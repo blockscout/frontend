@@ -58,7 +58,7 @@ const AppError = ({ error, className }: Props) => {
             undefined;
     const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'general:tx' && statusCode === 404;
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'core:tx' && statusCode === 404;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {

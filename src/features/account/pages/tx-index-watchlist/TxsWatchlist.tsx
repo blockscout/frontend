@@ -9,7 +9,7 @@ import useRedirectForInvalidAuthToken from 'src/features/account/hooks/useRedire
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
 type Props = {
-  query: QueryWithPagesResult<'general:txs_watchlist'>;
+  query: QueryWithPagesResult<'core:txs_watchlist'>;
   top?: number;
 };
 

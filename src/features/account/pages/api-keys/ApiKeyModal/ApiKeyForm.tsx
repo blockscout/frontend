@@ -45,10 +45,10 @@ const ApiKeyForm: React.FC<Props> = ({ data, onOpenChange, setAlertVisible }) =>
     const body = { name: data.name };
 
     if (!data.token) {
-      return apiFetch('general:api_keys', { fetchParams: { method: 'POST', body } });
+      return apiFetch('core:api_keys', { fetchParams: { method: 'POST', body } });
     }
 
-    return apiFetch('general:api_keys', {
+    return apiFetch('core:api_keys', {
       pathParams: { id: data.token },
       fetchParams: { method: 'PUT', body },
     });
@@ -59,7 +59,7 @@ const ApiKeyForm: React.FC<Props> = ({ data, onOpenChange, setAlertVisible }) =>
     onSuccess: async(data) => {
       const response = data as unknown as ApiKey;
 
-      queryClient.setQueryData([ resourceKey('general:api_keys') ], (prevData: ApiKeys | undefined) => {
+      queryClient.setQueryData([ resourceKey('core:api_keys') ], (prevData: ApiKeys | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.api_key === response.api_key);
 
         if (isExisting) {

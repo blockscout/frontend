@@ -38,7 +38,7 @@ const addresses: AddressesResponse = {
 
 test('base view +@mobile +@dark-mode', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
-  await mockApiResponse('general:addresses', addresses);
+  await mockApiResponse('core:addresses', addresses);
   const component = await render(<Accounts/>);
   await expect(component).toHaveScreenshot();
 });

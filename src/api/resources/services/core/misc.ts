@@ -41,7 +41,7 @@ import type {
   Transaction,
 } from 'src/slices/tx/types/api';
 
-export const GENERAL_API_MISC_RESOURCES = {
+export const CORE_API_MISC_RESOURCES = {
   // WITHDRAWALS
   withdrawals: {
     path: '/api/v2/withdrawals',
@@ -277,73 +277,73 @@ export const GENERAL_API_MISC_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiMiscResourceName = `general:${ keyof typeof GENERAL_API_MISC_RESOURCES }`;
+export type CoreApiMiscResourceName = `core:${ keyof typeof CORE_API_MISC_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiMiscResourcePayload<R extends GeneralApiMiscResourceName> =
-R extends 'general:stats' ? HomeStats :
-R extends 'general:stats_charts_txs' ? ChartTransactionResponse :
-R extends 'general:stats_charts_market' ? ChartMarketResponse :
-R extends 'general:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
-R extends 'general:stats_hot_contracts' ? HotContractsResponse :
-R extends 'general:homepage_blocks' ? Array<Block> :
-R extends 'general:homepage_txs' ? Array<Transaction> :
-R extends 'general:homepage_txs_watchlist' ? Array<Transaction> :
-R extends 'general:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
-R extends 'general:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
-R extends 'general:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
-R extends 'general:homepage_indexing_status' ? IndexingStatus :
-R extends 'general:homepage_zksync_latest_batch' ? number :
-R extends 'general:homepage_arbitrum_latest_batch' ? number :
-R extends 'general:quick_search' ? Array<SearchResultItem> :
-R extends 'general:search' ? SearchResult :
-R extends 'general:search_check_redirect' ? SearchRedirectResult :
-R extends 'general:config_backend' ? BackendConfig :
-R extends 'general:config_backend_version' ? BackendVersionConfig :
-R extends 'general:config_csv_export' ? CsvExportConfig :
-R extends 'general:config_celo' ? CeloConfig :
-R extends 'general:config_contract_languages' ? ContractLanguagesConfig :
-R extends 'general:blob' ? Blob :
-R extends 'general:validators_stability' ? ValidatorsStabilityResponse :
-R extends 'general:validators_stability_counters' ? ValidatorsStabilityCountersResponse :
-R extends 'general:validators_blackfort' ? ValidatorsBlackfortResponse :
-R extends 'general:validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
-R extends 'general:validators_zilliqa' ? ValidatorsZilliqaResponse :
-R extends 'general:validator_zilliqa' ? ValidatorZilliqa :
-R extends 'general:epochs_celo' ? CeloEpochListResponse :
-R extends 'general:epoch_celo' ? CeloEpochDetails :
-R extends 'general:epoch_celo_election_rewards' ? CeloEpochElectionRewardDetailsResponse :
-R extends 'general:user_ops' ? UserOpsResponse :
-R extends 'general:user_op' ? UserOp :
-R extends 'general:user_ops_account' ? UserOpsAccount :
-R extends 'general:user_op_interpretation' ? TxInterpretationResponse :
-R extends 'general:noves_transaction' ? NovesResponseData :
-R extends 'general:noves_address_history' ? NovesAccountHistoryResponse :
-R extends 'general:noves_describe_txs' ? NovesDescribeTxsResponse :
-R extends 'general:withdrawals' ? WithdrawalsResponse :
-R extends 'general:withdrawals_counters' ? WithdrawalsCounters :
-R extends 'general:deposits' ? DepositsResponse :
-R extends 'general:deposits_counters' ? DepositsCounters :
-R extends 'general:advanced_filter' ? AdvancedFilterResponse :
-R extends 'general:advanced_filter_methods' ? AdvancedFilterMethodsResponse :
-R extends 'general:csv_exports_item' ? CsvExportItemResponse :
+export type CoreApiMiscResourcePayload<R extends CoreApiMiscResourceName> =
+R extends 'core:stats' ? HomeStats :
+R extends 'core:stats_charts_txs' ? ChartTransactionResponse :
+R extends 'core:stats_charts_market' ? ChartMarketResponse :
+R extends 'core:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
+R extends 'core:stats_hot_contracts' ? HotContractsResponse :
+R extends 'core:homepage_blocks' ? Array<Block> :
+R extends 'core:homepage_txs' ? Array<Transaction> :
+R extends 'core:homepage_txs_watchlist' ? Array<Transaction> :
+R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
+R extends 'core:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
+R extends 'core:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
+R extends 'core:homepage_indexing_status' ? IndexingStatus :
+R extends 'core:homepage_zksync_latest_batch' ? number :
+R extends 'core:homepage_arbitrum_latest_batch' ? number :
+R extends 'core:quick_search' ? Array<SearchResultItem> :
+R extends 'core:search' ? SearchResult :
+R extends 'core:search_check_redirect' ? SearchRedirectResult :
+R extends 'core:config_backend' ? BackendConfig :
+R extends 'core:config_backend_version' ? BackendVersionConfig :
+R extends 'core:config_csv_export' ? CsvExportConfig :
+R extends 'core:config_celo' ? CeloConfig :
+R extends 'core:config_contract_languages' ? ContractLanguagesConfig :
+R extends 'core:blob' ? Blob :
+R extends 'core:validators_stability' ? ValidatorsStabilityResponse :
+R extends 'core:validators_stability_counters' ? ValidatorsStabilityCountersResponse :
+R extends 'core:validators_blackfort' ? ValidatorsBlackfortResponse :
+R extends 'core:validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
+R extends 'core:validators_zilliqa' ? ValidatorsZilliqaResponse :
+R extends 'core:validator_zilliqa' ? ValidatorZilliqa :
+R extends 'core:epochs_celo' ? CeloEpochListResponse :
+R extends 'core:epoch_celo' ? CeloEpochDetails :
+R extends 'core:epoch_celo_election_rewards' ? CeloEpochElectionRewardDetailsResponse :
+R extends 'core:user_ops' ? UserOpsResponse :
+R extends 'core:user_op' ? UserOp :
+R extends 'core:user_ops_account' ? UserOpsAccount :
+R extends 'core:user_op_interpretation' ? TxInterpretationResponse :
+R extends 'core:noves_transaction' ? NovesResponseData :
+R extends 'core:noves_address_history' ? NovesAccountHistoryResponse :
+R extends 'core:noves_describe_txs' ? NovesDescribeTxsResponse :
+R extends 'core:withdrawals' ? WithdrawalsResponse :
+R extends 'core:withdrawals_counters' ? WithdrawalsCounters :
+R extends 'core:deposits' ? DepositsResponse :
+R extends 'core:deposits_counters' ? DepositsCounters :
+R extends 'core:advanced_filter' ? AdvancedFilterResponse :
+R extends 'core:advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+R extends 'core:csv_exports_item' ? CsvExportItemResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiMiscPaginationFilters<R extends GeneralApiMiscResourceName> =
-R extends 'general:stats_hot_contracts' ? HotContractsFilters :
-R extends 'general:search' ? SearchResultFilters :
-R extends 'general:user_ops' ? UserOpsFilters :
-R extends 'general:validators_stability' ? ValidatorsStabilityFilters :
-R extends 'general:advanced_filter' ? AdvancedFilterParams :
+export type CoreApiMiscPaginationFilters<R extends CoreApiMiscResourceName> =
+R extends 'core:stats_hot_contracts' ? HotContractsFilters :
+R extends 'core:search' ? SearchResultFilters :
+R extends 'core:user_ops' ? UserOpsFilters :
+R extends 'core:validators_stability' ? ValidatorsStabilityFilters :
+R extends 'core:advanced_filter' ? AdvancedFilterParams :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiMiscPaginationSorting<R extends GeneralApiMiscResourceName> =
-R extends 'general:stats_hot_contracts' ? HotContractsSorting :
-R extends 'general:validators_stability' ? ValidatorsStabilitySorting :
-R extends 'general:validators_blackfort' ? ValidatorsBlackfortSorting :
+export type CoreApiMiscPaginationSorting<R extends CoreApiMiscResourceName> =
+R extends 'core:stats_hot_contracts' ? HotContractsSorting :
+R extends 'core:validators_stability' ? ValidatorsStabilitySorting :
+R extends 'core:validators_blackfort' ? ValidatorsBlackfortSorting :
 never;
 /* eslint-enable @stylistic/indent */

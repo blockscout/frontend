@@ -35,7 +35,7 @@ const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
     setSearchTerm(value);
   }, []);
 
-  const methodsQuery = useApiQuery('general:advanced_filter_methods', {
+  const methodsQuery = useApiQuery('core:advanced_filter_methods', {
     queryParams: { q: debouncedSearchTerm },
     queryOptions: { refetchOnMount: false },
   });

@@ -10,7 +10,7 @@ import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsLis
 import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
 
 type Props = {
-  blockWithdrawalsQuery: QueryWithPagesResult<'general:block_withdrawals'>;
+  blockWithdrawalsQuery: QueryWithPagesResult<'core:block_withdrawals'>;
 };
 const TABS_HEIGHT = 88;
 

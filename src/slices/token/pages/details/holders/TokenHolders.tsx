@@ -23,7 +23,7 @@ const TABS_HEIGHT = 88;
 
 type Props = {
   token?: TokenInfo;
-  holdersQuery: QueryWithPagesResult<'general:token_holders'>;
+  holdersQuery: QueryWithPagesResult<'core:token_holders'>;
   shouldRender?: boolean;
   tabsHeight?: number;
 };
@@ -45,7 +45,7 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
       { token && (
         <CsvExport
           type="token_holders"
-          resourceName="general:token_csv_export_holders"
+          resourceName="core:token_csv_export_holders"
           pathParams={{ hash: token.address_hash }}
           extraParams={{ token_name: token.name || 'Unknown token' }}
           periodFilter={ false }

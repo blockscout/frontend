@@ -8,7 +8,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 const MockAddressPage = ({ children }: { children: React.JSX.Element }): React.JSX.Element => {
   const router = useRouter();
 
-  const { data } = useApiQuery('general:address', {
+  const { data } = useApiQuery('core:address', {
     pathParams: { hash: router.query.hash?.toString() },
     queryOptions: { enabled: Boolean(router.query.hash) },
   });

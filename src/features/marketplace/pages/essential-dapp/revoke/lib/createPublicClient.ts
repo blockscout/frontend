@@ -14,7 +14,7 @@ export default function createPublicClient(chainId: string | undefined): PublicC
 
   return createPublicClientDefault({
     chain,
-    transport: http(`${ chainConfig?.app_config?.apis?.general?.endpoint }/api/eth-rpc`, { batch: { wait: 100, batchSize: 5 } }),
+    transport: http(`${ chainConfig?.app_config?.apis?.core?.endpoint }/api/eth-rpc`, { batch: { wait: 100, batchSize: 5 } }),
     batch: { multicall: true },
   });
 }

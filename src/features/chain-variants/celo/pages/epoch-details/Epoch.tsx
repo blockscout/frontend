@@ -27,7 +27,7 @@ const EpochPageContent = () => {
   const router = useRouter();
   const number = getQueryParamString(router.query.number);
 
-  const epochQuery = useApiQuery('general:epoch_celo', {
+  const epochQuery = useApiQuery('core:epoch_celo', {
     pathParams: {
       number: number,
     },

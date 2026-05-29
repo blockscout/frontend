@@ -16,7 +16,7 @@ const hooksConfig = {
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
   test.slow();
-  await mockApiResponse('general:address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
       <AddressInternalTxs/>

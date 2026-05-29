@@ -52,7 +52,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
 
   const handleClaimSuccess = React.useCallback((l1TxHash: string) => {
     queryClient.setQueryData(
-      getResourceKey('general:tx', { pathParams: { hash: txHash } }),
+      getResourceKey('core:tx', { pathParams: { hash: txHash } }),
       (prevData: Transaction | undefined) => {
         if (!prevData) {
           return;

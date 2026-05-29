@@ -10,8 +10,8 @@ import ScrollL2Withdrawals from './ScrollL2Withdrawals';
 test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   await mockTextAd();
   await mockEnvs(ENVS_MAP.scrollRollup);
-  await mockApiResponse('general:scroll_l2_withdrawals', messagesMock.baseResponse);
-  await mockApiResponse('general:scroll_l2_withdrawals_count', 3971111);
+  await mockApiResponse('core:scroll_l2_withdrawals', messagesMock.baseResponse);
+  await mockApiResponse('core:scroll_l2_withdrawals_count', 3971111);
 
   const component = await render(<ScrollL2Withdrawals/>);
 
@@ -24,8 +24,8 @@ test.describe('mobile', () => {
   test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
     await mockTextAd();
     await mockEnvs(ENVS_MAP.scrollRollup);
-    await mockApiResponse('general:scroll_l2_withdrawals', messagesMock.baseResponse);
-    await mockApiResponse('general:scroll_l2_withdrawals_count', 3971111);
+    await mockApiResponse('core:scroll_l2_withdrawals', messagesMock.baseResponse);
+    await mockApiResponse('core:scroll_l2_withdrawals_count', 3971111);
 
     const component = await render(<ScrollL2Withdrawals/>);
 

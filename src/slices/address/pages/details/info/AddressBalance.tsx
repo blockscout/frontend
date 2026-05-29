@@ -31,7 +31,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     }
 
     setLastBlockNumber(blockNumber);
-    const queryKey = getResourceKey('general:address', { pathParams: { hash: data.hash } });
+    const queryKey = getResourceKey('core:address', { pathParams: { hash: data.hash } });
     queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
       if (!prevData) {
         return;

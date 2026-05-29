@@ -44,7 +44,7 @@ const Pool = () => {
     },
   });
 
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash: data?.pool_id },
     queryOptions: {
       enabled: Boolean(data?.is_contract),

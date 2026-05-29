@@ -7,8 +7,8 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -129,7 +129,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
             { chainSelect }
             <CsvExport
               type="address_txs"
-              resourceName="general:address_csv_export_txs"
+              resourceName="core:address_csv_export_txs"
               pathParams={{ hash }}
               queryParams={ txsQueryLocal.filterValue ? {
                 filter_type: 'address',

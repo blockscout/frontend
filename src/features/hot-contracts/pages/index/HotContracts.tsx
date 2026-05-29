@@ -39,7 +39,7 @@ const HotContracts = () => {
       React.useState<HotContractsSortingValue>(getSortValueFromQuery<HotContractsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
 
   const { data, isError, isPlaceholderData, pagination, onSortingChange, onFilterChange } = useQueryWithPages({
-    resourceName: 'general:stats_hot_contracts',
+    resourceName: 'core:stats_hot_contracts',
     filters: { scale: interval },
     sorting: getSortParamsFromValue<HotContractsSortingValue, HotContractsSortingField, HotContractsSorting['order']>(sort),
     options: {
@@ -50,7 +50,7 @@ const HotContracts = () => {
     },
   });
 
-  const statsQuery = useApiQuery('general:stats', {
+  const statsQuery = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

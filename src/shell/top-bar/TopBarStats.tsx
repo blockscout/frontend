@@ -22,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 const TopBarStats = () => {
   const isMobile = useIsMobile();
 
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('general:stats', {
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

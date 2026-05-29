@@ -34,12 +34,12 @@ export default function useBridgedTokensQuery({ enabled }: Props) {
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const query = useQueryWithPages({
-    resourceName: 'general:tokens_bridged',
+    resourceName: 'core:tokens_bridged',
     filters: { q: debouncedSearchTerm, chain_ids: bridgeChains },
     sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
       enabled,
-      placeholderData: generateListStub<'general:tokens_bridged'>(
+      placeholderData: generateListStub<'core:tokens_bridged'>(
         TOKEN_INFO_ERC_20,
         50,
         { next_page_params: { holders_count: 81528, items_count: 50, name: '', market_cap: null },

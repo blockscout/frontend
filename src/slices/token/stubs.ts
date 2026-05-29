@@ -65,26 +65,26 @@ export const TOKEN_HOLDER_ERC_1155: TokenHolder = {
 export const getTokenHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
   switch (type) {
     case 'ERC-721':
-      return generateListStub<'general:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
     case 'ERC-1155':
-      return generateListStub<'general:token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
     case 'ERC-404':
-      return generateListStub<'general:token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
     default:
-      return generateListStub<'general:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
   }
 };
 
 export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
   switch (type) {
     case 'ERC-721':
-      return generateListStub<'general:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
     case 'ERC-1155':
-      return generateListStub<'general:token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
     case 'ERC-404':
-      return generateListStub<'general:token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
     default:
-      return generateListStub<'general:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
   }
 };
 

@@ -44,11 +44,11 @@ const MultichainBlocks = () => {
   const isMobile = useIsMobile();
 
   const blocksQuery = useQueryWithPages({
-    resourceName: 'general:blocks',
+    resourceName: 'core:blocks',
     filters: { type: 'block' },
     options: {
       enabled: tab === 'blocks' || !tab,
-      placeholderData: generateListStub<'general:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),
@@ -57,11 +57,11 @@ const MultichainBlocks = () => {
   });
 
   const reorgsQuery = useQueryWithPages({
-    resourceName: 'general:blocks',
+    resourceName: 'core:blocks',
     filters: { type: 'reorg' },
     options: {
       enabled: tab === 'reorgs',
-      placeholderData: generateListStub<'general:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),
@@ -70,11 +70,11 @@ const MultichainBlocks = () => {
   });
 
   const unclesQuery = useQueryWithPages({
-    resourceName: 'general:blocks',
+    resourceName: 'core:blocks',
     filters: { type: 'uncle' },
     options: {
       enabled: tab === 'uncles',
-      placeholderData: generateListStub<'general:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),

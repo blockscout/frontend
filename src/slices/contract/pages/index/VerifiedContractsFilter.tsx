@@ -21,7 +21,7 @@ interface Props {
 
 const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
 
-  const { data, isPending } = useApiQuery('general:config_contract_languages');
+  const { data, isPending } = useApiQuery('core:config_contract_languages');
 
   const options = React.useMemo(() => {
     return [

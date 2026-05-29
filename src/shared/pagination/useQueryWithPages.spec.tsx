@@ -86,8 +86,8 @@ const responseInit = {
 };
 
 it('returns correct data if there is only one page', async() => {
-  const params: Params<'general:address_txs'> = {
-    resourceName: 'general:address_txs',
+  const params: Params<'core:address_txs'> = {
+    resourceName: 'core:address_txs',
     pathParams: { hash: addressMock.hash },
   };
   fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
@@ -108,8 +108,8 @@ it('returns correct data if there is only one page', async() => {
 });
 
 describe('if there are multiple pages', () => {
-  const params: Params<'general:address_txs'> = {
-    resourceName: 'general:address_txs',
+  const params: Params<'core:address_txs'> = {
+    resourceName: 'core:address_txs',
     pathParams: { hash: addressMock.hash },
   };
 
@@ -132,7 +132,7 @@ describe('if there are multiple pages', () => {
 
   describe('correctly navigates forward and backward', () => {
     let result: {
-      current: QueryWithPagesResult<'general:address_txs'>;
+      current: QueryWithPagesResult<'core:address_txs'>;
     };
 
     beforeEach(async() => {
@@ -366,8 +366,8 @@ describe('if there are multiple pages', () => {
         scrollIntoView: vi.fn(),
       },
     };
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
       scrollRef: scrollRef as unknown as React.RefObject<HTMLDivElement>,
     };
@@ -392,8 +392,8 @@ describe('if there is page query param in URL', () => {
   it('sets this param as the page number', async() => {
     mockUseRouter.mockReturnValue({ ...router, query: { page: '3' } } as unknown as ReturnType<typeof useRouter>);
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
@@ -415,8 +415,8 @@ describe('if there is page query param in URL', () => {
   it('correctly navigates to the following pages', async() => {
     mockUseRouter.mockReturnValue({ ...router, pathname: '/blocks', query: { page: '2' } });
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
@@ -459,8 +459,8 @@ describe('queries with filters', () => {
   it('reset page, keep sorting when filter is changed', async() => {
     mockUseRouter.mockReturnValue({ ...router, pathname: '/blocks', query: { foo: 'bar', sort: 'val-desc' } });
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
 
       // @ts-ignore:
@@ -510,8 +510,8 @@ describe('queries with filters', () => {
   it('saves filter params in query when navigating between pages', async() => {
     mockUseRouter.mockReturnValue({ ...router, pathname: '/blocks', query: { filter: 'from', foo: 'bar' } });
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
     };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
@@ -546,8 +546,8 @@ describe('queries with sorting', () => {
   it('reset page, save filter when sorting is changed', async() => {
     mockUseRouter.mockReturnValue({ ...router, pathname: '/blocks', query: { foo: 'bar', filter: 'from' } });
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
       filters: { filter: 'from' },
     };
@@ -597,8 +597,8 @@ describe('queries with sorting', () => {
   it('saves sorting params in query when navigating between pages', async() => {
     mockUseRouter.mockReturnValue({ ...router, pathname: '/blocks', query: { foo: 'bar', sort: 'val-desc' } });
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
 
       // @ts-ignore:
@@ -644,8 +644,8 @@ describe('router query changes', () => {
     } as unknown as ReturnType<typeof useRouter>;
     mockUseRouter.mockReturnValue(router);
 
-    const params: Params<'general:address_txs'> = {
-      resourceName: 'general:address_txs',
+    const params: Params<'core:address_txs'> = {
+      resourceName: 'core:address_txs',
       pathParams: { hash: addressMock.hash },
     };
 

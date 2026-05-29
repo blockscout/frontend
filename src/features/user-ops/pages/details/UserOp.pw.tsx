@@ -20,7 +20,7 @@ test.beforeEach(async({ mockEnvs }) => {
 
 test('base view', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
-  await mockApiResponse('general:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
+  await mockApiResponse('core:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
   const component = await render(<UserOp/>, { hooksConfig });
   await component.getByText('View details').click();
   await expect(component).toHaveScreenshot();
@@ -31,7 +31,7 @@ test.describe('mobile', () => {
 
   test('base view', async({ render, mockTextAd, mockApiResponse }) => {
     await mockTextAd();
-    await mockApiResponse('general:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
+    await mockApiResponse('core:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
     const component = await render(<UserOp/>, { hooksConfig });
     await component.getByText('View details').click();
     await expect(component).toHaveScreenshot();

@@ -36,10 +36,10 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = useQueryWithPages({
-    resourceName: 'general:address_logs',
+    resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
-      placeholderData: generateListStub<'general:address_logs'>(LOG, 3, { next_page_params: {
+      placeholderData: generateListStub<'core:address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
         items_count: 50,
@@ -68,7 +68,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       { (data?.items.length ?? 0) > 0 && (
         <CsvExport
           type="address_logs"
-          resourceName="general:address_csv_export_logs"
+          resourceName="core:address_csv_export_logs"
           pathParams={{ hash }}
           loadingInitial={ pagination.isLoading }
           chainData={ chainData }

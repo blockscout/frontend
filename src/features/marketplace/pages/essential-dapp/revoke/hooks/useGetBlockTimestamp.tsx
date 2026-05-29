@@ -34,7 +34,7 @@ export default function useGetBlockTimestamp() {
     const cached = timestampCache.get(cacheKey);
     if (cached) return cached;
 
-    const response = (apiFetch('general:block', {
+    const response = (apiFetch('core:block', {
       pathParams: { height_or_hash: blockNumber.toString() },
       chain,
       fetchParams: {

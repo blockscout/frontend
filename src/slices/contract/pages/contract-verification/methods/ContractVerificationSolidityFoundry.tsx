@@ -17,13 +17,13 @@ import ContractVerificationMethod from '../ContractVerificationMethod';
 const ContractVerificationSolidityFoundry = () => {
   const { watch } = useFormContext<FormFields>();
   const address = watch('address');
-  const generalApiEndpoint = config.apis.general ?
-    `${ config.apis.general.endpoint }${ config.apis.general.basePath ?? '' }` : '';
+  const coreApiEndpoint = config.apis.core ?
+    `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }` : '';
 
   const codeSnippet = `forge verify-contract \\
-  --rpc-url ${ config.chain.rpcUrls[0] || (generalApiEndpoint ? `${ generalApiEndpoint }/api/eth-rpc` : '') } \\
+  --rpc-url ${ config.chain.rpcUrls[0] || (coreApiEndpoint ? `${ coreApiEndpoint }/api/eth-rpc` : '') } \\
   --verifier blockscout \\
-  --verifier-url '${ generalApiEndpoint ? `${ generalApiEndpoint }/api/` : '' }' \\
+  --verifier-url '${ coreApiEndpoint ? `${ coreApiEndpoint }/api/` : '' }' \\
   ${ address || '<address>' } \\
   [contractFile]:[contractName]`;
 

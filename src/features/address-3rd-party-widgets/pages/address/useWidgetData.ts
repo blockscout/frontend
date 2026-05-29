@@ -6,7 +6,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import config from 'src/config';
 
-const RESOURCE_NAME = 'general:address_3rd_party_info';
+const RESOURCE_NAME = 'core:address_3rd_party_info';
 
 const formatValue = (value: unknown): string | undefined => {
   if (typeof value !== 'number' && typeof value !== 'string') {

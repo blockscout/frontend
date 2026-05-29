@@ -86,7 +86,7 @@ const useGetERC20TokenData = () => {
     signal?: AbortSignal,
   ) => {
     try {
-      const data = await apiFetch('general:token', {
+      const data = await apiFetch('core:token', {
         pathParams: { hash: tokenAddress },
         chain,
         fetchParams: {
@@ -126,7 +126,7 @@ const useGetERC20Allowances = () => {
     const allowances: Array<AllowanceType> = [];
     let balances: Record<string, bigint> = {};
 
-    const response = await apiFetch('general:address_token_balances', {
+    const response = await apiFetch('core:address_token_balances', {
       pathParams: { hash: searchQuery },
       chain,
       fetchParams: {

@@ -52,7 +52,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
   });
 
   const authFetchFactory = React.useCallback((email: string) => (recaptchaToken?: string) => {
-    return apiFetch('general:auth_send_otp', {
+    return apiFetch('core:auth_send_otp', {
       fetchParams: {
         method: 'POST',
         body: { email, recaptcha_response: recaptchaToken },

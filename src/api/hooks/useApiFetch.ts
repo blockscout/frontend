@@ -9,11 +9,11 @@ import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import * as cookies from 'src/shared/storage/cookies';
 
-import buildUrl from '../build-url';
-import getResourceParams from '../get-resource-params';
-import isBodyAllowed from '../is-body-allowed';
-import isNeedProxy from '../is-need-proxy';
 import type { ResourceName, ResourcePathParams } from '../resources';
+import buildUrl from '../utils/build-url';
+import getResourceParams from '../utils/get-resource-params';
+import isBodyAllowed from '../utils/is-body-allowed';
+import isNeedProxy from '../utils/is-need-proxy';
 import { getResourceKey } from './useApiQuery';
 import type { Params as FetchParams } from './useFetch';
 import useFetch from './useFetch';
@@ -30,7 +30,7 @@ export default function useApiFetch() {
   const fetch = useFetch();
   const queryClient = useQueryClient();
 
-  const { token: csrfToken } = queryClient.getQueryData<CsrfData>(getResourceKey('general:csrf')) || {};
+  const { token: csrfToken } = queryClient.getQueryData<CsrfData>(getResourceKey('core:csrf')) || {};
 
   return React.useCallback(<R extends ResourceName, SuccessType = unknown, ErrorType = unknown>(
     resourceName: R,
@@ -47,8 +47,8 @@ export default function useApiFetch() {
     const headers = pickBy({
       'x-endpoint': isNeedProxy() ? api.endpoint : undefined,
       Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
-      'x-csrf-token': [ 'general', 'admin', 'contractInfo' ].includes(apiName) && withBody && csrfToken ? csrfToken : undefined,
-      ...(apiName === 'general' ? {
+      'x-csrf-token': [ 'core', 'admin', 'contractInfo' ].includes(apiName) && withBody && csrfToken ? csrfToken : undefined,
+      ...(apiName === 'core' ? {
         'api-v2-temp-token': apiTempToken,
         'show-scam-tokens': showScamTokens ? 'true' : undefined,
       } : {}),
@@ -80,7 +80,7 @@ export default function useApiFetch() {
         // Considering all of the above, we use:
         //   -  The "same-origin" option for all core API requests
         //   -  The "omit" option for all other requests
-        credentials: apiName === 'general' ? 'same-origin' : 'omit',
+        credentials: apiName === 'core' ? 'same-origin' : 'omit',
         headers,
         ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },

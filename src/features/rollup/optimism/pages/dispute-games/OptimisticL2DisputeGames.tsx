@@ -22,9 +22,9 @@ import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';
 
 const OptimisticL2DisputeGames = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:optimistic_l2_dispute_games',
+    resourceName: 'core:optimistic_l2_dispute_games',
     options: {
-      placeholderData: generateListStub<'general:optimistic_l2_dispute_games'>(
+      placeholderData: generateListStub<'core:optimistic_l2_dispute_games'>(
         L2_DISPUTE_GAMES_ITEM,
         50,
         {
@@ -37,7 +37,7 @@ const OptimisticL2DisputeGames = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:optimistic_l2_dispute_games_count', {
+  const countersQuery = useApiQuery('core:optimistic_l2_dispute_games_count', {
     queryOptions: {
       placeholderData: 50617,
     },

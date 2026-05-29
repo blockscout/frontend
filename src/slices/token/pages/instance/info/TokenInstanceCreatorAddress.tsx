@@ -14,7 +14,7 @@ interface Props {
 }
 
 const TokenInstanceCreatorAddress = ({ hash }: Props) => {
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),

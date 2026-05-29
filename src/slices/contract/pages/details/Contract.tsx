@@ -68,10 +68,10 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab, ...rest }:
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(async() => {
     setAutoVerificationStatus('success');
     await queryClient.refetchQueries({
-      queryKey: getResourceKey('general:address', { pathParams: { hash: addressData?.hash } }),
+      queryKey: getResourceKey('core:address', { pathParams: { hash: addressData?.hash } }),
     });
     await queryClient.refetchQueries({
-      queryKey: getResourceKey('general:contract', { pathParams: { hash: addressData?.hash } }),
+      queryKey: getResourceKey('core:contract', { pathParams: { hash: addressData?.hash } }),
     });
     setAutoVerificationStatus(null);
   }, [ addressData?.hash, queryClient ]);

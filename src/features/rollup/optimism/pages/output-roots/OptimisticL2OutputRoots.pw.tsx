@@ -11,8 +11,8 @@ test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse
   test.slow();
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockTextAd();
-  await mockApiResponse('general:optimistic_l2_output_roots', outputRootsData);
-  await mockApiResponse('general:optimistic_l2_output_roots_count', 9927);
+  await mockApiResponse('core:optimistic_l2_output_roots', outputRootsData);
+  await mockApiResponse('core:optimistic_l2_output_roots_count', 9927);
   const component = await render(<OptimisticL2OutputRoots/>);
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

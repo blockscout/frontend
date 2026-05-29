@@ -29,7 +29,7 @@ const TxRawTrace = ({ txQuery }: Props) => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError } = useApiQuery('general:tx_raw_trace', {
+  const { data, isPlaceholderData, isError } = useApiQuery('core:tx_raw_trace', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && Boolean(txQuery.data?.status) && isQueryEnabled,

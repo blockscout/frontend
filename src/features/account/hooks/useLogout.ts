@@ -34,7 +34,7 @@ export default function useLogout() {
 
   return React.useCallback(async() => {
     try {
-      await apiFetch('general:auth_logout');
+      await apiFetch('core:auth_logout');
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {
@@ -52,11 +52,11 @@ export default function useLogout() {
       }
 
       queryClient.resetQueries({
-        queryKey: getResourceKey('general:user_info'),
+        queryKey: getResourceKey('core:user_info'),
         exact: true,
       });
       queryClient.resetQueries({
-        queryKey: getResourceKey('general:custom_abi'),
+        queryKey: getResourceKey('core:custom_abi'),
         exact: true,
       });
     } catch (error) {

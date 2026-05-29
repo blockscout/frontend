@@ -24,9 +24,9 @@ import DepositsTable from './DepositsTable';
 
 const ShibariumDeposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:shibarium_deposits',
+    resourceName: 'core:shibarium_deposits',
     options: {
-      placeholderData: generateListStub<'general:shibarium_deposits'>(
+      placeholderData: generateListStub<'core:shibarium_deposits'>(
         SHIBARIUM_DEPOSIT_ITEM,
         50,
         {
@@ -39,7 +39,7 @@ const ShibariumDeposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:shibarium_deposits_count', {
+  const countersQuery = useApiQuery('core:shibarium_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

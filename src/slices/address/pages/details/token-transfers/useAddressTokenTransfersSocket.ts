@@ -85,7 +85,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
     }
 
     if (newItems.length > 0) {
-      const queryKey = getResourceKey('general:address_token_transfers', {
+      const queryKey = getResourceKey('core:address_token_transfers', {
         pathParams: { hash: addressHash },
         queryParams: { ...filters },
         chainId: multichainContext?.chain?.id,

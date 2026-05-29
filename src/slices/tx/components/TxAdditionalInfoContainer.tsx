@@ -15,7 +15,7 @@ interface Props {
 }
 
 const TxAdditionalInfoContainer = ({ hash }: Props) => {
-  const { data, isError, isPlaceholderData } = useApiQuery('general:tx', {
+  const { data, isError, isPlaceholderData } = useApiQuery('core:tx', {
     pathParams: { hash },
     queryOptions: {
       refetchOnMount: false,

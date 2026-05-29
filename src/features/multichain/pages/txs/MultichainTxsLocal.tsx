@@ -3,8 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 

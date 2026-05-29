@@ -2,9 +2,10 @@
 
 import type { AuthProvider } from 'src/features/account/types/client';
 
+import apis from 'src/api/config';
+
 import verifiedTokens from 'src/features/verified-tokens/config';
 
-import apis from 'src/config/apis';
 import app from 'src/config/app';
 import * as services from 'src/config/services';
 import { getEnvValue } from 'src/config/utils/envs';

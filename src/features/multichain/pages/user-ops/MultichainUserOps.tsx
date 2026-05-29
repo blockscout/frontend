@@ -24,9 +24,9 @@ const MultichainUserOps = () => {
   const chainIds = React.useMemo(() => chains.map(chain => chain.id).filter(Boolean), [ chains ]);
 
   const query = useQueryWithPages({
-    resourceName: 'general:user_ops',
+    resourceName: 'core:user_ops',
     options: {
-      placeholderData: generateListStub<'general:user_ops'>(USER_OPS_ITEM, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:user_ops'>(USER_OPS_ITEM, 50, { next_page_params: {
         page_token: '10355938',
         page_size: 50,
       } }),

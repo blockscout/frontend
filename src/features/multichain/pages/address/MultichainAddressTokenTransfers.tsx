@@ -7,8 +7,8 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import useAddressCountersQuery from 'src/slices/address/hooks/useAddressCountersQuery';
 import AddressTokenTransfersLocal from 'src/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
@@ -141,7 +141,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
             { chainSelect }
             <CsvExport
               type="address_token_transfers"
-              resourceName="general:address_csv_export_token_transfers"
+              resourceName="core:address_csv_export_token_transfers"
               pathParams={{ hash }}
               queryParams={ transfersQueryLocal.filters.filter ? {
                 filter_type: 'address',

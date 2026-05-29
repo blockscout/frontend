@@ -46,7 +46,7 @@ interface Props {
 }
 
 export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chain }: Props): ReturnType {
-  const contractQuery = useApiQuery('general:contract', {
+  const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
       enabled: isEnabled && addressData?.is_contract,
@@ -56,7 +56,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
     chain,
   });
 
-  const mudSystemsQuery = useApiQuery('general:mud_systems', {
+  const mudSystemsQuery = useApiQuery('core:mud_systems', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
       enabled: Boolean(isEnabled && hasMudTab && addressData?.is_contract),

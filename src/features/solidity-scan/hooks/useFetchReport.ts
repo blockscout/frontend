@@ -3,8 +3,8 @@
 import React from 'react';
 import * as v from 'valibot';
 
-import buildUrl from 'src/api/build-url';
 import useApiQuery from 'src/api/hooks/useApiQuery';
+import buildUrl from 'src/api/utils/build-url';
 
 import { SOLIDITY_SCAN_REPORT } from '../stubs';
 import { SolidityScanSchema } from '../utils/schema';
@@ -13,7 +13,7 @@ interface Params {
   hash: string;
 }
 
-const RESOURCE_NAME = 'general:contract_solidity_scan_report';
+const RESOURCE_NAME = 'core:contract_solidity_scan_report';
 const ERROR_NAME = 'Invalid response schema';
 
 export default function useFetchReport({ hash }: Params) {

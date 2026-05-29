@@ -42,14 +42,14 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
 
   const isAuth = useIsAuth();
 
-  const customAbiQuery = useApiQuery('general:custom_abi', {
+  const customAbiQuery = useApiQuery('core:custom_abi', {
     queryOptions: {
       enabled: !isLoadingProp && isAuth,
       refetchOnMount: false,
     },
   });
 
-  const contractQueryData = queryClient.getQueryData<SmartContract>(getResourceKey('general:contract', { pathParams: { hash: addressHash } }));
+  const contractQueryData = queryClient.getQueryData<SmartContract>(getResourceKey('core:contract', { pathParams: { hash: addressHash } }));
 
   const isLoading = isLoadingProp || (isAuth && customAbiQuery.isLoading);
 

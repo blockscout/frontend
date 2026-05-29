@@ -26,7 +26,7 @@ import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 
 interface Props {
-  query: QueryWithPagesResult<'general:address_token_transfers'>;
+  query: QueryWithPagesResult<'core:address_token_transfers'>;
   filters: Filters;
   addressHash: string;
   onTypeFilterChange: (type: Array<TokenType>) => void;
@@ -100,7 +100,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
         />
         <CsvExport
           type="address_token_transfers"
-          resourceName="general:address_csv_export_token_transfers"
+          resourceName="core:address_csv_export_token_transfers"
           pathParams={{ hash: addressHash }}
           queryParams={ filters.filter ? {
             filter_type: 'address',

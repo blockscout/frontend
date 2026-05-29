@@ -36,7 +36,7 @@ const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ confi
 
 const Footer = () => {
 
-  const { data: backendVersionData } = useApiQuery('general:config_backend_version', {
+  const { data: backendVersionData } = useApiQuery('core:config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
       enabled: !config.features.multichain.isEnabled,

@@ -18,7 +18,7 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 import NFTItem from './NFTItem';
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'general:address_nfts'>;
+  tokensQuery: QueryWithPagesResult<'core:address_nfts'>;
   tokenTypes: Array<NFTTokenType> | undefined;
   onTokenTypesChange: (value: Array<NFTTokenType>) => void;
 };

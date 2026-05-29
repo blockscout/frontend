@@ -59,7 +59,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const apiDailyTxsQuery = useApiQuery('general:stats_charts_txs', {
+  const apiDailyTxsQuery = useApiQuery('core:stats_charts_txs', {
     queryOptions: {
       refetchOnMount: false,
       enabled: !isStatsFeatureEnabled && indicatorId === 'daily_txs',
@@ -67,7 +67,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const coinPriceQuery = useApiQuery('general:stats_charts_market', {
+  const coinPriceQuery = useApiQuery('core:stats_charts_market', {
     queryOptions: {
       refetchOnMount: false,
       enabled: indicatorId === 'coin_price',
@@ -75,7 +75,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const secondaryCoinPriceQuery = useApiQuery('general:stats_charts_secondary_coin_price', {
+  const secondaryCoinPriceQuery = useApiQuery('core:stats_charts_secondary_coin_price', {
     queryOptions: {
       refetchOnMount: false,
       enabled: indicatorId === 'secondary_coin_price',
@@ -83,7 +83,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const marketCapQuery = useApiQuery('general:stats_charts_market', {
+  const marketCapQuery = useApiQuery('core:stats_charts_market', {
     queryOptions: {
       refetchOnMount: false,
       enabled: indicatorId === 'market_cap',
@@ -105,7 +105,7 @@ export default function useChartDataQuery(indicatorId: ChainIndicatorId): UseFet
     },
   });
 
-  const tvlQuery = useApiQuery('general:stats_charts_market', {
+  const tvlQuery = useApiQuery('core:stats_charts_market', {
     queryOptions: {
       refetchOnMount: false,
       enabled: indicatorId === 'tvl',

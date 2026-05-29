@@ -20,9 +20,9 @@ import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'general:addresses',
+    resourceName: 'core:addresses',
     options: {
-      placeholderData: generateListStub<'general:addresses'>(
+      placeholderData: generateListStub<'core:addresses'>(
         TOP_ADDRESS,
         50,
         {

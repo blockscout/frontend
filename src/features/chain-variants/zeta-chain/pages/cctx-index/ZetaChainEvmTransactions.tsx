@@ -37,11 +37,11 @@ const ZetaChainEvmTransactions = () => {
   const isMobile = useIsMobile();
 
   const txsValidatedQuery = useQueryWithPages({
-    resourceName: 'general:txs_validated',
+    resourceName: 'core:txs_validated',
     filters: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'zetachain' || tab === 'zetachain_validated',
-      placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -51,11 +51,11 @@ const ZetaChainEvmTransactions = () => {
   });
 
   const txsPendingQuery = useQueryWithPages({
-    resourceName: 'general:txs_pending',
+    resourceName: 'core:txs_pending',
     filters: { filter: 'pending' },
     options: {
       enabled: tab === 'zetachain_pending',
-      placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_pending'>(TX, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
         filter: 'pending',

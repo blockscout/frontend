@@ -131,7 +131,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
             { txsLocalFilter }
             <CsvExport
               type="address_txs"
-              resourceName="general:address_csv_export_txs"
+              resourceName="core:address_csv_export_txs"
               pathParams={{ hash }}
               queryParams={ localQuery.filterValue ? {
                 filter_type: 'address',

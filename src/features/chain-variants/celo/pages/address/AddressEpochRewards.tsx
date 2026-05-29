@@ -31,13 +31,13 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
   const hash = getQueryParamString(router.query.hash);
 
   const rewardsQuery = useQueryWithPages({
-    resourceName: 'general:address_epoch_rewards',
+    resourceName: 'core:address_epoch_rewards',
     pathParams: {
       hash,
     },
     options: {
       enabled: isQueryEnabled && Boolean(hash),
-      placeholderData: generateListStub<'general:address_epoch_rewards'>(EPOCH_REWARD_ITEM, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:address_epoch_rewards'>(EPOCH_REWARD_ITEM, 50, { next_page_params: {
         amount: '1',
         items_count: 50,
         type: 'voter',
@@ -76,7 +76,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
     <ActionBar mt={ -6 }>
       <CsvExport
         type="address_epoch_rewards"
-        resourceName="general:address_csv_export_celo_election_rewards"
+        resourceName="core:address_csv_export_celo_election_rewards"
         pathParams={{ hash }}
         loadingInitial={ rewardsQuery.pagination.isLoading }
       />

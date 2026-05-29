@@ -34,7 +34,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, pr
 
   const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address_hash === sourceAddress) || implementations[0]);
 
-  const contractQuery = useApiQuery('general:contract', {
+  const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash: selectedItem.address_hash },
     queryOptions: {
       enabled: Boolean(selectedItem.address_hash),

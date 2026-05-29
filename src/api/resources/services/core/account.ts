@@ -3,7 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { AddressTagsResponse, ApiKeys, CustomAbis, TransactionTagsResponse, UserInfo, WatchlistResponse } from 'src/features/account/types/api';
 
-export const GENERAL_API_ACCOUNT_RESOURCES = {
+export const CORE_API_ACCOUNT_RESOURCES = {
   // ACCOUNT
   csrf: {
     path: '/api/account/v2/get_csrf',
@@ -65,15 +65,15 @@ export const GENERAL_API_ACCOUNT_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiAccountResourceName = `general:${ keyof typeof GENERAL_API_ACCOUNT_RESOURCES }`;
+export type CoreApiAccountResourceName = `core:${ keyof typeof CORE_API_ACCOUNT_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiAccountResourcePayload<R extends GeneralApiAccountResourceName> =
-R extends 'general:user_info' ? UserInfo :
-R extends 'general:custom_abi' ? CustomAbis :
-R extends 'general:private_tags_address' ? AddressTagsResponse :
-R extends 'general:private_tags_tx' ? TransactionTagsResponse :
-R extends 'general:api_keys' ? ApiKeys :
-R extends 'general:watchlist' ? WatchlistResponse :
+export type CoreApiAccountResourcePayload<R extends CoreApiAccountResourceName> =
+R extends 'core:user_info' ? UserInfo :
+R extends 'core:custom_abi' ? CustomAbis :
+R extends 'core:private_tags_address' ? AddressTagsResponse :
+R extends 'core:private_tags_tx' ? TransactionTagsResponse :
+R extends 'core:api_keys' ? ApiKeys :
+R extends 'core:watchlist' ? WatchlistResponse :
 never;
 /* eslint-enable @stylistic/indent */

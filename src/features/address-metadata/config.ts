@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import apis from 'src/config/apis';
+import apis from 'src/api/config';
+
 import app from 'src/config/app';
 import * as services from 'src/config/services';
 import { getEnvValue } from 'src/config/utils/envs';

@@ -23,7 +23,7 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
-  inventoryQuery: QueryWithPagesResult<'general:token_inventory'>;
+  inventoryQuery: QueryWithPagesResult<'core:token_inventory'>;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   ownerFilter?: string;
   shouldRender?: boolean;

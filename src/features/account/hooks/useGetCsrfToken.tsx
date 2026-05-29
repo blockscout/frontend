@@ -2,10 +2,10 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import buildUrl from 'src/api/build-url';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useFetch from 'src/api/hooks/useFetch';
-import isNeedProxy from 'src/api/is-need-proxy';
+import buildUrl from 'src/api/utils/build-url';
+import isNeedProxy from 'src/api/utils/is-need-proxy';
 
 import * as cookies from 'src/shared/storage/cookies';
 
@@ -13,10 +13,10 @@ export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();
 
   return useQuery({
-    queryKey: getResourceKey('general:csrf'),
+    queryKey: getResourceKey('core:csrf'),
     queryFn: async() => {
       if (!isNeedProxy()) {
-        const url = buildUrl('general:csrf');
+        const url = buildUrl('core:csrf');
         const apiResponse = await fetch(url, { credentials: 'include' });
         const csrfFromHeader = apiResponse.headers.get('x-bs-account-csrf');
 

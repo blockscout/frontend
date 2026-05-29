@@ -19,10 +19,10 @@ import ValidatorsTable from './ValidatorsTable';
 
 const ValidatorsZilliqa = () => {
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'general:validators_zilliqa',
+    resourceName: 'core:validators_zilliqa',
     options: {
       enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'general:validators_zilliqa'>(
+      placeholderData: generateListStub<'core:validators_zilliqa'>(
         VALIDATORS_ZILLIQA_ITEM,
         50,
         { next_page_params: null },

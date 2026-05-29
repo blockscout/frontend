@@ -7,9 +7,9 @@ import type { PaginationParams } from 'src/shared/pagination/types';
 
 import { route } from 'src/server/routes';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import TxsContent from 'src/slices/tx/pages/index/list/TxsContent';
 import { TX } from 'src/slices/tx/stubs/tx';
@@ -33,7 +33,7 @@ const PAGINATION_PARAMS: PaginationParams = {
 const LatestTxsLocal = () => {
   const chain = useMultichainContext()?.chain;
 
-  const query = useApiQuery('general:homepage_txs', {
+  const query = useApiQuery('core:homepage_txs', {
     chain,
     queryOptions: {
       placeholderData: Array(3).fill(TX),

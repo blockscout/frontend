@@ -20,8 +20,8 @@ test.describe('daily txs chart', () => {
   let component: Locator;
 
   test.beforeEach(async({ page, mockApiResponse, mockAssetResponse, render }) => {
-    await mockApiResponse('general:stats', statsMock.withSecondaryCoin);
-    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('core:stats', statsMock.withSecondaryCoin);
+    await mockApiResponse('core:stats_charts_txs', dailyTxsMock.base);
     await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
     await mockAssetResponse(statsMock.withSecondaryCoin.secondary_coin_image as string, './playwright/mocks/image_s.jpg');
     component = await render(<ChainIndicators/>);
@@ -45,8 +45,8 @@ test.describe('daily txs chart', () => {
 });
 
 test('partial data', async({ page, mockApiResponse, mockAssetResponse, render }) => {
-  await mockApiResponse('general:stats', statsMock.base);
-  await mockApiResponse('general:stats_charts_txs', dailyTxsMock.partialData);
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:stats_charts_txs', dailyTxsMock.partialData);
   await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<ChainIndicators/>);
@@ -57,8 +57,8 @@ test('partial data', async({ page, mockApiResponse, mockAssetResponse, render })
 });
 
 test('no data', async({ mockApiResponse, mockAssetResponse, render }) => {
-  await mockApiResponse('general:stats', statsMock.noChartData);
-  await mockApiResponse('general:stats_charts_txs', dailyTxsMock.noData);
+  await mockApiResponse('core:stats', statsMock.noChartData);
+  await mockApiResponse('core:stats_charts_txs', dailyTxsMock.noData);
   await mockAssetResponse(statsMock.noChartData.coin_image as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<ChainIndicators/>);

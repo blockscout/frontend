@@ -34,7 +34,7 @@ import WatchlistTable from './WatchlistTable/WatchlistTable';
 const WatchList: React.FC = () => {
 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:watchlist',
+    resourceName: 'core:watchlist',
     options: {
       placeholderData: { items: Array(5).fill(WATCH_LIST_ITEM_WITH_TOKEN_INFO), next_page_params: null },
     },
@@ -62,7 +62,7 @@ const WatchList: React.FC = () => {
   }, [ addressModalProps ]);
 
   const onAddOrEditSuccess = useCallback(async() => {
-    await queryClient.refetchQueries({ queryKey: [ resourceKey('general:watchlist') ] });
+    await queryClient.refetchQueries({ queryKey: [ resourceKey('core:watchlist') ] });
     setAddressModalData(undefined);
     addressModalProps.onClose();
   }, [ addressModalProps, queryClient ]);
@@ -78,7 +78,7 @@ const WatchList: React.FC = () => {
   }, [ deleteModalProps ]);
 
   const onDeleteSuccess = useCallback(async() => {
-    queryClient.setQueryData(getResourceKey('general:watchlist'), (prevData: WatchlistResponse | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:watchlist'), (prevData: WatchlistResponse | undefined) => {
       const newItems = prevData?.items.filter((item: WatchlistAddress) => item.id !== deleteModalData?.id);
       return { ...prevData, items: newItems };
     },

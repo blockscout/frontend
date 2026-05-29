@@ -33,7 +33,7 @@ interface Params {
 export default function useAddressCountersQuery({ hash, isLoading, isDegradedData, isEnabled = true, chain }: Params): AddressCountersQuery {
   const enabled = isEnabled && Boolean(hash) && !isLoading;
 
-  const apiQuery = useApiQuery<'general:address_counters', { status: number }>('general:address_counters', {
+  const apiQuery = useApiQuery<'core:address_counters', { status: number }>('core:address_counters', {
     pathParams: { hash },
     queryOptions: {
       enabled: enabled && !isDegradedData,

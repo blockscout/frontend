@@ -10,7 +10,7 @@ const addressHash = 'hash';
 
 test('average report +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
   await mockApiResponse(
-    'general:contract_solidity_scan_report',
+    'core:contract_solidity_scan_report',
     solidityscanReportMock.solidityscanReportAverage,
     { pathParams: { hash: addressHash } },
   );
@@ -24,7 +24,7 @@ test('average report +@dark-mode +@mobile', async({ render, mockApiResponse, pag
 
 test('great report', async({ render, mockApiResponse, page }) => {
   await mockApiResponse(
-    'general:contract_solidity_scan_report',
+    'core:contract_solidity_scan_report',
     solidityscanReportMock.solidityscanReportGreat,
     { pathParams: { hash: addressHash } },
   );
@@ -42,7 +42,7 @@ test('great report', async({ render, mockApiResponse, page }) => {
 
 test('low report', async({ render, mockApiResponse, page }) => {
   await mockApiResponse(
-    'general:contract_solidity_scan_report',
+    'core:contract_solidity_scan_report',
     solidityscanReportMock.solidityscanReportLow,
     { pathParams: { hash: addressHash } },
   );

@@ -55,7 +55,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
   const { chain } = useMultichainContext() || {};
 
   const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
-    const queryKey = getResourceKey('general:address_txs', {
+    const queryKey = getResourceKey('core:address_txs', {
       pathParams: { hash: currentAddress },
       queryParams: filterValue ? { filter: filterValue } : undefined,
       chainId: chain?.id,

@@ -16,7 +16,7 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 
 interface Props {
   txQuery: TxQuery;
-  tokenTransferQuery: QueryWithPagesResult<'general:tx_token_transfers'>;
+  tokenTransferQuery: QueryWithPagesResult<'core:tx_token_transfers'>;
   tokenTransferFilter?: (data: TokenTransfer) => boolean;
   numActiveFilters: number;
   tableTop?: number;

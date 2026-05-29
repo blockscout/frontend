@@ -19,9 +19,9 @@ import EpochsTable from './EpochsTable';
 
 const EpochsPageContent = () => {
   const epochsQuery = useQueryWithPages({
-    resourceName: 'general:epochs_celo',
+    resourceName: 'core:epochs_celo',
     options: {
-      placeholderData: generateListStub<'general:epochs_celo'>(CELO_EPOCH_ITEM, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:epochs_celo'>(CELO_EPOCH_ITEM, 50, { next_page_params: {
         number: 1739,
         items_count: 50,
       } }),

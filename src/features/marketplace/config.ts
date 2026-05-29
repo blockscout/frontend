@@ -2,11 +2,12 @@
 
 import type { EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
 
+import apis from 'src/api/config';
+
 import chain from 'src/slices/chain/config';
 
 import connectWallet from 'src/features/connect-wallet/config';
 
-import apis from 'src/config/apis';
 import app from 'src/config/app';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from 'src/config/utils/envs';
 import type { Feature } from 'src/config/utils/features';

@@ -25,7 +25,7 @@ import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
   const { data: transactionTagsData, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:private_tags_tx',
+    resourceName: 'core:private_tags_tx',
     options: {
       refetchOnMount: false,
       placeholderData: { items: Array(3).fill(PRIVATE_TAG_TX), next_page_params: null },

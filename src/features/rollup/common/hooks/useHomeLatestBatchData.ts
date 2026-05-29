@@ -25,14 +25,14 @@ export default function useHomeLatestBatchData(): HomeLatestBatchQueryResult | u
   const queryClient = useQueryClient();
   const rollupFeature = config.features.rollup;
 
-  const zkSyncLatestBatchQuery = useApiQuery('general:homepage_zksync_latest_batch', {
+  const zkSyncLatestBatchQuery = useApiQuery('core:homepage_zksync_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
       enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && shouldShowLatestBatchStat,
     },
   });
 
-  const arbitrumLatestBatchQuery = useApiQuery('general:homepage_arbitrum_latest_batch', {
+  const arbitrumLatestBatchQuery = useApiQuery('core:homepage_arbitrum_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
       enabled: rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && shouldShowLatestBatchStat,
@@ -53,7 +53,7 @@ export default function useHomeLatestBatchData(): HomeLatestBatchQueryResult | u
           {
             topic: 'arbitrum:new_batch',
             event: 'new_arbitrum_batch',
-            resource: 'general:homepage_arbitrum_latest_batch',
+            resource: 'core:homepage_arbitrum_latest_batch',
           },
         ] as const;
       default:

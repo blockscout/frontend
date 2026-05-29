@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
       (config.metadata.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview')
     ) {
       const tokenData = await fetchApi({
-        resource: 'general:token',
+        resource: 'core:token',
         pathParams: { hash: getQueryParamString(ctx.query.hash) },
         timeout: 500,
       });

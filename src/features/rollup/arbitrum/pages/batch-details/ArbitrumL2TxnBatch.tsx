@@ -46,11 +46,11 @@ const ArbitrumL2TxnBatch = () => {
   const batchQuery = useBatchQuery();
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'general:arbitrum_l2_txn_batch_txs',
+    resourceName: 'core:arbitrum_l2_txn_batch_txs',
     pathParams: { number: String(batchQuery.data?.number) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'general:arbitrum_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:arbitrum_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         batch_number: '8122',
         block_number: 1338932,
         index: 0,
@@ -60,11 +60,11 @@ const ArbitrumL2TxnBatch = () => {
   });
 
   const batchBlocksQuery = useQueryWithPages({
-    resourceName: 'general:arbitrum_l2_txn_batch_blocks',
+    resourceName: 'core:arbitrum_l2_txn_batch_blocks',
     pathParams: { number: String(batchQuery.data?.number) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
-      placeholderData: generateListStub<'general:arbitrum_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:arbitrum_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
         batch_number: '8122',
         block_number: 1338932,
         items_count: 50,

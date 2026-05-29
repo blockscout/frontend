@@ -22,9 +22,9 @@ import ZkSyncTxnBatchesTable from './ZkSyncTxnBatchesTable';
 
 const ZkSyncL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:zksync_l2_txn_batches',
+    resourceName: 'core:zksync_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'general:zksync_l2_txn_batches'>(
+      placeholderData: generateListStub<'core:zksync_l2_txn_batches'>(
         ZKSYNC_L2_TXN_BATCHES_ITEM,
         50,
         {
@@ -37,7 +37,7 @@ const ZkSyncL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:zksync_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('core:zksync_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 5231746,
     },

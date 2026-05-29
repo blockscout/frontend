@@ -24,7 +24,7 @@ const UserOpSubHeading = ({ hash }: Props) => {
 
   const hasInterpretationFeature = config.features.txInterpretation.isEnabled;
 
-  const txInterpretationQuery = useApiQuery('general:user_op_interpretation', {
+  const txInterpretationQuery = useApiQuery('core:user_op_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && hasInterpretationFeature,

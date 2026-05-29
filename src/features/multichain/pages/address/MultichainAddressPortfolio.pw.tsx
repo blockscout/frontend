@@ -30,7 +30,7 @@ test.describe('nfts', () => {
 
   test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockApiResponse(
-      'general:address_collections',
+      'core:address_collections',
       { ...tokensMock.collections, items: [ tokensMock.collections.items[2] ] },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
     );

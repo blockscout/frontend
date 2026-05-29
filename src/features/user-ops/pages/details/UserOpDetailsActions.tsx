@@ -16,7 +16,7 @@ interface Props {
 }
 
 const UserOpDetailsActions = ({ hash, isUserOpDataLoading }: Props) => {
-  const interpretationQuery = useApiQuery('general:user_op_interpretation', {
+  const interpretationQuery = useApiQuery('core:user_op_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && !isUserOpDataLoading,

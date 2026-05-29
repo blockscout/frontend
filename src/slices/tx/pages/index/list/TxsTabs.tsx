@@ -50,14 +50,14 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
   const txsValidatedQuery = useQueryWithPages({
-    resourceName: 'general:txs_validated',
+    resourceName: 'core:txs_validated',
     filters: { filter: 'validated' },
     options: {
       enabled: tab === getTabId('validated', parentTab) ||
         (parentTab ? tab === parentTab : false) ||
         !tab ||
         !(isBlobTxsTab || isPendingTab || isWatchlistTab),
-      placeholderData: generateListStub<'general:txs_validated'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -67,11 +67,11 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   });
 
   const txsPendingQuery = useQueryWithPages({
-    resourceName: 'general:txs_pending',
+    resourceName: 'core:txs_pending',
     filters: { filter: 'pending' },
     options: {
       enabled: isPendingTab,
-      placeholderData: generateListStub<'general:txs_pending'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_pending'>(TX, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
         filter: 'pending',
@@ -80,11 +80,11 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   });
 
   const txsWithBlobsQuery = useQueryWithPages({
-    resourceName: 'general:txs_with_blobs',
+    resourceName: 'core:txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
       enabled: isBlobTxsTab,
-      placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
         items_count: 50,
@@ -93,10 +93,10 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   });
 
   const txsWatchlistQuery = useQueryWithPages({
-    resourceName: 'general:txs_watchlist',
+    resourceName: 'core:txs_watchlist',
     options: {
       enabled: isWatchlistTab,
-      placeholderData: generateListStub<'general:txs_watchlist'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_watchlist'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

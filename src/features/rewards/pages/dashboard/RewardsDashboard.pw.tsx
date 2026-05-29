@@ -24,7 +24,7 @@ const testWithAuth = test.extend<{ context: BrowserContext }>({
 
 testWithAuth.beforeEach(async({ mockEnvs, mockApiResponse }) => {
   await mockEnvs([ ...ENVS_MAP.rewardsService ]);
-  await mockApiResponse('general:user_info', profileMock.withEmailAndWallet);
+  await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
 });
 
 const testTab = (tab: 'activity' | 'referrals' | 'resources') =>

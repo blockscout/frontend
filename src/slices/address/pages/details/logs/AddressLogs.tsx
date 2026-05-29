@@ -29,11 +29,11 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:address_logs',
+    resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'general:address_logs'>(LOG, 3, { next_page_params: {
+      placeholderData: generateListStub<'core:address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,
         items_count: 50,
@@ -48,7 +48,7 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
     <ActionBar mt={ -6 } showShadow justifyContent={{ base: 'space-between', lg: 'end' }}>
       <CsvExport
         type="address_logs"
-        resourceName="general:address_csv_export_logs"
+        resourceName="core:address_csv_export_logs"
         pathParams={{ hash }}
         loadingInitial={ pagination.isLoading }
       />

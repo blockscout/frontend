@@ -28,10 +28,10 @@ const hooksConfig = {
 test.describe.configure({ mode: 'serial' });
 
 test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
-  await mockApiResponse('general:token', tokenInfo, { pathParams: { hash } });
-  await mockApiResponse('general:address', contract, { pathParams: { hash } });
-  await mockApiResponse('general:token_counters', tokenCounters, { pathParams: { hash } });
-  await mockApiResponse('general:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockApiResponse('core:token', tokenInfo, { pathParams: { hash } });
+  await mockApiResponse('core:address', contract, { pathParams: { hash } });
+  await mockApiResponse('core:token_counters', tokenCounters, { pathParams: { hash } });
+  await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
   await mockTextAd();
 });
 
@@ -80,10 +80,10 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   };
 
   await mockEnvs(ENVS_MAP.bridgedTokens);
-  await mockApiResponse('general:token', bridgedTokenA, { pathParams: { hash } });
-  await mockApiResponse('general:address', contract, { pathParams: { hash } });
-  await mockApiResponse('general:token_counters', tokenCounters, { pathParams: { hash } });
-  await mockApiResponse('general:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockApiResponse('core:token', bridgedTokenA, { pathParams: { hash } });
+  await mockApiResponse('core:address', contract, { pathParams: { hash } });
+  await mockApiResponse('core:token_counters', tokenCounters, { pathParams: { hash } });
+  await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
   await mockApiResponse(
     'contractInfo:token_verified_info',
     verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
@@ -106,7 +106,7 @@ test('scam token', async({ render, page, createSocket, mockApiResponse, mockEnvs
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
   ]);
-  await mockApiResponse('general:token', { ...tokenInfo, reputation: 'scam' }, { pathParams: { hash } });
+  await mockApiResponse('core:token', { ...tokenInfo, reputation: 'scam' }, { pathParams: { hash } });
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();

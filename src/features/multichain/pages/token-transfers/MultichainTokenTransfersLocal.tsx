@@ -22,7 +22,7 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 const ACTION_BAR_HEIGHT = 24 * 2 + 40;
 
 interface Props {
-  query: QueryWithPagesResult<'general:token_transfers_all'>;
+  query: QueryWithPagesResult<'core:token_transfers_all'>;
   typeFilter: Array<TokenType>;
   onTokenTypesChange: (value: Array<TokenType>) => void;
 }

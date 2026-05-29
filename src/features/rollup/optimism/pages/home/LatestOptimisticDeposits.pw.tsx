@@ -9,7 +9,7 @@ import LatestOptimisticDeposits from './LatestOptimisticDeposits';
 
 test('default view +@mobile +@dark-mode', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
-  mockApiResponse('general:homepage_optimistic_deposits', depositMock.data.items);
+  mockApiResponse('core:homepage_optimistic_deposits', depositMock.data.items);
   const component = await render(<LatestOptimisticDeposits/>);
   await expect(component).toHaveScreenshot();
 });

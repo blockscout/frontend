@@ -22,7 +22,7 @@ Aligned with **Next.js-style** paths: **kebab-case for directories** and for **n
 | **Helper / util modules** | `kebab-case.ts` | `format-tx-hash.ts`, `get-tab-list.ts` |
 | **Role files** | lowercase | `types.ts`, `mocks.ts`, `stubs.ts`, `config.ts` |
 
-**No re-export-only barrel files inside `/src`.** Deep imports are preferred; dumb barrels slow TypeScript server performance and break tree-shaking. Aggregation files that define or curate their own public surface (e.g. `src/api/services/general/index.ts` as a General API facade, or `src/config/index.ts` as the config aggregator) are acceptable where they provide genuine value.
+**No re-export-only barrel files inside `/src`.** Deep imports are preferred; dumb barrels slow TypeScript server performance and break tree-shaking. Aggregation files that define or curate their own public surface (e.g. `src/api/resources/services/core/index.ts` as a General API facade, or `src/config/index.ts` as the config aggregator) are acceptable where they provide genuine value.
 
 ---
 
@@ -68,20 +68,21 @@ Transport layer — fetch, resources, URL building, query client wiring, WebSock
 ```text
 src/api/
   hooks/              ← useApiFetch, useApiQuery, useApiInfiniteQuery, useFetch, …
-  services/
-    general/          ← Blockscout General API namespace
-      tx.ts
-      block.ts
-      misc.ts
-      rollup.ts
-      v1.ts
+  resources/
+    services/
+      core/          ← Blockscout Core API namespace
+        tx.ts
+        block.ts
+        misc.ts
+        rollup.ts
+        v1.ts
+        ...
+      rewards.ts        ← feature-specific APIs stay flat alongside core/
+      stats.ts
+      user-ops.ts
+      bens.ts
       ...
-    rewards.ts        ← feature-specific APIs stay flat alongside general/
-    stats.ts
-    user-ops.ts
-    bens.ts
-    ...
-  types.ts            ← shared API types incl. IsPaginated
+  types.ts            ← shared API types
   socket/
 ```
 
@@ -288,10 +289,11 @@ Types: `Transaction` in `slices/tx/types/api.ts` imports `ArbitrumTransactionDat
 ```text
 src/
   api/
-    services/
-      general/
-        tx.ts
-          └─ import type { Transaction } from 'src/slices/tx/types/api'
+    resources/
+      services/
+        core/
+          tx.ts
+            └─ import type { Transaction } from 'src/slices/tx/types/api'
   slices/
     tx/
       pages/

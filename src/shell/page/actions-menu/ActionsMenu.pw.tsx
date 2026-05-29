@@ -22,7 +22,7 @@ test.describe('with multiple items', () => {
   };
 
   test.beforeEach(async({ mockApiResponse }) => {
-    mockApiResponse('general:user_info', profileMock.base);
+    mockApiResponse('core:user_info', profileMock.base);
   });
 
   test('base view', async({ render, page }) => {

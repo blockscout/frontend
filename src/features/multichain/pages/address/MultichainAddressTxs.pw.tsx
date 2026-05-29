@@ -30,12 +30,12 @@ test.describe('local txs', () => {
     await mockMultichainConfig();
     await mockEnvs(ENVS_MAP.multichain);
     await mockApiResponse(
-      'general:address_txs',
+      'core:address_txs',
       { items: [ txMock.base ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
     await mockApiResponse(
-      'general:address_counters',
+      'core:address_counters',
       countersMock.forContract,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );

@@ -39,7 +39,7 @@ import type {
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'src/features/rollup/shibarium/types/api';
 import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'src/features/rollup/zk-sync/types/api';
 
-export const GENERAL_API_ROLLUP_RESOURCES = {
+export const CORE_API_ROLLUP_RESOURCES = {
   optimistic_l2_deposits: {
     path: '/api/v2/optimism/deposits',
     filterFields: [],
@@ -277,72 +277,72 @@ export const GENERAL_API_ROLLUP_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiRollupResourceName = `general:${ keyof typeof GENERAL_API_ROLLUP_RESOURCES }`;
+export type CoreApiRollupResourceName = `core:${ keyof typeof CORE_API_ROLLUP_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiRollupResourcePayload<R extends GeneralApiRollupResourceName> =
-R extends 'general:optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
-R extends 'general:optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
-R extends 'general:optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
-R extends 'general:optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
-R extends 'general:optimistic_l2_txn_batches_count' ? number :
-R extends 'general:optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
-R extends 'general:optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
-R extends 'general:optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
-R extends 'general:optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
-R extends 'general:optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
-R extends 'general:optimistic_l2_output_roots_count' ? number :
-R extends 'general:optimistic_l2_withdrawals_count' ? number :
-R extends 'general:optimistic_l2_deposits_count' ? number :
-R extends 'general:optimistic_l2_dispute_games_count' ? number :
-R extends 'general:optimistic_l2_interop_messages' ? InteropMessageListResponse :
-R extends 'general:optimistic_l2_interop_messages_count' ? number :
-R extends 'general:shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
-R extends 'general:shibarium_deposits' ? ShibariumDepositsResponse :
-R extends 'general:shibarium_withdrawals_count' ? number :
-R extends 'general:shibarium_deposits_count' ? number :
-R extends 'general:arbitrum_l2_messages' ? ArbitrumL2MessagesResponse :
-R extends 'general:arbitrum_l2_messages_count' ? number :
-R extends 'general:arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
-R extends 'general:arbitrum_l2_txn_batches_count' ? number :
-R extends 'general:arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
-R extends 'general:arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
-R extends 'general:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
-R extends 'general:arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
-R extends 'general:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
-R extends 'general:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
-R extends 'general:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
-R extends 'general:zksync_l2_txn_batches_count' ? number :
-R extends 'general:zksync_l2_txn_batch' ? ZkSyncBatch :
-R extends 'general:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
-R extends 'general:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
-R extends 'general:scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
-R extends 'general:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
-R extends 'general:scroll_l2_txn_batches_count' ? number :
-R extends 'general:scroll_l2_txn_batch' ? ScrollL2TxnBatch :
-R extends 'general:scroll_l2_deposits' ? ScrollL2MessagesResponse :
-R extends 'general:scroll_l2_deposits_count' ? number :
-R extends 'general:scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
-R extends 'general:scroll_l2_withdrawals_count' ? number :
-R extends 'general:mud_worlds' ? MudWorldsResponse :
-R extends 'general:mud_tables' ? AddressMudTables :
-R extends 'general:mud_tables_count' ? number :
-R extends 'general:mud_records' ? AddressMudRecords :
-R extends 'general:mud_record' ? AddressMudRecord :
-R extends 'general:mud_systems' ? SmartContractMudSystemsResponse :
-R extends 'general:mud_system_info' ? SmartContractMudSystemInfo :
+export type CoreApiRollupResourcePayload<R extends CoreApiRollupResourceName> =
+R extends 'core:optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
+R extends 'core:optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
+R extends 'core:optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
+R extends 'core:optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+R extends 'core:optimistic_l2_txn_batches_count' ? number :
+R extends 'core:optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+R extends 'core:optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
+R extends 'core:optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
+R extends 'core:optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
+R extends 'core:optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
+R extends 'core:optimistic_l2_output_roots_count' ? number :
+R extends 'core:optimistic_l2_withdrawals_count' ? number :
+R extends 'core:optimistic_l2_deposits_count' ? number :
+R extends 'core:optimistic_l2_dispute_games_count' ? number :
+R extends 'core:optimistic_l2_interop_messages' ? InteropMessageListResponse :
+R extends 'core:optimistic_l2_interop_messages_count' ? number :
+R extends 'core:shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
+R extends 'core:shibarium_deposits' ? ShibariumDepositsResponse :
+R extends 'core:shibarium_withdrawals_count' ? number :
+R extends 'core:shibarium_deposits_count' ? number :
+R extends 'core:arbitrum_l2_messages' ? ArbitrumL2MessagesResponse :
+R extends 'core:arbitrum_l2_messages_count' ? number :
+R extends 'core:arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
+R extends 'core:arbitrum_l2_txn_batches_count' ? number :
+R extends 'core:arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
+R extends 'core:arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
+R extends 'core:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
+R extends 'core:arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
+R extends 'core:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
+R extends 'core:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
+R extends 'core:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
+R extends 'core:zksync_l2_txn_batches_count' ? number :
+R extends 'core:zksync_l2_txn_batch' ? ZkSyncBatch :
+R extends 'core:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
+R extends 'core:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+R extends 'core:scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
+R extends 'core:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
+R extends 'core:scroll_l2_txn_batches_count' ? number :
+R extends 'core:scroll_l2_txn_batch' ? ScrollL2TxnBatch :
+R extends 'core:scroll_l2_deposits' ? ScrollL2MessagesResponse :
+R extends 'core:scroll_l2_deposits_count' ? number :
+R extends 'core:scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
+R extends 'core:scroll_l2_withdrawals_count' ? number :
+R extends 'core:mud_worlds' ? MudWorldsResponse :
+R extends 'core:mud_tables' ? AddressMudTables :
+R extends 'core:mud_tables_count' ? number :
+R extends 'core:mud_records' ? AddressMudRecords :
+R extends 'core:mud_record' ? AddressMudRecord :
+R extends 'core:mud_systems' ? SmartContractMudSystemsResponse :
+R extends 'core:mud_system_info' ? SmartContractMudSystemInfo :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiRollupPaginationFilters<R extends GeneralApiRollupResourceName> =
-R extends 'general:mud_tables' ? AddressMudTablesFilter :
-R extends 'general:mud_records' ? AddressMudRecordsFilter :
+export type CoreApiRollupPaginationFilters<R extends CoreApiRollupResourceName> =
+R extends 'core:mud_tables' ? AddressMudTablesFilter :
+R extends 'core:mud_records' ? AddressMudRecordsFilter :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiRollupPaginationSorting<R extends GeneralApiRollupResourceName> =
-R extends 'general:mud_records' ? AddressMudRecordsSorting :
+export type CoreApiRollupPaginationSorting<R extends CoreApiRollupResourceName> =
+R extends 'core:mud_records' ? AddressMudRecordsSorting :
 never;
 /* eslint-enable @stylistic/indent */

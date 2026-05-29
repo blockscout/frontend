@@ -133,7 +133,7 @@ const TxsContent = ({
       linkSlot={ currentAddress ? (
         <CsvExport
           type="address_txs"
-          resourceName="general:address_csv_export_txs"
+          resourceName="core:address_csv_export_txs"
           pathParams={{ hash: currentAddress }}
           queryParams={ filterValue ? {
             filter_type: 'address',

@@ -94,7 +94,7 @@ const AddressPageContent = () => {
   const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
-  const addressTabsCountersQuery = useApiQuery('general:address_tabs_counters', {
+  const addressTabsCountersQuery = useApiQuery('core:address_tabs_counters', {
     pathParams: { hash },
     queryOptions: {
       enabled: areQueriesEnabled && Boolean(hash),
@@ -108,7 +108,7 @@ const AddressPageContent = () => {
     isDegradedData: addressQuery.isDegradedData,
   });
 
-  const userOpsAccountQuery = useApiQuery('general:user_ops_account', {
+  const userOpsAccountQuery = useApiQuery('core:user_ops_account', {
     pathParams: { hash },
     queryOptions: {
       enabled: areQueriesEnabled && Boolean(hash) && config.features.userOps.isEnabled,
@@ -116,7 +116,7 @@ const AddressPageContent = () => {
     },
   });
 
-  const mudTablesCountQuery = useApiQuery('general:mud_tables_count', {
+  const mudTablesCountQuery = useApiQuery('core:mud_tables_count', {
     pathParams: { hash },
     queryOptions: {
       enabled: config.features.mudFramework.isEnabled && areQueriesEnabled && Boolean(hash),

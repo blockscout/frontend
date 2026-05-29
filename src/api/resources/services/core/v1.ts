@@ -3,7 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { BlockCountdownResponse } from 'src/slices/block/types/api';
 
-export const GENERAL_API_V1_RESOURCES = {
+export const CORE_API_V1_RESOURCES = {
   graphql: {
     path: '/api/v1/graphql',
   },
@@ -12,10 +12,10 @@ export const GENERAL_API_V1_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiV1ResourceName = `general:${ keyof typeof GENERAL_API_V1_RESOURCES }`;
+export type CoreApiV1ResourceName = `core:${ keyof typeof CORE_API_V1_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiV1ResourcePayload<R extends GeneralApiV1ResourceName> =
-R extends 'general:block_countdown' ? BlockCountdownResponse :
+export type CoreApiV1ResourcePayload<R extends CoreApiV1ResourceName> =
+R extends 'core:block_countdown' ? BlockCountdownResponse :
 never;
 /* eslint-enable @stylistic/indent */

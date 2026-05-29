@@ -20,10 +20,10 @@ export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const query = useQueryWithPages({
-    resourceName: 'general:internal_txs',
+    resourceName: 'core:internal_txs',
     filters: { transaction_hash: debouncedSearchTerm },
     options: {
-      placeholderData: generateListStub<'general:internal_txs'>(
+      placeholderData: generateListStub<'core:internal_txs'>(
         INTERNAL_TX,
         50,
         {

@@ -8,7 +8,7 @@ import MudWorlds from './MudWorlds';
 
 test('default view +@mobile', async({ mockTextAd, mockApiResponse, render }) => {
   await mockTextAd();
-  await mockApiResponse('general:mud_worlds', mudWorlds);
+  await mockApiResponse('core:mud_worlds', mudWorlds);
   const component = await render(<MudWorlds/>);
   await expect(component).toHaveScreenshot();
 });

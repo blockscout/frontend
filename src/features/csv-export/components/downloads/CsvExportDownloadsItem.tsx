@@ -50,7 +50,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       if (isExpired) {
         window.clearInterval(intervalId);
         queryClient.fetchQuery({
-          queryKey: getResourceKey('general:csv_exports_item', { pathParams: { id: data.request_id }, chainId: chainData?.id }),
+          queryKey: getResourceKey('core:csv_exports_item', { pathParams: { id: data.request_id }, chainId: chainData?.id }),
         });
       }
       setExpiresText(dayjs(data.expires_at).fromNow());
@@ -66,7 +66,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
   const markItemAsViewed = React.useCallback(() => {
     storage.removeItem(data.request_id);
     queryClient.setQueryData<StorageItem>(
-      getResourceKey('general:csv_exports_item', {
+      getResourceKey('core:csv_exports_item', {
         pathParams: { id: data.request_id },
         chainId: chainData?.id,
       }), (prevData) => {
@@ -177,7 +177,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
       return;
     }
 
-    const api = (chainData?.app_config || config).apis.general;
+    const api = (chainData?.app_config || config).apis.core;
 
     if (!api) {
       return;

@@ -22,7 +22,7 @@ export default function useQuickSearchQuery() {
     return Boolean(multichainConfig());
   }, []);
 
-  const mainQuery = useApiQuery('general:quick_search', {
+  const mainQuery = useApiQuery('core:quick_search', {
     queryParams: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
     queryOptions: {
       enabled: debouncedSearchTerm.trim().length > 0 && !isMultichain,
@@ -31,7 +31,7 @@ export default function useQuickSearchQuery() {
 
   const multichainQuery = useSearchMultichain({ searchTerm: debouncedSearchTerm, enabled: isMultichain });
 
-  const redirectCheckQuery = useApiQuery('general:search_check_redirect', {
+  const redirectCheckQuery = useApiQuery('core:search_check_redirect', {
     // on pages with regular search bar we check redirect on every search term change
     // in order to prepend its result to suggest list since this resource is much faster than regular search
     queryParams: { q: debouncedSearchTerm },

@@ -7,7 +7,7 @@ import type {
   SmartContractVerificationConfigRaw,
   VerifiedContractsResponse, VerifiedContractsCounters, VerifiedContractsFilters, VerifiedContractsSorting } from 'src/slices/contract/types/api';
 
-export const GENERAL_API_CONTRACT_RESOURCES = {
+export const CORE_API_CONTRACT_RESOURCES = {
   contract: {
     path: '/api/v2/smart-contracts/:hash',
     pathParams: [ 'hash' as const ],
@@ -37,27 +37,27 @@ export const GENERAL_API_CONTRACT_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiContractResourceName = `general:${ keyof typeof GENERAL_API_CONTRACT_RESOURCES }`;
+export type CoreApiContractResourceName = `core:${ keyof typeof CORE_API_CONTRACT_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiContractResourcePayload<R extends GeneralApiContractResourceName> =
-R extends 'general:contract' ? SmartContract :
-R extends 'general:contract_solidity_scan_report' ? unknown :
-R extends 'general:verified_contracts' ? VerifiedContractsResponse :
-R extends 'general:verified_contracts_counters' ? VerifiedContractsCounters :
-R extends 'general:contract_verification_config' ? SmartContractVerificationConfigRaw :
-R extends 'general:contract_security_audits' ? SmartContractSecurityAudits :
+export type CoreApiContractResourcePayload<R extends CoreApiContractResourceName> =
+R extends 'core:contract' ? SmartContract :
+R extends 'core:contract_solidity_scan_report' ? unknown :
+R extends 'core:verified_contracts' ? VerifiedContractsResponse :
+R extends 'core:verified_contracts_counters' ? VerifiedContractsCounters :
+R extends 'core:contract_verification_config' ? SmartContractVerificationConfigRaw :
+R extends 'core:contract_security_audits' ? SmartContractSecurityAudits :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiContractPaginationFilters<R extends GeneralApiContractResourceName> =
-R extends 'general:verified_contracts' ? VerifiedContractsFilters :
+export type CoreApiContractPaginationFilters<R extends CoreApiContractResourceName> =
+R extends 'core:verified_contracts' ? VerifiedContractsFilters :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiContractPaginationSorting<R extends GeneralApiContractResourceName> =
-R extends 'general:verified_contracts' ? VerifiedContractsSorting :
+export type CoreApiContractPaginationSorting<R extends CoreApiContractResourceName> =
+R extends 'core:verified_contracts' ? VerifiedContractsSorting :
 never;
 /* eslint-enable @stylistic/indent */

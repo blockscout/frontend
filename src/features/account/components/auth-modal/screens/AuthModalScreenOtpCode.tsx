@@ -41,7 +41,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   });
 
   const onFormSubmit: SubmitHandler<OtpCodeFormFields> = React.useCallback((formData) => {
-    const resource = isAuth ? 'general:auth_link_email' : 'general:auth_confirm_otp';
+    const resource = isAuth ? 'core:auth_link_email' : 'core:auth_confirm_otp';
     return apiFetch<typeof resource, UserInfo, unknown>(resource, {
       fetchParams: {
         method: 'POST',
@@ -73,7 +73,7 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   }, [ apiFetch, email, onSuccess, isAuth, formApi ]);
 
   const resendCodeFetchFactory = React.useCallback((recaptchaToken?: string) => {
-    return apiFetch('general:auth_send_otp', {
+    return apiFetch('core:auth_send_otp', {
       fetchParams: {
         method: 'POST',
         body: { email, recaptcha_response: recaptchaToken },

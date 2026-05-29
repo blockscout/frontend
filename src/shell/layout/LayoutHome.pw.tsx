@@ -9,7 +9,7 @@ import LayoutHome from './LayoutHome';
 // FIXME: at the moment, in the docker container playwright make screenshot before the page is completely loaded
 // I cannot figure out the reason, so I skip this test for now
 test.skip('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:homepage_indexing_status', indexingStatus);
+  await mockApiResponse('core:homepage_indexing_status', indexingStatus);
   const component = await render(<LayoutHome>Page Content</LayoutHome>);
   await expect(component).toHaveScreenshot();
 });

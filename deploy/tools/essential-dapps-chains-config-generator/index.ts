@@ -55,7 +55,7 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
 function trimChainConfig(config: typeof appConfig, logoUrl: string | undefined) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
-    apis: pick(config.apis || {}, [ 'general' ]),
+    apis: pick(config.apis || {}, [ 'core' ]),
   };
 }
 

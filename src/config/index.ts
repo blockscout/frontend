@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import apis from '../api/config';
 import metadata from '../shell/metadata/config';
 import chain from '../slices/chain/config';
-import apis from './apis';
 import app from './app';
 import * as features from './features';
 import misc from './misc';

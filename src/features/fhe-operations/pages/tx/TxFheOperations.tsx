@@ -25,7 +25,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
   const hash = txQuery.data?.hash || '';
   const isEnabled = Boolean(hash) && Boolean(txQuery.data?.status) && !txQuery.isPlaceholderData;
 
-  const { data, isError, isPlaceholderData } = useApiQuery('general:tx_fhe_operations', {
+  const { data, isError, isPlaceholderData } = useApiQuery('core:tx_fhe_operations', {
     pathParams: { hash },
     queryOptions: {
       enabled: isEnabled,

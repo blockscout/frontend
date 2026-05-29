@@ -31,7 +31,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const queryKey = getResourceKey(entityType === 'tx' ? 'general:tx' : 'general:address', { pathParams: { hash } });
+  const queryKey = getResourceKey(entityType === 'tx' ? 'core:tx' : 'core:address', { pathParams: { hash } });
   const queryData = queryClient.getQueryData<Address | Transaction>(queryKey);
 
   const handleAddPrivateTag = React.useCallback(async() => {

@@ -11,7 +11,7 @@ import TokenTransfers from './TokenTransfers';
 test.skip('base view +@mobile', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
   await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_s.jpg');
   await mockTextAd();
-  await mockApiResponse('general:token_transfers_all', mixTokens, { queryParams: { type: [ 'all' ] } });
+  await mockApiResponse('core:token_transfers_all', mixTokens, { queryParams: { type: [ 'all' ] } });
   const component = await render(<TokenTransfers/>);
   await expect(component).toHaveScreenshot();
 });

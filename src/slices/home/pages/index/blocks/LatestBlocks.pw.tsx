@@ -12,8 +12,8 @@ import { test, expect } from 'playwright/lib';
 import LatestBlocks from './LatestBlocks';
 
 test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:stats', statsMock.base);
-  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -26,8 +26,8 @@ test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => 
 
 test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
-  await mockApiResponse('general:stats', statsMock.base);
-  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -40,8 +40,8 @@ test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
 
 test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.blockHiddenFields);
-  await mockApiResponse('general:stats', statsMock.base);
-  await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -53,8 +53,8 @@ test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
 });
 
 test('with long block height', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:stats', statsMock.base);
-  await mockApiResponse('general:homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -68,8 +68,8 @@ test('with long block height', async({ render, mockApiResponse }) => {
 test.describe('socket', () => {
   test.describe.configure({ mode: 'serial' });
   test('new item', async({ render, mockApiResponse, createSocket }) => {
-    await mockApiResponse('general:stats', statsMock.base);
-    await mockApiResponse('general:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
     const component = await render(
       <HomeDataContextProvider>
         <HomeRpcDataContextProvider>

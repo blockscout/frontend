@@ -18,9 +18,9 @@ import MudWorldsTable from './MudWorldsTable';
 
 const MudWorlds = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:mud_worlds',
+    resourceName: 'core:mud_worlds',
     options: {
-      placeholderData: generateListStub<'general:mud_worlds'>(
+      placeholderData: generateListStub<'core:mud_worlds'>(
         MUD_WORLD,
         50,
         {

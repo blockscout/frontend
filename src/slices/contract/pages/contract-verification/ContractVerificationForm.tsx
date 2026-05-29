@@ -64,7 +64,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     if (!hash) {
       try {
-        const response = await apiFetch<'general:contract', SmartContract>('general:contract', {
+        const response = await apiFetch<'core:contract', SmartContract>('core:contract', {
           pathParams: { hash: data.address.toLowerCase() },
         });
 
@@ -83,7 +83,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
     try {
       await trackContract(data.address);
-      await apiFetch('general:contract_verification_via', {
+      await apiFetch('core:contract_verification_via', {
         pathParams: { method: data.method[0], hash: data.address.toLowerCase() },
         fetchParams: {
           method: 'POST',

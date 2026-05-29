@@ -16,7 +16,7 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
+  await mockApiResponse('core:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -29,7 +29,7 @@ test('base view +@mobile', async({ render, mockApiResponse }) => {
 });
 
 test('expanded view +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
+  await mockApiResponse('core:mud_records', mudRecords, { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -45,7 +45,7 @@ test('expanded view +@mobile', async({ render, mockApiResponse }) => {
 
 test('empty +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'general:mud_records',
+    'core:mud_records',
     { ...mudRecords, items: [] },
     { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
 

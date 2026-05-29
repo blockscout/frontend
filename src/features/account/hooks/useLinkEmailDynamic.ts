@@ -21,7 +21,7 @@ export default function useLinkEmailDynamic(): () => void {
       Source: 'Profile dropdown',
     });
     updateUserWithModal([ 'email' ]).then((fields) => {
-      queryClient.setQueryData(getResourceKey('general:user_info'), (prevData: UserInfo | undefined) => {
+      queryClient.setQueryData(getResourceKey('core:user_info'), (prevData: UserInfo | undefined) => {
         return { ...prevData, email: fields.email };
       });
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {

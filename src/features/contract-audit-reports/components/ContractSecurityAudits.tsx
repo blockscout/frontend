@@ -22,7 +22,7 @@ type Props = {
 };
 
 const ContractSecurityAudits = ({ addressHash }: Props) => {
-  const { data, isPlaceholderData } = useApiQuery('general:contract_security_audits', {
+  const { data, isPlaceholderData } = useApiQuery('core:contract_security_audits', {
     pathParams: { hash: addressHash },
     queryOptions: {
       refetchOnMount: false,

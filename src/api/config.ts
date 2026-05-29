@@ -6,11 +6,11 @@ import type { ApiName } from 'src/api/types';
 import { STATS_API_RESOURCES_REFETCH_INTERVAL } from 'src/features/chain-stats/types/config';
 import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
 
-import type { ResourceName } from 'src/api/resources';
+import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
-import { getEnvValue, parseEnvJson } from './utils/envs';
+import type { ResourceName } from './resources';
 
 export interface ApiPropsBase {
   endpoint: string;
@@ -27,7 +27,7 @@ export interface ApiPropsFull extends ApiPropsBase {
   socketEndpoint: string;
 }
 
-const generalApi = (() => {
+const coreApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
   if (!apiHost) {
     return;
@@ -244,11 +244,11 @@ const zetachainApi = (() => {
 })();
 
 export type Apis = {
-  general: ApiPropsFull | undefined;
-} & Partial<Record<Exclude<ApiName, 'general'>, ApiPropsBase>>;
+  core: ApiPropsFull | undefined;
+} & Partial<Record<Exclude<ApiName, 'core'>, ApiPropsBase>>;
 
 const apis: Apis = Object.freeze({
-  general: generalApi,
+  core: coreApi,
   admin: adminApi,
   bens: bensApi,
   clusters: clustersApi,

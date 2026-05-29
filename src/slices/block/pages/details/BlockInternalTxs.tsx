@@ -10,7 +10,7 @@ import DataList from 'src/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
 interface Props {
-  query: QueryWithPagesResult<'general:block_internal_txs'>;
+  query: QueryWithPagesResult<'core:block_internal_txs'>;
   top?: number;
 }
 

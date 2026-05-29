@@ -25,16 +25,16 @@ const feature = config.features.beaconChain;
 
 const BeaconChainDeposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:deposits',
+    resourceName: 'core:deposits',
     options: {
-      placeholderData: generateListStub<'general:deposits'>(DEPOSIT, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:deposits'>(DEPOSIT, 50, { next_page_params: {
         index: 5,
         items_count: 50,
       } }),
     },
   });
 
-  const countersQuery = useApiQuery('general:deposits_counters', {
+  const countersQuery = useApiQuery('core:deposits_counters', {
     queryOptions: {
       placeholderData: {
         deposits_count: '19091878',

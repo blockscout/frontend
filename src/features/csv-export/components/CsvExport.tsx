@@ -11,11 +11,11 @@ import type { FormFields } from './dialog/types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { NextJsQueryParam } from 'src/shared/router/types';
 
-import buildUrl from 'src/api/build-url';
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import useApiQuery from 'src/api/hooks/useApiQuery';
-import isNeedProxy from 'src/api/is-need-proxy';
 import type { ResourceName, ResourcePathParams } from 'src/api/resources';
+import buildUrl from 'src/api/utils/build-url';
+import isNeedProxy from 'src/api/utils/is-need-proxy';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -79,7 +79,7 @@ const CsvExport = <R extends ResourceName>({
 
   const chain = chainData || multichainContext?.chain;
 
-  const configQuery = useApiQuery('general:config_csv_export', {
+  const configQuery = useApiQuery('core:config_csv_export', {
     queryOptions: {
       refetchOnMount: false,
     },
@@ -111,7 +111,7 @@ const CsvExport = <R extends ResourceName>({
         headers: {
           'content-type': 'application/octet-stream',
           ...(recaptchaToken && { 'recaptcha-v2-response': recaptchaToken }),
-          ...(isNeedProxy() && chain ? { 'x-endpoint': chain.app_config.apis.general?.endpoint } : {}),
+          ...(isNeedProxy() && chain ? { 'x-endpoint': chain.app_config.apis.core?.endpoint } : {}),
         },
         signal: abortControllerRef.current?.signal,
       });

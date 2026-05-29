@@ -16,7 +16,7 @@ import { BLOCK } from 'src/slices/block/stubs/block';
 
 import config from 'src/config';
 
-/** Max blocks kept in React Query cache for `general:homepage_blocks` (fetch + socket). */
+/** Max blocks kept in React Query cache for `core:homepage_blocks` (fetch + socket). */
 const HOME_BLOCKS_QUERY_LIMIT = 5;
 
 const isHomepageBlocksDataEnabled = (() => {
@@ -29,14 +29,14 @@ const isHomepageBlocksDataEnabled = (() => {
 })();
 
 export type HomeBlocksQueryResult = UseQueryResult<
-  ResourcePayload<'general:homepage_blocks'>,
+  ResourcePayload<'core:homepage_blocks'>,
   ResourceError<unknown>
 >;
 
 export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
   const queryClient = useQueryClient();
 
-  const blocksQuery = useApiQuery('general:homepage_blocks', {
+  const blocksQuery = useApiQuery('core:homepage_blocks', {
     queryOptions: {
       enabled: isHomepageBlocksDataEnabled,
       placeholderData: Array(HOME_BLOCKS_QUERY_LIMIT).fill(BLOCK),
@@ -44,7 +44,7 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_blocks'), (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:homepage_blocks'), (prevData: Array<Block> | undefined) => {
       const newData = prevData ? [ ...prevData ] : [];
 
       if (newData.some((block) => block.height === payload.block.height)) {

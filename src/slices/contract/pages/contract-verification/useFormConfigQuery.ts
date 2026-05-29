@@ -7,7 +7,7 @@ import config from 'src/config';
 import { isValidVerificationMethod, sortVerificationMethods } from './utils';
 
 export default function useFormConfigQuery(enabled: boolean) {
-  return useApiQuery('general:contract_verification_config', {
+  return useApiQuery('core:contract_verification_config', {
     queryOptions: {
       select: (data) => {
         return {

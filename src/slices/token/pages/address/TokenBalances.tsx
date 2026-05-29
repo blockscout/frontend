@@ -26,7 +26,7 @@ const TokenBalances = () => {
 
   const hash = router.query.hash?.toString();
 
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });

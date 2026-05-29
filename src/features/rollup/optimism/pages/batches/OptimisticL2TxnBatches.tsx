@@ -21,9 +21,9 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const OptimisticL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:optimistic_l2_txn_batches',
+    resourceName: 'core:optimistic_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'general:optimistic_l2_txn_batches'>(
+      placeholderData: generateListStub<'core:optimistic_l2_txn_batches'>(
         L2_TXN_BATCHES_ITEM,
         50,
         {
@@ -36,7 +36,7 @@ const OptimisticL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:optimistic_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('core:optimistic_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 5231746,
     },

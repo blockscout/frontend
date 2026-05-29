@@ -16,13 +16,13 @@ import { REST_API_SECTIONS } from '../../utils/rest-api';
 
 const RestApi = () => {
 
-  const configQuery = useApiQuery('general:config_backend', {
+  const configQuery = useApiQuery('core:config_backend', {
     queryOptions: {
       refetchOnMount: false,
       enabled: config.features.apiDocs.isEnabled,
     },
   });
-  const configVersionQuery = useApiQuery('general:config_backend_version', {
+  const configVersionQuery = useApiQuery('core:config_backend_version', {
     queryOptions: {
       refetchOnMount: false,
       enabled: config.features.apiDocs.isEnabled,

@@ -14,7 +14,7 @@ import UserOpsListItem from './UserOpsListItem';
 import UserOpsTable from './UserOpsTable';
 
 type Props = {
-  query: QueryWithPagesResult<'general:user_ops'>;
+  query: QueryWithPagesResult<'core:user_ops'>;
   showTx?: boolean;
   showSender?: boolean;
 };

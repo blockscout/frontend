@@ -46,7 +46,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   const multichainContext = useMultichainContext();
   const chainSlug = multichainContext?.chain?.slug;
 
-  const tokenCountersQuery = useApiQuery('general:token_counters', {
+  const tokenCountersQuery = useApiQuery('core:token_counters', {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });

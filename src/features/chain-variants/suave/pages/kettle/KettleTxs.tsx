@@ -19,10 +19,10 @@ const KettleTxs = () => {
   const hash = getQueryParamString(router.query.hash);
 
   const query = useQueryWithPages({
-    resourceName: 'general:txs_execution_node',
+    resourceName: 'core:txs_execution_node',
     pathParams: { hash },
     options: {
-      placeholderData: generateListStub<'general:txs_execution_node'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_execution_node'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

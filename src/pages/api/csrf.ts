@@ -6,7 +6,7 @@ import buildUrl from 'src/server/utils/buildUrl';
 import fetchFactory from 'src/server/utils/fetchProxy';
 import { httpLogger } from 'src/server/utils/logger';
 
-import isNeedProxy from 'src/api/is-need-proxy';
+import isNeedProxy from 'src/api/utils/is-need-proxy';
 
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {
   if (!isNeedProxy()) {
@@ -16,7 +16,7 @@ export default async function csrfHandler(_req: NextApiRequest, res: NextApiResp
 
   httpLogger(_req, res);
 
-  const url = buildUrl('general:csrf');
+  const url = buildUrl('core:csrf');
   const response = await fetchFactory(_req)(url);
 
   if (response.status === 200) {

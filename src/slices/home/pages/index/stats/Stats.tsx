@@ -50,7 +50,7 @@ const Stats = () => {
     },
   });
 
-  const apiQuery = useApiQuery('general:stats', {
+  const apiQuery = useApiQuery('core:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

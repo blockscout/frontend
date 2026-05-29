@@ -47,11 +47,11 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
       const chain = item.params.chain_id ? multichain?.chains.find(({ id }) => id === item.params.chain_id) : undefined;
 
       return queryOptions({
-        queryKey: getResourceKey('general:csv_exports_item', { pathParams: { id: item.request_id }, chainId: chain?.id }),
+        queryKey: getResourceKey('core:csv_exports_item', { pathParams: { id: item.request_id }, chainId: chain?.id }),
         queryFn: async({ signal }) => {
           try {
             if (item.status === 'pending') {
-              const response = await (apiFetch('general:csv_exports_item', {
+              const response = await (apiFetch('core:csv_exports_item', {
                 pathParams: { id: item.request_id },
                 fetchParams: { signal },
                 chain,

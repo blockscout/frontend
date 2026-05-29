@@ -35,7 +35,7 @@ const NO_RPC_FALLBACK_ERROR_CODES = [ 403 ];
 export default function useAddressQuery({ hash, isEnabled = true }: Params): AddressQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useApiQuery<'general:address', { status: number }>('general:address', {
+  const apiQuery = useApiQuery<'core:address', { status: number }>('core:address', {
     pathParams: { hash },
     queryOptions: {
       enabled: isEnabled && Boolean(hash),

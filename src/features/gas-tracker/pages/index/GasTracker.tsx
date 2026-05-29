@@ -28,7 +28,7 @@ import { Heading } from 'src/toolkit/chakra/heading';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const GasTracker = () => {
-  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('general:stats', {
+  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

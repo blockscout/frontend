@@ -39,7 +39,7 @@ export default function useTokenTransfersQuery({ isMultichain, enabled }: Props)
   }, [ enabled ]);
 
   const query = useQueryWithPages({
-    resourceName: 'general:token_transfers_all',
+    resourceName: 'core:token_transfers_all',
     filters: { type: typeFilter },
     options: {
       placeholderData: getTokenTransfersStub(),

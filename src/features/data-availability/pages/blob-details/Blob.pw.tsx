@@ -18,7 +18,7 @@ test.beforeEach(async({ mockTextAd }) => {
 });
 
 test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('general:blob', blobsMock.base1, { pathParams: { hash: blobsMock.base1.hash } });
+  await mockApiResponse('core:blob', blobsMock.base1, { pathParams: { hash: blobsMock.base1.hash } });
   const component = await render(<Blob/>, { hooksConfig });
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
@@ -27,7 +27,7 @@ test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, page }) 
 });
 
 test('without data', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('general:blob', blobsMock.withoutData, { pathParams: { hash: blobsMock.base1.hash } });
+  await mockApiResponse('core:blob', blobsMock.withoutData, { pathParams: { hash: blobsMock.base1.hash } });
   const component = await render(<Blob/>, { hooksConfig });
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],

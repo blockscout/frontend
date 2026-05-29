@@ -35,7 +35,7 @@ authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiRes
     });
   });
 
-  await mockApiResponse('general:user_info', profileMock.withEmailAndWallet);
+  await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
   await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
   await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
 

@@ -25,11 +25,11 @@ interface Props {
 
 const TxBlobs = ({ txQuery }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:tx_blobs',
+    resourceName: 'core:tx_blobs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'general:tx_blobs'>(TX_BLOB, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'core:tx_blobs'>(TX_BLOB, 3, { next_page_params: null }),
     },
   });
 

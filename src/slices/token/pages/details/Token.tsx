@@ -71,7 +71,7 @@ const TokenPageContent = () => {
 
   const tokenQuery = useTokenQuery(hashString);
 
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash: hashString },
     queryOptions: {
       enabled: isQueryEnabled && Boolean(router.query.hash),
@@ -81,7 +81,7 @@ const TokenPageContent = () => {
 
   React.useEffect(() => {
     if (tokenQuery.data && totalSupplySocket) {
-      queryClient.setQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+      queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
         if (prevData) {
           return { ...prevData, total_supply: totalSupplySocket.toString() };
         }
@@ -90,11 +90,11 @@ const TokenPageContent = () => {
   }, [ tokenQuery.data, totalSupplySocket, hashString, queryClient ]);
 
   const handleTotalSupplyMessage: SocketMessage.TokenTotalSupply['handler'] = React.useCallback((payload) => {
-    const prevData = queryClient.getQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }));
+    const prevData = queryClient.getQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }));
     if (!prevData) {
       setTotalSupplySocket(payload.total_supply);
     }
-    queryClient.setQueryData(getResourceKey('general:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
       if (prevData) {
         return { ...prevData, total_supply: payload.total_supply.toString() };
       }
@@ -139,7 +139,7 @@ const TokenPageContent = () => {
   const isFirstTabTokenTransfer = !hasInventoryTab && !tab;
 
   const transfersQuery = useQueryWithPages({
-    resourceName: 'general:token_transfers',
+    resourceName: 'core:token_transfers',
     pathParams: { hash: hashString },
     scrollRef,
     options: {
@@ -156,7 +156,7 @@ const TokenPageContent = () => {
   });
 
   const inventoryQuery = useQueryWithPages({
-    resourceName: 'general:token_inventory',
+    resourceName: 'core:token_inventory',
     pathParams: { hash: hashString },
     filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
     scrollRef,
@@ -169,12 +169,12 @@ const TokenPageContent = () => {
           tab === 'inventory'
         ),
       ),
-      placeholderData: generateListStub<'general:token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
+      placeholderData: generateListStub<'core:token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
     },
   });
 
   const holdersQuery = useQueryWithPages({
-    resourceName: 'general:token_holders',
+    resourceName: 'core:token_holders',
     pathParams: { hash: hashString },
     scrollRef,
     options: {
@@ -271,7 +271,7 @@ const TokenPageContent = () => {
         { tab === 'holders' && (
           <CsvExport
             type="token_holders"
-            resourceName="general:token_csv_export_holders"
+            resourceName="core:token_csv_export_holders"
             pathParams={{ hash: hashString }}
             queryParams={{ from_period: null, to_period: null }}
             extraParams={{ token_name: tokenQuery.data?.name || 'Unknown token' }}

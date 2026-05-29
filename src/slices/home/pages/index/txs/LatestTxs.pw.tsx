@@ -18,7 +18,7 @@ export const test = base.extend<socketServer.SocketServerFixture>({
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
   test('default view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
@@ -31,7 +31,7 @@ test.describe('mobile', () => {
 });
 
 test('default view +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:homepage_txs', [
+  await mockApiResponse('core:homepage_txs', [
     txMock.base,
     txMock.withContractCreation,
     txMock.withTokenTransfer,
@@ -45,7 +45,7 @@ test('default view +@dark-mode', async({ render, mockApiResponse }) => {
 test.describe('small desktop', () => {
   test.use({ viewport: pwConfig.viewport.md });
   test('one tag', async({ render, mockApiResponse }) => {
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       {
         ...txMock.withProtocolTag,
         to: {
@@ -73,7 +73,7 @@ test.describe('small desktop', () => {
   });
 
   test('two or more tags', async({ render, mockApiResponse }) => {
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       txMock.withWatchListNames,
     ]);
 
@@ -97,7 +97,7 @@ test.describe('socket', () => {
   };
 
   test('new item', async({ render, mockApiResponse, createSocket }) => {
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,

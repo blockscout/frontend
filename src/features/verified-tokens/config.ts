@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import apis from 'src/config/apis';
+import apis from 'src/api/config';
+
 import type { Feature } from 'src/config/utils/features';
 
 const title = 'Verified tokens info';

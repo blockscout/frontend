@@ -44,7 +44,7 @@ const LatestBlocks = () => {
     enabled: Boolean(blocksQuery && !blocksQuery.isPlaceholderData),
   });
 
-  const statsQueryResult = useApiQuery('general:stats', {
+  const statsQueryResult = useApiQuery('core:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

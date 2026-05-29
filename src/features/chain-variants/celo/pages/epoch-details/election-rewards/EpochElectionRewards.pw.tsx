@@ -15,7 +15,7 @@ const hooksConfig = {
 
 test('base view', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'general:epoch_celo_election_rewards',
+    'core:epoch_celo_election_rewards',
     celoEpochMock.electionRewardDetails1,
     { pathParams: { number, reward_type: 'voter' } },
   );
@@ -26,7 +26,7 @@ test('base view', async({ render, mockApiResponse }) => {
 
 test('base view +@mobile -@default', async({ render, mockApiResponse }) => {
   await mockApiResponse(
-    'general:epoch_celo_election_rewards',
+    'core:epoch_celo_election_rewards',
     celoEpochMock.electionRewardDetails1,
     { pathParams: { number, reward_type: 'voter' } },
   );

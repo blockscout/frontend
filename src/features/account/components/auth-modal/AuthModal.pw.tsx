@@ -23,7 +23,7 @@ test('email login', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot();
 
   // send otp code
-  await mockApiResponse('general:auth_send_otp', {} as never);
+  await mockApiResponse('core:auth_send_otp', {} as never);
   await page.getByText('Send a code').click();
 
   // fill otp code
@@ -38,7 +38,7 @@ test('email login', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot();
 
   // submit otp code
-  await mockApiResponse('general:auth_confirm_otp', profileMock.base as never);
+  await mockApiResponse('core:auth_confirm_otp', profileMock.base as never);
   await page.getByText('Submit').click();
   // make sure that the focus is removed from the button
   await page.getByText('Congrats').click();
@@ -53,7 +53,7 @@ const linkEmailTest = test.extend<{ context: BrowserContext }>({
 });
 
 linkEmailTest('link email to account', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('general:user_info', profileMock.base);
+  await mockApiResponse('core:user_info', profileMock.base);
   await render(<AuthModalStory flow="email_link"/>);
 
   await expect(page.getByText('Status: Authenticated')).toBeVisible();
@@ -64,7 +64,7 @@ linkEmailTest('link email to account', async({ render, page, mockApiResponse }) 
   await expect(page).toHaveScreenshot();
 
   // send and fill otp code
-  await mockApiResponse('general:auth_send_otp', {} as never);
+  await mockApiResponse('core:auth_send_otp', {} as never);
   await page.getByText('Send a code').click();
   await page.getByLabel('pin code 1 of 6').fill('1');
   await page.getByLabel('pin code 2 of 6').fill('2');
@@ -72,7 +72,7 @@ linkEmailTest('link email to account', async({ render, page, mockApiResponse }) 
   await page.getByLabel('pin code 4 of 6').fill('4');
   await page.getByLabel('pin code 5 of 6').fill('5');
   await page.getByLabel('pin code 6 of 6').fill('6');
-  await mockApiResponse('general:auth_link_email', profileMock.base as never);
+  await mockApiResponse('core:auth_link_email', profileMock.base as never);
   await page.getByText('Submit').click();
 
   await expect(page).toHaveScreenshot();

@@ -138,7 +138,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
             />
             <CsvExport
               type="address_token_transfers"
-              resourceName="general:address_csv_export_token_transfers"
+              resourceName="core:address_csv_export_token_transfers"
               pathParams={{ hash }}
               queryParams={ localQuery.filters.filter ? {
                 filter_type: 'address',

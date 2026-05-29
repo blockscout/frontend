@@ -36,12 +36,12 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<NFTTokenType> | undefined>(getTokenFilterValue(router.query.type) || []);
 
   const collectionsQuery = useQueryWithPages({
-    resourceName: 'general:address_collections',
+    resourceName: 'core:address_collections',
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
       enabled: enabled && displayType === 'collection',
-      placeholderData: generateListStub<'general:address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'core:address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
     isMultichain,
@@ -49,12 +49,12 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
   });
 
   const nftsQuery = useQueryWithPages({
-    resourceName: 'general:address_nfts',
+    resourceName: 'core:address_nfts',
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
       enabled: enabled && displayType === 'list',
-      placeholderData: generateListStub<'general:address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'core:address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
     isMultichain,

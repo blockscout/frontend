@@ -28,7 +28,7 @@ import { WITHDRAWAL } from '../../stubs/withdrawals';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 
-export type BlockWithdrawalsQuery = QueryWithPagesResult<'general:block_withdrawals'> & {
+export type BlockWithdrawalsQuery = QueryWithPagesResult<'core:block_withdrawals'> & {
   isDegradedData: boolean;
 };
 
@@ -42,14 +42,14 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const apiQuery = useQueryWithPages({
-    resourceName: 'general:block_withdrawals',
+    resourceName: 'core:block_withdrawals',
     pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled:
         tab === 'withdrawals' &&
         config.features.beaconChain.isEnabled &&
         !blockQuery.isPlaceholderData && !blockQuery.isDegradedData,
-      placeholderData: generateListStub<'general:block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
       } }),
@@ -129,7 +129,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && publicClient);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'general:block_withdrawals'> = {
+  const rpcQueryWithPages: QueryWithPagesResult<'core:block_withdrawals'> = {
     ...rpcQuery as UseQueryResult<BlockWithdrawalsResponse, ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},

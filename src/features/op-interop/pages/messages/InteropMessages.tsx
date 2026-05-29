@@ -22,9 +22,9 @@ import InteropMessagesTable from './InteropMessagesTable';
 
 const InteropMessages = () => {
   const interopMessagesQuery = useQueryWithPages({
-    resourceName: 'general:optimistic_l2_interop_messages',
+    resourceName: 'core:optimistic_l2_interop_messages',
     options: {
-      placeholderData: generateListStub<'general:optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {
         init_transaction_hash: '',
         items_count: 50,
         timestamp: 0,
@@ -32,7 +32,7 @@ const InteropMessages = () => {
     },
   });
 
-  const countQuery = useApiQuery('general:optimistic_l2_interop_messages_count', {
+  const countQuery = useApiQuery('core:optimistic_l2_interop_messages_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

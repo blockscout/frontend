@@ -4,9 +4,9 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import { ADDRESS_INFO } from 'src/slices/address/stubs/address';
 import Contract from 'src/slices/contract/pages/details/Contract';
@@ -41,7 +41,7 @@ const MultichainAddressContract = ({ addressHash, isLoading, data }: Props) => {
     return multichainConfig()?.chains.find(({ id }) => id === chainSelect.value?.[0]);
   }, [ chainSelect.value ]);
 
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash: addressHash },
     queryOptions: {
       enabled: Boolean(addressHash) && !isLoading,

@@ -15,7 +15,7 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'general:tokens'> | QueryWithPagesResult<'general:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
+  query: QueryWithPagesResult<'core:tokens'> | QueryWithPagesResult<'core:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
   onSortChange?: OnValueChangeHandler;
   sort?: TokensSortingValue;
   actionBar?: React.ReactNode;

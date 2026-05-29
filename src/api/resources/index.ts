@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ApiName, ApiResource, IsPaginated } from './types';
+import type { ApiName } from '../types';
+import type { ApiResource, IsPaginated } from './types';
 
 import type { AdminApiResourceName, AdminApiResourcePayload } from './services/admin';
 import { ADMIN_API_RESOURCES } from './services/admin';
@@ -10,8 +11,8 @@ import { CLUSTERS_API_RESOURCES } from './services/clusters';
 import type { ClustersApiResourceName, ClustersApiResourcePayload, ClustersApiPaginationFilters, ClustersApiPaginationSorting } from './services/clusters';
 import { CONTRACT_INFO_API_RESOURCES } from './services/contract-info';
 import type { ContractInfoApiPaginationFilters, ContractInfoApiResourceName, ContractInfoApiResourcePayload } from './services/contract-info';
-import { GENERAL_API_RESOURCES } from './services/general';
-import type { GeneralApiResourceName, GeneralApiResourcePayload, GeneralApiPaginationFilters, GeneralApiPaginationSorting } from './services/general';
+import { CORE_API_RESOURCES } from './services/core';
+import type { CoreApiResourceName, CoreApiResourcePayload, CoreApiPaginationFilters, CoreApiPaginationSorting } from './services/core';
 import type {
   InterchainIndexerApiPaginationFilters,
   InterchainIndexerApiResourceName,
@@ -50,7 +51,7 @@ export const RESOURCES = {
   bens: BENS_API_RESOURCES,
   clusters: CLUSTERS_API_RESOURCES,
   contractInfo: CONTRACT_INFO_API_RESOURCES,
-  general: GENERAL_API_RESOURCES,
+  core: CORE_API_RESOURCES,
   interchainIndexer: INTERCHAIN_INDEXER_API_RESOURCES,
   metadata: METADATA_API_RESOURCES,
   multichainAggregator: MULTICHAIN_AGGREGATOR_API_RESOURCES,
@@ -84,7 +85,7 @@ R extends AdminApiResourceName ? AdminApiResourcePayload<R> :
 R extends BensApiResourceName ? BensApiResourcePayload<R> :
 R extends ClustersApiResourceName ? ClustersApiResourcePayload<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiResourcePayload<R> :
-R extends GeneralApiResourceName ? GeneralApiResourcePayload<R> :
+R extends CoreApiResourceName ? CoreApiResourcePayload<R> :
 R extends InterchainIndexerApiResourceName ? InterchainIndexerApiResourcePayload<R> :
 R extends MetadataApiResourceName ? MetadataApiResourcePayload<R> :
 R extends MultichainAggregatorApiResourceName ? MultichainAggregatorApiResourcePayload<R> :
@@ -123,7 +124,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 export type PaginationFilters<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationFilters<R> :
 R extends ClustersApiResourceName ? ClustersApiPaginationFilters :
-R extends GeneralApiResourceName ? GeneralApiPaginationFilters<R> :
+R extends CoreApiResourceName ? CoreApiPaginationFilters<R> :
 R extends ContractInfoApiResourceName ? ContractInfoApiPaginationFilters<R> :
 R extends InterchainIndexerApiResourceName ? InterchainIndexerApiPaginationFilters<R> :
 R extends MultichainAggregatorApiResourceName ? MultichainAggregatorApiPaginationFilters<R> :
@@ -138,7 +139,7 @@ export const SORTING_FIELDS = [ 'sort', 'order' ];
 export type PaginationSorting<R extends ResourceName> =
 R extends BensApiResourceName ? BensApiPaginationSorting<R> :
 R extends ClustersApiResourceName ? ClustersApiPaginationSorting :
-R extends GeneralApiResourceName ? GeneralApiPaginationSorting<R> :
+R extends CoreApiResourceName ? CoreApiPaginationSorting<R> :
 R extends InterchainIndexerApiResourceName ? InterchainIndexerApiPaginationSorting<R> :
 never;
 /* eslint-enable @stylistic/indent */
@@ -162,14 +163,14 @@ export type PaginatedResourceResponseNextPageParams<R extends ResourceName> = R 
   never;
 
 // TESTS
-export const a: ResourcePayload<'general:api_keys'> = [ {
+export const a: ResourcePayload<'core:api_keys'> = [ {
   api_key: '123',
   name: '123',
 } ];
 
-export const b: PaginatedResourceName = 'general:addresses';
+export const b: PaginatedResourceName = 'core:addresses';
 
-export const c: PaginatedResourceResponseItems<'general:addresses'> = [];
+export const c: PaginatedResourceResponseItems<'core:addresses'> = [];
 
 export const d: ResourcePathParams<'bens:address_domain'> = {
   address: '123',

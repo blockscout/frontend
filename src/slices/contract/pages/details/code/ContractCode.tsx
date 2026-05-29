@@ -63,7 +63,7 @@ const ContractDetails = ({ addressData, channel, mainContractQuery }: Props) => 
     }
   }, [ mainContractQuery.isPlaceholderData, sourceAddress, sourceItems ]);
 
-  const contractQuery = useApiQuery('general:contract', {
+  const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash: selectedItem?.address_hash },
     queryOptions: {
       enabled: Boolean(selectedItem?.address_hash && !mainContractQuery.isPlaceholderData && selectedItem.address_hash !== addressData.hash),

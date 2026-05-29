@@ -22,7 +22,7 @@ export const chainA = {
       icon: {},
     },
     apis: {
-      general: {
+      core: {
         host: 'localhost',
         protocol: 'http',
         port: '4003',
@@ -90,8 +90,8 @@ export const chainB = {
       },
     },
     apis: {
-      general: {
-        ...chainA.app_config?.apis?.general,
+      core: {
+        ...chainA.app_config?.apis?.core,
         port: '4004',
         endpoint: 'http://localhost:4004',
       },
@@ -116,8 +116,8 @@ export const chainC = {
       baseUrl: 'https://op-devnet.com',
     },
     apis: {
-      general: {
-        ...chainA.app_config?.apis?.general,
+      core: {
+        ...chainA.app_config?.apis?.core,
         port: '4005',
         endpoint: 'http://localhost:4005',
       },

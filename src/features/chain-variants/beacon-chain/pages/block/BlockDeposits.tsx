@@ -10,7 +10,7 @@ import BeaconChainDepositsList from '../deposits/BeaconChainDepositsList';
 import BeaconChainDepositsTable from '../deposits/BeaconChainDepositsTable';
 
 type Props = {
-  blockDepositsQuery: QueryWithPagesResult<'general:block_deposits'>;
+  blockDepositsQuery: QueryWithPagesResult<'core:block_deposits'>;
 };
 const TABS_HEIGHT = 88;
 

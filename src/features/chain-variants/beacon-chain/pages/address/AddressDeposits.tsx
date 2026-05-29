@@ -28,11 +28,11 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
   const hash = getQueryParamString(router.query.hash);
 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:address_deposits',
+    resourceName: 'core:address_deposits',
     pathParams: { hash },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'general:address_deposits'>(DEPOSIT, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:address_deposits'>(DEPOSIT, 50, { next_page_params: {
         index: 5,
         items_count: 50,
       } }),

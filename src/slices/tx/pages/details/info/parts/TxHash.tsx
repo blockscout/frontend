@@ -29,7 +29,7 @@ interface Props {
 const TxHash = ({ hash, isLoading, status }: Props) => {
   const isMobile = useIsMobile();
 
-  const externalTxsQuery = useApiQuery('general:tx_external_transactions', {
+  const externalTxsQuery = useApiQuery('core:tx_external_transactions', {
     pathParams: {
       hash,
     },

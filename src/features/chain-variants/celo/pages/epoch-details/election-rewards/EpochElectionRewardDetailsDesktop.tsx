@@ -30,7 +30,7 @@ const CeloEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {
 
   const { cutRef, query } = useLazyLoadedList({
     rootRef,
-    resourceName: 'general:epoch_celo_election_rewards',
+    resourceName: 'core:epoch_celo_election_rewards',
     pathParams: { number: number, reward_type: formatRewardType(type) },
     queryOptions: {
       refetchOnMount: false,

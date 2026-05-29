@@ -34,13 +34,13 @@ export default function useAddressTxsQuery({ addressHash, enabled, isMultichain,
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(initialFilterValue);
 
   const query = useQueryWithPages({
-    resourceName: 'general:address_txs',
+    resourceName: 'core:address_txs',
     pathParams: { hash: addressHash },
     filters: { filter: filterValue },
     sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
     options: {
       enabled: enabled,
-      placeholderData: generateListStub<'general:address_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:address_txs'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

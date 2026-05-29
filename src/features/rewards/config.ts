@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import apis from 'src/api/config';
+
 import account from 'src/features/account/config';
 import connectWallet from 'src/features/connect-wallet/config';
 
-import apis from 'src/config/apis';
 import app from 'src/config/app';
 import type { Feature } from 'src/config/utils/features';
 

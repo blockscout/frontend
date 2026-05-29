@@ -13,9 +13,9 @@ import type { NextPageWithLayout } from 'src/server/types';
 
 import PageMetadata from 'src/server/PageMetadata';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import useQueryClientConfig from 'src/api/hooks/useQueryClientConfig';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import { AppContextProvider } from 'src/shell/app/context';
 import Layout from 'src/shell/layout/Layout';

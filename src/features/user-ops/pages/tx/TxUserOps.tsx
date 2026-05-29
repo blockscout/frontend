@@ -19,11 +19,11 @@ interface Props {
 
 const TxUserOps = ({ txQuery }: Props) => {
   const userOpsQuery = useQueryWithPages({
-    resourceName: 'general:user_ops',
+    resourceName: 'core:user_ops',
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash),
       // most often there is only one user op in one tx
-      placeholderData: generateListStub<'general:user_ops'>(USER_OPS_ITEM, 1, { next_page_params: null }),
+      placeholderData: generateListStub<'core:user_ops'>(USER_OPS_ITEM, 1, { next_page_params: null }),
     },
     filters: { transaction_hash: txQuery.data?.hash },
   });

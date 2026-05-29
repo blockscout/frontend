@@ -10,11 +10,11 @@ import { animateScroll } from 'react-scroll';
 
 import type { PaginationParams } from './types';
 
-import getResourceParams from 'src/api/get-resource-params';
 import type { Params as UseApiQueryParams } from 'src/api/hooks/useApiQuery';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'src/api/resources';
 import { SORTING_FIELDS } from 'src/api/resources';
+import getResourceParams from 'src/api/utils/get-resource-params';
 
 import multichainConfig from 'src/features/multichain/chains-config';
 import { useMultichainContext } from 'src/features/multichain/context';

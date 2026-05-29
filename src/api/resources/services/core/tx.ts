@@ -18,7 +18,7 @@ import type {
   TxRawTracesResponse,
 } from 'src/slices/tx/types/api';
 
-export const GENERAL_API_TX_RESOURCES = {
+export const CORE_API_TX_RESOURCES = {
   txs_stats: {
     path: '/api/v2/transactions/stats',
   },
@@ -105,35 +105,35 @@ export const GENERAL_API_TX_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiTxResourceName = `general:${ keyof typeof GENERAL_API_TX_RESOURCES }`;
+export type CoreApiTxResourceName = `core:${ keyof typeof CORE_API_TX_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiTxResourcePayload<R extends GeneralApiTxResourceName> =
-R extends 'general:txs_stats' ? TransactionsStats :
-R extends 'general:txs_validated' ? TransactionsResponseValidated :
-R extends 'general:txs_pending' ? TransactionsResponsePending :
-R extends 'general:txs_with_blobs' ? TransactionsResponseWithBlobs :
-R extends 'general:txs_watchlist' ? TransactionsResponseWatchlist :
-R extends 'general:txs_execution_node' ? TransactionsResponseValidated :
-R extends 'general:tx_internal_txs' ? InternalTransactionsResponse :
-R extends 'general:tx' ? Transaction :
-R extends 'general:tx_logs' ? LogsResponseTx :
-R extends 'general:tx_token_transfers' ? TokenTransferResponse :
-R extends 'general:tx_fhe_operations' ? FheOperationsResponse :
-R extends 'general:tx_raw_trace' ? TxRawTracesResponse :
-R extends 'general:tx_state_changes' ? TxStateChanges :
-R extends 'general:tx_blobs' ? TxBlobs :
-R extends 'general:tx_interpretation' ? TxInterpretationResponse :
-R extends 'general:tx_external_transactions' ? Array<string> :
-R extends 'general:internal_txs' ? InternalTransactionsResponse :
+export type CoreApiTxResourcePayload<R extends CoreApiTxResourceName> =
+R extends 'core:txs_stats' ? TransactionsStats :
+R extends 'core:txs_validated' ? TransactionsResponseValidated :
+R extends 'core:txs_pending' ? TransactionsResponsePending :
+R extends 'core:txs_with_blobs' ? TransactionsResponseWithBlobs :
+R extends 'core:txs_watchlist' ? TransactionsResponseWatchlist :
+R extends 'core:txs_execution_node' ? TransactionsResponseValidated :
+R extends 'core:tx_internal_txs' ? InternalTransactionsResponse :
+R extends 'core:tx' ? Transaction :
+R extends 'core:tx_logs' ? LogsResponseTx :
+R extends 'core:tx_token_transfers' ? TokenTransferResponse :
+R extends 'core:tx_fhe_operations' ? FheOperationsResponse :
+R extends 'core:tx_raw_trace' ? TxRawTracesResponse :
+R extends 'core:tx_state_changes' ? TxStateChanges :
+R extends 'core:tx_blobs' ? TxBlobs :
+R extends 'core:tx_interpretation' ? TxInterpretationResponse :
+R extends 'core:tx_external_transactions' ? Array<string> :
+R extends 'core:internal_txs' ? InternalTransactionsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiTxPaginationFilters<R extends GeneralApiTxResourceName> =
-R extends 'general:txs_validated' | 'general:txs_pending' ? TxsFilters :
-R extends 'general:txs_with_blobs' ? TxsWithBlobsFilters :
-R extends 'general:tx_token_transfers' ? TokenTransferFilters :
-R extends 'general:internal_txs' ? InternalTransactionFilters :
+export type CoreApiTxPaginationFilters<R extends CoreApiTxResourceName> =
+R extends 'core:txs_validated' | 'core:txs_pending' ? TxsFilters :
+R extends 'core:txs_with_blobs' ? TxsWithBlobsFilters :
+R extends 'core:tx_token_transfers' ? TokenTransferFilters :
+R extends 'core:internal_txs' ? InternalTransactionFilters :
 never;
 /* eslint-enable @stylistic/indent */

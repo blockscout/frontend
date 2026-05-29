@@ -41,7 +41,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
 
   const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
 
-  const txInterpretationQuery = useApiQuery('general:tx_interpretation', {
+  const txInterpretationQuery = useApiQuery('core:tx_interpretation', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && (hasInterpretationFeature && !isNovesInterpretation),
@@ -49,7 +49,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     },
   });
 
-  const novesInterpretationQuery = useApiQuery('general:noves_transaction', {
+  const novesInterpretationQuery = useApiQuery('core:noves_transaction', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash) && isNovesInterpretation,

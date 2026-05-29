@@ -10,7 +10,7 @@ import Epochs from './Epochs';
 test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.celo);
   await mockTextAd();
-  await mockApiResponse('general:epochs_celo', epochsList);
+  await mockApiResponse('core:epochs_celo', epochsList);
 
   const component = await render(<Epochs/>);
 

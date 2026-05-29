@@ -63,7 +63,7 @@ const DynamicProvider = ({ children }: Props) => {
   const onAuthSuccess: OnAuthSuccess = React.useCallback(async() => {
     try {
       const authToken = getAuthToken();
-      const response = await apiFetch<'general:auth_dynamic', UserInfo, unknown>('general:auth_dynamic', {
+      const response = await apiFetch<'core:auth_dynamic', UserInfo, unknown>('core:auth_dynamic', {
         fetchParams: {
           headers: {
             Authorization: `Bearer ${ authToken }`,
@@ -73,7 +73,7 @@ const DynamicProvider = ({ children }: Props) => {
       if (!('name' in response)) {
         throw Error('Something went wrong');
       }
-      queryClient.setQueryData(getResourceKey('general:user_info'), () => response);
+      queryClient.setQueryData(getResourceKey('core:user_info'), () => response);
       csrfQuery.refetch();
       mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
         Action: 'Success',

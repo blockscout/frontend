@@ -47,7 +47,7 @@ const getTransactionsBeforeAndAfter = (data: CrossChainTx) => {
 };
 
 const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
-  const statsQuery = useApiQuery('general:stats', {
+  const statsQuery = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

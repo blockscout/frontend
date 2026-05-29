@@ -140,7 +140,7 @@ function useGetNftAllowances() {
             throw new DOMException('Aborted', 'AbortError');
           }
 
-          const tokenData = await apiFetch('general:token', {
+          const tokenData = await apiFetch('core:token', {
             pathParams: { hash: tokenAddress },
             chain,
             fetchParams: {

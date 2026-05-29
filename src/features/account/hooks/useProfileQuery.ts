@@ -6,7 +6,7 @@ import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
 
 export default function useProfileQuery() {
-  return useApiQuery('general:user_info', {
+  return useApiQuery('core:user_info', {
     queryOptions: {
       refetchOnMount: false,
       enabled: config.features.account.isEnabled && Boolean(cookies.get(cookies.NAMES.API_TOKEN)),

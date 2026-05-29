@@ -33,7 +33,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
 
   const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address_hash === sourceAddress) || items[0]);
 
-  const systemInfoQuery = useApiQuery('general:mud_system_info', {
+  const systemInfoQuery = useApiQuery('core:mud_system_info', {
     pathParams: { hash: addressHash, system_address: selectedItem.address_hash },
     queryOptions: {
       enabled: Boolean(selectedItem?.address_hash),

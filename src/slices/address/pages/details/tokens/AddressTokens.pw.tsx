@@ -41,13 +41,13 @@ test.beforeEach(async({ mockApiResponse }) => {
     next_page_params: nextPageParams,
   };
 
-  await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('general:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
-  await mockApiResponse('general:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
-  await mockApiResponse('general:address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
-  await mockApiResponse('general:address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
-  await mockApiResponse('general:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
-  await mockApiResponse('general:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
+  await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
+  await mockApiResponse('core:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
+  await mockApiResponse('core:address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
+  await mockApiResponse('core:address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
+  await mockApiResponse('core:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
+  await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
 });
 
 test('erc20 +@dark-mode', async({ render }) => {
@@ -202,15 +202,15 @@ test.describe('update balances via socket', () => {
       next_page_params: null,
     };
 
-    const erc20ApiUrl = await mockApiResponse('general:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
-    const erc721ApiUrl = await mockApiResponse('general:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
+    const erc20ApiUrl = await mockApiResponse('core:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
+    const erc721ApiUrl = await mockApiResponse('core:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
     const erc1155ApiUrl = await mockApiResponse(
-      'general:address_tokens',
+      'core:address_tokens',
       response1155,
       { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } },
     );
     const erc404ApiUrl = await mockApiResponse(
-      'general:address_tokens',
+      'core:address_tokens',
       response404,
       { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } },
     );
@@ -294,12 +294,12 @@ test.describe('update balances via socket', () => {
     };
 
     const erc20AndZrc2ApiUrl = await mockApiResponse(
-      'general:address_tokens',
+      'core:address_tokens',
       responseErc20AndZrc2,
       { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [ 'ERC-20', 'ZRC-2' ] } },
     );
     const zrc2ApiUrl = await mockApiResponse(
-      'general:address_tokens',
+      'core:address_tokens',
       responseZrc2,
       { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ZRC-2' } },
     );

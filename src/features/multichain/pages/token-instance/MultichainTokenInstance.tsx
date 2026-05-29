@@ -3,8 +3,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import TokenInstance from 'src/slices/token/pages/instance/TokenInstance';
 

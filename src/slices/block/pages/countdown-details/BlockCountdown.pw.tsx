@@ -14,7 +14,7 @@ test.describe('short period until the block', () => {
   };
 
   test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse('general:block_countdown', {
+    await mockApiResponse('core:block_countdown', {
       result: {
         CountdownBlock: height,
         CurrentBlock: '1234567700',
@@ -53,7 +53,7 @@ test.describe('long period until the block', () => {
   };
 
   test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse('general:block_countdown', {
+    await mockApiResponse('core:block_countdown', {
       result: {
         CountdownBlock: height,
         CurrentBlock: '1234567700',

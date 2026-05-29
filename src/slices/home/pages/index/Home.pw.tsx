@@ -22,17 +22,17 @@ test.describe('default view', () => {
   test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats:pages_main', statsMainMock.base);
-    await mockApiResponse('general:stats', statsMock.base);
-    await mockApiResponse('general:homepage_blocks', [
+    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('core:homepage_blocks', [
       blockMock.base,
       blockMock.base2,
     ]);
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
     ]);
-    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('core:stats_charts_txs', dailyTxsMock.base);
 
     component = await render(<Home/>);
   });
@@ -64,17 +64,17 @@ test.describe('mobile', () => {
   test('base view', async({ render, page, mockAssetResponse, mockApiResponse }) => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats:pages_main', statsMainMock.base);
-    await mockApiResponse('general:stats', statsMock.base);
-    await mockApiResponse('general:homepage_blocks', [
+    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('core:homepage_blocks', [
       blockMock.base,
       blockMock.base2,
     ]);
-    await mockApiResponse('general:homepage_txs', [
+    await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
     ]);
-    await mockApiResponse('general:stats_charts_txs', dailyTxsMock.base);
+    await mockApiResponse('core:stats_charts_txs', dailyTxsMock.base);
 
     const component = await render(<Home/>);
 
@@ -96,10 +96,10 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
     }));
 
   await mockApiResponse('stats:pages_main', null as never, { status: 500 });
-  await mockApiResponse('general:stats', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
-  await mockApiResponse('general:stats_charts_txs', null as never, { status: 500 });
+  await mockApiResponse('core:stats', null as never, { status: 500 });
+  await mockApiResponse('core:homepage_blocks', null as never, { status: 500 });
+  await mockApiResponse('core:homepage_txs', null as never, { status: 500 });
+  await mockApiResponse('core:stats_charts_txs', null as never, { status: 500 });
 
   await mockRpcResponse([
     {
@@ -143,10 +143,10 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
 test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => {
   test.slow();
   await mockApiResponse('stats:pages_main', null as never, { status: 500 });
-  await mockApiResponse('general:stats', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_blocks', null as never, { status: 500 });
-  await mockApiResponse('general:homepage_txs', null as never, { status: 500 });
-  await mockApiResponse('general:stats_charts_txs', null as never, { status: 500 });
+  await mockApiResponse('core:stats', null as never, { status: 500 });
+  await mockApiResponse('core:homepage_blocks', null as never, { status: 500 });
+  await mockApiResponse('core:homepage_txs', null as never, { status: 500 });
+  await mockApiResponse('core:stats_charts_txs', null as never, { status: 500 });
   await mockRpcResponse([
     {
       Method: 'eth_getBlockByNumber',

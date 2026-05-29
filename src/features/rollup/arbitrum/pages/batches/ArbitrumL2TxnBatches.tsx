@@ -21,9 +21,9 @@ import ArbitrumL2TxnBatchesTable from './ArbitrumL2TxnBatchesTable';
 
 const ArbitrumL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:arbitrum_l2_txn_batches',
+    resourceName: 'core:arbitrum_l2_txn_batches',
     options: {
-      placeholderData: generateListStub<'general:arbitrum_l2_txn_batches'>(
+      placeholderData: generateListStub<'core:arbitrum_l2_txn_batches'>(
         ARBITRUM_L2_TXN_BATCHES_ITEM,
         50,
         {
@@ -36,7 +36,7 @@ const ArbitrumL2TxnBatches = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:arbitrum_l2_txn_batches_count', {
+  const countersQuery = useApiQuery('core:arbitrum_l2_txn_batches_count', {
     queryOptions: {
       placeholderData: 5231746,
     },

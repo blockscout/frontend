@@ -1,6 +1,6 @@
 import React from 'react';
 
-import buildUrl from 'src/api/build-url';
+import buildUrl from 'src/api/utils/build-url';
 
 import * as mocks from 'src/features/account/mocks/verified-addresses';
 

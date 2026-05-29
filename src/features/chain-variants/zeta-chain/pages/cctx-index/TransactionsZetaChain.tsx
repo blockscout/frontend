@@ -39,11 +39,11 @@ const TransactionsZetaChain = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const txsWithBlobsQuery = useQueryWithPages({
-    resourceName: 'general:txs_with_blobs',
+    resourceName: 'core:txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
-      placeholderData: generateListStub<'general:txs_with_blobs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
         items_count: 50,
@@ -52,10 +52,10 @@ const TransactionsZetaChain = () => {
   });
 
   const txsWatchlistQuery = useQueryWithPages({
-    resourceName: 'general:txs_watchlist',
+    resourceName: 'core:txs_watchlist',
     options: {
       enabled: tab === 'watchlist',
-      placeholderData: generateListStub<'general:txs_watchlist'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_watchlist'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

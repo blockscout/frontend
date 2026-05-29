@@ -12,9 +12,9 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 import TxsContent from './TxsContent';
 
 type Props = {
-  query: QueryWithPagesResult<'general:txs_validated' | 'general:txs_pending'> |
-    QueryWithPagesResult<'general:txs_watchlist'> |
-    QueryWithPagesResult<'general:block_txs'>;
+  query: QueryWithPagesResult<'core:txs_validated' | 'core:txs_pending'> |
+    QueryWithPagesResult<'core:txs_watchlist'> |
+    QueryWithPagesResult<'core:block_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

@@ -157,7 +157,7 @@ test('arbitrum L1 status', async({ render, mockEnvs }) => {
 
 test('with external txs +@mobile', async({ page, render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs(ENVS_MAP.externalTxs);
-  await mockApiResponse('general:tx_external_transactions', [ 'tx1', 'tx2', 'tx3' ], { pathParams: { hash: txMock.base.hash } });
+  await mockApiResponse('core:tx_external_transactions', [ 'tx1', 'tx2', 'tx3' ], { pathParams: { hash: txMock.base.hash } });
   await mockAssetResponse('http://example.url', './playwright/mocks/image_s.jpg');
   const component = await render(<TxDetails data={ txMock.base } isLoading={ false }/>);
 

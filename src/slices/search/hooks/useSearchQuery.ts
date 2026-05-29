@@ -28,15 +28,15 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
   const pathname = router.pathname;
 
   const query = useQueryWithPages({
-    resourceName: 'general:search',
+    resourceName: 'core:search',
     filters: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
     options: {
       enabled: debouncedSearchTerm.trim().length > 0,
-      placeholderData: generateListStub<'general:search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }),
+      placeholderData: generateListStub<'core:search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }),
     },
   });
 
-  const redirectCheckQuery = useApiQuery('general:search_check_redirect', {
+  const redirectCheckQuery = useApiQuery('core:search_check_redirect', {
     // on search result page we check redirect only once on mount
     queryParams: { q: q.current },
     queryOptions: { enabled: Boolean(q.current) && withRedirectCheck },

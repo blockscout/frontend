@@ -14,11 +14,11 @@ test('base view +@mobile', async({ render, mockTextAd, mockApiResponse, mockEnvs
   await mockEnvs([ [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ] ]);
   await mockTextAd();
   await mockApiResponse(
-    'general:stats_hot_contracts',
+    'core:stats_hot_contracts',
     hotContractsMock.hotContractsResponse,
     { queryParams: { scale: getIntervalValueFromQuery(undefined) } },
   );
-  await mockApiResponse('general:stats', { ...statsMock.base, coin_price: '3214.42' });
+  await mockApiResponse('core:stats', { ...statsMock.base, coin_price: '3214.42' });
 
   const component = await render(<HotContracts/>);
   await expect(component).toHaveScreenshot({ timeout: 10_000 });

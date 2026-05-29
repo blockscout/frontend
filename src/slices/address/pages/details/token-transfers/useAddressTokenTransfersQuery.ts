@@ -61,7 +61,7 @@ export default function useAddressTokenTransfersQuery({ currentAddress, enabled,
   }, [ enabled ]);
 
   const query = useQueryWithPages({
-    resourceName: 'general:address_token_transfers',
+    resourceName: 'core:address_token_transfers',
     pathParams: { hash: currentAddress },
     filters,
     options: {

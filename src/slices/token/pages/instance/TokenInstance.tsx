@@ -47,7 +47,7 @@ const TokenInstanceContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const tokenQuery = useApiQuery('general:token', {
+  const tokenQuery = useApiQuery('core:token', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -55,7 +55,7 @@ const TokenInstanceContent = () => {
     },
   });
 
-  const tokenInstanceQuery = useApiQuery('general:token_instance', {
+  const tokenInstanceQuery = useApiQuery('core:token_instance', {
     pathParams: { hash, id },
     queryOptions: {
       enabled: Boolean(hash && id),
@@ -64,7 +64,7 @@ const TokenInstanceContent = () => {
   });
 
   const transfersQuery = useQueryWithPages({
-    resourceName: 'general:token_instance_transfers',
+    resourceName: 'core:token_instance_transfers',
     pathParams: { hash, id },
     scrollRef,
     options: {
@@ -80,7 +80,7 @@ const TokenInstanceContent = () => {
     !tokenInstanceQuery.data.is_unique;
 
   const holdersQuery = useQueryWithPages({
-    resourceName: 'general:token_instance_holders',
+    resourceName: 'core:token_instance_holders',
     pathParams: { hash, id },
     scrollRef,
     options: {

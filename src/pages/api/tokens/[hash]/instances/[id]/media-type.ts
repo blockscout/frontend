@@ -24,7 +24,7 @@ export default async function tokenInstanceMediaTypeHandler(req: NextApiRequest,
     }
 
     const apiData = await fetchApi({
-      resource: 'general:token_instance',
+      resource: 'core:token_instance',
       pathParams: { hash: getQueryParamString(req.query.hash), id: getQueryParamString(req.query.id) },
       timeout: SECOND,
     });

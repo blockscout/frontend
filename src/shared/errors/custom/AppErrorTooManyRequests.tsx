@@ -3,7 +3,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import buildUrl from 'src/api/build-url';
+import buildUrl from 'src/api/utils/build-url';
 
 import config from 'src/config';
 import ReCaptcha from 'src/services/re-captcha/ReCaptcha';
@@ -45,7 +45,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         throw new Error('ReCaptcha is not solved');
       }
 
-      const url = buildUrl('general:api_v2_key', undefined, { in_header: true });
+      const url = buildUrl('core:api_v2_key', undefined, { in_header: true });
 
       const response = await fetch(url, {
         method: 'POST',

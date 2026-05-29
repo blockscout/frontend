@@ -39,8 +39,8 @@ function generateAddressMetadataResponse(tag: AddressMetadataTagApi) {
 }
 
 test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
-  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash } });
-  await mockApiResponse('general:token_instance_transfers_count', { transfers_count: 42 }, { pathParams: { id: tokenInstanceMock.unique.id, hash } });
+  await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash } });
+  await mockApiResponse('core:token_instance_transfers_count', { transfers_count: 42 }, { pathParams: { id: tokenInstanceMock.unique.id, hash } });
   await mockAssetResponse('http://localhost:3000/nft-marketplace-logo.png', './playwright/mocks/image_s.jpg');
   await mockAssetResponse(tokenInstanceMock.unique.image_url as string, './playwright/mocks/image_md.jpg');
 });

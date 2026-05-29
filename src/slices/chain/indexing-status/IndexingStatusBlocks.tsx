@@ -24,7 +24,7 @@ const IndexingStatusBlocks = () => {
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
 
-  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
+  const { data, isError, isPending } = useApiQuery('core:homepage_indexing_status', {
     queryOptions: {
       enabled: !config.chain.indexingStatus.blocks.isHidden,
     },
@@ -39,7 +39,7 @@ const IndexingStatusBlocks = () => {
   const queryClient = useQueryClient();
 
   const handleBlocksIndexStatus: SocketMessage.BlocksIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing_blocks = payload.finished;

@@ -30,11 +30,11 @@ const testWidgetsFn = (isMobile: boolean) => async({ render, mockConfigResponse,
   ]);
   await mockConfigResponse('NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', WIDGETS_CONFIG_URL, widgetsMock.config);
 
-  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('general:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
   await Promise.all(widgetsMock.widgets.map((widget, i) =>
     mockApiResponse(
-      'general:address_3rd_party_info',
+      'core:address_3rd_party_info',
       { value: widgetsMock.values[i] },
       { pathParams: { name: widget }, queryParams: { address: ADDRESS_HASH, chain_id: '1' } },
     ),
@@ -63,7 +63,7 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('contract', async({ render, mockApiResponse, page }) => {
-    await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(
       <AddressDetails
@@ -80,7 +80,7 @@ test.describe('mobile', () => {
   });
 
   test('validator', async({ render, page, mockApiResponse }) => {
-    await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(
       <AddressDetails
@@ -97,7 +97,7 @@ test.describe('mobile', () => {
   });
 
   test('filecoin', async({ render, mockApiResponse, page }) => {
-    await mockApiResponse('general:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('core:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
 
     const component = await render(
       <AddressDetails
@@ -117,7 +117,7 @@ test.describe('mobile', () => {
 });
 
 test('contract', async({ render, page, mockApiResponse }) => {
-  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(
     <AddressDetails
@@ -135,11 +135,11 @@ test('contract', async({ render, page, mockApiResponse }) => {
 
 // there's an unexpected timeout occurred in this test
 test.fixme('token', async({ render, mockApiResponse, injectMetaMaskProvider, page }) => {
-  await mockApiResponse('general:address', addressMock.token, { pathParams: { hash: ADDRESS_HASH } });
-  await mockApiResponse('general:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
-  await mockApiResponse('general:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
-  await mockApiResponse('general:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
-  await mockApiResponse('general:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
+  await mockApiResponse('core:address', addressMock.token, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
+  await mockApiResponse('core:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
+  await mockApiResponse('core:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
+  await mockApiResponse('core:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
   await injectMetaMaskProvider();
 
   const component = await render(
@@ -156,7 +156,7 @@ test.fixme('token', async({ render, mockApiResponse, injectMetaMaskProvider, pag
 });
 
 test('validator', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('general:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(
     <AddressDetails
@@ -173,7 +173,7 @@ test('validator', async({ render, mockApiResponse, page }) => {
 });
 
 test('filecoin', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('general:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await render(
     <AddressDetails

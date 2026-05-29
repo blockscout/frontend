@@ -24,7 +24,7 @@ test('base view +@mobile +@dark-mode', async({ mockApiResponse, render, page, mo
   await mockApiResponse('multichainAggregator:chain_metrics', metricsMock.chainMetrics);
   await mockApiResponse('multichainStats:pages_main', statsMock.mainPageStats);
   await mockApiResponse(
-    'general:homepage_txs',
+    'core:homepage_txs',
     [ txMock.base, txMock.withProtocolTag ],
     { chainConfig: chainDataMock.chainA },
   );

@@ -49,7 +49,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
   );
 
   const localQuery = useQueryWithPages({
-    resourceName: 'general:tx_token_transfers',
+    resourceName: 'core:tx_token_transfers',
     pathParams: { hash: txQuery.data?.hash.toString() },
     options: {
       enabled: areQueriesEnabled,

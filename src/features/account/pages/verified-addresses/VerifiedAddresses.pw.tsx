@@ -20,7 +20,7 @@ test.beforeEach(async({ mockAssetResponse }) => {
 test('base view +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1' } });
   await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1', id: undefined } });
-  await mockApiResponse('general:user_info', profileMock.base);
+  await mockApiResponse('core:user_info', profileMock.base);
 
   const component = await render(<VerifiedAddresses/>);
   await expect(component).toHaveScreenshot();
@@ -29,7 +29,7 @@ test('base view +@mobile', async({ render, mockApiResponse }) => {
 test('user without email', async({ render, mockApiResponse }) => {
   await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1' } });
   await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1', id: undefined } });
-  await mockApiResponse('general:user_info', profileMock.withoutEmail);
+  await mockApiResponse('core:user_info', profileMock.withoutEmail);
 
   const component = await render(<VerifiedAddresses/>);
 
@@ -49,7 +49,7 @@ test('address verification flow', async({ render, mockApiResponse, page }) => {
     mocks.ADDRESS_VERIFY_RESPONSE.SUCCESS as never,
     { pathParams: { instanceId: '1', type: ':verify' } },
   );
-  await mockApiResponse('general:user_info', profileMock.base);
+  await mockApiResponse('core:user_info', profileMock.base);
 
   await render(<VerifiedAddresses/>);
 
@@ -76,7 +76,7 @@ test('address verification flow', async({ render, mockApiResponse, page }) => {
 test('application update flow', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1' } });
   await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.FOR_UPDATE, { pathParams: { instanceId: '1', id: undefined } });
-  await mockApiResponse('general:user_info', profileMock.base);
+  await mockApiResponse('core:user_info', profileMock.base);
   await mockApiResponse('admin:token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { instanceId: '1' } });
 
   await mockApiResponse(

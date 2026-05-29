@@ -22,7 +22,7 @@ const OptimisticL2WithdrawalsItemStatus = ({ data, isLoading }: Props) => {
 
   const handleClaimSuccess = React.useCallback((l1TxHash: string) => {
     queryClient.setQueriesData({
-      queryKey: getResourceKey('general:optimistic_l2_withdrawals'),
+      queryKey: getResourceKey('core:optimistic_l2_withdrawals'),
       exact: false,
       type: 'active',
     },

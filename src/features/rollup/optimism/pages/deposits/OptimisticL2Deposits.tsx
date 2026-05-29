@@ -23,9 +23,9 @@ import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Deposits = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:optimistic_l2_deposits',
+    resourceName: 'core:optimistic_l2_deposits',
     options: {
-      placeholderData: generateListStub<'general:optimistic_l2_deposits'>(
+      placeholderData: generateListStub<'core:optimistic_l2_deposits'>(
         L2_DEPOSIT_ITEM,
         50,
         {
@@ -39,7 +39,7 @@ const OptimisticL2Deposits = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:optimistic_l2_deposits_count', {
+  const countersQuery = useApiQuery('core:optimistic_l2_deposits_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

@@ -34,12 +34,12 @@ const AddressMudTables = ({ isQueryEnabled = true }: Props) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'general:mud_tables',
+    resourceName: 'core:mud_tables',
     pathParams: { hash },
     filters: { q: debouncedSearchTerm },
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'general:mud_tables'>(ADDRESS_MUD_TABLE_ITEM, 3, { next_page_params: {
+      placeholderData: generateListStub<'core:mud_tables'>(ADDRESS_MUD_TABLE_ITEM, 3, { next_page_params: {
         items_count: 50,
         table_id: '1',
       } }),

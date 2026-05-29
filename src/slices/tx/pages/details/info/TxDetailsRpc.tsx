@@ -98,7 +98,7 @@ const TxDetailsRpc = ({ hash, txQuery }: Props) => {
 
   if (!query.data) {
     if (originalError && isCustomAppError(originalError)) {
-      throwOnResourceLoadError({ resource: 'general:tx', error: originalError, isError: true });
+      throwOnResourceLoadError({ resource: 'core:tx', error: originalError, isError: true });
     }
 
     return <ApiFetchAlert/>;

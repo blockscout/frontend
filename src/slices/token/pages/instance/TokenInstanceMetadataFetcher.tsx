@@ -50,7 +50,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   }, [ setStatus ]);
 
   const apiFetchFactory = React.useCallback(async(recaptchaToken?: string) => {
-    return apiFetch<'general:token_instance_refresh_metadata', unknown, unknown>('general:token_instance_refresh_metadata', {
+    return apiFetch<'core:token_instance_refresh_metadata', unknown, unknown>('core:token_instance_refresh_metadata', {
       pathParams: { hash, id },
       fetchParams: {
         method: 'PATCH',
@@ -95,7 +95,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       return;
     }
 
-    const queryKey = getResourceKey('general:token_instance', { queryParams: { hash, id } });
+    const queryKey = getResourceKey('core:token_instance', { queryParams: { hash, id } });
     queryClient.setQueryData(queryKey, (prevData: TokenInstance | undefined): TokenInstance | undefined => {
       if (!prevData) {
         return;

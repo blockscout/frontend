@@ -31,13 +31,13 @@ const TagSearch = () => {
   const tagName = getQueryParamString(router.query.tagName);
 
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
-    resourceName: 'general:addresses_metadata_search',
+    resourceName: 'core:addresses_metadata_search',
     filters: {
       slug,
       tag_type: tagType,
     },
     options: {
-      placeholderData: generateListStub<'general:addresses_metadata_search'>(
+      placeholderData: generateListStub<'core:addresses_metadata_search'>(
         TOP_ADDRESS,
         50,
         {

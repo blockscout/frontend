@@ -26,7 +26,7 @@ import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
   const { data: addressTagsData, isError, isPlaceholderData, refetch, pagination } = useQueryWithPages({
-    resourceName: 'general:private_tags_address',
+    resourceName: 'core:private_tags_address',
     options: {
       refetchOnMount: false,
       placeholderData: { items: Array(5).fill(PRIVATE_TAG_ADDRESS), next_page_params: null },

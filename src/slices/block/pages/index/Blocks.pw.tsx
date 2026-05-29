@@ -25,8 +25,8 @@ test.beforeEach(async({ mockTextAd }) => {
 });
 
 test('base view +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -38,8 +38,8 @@ test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
     ...ENVS_MAP.blockHiddenFields,
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
   ]);
-  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-  await mockApiResponse('general:stats', statsMock.base);
+  await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -50,8 +50,8 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-    await mockApiResponse('general:stats', statsMock.base);
+    await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('core:stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -63,8 +63,8 @@ test.describe('mobile', () => {
       ...ENVS_MAP.blockHiddenFields,
       [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
     ]);
-    await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
-    await mockApiResponse('general:stats', statsMock.base);
+    await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('core:stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -73,7 +73,7 @@ test.describe('mobile', () => {
 });
 
 test('new item from socket', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 
@@ -92,7 +92,7 @@ test('new item from socket', async({ render, mockApiResponse, createSocket }) =>
 });
 
 test('socket error', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('general:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 

@@ -13,7 +13,7 @@ import TxsContent from './TxsContent';
 
 interface Props {
 
-  query: QueryWithPagesResult<'general:address_txs'>;
+  query: QueryWithPagesResult<'core:address_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

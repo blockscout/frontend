@@ -26,7 +26,7 @@ const ContractVerificationForAddress = () => {
   const hash = getQueryParamString(router.query.hash);
   const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
 
-  const contractQuery = useApiQuery('general:contract', {
+  const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),

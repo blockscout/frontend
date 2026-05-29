@@ -9,7 +9,7 @@ import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 export default function useTokenQuery(hash: string) {
   const { apiData } = useAppContext<'/token/[hash]'>();
 
-  return useApiQuery('general:token', {
+  return useApiQuery('core:token', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),

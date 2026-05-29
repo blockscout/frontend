@@ -27,7 +27,7 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
   solidity: "${ latestSolidityVersion || '0.8.24' }", // replace if necessary
   networks: {
     '${ chainNameSlug }': {
-      url: '${ config.chain.rpcUrls[0] || (config.apis.general ? `${ config.apis.general.endpoint }${ config.apis.general.basePath ?? '' }/api/eth-rpc` : '') }'
+      url: '${ config.chain.rpcUrls[0] || (config.apis.core ? `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }/api/eth-rpc` : '') }'
     },
   },
   etherscan: {
@@ -39,7 +39,7 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
         network: "${ chainNameSlug }",
         chainId: ${ config.chain.id },
         urls: {
-          apiURL: "${ config.apis.general ? `${ config.apis.general.endpoint }${ config.apis.general.basePath ?? '' }/api` : '' }",
+          apiURL: "${ config.apis.core ? `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }/api` : '' }",
           browserURL: "${ config.app.baseUrl }"
         }
       }

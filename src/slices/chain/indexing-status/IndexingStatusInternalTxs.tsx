@@ -19,7 +19,7 @@ import { apos, nbsp, ndash } from 'src/toolkit/utils/htmlEntities';
 
 const IndexingStatusInternalTxs = () => {
 
-  const { data, isError, isPending } = useApiQuery('general:homepage_indexing_status', {
+  const { data, isError, isPending } = useApiQuery('core:homepage_indexing_status', {
     queryOptions: {
       enabled: !config.chain.indexingStatus.intTxs.isHidden,
     },
@@ -28,7 +28,7 @@ const IndexingStatusInternalTxs = () => {
   const queryClient = useQueryClient();
 
   const handleInternalTxsIndexStatus: SocketMessage.InternalTxsIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('general:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
 
       const newData = prevData ? { ...prevData } : {} as IndexingStatus;
       newData.finished_indexing = payload.finished;

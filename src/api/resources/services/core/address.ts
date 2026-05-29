@@ -28,7 +28,7 @@ import type {
 import type { LogsResponseAddress } from 'src/slices/log/types/api';
 import type { TransactionsSorting } from 'src/slices/tx/types/api';
 
-export const GENERAL_API_ADDRESS_RESOURCES = {
+export const CORE_API_ADDRESS_RESOURCES = {
   // ADDRESSES
   addresses: {
     path: '/api/v2/addresses/',
@@ -169,47 +169,47 @@ export const GENERAL_API_ADDRESS_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiAddressResourceName = `general:${ keyof typeof GENERAL_API_ADDRESS_RESOURCES }`;
+export type CoreApiAddressResourceName = `core:${ keyof typeof CORE_API_ADDRESS_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiAddressResourcePayload<R extends GeneralApiAddressResourceName> =
-R extends 'general:addresses' ? AddressesResponse :
-R extends 'general:addresses_metadata_search' ? AddressesMetadataSearchResult :
-R extends 'general:address' ? Address :
-R extends 'general:address_counters' ? AddressCounters :
-R extends 'general:address_tabs_counters' ? AddressTabsCounters :
-R extends 'general:address_txs' ? AddressTransactionsResponse :
-R extends 'general:address_internal_txs' ? AddressInternalTxsResponse :
-R extends 'general:address_token_transfers' ? AddressTokenTransferResponse :
-R extends 'general:address_blocks_validated' ? AddressBlocksValidatedResponse :
-R extends 'general:address_coin_balance' ? AddressCoinBalanceHistoryResponse :
-R extends 'general:address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
-R extends 'general:address_logs' ? LogsResponseAddress :
-R extends 'general:address_tokens' ? AddressTokensResponse :
-R extends 'general:address_token_balances' ? AddressTokenBalancesResponse :
-R extends 'general:address_nfts' ? AddressNFTsResponse :
-R extends 'general:address_collections' ? AddressCollectionsResponse :
-R extends 'general:address_withdrawals' ? AddressWithdrawalsResponse :
-R extends 'general:address_deposits' ? DepositsResponse :
-R extends 'general:address_epoch_rewards' ? AddressEpochRewardsResponse :
-R extends 'general:address_xstar_score' ? AddressXStarResponse :
-R extends 'general:address_3rd_party_info' ? unknown :
+export type CoreApiAddressResourcePayload<R extends CoreApiAddressResourceName> =
+R extends 'core:addresses' ? AddressesResponse :
+R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchResult :
+R extends 'core:address' ? Address :
+R extends 'core:address_counters' ? AddressCounters :
+R extends 'core:address_tabs_counters' ? AddressTabsCounters :
+R extends 'core:address_txs' ? AddressTransactionsResponse :
+R extends 'core:address_internal_txs' ? AddressInternalTxsResponse :
+R extends 'core:address_token_transfers' ? AddressTokenTransferResponse :
+R extends 'core:address_blocks_validated' ? AddressBlocksValidatedResponse :
+R extends 'core:address_coin_balance' ? AddressCoinBalanceHistoryResponse :
+R extends 'core:address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
+R extends 'core:address_logs' ? LogsResponseAddress :
+R extends 'core:address_tokens' ? AddressTokensResponse :
+R extends 'core:address_token_balances' ? AddressTokenBalancesResponse :
+R extends 'core:address_nfts' ? AddressNFTsResponse :
+R extends 'core:address_collections' ? AddressCollectionsResponse :
+R extends 'core:address_withdrawals' ? AddressWithdrawalsResponse :
+R extends 'core:address_deposits' ? DepositsResponse :
+R extends 'core:address_epoch_rewards' ? AddressEpochRewardsResponse :
+R extends 'core:address_xstar_score' ? AddressXStarResponse :
+R extends 'core:address_3rd_party_info' ? unknown :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiAddressPaginationFilters<R extends GeneralApiAddressResourceName> =
-R extends 'general:addresses_metadata_search' ? AddressesMetadataSearchFilters :
-R extends 'general:address_txs' | 'general:address_internal_txs' ? AddressTxsFilters :
-R extends 'general:address_token_transfers' ? AddressTokenTransferFilters :
-R extends 'general:address_tokens' ? AddressTokensFilter :
-R extends 'general:address_nfts' ? AddressNFTTokensFilter :
-R extends 'general:address_collections' ? AddressNFTTokensFilter :
+export type CoreApiAddressPaginationFilters<R extends CoreApiAddressResourceName> =
+R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchFilters :
+R extends 'core:address_txs' | 'core:address_internal_txs' ? AddressTxsFilters :
+R extends 'core:address_token_transfers' ? AddressTokenTransferFilters :
+R extends 'core:address_tokens' ? AddressTokensFilter :
+R extends 'core:address_nfts' ? AddressNFTTokensFilter :
+R extends 'core:address_collections' ? AddressNFTTokensFilter :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiAddressPaginationSorting<R extends GeneralApiAddressResourceName> =
-R extends 'general:address_txs' ? TransactionsSorting :
+export type CoreApiAddressPaginationSorting<R extends CoreApiAddressResourceName> =
+R extends 'core:address_txs' ? TransactionsSorting :
 never;
 /* eslint-enable @stylistic/indent */

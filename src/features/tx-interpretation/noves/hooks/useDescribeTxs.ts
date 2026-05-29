@@ -14,7 +14,7 @@ const feature = config.features.txInterpretation;
 
 const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 
-export type TxsTranslationQuery = ReturnType<'general:noves_describe_txs'> | undefined;
+export type TxsTranslationQuery = ReturnType<'core:noves_describe_txs'> | undefined;
 
 export default function useDescribeTxs(
   items: Array<Transaction> | undefined,
@@ -32,7 +32,7 @@ export default function useDescribeTxs(
   }, [ items, enabled ]);
 
   const query = useApiQueries(
-    'general:noves_describe_txs',
+    'core:noves_describe_txs',
     chunks.map((hashes) => {
       return {
         queryParams: {

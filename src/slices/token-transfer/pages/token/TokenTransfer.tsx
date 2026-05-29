@@ -30,7 +30,7 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 const TABS_HEIGHT = 88;
 
 type Props = {
-  transfersQuery: QueryWithPagesResult<'general:token_transfers'> | QueryWithPagesResult<'general:token_instance_transfers'>;
+  transfersQuery: QueryWithPagesResult<'core:token_transfers'> | QueryWithPagesResult<'core:token_instance_transfers'>;
   tokenId?: string;
   tokenInstance?: TokenInstance;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;

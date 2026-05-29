@@ -34,11 +34,11 @@ export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) 
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const query = useQueryWithPages({
-    resourceName: 'general:verified_contracts',
+    resourceName: 'core:verified_contracts',
     filters: { q: debouncedSearchTerm, filter: type },
     sorting: getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(sort),
     options: {
-      placeholderData: generateListStub<'general:verified_contracts'>(
+      placeholderData: generateListStub<'core:verified_contracts'>(
         VERIFIED_CONTRACT_INFO,
         50,
         {

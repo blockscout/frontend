@@ -26,12 +26,12 @@ export default function useAddressInternalTxsQuery({ enabled, isMultichain, chai
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const query = useQueryWithPages({
-    resourceName: 'general:address_internal_txs',
+    resourceName: 'core:address_internal_txs',
     pathParams: { hash },
     filters: { filter: filterValue },
     options: {
       enabled,
-      placeholderData: generateListStub<'general:address_internal_txs'>(
+      placeholderData: generateListStub<'core:address_internal_txs'>(
         INTERNAL_TX,
         50,
         {

@@ -52,7 +52,7 @@ const ValidatorsStability = () => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
-    resourceName: 'general:validators_stability',
+    resourceName: 'core:validators_stability',
     filters: {
       // address_hash: debouncedSearchTerm,
       state_filter: statusFilter,
@@ -60,7 +60,7 @@ const ValidatorsStability = () => {
     sorting: getSortParamsFromValue<ValidatorsStabilitySortingValue, ValidatorsStabilitySortingField, ValidatorsStabilitySorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'general:validators_stability'>(
+      placeholderData: generateListStub<'core:validators_stability'>(
         VALIDATOR_STABILITY,
         50,
         { next_page_params: null },

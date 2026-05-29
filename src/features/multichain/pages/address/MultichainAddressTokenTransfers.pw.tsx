@@ -30,12 +30,12 @@ test.describe('local transfers', () => {
     await mockMultichainConfig();
     await mockEnvs(ENVS_MAP.multichain);
     await mockApiResponse(
-      'general:address_token_transfers',
+      'core:address_token_transfers',
       { items: [ tokenTransferMock.erc20 ], next_page_params: DEFAULT_PAGINATION },
       { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
     );
     await mockApiResponse(
-      'general:address_counters',
+      'core:address_counters',
       countersMock.forAddress,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );

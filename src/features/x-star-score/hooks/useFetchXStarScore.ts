@@ -3,8 +3,8 @@
 import React from 'react';
 import * as v from 'valibot';
 
-import buildUrl from 'src/api/build-url';
 import useApiQuery from 'src/api/hooks/useApiQuery';
+import buildUrl from 'src/api/utils/build-url';
 
 import config from 'src/config';
 
@@ -12,7 +12,7 @@ interface Params {
   hash: string;
 }
 
-const RESOURCE_NAME = 'general:address_xstar_score';
+const RESOURCE_NAME = 'core:address_xstar_score';
 const ERROR_NAME = 'Invalid response schema';
 
 export default function useFetchXStarScore({ hash }: Params) {

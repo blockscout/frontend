@@ -124,7 +124,7 @@ const TransactionPageContent = () => {
 
   if (isError && !showDegradedView) {
     if (isCustomAppError(error)) {
-      throwOnResourceLoadError({ resource: 'general:tx', error, isError: true });
+      throwOnResourceLoadError({ resource: 'core:tx', error, isError: true });
     }
   }
 

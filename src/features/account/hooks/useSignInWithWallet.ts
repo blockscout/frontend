@@ -93,7 +93,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         type: 'shared',
       };
     } catch (error) {
-      const response = await apiFetch('general:auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
+      const response = await apiFetch('core:auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
       return {
         message: response.siwe_message,
         type: 'single',
@@ -102,7 +102,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
   }, [ apiFetch, loginToRewards ]);
 
   const authFetchFactory = React.useCallback((message: string, signature: string) => (recaptchaToken?: string) => {
-    const authResource = isAuth ? 'general:auth_link_address' : 'general:auth_siwe_verify';
+    const authResource = isAuth ? 'core:auth_link_address' : 'core:auth_siwe_verify';
     return apiFetch<typeof authResource, UserInfo, unknown>(authResource, {
       fetchParams: {
         method: 'POST',

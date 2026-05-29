@@ -14,8 +14,8 @@ test('base view +@mobile', async({ render, mockTextAd, mockEnvs, mockApiResponse
   test.slow();
   await mockTextAd();
   await mockEnvs(ENVS_MAP.optimisticRollup);
-  await mockApiResponse('general:optimistic_l2_txn_batches', txnBatchesData);
-  await mockApiResponse('general:optimistic_l2_txn_batches_count', 1235016);
+  await mockApiResponse('core:optimistic_l2_txn_batches', txnBatchesData);
+  await mockApiResponse('core:optimistic_l2_txn_batches_count', 1235016);
   const component = await render(<OptimisticL2TxnBatches/>);
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });

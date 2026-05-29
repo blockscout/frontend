@@ -25,7 +25,7 @@ const VerifiedContractsCounters = () => {
     },
   });
 
-  const countersApiQuery = useApiQuery('general:verified_contracts_counters', {
+  const countersApiQuery = useApiQuery('core:verified_contracts_counters', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
       placeholderData: !isStatsFeatureEnabled ? VERIFIED_CONTRACTS_COUNTERS : undefined,

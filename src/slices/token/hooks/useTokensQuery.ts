@@ -33,12 +33,12 @@ export default function useTokensQuery({ enabled }: Props) {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const query = useQueryWithPages({
-    resourceName: 'general:tokens',
+    resourceName: 'core:tokens',
     filters: { q: debouncedSearchTerm, type: tokenTypes },
     sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
       enabled,
-      placeholderData: generateListStub<'general:tokens'>(
+      placeholderData: generateListStub<'core:tokens'>(
         TOKEN_INFO_ERC_20,
         50,
         { next_page_params: { holders_count: 81528, items_count: 50, name: '', market_cap: null } },

@@ -27,7 +27,7 @@ import NFTItem from './NFTItem';
 import NFTItemContainer from './NFTItemContainer';
 
 type Props = {
-  collectionsQuery: QueryWithPagesResult<'general:address_collections'>;
+  collectionsQuery: QueryWithPagesResult<'core:address_collections'>;
   address: string;
   tokenTypes: Array<NFTTokenType> | undefined;
   onTokenTypesChange: (value: Array<NFTTokenType>) => void;

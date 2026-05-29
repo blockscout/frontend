@@ -23,9 +23,9 @@ import OptimisticL2OutputRootsTable from './OptimisticL2OutputRootsTable';
 
 const OptimisticL2OutputRoots = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:optimistic_l2_output_roots',
+    resourceName: 'core:optimistic_l2_output_roots',
     options: {
-      placeholderData: generateListStub<'general:optimistic_l2_output_roots'>(
+      placeholderData: generateListStub<'core:optimistic_l2_output_roots'>(
         L2_OUTPUT_ROOTS_ITEM,
         50,
         {
@@ -38,7 +38,7 @@ const OptimisticL2OutputRoots = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:optimistic_l2_output_roots_count', {
+  const countersQuery = useApiQuery('core:optimistic_l2_output_roots_count', {
     queryOptions: {
       placeholderData: 50617,
     },

@@ -17,7 +17,7 @@ interface Props {
 }
 
 const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
-  const transfersCountQuery = useApiQuery('general:token_instance_transfers_count', {
+  const transfersCountQuery = useApiQuery('core:token_instance_transfers_count', {
     pathParams: { hash, id },
     queryOptions: {
       enabled: Boolean(hash && id),

@@ -53,7 +53,7 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {
     try {
-      await apiFetch<'general:contract_security_audits', SmartContractSecurityAuditSubmission, AuditSubmissionErrors>('general:contract_security_audits', {
+      await apiFetch<'core:contract_security_audits', SmartContractSecurityAuditSubmission, AuditSubmissionErrors>('core:contract_security_audits', {
         pathParams: { hash: address },
         fetchParams: {
           method: 'POST',

@@ -5,9 +5,8 @@ import { createGraphiQLFetcher } from '@graphiql/toolkit';
 import { GraphiQL } from 'graphiql';
 import React from 'react';
 
-import buildUrl from 'src/api/build-url';
-import 'graphiql/graphiql.css';
 import useApiQuery from 'src/api/hooks/useApiQuery';
+import buildUrl from 'src/api/utils/build-url';
 
 import config from 'src/config';
 
@@ -15,6 +14,8 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 import { isBrowser } from 'src/toolkit/utils/isBrowser';
+
+import 'graphiql/graphiql.css';
 
 const feature = config.features.apiDocs;
 
@@ -26,7 +27,7 @@ const graphQLStyle = {
 
 const GraphQL = () => {
 
-  const latestTxsQuery = useApiQuery('general:homepage_txs', {
+  const latestTxsQuery = useApiQuery('core:homepage_txs', {
     queryOptions: {
       enabled: feature.isEnabled,
     },
@@ -76,7 +77,7 @@ const GraphQL = () => {
     }
   }`;
 
-  const graphqlUrl = buildUrl('general:graphql');
+  const graphqlUrl = buildUrl('core:graphql');
 
   const fetcher = createGraphiQLFetcher({
     url: graphqlUrl,

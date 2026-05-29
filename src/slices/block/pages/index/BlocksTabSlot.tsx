@@ -25,7 +25,7 @@ interface Props {
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
-  const statsQuery = useApiQuery('general:stats', {
+  const statsQuery = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

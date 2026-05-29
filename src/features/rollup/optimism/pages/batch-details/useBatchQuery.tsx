@@ -14,7 +14,7 @@ export default function useBatchQuery() {
   const height = getQueryParamString(router.query.height);
   const commitment = getQueryParamString(router.query.commitment);
 
-  const batchByNumberQuery = useApiQuery('general:optimistic_l2_txn_batch', {
+  const batchByNumberQuery = useApiQuery('core:optimistic_l2_txn_batch', {
     pathParams: { number },
     queryOptions: {
       enabled: Boolean(number),
@@ -22,7 +22,7 @@ export default function useBatchQuery() {
     },
   });
 
-  const batchByHeightQuery = useApiQuery('general:optimistic_l2_txn_batch_celestia', {
+  const batchByHeightQuery = useApiQuery('core:optimistic_l2_txn_batch_celestia', {
     pathParams: { height, commitment },
     queryOptions: {
       enabled: Boolean(height && commitment),

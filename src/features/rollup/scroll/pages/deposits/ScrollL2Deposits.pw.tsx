@@ -10,8 +10,8 @@ import ScrollL2Deposits from './ScrollL2Deposits';
 test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   await mockTextAd();
   await mockEnvs(ENVS_MAP.scrollRollup);
-  await mockApiResponse('general:scroll_l2_deposits', messagesMock.baseResponse);
-  await mockApiResponse('general:scroll_l2_deposits_count', 3971111);
+  await mockApiResponse('core:scroll_l2_deposits', messagesMock.baseResponse);
+  await mockApiResponse('core:scroll_l2_deposits_count', 3971111);
 
   const component = await render(<ScrollL2Deposits/>);
 
@@ -24,8 +24,8 @@ test.describe('mobile', () => {
   test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
     await mockTextAd();
     await mockEnvs(ENVS_MAP.scrollRollup);
-    await mockApiResponse('general:scroll_l2_deposits', messagesMock.baseResponse);
-    await mockApiResponse('general:scroll_l2_deposits_count', 3971111);
+    await mockApiResponse('core:scroll_l2_deposits', messagesMock.baseResponse);
+    await mockApiResponse('core:scroll_l2_deposits_count', 3971111);
 
     const component = await render(<ScrollL2Deposits/>);
 

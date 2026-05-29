@@ -4,8 +4,8 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import getSocketUrl from 'src/api/get-socket-url';
 import { SocketProvider } from 'src/api/socket/context';
+import getSocketUrl from 'src/api/socket/get-socket-url';
 
 import AddressCoinBalance from 'src/slices/address/pages/details/coin-balance/AddressCoinBalance';
 

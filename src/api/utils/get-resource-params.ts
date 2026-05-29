@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ApiName, ApiResource } from './types';
+import type { ApiResource } from '../resources/types';
+import type { ApiName } from '../types';
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import config from 'src/config';
 
-import type { ResourceName } from './resources';
-import { RESOURCES } from './resources';
+import type { ResourceName } from '../resources';
+import { RESOURCES } from '../resources';
 
 export default function getResourceParams(resourceFullName: ResourceName, chain?: ExternalChainExtended) {
   const [ apiName, resourceName ] = resourceFullName.split(':') as [ ApiName, string ];

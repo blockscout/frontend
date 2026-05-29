@@ -67,25 +67,25 @@ export const TOKEN_TRANSFER_ERC_404: TokenTransfer = {
 export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
-      return generateListStub<'general:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
     case 'ERC-1155':
-      return generateListStub<'general:token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, { next_page_params: pagination });
     case 'ERC-404':
-      return generateListStub<'general:token_transfers'>(TOKEN_TRANSFER_ERC_404, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_404, 50, { next_page_params: pagination });
     default:
-      return generateListStub<'general:token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, { next_page_params: pagination });
+      return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, { next_page_params: pagination });
   }
 };
 
 export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: TokenInstanceTransferPagination | null = null): TokenInstanceTransferResponse => {
   switch (type) {
     case 'ERC-721':
-      return generateListStub<'general:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });
     case 'ERC-1155':
-      return generateListStub<'general:token_instance_transfers'>(TOKEN_TRANSFER_ERC_1155, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_1155, 10, { next_page_params: pagination });
     case 'ERC-404':
-      return generateListStub<'general:token_instance_transfers'>(TOKEN_TRANSFER_ERC_404, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_404, 10, { next_page_params: pagination });
     default:
-      return generateListStub<'general:token_instance_transfers'>(TOKEN_TRANSFER_ERC_20, 10, { next_page_params: pagination });
+      return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_20, 10, { next_page_params: pagination });
   }
 };

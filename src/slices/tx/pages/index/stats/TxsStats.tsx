@@ -36,14 +36,14 @@ const TxsStats = (props: Props) => {
     },
   });
 
-  const txsStatsApiQuery = useApiQuery('general:txs_stats', {
+  const txsStatsApiQuery = useApiQuery('core:txs_stats', {
     queryOptions: {
       enabled: !isStatsFeatureEnabled,
       placeholderData: !isStatsFeatureEnabled ? TXS_STATS : undefined,
     },
   });
 
-  const statsQuery = useApiQuery('general:stats', {
+  const statsQuery = useApiQuery('core:stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

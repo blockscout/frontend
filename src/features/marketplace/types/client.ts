@@ -44,7 +44,7 @@ export enum MarketplaceCategory {
 
 export interface EssentialDappsChainConfig extends ExternalChain {
   app_config?: Pick<typeof config, 'app' | 'chain'> & {
-    apis: Pick<typeof config['apis'], 'general'>;
+    apis: Pick<typeof config['apis'], 'core'>;
   };
   contracts?: Chain['contracts'];
 }

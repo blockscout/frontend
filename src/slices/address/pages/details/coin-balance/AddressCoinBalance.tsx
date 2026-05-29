@@ -37,12 +37,12 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const addressHash = getQueryParamString(router.query.hash);
   const coinBalanceQuery = useQueryWithPages({
-    resourceName: 'general:address_coin_balance',
+    resourceName: 'core:address_coin_balance',
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
       enabled: isQueryEnabled,
-      placeholderData: generateListStub<'general:address_coin_balance'>(
+      placeholderData: generateListStub<'core:address_coin_balance'>(
         ADDRESS_COIN_BALANCE,
         50,
         {
@@ -63,7 +63,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
     setSocketAlert(false);
 
     queryClient.setQueryData(
-      getResourceKey('general:address_coin_balance', { pathParams: { hash: addressHash } }),
+      getResourceKey('core:address_coin_balance', { pathParams: { hash: addressHash } }),
       (prevData: AddressCoinBalanceHistoryResponse | undefined) => {
         if (!prevData) {
           return;

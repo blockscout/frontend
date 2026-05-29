@@ -51,7 +51,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
   const { chain } = useMultichainContext() || {};
   const isGasTrackerEnabled = config.features.gasTracker.isEnabled;
 
-  const homeStatsQuery = useApiQuery('general:stats', {
+  const homeStatsQuery = useApiQuery('core:stats', {
     queryOptions: {
       refetchOnMount: false,
       enabled: isGasTrackerEnabled,

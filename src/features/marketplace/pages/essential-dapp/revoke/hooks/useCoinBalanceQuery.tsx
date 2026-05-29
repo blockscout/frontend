@@ -15,11 +15,11 @@ const PLACEHOLDER_DATA = {
 };
 
 export default function useCoinBalanceQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string) {
-  const addressQuery = useApiQuery('general:address', {
+  const addressQuery = useApiQuery('core:address', {
     pathParams: { hash: userAddress },
     chain,
   });
-  const statsQuery = useApiQuery('general:stats', { chain });
+  const statsQuery = useApiQuery('core:stats', { chain });
 
   return React.useMemo(() => {
     if (!addressQuery.data || !statsQuery.data) {

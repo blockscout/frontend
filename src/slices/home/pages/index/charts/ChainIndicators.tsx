@@ -41,7 +41,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const statsApiQueryResult = useApiQuery('general:stats', {
+  const statsApiQueryResult = useApiQuery('core:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

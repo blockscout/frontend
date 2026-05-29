@@ -21,7 +21,7 @@ import { ARBITRUM_MESSAGES_ITEM } from '../../stubs';
 const LatestArbitrumDeposits = () => {
   const isMobile = useIsMobile();
   const itemsCount = isMobile ? 2 : 5;
-  const { data, isPlaceholderData, isError } = useApiQuery('general:homepage_arbitrum_deposits', {
+  const { data, isPlaceholderData, isError } = useApiQuery('core:homepage_arbitrum_deposits', {
     queryOptions: {
       placeholderData: { items: Array(itemsCount).fill(ARBITRUM_MESSAGES_ITEM) },
     },

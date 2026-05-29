@@ -33,7 +33,7 @@ const UserOp = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const userOpQuery = useApiQuery('general:user_op', {
+  const userOpQuery = useApiQuery('core:user_op', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),

@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'src/server/utils/fetchProxy';
 
-import isNeedProxy from 'src/api/is-need-proxy';
+import isNeedProxy from 'src/api/utils/is-need-proxy';
 
 import appConfig from 'src/config';
 
@@ -23,7 +23,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.general?.endpoint,
+    nextReq.headers['x-endpoint']?.toString() || appConfig.apis.core?.endpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),

@@ -13,7 +13,7 @@ import type {
   BlockInternalTransactionsResponse,
 } from 'src/slices/block/types/api';
 
-export const GENERAL_API_BLOCK_RESOURCES = {
+export const CORE_API_BLOCK_RESOURCES = {
   blocks: {
     path: '/api/v2/blocks',
     filterFields: [ 'type' as const ],
@@ -48,23 +48,23 @@ export const GENERAL_API_BLOCK_RESOURCES = {
   },
 } satisfies Record<string, ApiResource>;
 
-export type GeneralApiBlockResourceName = `general:${ keyof typeof GENERAL_API_BLOCK_RESOURCES }`;
+export type CoreApiBlockResourceName = `core:${ keyof typeof CORE_API_BLOCK_RESOURCES }`;
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiBlockResourcePayload<R extends GeneralApiBlockResourceName> =
-R extends 'general:blocks' ? BlocksResponse :
-R extends 'general:block' ? Block :
-R extends 'general:block_countdown' ? BlockCountdownResponse :
-R extends 'general:block_txs' ? BlockTransactionsResponse :
-R extends 'general:block_internal_txs' ? BlockInternalTransactionsResponse :
-R extends 'general:block_withdrawals' ? BlockWithdrawalsResponse :
-R extends 'general:block_deposits' ? DepositsResponse :
+export type CoreApiBlockResourcePayload<R extends CoreApiBlockResourceName> =
+R extends 'core:blocks' ? BlocksResponse :
+R extends 'core:block' ? Block :
+R extends 'core:block_countdown' ? BlockCountdownResponse :
+R extends 'core:block_txs' ? BlockTransactionsResponse :
+R extends 'core:block_internal_txs' ? BlockInternalTransactionsResponse :
+R extends 'core:block_withdrawals' ? BlockWithdrawalsResponse :
+R extends 'core:block_deposits' ? DepositsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
-export type GeneralApiBlockPaginationFilters<R extends GeneralApiBlockResourceName> =
-R extends 'general:blocks' ? BlockFilters :
-R extends 'general:block_txs' ? TxsWithBlobsFilters :
+export type CoreApiBlockPaginationFilters<R extends CoreApiBlockResourceName> =
+R extends 'core:blocks' ? BlockFilters :
+R extends 'core:block_txs' ? TxsWithBlobsFilters :
 never;
 /* eslint-enable @stylistic/indent */

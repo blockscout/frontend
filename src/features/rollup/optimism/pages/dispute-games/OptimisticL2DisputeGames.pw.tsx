@@ -11,8 +11,8 @@ test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse
   test.slow();
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockTextAd();
-  await mockApiResponse('general:optimistic_l2_dispute_games', disputeGamesData);
-  await mockApiResponse('general:optimistic_l2_dispute_games_count', 3971111);
+  await mockApiResponse('core:optimistic_l2_dispute_games', disputeGamesData);
+  await mockApiResponse('core:optimistic_l2_dispute_games_count', 3971111);
 
   const component = await render(<OptimisticL2DisputeGames/>);
 

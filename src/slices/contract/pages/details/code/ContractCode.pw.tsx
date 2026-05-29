@@ -23,14 +23,14 @@ test.beforeEach(async({ mockApiResponse, page }) => {
   await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/**', (route) => {
     route.abort();
   });
-  await mockApiResponse('general:address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
 });
 
 test.describe('full view', () => {
   test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse('general:contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('core:contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
     await mockApiResponse(
-      'general:contract',
+      'core:contract',
       contractMock.withChangedByteCode,
       { pathParams: { hash: addressMock.contract.implementations?.[0].address_hash as string } },
     );
@@ -89,9 +89,9 @@ test.describe('mobile view', () => {
   test.use({ viewport: pwConfig.viewport.mobile });
 
   test('source code', async({ render, createSocket, mockApiResponse }) => {
-    await mockApiResponse('general:contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('core:contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
     await mockApiResponse(
-      'general:contract',
+      'core:contract',
       contractMock.withChangedByteCode,
       { pathParams: { hash: addressMock.contract.implementations?.[0].address_hash as string } },
     );
@@ -103,7 +103,7 @@ test.describe('mobile view', () => {
 });
 
 test('verified with multiple sources', async({ render, page, mockApiResponse, createSocket }) => {
-  await mockApiResponse('general:contract', contractMock.withMultiplePaths, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('core:contract', contractMock.withMultiplePaths, { pathParams: { hash: addressMock.contract.hash } });
   await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);
@@ -124,7 +124,7 @@ test('self destructed', async({ render, mockApiResponse, page, createSocket }) =
       query: { hash: addressMock.contract.hash, tab: 'contract_bytecode' },
     },
   };
-  await mockApiResponse('general:contract', contractMock.selfDestructed, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('core:contract', contractMock.selfDestructed, { pathParams: { hash: addressMock.contract.hash } });
   await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);
@@ -134,8 +134,8 @@ test('self destructed', async({ render, mockApiResponse, page, createSocket }) =
 });
 
 test('non verified', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('general:address', { ...addressMock.contract, name: null }, { pathParams: { hash: addressMock.contract.hash } });
-  await mockApiResponse('general:contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('core:address', { ...addressMock.contract, name: null }, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('core:contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
   const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   await socketServer.joinChannel(socket, `addresses:${ addressMock.contract.hash.toLowerCase() }`);

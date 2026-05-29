@@ -24,9 +24,9 @@ import ScrollL2WithdrawalsTable from './ScrollL2WithdrawalsTable';
 
 const ScrollL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'general:scroll_l2_withdrawals',
+    resourceName: 'core:scroll_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'general:scroll_l2_withdrawals'>(
+      placeholderData: generateListStub<'core:scroll_l2_withdrawals'>(
         SCROLL_L2_MESSAGE_ITEM,
         50,
         { next_page_params: { items_count: 50, id: 1 } },
@@ -34,7 +34,7 @@ const ScrollL2Withdrawals = () => {
     },
   });
 
-  const countersQuery = useApiQuery('general:scroll_l2_withdrawals_count', {
+  const countersQuery = useApiQuery('core:scroll_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 1927029,
     },

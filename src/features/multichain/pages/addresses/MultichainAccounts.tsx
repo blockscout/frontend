@@ -22,9 +22,9 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainAccounts = () => {
   const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = useQueryWithPages({
-    resourceName: 'general:addresses',
+    resourceName: 'core:addresses',
     options: {
-      placeholderData: generateListStub<'general:addresses'>(TOP_ADDRESS, 50, {
+      placeholderData: generateListStub<'core:addresses'>(TOP_ADDRESS, 50, {
         next_page_params: {
           fetched_coin_balance: '42',
           hash: '0x99f0ec06548b086e46cb0019c78d0b9b9f36cd53',

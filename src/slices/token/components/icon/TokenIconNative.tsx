@@ -20,7 +20,7 @@ type Props = {
 };
 
 const TokenIconNative = ({ isLoading, className, type }: Props) => {
-  const statsQueryResult = useApiQuery('general:stats', {
+  const statsQueryResult = useApiQuery('core:stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

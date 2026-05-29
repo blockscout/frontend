@@ -15,8 +15,8 @@ test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd
 
   await mockTextAd();
   await mockEnvs(ENVS_MAP.shibariumRollup);
-  await mockApiResponse('general:shibarium_withdrawals', withdrawalsData);
-  await mockApiResponse('general:shibarium_withdrawals_count', 397);
+  await mockApiResponse('core:shibarium_withdrawals', withdrawalsData);
+  await mockApiResponse('core:shibarium_withdrawals_count', 397);
 
   const component = await render(<ShibariumWithdrawals/>);
 

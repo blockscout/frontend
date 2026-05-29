@@ -6,9 +6,9 @@ import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import config from 'src/config';
 
+import type { ResourceName, ResourcePathParams } from '../resources';
 import getResourceParams from './get-resource-params';
 import isNeedProxy from './is-need-proxy';
-import type { ResourceName, ResourcePathParams } from './resources';
 
 export default function buildUrl<R extends ResourceName>(
   resourceFullName: R,
