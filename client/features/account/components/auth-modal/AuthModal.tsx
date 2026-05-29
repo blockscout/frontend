@@ -12,7 +12,7 @@ import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
 import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
 

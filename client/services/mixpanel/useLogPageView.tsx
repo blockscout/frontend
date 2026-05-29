@@ -28,7 +28,7 @@ export default function useLogPageView(isInitialized: boolean) {
   const { colorMode } = useColorMode();
 
   React.useEffect(() => {
-    if (!config.features.mixpanel.isEnabled || !isInitialized) {
+    if (!config.services.mixpanel.projectToken || !isInitialized) {
       return;
     }
 

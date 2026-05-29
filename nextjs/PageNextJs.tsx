@@ -9,7 +9,7 @@ import useGetCsrfToken from 'client/features/account/hooks/useGetCsrfToken';
 import useAdblockDetect from 'client/features/ads/common/hooks/useAdblockDetect';
 import useNotifyOnNavigation from 'client/features/metasuites/hooks/useNotifyOnNavigation';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMounted from 'client/shared/hooks/useIsMounted';
 
 interface Props<Pathname extends Route['pathname']> {

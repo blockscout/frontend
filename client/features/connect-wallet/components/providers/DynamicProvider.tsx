@@ -18,7 +18,7 @@ import useLogout from 'client/features/account/hooks/useLogout';
 import { chains } from 'client/features/connect-wallet/utils/chains';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 
 import { toaster } from 'toolkit/chakra/toaster';

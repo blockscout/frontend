@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import { toaster } from 'toolkit/chakra/toaster';
 

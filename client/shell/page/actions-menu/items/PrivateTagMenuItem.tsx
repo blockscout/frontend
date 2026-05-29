@@ -14,7 +14,7 @@ import AuthGuard from 'client/features/account/components/auth-modal/guard/AuthG
 import AddressModal from 'client/features/account/pages/private-tags/AddressModal/AddressModal';
 import TransactionModal from 'client/features/account/pages/private-tags/TransactionModal/TransactionModal';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { MenuItem } from 'toolkit/chakra/menu';

@@ -6,7 +6,7 @@ import verifiedTokens from 'client/features/verified-tokens/config';
 
 import apis from 'client/config/apis';
 import app from 'client/config/app';
-import services from 'client/config/services';
+import * as services from 'client/config/services';
 import { getEnvValue } from 'client/config/utils/envs';
 import type { Feature } from 'client/config/utils/features';
 
@@ -60,7 +60,7 @@ const config: Feature<{
       });
     }
 
-    if (services.reCaptchaV2.siteKey) {
+    if (services.reCaptcha.siteKey) {
       return Object.freeze({
         title,
         isEnabled: true,

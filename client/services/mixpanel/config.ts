@@ -4,7 +4,6 @@ import type { Config } from 'mixpanel-browser';
 
 import app from 'client/config/app';
 import { getEnvValue, parseEnvJson } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
 
 const projectToken = getEnvValue('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN');
 const configOverrides = (() => {
@@ -16,22 +15,9 @@ const configOverrides = (() => {
   return parseEnvJson<Partial<Config>>(value) || undefined;
 })();
 
-const title = 'Mixpanel analytics';
-
-const config: Feature<{ projectToken: string; configOverrides?: Partial<Config> }> = (() => {
-  if (!app.isPrivateMode && projectToken) {
-    return Object.freeze({
-      title,
-      isEnabled: true,
-      projectToken,
-      configOverrides,
-    });
-  }
-
-  return Object.freeze({
-    title,
-    isEnabled: false,
-  });
-})();
+const config = Object.freeze({
+  projectToken: !app.isPrivateMode ? projectToken : undefined,
+  configOverrides,
+});
 
 export default config;

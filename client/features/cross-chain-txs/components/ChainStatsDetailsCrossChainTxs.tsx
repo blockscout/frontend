@@ -11,7 +11,7 @@ import useApiQuery from 'client/api/hooks/useApiQuery';
 import ChartIntervalSelect from 'client/features/chain-stats/components/ChartIntervalSelect';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import ChainSelect, { isAllOption } from 'client/shared/external-chains/ChainSelect';
 
 import type { OnValueChangeHandler } from 'toolkit/chakra/select';

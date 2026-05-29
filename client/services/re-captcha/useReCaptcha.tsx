@@ -8,7 +8,7 @@ import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 
 export default function useReCaptcha() {
-  const isDisabled = config.app.isPrivateMode;
+  const isDisabled = !config.services.reCaptcha.siteKey;
   const ref = React.useRef<ReCAPTCHA>(null);
   const rejectCb = React.useRef<((error: Error) => void) | null>(null);
 
@@ -17,7 +17,7 @@ export default function useReCaptcha() {
 
   const executeAsync: () => Promise<string | null> = React.useCallback(async() => {
     if (isDisabled) {
-      throw new Error('ReCaptcha is disabled in private mode');
+      throw new Error('ReCaptcha is disabled due to missing site key');
     }
 
     setIsOpen(true);

@@ -22,7 +22,7 @@ import TokenEntity from 'client/slices/token/components/entity/TokenEntity';
 import EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import ChainIcon from 'client/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'client/shared/external-chains/get-chain-tooltip-text';

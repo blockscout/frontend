@@ -13,9 +13,9 @@ import useSocketChannel from 'client/api/socket/useSocketChannel';
 import useSocketMessage from 'client/api/socket/useSocketMessage';
 
 import config from 'client/config';
+import ReCaptcha from 'client/services/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/services/re-captcha/useReCaptcha';
 import getErrorMessage from 'client/shared/errors/get-error-message';
-import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
-import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 
 import { Alert } from 'toolkit/chakra/alert';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'toolkit/chakra/dialog';
@@ -175,7 +175,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       <DialogContent>
         <DialogHeader mb={ 4 }>Sending request</DialogHeader>
         <DialogBody mb={ 0 } minH="78px">
-          { config.services.reCaptchaV2.siteKey ? (
+          { config.services.reCaptcha.siteKey ? (
             <>
               <Center h="80px">
                 <Spinner size="lg"/>

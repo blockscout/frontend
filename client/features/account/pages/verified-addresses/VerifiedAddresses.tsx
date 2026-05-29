@@ -22,7 +22,7 @@ import TokenInfoForm from 'client/features/account/pages/verified-addresses/toke
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'client/features/account/stubs';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import DataList from 'client/shared/lists/DataList';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 

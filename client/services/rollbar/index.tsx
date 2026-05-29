@@ -10,19 +10,17 @@ import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 
 import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName } from './utils';
 
-const feature = config.features.rollbar;
-
 const useRollbarFallback = (): undefined => {};
 
-export const Provider = feature.isEnabled ? DefaultProvider : FallbackProvider;
-export const useRollbar = feature.isEnabled ? useRollbarDefault : useRollbarFallback;
+export const Provider = config.services.rollbar.clientToken ? DefaultProvider : FallbackProvider;
+export const useRollbar = config.services.rollbar.clientToken ? useRollbarDefault : useRollbarFallback;
 
-export const clientConfig: Configuration | undefined = feature.isEnabled ? {
-  accessToken: feature.clientToken,
-  environment: feature.environment,
+export const clientConfig: Configuration | undefined = config.services.rollbar.clientToken ? {
+  accessToken: config.services.rollbar.clientToken,
+  environment: config.services.rollbar.environment,
   payload: {
-    code_version: feature.codeVersion,
-    app_instance: feature.instance,
+    code_version: config.services.rollbar.codeVersion,
+    app_instance: config.services.rollbar.instance,
   },
   checkIgnore(_isUncaught, _args, item) {
     if (isBot(window.navigator.userAgent)) {

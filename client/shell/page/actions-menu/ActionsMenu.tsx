@@ -8,7 +8,7 @@ import type { ItemProps } from './types';
 
 import config from 'client/config';
 import { getFeaturePayload } from 'client/config/utils/features';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

@@ -13,7 +13,7 @@ import { getRecentSearchKeywords, saveToRecentKeywords } from 'client/slices/sea
 
 import useSearchWithClusters from 'client/features/name-services/clusters/hooks/useSearchWithClusters';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Link } from 'toolkit/chakra/link';

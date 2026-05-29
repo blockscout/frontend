@@ -12,7 +12,7 @@ import { getResourceKey } from 'client/api/hooks/useApiQuery';
 import { useRewardsContext } from 'client/features/rewards/context';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import * as cookies from 'client/shared/storage/cookies';
 
 import { toaster } from 'toolkit/chakra/toaster';

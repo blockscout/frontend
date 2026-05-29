@@ -6,7 +6,7 @@ import React from 'react';
 
 import { useSettingsContext } from 'client/shell/top-bar/settings/context';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 
 import { IconButton } from 'toolkit/chakra/icon-button';

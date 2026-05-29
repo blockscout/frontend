@@ -14,7 +14,7 @@ export default function logEvent<EventType extends EventTypes>(
   optionsOrCallback?: TrackFnArgs[2],
   callback?: TrackFnArgs[3],
 ) {
-  if (!config.features.mixpanel.isEnabled) {
+  if (!config.services.mixpanel.projectToken) {
     return;
   }
   mixpanel.track(type, properties, optionsOrCallback, callback);

@@ -11,7 +11,7 @@ import useProfileQuery from 'client/features/account/hooks/useProfileQuery';
 import useAccount from 'client/features/connect-wallet/hooks/useAccount';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'toolkit/chakra/popover';
 import { useDisclosure } from 'toolkit/hooks/useDisclosure';

@@ -12,7 +12,7 @@ import useWeb3Wallet from 'client/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'client/features/marketplace/chains-config/essential-dapps';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import { useQueryParams } from 'client/shared/router/useQueryParams';

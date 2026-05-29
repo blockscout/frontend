@@ -5,14 +5,12 @@ import React from 'react';
 
 import config from 'client/config';
 
-const feature = config.features.googleAnalytics;
-
 const GoogleAnalytics = () => {
-  if (!feature.isEnabled) {
+  if (!config.services.googleAnalytics.propertyId) {
     return null;
   }
 
-  const id = feature.propertyId;
+  const id = config.services.googleAnalytics.propertyId;
 
   return (
     <>

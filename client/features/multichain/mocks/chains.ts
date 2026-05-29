@@ -59,7 +59,7 @@ export const chainA = {
       },
     },
     services: {
-      reCaptchaV2: {
+      reCaptcha: {
         siteKey: 'xxx',
       },
     },

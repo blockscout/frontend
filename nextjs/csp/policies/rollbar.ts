@@ -5,7 +5,7 @@ import type CspDev from 'csp-dev';
 import config from 'client/config';
 
 export function rollbar(): CspDev.DirectiveDescriptor {
-  if (!config.features.rollbar.isEnabled) {
+  if (!config.services.rollbar.clientToken) {
     return {};
   }
 

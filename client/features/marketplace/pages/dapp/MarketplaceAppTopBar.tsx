@@ -15,7 +15,7 @@ import UserProfileDesktop from 'client/features/account/components/user-profile/
 import RewardsButton from 'client/features/rewards/components/RewardsButton';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Link } from 'toolkit/chakra/link';

@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'client/features/marketplace/types/client';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { useColorModeValue } from 'toolkit/chakra/color-mode';

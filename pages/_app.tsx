@@ -26,12 +26,12 @@ import { CsvExportContextProvider } from 'client/features/csv-export/utils/conte
 import { MarketplaceContextProvider } from 'client/features/marketplace/context';
 
 import config from 'client/config';
-import GoogleAnalytics from 'client/shared/analytics/google/GoogleAnalytics';
+import GoogleAnalytics from 'client/services/google-analytics/GoogleAnalytics';
+import { initGrowthBook } from 'client/services/growthbook/init';
+import useLoadFeatures from 'client/services/growthbook/useLoadFeatures';
+import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/services/rollbar';
 import AppErrorBoundary from 'client/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'client/shared/errors/AppErrorGlobalContainer';
-import { initGrowthBook } from 'client/shared/feature-flags/init';
-import useLoadFeatures from 'client/shared/feature-flags/useLoadFeatures';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'client/shared/monitoring/rollbar';
 import { FallbackProvider } from 'client/shared/utils/fallback-provider';
 
 import { Provider as ChakraProvider } from 'toolkit/chakra/provider';

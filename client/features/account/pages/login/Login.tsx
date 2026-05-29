@@ -8,8 +8,8 @@ import React from 'react';
 import PageTitle from 'client/shell/page/title/PageTitle';
 
 import config from 'client/config';
-import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
-import { useRollbar } from 'client/shared/monitoring/rollbar';
+import useFeatureValue from 'client/services/growthbook/useFeatureValue';
+import { useRollbar } from 'client/services/rollbar';
 import useGradualIncrement from 'client/shared/numbers/useGradualIncrement';
 import * as cookies from 'client/shared/storage/cookies';
 

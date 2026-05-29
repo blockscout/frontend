@@ -3,12 +3,12 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import { useRollbar } from 'client/services/rollbar';
 import getErrorCause from 'client/shared/errors/get-error-cause';
 import getErrorCauseStatusCode from 'client/shared/errors/get-error-cause-status-code';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import getErrorStack from 'client/shared/errors/get-error-stack';
-import { useRollbar } from 'client/shared/monitoring/rollbar';
 
 import AppError from './AppError';
 import ErrorBoundary from './ErrorBoundary';

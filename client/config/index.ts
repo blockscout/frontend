@@ -1,15 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// TODO: services
-// TODO: try refactor imports **/types/config.ts from features configs
-
 import metadata from '../shell/metadata/config';
 import chain from '../slices/chain/config';
 import apis from './apis';
 import app from './app';
 import * as features from './features';
 import misc from './misc';
-import services from './services';
+import * as services from './services';
 import * as shell from './shell';
 import * as slices from './slices';
 

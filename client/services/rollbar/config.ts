@@ -2,7 +2,6 @@
 
 import app from 'client/config/app';
 import { getEnvValue } from 'client/config/utils/envs';
-import type { Feature } from 'client/config/utils/features';
 
 const clientToken = getEnvValue('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN');
 const instance = (() => {
@@ -16,29 +15,11 @@ const instance = (() => {
 const environment = getEnvValue('NEXT_PUBLIC_APP_ENV') || 'production';
 const codeVersion = getEnvValue('NEXT_PUBLIC_GIT_TAG') || getEnvValue('NEXT_PUBLIC_GIT_COMMIT_SHA');
 
-const title = 'Rollbar error monitoring';
-
-const config: Feature<{
-  clientToken: string;
-  environment: string;
-  instance: string | undefined;
-  codeVersion: string | undefined;
-}> = (() => {
-  if (!app.isPrivateMode && clientToken) {
-    return Object.freeze({
-      title,
-      isEnabled: true,
-      clientToken,
-      environment,
-      instance,
-      codeVersion,
-    });
-  }
-
-  return Object.freeze({
-    title,
-    isEnabled: false,
-  });
-})();
+const config = Object.freeze({
+  clientToken: !app.isPrivateMode ? clientToken : undefined,
+  environment,
+  instance,
+  codeVersion,
+});
 
 export default config;

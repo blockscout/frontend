@@ -22,8 +22,7 @@ export default function useMixpanelInit() {
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
 
   React.useEffect(() => {
-    const feature = config.features.mixpanel;
-    if (!feature.isEnabled) {
+    if (!config.services.mixpanel.projectToken) {
       return;
     }
 
@@ -32,13 +31,13 @@ export default function useMixpanelInit() {
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
       persistence: 'localStorage',
-      ...feature.configOverrides,
+      ...config.services.mixpanel.configOverrides,
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 
     const uuid = cookies.get(cookies.NAMES.UUID);
 
-    mixpanel.init(feature.projectToken, mixpanelConfig);
+    mixpanel.init(config.services.mixpanel.projectToken, mixpanelConfig);
     mixpanel.register({
       'Chain id': config.chain.id,
       Environment: config.app.isDev ? 'Dev' : 'Prod',

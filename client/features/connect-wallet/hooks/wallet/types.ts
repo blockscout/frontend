@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type * as mixpanel from 'client/shared/analytics/mixpanel';
+import type * as mixpanel from 'client/services/mixpanel';
 
 export interface Params {
   source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];

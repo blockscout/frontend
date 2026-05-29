@@ -25,7 +25,7 @@ import * as BlobEntity from 'client/features/data-availability/components/entity
 import * as EnsEntity from 'client/features/name-services/domains/components/EnsEntity';
 import * as UserOpEntity from 'client/features/user-ops/components/entity/UserOpEntity';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import Time from 'client/shared/date-and-time/Time';
 import HashStringShortenDynamic from 'client/shared/texts/HashStringShortenDynamic';

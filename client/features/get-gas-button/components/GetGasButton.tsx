@@ -6,7 +6,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 
 import { Image } from 'toolkit/chakra/image';

@@ -3,7 +3,7 @@
 import { GrowthBook } from '@growthbook/growthbook-react';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
@@ -13,15 +13,13 @@ export interface GrowthBookFeatures {
 }
 
 export const initGrowthBook = (uuid: string) => {
-  const feature = config.features.growthBook;
-
-  if (!feature.isEnabled) {
+  if (!config.services.growthBook.clientKey) {
     return;
   }
 
   return new GrowthBook<GrowthBookFeatures>({
     apiHost: 'https://cdn.growthbook.io',
-    clientKey: feature.clientKey,
+    clientKey: config.services.growthBook.clientKey,
     enableDevMode: config.app.isDev,
     attributes: {
       id: uuid,

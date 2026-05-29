@@ -16,7 +16,7 @@ import useFetchTokens from 'client/slices/token/pages/address/useFetchTokens';
 
 import { useMultichainContext } from 'client/features/multichain/context';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import useIsMobile from 'client/shared/hooks/useIsMobile';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';

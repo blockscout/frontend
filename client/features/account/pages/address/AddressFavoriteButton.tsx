@@ -13,7 +13,7 @@ import WatchlistAddModal from 'client/features/account/pages/watchlist/AddressMo
 import DeleteAddressModal from 'client/features/account/pages/watchlist/DeleteAddressModal';
 
 import config from 'client/config';
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import usePreventFocusAfterModalClosing from 'client/shared/hooks/usePreventFocusAfterModalClosing';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

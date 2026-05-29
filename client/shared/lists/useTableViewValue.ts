@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
-import useFeatureValue from 'client/shared/feature-flags/useFeatureValue';
+import useFeatureValue from 'client/services/growthbook/useFeatureValue';
+import * as mixpanel from 'client/services/mixpanel';
 import * as cookies from 'client/shared/storage/cookies';
 
 export default function useTableViewValue() {

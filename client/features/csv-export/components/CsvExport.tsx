@@ -20,12 +20,12 @@ import type { ResourceName, ResourcePathParams } from 'client/api/resources';
 import { useMultichainContext } from 'client/features/multichain/context';
 
 import config from 'client/config';
+import ReCaptcha from 'client/services/re-captcha/ReCaptcha';
+import useReCaptcha from 'client/services/re-captcha/useReCaptcha';
 import dayjs from 'client/shared/date-and-time/dayjs';
 import getErrorMessage from 'client/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'client/shared/errors/get-error-obj-status-code';
 import useIsInitialLoading from 'client/shared/hooks/useIsInitialLoading';
-import ReCaptcha from 'client/shared/re-captcha/ReCaptcha';
-import useReCaptcha from 'client/shared/re-captcha/useReCaptcha';
 import getQueryParamString from 'client/shared/router/get-query-param-string';
 import SpriteIcon from 'client/sprite/SpriteIcon';
 

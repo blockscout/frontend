@@ -44,7 +44,7 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
     }
   }, [ ]);
 
-  if (!chainConfig.services.reCaptchaV2.siteKey || config.app.isPrivateMode) {
+  if (!chainConfig.services.reCaptcha.siteKey) {
     return null;
   }
 
@@ -53,7 +53,7 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
       <ReCaptcha
         ref={ ref }
         key={ attempt }
-        sitekey={ chainConfig.services.reCaptchaV2.siteKey }
+        sitekey={ chainConfig.services.reCaptcha.siteKey }
         size="invisible"
         onChange={ handleChange }
         onErrored={ handleError }

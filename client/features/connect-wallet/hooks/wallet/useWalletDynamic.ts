@@ -6,7 +6,7 @@ import { useAccountEffect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 import useAccountDynamic from '../account/useAccountDynamic';
 

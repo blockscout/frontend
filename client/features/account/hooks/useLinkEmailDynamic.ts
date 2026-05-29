@@ -8,7 +8,7 @@ import type { UserInfo } from 'client/features/account/types/api';
 
 import { getResourceKey } from 'client/api/hooks/useApiQuery';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 
 export default function useLinkEmailDynamic(): () => void {
   const { updateUserWithModal } = useUserUpdateRequest();

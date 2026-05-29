@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'client/features/account/types/api';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import FormModal from 'client/shared/forms/FormModal';
 
 import TransactionForm from './TransactionForm';

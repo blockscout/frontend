@@ -12,7 +12,7 @@ import ChainSelect from 'client/features/multichain/components/ChainSelect';
 import { useMultichainContext } from 'client/features/multichain/context';
 import useRoutedChainSelect from 'client/features/multichain/hooks/useRoutedChainSelect';
 
-import * as mixpanel from 'client/shared/analytics/mixpanel';
+import * as mixpanel from 'client/services/mixpanel';
 import { useChartsConfig } from 'client/shared/stats/line-chart-config';
 
 import type { OnValueChangeHandler, SelectOption } from 'toolkit/chakra/select';
