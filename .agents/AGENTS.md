@@ -1,5 +1,9 @@
 # Frontend application for Blockscout
 
+## Per-directory context
+
+If a `CONTEXT.md` file is present in a directory you read or modify under `src/`, read it first. These files document non-obvious patterns specific to that area.
+
 ## Architecture
 
 See `./rules/architecture.mdc`.

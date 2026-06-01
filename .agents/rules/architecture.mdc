@@ -1,5 +1,5 @@
 ---
-description: Project overview, tech stack, directory layout, data flow, and ongoing client/ architecture migration
+description: Project overview, tech stack, and directory layout
 globs:
 alwaysApply: true
 ---
@@ -29,56 +29,68 @@ Feature and product codenames used throughout the codebase are defined in `docs/
 
 ## Directory layout
 
-```
-pages/          Next.js file-based routes — thin wrappers only (dynamic import + getServerSideProps)
-ui/             Legacy React UI components organized by feature (~65 subdirectories) → being migrated to client/
-lib/            Legacy business logic, API utilities, custom hooks, context providers → being migrated to client/
-client/         New home for all product code (see Migration section below)
-toolkit/        Design system — Chakra wrappers, theme tokens, shared hooks/components (stays here permanently)
-configs/app/    Runtime app configuration; must not import from client/
-nextjs/         Next.js config utilities: headers, rewrites, redirects, type-safe routes
-mocks/          Shared mock data for tests → being co-located under client/ slices/features
-deploy/         Docker scripts, env validator, build tools
-docs/           ENVS.md, GLOSSARY.md, CONTRIBUTING.md
-```
+All application source lives under `/src`. Code is co-located by **slice** (core explorer domain) or **feature** (optional / config-gated area).
 
-## Data flow
+### Top-level repo
 
-- **Getting data:** pages fetch data via React Query. Query keys and fetcher functions live in `lib/api/` (moving to `client/api/`).
-- **Global UI state:** React Context providers initialized in `pages/_app.tsx` — `AppContextProvider`, `SettingsContextProvider`, `MarketplaceContextProvider`, etc.
-- **Real-time data:** WebSocket via `SocketProvider` (moving to `client/api/socket/`).
-- **App config:** always read via `configs/app/` (which reads `window.__envs` at runtime) — never `process.env.*` directly in component code.
-
----
-
-## Ongoing migration: `client/` architecture
-
-The codebase is being progressively restructured. The long-term target moves all product code from `ui/` and `lib/` into a new `client/` directory with a clear domain-based layout.
-
-**Blueprint:** `client/ARCH_REDESIGN.md`
-**Task backlog and current status:** `client/MIGRATION_TASKS.md`
-
-### Target layout inside `client/`
-
-| Directory | Contents |
+| Path | Role |
 |---|---|
-| `client/shell/` | App chrome: layout, header, footer, navigation, top-bar, root contexts |
-| `client/api/` | API transport, fetch utilities, query client, WebSocket; migrated from `lib/api/` and `lib/socket/` |
-| `client/slices/` | Core explorer entities always present on any EVM chain (tx, block, address, token, contract, search, …) |
-| `client/features/` | Optional / config-gated areas: rollups, chain variants, account, rewards, marketplace, stats, … |
-| `client/shared/` | Cross-cutting utilities with no single domain owner (analytics, errors, hooks, router helpers, text utils, …) |
+| `/src` | All application source — product UI, server plumbing, routing, config, design system, and code-imported assets |
+| `/configs/envs/` | Env variable declarations |
+| `/deploy/` | CI/CD scripts, Docker, env validator, build tools |
+| `/public/` | Static assets served as-is (sprite output, etc.) — never bundled |
+| `/docs/` | ENVS.md, GLOSSARY.md, CONTRIBUTING.md |
+| Root config files | `next.config.js`, `tsconfig.json`, `eslint.config.mjs`, `package.json` |
+
+### Inside `/src`
+
+| Path | Role |
+|---|---|
+| `src/api/` | Transport, fetch utilities, query client, WebSocket, data-fetching hooks |
+| `src/shell/` | App chrome: layout, header, footer, navigation, top-bar, root contexts |
+| `src/slices/` | Core explorer entities — always present on any vanilla EVM chain |
+| `src/features/` | Optional / config-gated product areas |
+| `src/shared/` | Cross-cutting utilities with no single domain owner |
+| `src/config/` | Runtime app configuration (aggregator + cross-cutting parts) |
+| `src/services/` | Third-party integrations: analytics, error reporting, A/B flags |
+| `src/pages/` | Next.js file-based routes — thin wrappers only |
+| `src/server/` | Next.js server plumbing: SSR helpers, middleware, CSP, headers, rewrites |
+| `src/sprite/` | SVG sprite runtime component + icon source files |
+| `src/toolkit/` | Design system — pnpm workspace package, published as `@blockscout/ui-toolkit` |
 
 ### Slice vs feature
 
-- **Slice** — present on every vanilla EVM chain, no feature flag required. Examples: `tx`, `block`, `address`, `token`, `contract`.
-- **Feature** — config-gated or chain-specific. Examples: `rollup/optimism`, `chain-variants/celo`, `account`, `stats`, `gas-tracker`.
+Key classification question: *"Can this area exist on a vanilla EVM chain with no feature flag?"*
 
-### Key rules for migrated code
+- **Slice** — yes. Always present. Examples: `tx`, `block`, `address`, `token`, etc.
+- **Feature** — no. Config-gated or chain-specific. Examples: `rollup/optimism`, `chain-variants/celo`, `account`, `stats`, `gas-tracker`. Every config-gated feature with user-facing UI gets its own folder under `src/features/`, regardless of size.
+- **Service, not feature** — config-gated infrastructure with no user-facing UI (analytics, error reporting, A/B flags) lives under `src/services/`, not `src/features/`.
 
-- **No barrel `index.ts` files** inside `client/` unless the file defines a genuine public facade (not just `export * from ...`).
-- **`client/api` must not have runtime imports** from `client/slices/*` or `client/features/*`; `import type` is allowed.
-- **`configs/` never imports `client/`.**
-- **`pages/` files are thin wrappers** — a dynamic import and optionally `getServerSideProps`; no UI components or business logic inline.
-- **Naming:** kebab-case for directories and non-component modules; `PascalCase.tsx` for React components; `useCamelCase.ts` for hooks.
-- **Types:** each slice/feature owns its API response types in `<slice|feature>/types/api.ts`. Do not import from deeper internal paths across domain boundaries.
-- **When editing legacy `lib/` or `ui/` code:** check `client/MIGRATION_TASKS.md` to see if that area has a migration task in progress or planned. If so, note the target destination in your PR description.
+Both slices and features share the same internal shape: `pages/`, `components/`, `hooks/`, `utils/`, `types/`, `config.ts`, `mocks.ts` or `mocks/`, `stubs.ts` or `stubs/`.
+
+### Naming conventions
+
+| Artifact | Convention |
+|---|---|
+| Directories | `kebab-case` |
+| React components | `PascalCase.tsx` |
+| Hooks | `use` + `camelCase.ts` |
+| Helper / util modules | `kebab-case.ts` |
+| Role files | lowercase — `types.ts`, `mocks.ts`, `stubs.ts`, `config.ts` |
+
+### Key rules
+
+- **No re-export-only barrel `index.ts` files** inside `/src`. Aggregator files that curate a genuine public surface are fine.
+- **`src/api/resources` must not have runtime imports** from `src/slices/*` or `src/features/*`; `import type` is allowed.
+- **`config.ts` and `types/config.ts` files** must not import React, browser APIs, or code from other slices/features — they are executed by the Node.js env validator.
+- **`src/pages/` files are thin wrappers** — a dynamic import and optionally `getServerSideProps`; no UI components or business logic inline.
+- **Cross-domain type imports** go through `<slice|feature>/types/api.ts`, never deeper internal paths.
+- **Compose at the page level** when optional feature UI plugs into a core slice — the slice page renders the feature's component, not the other way around. Avoids cycles and keeps the feature opt-in.
+- **No files directly at the root of `src/shared/`** — only subfolders grouped by purpose.
+
+## Data flow
+
+- **Getting data:** pages fetch data via React Query. Query keys and fetcher functions live in `src/api/hooks` and `src/api/utils`.
+- **Global UI state:** React Context providers initialized in `src/pages/_app.tsx` — `AppContextProvider`, `SettingsContextProvider`, `MarketplaceContextProvider`, etc.
+- **Real-time data:** WebSocket via `SocketProvider` in `src/api/socket/`.
+- **App config:** always read via `src/config/` (which reads `window.__envs` at runtime) — never `process.env.*` directly in component code, except for server code (`src/server/`).
