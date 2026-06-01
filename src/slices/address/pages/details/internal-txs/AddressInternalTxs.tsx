@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
@@ -13,6 +11,8 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import AddressTxsFilter from '../txs/AddressTxsFilter';
 import useAddressInternalTxsQuery from './useAddressInternalTxsQuery';
@@ -32,14 +32,9 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   }
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Box>
-      <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
+    </TableContainerScrollable>
   ) : null ;
 
   const actionBar = (

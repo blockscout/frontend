@@ -15,8 +15,6 @@ import useDescribeTxs from 'src/features/tx-interpretation/noves/hooks/useDescri
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
-import TableViewToggleButton from 'src/shared/lists/TableViewToggleButton';
-import useTableViewValue from 'src/shared/lists/useTableViewValue';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
@@ -44,7 +42,7 @@ type Props = {
   setSorting?: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
-  showTableViewButton?: boolean;
+  showTableView?: boolean;
 };
 
 const TxsContent = ({
@@ -62,14 +60,12 @@ const TxsContent = ({
   setSorting,
   sort,
   stickyHeader = true,
-  showTableViewButton,
+  showTableView,
 }: Props) => {
   const isMobile = useIsMobile();
 
-  const tableViewFlag = useTableViewValue();
-
-  const isTableView = isMobile ? showTableViewButton && !tableViewFlag.isLoading && tableViewFlag.value : true;
-  const isLoading = isPlaceholderData || tableViewFlag.isLoading;
+  const isTableView = isMobile ? showTableView : true;
+  const isLoading = isPlaceholderData;
 
   const onSortToggle = React.useCallback((field: TransactionsSortingField) => {
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
@@ -114,14 +110,6 @@ const TxsContent = ({
     </>
   ) : null;
 
-  const tableViewButton = isMobile && showTableViewButton ? (
-    <TableViewToggleButton
-      value={ tableViewFlag.value }
-      onClick={ tableViewFlag.onToggle }
-      loading={ isLoading }
-    />
-  ) : null;
-
   const actionBar = isMobile ? (
     <TxsHeaderMobile
       mt={ -6 }
@@ -142,7 +130,6 @@ const TxsContent = ({
           loadingInitial={ pagination.isLoading }
         />
       ) : null }
-      tableViewButton={ tableViewButton }
     />
   ) : null;
 

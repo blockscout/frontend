@@ -32,7 +32,7 @@ const AddressNFTs = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
   const actionBar = isMobile && pagination.isVisible && (
-    <ActionBar mt={ -6 }>
+    <ActionBar mt={ -3 }>
       <AddressNftTypeFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

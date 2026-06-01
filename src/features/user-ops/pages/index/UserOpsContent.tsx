@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -10,7 +9,8 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
-import UserOpsListItem from './UserOpsListItem';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import UserOpsTable from './UserOpsTable';
 
 type Props = {
@@ -26,28 +26,15 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
   }
 
   const content = query.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <UserOpsTable
-          items={ query.data.items }
-          top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ query.isPlaceholderData }
-          showTx={ showTx }
-          showSender={ showSender }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        { query.data.items.map((item, index) => (
-          <UserOpsListItem
-            key={ item.hash + (query.isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ query.isPlaceholderData }
-            showTx={ showTx }
-            showSender={ showSender }
-          />
-        )) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <UserOpsTable
+        items={ query.data.items }
+        top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ query.isPlaceholderData }
+        showTx={ showTx }
+        showSender={ showSender }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = query.pagination.isVisible ? (

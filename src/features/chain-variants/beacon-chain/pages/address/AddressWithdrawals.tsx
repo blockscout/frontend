@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import BeaconChainWithdrawalsListItem from 'src/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawalsListItem';
 import BeaconChainWithdrawalsTable from 'src/features/chain-variants/beacon-chain/pages/withdrawals/BeaconChainWithdrawalsTable';
 import { WITHDRAWAL } from 'src/features/chain-variants/beacon-chain/stubs/withdrawals';
 
@@ -16,6 +14,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 type Props = {
   shouldRender?: boolean;
@@ -44,26 +44,14 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
   }
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        { data.items.map((item, index) => (
-          <BeaconChainWithdrawalsListItem
-            key={ item.index + Number(isPlaceholderData ? index : '') }
-            item={ item }
-            view="address"
-            isLoading={ isPlaceholderData }
-          />
-        )) }
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainWithdrawalsTable
-          items={ data.items }
-          view="address"
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainWithdrawalsTable
+        items={ data.items }
+        view="address"
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isPlaceholderData }
+      />
+    </TableContainerScrollable>
   ) : null ;
 
   const actionBar = pagination.isVisible ? (

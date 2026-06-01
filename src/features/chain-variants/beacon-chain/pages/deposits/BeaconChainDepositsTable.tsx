@@ -35,7 +35,7 @@ const BeaconChainDepositsTable = ({ items, isLoading, top, view }: Props) => {
       <TableRoot minW="1100px">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader w="190px">Transaction hash</TableColumnHeader>
+            <TableColumnHeader w="200px">Transaction hash</TableColumnHeader>
             { view !== 'block' && <TableColumnHeader>Block</TableColumnHeader> }
             { view !== 'block' && <TableColumnHeader w="180px">Timestamp<TimeFormatToggle/></TableColumnHeader> }
             <TableColumnHeader>{ `Value ${ feature.currency.symbol }` }</TableColumnHeader>

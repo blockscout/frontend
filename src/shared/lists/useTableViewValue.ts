@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// TODO: remove this component once tables in mobile are finalized
 import React from 'react';
 
 import useFeatureValue from 'src/services/growthbook/useFeatureValue';

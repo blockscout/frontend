@@ -26,13 +26,9 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 const TAB_LIST_PROPS = {
-  mt: 1,
-  mb: { base: 6, lg: 1 },
-  py: 5,
-};
-
-const TAB_LIST_PROPS_MOBILE = {
-  my: 8,
+  mb: 0,
+  pt: 6,
+  pb: 3,
 };
 
 type Props = {
@@ -142,10 +138,10 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         tabs={ tabs }
         variant="secondary"
         size="sm"
-        listProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
+        listProps={ TAB_LIST_PROPS }
         rightSlot={ rightSlot }
         rightSlotProps={ tab === 'tokens_nfts' && !isMobile ? { display: 'flex', justifyContent: 'space-between', ml: 8, widthAllocation: 'available' } : {} }
-        stickyEnabled={ !isMobile }
+        stickyEnabled
       />
     </>
   );

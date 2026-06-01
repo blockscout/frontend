@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Table as ChakraTable, Icon } from '@chakra-ui/react';
+import { Box, Table as ChakraTable, Icon } from '@chakra-ui/react';
 import { throttle } from 'es-toolkit';
 import * as React from 'react';
 
@@ -103,8 +103,9 @@ export const TableHeaderSticky = (props: TableHeaderProps) => {
   return (
     <TableHeader
       ref={ ref }
-      position="sticky"
-      top={ top ? `${ top }px` : 0 }
+      // we assume tables on mobile cannot have sticky header dut to the scrollable container
+      position={{ base: 'unset', lg: 'sticky' }}
+      top={{ base: 0, lg: top ? `${ top }px` : 0 }}
       backgroundColor={{ _light: 'white', _dark: 'black' }}
       boxShadow={ isStuck ? 'action_bar' : 'none' }
       zIndex="1"
@@ -112,5 +113,22 @@ export const TableHeaderSticky = (props: TableHeaderProps) => {
     >
       { children }
     </TableHeader>
+  );
+};
+
+export const TableContainerScrollable = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <Box
+      overflowX={{ base: 'scroll', lg: 'unset' }}
+      mx={{ base: -3, lg: 0 }}
+      px={{ base: 3, lg: 0 }}
+      maxW={{ base: '100vw', lg: undefined }}
+    >
+      { children }
+    </Box>
   );
 };

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,7 +15,8 @@ import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-import AddressEpochRewardsListItem from './AddressEpochRewardsListItem';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import AddressEpochRewardsTable from './AddressEpochRewardsTable';
 
 type Props = {
@@ -52,24 +52,13 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
   }
 
   const content = rewardsQuery.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <AddressEpochRewardsTable
-          items={ rewardsQuery.data.items }
-          top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ rewardsQuery.isPlaceholderData }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        { rewardsQuery.data.items.map((item, index) => (
-          <AddressEpochRewardsListItem
-            key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (rewardsQuery.isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ rewardsQuery.isPlaceholderData }
-          />
-        )) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <AddressEpochRewardsTable
+        items={ rewardsQuery.data.items }
+        top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ rewardsQuery.isPlaceholderData }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = (

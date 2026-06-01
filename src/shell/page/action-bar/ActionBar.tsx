@@ -28,7 +28,7 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
       backgroundColor="bg.primary"
       pt={ 6 }
       mt={ -6 }
-      pb={{ base: 6, lg: 3 }}
+      pb={ 3 }
       mx={{ base: -3, lg: 0 }}
       px={{ base: 3, lg: 0 }}
       justifyContent="space-between"
