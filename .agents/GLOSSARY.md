@@ -1,6 +1,6 @@
 # Ubiquitous Language Glossary
 
-Domain terms used in the Blockscout frontend codebase. Intended for both engineers and agents.
+Domain terms used in the Blockscout frontend codebase.
 
 The glossary carries only what isn't already in code or other docs:
 disambiguation between easily-confused terms, etymology, and scope. Folder

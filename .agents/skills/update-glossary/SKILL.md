@@ -1,11 +1,11 @@
 ---
 name: update-glossary
-description: Add a new term, update an existing definition, or remove an outdated entry in `docs/GLOSSARY.md`. Use whenever the user wants to write something into the project glossary, or asks "should this be in the glossary?". Enforces the file's principle — disambiguation and etymology only, no paths/env vars/UI-location restatements.
+description: Add a new term, update an existing definition, or remove an outdated entry in `.agents/GLOSSARY.md`. Use whenever the user wants to write something into the project glossary, or asks "should this be in the glossary?". Enforces the file's principle — disambiguation and etymology only, no paths/env vars/UI-location restatements.
 ---
 
 # Update the project glossary
 
-`docs/GLOSSARY.md` is the **ubiquitous-language** reference for the Blockscout
+`.agents/GLOSSARY.md` is the **ubiquitous-language** reference for the Blockscout
 frontend. It exists to disambiguate easily-confused terms and explain
 non-obvious names. It is **not** a feature index, a config reference, or a
 folder map — those live in code, `docs/ENVS.md`, and `.agents/rules/`.
@@ -113,7 +113,7 @@ Reuse the existing exploration tools:
 
 ### 2. Check if it's already in the glossary
 
-`grep -i "<term>" docs/GLOSSARY.md`. If a row already exists under a
+`grep -i "<term>" .agents/GLOSSARY.md`. If a row already exists under a
 different label (e.g. the user says "Merits" but the row is `Rewards`),
 update that row rather than creating a duplicate.
 
@@ -153,7 +153,7 @@ when warranted. Add or refine the cross-ref there.
 
 ### 7. Verify
 
-- `grep -nE "src/|NEXT_PUBLIC_|\.ts\b" docs/GLOSSARY.md` — should be empty
+- `grep -nE "src/|NEXT_PUBLIC_|\.ts\b" .agents/GLOSSARY.md` — should be empty
   apart from the intro paragraph and intentional package names like
   `@blockscout/points-types`.
 - Visual scan: the new row's sentence shape matches its neighbors; the Kind

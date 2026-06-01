@@ -25,7 +25,7 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 
 ## Domain terminology
 
-Feature and product codenames used throughout the codebase are defined in `docs/GLOSSARY.md`. Consult it whenever you encounter an unfamiliar term — e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`, `blobs`.
+Feature and product codenames used throughout the codebase are defined in `.agents/GLOSSARY.md`. Consult it whenever you encounter an unfamiliar term — e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`, `blobs`.
 
 ## Directory layout
 
@@ -39,7 +39,7 @@ All application source lives under `/src`. Code is co-located by **slice** (core
 | `/configs/envs/` | Env variable declarations |
 | `/deploy/` | CI/CD scripts, Docker, env validator, build tools |
 | `/public/` | Static assets served as-is (sprite output, etc.) — never bundled |
-| `/docs/` | ENVS.md, GLOSSARY.md, CONTRIBUTING.md |
+| `/docs/` | ENVS.md, CONTRIBUTING.md, etc. |
 | Root config files | `next.config.js`, `tsconfig.json`, `eslint.config.mjs`, `package.json` |
 
 ### Inside `/src`
