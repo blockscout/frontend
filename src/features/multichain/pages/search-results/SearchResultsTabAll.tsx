@@ -9,7 +9,7 @@ import { Link } from 'src/toolkit/chakra/link';
 
 import SearchResultsList from './SearchResultsList';
 import type { QueryType, SearchQueries } from './utils';
-import { SEARCH_TABS_NAMES, SEARCH_TABS_IDS } from './utils';
+import { getSearchTabName, SEARCH_TABS_IDS } from './utils';
 
 const MAX_ITEMS_IN_GROUP = 5;
 
@@ -22,7 +22,7 @@ const SearchResultsTabAll = ({ queries }: Props) => {
     <Flex flexDir="column" rowGap={ 8 }>
       { Object.entries(queries)
         .filter(([ , query ]) => query.data?.pages?.[0]?.items?.length > 0)
-        .filter(([ queryType ]) => SEARCH_TABS_NAMES[queryType as QueryType])
+        .filter(([ queryType ]) => getSearchTabName(queryType as QueryType))
         .map((items) => {
           const queryType = items[0] as QueryType;
           const query = items[1] as SearchQueries[QueryType];
@@ -31,7 +31,7 @@ const SearchResultsTabAll = ({ queries }: Props) => {
 
           return (
             <Box key={ queryType }>
-              <Text color="text.secondary" fontWeight={ 600 } textStyle="sm" mb={ 2 }>{ SEARCH_TABS_NAMES[queryType] }</Text>
+              <Text color="text.secondary" fontWeight={ 600 } textStyle="sm" mb={ 2 }>{ getSearchTabName(queryType) }</Text>
               <SearchResultsList queryType={ queryType } query={ query } maxItems={ MAX_ITEMS_IN_GROUP }/>
               { hasMore && (
                 <Link
