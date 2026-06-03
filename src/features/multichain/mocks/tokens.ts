@@ -40,7 +40,7 @@ export const tokenAB: AddressTokenItem = {
     circulating_market_cap: '274743626781.043515906',
     decimals: '18',
     holders_count: null,
-    icon_url: 'https://coin-images.coingecko.com/coins/images/279/small/ethereum.png?1696501628',
+    icon_url: null,
     name: 'Ether',
     symbol: 'ETH',
     total_supply: null,
