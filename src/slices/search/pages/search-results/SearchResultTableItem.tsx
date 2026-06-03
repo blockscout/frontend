@@ -495,8 +495,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
     }
   })();
 
-  const category = getItemCategory(data);
-  const searchCategories = getSearchCategories();
+  const category = React.useMemo(() => getItemCategory(data), [ data ]);
+  const searchCategories = React.useMemo(() => getSearchCategories(), []);
 
   return (
     <TableRow>

@@ -478,8 +478,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
     }
   })();
 
-  const category = getItemCategory(data);
-  const searchCategories = getSearchCategories();
+  const category = React.useMemo(() => getItemCategory(data), [ data ]);
+  const searchCategories = React.useMemo(() => getSearchCategories(), []);
 
   return (
     <ListItemMobile py={ 3 } textStyle="sm" rowGap={ 2 }>
