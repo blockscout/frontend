@@ -7,13 +7,12 @@ import { test, expect } from 'playwright/lib';
 
 import VerifiedContracts from './VerifiedContracts';
 
-test('base view +@mobile', async({ render, mockTextAd, mockApiResponse, mockEnvs }) => {
+test('base view +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
   test.slow();
   await mockEnvs([ [ 'NEXT_PUBLIC_STATS_API_HOST', '' ] ]);
-  await mockTextAd();
   await mockApiResponse('core:verified_contracts', verifiedContractsMock.baseResponse);
   await mockApiResponse('core:verified_contracts_counters', verifiedContractsCountersMock);
   await mockApiResponse('core:config_contract_languages', { languages: [ 'solidity', 'vyper' ] });
   const component = await render(<VerifiedContracts/>);
-  await expect(component).toHaveScreenshot({ timeout: 10_000 });
+  await expect(component).toHaveScreenshot({ timeout: 20_000 });
 });

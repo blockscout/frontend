@@ -62,6 +62,25 @@ const config: PlaywrightTestConfig = defineConfig({
         react(),
         svgr({
           include: '**/*.svg',
+          svgrOptions: {
+            icon: true,
+            svgo: true,
+            plugins: [ '@svgr/plugin-jsx' ],
+            svgoConfig: {
+              plugins: [
+                {
+                  name: 'preset-default',
+                  params: {
+                    overrides: {
+                      removeViewBox: false,
+                      removeHiddenElems: false,
+                    },
+                  },
+                },
+                'removeDimensions',
+              ],
+            },
+          },
         }),
       ] as unknown as Array<Plugin>,
       build: {
