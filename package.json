@@ -208,7 +208,7 @@
     "typescript-eslint": "8.59.2",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.0.15",
+    "vitest": "4.1.0",
     "vitest-fetch-mock": "0.4.5",
     "ws": "^8.17.1"
   },
