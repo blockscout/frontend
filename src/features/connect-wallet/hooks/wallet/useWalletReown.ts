@@ -6,9 +6,13 @@ import { useAccountEffect, useAccount, useDisconnect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
+import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
 import * as mixpanel from 'src/services/mixpanel';
 
-export default function useWalletReown({ source, onConnect }: Params): Result {
+import useWalletFallback from './useWalletFallback';
+
+export function useWalletReown({ source, onConnect }: Params): Result {
   const { open: openModal } = useAppKit();
   const { open: isOpen } = useAppKitState();
   const { disconnect } = useDisconnect();
@@ -59,3 +63,5 @@ export default function useWalletReown({ source, onConnect }: Params): Result {
     openModal,
   }), [ handleConnect, handleDisconnect, isOpening, isOpen, isConnected, account.isReconnecting, address, openModal ]);
 }
+
+export default getFeaturePayload(config.features.connectWallet)?.connectorType === 'reown' ? useWalletReown : useWalletFallback;

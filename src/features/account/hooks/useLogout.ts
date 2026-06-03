@@ -8,6 +8,7 @@ import React from 'react';
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
+import useWalletReown from 'src/features/connect-wallet/hooks/wallet/useWalletReown';
 import { useRewardsContext } from 'src/features/rewards/context';
 
 import config from 'src/config';
@@ -31,10 +32,12 @@ export default function useLogout() {
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
   const { logout: rewardsLogout } = useRewardsContext();
+  const { disconnect } = useWalletReown({ source: 'Profile dropdown' });
 
   return React.useCallback(async() => {
     try {
       await apiFetch('core:auth_logout');
+      disconnect();
       cookies.remove(cookies.NAMES.API_TOKEN);
 
       if (config.features.rewards.isEnabled) {
@@ -65,5 +68,5 @@ export default function useLogout() {
         description: 'Please try again later',
       });
     }
-  }, [ apiFetch, rewardsLogout, queryClient, router ]);
+  }, [ apiFetch, rewardsLogout, queryClient, router, disconnect ]);
 }
