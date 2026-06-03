@@ -9,10 +9,42 @@ packages:
   - 'deploy/tools/llms-txt-generator'
   - 'deploy/tools/affected-tests'
 
-# pnpm 10+: allowlisted dependency install scripts (required for native addons such as @ipshipyard/node-datachannel).
-onlyBuiltDependencies:
-  - '@ipshipyard/node-datachannel'
-  - 'sharp'
+verifyDepsBeforeRun: warn
+
+overrides:
+  '@wagmi/connectors': "6.2.0"
+  ws: "8.17.1"
+  axios: "1.12.0"
+  tar-fs: "2.1.4"
+  node-forge: "1.3.2"
+  brace-expansion: "1.1.12"
+  js-yaml: "4.1.1"
+  "@noble/hashes": "1.8.0"
+  "vite-plugin-dts>brace-expansion": "2.0.2"
+  protobufjs: "7.5.5"
+
+# pnpm 11+: allowlisted dependency install scripts (required for native addons).
+# Replaces pnpm 10's onlyBuiltDependencies — same policy: only these two packages may run build scripts.
+allowBuilds:
+  '@ipshipyard/node-datachannel': true
+  '@reown/appkit': false
+  '@scarf/scarf': false
+  '@specify-sh/sdk': false
+  '@tree-sitter-grammars/tree-sitter-yaml': false
+  bigint-buffer: false
+  bufferutil: false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  iso-constants: false
+  keccak: false
+  protobufjs: false
+  sharp: true
+  tree-sitter: false
+  tree-sitter-json: false
+  tsl-apple-cloudkit: false
+  unrs-resolver: false
+  utf-8-validate: false
 
 minimumReleaseAge: 10080 # 1 week
 minimumReleaseAgeExclude:
