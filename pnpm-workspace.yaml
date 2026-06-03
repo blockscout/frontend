@@ -12,6 +12,7 @@ packages:
 verifyDepsBeforeRun: warn
 
 overrides:
+  '@wagmi/connectors': "6.2.0"
   ws: "8.17.1"
   axios: "1.12.0"
   tar-fs: "2.1.4"
