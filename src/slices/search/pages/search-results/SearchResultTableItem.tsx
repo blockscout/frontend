@@ -14,7 +14,7 @@ import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
 import { saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 import type { SearchResultAppItem } from 'src/slices/search/utils/search-categories';
-import { getItemCategory, searchItemTitles } from 'src/slices/search/utils/search-categories';
+import { getItemCategory, getSearchCategories } from 'src/slices/search/utils/search-categories';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -495,14 +495,15 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
     }
   })();
 
-  const category = getItemCategory(data);
+  const category = React.useMemo(() => getItemCategory(data), [ data ]);
+  const searchCategories = React.useMemo(() => getSearchCategories(), []);
 
   return (
     <TableRow>
       { content }
       <TableCell fontSize="sm" textTransform="capitalize" verticalAlign="middle">
         <Skeleton loading={ isLoading } color="text.secondary" display="inline-block">
-          <span>{ category ? searchItemTitles[category].itemTitle : '' }</span>
+          <span>{ category ? searchCategories.find(({ id }) => id === category)?.itemTitle : '' }</span>
         </Skeleton>
       </TableCell>
     </TableRow>

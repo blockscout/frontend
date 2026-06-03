@@ -13,7 +13,7 @@ import type { ResourceError } from 'src/api/resources';
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 
 import type { ApiCategory, Category, ItemsCategoriesMap } from 'src/slices/search/utils/search-categories';
-import { getItemCategory, searchCategories } from 'src/slices/search/utils/search-categories';
+import { getItemCategory, getSearchCategories } from 'src/slices/search/utils/search-categories';
 
 import TextAd from 'src/features/ads/text/components/TextAd';
 import ExternalSearchItem from 'src/features/chain-variants/zeta-chain/components/ExternalSearchItem';
@@ -99,9 +99,11 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     }
 
     const map: Partial<ItemsCategoriesMap> = {};
+    const chainsConfig = multichainConfig();
 
     query.data?.forEach(item => {
-      const cat = getItemCategory(item) as ApiCategory;
+      const chainConfig = 'chain_infos' in item ? chainsConfig?.chains.find((chain) => chain.id === Object.keys(item.chain_infos)[0]) : undefined;
+      const cat = getItemCategory(item, chainConfig?.app_config) as ApiCategory;
       if (cat) {
         if (cat in map) {
           map[cat]?.push(item);
@@ -119,7 +121,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
       map.zetaChainCCTX = zetaChainCCTXQuery.data.items;
     }
 
-    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm) && !multichainConfig()) {
+    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm) && !chainsConfig) {
       map['block'] = [ {
         type: 'block',
         block_type: 'block',
@@ -132,11 +134,15 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
     return map;
   }, [ query.data, marketplaceApps.displayedApps, searchTerm, zetaChainCCTXQuery.data?.items ]);
 
+  const searchCategories = React.useMemo(() => {
+    return getSearchCategories(multichainConfig()?.chains.map((chain) => chain.app_config));
+  }, [ ]);
+
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
     setCurrentTab(resultCategories[0]?.id);
-  }, [ itemsGroups ]);
+  }, [ itemsGroups, searchCategories ]);
 
   const handleTabsValueChange = React.useCallback(({ value }: { value: string }) => {
     setCurrentTab(value as Category);
@@ -162,7 +168,7 @@ const SearchBarSuggest = ({ query, zetaChainCCTXQuery, externalSearchItem, searc
       title: isMobile ? cat.tabTitle : cat.title,
       component: null,
     }));
-  }, [ itemsGroups, isMobile ]);
+  }, [ searchCategories, itemsGroups, isMobile ]);
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData || (config.features.zetachain.isEnabled && zetaChainCCTXQuery.isPending)) {
