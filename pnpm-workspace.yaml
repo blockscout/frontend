@@ -18,7 +18,6 @@ overrides:
   js-yaml: "4.1.1"
   "@noble/hashes": "1.8.0"
   "vite-plugin-dts>brace-expansion": "2.0.2"
-  "vite-plugin-svgr>js-yaml": "4.1.1"
   protobufjs: "7.5.5"
 
 # pnpm 11+: allowlisted dependency install scripts (required for native addons).
