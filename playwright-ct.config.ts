@@ -61,7 +61,7 @@ const config: PlaywrightTestConfig = defineConfig({
         tsconfigPaths({ loose: true, ignoreConfigErrors: true }),
         react(),
         svgr({
-          exportAsDefault: true,
+          include: '**/*.svg',
         }),
       ] as unknown as Array<Plugin>,
       build: {
