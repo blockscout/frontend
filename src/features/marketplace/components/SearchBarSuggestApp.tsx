@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -23,7 +22,6 @@ interface Props {
 }
 
 const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => {
-  const router = useRouter();
   const logo = (
     <Image
       borderRadius="base"
@@ -97,8 +95,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
   return (
     <SearchBarSuggestItemLink
       onClick={ onClick }
-      href={ data.external ? route({ pathname: '/apps', query: { selectedAppId: data.id } }) : route({ pathname: '/apps/[id]', query: { id: data.id } }) }
-      shallow={ data.external && router.pathname === '/apps' }
+      href={ route({ pathname: '/apps/[id]/info', query: { id: data.id } }) }
     >
       { content }
     </SearchBarSuggestItemLink>

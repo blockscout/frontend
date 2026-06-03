@@ -30,6 +30,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/token/[hash]/instance/[id]': '%network_name% NFT instance',
   '/apps': `%network_name% ${ dappEntityName }s - Explore top ${ dappEntityName }s`,
   '/apps/[id]': `%network_name% marketplace ${ dappEntityName }`,
+  '/apps/[id]/info': `%network_name% marketplace ${ dappEntityName }`,
   '/essential-dapps/[id]': '%id_cap%',
   '/stats': '%network_name% stats - %network_name% network insights',
   '/stats/[id]': '%network_name% stats - %id% chart',
@@ -109,6 +110,7 @@ const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
   '/token/[hash]': '%network_name% %symbol_or_name% token details',
   '/token/[hash]/instance/[id]': '%network_name% token instance for %symbol_or_name%',
   '/apps/[id]': '%network_name% - %app_name%',
+  '/apps/[id]/info': '%network_name% - %app_name%',
   '/address/[hash]': '%network_name% address details for %domain_name%',
   '/stats/[id]': '%title% chart on %network_name%',
 };

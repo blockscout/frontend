@@ -7,7 +7,6 @@ import type { MouseEvent } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 
-import * as mixpanel from 'src/services/mixpanel';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import EmptySearchResult from './EmptySearchResult';
@@ -15,7 +14,6 @@ import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
   apps: Array<MarketplaceApp>;
-  showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
@@ -25,15 +23,10 @@ type Props = {
 };
 
 const MarketplaceList = ({
-  apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
+  apps, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
   onAppClick, graphLinksQuery,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
-
-  const handleInfoClick = useCallback((id: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
-    showAppInfo(id);
-  }, [ showAppInfo ]);
 
   const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
     onFavoriteClick(id, isFavorite, 'Discovery view');
@@ -50,7 +43,6 @@ const MarketplaceList = ({
         { apps.slice(0, renderedItemsNum).map((app, index) => (
           <MarketplaceAppCard
             key={ app.id + (isLoading ? index : '') }
-            onInfoClick={ handleInfoClick }
             id={ app.id }
             external={ app.external }
             url={ app.url }

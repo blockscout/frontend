@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
@@ -18,7 +19,6 @@ import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
 interface Props extends MarketplaceApp {
-  onInfoClick: (event: MouseEvent) => void;
   isFavorite: boolean;
   onFavoriteClick: () => void;
   isLoading: boolean;
@@ -34,7 +34,6 @@ const FeaturedAppMobile = ({
   logoDarkMode,
   shortDescription,
   categories,
-  onInfoClick,
   isFavorite,
   onFavoriteClick,
   isLoading,
@@ -88,8 +87,7 @@ const FeaturedAppMobile = ({
                 fontSize={{ base: 'xs', sm: 'sm' }}
                 fontWeight="500"
                 paddingRight={{ sm: 2 }}
-                href="#"
-                onClick={ onInfoClick }
+                href={ route({ pathname: '/apps/[id]/info', query: { id } }) }
               >
                 More info
               </Link>

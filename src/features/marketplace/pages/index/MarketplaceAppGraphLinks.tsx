@@ -17,9 +17,10 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 interface Props {
   className?: string;
   links?: Array<{ title: string; url: string }>;
+  isLoading?: boolean;
 }
 
-const MarketplaceAppGraphLinks = ({ className, links }: Props) => {
+const MarketplaceAppGraphLinks = ({ className, links, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const handleButtonClick = React.useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -47,7 +48,7 @@ const MarketplaceAppGraphLinks = ({ className, links }: Props) => {
         positioning={{ placement: isMobile ? 'bottom-end' : 'bottom' }}
         interactive
       >
-        <SpriteIcon name="brands/graph" boxSize={ 5 } onClick={ handleButtonClick }/>
+        <SpriteIcon name="brands/graph" boxSize={ 5 } onClick={ handleButtonClick } isLoading={ isLoading }/>
       </Tooltip>
     </Box>
   );

@@ -57,24 +57,15 @@ function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [])
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string> | undefined = undefined,
-  isFavoriteAppsLoaded: boolean = false,
+  favoriteApps: Array<string>,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const isAuth = useIsAuth();
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
-  // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
-  const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
-  const isInitialSetup = React.useRef(true);
-
-  React.useEffect(() => {
-    if (isInitialSetup.current && (isFavoriteAppsLoaded || favoriteApps === undefined)) {
-      setSnapshotFavoriteApps(favoriteApps || []);
-      isInitialSetup.current = false;
-    }
-  }, [ isFavoriteAppsLoaded, favoriteApps ]);
+  // Use a ref to keep sorting while favorite / un-favorite apps
+  const favoriteAppsRef = React.useRef(favoriteApps);
 
   const {
     isPlaceholderData, isError, error, data, refetch,
@@ -89,10 +80,10 @@ export default function useMarketplaceApps(
         return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceApp>, snapshotFavoriteApps),
+    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
+    enabled: feature.isEnabled,
   });
 
   React.useEffect(() => {

@@ -21,12 +21,11 @@ type BannerProps = {
   apps: Array<MarketplaceApp> | undefined;
   favoriteApps: Array<string>;
   isLoading: boolean;
-  onInfoClick: (id: string) => void;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
 };
 
-const Banner = ({ apps = [], favoriteApps, isLoading, onInfoClick, onFavoriteClick, onAppClick }: BannerProps) => {
+const Banner = ({ apps = [], favoriteApps, isLoading, onFavoriteClick, onAppClick }: BannerProps) => {
   const isMobile = useIsMobile();
 
   if (!feature.isEnabled) {
@@ -46,7 +45,6 @@ const Banner = ({ apps = [], favoriteApps, isLoading, onInfoClick, onFavoriteCli
         app={ app || appsMock[0] }
         isFavorite={ isFavorite }
         isLoading={ isLoading }
-        onInfoClick={ onInfoClick }
         onFavoriteClick={ onFavoriteClick }
         onAppClick={ onAppClick }
       />

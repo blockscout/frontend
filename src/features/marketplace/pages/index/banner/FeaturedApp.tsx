@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -25,14 +26,13 @@ type FeaturedAppProps = {
   app: MarketplaceApp;
   isFavorite: boolean;
   isLoading: boolean;
-  onInfoClick: (id: string) => void;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
 };
 
 const FeaturedApp = ({
   app, isFavorite, isLoading, onAppClick,
-  onInfoClick, onFavoriteClick,
+  onFavoriteClick,
 }: FeaturedAppProps) => {
   const isMobile = useIsMobile();
 
@@ -40,11 +40,9 @@ const FeaturedApp = ({
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
   const categoriesLabel = categories.join(', ');
 
-  const handleInfoClick = useCallback((event: MouseEvent) => {
-    event.preventDefault();
+  const handleInfoClick = useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
-    onInfoClick(id);
-  }, [ onInfoClick, id ]);
+  }, [ id ]);
 
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite, 'Banner');
@@ -54,7 +52,6 @@ const FeaturedApp = ({
     return (
       <FeaturedAppMobile
         { ...app }
-        onInfoClick={ handleInfoClick }
         isFavorite={ isFavorite }
         onFavoriteClick={ handleFavoriteClick }
         isLoading={ isLoading }
@@ -115,7 +112,7 @@ const FeaturedApp = ({
               <Link
                 fontSize="sm"
                 fontWeight="500"
-                href="#"
+                href={ route({ pathname: '/apps/[id]/info', query: { id } }) }
                 onClick={ handleInfoClick }
               >
                 More info
