@@ -39,7 +39,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -74,7 +74,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -121,7 +121,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -149,7 +149,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -178,7 +178,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -229,7 +229,7 @@ jobs:
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
@@ -296,7 +296,7 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: pnpm/action-setup@v4
         with:
-          version: 10.32.1
+          version: 11.5.1
           cache: true
 
       - name: Setup node
