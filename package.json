@@ -33,7 +33,7 @@
     "svg:build-sprite": "./deploy/scripts/build_sprite.sh",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && pnpm test:pw",
-    "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.57.0-noble ./tools/scripts/pw.docker.sh",
+    "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -v $(pwd)/node_modules_linux:/work/node_modules -w /work/ -it mcr.microsoft.com/playwright:v1.57.0-noble ./tools/scripts/pw.docker.sh",
     "test:pw:docker:deps": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.57.0-noble ./tools/scripts/pw.docker.deps.sh",
     "test:pw:ci": "pnpm test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
