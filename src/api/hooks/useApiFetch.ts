@@ -80,7 +80,12 @@ export default function useApiFetch() {
         // Considering all of the above, we use:
         //   -  The "same-origin" option for all core API requests
         //   -  The "omit" option for all other requests
-        credentials: apiName === 'core' ? 'same-origin' : 'omit',
+        //
+        // UPDATED:
+        // In some scenarios, we need to include credentials for request to non-core API which is on the same origin as the core API.
+        // For example, the request to the Stats API which is behind Claudflare authentication.
+        // So we use the "same-origin" option for all requests which is the default behavior of fetch API.
+        // credentials: apiName === 'core' ? 'same-origin' : 'omit',
         headers,
         ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },

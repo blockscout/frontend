@@ -1,8 +1,8 @@
 ---
-description: Project domain terms and ubiquitous language — consult docs/GLOSSARY.md
+description: Project domain terms and ubiquitous language
 alwaysApply: true
 ---
 
 # Ubiquitous language (Glossary)
 
-Product and feature codenames used in this codebase are defined in `docs/GLOSSARY.md`. Consult it when you encounter an unfamiliar term (e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`).
+Product and feature codenames used in this codebase are defined in `.agents/GLOSSARY.md`. Consult it when you encounter an unfamiliar term (e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`).

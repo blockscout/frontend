@@ -14,7 +14,7 @@ import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
 import { saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 import type { SearchResultAppItem } from 'src/slices/search/utils/search-categories';
-import { getItemCategory, searchItemTitles } from 'src/slices/search/utils/search-categories';
+import { getItemCategory, getSearchCategories } from 'src/slices/search/utils/search-categories';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -478,14 +478,15 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
     }
   })();
 
-  const category = getItemCategory(data);
+  const category = React.useMemo(() => getItemCategory(data), [ data ]);
+  const searchCategories = React.useMemo(() => getSearchCategories(), []);
 
   return (
     <ListItemMobile py={ 3 } textStyle="sm" rowGap={ 2 }>
       <Grid templateColumns="1fr auto" w="100%" overflow="hidden">
         { firstRow }
         <Skeleton loading={ isLoading } color="text.secondary" ml={ 8 } textTransform="capitalize">
-          <span>{ category ? searchItemTitles[category].itemTitleShort : '' }</span>
+          <span>{ category ? searchCategories.find(({ id }) => id === category)?.itemTitleShort : '' }</span>
         </Skeleton>
       </Grid>
       { Boolean(secondRow) && (

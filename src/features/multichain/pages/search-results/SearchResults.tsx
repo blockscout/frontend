@@ -25,7 +25,7 @@ import SearchResultTabContent from './SearchResultTabContent';
 import useSearchQuery from './useSearchQuery';
 import useSearchRedirect from './useSearchRedirect';
 import type { QueryType } from './utils';
-import { SEARCH_TABS_IDS, SEARCH_TABS_NAMES } from './utils';
+import { SEARCH_TABS_IDS, getSearchTabName } from './utils';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -96,7 +96,7 @@ const SearchResults = () => {
 
     return {
       id: value,
-      title: SEARCH_TABS_NAMES[queryType],
+      title: getSearchTabName(queryType),
       component: (
         <SearchResultTabContent
           queries={ queries }

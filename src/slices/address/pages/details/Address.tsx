@@ -174,8 +174,7 @@ const AddressPageContent = () => {
 
   useAddressMetadataInitUpdate({
     address: hash,
-    counters: countersQuery.data,
-    isEnabled: !countersQuery.isPlaceholderData && !countersQuery.isDegradedData,
+    isEnabled: !addressQuery.isPlaceholderData && !addressQuery.isDegradedData,
   });
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? addressQuery.data.hash : undefined);

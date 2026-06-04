@@ -8,7 +8,7 @@ import { isBech32Address, fromBech32Address } from 'src/slices/address/utils/bec
 
 import { getExternalSearchItem } from 'src/features/chain-variants/zeta-chain/utils/external-search';
 import multichainConfig from 'src/features/multichain/chains-config';
-import useSearchMultichain from 'src/features/multichain/hooks/useSearchMultichain';
+import useQuickSearchQueryMultichain from 'src/features/multichain/hooks/useQuickSearchQueryMultichain';
 
 import config from 'src/config';
 import useDebounce from 'src/shared/hooks/useDebounce';
@@ -29,7 +29,7 @@ export default function useQuickSearchQuery() {
     },
   });
 
-  const multichainQuery = useSearchMultichain({ searchTerm: debouncedSearchTerm, enabled: isMultichain });
+  const multichainQuery = useQuickSearchQueryMultichain({ searchTerm: debouncedSearchTerm, enabled: isMultichain });
 
   const redirectCheckQuery = useApiQuery('core:search_check_redirect', {
     // on pages with regular search bar we check redirect on every search term change

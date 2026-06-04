@@ -11,7 +11,7 @@ interface Props {
   enabled: boolean;
 }
 
-export default function useSearchMultichain({ searchTerm, enabled }: Props) {
+export default function useQuickSearchQueryMultichain({ searchTerm, enabled }: Props) {
   return useApiQuery<'multichainAggregator:quick_search', unknown, Array<QuickSearchResultItem>>('multichainAggregator:quick_search', {
     queryParams: { q: searchTerm, unlimited_per_chain: true },
     queryOptions: {

@@ -9,10 +9,6 @@ import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 
-const nameServicesFeature = config.features.nameServices;
-
-const dappEntityName = getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '';
-
 export type ApiCategory =
   'token' |
   'nft' |
@@ -38,60 +34,132 @@ export type SearchResultAppItem = {
   app: MarketplaceApp;
 };
 
-const hasConfidentialTokenType = config.slices.token.additionalTypes.some((item) => isConfidentialTokenType(item.id as TokenType));
+const hasConfidentialTokenType = (chainsConfig: Array<typeof config> = [ config ]) =>
+  chainsConfig.some((chainConfig) => chainConfig.slices.token.additionalTypes.some((item) => isConfidentialTokenType(item.id as TokenType)));
 
-export const searchCategories: Array<{ id: Category; title: string; tabTitle: string }> = [
-  { id: 'token', title: `Tokens (${ config.slices.token.standard }-20)`, tabTitle: 'Tokens' },
-  { id: 'nft', title: `NFTs (${ config.slices.token.standard }-721 & 1155)`, tabTitle: 'NFTs' },
-  ...(hasConfidentialTokenType ? [
-    { id: 'confidential_token' as const, title: `Confidential Tokens (${ config.slices.token.standard }-7984)`, tabTitle: 'Confidential Tokens' },
-  ] : []),
-  { id: 'address', title: 'Addresses', tabTitle: 'Addresses' },
-  { id: 'public_tag', title: 'Public tags', tabTitle: 'Public tags' },
-  { id: 'transaction', title: 'Transactions', tabTitle: 'Transactions' },
-  { id: 'block', title: 'Blocks', tabTitle: 'Blocks' },
-  { id: 'tac_operation', title: 'Operations', tabTitle: 'Operations' },
-  { id: 'zetaChainCCTX', title: 'CCTXs', tabTitle: 'CCTXs' },
-];
+export const getSearchCategories =
+ (chainsConfig: Array<typeof config> = [ config ]): Array<{ id: Category; title: string; tabTitle: string; itemTitle: string; itemTitleShort: string }> => {
+   const nameServicesFeatures = chainsConfig.map((chainConfig) => chainConfig.features.nameServices).filter((feature) => feature?.isEnabled);
+   const isEnsEnabled = nameServicesFeatures?.some((feature) => feature?.ens.isEnabled);
+   const isClustersEnabled = nameServicesFeatures?.some((feature) => feature?.clusters.isEnabled);
+   //  FIXME: We don't support marketplace on multichain yet
+   const dappEntityName = getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '';
 
-if (config.features.userOps.isEnabled) {
-  searchCategories.push({ id: 'user_operation', title: 'User operations', tabTitle: 'User ops' });
-}
+   return [
+     ...(config.features.marketplace.isEnabled ? [
+       {
+         id: 'app' as const,
+         title: `${ dappEntityName }s`,
+         tabTitle: `${ dappEntityName }s`,
+         itemTitle: dappEntityName,
+         itemTitleShort: dappEntityName,
+       },
+     ] : []),
+     ...(isEnsEnabled || config.features.multichain.isEnabled ? [
+       {
+         id: 'domain' as const,
+         title: 'Names',
+         tabTitle: 'Names',
+         itemTitle: 'Name',
+         itemTitleShort: 'Name',
+       },
+     ] : []),
+     ...(isClustersEnabled ? [
+       {
+         id: 'cluster' as const,
+         title: 'Cluster Name',
+         tabTitle: 'Cluster',
+         itemTitle: 'Cluster',
+         itemTitleShort: 'Cluster',
+       },
+     ] : []),
+     {
+       id: 'token',
+       title: `Tokens (${ config.slices.token.standard }-20)`,
+       tabTitle: 'Tokens',
+       itemTitle: 'Token',
+       itemTitleShort: 'Token',
+     },
+     {
+       id: 'nft',
+       title: `NFTs (${ config.slices.token.standard }-721 & 1155)`,
+       tabTitle: 'NFTs',
+       itemTitle: 'NFT',
+       itemTitleShort: 'NFT',
+     },
+     ...(hasConfidentialTokenType(chainsConfig) ? [
+       {
+         id: 'confidential_token' as const,
+         title: `Confidential Tokens (${ config.slices.token.standard }-7984)`,
+         tabTitle: 'Confidential Tokens',
+         itemTitle: 'Confidential Token',
+         itemTitleShort: 'Conf. Token',
+       },
+     ] : []),
+     {
+       id: 'address',
+       title: 'Addresses',
+       tabTitle: 'Addresses',
+       itemTitle: 'Address',
+       itemTitleShort: 'Address',
+     },
+     {
+       id: 'public_tag',
+       title: 'Public tags',
+       tabTitle: 'Public tags',
+       itemTitle: 'Public tag',
+       itemTitleShort: 'Tag',
+     },
+     {
+       id: 'transaction',
+       title: 'Transactions',
+       tabTitle: 'Transactions',
+       itemTitle: 'Transaction',
+       itemTitleShort: 'Txn',
+     },
+     {
+       id: 'block',
+       title: 'Blocks',
+       tabTitle: 'Blocks',
+       itemTitle: 'Block',
+       itemTitleShort: 'Block',
+     },
+     {
+       id: 'tac_operation',
+       title: 'Operations',
+       tabTitle: 'Operations',
+       itemTitle: 'Operation',
+       itemTitleShort: 'Operation',
+     },
+     {
+       id: 'zetaChainCCTX',
+       title: 'CCTXs',
+       tabTitle: 'CCTXs',
+       itemTitle: 'CCTX',
+       itemTitleShort: 'CCTX',
+     },
+     ...(config.features.userOps.isEnabled ? [
+       {
+         id: 'user_operation' as const,
+         title: 'User operations',
+         tabTitle: 'User ops',
+         itemTitle: 'User operation',
+         itemTitleShort: 'User op',
+       },
+     ] : []),
+     ...(config.features.dataAvailability.isEnabled ? [
+       {
+         id: 'blob' as const,
+         title: 'Blobs',
+         tabTitle: 'Blobs',
+         itemTitle: 'Blob',
+         itemTitleShort: 'Blob',
+       },
+     ] : []),
+   ];
+ };
 
-if (config.features.dataAvailability.isEnabled) {
-  searchCategories.push({ id: 'blob', title: 'Blobs', tabTitle: 'Blobs' });
-}
-
-if (config.features.marketplace.isEnabled) {
-  searchCategories.unshift({ id: 'app', title: `${ dappEntityName }s`, tabTitle: `${ dappEntityName }s` });
-}
-
-if ((nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) || config.features.multichain.isEnabled) {
-  searchCategories.unshift({ id: 'domain', title: 'Names', tabTitle: 'Names' });
-}
-
-if (nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled) {
-  searchCategories.unshift({ id: 'cluster', title: 'Cluster Name', tabTitle: 'Cluster' });
-}
-
-export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
-  app: { itemTitle: dappEntityName, itemTitleShort: dappEntityName },
-  domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
-  cluster: { itemTitle: 'Cluster', itemTitleShort: 'Cluster' },
-  token: { itemTitle: 'Token', itemTitleShort: 'Token' },
-  nft: { itemTitle: 'NFT', itemTitleShort: 'NFT' },
-  confidential_token: { itemTitle: 'Confidential Token', itemTitleShort: 'Conf. Token' },
-  address: { itemTitle: 'Address', itemTitleShort: 'Address' },
-  public_tag: { itemTitle: 'Public tag', itemTitleShort: 'Tag' },
-  transaction: { itemTitle: 'Transaction', itemTitleShort: 'Txn' },
-  block: { itemTitle: 'Block', itemTitleShort: 'Block' },
-  user_operation: { itemTitle: 'User operation', itemTitleShort: 'User op' },
-  blob: { itemTitle: 'Blob', itemTitleShort: 'Blob' },
-  tac_operation: { itemTitle: 'Operations', itemTitleShort: 'Operations' },
-  zetaChainCCTX: { itemTitle: 'CCTX', itemTitleShort: 'CCTX' },
-};
-
-export function getItemCategory(item: QuickSearchResultItem | SearchResultAppItem): Category | undefined {
+export function getItemCategory(item: QuickSearchResultItem | SearchResultAppItem, chainConfig: typeof config = config): Category | undefined {
   switch (item.type) {
     case 'address':
     case 'contract':
@@ -102,7 +170,7 @@ export function getItemCategory(item: QuickSearchResultItem | SearchResultAppIte
       if (item.token_type === 'ERC-20') {
         return 'token';
       }
-      if (hasConfidentialTokenType && isConfidentialTokenType(item.token_type as TokenType)) {
+      if (hasConfidentialTokenType([ chainConfig ]) && isConfidentialTokenType(item.token_type as TokenType)) {
         return 'confidential_token';
       }
       return 'nft';

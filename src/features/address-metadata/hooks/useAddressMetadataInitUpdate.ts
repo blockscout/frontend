@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import type { AddressCounters } from 'src/slices/address/types/api';
-
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
 import config from 'src/config';
@@ -12,13 +10,10 @@ const feature = config.features.addressMetadata;
 
 interface Params {
   address: string | undefined;
-  counters: AddressCounters | undefined;
   isEnabled: boolean;
 }
 
-const TXS_THRESHOLD = 500;
-
-export default function useAddressMetadataInitUpdate({ address, counters, isEnabled }: Params) {
+export default function useAddressMetadataInitUpdate({ address, isEnabled }: Params) {
 
   const apiFetch = useApiFetch();
 
@@ -27,8 +22,7 @@ export default function useAddressMetadataInitUpdate({ address, counters, isEnab
       feature.isEnabled &&
         feature.isTagsUpdateEnabled &&
         address &&
-        isEnabled &&
-        counters?.transactions_count && Number(counters.transactions_count) > TXS_THRESHOLD
+        isEnabled
     ) {
       apiFetch('metadata:address_submit', {
         fetchParams: {
@@ -39,5 +33,5 @@ export default function useAddressMetadataInitUpdate({ address, counters, isEnab
         },
       });
     }
-  }, [ address, apiFetch, counters?.transactions_count, isEnabled ]);
+  }, [ address, apiFetch, isEnabled ]);
 }

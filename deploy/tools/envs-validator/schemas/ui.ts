@@ -8,7 +8,7 @@ import { NETWORK_GROUPS } from 'src/shell/top-bar/chain-menu/types';
 import { AlternativeExplorer } from 'src/features/alternative-explorers/types/client';
 import { CustomLink, CustomLinksGroup } from 'src/shell/footer/types';
 import { COLOR_THEME_IDS } from 'src/shell/top-bar/settings/color-theme/config';
-import type { FontFamily } from 'src/config/ui';
+import type { FontFamily } from 'src/config/misc';
 import type { ContractCodeIde } from 'src/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type SmartContractVerificationMethodExtra } from 'src/slices/contract/types/config';
 import type { AddressFormat, AddressViewId } from 'src/slices/address/types/config';
