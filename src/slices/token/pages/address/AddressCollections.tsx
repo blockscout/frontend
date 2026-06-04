@@ -42,7 +42,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
   const actionBar = isMobile && pagination.isVisible && (
-    <ActionBar mt={ -3 }>
+    <ActionBar mt={ multichainContext ? -6 : -3 }>
       <AddressNftTypeFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>

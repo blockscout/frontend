@@ -212,7 +212,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
         { searchInput }
       </Box>
       { (!isMobile || tokensQuery.pagination.isVisible) && (
-        <ActionBar mt={{ base: -6, lg: 0 }}>
+        <ActionBar mt={{ base: -3, lg: 0 }}>
           <Box hideBelow="lg">
             { searchInput }
           </Box>
