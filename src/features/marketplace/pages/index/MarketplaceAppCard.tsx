@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+
+import { route } from 'src/server/routes';
 
 import * as mixpanel from 'src/services/mixpanel';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -15,7 +16,6 @@ import { IconButton } from 'src/toolkit/chakra/icon-button';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link, LinkBox } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { isBrowser } from 'src/toolkit/utils/isBrowser';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import FavoriteIcon from './FavoriteIcon';
@@ -182,7 +182,7 @@ const MarketplaceAppCard = ({
                   <FavoriteIcon isFavorite={ isFavorite }/>
                 </IconButton>
                 <CopyToClipboard
-                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  text={ route({ pathname: '/apps/[id]/info', query: { id } }, { absolute: true }) }
                   type="share"
                   variant="icon_background"
                   size="md"

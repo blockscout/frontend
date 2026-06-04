@@ -2,10 +2,11 @@
 
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React, { useEffect, useMemo } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+
+import { route } from 'src/server/routes';
 
 import * as metadata from 'src/shell/metadata';
 
@@ -40,9 +41,9 @@ export default function MarketplaceApp() {
 
   const message = useMemo(() => ({
     blockscoutColorMode: colorMode,
-    blockscoutRootUrl: config.app.baseUrl + route({ pathname: '/' }),
-    blockscoutAddressExplorerUrl: config.app.baseUrl + route({ pathname: '/address/[hash]', query: { hash: '' } }),
-    blockscoutTransactionExplorerUrl: config.app.baseUrl + route({ pathname: '/tx/[hash]', query: { hash: '' } }),
+    blockscoutRootUrl: route({ pathname: '/' }, { absolute: true }),
+    blockscoutAddressExplorerUrl: route({ pathname: '/address/[hash]', query: { hash: '' } }, { absolute: true }),
+    blockscoutTransactionExplorerUrl: route({ pathname: '/tx/[hash]', query: { hash: '' } }, { absolute: true }),
     blockscoutNetworkName: config.chain.name,
     blockscoutNetworkId: Number(config.chain.id),
     blockscoutNetworkCurrency: config.chain.currency,

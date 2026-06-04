@@ -5,11 +5,14 @@ import { route as nextjsRoute } from 'nextjs-routes';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
+import config from 'src/config';
+
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
 export interface RouteParams {
   external?: boolean;
   chain?: ExternalChain & { slug?: string };
+  absolute?: boolean;
 }
 
 export const route = (route: Route, params?: RouteParams | null) => {
@@ -17,6 +20,10 @@ export const route = (route: Route, params?: RouteParams | null) => {
 
   if (params && params.chain && params.external && params.chain.explorer_url) {
     return stripTrailingSlash(params.chain.explorer_url) + generatedRoute;
+  }
+
+  if (params && params.absolute) {
+    return config.app.baseUrl + generatedRoute;
   }
 
   return generatedRoute;

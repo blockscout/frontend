@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import type { WebApplication, WithContext } from 'schema-dts';
 
 import type { ApiData } from 'src/shell/metadata/types';
 
-import config from 'src/config';
+import { route } from 'src/server/routes';
 
 interface Params {
   id: string;
@@ -14,8 +13,8 @@ interface Params {
 
 export default function generateDappInfoSchema({ id, apiData }: Params): WithContext<WebApplication> | undefined {
 
-  const appInfoPageUrl = config.app.baseUrl + route({ pathname: '/apps/[id]/info', query: { id } });
-  const appPageUrl = config.app.baseUrl + route({ pathname: '/apps/[id]', query: { id } });
+  const appInfoPageUrl = route({ pathname: '/apps/[id]/info', query: { id } }, { absolute: true });
+  const appPageUrl = route({ pathname: '/apps/[id]', query: { id } }, { absolute: true });
 
   const schema: WithContext<WebApplication> = {
     '@context': 'https://schema.org',

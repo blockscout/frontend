@@ -2,9 +2,10 @@
 
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React from 'react';
+
+import { route } from 'src/server/routes';
 
 import * as metadata from 'src/shell/metadata';
 
@@ -27,7 +28,6 @@ import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { nbsp } from 'src/toolkit/utils/htmlEntities';
-import { isBrowser } from 'src/toolkit/utils/isBrowser';
 import { makePrettyLink } from 'src/toolkit/utils/url';
 
 import MarketplaceDisclaimerModal from '../../components/MarketplaceDisclaimerModal';
@@ -183,7 +183,7 @@ export default function MarketplaceAppInfoPage() {
             </IconButton>
 
             <CopyToClipboard
-              text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+              text={ route({ pathname: '/apps/[id]/info', query: { id } }, { absolute: true }) }
               type="share"
               variant="icon_background"
               size="md"

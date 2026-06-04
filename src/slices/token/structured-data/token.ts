@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import type { Product, WithContext } from 'schema-dts';
 
 import type { ApiData } from 'src/shell/metadata/types';
 
-import config from 'src/config';
+import { route } from 'src/server/routes';
 
 import { DAY } from 'src/toolkit/utils/consts';
 
@@ -16,7 +15,7 @@ interface Params {
 
 export default function generateTokenSchema({ hash, apiData }: Params): WithContext<Product> | undefined {
 
-  const tokenUrl = config.app.baseUrl + route({ pathname: '/token/[hash]', query: { hash } });
+  const tokenUrl = route({ pathname: '/token/[hash]', query: { hash } }, { absolute: true });
 
   const schema: WithContext<Product> = {
     '@context': 'https://schema.org',
