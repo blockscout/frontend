@@ -10,10 +10,10 @@ import { currencyUnits } from 'src/slices/chain/units';
 import config from 'src/config';
 
 import compileValue from './compile-value';
-import generateProductSchema from './generate-product-schema';
 import getCanonicalUrl from './get-canonical-url';
 import getChainTitle from './get-chain-title';
 import getPageOgType from './get-page-og-type';
+import { generateStructuredData } from './structured-data';
 import * as templates from './templates';
 
 export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname> = null): Metadata {
@@ -33,7 +33,7 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
   const description = compileValue(templates.description.make(route.pathname, Boolean(apiData)), params);
 
   const pageOgType = getPageOgType(route.pathname);
-  const jsonLd = generateProductSchema(route, apiData);
+  const jsonLd = generateStructuredData({ route, apiData });
 
   return {
     title: title,

@@ -6,7 +6,7 @@ import React from 'react';
 
 import PageNextJs from 'src/server/PageNextJs';
 
-const MarketplaceAppInfoPage = dynamic(() => import('src/features/marketplace/pages/info/MarketplaceAppInfoPage'), { ssr: false });
+const MarketplaceAppInfoPage = dynamic(() => import('src/features/marketplace/pages/dapp-info/MarketplaceAppInfoPage'), { ssr: false });
 
 const Page: NextPage = () => (
   <PageNextJs pathname="/apps/[id]/info">
@@ -16,4 +16,4 @@ const Page: NextPage = () => (
 
 export default Page;
 
-export { marketplace as getServerSideProps } from 'src/server/getServerSideProps/main';
+export { getServerSideProps } from 'src/server/getServerSideProps/routes/apps/id';

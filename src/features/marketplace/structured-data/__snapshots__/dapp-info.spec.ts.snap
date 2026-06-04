@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`with rating 1`] = `
+{
+  "@context": "https://schema.org",
+  "@id": "hop-exchange",
+  "@type": "WebApplication",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingCount": 15,
+    "ratingValue": 4.3,
+  },
+  "applicationCategory": "Decentralized Web Application",
+  "applicationSubCategory": "Bridge",
+  "description": "Hop is a scalable rollup-to-rollup general token bridge. It allows users to send tokens from one rollup or sidechain to another almost immediately without having to wait for the networks challenge period.",
+  "image": "https://www.gitbook.com/cdn-cgi/image/width=288,dpr=2.200000047683716,format=auto/https%3A%2F%2Ffiles.gitbook.com%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252F-Lq1XoWGmy8zggj_u2fM%252Fuploads%252FfhJJGsR3RSfFmRoxfvqk%252FHop.png%3Falt%3Dmedia%26token%3D8107e45c-546c-4771-bbfe-e86bb0fe8c1a",
+  "name": "Hop",
+  "operatingSystem": "Web",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Hop",
+    "url": "https://help.hop.exchange/hc/en-us/articles/4405172445197-What-is-Hop-Protocol-",
+  },
+  "sameAs": "https://goerli.hop.exchange/send?token=ETH&sourceNetwork=ethereum",
+  "url": "http://localhost:3000/apps/hop-exchange/info",
+}
+`;
+
+exports[`without rating 1`] = `
+{
+  "@context": "https://schema.org",
+  "@id": "token-approval-tracker",
+  "@type": "WebApplication",
+  "applicationCategory": "Decentralized Web Application",
+  "applicationSubCategory": "Infra & Dev tooling",
+  "description": "Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.",
+  "image": "https://approval-tracker.apps.blockscout.com/icon-192.png",
+  "name": "Token Approval Tracker",
+  "operatingSystem": "Web",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Blockscout",
+    "url": "https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker",
+  },
+  "sameAs": "http://localhost:3000/apps/token-approval-tracker",
+  "url": "http://localhost:3000/apps/token-approval-tracker/info",
+}
+`;

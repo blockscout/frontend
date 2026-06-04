@@ -6,7 +6,7 @@ import type { ExternalChain } from 'src/shared/external-chains/types';
 
 import type config from 'src/config';
 
-export type MarketplaceAppBase = {
+export interface MarketplaceAppBase {
   id: string;
   author: string;
   site?: string;
@@ -22,20 +22,20 @@ export type MarketplaceAppBase = {
   priority?: number;
 };
 
-export type MarketplaceAppRating = {
+export interface MarketplaceAppRating {
   rating?: number;
   ratingsTotalCount?: number;
   userRating?: number;
 };
 
-export type MarketplaceAppSocialInfo = {
+export interface MarketplaceAppSocialInfo {
   twitter?: string;
   telegram?: string;
   github?: string | Array<string>;
   discord?: string;
 };
 
-export type MarketplaceApp = MarketplaceAppBase & MarketplaceAppSocialInfo & MarketplaceAppRating;
+export interface MarketplaceApp extends MarketplaceAppBase, MarketplaceAppSocialInfo, MarketplaceAppRating {}
 
 export enum MarketplaceCategory {
   ALL = 'All',

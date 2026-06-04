@@ -19,6 +19,8 @@ import type { SortValue } from '../utils/sort';
 
 const feature = config.features.marketplace;
 
+const EMPTY_ARRAY: Array<string> = [];
+
 function isAppNameMatches(q: string, app: MarketplaceApp) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
@@ -57,7 +59,7 @@ function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [])
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string>,
+  favoriteApps: Array<string> = EMPTY_ARRAY,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();

@@ -75,13 +75,13 @@ export default function MarketplaceAppInfoPage() {
   }, [ onFavoriteClick, data?.id, isFavorite ]);
 
   React.useEffect(() => {
-    if (data) {
+    if (data && !isLoading) {
       metadata.update(
         { pathname: '/apps/[id]/info', query: { id: data.id } },
-        { app_name: data.title },
+        data,
       );
     }
-  }, [ data ]);
+  }, [ data, isLoading ]);
 
   throwOnResourceLoadError(query);
   throwOnAbsentParamError(data);

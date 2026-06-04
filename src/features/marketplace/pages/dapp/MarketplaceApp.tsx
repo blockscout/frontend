@@ -50,14 +50,14 @@ export default function MarketplaceApp() {
   }), [ colorMode ]);
 
   useEffect(() => {
-    if (data) {
+    if (data && !isPlaceholderData) {
       metadata.update(
         { pathname: '/apps/[id]', query: { id: data.id } },
-        { app_name: data.title },
+        data,
       );
       setIsAutoConnectDisabled(!data.internalWallet);
     }
-  }, [ data, setIsAutoConnectDisabled ]);
+  }, [ data, isPlaceholderData, setIsAutoConnectDisabled ]);
 
   throwOnResourceLoadError(query);
 
