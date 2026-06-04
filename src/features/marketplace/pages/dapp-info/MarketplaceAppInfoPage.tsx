@@ -112,12 +112,14 @@ export default function MarketplaceAppInfoPage() {
         alignItems="flex-start"
         columnGap={ 8 }
         rowGap={ 6 }
+        mt={{ base: 0, lg: 2 }}
       >
         <Image
           src={ logoUrl || undefined }
           alt={ `${ data.title } app icon` }
           borderRadius="md"
           boxSize="144px"
+          objectFit="contain"
         />
         <Box>
           <HStack>
