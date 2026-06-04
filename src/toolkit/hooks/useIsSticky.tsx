@@ -8,7 +8,7 @@ export function useIsSticky(ref: React.RefObject<HTMLElement | null>, offset = 0
 
   const handleScroll = React.useCallback(() => {
     if (
-      Number(ref.current?.getBoundingClientRect().y) < offset
+      Number(ref.current?.getBoundingClientRect().y) <= offset
     ) {
       setIsSticky(true);
     } else {

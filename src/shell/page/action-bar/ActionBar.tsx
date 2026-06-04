@@ -12,7 +12,6 @@ type Props = {
 };
 
 export const ACTION_BAR_HEIGHT_DESKTOP = 24 + 32 + 12;
-export const ACTION_BAR_HEIGHT_MOBILE = 24 + 32 + 24;
 
 const ActionBar = ({ children, className, showShadow }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);

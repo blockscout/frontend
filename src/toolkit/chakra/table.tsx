@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Table as ChakraTable, Icon } from '@chakra-ui/react';
-import { throttle } from 'es-toolkit';
 import * as React from 'react';
 
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import ArrowIcon from 'src/sprite/icons/arrows/east.svg';
 
+import { useIsSticky } from '../hooks/useIsSticky';
 import { Link } from './link';
 
 export const TableRoot = ChakraTable.Root;
@@ -80,34 +81,18 @@ export const TableHeaderSticky = (props: TableHeaderProps) => {
   const { top, children, ...rest } = props;
 
   const ref = React.useRef<HTMLTableSectionElement>(null);
-  const [ isStuck, setIsStuck ] = React.useState(false);
 
-  const handleScroll = React.useCallback(() => {
-    if (Number(ref.current?.getBoundingClientRect().y) <= (top || 0)) {
-      setIsStuck(true);
-    } else {
-      setIsStuck(false);
-    }
-  }, [ top ]);
-
-  React.useEffect(() => {
-    const throttledHandleScroll = throttle(handleScroll, 300);
-
-    window.addEventListener('scroll', throttledHandleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', throttledHandleScroll);
-    };
-  }, [ handleScroll ]);
+  const isMobile = useIsMobile();
+  const isSticky = useIsSticky(ref, top || 0, !isMobile);
 
   return (
     <TableHeader
       ref={ ref }
-      // we assume tables on mobile cannot have sticky header dut to the scrollable container
+      // we assume tables on mobile cannot have sticky header due to the scrollable container
       position={{ base: 'unset', lg: 'sticky' }}
       top={{ base: 0, lg: top ? `${ top }px` : 0 }}
       backgroundColor={{ _light: 'white', _dark: 'black' }}
-      boxShadow={ isStuck ? 'action_bar' : 'none' }
+      boxShadow={ isSticky ? 'action_bar' : 'none' }
       zIndex="1"
       { ...rest }
     >
