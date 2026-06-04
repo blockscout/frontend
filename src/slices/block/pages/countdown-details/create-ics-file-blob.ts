@@ -23,7 +23,7 @@ export default function createIcsFileBlob({ date, blockHeight, multichainContext
   const startTime = date.format(DATE_FORMAT);
   const endTime = date.add(15, 'minutes').format(DATE_FORMAT);
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const blockUrl = config.app.baseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: blockHeight } }, multichainContext);
+  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: blockHeight } }, { absolute: true });
 
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0

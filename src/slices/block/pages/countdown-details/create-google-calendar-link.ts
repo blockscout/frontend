@@ -25,7 +25,7 @@ export default function createGoogleCalendarLink({ timeFromNow, blockHeight, mul
   const startTime = date.format(DATE_FORMAT);
   const endTime = date.add(15, 'minutes').format(DATE_FORMAT);
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const blockUrl = config.app.baseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: blockHeight } }, multichainContext);
+  const blockUrl = route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: blockHeight } }, { absolute: true });
 
   const url = new URL('calendar/render', 'https://www.google.com/');
   url.searchParams.append('action', 'TEMPLATE');

@@ -19,6 +19,8 @@ import type { SortValue } from '../utils/sort';
 
 const feature = config.features.marketplace;
 
+const EMPTY_ARRAY: Array<string> = [];
+
 function isAppNameMatches(q: string, app: MarketplaceApp) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
@@ -29,13 +31,19 @@ function isAppCategoryMatches(category: string, app: MarketplaceApp, favoriteApp
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = []) {
+function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [], sorting: SortValue | undefined) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
     // First, sort by favorite apps
     if (favoriteApps.includes(a.id) !== favoriteApps.includes(b.id)) {
       return favoriteApps.includes(a.id) ? -1 : 1;
+    }
+    if (sorting === 'rating_score') {
+      return (b.rating || 0) - (a.rating || 0);
+    }
+    if (sorting === 'rating_count') {
+      return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
     }
     // Then sort by priority (descending)
     if (priorityB !== priorityA) {
@@ -57,24 +65,15 @@ function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [])
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string> | undefined = undefined,
-  isFavoriteAppsLoaded: boolean = false,
+  favoriteApps: Array<string> = EMPTY_ARRAY,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const isAuth = useIsAuth();
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
-  // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
-  const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
-  const isInitialSetup = React.useRef(true);
-
-  React.useEffect(() => {
-    if (isInitialSetup.current && (isFavoriteAppsLoaded || favoriteApps === undefined)) {
-      setSnapshotFavoriteApps(favoriteApps || []);
-      isInitialSetup.current = false;
-    }
-  }, [ isFavoriteAppsLoaded, favoriteApps ]);
+  // Use a ref to keep initial favorite apps and sorting while favorite / un-favorite apps
+  const favoriteAppsRef = React.useRef(favoriteApps);
 
   const {
     isPlaceholderData, isError, error, data, refetch,
@@ -89,10 +88,10 @@ export default function useMarketplaceApps(
         return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceApp>, snapshotFavoriteApps),
+    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current, sorting),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
+    enabled: feature.isEnabled,
   });
 
   React.useEffect(() => {
@@ -104,18 +103,8 @@ export default function useMarketplaceApps(
       return data || [];
     }
 
-    return data
-      ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
-      .sort((a, b) => {
-        if (sorting === 'rating_score') {
-          return (b.rating || 0) - (a.rating || 0);
-        }
-        if (sorting === 'rating_count') {
-          return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
-        }
-        return 0;
-      }) || [];
-  }, [ selectedCategoryId, data, filter, favoriteApps, sorting, isPlaceholderData ]);
+    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [ selectedCategoryId, data, filter, favoriteApps, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     data,
