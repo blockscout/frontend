@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
@@ -16,6 +15,8 @@ import useDescribeTxs from 'src/features/tx-interpretation/noves/hooks/useDescri
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';
@@ -74,9 +75,28 @@ const TxsContent = ({
 
   const translationQuery = useDescribeTxs(items, currentAddress, isPlaceholderData);
 
-  const content = items && items.length > 0 ? (
-    <>
-      <Box display={ isTableView ? 'none' : 'block' }>
+  const content = (() => {
+    if (items && items.length > 0) {
+      if (isTableView) {
+        return (
+          <TableContainerScrollable>
+            <TxsTable
+              txs={ items }
+              sort={ sort }
+              onSortToggle={ setSorting ? onSortToggle : undefined }
+              showBlockInfo={ showBlockInfo }
+              socketType={ socketType }
+              top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
+              currentAddress={ currentAddress }
+              enableTimeIncrement={ enableTimeIncrement }
+              isLoading={ isLoading }
+              stickyHeader={ !isMobile && stickyHeader }
+              translationQuery={ translationQuery }
+            />
+          </TableContainerScrollable>
+        );
+      }
+      return (
         <TxsList
           showBlockInfo={ showBlockInfo }
           socketType={ socketType }
@@ -86,35 +106,16 @@ const TxsContent = ({
           items={ items }
           translationQuery={ translationQuery }
         />
-      </Box>
-      <Box
-        display={ isTableView ? 'block' : 'none' }
-        overflowX={ isMobile ? 'scroll' : undefined }
-        mx={ isMobile ? -3 : 0 }
-        px={ isMobile ? 3 : 0 }
-      >
-        <TxsTable
-          txs={ items }
-          sort={ sort }
-          onSortToggle={ setSorting ? onSortToggle : undefined }
-          showBlockInfo={ showBlockInfo }
-          socketType={ socketType }
-          top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
-          currentAddress={ currentAddress }
-          enableTimeIncrement={ enableTimeIncrement }
-          isLoading={ isLoading }
-          stickyHeader={ !isMobile && stickyHeader }
-          translationQuery={ translationQuery }
-        />
-      </Box>
-    </>
-  ) : null;
+      );
+    }
+    return null;
+  })();
 
   const actionBar = isMobile ? (
     <TxsHeaderMobile
       mt={ -6 }
       sorting={ sort }
-      setSorting={ setSorting }
+      setSorting={ !isTableView ? setSorting : undefined }
       paginationProps={ pagination }
       showPagination={ pagination.isVisible }
       filterComponent={ filter }
