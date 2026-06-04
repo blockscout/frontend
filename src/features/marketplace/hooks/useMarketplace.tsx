@@ -8,20 +8,10 @@ import { MarketplaceCategory } from 'src/features/marketplace/types/client';
 import * as mixpanel from 'src/services/mixpanel';
 import useDebounce from 'src/shared/hooks/useDebounce';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
-import removeQueryParam from 'src/shared/router/remove-query-param';
 
+import useFavoriteApps from './useFavoriteApps';
 import useMarketplaceApps from './useMarketplaceApps';
 import useMarketplaceCategories from './useMarketplaceCategories';
-
-const favoriteAppsLocalStorageKey = 'favoriteApps';
-
-function getFavoriteApps() {
-  try {
-    return JSON.parse(localStorage.getItem(favoriteAppsLocalStorageKey) || '[]') as Array<string>;
-  } catch (e) {
-    return [];
-  }
-}
 
 export default function useMarketplace() {
   const router = useRouter();
@@ -31,31 +21,9 @@ export default function useMarketplace() {
   const [ selectedAppId, setSelectedAppId ] = React.useState<string | null>(null);
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
-  const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
-  const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
-  const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
 
-  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'App modal' | 'Banner') => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
-
-    const favoriteApps = getFavoriteApps();
-
-    if (isFavorite) {
-      const result = favoriteApps.filter((appId: string) => appId !== id);
-      setFavoriteApps(result);
-      localStorage.setItem(favoriteAppsLocalStorageKey, JSON.stringify(result));
-    } else {
-      favoriteApps.push(id);
-      localStorage.setItem(favoriteAppsLocalStorageKey, JSON.stringify(favoriteApps));
-      setFavoriteApps(favoriteApps);
-    }
-  }, [ ]);
-
-  const showAppInfo = React.useCallback((id: string) => {
-    setSelectedAppId(id);
-    setIsAppInfoModalOpen(true);
-  }, []);
+  const { favoriteApps, onFavoriteClick } = useFavoriteApps();
 
   const showDisclaimer = React.useCallback((id: string) => {
     setSelectedAppId(id);
@@ -65,7 +33,6 @@ export default function useMarketplace() {
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = React.useCallback(() => {
     setSelectedAppId(null);
-    setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
   }, []);
 
@@ -76,15 +43,10 @@ export default function useMarketplace() {
 
   const {
     isPlaceholderData, isError, error, data, displayedApps, setSorting, refetch,
-  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
+  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
   const {
     isPlaceholderData: isCategoriesPlaceholderData, data: categories,
   } = useMarketplaceCategories(data, isPlaceholderData);
-
-  React.useEffect(() => {
-    setFavoriteApps(getFavoriteApps());
-    setIsFavoriteAppsLoaded(true);
-  }, [ ]);
 
   React.useEffect(() => {
     if (!isPlaceholderData && !isError) {
@@ -94,12 +56,11 @@ export default function useMarketplace() {
     // run only when data is loaded
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
+
   React.useEffect(() => {
-    const selectedAppId = getQueryParamString(router.query.selectedAppId);
-    if (selectedAppId) {
-      setSelectedAppId(selectedAppId);
-      setIsAppInfoModalOpen(true);
-      removeQueryParam(router, 'selectedAppId');
+    const appId = getQueryParamString(router.query.selectedAppId);
+    if (appId) {
+      router.replace({ pathname: '/apps/[id]/info', query: { id: appId } });
     }
   }, [ router.query.selectedAppId, router ]);
 
@@ -148,12 +109,10 @@ export default function useMarketplace() {
     categories,
     apps: data,
     displayedApps,
-    showAppInfo,
     selectedAppId,
     clearSelectedAppId,
     favoriteApps,
-    onFavoriteClick: handleFavoriteClick,
-    isAppInfoModalOpen,
+    onFavoriteClick,
     isDisclaimerModalOpen,
     showDisclaimer,
     appsTotal: data?.length || 0,
@@ -170,12 +129,10 @@ export default function useMarketplace() {
     error,
     favoriteApps,
     handleCategoryChange,
-    handleFavoriteClick,
+    onFavoriteClick,
     isError,
     isPlaceholderData,
-    showAppInfo,
     debouncedFilterQuery,
-    isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
     isCategoriesPlaceholderData,

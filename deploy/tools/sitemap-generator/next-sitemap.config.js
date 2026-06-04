@@ -29,6 +29,47 @@ const fetchResource = async(url, formatter) => {
   }
 };
 
+const fetchDapps = async() => {
+  if(process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true'){
+    return;
+  }
+
+  const formatter = (data) => {
+    if(!Array.isArray(data)){
+      return [];
+    }
+
+    return data
+      .sort((a, b) => {
+        const priorityA = a.priority || 0;
+        const priorityB = b.priority || 0;
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA;
+        }
+        if (a.internalWallet !== b.internalWallet) {
+          return a.internalWallet ? -1 : 1;
+        }
+        if (a.external !== b.external) {
+          return a.external ? 1 : -1;
+        }
+        return 0;
+      })
+      .slice(0, 50)
+      .map(({ id }) => ({ path: `/apps/${ id }/info` }))
+  };
+
+  const configUrl = process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL;
+  if(configUrl){
+    return fetchResource(configUrl, formatter);
+  }
+
+  const api = process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST;
+  const instanceId = process.env.NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID || process.env.NEXT_PUBLIC_NETWORK_ID;
+  if(api && instanceId){
+    return fetchResource(`${ stripTrailingSlash(api) }/api/v1/chains/${ instanceId }/marketplace/dapps`, formatter);
+  }
+}
+
 const siteUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
@@ -247,6 +288,7 @@ module.exports = {
           path: `/address/${ address.hash }?tab=contract`
         })),
       );
+    const dapps = fetchDapps();
 
     return Promise.all([
       ...(await addresses || []),
@@ -254,6 +296,7 @@ module.exports = {
       ...(await blocks || []),
       ...(await tokens || []),
       ...(await contracts || []),
+      ...(await dapps || []),
     ].map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
   },
 };

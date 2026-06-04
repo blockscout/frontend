@@ -1,3 +1,7 @@
+# Required for `pnpm deploy` in the Docker image (favicon/sitemap generators).
+# pnpm 11+ reads this from pnpm-workspace.yaml only — not from .npmrc.
+injectWorkspacePackages: true
+
 packages:
   - 'src/toolkit/package'
   - 'deploy/tools/envs-validator'

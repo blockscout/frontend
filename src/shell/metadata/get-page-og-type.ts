@@ -25,6 +25,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/token/[hash]/instance/[id]': 'Regular page',
   '/apps': 'Root page',
   '/apps/[id]': 'Regular page',
+  '/apps/[id]/info': 'Regular page',
   '/essential-dapps/[id]': 'Regular page',
   '/stats': 'Root page',
   '/stats/[id]': 'Regular page',

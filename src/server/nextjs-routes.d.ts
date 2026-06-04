@@ -35,6 +35,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/api/tokens/[hash]/instances/[id]/media-type", { "hash": string; "id": string }>
     | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>
+    | DynamicRoute<"/apps/[id]/info", { "id": string }>
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/batches">
     | DynamicRoute<"/batches/[number]", { "number": string }>

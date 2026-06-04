@@ -14,39 +14,6 @@ exports[`generates correct metadata for: > dynamic route 1`] = `
 }
 `;
 
-exports[`generates correct metadata for: > dynamic route with API data 1`] = `
-{
-  "canonical": undefined,
-  "description": "0x12345, balances and analytics on the Blockscout (Blockscout) Explorer",
-  "jsonLd": {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    "brand": {
-      "@type": "Brand",
-      "name": "Tether",
-    },
-    "description": "USDT is a stablecoin",
-    "image": "https://example.com/usdt.png",
-    "name": "USDT",
-    "offers": {
-      "@type": "Offer",
-      "availability": "InStock",
-      "price": "1.00",
-      "priceCurrency": "USD",
-      "priceValidUntil": "2024-01-02T00:00:00.000Z",
-    },
-    "productID": "0x12345",
-    "url": "http://localhost:3000/token/0x12345",
-  },
-  "opengraph": {
-    "description": "",
-    "imageUrl": "",
-    "title": "Blockscout USDT token details | Blockscout",
-  },
-  "title": "Blockscout USDT token details | Blockscout",
-}
-`;
-
 exports[`generates correct metadata for: > static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",

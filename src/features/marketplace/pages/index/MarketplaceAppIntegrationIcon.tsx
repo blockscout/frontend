@@ -10,9 +10,10 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 type Props = {
   internalWallet: boolean | undefined;
   external: boolean | undefined;
+  isLoading?: boolean;
 };
 
-const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
+const MarketplaceAppIntegrationIcon = ({ external, internalWallet, isLoading }: Props) => {
   const [ icon, iconColor, text, boxSize ] = React.useMemo(() => {
     let icon: IconName = 'integration/partial';
     let color = 'icon.secondary';
@@ -46,6 +47,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
         position="relative"
         cursor="pointer"
         verticalAlign="middle"
+        isLoading={ isLoading }
       />
     </Tooltip>
   );

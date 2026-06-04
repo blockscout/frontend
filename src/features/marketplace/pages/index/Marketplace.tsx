@@ -26,13 +26,13 @@ import { MenuContent, MenuItem, MenuRoot, MenuTrigger } from 'src/toolkit/chakra
 import AdaptiveTabs from 'src/toolkit/components/AdaptiveTabs/AdaptiveTabs';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
+import MarketplaceDisclaimerModal from '../../components/MarketplaceDisclaimerModal';
 import useMarketplace from '../../hooks/useMarketplace';
+import { isDisclaimerShown } from '../../utils/disclaimer-modal';
 import type { SortValue } from '../../utils/sort';
 import { SORT_OPTIONS } from '../../utils/sort';
 import Banner from './banner/Banner';
 import EssentialDappsList from './essential-dapps/EssentialDappsList';
-import MarketplaceAppModal from './MarketplaceAppModal';
-import MarketplaceDisclaimerModal from './MarketplaceDisclaimerModal';
 import MarketplaceList from './MarketplaceList';
 
 const sortCollection = createListCollection({ items: SORT_OPTIONS });
@@ -67,14 +67,12 @@ const Marketplace = () => {
     onCategoryChange,
     filterQuery,
     onSearchInputChange,
-    showAppInfo,
     apps,
     displayedApps,
     selectedAppId,
     clearSelectedAppId,
     favoriteApps,
     onFavoriteClick,
-    isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
     appsTotal,
@@ -126,8 +124,7 @@ const Marketplace = () => {
   }, [ categoryTabs, onCategoryChange ]);
 
   const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
-    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
-    if (!isShown) {
+    if (!isDisclaimerShown()) {
       event.preventDefault();
       showDisclaimer(id);
     }
@@ -186,7 +183,6 @@ const Marketplace = () => {
         apps={ apps }
         favoriteApps={ favoriteApps }
         isLoading={ isPlaceholderData }
-        onInfoClick={ showAppInfo }
         onFavoriteClick={ onFavoriteClick }
         onAppClick={ handleAppClick }
       />
@@ -244,7 +240,6 @@ const Marketplace = () => {
 
       <MarketplaceList
         apps={ displayedApps }
-        showAppInfo={ showAppInfo }
         favoriteApps={ favoriteApps }
         onFavoriteClick={ onFavoriteClick }
         isLoading={ isPlaceholderData }
@@ -252,16 +247,6 @@ const Marketplace = () => {
         onAppClick={ handleAppClick }
         graphLinksQuery={ graphLinksQuery }
       />
-
-      { (selectedApp && isAppInfoModalOpen) && (
-        <MarketplaceAppModal
-          onClose={ clearSelectedAppId }
-          isFavorite={ favoriteApps.includes(selectedApp.id) }
-          onFavoriteClick={ onFavoriteClick }
-          data={ selectedApp }
-          graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
-        />
-      ) }
 
       { (selectedApp && isDisclaimerModalOpen) && (
         <MarketplaceDisclaimerModal

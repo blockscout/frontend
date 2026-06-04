@@ -6,6 +6,9 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 
+import { route } from 'src/server/routes';
+
+import * as mixpanel from 'src/services/mixpanel';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
@@ -13,7 +16,6 @@ import { IconButton } from 'src/toolkit/chakra/icon-button';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link, LinkBox } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { isBrowser } from 'src/toolkit/utils/isBrowser';
 
 import Rating from '../../components/rating/MarketplaceRating';
 import FavoriteIcon from './FavoriteIcon';
@@ -22,7 +24,6 @@ import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 
 interface Props extends MarketplaceApp {
-  onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
@@ -40,7 +41,6 @@ const MarketplaceAppCard = ({
   logoDarkMode,
   shortDescription,
   categories,
-  onInfoClick,
   isFavorite,
   onFavoriteClick,
   isLoading,
@@ -54,10 +54,9 @@ const MarketplaceAppCard = ({
 }: Props) => {
   const categoriesLabel = categories.join(', ');
 
-  const handleInfoClick = useCallback((event: MouseEvent) => {
-    event.preventDefault();
-    onInfoClick(id);
-  }, [ onInfoClick, id ]);
+  const handleInfoClick = useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
+  }, [ id ]);
 
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(id, isFavorite);
@@ -157,7 +156,7 @@ const MarketplaceAppCard = ({
               fontWeight="500"
               paddingRight={ 3 }
               h="full"
-              href="#"
+              href={ route({ pathname: '/apps/[id]/info', query: { id } }) }
               onClick={ handleInfoClick }
             >
               Info
@@ -183,7 +182,7 @@ const MarketplaceAppCard = ({
                   <FavoriteIcon isFavorite={ isFavorite }/>
                 </IconButton>
                 <CopyToClipboard
-                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  text={ route({ pathname: '/apps/[id]/info', query: { id } }, { absolute: true }) }
                   type="share"
                   variant="icon_background"
                   size="md"

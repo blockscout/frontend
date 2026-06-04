@@ -7,7 +7,7 @@ import type { RouteParams } from 'src/server/types';
 
 import generate from './generate';
 
-const JSON_LD_SCRIPT_ID = 'blockscout-product-schema';
+const JSON_LD_SCRIPT_ID = 'blockscout-structured-data';
 
 export default function update<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname>) {
   const { title, description, jsonLd } = generate(route, apiData);
@@ -15,7 +15,6 @@ export default function update<Pathname extends Route['pathname']>(route: RouteP
   window.document.title = title;
   window.document.querySelector('meta[name="description"]')?.setAttribute('content', description);
 
-  // Update or create JSON-LD script tag for Product schema
   if (jsonLd) {
     let scriptElement = window.document.getElementById(JSON_LD_SCRIPT_ID) as HTMLScriptElement | null;
 
@@ -28,7 +27,6 @@ export default function update<Pathname extends Route['pathname']>(route: RouteP
 
     scriptElement.textContent = JSON.stringify(jsonLd);
   } else {
-    // Remove JSON-LD script if it exists but schema is not needed
     const existingScript = window.document.getElementById(JSON_LD_SCRIPT_ID);
     if (existingScript) {
       existingScript.remove();

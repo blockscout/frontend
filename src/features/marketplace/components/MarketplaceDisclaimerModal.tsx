@@ -10,6 +10,8 @@ import { Button } from 'src/toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
 import { Link } from 'src/toolkit/chakra/link';
 
+import { setDisclaimerShown } from '../utils/disclaimer-modal';
+
 type Props = {
   isOpen: boolean;
   onClose: () => void;
@@ -23,7 +25,7 @@ const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId, external, url }: P
   const isMobile = useIsMobile();
 
   const handleContinueClick = React.useCallback(() => {
-    window.localStorage.setItem('marketplace-disclaimer-shown', 'true');
+    setDisclaimerShown();
     onClose();
   }, [ onClose ]);
 
@@ -32,6 +34,8 @@ const MarketplaceDisclaimerModal = ({ isOpen, onClose, appId, external, url }: P
       open={ isOpen }
       onOpenChange={ onClose }
       size={ isMobile ? 'full' : 'md' }
+      lazyMount
+      unmountOnExit
     >
       <DialogContent>
         <DialogHeader>

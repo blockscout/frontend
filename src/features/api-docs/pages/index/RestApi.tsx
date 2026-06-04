@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import { route } from 'src/server/routes';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -94,7 +95,7 @@ const RestApi = () => {
         <AccordionItem key={ index } value={ section.id }>
           <AccordionItemTrigger>
             <CopyToClipboard
-              text={ config.app.baseUrl + route({ pathname: '/api-docs', query: { tab: 'rest_api' }, hash: section.id }) }
+              text={ route({ pathname: '/api-docs', query: { tab: 'rest_api' }, hash: section.id }, { absolute: true }) }
               type="link"
               ml={ 0 }
               mr={ 1 }

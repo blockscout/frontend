@@ -1,50 +1,23 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSideProps } from 'next';
-import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
-import fetch from 'node-fetch';
-import React from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-import type { NextPageWithLayout } from 'src/server/types';
 
-import type { Props } from 'src/server/getServerSideProps/handlers';
-import * as gSSP from 'src/server/getServerSideProps/main';
-import PageNextJs from 'src/server/PageNextJs';
 import detectBotRequest from 'src/server/utils/detectBotRequest';
 import fetchApi from 'src/server/utils/fetchApi';
-
-import LayoutApp from 'src/shell/layout/LayoutApp';
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-const MarketplaceAppPage = dynamic(() => import('src/features/marketplace/pages/dapp/MarketplaceApp'), { ssr: false });
+import type { Props } from '../../handlers';
+import * as gSSP from '../../main';
 
-const pathname: Route['pathname'] = '/apps/[id]';
+type Pathname = '/apps/[id]' | '/apps/[id]/info';
 const feature = config.features.marketplace;
 
-const Page: NextPageWithLayout<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
-  return (
-    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
-      <MarketplaceAppPage/>
-    </PageNextJs>
-  );
-};
-
-Page.getLayout = function getLayout(page: React.ReactElement) {
-  return (
-    <LayoutApp>
-      { page }
-    </LayoutApp>
-  );
-};
-
-export default Page;
-
-export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
-  const baseResponse = await gSSP.marketplace<typeof pathname>(ctx);
+export const getServerSideProps: GetServerSideProps<Props<Pathname>> = async(ctx) => {
+  const baseResponse = await gSSP.marketplace<Pathname>(ctx);
 
   if (config.metadata.og.enhancedDataEnabled && 'props' in baseResponse && feature.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
@@ -78,9 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
         }
       })();
 
-      (await baseResponse.props).apiData = appData && appData.title ? {
-        app_name: appData.title,
-      } : null;
+      (await baseResponse.props).apiData = appData ? appData : null;
     }
   }
 

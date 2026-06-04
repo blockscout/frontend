@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import { Element } from 'react-scroll';
 
 import type { FormSubmitHandler, SmartContractMethod } from './types';
 
-import config from 'src/config';
+import { route } from 'src/server/routes';
+
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger } from 'src/toolkit/chakra/accordion';
@@ -35,7 +35,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
   const [ attempt, setAttempt ] = React.useState(0);
 
   const url = React.useMemo(() => {
-    return config.app.baseUrl + route({
+    return route({
       pathname: '/address/[hash]',
       query: {
         hash: addressHash ?? '',
@@ -43,7 +43,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
         ...(sourceAddress ? { source_address: sourceAddress } : {}),
       },
       hash: getElementId(data),
-    });
+    }, { absolute: true });
   }, [ addressHash, data, tab, sourceAddress ]);
 
   const handleReset = React.useCallback(() => {

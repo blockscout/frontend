@@ -159,10 +159,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               alt={ `${ data.app.title } app icon` }
             />
             <Link
-              href={ data.app.external ?
-                route({ pathname: '/apps', query: { selectedAppId: data.app.id } }) :
-                route({ pathname: '/apps/[id]', query: { id: data.app.id } })
-              }
+              href={ route({ pathname: '/apps/[id]/info', query: { id: data.app.id } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
               loading={ isLoading }
