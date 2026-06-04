@@ -31,13 +31,19 @@ function isAppCategoryMatches(category: string, app: MarketplaceApp, favoriteApp
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = []) {
+function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [], sorting: SortValue | undefined) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
     // First, sort by favorite apps
     if (favoriteApps.includes(a.id) !== favoriteApps.includes(b.id)) {
       return favoriteApps.includes(a.id) ? -1 : 1;
+    }
+    if (sorting === 'rating_score') {
+      return (b.rating || 0) - (a.rating || 0);
+    }
+    if (sorting === 'rating_count') {
+      return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
     }
     // Then sort by priority (descending)
     if (priorityB !== priorityA) {
@@ -82,7 +88,7 @@ export default function useMarketplaceApps(
         return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current),
+    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current, sorting),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,
@@ -97,18 +103,8 @@ export default function useMarketplaceApps(
       return data || [];
     }
 
-    return data
-      ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
-      .sort((a, b) => {
-        if (sorting === 'rating_score') {
-          return (b.rating || 0) - (a.rating || 0);
-        }
-        if (sorting === 'rating_count') {
-          return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
-        }
-        return 0;
-      }) || [];
-  }, [ selectedCategoryId, data, filter, favoriteApps, sorting, isPlaceholderData ]);
+    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [ selectedCategoryId, data, filter, favoriteApps, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     data,
