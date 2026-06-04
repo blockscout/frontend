@@ -30,7 +30,7 @@ const fetchResource = async(url, formatter) => {
 };
 
 const fetchDapps = async() => {
-  if(!process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED){
+  if(process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true'){
     return;
   }
 

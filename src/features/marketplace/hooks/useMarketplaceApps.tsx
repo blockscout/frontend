@@ -72,7 +72,7 @@ export default function useMarketplaceApps(
   const isAuth = useIsAuth();
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
-  // Use a ref to keep sorting while favorite / un-favorite apps
+  // Use a ref to keep initial favorite apps and sorting while favorite / un-favorite apps
   const favoriteAppsRef = React.useRef(favoriteApps);
 
   const {
