@@ -43,6 +43,8 @@ export function connectWallet(): CspDev.DirectiveDescriptor {
           'https://logs.dynamicauth.com',
           'wss://relay.walletconnect.com',
           'wss://relay.walletconnect.org',
+          // Gas Sponsorship with ZeroDev
+          'https://rpc.zerodev.app',
         ],
         'font-src': [
           'https://cdn.jsdelivr.net/npm/@fontsource/dm-sans/files/dm-sans-latin-400-normal.woff2',
