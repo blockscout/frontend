@@ -4,7 +4,7 @@ import type { Product, WithContext } from 'schema-dts';
 
 import type { ApiData } from 'src/shell/metadata/types';
 
-import { route } from 'src/server/routes';
+import { route } from 'src/shared/router/routes';
 
 import { DAY } from 'src/toolkit/utils/consts';
 

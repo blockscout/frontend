@@ -5,11 +5,11 @@ import React from 'react';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
-import { route } from 'src/server/routes';
-
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
+
+import { route } from 'src/shared/router/routes';
 
 type Props = {
   chainId: string;

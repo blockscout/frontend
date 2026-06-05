@@ -5,14 +5,13 @@ import React from 'react';
 
 import type { SmartContract } from 'src/slices/contract/types/api';
 
-import { route } from 'src/server/routes';
-
 import { formatLanguageName } from 'src/slices/contract/utils/language';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import CodeEditor from 'src/shared/code-editor/CodeEditor';
 import formatFilePath from 'src/shared/code-editor/utils/formatFilePath';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Link } from 'src/toolkit/chakra/link';

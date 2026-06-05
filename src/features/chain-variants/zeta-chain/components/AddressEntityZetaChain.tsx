@@ -5,8 +5,6 @@ import React from 'react';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
-import { route } from 'src/server/routes';
-
 import type * as AddressEntityBase from 'src/slices/address/components/entity/AddressEntity';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { unknownAddress } from 'src/slices/address/utils/consts';
@@ -15,6 +13,7 @@ import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/use
 
 import config from 'src/config';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';

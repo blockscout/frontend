@@ -3,7 +3,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'src/server/routes';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

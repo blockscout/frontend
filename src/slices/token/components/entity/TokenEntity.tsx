@@ -6,8 +6,6 @@ import React from 'react';
 
 import type { TokenInfo } from 'src/slices/token/types/api';
 
-import { route } from 'src/server/routes';
-
 import TokenIconPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -16,6 +14,7 @@ import config from 'src/config';
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

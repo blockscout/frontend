@@ -2,11 +2,10 @@
 
 import React from 'react';
 
-import { route } from 'src/server/routes';
-
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger, AccordionRoot, useAccordion } from 'src/toolkit/chakra/accordion';

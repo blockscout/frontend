@@ -7,12 +7,11 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { AddressNFT } from 'src/slices/address/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
-import { route } from 'src/server/routes';
-
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
 
+import { route } from 'src/shared/router/routes';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'src/toolkit/chakra/link';

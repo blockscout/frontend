@@ -8,8 +8,6 @@ import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
 
-import { route, routeParams } from 'src/server/routes';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'src/slices/block/utils/get-block-reward';
@@ -36,6 +34,7 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route, routeParams } from 'src/shared/router/routes';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';

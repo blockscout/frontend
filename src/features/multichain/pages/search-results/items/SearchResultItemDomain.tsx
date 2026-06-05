@@ -5,9 +5,9 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import { route } from 'src/server/routes';
-
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
+
+import { route } from 'src/shared/router/routes';
 
 import SearchResultListItem from '../SearchResultListItem';
 

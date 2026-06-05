@@ -4,11 +4,10 @@ import { chakra, Box, Center } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { routeParams } from 'src/server/routes';
-
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
+import { routeParams } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Heading } from 'src/toolkit/chakra/heading';

@@ -2,9 +2,9 @@
 
 import type { MetadataTag } from './types';
 
-import { route } from 'src/server/routes';
-
 import type { TMultichainContext } from 'src/features/multichain/context';
+
+import { route } from 'src/shared/router/routes';
 
 export function getTagLinkParams(
   data: MetadataTag,

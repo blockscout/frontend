@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'src/server/routes';
-
 import type { TMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import type dayjs from 'src/shared/date-and-time/dayjs';
+import { route } from 'src/shared/router/routes';
 
 interface Params {
   date: dayjs.Dayjs;

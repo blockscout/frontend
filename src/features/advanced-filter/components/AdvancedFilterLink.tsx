@@ -3,9 +3,8 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { RouteParams } from 'src/server/routes';
-import { route } from 'src/server/routes';
-
+import type { RouteParams } from 'src/shared/router/routes';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import type { LinkProps } from 'src/toolkit/chakra/link';

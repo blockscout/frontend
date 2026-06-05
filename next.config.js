@@ -76,7 +76,7 @@ const moduleExports = {
   },
 
   // workaround for passing outDir to nextjs-routes CLI
-  outDir: 'src/server',
+  outDir: 'src/shared/router',
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

@@ -3,13 +3,12 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { route } from 'src/server/routes';
-
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps } from 'src/shared/entities/utils';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 

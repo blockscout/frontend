@@ -5,11 +5,11 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import { route } from 'src/server/routes';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import * as contract from 'src/features/multichain/utils/contract';
+
+import { route } from 'src/shared/router/routes';
 
 import SearchResultListItem from '../SearchResultListItem';
 

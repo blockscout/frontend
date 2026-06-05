@@ -5,14 +5,13 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
 
-import { route } from 'src/server/routes';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

@@ -4,13 +4,13 @@ import React from 'react';
 
 import type { TxsSocketNoticePlace, TxsSocketType } from 'src/slices/tx/types/socket';
 
-import { route } from 'src/server/routes';
-
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
 import useNewTxsSocketTypeAll from 'src/slices/tx/hooks/useTxsSocketTypeAll';
 
 import { useMultichainContext } from 'src/features/multichain/context';
+
+import { route } from 'src/shared/router/routes';
 
 interface Props {
   type: TxsSocketType;

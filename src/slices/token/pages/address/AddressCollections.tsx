@@ -5,8 +5,6 @@ import React from 'react';
 
 import type { NFTTokenType } from 'src/slices/token/types/api';
 
-import { route } from 'src/server/routes';
-
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -18,6 +16,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

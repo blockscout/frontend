@@ -6,8 +6,6 @@ import React from 'react';
 
 import { isConfidentialTokenType, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
-import { route } from 'src/server/routes';
-
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
 import type { TokenEnhancedData } from 'src/slices/token/pages/address/utils';
@@ -15,6 +13,7 @@ import type { TokenEnhancedData } from 'src/slices/token/pages/address/utils';
 import multichainConfig from 'src/features/multichain/chains-config';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'src/toolkit/chakra/link';

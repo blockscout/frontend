@@ -8,8 +8,6 @@ import React from 'react';
 import type { PaginationParams } from 'src/shared/pagination/types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import { routeParams } from 'src/server/routes';
-
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -40,6 +38,7 @@ import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-e
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { routeParams } from 'src/shared/router/routes';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';

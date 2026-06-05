@@ -6,9 +6,9 @@ import React from 'react';
 
 import type { AddressCounters } from 'src/slices/address/types/api';
 
-import { route } from 'src/server/routes';
-
 import type { ResourceError } from 'src/api/resources';
+
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

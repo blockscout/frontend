@@ -5,11 +5,10 @@ import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 
-import { route } from 'src/server/routes';
-
 import SearchBarSuggestItemLink from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
 import Time from 'src/shared/date-and-time/Time';
+import { route } from 'src/shared/router/routes';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

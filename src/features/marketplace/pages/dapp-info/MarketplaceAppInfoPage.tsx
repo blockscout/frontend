@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
-import { route } from 'src/server/routes';
-
 import * as metadata from 'src/shell/metadata';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
@@ -15,6 +13,7 @@ import config from 'src/config';
 import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';

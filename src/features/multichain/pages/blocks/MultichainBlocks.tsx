@@ -6,8 +6,6 @@ import React from 'react';
 
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import { route } from 'src/server/routes';
-
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { BLOCK } from 'src/slices/block/stubs/block';
@@ -20,6 +18,7 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';

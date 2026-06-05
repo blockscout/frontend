@@ -4,8 +4,6 @@ import { Box, Center, Flex, Grid } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { route } from 'src/server/routes';
-
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import CapybaraRunner from 'src/features/easter-eggs/components/runner/CapybaraRunner';
@@ -16,6 +14,7 @@ import Time from 'src/shared/date-and-time/Time';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

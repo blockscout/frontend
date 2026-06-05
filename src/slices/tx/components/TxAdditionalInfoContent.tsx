@@ -6,8 +6,6 @@ import React from 'react';
 
 import type { Transaction } from 'src/slices/tx/types/api';
 
-import { route } from 'src/server/routes';
-
 import { currencyUnits } from 'src/slices/chain/units';
 import TxFee from 'src/slices/tx/components/TxFee';
 import TxStatus from 'src/slices/tx/components/TxStatus';
@@ -16,6 +14,7 @@ import BlobEntity from 'src/features/data-availability/components/entity/BlobEnt
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import Utilization from 'src/shared/values/utilization/Utilization';

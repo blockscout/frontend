@@ -6,11 +6,10 @@ import React, { useState, useCallback, useMemo } from 'react';
 import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 
-import { route } from 'src/server/routes';
-
 import TokenLogoPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { Heading } from 'src/toolkit/chakra/heading';

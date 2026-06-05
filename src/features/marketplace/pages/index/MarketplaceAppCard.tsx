@@ -6,9 +6,8 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 
-import { route } from 'src/server/routes';
-
 import * as mixpanel from 'src/services/mixpanel';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';

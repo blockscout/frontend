@@ -5,11 +5,10 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 
-import { route } from 'src/server/routes';
-
 import multichainConfig from 'src/features/multichain/chains-config';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

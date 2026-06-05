@@ -5,12 +5,11 @@ import React from 'react';
 
 import type { TokenInstance } from 'src/slices/token/types/api';
 
-import { route } from 'src/server/routes';
-
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
+import { route } from 'src/shared/router/routes';
 
 import NftMedia from '../nft-media/NftMedia';
 

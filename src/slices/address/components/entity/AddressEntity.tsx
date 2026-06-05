@@ -5,8 +5,6 @@ import React from 'react';
 
 import type { AddressParam } from 'src/slices/address/types/api';
 
-import { route } from 'src/server/routes';
-
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 
 import { useAddressHighlightContext } from 'src/slices/address/contexts/address-highlight';
@@ -17,6 +15,7 @@ import { getTagName } from 'src/features/address-metadata/components/tag/utils';
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps, getContentProps, getIconProps } from 'src/shared/entities/utils';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

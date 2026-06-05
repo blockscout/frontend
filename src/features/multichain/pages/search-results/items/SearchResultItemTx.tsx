@@ -5,9 +5,9 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
-import { route } from 'src/server/routes';
-
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
+import { route } from 'src/shared/router/routes';
 
 import SearchResultListItem from '../SearchResultListItem';
 

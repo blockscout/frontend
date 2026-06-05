@@ -8,8 +8,6 @@ import React from 'react';
 
 import type { Address } from 'src/slices/address/types/api';
 
-import { route } from 'src/server/routes';
-
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
 import useFetchTokens from 'src/slices/token/pages/address/useFetchTokens';
@@ -19,6 +17,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import * as mixpanel from 'src/services/mixpanel';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';

@@ -7,8 +7,6 @@ import React from 'react';
 import type { SocketMessage } from 'src/api/socket/types';
 import type { BlockType, BlocksResponse } from 'src/slices/block/types/api';
 
-import { route } from 'src/server/routes';
-
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
@@ -25,6 +23,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';

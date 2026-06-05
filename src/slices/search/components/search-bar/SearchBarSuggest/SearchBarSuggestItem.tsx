@@ -5,8 +5,6 @@ import React from 'react';
 import type { AddressFormat } from 'src/slices/address/types/config';
 import type { QuickSearchResultItem } from 'src/slices/search/types/client';
 
-import { route } from 'src/server/routes';
-
 import { isEvmAddress } from 'src/slices/address/utils/is-evm-address';
 
 import SearchBarSuggestTacOperation from 'src/features/chain-variants/tac/components/SearchBarSuggestTacOperation';
@@ -15,6 +13,8 @@ import multichainConfig from 'src/features/multichain/chains-config';
 import SearchBarSuggestCluster from 'src/features/name-services/clusters/components/SearchBarSuggestCluster';
 import SearchBarSuggestDomain from 'src/features/name-services/domains/components/SearchBarSuggestDomain';
 import SearchBarSuggestUserOp from 'src/features/user-ops/components/SearchBarSuggestUserOp';
+
+import { route } from 'src/shared/router/routes';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';

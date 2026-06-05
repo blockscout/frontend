@@ -6,8 +6,6 @@ import React, { useEffect, useMemo } from 'react';
 
 import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 
-import { route } from 'src/server/routes';
-
 import * as metadata from 'src/shell/metadata';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
@@ -16,6 +14,7 @@ import { useMarketplaceContext } from 'src/features/marketplace/context';
 import config from 'src/config';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 

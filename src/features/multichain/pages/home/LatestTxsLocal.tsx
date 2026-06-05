@@ -5,8 +5,6 @@ import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
 
-import { route } from 'src/server/routes';
-
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import { SocketProvider } from 'src/api/socket/context';
 import getSocketUrl from 'src/api/socket/get-socket-url';
@@ -15,6 +13,8 @@ import TxsContent from 'src/slices/tx/pages/index/list/TxsContent';
 import { TX } from 'src/slices/tx/stubs/tx';
 
 import { useMultichainContext } from 'src/features/multichain/context';
+
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

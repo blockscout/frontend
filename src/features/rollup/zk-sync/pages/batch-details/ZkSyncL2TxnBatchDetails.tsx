@@ -7,8 +7,6 @@ import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'src/features/rollup/zk-sync/types/api';
 
-import { route } from 'src/server/routes';
-
 import type { ResourceError } from 'src/api/resources';
 
 import { currencyUnits } from 'src/slices/chain/units';
@@ -24,6 +22,7 @@ import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestam
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 

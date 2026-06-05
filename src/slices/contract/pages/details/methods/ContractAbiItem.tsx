@@ -6,8 +6,7 @@ import { Element } from 'react-scroll';
 
 import type { FormSubmitHandler, SmartContractMethod } from './types';
 
-import { route } from 'src/server/routes';
-
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { AccordionItem, AccordionItemContent, AccordionItemTrigger } from 'src/toolkit/chakra/accordion';

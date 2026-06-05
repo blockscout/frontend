@@ -5,13 +5,12 @@ import React from 'react';
 
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 
-import { route } from 'src/server/routes';
-
 import TokenTransferSnippet from 'src/slices/token-transfer/components/snippet/TokenTransferSnippet';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
