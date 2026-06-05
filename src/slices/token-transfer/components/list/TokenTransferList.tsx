@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// TODO: remove this component once tables in mobile are finalized
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 

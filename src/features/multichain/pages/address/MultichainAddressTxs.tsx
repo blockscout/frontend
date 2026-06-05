@@ -171,6 +171,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
               top={ ACTION_BAR_HEIGHT_DESKTOP }
               sorting={ txsQueryLocal.sort }
               setSort={ txsQueryLocal.setSort }
+              showTableView
             />
           </MultichainProvider>
         </SocketProvider>

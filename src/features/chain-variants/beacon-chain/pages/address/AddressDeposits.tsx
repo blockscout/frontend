@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,8 +12,9 @@ import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import { DEPOSIT } from '../../stubs/deposits';
-import BeaconChainDepositsListItem from '../deposits/BeaconChainDepositsListItem';
 import BeaconChainDepositsTable from '../deposits/BeaconChainDepositsTable';
 
 type Props = {
@@ -44,26 +44,14 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
   }
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        { data.items.map((item, index) => (
-          <BeaconChainDepositsListItem
-            key={ item.index + Number(isPlaceholderData ? index : '') }
-            item={ item }
-            view="address"
-            isLoading={ isPlaceholderData }
-          />
-        )) }
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainDepositsTable
-          items={ data.items }
-          view="address"
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainDepositsTable
+        items={ data.items }
+        view="address"
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isPlaceholderData }
+      />
+    </TableContainerScrollable>
   ) : null ;
 
   const actionBar = pagination.isVisible ? (

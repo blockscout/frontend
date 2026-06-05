@@ -17,7 +17,7 @@ interface Props {
 
 const ERC20TokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Props) => {
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="30%">Asset</TableColumnHeader>

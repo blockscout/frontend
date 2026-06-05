@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,10 +19,9 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
-import AddressAccountHistoryListItem from './AddressAccountHistoryListItem';
 import AddressAccountHistoryTableItem from './AddressAccountHistoryTableItem';
 
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
@@ -76,46 +74,33 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
 
   const content = (
-    <Box position="relative">
-      <Box hideFrom="lg">
-        { filteredData?.map((item, i) => (
-          <AddressAccountHistoryListItem
-            key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
-            tx={ item }
-            currentAddress={ currentAddress }
-            isPlaceholderData={ isPlaceholderData }
-          />
-        )) }
-      </Box>
-
-      <Box hideBelow="lg">
-        <TableRoot>
-          <TableHeaderSticky top={ 75 }>
-            <TableRow>
-              <TableColumnHeader width="120px">
-                Age
-              </TableColumnHeader>
-              <TableColumnHeader>
-                Action
-              </TableColumnHeader>
-              <TableColumnHeader width="320px">
-                From/To
-              </TableColumnHeader>
-            </TableRow>
-          </TableHeaderSticky>
-          <TableBody maxWidth="full">
-            { filteredData?.map((item, i) => (
-              <AddressAccountHistoryTableItem
-                key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
-                tx={ item }
-                currentAddress={ currentAddress }
-                isPlaceholderData={ isPlaceholderData }
-              />
-            )) }
-          </TableBody>
-        </TableRoot>
-      </Box>
-    </Box>
+    <TableContainerScrollable>
+      <TableRoot minW="900px">
+        <TableHeaderSticky top={ 75 }>
+          <TableRow>
+            <TableColumnHeader width="120px">
+              Age
+            </TableColumnHeader>
+            <TableColumnHeader>
+              Action
+            </TableColumnHeader>
+            <TableColumnHeader width="320px">
+              From/To
+            </TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody maxWidth="full">
+          { filteredData?.map((item, i) => (
+            <AddressAccountHistoryTableItem
+              key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
+              tx={ item }
+              currentAddress={ currentAddress }
+              isPlaceholderData={ isPlaceholderData }
+            />
+          )) }
+        </TableBody>
+      </TableRoot>
+    </TableContainerScrollable>
   );
 
   return (

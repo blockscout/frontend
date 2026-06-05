@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -19,9 +18,8 @@ import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
@@ -35,47 +33,34 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
   const chainData = multichainContext?.chain;
 
   const content = query.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TableRoot>
-          <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
-            <TableRow>
-              { chainData && <TableColumnHeader width="38px"/> }
-              <TableColumnHeader width="20%">Block</TableColumnHeader>
-              <TableColumnHeader width="20%">Txn</TableColumnHeader>
-              <TableColumnHeader width="20%">
-                Timestamp
-                <TimeFormatToggle/>
-              </TableColumnHeader>
-              <TableColumnHeader width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</TableColumnHeader>
-              <TableColumnHeader width="20%" isNumeric>Delta</TableColumnHeader>
-            </TableRow>
-          </TableHeaderSticky>
-          <TableBody>
-            { query.data.items.map((item, index) => (
-              <AddressCoinBalanceTableItem
-                key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
-                { ...item }
-                page={ query.pagination.page }
-                isLoading={ query.isPlaceholderData }
-                chainData={ chainData }
-              />
-            )) }
-          </TableBody>
-        </TableRoot>
-      </Box>
-      <Box hideFrom="lg">
-        { query.data.items.map((item, index) => (
-          <AddressCoinBalanceListItem
-            key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
-            { ...item }
-            page={ query.pagination.page }
-            isLoading={ query.isPlaceholderData }
-            chainData={ chainData }
-          />
-        )) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TableRoot minW="900px">
+        <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
+          <TableRow>
+            { chainData && <TableColumnHeader width="38px"/> }
+            <TableColumnHeader width="20%">Block</TableColumnHeader>
+            <TableColumnHeader width="20%">Txn</TableColumnHeader>
+            <TableColumnHeader width="20%">
+              Timestamp
+              <TimeFormatToggle/>
+            </TableColumnHeader>
+            <TableColumnHeader width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</TableColumnHeader>
+            <TableColumnHeader width="20%" isNumeric>Delta</TableColumnHeader>
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
+          { query.data.items.map((item, index) => (
+            <AddressCoinBalanceTableItem
+              key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+              { ...item }
+              page={ query.pagination.page }
+              isLoading={ query.isPlaceholderData }
+              chainData={ chainData }
+            />
+          )) }
+        </TableBody>
+      </TableRoot>
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = query.pagination.isVisible ? (

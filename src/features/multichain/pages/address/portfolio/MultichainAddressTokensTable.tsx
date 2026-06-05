@@ -16,7 +16,7 @@ interface Props {
 
 const MultichainAddressTokensTable = ({ data, top, isLoading }: Props) => {
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="55%">Asset</TableColumnHeader>

@@ -67,7 +67,7 @@ export const recipe = defineSlotRecipe({
         },
         cell: {
           px: '6px',
-          py: 4,
+          py: { base: 2, lg: 4 },
           _first: {
             pl: 3,
           },

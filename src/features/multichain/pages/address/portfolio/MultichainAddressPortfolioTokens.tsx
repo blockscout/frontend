@@ -27,12 +27,12 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import * as cookies from 'src/shared/storage/cookies';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 import { ZERO } from 'src/toolkit/utils/consts';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
-import MultichainAddressTokensListItem from './MultichainAddressTokensListItem';
 import MultichainAddressTokensTable from './MultichainAddressTokensTable';
 
 interface Props {
@@ -197,33 +197,22 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
   );
 
   const tokensContent = tokensQuery.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <MultichainAddressTokensTable
-          data={ tokensQuery.data.items }
-          top={ ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ tokensQuery.isPlaceholderData }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        { tokensQuery.data.items.map((item, index) => (
-          <MultichainAddressTokensListItem
-            key={ item.token.address_hash + (tokensQuery.isPlaceholderData ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
-            data={ item }
-            isLoading={ tokensQuery.isPlaceholderData }
-          />
-        )) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <MultichainAddressTokensTable
+        data={ tokensQuery.data.items }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
+        isLoading={ tokensQuery.isPlaceholderData }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = (
     <>
-      <Box hideFrom="lg" my={ 6 }>
+      <Box hideFrom="lg" mt={ 6 } mb={ 3 }>
         { searchInput }
       </Box>
       { (!isMobile || tokensQuery.pagination.isVisible) && (
-        <ActionBar mt={{ base: -6, lg: 0 }}>
+        <ActionBar mt={{ base: -3, lg: 0 }}>
           <Box hideBelow="lg">
             { searchInput }
           </Box>

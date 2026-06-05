@@ -127,7 +127,7 @@ const TokenTransferTableItem = ({
           current={ baseAddress }
           isLoading={ isLoading }
           mt={ 1 }
-          mode={{ lg: 'compact', xl: 'long' }}
+          mode={{ base: 'compact', lg: 'compact', xl: 'long' }}
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="top">

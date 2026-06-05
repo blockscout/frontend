@@ -96,7 +96,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           sorting={ localQuery.sort }
           setSort={ localQuery.setSort }
           showBlockInfo
-          showTableViewButton
+          showTableView
         />
       ),
     },

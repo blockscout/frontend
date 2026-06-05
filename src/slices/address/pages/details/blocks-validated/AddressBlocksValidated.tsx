@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -26,9 +25,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import AddressBlocksValidatedListItem from './AddressBlocksValidatedListItem';
 import AddressBlocksValidatedTableItem from './AddressBlocksValidatedTableItem';
 
 const OVERLOAD_COUNT = 75;
@@ -108,59 +106,39 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   }
 
   const content = query.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TableRoot tableLayout="auto">
-          <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
-            <TableRow>
-              <TableColumnHeader>Block</TableColumnHeader>
-              <TableColumnHeader>
-                Timestamp
-                <TimeFormatToggle/>
-              </TableColumnHeader>
-              <TableColumnHeader>Txn</TableColumnHeader>
-              <TableColumnHeader>Gas used</TableColumnHeader>
-              { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
+    <TableContainerScrollable>
+      <TableRoot tableLayout="auto" minW="900px">
+        <TableHeaderSticky top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
+          <TableRow>
+            <TableColumnHeader>Block</TableColumnHeader>
+            <TableColumnHeader>
+              Timestamp
+              <TimeFormatToggle/>
+            </TableColumnHeader>
+            <TableColumnHeader>Txn</TableColumnHeader>
+            <TableColumnHeader>Gas used</TableColumnHeader>
+            { !config.slices.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled &&
                 <TableColumnHeader isNumeric>Reward { currencyUnits.ether }</TableColumnHeader> }
-            </TableRow>
-          </TableHeaderSticky>
-          <TableBody>
-            <SocketNewItemsNotice.Desktop
-              num={ newItemsCount }
-              showErrorAlert={ showSocketAlert }
-              type="block"
-              isLoading={ query.isPlaceholderData }
-            />
-            { query.data.items.map((item, index) => (
-              <AddressBlocksValidatedTableItem
-                key={ item.height + (query.isPlaceholderData ? String(index) : '') }
-                { ...item }
-                page={ query.pagination.page }
-                isLoading={ query.isPlaceholderData }
-              />
-            )) }
-          </TableBody>
-        </TableRoot>
-      </Box>
-      <Box hideFrom="lg">
-        { query.pagination.page === 1 && (
-          <SocketNewItemsNotice.Mobile
+          </TableRow>
+        </TableHeaderSticky>
+        <TableBody>
+          <SocketNewItemsNotice.Desktop
             num={ newItemsCount }
             showErrorAlert={ showSocketAlert }
             type="block"
             isLoading={ query.isPlaceholderData }
           />
-        ) }
-        { query.data.items.map((item, index) => (
-          <AddressBlocksValidatedListItem
-            key={ item.height + (query.isPlaceholderData ? String(index) : '') }
-            { ...item }
-            page={ query.pagination.page }
-            isLoading={ query.isPlaceholderData }
-          />
-        )) }
-      </Box>
-    </>
+          { query.data.items.map((item, index) => (
+            <AddressBlocksValidatedTableItem
+              key={ item.height + (query.isPlaceholderData ? String(index) : '') }
+              { ...item }
+              page={ query.pagination.page }
+              isLoading={ query.isPlaceholderData }
+            />
+          )) }
+        </TableBody>
+      </TableRoot>
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = query.pagination.isVisible ? (

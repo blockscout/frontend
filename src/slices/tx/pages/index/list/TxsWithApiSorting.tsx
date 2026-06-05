@@ -23,7 +23,7 @@ interface Props {
   top?: number;
   sorting: TransactionsSortingValue;
   setSort: (value: TransactionsSortingValue) => void;
-  showTableViewButton?: boolean;
+  showTableView?: boolean;
 };
 
 const TxsWithApiSorting = ({
@@ -37,7 +37,7 @@ const TxsWithApiSorting = ({
   top,
   sorting,
   setSort,
-  showTableViewButton,
+  showTableView,
 }: Props) => {
 
   const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
@@ -60,7 +60,7 @@ const TxsWithApiSorting = ({
       setSorting={ handleSortChange }
       sort={ sorting }
       pagination={ query.pagination }
-      showTableViewButton={ showTableViewButton }
+      showTableView={ showTableView }
     />
   );
 };

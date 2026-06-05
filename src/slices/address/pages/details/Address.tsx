@@ -28,7 +28,6 @@ import AddressLogs from 'src/slices/address/pages/details/logs/AddressLogs';
 import AddressTokenTransfers, { ADDRESS_TOKEN_TRANSFERS_TAB_IDS } from 'src/slices/address/pages/details/token-transfers/AddressTokenTransfers';
 import AddressTokens from 'src/slices/address/pages/details/tokens/AddressTokens';
 import AddressTxs, { ADDRESS_TXS_TAB_IDS } from 'src/slices/address/pages/details/txs/AddressTxs';
-import AddressWithdrawals from 'src/slices/address/pages/details/withdrawals/AddressWithdrawals';
 import { ADDRESS_TABS_COUNTERS } from 'src/slices/address/stubs/address';
 import getCheckedSummedAddress from 'src/slices/address/utils/get-checked-summed-address';
 import getChainValidationActionText from 'src/slices/chain/verification-type/utils/get-chain-validation-action-text';
@@ -47,6 +46,7 @@ import useAddressProfileApiQuery from 'src/features/address-profile-api/hooks/us
 import TextAd from 'src/features/ads/text/components/TextAd';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
 import AddressDeposits from 'src/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
+import AddressWithdrawals from 'src/features/chain-variants/beacon-chain/pages/address/AddressWithdrawals';
 import AddressEpochRewards from 'src/features/chain-variants/celo/pages/address/AddressEpochRewards';
 import AddressMud from 'src/features/chain-variants/mud/pages/address/AddressMud';
 import AddressMultichainInfoButton from 'src/features/multichain-button/pages/address/AddressMultichainInfoButton';
