@@ -70,7 +70,7 @@ export function useImageField<
       return;
     }
 
-    const isValidUrl = urlValidator(fieldValue);
+    const isValidUrl = urlValidator()(fieldValue);
     isValidUrl === true && setValue(fieldValue);
   }, [ fieldValue, isRequired, name, trigger ]);
 

@@ -20,7 +20,7 @@ const TokenInfoFieldSupport = (props: Props) => {
       return true;
     }
 
-    const urlValidationResult = urlValidator(newValue);
+    const urlValidationResult = urlValidator()(newValue);
     const emailValidationResult = emailValidator(newValue);
 
     if (urlValidationResult === true || emailValidationResult === true) {
