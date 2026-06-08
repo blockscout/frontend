@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { debounce } from 'es-toolkit';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
@@ -24,7 +23,6 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
   const { open, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
-  const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
 
   const recentSearchKeywords = getRecentSearchKeywords();
@@ -55,29 +53,6 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     inputRef.current?.querySelector('input')?.focus();
   }, [ handleSearchTermChange ]);
 
-  const menuPaddingX = isMobile ? 24 : 0;
-  const calculateMenuWidth = React.useCallback(() => {
-    menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
-  }, [ menuPaddingX ]);
-
-  React.useEffect(() => {
-    const inputEl = inputRef.current;
-    if (!inputEl) {
-      return;
-    }
-    calculateMenuWidth();
-
-    const resizeHandler = debounce(calculateMenuWidth, 200);
-    const resizeObserver = new ResizeObserver(resizeHandler);
-    if (inputRef.current) {
-      resizeObserver.observe(inputRef.current);
-    }
-
-    return function cleanup() {
-      resizeObserver.unobserve(inputEl);
-    };
-  }, [ calculateMenuWidth ]);
-
   const isSuggestOpen = open && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0;
 
   return (
@@ -86,7 +61,10 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
         open={ isSuggestOpen }
         autoFocus={ false }
         onOpenChange={ handleOpenChange }
-        positioning={{ offset: { mainAxis: isMobile ? 0 : 8, crossAxis: isMobile ? 12 : 0 } }}
+        positioning={{
+          offset: { mainAxis: isMobile ? 0 : 8, crossAxis: isMobile ? 12 : 0 },
+          sameWidth: true,
+        }}
       >
         <PopoverTrigger>
           <SearchBarInput
@@ -101,7 +79,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
             isSuggestOpen={ isSuggestOpen }
           />
         </PopoverTrigger>
-        <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
+        <PopoverContent w="auto" maxW="100%" maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" zIndex="modal" ref={ menuRef }>
           <PopoverBody py={ 6 }>
             <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
           </PopoverBody>
