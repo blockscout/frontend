@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useClickAway } from '@uidotdev/usehooks';
-import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -30,7 +29,6 @@ type Props = {
 
 const SearchBarDesktop = ({ isHeroBanner }: Props) => {
   const inputRef = React.useRef<HTMLFormElement>(null);
-  const menuWidth = React.useRef<number>(0);
 
   const { open, onClose, onOpen } = useDisclosure();
   const isMobile = useIsMobile();
@@ -86,6 +84,11 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
     open && onOpen();
   }, [ onOpen ]);
 
+  const handleRecentKeywordsClick = React.useCallback((keyword: string) => {
+    handleSearchTermChange(keyword);
+    inputRef.current?.querySelector('input')?.focus();
+  }, [ handleSearchTermChange ]);
+
   const handleClear = React.useCallback(() => {
     handleSearchTermChange('');
     inputRef.current?.querySelector('input')?.focus();
@@ -110,34 +113,11 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ onClose ]);
 
-  const menuPaddingX = isMobile && !isHeroBanner ? 24 : 0;
-  const calculateMenuWidth = React.useCallback(() => {
-    menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
-  }, [ menuPaddingX ]);
-
   // clear input on page change
   React.useEffect(() => {
     handleSearchTermChange('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ router.asPath?.split('?')?.[0] ]);
-
-  React.useEffect(() => {
-    const inputEl = inputRef.current;
-    if (!inputEl) {
-      return;
-    }
-    calculateMenuWidth();
-
-    const resizeHandler = debounce(calculateMenuWidth, 200);
-    const resizeObserver = new ResizeObserver(resizeHandler);
-    if (inputRef.current) {
-      resizeObserver.observe(inputRef.current);
-    }
-
-    return function cleanup() {
-      resizeObserver.unobserve(inputEl);
-    };
-  }, [ calculateMenuWidth ]);
 
   const showAllResultsLink = searchTerm.trim().length > 0 && (
     (query.data && query.data.length >= 50) ||
@@ -150,11 +130,14 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
         open={ open && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
         onOpenChange={ handleOpenChange }
-        positioning={{ offset: isMobile && !isHeroBanner ? { mainAxis: 0, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 } }}
+        positioning={{
+          offset: isMobile && !isHeroBanner ? { mainAxis: 0, crossAxis: 12 } : { mainAxis: 8, crossAxis: 0 },
+          sameWidth: true,
+        }}
         lazyMount
         closeOnInteractOutside={ false }
       >
-        <PopoverTrigger asChild w="100%">
+        <PopoverTrigger asChild>
           <SearchBarInput
             ref={ inputRef }
             onChange={ handleSearchTermChange }
@@ -169,11 +152,11 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
           />
         </PopoverTrigger>
         <PopoverContent
-          maxW={{ base: 'calc(100vw - 8px)', lg: 'unset' }}
-          w={ `${ menuWidth.current }px` }
-          ref={ menuRef }
+          w="auto"
+          maxW="100%"
           overflow="hidden"
           zIndex="modal"
+          ref={ menuRef }
         >
           <PopoverBody
             px={ 4 }
@@ -184,7 +167,7 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
             overflowY="hidden"
           >
             { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
-              <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
+              <SearchBarRecentKeywords onClick={ handleRecentKeywordsClick } onClear={ onClose }/>
             ) }
             { searchTerm.trim().length > 0 && (
               <SearchBarSuggest
