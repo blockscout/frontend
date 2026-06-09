@@ -5,24 +5,25 @@ import type { FieldValues } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
+import type { UrlValidatorParams } from '../validators/url';
 import { urlValidator } from '../validators/url';
 import { FormFieldText } from './FormFieldText';
 
 const FormFieldUrlContent = <FormFields extends FieldValues>(
-  props: FormFieldPropsBase<FormFields>,
+  { urlValidatorParams, ...rest }: FormFieldPropsBase<FormFields> & { urlValidatorParams?: UrlValidatorParams },
 ) => {
   const rules = React.useMemo(
     () => ({
-      ...props.rules,
+      ...rest.rules,
       validate: {
-        ...props.rules?.validate,
-        url: urlValidator,
+        ...rest.rules?.validate,
+        url: urlValidator(urlValidatorParams),
       },
     }),
-    [ props.rules ],
+    [ rest.rules, urlValidatorParams ],
   );
 
-  return <FormFieldText { ...props } rules={ rules }/>;
+  return <FormFieldText { ...rest } rules={ rules }/>;
 };
 
 export const FormFieldUrl = React.memo(FormFieldUrlContent) as typeof FormFieldUrlContent;

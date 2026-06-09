@@ -20,7 +20,7 @@ const verificationType: NetworkVerificationType = (() => {
 
 const rpcUrls = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL');
-  const isUrl = urlValidator(envValue);
+  const isUrl = urlValidator()(envValue);
 
   if (envValue && isUrl === true) {
     return [ envValue ];

@@ -124,7 +124,7 @@ export * from '../../utils/isBrowser';
 
 // Export hooks
 export { useClipboard } from '../../hooks/useClipboard';
-export { useDisclosure } from '../../hooks/useDisclosure';
+export * from '../../hooks/useDisclosure';
 export { useUpdateEffect } from '../../hooks/useUpdateEffect';
 export { useFirstMountState } from '../../hooks/useFirstMountState';
 export { useIsSticky } from '../../hooks/useIsSticky';

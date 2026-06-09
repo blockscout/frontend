@@ -1,16 +1,39 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export function urlValidator(value: string | undefined) {
-  if (!value) {
-    return true;
-  }
+export type UrlScheme = 'http' | 'https' | 'ws' | 'wss';
 
-  try {
-    new URL(value);
-    return true;
-  } catch (error) {
-    return 'Incorrect URL';
-  }
+export const URL_SCHEME_REGEXP = /^[a-z][a-z0-9+\-.]*:\/\//i;
+
+export interface UrlValidatorParams {
+  // If true, the URL will be validated as an URL without scheme (e.g. 'example.com')
+  loose?: boolean;
+}
+
+export function urlValidator({ loose }: UrlValidatorParams = {}) {
+  return function(value: string | undefined) {
+    if (!value) {
+      return true;
+    }
+
+    try {
+      const valueToTest = (() => {
+        if (!loose) {
+          return value;
+        }
+
+        const hasScheme = URL_SCHEME_REGEXP.test(value);
+        if (hasScheme) {
+          return value;
+        }
+
+        return `https://${ value }`;
+      })();
+      new URL(valueToTest);
+      return true;
+    } catch (error) {
+      return 'Incorrect URL';
+    }
+  };
 }
 
 export const DOMAIN_REGEXP =
