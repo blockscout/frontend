@@ -5,7 +5,7 @@ import { getEnvValue, getExternalAssetFilePath } from 'src/config/utils/envs';
 
 const defaultImageUrl = '/static/og_image.png';
 
-const meta = Object.freeze({
+const metadata = Object.freeze({
   promoteBlockscoutInTitle: getEnvValue('NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE') === 'false' ? false : true,
   og: {
     description: getEnvValue('NEXT_PUBLIC_OG_DESCRIPTION') || '',
@@ -17,4 +17,4 @@ const meta = Object.freeze({
   },
 });
 
-export default meta;
+export default metadata;

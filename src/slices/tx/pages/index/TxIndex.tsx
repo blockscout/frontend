@@ -4,7 +4,6 @@ import React from 'react';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import TxsTabs from './list/TxsTabs';
@@ -23,10 +22,7 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
-        withTextAd
-      />
+      <PageTitle title="Transactions" withTextAd/>
       <TxsStats/>
       <TxsTabs
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
