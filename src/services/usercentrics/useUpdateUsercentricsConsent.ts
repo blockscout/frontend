@@ -21,7 +21,7 @@ export default function useUpdateUsercentricsConsent() {
 
       const details = 'detail' in event && typeof event.detail === 'object' && event.detail !== null ? event.detail as ConsentDetails : undefined;
 
-      if (!details) {
+      if (!details || !details.consent.fromUserAction) {
         return;
       }
 

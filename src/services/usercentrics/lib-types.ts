@@ -38,6 +38,8 @@ interface ConsentData {
   gpcSignal?: boolean;
   isBot?: true;
   isOutsideEu?: true;
+  // not documented fields
+  fromUserAction?: boolean;
 }
 
 interface SettingData {
