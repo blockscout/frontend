@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import type { ValidationError } from 'yup';
 
-import { buildExternalAssetFilePath } from 'configs/app/utils';
+import { buildExternalAssetFilePath } from 'src/config/utils/envs';
 import schema from './schema';
 import schemaMultichain from './schema_multichain';
 import { fileURLToPath } from 'node:url';

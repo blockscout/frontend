@@ -1,0 +1,55 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Text } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useCallback } from 'react';
+
+import type { ApiKey, ApiKeys } from 'src/features/account/types/api';
+
+import useApiFetch from 'src/api/hooks/useApiFetch';
+import { resourceKey } from 'src/api/resources';
+
+import DeleteModal from 'src/features/account/components/DeleteModal';
+
+type Props = {
+  open: boolean;
+  onOpenChange: ({ open }: { open: boolean }) => void;
+  data: ApiKey;
+};
+
+const DeleteApiKeyModal: React.FC<Props> = ({ open, onOpenChange, data }) => {
+  const queryClient = useQueryClient();
+  const apiFetch = useApiFetch();
+
+  const mutationFn = useCallback(() => {
+    return apiFetch('core:api_keys', {
+      pathParams: { id: data.api_key },
+      fetchParams: { method: 'DELETE' },
+    });
+  }, [ data.api_key, apiFetch ]);
+
+  const onSuccess = useCallback(async() => {
+    queryClient.setQueryData([ resourceKey('core:api_keys') ], (prevData: ApiKeys | undefined) => {
+      return prevData?.filter((item) => item.api_key !== data.api_key);
+    });
+  }, [ data, queryClient ]);
+
+  const renderText = useCallback(() => {
+    return (
+      <Text> API key for <Text fontWeight="700" as="span">{ ` "${ data.name || 'name' }" ` }</Text> will be deleted </Text>
+    );
+  }, [ data.name ]);
+
+  return (
+    <DeleteModal
+      open={ open }
+      onOpenChange={ onOpenChange }
+      title="Remove API key"
+      renderContent={ renderText }
+      mutationFn={ mutationFn }
+      onSuccess={ onSuccess }
+    />
+  );
+};
+
+export default DeleteApiKeyModal;

@@ -1,0 +1,76 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Flex } from '@chakra-ui/react';
+import type { MouseEvent } from 'react';
+import React from 'react';
+
+import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+
+import AdBanner from 'src/features/ads/banner/components/AdBanner';
+import { apps as appsMock } from 'src/features/marketplace/mocks/dapps';
+
+import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+
+import FeaturedApp from './FeaturedApp';
+import IframeBanner from './IframeBanner';
+
+const feature = config.features.marketplace;
+
+type BannerProps = {
+  apps: Array<MarketplaceApp> | undefined;
+  favoriteApps: Array<string>;
+  isLoading: boolean;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;
+  onAppClick: (event: MouseEvent, id: string) => void;
+};
+
+const Banner = ({ apps = [], favoriteApps, isLoading, onFavoriteClick, onAppClick }: BannerProps) => {
+  const isMobile = useIsMobile();
+
+  if (!feature.isEnabled) {
+    return null;
+  }
+
+  let content = null;
+
+  if (feature.featuredApp) {
+    const app = apps.find(app => app.id === feature.featuredApp);
+    const isFavorite = favoriteApps.includes(feature.featuredApp);
+    if (!isLoading && !app) {
+      return null;
+    }
+    content = (
+      <FeaturedApp
+        app={ app || appsMock[0] }
+        isFavorite={ isFavorite }
+        isLoading={ isLoading }
+        onFavoriteClick={ onFavoriteClick }
+        onAppClick={ onAppClick }
+      />
+    );
+  } else if (feature.banner) {
+    content = <IframeBanner contentUrl={ feature.banner.contentUrl } linkUrl={ feature.banner.linkUrl }/>;
+  }
+
+  if (!content) {
+    return null;
+  }
+
+  return (
+    <Flex gap={ 6 }>
+      { content }
+      { !isMobile && (
+        <AdBanner
+          format="mobile"
+          w="fit-content"
+          flexShrink={ 0 }
+          borderRadius="md"
+          overflow="hidden"
+        />
+      ) }
+    </Flex>
+  );
+};
+
+export default Banner;

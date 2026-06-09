@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type * as multichain from '@blockscout/multichain-aggregator-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+
+import { route } from 'src/shared/router/routes';
+
+import SearchResultListItem from '../SearchResultListItem';
+
+interface Props {
+  data: multichain.ChainBlockNumber;
+  chain: ClusterChainConfig;
+}
+
+const SearchResultItemBlockNumber = ({ data, chain }: Props) => {
+  return (
+    <SearchResultListItem
+      href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_number) } }, { chain }) }
+    >
+      <BlockEntity
+        number={ data.block_number }
+        chain={ chain }
+        noLink
+        noCopy
+        fontWeight={{ base: '600', lg: '700' }}
+      />
+    </SearchResultListItem>
+  );
+};
+
+export default React.memo(SearchResultItemBlockNumber);

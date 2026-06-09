@@ -1,7 +1,7 @@
 import * as yup from 'yup';
-import { replaceQuotes } from 'configs/app/utils';
-import type { ApiDocsTabId } from 'types/views/apiDocs';
-import { API_DOCS_TABS } from 'types/views/apiDocs';
+import { replaceQuotes } from 'src/config/utils/envs';
+import type { ApiDocsTabId } from 'src/features/api-docs/types/config';
+import { API_DOCS_TABS } from 'src/features/api-docs/types/config';
 
 export const apiDocsSchema = yup
   .object()

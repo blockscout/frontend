@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`generates correct metadata for: > dynamic route 1`] = `
+{
+  "canonical": undefined,
+  "description": "View transaction 0x12345 on Blockscout (Blockscout) Explorer",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout transaction 0x12345 | Blockscout",
+  },
+  "title": "Blockscout transaction 0x12345 | Blockscout",
+}
+`;
+
+exports[`generates correct metadata for: > static route 1`] = `
+{
+  "canonical": "http://localhost:3000/txs",
+  "description": "Scan Blockscout (Blockscout) Explorer with Blockscout. Search transactions, verify smart contracts, analyze addresses, and access blockchain data through explorer APIs.",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "http://localhost:3000/static/og_image.png",
+    "title": "Blockscout transactions - Blockscout explorer | Blockscout",
+  },
+  "title": "Blockscout transactions - Blockscout explorer | Blockscout",
+}
+`;

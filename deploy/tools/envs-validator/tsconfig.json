@@ -8,10 +8,9 @@
 	  "skipLibCheck": true,
 	  "forceConsistentCasingInFileNames": true,
 	  "outDir": "./dist",
+	  "rootDir": "../../../",
 	  "paths": {
-		"lib/*": ["../../../lib/*"],
-		"toolkit/*": ["../../../toolkit/*"],
-		"types/*": ["../../../types/*"],
+		"src/*": ["../../../src/*"],
 		"public/*": ["../../../public/*"]
 	  },
 	  "types": ["node"],

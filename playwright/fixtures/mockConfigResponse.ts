@@ -1,7 +1,7 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import config from 'configs/app';
-import { buildExternalAssetFilePath } from 'configs/app/utils';
+import config from 'src/config';
+import { buildExternalAssetFilePath } from 'src/config/utils/envs';
 
 export type MockConfigResponseFixture = (envName: string, envValue: string, content: unknown, isImage?: boolean) => Promise<string>;
 

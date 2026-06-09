@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+/* eslint-disable @next/next/no-img-element */
+import { Box, Text, Flex } from '@chakra-ui/react';
+import Script from 'next/script';
+import React from 'react';
+
+import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+
+import { Button } from 'src/toolkit/chakra/button';
+import { Heading } from 'src/toolkit/chakra/heading';
+import { Link } from 'src/toolkit/chakra/link';
+const easterEggsFeature = config.features.easterEggs;
+
+const CapybaraRunner = () => {
+  const [ hasReachedHighScore, setHasReachedHighScore ] = React.useState(false);
+
+  const isMobile = useIsMobile();
+
+  React.useEffect(() => {
+    const preventDefaultKeys = (e: KeyboardEvent) => {
+      if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'ArrowDown') {
+        e.preventDefault();
+      }
+    };
+
+    const handleHighScore = () => {
+      setHasReachedHighScore(true);
+    };
+
+    window.addEventListener('reachedHighScore', handleHighScore);
+    window.addEventListener('keydown', preventDefaultKeys);
+
+    return () => {
+      window.removeEventListener('keydown', preventDefaultKeys);
+      window.removeEventListener('reachedHighScore', handleHighScore);
+    };
+  }, []);
+
+  return (
+    <>
+      <Heading level="2" mt={ 12 } mb={ 2 }>Score 1000 to win a special prize!</Heading>
+      <Box mb={ 4 }>{ isMobile ? 'Tap below to start' : 'Press space to start' }</Box>
+      <Script strategy="lazyOnload" src="/static/capybara/index.js"/>
+      <Box width={{ base: '100%', lg: '600px' }} height="300px" p="50px 0">
+        <div id="main-frame-error" className="interstitial-wrapper" style={{ marginTop: '20px' }}>
+          <div id="main-content"></div>
+          <div id="offline-resources" style={{ display: 'none' }}>
+            <img id="offline-resources-1x" src="/static/capybara/capybaraSprite.png"/>
+            <img id="offline-resources-2x" src="/static/capybara/capybaraSpriteX2.png"/>
+          </div>
+        </div>
+      </Box>
+      { easterEggsFeature.isEnabled && easterEggsFeature.runner && hasReachedHighScore && (
+        <Flex flexDirection="column" alignItems="center" justifyContent="center" gap={ 4 } mt={ 10 }>
+          <Text fontSize="2xl" fontWeight="bold">You unlocked a hidden badge!</Text>
+          <Text fontSize="lg" textAlign="center">Congratulations! You’re eligible to claim an epic hidden badge!</Text>
+          <Link
+            href={ easterEggsFeature.runner.claimLink }
+            external noIcon
+          >
+            <Button>Claim</Button>
+          </Link>
+        </Flex>
+      ) }
+    </>
+  );
+};
+
+export default CapybaraRunner;

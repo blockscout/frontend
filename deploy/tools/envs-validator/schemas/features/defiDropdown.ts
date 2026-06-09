@@ -1,8 +1,8 @@
 import * as yup from 'yup';
-import type { DeFiDropdownItem } from 'types/client/deFiDropdown';
+import type { DeFiDropdownItem } from 'src/features/defi-dropdown/types/client';
 import type { IconName } from 'public/icons/name';
 import { urlTest } from '../../utils';
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'src/config/utils/envs';
 
 const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
   .object({

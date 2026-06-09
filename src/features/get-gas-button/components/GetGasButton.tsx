@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box } from '@chakra-ui/react';
+import { route } from 'nextjs-routes';
+import React from 'react';
+
+import config from 'src/config';
+import * as mixpanel from 'src/services/mixpanel';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+
+import { Image } from 'src/toolkit/chakra/image';
+import { Link } from 'src/toolkit/chakra/link';
+const getGasFeature = config.features.getGasButton;
+
+const GetGasButton = () => {
+  const isMobile = useIsMobile();
+
+  const onGetGasClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
+  }, []);
+
+  if (getGasFeature.isEnabled && !isMobile) {
+    try {
+      const dappId = getGasFeature.dappId;
+      const urlObj = new URL(getGasFeature.url);
+
+      urlObj.searchParams.append('utm_source', 'blockscout');
+      urlObj.searchParams.append('utm_medium', 'address');
+
+      const url = urlObj.toString();
+      const isInternal = typeof dappId === 'string';
+
+      return (
+        <>
+          <Box h="1px" w="8px" bg="border.divider" mx={ 1 }/>
+          <Link
+            href={ isInternal ? route({ pathname: '/apps/[id]', query: { id: dappId, url } }) : url }
+            external={ !isInternal }
+            display="flex"
+            alignItems="center"
+            textStyle="xs"
+            onClick={ onGetGasClick }
+          >
+            { getGasFeature.logoUrl && (
+              <Image
+                src={ getGasFeature.logoUrl }
+                alt={ getGasFeature.name }
+                boxSize="14px"
+                mr={ 1 }
+              />
+            ) }
+            { getGasFeature.name }
+          </Link>
+        </>
+      );
+    } catch (error) {}
+  }
+
+  return null;
+};
+
+export default GetGasButton;

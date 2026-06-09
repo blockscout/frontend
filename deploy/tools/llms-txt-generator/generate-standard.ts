@@ -1,13 +1,13 @@
-import config from 'configs/app';
+import config from 'src/config';
 import dedent from 'dedent';
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 const MCP_SERVER_URL = 'https://mcp.blockscout.com';
 
 export function generateStandard(): string {
     const chainName = config.chain.name ?? '';
     const chainId = config.chain.id ?? '';
-    const generalApiUrl = config.apis.general ? config.apis.general.endpoint + config.apis.general.basePath : '';
+    const coreApiUrl = config.apis.core ? config.apis.core.endpoint + config.apis.core.basePath : '';
     const statsApiUrl = config.apis.stats ? config.apis.stats.endpoint + config.apis.stats.basePath : undefined;
 
     const rollupFeature = config.features.rollup;
@@ -29,25 +29,25 @@ export function generateStandard(): string {
         ### Account Abstraction info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/accounts/{account_address}'
+        curl --request GET --url '${coreApiUrl}/api/v2/proxy/account-abstraction/accounts/{account_address}'
         \`\`\`
 
         ### User Operations by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations?sender={account_address}'
+        curl --request GET --url '${coreApiUrl}/api/v2/proxy/account-abstraction/operations?sender={account_address}'
         \`\`\`
 
         ### User Operations by Transaction
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
+        curl --request GET --url '${coreApiUrl}/api/v2/proxy/account-abstraction/operations?transaction_hash={transaction_hash}'
         \`\`\`
 
         ### User Operation Details
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
+        curl --request GET --url '${coreApiUrl}/api/v2/proxy/account-abstraction/operations/{user_operation_hash}'
         \`\`\`
     ` : '{blank}';
 
@@ -55,25 +55,25 @@ export function generateStandard(): string {
         ### Deposits by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/beacon/deposits'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/beacon/deposits'
         \`\`\`
 
         ### Deposits by Block
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/blocks/{block_hash_or_number}/beacon/deposits'
+        curl --request GET --url '${coreApiUrl}/api/v2/blocks/{block_hash_or_number}/beacon/deposits'
         \`\`\`
 
         ### Withdrawals by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/withdrawals'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/withdrawals'
         \`\`\`
 
         ### Withdrawals by Block
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/blocks/{block_number}/withdrawals'
+        curl --request GET --url '${coreApiUrl}/api/v2/blocks/{block_number}/withdrawals'
         \`\`\`
     ` : undefined;
 
@@ -81,37 +81,37 @@ export function generateStandard(): string {
         ### Latest Committed Batch Number
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/main-page/arbitrum/batches/latest-number'
+        curl --request GET --url '${coreApiUrl}/api/v2/main-page/arbitrum/batches/latest-number'
         \`\`\`
 
         ### Batch Info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/arbitrum/batches/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/arbitrum/batches/{batch_number}'
         \`\`\`
 
         ### Blocks By Batch
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/blocks/arbitrum-batch/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/blocks/arbitrum-batch/{batch_number}'
         \`\`\`
 
         ### Get ${parentToCurrentLayerLabel} messages
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/arbitrum/messages/to-rollup'
+        curl --request GET --url '${coreApiUrl}/api/v2/arbitrum/messages/to-rollup'
         \`\`\`
 
         ### Get ${currentToParentLayerLabel} messages
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/arbitrum/messages/from-rollup'
+        curl --request GET --url '${coreApiUrl}/api/v2/arbitrum/messages/from-rollup'
         \`\`\`
 
         ### ${currentToParentLayerLabel} messages by transaction:
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
+        curl --request GET --url '${coreApiUrl}/api/v2/arbitrum/messages/withdrawals/{transactions_hash}'
         \`\`\`
     ` : undefined;
 
@@ -119,37 +119,37 @@ export function generateStandard(): string {
         ### Latest Committed Batch Number (top of)
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/optimism/batches'
+        curl --request GET --url '${coreApiUrl}/api/v2/optimism/batches'
         \`\`\`
 
         ### Batch Info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/optimism/batches/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/optimism/batches/{batch_number}'
         \`\`\`
 
         ### Blocks By Batch (TODO: not needed if the batch returns blocks range)
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/blocks/optimism-batch/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/blocks/optimism-batch/{batch_number}'
         \`\`\`
 
         ### Dispute Games
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/optimism/games'
+        curl --request GET --url '${coreApiUrl}/api/v2/optimism/games'
         \`\`\`
 
         ### Get ${parentToCurrentLayerLabel} messages
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/optimism/deposits'
+        curl --request GET --url '${coreApiUrl}/api/v2/optimism/deposits'
         \`\`\`
 
         ### Get ${currentToParentLayerLabel} messages
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/optimism/withdrawals'
+        curl --request GET --url '${coreApiUrl}/api/v2/optimism/withdrawals'
         \`\`\`
     ` : undefined;
 
@@ -157,31 +157,31 @@ export function generateStandard(): string {
         ### Latest Finalized Epoch (top of)
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/celo/epochs'
+        curl --request GET --url '${coreApiUrl}/api/v2/celo/epochs'
         \`\`\`
 
         ### Get Epoch Information
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/celo/epochs/{epoch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/celo/epochs/{epoch_number}'
         \`\`\`
 
         ### Validator Group Reward by Epoch
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/group'
+        curl --request GET --url '${coreApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/group'
         \`\`\`
 
         ### Validator Rewards by Epoch
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/validator'
+        curl --request GET --url '${coreApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/validator'
         \`\`\`
 
         ### Voting Rewards by Epoch
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/voter'
+        curl --request GET --url '${coreApiUrl}/api/v2/celo/epochs/{epoch_number}/election-rewards/voter'
         \`\`\`
     ` : undefined;
 
@@ -189,13 +189,13 @@ export function generateStandard(): string {
         ### Latest Committed Batch Number
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/main-page/zksync/batches/latest-number'
+        curl --request GET --url '${coreApiUrl}/api/v2/main-page/zksync/batches/latest-number'
         \`\`\`
 
         ### Batch info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/zksync/batches/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/zksync/batches/{batch_number}'
         \`\`\`
     ` : undefined;
 
@@ -217,25 +217,25 @@ export function generateStandard(): string {
         ### MUD Worlds
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/mud/worlds'
+        curl --request GET --url '${coreApiUrl}/api/v2/mud/worlds'
         \`\`\`
 
         ### MUD World Tables
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/mud/worlds/{contract_address}/tables'
+        curl --request GET --url '${coreApiUrl}/api/v2/mud/worlds/{contract_address}/tables'
         \`\`\`
 
         ### MUD World Table Records
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
+        curl --request GET --url '${coreApiUrl}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records'
         \`\`\`
 
         ### MUD World Table Record
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
+        curl --request GET --url '${coreApiUrl}/api/v2/mud/worlds/{contract_address}/tables/{table_id}/records/{record_id}'
         \`\`\`
     ` : undefined;
 
@@ -243,31 +243,31 @@ export function generateStandard(): string {
         ### Latest Committed Batch Number (top of)
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/scroll/batches'
+        curl --request GET --url '${coreApiUrl}/api/v2/scroll/batches'
         \`\`\`
 
         ### Batch Info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/scroll/batches/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/scroll/batches/{batch_number}'
         \`\`\`
 
         ### Blocks By Batch
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/blocks/scroll-batch/{batch_number}'
+        curl --request GET --url '${coreApiUrl}/api/v2/blocks/scroll-batch/{batch_number}'
         \`\`\`
 
         ### Deposits (${parentToCurrentLayerLabel})
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/scroll/deposits'
+        curl --request GET --url '${coreApiUrl}/api/v2/scroll/deposits'
         \`\`\`
 
         ### Withdrawals (${currentToParentLayerLabel})
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/scroll/withdrawals'
+        curl --request GET --url '${coreApiUrl}/api/v2/scroll/withdrawals'
         \`\`\`
     ` : undefined;
 
@@ -275,13 +275,13 @@ export function generateStandard(): string {
         ### Deposits (${parentToCurrentLayerLabel})
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/shibarium/deposits'
+        curl --request GET --url '${coreApiUrl}/api/v2/shibarium/deposits'
         \`\`\`
 
         ### Withdrawals (${currentToParentLayerLabel})
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/shibarium/withdrawals'
+        curl --request GET --url '${coreApiUrl}/api/v2/shibarium/withdrawals'
         \`\`\`
     ` : undefined;
 
@@ -289,13 +289,13 @@ export function generateStandard(): string {
         ### Validators list:
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/validators/zilliqa'
+        curl --request GET --url '${coreApiUrl}/api/v2/validators/zilliqa'
         \`\`\`
 
         ### Validator Info:
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/validators/zilliqa/{validator_public_key}'
+        curl --request GET --url '${coreApiUrl}/api/v2/validators/zilliqa/{validator_public_key}'
         \`\`\`
     ` : undefined;
 
@@ -303,7 +303,7 @@ export function generateStandard(): string {
         ### Validators list:
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/validators/stability'
+        curl --request GET --url '${coreApiUrl}/api/v2/validators/stability'
         \`\`\`
     ` : undefined;
 
@@ -435,45 +435,45 @@ export function generateStandard(): string {
         ### Gas Tracker
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/stats'
+        curl --request GET --url '${coreApiUrl}/api/v2/stats'
         \`\`\`
 
         ### Coin Balance History by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/coin-balance-history-by-day'
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/coin-balance-history'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/coin-balance-history-by-day'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/coin-balance-history'
         \`\`\`
 
         ### Logs Emitted by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/logs'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/logs'
         \`\`\`
 
         ### Blocks Validated by Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/addresses/{account_address}/blocks-validated'
+        curl --request GET --url '${coreApiUrl}/api/v2/addresses/{account_address}/blocks-validated'
         \`\`\`
         ${USER_OPS_TEMPLATE}
         ### Holders By Token Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/holders'
+        curl --request GET --url '${coreApiUrl}/api/v2/tokens/{token_contract_address}/holders'
         \`\`\`
 
         ### NFT Inventory By Token Address
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances'
+        curl --request GET --url '${coreApiUrl}/api/v2/tokens/{token_contract_address}/instances'
         \`\`\`
 
         ### NFT Instance Info
 
         \`\`\`bash
-        curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
-        curl --request GET --url '${generalApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
+        curl --request GET --url '${coreApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}'
+        curl --request GET --url '${coreApiUrl}/api/v2/tokens/{token_contract_address}/instances/{instance_id}/transfers'
         \`\`\`
         ${CHAIN_SPECIFIC_TEMPLATE}
         ## Additional Info

@@ -6,11 +6,11 @@ import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
 import { pick, uniq, delay } from 'es-toolkit';
 
-import { EssentialDappsConfig } from 'types/client/marketplace';
-import { getEnvValue, parseEnvJson } from 'configs/app/utils';
-import currentChainConfig from 'configs/app';
-import appConfig from 'configs/app';
-import { EssentialDappsChainConfig } from 'types/client/marketplace';
+import { EssentialDappsConfig } from 'src/features/marketplace/types/client';
+import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
+import currentChainConfig from 'src/config';
+import appConfig from 'src/config';
+import { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
@@ -55,7 +55,7 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
 function trimChainConfig(config: typeof appConfig, logoUrl: string | undefined) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
-    apis: pick(config.apis || {}, [ 'general' ]),
+    apis: pick(config.apis || {}, [ 'core' ]),
   };
 }
 

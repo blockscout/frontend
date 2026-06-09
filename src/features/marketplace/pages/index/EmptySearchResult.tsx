@@ -1,0 +1,45 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import { MarketplaceCategory } from 'src/features/marketplace/types/client';
+
+import config from 'src/config';
+import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { EmptyState } from 'src/toolkit/chakra/empty-state';
+import { Link } from 'src/toolkit/chakra/link';
+import { apos, space } from 'src/toolkit/utils/htmlEntities';
+
+const feature = config.features.marketplace;
+
+type Props = {
+  favoriteApps: Array<string>;
+  selectedCategoryId?: string;
+};
+
+const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
+  <EmptyState
+    description={
+      (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length) ? (
+        <>
+          You don{ apos }t have any favorite apps.<br/>
+          Click on the <SpriteIcon name="heart_outline" boxSize={ 5 } verticalAlign="text-bottom" color="icon.secondary"/>{ space }
+          icon on the app{ apos }s card to add it to Favorites.
+        </>
+      ) : (
+        <>
+          No matching apps found.
+          { 'suggestIdeasFormUrl' in feature && (
+            <>
+              { ' ' }Have a groundbreaking idea or app suggestion?<br/>
+              <Link external href={ feature.suggestIdeasFormUrl }>Share it with us</Link>
+            </>
+          ) }
+        </>
+      )
+    }
+  />
+);
+
+export default React.memo(EmptySearchResult);

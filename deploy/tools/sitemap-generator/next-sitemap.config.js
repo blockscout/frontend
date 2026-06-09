@@ -29,6 +29,47 @@ const fetchResource = async(url, formatter) => {
   }
 };
 
+const fetchDapps = async() => {
+  if(process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true'){
+    return;
+  }
+
+  const formatter = (data) => {
+    if(!Array.isArray(data)){
+      return [];
+    }
+
+    return data
+      .sort((a, b) => {
+        const priorityA = a.priority || 0;
+        const priorityB = b.priority || 0;
+        if (priorityB !== priorityA) {
+          return priorityB - priorityA;
+        }
+        if (a.internalWallet !== b.internalWallet) {
+          return a.internalWallet ? -1 : 1;
+        }
+        if (a.external !== b.external) {
+          return a.external ? 1 : -1;
+        }
+        return 0;
+      })
+      .slice(0, 50)
+      .map(({ id }) => ({ path: `/apps/${ id }/info` }))
+  };
+
+  const configUrl = process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL;
+  if(configUrl){
+    return fetchResource(configUrl, formatter);
+  }
+
+  const api = process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST;
+  const instanceId = process.env.NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID || process.env.NEXT_PUBLIC_NETWORK_ID;
+  if(api && instanceId){
+    return fetchResource(`${ stripTrailingSlash(api) }/api/v1/chains/${ instanceId }/marketplace/dapps`, formatter);
+  }
+}
+
 const siteUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
   '://',
@@ -72,7 +113,7 @@ module.exports = {
     '/sprite',
     '/chakra',
   ],
-  transform: async(config, path) => {
+  transform: async({ lastmod, ...config }, path) => {
     switch (path) {
       case '/mud-worlds':
         if (process.env.NEXT_PUBLIC_HAS_MUD_FRAMEWORK !== 'true') {
@@ -180,6 +221,11 @@ module.exports = {
           return null;
         }
         break;
+      case '/hot-contracts':
+        if (process.env.NEXT_PUBLIC_HOT_CONTRACTS_ENABLED !== 'true') {
+          return null;
+        }
+        break;
       // disabled routes for multichain
       case '/block/countdown':
       case '/contract-verification':
@@ -194,7 +240,7 @@ module.exports = {
       loc: path,
       changefreq: undefined,
       priority: undefined,
-      lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
+      lastmod: lastmod ?? (config.autoLastmod ? new Date().toISOString() : undefined),
       alternateRefs: config.alternateRefs ?? [],
     };
   },
@@ -205,24 +251,44 @@ module.exports = {
 
     const addresses = fetchResource(
       `${ apiUrl }/addresses`,
-      (data) => data.items.map(({ hash }) => `/address/${ hash }`),
+      (data) => data.items.map(({ hash }) => ({
+        path: `/address/${ hash }`
+      })),
     );
     const txs = fetchResource(
       `${ apiUrl }/transactions?filter=validated`,
-      (data) => data.items.map(({ hash }) => `/tx/${ hash }`),
+      (data) => data.items.map(({ hash, timestamp }) => ({
+        path: `/tx/${ hash }`,
+        lastmod: timestamp,
+      })),
     );
     const blocks = fetchResource(
       `${ apiUrl }/blocks?type=block`,
-      (data) => data.items.map(({ height }) => `/block/${ height }`),
+      (data) => data.items.map(({ height, timestamp }) => ({
+        path: `/block/${ height }`,
+        lastmod: timestamp,
+      })),
     );
     const tokens = fetchResource(
       `${ apiUrl }/tokens`,
-      (data) => data.items.map(({ address_hash }) => `/token/${ address_hash }`),
+      (data) => data.items.map(({ address_hash }) => ({
+        path: `/token/${ address_hash }`
+      })),
     );
-    const contracts = fetchResource(
-      `${ apiUrl }/smart-contracts`,
-      (data) => data.items.map(({ address }) => `/address/${ address.hash }?tab=contract`),
-    );
+    const contracts = process.env.NEXT_PUBLIC_HOT_CONTRACTS_ENABLED === 'true' ? 
+      fetchResource(
+        `${ apiUrl }/stats/hot-smart-contracts?scale=30d`,
+        (data) => data.items.map(({ contract_address }) => ({
+          path: `/address/${ contract_address.hash }?tab=contract`
+        })),
+      ) : 
+      fetchResource(
+        `${ apiUrl }/smart-contracts`,
+        (data) => data.items.map(({ address }) => ({
+          path: `/address/${ address.hash }?tab=contract`
+        })),
+      );
+    const dapps = fetchDapps();
 
     return Promise.all([
       ...(await addresses || []),
@@ -230,6 +296,7 @@ module.exports = {
       ...(await blocks || []),
       ...(await tokens || []),
       ...(await contracts || []),
-    ].map(path => config.transform(config, path)));
+      ...(await dapps || []),
+    ].map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
   },
 };

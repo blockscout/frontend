@@ -1,0 +1,163 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
+import type { TxsSocketType } from 'src/slices/tx/types/socket';
+
+import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
+import { currencyUnits } from 'src/slices/chain/units';
+
+import { useMultichainContext } from 'src/features/multichain/context';
+import type { TxsTranslationQuery } from 'src/features/tx-interpretation/noves/hooks/useDescribeTxs';
+
+import config from 'src/config';
+import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
+import useInitialList from 'src/shared/lists/useInitialList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
+import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+
+import TxsSocketNotice from './socket/TxsSocketNotice';
+import TxsTableItem from './TxsTableItem';
+
+type Props = {
+  txs: Array<Transaction>;
+  sort: TransactionsSortingValue;
+  onSortToggle?: (field: TransactionsSortingField) => void;
+  top: number;
+  showBlockInfo: boolean;
+  socketType?: TxsSocketType;
+  currentAddress?: string;
+  enableTimeIncrement?: boolean;
+  isLoading?: boolean;
+  stickyHeader?: boolean;
+  translationQuery?: TxsTranslationQuery;
+};
+
+const TxsTable = ({
+  txs,
+  sort,
+  onSortToggle,
+  top,
+  showBlockInfo,
+  socketType,
+  currentAddress,
+  enableTimeIncrement,
+  isLoading,
+  stickyHeader = true,
+  translationQuery,
+}: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+  const initialList = useInitialList({
+    data: txs ?? [],
+    idFn: (item) => item.hash,
+    enabled: !isLoading,
+  });
+  const multichainContext = useMultichainContext();
+  const chainData = multichainContext?.chain;
+  const isMobile = useIsMobile();
+
+  const feeCurrency = config.slices.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
+    '' :
+    ' ' + currencyUnits.ether;
+
+  const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
+
+  const columnNum = [
+    showBlockInfo,
+    true,
+    !config.slices.tx.hiddenFields?.value,
+    !config.slices.tx.hiddenFields?.tx_fee,
+  ].filter(Boolean).length;
+  const baseWidth = `${ 100 / columnNum }%`;
+
+  return (
+    <AddressHighlightProvider>
+      <TableRoot minWidth={{ base: '1200px', lg: '1000px' }}>
+        <TableHeaderComponent top={ stickyHeader ? top : undefined }>
+          <TableRow>
+            <TableColumnHeader width="48px"></TableColumnHeader>
+            { chainData && <TableColumnHeader width="32px"></TableColumnHeader> }
+            <TableColumnHeader width="180px">
+              Txn hash
+              <TimeFormatToggle/>
+            </TableColumnHeader>
+            <TableColumnHeader width="160px">Type</TableColumnHeader>
+            <TableColumnHeader width={ baseWidth }>Method</TableColumnHeader>
+            { showBlockInfo && (
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width={ baseWidth }
+                  sortField="block_number"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  Block
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width={ baseWidth }>Block</TableColumnHeader>
+              )
+            ) }
+            <TableColumnHeader width={ columnNum <= 2 ? baseWidth : '224px' }>From/To</TableColumnHeader>
+            { !config.slices.tx.hiddenFields?.value && (
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width={ baseWidth }
+                  isNumeric
+                  sortField="value"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  { `Value ${ currencyUnits.ether }` }
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width={ baseWidth } isNumeric>Value</TableColumnHeader>
+              )
+            ) }
+            { !config.slices.tx.hiddenFields?.tx_fee && (
+              onSortToggle ? (
+                <TableColumnHeaderSortable
+                  width={ baseWidth }
+                  isNumeric
+                  pr={ 5 }
+                  sortField="fee"
+                  sortValue={ sort }
+                  onSortToggle={ onSortToggle }
+                >
+                  { `Fee${ feeCurrency }` }
+                </TableColumnHeaderSortable>
+              ) : (
+                <TableColumnHeader width={ baseWidth } isNumeric pr={ 5 }>Fee</TableColumnHeader>
+              )
+            ) }
+          </TableRow>
+        </TableHeaderComponent>
+        <TableBody>
+          { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
+          { txs.slice(0, renderedItemsNum).map((item, index) => {
+            return (
+              <TxsTableItem
+                key={ item.hash + (isLoading ? index : '') }
+                tx={ item }
+                showBlockInfo={ showBlockInfo }
+                currentAddress={ currentAddress }
+                enableTimeIncrement={ enableTimeIncrement }
+                isLoading={ isLoading }
+                animation={ initialList.getAnimationProp(item) }
+                chainData={ chainData }
+                translationIsLoading={ translationQuery?.isLoading }
+                translationData={ translationQuery?.data?.find(({ txHash }) => txHash.toLowerCase() === item.hash.toLowerCase()) }
+                isMobile={ isMobile }
+              />
+            );
+          }) }
+        </TableBody>
+      </TableRoot>
+      <div ref={ cutRef }/>
+    </AddressHighlightProvider>
+  );
+};
+
+export default React.memo(TxsTable);

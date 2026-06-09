@@ -3,12 +3,12 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const withRoutes = require('nextjs-routes/config')({
-  outDir: 'nextjs',
+  outDir: 'src/server',
 });
 
-const headers = require('./nextjs/headers');
-const redirects = require('./nextjs/redirects');
-const rewrites = require('./nextjs/rewrites');
+const headers = require('./src/server/headers');
+const redirects = require('./src/server/redirects');
+const rewrites = require('./src/server/rewrites');
 
 /** @type {import('next').NextConfig} */
 const moduleExports = {
@@ -26,9 +26,9 @@ const moduleExports = {
     },
     // Stub Node built-ins only in browser bundles; Node (SSR, instrumentation) keeps real modules
     resolveAlias: {
-      fs: { browser: './nextjs/empty-module.js' },
-      net: { browser: './nextjs/empty-module.js' },
-      tls: { browser: './nextjs/empty-module.js' },
+      fs: { browser: './src/server/empty-module.js' },
+      net: { browser: './src/server/empty-module.js' },
+      tls: { browser: './src/server/empty-module.js' },
     },
   },
   // Used when BUNDLE_ANALYZER=true (run: next build --webpack) or for custom webpack tooling
@@ -76,7 +76,7 @@ const moduleExports = {
   },
 
   // workaround for passing outDir to nextjs-routes CLI
-  outDir: 'nextjs',
+  outDir: 'src/shared/router',
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

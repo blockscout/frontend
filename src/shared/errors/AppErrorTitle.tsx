@@ -1,0 +1,15 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import { Heading } from 'src/toolkit/chakra/heading';
+
+interface Props {
+  title: string;
+}
+
+const AppErrorTitle = ({ title }: Props) => {
+  return <Heading mt={ 8 } textStyle="heading.xl" as="h1">{ title }</Heading>;
+};
+
+export default AppErrorTitle;

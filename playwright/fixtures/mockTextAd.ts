@@ -1,6 +1,6 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import * as textAdMock from 'mocks/ad/textAd';
+import * as textAdMock from 'src/features/ads/text/mocks';
 
 export type MockTextAdFixture = () => Promise<void>;
 

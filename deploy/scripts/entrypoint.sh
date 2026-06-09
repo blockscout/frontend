@@ -65,6 +65,9 @@ echo
 # Generate OG image
 node --no-warnings ./og_image_generator.js
 
+# Expose Pro API support flag for the current chain (if NEXT_PUBLIC_NETWORK_ID is set)
+source ./export_pro_api_flag.sh
+
 # Create envs.js file with run-time environment variables for the client app
 ./make_envs_script.sh
 

@@ -1,6 +1,6 @@
 import type { TestFixture, Page } from '@playwright/test';
 
-import * as chainDataMock from 'mocks/multichain/chains';
+import * as chainDataMock from 'src/features/multichain/mocks/chains';
 
 export type MockEssentialDappsChainsConfigFixture = () => Promise<void>;
 

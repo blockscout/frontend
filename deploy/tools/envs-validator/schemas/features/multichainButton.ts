@@ -1,5 +1,5 @@
-import { replaceQuotes } from 'configs/app/utils';
-import { MultichainProviderConfig } from 'types/client/multichainProviderConfig';
+import { replaceQuotes } from 'src/config/utils/envs';
+import { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
 import * as yup from 'yup';
 
 const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig> = yup.object({

@@ -1,5 +1,5 @@
-import { replaceQuotes } from "configs/app/utils";
-import { Address3rdPartyWidget, ADDRESS_3RD_PARTY_WIDGET_PAGES } from "client/features/address-3rd-party-widgets/types/view";
+import { replaceQuotes } from "src/config/utils/envs";
+import { Address3rdPartyWidget, ADDRESS_3RD_PARTY_WIDGET_PAGES } from "src/features/address-3rd-party-widgets/types/view";
 import * as yup from 'yup';
 
 export const address3rdPartyWidgetsConfigSchema = yup

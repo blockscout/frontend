@@ -1,6 +1,6 @@
-import config from 'configs/app';
+import config from 'src/config';
 import dedent from 'dedent';
-import { layerLabels } from 'lib/rollups/utils';
+import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 const PRO_API_URL = 'https://api.blockscout.com';
 

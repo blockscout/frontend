@@ -19,10 +19,39 @@ import { fileURLToPath } from 'node:url';
 
 import tseslint from 'typescript-eslint';
 
+const SPDX_HEADER = '// SPDX-License-Identifier: LicenseRef-Blockscout';
+
+const spdxLicenseRule = {
+  meta: {
+    type: 'layout',
+    fixable: 'code',
+    messages: { missing: `File must start with: ${ SPDX_HEADER }` },
+    schema: [],
+  },
+  create(context) {
+    return {
+      Program() {
+        const src = context.sourceCode.getText();
+        if (src.startsWith(SPDX_HEADER + '\n')) {
+          return;
+        }
+        context.report({
+          loc: { line: 1, column: 0 },
+          messageId: 'missing',
+          fix: (fixer) => fixer.replaceTextRange([ 0, 0 ], SPDX_HEADER + '\n\n'),
+        });
+      },
+    };
+  },
+};
+
 const RESTRICTED_MODULES = {
   paths: [
-    { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
-    { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
+    { name: 'dayjs', message: 'Please use src/shared/date-and-time/dayjs.ts instead of directly importing dayjs' },
+    {
+      name: '@chakra-ui/icons',
+      message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "src/sprite/icons/" folder)',
+    },
     { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
@@ -41,7 +70,7 @@ const RESTRICTED_MODULES = {
         'Rating', 'RatingGroup', 'Textarea', 'Progress', 'ProgressCircle',
         'EmptyState',
       ],
-      message: 'Please use corresponding component or hook from "toolkit" instead',
+      message: 'Please use corresponding component or hook from "src/toolkit" instead',
     },
     {
       name: 'next/link',
@@ -50,7 +79,7 @@ const RESTRICTED_MODULES = {
     },
   ],
   patterns: [
-    'icons/*',
+    'src/sprite/icons/*',
   ],
 };
 
@@ -58,18 +87,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const gitignorePath = path.resolve(__dirname, '.gitignore');
 
-/** @see client/ARCH_REDESIGN.md §8 — dependency layers for migrated code */
+/** @see src/ARCH_REDESIGN.md §8 — dependency layers for migrated code */
 const ARCH_BOUNDARY_ELEMENTS = [
-  { type: 'client-api', pattern: 'client/api/**', mode: 'full' },
-  { type: 'client-slices', pattern: 'client/slices/**', mode: 'full' },
-  { type: 'client-features', pattern: 'client/features/**', mode: 'full' },
-  { type: 'client-shared', pattern: 'client/shared/**', mode: 'full' },
-  { type: 'client-shell', pattern: 'client/shell/**', mode: 'full' },
-  { type: 'configs', pattern: 'configs/**', mode: 'full' },
-  { type: 'toolkit', pattern: 'toolkit/**', mode: 'full' },
-  { type: 'nextjs', pattern: 'nextjs/**', mode: 'full' },
-  { type: 'legacy-lib', pattern: 'lib/**', mode: 'full' },
-  { type: 'legacy-ui', pattern: 'ui/**', mode: 'full' },
+  { type: 'src-api', pattern: 'src/api/**', mode: 'full' },
+  { type: 'src-slices', pattern: 'src/slices/**', mode: 'full' },
+  { type: 'src-features', pattern: 'src/features/**', mode: 'full' },
 ];
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -315,7 +337,7 @@ export default tseslint.config(
   //    after: 4m27s - https://github.com/blockscout/frontend/actions/runs/25108323146/job/73585871924
   //
   // {
-  //   files: [ 'client/**' ],
+  //   files: [ 'src/**' ],
   //   plugins: {
   //     'import': importPlugin,
   //   },
@@ -323,84 +345,25 @@ export default tseslint.config(
   //     'import/no-cycle': [ 'error', { maxDepth: 10 } ],
   //   },
   // },
-  // {
-  //   files: [ 'lib/**', 'ui/**' ],
-  //   plugins: {
-  //     'import': importPlugin,
-  //   },
-  //   rules: {
-  //     'import/no-cycle': 'warn',
-  //   },
-  // },
 
   /*
-   * ARCH_REDESIGN.md §10 — public type surface: consumers should import slice/feature types only from
-   * `types/api.ts`. eslint-plugin-boundaries can enforce this with `capture` on element patterns and
-   * targeted `disallow` rules; that is left for a follow-up once more slices/features exist under client/.
-   * Type-only cross-layer imports are approximated via per-rule `importKind: 'type'` (v4 has no `allowTypeImports` option).
+   * ARCH_REDESIGN.md §6 — two hard boundaries enforced as ESLint errors.
    */
   {
     files: [
-      'client/**/*.{ts,tsx}',
-      'configs/**/*.{ts,tsx,mjs}',
+      'src/**/*.{ts,tsx}',
     ],
     plugins: {
       boundaries: boundariesPlugin,
     },
     rules: {
       'boundaries/element-types': [ 'error', {
-        'default': 'disallow',
+        'default': 'allow',
         rules: [
           {
-            from: 'client-api',
-            allow: [ 'client-shared', 'legacy-lib' ],
-          },
-          {
-            from: 'client-api',
-            allow: [ 'client-slices', 'client-features' ],
-            importKind: 'type',
-          },
-          {
-            from: 'client-slices',
-            allow: [ 'client-api', 'client-shared', 'client-slices', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
-          },
-          {
-            from: 'client-slices',
-            allow: [ 'client-features' ],
-            importKind: 'type',
-          },
-          {
-            from: 'client-features',
-            allow: [ 'client-api', 'client-shared', 'client-slices', 'client-features', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
-          },
-          {
-            from: 'client-shared',
-            allow: [ 'client-shared', 'legacy-lib', 'legacy-ui', 'toolkit', 'configs' ],
-          },
-          {
-            from: 'client-shared',
-            allow: [ 'client-slices' ],
-            importKind: 'type',
-          },
-          {
-            from: 'client-shell',
-            allow: [
-              'client-api',
-              'client-slices',
-              'client-features',
-              'client-shared',
-              'client-shell',
-              'legacy-lib',
-              'legacy-ui',
-              'toolkit',
-              'nextjs',
-              'configs',
-            ],
-          },
-          {
-            from: 'configs',
-            // `configs` must not import `client/*`; `lib/*` stays allowed until config-owned types move out of legacy paths
-            allow: [ 'configs', 'legacy-lib' ],
+            from: 'src-api',
+            disallow: [ 'src-slices', 'src-features' ],
+            importKind: 'value',
           },
         ],
       } ],
@@ -419,24 +382,16 @@ export default tseslint.config(
           groups: [
             'module',
             '/types/',
-            [ '/^nextjs/' ],
-            [ '/^client/api/' ],
-            [ '/^client/slices/' ],
-            [ '/^client/features/' ],
-            [ '/^client/shared/' ],
+            [ '/^src/server/' ],
+            [ '/^src/api/' ],
+            [ '/^src/shell/' ],
+            [ '/^src/slices/' ],
+            [ '/^src/features/' ],
+            [ '/^src/config/', '/^src/services/', '/^src/shared/', '/^src/sprite/' ],
+            [ '/^src/toolkit/' ],
             [
-              '/^configs/',
-              '/^data/',
               '/^deploy/',
-              '/^icons/',
-              '/^lib/',
-              '/^mocks/',
-              '/^pages/',
               '/^playwright/',
-              '/^stubs/',
-              '/^theme/',
-              '/^toolkit/',
-              '/^ui/',
               '/^vitest/',
             ],
             [ 'parent', 'sibling', 'index' ],
@@ -459,8 +414,7 @@ export default tseslint.config(
       'consistent-default-export-name': consistentDefaultExportNamePlugin,
     },
     files: [
-      'ui/**/[A-Z]*.tsx',
-      'client/**/*.tsx',
+      'src/**/*.tsx',
     ],
     ignores: [
       '**/*.pw.*',
@@ -574,14 +528,14 @@ export default tseslint.config(
         object: 'process',
         property: 'env',
         // FIXME: restrict the rule only NEXT_PUBLIC variables
-        message: 'Please use configs/app/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
+        message: 'Please use src/config/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
       } ],
     },
   },
   {
     files: [
-      'pages/**',
-      'nextjs/**',
+      'src/pages/**',
+      'src/server/**',
       'playwright/**',
       'deploy/scripts/**',
       'deploy/tools/**',
@@ -597,13 +551,36 @@ export default tseslint.config(
   },
   {
     files: [
-      'toolkit/chakra/**',
-      'toolkit/components/**',
-      'toolkit/package/**',
+      'src/toolkit/chakra/**',
+      'src/toolkit/components/**',
+      'src/toolkit/package/**',
     ],
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly
       'no-restricted-imports': 'off',
+    },
+  },
+
+  {
+    plugins: { 'spdx-license': { rules: { header: spdxLicenseRule } } },
+    files: [ '**/*.{ts,tsx,js}' ],
+    ignores: [
+      '**/*.d.ts',
+      '**/*.pw.tsx',
+      '**/*.spec.{ts,tsx}',
+      '**/*.config.{ts,js}',
+      '**.config.{ts,js}',
+      '**/mocks/**',
+      '**/mocks.ts',
+      'playwright/**',
+      '**/stubs/**',
+      '**/stubs.ts',
+      'vitest/**',
+      'tools/**',
+      '.agents/**',
+    ],
+    rules: {
+      'spdx-license/header': 'error',
     },
   },
 );

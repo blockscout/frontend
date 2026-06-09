@@ -1,0 +1,126 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { useQuery } from '@tanstack/react-query';
+import React from 'react';
+
+import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import { MarketplaceCategory } from 'src/features/marketplace/types/client';
+
+import useApiFetch from 'src/api/hooks/useApiFetch';
+import useFetch from 'src/api/hooks/useFetch';
+import type { ResourceError } from 'src/api/resources';
+
+import useIsAuth from 'src/features/account/hooks/useIsAuth';
+import { MARKETPLACE_APP } from 'src/features/marketplace/stubs';
+
+import config from 'src/config';
+
+import type { SortValue } from '../utils/sort';
+
+const feature = config.features.marketplace;
+
+const EMPTY_ARRAY: Array<string> = [];
+
+function isAppNameMatches(q: string, app: MarketplaceApp) {
+  return app.title.toLowerCase().includes(q.toLowerCase());
+}
+
+function isAppCategoryMatches(category: string, app: MarketplaceApp, favoriteApps: Array<string> = []) {
+  return category === MarketplaceCategory.ALL ||
+      (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
+      app.categories.includes(category);
+}
+
+function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [], sorting: SortValue | undefined) {
+  return apps.sort((a, b) => {
+    const priorityA = a.priority || 0;
+    const priorityB = b.priority || 0;
+    // First, sort by favorite apps
+    if (favoriteApps.includes(a.id) !== favoriteApps.includes(b.id)) {
+      return favoriteApps.includes(a.id) ? -1 : 1;
+    }
+    if (sorting === 'rating_score') {
+      return (b.rating || 0) - (a.rating || 0);
+    }
+    if (sorting === 'rating_count') {
+      return (b.ratingsTotalCount || 0) - (a.ratingsTotalCount || 0);
+    }
+    // Then sort by priority (descending)
+    if (priorityB !== priorityA) {
+      return priorityB - priorityA;
+    }
+    // If priority is the same, sort by internalWallet (true first)
+    if (a.internalWallet !== b.internalWallet) {
+      return a.internalWallet ? -1 : 1;
+    }
+    // If internalWallet is also the same, sort by external (false first)
+    if (a.external !== b.external) {
+      return a.external ? 1 : -1;
+    }
+    // If all criteria are the same, keep original order (stable sort)
+    return 0;
+  });
+}
+
+export default function useMarketplaceApps(
+  filter: string,
+  selectedCategoryId: string = MarketplaceCategory.ALL,
+  favoriteApps: Array<string> = EMPTY_ARRAY,
+) {
+  const fetch = useFetch();
+  const apiFetch = useApiFetch();
+  const isAuth = useIsAuth();
+
+  const [ sorting, setSorting ] = React.useState<SortValue>();
+  // Use a ref to keep initial favorite apps and sorting while favorite / un-favorite apps
+  const favoriteAppsRef = React.useRef(favoriteApps);
+
+  const {
+    isPlaceholderData, isError, error, data, refetch,
+  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceApp>>({
+    queryKey: [ 'marketplace-dapps' ],
+    queryFn: async() => {
+      if (!feature.isEnabled) {
+        return [];
+      } else if ('configUrl' in feature) {
+        return fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+      } else {
+        return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
+      }
+    },
+    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current, sorting),
+    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    staleTime: Infinity,
+    enabled: feature.isEnabled,
+  });
+
+  React.useEffect(() => {
+    refetch();
+  }, [ isAuth, refetch ]);
+
+  const displayedApps = React.useMemo(() => {
+    if (isPlaceholderData) {
+      return data || [];
+    }
+
+    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [ selectedCategoryId, data, filter, favoriteApps, isPlaceholderData ]);
+
+  return React.useMemo(() => ({
+    data,
+    displayedApps,
+    error,
+    isError,
+    isPlaceholderData,
+    setSorting,
+    refetch,
+  }), [
+    data,
+    displayedApps,
+    error,
+    isError,
+    isPlaceholderData,
+    setSorting,
+    refetch,
+  ]);
+}

@@ -1,4 +1,4 @@
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'src/config/utils/envs';
 import * as yup from 'yup';
 
 // External services envs

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-icons_dir="./icons"
+icons_dir="./src/sprite/icons"
 target_dir="./public/icons"
 
 pnpm icons build -i $icons_dir -o $target_dir --optimize

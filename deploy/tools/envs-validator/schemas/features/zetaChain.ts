@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 import { urlTest } from '../../utils';
-import { replaceQuotes } from 'configs/app/utils';
-import type { ZetaChainChainsConfigEnv } from 'types/client/zetaChain';
+import { replaceQuotes } from 'src/config/utils/envs';
+import type { ZetaChainChainsConfigEnv } from 'src/features/chain-variants/zeta-chain/types/client';
   
 const zetaChainCCTXConfigSchema: yup.ObjectSchema<ZetaChainChainsConfigEnv> = yup.object({
     chain_id: yup.number().required(),

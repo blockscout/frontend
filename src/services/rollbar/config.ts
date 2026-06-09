@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import app from 'src/config/app';
+import { getEnvValue } from 'src/config/utils/envs';
+import usercentrics from 'src/services/usercentrics/config';
+
+const clientToken = getEnvValue('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN');
+const instance = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_APP_INSTANCE');
+  if (envValue) {
+    return envValue;
+  }
+
+  return app.host?.replace('.blockscout.com', '').replace('.k8s-dev', '').replaceAll('-', '_');
+})();
+const environment = getEnvValue('NEXT_PUBLIC_APP_ENV') || 'production';
+const codeVersion = getEnvValue('NEXT_PUBLIC_GIT_TAG') || getEnvValue('NEXT_PUBLIC_GIT_COMMIT_SHA');
+
+const config = Object.freeze({
+  clientToken: !app.isPrivateMode && !(usercentrics && usercentrics.consent?.rollbar) ? clientToken : undefined,
+  environment,
+  instance,
+  codeVersion,
+});
+
+export default config;

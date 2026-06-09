@@ -38,6 +38,8 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
       nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
       cert-manager.io/cluster-issuer: "zerossl-prod"
+      nginx.ingress.kubernetes.io/configuration-snippet: |
+        proxy_set_header Onion-Location "http://blockscoutlmnjcsbaxjhysk4q7vurrlpspelnzgdhjaw3yn26npaaad.onion";
     hostname: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
 
   resources:

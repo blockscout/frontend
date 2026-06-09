@@ -1,0 +1,95 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { chakra } from '@chakra-ui/react';
+import React from 'react';
+
+import type * as visualizer from '@blockscout/visualizer-types';
+import type { SmartContract } from 'src/slices/contract/types/api';
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+import type { ResourceError } from 'src/api/resources';
+
+import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-error';
+import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+
+import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
+
+interface Props {
+  addressHash: string;
+}
+
+function composeSources(contract: SmartContract | undefined): visualizer.VisualizeStorageRequest['sources'] {
+  if (!contract) {
+    return {};
+  }
+  const additionalSources = contract.additional_sources?.reduce<Record<string, string>>((result, item) => {
+    result[item.file_path] = item.source_code;
+    return result;
+  }, {});
+
+  return {
+    [contract.file_path || 'index.sol']: contract.source_code || '',
+    ...additionalSources,
+  };
+}
+
+const Sol2UmlDiagram = ({ addressHash }: Props) => {
+  const contractQuery = useApiQuery<'core:contract', ResourceError>('core:contract', {
+    pathParams: { hash: addressHash },
+    queryOptions: {
+      enabled: Boolean(addressHash),
+      refetchOnMount: false,
+    },
+  });
+
+  const umlQuery = useApiQuery('visualize:solidity_contract', {
+    fetchParams: {
+      method: 'POST',
+      body: {
+        sources: composeSources(contractQuery.data),
+      },
+    },
+    queryOptions: {
+      queryKey: [ 'solidity_contract', addressHash ],
+      enabled: Boolean(contractQuery.data),
+      refetchOnMount: false,
+    },
+  });
+
+  const imgUrl = `data:image/svg+xml;base64,${ umlQuery.data?.svg }`;
+
+  const handleClick = React.useCallback(() => {
+    const image = new Image();
+    image.src = imgUrl;
+
+    const newWindow = window.open(imgUrl, '_blank', 'noopener,noreferrer');
+    newWindow?.document.write(image.outerHTML);
+  }, [ imgUrl ]);
+
+  throwOnAbsentParamError(addressHash);
+  throwOnResourceLoadError(contractQuery);
+  throwOnResourceLoadError(umlQuery);
+
+  if (contractQuery.isPending || umlQuery.isPending) {
+    return <ContentLoader/>;
+  }
+
+  if (!umlQuery.data?.svg || !contractQuery.data) {
+    return <span>No data for visualization</span>;
+  }
+
+  return (
+    <Tooltip content="Click on image to zoom" positioning={{ placement: 'top' }}>
+      <chakra.img
+        src={ imgUrl }
+        alt={ `Contract ${ contractQuery.data.name } UML diagram` }
+        onClick={ handleClick }
+        cursor="pointer"
+        filter={{ _light: 'invert(0)', _dark: 'invert(1)' }}
+      />
+    </Tooltip>
+  );
+};
+
+export default React.memo(Sol2UmlDiagram);

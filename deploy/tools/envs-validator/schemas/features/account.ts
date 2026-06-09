@@ -1,4 +1,4 @@
-import { AuthProvider } from 'types/client/account';
+import { AuthProvider } from 'src/features/account/types/client';
 import * as yup from 'yup';
 import { urlTest } from '../../utils';
 

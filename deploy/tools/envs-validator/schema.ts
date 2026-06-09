@@ -16,17 +16,17 @@ type AddressProfileAPIConfig = {
   tag_bg_color?: string;
   tag_text_color?: string;
 };
-import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
-import { GAS_UNITS } from 'types/client/gasTracker';
-import type { GasUnit } from 'types/client/gasTracker';
-import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'types/client/txInterpretation';
-import { VALIDATORS_CHAIN_TYPE } from 'types/client/validators';
-import type { ValidatorsChainType } from 'types/client/validators';
-import type { WalletType } from 'types/client/wallets';
-import { SUPPORTED_WALLETS } from 'types/client/wallets';
-import type { TxExternalTxsConfig } from 'types/client/externalTxsConfig';
+import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
+import { GAS_UNITS } from 'src/slices/gas/types/config';
+import type { GasUnit } from 'src/slices/gas/types/config';
+import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'src/features/tx-interpretation/common/types/config';
+import { VALIDATORS_CHAIN_TYPE } from 'src/features/validators/types/config';
+import type { ValidatorsChainType } from 'src/features/validators/types/config';
+import type { WalletType } from 'src/features/web3-wallet/types/config';
+import { SUPPORTED_WALLETS } from 'src/features/web3-wallet/types/config';
+import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 
-import { replaceQuotes } from 'configs/app/utils';
+import { replaceQuotes } from 'src/config/utils/envs';
 import { urlTest, protocols } from './utils';
 import apisSchema from './schemas/apis';
 import chainSchema from './schemas/chain';
@@ -149,6 +149,7 @@ const schema = yup
       }),
 
     // Misc
+    NEXT_PUBLIC_PRO_API_SUPPORTED: yup.boolean(),
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
     NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE: yup.string(),

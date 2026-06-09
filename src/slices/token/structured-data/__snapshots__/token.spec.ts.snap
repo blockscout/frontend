@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`generates correct schema 1`] = `
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "brand": {
+    "@type": "Brand",
+    "name": "Tether",
+  },
+  "description": "USDT is a stablecoin",
+  "image": "http://localhost:3000/token-icon.png",
+  "name": "ARIANEE",
+  "offers": {
+    "@type": "Offer",
+    "availability": "InStock",
+    "price": "2.0101",
+    "priceCurrency": "USD",
+    "priceValidUntil": "2024-01-02T00:00:00.000Z",
+  },
+  "productID": "0x55d536e4d6c1993d8ef2e2a4ef77f02088419420",
+  "url": "http://localhost:3000/token/0x12345",
+}
+`;

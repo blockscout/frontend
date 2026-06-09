@@ -4,11 +4,11 @@ import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
 import React from 'react';
 
-import { SocketProvider } from 'client/api/socket/context';
+import { SocketProvider } from 'src/api/socket/context';
 
-import { AppContextProvider } from 'lib/contexts/app';
+import { AppContextProvider } from 'src/shell/app/context';
 
-import 'client/shared/i18n/set-locale';
+import 'src/shared/i18n/set-locale';
 
 const PAGE_PROPS = {
   cookies: '',
@@ -17,6 +17,8 @@ const PAGE_PROPS = {
   adBannerProvider: null,
   apiData: null,
   uuid: '123',
+  onionDomain: null,
+  cspNonce: null,
 };
 
 const TestApp = ({ children }: { children: React.ReactNode }) => {
