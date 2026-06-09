@@ -32,8 +32,10 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     id_formatted: idFormatted,
   };
 
-  const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
-  const description = compileValue(templates.description.make(route.pathname, Boolean(apiData)), params);
+  const titlePostfix = config.metadata.promoteBlockscoutInTitle ? ' | Blockscout' : '';
+
+  const title = compileValue(templates.TEMPLATE_MAP[route.pathname].metadata.title, params) + titlePostfix;
+  const description = compileValue(templates.TEMPLATE_MAP[route.pathname].metadata.description, params);
 
   const pageOgType = getPageOgType(route.pathname);
   const jsonLd = generateStructuredData({ route, apiData });

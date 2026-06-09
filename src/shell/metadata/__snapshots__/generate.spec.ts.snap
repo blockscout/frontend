@@ -1,20 +1,48 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`generates correct metadata for: > dynamic route 1`] = `
+exports[`address route > enhanced data 1`] = `
 {
   "canonical": undefined,
-  "description": "View transaction 0x12345 on Blockscout (Blockscout) Explorer",
+  "description": "View the account balance, transactions, and other data for duck.eth on the Blockscout (Blockscout) Explorer",
   "jsonLd": undefined,
   "opengraph": {
     "description": "",
     "imageUrl": "",
-    "title": "Blockscout transaction 0x12345 | Blockscout",
+    "title": "Blockscout address details for duck.eth | Blockscout",
   },
-  "title": "Blockscout transaction 0x12345 | Blockscout",
+  "title": "Blockscout address details for duck.eth | Blockscout",
 }
 `;
 
-exports[`generates correct metadata for: > static route 1`] = `
+exports[`address route > no enhanced data 1`] = `
+{
+  "canonical": undefined,
+  "description": "View the account balance, transactions, and other data for 0xd789a607CEac2f0E14867de4EB15b15C9FFB5859 on the Blockscout (Blockscout) Explorer",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout address details for 0xd789a607CEac2f0E14867de4EB15b15C9FFB5859 | Blockscout",
+  },
+  "title": "Blockscout address details for 0xd789a607CEac2f0E14867de4EB15b15C9FFB5859 | Blockscout",
+}
+`;
+
+exports[`dynamic route 1`] = `
+{
+  "canonical": undefined,
+  "description": "View transaction 0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193 on Blockscout (Blockscout) Explorer",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout transaction 0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193 | Blockscout",
+  },
+  "title": "Blockscout transaction 0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193 | Blockscout",
+}
+`;
+
+exports[`static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",
   "description": "Scan Blockscout (Blockscout) Explorer with Blockscout. Search transactions, verify smart contracts, analyze addresses, and access blockchain data through explorer APIs.",
