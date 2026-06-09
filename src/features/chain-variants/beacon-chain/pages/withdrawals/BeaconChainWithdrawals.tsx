@@ -90,7 +90,7 @@ const BeaconChainWithdrawals = () => {
 
   return (
     <>
-      <PageTitle title="Withdrawals"/>
+      <PageTitle title="Withdrawals" withTextAd/>
       <DataList
         isError={ isError }
         itemsNum={ data?.items.length }
