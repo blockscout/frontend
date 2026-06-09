@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { upperFirst } from 'es-toolkit';
+import { kebabCase, upperFirst } from 'es-toolkit';
 import type { Route } from 'nextjs-routes';
 
 import type { ApiData, Metadata } from './types';
@@ -21,7 +21,7 @@ import * as templates from './templates';
 
 export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname> = null): Metadata {
   const idParam = castToString(route.query?.id);
-  const idFormatted = idParam ? upperFirst(idParam) : undefined;
+  const idFormatted = idParam ? upperFirst(kebabCase(idParam).replaceAll('-', ' ')) : undefined;
 
   const params = {
     ...route.query,

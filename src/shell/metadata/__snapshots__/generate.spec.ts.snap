@@ -45,7 +45,7 @@ exports[`dynamic route 1`] = `
 exports[`static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",
-  "description": "Scan Blockscout (Blockscout) Explorer with Blockscout. Search transactions, verify smart contracts, analyze addresses, and access blockchain data through explorer APIs.",
+  "description": "Browse the latest Blockscout transactions on the Blockscout (Blockscout) Explorer. Track transaction status, fees, and details in real time.",
   "jsonLd": undefined,
   "opengraph": {
     "description": "",
@@ -53,5 +53,33 @@ exports[`static route 1`] = `
     "title": "Blockscout transactions - Blockscout explorer | Blockscout",
   },
   "title": "Blockscout transactions - Blockscout explorer | Blockscout",
+}
+`;
+
+exports[`stats details route > enhanced data 1`] = `
+{
+  "canonical": undefined,
+  "description": "Cumulative account growth over time",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Number of accounts chart on Blockscout | Blockscout",
+  },
+  "title": "Number of accounts chart on Blockscout | Blockscout",
+}
+`;
+
+exports[`stats details route > no enhanced data 1`] = `
+{
+  "canonical": undefined,
+  "description": "Explore the accountsGrowth chart with historical Blockscout network data on the Blockscout (Blockscout) Explorer.",
+  "jsonLd": undefined,
+  "opengraph": {
+    "description": "",
+    "imageUrl": "",
+    "title": "Blockscout stats - Accounts growth chart | Blockscout",
+  },
+  "title": "Blockscout stats - Accounts growth chart | Blockscout",
 }
 `;
