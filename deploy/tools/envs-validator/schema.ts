@@ -147,6 +147,15 @@ const schema = yup
         });
         return isUndefined || valueSchema.isValidSync(data);
       }),
+    NEXT_PUBLIC_USERCENTRICS_DRAFT: yup.boolean().when('NEXT_PUBLIC_USERCENTRICS_CONFIG', {
+      is: (value: string) => Boolean(value),
+      then: (schema) => schema,
+      otherwise: (schema) => schema.test(
+        'not-exist',
+        'NEXT_PUBLIC_USERCENTRICS_DRAFT can only be used with NEXT_PUBLIC_USERCENTRICS_CONFIG',
+        value => value === undefined,
+      ),
+    }),
 
     // Misc
     NEXT_PUBLIC_PRO_API_SUPPORTED: yup.boolean(),

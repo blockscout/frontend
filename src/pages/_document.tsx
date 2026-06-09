@@ -82,9 +82,8 @@ class MyDocument extends Document {
               { ...(pickBy({
                 'data-settings-id': usercentrics.settingsId,
                 'data-ruleset-id': usercentrics.rulesetId,
+                'data-draft': usercentrics.isDraft,
               }, Boolean)) }
-              // TODO @tom2drum remove before production
-              data-draft="true"
               async
             />
           ) }

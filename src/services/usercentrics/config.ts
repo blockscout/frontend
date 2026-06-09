@@ -36,6 +36,7 @@ const rawConfig = parseEnvJson<UsercentricsConfig>(getEnvValue('NEXT_PUBLIC_USER
 const config = !app.isPrivateMode && rawConfig ? Object.freeze({
   settingsId: rawConfig.settingsId,
   rulesetId: rawConfig.rulesetId,
+  isDraft: getEnvValue('NEXT_PUBLIC_USERCENTRICS_DRAFT') === 'true',
   consent,
 }) : undefined;
 
