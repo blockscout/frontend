@@ -2,12 +2,14 @@
 
 export type UrlScheme = 'http' | 'https' | 'ws' | 'wss';
 
+export const URL_SCHEME_REGEXP = /^[a-z][a-z0-9+\-.]*:\/\//i;
+
 export interface UrlValidatorParams {
+  // If true, the URL will be validated as an URL without scheme (e.g. 'example.com')
   loose?: boolean;
-  schemes?: Array<UrlScheme>;
 }
 
-export function urlValidator({ loose, schemes = [ 'https', 'http' ] }: UrlValidatorParams = {}) {
+export function urlValidator({ loose }: UrlValidatorParams = {}) {
   return function(value: string | undefined) {
     if (!value) {
       return true;
@@ -19,12 +21,12 @@ export function urlValidator({ loose, schemes = [ 'https', 'http' ] }: UrlValida
           return value;
         }
 
-        const hasScheme = schemes.some(scheme => value.startsWith(`${ scheme }://`));
+        const hasScheme = URL_SCHEME_REGEXP.test(value);
         if (hasScheme) {
           return value;
         }
 
-        return `${ schemes[0] }://${ value }`;
+        return `https://${ value }`;
       })();
       new URL(valueToTest);
       return true;

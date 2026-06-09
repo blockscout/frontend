@@ -10,20 +10,20 @@ import { urlValidator } from '../validators/url';
 import { FormFieldText } from './FormFieldText';
 
 const FormFieldUrlContent = <FormFields extends FieldValues>(
-  props: FormFieldPropsBase<FormFields> & { urlValidatorParams?: UrlValidatorParams },
+  { urlValidatorParams, ...rest }: FormFieldPropsBase<FormFields> & { urlValidatorParams?: UrlValidatorParams },
 ) => {
   const rules = React.useMemo(
     () => ({
-      ...props.rules,
+      ...rest.rules,
       validate: {
-        ...props.rules?.validate,
-        url: urlValidator(props.urlValidatorParams),
+        ...rest.rules?.validate,
+        url: urlValidator(urlValidatorParams),
       },
     }),
-    [ props.rules, props.urlValidatorParams ],
+    [ rest.rules, urlValidatorParams ],
   );
 
-  return <FormFieldText { ...props } rules={ rules }/>;
+  return <FormFieldText { ...rest } rules={ rules }/>;
 };
 
 export const FormFieldUrl = React.memo(FormFieldUrlContent) as typeof FormFieldUrlContent;
