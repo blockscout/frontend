@@ -246,21 +246,23 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
     metadata: {
       title: {
         'default': `%chain_name% marketplace ${ dappEntityName }`,
-        enhanced: '%chain_name% - %title%',
+        enhanced: `%title% - %chain_name% ${ dappEntityName }`,
       },
       description: {
-        'default': `Explore this %chain_name% ${ dappEntityName } in the marketplace on the %chain_explorer_title%.`,
+        'default': `Open and use this ${ dappEntityName } on %chain_name% via the %chain_explorer_title% marketplace.`,
+        enhanced: '%description%',
       },
     },
   },
   '/apps/[id]/info': {
     metadata: {
       title: {
-        'default': `%chain_name% marketplace ${ dappEntityName }`,
-        enhanced: '%chain_name% - %title%',
+        'default': `%chain_name% marketplace ${ dappEntityName } details`,
+        enhanced: `%title% - %chain_name% ${ dappEntityName } details`,
       },
       description: {
-        'default': `Explore this %chain_name% ${ dappEntityName } in the marketplace on the %chain_explorer_title%.`,
+        'default': `Learn about this ${ dappEntityName } on %chain_name%: features, links, and details on the %chain_explorer_title%.`,
+        enhanced: '%shortDescription%',
       },
     },
   },
