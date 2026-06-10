@@ -1322,7 +1322,7 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{'scriptUrl':'https://your-cdn.com/uc.js','rulesetId':'<your-ruleset-id>'}` | upcoming |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | upcoming |
 | NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | upcoming |
 
 ## Misc

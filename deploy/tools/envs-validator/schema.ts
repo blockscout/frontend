@@ -139,7 +139,7 @@ const schema = yup
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
     NEXT_PUBLIC_USERCENTRICS_CONFIG: yup
       .mixed()
-      .test('shape', 'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have scriptUrl and rulesetId', (data) => {
+      .test('shape', 'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have settingsId or rulesetId', (data) => {
         const isUndefined = data === undefined;
         const valueSchema = yup.object().transform(replaceQuotes).json().shape({
           settingsId: yup.string(),

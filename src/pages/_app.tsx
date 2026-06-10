@@ -11,6 +11,7 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
 
+import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 import PageMetadata from 'src/server/PageMetadata';
 
 import useQueryClientConfig from 'src/api/hooks/useQueryClientConfig';
@@ -44,8 +45,8 @@ import 'src/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
 import 'src/server/global.css';
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+type AppPropsWithLayout = AppProps<PageProps<'/'>> & {
+  Component: NextPageWithLayout<PageProps<'/'>>;
 };
 
 const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
@@ -69,7 +70,7 @@ const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   const queryClient = useQueryClientConfig();
-  const growthBook = useLoadFeatures(pageProps);
+  const growthBook = useLoadFeatures(pageProps.uuid);
 
   React.useEffect(() => {
     // after the app is rendered/hydrated, show the console scam warning

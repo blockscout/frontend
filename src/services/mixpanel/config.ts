@@ -17,7 +17,7 @@ const configOverrides = (() => {
 })();
 
 const config = Object.freeze({
-  projectToken: !app.isPrivateMode && !(usercentrics && usercentrics.consent?.mixpanel) ? projectToken : undefined,
+  projectToken: !app.isPrivateMode && !(usercentrics && !usercentrics.consent?.mixpanel) ? projectToken : undefined,
   configOverrides,
 });
 

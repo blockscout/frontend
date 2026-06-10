@@ -8,7 +8,7 @@ import { initGrowthBook } from './init';
 
 export default function useLoadFeatures(uuid: string) {
 
-  const [ growthBook ] = React.useState(initGrowthBook(uuid));
+  const [ growthBook ] = React.useState(() => initGrowthBook(uuid));
 
   React.useEffect(() => {
     if (!growthBook) {

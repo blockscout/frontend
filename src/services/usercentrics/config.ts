@@ -17,23 +17,20 @@ interface UsercentricsConfig {
 }
 
 const consent = (() => {
-  if (!isBrowser()) {
-    return CONSENT_RESULT_ALL_ACCEPTED;
+  if (isBrowser()) {
+    const consent = localStorage.getItem(STORAGE_KEY);
+    if (consent) {
+      try {
+        return JSON.parse(consent) as UsercentricsConsentResult;
+      } catch {}
+    }
   }
-  const consent = localStorage.getItem(STORAGE_KEY);
-  if (!consent) {
-    return;
-  }
-  try {
-    return JSON.parse(consent) as UsercentricsConsentResult;
-  } catch {
-    return;
-  }
+  return CONSENT_RESULT_ALL_ACCEPTED;
 })();
 
 const rawConfig = parseEnvJson<UsercentricsConfig>(getEnvValue('NEXT_PUBLIC_USERCENTRICS_CONFIG') ?? '');
 
-const config = !app.isPrivateMode && rawConfig ? Object.freeze({
+const config = !app.isPrivateMode && rawConfig && (rawConfig.settingsId || rawConfig.rulesetId) ? Object.freeze({
   settingsId: rawConfig.settingsId,
   rulesetId: rawConfig.rulesetId,
   isDraft: getEnvValue('NEXT_PUBLIC_USERCENTRICS_DRAFT') === 'true',

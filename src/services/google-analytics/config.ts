@@ -7,7 +7,7 @@ import usercentrics from 'src/services/usercentrics/config';
 const propertyId = getEnvValue('NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID');
 
 const config = Object.freeze({
-  propertyId: !app.isPrivateMode && !(usercentrics && usercentrics.consent?.googleAnalytics) ? propertyId : undefined,
+  propertyId: !app.isPrivateMode && !(usercentrics && !usercentrics.consent?.googleAnalytics) ? propertyId : undefined,
 });
 
 export default config;

@@ -82,7 +82,7 @@ class MyDocument extends Document {
               { ...(pickBy({
                 'data-settings-id': usercentrics.settingsId,
                 'data-ruleset-id': usercentrics.rulesetId,
-                'data-draft': usercentrics.isDraft,
+                'data-draft': usercentrics.isDraft ? 'true' : undefined,
               }, Boolean)) }
               async
             />

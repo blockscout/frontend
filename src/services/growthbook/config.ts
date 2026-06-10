@@ -7,7 +7,7 @@ import usercentrics from 'src/services/usercentrics/config';
 const clientKey = getEnvValue('NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY');
 
 const config = Object.freeze({
-  clientKey: !app.isPrivateMode && !(usercentrics && usercentrics.consent?.growthBook) ? clientKey : undefined,
+  clientKey: !app.isPrivateMode && !(usercentrics && !usercentrics.consent?.growthBook) ? clientKey : undefined,
 });
 
 export default config;
