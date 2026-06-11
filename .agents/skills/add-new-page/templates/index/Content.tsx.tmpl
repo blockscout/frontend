@@ -18,10 +18,13 @@ const __PageName__Content = () => {
   const isLoading = false;
 
   return (
+    // TODO: replace the "items"/"item" placeholders below with this page's entity —
+    // plural in `emptyText` ("There are no validators."), singular in `emptyStateProps.term` ("validator").
     <DataList
       isError={ isError }
       itemsNum={ items.length }
       emptyText="There are no items."
+      emptyStateProps={{ term: 'item' }}
     >
       <Box hideFrom="lg">
         <__PageName__List items={ items } isLoading={ isLoading }/>

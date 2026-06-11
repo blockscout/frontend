@@ -105,7 +105,7 @@ Proceed only once these are settled.
 Skip this step entirely for core slice pages.
 
 The route's server guard (Step 3) depends on the feature flag, so the feature and its env variable must exist
-**before** the route file.
+**before** the route file. If the feature and its config already exist, proceed to the next step.
 
 - **Invoke the `add-env-var` skill** to create the guarding env variable(s), the feature
   `src/features/__featureName__/config.ts`, and its registration in `src/config/features.ts`. That skill
@@ -132,6 +132,9 @@ The **content bodies** are the same regardless of tabs — reference these exemp
   one row per item via dedicated `TableItem`/`ListItem` components (mirroring `BlocksTableItem`/`BlocksListItem`).
   Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem,BlocksList,BlocksListItem}.tsx`;
   `src/shared/lists/DataList.tsx`.
+  Replace the `DataList` placeholders with the page's entity (don't leave the generic "items"):
+  set `emptyText` to a plural no-data sentence (`"There are no blocks."`) and `emptyStateProps={{ term: '<entity>' }}` to 
+  the singular form (`'block'`).
 
 Then branch on the Step 0 layout decision:
 
