@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import PageTitle from 'src/shell/page/title/PageTitle';
+
+import __PageName__Details from 'src/__area__/__featureName__/pages/details/__PageName__Details';
+
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+const __PageName__ = () => {
+  const router = useRouter();
+  const __entityParam__ = getQueryParamString(router.query.__entityParam__);
+
+  // TODO: wire up data (useApiQuery keyed by __entityParam__) — out of scaffold scope.
+  // Drive `isLoading` from the query's `isPlaceholderData` once wired.
+  const isLoading = false;
+  const data: unknown = {};
+
+  return (
+    <>
+      <PageTitle title={ `__title__ ${ __entityParam__ }` } isLoading={ isLoading }/>
+      <__PageName__Details isLoading={ isLoading } data={ data }/>
+    </>
+  );
+};
+
+export default __PageName__;

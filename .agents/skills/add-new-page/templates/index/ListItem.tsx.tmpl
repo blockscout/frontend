@@ -1,0 +1,37 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
+
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
+interface Props {
+  // TODO: replace `unknown` with the real item type
+  item: unknown;
+  isLoading?: boolean;
+}
+
+const __PageName__ListItem = ({ item, isLoading }: Props) => {
+  return (
+    <ListItemMobileGrid.Container>
+      { /* TODO: one Label/Value pair per field; render values from `item` */ }
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Label 1</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <Skeleton loading={ isLoading }>Value 1</Skeleton>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Label 2</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <Skeleton loading={ isLoading }>Value 2</Skeleton>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Label 3</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <Skeleton loading={ isLoading }>Value 3</Skeleton>
+      </ListItemMobileGrid.Value>
+    </ListItemMobileGrid.Container>
+  );
+};
+
+export default __PageName__ListItem;
