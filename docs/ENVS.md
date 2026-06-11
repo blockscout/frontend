@@ -104,6 +104,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Mixpanel](#mixpanel)
   - [OpenTelemetry](#opentelemetry)
   - [Rollbar](#rollbar)
+  - [Usercentrics CMP](#usercentrics-cmp)
 - [Misc](#misc)
   - [Design system](#design-system)
   - [Pro API support](#pro-api-support)
@@ -1312,6 +1313,17 @@ OpenTelemetry SDK for the Node.js server-side process. Configure the OpenTelemet
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN | `string` | Client token for your Rollbar project | Required | - | `<your-secret>` | v1.37.x+ |
+
+&nbsp;
+
+### Usercentrics CMP
+
+Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management Platform (CMP). When configured, Blockscout loads the Usercentrics script and waits for marketing consent before enabling analytics providers.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | upcoming |
+| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | upcoming |
 
 ## Misc
 
