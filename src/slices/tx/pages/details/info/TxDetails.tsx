@@ -686,7 +686,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && (
         <>
-          { data.l1_gas_used && (
+          { data.l1_gas_used && !config.slices.tx.hiddenFields?.l1_gas_used && (
             <>
               <DetailedInfo.ItemLabel
                 hint={ `${ layerLabels.parent } gas used by transaction` }
@@ -700,7 +700,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
             </>
           ) }
 
-          { data.l1_gas_price && (
+          { data.l1_gas_price && !config.slices.tx.hiddenFields?.l1_gas_price && (
             <>
               <DetailedInfo.ItemLabel
                 hint={ `${ layerLabels.parent } gas price` }
@@ -716,7 +716,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
             </>
           ) }
 
-          { data.l1_fee && (
+          { data.l1_fee && !config.slices.tx.hiddenFields?.l1_fee && (
             <>
               <DetailedInfo.ItemLabel
                 // eslint-disable-next-line max-len
@@ -737,7 +737,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
             </>
           ) }
 
-          { data.l1_fee_scalar && (
+          { data.l1_fee_scalar && !config.slices.tx.hiddenFields?.l1_fee_scalar && (
             <>
               <DetailedInfo.ItemLabel
                 hint={ `A Dynamic overhead (fee scalar) premium, which serves as a buffer in case ${ layerLabels.parent } prices rapidly increase.` }

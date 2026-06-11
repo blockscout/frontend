@@ -9,6 +9,10 @@ export const TX_FIELDS_IDS = [
   'burnt_fees',
   'L1_status',
   'batch',
+  'l1_gas_used',
+  'l1_gas_price',
+  'l1_fee',
+  'l1_fee_scalar',
 ] as const;
 
 export type TxFieldsId = (typeof TX_FIELDS_IDS)[number];

@@ -577,6 +577,10 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | `burnt_fees` | Amount of native coin burnt for transaction |
 | `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
+| `l1_gas_used` | Amount of L1 gas used by transaction (applicable for Optimistic Rollup chains) |
+| `l1_gas_price` | L1 gas price (applicable for Optimistic Rollup chains) |
+| `l1_fee` | L1 data fee (applicable for Optimistic Rollup chains) |
+| `l1_fee_scalar` | Dynamic overhead fee scalar (applicable for Optimistic Rollup chains) |
 
 #### Transaction additional fields list
 | Id | Description |
