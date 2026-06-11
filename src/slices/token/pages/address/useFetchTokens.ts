@@ -40,22 +40,22 @@ const additionalTypes = config.slices.token.additionalTypes;
 export default function useFetchTokens({ hash, enabled }: Props) {
   const erc20query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-20' },
+    queryParams: { type: [ 'ERC-20' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc721query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-721' },
+    queryParams: { type: [ 'ERC-721' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc1155query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-1155' },
+    queryParams: { type: [ 'ERC-1155' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc404query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-404' },
+    queryParams: { type: [ 'ERC-404' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const apiFetch = useApiFetch();
@@ -64,11 +64,11 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
   const additionalTokenQueries = useQueries({
     queries: additionalTypes.map((item) => ({
-      queryKey: getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: item.id as unknown as TokenType }, chainId: chain?.id }),
+      queryKey: getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: [ item.id as unknown as TokenType ] }, chainId: chain?.id }),
       queryFn: async({ signal }) => {
         return apiFetch('core:address_tokens', {
           pathParams: { hash },
-          queryParams: { type: item.id as unknown as TokenType },
+          queryParams: { type: [ item.id as unknown as TokenType ] },
           chain,
           fetchParams: { signal },
         }) as Promise<AddressTokensResponse>;
@@ -81,7 +81,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const queryClient = useQueryClient();
 
   const updateTokensData = React.useCallback((type: TokenType | Array<TokenType>, payload: AddressTokensBalancesSocketMessage) => {
-    const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type } });
+    const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: Array.isArray(type) ? type : [ type ] } });
 
     queryClient.setQueryData(queryKey, (prevData: AddressTokensResponse | undefined) => {
       const items = prevData?.items.map((currentItem) => {

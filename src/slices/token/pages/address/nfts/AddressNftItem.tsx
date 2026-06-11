@@ -18,11 +18,11 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-import NFTItemContainer from './NFTItemContainer';
+import AddressNftItemContainer from './AddressNftItemContainer';
 
 type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean; chain?: ClusterChainConfig };
 
-const NFTItem = ({ value, isLoading, withTokenLink, chain, ...tokenInstance }: Props) => {
+const AddressNftItem = ({ value, isLoading, withTokenLink, chain, ...tokenInstance }: Props) => {
   const { token } = tokenInstance;
   const valueResult = token.decimals && value ? calculateUsdValue({ amount: value, decimals: token.decimals, accuracy: 2 }).valueStr : value;
   const tokenInstanceLink = tokenInstance.id ?
@@ -30,7 +30,7 @@ const NFTItem = ({ value, isLoading, withTokenLink, chain, ...tokenInstance }: P
     undefined;
 
   return (
-    <NFTItemContainer position="relative">
+    <AddressNftItemContainer position="relative">
       <Skeleton loading={ isLoading } className="light">
         <Tag background="gray.50" zIndex={ 1 } position="absolute" top="18px" right="18px">{ getTokenTypeName(token.type) }</Tag>
       </Skeleton>
@@ -67,8 +67,8 @@ const NFTItem = ({ value, isLoading, withTokenLink, chain, ...tokenInstance }: P
           chain={ chain }
         />
       ) }
-    </NFTItemContainer>
+    </AddressNftItemContainer>
   );
 };
 
-export default NFTItem;
+export default AddressNftItem;

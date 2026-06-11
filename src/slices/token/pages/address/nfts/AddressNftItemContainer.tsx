@@ -8,7 +8,7 @@ type Props = {
   className?: string;
 };
 
-const NFTItemContainer = ({ children, className }: Props) => {
+const AddressNftItemContainer = ({ children, className }: Props) => {
   return (
     <Box
       w={{ base: '100%', lg: '210px' }}
@@ -26,4 +26,4 @@ const NFTItemContainer = ({ children, className }: Props) => {
   );
 };
 
-export default chakra(NFTItemContainer);
+export default chakra(AddressNftItemContainer);

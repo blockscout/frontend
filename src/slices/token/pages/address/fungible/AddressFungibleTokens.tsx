@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
 import type { AddressTokenBalance } from 'src/slices/address/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -14,7 +15,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import ERC20TokensTable from './ERC20TokensTable';
+import AddressFungibleTokensFilter from './AddressFungibleTokensFilter';
+import AddressFungibleTokensTable from './AddressFungibleTokensTable';
 
 type Props = {
   items: Array<Pick<AddressTokenBalance, 'token' | 'value'>> | undefined;
@@ -22,22 +24,25 @@ type Props = {
   pagination: PaginationParams;
   isError: boolean;
   top?: number;
+  tokenTypes: Array<TokenType>;
+  onTokenTypesChange: (value: Array<TokenType>) => void;
 };
 
-const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
+const AddressFungibleTokens = ({ items, isLoading, pagination, isError, top, tokenTypes, onTokenTypesChange }: Props) => {
   const isMobile = useIsMobile();
 
   const hasAdditionalTokenTypes = config.slices.token.additionalTypes.length > 0;
 
   const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -3 }>
+      <AddressFungibleTokensFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
 
   const content = items ? (
     <TableContainerScrollable>
-      <ERC20TokensTable
+      <AddressFungibleTokensTable
         data={ items }
         top={ top ?? (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
         isLoading={ isLoading }
@@ -58,4 +63,4 @@ const ERC20Tokens = ({ items, isLoading, pagination, isError, top }: Props) => {
 
 };
 
-export default ERC20Tokens;
+export default AddressFungibleTokens;

@@ -13,12 +13,16 @@ import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 type Props<T extends TokenType | NFTTokenType> = {
   onChange: (nextValue: Array<T>) => void;
   defaultValue?: Array<T>;
-  nftOnly: T extends NFTTokenType ? true : false;
+  category: T extends NFTTokenType ? 'nft' : 'all' | 'nft' | 'fungible';
   chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
   title?: React.ReactNode;
 };
-const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue, chainConfig, title }: Props<T>) => {
+const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ category, onChange, defaultValue, chainConfig, title }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
+
+  const tokenTypes = React.useMemo(() => {
+    return getTokenTypes(category, chainConfig);
+  }, [ chainConfig, category ]);
 
   const handleReset = React.useCallback(() => {
     if (value.length === 0) {
@@ -32,10 +36,6 @@ const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange
     setValue(nextValue as Array<T>);
     onChange(nextValue as Array<T>);
   }, [ onChange, setValue ]);
-
-  const tokenTypes = React.useMemo(() => {
-    return getTokenTypes(nftOnly, chainConfig);
-  }, [ chainConfig, nftOnly ]);
 
   return (
     <>

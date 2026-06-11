@@ -4,7 +4,7 @@ import { VStack } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { AddressTokensErc20Item } from 'src/slices/token/pages/address/types';
+import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -22,7 +22,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 interface Props {
-  data: AddressTokensErc20Item;
+  data: AddressFungibleTokensItem;
   isLoading: boolean;
 }
 

@@ -6,21 +6,21 @@ import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
 
-import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'src/slices/address/stubs/address';
-import AddressCollections from 'src/slices/token/pages/address/AddressCollections';
-import AddressNftDisplayTypeRadio from 'src/slices/token/pages/address/AddressNftDisplayTypeRadio';
-import AddressNFTs from 'src/slices/token/pages/address/AddressNFTs';
-import AddressNftTypeFilter from 'src/slices/token/pages/address/AddressNftTypeFilter';
-import ERC20Tokens from 'src/slices/token/pages/address/ERC20Tokens';
-import TokenBalances from 'src/slices/token/pages/address/TokenBalances';
+import AddressTokenBalances from 'src/slices/token/pages/address/AddressTokenBalances';
+import AddressFungibleTokens from 'src/slices/token/pages/address/fungible/AddressFungibleTokens';
+import AddressFungibleTokensFilter from 'src/slices/token/pages/address/fungible/AddressFungibleTokensFilter';
+import AddressNftDisplayTypeRadio from 'src/slices/token/pages/address/nfts/AddressNftDisplayTypeRadio';
+import AddressNfts from 'src/slices/token/pages/address/nfts/AddressNfts';
+import AddressNftsCollections from 'src/slices/token/pages/address/nfts/AddressNftsCollections';
+import AddressNftTypeFilter from 'src/slices/token/pages/address/nfts/AddressNftTypeFilter';
+import useAddressFungibleTokensQuery from 'src/slices/token/pages/address/useAddressFungibleTokensQuery';
 import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuery';
+import { FUNGIBLE_TOKEN_TYPES } from 'src/slices/token/pages/address/utils';
 
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
-import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
@@ -31,7 +31,7 @@ const TAB_LIST_PROPS = {
   pb: 3,
 };
 
-type Props = {
+interface Props {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
 };
@@ -46,24 +46,10 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const tab = getQueryParamString(router.query.tab);
   const hash = getQueryParamString(router.query.hash);
 
-  // on address details we have tokens requests for all token types, separately
-  // react query can behave unexpectedly, when it already has data for ERC-20 (string type)
-  // and we fetch it again with the array type
-  // so if it's just one token type, we heed to keep it a string for queries compatibility
-  const tokenTypesFilter = config.slices.token.additionalTypes.length > 0 ?
-    [ 'ERC-20', ...config.slices.token.additionalTypes.map(item => item.id) ] :
-    'ERC-20';
-
-  const erc20Query = useQueryWithPages({
-    resourceName: 'core:address_tokens',
-    pathParams: { hash },
-    filters: { type: tokenTypesFilter },
+  const { query: fungibleTokensQuery, tokenTypes: fungibleTokenTypes, onTokenTypesChange: handleFungibleTokenTypesChange } = useAddressFungibleTokensQuery({
+    addressHash: hash,
     scrollRef,
-    options: {
-      enabled: isQueryEnabled && (tab === 'tokens' || tab === 'tokens_erc20'),
-      refetchOnMount: false,
-      placeholderData: generateListStub<'core:address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
-    },
+    enabled: isQueryEnabled && (tab === 'tokens' || tab === 'tokens_erc20'),
   });
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
@@ -86,11 +72,13 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         ...config.slices.token.additionalTypes.map((item) => item.name),
       ].join(' & '),
       component: (
-        <ERC20Tokens
-          items={ erc20Query.data?.items }
-          isLoading={ erc20Query.isPlaceholderData }
-          pagination={ erc20Query.pagination }
-          isError={ erc20Query.isError }
+        <AddressFungibleTokens
+          items={ fungibleTokensQuery.data?.items }
+          isLoading={ fungibleTokensQuery.isPlaceholderData }
+          pagination={ fungibleTokensQuery.pagination }
+          isError={ fungibleTokensQuery.isError }
+          tokenTypes={ fungibleTokenTypes }
+          onTokenTypesChange={ handleFungibleTokenTypesChange }
         />
       ),
     },
@@ -98,8 +86,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       id: 'tokens_nfts',
       title: 'NFTs',
       component: nftDisplayType === 'list' ?
-        <AddressNFTs tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/> :
-        <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>,
+        <AddressNfts tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/> :
+        <AddressNftsCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>,
     },
   ];
 
@@ -108,7 +96,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   if (tab === 'tokens_nfts') {
     pagination = nftDisplayType === 'list' ? nftsQuery.pagination : collectionsQuery.pagination;
   } else {
-    pagination = erc20Query.pagination;
+    pagination = fungibleTokensQuery.pagination;
   }
 
   const hasNftData =
@@ -116,6 +104,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     (!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
 
   const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
+  const hasFungibleTokenFilter = !isNftTab && (!isMobile || !pagination.isVisible) && FUNGIBLE_TOKEN_TYPES.length > 1;
 
   const rightSlot = (
     <>
@@ -124,6 +113,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
           <AddressNftDisplayTypeRadio value={ nftDisplayType } onChange={ onDisplayTypeChange }/> }
         { isNftTab && (hasNftData || hasActiveFilters) && !(isMobile && pagination.isVisible) &&
           <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
+        { hasFungibleTokenFilter && <AddressFungibleTokensFilter value={ fungibleTokenTypes } onChange={ handleFungibleTokenTypesChange }/> }
       </HStack>
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>
@@ -131,7 +121,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
 
   return (
     <>
-      <TokenBalances/>
+      <AddressTokenBalances/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
       <RoutedTabs
@@ -140,7 +130,16 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         size="sm"
         listProps={ TAB_LIST_PROPS }
         rightSlot={ rightSlot }
-        rightSlotProps={ tab === 'tokens_nfts' && !isMobile ? { display: 'flex', justifyContent: 'space-between', ml: 8, widthAllocation: 'available' } : {} }
+        rightSlotProps={
+          ((tab === 'tokens_nfts' && !isMobile) || hasFungibleTokenFilter) ?
+            {
+              display: 'flex',
+              justifyContent: 'space-between',
+              ml: hasFungibleTokenFilter && isMobile ? 'auto' : 8,
+              widthAllocation: hasFungibleTokenFilter && isMobile ? 'fixed' : 'available',
+            } :
+            {}
+        }
         stickyEnabled
       />
     </>
