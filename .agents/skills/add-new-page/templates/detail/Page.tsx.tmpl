@@ -16,11 +16,12 @@ const __PageName__ = () => {
   // TODO: wire up data (useApiQuery keyed by __entityParam__) — out of scaffold scope.
   // Drive `isLoading` from the query's `isPlaceholderData` once wired.
   const isLoading = false;
+  const data: unknown = {};
 
   return (
     <>
       <PageTitle title={ `__title__ ${ __entityParam__ }` } isLoading={ isLoading }/>
-      <__PageName__Details isLoading={ isLoading }/>
+      <__PageName__Details isLoading={ isLoading } data={ data }/>
     </>
   );
 };

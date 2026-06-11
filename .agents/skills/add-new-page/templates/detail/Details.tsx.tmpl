@@ -7,10 +7,11 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
+  data: unknown;
   isLoading?: boolean;
 }
 
-const __PageName__Details = ({ isLoading }: Props) => {
+const __PageName__Details = ({ data, isLoading }: Props) => {
   // TODO: replace placeholder rows with real fields from the fetched data.
   // Each field is a label/value pair. Use DetailedInfo.ItemDivider to group sections.
 

@@ -34,10 +34,15 @@ substitute the placeholders and delete any optional blocks you don't need:
 | `__gsspName__` | `getServerSideProps` export name in `main.ts` | `validators` |
 
 Template sets:
-- `templates/general/Page.tsx.tmpl`
+- `templates/general/{Page,GeneralInfo}.tsx.tmpl` (`Page` = non-tabbed general page; `GeneralInfo` = a general-content body, used as a tab panel)
 - `templates/detail/{Page,Details}.tsx.tmpl`
 - `templates/index/{Page,Content,Table,TableItem,List,ListItem}.tsx.tmpl`
+- `templates/tabs/PageWithTabs.tsx.tmpl` (tabbed page shell — `PageTitle` + `RoutedTabs`)
 - `templates/route.tsx.tmpl` (shared route wrapper; has a commented dynamic-route variant)
+
+A **page shell** is one of: a non-tabbed `Page.tsx.tmpl` (embeds a single content body) or the tabbed
+`PageWithTabs.tsx.tmpl` (renders `RoutedTabs`). A **content body** is `Details` (detail), `Content` +
+`Table`/`List`/items (index), or `GeneralInfo` (general). Tabbed pages combine one shell with one body per tab.
 
 **Naming the destination files.** Drop the `.tmpl` extension and name each component file after the
 component it exports — i.e. the `__PageName__`-prefixed name used in the template's `const` / `import`
@@ -55,15 +60,34 @@ route wrapper is named after the route, not the component.
 | `index/TableItem.tsx.tmpl` | `__PageName__TableItem.tsx` → `ValidatorsTableItem.tsx` |
 | `index/List.tsx.tmpl` | `__PageName__List.tsx` → `ValidatorsList.tsx` |
 | `index/ListItem.tsx.tmpl` | `__PageName__ListItem.tsx` → `ValidatorsListItem.tsx` |
+| `general/GeneralInfo.tsx.tmpl` | `__PageName__GeneralInfo.tsx` → `ValidatorsGeneralInfo.tsx` |
+| `tabs/PageWithTabs.tsx.tmpl` | `__PageName__.tsx` → `Validators.tsx` |
 | `route.tsx.tmpl` | `src/pages/__route__.tsx` → `src/pages/validators.tsx` |
+
+**Tabbed pages — folders & per-tab names.** The page shell sits directly in the page dir; **each tab's body
+components live in their own kebab-case sub-folder** under it (mirrors
+`src/slices/tx/pages/details/{info,logs,state,…}`). Name a tab's components after the tab so same-type tabs
+don't collide: replace the `__PageName__` base with `__PageName__<TabName>` (PascalCase tab name), and rename
+the body's sub-components/imports to match. E.g. an `index`-type tab "Active" on page `Validators` → folder
+`active/` holding `ValidatorsActive` (from `Content`), `ValidatorsActiveTable`, `ValidatorsActiveTableItem`,
+`ValidatorsActiveList`, `ValidatorsActiveListItem`. A `detail`-type tab "Details" → folder `info/` holding
+`ValidatorsDetails` (from `Details`). A `general`-type tab "Stats" → folder `stats/` holding `ValidatorsStats`
+(from `GeneralInfo`).
+
+**Details-tab rule:** a `details`-type tab either **comes first** (id `'index'`, title `Details`) **or doesn't
+exist at all** — never place it after another tab.
 
 ## Step 0 — Agree on the shape (REQUIRED before writing anything)
 
 Propose each of the following and **wait for the user's explicit approval**. Ask whenever an answer is not
 obvious from the conversation or the codebase.
 
-1. **Page type** — `index` (list + table views), `detail` (label/value grid), or `general` (title + content).
-   Picks which `templates/<type>/` set to use.
+1. **Layout** — does the page have **tabs**? Decide this first; ask if it isn't obvious from the conversation.
+   - **No tabs** → pick the single content type: `index` (list + table views), `detail` (label/value grid),
+     or `general` (title + content).
+   - **Tabs** → list the tabs **in order**; for each, give a **name** (the tab title) and a **content type**
+     (`details` / `index` / `general info`). That's enough at this stage. **A `details` tab, if present, must
+     be the first tab**.
 2. **Route & path params** — the exact path. If it's **dynamic** (`/foo/[param]`), confirm the param
    name(s) and what each represents (`__entityParam__`, `__pathname__`).
 3. **Gated or core?** — apply the architecture rule's test: *"Can this exist on a vanilla EVM chain with no
@@ -90,25 +114,45 @@ The route's server guard (Step 3) depends on the feature flag, so the feature an
 - `add-env-var` covers `docs/ENVS.md`, `config.ts`, `features.ts`, the validator schema, and CSP/assets. It
   does **not** create the server guard — that lives in Step 3.
 
-## Step 2 — Scaffold the page component (layout only)
+## Step 2 — Scaffold the page component(s) (layout only)
 
-Create the component folder, mirroring `src/slices/block/pages/{index,details}`:
+Create the component folder, mirroring `src/slices/block/pages/{index,details}`. `__pageDir__` is `details`
+for an entity/detail page (typically a dynamic route), otherwise `index`:
 
-- Root/list/general page → `src/__area__/__featureName__/pages/index/`
-- Detail page → `src/__area__/__featureName__/pages/details/`
+- `src/__area__/__featureName__/pages/__pageDir__/`
 
-Copy the matching template set, substitute placeholders, and remove unused optional blocks. Reference
-exemplars while filling in real layout:
+The **content bodies** are the same regardless of tabs — reference these exemplars while filling in real layout:
 
-- **general** — `PageTitle` + content slot. Exemplar `src/features/gas-tracker/pages/index/GasTracker.tsx`.
-- **detail** — `Page.tsx` reads the route param and renders `PageTitle` + `Details.tsx`; `Details.tsx` is a
-  `DetailedInfo.Container` grid of `ItemLabel`/`ItemValue` rows wrapped in `Skeleton`. Exemplars
-  `src/slices/block/pages/details/{Block,BlockDetails}.tsx`; grid component `src/shared/detailed-info/DetailedInfo.tsx`.
-- **index** — `Page.tsx` (title + `Content`), `Content.tsx` (`DataList` + dual view: `<Box hideFrom="lg">`
-  for the mobile `List`, `<Box hideBelow="lg">` for the desktop `Table`). `Table`/`List` render one row per
-  item via dedicated `TableItem`/`ListItem` components (mirroring `BlocksTableItem`/`BlocksListItem`).
-  Exemplars `src/slices/block/pages/index/{Blocks,BlocksContent,BlocksTable,BlocksTableItem,BlocksList,BlocksListItem}.tsx`;
+- **general** (`GeneralInfo.tsx`, or inline in a non-tabbed `general/Page.tsx`) — a content slot. Exemplar
+  `src/features/gas-tracker/pages/index/GasTracker.tsx`.
+- **detail** (`Details.tsx`) — a `DetailedInfo.Container` grid of `ItemLabel`/`ItemValue` rows wrapped in
+  `Skeleton`. Exemplars `src/slices/block/pages/details/BlockDetails.tsx`; grid `src/shared/detailed-info/DetailedInfo.tsx`.
+- **index** (`Content.tsx` + `Table`/`TableItem` + `List`/`ListItem`) — `Content.tsx` is `DataList` + dual
+  view (`<Box hideFrom="lg">` mobile `List`, `<Box hideBelow="lg">` desktop `Table`); `Table`/`List` render
+  one row per item via dedicated `TableItem`/`ListItem` components (mirroring `BlocksTableItem`/`BlocksListItem`).
+  Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem,BlocksList,BlocksListItem}.tsx`;
   `src/shared/lists/DataList.tsx`.
+
+Then branch on the Step 0 layout decision:
+
+### A. No tabs
+
+Use the single page shell that embeds its one content body directly:
+
+- **general** → `general/Page.tsx.tmpl` (content inline; no separate body needed).
+- **detail** → `detail/Page.tsx.tmpl` (reads the route param, renders `PageTitle` + `Details`) + `detail/Details.tsx.tmpl`.
+- **index** → `index/Page.tsx.tmpl` (renders `PageTitle` + `Content`) + `index/{Content,Table,TableItem,List,ListItem}.tsx.tmpl`.
+
+### B. With tabs
+
+1. **Page shell** — copy `tabs/PageWithTabs.tsx.tmpl` (→ `__PageName__.tsx`, directly in the page dir). It
+   renders `PageTitle` + `RoutedTabs`. Fill the `tabs` array with one `{ id, title, component }` entry per
+   tab; the first tab's id is conventionally `'index'`. If a `details` tab exists it is the **first** entry
+   (`id: 'index'`, title `Details`).
+2. **One body per tab** — for each tab, create a kebab-case **sub-folder** under the page dir and scaffold a
+   body there from the content template matching its type (`Details` / index `Content` + sub-components /
+   `GeneralInfo`), **named after the tab** (`__PageName__<TabName>`, see the folders & naming rule above).
+   Wire the renamed components into the shell's `tabs` array and imports.
 
 Leave the `// TODO: wire up data …` markers in place — data fetching is out of scope.
 
