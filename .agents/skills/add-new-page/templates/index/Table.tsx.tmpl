@@ -1,0 +1,35 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import __PageName__TableItem from 'src/__area__/__featureName__/pages/index/__PageName__TableItem';
+
+import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+
+interface Props {
+  // TODO: replace `unknown` with the real item type
+  items: Array<unknown>;
+  isLoading?: boolean;
+}
+
+const __PageName__Table = ({ items, isLoading }: Props) => {
+  return (
+    <TableRoot>
+      <TableHeaderSticky top={ 0 }>
+        <TableRow>
+          { /* TODO: define columns */ }
+          <TableColumnHeader>Column 1</TableColumnHeader>
+          <TableColumnHeader>Column 2</TableColumnHeader>
+          <TableColumnHeader>Column 3</TableColumnHeader>
+        </TableRow>
+      </TableHeaderSticky>
+      <TableBody>
+        { items.map((item, index) => (
+          <__PageName__TableItem key={ index } item={ item } isLoading={ isLoading }/>
+        )) }
+      </TableBody>
+    </TableRoot>
+  );
+};
+
+export default __PageName__Table;

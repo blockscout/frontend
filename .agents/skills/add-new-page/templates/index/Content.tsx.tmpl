@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { Box } from '@chakra-ui/react';
+import React from 'react';
+
+import __PageName__List from 'src/__area__/__featureName__/pages/index/__PageName__List';
+import __PageName__Table from 'src/__area__/__featureName__/pages/index/__PageName__Table';
+
+import DataList from 'src/shared/lists/DataList';
+
+const __PageName__Content = () => {
+  // TODO: wire up data (useQueryWithPages) — out of scaffold scope.
+  // Pagination, filtering, sorting and the action bar are intentionally omitted from
+  // this scaffold. See src/slices/block/pages/index/BlocksContent.tsx for the full pattern.
+  // Three placeholder items so the table/list render visible example rows — replace with fetched data.
+  const items: Array<unknown> = [ {}, {}, {} ];
+  const isError = false;
+  const isLoading = false;
+
+  return (
+    <DataList
+      isError={ isError }
+      itemsNum={ items.length }
+      emptyText="There are no items."
+    >
+      <Box hideFrom="lg">
+        <__PageName__List items={ items } isLoading={ isLoading }/>
+      </Box>
+      <Box hideBelow="lg">
+        <__PageName__Table items={ items } isLoading={ isLoading }/>
+      </Box>
+    </DataList>
+  );
+};
+
+export default __PageName__Content;
