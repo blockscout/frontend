@@ -7,12 +7,18 @@ import type { schemas } from '@blockscout/api-types';
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
+type TransactionType = schemas['Transaction']['transaction_types'][number] |
+'op_stack_l1_attributes_tx' |
+'op_stack_post_exec_tx';
+
 export interface Props extends BadgeProps {
-  types: schemas['Transaction']['transaction_types'];
+  types: Array<TransactionType>;
   isLoading?: boolean;
 }
 
-const TYPES_ORDER: schemas['Transaction']['transaction_types'] = [
+const TYPES_ORDER: Array<TransactionType> = [
+  'op_stack_l1_attributes_tx',
+  'op_stack_post_exec_tx',
   'blob_transaction',
   'rootstock_remasc',
   'rootstock_bridge',
@@ -57,6 +63,14 @@ const TxType = ({ types, isLoading, ...rest }: Props) => {
     case 'coin_transfer':
       label = 'Coin transfer';
       colorPalette = 'orange';
+      break;
+    case 'op_stack_l1_attributes_tx':
+      label = 'L1 attr tx';
+      colorPalette = 'green';
+      break;
+    case 'op_stack_post_exec_tx':
+      label = 'Post exec tx';
+      colorPalette = 'green';
       break;
     case 'rootstock_remasc':
       label = 'REMASC';
