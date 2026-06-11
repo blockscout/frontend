@@ -6,7 +6,6 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
-import config from 'src/config';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
@@ -25,10 +24,7 @@ const UserOps = () => {
 
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } user operations` : 'User operations' }
-        withTextAd
-      />
+      <PageTitle title="User operations" withTextAd/>
       <UserOpsContent query={ query }/>
     </>
   );

@@ -12,7 +12,6 @@ import VerifiedContractsFilter from 'src/slices/contract/pages/index/VerifiedCon
 import VerifiedContractsList from 'src/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'src/slices/contract/pages/index/VerifiedContractsTable';
 
-import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -92,10 +91,7 @@ const VerifiedContracts = () => {
 
   return (
     <Box>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
-        withTextAd
-      />
+      <PageTitle title="Verified contracts" withTextAd/>
       <VerifiedContractsCounters/>
       <DataList
         isError={ isError }
