@@ -11,6 +11,11 @@ on:
           options:
             - review
             - review-2
+      build_image:
+          description: 'Build & publish a new image. Disable to redeploy an existing demo with a different preset (no rebuild).'
+          required: false
+          default: true
+          type: boolean
       envs_preset:
           description: ENVs preset
           required: false
@@ -76,6 +81,8 @@ jobs:
   publish_image:
     name: Publish Docker image
     needs: make_slug
+    # Skipped when redeploying an existing demo with a different preset (the image is preset-agnostic).
+    if: ${{ inputs.build_image }}
     uses: './.github/workflows/publish-image.yml'
     with:
         tags: |
@@ -86,6 +93,8 @@ jobs:
   deploy_review:
     name: Deploy frontend
     needs: [ make_slug, publish_image ]
+    # Run after a successful build, or directly when the build was skipped (redeploy-only).
+    if: ${{ always() && needs.make_slug.result == 'success' && (needs.publish_image.result == 'success' || needs.publish_image.result == 'skipped') }}
     uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
       appName: ${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
