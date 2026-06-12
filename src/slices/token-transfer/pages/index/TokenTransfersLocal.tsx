@@ -43,7 +43,7 @@ const TokenTransfersLocal = () => {
 
   const filter = (
     <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ typeFilter.length }>
-      <TokenTypeFilter<TokenType> onChange={ onTokenTypesChange } defaultValue={ typeFilter } nftOnly={ false }/>
+      <TokenTypeFilter<TokenType> onChange={ onTokenTypesChange } defaultValue={ typeFilter } category="all"/>
     </PopoverFilter>
   );
 
