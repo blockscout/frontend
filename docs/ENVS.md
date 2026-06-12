@@ -575,12 +575,12 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | `tx_fee` | Total transaction fee |
 | `gas_fees` | Gas fees breakdown |
 | `burnt_fees` | Amount of native coin burnt for transaction |
-| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
-| `l1_gas_used` | Amount of L1 gas used by transaction (applicable for Optimistic Rollup chains) |
-| `l1_gas_price` | L1 gas price (applicable for Optimistic Rollup chains) |
-| `l1_fee` | L1 data fee (applicable for Optimistic Rollup chains) |
-| `l1_fee_scalar` | Dynamic overhead fee scalar (applicable for Optimistic Rollup chains) |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `L1_gas_used` | Amount of L1 gas used by transaction (applicable for Rollup chains) |
+| `L1_gas_price` | L1 gas price (applicable for Rollup chains) |
+| `L1_fee` | L1 data fee (applicable for Rollup chains) |
+| `L1_fee_scalar` | Dynamic overhead fee scalar (applicable for Rollup chains) |
 
 #### Transaction additional fields list
 | Id | Description |
