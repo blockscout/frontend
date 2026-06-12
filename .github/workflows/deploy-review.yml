@@ -6,38 +6,37 @@ on:
       envs_preset:
           description: ENVs preset
           required: false
-          default: main
+          default: staging
           type: choice
           options:
             - none
+            # presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
             - arbitrum
-            - arbitrum_nova
             - arbitrum_sepolia
             - base
+            - blackfort_testnet
             - celo
             - celo_sepolia
-            - garnet
-            - gnosis
             - eth
             - eth_sepolia
             - filecoin
+            - garnet
+            - gnosis
             - immutable
-            - main
             - mega_eth
-            - mekong
-            - multichain_dev
-            - multichain_prod
+            - multichain
             - neon_devnet
             - numine
             - optimism
             - optimism_sepolia
             - polygon
-            - rari_testnet
             - rootstock
             - rootstock_testnet
-            - shibarium
             - scroll_sepolia
-            - stability
+            - shibarium
+            - stability_testnet
+            - staging
+            - staging_multichain
             - tac
             - tac_spb
             - zetachain
@@ -45,6 +44,7 @@ on:
             - zilliqa
             - zksync
             - zora
+            # presets:end
 
 permissions:
   contents: read

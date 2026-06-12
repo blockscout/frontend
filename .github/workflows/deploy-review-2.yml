@@ -10,21 +10,21 @@ on:
           type: choice
           options:
             - none
+            # presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
             - arbitrum
-            - arbitrum_nova
             - arbitrum_sepolia
             - base
+            - blackfort_testnet
             - celo
             - celo_sepolia
-            - garnet
-            - gnosis
             - eth
             - eth_sepolia
             - filecoin
+            - garnet
+            - gnosis
             - immutable
             - mega_eth
-            - multichain_dev
-            - multichain_prod
+            - multichain
             - neon_devnet
             - numine
             - optimism
@@ -34,12 +34,17 @@ on:
             - rootstock_testnet
             - scroll_sepolia
             - shibarium
-            - stability
+            - stability_testnet
+            - staging
+            - staging_multichain
+            - tac
+            - tac_spb
             - zetachain
             - zetachain_testnet
             - zilliqa
             - zksync
             - zora
+            # presets:end
 
 permissions:
   contents: read

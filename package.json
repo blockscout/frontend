@@ -10,8 +10,10 @@
   "license": "SEE LICENSE IN ./LICENSE",
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
-    "dev:preset": "./tools/scripts/dev.preset.sh",
-    "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
+    "dev:preset": "./tools/dev-server/dev.preset.sh",
+    "dev:local": "./tools/dev-server/dev.local.sh",
+    "presets:sync": "node ./tools/dev-server/sync-preset-lists.mjs --write",
+    "presets:lint": "node ./tools/dev-server/sync-preset-lists.mjs",
     "build": "next build",
     "build:next": "./deploy/scripts/download_assets.sh ./public/assets/configs && pnpm svg:build-sprite && ./deploy/scripts/make_envs_script.sh && next build",
     "build:docker": "./tools/scripts/build.docker.sh",

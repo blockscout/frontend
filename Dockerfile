@@ -78,6 +78,10 @@ RUN cd ./deploy/tools/essential-dapps-chains-config-generator && pnpm run build
 RUN cd ./deploy/tools/llms-txt-generator && pnpm run build
 
 
+### DEV-SERVER ENV FETCHER
+RUN pnpm exec tsc -p ./tools/dev-server/tsconfig.json
+
+
 # *****************************
 # ******* STAGE 3: Run ********
 # *****************************
@@ -134,10 +138,14 @@ COPY --from=builder /app/sitemap-generator-bundle ./deploy/tools/sitemap-generat
 COPY --from=builder /app/.env.registry .
 COPY --from=builder /app/.env .
 
-# Copy ENVs presets
+# Preset selector + dev-server env fetcher (compiled script + registry/rules data + committed overrides).
+# At startup the entrypoint runs fetch.js to pull the source instance's public config over HTTP.
 ARG ENVS_PRESET
 ENV ENVS_PRESET=$ENVS_PRESET
-COPY ./configs/envs ./configs/envs
+COPY --from=builder /app/tools/dev-server/fetch.js ./tools/dev-server/fetch.js
+COPY ./tools/dev-server/registry.json ./tools/dev-server/registry.json
+COPY ./tools/dev-server/envs-rules.json ./tools/dev-server/envs-rules.json
+COPY ./.env.extra ./.env.extra
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
