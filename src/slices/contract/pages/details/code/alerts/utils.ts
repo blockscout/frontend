@@ -68,6 +68,10 @@ export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
     name: 'Generic Proxy',
     description: 'getImplementation() getter',
   },
+  minimal_proxy: {
+    name: 'Minimal Proxy',
+    description: 'Minimal Proxy uses compact bytecode to forward calls to an implementation contract.',
+  },
   unknown: {
     name: 'Unknown proxy pattern',
   },
