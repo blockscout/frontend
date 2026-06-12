@@ -3,41 +3,53 @@ name: Deploy review environment
 on:
   workflow_dispatch:
     inputs:
+      variant:
+          description: 'Demo variant — "review-2" disables ENVs validation (e.g. for multichain)'
+          required: false
+          default: review
+          type: choice
+          options:
+            - review
+            - review-2
+      build_image:
+          description: 'Build & publish a new image. Disable to redeploy an existing demo with a different preset (no rebuild).'
+          required: false
+          default: true
+          type: boolean
       envs_preset:
           description: ENVs preset
           required: false
-          default: main
+          default: staging
           type: choice
           options:
             - none
+            # presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
             - arbitrum
-            - arbitrum_nova
             - arbitrum_sepolia
             - base
+            - blackfort_testnet
             - celo
             - celo_sepolia
-            - garnet
-            - gnosis
             - eth
             - eth_sepolia
             - filecoin
+            - garnet
+            - gnosis
             - immutable
-            - main
             - mega_eth
-            - mekong
-            - multichain_dev
-            - multichain_prod
+            - multichain
             - neon_devnet
             - numine
             - optimism
             - optimism_sepolia
             - polygon
-            - rari_testnet
             - rootstock
             - rootstock_testnet
-            - shibarium
             - scroll_sepolia
-            - stability
+            - shibarium
+            - stability_testnet
+            - staging
+            - staging_multichain
             - tac
             - tac_spb
             - zetachain
@@ -45,6 +57,7 @@ on:
             - zilliqa
             - zksync
             - zora
+            # presets:end
 
 permissions:
   contents: read
@@ -68,22 +81,27 @@ jobs:
   publish_image:
     name: Publish Docker image
     needs: make_slug
+    # Skipped when redeploying an existing demo with a different preset (the image is preset-agnostic).
+    if: ${{ inputs.build_image }}
     uses: './.github/workflows/publish-image.yml'
     with:
         tags: |
-          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
-        build_args: ENVS_PRESET=${{ inputs.envs_preset }}
+          type=raw,value=${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
         platforms: linux/amd64
     secrets: inherit
 
   deploy_review:
     name: Deploy frontend
     needs: [ make_slug, publish_image ]
+    # Run after a successful build, or directly when the build was skipped (redeploy-only).
+    if: ${{ always() && needs.make_slug.result == 'success' && (needs.publish_image.result == 'success' || needs.publish_image.result == 'skipped') }}
     uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
-      appName: review-${{ needs.make_slug.outputs.REF_SLUG }}
+      appName: ${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review
       helmfileDir: deploy
+      # Inject the chosen preset as a runtime env (ENVS_PRESET) instead of baking it into the image.
+      helmfileParameters: --suppress-diff --state-values-set envsPreset=${{ inputs.envs_preset }}
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
       vaultRole: ci-dev
     secrets: inherit

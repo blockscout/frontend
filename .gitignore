@@ -44,9 +44,14 @@ npm-debug.log*
 .pnpm-debug.log*
 
 # local env files
+# NOTE: .env.extra is intentionally NOT ignored — it is committed so branch/feature ENVs
+# reach the demo deploy. Purely-local overrides go in .env.local (matched by .env*.local below).
 .env*.local
-/configs/envs/.env.secrets
-/configs/envs/.samples
+/.env.secrets
+.env.tmp
+
+# compiled dev-server fetch script
+/tools/dev-server/fetch.js
 
 # typescript
 *.tsbuildinfo
@@ -65,7 +70,6 @@ npm-debug.log*
 **.dec**
 
 # build outputs
-/tools/preset-sync/index.js
 /toolkit/package/dist
 license.json
 release-prs-data.json

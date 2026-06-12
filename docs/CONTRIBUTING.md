@@ -65,12 +65,16 @@ A. Custom configuration:
 3. Use `pnpm dev` command to start the Dev Server.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
-B. Pre-defined configuration:
+B. Pre-defined configuration (fetched from a live instance):
 
-1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
-2. Choose one of the predefined configurations located in the `/configs/envs` folder.
-3. Start your local Dev Server using the `pnpm dev:preset <config_preset_name>` command.
+1. Optionally, clone `.env.example` file into `.env.secrets` (repo root). Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets you need. (Most public keys already come from the fetched instance config.)
+2. Choose an instance alias from `tools/dev-server/registry.json` (for example, `eth` or `base`).
+3. Start your local Dev Server using the `pnpm dev:preset <alias>` command — it fetches that instance's config from `<url>/node-api/config` at startup and writes it to `.env.tmp`. To run against a local backend instead, use `pnpm dev:local`.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
+To add or override an ENV for your branch (e.g. a new variable not yet on the instance), put it in the committed `.env.extra` file — it is layered over the fetched config for both the dev server and the review deploy. Personal, local-only overrides go in `.env.local` (git-ignored).
+
+To add or remove an instance preset, edit `tools/dev-server/registry.json` (the `alias` → `URL` map) and run `pnpm presets:sync` to regenerate the dropdowns in the deploy workflows and `.vscode/tasks.json`. CI (`pnpm presets:lint`) fails if they drift from the registry.
 
 
 &nbsp;
@@ -97,7 +101,7 @@ These are the steps that you have to follow to make everything work:
     - `features` - the particular feature of the app
     - `services` - some 3rd party service integration which is not related to one particular feature
 3. If a new variable is meant to store the URL of an external API service, remember to include its value in the Content-Security-Policy document header. Refer to `nextjs/csp/policies/app.ts` for details.
-4. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
+4. For local development and the review deploy, add the variable with its appropriate value to the committed `.env.extra` file — it is layered over the fetched instance config in both
 5. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/review-2/values.yaml.gotmpl` - review development environment (second instance)

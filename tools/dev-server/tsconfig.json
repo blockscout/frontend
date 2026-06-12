@@ -8,8 +8,7 @@
 		"noEmit": false,
 		"moduleResolution": "node16"
 	},
-	"include": [ 
-		"./index.ts", 
+	"include": [
+		"./fetch.ts",
 	]
 }
-  

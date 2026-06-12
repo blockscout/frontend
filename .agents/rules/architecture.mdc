@@ -36,7 +36,7 @@ All application source lives under `/src`. Code is co-located by **slice** (core
 | Path | Role |
 |---|---|
 | `/src` | All application source — product UI, server plumbing, routing, config, design system, and code-imported assets |
-| `/configs/envs/` | Env variable declarations |
+| `/tools/` | Developer tooling — local dev utilities and scripts (e.g. `tools/dev-server/`, which loads the dev server's env vars) |
 | `/deploy/` | CI/CD scripts, Docker, env validator, build tools |
 | `/public/` | Static assets served as-is (sprite output, etc.) — never bundled |
 | `/docs/` | ENVS.md, CONTRIBUTING.md, etc. |

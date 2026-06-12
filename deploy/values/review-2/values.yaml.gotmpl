@@ -50,6 +50,7 @@ frontend:
       memory: 384Mi
       cpu: 250m
   env:
+    ENVS_PRESET: {{ .Values.envsPreset }}
     NEXT_PUBLIC_APP_ENV: review
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: true
     SKIP_ENVS_VALIDATION: true
