@@ -15,6 +15,7 @@ import Pagination from 'src/shared/pagination/Pagination';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
+import { FUNGIBLE_TOKEN_TYPES } from '../utils';
 import AddressFungibleTokensFilter from './AddressFungibleTokensFilter';
 import AddressFungibleTokensTable from './AddressFungibleTokensTable';
 
@@ -35,7 +36,7 @@ const AddressFungibleTokens = ({ items, isLoading, pagination, isError, top, tok
 
   const actionBar = isMobile && pagination.isVisible && (
     <ActionBar mt={ -3 }>
-      <AddressFungibleTokensFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
+      { FUNGIBLE_TOKEN_TYPES.length > 1 && <AddressFungibleTokensFilter value={ tokenTypes } onChange={ onTokenTypesChange }/> }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
