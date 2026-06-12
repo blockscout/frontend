@@ -138,10 +138,9 @@ COPY --from=builder /app/sitemap-generator-bundle ./deploy/tools/sitemap-generat
 COPY --from=builder /app/.env.registry .
 COPY --from=builder /app/.env .
 
-# Preset selector + dev-server env fetcher (compiled script + registry/rules data + committed overrides).
-# At startup the entrypoint runs fetch.js to pull the source instance's public config over HTTP.
-ARG ENVS_PRESET
-ENV ENVS_PRESET=$ENVS_PRESET
+# Dev-server env fetcher (compiled script + registry/rules data + committed overrides).
+# The image is preset-agnostic: ENVS_PRESET is supplied at runtime (k8s env), and at startup
+# the entrypoint runs fetch.js to pull that instance's public config over HTTP.
 COPY --from=builder /app/tools/dev-server/fetch.js ./tools/dev-server/fetch.js
 COPY ./tools/dev-server/registry.json ./tools/dev-server/registry.json
 COPY ./tools/dev-server/envs-rules.json ./tools/dev-server/envs-rules.json

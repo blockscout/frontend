@@ -62,7 +62,12 @@ unnecessary.
 because the `nextjs` runtime user can't write `/app`), then exports `.env.tmp` followed by the
 committed `.env.extra`. The `Dockerfile` compiles `fetch.ts` in the builder stage and copies
 `fetch.js` + `registry.json` + `envs-rules.json` + `.env.extra` into the runtime image.
-`ENVS_PRESET` is a build-arg→ENV passed by the deploy workflows.
+
+The image is **preset-agnostic** — `ENVS_PRESET` is NOT baked in. The deploy workflows
+(`deploy-review*.yml`) pass the chosen preset to the deploy job via
+`helmfileParameters: --state-values-set envsPreset=<alias>`; `deploy/helmfile.yaml.gotmpl`
+defaults `envsPreset: none` and `deploy/values/*/values.yaml.gotmpl` render it into the
+container's `frontend.env.ENVS_PRESET`, so it arrives as a runtime k8s env.
 
 ## Adding / removing a preset
 

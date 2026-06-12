@@ -72,7 +72,6 @@ jobs:
     with:
         tags: |
           type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
-        build_args: ENVS_PRESET=${{ inputs.envs_preset }}
         platforms: linux/amd64
     secrets: inherit
 
@@ -84,6 +83,8 @@ jobs:
       appName: review-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review
       helmfileDir: deploy
+      # Inject the chosen preset as a runtime env (ENVS_PRESET) instead of baking it into the image.
+      helmfileParameters: --suppress-diff --state-values-set envsPreset=${{ inputs.envs_preset }}
       kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
       vaultRole: ci-dev
     secrets: inherit
