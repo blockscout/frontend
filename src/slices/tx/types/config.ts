@@ -7,8 +7,12 @@ export const TX_FIELDS_IDS = [
   'tx_fee',
   'gas_fees',
   'burnt_fees',
-  'L1_status',
   'batch',
+  'L1_status',
+  'L1_gas_used',
+  'L1_gas_price',
+  'L1_fee',
+  'L1_fee_scalar',
 ] as const;
 
 export type TxFieldsId = (typeof TX_FIELDS_IDS)[number];
