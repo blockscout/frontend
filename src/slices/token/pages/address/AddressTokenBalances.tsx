@@ -17,11 +17,11 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { ZERO } from 'src/toolkit/utils/consts';
 import { thinsp } from 'src/toolkit/utils/htmlEntities';
 
-import TokenBalancesItem from './TokenBalancesItem';
+import AddressTokenBalancesItem from './AddressTokenBalancesItem';
 import useFetchTokens from './useFetchTokens';
 import { getTokensTotalInfo } from './utils';
 
-const TokenBalances = () => {
+const AddressTokenBalances = () => {
   const router = useRouter();
 
   const hash = router.query.hash?.toString();
@@ -53,20 +53,20 @@ const TokenBalances = () => {
 
   return (
     <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
-      <TokenBalancesItem
+      <AddressTokenBalancesItem
         name="Net Worth"
         value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) }` : 'N/A' }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
         icon={ <SpriteIcon name="wallet" boxSize="20px" flexShrink={ 0 } color="icon.primary"/> }
       />
-      <TokenBalancesItem
+      <AddressTokenBalancesItem
         name={ `${ currencyUnits.ether } Balance` }
         value={ `${ nativeValue } ${ currencyUnits.ether }` }
         valueSecondary={ !nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) }` : '' }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
         icon={ <NativeTokenIcon boxSize="20px"/> }
       />
-      <TokenBalancesItem
+      <AddressTokenBalancesItem
         name="Tokens"
         value={ tokensNumText }
         valueSecondary={ `${ prefix }$${ tokensInfo.usd.toFormat(2) }` }
@@ -77,4 +77,4 @@ const TokenBalances = () => {
   );
 };
 
-export default TokenBalances;
+export default AddressTokenBalances;

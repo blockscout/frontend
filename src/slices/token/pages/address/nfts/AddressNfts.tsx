@@ -14,8 +14,8 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
+import AddressNftItem from './AddressNftItem';
 import AddressNftTypeFilter from './AddressNftTypeFilter';
-import NFTItem from './NFTItem';
 
 type Props = {
   tokensQuery: QueryWithPagesResult<'core:address_nfts'>;
@@ -23,7 +23,7 @@ type Props = {
   onTokenTypesChange: (value: Array<NFTTokenType>) => void;
 };
 
-const AddressNFTs = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => {
+const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => {
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
@@ -49,7 +49,7 @@ const AddressNFTs = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
         const key = item.token.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
 
         return (
-          <NFTItem
+          <AddressNftItem
             key={ key }
             { ...item }
             isLoading={ isPlaceholderData }
@@ -77,4 +77,4 @@ const AddressNFTs = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
   );
 };
 
-export default AddressNFTs;
+export default AddressNfts;

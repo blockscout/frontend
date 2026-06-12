@@ -39,7 +39,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
         <TokenTypeFilter<TokenType>
           onChange={ onTokenTypesChange }
           defaultValue={ typeFilter }
-          nftOnly={ false }
+          category="all"
           chainConfig={ chainData?.app_config }
         />
       </PopoverFilter>

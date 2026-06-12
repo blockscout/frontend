@@ -22,7 +22,7 @@ export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['a
       id: 'coin_transfer',
       name: 'Coin Transfer',
     },
-    ...Object.entries(getTokenTypes(false, chainConfig))
+    ...Object.entries(getTokenTypes('all', chainConfig))
       .map(([ id, name ]) => ({
         id,
         name: `${ name } Transfer`,

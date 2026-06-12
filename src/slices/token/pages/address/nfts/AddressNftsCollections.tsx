@@ -21,9 +21,9 @@ import { route } from 'src/shared/router/routes';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
+import AddressNftItem from './AddressNftItem';
+import AddressNftItemContainer from './AddressNftItemContainer';
 import AddressNftTypeFilter from './AddressNftTypeFilter';
-import NFTItem from './NFTItem';
-import NFTItemContainer from './NFTItemContainer';
 
 type Props = {
   collectionsQuery: QueryWithPagesResult<'core:address_collections'>;
@@ -32,7 +32,7 @@ type Props = {
   onTokenTypesChange: (value: Array<NFTTokenType>) => void;
 };
 
-const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenTypesChange }: Props) => {
+const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onTokenTypesChange }: Props) => {
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
@@ -88,7 +88,7 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
             const key = item.token.address_hash + '_' + (instance.id && !isPlaceholderData ? `id_${ instance.id }` : `index_${ index }`);
 
             return (
-              <NFTItem
+              <AddressNftItem
                 key={ key }
                 { ...instance }
                 token={ item.token }
@@ -99,14 +99,14 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
           }) }
           { hasOverload && (
             <Link href={ collectionUrl }>
-              <NFTItemContainer display="flex" alignItems="center" justifyContent="center" flexDirection="column" minH="248px">
+              <AddressNftItemContainer display="flex" alignItems="center" justifyContent="center" flexDirection="column" minH="248px">
                 <HStack gap={ 2 } mb={ 3 }>
                   <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
                   <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
                   <NftFallback bgColor={{ _light: 'unset', _dark: 'unset' }} w="30px" h="30px" boxSize="30px" p={ 0 }/>
                 </HStack>
                 View all NFTs
-              </NFTItemContainer>
+              </AddressNftItemContainer>
             </Link>
           ) }
         </Grid>
@@ -130,4 +130,4 @@ const AddressCollections = ({ collectionsQuery, address, tokenTypes, onTokenType
   );
 };
 
-export default AddressCollections;
+export default AddressNftsCollections;

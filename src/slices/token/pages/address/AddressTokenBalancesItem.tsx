@@ -14,7 +14,7 @@ type Props = {
   contentAfter?: React.ReactNode;
 };
 
-const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading, contentAfter }: Props) => {
+const AddressTokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading, contentAfter }: Props) => {
 
   return (
     <Box px="12px" py="10px" bgColor={{ _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' }} borderRadius="base">
@@ -31,4 +31,4 @@ const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading, conte
   );
 };
 
-export default React.memo(TokenBalancesItem);
+export default React.memo(AddressTokenBalancesItem);

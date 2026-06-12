@@ -11,28 +11,34 @@ const tokenStandardName = config.slices.token.standard;
 
 type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 
+type TokenCategory = 'all' | 'nft' | 'fungible';
+
 export const NFT_TOKEN_TYPES: Record<NFTTokenType, string> = {
   'ERC-721': `${ tokenStandardName }-721`,
   'ERC-1155': `${ tokenStandardName }-1155`,
   'ERC-404': `${ tokenStandardName }-404`,
 };
 
-export const getTokenTypes = (nftOnly: boolean, chainConfig: ChainConfig = config) => {
-  if (nftOnly) {
+export const getTokenTypes = (category: TokenCategory, chainConfig: ChainConfig = config) => {
+  if (category === 'nft') {
     return NFT_TOKEN_TYPES;
   }
 
-  const chainConfigs = Array.isArray(chainConfig) ? chainConfig : [ chainConfig ];
-
-  return {
+  const fungibleTokenTypes = {
     'ERC-20': `${ tokenStandardName }-20`,
-    ...chainConfigs
-      .map((chainConfig) => chainConfig.slices.token.additionalTypes)
-      .flat()
+    ...getAdditionalTokenTypes(chainConfig)
       .reduce((result, item) => {
         result[item.id] = item.name;
         return result;
       }, {} as Record<string, string>),
+  };
+
+  if (category === 'fungible') {
+    return fungibleTokenTypes;
+  }
+
+  return {
+    ...fungibleTokenTypes,
     ...NFT_TOKEN_TYPES,
   };
 };
@@ -56,7 +62,7 @@ export function getTokenTypeName(typeId: string, chainConfig?: ChainConfig) {
   if (typeId === 'NATIVE') {
     return 'Native token';
   }
-  const tokenTypes = getTokenTypes(false, chainConfig);
+  const tokenTypes = getTokenTypes('all', chainConfig);
   return tokenTypes[typeId as keyof typeof tokenTypes] || typeId;
 }
 

@@ -2,20 +2,20 @@
 
 import React from 'react';
 
-import type { AddressTokensErc20Item } from './types';
+import type { AddressFungibleTokensItem } from '../types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import ERC20TokensTableItem from './ERC20TokensTableItem';
+import AddressFungibleTokensTableItem from './AddressFungibleTokensTableItem';
 
 interface Props {
-  data: Array<AddressTokensErc20Item>;
+  data: Array<AddressFungibleTokensItem>;
   top: number;
   isLoading: boolean;
   hasAdditionalTokenTypes?: boolean;
 }
 
-const ERC20TokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Props) => {
+const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Props) => {
   return (
     <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
@@ -29,7 +29,7 @@ const ERC20TokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Pro
       </TableHeaderSticky>
       <TableBody>
         { data.map((item, index) => (
-          <ERC20TokensTableItem
+          <AddressFungibleTokensTableItem
             key={ item.token.address_hash + (isLoading ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
             { ...item }
             isLoading={ isLoading }
@@ -41,4 +41,4 @@ const ERC20TokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes }: Pro
   );
 };
 
-export default ERC20TokensTable;
+export default AddressFungibleTokensTable;

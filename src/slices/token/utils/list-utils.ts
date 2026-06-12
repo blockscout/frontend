@@ -28,6 +28,6 @@ export const getTokenFilterValue = (
   value: string | Array<string> | undefined,
   chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'],
 ) => {
-  const tokenTypes = getTokenTypes(false, chainConfig);
+  const tokenTypes = getTokenTypes('all', chainConfig);
   return getFilterValuesFromQuery(Object.keys(tokenTypes), value);
 };

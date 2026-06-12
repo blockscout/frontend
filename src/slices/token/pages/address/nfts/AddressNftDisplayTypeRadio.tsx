@@ -8,7 +8,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import type { ButtonGroupRadioProps } from 'src/toolkit/chakra/button';
 import { Button, ButtonGroupRadio } from 'src/toolkit/chakra/button';
 
-import type { TNftDisplayType } from './useAddressNftQuery';
+import type { TNftDisplayType } from '../useAddressNftQuery';
 
 interface Props extends Omit<ButtonGroupRadioProps, 'children'> {
   value: TNftDisplayType;
