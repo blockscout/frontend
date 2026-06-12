@@ -63,18 +63,18 @@ because the `nextjs` runtime user can't write `/app`), then exports `.env.tmp` f
 committed `.env.extra`. The `Dockerfile` compiles `fetch.ts` in the builder stage and copies
 `fetch.js` + `registry.json` + `envs-rules.json` + `.env.extra` into the runtime image.
 
-The image is **preset-agnostic** — `ENVS_PRESET` is NOT baked in. The deploy workflows
-(`deploy-review*.yml`) pass the chosen preset to the deploy job via
-`helmfileParameters: --state-values-set envsPreset=<alias>`; `deploy/helmfile.yaml.gotmpl`
-defaults `envsPreset: none` and `deploy/values/*/values.yaml.gotmpl` render it into the
-container's `frontend.env.ENVS_PRESET`, so it arrives as a runtime k8s env.
+The image is **preset-agnostic** — `ENVS_PRESET` is NOT baked in. The deploy workflow
+(`deploy-review.yml`, with a `variant` input selecting the `review` / `review-2` flavor) passes
+the chosen preset to the deploy job via `helmfileParameters: --state-values-set envsPreset=<alias>`;
+`deploy/helmfile.yaml.gotmpl` defaults `envsPreset: none` and `deploy/values/*/values.yaml.gotmpl`
+render it into the container's `frontend.env.ENVS_PRESET`, so it arrives as a runtime k8s env.
 
 ## Adding / removing a preset
 
 1. Edit `registry.json` (the `alias` → URL map).
-2. Run `pnpm presets:sync` — regenerates the alias dropdowns in `.github/workflows/deploy-review.yml`,
-   `deploy-review-2.yml`, and `.vscode/tasks.json` (it splices only the lines between the
-   `presets:start` / `presets:end` marker comments).
+2. Run `pnpm presets:sync` — regenerates the alias dropdowns in `.github/workflows/deploy-review.yml`
+   and `.vscode/tasks.json` (it splices only the lines between the `presets:start` / `presets:end`
+   marker comments).
 3. Commit. CI runs `pnpm presets:lint` (in `checks.yml`) and **fails the PR if the dropdowns drift**
    from the registry.
 

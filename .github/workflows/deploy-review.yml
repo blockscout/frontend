@@ -3,6 +3,14 @@ name: Deploy review environment
 on:
   workflow_dispatch:
     inputs:
+      variant:
+          description: 'Demo variant — "review-2" disables ENVs validation (e.g. for multichain)'
+          required: false
+          default: review
+          type: choice
+          options:
+            - review
+            - review-2
       envs_preset:
           description: ENVs preset
           required: false
@@ -71,7 +79,7 @@ jobs:
     uses: './.github/workflows/publish-image.yml'
     with:
         tags: |
-          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
+          type=raw,value=${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
         platforms: linux/amd64
     secrets: inherit
 
@@ -80,7 +88,7 @@ jobs:
     needs: [ make_slug, publish_image ]
     uses: blockscout/actions/.github/workflows/deploy_helmfile.yaml@main
     with:
-      appName: review-${{ needs.make_slug.outputs.REF_SLUG }}
+      appName: ${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
       globalEnv: review
       helmfileDir: deploy
       # Inject the chosen preset as a runtime env (ENVS_PRESET) instead of baking it into the image.

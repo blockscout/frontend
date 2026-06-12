@@ -23,7 +23,6 @@ const aliases = Object.keys(JSON.parse(fs.readFileSync(path.join(__dirname, 'reg
 
 const targets = [
   { file: '.github/workflows/deploy-review.yml', indent: 12, comment: '#', line: (a) => `- ${ a }` },
-  { file: '.github/workflows/deploy-review-2.yml', indent: 12, comment: '#', line: (a) => `- ${ a }` },
   { file: '.vscode/tasks.json', indent: 14, comment: '//', line: (a) => `"${ a }",` },
 ];
 
