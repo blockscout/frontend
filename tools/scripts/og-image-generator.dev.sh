@@ -3,7 +3,7 @@
 # use this script for testing the og image generator
 
 # Fetch a representative instance config (eth) into ./.env.tmp
-./tools/dev-server/fetch.sh arbitrum || exit 1
+./tools/dev-server/fetch.sh eth || exit 1
 
 dotenv \
   -e ./.env.tmp \
