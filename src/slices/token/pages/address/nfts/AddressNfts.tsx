@@ -46,12 +46,13 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
       gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
     >
       { data.items.map((item, index) => {
-        const key = item.token.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
+        const key = item.token?.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
 
         return (
           <AddressNftItem
             key={ key }
-            { ...item }
+            instance={ item }
+            token={ item.token ?? undefined }
             isLoading={ isPlaceholderData }
             withTokenLink
             chain={ multichainContext?.chain }

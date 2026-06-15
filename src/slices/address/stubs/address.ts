@@ -1,9 +1,7 @@
 import type { schemas } from '@blockscout/api-types';
 import type {
   AddressCoinBalanceHistoryItem,
-  AddressCollection,
   AddressCounters,
-  AddressNFT,
   AddressTabsCounters,
   AddressesItem,
 } from 'src/slices/address/types/api';
@@ -93,28 +91,28 @@ export const ADDRESS_TOKEN_BALANCE_ERC_20: schemas['TokenBalance'] = {
   value: '1000000000000000000000000',
 };
 
-export const ADDRESS_NFT_721: AddressNFT = {
+export const ADDRESS_NFT_721: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-721',
   value: '1',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_721,
 };
 
-export const ADDRESS_NFT_1155: AddressNFT = {
+export const ADDRESS_NFT_1155: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-1155',
   value: '10',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_1155,
 };
 
-export const ADDRESS_NFT_404: AddressNFT = {
+export const ADDRESS_NFT_404: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-404',
   value: '10',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_404,
 };
 
-export const ADDRESS_COLLECTION: AddressCollection = {
+export const ADDRESS_COLLECTION: schemas['NFTCollection'] = {
   token: TOKEN_INFO_ERC_1155,
   amount: '4',
   token_instances: Array(4).fill(TOKEN_INSTANCE),

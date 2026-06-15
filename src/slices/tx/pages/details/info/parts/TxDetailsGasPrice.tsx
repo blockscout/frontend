@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -10,7 +10,7 @@ import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
 interface Props {
-  gasToken?: TokenInfo | null;
+  gasToken?: schemas['Token'] | null;
   gasPrice: string | null;
   isLoading?: boolean;
 }

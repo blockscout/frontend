@@ -70,7 +70,8 @@ const TokenTransfersListItem = ({ item, isLoading, chainData }: Props) => {
         <AddressEntity address={ item.to } isLoading={ isLoading } truncation="constant"/>
       </ListItemMobileGrid.Value>
 
-      { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
+      { item.total && 'token_id' in item.total && item.token && item.token.type &&
+        (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value overflow="hidden">

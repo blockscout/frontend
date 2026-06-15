@@ -3,8 +3,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
@@ -12,6 +10,7 @@ import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import * as blockMock from 'src/slices/block/mocks/block';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { toTokenModel } from 'src/slices/token/utils/model';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import * as txMock from 'src/slices/tx/mocks/tx';
 
@@ -26,7 +25,7 @@ import { Link, LinkBox, LinkOverlay } from 'src/toolkit/chakra/link';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
-export const TOKEN = {
+export const TOKEN = toTokenModel({
   address_hash: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   circulating_market_cap: '139446916652.6728',
   decimals: '6',
@@ -38,7 +37,7 @@ export const TOKEN = {
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
   reputation: 'ok' as const,
-} satisfies TokenInfo;
+});
 
 const LinkShowcase = () => {
 

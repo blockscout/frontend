@@ -4,14 +4,13 @@ import { Flex, HStack } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { AddressFungibleTokensItem } from '../types';
+import type { schemas } from '@blockscout/api-types';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
 
-import multichainConfig from 'src/features/multichain/chains-config';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
 import config from 'src/config';
@@ -23,15 +22,18 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-type Props = AddressFungibleTokensItem & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
+type Props = Pick<schemas['TokenBalance'], 'token' | 'value'> & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 
 const AddressFungibleTokensTableItem = ({
   token,
   value,
-  chain_values: chainValues,
   isLoading,
   hasAdditionalTokenTypes,
 }: Props) => {
+
+  if (!token) {
+    return null;
+  }
 
   const {
     valueBn: tokenQuantity,
@@ -41,16 +43,6 @@ const AddressFungibleTokensTableItem = ({
   const isNativeToken = config.slices.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
-  const chainInfo = React.useMemo(() => {
-    if (!chainValues) {
-      return;
-    }
-
-    const chainId = Object.keys(chainValues)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
-    return chain;
-  }, [ chainValues ]);
-
   const cellVerticalAlign = hasAdditionalTokenTypes ? 'top' : 'middle';
 
   return (
@@ -59,7 +51,6 @@ const AddressFungibleTokensTableItem = ({
         <HStack gap={ 2 }>
           <TokenEntity
             token={ token }
-            chain={ chainInfo }
             isLoading={ isLoading }
             noCopy
             jointSymbol

@@ -21,7 +21,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props {
-  data: schemas['ListItem'];
+  data: schemas['SmartContractListItem'];
   isLoading?: boolean;
   chainData?: ClusterChainConfig;
 }

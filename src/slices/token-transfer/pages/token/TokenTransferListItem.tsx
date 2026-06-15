@@ -3,9 +3,9 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInstance } from 'src/slices/token/types/api';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -21,7 +21,7 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: schemas['TokenInstance']; chainData?: ClusterChainConfig };
 
 const TokenTransferListItem = ({
   token,
@@ -116,7 +116,7 @@ const TokenTransferListItem = ({
           />
         </Flex>
       ) }
-      { total && 'token_id' in total && token && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
+      { total && 'token_id' in total && token?.type && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
           hash={ token.address_hash }
           id={ total.token_id }

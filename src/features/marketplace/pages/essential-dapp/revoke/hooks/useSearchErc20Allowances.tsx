@@ -7,9 +7,9 @@ import { getAddress, formatUnits, slice } from 'viem';
 import type { PublicClient, Log } from 'viem';
 
 import type { AllowanceType, ContractAllowanceType } from '../types';
+import type { schemas } from '@blockscout/api-types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 import type { AddressTokenBalancesResponse } from 'src/slices/address/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
@@ -92,7 +92,7 @@ const useGetERC20TokenData = () => {
         fetchParams: {
           signal,
         },
-      }) as TokenInfo;
+      }) as schemas['Token'];
 
       return {
         symbol: data.symbol || undefined,

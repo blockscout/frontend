@@ -3,7 +3,8 @@
 import React from 'react';
 
 import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
+
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import TokenValue from 'src/shared/values/entity/TokenValue';
@@ -18,7 +19,7 @@ interface Props {
 const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
 
   if (data.token) {
-    const token: TokenInfo | null = {
+    const token = toTokenModel({
       ...data.token,
       decimals: String(data.token.decimals),
       type: 'ERC-20',
@@ -28,7 +29,7 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
       circulating_market_cap: null,
       icon_url: null,
       reputation: null,
-    };
+    });
 
     return (
       <TokenValue

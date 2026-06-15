@@ -1,17 +1,16 @@
 /* eslint-disable max-len */
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInfoMock from 'src/slices/token/mocks/info';
 
-export const base: TokenInstance = {
+export const base: schemas['TokenInstance'] = {
   token: tokenInfoMock.tokenInfoERC721a,
   animation_url: null,
   external_app_url: 'https://duck.nft/get-your-duck-today',
   id: '32925298983216553915666621415831103694597106215670571463977478984525997408266',
   image_url: 'https://example.com/image.jpg',
   is_unique: false,
-  holder_address_hash: null,
   metadata: {
     attributes: [
       {
@@ -76,9 +75,11 @@ export const base: TokenInstance = {
   },
   owner: addressParamMock.withName,
   thumbnails: null,
+  media_type: null,
+  media_url: null,
 };
 
-export const withRichMetadata: TokenInstance = {
+export const withRichMetadata: schemas['TokenInstance'] = {
   ...base,
   metadata: {
     background_color: '000000',
@@ -181,7 +182,7 @@ export const withRichMetadata: TokenInstance = {
   },
 };
 
-export const unique: TokenInstance = {
+export const unique: schemas['TokenInstance'] = {
   ...base,
   is_unique: true,
 };

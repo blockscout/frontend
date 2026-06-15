@@ -1,5 +1,6 @@
 import type { Transaction } from 'src/slices/tx/types/api';
 
+import { toTokenModel } from 'src/slices/token/utils/model';
 import { base } from 'src/slices/tx/mocks/tx';
 
 export const stabilityTx: Transaction = {
@@ -21,7 +22,7 @@ export const stabilityTx: Transaction = {
       reputation: 'ok',
     },
     dapp_fee: '34381250000000',
-    token: {
+    token: toTokenModel({
       address_hash: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
       circulating_market_cap: null,
       decimals: '18',
@@ -33,7 +34,7 @@ export const stabilityTx: Transaction = {
       total_supply: '10000000000000000000000000',
       type: 'ERC-20',
       reputation: 'ok',
-    },
+    }),
     total_fee: '68762500000000',
     validator_address: {
       hash: '0x1432997a4058acbBe562F3c1E79738c142039044',

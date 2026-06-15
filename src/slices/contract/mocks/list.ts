@@ -27,7 +27,7 @@ export const contract1 = {
   license_type: 'mit',
   certified: true,
   reputation: 'ok',
-} satisfies schemas['ListItem'];
+} satisfies schemas['SmartContractListItem'];
 
 export const contract2 = {
   address: {
@@ -56,7 +56,7 @@ export const contract2 = {
   verified_at: '2021-09-07T20:01:56.076979Z',
   license_type: 'bsd_3_clause',
   reputation: 'ok',
-} satisfies schemas['ListItem'];
+} satisfies schemas['SmartContractListItem'];
 
 export const contract3 = {
   address: {
@@ -85,7 +85,7 @@ export const contract3 = {
   transactions_count: 0,
   verified_at: '2024-12-03T14:05:42.796224Z',
   reputation: 'ok',
-} satisfies schemas['ListItem'];
+} satisfies schemas['SmartContractListItem'];
 
 export const baseResponse: publicApi.paths['/v2/smart-contracts/']['get']['responses']['200']['content']['application/json'] = {
   items: [

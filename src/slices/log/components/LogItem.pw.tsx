@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMocks from 'src/slices/address/mocks/address';
+import * as addressParamMocks from 'src/slices/address/mocks/address-param';
 import * as inputDataMocks from 'src/slices/log/mocks/decoded-input';
 
 import { test, expect } from 'playwright/lib';
@@ -20,7 +20,7 @@ test('with decoded input data +@mobile +@dark-mode', async({ render }) => {
     <LogItem
       index={ 42 }
       decoded={ inputDataMocks.withIndexedFields }
-      address={{ ...addressMocks.withName, is_verified: true }}
+      address={{ ...addressParamMocks.withName, is_verified: true }}
       topics={ TOPICS }
       data={ DATA }
       type="transaction"
@@ -36,7 +36,7 @@ test('without decoded input data +@mobile', async({ render }) => {
     <LogItem
       index={ 42 }
       decoded={ null }
-      address={ addressMocks.withoutName }
+      address={ addressParamMocks.withoutName }
       topics={ TOPICS }
       data={ DATA }
       type="transaction"
@@ -52,7 +52,7 @@ test('with default data type', async({ render }) => {
     <LogItem
       index={ 42 }
       decoded={ null }
-      address={ addressMocks.withoutName }
+      address={ addressParamMocks.withoutName }
       topics={ TOPICS }
       data="0x6475636b"
       type="address"

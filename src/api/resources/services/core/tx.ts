@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { merged } from '@blockscout/api-types';
 import type { TransactionsResponseWatchlist } from 'src/features/account/types/api';
 import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters, TxBlobs } from 'src/features/data-availability/types/api';
 import type { FheOperationsResponse } from 'src/features/fhe-operations/types/api';
@@ -14,7 +15,6 @@ import type {
   Transaction,
   TransactionsStats,
   TxsFilters,
-  TxStateChanges,
   TxRawTracesResponse,
 } from 'src/slices/tx/types/api';
 
@@ -121,7 +121,8 @@ R extends 'core:tx_logs' ? LogsResponseTx :
 R extends 'core:tx_token_transfers' ? TokenTransferResponse :
 R extends 'core:tx_fhe_operations' ? FheOperationsResponse :
 R extends 'core:tx_raw_trace' ? TxRawTracesResponse :
-R extends 'core:tx_state_changes' ? TxStateChanges :
+R extends 'core:tx_state_changes' ?
+  merged.paths['/v2/transactions/{transaction_hash_param}/state-changes']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:tx_blobs' ? TxBlobs :
 R extends 'core:tx_interpretation' ? TxInterpretationResponse :
 R extends 'core:tx_external_transactions' ? Array<string> :

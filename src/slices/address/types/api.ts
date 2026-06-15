@@ -134,7 +134,7 @@ export interface AddressCollectionsResponse {
 
 export interface AddressTokensBalancesSocketMessage {
   overflow: boolean;
-  token_balances: Array<AddressTokenBalance>;
+  token_balances: Array<schemas['TokenBalance']>;
 }
 
 export interface AddressTransactionsResponse {

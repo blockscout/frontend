@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 export interface TransactionStability {
   stability_fee?: {
     dapp_address: schemas['Address'];
     dapp_fee: string;
-    token: TokenInfo;
+    token: schemas['Token'];
     total_fee: string;
     validator_address: schemas['Address'];
     validator_fee: string;

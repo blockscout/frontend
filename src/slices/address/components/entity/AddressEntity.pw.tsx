@@ -162,7 +162,7 @@ test.describe('proxy contract', () => {
   test('with name tag', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressParamMock.contract, metadata: { reputation: 1, tags: [ metadataMock.nameTag ] } }}
+        address={{ ...addressParamMock.contract, metadata: { tags: [ metadataMock.nameTag ] } }}
       />,
     );
 
@@ -231,7 +231,7 @@ test.describe('with cex deposit tag', () => {
   test.use({ viewport: { width: 500, height: 140 } });
 
   test('default', async({ render }) => {
-    const address: schemas['Address'] = { ...addressParamMock.withNameTag, metadata: { reputation: 1, tags: [ metadataMock.cexDepositTag ] } };
+    const address: schemas['Address'] = { ...addressParamMock.withNameTag, metadata: { tags: [ metadataMock.cexDepositTag ] } };
 
     const component = await render(
       <AddressEntity

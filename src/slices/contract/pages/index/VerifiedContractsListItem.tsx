@@ -19,7 +19,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: schemas['ListItem'];
+  data: schemas['SmartContractListItem'];
   isLoading?: boolean;
 }
 

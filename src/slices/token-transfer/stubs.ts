@@ -64,7 +64,7 @@ export const TOKEN_TRANSFER_ERC_404: TokenTransfer = {
   token: TOKEN_INFO_ERC_404,
 };
 
-export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
+export const getTokenTransfersStub = (type?: TokenType | null, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
@@ -77,7 +77,10 @@ export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransfe
   }
 };
 
-export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: TokenInstanceTransferPagination | null = null): TokenInstanceTransferResponse => {
+export const getTokenInstanceTransfersStub = (
+  type?: TokenType | null,
+  pagination: TokenInstanceTransferPagination | null = null,
+): TokenInstanceTransferResponse => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });

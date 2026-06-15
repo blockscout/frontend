@@ -4,8 +4,8 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AggregatedTokenInfo } from 'src/features/multichain/types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import type { EntityProps as AddressEntityProps } from 'src/slices/address/components/entity/AddressEntity';
@@ -25,7 +25,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 type Props = {
-  token: TokenInfo | AggregatedTokenInfo;
+  token: schemas['Token'] | AggregatedTokenInfo;
   index: number;
   page: number;
   isLoading?: boolean;

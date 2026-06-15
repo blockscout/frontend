@@ -34,7 +34,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
     }
   }
   if (filters.type && filters.type.length) {
-    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
+    if (!tokenTransfer.token || !(tokenTransfer.token.type && filters.type.includes(tokenTransfer.token.type))) {
       return false;
     }
   }

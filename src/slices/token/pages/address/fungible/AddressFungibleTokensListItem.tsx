@@ -11,7 +11,6 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
 
-import multichainConfig from 'src/features/multichain/chains-config';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
 import config from 'src/config';
@@ -30,9 +29,13 @@ const AddressFungibleTokensListItem = ({
   token,
   value,
   isLoading,
-  chain_values: chainValues,
   hasAdditionalTokenTypes,
 }: Props) => {
+
+  if (!token) {
+    return null;
+  }
+
   const {
     valueBn: tokenQuantity,
     usdBn: tokenValue,
@@ -41,22 +44,11 @@ const AddressFungibleTokensListItem = ({
   const isNativeToken = config.slices.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
-  const chainInfo = React.useMemo(() => {
-    if (!chainValues) {
-      return;
-    }
-
-    const chainId = Object.keys(chainValues)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
-    return chain;
-  }, [ chainValues ]);
-
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%" columnGap={ 2 }>
         <TokenEntity
           token={ token }
-          chain={ chainInfo }
           isLoading={ isLoading }
           noCopy
           jointSymbol

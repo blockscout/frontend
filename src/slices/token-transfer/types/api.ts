@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { TokenInfo, TokenInstance, TokenType } from 'src/slices/token/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -10,41 +10,41 @@ export type Erc20TotalPayload = {
 
 export type Erc721TotalPayload = {
   token_id: string | null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type Erc1155TotalPayload = {
   decimals: string | null;
   value: string;
   token_id: string | null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type Erc404TotalPayload = {
   decimals: string;
   value: string;
   token_id: null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 } | {
   token_id: string;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type TokenTransfer = (
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc20TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc721TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc1155TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc404TotalPayload | null;
   }
 ) & TokenTransferBase;

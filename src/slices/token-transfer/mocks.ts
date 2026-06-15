@@ -1,8 +1,9 @@
+import type { schemas } from '@blockscout/api-types';
 import type { TokenTransfer, TokenTransferResponse } from 'src/slices/token-transfer/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import { erc7984 } from 'src/features/fhe-operations/mocks/token-transfer';
 
@@ -20,7 +21,7 @@ export const erc20: TokenTransfer = {
     is_contract: true,
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
-  token: {
+  token: toTokenModel({
     address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
     circulating_market_cap: '117629601.61913824',
     decimals: '18',
@@ -32,7 +33,7 @@ export const erc20: TokenTransfer = {
     total_supply: '0',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   total: {
     decimals: '18',
     value: '31567373703130350',
@@ -57,7 +58,7 @@ export const erc721: TokenTransfer = {
     ...addressParamMock.withoutName,
     hash: '0x47eE48AEBc4ab9Ed908b805b8c8dAAa71B31Db1A',
   },
-  token: {
+  token: toTokenModel({
     address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: null,
     decimals: null,
@@ -69,7 +70,7 @@ export const erc721: TokenTransfer = {
     total_supply: '0',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   total: {
     token_id: '875879856',
     token_instance: tokenInstanceMock.base,
@@ -94,7 +95,7 @@ export const erc1155A: TokenTransfer = {
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
-  token: {
+  token: toTokenModel({
     address_hash: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
     circulating_market_cap: null,
     decimals: null,
@@ -106,7 +107,7 @@ export const erc1155A: TokenTransfer = {
     total_supply: '0',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   total: {
     token_id: '123',
     value: '42',
@@ -125,7 +126,7 @@ export const erc1155A: TokenTransfer = {
 export const erc1155B: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...(erc1155A.token as TokenInfo),
+    ...(erc1155A.token as schemas['Token']),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -135,7 +136,7 @@ export const erc1155B: TokenTransfer = {
 export const erc1155C: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...(erc1155A.token as TokenInfo),
+    ...(erc1155A.token as schemas['Token']),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -145,7 +146,7 @@ export const erc1155C: TokenTransfer = {
 export const erc1155D: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...(erc1155A.token as TokenInfo),
+    ...(erc1155A.token as schemas['Token']),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -162,7 +163,7 @@ export const erc404A: TokenTransfer = {
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
-  token: {
+  token: toTokenModel({
     address_hash: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
     circulating_market_cap: null,
     decimals: null,
@@ -174,7 +175,7 @@ export const erc404A: TokenTransfer = {
     total_supply: '0',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   total: {
     value: '42000000000000000000000000',
     decimals: '18',
@@ -194,7 +195,7 @@ export const erc404A: TokenTransfer = {
 export const erc404B: TokenTransfer = {
   ...erc404A,
   token: {
-    ...(erc404A.token as TokenInfo),
+    ...(erc404A.token as schemas['Token']),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },

@@ -3,13 +3,14 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TokenHolder } from 'src/slices/token/types/api';
 
 import TokenHoldersListItem from './TokenHoldersListItem';
 
 interface Props {
   data: Array<TokenHolder>;
-  token: TokenInfo;
+  token: schemas['Token'];
   isLoading?: boolean;
 }
 

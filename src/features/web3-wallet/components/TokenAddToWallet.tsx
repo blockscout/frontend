@@ -5,6 +5,7 @@ import React from 'react';
 import type { WatchAssetParams } from 'viem';
 
 import type { schemas } from '@blockscout/api-types';
+import type { AggregatedTokenInfo } from 'src/features/multichain/types/client';
 import { WALLETS_INFO } from 'src/features/web3-wallet/types/wallets';
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
@@ -21,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { toaster } from 'src/toolkit/chakra/toaster';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-function getRequestParams(token: schemas['Token'], tokenId?: string): WatchAssetParams | undefined {
+function getRequestParams(token: schemas['Token'] | AggregatedTokenInfo, tokenId?: string): WatchAssetParams | undefined {
   switch (token.type) {
     case 'ERC-20':
       return {
@@ -54,7 +55,7 @@ function getRequestParams(token: schemas['Token'], tokenId?: string): WatchAsset
 
 interface Props {
   className?: string;
-  token: schemas['Token'];
+  token: schemas['Token'] | AggregatedTokenInfo;
   tokenId?: string;
   isLoading?: boolean;
   variant?: 'icon' | 'button';

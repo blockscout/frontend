@@ -20,7 +20,7 @@ import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSti
 import VerifiedContractsTableItem from './VerifiedContractsTableItem';
 
 interface Props {
-  data: Array<schemas['ListItem']>;
+  data: Array<schemas['SmartContractListItem']>;
   sort: VerifiedContractsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
   isLoading?: boolean;

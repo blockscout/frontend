@@ -62,7 +62,7 @@ export const CONTRACT_CODE_VERIFIED = {
   license_type: 'mit',
 } as unknown as SmartContract;
 
-export const VERIFIED_CONTRACT_INFO: schemas['ListItem'] = {
+export const VERIFIED_CONTRACT_INFO: schemas['SmartContractListItem'] = {
   address: {
     ...ADDRESS_PARAMS,
     name: 'StubContract',

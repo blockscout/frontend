@@ -79,8 +79,8 @@ const TokenTransferTableItem = ({
               mt={ 1 }
             />
             <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
-              <Badge loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge>
-              <TokenTransferTypeBadge methodType={ type } tokenType={ token.type } transferTokenType={ transferTokenType } loading={ isLoading }/>
+              { token.type && <Badge loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge> }
+              <TokenTransferTypeBadge methodType={ type } tokenType={ token.type ?? undefined } transferTokenType={ transferTokenType } loading={ isLoading }/>
             </Flex>
           </>
         ) : 'N/A' }

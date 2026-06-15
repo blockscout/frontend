@@ -3,8 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInstance } from 'src/slices/token/types/api';
 
 import TokenTransferListItem from 'src/slices/token-transfer/pages/token/TokenTransferListItem';
 
@@ -13,7 +13,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 interface Props {
   data: Array<TokenTransfer>;
   tokenId?: string;
-  instance?: TokenInstance;
+  instance?: schemas['TokenInstance'];
   isLoading?: boolean;
 }
 

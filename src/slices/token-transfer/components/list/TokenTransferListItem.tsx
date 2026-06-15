@@ -59,10 +59,10 @@ const TokenTransferListItem = ({
                 noCopy
                 w="auto"
               />
-              <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge>
+              { token.type && <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge> }
             </>
           ) }
-          <TokenTransferTypeBadge methodType={ type } tokenType={ token?.type } transferTokenType={ transferTokenType } loading={ isLoading }/>
+          <TokenTransferTypeBadge methodType={ type } tokenType={ token?.type ?? undefined } transferTokenType={ transferTokenType } loading={ isLoading }/>
         </Flex>
         { showTxInfo && txHash && (
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>

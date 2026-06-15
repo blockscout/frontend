@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { PaginationParams } from 'src/shared/pagination/types';
-import type { AddressTokenBalance } from 'src/slices/address/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -20,7 +20,7 @@ import AddressFungibleTokensFilter from './AddressFungibleTokensFilter';
 import AddressFungibleTokensTable from './AddressFungibleTokensTable';
 
 type Props = {
-  items: Array<Pick<AddressTokenBalance, 'token' | 'value'>> | undefined;
+  items: Array<Pick<schemas['TokenBalance'], 'token' | 'value'>> | undefined;
   isLoading: boolean;
   pagination: PaginationParams;
   isError: boolean;

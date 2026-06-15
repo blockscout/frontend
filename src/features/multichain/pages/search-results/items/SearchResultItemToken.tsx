@@ -6,7 +6,6 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenType } from 'src/slices/token/types/api';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
@@ -40,7 +39,7 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
             icon_url: data.icon_url ?? null,
             name: data.name ?? 'Unnamed token',
             symbol: data.symbol ?? '',
-            type: data.type as unknown as TokenType,
+            type: data.type,
             reputation: null,
           }}
           chain={ chain }

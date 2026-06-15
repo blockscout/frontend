@@ -90,7 +90,7 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
             return (
               <AddressNftItem
                 key={ key }
-                { ...instance }
+                instance={ instance }
                 token={ item.token }
                 isLoading={ isPlaceholderData }
                 chain={ multichainContext?.chain }

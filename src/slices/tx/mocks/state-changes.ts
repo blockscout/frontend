@@ -1,25 +1,19 @@
-import type { TxStateChange, TxStateChanges } from 'src/slices/tx/types/api';
+import type { merged, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
-export const mintToken: TxStateChange = {
+export const mintToken: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
   },
   balance_after: null,
   balance_before: null,
-  change: [
-    {
-      direction: 'from',
-      total: {
-        token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
-        token_instance: null,
-      },
-    },
-  ],
+  change: '-1',
   is_miner: false,
-  token: {
+  token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
+  token: toTokenModel({
     address_hash: '0x8977EA6C55e878125d1bF3433EBf72138B7a4543',
     circulating_market_cap: null,
     decimals: null,
@@ -31,28 +25,21 @@ export const mintToken: TxStateChange = {
     type: 'ERC-721',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   type: 'token' as const,
 };
 
-export const receiveMintedToken: TxStateChange = {
+export const receiveMintedToken: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
   },
   balance_after: '1',
   balance_before: '0',
-  change: [
-    {
-      direction: 'to',
-      total: {
-        token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
-        token_instance: null,
-      },
-    },
-  ],
+  change: '1',
   is_miner: false,
-  token: {
+  token_id: '15077554365819457090226168288698582604878106156134383525616269766016907608065',
+  token: toTokenModel({
     address_hash: '0x8977EA6C55e878125d1bF3433EBf72138B7a4543',
     circulating_market_cap: null,
     decimals: null,
@@ -64,11 +51,11 @@ export const receiveMintedToken: TxStateChange = {
     type: 'ERC-721',
     icon_url: null,
     reputation: 'ok',
-  },
+  }),
   type: 'token' as const,
 };
 
-export const transfer1155Token: TxStateChange = {
+export const transfer1155Token: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0x51243E83Db20F8FC2761D894067A2A9eb7B158DE',
@@ -77,7 +64,7 @@ export const transfer1155Token: TxStateChange = {
   balance_before: '0',
   change: '1',
   is_miner: false,
-  token: {
+  token: toTokenModel({
     address_hash: '0x56Cc277717106E528A9FcC2CD342Ff98db758041',
     circulating_market_cap: null,
     decimals: null,
@@ -89,12 +76,12 @@ export const transfer1155Token: TxStateChange = {
     total_supply: null,
     type: 'ERC-1155',
     reputation: 'ok',
-  },
+  }),
   token_id: '1',
   type: 'token' as const,
 };
 
-export const receiveCoin: TxStateChange = {
+export const receiveCoin: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0x8dC847Af872947Ac18d5d63fA646EB65d4D99560',
@@ -107,7 +94,7 @@ export const receiveCoin: TxStateChange = {
   type: 'coin' as const,
 };
 
-export const sendCoin: TxStateChange = {
+export const sendCoin: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
@@ -120,7 +107,7 @@ export const sendCoin: TxStateChange = {
   type: 'coin' as const,
 };
 
-export const sendERC20Token: TxStateChange = {
+export const sendERC20Token: schemas['StateChange'] = {
   address: {
     ...addressParamMock.withoutName,
     hash: '0x7f6479df95Aa3036a3BE02DB6300ea201ABd9981',
@@ -129,7 +116,7 @@ export const sendERC20Token: TxStateChange = {
   balance_before: '9814903154',
   change: '-3000000000',
   is_miner: false,
-  token: {
+  token: toTokenModel({
     address_hash: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
     circulating_market_cap: '82978861367.28714',
     decimals: '6',
@@ -141,11 +128,11 @@ export const sendERC20Token: TxStateChange = {
     total_supply: '39030615894320966',
     type: 'ERC-20' as const,
     reputation: 'ok',
-  },
+  }),
   type: 'token' as const,
 };
 
-export const baseResponse: TxStateChanges = {
+export const baseResponse: merged.paths['/v2/transactions/{transaction_hash_param}/state-changes']['get']['responses']['200']['content']['application/json'] = {
   items: [
     mintToken,
     receiveMintedToken,

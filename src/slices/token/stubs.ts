@@ -1,10 +1,9 @@
+import type { schemas } from '@blockscout/api-types';
 import type {
   TokenCounters,
   TokenHolder,
   TokenHolders,
   TokenHoldersPagination,
-  TokenInfo,
-  TokenInstance,
   TokenType,
 } from 'src/slices/token/types/api';
 
@@ -14,7 +13,7 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
-export const TOKEN_INFO_ERC_20: TokenInfo = {
+export const TOKEN_INFO_ERC_20: schemas['Token'] = {
   address_hash: ADDRESS_HASH,
   circulating_market_cap: '117629601.61913824',
   decimals: '18',
@@ -26,21 +25,24 @@ export const TOKEN_INFO_ERC_20: TokenInfo = {
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
+  circulating_supply: null,
+  volume_24h: null,
+  is_bridged: false,
 };
 
-export const TOKEN_INFO_ERC_721: TokenInfo = {
+export const TOKEN_INFO_ERC_721: schemas['Token'] = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-721',
 };
 
-export const TOKEN_INFO_ERC_1155: TokenInfo = {
+export const TOKEN_INFO_ERC_1155: schemas['Token'] = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-1155',
 };
 
-export const TOKEN_INFO_ERC_404: TokenInfo = {
+export const TOKEN_INFO_ERC_404: schemas['Token'] = {
   ...TOKEN_INFO_ERC_20,
   circulating_market_cap: null,
   type: 'ERC-404',
@@ -62,7 +64,7 @@ export const TOKEN_HOLDER_ERC_1155: TokenHolder = {
   value: '1021378038331138520',
 };
 
-export const getTokenHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
+export const getTokenHoldersStub = (type?: TokenType | null, pagination: TokenHoldersPagination | null = null): TokenHolders => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
@@ -88,7 +90,7 @@ export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenH
   }
 };
 
-export const TOKEN_INSTANCE: TokenInstance = {
+export const TOKEN_INSTANCE: schemas['TokenInstance'] = {
   token: TOKEN_INFO_ERC_721,
   animation_url: null,
   external_app_url: 'https://vipsland.com/nft/collections/genesis/188882',
@@ -103,6 +105,7 @@ export const TOKEN_INSTANCE: TokenInstance = {
     name: 'GENESIS #188882, 8a77ca1bcaa4036f',
   },
   owner: ADDRESS_PARAMS,
-  holder_address_hash: ADDRESS_HASH,
   thumbnails: null,
+  media_type: null,
+  media_url: null,
 };

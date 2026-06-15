@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { AddressFungibleTokensItem } from '../types';
+import type { schemas } from '@blockscout/api-types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import AddressFungibleTokensTableItem from './AddressFungibleTokensTableItem';
 
 interface Props {
-  data: Array<AddressFungibleTokensItem>;
+  data: Array<Pick<schemas['TokenBalance'], 'token' | 'value'>>;
   top: number;
   isLoading: boolean;
   hasAdditionalTokenTypes?: boolean;
@@ -30,7 +30,7 @@ const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTy
       <TableBody>
         { data.map((item, index) => (
           <AddressFungibleTokensTableItem
-            key={ item.token.address_hash + (isLoading ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
+            key={ (item.token?.address_hash ?? '') + (isLoading ? index : '') }
             { ...item }
             isLoading={ isLoading }
             hasAdditionalTokenTypes={ hasAdditionalTokenTypes }

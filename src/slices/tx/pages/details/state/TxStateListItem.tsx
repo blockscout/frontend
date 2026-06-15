@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxStateChange } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -11,7 +11,7 @@ import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import { getStateElements } from './utils';
 
 interface Props {
-  data: TxStateChange;
+  data: schemas['StateChange'];
   isLoading?: boolean;
 }
 

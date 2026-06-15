@@ -3,14 +3,14 @@
 import React from 'react';
 
 import type { TokenTransfer } from '../types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 import { Badge, type BadgeProps } from 'src/toolkit/chakra/badge';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props extends BadgeProps {
   methodType: TokenTransfer['type'];
-  tokenType?: TokenInfo['type'];
+  tokenType?: TokenType;
   transferTokenType?: TokenTransfer['token_type'];
 }
 

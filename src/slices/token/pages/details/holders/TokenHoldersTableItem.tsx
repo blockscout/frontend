@@ -3,7 +3,8 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TokenHolder } from 'src/slices/token/types/api';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -15,9 +16,9 @@ import Utilization from 'src/shared/values/utilization/Utilization';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
-type Props = {
+interface Props {
   holder: TokenHolder;
-  token: TokenInfo;
+  token: schemas['Token'];
   isLoading?: boolean;
 };
 

@@ -4,7 +4,7 @@ import { Grid } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
+import type { AddressTokenItem } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -22,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 interface Props {
-  data: AddressFungibleTokensItem;
+  data: AddressTokenItem;
   isLoading: boolean;
 }
 

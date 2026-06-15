@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { DynamicRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 
@@ -13,7 +13,7 @@ import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
-  data: TokenInstance;
+  data: schemas['TokenInstance'];
   size: Size;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
@@ -54,7 +54,7 @@ export default function useNftMediaInfo({ data, size, allowedTypes, field, isEna
   return query;
 }
 
-async function getMediaType(data: TokenInstance, field: Params['field']): Promise<MediaType | undefined> {
+async function getMediaType(data: schemas['TokenInstance'], field: Params['field']): Promise<MediaType | undefined> {
   const url = data[field];
 
   if (!url) {
@@ -82,6 +82,9 @@ async function getMediaType(data: TokenInstance, field: Params['field']): Promis
   }
 
   try {
+    if (!data.token) {
+      return;
+    }
     const mediaTypeResourceUrl = route({
       // eslint-disable-next-line max-len
       pathname: '/node-api/tokens/[hash]/instances/[id]/media-type' as DynamicRoute<'/api/tokens/[hash]/instances/[id]/media-type', { hash: string; id: string }>['pathname'],
@@ -114,7 +117,7 @@ function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | unde
   }
 }
 
-function getCdnData(data: TokenInstance, size: Size, mediaType: MediaType): MediaInfo | undefined {
+function getCdnData(data: schemas['TokenInstance'], size: Size, mediaType: MediaType): MediaInfo | undefined {
   // CDN is only used for images
   if (mediaType !== 'image') {
     return;

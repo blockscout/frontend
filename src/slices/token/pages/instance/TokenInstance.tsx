@@ -69,7 +69,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && id && (!tab || tab === 'token_transfers')),
-      placeholderData: getTokenInstanceTransfersStub(tokenQuery.data?.type, null),
+      placeholderData: getTokenInstanceTransfersStub(tokenQuery.data?.type ?? undefined, null),
     },
   });
 
@@ -85,7 +85,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && tab === 'holders' && shouldFetchHolders),
-      placeholderData: getTokenInstanceHoldersStub(tokenQuery.data?.type, null),
+      placeholderData: getTokenInstanceHoldersStub(tokenQuery.data?.type ?? undefined, null),
     },
   });
 

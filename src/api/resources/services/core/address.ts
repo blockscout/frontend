@@ -8,9 +8,6 @@ import type { AddressEpochRewardsResponse } from 'src/features/chain-variants/ce
 import type {
   AddressCounters,
   AddressBlocksValidatedResponse,
-  AddressTokensResponse,
-  AddressCollectionsResponse,
-  AddressNFTsResponse,
   AddressWithdrawalsResponse,
   AddressXStarResponse,
   AddressCoinBalanceHistoryChart,
@@ -23,7 +20,6 @@ import type {
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressNFTTokensFilter,
-  AddressTokenBalancesResponse,
 } from 'src/slices/address/types/api';
 import type { LogsResponseAddress } from 'src/slices/log/types/api';
 import type { TransactionsSorting } from 'src/slices/tx/types/api';
@@ -185,10 +181,12 @@ R extends 'core:address_blocks_validated' ? AddressBlocksValidatedResponse :
 R extends 'core:address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 R extends 'core:address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 R extends 'core:address_logs' ? LogsResponseAddress :
-R extends 'core:address_tokens' ? AddressTokensResponse :
-R extends 'core:address_token_balances' ? AddressTokenBalancesResponse :
-R extends 'core:address_nfts' ? AddressNFTsResponse :
-R extends 'core:address_collections' ? AddressCollectionsResponse :
+R extends 'core:address_tokens' ? merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:address_token_balances' ?
+  merged.paths['/v2/addresses/{address_hash_param}/token-balances']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:address_nfts' ? merged.paths['/v2/addresses/{address_hash_param}/nft']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:address_collections' ?
+  merged.paths['/v2/addresses/{address_hash_param}/nft/collections']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:address_withdrawals' ? AddressWithdrawalsResponse :
 R extends 'core:address_deposits' ? DepositsResponse :
 R extends 'core:address_epoch_rewards' ? AddressEpochRewardsResponse :

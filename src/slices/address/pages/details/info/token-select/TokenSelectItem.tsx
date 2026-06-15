@@ -26,7 +26,7 @@ interface Props {
 const TokenSelectItem = ({ data }: Props) => {
 
   const isNativeToken = config.slices.address.nativeTokenAddress &&
-    data.token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
+    data.token?.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
   const chain = React.useMemo(() => {
     if (!data.chain_values) {
@@ -37,6 +37,10 @@ const TokenSelectItem = ({ data }: Props) => {
     const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
     return chain;
   }, [ data.chain_values ]);
+
+  if (!data.token) {
+    return null;
+  }
 
   const secondRow = (() => {
     if (isConfidentialTokenType(data.token.type)) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { TokenInfo, TokenType } from 'src/slices/token/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 export const ADVANCED_FILTER_ADDRESS_RELATION = [ 'or', 'and' ] as const;
 export type AddressRelation = typeof ADVANCED_FILTER_ADDRESS_RELATION[number];
@@ -39,7 +39,7 @@ export type AdvancedFilterResponseItem = {
   method: string | null;
   timestamp: string;
   to: schemas['Address'];
-  token: TokenInfo | null;
+  token: schemas['Token'] | null;
   total: {
     decimals: string | null;
     value: string;
@@ -50,7 +50,7 @@ export type AdvancedFilterResponseItem = {
 
 export type AdvancedFiltersSearchParams = {
   methods: Record<string, string>;
-  tokens: Record<string, TokenInfo>;
+  tokens: Record<string, schemas['Token']>;
 };
 
 export type AdvancedFilterResponse = {

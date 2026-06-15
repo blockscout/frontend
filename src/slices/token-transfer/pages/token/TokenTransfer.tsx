@@ -5,8 +5,8 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
 
 import type { ResourceError } from 'src/api/resources';
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -32,8 +32,8 @@ const TABS_HEIGHT = 88;
 type Props = {
   transfersQuery: QueryWithPagesResult<'core:token_transfers'> | QueryWithPagesResult<'core:token_instance_transfers'>;
   tokenId?: string;
-  tokenInstance?: TokenInstance;
-  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
+  tokenInstance?: schemas['TokenInstance'];
+  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
   shouldRender?: boolean;
   tabsHeight?: number;
 };

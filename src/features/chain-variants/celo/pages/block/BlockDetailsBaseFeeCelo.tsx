@@ -5,7 +5,6 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 import type { BlockBaseFeeCelo } from 'src/features/chain-variants/celo/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -19,7 +18,7 @@ import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
   addressFrom: schemas['Address'];
-  token: TokenInfo;
+  token: schemas['Token'];
 };
 
 const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: ItemProps) => {

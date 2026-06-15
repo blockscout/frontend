@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TokenHolder } from 'src/slices/token/types/api';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenHoldersTableItem';
@@ -11,7 +12,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 
 interface Props {
   data: Array<TokenHolder>;
-  token: TokenInfo;
+  token: schemas['Token'];
   top: number;
   isLoading?: boolean;
 }

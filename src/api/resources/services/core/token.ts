@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { merged } from '@blockscout/api-types';
 import type { TokenTransferResponse, TokenTransferFilters } from 'src/slices/token-transfer/types/api';
 import type {
   TokenCounters,
-  TokenInfo,
   TokenHolders,
-  TokenInventoryResponse,
-  TokenInstance,
   TokenInstanceTransfersCount,
   TokenInventoryFilters,
-  TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'src/slices/token/types/api';
+  TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters,
+} from 'src/slices/token/types/api';
 
 export const CORE_API_TOKEN_RESOURCES = {
   // TOKEN
@@ -94,17 +93,18 @@ export type CoreApiTokenResourceName = `core:${ keyof typeof CORE_API_TOKEN_RESO
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTokenResourcePayload<R extends CoreApiTokenResourceName> =
-R extends 'core:token' ? TokenInfo :
+R extends 'core:token' ? merged.paths['/v2/tokens/{address_hash_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:token_counters' ? TokenCounters :
 R extends 'core:token_transfers' ? TokenTransferResponse :
 R extends 'core:token_holders' ? TokenHolders :
-R extends 'core:token_instance' ? TokenInstance :
+R extends 'core:token_instance' ?
+  merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:token_instance_transfers_count' ? TokenInstanceTransfersCount :
 R extends 'core:token_instance_transfers' ? TokenInstanceTransferResponse :
 R extends 'core:token_instance_holders' ? TokenHolders :
-R extends 'core:token_inventory' ? TokenInventoryResponse :
-R extends 'core:tokens' ? TokensResponse :
-R extends 'core:tokens_bridged' ? TokensResponse :
+R extends 'core:token_inventory' ? merged.paths['/v2/tokens/{address_hash_param}/instances']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:tokens' ? merged.paths['/v2/tokens/']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:tokens_bridged' ? merged.paths['/v2/tokens/bridged']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:token_transfers_all' ? TokenTransferResponse :
 never;
 /* eslint-enable @stylistic/indent */

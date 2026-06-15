@@ -7,7 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import VerifiedContractsListItem from './VerifiedContractsListItem';
 
-const VerifiedContractsList = ({ data, isLoading }: { data: Array<schemas['ListItem']>; isLoading: boolean }) => {
+const VerifiedContractsList = ({ data, isLoading }: { data: Array<schemas['SmartContractListItem']>; isLoading: boolean }) => {
   return (
     <Box>
       { data.map((item, index) => (
