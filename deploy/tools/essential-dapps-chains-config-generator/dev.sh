@@ -1,12 +1,8 @@
 #!/bin/bash
 
-config_file="../../../configs/envs/.env.eth"
-
-if [ ! -f "$config_file" ]; then
-    echo "Error: File '$config_file' not found."
-    exit 1
-fi
+# Fetch a representative instance config (eth) into ./.env.tmp (in this tool's dir)
+../../../tools/dev-server/fetch.sh eth || exit 1
 
 dotenv \
-  -e $config_file \
+  -e ./.env.tmp \
   -- bash -c 'pnpm build && pnpm generate'

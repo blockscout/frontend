@@ -1,6 +1,6 @@
 #!/bin/bash
 
-config_file="./configs/envs/.env.pw"
+config_file="./playwright/.env.pw"
 
 rm -rf ./playwright/.cache
 

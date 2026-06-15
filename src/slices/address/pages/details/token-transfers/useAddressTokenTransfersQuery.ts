@@ -35,7 +35,7 @@ const getFilters = (query: Record<string, string | Array<string> | undefined>, c
   return {
     filter: getAddressFilterValue(filterParam),
     type: getFilterValuesFromQuery(
-      Object.keys(getTokenTypes(false, chainConfig?.app_config)),
+      Object.keys(getTokenTypes('all', chainConfig?.app_config)),
       typeParam,
     ) || [],
   };

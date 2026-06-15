@@ -128,7 +128,7 @@ Remove commented-out code blocks. The git history preserves anything that might 
 ### Links
 
 - Use `toolkit/chakra/link` instead of `next/link`. Never import `Link` from `next/link` directly.
-- When links to **application pages** are constructed, verify that `nextjs-routes` or `nextjs/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `nextjs/nextjs-routes.d.ts`.
+- When links to **application pages** are constructed, verify that `nextjs-routes` or `src/shared/router/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
 
 ### Date and time
 

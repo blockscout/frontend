@@ -3,12 +3,14 @@
 import BigNumber from 'bignumber.js';
 
 import type { AddressTokenBalance } from 'src/slices/address/types/api';
-import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
+import { getTokenTypes, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import config from 'src/config';
 import sumBnReducer from 'src/shared/numbers/sumBnReducer';
 
 import { ZERO } from 'src/toolkit/utils/consts';
+
+export const FUNGIBLE_TOKEN_TYPES = Object.keys(getTokenTypes('fungible'));
 
 const isNativeToken = (token: TokenEnhancedData) =>
   config.slices.address.nativeTokenAddress &&

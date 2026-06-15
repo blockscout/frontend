@@ -42,7 +42,7 @@ const TokenSelect = () => {
   const { data, isError, isPending } = useFetchTokens({ hash: addressQueryData?.hash });
   const tokensResourceKey = getResourceKey('core:address_tokens', {
     pathParams: { hash: addressQueryData?.hash },
-    queryParams: { type: 'ERC-20' },
+    queryParams: { type: [ 'ERC-20' ] },
     chainId: multichainContext?.chain?.id,
   });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });

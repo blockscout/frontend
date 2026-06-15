@@ -86,7 +86,7 @@ const TokenTransferFilter = ({
       <TokenTypeFilter<TokenType>
         onChange={ onTypeFilterChange }
         defaultValue={ defaultTypeFilters }
-        nftOnly={ false }
+        category="all"
         chainConfig={ chainConfig }
         title={ tokenFilterTitle }
       />

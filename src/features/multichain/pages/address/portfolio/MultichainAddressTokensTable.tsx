@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { AddressTokensErc20Item } from 'src/slices/token/pages/address/types';
+import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import MultichainAddressTokensTableItem from './MultichainAddressTokensTableItem';
 
 interface Props {
-  data: Array<AddressTokensErc20Item>;
+  data: Array<AddressFungibleTokensItem>;
   top: number;
   isLoading: boolean;
 }

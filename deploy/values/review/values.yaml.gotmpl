@@ -50,6 +50,7 @@ frontend:
       memory: 384Mi
       cpu: 250m
   env:
+    ENVS_PRESET: {{ .Values.envsPreset }}
     NEXT_PUBLIC_APP_ENV: review
     NEXT_PUBLIC_API_HOST: eth-sepolia.k8s-dev.blockscout.com
     NEXT_PUBLIC_NETWORK_RPC_URL: https://eth-sepolia.public.blastapi.io

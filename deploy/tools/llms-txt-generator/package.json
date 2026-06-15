@@ -7,7 +7,7 @@
     "dev": "pnpm run build && pnpm run generate:dev",
     "build": "vite build --logLevel error",
     "generate": "node dist/index.js",
-    "generate:dev": "dotenv -e ../../../configs/envs/.env.eth -- node dist/index.js"
+    "generate:dev": "../../../tools/dev-server/fetch.sh eth && dotenv -e ./.env.tmp -- node dist/index.js"
   },
   "dependencies": {
     "dedent": "1.6.0"

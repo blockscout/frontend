@@ -63,6 +63,9 @@ jobs:
       - name: Check spelling
         run: pnpm lint:cspell --no-progress
 
+      - name: Check preset lists are in sync with registry
+        run: pnpm presets:lint
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]

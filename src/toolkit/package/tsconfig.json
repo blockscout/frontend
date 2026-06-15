@@ -20,7 +20,7 @@
     "paths": {
       "src/*": ["../../../src/*"],
       "public/*": ["../../../public/*"],
-      "nextjs-routes": ["../../../src/server/nextjs-routes.d.ts"],
+      "nextjs-routes": ["../../../src/shared/router/nextjs-routes.d.ts"],
     },
     "types": ["vite/client", "node"],
     "allowJs": true,

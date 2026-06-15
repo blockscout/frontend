@@ -42,6 +42,7 @@ export type SmartContractProxyType =
   'comptroller' |
   'clone_with_immutable_arguments' |
   'resolved_delegate_proxy' |
+  'minimal_proxy' |
   'unknown' |
   null;
 
