@@ -10,7 +10,7 @@ import type { BlockTransactionsResponse } from 'src/slices/block/types/api';
 import { retry } from 'src/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'src/api/resources';
 
-import { unknownAddress } from 'src/slices/address/utils/consts';
+import { toAddressModel } from 'src/slices/address/utils/model';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'src/slices/block/stubs/rpc';
 import { TX } from 'src/slices/tx/stubs/tx';
 
@@ -90,8 +90,8 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
             }
 
             return {
-              from: { ...unknownAddress, hash: tx.from as string },
-              to: tx.to ? { ...unknownAddress, hash: tx.to as string } : null,
+              from: toAddressModel({ hash: tx.from as string }),
+              to: tx.to ? toAddressModel({ hash: tx.to as string }) : null,
               hash: tx.hash as string,
               timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
               confirmation_duration: null,

@@ -59,13 +59,15 @@ const TokensTableItem = ({
   const tokenAddress: AddressEntityProps['address'] = {
     hash: addressHash,
     filecoin: {
-      robust: filecoinRobustAddress,
+      robust: filecoinRobustAddress ?? null,
+      actor_type: null,
+      id: null,
     },
     name: '',
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
-    implementations: null,
+    implementations: [],
   };
 
   const chainInfo = React.useMemo(() => {

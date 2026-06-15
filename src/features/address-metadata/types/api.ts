@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// TODO @tom2drum add type for admin and metadata services
+
 import type { AddressesItem } from 'src/slices/address/types/api';
 
 export interface AddressMetadataInfo {

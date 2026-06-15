@@ -31,6 +31,7 @@ const MultichainAccounts = () => {
           items_count: 50,
         },
         total_supply: '0',
+        exchange_rate: '1',
       }),
     },
     isMultichain: true,

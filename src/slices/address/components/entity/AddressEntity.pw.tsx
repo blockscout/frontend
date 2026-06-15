@@ -2,8 +2,10 @@ import { Box } from '@chakra-ui/react';
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
+
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
 
 import * as metadataMock from 'src/features/address-metadata/mocks/tags';
@@ -25,7 +27,7 @@ test.describe('variant', () => {
     test(`${ variant }`, async({ render }) => {
       const component = await render(
         <AddressEntity
-          address={ addressMock.withoutName }
+          address={ addressParamMock.withoutName }
           variant={ variant }
         />,
       );
@@ -39,7 +41,7 @@ test.describe('contract', () => {
   test('unverified', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, is_verified: false, implementations: null }}
+        address={{ ...addressParamMock.contract, is_verified: false, implementations: [] }}
       />,
     );
 
@@ -51,7 +53,7 @@ test.describe('contract', () => {
   test('verified', async({ render }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, is_verified: true, implementations: null }}
+        address={{ ...addressParamMock.contract, is_verified: true, implementations: [] }}
       />,
     );
 
@@ -68,7 +70,7 @@ test.describe('shield', () => {
 
     await render(
       <AddressEntity
-        address={{ ...addressMock.withoutName }}
+        address={{ ...addressParamMock.withoutName }}
         icon={{
           shield: { src: ICON_URL },
           hint: 'Address on TON',
@@ -84,7 +86,7 @@ test.describe('shield', () => {
   test('contract with icon', async({ render, page }) => {
     await render(
       <AddressEntity
-        address={{ ...addressMock.contract, is_verified: true, implementations: null }}
+        address={{ ...addressParamMock.contract, is_verified: true, implementations: [] }}
         icon={{
           shield: { name: 'brands/ton' },
           hint: 'Address on TON',
@@ -105,7 +107,7 @@ test.describe('proxy contract', () => {
   test('with implementation name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={ addressMock.contract }
+        address={ addressParamMock.contract }
       />,
     );
 
@@ -117,7 +119,10 @@ test.describe('proxy contract', () => {
   test('without implementation name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, implementations: [ { address_hash: addressMock.contract.implementations?.[0].address_hash as string } ] }}
+        address={{
+          ...addressParamMock.contract,
+          implementations: [ { address_hash: addressParamMock.contract.implementations?.[0].address_hash as string, name: null } ],
+        }}
       />,
     );
 
@@ -130,14 +135,14 @@ test.describe('proxy contract', () => {
     const component = await render(
       <AddressEntity
         address={{
-          ...addressMock.contract,
+          ...addressParamMock.contract,
           name: undefined,
-          implementations: [ { address_hash: addressMock.contract.implementations?.[0].address_hash as string } ],
+          implementations: [ { address_hash: addressParamMock.contract.implementations?.[0].address_hash as string, name: null } ],
         }}
       />,
     );
 
-    await component.getByText(addressMock.contract.hash.slice(0, 4)).hover();
+    await component.getByText(addressParamMock.contract.hash.slice(0, 4)).hover();
     await page.getByText(/implementation/i).waitFor({ state: 'visible' });
     await expect(page).toHaveScreenshot();
   });
@@ -145,7 +150,7 @@ test.describe('proxy contract', () => {
   test('with multiple implementations', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, implementations: implementationsMock.multiple }}
+        address={{ ...addressParamMock.contract, implementations: implementationsMock.multiple }}
       />,
     );
 
@@ -157,7 +162,7 @@ test.describe('proxy contract', () => {
   test('with name tag', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, metadata: { reputation: 1, tags: [ metadataMock.nameTag ] } }}
+        address={{ ...addressParamMock.contract, metadata: { reputation: 1, tags: [ metadataMock.nameTag ] } }}
       />,
     );
 
@@ -171,7 +176,7 @@ test.describe('loading', () => {
   test('without alias', async({ render }) => {
     const component = await render(
       <AddressEntity
-        address={ addressMock.withoutName }
+        address={ addressParamMock.withoutName }
         isLoading
       />,
     );
@@ -182,7 +187,7 @@ test.describe('loading', () => {
   test('with alias', async({ render }) => {
     const component = await render(
       <AddressEntity
-        address={ addressMock.withName }
+        address={ addressParamMock.withName }
         isLoading
       />,
     );
@@ -195,7 +200,7 @@ test.describe('loading', () => {
 test('with ENS', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.withEns }
+      address={ addressParamMock.withEns }
     />,
   );
 
@@ -205,7 +210,7 @@ test('with ENS', async({ render }) => {
 test('delegated address +@dark-mode', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.delegated }
+      address={ addressParamMock.delegated }
     />,
   );
 
@@ -215,7 +220,7 @@ test('delegated address +@dark-mode', async({ render }) => {
 test('with name tag', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.withNameTag }
+      address={ addressParamMock.withNameTag }
     />,
   );
 
@@ -226,7 +231,7 @@ test.describe('with cex deposit tag', () => {
   test.use({ viewport: { width: 500, height: 140 } });
 
   test('default', async({ render }) => {
-    const address = { ...addressMock.withNameTag, metadata: { reputation: 1, tags: [ metadataMock.cexDepositTag ] } };
+    const address: schemas['Address'] = { ...addressParamMock.withNameTag, metadata: { reputation: 1, tags: [ metadataMock.cexDepositTag ] } };
 
     const component = await render(
       <AddressEntity
@@ -241,7 +246,7 @@ test.describe('with cex deposit tag', () => {
 test('external link', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       link={{ external: true }}
     />,
   );
@@ -252,7 +257,7 @@ test('external link', async({ render }) => {
 test('no link', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       noLink
     />,
   );
@@ -263,7 +268,7 @@ test('no link', async({ render }) => {
 test('customization', async({ render }) => {
   const component = await render(
     <AddressEntity
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       truncation="constant"
       p={ 3 }
       borderWidth="1px"
@@ -279,14 +284,14 @@ test('hover', async({ page, render }) => {
     <AddressHighlightProvider>
       <Box p={ 3 }>
         <AddressEntity
-          address={ addressMock.withoutName }
+          address={ addressParamMock.withoutName }
         />
       </Box>
     </AddressHighlightProvider>,
   );
 
-  await component.getByText(addressMock.hash.slice(0, 4)).hover();
-  await page.getByText(addressMock.hash).waitFor({ state: 'visible' });
+  await component.getByText(addressParamMock.hash.slice(0, 4)).hover();
+  await page.getByText(addressParamMock.hash).waitFor({ state: 'visible' });
   await expect(page).toHaveScreenshot();
 });
 
@@ -301,7 +306,7 @@ bech32test('bech32 format', async({ render, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.addressBech32Format);
   const component = await render(
     <AddressEntity
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
     />,
   );
 

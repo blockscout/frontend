@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 
 export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
@@ -43,7 +43,7 @@ export interface TokenHolders {
 export type TokenHolder = TokenHolderERC20ERC721 | TokenHolderERC1155;
 
 export type TokenHolderBase = {
-  address: AddressParam;
+  address: schemas['Address'];
   value: string;
 };
 
@@ -70,7 +70,7 @@ export interface TokenInstance {
   media_type?: string | null;
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
-  owner: AddressParam | null;
+  owner: schemas['Address'] | null;
   thumbnails: ({ original: string } & Partial<Record<Exclude<ThumbnailSize, 'original'>, string>>) | null;
   token: TokenInfo;
 }

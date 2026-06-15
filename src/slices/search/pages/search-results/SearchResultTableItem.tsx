@@ -10,6 +10,7 @@ import type { SearchResultItem } from 'src/slices/search/types/client';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
+import { toAddressModel } from 'src/slices/address/utils/model';
 import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
 import { saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
@@ -119,17 +120,16 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const addressName = data.name || data.ens_info?.name;
-        const address = {
+        const address = toAddressModel({
           hash: data.address_hash,
           filecoin: {
-            robust: data.filecoin_robust_address,
+            robust: data.filecoin_robust_address ?? null,
+            actor_type: null,
+            id: null,
           },
           is_contract: data.type === 'contract' || data.is_smart_contract_address,
           is_verified: data.is_smart_contract_verified,
-          name: null,
-          implementations: null,
-          ens_domain_name: null,
-        };
+        });
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
         const hash = addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash;
 

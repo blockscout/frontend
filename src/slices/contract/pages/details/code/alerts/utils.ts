@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { SmartContractProxyType } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
+export const PROXY_TYPES: Partial<Record<NonNullable<schemas['ProxyType']>, {
   name: string;
   link?: string;
   description?: string;
@@ -67,8 +67,5 @@ export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
   basic_get_implementation: {
     name: 'Generic Proxy',
     description: 'getImplementation() getter',
-  },
-  unknown: {
-    name: 'Unknown proxy pattern',
   },
 };

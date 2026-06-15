@@ -2,7 +2,7 @@
 
 import type { Abi } from 'abitype';
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export type MudWorldsResponse = {
   items: Array<MudWorldItem>;
@@ -13,7 +13,7 @@ export type MudWorldsResponse = {
 };
 
 export type MudWorldItem = {
-  address: AddressParam;
+  address: schemas['Address'];
   coin_balance: string;
   transactions_count: number | null;
 };

@@ -1,14 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const unknownAddress: Omit<AddressParam, 'hash'> = {
+export const UNKNOWN_ADDRESS: Omit<schemas['Address'], 'hash'> = {
   is_contract: false,
   is_verified: false,
-  implementations: null,
+  implementations: [],
   name: '',
   private_tags: [],
   public_tags: [],
   watchlist_names: [],
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
 };

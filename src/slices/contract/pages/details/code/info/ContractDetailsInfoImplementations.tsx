@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AddressImplementation } from 'src/slices/address/types/api';
-import type { SmartContractProxyType } from 'src/slices/contract/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -13,7 +13,7 @@ import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 
 interface Props {
   implementations: Array<AddressImplementation>;
-  proxyType?: SmartContractProxyType;
+  proxyType?: schemas['ProxyType'];
 }
 
 const ContractDetailsInfoImplementations = ({ implementations, proxyType }: Props) => {
@@ -28,7 +28,7 @@ const ContractDetailsInfoImplementations = ({ implementations, proxyType }: Prop
             key={ item.address_hash }
             address={{
               hash: item.address_hash,
-              filecoin: { robust: item.filecoin_robust_address },
+              filecoin: { robust: item.filecoin_robust_address ?? null, actor_type: null, id: null },
               name: item.name,
               is_contract: true,
             }}

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import type { TokenInstance } from 'src/slices/token/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInfoMock from 'src/slices/token/mocks/info';
 
 export const base: TokenInstance = {
@@ -74,7 +74,7 @@ export const base: TokenInstance = {
     image: 'https://i.seadn.io/gcs/files/1ee1c5e1ead058322615e3206abb8ba3.png?w=500&auto=format',
     name: 'GENESIS #188848, 22a5f8bbb1602995. Blockchain pixel PFP NFT + "on music video" trait inspired by God',
   },
-  owner: addressMock.withName,
+  owner: addressParamMock.withName,
   thumbnails: null,
 };
 

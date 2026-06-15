@@ -3,8 +3,8 @@
 import type { Channel } from 'phoenix';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Address } from 'src/slices/address/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -38,7 +38,7 @@ interface ReturnType {
 }
 
 interface Props {
-  addressData: Address | undefined;
+  addressData: schemas['AddressResponse'] | undefined;
   isEnabled: boolean;
   hasMudTab?: boolean;
   channel?: Channel;
@@ -49,7 +49,7 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
   const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled && addressData?.is_contract,
+      enabled: isEnabled && Boolean(addressData?.is_contract),
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },

@@ -1,6 +1,6 @@
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 
-import { hash } from 'src/slices/address/mocks/address';
+import { withoutName } from 'src/slices/address/mocks/address-param';
 
 export const txInterpretation: TxInterpretationResponse = {
   data: {
@@ -27,17 +27,7 @@ export const txInterpretation: TxInterpretationResponse = {
         },
         to_address: {
           type: 'address',
-          value: {
-            hash: hash,
-            implementations: null,
-            is_contract: false,
-            is_verified: false,
-            name: null,
-            private_tags: [],
-            public_tags: [],
-            watchlist_names: [],
-            ens_domain_name: null,
-          },
+          value: withoutName,
         },
         timestamp: {
           type: 'timestamp',

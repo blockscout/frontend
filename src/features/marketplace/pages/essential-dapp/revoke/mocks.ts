@@ -26,7 +26,7 @@ export const allowances: Array<AllowanceType> = [
     allowance: '30.5',
     balance: '120.67',
     decimals: 18,
-    spender: contractsMock.contract3.address.hash as `0x${ string }`,
+    spender: contractsMock.contract3.address!.hash as `0x${ string }`,
     symbol: 'UNI',
     name: 'Uniswap',
     totalSupply: BigInt(0),
@@ -37,7 +37,7 @@ export const allowances: Array<AllowanceType> = [
   },
   {
     type: 'ERC-20',
-    address: contractsMock.contract3.address.hash as `0x${ string }`,
+    address: contractsMock.contract3.address!.hash as `0x${ string }`,
     transactionId: null,
     allowance: '1500.34',
     balance: '3000',

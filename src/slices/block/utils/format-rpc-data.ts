@@ -4,7 +4,7 @@ import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { Block } from 'src/slices/block/types/api';
 
-import { unknownAddress } from 'src/slices/address/utils/consts';
+import { toAddressModel } from 'src/slices/address/utils/model';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
 
@@ -18,7 +18,7 @@ export default function formatRpcData(block: GetBlockReturnType<Chain, false, 'l
     timestamp: dayjs.unix(Number(block.timestamp)).format(),
     transactions_count: block.transactions.length,
     internal_transactions_count: 0,
-    miner: { ...unknownAddress, hash: block.miner },
+    miner: toAddressModel({ hash: block.miner }),
     size: Number(block.size),
     hash: block.hash,
     parent_hash: block.parentHash,

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { AddressFilecoinParams } from 'src/features/chain-variants/filecoin/types/api';
 import type { AddressZilliqaParams } from 'src/features/chain-variants/zilliqa/types/api';
 import type { Block } from 'src/slices/block/types/api';
 import type { SmartContractCreationStatus, SmartContractProxyType } from 'src/slices/contract/types/api';
 import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
 import type { TokenTransfer, TokenTransferPagination } from 'src/slices/token-transfer/types/api';
-import type { NFTTokenType, TokenInfo, TokenInstance, TokenReputation, TokenType } from 'src/slices/token/types/api';
+import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from 'src/slices/token/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface AddressImplementation {
@@ -33,24 +33,6 @@ export interface UserTags {
   public_tags: Array<AddressTag> | null;
 }
 
-export type AddressParamBasic = {
-  hash: string;
-  implementations: Array<AddressImplementation> | null;
-  name: string | null;
-  is_contract: boolean;
-  is_verified: boolean | null;
-  ens_domain_name: string | null;
-  metadata?: {
-    reputation: number | null;
-    tags: Array<AddressMetadataTagApi>;
-  } | null;
-  filecoin?: AddressFilecoinParams;
-  proxy_type?: SmartContractProxyType | null;
-  reputation?: TokenReputation;
-};
-
-export type AddressParam = UserTags & AddressParamBasic;
-
 export interface AddressCeloParams {
   account: {
     locked_celo: string;
@@ -58,12 +40,13 @@ export interface AddressCeloParams {
     name: string | null;
     nonvoting_locked_celo: string;
     type: string;
-    vote_signer_address: AddressParam | null;
-    validator_signer_address: AddressParam | null;
-    attestation_signer_address: AddressParam | null;
+    vote_signer_address: schemas['Address'] | null;
+    validator_signer_address: schemas['Address'] | null;
+    attestation_signer_address: schemas['Address'] | null;
   } | null;
 }
 
+// TODO @tom2drum remove this type
 export interface Address extends UserTags {
   block_number_balance_updated_at: number | null;
   coin_balance: string | null;
@@ -99,6 +82,7 @@ export interface AddressCounters {
   validations_count: string | null;
 }
 
+// TODO @tom2drum remove this type
 export interface AddressTokenBalance {
   token: TokenInfo;
   token_id: string | null;
@@ -264,7 +248,7 @@ export type AddressXStarResponse = {
   };
 };
 
-export type AddressesItem = AddressParam & { transactions_count: string; coin_balance: string | null };
+export type AddressesItem = schemas['Address'] & { transactions_count: string; coin_balance: string | null };
 
 export type AddressesResponse = {
   items: Array<AddressesItem>;

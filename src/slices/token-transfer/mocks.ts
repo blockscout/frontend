@@ -1,31 +1,23 @@
 import type { TokenTransfer, TokenTransferResponse } from 'src/slices/token-transfer/types/api';
 import type { TokenInfo } from 'src/slices/token/types/api';
 
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
 
 import { erc7984 } from 'src/features/fhe-operations/mocks/token-transfer';
 
 export const erc20: TokenTransfer = {
   from: {
+    ...addressParamMock.withoutName,
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   to: {
+    ...addressParamMock.withoutName,
     hash: '0x7d20a8D54F955b4483A66aB335635ab66e151c51',
-    implementations: null,
     is_contract: true,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
@@ -57,26 +49,13 @@ export const erc20: TokenTransfer = {
 
 export const erc721: TokenTransfer = {
   from: {
+    ...addressParamMock.withoutName,
     hash: '0x621C2a125ec4A6D8A7C7A655A18a2868d35eb43C',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   to: {
+    ...addressParamMock.withoutName,
     hash: '0x47eE48AEBc4ab9Ed908b805b8c8dAAa71B31Db1A',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   token: {
     address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
@@ -107,25 +86,12 @@ export const erc721: TokenTransfer = {
 
 export const erc1155A: TokenTransfer = {
   from: {
+    ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   to: {
+    ...addressParamMock.withoutName,
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
@@ -188,25 +154,12 @@ export const erc1155D: TokenTransfer = {
 
 export const erc404A: TokenTransfer = {
   from: {
+    ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   to: {
+    ...addressParamMock.withoutName,
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {

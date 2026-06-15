@@ -7,7 +7,7 @@ export const stabilityTx: Transaction = {
   stability_fee: {
     dapp_address: {
       hash: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
-      implementations: null,
+      implementations: [],
       is_contract: false,
       is_verified: null,
       name: null,
@@ -15,6 +15,10 @@ export const stabilityTx: Transaction = {
       public_tags: [],
       watchlist_names: [],
       ens_domain_name: null,
+      is_scam: false,
+      metadata: null,
+      proxy_type: null,
+      reputation: 'ok',
     },
     dapp_fee: '34381250000000',
     token: {
@@ -33,7 +37,7 @@ export const stabilityTx: Transaction = {
     total_fee: '68762500000000',
     validator_address: {
       hash: '0x1432997a4058acbBe562F3c1E79738c142039044',
-      implementations: null,
+      implementations: [],
       is_contract: false,
       is_verified: null,
       name: null,
@@ -41,6 +45,10 @@ export const stabilityTx: Transaction = {
       public_tags: [],
       watchlist_names: [],
       ens_domain_name: null,
+      is_scam: false,
+      metadata: null,
+      proxy_type: null,
+      reputation: 'ok',
     },
     validator_fee: '34381250000000',
   },

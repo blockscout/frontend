@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { TokenInfo } from 'src/slices/token/types/api';
 
 export interface TransactionStability {
   stability_fee?: {
-    dapp_address: AddressParam;
+    dapp_address: schemas['Address'];
     dapp_fee: string;
     token: TokenInfo;
     total_fee: string;
-    validator_address: AddressParam;
+    validator_address: schemas['Address'];
     validator_fee: string;
   };
 }
 
 export interface ValidatorStability {
-  address: AddressParam;
+  address: schemas['Address'];
   blocks_validated_count: number;
   state: 'active' | 'probation' | 'inactive';
 }

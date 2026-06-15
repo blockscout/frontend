@@ -7,7 +7,7 @@ import type {
   CeloEpochListResponse,
 } from 'src/features/chain-variants/celo/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 import * as tokenMock from 'src/slices/token/mocks/info';
 
@@ -113,11 +113,11 @@ function getRewardDetailsItem(index: number): CeloEpochElectionRewardDetails {
   return {
     amount: `${ 100 - index }210001063118670575`,
     account: {
-      ...addressMock.withoutName,
+      ...addressParamMock.withoutName,
       hash: `0x30D060F129817c4DE5fBc1366d53e19f43c8c6${ padStart(String(index), 2, '0') }`,
     },
     associated_account: {
-      ...addressMock.withoutName,
+      ...addressParamMock.withoutName,
       hash: `0x456f41406B32c45D59E539e4BBA3D7898c3584${ padStart(String(index), 2, '0') }`,
     },
   };

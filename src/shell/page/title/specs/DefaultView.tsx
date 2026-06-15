@@ -5,7 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'src/slices/token/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
@@ -45,10 +45,10 @@ const DefaultView = () => {
   const secondRow = (
     <>
       <AddressEntity
-        address={{ ...addressMock.token, name: '' }}
+        address={ addressParamMock.withoutName }
         variant="subheading"
       />
-      <AlternativeExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
+      <AlternativeExplorers type="token" pathParam={ addressParamMock.hash } ml="auto"/>
     </>
   );
 

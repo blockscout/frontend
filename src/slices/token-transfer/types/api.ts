@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { TokenInfo, TokenInstance, TokenType } from 'src/slices/token/types/api';
 
 export type Erc20TotalPayload = {
@@ -55,8 +55,8 @@ interface TokenTransferBase {
   type: 'token_transfer' | 'token_burning' | 'token_spawning' | 'token_minting';
   token_type: TokenType;
   transaction_hash: string | null;
-  from: AddressParam;
-  to: AddressParam;
+  from: schemas['Address'];
+  to: schemas['Address'];
   timestamp: string;
   block_number: string;
   block_hash: string;

@@ -27,6 +27,8 @@ export const validatorDetails: ValidatorZilliqa = {
     proxy_type: null,
     public_tags: [],
     watchlist_names: [],
+    is_scam: false,
+    reputation: 'ok',
   },
   index: 1,
   peer_id: '0x002408011220a8ce8c9a146f3dc411cd72ba845b76722824c55824ac74b3362f070a332d85f2',
@@ -42,6 +44,8 @@ export const validatorDetails: ValidatorZilliqa = {
     proxy_type: null,
     public_tags: [],
     watchlist_names: [],
+    is_scam: false,
+    reputation: 'ok',
   },
   signing_address: {
     ens_domain_name: null,
@@ -55,6 +59,8 @@ export const validatorDetails: ValidatorZilliqa = {
     proxy_type: null,
     public_tags: [],
     watchlist_names: [],
+    is_scam: false,
+    reputation: 'ok',
   },
   stake_updated_at_block_number: 7527642,
 };

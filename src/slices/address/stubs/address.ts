@@ -1,11 +1,10 @@
+import type { schemas } from '@blockscout/api-types';
 import type {
-  Address,
   AddressCoinBalanceHistoryItem,
   AddressCollection,
   AddressCounters,
   AddressNFT,
   AddressTabsCounters,
-  AddressTokenBalance,
   AddressesItem,
 } from 'src/slices/address/types/api';
 
@@ -14,7 +13,7 @@ import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import { ADDRESS_HASH } from './address-params';
 
-export const ADDRESS_INFO: Address = {
+export const ADDRESS_INFO: schemas['AddressResponse'] = {
   block_number_balance_updated_at: 8774377,
   coin_balance: '810941268802273085757',
   creation_transaction_hash: null,
@@ -36,6 +35,11 @@ export const ADDRESS_INFO: Address = {
   watchlist_names: [],
   watchlist_address_id: null,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
 export const ADDRESS_COUNTERS: AddressCounters = {
@@ -60,7 +64,7 @@ export const TOP_ADDRESS: AddressesItem = {
   coin_balance: '11886682377162664596540805',
   transactions_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
-  implementations: null,
+  implementations: [],
   is_contract: false,
   is_verified: null,
   name: null,
@@ -68,6 +72,10 @@ export const TOP_ADDRESS: AddressesItem = {
   public_tags: [ ],
   watchlist_names: [],
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
 };
 
 export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
@@ -78,7 +86,7 @@ export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
   value: '953427250000000000000000',
 };
 
-export const ADDRESS_TOKEN_BALANCE_ERC_20: AddressTokenBalance = {
+export const ADDRESS_TOKEN_BALANCE_ERC_20: schemas['TokenBalance'] = {
   token: TOKEN_INFO_ERC_20,
   token_id: null,
   token_instance: null,

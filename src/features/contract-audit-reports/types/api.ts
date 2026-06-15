@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// TODO @tom2drum remove this types
 export type SmartContractSecurityAudit = {
   audit_company_name: string;
   audit_publish_date: string;

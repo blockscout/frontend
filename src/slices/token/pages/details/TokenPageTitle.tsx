@@ -4,9 +4,9 @@ import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
-import type { Address } from 'src/slices/address/types/api';
 import type { TokenInfo } from 'src/slices/token/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
@@ -38,7 +38,7 @@ const PREDEFINED_TAG_PRIORITY = 100;
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
-  addressQuery: UseQueryResult<Address, ResourceError<unknown>>;
+  addressQuery: UseQueryResult<schemas['Address'], ResourceError<unknown>>;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo, ResourceError<unknown>>;
   hash: string;
 }

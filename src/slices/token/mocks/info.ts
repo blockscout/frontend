@@ -1,6 +1,8 @@
-import type { TokenCounters, TokenInfo } from 'src/slices/token/types/api';
+import type { TokenCounters } from 'src/slices/token/types/api';
 
-export const tokenInfo: TokenInfo = {
+import { toTokenModel } from '../utils/model';
+
+export const tokenInfo = toTokenModel({
   address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
   circulating_market_cap: '117629601.61913824',
   decimals: '18',
@@ -12,14 +14,14 @@ export const tokenInfo: TokenInfo = {
   total_supply: '1235',
   icon_url: 'http://localhost:3000/token-icon.png',
   reputation: 'ok',
-};
+});
 
 export const tokenCounters: TokenCounters = {
   token_holders_count: '8838883',
   transfers_count: '88282281',
 };
 
-export const tokenInfoERC20a: TokenInfo = {
+export const tokenInfoERC20a = toTokenModel({
   address_hash: '0xb2a90505dc6680a7a695f7975d0d32EeF610f456',
   circulating_market_cap: '117268489.23970924',
   decimals: '18',
@@ -31,9 +33,9 @@ export const tokenInfoERC20a: TokenInfo = {
   type: 'ERC-20',
   icon_url: 'http://localhost:3000/token-icon.png',
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC20b: TokenInfo = {
+export const tokenInfoERC20b = toTokenModel({
   address_hash: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A7',
   circulating_market_cap: '115060192.36105014',
   decimals: '6',
@@ -45,9 +47,9 @@ export const tokenInfoERC20b: TokenInfo = {
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC20c: TokenInfo = {
+export const tokenInfoERC20c = toTokenModel({
   address_hash: '0xc1116c98ba622a6218433fF90a2E40DEa482d7A8',
   circulating_market_cap: null,
   decimals: '18',
@@ -59,9 +61,9 @@ export const tokenInfoERC20c: TokenInfo = {
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC20d: TokenInfo = {
+export const tokenInfoERC20d = toTokenModel({
   address_hash: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9196',
   circulating_market_cap: null,
   decimals: '18',
@@ -73,9 +75,9 @@ export const tokenInfoERC20d: TokenInfo = {
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC20LongSymbol: TokenInfo = {
+export const tokenInfoERC20LongSymbol = toTokenModel({
   address_hash: '0xCc7bb2D219A0FC08033E130629C2B854b7bA9197',
   circulating_market_cap: '112855875.75888918',
   decimals: '18',
@@ -87,9 +89,9 @@ export const tokenInfoERC20LongSymbol: TokenInfo = {
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC721a: TokenInfo = {
+export const tokenInfoERC721a = toTokenModel({
   address_hash: '0xDe7cAc71E072FCBd4453E5FB3558C2684d1F88A0',
   circulating_market_cap: null,
   decimals: null,
@@ -101,9 +103,9 @@ export const tokenInfoERC721a: TokenInfo = {
   type: 'ERC-721',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC721b: TokenInfo = {
+export const tokenInfoERC721b = toTokenModel({
   address_hash: '0xA8d5C7beEA8C9bB57f5fBa35fB638BF45550b11F',
   circulating_market_cap: null,
   decimals: null,
@@ -115,9 +117,9 @@ export const tokenInfoERC721b: TokenInfo = {
   type: 'ERC-721',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC721c: TokenInfo = {
+export const tokenInfoERC721c = toTokenModel({
   address_hash: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4992',
   circulating_market_cap: null,
   decimals: null,
@@ -129,9 +131,9 @@ export const tokenInfoERC721c: TokenInfo = {
   type: 'ERC-721',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC721LongSymbol: TokenInfo = {
+export const tokenInfoERC721LongSymbol = toTokenModel({
   address_hash: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4993',
   circulating_market_cap: null,
   decimals: null,
@@ -143,9 +145,9 @@ export const tokenInfoERC721LongSymbol: TokenInfo = {
   type: 'ERC-721',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC1155a: TokenInfo = {
+export const tokenInfoERC1155a = toTokenModel({
   address_hash: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8e',
   circulating_market_cap: null,
   decimals: null,
@@ -157,9 +159,9 @@ export const tokenInfoERC1155a: TokenInfo = {
   type: 'ERC-1155',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC1155b: TokenInfo = {
+export const tokenInfoERC1155b = toTokenModel({
   address_hash: '0xf4b71b179132ad457f6bcae2a55efa9e4b26eefc',
   circulating_market_cap: null,
   decimals: null,
@@ -171,9 +173,9 @@ export const tokenInfoERC1155b: TokenInfo = {
   type: 'ERC-1155',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC1155WithoutName: TokenInfo = {
+export const tokenInfoERC1155WithoutName = toTokenModel({
   address_hash: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8a',
   circulating_market_cap: null,
   decimals: null,
@@ -185,9 +187,9 @@ export const tokenInfoERC1155WithoutName: TokenInfo = {
   type: 'ERC-1155',
   icon_url: null,
   reputation: 'ok',
-};
+});
 
-export const tokenInfoERC404: TokenInfo = {
+export const tokenInfoERC404 = toTokenModel({
   address_hash: '0xB5C457dDB4cE3312a6C5a2b056a1652bd542a208',
   circulating_market_cap: '0.0',
   decimals: '18',
@@ -199,28 +201,28 @@ export const tokenInfoERC404: TokenInfo = {
   total_supply: '6482275000000000000',
   type: 'ERC-404',
   reputation: 'ok',
-};
+});
 
-export const bridgedTokenA: TokenInfo = {
+export const bridgedTokenA = toTokenModel({
   ...tokenInfoERC20a,
   is_bridged: true,
   origin_chain_id: '1',
   bridge_type: 'omni',
   foreign_address: '0x4b333DEd10c7ca855EA2C8D4D90A0a8b73788c8b',
-};
+});
 
-export const bridgedTokenB: TokenInfo = {
+export const bridgedTokenB = toTokenModel({
   ...tokenInfoERC20b,
   is_bridged: true,
   origin_chain_id: '56',
   bridge_type: 'omni',
   foreign_address: '0xf4b71b179132ad457f6bcae2a55efa9e4b26eefd',
-};
+});
 
-export const bridgedTokenC: TokenInfo = {
+export const bridgedTokenC = toTokenModel({
   ...tokenInfoERC20d,
   is_bridged: true,
   origin_chain_id: '99',
   bridge_type: 'amb',
   foreign_address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4994',
-};
+});

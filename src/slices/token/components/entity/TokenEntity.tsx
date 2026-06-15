@@ -4,7 +4,7 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenIconPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
@@ -142,7 +142,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 interface ReputationProps extends BoxProps {
-  value: TokenInfo['reputation'];
+  value: schemas['Token']['reputation'];
 }
 
 const Reputation = ({ value, ...rest }: ReputationProps) => {
@@ -158,7 +158,7 @@ const Reputation = ({ value, ...rest }: ReputationProps) => {
 };
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  token: Pick<TokenInfo, 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'type' | 'reputation'>;
+  token: Pick<schemas['Token'], 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'type' | 'reputation'>;
   noSymbol?: boolean;
   jointSymbol?: boolean;
   onlySymbol?: boolean;

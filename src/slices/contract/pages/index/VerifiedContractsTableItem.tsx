@@ -3,8 +3,8 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { VerifiedContract } from 'src/slices/contract/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
@@ -21,7 +21,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props {
-  data: VerifiedContract;
+  data: schemas['ListItem'];
   isLoading?: boolean;
   chainData?: ClusterChainConfig;
 }
@@ -54,7 +54,7 @@ const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }
         </Flex>
         <AddressEntity
-          address={{ hash: data.address.filecoin?.robust ?? data.address.hash }}
+          address={{ hash: data.address?.filecoin?.robust ?? data.address.hash }}
           isLoading={ isLoading }
           noLink
           noIcon
@@ -80,7 +80,7 @@ const VerifiedContractsTableItem = ({ data, isLoading, chainData }: Props) => {
       </TableCell>
       <TableCell>
         <Flex flexWrap="wrap" columnGap={ 2 }>
-          <Skeleton loading={ isLoading } my={ 1 }>{ formatLanguageName(data.language) }</Skeleton>
+          <Skeleton loading={ isLoading } my={ 1 }>{ data.language ? formatLanguageName(data.language) : '-' }</Skeleton>
           { data.compiler_version && (
             <Skeleton loading={ isLoading } color="text.secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
               <Tooltip content={ data.compiler_version }>

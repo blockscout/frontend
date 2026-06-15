@@ -4,8 +4,8 @@ import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { WatchAssetParams } from 'viem';
 
+import type { schemas } from '@blockscout/api-types';
 import { WALLETS_INFO } from 'src/features/web3-wallet/types/wallets';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 import useProvider from 'src/features/web3-wallet/hooks/useProvider';
@@ -21,7 +21,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { toaster } from 'src/toolkit/chakra/toaster';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams | undefined {
+function getRequestParams(token: schemas['Token'], tokenId?: string): WatchAssetParams | undefined {
   switch (token.type) {
     case 'ERC-20':
       return {
@@ -54,7 +54,7 @@ function getRequestParams(token: TokenInfo, tokenId?: string): WatchAssetParams 
 
 interface Props {
   className?: string;
-  token: TokenInfo;
+  token: schemas['Token'];
   tokenId?: string;
   isLoading?: boolean;
   variant?: 'icon' | 'button';
@@ -124,7 +124,7 @@ const TokenAddToWallet = ({ className, token, tokenId, isLoading, variant = 'ico
     // MetaMask can add NFTs now, but this is still experimental feature, and doesn't work on mobile devices
     // https://docs.metamask.io/wallet/how-to/display/tokens/#display-nfts
     wallet === 'metamask' &&
-    [ 'ERC-721', 'ERC-1155' ].includes(token.type) &&
+    token.type && [ 'ERC-721', 'ERC-1155' ].includes(token.type) &&
     tokenId &&
     !isMobile
   ) || token.type === 'ERC-20';

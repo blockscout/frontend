@@ -5,7 +5,7 @@ import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -38,7 +38,7 @@ const collection = createListCollection({
 });
 
 // add native token
-type Value = Array<{ token: TokenInfo; mode: AssetFilterMode }>;
+type Value = Array<{ token: schemas['Token']; mode: AssetFilterMode }>;
 
 type Props = {
   value: Value;
@@ -78,7 +78,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
     },
   });
 
-  const onTokenClick = React.useCallback((token: TokenInfo) => () => {
+  const onTokenClick = React.useCallback((token: schemas['Token']) => () => {
     setCurrentValue(prev => prev.findIndex(i => i.token.address_hash === token.address_hash) > -1 ? prev : [ { token, mode: 'include' }, ...prev ]);
   }, []);
 

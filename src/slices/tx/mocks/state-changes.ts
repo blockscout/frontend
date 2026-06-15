@@ -1,16 +1,11 @@
 import type { TxStateChange, TxStateChanges } from 'src/slices/tx/types/api';
 
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
+
 export const mintToken: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   balance_after: null,
   balance_before: null,
@@ -42,15 +37,8 @@ export const mintToken: TxStateChange = {
 
 export const receiveMintedToken: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   balance_after: '1',
   balance_before: '0',
@@ -82,15 +70,8 @@ export const receiveMintedToken: TxStateChange = {
 
 export const transfer1155Token: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0x51243E83Db20F8FC2761D894067A2A9eb7B158DE',
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   balance_after: '1',
   balance_before: '0',
@@ -115,15 +96,8 @@ export const transfer1155Token: TxStateChange = {
 
 export const receiveCoin: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0x8dC847Af872947Ac18d5d63fA646EB65d4D99560',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   balance_after: '443787514723917012805',
   balance_before: '443787484997510408745',
@@ -135,15 +109,8 @@ export const receiveCoin: TxStateChange = {
 
 export const sendCoin: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   balance_after: '828282622733717191',
   balance_before: '832127467556437753',
@@ -155,15 +122,8 @@ export const sendCoin: TxStateChange = {
 
 export const sendERC20Token: TxStateChange = {
   address: {
+    ...addressParamMock.withoutName,
     hash: '0x7f6479df95Aa3036a3BE02DB6300ea201ABd9981',
-    ens_domain_name: null,
-    implementations: null,
-    is_contract: false,
-    is_verified: false,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
   },
   balance_after: '6814903154',
   balance_before: '9814903154',

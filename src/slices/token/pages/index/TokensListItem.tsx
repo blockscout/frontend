@@ -96,7 +96,7 @@ const TokensListItem = ({
       { type !== 'NATIVE' && (
         <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
           <AddressEntity
-            address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress } }}
+            address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress ?? null, actor_type: null, id: null } }}
             isLoading={ isLoading }
             truncation="constant"
             link={{ variant: 'secondary' }}

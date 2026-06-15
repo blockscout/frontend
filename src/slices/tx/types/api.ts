@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { schemas } from '@blockscout/api-types';
 import type { TransactionCelo } from 'src/features/chain-variants/celo/types/api';
 import type { TransactionStability } from 'src/features/chain-variants/stability/types/api';
 import type { TransactionSuave } from 'src/features/chain-variants/suave/types/api';
@@ -14,7 +15,6 @@ import type { TransactionScroll } from 'src/features/rollup/scroll/types/api';
 import type { TransactionZkSync } from 'src/features/rollup/zk-sync/types/api';
 import type { TransactionActions } from 'src/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'src/features/tx-authorization/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
 import type { BlockTransactionsResponse } from 'src/slices/block/types/api';
 import type { DecodedInput } from 'src/slices/log/types/api';
 import type { Erc721TotalPayload, TokenTransfer } from 'src/slices/token-transfer/types/api';
@@ -75,8 +75,8 @@ export interface Transaction extends
   TransactionActions,
   TransactionDataAvailability
 {
-  to: AddressParam | null;
-  created_contract: AddressParam | null;
+  to: schemas['Address'] | null;
+  created_contract: schemas['Address'] | null;
   hash: string;
   result: string;
   confirmations: number;
@@ -84,7 +84,7 @@ export interface Transaction extends
   block_number: number | null;
   timestamp: string | null;
   confirmation_duration: Array<number> | null;
-  from: AddressParam;
+  from: schemas['Address'];
   value: string;
   fee: TransactionFee;
   gas_price: string | null;
@@ -165,7 +165,7 @@ export type TxsFilters = {
 
 // STATE CHANGES
 export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
-  address: AddressParam;
+  address: schemas['Address'];
   is_miner: boolean;
   balance_before: string | null;
   balance_after: string | null;

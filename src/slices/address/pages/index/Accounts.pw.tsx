@@ -1,38 +1,39 @@
 import React from 'react';
 
-import type { AddressesResponse } from 'src/slices/address/types/api';
+import type { merged } from '@blockscout/api-types';
 
-import * as addressMocks from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { test, expect } from 'playwright/lib';
 
 import Accounts from './Accounts';
 
-const addresses: AddressesResponse = {
+const addresses: merged.paths['/v2/addresses']['get']['responses']['200']['content']['application/json'] = {
   items: [
     {
-      ...addressMocks.withName,
+      ...addressParamMock.withName,
       transactions_count: '1',
       coin_balance: '12345678901234567890000',
     },
     {
-      ...addressMocks.token,
+      ...addressParamMock.withEns,
       transactions_count: '109123890123',
       coin_balance: '22222345678901234567890000',
       ens_domain_name: null,
     },
     {
-      ...addressMocks.withoutName,
+      ...addressParamMock.withoutName,
       transactions_count: '11',
       coin_balance: '1000000000000000000',
     },
     {
-      ...addressMocks.eoa,
+      ...addressParamMock.withNameTag,
       transactions_count: '420',
       coin_balance: '123456',
     },
   ],
   total_supply: '25222000',
+  exchange_rate: '1',
   next_page_params: null,
 };
 

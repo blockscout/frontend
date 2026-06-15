@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import * as widgetsMock from 'src/features/address-3rd-party-widgets/mocks';
 
@@ -11,7 +11,7 @@ import * as pwConfig from 'playwright/utils/config';
 import Address3rdPartyWidgets from './Address3rdPartyWidgets';
 
 const WIDGETS_CONFIG_URL = 'http://localhost:4000/address-3rd-party-widgets-config.json';
-const ADDRESS_HASH = addressMock.hash;
+const ADDRESS_HASH = addressParamMock.hash;
 const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },

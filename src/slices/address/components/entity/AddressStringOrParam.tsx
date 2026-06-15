@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import type { AddressParamBasic } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from './AddressEntity';
 import type { EntityProps } from './AddressEntity';
 
 type Props = Omit<EntityProps, 'address'> & {
-  address: string | AddressParamBasic;
+  address: string | schemas['Address'];
 };
 
 const AddressStringOrParam = ({ address, ...props }: Props) => {

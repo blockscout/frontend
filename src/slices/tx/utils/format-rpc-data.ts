@@ -4,7 +4,7 @@ import type { Chain, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
 import type { Transaction } from 'src/slices/tx/types/api';
 
-import { unknownAddress } from 'src/slices/address/utils/consts';
+import { toAddressModel } from 'src/slices/address/utils/model';
 
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
 import dayjs from 'src/shared/date-and-time/dayjs';
@@ -26,8 +26,8 @@ export default function formatRpcData(
   const gasPrice = receipt?.effectiveGasPrice ?? tx.gasPrice;
 
   return {
-    from: { ...unknownAddress, hash: tx.from as string },
-    to: tx.to ? { ...unknownAddress, hash: tx.to as string } : null,
+    from: toAddressModel({ hash: tx.from as string }),
+    to: tx.to ? toAddressModel({ hash: tx.to as string }) : null,
     hash: tx.hash as string,
     timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
     confirmation_duration: null,
@@ -50,7 +50,7 @@ export default function formatRpcData(
       type: 'actual',
     },
     created_contract: receipt?.contractAddress ?
-      { ...unknownAddress, hash: receipt.contractAddress, is_contract: true } :
+      toAddressModel({ hash: receipt.contractAddress, is_contract: true }) :
       null,
     result: '',
     priority_fee: null,

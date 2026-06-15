@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import CodeEditorSnippet from 'src/shared/code-editor/CodeEditorSnippet';
@@ -22,7 +22,7 @@ interface Tab {
 interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
   sourceAddress: string | undefined;
 }
 

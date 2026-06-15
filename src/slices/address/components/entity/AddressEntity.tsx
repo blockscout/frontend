@@ -3,7 +3,7 @@
 import { Box, Flex, chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 
@@ -204,7 +204,7 @@ const Copy = (props: CopyProps) => {
 
 const Container = EntityBase.Container;
 
-interface AddressProp extends Partial<AddressParam> {
+interface AddressProp extends Partial<schemas['Address']> {
   hash: string;
 }
 

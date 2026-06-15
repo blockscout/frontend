@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
@@ -11,7 +11,7 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: Pick<Address, 'name' | 'token' | 'is_contract'>;
+  data: Pick<schemas['AddressResponse'], 'name' | 'token' | 'is_contract'>;
   isLoading?: boolean;
 }
 

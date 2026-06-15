@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -12,9 +12,9 @@ test.use({ viewport: pwConfig.viewport.mobile });
 test('outgoing txn', async({ render }) => {
   const component = await render(
     <AddressFromTo
-      from={ addressMock.withoutName }
-      to={{ ...addressMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
-      current={ addressMock.withoutName.hash }
+      from={ addressParamMock.withoutName }
+      to={{ ...addressParamMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
+      current={ addressParamMock.withoutName.hash }
     />,
   );
   await expect(component).toHaveScreenshot();
@@ -23,9 +23,9 @@ test('outgoing txn', async({ render }) => {
 test('incoming txn', async({ render }) => {
   const component = await render(
     <AddressFromTo
-      from={{ ...addressMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
-      to={ addressMock.withoutName }
-      current={ addressMock.withoutName.hash }
+      from={{ ...addressParamMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
+      to={ addressParamMock.withoutName }
+      current={ addressParamMock.withoutName.hash }
     />,
   );
   await expect(component).toHaveScreenshot();
@@ -34,8 +34,8 @@ test('incoming txn', async({ render }) => {
 test('compact mode', async({ render }) => {
   const component = await render(
     <AddressFromTo
-      from={ addressMock.withoutName }
-      to={{ ...addressMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
+      from={ addressParamMock.withoutName }
+      to={{ ...addressParamMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
       mode="compact"
     />,
   );
@@ -45,8 +45,8 @@ test('compact mode', async({ render }) => {
 test('loading state', async({ render }) => {
   const component = await render(
     <AddressFromTo
-      from={ addressMock.withoutName }
-      to={{ ...addressMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
+      from={ addressParamMock.withoutName }
+      to={{ ...addressParamMock.withName, hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' }}
       isLoading
     />,
   );

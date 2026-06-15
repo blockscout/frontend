@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { VerifiedContract, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'src/slices/contract/types/api';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -19,7 +20,7 @@ import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSti
 import VerifiedContractsTableItem from './VerifiedContractsTableItem';
 
 interface Props {
-  data: Array<VerifiedContract>;
+  data: Array<schemas['ListItem']>;
   sort: VerifiedContractsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
   isLoading?: boolean;
@@ -72,7 +73,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
       <TableBody>
         { data.map((item, index) => (
           <VerifiedContractsTableItem
-            key={ item.address.hash + (isLoading ? index : '') }
+            key={ `${ item.address?.hash ?? '' }${ isLoading ? index : '' }` }
             data={ item }
             isLoading={ isLoading }
             chainData={ chainData }

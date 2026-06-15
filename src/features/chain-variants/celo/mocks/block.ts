@@ -1,6 +1,6 @@
 import type { Block } from 'src/slices/block/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { base } from 'src/slices/block/mocks/block';
 import * as tokenMock from 'src/slices/token/mocks/info';
 
@@ -14,20 +14,20 @@ export const celo: Block = {
       amount: '445690000000000',
       breakdown: [
         {
-          address: addressMock.withName,
+          address: addressParamMock.withName,
           amount: '356552000000000.0000000000000',
           percentage: 80,
         },
         {
           address: {
-            ...addressMock.withoutName,
+            ...addressParamMock.withoutName,
             hash: ZERO_ADDRESS,
           },
           amount: '89138000000000.0000000000000',
           percentage: 20,
         },
       ],
-      recipient: addressMock.contract,
+      recipient: addressParamMock.contract,
     },
     epoch_number: 1486,
     l1_era_finalized_epoch_number: 1485,

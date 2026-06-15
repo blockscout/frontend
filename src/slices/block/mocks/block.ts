@@ -4,7 +4,7 @@ import type { RpcBlock } from 'viem';
 import type { ZilliqaBlockData } from 'src/features/chain-variants/zilliqa/types/api';
 import type { Block, BlocksResponse } from 'src/slices/block/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenMock from 'src/slices/token/mocks/info';
 
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
@@ -22,15 +22,9 @@ export const base: Block = {
   hash: '0xccc75136de485434d578b73df66537c06b34c3c9b12d085daf95890c914fc2bc',
   height: 30146364,
   miner: {
+    ...addressParamMock.withoutName,
     hash: '0xdAd49e6CbDE849353ab27DeC6319E687BFc91A41',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
     name: 'Alex Emelyanov',
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   nonce: '0x0000000000000000',
   parent_hash: '0x44125f0eb36a9d942e0c23bb4e8117f7ba86a9537a69b59c0025986ed2b7500f',
@@ -73,14 +67,8 @@ export const genesis: Block = {
   hash: '0x39f02c003dde5b073b3f6e1700fc0b84b4877f6839bb23edadd3d2d82a488634',
   height: 0,
   miner: {
+    ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
-    name: null,
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
   },
   nonce: '0x0000000000000000',
@@ -103,15 +91,9 @@ export const base2: Block = {
   height: base.height - 1,
   size: 592,
   miner: {
+    ...addressParamMock.withoutName,
     hash: '0xDfE10D55d9248B2ED66f1647df0b0A46dEb25165',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
     name: 'Kiryl Ihnatsyeu',
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   timestamp: '2022-11-11T11:46:05Z',
   transactions_count: 253,
@@ -154,20 +136,25 @@ export const celo: Block = {
       amount: '445690000000000',
       breakdown: [
         {
-          address: addressMock.withName,
+          address: addressParamMock.withName,
           amount: '356552000000000.0000000000000',
           percentage: 80,
         },
         {
           address: {
-            ...addressMock.withoutName,
+            ...addressParamMock.withoutName,
             hash: ZERO_ADDRESS,
           },
           amount: '89138000000000.0000000000000',
           percentage: 20,
         },
       ],
-      recipient: addressMock.contract,
+      recipient: {
+        ...addressParamMock.withoutName,
+        is_contract: true,
+        is_verified: true,
+        name: 'EternalStorageProxy',
+      },
     },
     epoch_number: 1486,
     l1_era_finalized_epoch_number: 1485,

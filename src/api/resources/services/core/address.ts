@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { merged } from '@blockscout/api-types';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'src/features/address-metadata/types/api';
 import type { DepositsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
 import type { AddressEpochRewardsResponse } from 'src/features/chain-variants/celo/types/api';
@@ -18,13 +19,12 @@ import type {
   AddressInternalTxsResponse,
   AddressTransactionsResponse,
   AddressTabsCounters,
-  Address,
   AddressTxsFilters,
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressNFTTokensFilter,
   AddressTokenBalancesResponse,
-  AddressesResponse } from 'src/slices/address/types/api';
+} from 'src/slices/address/types/api';
 import type { LogsResponseAddress } from 'src/slices/log/types/api';
 import type { TransactionsSorting } from 'src/slices/tx/types/api';
 
@@ -173,9 +173,9 @@ export type CoreApiAddressResourceName = `core:${ keyof typeof CORE_API_ADDRESS_
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiAddressResourcePayload<R extends CoreApiAddressResourceName> =
-R extends 'core:addresses' ? AddressesResponse :
+R extends 'core:addresses' ? merged.paths['/v2/addresses']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchResult :
-R extends 'core:address' ? Address :
+R extends 'core:address' ? merged.paths['/v2/addresses/{address_hash_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:address_counters' ? AddressCounters :
 R extends 'core:address_tabs_counters' ? AddressTabsCounters :
 R extends 'core:address_txs' ? AddressTransactionsResponse :

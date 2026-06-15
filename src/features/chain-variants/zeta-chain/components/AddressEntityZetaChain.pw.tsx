@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { zetaChainCCTXConfig } from 'src/features/chain-variants/zeta-chain/mocks/cctx-config';
 
@@ -27,7 +27,7 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
   await mockAssetResponse('https://example.com/sepolia-logo.svg', './playwright/mocks/image_svg.svg');
   const component = await render(
     <AddressEntityZetaChain
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       chainId="11155111"
     />,
   );
@@ -38,7 +38,7 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
 test('with chain icon stub +@dark-mode', async({ render }) => {
   const component = await render(
     <AddressEntityZetaChain
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       chainId="11155111"
     />,
   );
@@ -52,7 +52,7 @@ test('with current chain icon +@dark-mode', async({ render, mockConfigResponse }
 
   const component = await render(
     <AddressEntityZetaChain
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       chainId="7001"
     />,
   );

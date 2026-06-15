@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import * as interopMock from 'src/features/op-interop/mocks/interop';
 
@@ -14,7 +14,7 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
   await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_svg.svg');
   const component = await render(
     <AddressEntityInterop
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       chain={ interopMock.chain }
     />,
   );
@@ -25,7 +25,7 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
 test('with chain icon stub +@dark-mode', async({ render }) => {
   const component = await render(
     <AddressEntityInterop
-      address={ addressMock.withoutName }
+      address={ addressParamMock.withoutName }
       chain={{ ...interopMock.chain, chain_logo: null }}
     />,
   );

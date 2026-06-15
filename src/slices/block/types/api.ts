@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { schemas } from '@blockscout/api-types';
 import type { BlockCelo } from 'src/features/chain-variants/celo/types/api';
 import type { BlockRootstock } from 'src/features/chain-variants/rootstock/types/api';
 import type { BlockZilliqa } from 'src/features/chain-variants/zilliqa/types/api';
@@ -7,7 +8,6 @@ import type { BlockDataAvailability } from 'src/features/data-availability/types
 import type { BlockArbitrum } from 'src/features/rollup/arbitrum/types/api';
 import type { BlockOptimism } from 'src/features/rollup/optimism/types/api';
 import type { BlockZkSync } from 'src/features/rollup/zk-sync/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
 import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
@@ -23,7 +23,7 @@ export interface Block extends BlockArbitrum, BlockOptimism, BlockZkSync, BlockC
   timestamp: string;
   transactions_count: number;
   internal_transactions_count: number;
-  miner: AddressParam;
+  miner: schemas['Address'];
   size?: number;
   hash: string;
   parent_hash: string;
