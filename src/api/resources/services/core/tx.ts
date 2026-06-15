@@ -8,7 +8,7 @@ import type { FheOperationsResponse } from 'src/features/fhe-operations/types/ap
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { InternalTransactionFilters, InternalTransactionsResponse } from 'src/slices/internal-tx/types/api';
 import type { LogsResponseTx } from 'src/slices/log/types/api';
-import type { TokenTransferResponse, TokenTransferFilters } from 'src/slices/token-transfer/types/api';
+import type { TokenTransferFilters } from 'src/slices/token-transfer/types/api';
 import type {
   TransactionsResponseValidated,
   TransactionsResponsePending,
@@ -118,7 +118,8 @@ R extends 'core:txs_execution_node' ? TransactionsResponseValidated :
 R extends 'core:tx_internal_txs' ? InternalTransactionsResponse :
 R extends 'core:tx' ? Transaction :
 R extends 'core:tx_logs' ? LogsResponseTx :
-R extends 'core:tx_token_transfers' ? TokenTransferResponse :
+R extends 'core:tx_token_transfers' ?
+  merged.paths['/v2/transactions/{transaction_hash_param}/token-transfers']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:tx_fhe_operations' ? FheOperationsResponse :
 R extends 'core:tx_raw_trace' ? TxRawTracesResponse :
 R extends 'core:tx_state_changes' ?

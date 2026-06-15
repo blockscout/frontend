@@ -2,16 +2,16 @@
 
 import React from 'react';
 
-import type { TokenTransfer } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import { Badge, type BadgeProps } from 'src/toolkit/chakra/badge';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props extends BadgeProps {
-  methodType: TokenTransfer['type'];
+  methodType: schemas['TokenTransfer']['type'];
   tokenType?: TokenType;
-  transferTokenType?: TokenTransfer['token_type'];
+  transferTokenType?: schemas['TokenTransfer']['token_type'];
 }
 
 const TokenTransferTypeBadge = ({ methodType, tokenType, transferTokenType, ...rest }: Props) => {

@@ -1,8 +1,8 @@
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { erc7984Token } from './token';
 
-export const erc7984: TokenTransfer = {
+export const erc7984: schemas['TokenTransfer'] = {
   from: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
     implementations: [],
@@ -39,8 +39,8 @@ export const erc7984: TokenTransfer = {
   type: 'token_transfer',
   token_type: 'ERC-20',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
   method: 'transfer',
 };

@@ -64,17 +64,6 @@ interface TokenTransferBase {
   method?: string;
 }
 
-export type TokenTransferPagination = {
-  block_number: number;
-  index: number;
-  items_count: number;
-};
-
-export interface TokenTransferResponse {
-  items: Array<TokenTransfer>;
-  next_page_params: TokenTransferPagination | null;
-}
-
 export interface TokenTransferFilters {
   type: Array<TokenType>;
 }

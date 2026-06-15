@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -18,8 +18,8 @@ import TokenValue from 'src/shared/values/entity/TokenValue';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
-type Props = {
-  item: TokenTransfer;
+interface Props {
+  item: schemas['TokenTransfer'];
   isLoading: boolean;
   chainData?: ClusterChainConfig;
 };

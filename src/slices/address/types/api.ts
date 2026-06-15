@@ -6,8 +6,7 @@ import type { AddressZilliqaParams } from 'src/features/chain-variants/zilliqa/t
 import type { Block } from 'src/slices/block/types/api';
 import type { SmartContractCreationStatus, SmartContractProxyType } from 'src/slices/contract/types/api';
 import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
-import type { TokenTransfer, TokenTransferPagination } from 'src/slices/token-transfer/types/api';
-import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from 'src/slices/token/types/api';
+import type { NftTokenType, TokenType } from 'src/slices/token/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface AddressImplementation {
@@ -70,7 +69,7 @@ export interface Address extends UserTags {
   is_contract: boolean;
   is_verified: boolean;
   name: string | null;
-  token: TokenInfo | null;
+  token: schemas['Token'] | null;
   watchlist_address_id: number | null;
   proxy_type?: SmartContractProxyType | null;
 }
@@ -84,21 +83,21 @@ export interface AddressCounters {
 
 // TODO @tom2drum remove this type
 export interface AddressTokenBalance {
-  token: TokenInfo;
+  token: schemas['Token'];
   token_id: string | null;
   value: string | null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 }
 export type AddressTokenBalancesResponse = Array<AddressTokenBalance>;
 
-export type AddressNFT = TokenInstance & {
-  token: TokenInfo;
+export type AddressNFT = schemas['TokenInstance'] & {
+  token: schemas['Token'];
   token_type: Omit<TokenType, 'ERC-20'>;
   value: string;
 };
 
 export type AddressCollection = {
-  token: TokenInfo;
+  token: schemas['Token'];
   amount: string;
   token_instances: Array<Omit<AddressNFT, 'token'>>;
 };
@@ -154,11 +153,6 @@ export type AddressTxsFilters = {
   filter: AddressFromToFilter;
 };
 
-export interface AddressTokenTransferResponse {
-  items: Array<TokenTransfer>;
-  next_page_params: TokenTransferPagination | null;
-}
-
 export type AddressTokenTransferFilters = {
   filter?: AddressFromToFilter;
   type?: Array<TokenType>;
@@ -170,7 +164,7 @@ export type AddressTokensFilter = {
 };
 
 export type AddressNFTTokensFilter = {
-  type: Array<NFTTokenType> | undefined;
+  type: Array<NftTokenType> | undefined;
 };
 
 export interface AddressCoinBalanceHistoryItem {

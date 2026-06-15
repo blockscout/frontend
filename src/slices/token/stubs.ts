@@ -1,9 +1,5 @@
-import type { schemas } from '@blockscout/api-types';
+import type { merged, schemas } from '@blockscout/api-types';
 import type {
-  TokenCounters,
-  TokenHolder,
-  TokenHolders,
-  TokenHoldersPagination,
   TokenType,
 } from 'src/slices/token/types/api';
 
@@ -48,23 +44,25 @@ export const TOKEN_INFO_ERC_404: schemas['Token'] = {
   type: 'ERC-404',
 };
 
-export const TOKEN_COUNTERS: TokenCounters = {
+export const TOKEN_COUNTERS: schemas['TokenCountersResponse'] = {
   token_holders_count: '123456',
   transfers_count: '123456',
 };
 
-export const TOKEN_HOLDER_ERC_20: TokenHolder = {
+export const TOKEN_HOLDER_ERC_20: schemas['TokenHolderResponse'] = {
   address: ADDRESS_PARAMS,
   value: '1021378038331138520',
+  token_id: null,
 };
 
-export const TOKEN_HOLDER_ERC_1155: TokenHolder = {
+export const TOKEN_HOLDER_ERC_1155: schemas['TokenHolderResponse'] = {
   address: ADDRESS_PARAMS,
   token_id: '12345',
   value: '1021378038331138520',
 };
 
-export const getTokenHoldersStub = (type?: TokenType | null, pagination: TokenHoldersPagination | null = null): TokenHolders => {
+export const getTokenHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
+merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
@@ -77,7 +75,8 @@ export const getTokenHoldersStub = (type?: TokenType | null, pagination: TokenHo
   }
 };
 
-export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
+export const getTokenInstanceHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
+merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });

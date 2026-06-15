@@ -4,7 +4,6 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { TokenHolder } from 'src/slices/token/types/api';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -17,7 +16,7 @@ import Utilization from 'src/shared/values/utilization/Utilization';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
-  holder: TokenHolder;
+  holder: schemas['TokenHolderResponse'];
   token: schemas['Token'];
   isLoading?: boolean;
 }
@@ -35,7 +34,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { (hasTokenIds(token.type)) && 'token_id' in holder && (
+      { (hasTokenIds(token.type)) && 'token_id' in holder && holder.token_id !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>ID#</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -62,7 +61,7 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
           <ListItemMobileGrid.Label isLoading={ isLoading }>Percentage</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Utilization
-              value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }
+              value={ BigNumber(holder.value ?? '0').div(BigNumber(token.total_supply)).dp(4).toNumber() }
               colorScheme="green"
               isLoading={ isLoading }
               display="inline-flex"

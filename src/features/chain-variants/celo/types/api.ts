@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { Erc20TotalPayload, TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
 
 export interface TransactionCelo {
   celo?: {
@@ -60,8 +60,8 @@ export type CeloEpochDetails = {
   end_processing_block_hash: string | null;
   end_processing_block_number: number | null;
   distribution: {
-    carbon_offsetting_transfer: TokenTransfer | null;
-    community_transfer: TokenTransfer | null;
+    carbon_offsetting_transfer: schemas['TokenTransfer'] | null;
+    community_transfer: schemas['TokenTransfer'] | null;
     transfers_total: {
       token: schemas['Token'] | null;
       total: Erc20TotalPayload | null;

@@ -57,7 +57,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       <Box hideFrom="lg">
         { query.data?.items.map((item, index) => (
           <TokenTransfersListItem
-            key={ item.transaction_hash + item.log_index + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
+            key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
             isLoading={ query.isPlaceholderData }
             item={ item }
             chainData={ chainData }

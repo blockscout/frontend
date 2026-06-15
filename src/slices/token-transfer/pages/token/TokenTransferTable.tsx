@@ -3,7 +3,6 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import { hasTokenIds, hasTokenTransferValue, isConfidentialTokenType, isFungibleTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -19,7 +18,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   top: number;
   showSocketInfo: boolean;
   showSocketErrorAlert?: boolean;
@@ -72,7 +71,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
           { data.map((item, index) => (
             <TokenTransferTableItem
               key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
-              { ...item }
+              data={ item }
               tokenId={ tokenId }
               instance={ instance }
               isLoading={ isLoading }

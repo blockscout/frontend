@@ -12,7 +12,6 @@ import type {
   AddressXStarResponse,
   AddressCoinBalanceHistoryChart,
   AddressCoinBalanceHistoryResponse,
-  AddressTokenTransferResponse,
   AddressInternalTxsResponse,
   AddressTransactionsResponse,
   AddressTabsCounters,
@@ -176,7 +175,8 @@ R extends 'core:address_counters' ? AddressCounters :
 R extends 'core:address_tabs_counters' ? AddressTabsCounters :
 R extends 'core:address_txs' ? AddressTransactionsResponse :
 R extends 'core:address_internal_txs' ? AddressInternalTxsResponse :
-R extends 'core:address_token_transfers' ? AddressTokenTransferResponse :
+R extends 'core:address_token_transfers' ?
+  merged.paths['/v2/addresses/{address_hash_param}/token-transfers']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:address_blocks_validated' ? AddressBlocksValidatedResponse :
 R extends 'core:address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 R extends 'core:address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :

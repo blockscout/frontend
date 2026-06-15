@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
@@ -17,7 +17,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TokenTransferTableItem from './TokenTransferTableItem';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   baseAddress?: string;
   showTxInfo?: boolean;
   top: number;
@@ -73,7 +73,7 @@ const TokenTransferTable = ({
           { data.map((item, index) => (
             <TokenTransferTableItem
               key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
-              { ...item }
+              data={ item }
               baseAddress={ baseAddress }
               showTxInfo={ showTxInfo }
               enableTimeIncrement={ enableTimeIncrement }

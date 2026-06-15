@@ -1,4 +1,4 @@
-import type { TokenCounters } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { toTokenModel } from '../utils/model';
 
@@ -16,7 +16,7 @@ export const tokenInfo = toTokenModel({
   reputation: 'ok',
 });
 
-export const tokenCounters: TokenCounters = {
+export const tokenCounters: schemas['TokenCountersResponse'] = {
   token_holders_count: '8838883',
   transfers_count: '88282281',
 };

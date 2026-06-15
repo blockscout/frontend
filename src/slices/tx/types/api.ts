@@ -17,8 +17,6 @@ import type { TransactionActions } from 'src/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'src/features/tx-authorization/types/api';
 import type { BlockTransactionsResponse } from 'src/slices/block/types/api';
 import type { DecodedInput } from 'src/slices/log/types/api';
-import type { Erc721TotalPayload, TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 export type TransactionRevertReason = {
   raw: string;
@@ -101,7 +99,7 @@ export interface Transaction extends
   revert_reason: TransactionRevertReason | null;
   raw_input: string;
   decoded_input: DecodedInput | null;
-  token_transfers: Array<TokenTransfer> | null;
+  token_transfers: Array<schemas['TokenTransfer']> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string | null;
   historic_exchange_rate: string | null;
@@ -161,59 +159,4 @@ export type TxsFilters = {
   filter: 'pending' | 'validated';
   type?: Array<TxsTypeFilter>;
   method?: Array<TxsMethodFilter>;
-};
-
-// STATE CHANGES
-export type TxStateChange = (TxStateChangeCoin | TxStateChangeToken) & {
-  address: schemas['Address'];
-  is_miner: boolean;
-  balance_before: string | null;
-  balance_after: string | null;
-};
-
-export interface TxStateChangeCoin {
-  type: 'coin';
-  change: string;
-  token: null;
-}
-
-export type TxStateChangeToken = TxStateChangeTokenErc20 | TxStateChangeTokenErc721 | TxStateChangeTokenErc1155;
-
-type TxStateChangeDirection = 'from' | 'to';
-
-export interface TxStateChangeTokenErc20 {
-  type: 'token';
-  token: TokenInfo;
-  change: string;
-}
-
-export interface TxStateChangeTokenErc721 {
-  type: 'token';
-  token: TokenInfo;
-  change: Array<{
-    direction: TxStateChangeDirection;
-    total: Erc721TotalPayload;
-  }>;
-}
-
-export interface TxStateChangeTokenErc1155 {
-  type: 'token';
-  token: TokenInfo;
-  change: string;
-  token_id: string;
-}
-
-export interface TxStateChangeTokenErc404 {
-  type: 'token';
-  token: TokenInfo;
-  change: string;
-  token_id: string;
-}
-
-export type TxStateChanges = {
-  items: Array<TxStateChange>;
-  next_page_params: {
-    items_count: number;
-    state_changes: null;
-  };
 };

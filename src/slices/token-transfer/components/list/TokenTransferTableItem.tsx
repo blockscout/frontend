@@ -3,8 +3,8 @@
 import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -24,7 +24,8 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
 
-type Props = TokenTransfer & {
+interface Props {
+  data: schemas['TokenTransfer'];
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
@@ -33,16 +34,9 @@ type Props = TokenTransfer & {
 };
 
 const TokenTransferTableItem = ({
-  token,
-  total,
-  transaction_hash: txHash,
-  from,
-  to,
+  data,
   baseAddress,
   showTxInfo,
-  type,
-  token_type: transferTokenType,
-  timestamp,
   enableTimeIncrement,
   isLoading,
   chainData,
@@ -53,9 +47,9 @@ const TokenTransferTableItem = ({
       { showTxInfo && (
         <TableCell>
           {
-            txHash ? (
+            data.transaction_hash ? (
               <Box my="3px" textAlign="center">
-                <TxAdditionalInfo hash={ txHash } isLoading={ isLoading }/>
+                <TxAdditionalInfo hash={ data.transaction_hash } isLoading={ isLoading }/>
               </Box>
             ) : (
               <div/>
@@ -69,37 +63,42 @@ const TokenTransferTableItem = ({
         </TableCell>
       ) }
       <TableCell>
-        { token ? (
+        { data.token ? (
           <>
             <TokenEntity
-              token={ token }
+              token={ data.token }
               isLoading={ isLoading }
               noSymbol
               noCopy
               mt={ 1 }
             />
             <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
-              { token.type && <Badge loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge> }
-              <TokenTransferTypeBadge methodType={ type } tokenType={ token.type ?? undefined } transferTokenType={ transferTokenType } loading={ isLoading }/>
+              { data.token.type && <Badge loading={ isLoading }>{ getTokenTypeName(data.token.type, chainData?.app_config) }</Badge> }
+              <TokenTransferTypeBadge
+                methodType={ data.type }
+                tokenType={ data.token.type ?? undefined }
+                transferTokenType={ data.token_type }
+                loading={ isLoading }
+              />
             </Flex>
           </>
         ) : 'N/A' }
       </TableCell>
       <TableCell>
-        { total && 'token_id' in total && total.token_id !== null && token && (
+        { data.total && 'token_id' in data.total && data.total.token_id !== null && data.token && (
           <NftEntity
-            hash={ token.address_hash }
-            id={ total.token_id }
-            instance={ total.token_instance }
+            hash={ data.token.address_hash }
+            id={ data.total.token_id }
+            instance={ data.total.token_instance }
             isLoading={ isLoading }
           />
         ) }
       </TableCell>
       { showTxInfo && (
         <TableCell>
-          { txHash ? (
+          { data.transaction_hash ? (
             <TxEntity
-              hash={ txHash }
+              hash={ data.transaction_hash }
               isLoading={ isLoading }
               fontWeight={ 600 }
               noIcon
@@ -110,7 +109,7 @@ const TokenTransferTableItem = ({
             <Skeleton loading={ isLoading } mt={ 1 }>-</Skeleton>
           ) }
           <TimeWithTooltip
-            timestamp={ timestamp }
+            timestamp={ data.timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
             color="text.secondary"
@@ -122,8 +121,8 @@ const TokenTransferTableItem = ({
       ) }
       <TableCell>
         <AddressFromTo
-          from={ from }
-          to={ to }
+          from={ data.from }
+          to={ data.to }
           current={ baseAddress }
           isLoading={ isLoading }
           mt={ 1 }
@@ -131,13 +130,13 @@ const TokenTransferTableItem = ({
         />
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
-        { token && isConfidentialTokenType(token.type) && (!total || !('value' in total) || total.value === null) ? (
+        { data.token && isConfidentialTokenType(data.token.type) && (!data.total || !('value' in data.total) || data.total.value === null) ? (
           <ConfidentialValue loading={ isLoading } mt="4px"/>
         ) : (
           <AssetValue
-            amount={ total && 'value' in total && total.value !== null ? total.value : null }
-            decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
-            exchangeRate={ token?.exchange_rate }
+            amount={ data.total && 'value' in data.total && data.total.value !== null ? data.total.value : null }
+            decimals={ data.total && 'decimals' in data.total ? data.total.decimals || '0' : '0' }
+            exchangeRate={ data.token?.exchange_rate }
             loading={ isLoading }
             layout="vertical"
             mt="4px"

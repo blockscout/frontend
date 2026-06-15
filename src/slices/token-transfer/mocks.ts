@@ -1,5 +1,4 @@
-import type { schemas } from '@blockscout/api-types';
-import type { TokenTransfer, TokenTransferResponse } from 'src/slices/token-transfer/types/api';
+import type { merged, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
@@ -7,7 +6,7 @@ import { toTokenModel } from 'src/slices/token/utils/model';
 
 import { erc7984 } from 'src/features/fhe-operations/mocks/token-transfer';
 
-export const erc20: TokenTransfer = {
+export const erc20: schemas['TokenTransfer'] = {
   from: {
     ...addressParamMock.withoutName,
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
@@ -42,13 +41,13 @@ export const erc20: TokenTransfer = {
   type: 'token_transfer',
   token_type: 'ERC-20',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
   method: 'updateSmartAsset',
 };
 
-export const erc721: TokenTransfer = {
+export const erc721: schemas['TokenTransfer'] = {
   from: {
     ...addressParamMock.withoutName,
     hash: '0x621C2a125ec4A6D8A7C7A655A18a2868d35eb43C',
@@ -79,13 +78,13 @@ export const erc721: TokenTransfer = {
   type: 'token_transfer',
   token_type: 'ERC-721',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
   method: 'updateSmartAsset',
 };
 
-export const erc1155A: TokenTransfer = {
+export const erc1155A: schemas['TokenTransfer'] = {
   from: {
     ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
@@ -118,12 +117,13 @@ export const erc1155A: TokenTransfer = {
   type: 'token_minting',
   token_type: 'ERC-1155',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
+  method: 'mint',
 };
 
-export const erc1155B: TokenTransfer = {
+export const erc1155B: schemas['TokenTransfer'] = {
   ...erc1155A,
   token: {
     ...(erc1155A.token as schemas['Token']),
@@ -133,7 +133,7 @@ export const erc1155B: TokenTransfer = {
   total: { token_id: '12345678', value: '100000000000000000000', decimals: null, token_instance: null },
 };
 
-export const erc1155C: TokenTransfer = {
+export const erc1155C: schemas['TokenTransfer'] = {
   ...erc1155A,
   token: {
     ...(erc1155A.token as schemas['Token']),
@@ -143,7 +143,7 @@ export const erc1155C: TokenTransfer = {
   total: { token_id: '483200961027732618117991942553110860267520', value: '200000000000000000000', decimals: null, token_instance: null },
 };
 
-export const erc1155D: TokenTransfer = {
+export const erc1155D: schemas['TokenTransfer'] = {
   ...erc1155A,
   token: {
     ...(erc1155A.token as schemas['Token']),
@@ -153,7 +153,7 @@ export const erc1155D: TokenTransfer = {
   total: { token_id: '456', value: '42', decimals: null, token_instance: null },
 };
 
-export const erc404A: TokenTransfer = {
+export const erc404A: schemas['TokenTransfer'] = {
   from: {
     ...addressParamMock.withoutName,
     hash: '0x0000000000000000000000000000000000000000',
@@ -187,12 +187,12 @@ export const erc404A: TokenTransfer = {
   token_type: 'ERC-721',
   method: 'swap',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
 };
 
-export const erc404B: TokenTransfer = {
+export const erc404B: schemas['TokenTransfer'] = {
   ...erc404A,
   token: {
     ...(erc404A.token as schemas['Token']),
@@ -202,7 +202,7 @@ export const erc404B: TokenTransfer = {
   total: { token_id: '4625304364899952', token_instance: null },
 };
 
-export const mixTokens: TokenTransferResponse = {
+export const mixTokens: merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['application/json'] = {
   items: [
     erc20,
     erc721,
