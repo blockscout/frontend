@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { AddressEpochRewardsItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -13,7 +13,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import AddressEpochRewardsTableItem from './AddressEpochRewardsTableItem';
 
 type Props = {
-  items: Array<AddressEpochRewardsItem>;
+  items: Array<schemas['ElectionReward']>;
   isLoading?: boolean;
   top: number;
 };
@@ -37,7 +37,13 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
           { items.map((item, index) => {
             return (
               <AddressEpochRewardsTableItem
-                key={ item.epoch_number + item.type + item.account.hash + item.associated_account.hash + (isLoading ? String(index) : '') }
+                key={
+                  (item.epoch_number ?? '0') +
+                  (item.type ?? 'unknown') +
+                  item.account.hash +
+                  item.associated_account.hash +
+                  (isLoading ? String(index) : '')
+                }
                 item={ item }
                 isLoading={ isLoading }
               />

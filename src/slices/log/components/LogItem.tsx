@@ -4,8 +4,8 @@ import { Grid, GridItem } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TransactionLog } from 'src/slices/log/types/api';
 
 // import searchIcon from 'src/sprite/icons/search.svg';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -24,12 +24,13 @@ import LogDecodedInputData from './LogDecodedInputData';
 import LogIndex from './LogIndex';
 import LogTopic from './LogTopic';
 
-type Props = TransactionLog & {
-  type: 'address' | 'transaction';
+interface Props {
+  data: schemas['Log'];
   isLoading?: boolean;
   defaultDataType?: DataType;
   chainData?: ClusterChainConfig;
-};
+  type: 'address' | 'transaction';
+}
 
 const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
   <GridItem _notFirst={{ my: { base: 4, lg: 0 } }}>
@@ -38,20 +39,14 @@ const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoadi
 );
 
 const LogItem = ({
-  address,
-  index,
-  topics,
   data,
-  decoded,
   type,
-  transaction_hash: txHash,
-  block_timestamp: blockTimestamp,
   isLoading,
   defaultDataType,
   chainData,
 }: Props) => {
 
-  const hasTxInfo = type === 'address' && txHash;
+  const hasTxInfo = type === 'address' && data.transaction_hash;
 
   return (
     <Grid
@@ -66,19 +61,19 @@ const LogItem = ({
         pt: 0,
       }}
     >
-      { !decoded && !address.is_verified && type === 'transaction' && (
+      { !data.decoded && !data.address.is_verified && type === 'transaction' && (
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
-            <Link href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: address.hash } }) }>Verify the contract here</Link>
+            <Link href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: data.address.hash } }) }>Verify the contract here</Link>
           </Alert>
         </GridItem>
       ) }
       { hasTxInfo ? <RowHeader isLoading={ isLoading }>Transaction</RowHeader> : <RowHeader isLoading={ isLoading }>Address</RowHeader> }
       <GridItem display="flex" alignItems="center">
-        { type === 'address' && txHash ? (
+        { type === 'address' && data.transaction_hash ? (
           <TxEntity
-            hash={ txHash }
+            hash={ data.transaction_hash }
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
             w="100%"
@@ -87,7 +82,7 @@ const LogItem = ({
           />
         ) : (
           <AddressEntity
-            address={ address }
+            address={ data.address }
             isLoading={ isLoading }
             mr={{ base: 9, lg: 4 }}
           />
@@ -105,28 +100,28 @@ const LogItem = ({
           minW={ 8 }
           height={ 8 }
         >
-          { index }
+          { data.index }
         </LogIndex>
       </GridItem>
-      { hasTxInfo && blockTimestamp ? (
+      { hasTxInfo && data.block_timestamp ? (
         <>
           <RowHeader isLoading={ isLoading }>Timestamp</RowHeader>
           <GridItem>
-            <DetailedInfoTimestamp timestamp={ blockTimestamp } isLoading={ isLoading }/>
+            <DetailedInfoTimestamp timestamp={ data.block_timestamp } isLoading={ isLoading }/>
           </GridItem>
         </>
       ) : null }
-      { decoded && (
+      { data.decoded && (
         <>
           <RowHeader isLoading={ isLoading }>Decode input data</RowHeader>
           <GridItem>
-            <LogDecodedInputData data={ decoded } isLoading={ isLoading }/>
+            <LogDecodedInputData data={ data.decoded } isLoading={ isLoading }/>
           </GridItem>
         </>
       ) }
       <RowHeader isLoading={ isLoading }>Topics</RowHeader>
       <GridItem>
-        { topics.filter(Boolean).map((item, index) => (
+        { data.topics.filter(Boolean).map((item, index) => (
           <LogTopic
             key={ index }
             hex={ item }
@@ -137,7 +132,7 @@ const LogItem = ({
       </GridItem>
       <RowHeader isLoading={ isLoading }>Data</RowHeader>
       { defaultDataType ? (
-        <RawInputData hex={ data } isLoading={ isLoading } defaultDataType={ defaultDataType } minHeight="53px"/>
+        <RawInputData hex={ data.data } isLoading={ isLoading } defaultDataType={ defaultDataType } minHeight="53px"/>
       ) : (
         <Skeleton
           loading={ isLoading }
@@ -146,7 +141,7 @@ const LogItem = ({
           borderRadius="md"
           bgColor={ isLoading ? undefined : { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } }
         >
-          { data }
+          { data.data }
         </Skeleton>
       ) }
     </Grid>

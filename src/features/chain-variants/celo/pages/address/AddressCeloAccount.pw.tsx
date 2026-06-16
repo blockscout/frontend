@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { AddressCeloAccount as TAddressCeloAccount } from 'src/features/chain-variants/celo/types/api';
+
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { Container } from 'src/shared/detailed-info/DetailedInfo';
@@ -18,7 +20,7 @@ const DATA = {
   vote_signer_address: addressParamMock.withName,
   validator_signer_address: addressParamMock.withEns,
   attestation_signer_address: addressParamMock.withoutName,
-};
+} satisfies TAddressCeloAccount ;
 
 test('default view +@mobile', async({ render }) => {
   const component = await render(

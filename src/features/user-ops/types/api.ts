@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { DecodedInput } from 'src/slices/log/types/api';
 
 export interface SearchResultUserOp {
   type: 'user_operation';
@@ -56,10 +55,10 @@ export type UserOp = {
   signature: string;
   nonce: string;
   call_data: string;
-  decoded_call_data: DecodedInput | null;
+  decoded_call_data: schemas['DecodedInput'] | null;
   execute_call_data: string | null;
   execute_target?: schemas['Address'] | null;
-  decoded_execute_call_data: DecodedInput | null;
+  decoded_execute_call_data: schemas['DecodedInput'] | null;
   user_logs_start_index: number;
   user_logs_count: number;
   raw: {

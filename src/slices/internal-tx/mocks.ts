@@ -1,8 +1,8 @@
-import type { InternalTransaction, InternalTransactionsResponse } from 'src/slices/internal-tx/types/api';
+import type { merged, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
-export const base: InternalTransaction = {
+export const base: schemas['InternalTransaction'] = {
   block_number: 29611822,
   created_contract: null,
   error: null,
@@ -27,9 +27,10 @@ export const base: InternalTransaction = {
   transaction_hash: '0xe9e27dfeb183066e26cfe556f74b7219b08df6951e25d14003d4fc7af8bbff61',
   type: 'call',
   value: '42000000000000000000',
+  transaction_index: 0,
 };
 
-export const typeStaticCall: InternalTransaction = {
+export const typeStaticCall: schemas['InternalTransaction'] = {
   ...base,
   type: 'staticcall',
   to: {
@@ -40,10 +41,10 @@ export const typeStaticCall: InternalTransaction = {
   transaction_hash: '0xe9e27dfeb183066e26cfe556f74b7219b08df6951e25d14003d4fc7af8bbff62',
 };
 
-export const withContractCreated: InternalTransaction = {
+export const withContractCreated: schemas['InternalTransaction'] = {
   ...base,
   type: 'delegatecall',
-  to: null,
+  to: addressParamMock.contract,
   from: {
     ...base.from,
     name: null,
@@ -59,7 +60,8 @@ export const withContractCreated: InternalTransaction = {
   transaction_hash: '0xe9e27dfeb183066e26cfe556f74b7219b08df6951e25d14003d4fc7af8bbff63',
 };
 
-export const baseResponse: InternalTransactionsResponse = {
+export const baseResponse:
+merged.operations['BlockScoutWeb.API.V2.InternalTransactionController.internal_transactions']['responses']['200']['content']['application/json'] = {
   items: [
     base,
     typeStaticCall,

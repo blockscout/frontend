@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
+import type { ExcludeNull, ExcludeUndefined } from 'src/shared/types/utils';
 import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
+
+export type AddressCeloAccount = NonNullable<ExcludeUndefined<ExcludeNull<ExcludeUndefined<schemas['AddressResponse']>['celo']>>['account']>;
 
 export interface TransactionCelo {
   celo?: {

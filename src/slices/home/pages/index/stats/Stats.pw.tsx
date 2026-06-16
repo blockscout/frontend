@@ -1,7 +1,7 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockListMock from 'src/slices/block/mocks/list';
 import { HomeDataContextProvider } from 'src/slices/home/contexts/home-data-context';
 import * as statsMock from 'src/slices/home/mocks/stats';
 
@@ -18,7 +18,7 @@ test.describe('all items', () => {
       [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
     ]);
     await mockApiResponse('core:stats', statsMock.withBtcLocked);
-    await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
     component = await render(
       <HomeDataContextProvider>
         <Stats/>
@@ -36,7 +36,7 @@ test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('core:stats', statsMock.withoutGasInfo);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <Stats/>
@@ -52,7 +52,7 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <Stats/>
@@ -67,7 +67,7 @@ test('3 items default view +@mobile -@default', async({ render, mockApiResponse,
     [ 'NEXT_PUBLIC_STATS_API_HOST', '' ],
   ]);
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <Stats/>

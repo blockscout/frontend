@@ -5,8 +5,8 @@ import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Block } from 'src/slices/block/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockPendingUpdateHint from 'src/slices/block/components/BlockPendingUpdateHint';
@@ -28,7 +28,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props {
-  data: Block;
+  data: schemas['Block'];
   isLoading?: boolean;
   animation?: string;
   enableTimeIncrement?: boolean;

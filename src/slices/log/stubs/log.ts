@@ -1,9 +1,10 @@
-import type { TransactionLog } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
+import { BLOCK_HASH } from 'src/slices/block/stubs/block';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const LOG: TransactionLog = {
+export const LOG: schemas['Log'] = {
   address: ADDRESS_PARAMS,
   data: '0x000000000000000000000000000000000000000000000000000000d75e4be200',
   decoded: {
@@ -33,4 +34,7 @@ export const LOG: TransactionLog = {
   ],
   transaction_hash: TX_HASH,
   block_timestamp: '2022-02-02T12:00:00Z',
+  block_number: 9005750,
+  block_hash: BLOCK_HASH,
+  smart_contract: null,
 };

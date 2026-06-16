@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Transaction } from 'src/slices/tx/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -32,7 +32,7 @@ const PrivateTagMenuItem = ({ hash, entityType = 'address', type }: Props) => {
   const router = useRouter();
 
   const queryKey = getResourceKey(entityType === 'tx' ? 'core:tx' : 'core:address', { pathParams: { hash } });
-  const queryData = queryClient.getQueryData<Address | Transaction>(queryKey);
+  const queryData = queryClient.getQueryData<schemas['AddressResponse'] | Transaction>(queryKey);
 
   const handleAddPrivateTag = React.useCallback(async() => {
     await queryClient.refetchQueries({ queryKey });

@@ -6,8 +6,8 @@ import { capitalize } from 'es-toolkit';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Block } from 'src/slices/block/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -29,7 +29,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props {
-  data: Block;
+  data: schemas['Block'];
   isLoading?: boolean;
   enableTimeIncrement?: boolean;
   animation?: string;
@@ -53,7 +53,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
             hash={ data.type !== 'block' ? data.hash : undefined }
             fontWeight={ 600 }
             chain={ chainData }
-            isPendingUpdate={ data.is_pending_update }
+            isPendingUpdate={ data.is_pending_update ?? false }
           />
           { data.celo?.l1_era_finalized_epoch_number && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>

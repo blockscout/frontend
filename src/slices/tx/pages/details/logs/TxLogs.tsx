@@ -3,7 +3,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionLog } from 'src/slices/log/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
@@ -20,7 +20,7 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 interface Props {
   txQuery: TxQuery;
-  logsFilter?: (log: TransactionLog) => boolean;
+  logsFilter?: (log: schemas['Log']) => boolean;
 }
 
 const TxLogs = ({ txQuery, logsFilter }: Props) => {
@@ -41,7 +41,7 @@ const TxLogs = ({ txQuery, logsFilter }: Props) => {
     return <ApiFetchAlert/>;
   }
 
-  let items: Array<TransactionLog> = [];
+  let items: Array<schemas['Log']> = [];
 
   if (data?.items) {
     if (isPlaceholderData) {
@@ -65,7 +65,7 @@ const TxLogs = ({ txQuery, logsFilter }: Props) => {
       { items.map((item, index) => (
         <LogItem
           key={ index }
-          { ...item }
+          data={ item }
           type="transaction"
           isLoading={ isPlaceholderData }
           defaultDataType={ txQuery.data?.zilliqa?.is_scilla ? 'UTF-8' : undefined }

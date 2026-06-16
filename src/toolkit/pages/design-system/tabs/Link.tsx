@@ -7,7 +7,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/details';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import { toTokenModel } from 'src/slices/token/utils/model';

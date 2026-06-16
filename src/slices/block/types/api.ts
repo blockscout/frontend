@@ -76,7 +76,7 @@ export interface BlockInternalTransactionsResponse {
 
 export interface NewBlockSocketResponse {
   average_block_time: string;
-  block: Block;
+  block: schemas['BlockResponse'];
 }
 
 export interface BlockFilters {

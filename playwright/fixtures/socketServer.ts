@@ -3,7 +3,7 @@ import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
 import type { schemas } from '@blockscout/api-types';
-import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
+import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
@@ -58,7 +58,7 @@ export const joinChannel = async(socket: WebSocket, channelName: string) => {
   });
 };
 
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: { coin_balance: AddressCoinBalanceHistoryItem }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_balance', payload: AddressCoinBalanceSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: `updated_token_balances_${ string }`, payload: AddressTokensBalancesSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;

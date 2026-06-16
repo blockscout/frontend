@@ -1,6 +1,7 @@
 import React from 'react';
 
-import * as blockMock from 'src/slices/block/mocks/block';
+import { base as baseBlock } from 'src/slices/block/mocks/details';
+import * as blockMock from 'src/slices/block/mocks/list';
 import { HomeDataContextProvider } from 'src/slices/home/contexts/home-data-context';
 import { HomeRpcDataContextProvider } from 'src/slices/home/contexts/rpc-data-context';
 import * as statsMock from 'src/slices/home/mocks/stats';
@@ -13,7 +14,7 @@ import LatestBlocks from './LatestBlocks';
 
 test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -27,7 +28,7 @@ test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => 
 test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -41,7 +42,7 @@ test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
 test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.blockHiddenFields);
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -54,7 +55,7 @@ test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
 
 test('with long block height', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:stats', statsMock.base);
-  await mockApiResponse('core:homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
+  await mockApiResponse('core:homepage_blocks', [ { ...blockMock.baseListResponse.items[0], height: 123456789012345 } ]);
   const component = await render(
     <HomeDataContextProvider>
       <HomeRpcDataContextProvider>
@@ -69,7 +70,7 @@ test.describe('socket', () => {
   test.describe.configure({ mode: 'serial' });
   test('new item', async({ render, mockApiResponse, createSocket }) => {
     await mockApiResponse('core:stats', statsMock.base);
-    await mockApiResponse('core:homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
     const component = await render(
       <HomeDataContextProvider>
         <HomeRpcDataContextProvider>
@@ -84,8 +85,8 @@ test.describe('socket', () => {
     socketServer.sendMessage(socket, channel, 'new_block', {
       average_block_time: '6212.0',
       block: {
-        ...blockMock.base,
-        height: blockMock.base.height + 1,
+        ...baseBlock,
+        height: baseBlock.height + 1,
         timestamp: '2022-11-11T11:59:58Z',
       },
     });

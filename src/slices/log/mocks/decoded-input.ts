@@ -1,6 +1,6 @@
-import type { DecodedInput } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const withoutIndexedFields: DecodedInput = {
+export const withoutIndexedFields: schemas['DecodedLogInput'] = {
   method_call: 'CreditSpended(uint256 _type, uint256 _quantity)',
   method_id: '58cdf94a',
   parameters: [
@@ -8,16 +8,18 @@ export const withoutIndexedFields: DecodedInput = {
       name: '_type',
       type: 'uint256',
       value: '3',
+      indexed: false,
     },
     {
       name: '_quantity',
       type: 'uint256',
       value: '1',
+      indexed: false,
     },
   ],
 };
 
-export const withIndexedFields: DecodedInput = {
+export const withIndexedFields: schemas['DecodedLogInput'] = {
   method_call: 'Transfer(address indexed from, address indexed to, uint256 value)',
   method_id: 'ddf252ad',
   parameters: [

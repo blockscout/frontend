@@ -1,10 +1,4 @@
 import type { schemas } from '@blockscout/api-types';
-import type {
-  AddressCoinBalanceHistoryItem,
-  AddressCounters,
-  AddressTabsCounters,
-  AddressesItem,
-} from 'src/slices/address/types/api';
 
 import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from 'src/slices/token/stubs';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
@@ -40,14 +34,14 @@ export const ADDRESS_INFO: schemas['AddressResponse'] = {
   has_beacon_chain_withdrawals: false,
 };
 
-export const ADDRESS_COUNTERS: AddressCounters = {
+export const ADDRESS_COUNTERS: schemas['AddressCounters'] = {
   gas_usage_count: '8028907522',
   token_transfers_count: '420',
   transactions_count: '119020',
   validations_count: '0',
 };
 
-export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
+export const ADDRESS_TABS_COUNTERS: schemas['AddressTabsCounters'] = {
   internal_transactions_count: 10,
   logs_count: 10,
   token_balances_count: 10,
@@ -58,7 +52,7 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
   beacon_deposits_count: 10,
 };
 
-export const TOP_ADDRESS: AddressesItem = {
+export const TOP_ADDRESS: schemas['TopAddress'] = {
   coin_balance: '11886682377162664596540805',
   transactions_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
@@ -76,7 +70,7 @@ export const TOP_ADDRESS: AddressesItem = {
   reputation: 'ok',
 };
 
-export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
+export const ADDRESS_COIN_BALANCE: schemas['CoinBalance'] = {
   block_number: 9004413,
   block_timestamp: '2023-05-15T13:16:24Z',
   delta: '1000000000000000000',

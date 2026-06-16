@@ -2,10 +2,6 @@
 
 import type { schemas } from '@blockscout/api-types';
 
-export interface AddressZilliqaParams {
-  is_scilla_contract: boolean;
-}
-
 export interface TransactionZilliqa {
   zilliqa?: {
     is_scilla: boolean;

@@ -5,7 +5,7 @@ import type { Channel } from 'phoenix';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 import type { NewArbitrumBatchSocketResponse } from 'src/features/rollup/arbitrum/types/api';
-import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
+import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
@@ -73,7 +73,7 @@ export namespace SocketMessage {
   export type AddressTokenBalancesErc721 = SocketMessageParamsGeneric<'updated_token_balances_erc_721', AddressTokensBalancesSocketMessage>;
   export type AddressTokenBalancesErc1155 = SocketMessageParamsGeneric<'updated_token_balances_erc_1155', AddressTokensBalancesSocketMessage>;
   export type AddressTokenBalancesErc404 = SocketMessageParamsGeneric<'updated_token_balances_erc_404', AddressTokensBalancesSocketMessage>;
-  export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', { coin_balance: AddressCoinBalanceHistoryItem }>;
+  export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', AddressCoinBalanceSocketMessage>;
   export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transactions: Array<Transaction> }>;
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transactions: Array<Transaction> }>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;

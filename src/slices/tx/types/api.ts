@@ -16,11 +16,6 @@ import type { TransactionZkSync } from 'src/features/rollup/zk-sync/types/api';
 import type { TransactionActions } from 'src/features/tx-actions/types/api';
 import type { TransactionAuthorization } from 'src/features/tx-authorization/types/api';
 import type { BlockTransactionsResponse } from 'src/slices/block/types/api';
-import type { DecodedInput } from 'src/slices/log/types/api';
-
-export type TransactionRevertReason = {
-  raw: string;
-} | DecodedInput;
 
 export interface TransactionFee {
   type: string;
@@ -96,9 +91,9 @@ export interface Transaction extends
   transaction_burnt_fee: string | null;
   nonce: number;
   position: number | null;
-  revert_reason: TransactionRevertReason | null;
+  revert_reason: NonNullable<schemas['Transaction']>['revert_reason'] | null;
   raw_input: string;
-  decoded_input: DecodedInput | null;
+  decoded_input: schemas['DecodedInput'] | null;
   token_transfers: Array<schemas['TokenTransfer']> | null;
   token_transfers_overflow: boolean;
   exchange_rate: string | null;

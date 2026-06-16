@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { TransactionLog } from 'src/slices/log/types/api';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -61,7 +60,7 @@ const UserOp = () => {
     }
   }, [ userOpQuery.data ]);
 
-  const filterLogsByLogIndex = React.useCallback((log: TransactionLog) => {
+  const filterLogsByLogIndex = React.useCallback((log: schemas['Log']) => {
     if (!userOpQuery.data) {
       return true;
     } else {

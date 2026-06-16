@@ -3,10 +3,9 @@ import React from 'react';
 
 import type { ZilliqaQuorumCertificate } from 'src/features/chain-variants/zilliqa/types/api';
 
-import * as blockMock from 'src/slices/block/mocks/block';
-
 import { test, expect } from 'playwright/lib';
 
+import * as blockMock from '../../mocks/block';
 import BlockDetailsZilliqaQuorumCertificate from './BlockDetailsZilliqaQuorumCertificate';
 
 test('quorum certificate', async({ render }) => {

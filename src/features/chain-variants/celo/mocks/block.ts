@@ -1,12 +1,12 @@
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
-import { base } from 'src/slices/block/mocks/block';
+import { base } from 'src/slices/block/mocks/details';
 import * as tokenMock from 'src/slices/token/mocks/info';
 
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 
-export const celo: Block = {
+export const celo: schemas['BlockResponse'] = {
   ...base,
   celo: {
     base_fee: {
@@ -31,5 +31,6 @@ export const celo: Block = {
     },
     epoch_number: 1486,
     l1_era_finalized_epoch_number: 1485,
+    is_epoch_block: false,
   },
 };

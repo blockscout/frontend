@@ -2,9 +2,7 @@
 
 import React from 'react';
 
-import type { WithdrawalsItem } from 'src/features/chain-variants/beacon-chain/types/api';
-import type { AddressWithdrawalsItem } from 'src/slices/address/types/api';
-import type { BlockWithdrawalsItem } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -15,16 +13,11 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
-type Props = ({
-  item: WithdrawalsItem;
-  view: 'list';
-} | {
-  item: AddressWithdrawalsItem;
-  view: 'address';
-} | {
-  item: BlockWithdrawalsItem;
-  view: 'block';
-}) & { isLoading?: boolean };
+interface Props {
+  item: schemas['Withdrawal'];
+  view: 'address' | 'block' | 'list';
+  isLoading?: boolean;
+}
 
 const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
   return (
@@ -37,21 +30,25 @@ const BeaconChainWithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
       </TableCell>
       { view !== 'block' && (
         <TableCell verticalAlign="middle">
-          <BlockEntity
-            number={ item.block_number }
-            isLoading={ isLoading }
-            textStyle="sm"
-            noIcon
-          />
+          { item.block_number ? (
+            <BlockEntity
+              number={ item.block_number }
+              isLoading={ isLoading }
+              textStyle="sm"
+              noIcon
+            />
+          ) : '-' }
         </TableCell>
       ) }
       { view !== 'address' && (
         <TableCell verticalAlign="middle">
-          <AddressEntity
-            address={ item.receiver }
-            isLoading={ isLoading }
-            truncation="constant"
-          />
+          { item.receiver ? (
+            <AddressEntity
+              address={ item.receiver }
+              isLoading={ isLoading }
+              truncation="constant"
+            />
+          ) : '-' }
         </TableCell>
       ) }
       { view !== 'block' && (

@@ -2,9 +2,7 @@
 
 import React from 'react';
 
-import type { WithdrawalsItem } from 'src/features/chain-variants/beacon-chain/types/api';
-import type { AddressWithdrawalsItem } from 'src/slices/address/types/api';
-import type { BlockWithdrawalsItem } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -18,16 +16,11 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const feature = config.features.beaconChain;
 
-type Props = ({
-  item: WithdrawalsItem;
-  view: 'list';
-} | {
-  item: AddressWithdrawalsItem;
-  view: 'address';
-} | {
-  item: BlockWithdrawalsItem;
-  view: 'block';
-}) & { isLoading?: boolean };
+interface Props {
+  item: schemas['Withdrawal'];
+  view: 'address' | 'block' | 'list';
+  isLoading?: boolean;
+}
 
 const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
   if (!feature.isEnabled) {
@@ -47,7 +40,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         <Skeleton loading={ isLoading } display="inline-block">{ item.validator_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
-      { view !== 'block' && (
+      { view !== 'block' && item.block_number && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -60,7 +53,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         </>
       ) }
 
-      { view !== 'address' && (
+      { view !== 'address' && item.receiver && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>To</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
             <AddressEntity

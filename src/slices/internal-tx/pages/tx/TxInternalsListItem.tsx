@@ -3,7 +3,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -17,20 +17,23 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import { TX_INTERNALS_ITEMS } from '../../utils/utils';
 
-type Props = InternalTransaction & { isLoading?: boolean };
+interface Props {
+  data: schemas['InternalTransaction'];
+  isLoading?: boolean;
+}
 
-const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract, isLoading }: Props) => {
-  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
-  const toData = to ? to : createdContract;
+const TxInternalsListItem = ({ data, isLoading }: Props) => {
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === data.type)?.title;
+  const toData = data.to ? data.to : data.created_contract;
 
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex columnGap={ 2 }>
         { typeTitle && <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge> }
-        { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
+        { !data.success && <TxStatus status="error" errorText={ data.error } isLoading={ isLoading }/> }
       </Flex>
       <AddressFromTo
-        from={ from }
+        from={ data.from }
         to={ toData }
         isLoading={ isLoading }
         w="100%"
@@ -39,7 +42,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       <HStack gap={ 3 } textStyle="sm" >
         <Skeleton loading={ isLoading } fontWeight={ 500 }><span>Value { currencyUnits.ether }</span></Skeleton>
         <NativeCoinValue
-          amount={ value }
+          amount={ data.value }
           noSymbol
           loading={ isLoading }
           color="text.secondary"
@@ -48,7 +51,7 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
       <HStack gap={ 3 } textStyle="sm" >
         <Skeleton loading={ isLoading } fontWeight={ 500 }><span>Gas limit</span></Skeleton>
         <NativeCoinValue
-          amount={ gasLimit }
+          amount={ data.gas_limit }
           units="wei"
           noSymbol
           loading={ isLoading }
