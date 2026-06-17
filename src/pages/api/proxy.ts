@@ -4,6 +4,7 @@ import { pick, pickBy } from 'es-toolkit';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'src/server/utils/fetchProxy';
+import getAllowedApiOrigins from 'src/server/utils/getAllowedApiOrigins';
 
 import isNeedProxy from 'src/api/utils/is-need-proxy';
 
@@ -25,6 +26,15 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
     nextReq.headers['x-endpoint']?.toString() || appConfig.apis.core?.endpoint,
   );
+
+  // Guard against server-side request forgery: the target host comes from the
+  // user-controlled "x-endpoint" header (or a protocol-relative path), so only
+  // forward to origins that are present in the server-side configuration.
+  if (!getAllowedApiOrigins().has(url.origin)) {
+    nextRes.status(403).json({ error: 'Requested endpoint is not allowed' });
+    return;
+  }
+
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),
     pickBy(pick(nextReq, [ 'body', 'method' ]), Boolean),
