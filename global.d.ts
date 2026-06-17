@@ -18,6 +18,9 @@ declare global {
     __envs: Record<string, string>;
     __multichainConfig?: MultichainConfig;
     __essentialDappsChains?: { chains: Array<EssentialDappsChainConfig> };
+    __ucCmp?: {
+      showSecondLayer: () => void;
+    };
   }
 
   namespace NodeJS {

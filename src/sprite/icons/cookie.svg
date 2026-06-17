@@ -1,0 +1,20 @@
+<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#cookie_svg__a)">
+    <path d="M9 3.74c.47.117-1.667 2 0 3.333 1.667 1.334 3.216-1.137 3.333-.666.117.47-.273 1.08.333 1.593.796.672 1.537.143 2 0A6.666 6.666 0 1 1 8 1.333c-.143.464-1.207 1.043-1 1.74.248.838 1.657.324 2 .667Zm0 0c-.47-.117.343.343 0 0Z" stroke="currentColor" stroke-width="1.067" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="4" cy="7.073" r="1.333" fill="currentColor"/>
+    <circle cx="11" cy="10.073" r="1" fill="currentColor"/>
+    <circle cx="8.334" cy="12.073" r="1" fill="currentColor"/>
+    <circle cx="11.667" cy="4.073" r="1" fill="currentColor"/>
+    <circle cx="4.667" cy="10.406" r=".667" fill="currentColor"/>
+    <circle cx="7.334" cy="8.406" r=".667" fill="currentColor"/>
+    <circle cx="6.001" cy="4.406" r=".667" fill="currentColor"/>
+    <circle cx="10.001" cy="1.74" r=".667" fill="currentColor"/>
+    <circle cx="14.667" cy="3.74" r=".533" fill="currentColor"/>
+    <circle cx="14" cy="1.073" r=".333" fill="currentColor"/>
+  </g>
+  <defs>
+    <clipPath id="cookie_svg__a">
+      <path fill="#fff" d="M0 0h16v16H0z"/>
+    </clipPath>
+  </defs>
+</svg>
