@@ -250,7 +250,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
           </>
         ) }
 
-        { countersQuery.data?.gas_usage_count && (
+        { countersQuery.data?.gas_usage_count && Number(countersQuery.data.gas_usage_count) > 0 && (
           <>
             <DetailedInfo.ItemLabel
               hint="Gas used by the address"

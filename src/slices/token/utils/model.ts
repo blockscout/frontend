@@ -5,7 +5,7 @@ import type { schemas } from '@blockscout/api-types';
 export function toTokenModel(fields: Partial<schemas['Token']>): schemas['Token'] {
   return {
     ...fields,
-    decimals: fields.decimals ?? '18',
+    decimals: fields.decimals ?? null,
     address_hash: fields.address_hash ?? '',
     circulating_market_cap: fields.circulating_market_cap ?? null,
     circulating_supply: fields.circulating_supply ?? null,

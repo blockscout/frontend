@@ -38,7 +38,7 @@ const Row = ({
   indexed,
   value,
   isLoading,
-}: schemas['DecodedLogInput']['parameters'][number] & { isLoading?: boolean }) => {
+}: Omit<schemas['DecodedLogInput']['parameters'][number], 'indexed'> & { indexed?: boolean; isLoading?: boolean }) => {
   const content = (() => {
     if (type === 'address' && typeof value === 'string') {
       return (
@@ -80,7 +80,7 @@ const Row = ({
 };
 
 const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
-  const hasIndexed = data.some((item) => 'indexed' in item && item.indexed !== undefined);
+  const hasIndexed = data.some((item) => 'indexed' in item && typeof item.indexed === 'boolean');
 
   const gridTemplateColumnsBase = hasIndexed ?
     '50px 60px 40px minmax(0, 1fr)' :
@@ -114,7 +114,7 @@ const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
             name={ item.name || 'unnamed' }
             type={ item.type || '' }
             value={ item.value || '-' }
-            indexed={ 'indexed' in item ? item.indexed : false }
+            indexed={ 'indexed' in item ? item.indexed : undefined }
             isLoading={ isLoading }
           />
         );

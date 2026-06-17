@@ -120,7 +120,7 @@ export const erc1155A: schemas['TokenTransfer'] = {
   block_number: 12345,
   block_hash: '1',
   log_index: 1,
-  method: 'mint',
+  method: null,
 };
 
 export const erc1155B: schemas['TokenTransfer'] = {

@@ -44,7 +44,7 @@ const DefaultView = () => {
   const secondRow = (
     <>
       <AddressEntity
-        address={ addressParamMock.withoutName }
+        address={{ ...addressParamMock.withoutName, is_contract: true }}
         variant="subheading"
       />
       <AlternativeExplorers type="token" pathParam={ addressParamMock.hash } ml="auto"/>

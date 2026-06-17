@@ -1,5 +1,7 @@
 import type { schemas } from '@blockscout/api-types';
 
+import { publicTag } from 'src/features/account/mocks/address-tags';
+
 export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 export const withName: schemas['Address'] = {
@@ -68,6 +70,11 @@ export const withoutName: schemas['Address'] = {
   metadata: null,
   proxy_type: null,
   reputation: 'ok',
+};
+
+export const withPublicTag: schemas['Address'] = {
+  ...withoutName,
+  public_tags: [ publicTag ],
 };
 
 export const contract: schemas['Address'] = {

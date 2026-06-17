@@ -25,7 +25,7 @@ export const contract1 = {
   transactions_count: 7334224,
   verified_at: '2022-09-16T18:49:29.605179Z',
   license_type: 'mit',
-  certified: true,
+  certified: false,
   reputation: 'ok',
 } satisfies schemas['SmartContractListItem'];
 

@@ -1,6 +1,7 @@
 import type { merged, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import { toAddressModel } from 'src/slices/address/utils/model';
 
 export const base: schemas['InternalTransaction'] = {
   block_number: 29611822,
@@ -33,10 +34,10 @@ export const base: schemas['InternalTransaction'] = {
 export const typeStaticCall: schemas['InternalTransaction'] = {
   ...base,
   type: 'staticcall',
-  to: {
+  to: toAddressModel({
     ...base.to,
     name: null,
-  },
+  }),
   gas_limit: '63424243',
   transaction_hash: '0xe9e27dfeb183066e26cfe556f74b7219b08df6951e25d14003d4fc7af8bbff62',
 };
@@ -44,7 +45,7 @@ export const typeStaticCall: schemas['InternalTransaction'] = {
 export const withContractCreated: schemas['InternalTransaction'] = {
   ...base,
   type: 'delegatecall',
-  to: addressParamMock.contract,
+  to: null,
   from: {
     ...base.from,
     name: null,

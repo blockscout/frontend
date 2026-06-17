@@ -155,8 +155,7 @@ export type VerifiedContractsLanguage = 'solidity' | 'vyper' | 'yul' | 'scilla' 
 
 // The API doesn't return the full model but only these fields
 export interface VerifiedContract extends Pick<schemas['SmartContract'],
-'address' |
-'certified' |
+  'certified' |
  'coin_balance' |
  'compiler_version' |
  'language' |

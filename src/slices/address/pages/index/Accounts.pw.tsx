@@ -16,13 +16,13 @@ const addresses: merged.paths['/v2/addresses']['get']['responses']['200']['conte
       coin_balance: '12345678901234567890000',
     },
     {
-      ...addressParamMock.withEns,
+      ...addressParamMock.contract,
       transactions_count: '109123890123',
       coin_balance: '22222345678901234567890000',
       ens_domain_name: null,
     },
     {
-      ...addressParamMock.withoutName,
+      ...addressParamMock.withPublicTag,
       transactions_count: '11',
       coin_balance: '1000000000000000000',
     },

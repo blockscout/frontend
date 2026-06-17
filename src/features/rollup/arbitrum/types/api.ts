@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { schemas } from '@blockscout/api-types';
+import type { ExcludeUndefined } from 'src/shared/types/utils';
 import type { Block } from 'src/slices/block/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
@@ -148,14 +150,13 @@ export interface ArbitrumL2MessageClaimResponse {
   outbox_address_hash: string;
 }
 
-export const ARBITRUM_L2_TX_BATCH_STATUSES = [
+export const ARBITRUM_L2_TX_BATCH_STATUSES: Array<ArbitrumBatchStatus> = [
   'Processed on rollup' as const,
-  'Sealed on rollup' as const,
   'Sent to base' as const,
   'Confirmed on base' as const,
 ];
 
-export type ArbitrumBatchStatus = typeof ARBITRUM_L2_TX_BATCH_STATUSES[number];
+export type ArbitrumBatchStatus = ExcludeUndefined<schemas['Block']['arbitrum']>['status'];
 
 export type NewArbitrumBatchSocketResponse = { batch: ArbitrumL2TxnBatchesItem };
 

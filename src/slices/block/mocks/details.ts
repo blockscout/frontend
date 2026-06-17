@@ -140,7 +140,10 @@ export const celo: schemas['BlockResponse'] = {
         ...addressParamMock.withoutName,
         is_contract: true,
         is_verified: true,
-        name: 'EternalStorageProxy',
+        name: 'HomeBridge',
+        implementations: [
+          { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+        ],
       },
     },
     epoch_number: 1486,

@@ -126,5 +126,9 @@ export const validator: schemas['AddressResponse'] = {
 
 export const filecoin: schemas['AddressResponse'] = {
   ...validator,
-  filecoin: addressParamMock.filecoin.filecoin,
+  filecoin: {
+    actor_type: 'evm' as const,
+    id: 'f02977693',
+    robust: 'f410fuiwj6a3yxajbohrl5vu6ns6o2e2jriul52lvzci',
+  },
 };

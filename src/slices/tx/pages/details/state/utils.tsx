@@ -85,12 +85,12 @@ export function getStateElements(data: schemas['StateChange'], isLoading?: boole
           w="auto"
         />
       );
-      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 18))));
-      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 18))));
+      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
+      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
       const change = (() => {
         let differenceBn;
         if (typeof data.change === 'string') {
-          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 18))));
+          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
         } else {
           differenceBn = afterBn.minus(beforeBn);
         }
