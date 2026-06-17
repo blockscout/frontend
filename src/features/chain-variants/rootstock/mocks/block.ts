@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { base } from 'src/slices/block/mocks/block';
+import { base } from 'src/slices/block/mocks/details';
 
-export const rootstock: Block = {
+export const rootstock: schemas['BlockResponse'] = {
   ...base,
   bitcoin_merged_mining_coinbase_transaction: '0x0000000000000080a1219cea298d65d545b56abafe7c5421edfaf084cf9e374bb23ea985ebd86b206088ac0000000000000000266a24aa21a9edb2ac3022ad2a5327449f029b6aa3d2e55605061b5d8171b30abf5b330d1959c900000000000000002a6a52534b424c4f434b3a481d071e57c6c47cb8eb716295a7079b15859962abf35e32f107b21f003f0bb900000000',
   bitcoin_merged_mining_header: '0x000000204a7e42cadf8b5b0a094755c5a13298e596d61f361c6d31171a00000000000000970e51977cd6f82bab9ed62e678c8d8ca664af9d5c3b5cea39d5d4337c7abedae334c9649fc63e1982a84aaa',

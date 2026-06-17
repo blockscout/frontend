@@ -52,7 +52,7 @@ test.describe('with audits feature', () => {
   });
 
   test('no audits', async({ render, mockApiResponse }) => {
-    await mockApiResponse('core:contract_security_audits', { items: [] }, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('core:contract_security_audits', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.contract.hash } });
     const props = {
       data: contractMock.verified,
       isLoading: false,

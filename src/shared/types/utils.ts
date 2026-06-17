@@ -18,3 +18,8 @@ export type PickByType<T, X> = Record<
 
 // Make some properties of an object optional
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+// Make all properties of an object optional
+export type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
+};

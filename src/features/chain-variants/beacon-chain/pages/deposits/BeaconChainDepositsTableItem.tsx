@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -18,7 +18,7 @@ import BeaconChainDepositStatusTag from '../../components/BeaconChainDepositStat
 import BeaconChainValidatorLink from '../../components/BeaconChainValidatorLink';
 
 type Props = {
-  item: DepositsItem;
+  item: schemas['Deposit'];
   view: 'list' | 'address' | 'block';
   isLoading?: boolean;
 };
@@ -27,22 +27,26 @@ const BeaconChainDepositsTableItem = ({ item, view, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <TxEntity
-          hash={ item.transaction_hash }
-          isLoading={ isLoading }
-          truncation="constant_long"
-          noIcon
-        />
+        { item.transaction_hash ? (
+          <TxEntity
+            hash={ item.transaction_hash }
+            isLoading={ isLoading }
+            truncation="constant_long"
+            noIcon
+          />
+        ) : '-' }
       </TableCell>
       { view !== 'block' && (
         <TableCell verticalAlign="middle">
-          <BlockEntity
-            number={ item.block_number }
-            hash={ item.block_hash }
-            isLoading={ isLoading }
-            textStyle="sm"
-            noIcon
-          />
+          { item.block_number ? (
+            <BlockEntity
+              number={ item.block_number }
+              hash={ item.block_hash }
+              isLoading={ isLoading }
+              textStyle="sm"
+              noIcon
+            />
+          ) : '-' }
         </TableCell>
       ) }
       { view !== 'block' && (
@@ -60,18 +64,20 @@ const BeaconChainDepositsTableItem = ({ item, view, isLoading }: Props) => {
       </TableCell>
       { view !== 'address' && (
         <TableCell verticalAlign="middle">
-          <AddressEntity
-            address={ item.from_address }
-            isLoading={ isLoading }
-            truncation="constant"
-          />
+          { item.from_address ? (
+            <AddressEntity
+              address={ item.from_address }
+              isLoading={ isLoading }
+              truncation="constant"
+            />
+          ) : '-' }
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" maxW="200px" overflow="hidden">
-        <BeaconChainValidatorLink pubkey={ item.pubkey } isLoading={ isLoading }/>
+        { item.pubkey ? <BeaconChainValidatorLink pubkey={ item.pubkey } isLoading={ isLoading }/> : '-' }
       </TableCell>
       <TableCell verticalAlign="middle" maxW="200px" overflow="hidden">
-        <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/>
+        { item.signature ? <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/> : '-' }
       </TableCell>
       <TableCell verticalAlign="middle">
         <BeaconChainDepositStatusTag status={ item.status } isLoading={ Boolean(isLoading) }/>

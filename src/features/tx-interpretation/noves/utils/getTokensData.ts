@@ -2,12 +2,12 @@
 
 import { groupBy, mapValues } from 'es-toolkit';
 
+import type { schemas } from '@blockscout/api-types';
 import type { NovesResponseData } from 'src/features/tx-interpretation/noves/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import { HEX_REGEXP } from 'src/toolkit/utils/regexp';
 
-export interface NovesTokenInfo extends Pick<TokenInfo, 'name' | 'symbol'> {
+export interface NovesTokenInfo extends Pick<schemas['Token'], 'name' | 'symbol'> {
   id?: string | undefined;
   address?: string;
 }

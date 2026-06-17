@@ -3,7 +3,8 @@
 import { VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
 
 import ContractCodeProxyPattern from '../code/alerts/ContractDetailsAlertProxyPattern';
 import ConnectWalletAlert from './alerts/ConnectWalletAlert';
@@ -12,7 +13,7 @@ import ContractCustomAbiAlert from './alerts/ContractCustomAbiAlert';
 interface Props {
   isLoading?: boolean;
   isCustomAbi?: boolean;
-  proxyType?: SmartContractProxyType;
+  proxyType?: schemas['ProxyType'];
   conflictingImplementations?: Array<SmartContractConflictingImplementation>;
 }
 

@@ -2,7 +2,7 @@
 
 import type { Abi } from 'viem';
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface TransactionsResponseWatchlist {
@@ -15,7 +15,7 @@ export interface TransactionsResponseWatchlist {
 }
 export interface AddressTag {
   address_hash: string;
-  address: AddressParam;
+  address: schemas['Address'];
   name: string;
   id: number;
 }
@@ -90,7 +90,7 @@ export interface WatchlistAddress {
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
   id: number;
-  address: AddressParam;
+  address: schemas['Address'];
   tokens_count: number;
   tokens_fiat_value: string;
   tokens_overflow: boolean;
@@ -117,7 +117,7 @@ export interface CustomAbi {
   name: string;
   id: number;
   contract_address_hash: string;
-  contract_address: AddressParam;
+  contract_address: schemas['Address'];
   abi: Abi;
 }
 

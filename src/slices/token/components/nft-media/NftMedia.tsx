@@ -5,7 +5,7 @@ import { AspectRatio, Box } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
@@ -20,7 +20,7 @@ import type { MediaType, Size } from './utils';
 import { mediaStyleProps } from './utils';
 
 interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
-  data: TokenInstance;
+  data: schemas['TokenInstance'];
   size?: Size;
   allowedTypes?: Array<MediaType>;
   isLoading?: boolean;

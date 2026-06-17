@@ -3,7 +3,7 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NFTTokenType } from 'src/slices/token/types/api';
+import type { NftTokenType } from 'src/slices/token/types/api';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
@@ -19,8 +19,8 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 
 type Props = {
   tokensQuery: QueryWithPagesResult<'core:address_nfts'>;
-  tokenTypes: Array<NFTTokenType> | undefined;
-  onTokenTypesChange: (value: Array<NFTTokenType>) => void;
+  tokenTypes: Array<NftTokenType> | undefined;
+  onTokenTypesChange: (value: Array<NftTokenType>) => void;
 };
 
 const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => {
@@ -46,12 +46,13 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
       gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
     >
       { data.items.map((item, index) => {
-        const key = item.token.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
+        const key = item.token?.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
 
         return (
           <AddressNftItem
             key={ key }
-            { ...item }
+            instance={ item }
+            token={ item.token ?? undefined }
             isLoading={ isPlaceholderData }
             withTokenLink
             chain={ multichainContext?.chain }

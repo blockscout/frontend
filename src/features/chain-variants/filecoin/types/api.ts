@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export type AddressFilecoinParams = {
-  actor_type?: FilecoinActorType;
-  id?: string | null;
-  robust?: string | null;
-};
-
 export type FilecoinActorType =
   'account' |
   'cron' |

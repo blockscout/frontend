@@ -1,5 +1,6 @@
 import type { WithdrawalsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
+
+import { withoutName } from 'src/slices/address/mocks/address-param';
 
 export const data: WithdrawalsResponse = {
   items: [
@@ -8,12 +9,9 @@ export const data: WithdrawalsResponse = {
       block_number: 43242,
       index: 11688,
       receiver: {
+        ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       timestamp: '2022-06-07T18:12:24.000000Z',
       validator_index: 49622,
     },
@@ -22,12 +20,9 @@ export const data: WithdrawalsResponse = {
       block_number: 43242,
       index: 11687,
       receiver: {
+        ...withoutName,
         hash: '0xf97e987c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       timestamp: '2022-05-07T18:12:24.000000Z',
       validator_index: 49621,
     },
@@ -36,12 +31,9 @@ export const data: WithdrawalsResponse = {
       block_number: 43242,
       index: 11686,
       receiver: {
+        ...withoutName,
         hash: '0xf97e123c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       timestamp: '2022-04-07T18:12:24.000000Z',
       validator_index: 49620,
     },

@@ -2,7 +2,8 @@
 
 import type { Abi, AbiType } from 'abitype';
 
-import type { AddressImplementation, AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { AddressImplementation } from 'src/slices/address/types/api';
 
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
@@ -46,10 +47,11 @@ export type SmartContractProxyType =
   null;
 
 export interface SmartContractConflictingImplementation {
-  proxy_type: NonNullable<SmartContractProxyType>;
+  proxy_type: NonNullable<schemas['ProxyType']>;
   implementations: Array<AddressImplementation>;
 }
 
+// TODO @tom2drum remove this types
 export interface SmartContract {
   deployed_bytecode: string | null;
   creation_bytecode: string | null;
@@ -148,22 +150,21 @@ export interface SmartContractVerificationError {
 
 // VERIFIED CONTRACTS
 
+// TODO @tom2drum remove this type
 export type VerifiedContractsLanguage = 'solidity' | 'vyper' | 'yul' | 'scilla' | 'stylus_rust' | 'geas';
 
-export interface VerifiedContract {
-  address: AddressParam;
-  certified?: boolean;
-  coin_balance: string;
-  compiler_version: string | null;
-  language: VerifiedContractsLanguage;
-  has_constructor_args: boolean;
-  optimization_enabled: boolean;
-  transactions_count: number | null;
-  verified_at: string;
-  market_cap: string | null;
-  license_type: SmartContractLicenseType | null;
-  zk_compiler_version?: string;
-}
+// The API doesn't return the full model but only these fields
+export interface VerifiedContract extends Pick<schemas['SmartContract'],
+  'certified' |
+ 'coin_balance' |
+ 'compiler_version' |
+ 'language' |
+ 'optimization_enabled' |
+ 'transactions_count' |
+ 'verified_at' |
+ 'market_cap' |
+ 'license_type' |
+ 'zk_compiler_version'> {}
 
 export interface VerifiedContractsResponse {
   items: Array<VerifiedContract>;
@@ -180,6 +181,7 @@ export interface VerifiedContractsFilters {
   filter: VerifiedContractsFilter | undefined;
 }
 
+// TODO @tom2drum remove this types
 export type VerifiedContractsCounters = {
   new_smart_contracts_24h: string;
   new_verified_smart_contracts_24h: string;

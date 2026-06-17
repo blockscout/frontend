@@ -1,20 +1,11 @@
-import type {
-  Address,
-  AddressCoinBalanceHistoryItem,
-  AddressCollection,
-  AddressCounters,
-  AddressNFT,
-  AddressTabsCounters,
-  AddressTokenBalance,
-  AddressesItem,
-} from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from 'src/slices/token/stubs';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import { ADDRESS_HASH } from './address-params';
 
-export const ADDRESS_INFO: Address = {
+export const ADDRESS_INFO: schemas['AddressResponse'] = {
   block_number_balance_updated_at: 8774377,
   coin_balance: '810941268802273085757',
   creation_transaction_hash: null,
@@ -36,16 +27,21 @@ export const ADDRESS_INFO: Address = {
   watchlist_names: [],
   watchlist_address_id: null,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
-export const ADDRESS_COUNTERS: AddressCounters = {
+export const ADDRESS_COUNTERS: schemas['AddressCounters'] = {
   gas_usage_count: '8028907522',
   token_transfers_count: '420',
   transactions_count: '119020',
   validations_count: '0',
 };
 
-export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
+export const ADDRESS_TABS_COUNTERS: schemas['AddressTabsCounters'] = {
   internal_transactions_count: 10,
   logs_count: 10,
   token_balances_count: 10,
@@ -56,11 +52,11 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
   beacon_deposits_count: 10,
 };
 
-export const TOP_ADDRESS: AddressesItem = {
+export const TOP_ADDRESS: schemas['TopAddress'] = {
   coin_balance: '11886682377162664596540805',
   transactions_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
-  implementations: null,
+  implementations: [],
   is_contract: false,
   is_verified: null,
   name: null,
@@ -68,9 +64,13 @@ export const TOP_ADDRESS: AddressesItem = {
   public_tags: [ ],
   watchlist_names: [],
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
 };
 
-export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
+export const ADDRESS_COIN_BALANCE: schemas['CoinBalance'] = {
   block_number: 9004413,
   block_timestamp: '2023-05-15T13:16:24Z',
   delta: '1000000000000000000',
@@ -78,35 +78,35 @@ export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
   value: '953427250000000000000000',
 };
 
-export const ADDRESS_TOKEN_BALANCE_ERC_20: AddressTokenBalance = {
+export const ADDRESS_TOKEN_BALANCE_ERC_20: schemas['TokenBalance'] = {
   token: TOKEN_INFO_ERC_20,
   token_id: null,
   token_instance: null,
   value: '1000000000000000000000000',
 };
 
-export const ADDRESS_NFT_721: AddressNFT = {
+export const ADDRESS_NFT_721: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-721',
   value: '1',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_721,
 };
 
-export const ADDRESS_NFT_1155: AddressNFT = {
+export const ADDRESS_NFT_1155: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-1155',
   value: '10',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_1155,
 };
 
-export const ADDRESS_NFT_404: AddressNFT = {
+export const ADDRESS_NFT_404: schemas['TokenInstanceInList'] = {
+  ...TOKEN_INSTANCE,
   token_type: 'ERC-404',
   value: '10',
-  ...TOKEN_INSTANCE,
   token: TOKEN_INFO_ERC_404,
 };
 
-export const ADDRESS_COLLECTION: AddressCollection = {
+export const ADDRESS_COLLECTION: schemas['NFTCollection'] = {
   token: TOKEN_INFO_ERC_1155,
   amount: '4',
   token_instances: Array(4).fill(TOKEN_INSTANCE),

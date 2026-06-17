@@ -63,7 +63,7 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const content = data?.items ? data.items.map((item, index) => (
     <LogItem
       key={ index }
-      { ...item }
+      data={ item }
       type="address"
       isLoading={ isPlaceholderData }
       defaultDataType={ addressQuery.data?.zilliqa?.is_scilla_contract ? 'UTF-8' : undefined }

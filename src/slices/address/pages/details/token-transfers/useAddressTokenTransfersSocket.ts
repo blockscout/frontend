@@ -3,8 +3,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { merged } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { AddressTokenTransferResponse } from 'src/slices/address/types/api';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -34,7 +34,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
     }
   }
   if (filters.type && filters.type.length) {
-    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
+    if (!tokenTransfer.token || !(tokenTransfer.token.type && filters.type.includes(tokenTransfer.token.type))) {
       return false;
     }
   }
@@ -43,6 +43,9 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 };
 
 const OVERLOAD_COUNT = 75;
+
+type AddressTokenTransferResponse =
+  merged.paths['/v2/addresses/{address_hash_param}/token-transfers']['get']['responses']['200']['content']['application/json'];
 
 interface Props {
   filters: Filters;

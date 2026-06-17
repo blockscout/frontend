@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useLoadImageViaIpfs from './useLoadImageViaIpfs';
 import useNftMediaInfo from './useNftMediaInfo';
@@ -11,7 +11,7 @@ import type { MediaElementProps, Size } from './utils';
 import { videoPlayProps } from './utils';
 
 interface Props extends MediaElementProps<'video'> {
-  instance: TokenInstance;
+  instance: schemas['TokenInstance'];
   autoPlay?: boolean;
   size?: Size;
 }

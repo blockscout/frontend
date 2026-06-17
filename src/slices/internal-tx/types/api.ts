@@ -1,24 +1,24 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export type TxInternalsType = 'call' | 'delegatecall' | 'staticcall' | 'create' | 'create2' | 'selfdestruct' | 'reward';
 
 export type InternalTransaction = (
   {
-    to: AddressParam;
+    to: schemas['Address'];
     created_contract: null;
   } |
   {
     to: null;
-    created_contract: AddressParam;
+    created_contract: schemas['Address'];
   }
 ) & {
   error: string | null;
   success: boolean;
   type: TxInternalsType;
   transaction_hash: string;
-  from: AddressParam;
+  from: schemas['Address'];
   value: string;
   index: number;
   block_number: number;

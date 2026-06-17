@@ -2,11 +2,10 @@
 
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
@@ -16,7 +15,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import PageTitle from '../PageTitle';
 
 const DefaultView = () => {
-  const tokenData: TokenInfo = {
+  const tokenData = toTokenModel({
     address_hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: '117629601.61913824',
     type: 'ERC-20',
@@ -28,7 +27,7 @@ const DefaultView = () => {
     total_supply: null,
     icon_url: 'https://example.com/logo.png',
     reputation: 'ok',
-  };
+  });
 
   const contentAfter = (
     <>
@@ -45,10 +44,10 @@ const DefaultView = () => {
   const secondRow = (
     <>
       <AddressEntity
-        address={{ ...addressMock.token, name: '' }}
+        address={{ ...addressParamMock.withoutName, is_contract: true }}
         variant="subheading"
       />
-      <AlternativeExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
+      <AlternativeExplorers type="token" pathParam={ addressParamMock.hash } ml="auto"/>
     </>
   );
 

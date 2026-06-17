@@ -3,7 +3,7 @@
 import { Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TransactionRevertReason } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
 
@@ -11,10 +11,14 @@ import hexToUtf8 from 'src/shared/data/transformers/hex-to-utf8';
 
 import { HEX_REGEXP } from 'src/toolkit/utils/regexp';
 
-type Props = TransactionRevertReason;
+type Props = NonNullable<schemas['Transaction']['revert_reason']>;
 
 const TxRevertReason = (props: Props) => {
   if ('raw' in props) {
+    if (!props.raw) {
+      return null;
+    }
+
     if (!HEX_REGEXP.test(props.raw)) {
       return <Text>{ props.raw }</Text>;
     }

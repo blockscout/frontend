@@ -1,6 +1,8 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import type { AddressCeloAccount as TAddressCeloAccount } from 'src/features/chain-variants/celo/types/api';
+
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { Container } from 'src/shared/detailed-info/DetailedInfo';
 
@@ -15,10 +17,10 @@ const DATA = {
   // eslint-disable-next-line max-len
   metadata_url: 'https://storage.googleapis.com/clabs_validator_metadata/alfajores/validator-alfajores-0x050f34537F5b2a00B9B9C752Cb8500a3fcE3DA7d-metadata.json',
   nonvoting_locked_celo: '10000000000000000000000',
-  vote_signer_address: addressMock.withName,
-  validator_signer_address: addressMock.withEns,
-  attestation_signer_address: addressMock.withoutName,
-};
+  vote_signer_address: addressParamMock.withName,
+  validator_signer_address: addressParamMock.withEns,
+  attestation_signer_address: addressParamMock.withoutName,
+} satisfies TAddressCeloAccount ;
 
 test('default view +@mobile', async({ render }) => {
   const component = await render(

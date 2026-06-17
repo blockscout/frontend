@@ -3,10 +3,10 @@
 import { useQueries, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Transaction } from 'src/slices/tx/types/api';
 
-import formatBlockRpcData from 'src/slices/block/utils/format-rpc-data';
+import { formatBlockListData } from 'src/slices/block/utils/format-rpc-data';
 import formatTxRpcData from 'src/slices/tx/utils/format-rpc-data';
 
 import { publicClient } from 'src/features/connect-wallet/utils/public-client';
@@ -16,7 +16,7 @@ import { SECOND } from 'src/toolkit/utils/consts';
 export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';
 
 interface HomeRpcDataContext {
-  blocks: Array<Block>;
+  blocks: Array<schemas['Block']>;
   txs: Array<Transaction>;
   totalTxs: number;
   isError: boolean;
@@ -31,7 +31,7 @@ export const HomeRpcDataContext = React.createContext<HomeRpcDataContext | null>
 const ITEMS_LIMIT = 5;
 
 export function HomeRpcDataContextProvider({ children }: { children: React.ReactNode }) {
-  const [ blocks, setBlocks ] = React.useState<Array<Block>>([]);
+  const [ blocks, setBlocks ] = React.useState<Array<schemas['Block']>>([]);
   const [ txs, setTxs ] = React.useState<Array<Transaction>>([]);
   const [ totalTxs, setTotalTxs ] = React.useState(0);
   const [ isLoading, setIsLoading ] = React.useState(true);
@@ -65,7 +65,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
           setBlocks((prev) => {
             try {
               return [
-                formatBlockRpcData({
+                formatBlockListData({
                   ...block,
                   transactions: block.transactions.map((tx) => tx.hash),
                 }),

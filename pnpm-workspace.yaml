@@ -52,6 +52,7 @@ allowBuilds:
 
 minimumReleaseAge: 10080 # 1 week
 minimumReleaseAgeExclude:
+  - '@blockscout/api-types'
   - '@blockscout/bens-types'
   - '@blockscout/interchain-indexer-types'
   - '@blockscout/multichain-aggregator-types'

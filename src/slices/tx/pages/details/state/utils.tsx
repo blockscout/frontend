@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxStateChange } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
@@ -19,9 +19,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 import { nbsp, space } from 'src/toolkit/utils/htmlEntities';
 
-import TxStateTokenIdList from './TxStateTokenIdList';
-
-export function getStateElements(data: TxStateChange, isLoading?: boolean) {
+export function getStateElements(data: schemas['StateChange'], isLoading?: boolean) {
   const tag = (() => {
     if (data.is_miner) {
       return (
@@ -34,13 +32,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
     }
 
     if (data.address.hash === ZERO_ADDRESS) {
-      const changeDirection = (() => {
-        if (Array.isArray(data.change)) {
-          const firstChange = data.change[0];
-          return firstChange.direction;
-        }
-        return Number(data.change) > 0 ? 'to' : 'from';
-      })();
+      const changeDirection = Number(data.change) > 0 ? 'to' : 'from';
 
       if (changeDirection) {
         const text = changeDirection === 'from' ? 'Mint' : 'Burn';
@@ -83,7 +75,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       };
     }
     case 'token': {
-      const tokenLink = (
+      const tokenLink = data.token && (
         <TokenEntity
           token={ data.token }
           isLoading={ isLoading }
@@ -93,12 +85,12 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           w="auto"
         />
       );
-      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
-      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
+      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
+      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
       const change = (() => {
         let differenceBn;
         if (typeof data.change === 'string') {
-          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token.decimals))));
+          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
         } else {
           differenceBn = afterBn.minus(beforeBn);
         }
@@ -118,21 +110,17 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       })();
 
       const tokenId = (() => {
-        if (!Array.isArray(data.change)) {
-          if ('token_id' in data && data.token_id) {
-            return (
-              <NftEntity
-                hash={ data.token.address_hash }
-                id={ data.token_id }
-                isLoading={ isLoading }
-              />
-            );
-          } else {
-            return null;
-          }
+        if ('token_id' in data && data.token_id && data.token) {
+          return (
+            <NftEntity
+              hash={ data.token.address_hash }
+              id={ data.token_id }
+              isLoading={ isLoading }
+            />
+          );
+        } else {
+          return null;
         }
-
-        return <TxStateTokenIdList items={ data.change } tokenAddress={ data.token.address_hash } isLoading={ isLoading }/>;
       })();
 
       return {

@@ -464,7 +464,7 @@ const AddressPageContent = () => {
           hash: checkSummedHash,
           name: '',
           ens_domain_name: '',
-          implementations: null,
+          implementations: [],
         }}
         isLoading={ isLoading }
         variant="subheading"

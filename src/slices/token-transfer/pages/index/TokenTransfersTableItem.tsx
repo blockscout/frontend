@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import { isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -21,7 +21,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 type Props = {
-  item: TokenTransfer;
+  item: schemas['TokenTransfer'];
   isLoading?: boolean;
   chainData?: ClusterChainConfig;
 };
@@ -98,15 +98,16 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
         />
       </TableCell>
       <TableCell>
-        { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
-          <NftEntity
-            hash={ item.token.address_hash }
-            id={ item.total.token_id }
-            instance={ item.total.token_instance }
-            isLoading={ isLoading }
-            maxW="140px"
-          />
-        ) : <Skeleton loading={ isLoading }>-</Skeleton> }
+        { item.total && 'token_id' in item.total && item.token && item.token.type &&
+          (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
+            <NftEntity
+              hash={ item.token.address_hash }
+              id={ item.total.token_id }
+              instance={ item.total.token_instance }
+              isLoading={ isLoading }
+              maxW="140px"
+            />
+          ) : <Skeleton loading={ isLoading }>-</Skeleton> }
       </TableCell>
       <TableCell isNumeric verticalAlign="top">
         { renderValue() }

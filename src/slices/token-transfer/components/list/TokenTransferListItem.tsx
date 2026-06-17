@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -23,7 +23,8 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
 
-type Props = TokenTransfer & {
+interface Props {
+  data: schemas['TokenTransfer'];
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
@@ -32,16 +33,9 @@ type Props = TokenTransfer & {
 };
 
 const TokenTransferListItem = ({
-  token,
-  total,
-  transaction_hash: txHash,
-  from,
-  to,
+  data,
   baseAddress,
   showTxInfo,
-  type,
-  token_type: transferTokenType,
-  timestamp,
   enableTimeIncrement,
   isLoading,
   chainData,
@@ -49,41 +43,46 @@ const TokenTransferListItem = ({
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex w="100%" justifyContent="space-between">
-        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 } columnGap={ 2 } overflow="hidden">
-          { token && (
+        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && data.transaction_hash ? 2 : 0 } columnGap={ 2 } overflow="hidden">
+          { data.token && (
             <>
               <TokenEntity
-                token={ token }
+                token={ data.token }
                 isLoading={ isLoading }
                 noSymbol
                 noCopy
                 w="auto"
               />
-              <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(token.type, chainData?.app_config) }</Badge>
+              { data.token.type && <Badge flexShrink={ 0 } loading={ isLoading }>{ getTokenTypeName(data.token.type, chainData?.app_config) }</Badge> }
             </>
           ) }
-          <TokenTransferTypeBadge methodType={ type } tokenType={ token?.type } transferTokenType={ transferTokenType } loading={ isLoading }/>
+          <TokenTransferTypeBadge
+            methodType={ data.type }
+            tokenType={ data.token?.type ?? undefined }
+            transferTokenType={ data.token_type }
+            loading={ isLoading }
+          />
         </Flex>
-        { showTxInfo && txHash && (
-          <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
+        { showTxInfo && data.transaction_hash && (
+          <TxAdditionalInfo hash={ data.transaction_hash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { total && 'token_id' in total && total.token_id !== null && token && (
-        <NftEntity hash={ token.address_hash } id={ total.token_id } instance={ total.token_instance } isLoading={ isLoading }/>
+      { data.total && 'token_id' in data.total && data.total.token_id !== null && data.token && (
+        <NftEntity hash={ data.token.address_hash } id={ data.total.token_id } instance={ data.total.token_instance } isLoading={ isLoading }/>
       ) }
       { showTxInfo && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
-          { txHash && (
+          { data.transaction_hash && (
             <TxEntity
               isLoading={ isLoading }
-              hash={ txHash }
+              hash={ data.transaction_hash }
               truncation="constant_long"
               fontWeight="700"
               chain={ chainData }
             />
           ) }
           <TimeWithTooltip
-            timestamp={ timestamp }
+            timestamp={ data.timestamp }
             enableIncrement={ enableTimeIncrement }
             isLoading={ isLoading }
             color="text.secondary"
@@ -93,26 +92,26 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       <AddressFromTo
-        from={ from }
-        to={ to }
+        from={ data.from }
+        to={ data.to }
         current={ baseAddress }
         isLoading={ isLoading }
         w="100%"
       />
-      { total && 'value' in total && total.value !== null && (
+      { data.total && 'value' in data.total && data.total.value !== null && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
           <AssetValue
-            amount={ total && 'value' in total && total.value !== null ? total.value : null }
-            decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
-            exchangeRate={ token?.exchange_rate }
+            amount={ data.total && 'value' in data.total && data.total.value !== null ? data.total.value : null }
+            decimals={ data.total && 'decimals' in data.total ? data.total.decimals || '0' : '0' }
+            exchangeRate={ data.token?.exchange_rate }
             loading={ isLoading }
             color="text.secondary"
           />
         </Flex>
       ) }
 
-      { token && isConfidentialTokenType(token.type) && (!total || !('value' in total) || total.value === null) && (
+      { data.token && isConfidentialTokenType(data.token.type) && (!data.total || !('value' in data.total) || data.total.value === null) && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
           <ConfidentialValue loading={ isLoading } color="text.secondary"/>

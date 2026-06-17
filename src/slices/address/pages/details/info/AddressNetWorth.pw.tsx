@@ -2,13 +2,14 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 
 import { test, expect } from 'playwright/lib';
 
 import AddressNetWorth from './AddressNetWorth';
 
-const ADDRESS_HASH = addressMock.hash;
+const ADDRESS_HASH = addressParamMock.hash;
 const ICON_URL = 'https://localhost:3000/my-icon.png';
 const ICON_URL_PROMO = 'https://localhost:3000/my-icon-promo.png';
 

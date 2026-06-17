@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -34,7 +34,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
-  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
+  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
 }
 
 const TokenDetails = ({ tokenQuery }: Props) => {

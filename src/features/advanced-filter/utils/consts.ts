@@ -2,7 +2,8 @@
 
 import type { AdvancedFilterParams } from '../types/api';
 import type { TxTableColumn } from '../types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
+
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import config from 'src/config';
 
@@ -61,13 +62,13 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   },
 ] as const;
 
-export const NATIVE_TOKEN = {
+export const NATIVE_TOKEN = toTokenModel({
   name: config.chain.currency.name || '',
   icon_url: '',
   symbol: config.chain.currency.symbol || '',
   address_hash: 'native',
-  type: 'ERC-20' as const,
-} as TokenInfo;
+  type: 'ERC-20',
+});
 
 export const FILTER_PARAM_NAMES: Record<keyof AdvancedFilterParams, string> = {
   // we don't show address_relation as filter tag

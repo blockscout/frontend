@@ -25,7 +25,7 @@ const TokenTransfersLocal = () => {
       <Box hideFrom="lg">
         { query.data?.items.map((item, index) => (
           <TokenTransfersListItem
-            key={ item.transaction_hash + item.log_index + (query.isPlaceholderData ? index : '') }
+            key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') }
             isLoading={ query.isPlaceholderData }
             item={ item }
           />

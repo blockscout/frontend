@@ -4,7 +4,7 @@
 import { Dialog as ChakraDialog } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { DialogContent, DialogRoot, DialogCloseTrigger } from 'src/toolkit/chakra/dialog';
 
@@ -17,7 +17,7 @@ import type { MediaType } from './utils';
 interface Props {
   open: boolean;
   onOpenChange: ({ open }: { open: boolean }) => void;
-  data: TokenInstance;
+  data: schemas['TokenInstance'];
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
 }

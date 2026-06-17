@@ -14,8 +14,6 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import { calculateUsdValue } from 'src/slices/token/pages/address/utils';
-
 import multichainConfig from 'src/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
@@ -34,6 +32,7 @@ import { ZERO } from 'src/toolkit/utils/consts';
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
 import MultichainAddressTokensTable from './MultichainAddressTokensTable';
+import { calculateUsdValue } from './utils';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -159,7 +158,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
 
     const usdBalances = allTokensQuery.data?.items?.map((item) => ({
       symbol: item.token.symbol ?? 'Unknown',
-      usd: calculateUsdValue(item).usd,
+      usd: calculateUsdValue(item)?.usd,
     }));
     const groups = groupBy(usdBalances ?? [], (item) => item.symbol);
     const topTokens = Object.entries(groups)

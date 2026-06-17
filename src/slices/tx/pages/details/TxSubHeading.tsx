@@ -3,7 +3,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -66,9 +66,9 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasViewAllInterpretationsLink =
     !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-  const addressDataMap: Record<string, AddressParam> = {};
+  const addressDataMap: Record<string, schemas['Address']> = {};
   [ txQuery.data?.from, txQuery.data?.to ]
-    .filter((data): data is AddressParam => Boolean(data && data.hash))
+    .filter((data): data is schemas['Address'] => Boolean(data && data.hash))
     .forEach(data => {
       addressDataMap[data.hash] = data;
     });

@@ -3,7 +3,9 @@
 import { Separator, Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZilliqaNestedQuorumCertificate, ZilliqaQuorumCertificate } from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { ZilliqaNestedQuorumCertificate } from 'src/features/chain-variants/zilliqa/types/api';
+import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -17,7 +19,7 @@ function formatSigners(signers: Array<number>) {
 }
 
 interface Props {
-  data: ZilliqaQuorumCertificate & {
+  data: ExcludeUndefined<schemas['BlockResponse']['zilliqa']>['quorum_certificate'] & {
     nested_quorum_certificates?: Array<ZilliqaNestedQuorumCertificate>;
   };
 }

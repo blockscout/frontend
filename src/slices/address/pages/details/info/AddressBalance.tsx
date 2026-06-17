@@ -3,8 +3,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { Address } from 'src/slices/address/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
@@ -17,7 +17,7 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 interface Props {
-  data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
+  data: Pick<schemas['AddressResponse'], 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
   isLoading?: boolean;
 }
 
@@ -32,7 +32,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
 
     setLastBlockNumber(blockNumber);
     const queryKey = getResourceKey('core:address', { pathParams: { hash: data.hash } });
-    queryClient.setQueryData(queryKey, (prevData: Address | undefined) => {
+    queryClient.setQueryData(queryKey, (prevData: schemas['AddressResponse'] | undefined) => {
       if (!prevData) {
         return;
       }

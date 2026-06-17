@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import ActionsMenu from 'src/shell/page/actions-menu/ActionsMenu';
@@ -21,8 +21,8 @@ import * as regexp from 'src/toolkit/utils/regexp';
 
 interface Props {
   isLoading: boolean;
-  token: TokenInfo | undefined;
-  instance: TokenInstance | undefined;
+  token: schemas['Token'] | undefined;
+  instance: schemas['TokenInstance'] | undefined;
   hash: string | undefined;
 }
 

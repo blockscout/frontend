@@ -3,7 +3,7 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { MetadataAttributes } from 'src/slices/token/types/client';
 
 import parseMetadata from 'src/slices/token/utils/parse-metadata';
@@ -17,7 +17,7 @@ import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 import { useMetadataUpdateContext } from '../metadata-update-context';
 
 interface Props {
-  data?: TokenInstance;
+  data?: schemas['TokenInstance'];
   isLoading?: boolean;
 }
 

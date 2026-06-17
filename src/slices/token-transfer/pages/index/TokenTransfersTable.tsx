@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -14,7 +14,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TokenTransferTableItem from './TokenTransfersTableItem';
 
 interface Props {
-  items?: Array<TokenTransfer>;
+  items?: Array<schemas['TokenTransfer']>;
   top: number;
   isLoading?: boolean;
   chainData?: ClusterChainConfig;
@@ -41,7 +41,7 @@ const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {
         <TableBody>
           { items?.map((item, index) => (
             <TokenTransferTableItem
-              key={ item.transaction_hash + item.log_index + (isLoading ? index : '') + (chainData ? chainData.id : '') }
+              key={ (item.transaction_hash ?? '') + item.log_index + (isLoading ? index : '') + (chainData ? chainData.id : '') }
               item={ item }
               isLoading={ isLoading }
               chainData={ chainData }

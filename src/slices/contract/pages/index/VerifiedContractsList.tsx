@@ -3,16 +3,16 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { VerifiedContract } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import VerifiedContractsListItem from './VerifiedContractsListItem';
 
-const VerifiedContractsList = ({ data, isLoading }: { data: Array<VerifiedContract>; isLoading: boolean }) => {
+const VerifiedContractsList = ({ data, isLoading }: { data: Array<schemas['SmartContractListItem']>; isLoading: boolean }) => {
   return (
     <Box>
       { data.map((item, index) => (
         <VerifiedContractsListItem
-          key={ item.address.hash + (isLoading ? index : '') }
+          key={ `${ item.address?.hash ?? '' }${ isLoading ? index : '' }` }
           data={ item }
           isLoading={ isLoading }
         />

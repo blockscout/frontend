@@ -3,8 +3,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { AddressCounters } from 'src/slices/address/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import type { ResourceError } from 'src/api/resources';
@@ -18,7 +18,7 @@ type RpcResponseType = [
   number | null,
 ];
 
-export type AddressCountersQuery = UseQueryResult<AddressCounters, ResourceError<{ status: number }>> & {
+export type AddressCountersQuery = UseQueryResult<schemas['AddressCounters'], ResourceError<{ status: number }>> & {
   isDegradedData: boolean;
 };
 
@@ -43,7 +43,7 @@ export default function useAddressCountersQuery({ hash, isLoading, isDegradedDat
     chain,
   });
 
-  const rpcQuery = useQuery<RpcResponseType, unknown, AddressCounters | null>({
+  const rpcQuery = useQuery<RpcResponseType, unknown, schemas['AddressCounters'] | null>({
     queryKey: [ 'RPC', 'address_counters', { hash } ],
     queryFn: async() => {
       if (!publicClient) {
@@ -61,8 +61,8 @@ export default function useAddressCountersQuery({ hash, isLoading, isDegradedDat
       return {
         transactions_count: txCount?.toString() ?? '0',
         token_transfers_count: '0',
-        gas_usage_count: null,
-        validations_count: null,
+        gas_usage_count: '0',
+        validations_count: '0',
       };
     },
     placeholderData: [ GET_TRANSACTIONS_COUNT ],
@@ -72,7 +72,7 @@ export default function useAddressCountersQuery({ hash, isLoading, isDegradedDat
   });
 
   const isRpcQuery = Boolean((isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
-  const query = isRpcQuery ? rpcQuery as UseQueryResult<AddressCounters, ResourceError<{ status: number }>> : apiQuery;
+  const query = isRpcQuery ? rpcQuery as UseQueryResult<schemas['AddressCounters'], ResourceError<{ status: number }>> : apiQuery;
 
   return {
     ...query,

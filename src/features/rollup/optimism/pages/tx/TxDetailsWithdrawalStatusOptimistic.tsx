@@ -3,8 +3,8 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { OpWithdrawal, OptimisticL2WithdrawalStatus } from 'src/features/rollup/optimism/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -17,7 +17,7 @@ import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 
 interface Props {
   data: OpWithdrawal;
-  from: AddressParam;
+  from: schemas['Address'];
   txHash: string;
 }
 

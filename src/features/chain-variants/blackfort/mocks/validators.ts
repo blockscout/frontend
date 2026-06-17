@@ -4,10 +4,10 @@ import type {
   ValidatorsBlackfortResponse,
 } from 'src/features/chain-variants/blackfort/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 export const validator1: ValidatorBlackfort = {
-  address: addressMock.withName,
+  address: addressParamMock.withName,
   name: 'testnet-3',
   commission: 10,
   delegated_amount: '0',
@@ -15,7 +15,7 @@ export const validator1: ValidatorBlackfort = {
 };
 
 export const validator2: ValidatorBlackfort = {
-  address: addressMock.withEns,
+  address: addressParamMock.withEns,
   name: 'GooseGanG GooseGanG GooseGanG GooseGanG GooseGanG GooseGanG GooseGanG',
   commission: 5000,
   delegated_amount: '10000',
@@ -23,7 +23,7 @@ export const validator2: ValidatorBlackfort = {
 };
 
 export const validator3: ValidatorBlackfort = {
-  address: addressMock.withoutName,
+  address: addressParamMock.withoutName,
   name: 'testnet-1',
   commission: 0,
   delegated_amount: '0',

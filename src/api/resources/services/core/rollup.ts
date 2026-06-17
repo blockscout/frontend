@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { merged } from '@blockscout/api-types';
 import type {
   AddressMudTables,
   AddressMudTablesFilter,
@@ -15,7 +16,6 @@ import type {
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
   ArbitrumL2BatchTxs,
-  ArbitrumL2BatchBlocks,
   ArbitrumL2TxnWithdrawalsResponse,
   ArbitrumL2MessageClaimResponse,
 } from 'src/features/rollup/arbitrum/types/api';
@@ -27,13 +27,11 @@ import type {
   OptimisticL2DisputeGamesResponse,
   OptimismL2TxnBatch,
   OptimismL2BatchTxs,
-  OptimismL2BatchBlocks,
 } from 'src/features/rollup/optimism/types/api';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,
   ScrollL2TxnBatchTxs,
-  ScrollL2TxnBatchBlocks,
   ScrollL2MessagesResponse,
 } from 'src/features/rollup/scroll/types/api';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'src/features/rollup/shibarium/types/api';
@@ -289,7 +287,8 @@ R extends 'core:optimistic_l2_txn_batches_count' ? number :
 R extends 'core:optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
 R extends 'core:optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
 R extends 'core:optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
-R extends 'core:optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
+R extends 'core:optimistic_l2_txn_batch_blocks' ?
+  merged.paths['/v2/blocks/optimism-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 R extends 'core:optimistic_l2_output_roots_count' ? number :
 R extends 'core:optimistic_l2_withdrawals_count' ? number :
@@ -308,7 +307,8 @@ R extends 'core:arbitrum_l2_txn_batches_count' ? number :
 R extends 'core:arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
 R extends 'core:arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
 R extends 'core:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
-R extends 'core:arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
+R extends 'core:arbitrum_l2_txn_batch_blocks' ?
+  merged.paths['/v2/blocks/arbitrum-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
 R extends 'core:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
 R extends 'core:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
@@ -316,7 +316,8 @@ R extends 'core:zksync_l2_txn_batches_count' ? number :
 R extends 'core:zksync_l2_txn_batch' ? ZkSyncBatch :
 R extends 'core:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 R extends 'core:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
-R extends 'core:scroll_l2_txn_batch_blocks' ? ScrollL2TxnBatchBlocks :
+R extends 'core:scroll_l2_txn_batch_blocks' ?
+  merged.paths['/v2/blocks/scroll-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
 R extends 'core:scroll_l2_txn_batches_count' ? number :
 R extends 'core:scroll_l2_txn_batch' ? ScrollL2TxnBatch :

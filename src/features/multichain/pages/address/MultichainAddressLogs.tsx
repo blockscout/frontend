@@ -82,7 +82,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const content = data?.items ? data.items.map((item, index) => (
     <LogItem
       key={ index }
-      { ...item }
+      data={ item }
       type="address"
       isLoading={ isPlaceholderData }
       chainData={ chainData }

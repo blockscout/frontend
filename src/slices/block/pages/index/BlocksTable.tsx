@@ -3,8 +3,8 @@
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Block } from 'src/slices/block/types/api';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
@@ -20,7 +20,7 @@ import useInitialList from 'src/shared/lists/useInitialList';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  data: Array<Block>;
+  data: Array<schemas['Block']>;
   isLoading?: boolean;
   top: number;
   page: number;

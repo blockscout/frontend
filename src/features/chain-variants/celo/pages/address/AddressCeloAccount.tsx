@@ -3,8 +3,7 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { ExcludeNull, ExcludeUndefined } from 'src/shared/types/utils';
-import type { Address } from 'src/slices/address/types/api';
+import type { AddressCeloAccount as TAddressCeloAccount } from 'src/features/chain-variants/celo/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -18,7 +17,7 @@ import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
   isLoading?: boolean;
-  data: ExcludeNull<ExcludeUndefined<Address['celo']>['account']>;
+  data: TAddressCeloAccount;
 }
 
 const AddressCeloAccount = ({ isLoading, data }: Props) => {

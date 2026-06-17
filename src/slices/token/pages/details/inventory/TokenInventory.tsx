@@ -4,7 +4,7 @@ import { Flex, Grid, Text } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -24,7 +24,7 @@ import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
   inventoryQuery: QueryWithPagesResult<'core:token_inventory'>;
-  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
+  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
   ownerFilter?: string;
   shouldRender?: boolean;
 };

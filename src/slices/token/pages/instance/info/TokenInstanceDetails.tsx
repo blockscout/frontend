@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
@@ -26,8 +26,8 @@ import TokenInstanceMetadataInfo from './TokenInstanceMetadataInfo';
 import TokenInstanceTransfersCount from './TokenInstanceTransfersCount';
 
 interface Props {
-  data?: TokenInstance;
-  token?: TokenInfo;
+  data?: schemas['TokenInstance'];
+  token?: schemas['Token'];
   isLoading?: boolean;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
 }

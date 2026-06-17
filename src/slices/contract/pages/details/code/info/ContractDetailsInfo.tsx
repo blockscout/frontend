@@ -3,7 +3,7 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
@@ -27,7 +27,7 @@ const rollupFeature = config.features.rollup;
 interface Props {
   data: SmartContract;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
 }
 
 const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {

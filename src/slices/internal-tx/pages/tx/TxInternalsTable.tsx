@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -13,7 +13,7 @@ import type { Sort, SortField } from '../../utils/utils';
 import TxInternalsTableItem from './TxInternalsTableItem';
 
 interface Props {
-  data: Array<InternalTransaction>;
+  data: Array<schemas['InternalTransaction']>;
   sort: Sort;
   onSortToggle: (field: SortField) => void;
   top: number;
@@ -50,7 +50,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
         </TableHeaderSticky>
         <TableBody>
           { data.map((item, index) => (
-            <TxInternalsTableItem key={ item.index.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+            <TxInternalsTableItem key={ item.index.toString() + (isLoading ? index : '') } data={ item } isLoading={ isLoading }/>
           )) }
         </TableBody>
       </TableRoot>

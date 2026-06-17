@@ -1,6 +1,6 @@
-import type { AddressCoinBalanceHistoryItem, AddressCoinBalanceHistoryResponse, AddressCoinBalanceHistoryChart } from 'src/slices/address/types/api';
+import type { schemas, merged } from '@blockscout/api-types';
 
-export const base: AddressCoinBalanceHistoryItem = {
+export const base: schemas['CoinBalance'] = {
   block_number: 30367643,
   block_timestamp: '2022-12-11T17:55:20Z',
   delta: '-5568096000000000',
@@ -8,7 +8,8 @@ export const base: AddressCoinBalanceHistoryItem = {
   value: '107014805905725000000',
 };
 
-export const baseResponse: AddressCoinBalanceHistoryResponse = {
+export const baseResponse:
+merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['responses']['200']['content']['application/json'] = {
   items: [
     {
       block_number: 30367643,
@@ -35,7 +36,8 @@ export const baseResponse: AddressCoinBalanceHistoryResponse = {
   next_page_params: null,
 };
 
-export const chartResponse: AddressCoinBalanceHistoryChart = {
+export const chartResponse:
+merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get']['responses']['200']['content']['application/json'] = {
   items: [
     {
       date: '2022-11-02',

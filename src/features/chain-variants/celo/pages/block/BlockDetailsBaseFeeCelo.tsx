@@ -3,9 +3,8 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { BlockBaseFeeCelo } from 'src/features/chain-variants/celo/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -18,8 +17,8 @@ import { Link } from 'src/toolkit/chakra/link';
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
-  addressFrom: AddressParam;
-  token: TokenInfo;
+  addressFrom: schemas['Address'];
+  token: schemas['Token'];
 };
 
 const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: ItemProps) => {

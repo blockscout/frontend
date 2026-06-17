@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { SmartContractProxyType } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
+export const PROXY_TYPES: Partial<Record<NonNullable<schemas['ProxyType']>, {
   name: string;
   link?: string;
   description?: string;
@@ -71,8 +71,5 @@ export const PROXY_TYPES: Partial<Record<NonNullable<SmartContractProxyType>, {
   minimal_proxy: {
     name: 'Minimal Proxy',
     description: 'Minimal Proxy uses compact bytecode to forward calls to an implementation contract.',
-  },
-  unknown: {
-    name: 'Unknown proxy pattern',
   },
 };

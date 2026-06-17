@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'src/slices/block/utils/get-block-total-reward';
@@ -17,20 +17,21 @@ import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
-type Props = Block & {
+interface Props {
+  data: schemas['Block'];
   page: number;
   isLoading: boolean;
-};
+}
 
-const AddressBlocksValidatedTableItem = (props: Props) => {
-  const totalReward = getBlockTotalReward(props);
+const AddressBlocksValidatedTableItem = ({ data, page, isLoading }: Props) => {
+  const totalReward = getBlockTotalReward(data);
 
   return (
     <TableRow>
       <TableCell>
         <BlockEntity
-          isLoading={ props.isLoading }
-          number={ props.height }
+          isLoading={ isLoading }
+          number={ data.height }
           noIcon
           textStyle="sm"
           fontWeight={ 700 }
@@ -38,27 +39,27 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
       </TableCell>
       <TableCell>
         <TimeWithTooltip
-          timestamp={ props.timestamp }
-          enableIncrement={ props.page === 1 }
-          isLoading={ props.isLoading }
+          timestamp={ data.timestamp }
+          enableIncrement={ page === 1 }
+          isLoading={ isLoading }
           color="text.secondary"
           display="inline-block"
         />
       </TableCell>
       <TableCell>
-        <Skeleton loading={ props.isLoading } display="inline-block" fontWeight="500">
-          <span>{ props.transactions_count }</span>
+        <Skeleton loading={ isLoading } display="inline-block" fontWeight="500">
+          <span>{ data.transactions_count }</span>
         </Skeleton>
       </TableCell>
       <TableCell>
         <Flex alignItems="center" columnGap={ 2 }>
-          <Skeleton loading={ props.isLoading } flexBasis="80px">
-            { BigNumber(props.gas_used || 0).toFormat() }
+          <Skeleton loading={ isLoading } flexBasis="80px">
+            { BigNumber(data.gas_used || 0).toFormat() }
           </Skeleton>
           <GasUsed
-            gasUsed={ props.gas_used || undefined }
-            gasLimit={ props.gas_limit }
-            isLoading={ props.isLoading }
+            gasUsed={ data.gas_used || undefined }
+            gasLimit={ data.gas_limit }
+            isLoading={ isLoading }
           />
         </Flex>
       </TableCell>
@@ -67,7 +68,7 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           <SimpleValue
             value={ totalReward }
             accuracy={ 0 }
-            loading={ props.isLoading }
+            loading={ isLoading }
           />
         </TableCell>
       ) }

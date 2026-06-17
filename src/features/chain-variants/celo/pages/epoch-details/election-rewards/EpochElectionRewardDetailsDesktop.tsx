@@ -4,8 +4,8 @@ import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { CeloEpochDetails } from 'src/features/chain-variants/celo/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -19,7 +19,7 @@ import { formatRewardType, getRewardDetailsTableTitles } from './utils';
 
 interface Props {
   type: keyof CeloEpochDetails['aggregated_election_rewards'];
-  token: TokenInfo;
+  token: schemas['Token'];
 }
 
 const CeloEpochElectionRewardDetailsDesktop = ({ type, token }: Props) => {

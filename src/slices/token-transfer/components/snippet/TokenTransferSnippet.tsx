@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type {
-  TokenTransfer,
   Erc20TotalPayload,
   Erc721TotalPayload,
   Erc1155TotalPayload,
@@ -22,7 +22,7 @@ import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
 import TokenTransferSnippetNft from './TokenTransferSnippetNft';
 
 interface Props {
-  data: TokenTransfer;
+  data: schemas['TokenTransfer'];
   noAddressIcons?: boolean;
   isLoading?: boolean;
 }

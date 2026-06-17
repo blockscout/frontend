@@ -4,7 +4,7 @@ import { Box, Flex, Grid } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -22,7 +22,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { thinsp } from 'src/toolkit/utils/htmlEntities';
 
 type Props = {
-  block: Block;
+  block: schemas['Block'];
   isLoading?: boolean;
   animation?: string;
 };

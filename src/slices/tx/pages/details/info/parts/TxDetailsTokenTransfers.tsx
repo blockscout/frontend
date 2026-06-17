@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenTransferSnippet from 'src/slices/token-transfer/components/snippet/TokenTransferSnippet';
 
@@ -16,7 +16,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   txHash: string;
   isOverflow: boolean;
 }

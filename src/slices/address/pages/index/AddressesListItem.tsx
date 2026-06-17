@@ -4,7 +4,7 @@ import { Flex, HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -16,8 +16,8 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
 import { ZERO } from 'src/toolkit/utils/consts';
 
-type Props = {
-  item: AddressesItem;
+interface Props {
+  item: schemas['TopAddress'];
   index: number;
   totalSupply: BigNumber;
   isLoading?: boolean;
@@ -46,7 +46,7 @@ const AddressesListItem = ({
           <span>{ index }</span>
         </Skeleton>
       </Flex>
-      { item.public_tags !== null && item.public_tags.length > 0 && item.public_tags.map(tag => (
+      { item.public_tags !== null && item.public_tags !== undefined && item.public_tags.length > 0 && item.public_tags.map(tag => (
         <Tag key={ tag.label } loading={ isLoading } truncated>{ tag.display_name }</Tag>
       )) }
       <HStack gap={ 3 } maxW="100%" alignItems="flex-start">

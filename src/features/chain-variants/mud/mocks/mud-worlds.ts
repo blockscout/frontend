@@ -1,6 +1,6 @@
 import type { MudWorldsResponse } from 'src/features/chain-variants/mud/types/api';
 
-import { withName, withoutName } from 'src/slices/address/mocks/address';
+import { withName, withoutName } from 'src/slices/address/mocks/address-param';
 
 export const mudWorlds: MudWorldsResponse = {
   items: [

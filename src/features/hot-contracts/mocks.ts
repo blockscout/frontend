@@ -14,9 +14,8 @@ export const hotContractsResponse: HotContractsResponse = {
       contract_address: {
         ...contract2.address,
         metadata: {
-          reputation: null,
           tags: [
-            { tagType: 'protocol', name: 'Goose', slug: 'goose', ordinal: 1, meta: null },
+            { tagType: 'protocol', name: 'Goose', slug: 'goose', ordinal: 1, meta: {} },
           ],
         },
       },

@@ -7,7 +7,7 @@ import type { ExternalChain } from 'src/shared/external-chains/types';
 
 import type * as AddressEntityBase from 'src/slices/address/components/entity/AddressEntity';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import { unknownAddress } from 'src/slices/address/utils/consts';
+import { toAddressModel } from 'src/slices/address/utils/model';
 
 import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/useZetaChainConfig';
 
@@ -26,7 +26,6 @@ interface Props extends Omit<AddressEntityBase.EntityProps, 'address'> {
 const AddressEntityZetaChain = ({ chainId, address, ...props }: Props) => {
   const { data: chainsConfig } = useZetaChainConfig();
 
-  const addressFull = { ...unknownAddress, hash: address.hash };
   const chain = chainsConfig?.find((chain) => chain.id.toString() === chainId);
   const isCurrentChain = chainId === config.chain.id;
 
@@ -56,7 +55,7 @@ const AddressEntityZetaChain = ({ chainId, address, ...props }: Props) => {
 
   return (
     <AddressEntity
-      address={ addressFull }
+      address={ toAddressModel(address) }
       href={ href }
       icon={{
         ...(chainLogo ? { src: chainLogo, fallback: iconStub } : { name: 'networks/icon-placeholder', color: 'icon.primary' }),

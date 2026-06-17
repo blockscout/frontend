@@ -3,7 +3,7 @@
 import { Box, Flex, Text, Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NFTTokenType } from 'src/slices/token/types/api';
+import type { NftTokenType } from 'src/slices/token/types/api';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
@@ -28,8 +28,8 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 type Props = {
   collectionsQuery: QueryWithPagesResult<'core:address_collections'>;
   address: string;
-  tokenTypes: Array<NFTTokenType> | undefined;
-  onTokenTypesChange: (value: Array<NFTTokenType>) => void;
+  tokenTypes: Array<NftTokenType> | undefined;
+  onTokenTypesChange: (value: Array<NftTokenType>) => void;
 };
 
 const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onTokenTypesChange }: Props) => {
@@ -90,7 +90,7 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
             return (
               <AddressNftItem
                 key={ key }
-                { ...instance }
+                instance={ instance }
                 token={ item.token }
                 isLoading={ isPlaceholderData }
                 chain={ multichainContext?.chain }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Block } from 'src/slices/block/types/api';
 import type { Transaction } from 'src/slices/tx/types/api';
 
@@ -142,7 +142,7 @@ export interface OptimisticL2WithdrawalClaimInfo {
 
 export interface OptimisticL2WithdrawalsItem extends OptimisticL2WithdrawalClaimInfo {
   challenge_period_end: string | null;
-  from: AddressParam | null;
+  from: schemas['Address'] | null;
   l1_transaction_hash: string | null;
   l2_timestamp: string | null;
   l2_transaction_hash: string;

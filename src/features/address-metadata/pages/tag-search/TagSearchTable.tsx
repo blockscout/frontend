@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
@@ -11,7 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TagSearchTableItem from './TagSearchTableItem';
 
 interface Props {
-  items: Array<AddressesItem>;
+  items: Array<schemas['TopAddress']>;
   top: number;
   isLoading?: boolean;
 }

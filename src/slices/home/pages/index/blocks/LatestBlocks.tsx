@@ -5,7 +5,7 @@ import { upperFirst } from 'es-toolkit';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -38,7 +38,7 @@ const LatestBlocks = () => {
     blocksMaxCount = isMobile ? 2 : 3;
   }
   const { blocksQuery } = useHomeDataContext();
-  const initialList = useInitialList<Block>({
+  const initialList = useInitialList<schemas['Block']>({
     data: blocksQuery?.data ?? [],
     idFn: (block) => block.height,
     enabled: Boolean(blocksQuery && !blocksQuery.isPlaceholderData),

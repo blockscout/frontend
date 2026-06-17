@@ -4,20 +4,20 @@ import { Box, Flex, useCheckboxGroup, Fieldset } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { NFTTokenType, TokenType } from 'src/slices/token/types/api';
+import type { NftTokenType, TokenType } from 'src/slices/token/types/api';
 import { getTokenTypes } from 'src/slices/token/utils/token-types';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 
-type Props<T extends TokenType | NFTTokenType> = {
+type Props<T extends TokenType | NftTokenType> = {
   onChange: (nextValue: Array<T>) => void;
   defaultValue?: Array<T>;
-  category: T extends NFTTokenType ? 'nft' : 'all' | 'nft' | 'fungible';
+  category: T extends NftTokenType ? 'nft' : 'all' | 'nft' | 'fungible';
   chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
   title?: React.ReactNode;
 };
-const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ category, onChange, defaultValue, chainConfig, title }: Props<T>) => {
+const TokenTypeFilter = <T extends TokenType | NftTokenType>({ category, onChange, defaultValue, chainConfig, title }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const tokenTypes = React.useMemo(() => {

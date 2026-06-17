@@ -3,7 +3,7 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
@@ -17,7 +17,11 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
 
-type Props = { item: TokenInstance; token: TokenInfo; isLoading: boolean };
+interface Props {
+  item: schemas['TokenInstance'];
+  token: schemas['Token'];
+  isLoading: boolean;
+};
 
 const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
 

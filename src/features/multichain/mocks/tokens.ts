@@ -88,6 +88,7 @@ export const tokenBB: AddressTokenItem = {
   ...tokenAA,
   token: {
     ...erc7984Token,
+    type: 'ERC-7984',
     chain_infos: {
       [chainB.id]: {
         holders_count: '1250',

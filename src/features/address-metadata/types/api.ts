@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface AddressMetadataInfo {
   addresses: Record<string, {
@@ -59,7 +59,7 @@ export interface PublicTagTypesResponse {
 }
 
 export interface AddressesMetadataSearchResult {
-  items: Array<AddressesItem>;
+  items: Array<schemas['TopAddress']>;
   next_page_params: null;
 }
 

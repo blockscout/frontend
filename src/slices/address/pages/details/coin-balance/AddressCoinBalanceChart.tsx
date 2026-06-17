@@ -31,10 +31,10 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       {
         id: 'balance',
         name: 'Value',
-        items: data.items.map(({ date, value }) => ({
+        items: data.items?.map(({ date, value }) => ({
           date: new Date(date),
           value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
-        })),
+        })) || [],
         charts: chartsConfig,
         units: currencyUnits.ether,
       },

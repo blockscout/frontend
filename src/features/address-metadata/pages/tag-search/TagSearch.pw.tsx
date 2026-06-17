@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { AddressesMetadataSearchResult } from 'src/features/address-metadata/types/api';
 
-import * as addressMocks from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { test, expect } from 'playwright/lib';
 
@@ -13,23 +13,22 @@ import TagSearch from './TagSearch';
 const addresses: AddressesMetadataSearchResult = {
   items: [
     {
-      ...addressMocks.withName,
+      ...addressParamMock.withName,
       transactions_count: '1',
       coin_balance: '12345678901234567890000',
     },
     {
-      ...addressMocks.token,
+      ...addressParamMock.contract,
       transactions_count: '109123890123',
       coin_balance: '22222345678901234567890000',
-      ens_domain_name: null,
     },
     {
-      ...addressMocks.withoutName,
+      ...addressParamMock.withoutName,
       transactions_count: '11',
       coin_balance: '1000000000000000000',
     },
     {
-      ...addressMocks.eoa,
+      ...addressParamMock.withNameTag,
       transactions_count: '420',
       coin_balance: null,
     },

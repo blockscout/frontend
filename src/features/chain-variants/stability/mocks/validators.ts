@@ -4,22 +4,22 @@ import type {
   ValidatorsStabilityResponse,
 } from 'src/features/chain-variants/stability/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 export const validator1: ValidatorStability = {
-  address: addressMock.withName,
+  address: addressParamMock.withName,
   blocks_validated_count: 7334224,
   state: 'active',
 };
 
 export const validator2: ValidatorStability = {
-  address: addressMock.withEns,
+  address: addressParamMock.withEns,
   blocks_validated_count: 8937453,
   state: 'probation',
 };
 
 export const validator3: ValidatorStability = {
-  address: addressMock.withoutName,
+  address: addressParamMock.withoutName,
   blocks_validated_count: 1234,
   state: 'inactive',
 };

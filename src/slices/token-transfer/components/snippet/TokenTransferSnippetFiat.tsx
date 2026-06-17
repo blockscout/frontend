@@ -3,12 +3,12 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
 interface Props {
-  token: TokenInfo;
+  token: schemas['Token'];
   value: string;
   decimals: string | null;
 }

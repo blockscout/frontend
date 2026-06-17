@@ -6,7 +6,8 @@ import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
-import type { Address, AddressImplementation } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { AddressImplementation } from 'src/slices/address/types/api';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -32,7 +33,7 @@ const TAB_LIST_PROPS = { flexWrap: 'wrap', rowGap: 2 };
 const LEFT_SLOT_PROPS = { w: { base: '100%', lg: 'auto' } };
 
 type Props = {
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
   channel: Channel | undefined;
   mainContractQuery: UseQueryResult<SmartContract, ResourceError>;
 };

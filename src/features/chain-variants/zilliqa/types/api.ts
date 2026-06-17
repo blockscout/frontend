@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
-
-export interface AddressZilliqaParams {
-  is_scilla_contract: boolean;
-}
+import type { schemas } from '@blockscout/api-types';
 
 export interface TransactionZilliqa {
   zilliqa?: {
@@ -49,10 +45,10 @@ export interface ValidatorZilliqa {
   added_at_block_number: number;
   balance: string;
   bls_public_key: string;
-  control_address: AddressParam;
+  control_address: schemas['Address'];
   index: number;
   peer_id: string;
-  reward_address: AddressParam;
-  signing_address: AddressParam;
+  reward_address: schemas['Address'];
+  signing_address: schemas['Address'];
   stake_updated_at_block_number: number;
 }

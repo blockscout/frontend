@@ -3,11 +3,12 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -26,24 +27,15 @@ interface Props {
 
 const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) => {
 
-  const tokenInfo: TokenInfo | undefined = React.useMemo(() => {
+  const tokenInfo: schemas['Token'] | undefined = React.useMemo(() => {
     if (!token) {
       return;
     }
 
-    return {
-      symbol: token.symbol ?? null,
-      address_hash: token.token_address,
-      type: 'ERC-20',
-      name: token.name ?? null,
+    return toTokenModel({
+      ...token,
       decimals: String(token.decimals ?? '0'),
-      holders_count: null,
-      exchange_rate: null,
-      total_supply: null,
-      icon_url: token.icon_url ?? null,
-      circulating_market_cap: null,
-      reputation: null,
-    };
+    });
   }, [ token ]);
 
   return (

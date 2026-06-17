@@ -1,15 +1,13 @@
 import type { UserOpsResponse } from 'src/features/user-ops/types/api';
 
+import { withoutName } from 'src/slices/address/mocks/address-param';
 export const userOpsData: UserOpsResponse = {
   items: [
     {
       address: {
-        ens_domain_name: null,
+        ...withoutName,
         hash: '0xF0C14FF4404b188fAA39a3507B388998c10FE284',
-        implementations: null,
         is_contract: true,
-        is_verified: null,
-        name: null,
       },
       block_number: '10399597',
       fee: '187125856691380',
@@ -19,14 +17,11 @@ export const userOpsData: UserOpsResponse = {
       transaction_hash: '0x715fe1474ac7bea3d6f4a03b1c5b6d626675fb0b103be29f849af65e9f1f9c6a',
     },
     {
-      address:
-        { ens_domain_name: null,
-          hash: '0x2c298CcaFFD1549e1C21F46966A6c236fCC66dB2',
-          implementations: null,
-          is_contract: true,
-          is_verified: null,
-          name: null,
-        },
+      address: {
+        ...withoutName,
+        hash: '0x2c298CcaFFD1549e1C21F46966A6c236fCC66dB2',
+        is_contract: true,
+      },
       block_number: '10399596',
       fee: '381895502291373',
       hash: '0xcb945ae86608bdc88c3318245403c81a880fcb1e49fef18ac59477761c056cea',
@@ -36,12 +31,9 @@ export const userOpsData: UserOpsResponse = {
     },
     {
       address: {
-        ens_domain_name: null,
+        ...withoutName,
         hash: '0x2c298CcaFFD1549e1C21F46966A6c236fCC66dB2',
-        implementations: null,
         is_contract: true,
-        is_verified: null,
-        name: null,
       },
       block_number: '10399560',
       fee: '165019501210143',

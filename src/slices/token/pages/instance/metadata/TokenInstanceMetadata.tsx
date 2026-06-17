@@ -3,7 +3,7 @@
 import { Box, Flex, chakra, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import RawDataSnippet from 'src/shared/data/RawDataSnippet';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -26,7 +26,7 @@ const collection = createListCollection<SelectOption>({ items: OPTIONS });
 type Format = (typeof OPTIONS)[number]['value'];
 
 interface Props {
-  data: TokenInstance['metadata'] | undefined;
+  data: schemas['TokenInstance']['metadata'] | undefined;
   isPlaceholderData?: boolean;
 }
 

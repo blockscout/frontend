@@ -3,7 +3,7 @@
 import { Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DecodedInput, DecodedInputParams } from 'src/slices/log/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -13,7 +13,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
-  data: DecodedInput['parameters'];
+  data: schemas['DecodedLogInput']['parameters'] | schemas['DecodedInput']['parameters'];
   isLoading?: boolean;
 }
 
@@ -32,7 +32,13 @@ const HeaderItem = ({ children, isLoading }: { children: React.ReactNode; isLoad
   );
 };
 
-const Row = ({ name, type, indexed, value, isLoading }: DecodedInputParams & { isLoading?: boolean }) => {
+const Row = ({
+  name,
+  type,
+  indexed,
+  value,
+  isLoading,
+}: Omit<schemas['DecodedLogInput']['parameters'][number], 'indexed'> & { indexed?: boolean; isLoading?: boolean }) => {
   const content = (() => {
     if (type === 'address' && typeof value === 'string') {
       return (
@@ -74,7 +80,7 @@ const Row = ({ name, type, indexed, value, isLoading }: DecodedInputParams & { i
 };
 
 const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
-  const hasIndexed = data.some(({ indexed }) => indexed !== undefined);
+  const hasIndexed = data.some((item) => 'indexed' in item && typeof item.indexed === 'boolean');
 
   const gridTemplateColumnsBase = hasIndexed ?
     '50px 60px 40px minmax(0, 1fr)' :
@@ -102,7 +108,16 @@ const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
       <HeaderItem isLoading={ isLoading }>Data</HeaderItem>
       { data.map((item) => {
 
-        return <Row key={ item.name } { ...item } isLoading={ isLoading }/>;
+        return (
+          <Row
+            key={ item.name }
+            name={ item.name || 'unnamed' }
+            type={ item.type || '' }
+            value={ item.value || '-' }
+            indexed={ 'indexed' in item ? item.indexed : undefined }
+            isLoading={ isLoading }
+          />
+        );
       }) }
     </Grid>
   );

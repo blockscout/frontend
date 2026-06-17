@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { SmartContractSecurityAudits } from 'src/features/contract-audit-reports/types/api';
+import type { merged } from '@blockscout/api-types';
 import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
-  VerifiedContractsResponse, VerifiedContractsCounters, VerifiedContractsFilters, VerifiedContractsSorting } from 'src/slices/contract/types/api';
+  VerifiedContractsFilters,
+  VerifiedContractsSorting,
+} from 'src/slices/contract/types/api';
 
 export const CORE_API_CONTRACT_RESOURCES = {
   contract: {
@@ -43,10 +45,11 @@ export type CoreApiContractResourceName = `core:${ keyof typeof CORE_API_CONTRAC
 export type CoreApiContractResourcePayload<R extends CoreApiContractResourceName> =
 R extends 'core:contract' ? SmartContract :
 R extends 'core:contract_solidity_scan_report' ? unknown :
-R extends 'core:verified_contracts' ? VerifiedContractsResponse :
-R extends 'core:verified_contracts_counters' ? VerifiedContractsCounters :
+R extends 'core:verified_contracts' ? merged.paths['/v2/smart-contracts/']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:verified_contracts_counters' ? merged.paths['/v2/smart-contracts/counters']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:contract_verification_config' ? SmartContractVerificationConfigRaw :
-R extends 'core:contract_security_audits' ? SmartContractSecurityAudits :
+R extends 'core:contract_security_audits' ?
+  merged.paths['/v2/smart-contracts/{address_hash_param}/audit-reports']['get']['responses']['200']['content']['application/json'] :
 never;
 /* eslint-enable @stylistic/indent */
 

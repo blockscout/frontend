@@ -1,5 +1,6 @@
 import type { DepositsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
+
+import { withoutName } from 'src/slices/address/mocks/address-param';
 
 export const data: DepositsResponse = {
   items: [
@@ -11,22 +12,16 @@ export const data: DepositsResponse = {
       signature: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       status: 'completed',
       from_address: {
+        ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       block_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       block_timestamp: '2022-06-07T18:12:24.000000Z',
       transaction_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       withdrawal_address: {
+        ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
     },
     {
       amount: '192175000000000',
@@ -36,22 +31,16 @@ export const data: DepositsResponse = {
       signature: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       status: 'pending',
       from_address: {
+        ...withoutName,
         hash: '0xf97e987c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       block_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       block_timestamp: '2022-05-07T18:12:24.000000Z',
       transaction_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       withdrawal_address: {
+        ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
     },
     {
       amount: '182773000000000',
@@ -61,22 +50,16 @@ export const data: DepositsResponse = {
       signature: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       status: 'invalid',
       from_address: {
+        ...withoutName,
         hash: '0xf97e123c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
       block_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       block_timestamp: '2022-04-07T18:12:24.000000Z',
       transaction_hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       withdrawal_address: {
+        ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementations: null,
-        is_contract: false,
-        is_verified: null,
-        name: null,
-      } as AddressParam,
+      },
     },
   ],
   next_page_params: {

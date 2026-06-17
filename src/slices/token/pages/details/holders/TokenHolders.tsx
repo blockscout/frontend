@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
@@ -22,7 +22,7 @@ import TokenHoldersTable from './TokenHoldersTable';
 const TABS_HEIGHT = 88;
 
 type Props = {
-  token?: TokenInfo;
+  token?: schemas['Token'];
   holdersQuery: QueryWithPagesResult<'core:token_holders'>;
   shouldRender?: boolean;
   tabsHeight?: number;
