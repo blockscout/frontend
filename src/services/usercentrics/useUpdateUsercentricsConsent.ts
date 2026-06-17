@@ -27,8 +27,6 @@ export default function useUpdateUsercentricsConsent() {
 
       try {
         const consent = getConsentStatus(details);
-        // eslint-disable-next-line no-console
-        console.log('__>__ updateConsent:', consent);
         if (consent) {
           const currentConsent = window.localStorage.getItem(STORAGE_KEY);
           const parsedConsent = currentConsent ? JSON.parse(currentConsent) as UsercentricsConsentResult : undefined;
