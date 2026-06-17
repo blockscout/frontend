@@ -1,4 +1,4 @@
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
@@ -202,7 +202,7 @@ export const erc404B: schemas['TokenTransfer'] = {
   total: { token_id: '4625304364899952', token_instance: null },
 };
 
-export const mixTokens: merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['application/json'] = {
+export const mixTokens: paths['/v2/token-transfers']['get'] = {
   items: [
     erc20,
     erc721,

@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { merged } from '@blockscout/api-types';
+import type { operations } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -73,7 +73,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
     queryClient.setQueryData(
       getResourceKey('core:address_blocks_validated', { pathParams: { hash: addressHash } }),
       (prevData:
-        merged.operations['BlockScoutWeb.API.V2.AddressController.blocks_validated']['responses']['200']['content']['application/json'] | undefined) => {
+        operations['AddressController.blocks_validated']['json'] | undefined) => {
         if (!prevData) {
           return;
         }

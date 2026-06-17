@@ -1,4 +1,4 @@
-import type { schemas, merged } from '@blockscout/api-types';
+import type { schemas, paths } from '@blockscout/api-types';
 
 export const base: schemas['CoinBalance'] = {
   block_number: 30367643,
@@ -9,7 +9,7 @@ export const base: schemas['CoinBalance'] = {
 };
 
 export const baseResponse:
-merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['responses']['200']['content']['application/json'] = {
+paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get'] = {
   items: [
     {
       block_number: 30367643,
@@ -37,7 +37,7 @@ merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['
 };
 
 export const chartResponse:
-merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get']['responses']['200']['content']['application/json'] = {
+paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get'] = {
   items: [
     {
       date: '2022-11-02',

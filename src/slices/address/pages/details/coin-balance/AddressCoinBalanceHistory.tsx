@@ -3,7 +3,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { PaginationParams } from 'src/shared/pagination/types';
 
 import type { ResourceError } from 'src/api/resources';
@@ -24,7 +24,7 @@ import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
   query: UseQueryResult<
-    merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['responses']['200']['content']['application/json'],
+    paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get'],
     ResourceError<unknown>
   > & {
     pagination: PaginationParams;

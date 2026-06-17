@@ -1,4 +1,4 @@
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 
@@ -66,7 +66,7 @@ export const TOKEN_TRANSFER_ERC_404: schemas['TokenTransfer'] = {
 };
 
 export const getTokenTransfersStub = (type?: TokenType | null, pagination: Record<string, unknown> | null = null):
-merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['application/json'] => {
+paths['/v2/token-transfers']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
@@ -82,7 +82,7 @@ merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['appli
 export const getTokenInstanceTransfersStub = (
   type?: TokenType | null,
   pagination: Record<string, unknown> | null = null,
-): merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get']['responses']['200']['content']['application/json'] => {
+): paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });

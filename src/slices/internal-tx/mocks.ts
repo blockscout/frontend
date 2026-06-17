@@ -1,4 +1,4 @@
-import type { merged, schemas } from '@blockscout/api-types';
+import type { operations, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { toAddressModel } from 'src/slices/address/utils/model';
@@ -62,7 +62,7 @@ export const withContractCreated: schemas['InternalTransaction'] = {
 };
 
 export const baseResponse:
-merged.operations['BlockScoutWeb.API.V2.InternalTransactionController.internal_transactions']['responses']['200']['content']['application/json'] = {
+operations['InternalTransactionController.internal_transactions']['json'] = {
   items: [
     base,
     typeStaticCall,

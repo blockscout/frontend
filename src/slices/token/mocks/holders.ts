@@ -1,8 +1,8 @@
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 
 import { withName, withoutName } from 'src/slices/address/mocks/address-param';
 
-export const tokenHoldersERC20: merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] = {
+export const tokenHoldersERC20: paths['/v2/tokens/{address_hash_param}/holders']['get'] = {
   items: [
     {
       address: withName,
@@ -21,7 +21,7 @@ export const tokenHoldersERC20: merged.paths['/v2/tokens/{address_hash_param}/ho
   },
 };
 
-export const tokenHoldersERC1155: merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] = {
+export const tokenHoldersERC1155: paths['/v2/tokens/{address_hash_param}/holders']['get'] = {
   items: [
     {
       address: withName,

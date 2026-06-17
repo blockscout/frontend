@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { TransactionsResponseWatchlist } from 'src/features/account/types/api';
 import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters, TxBlobs } from 'src/features/data-availability/types/api';
 import type { FheOperationsResponse } from 'src/features/fhe-operations/types/api';
@@ -114,21 +114,17 @@ R extends 'core:txs_pending' ? TransactionsResponsePending :
 R extends 'core:txs_with_blobs' ? TransactionsResponseWithBlobs :
 R extends 'core:txs_watchlist' ? TransactionsResponseWatchlist :
 R extends 'core:txs_execution_node' ? TransactionsResponseValidated :
-R extends 'core:tx_internal_txs' ?
-  merged.paths['/v2/transactions/{transaction_hash_param}/internal-transactions']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:tx_internal_txs' ? paths['/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :
 R extends 'core:tx' ? Transaction :
-R extends 'core:tx_logs' ?
-  merged.paths['/v2/transactions/{transaction_hash_param}/logs']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:tx_token_transfers' ?
-  merged.paths['/v2/transactions/{transaction_hash_param}/token-transfers']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:tx_logs' ? paths['/v2/transactions/{transaction_hash_param}/logs']['get'] :
+R extends 'core:tx_token_transfers' ? paths['/v2/transactions/{transaction_hash_param}/token-transfers']['get'] :
 R extends 'core:tx_fhe_operations' ? FheOperationsResponse :
 R extends 'core:tx_raw_trace' ? TxRawTracesResponse :
-R extends 'core:tx_state_changes' ?
-  merged.paths['/v2/transactions/{transaction_hash_param}/state-changes']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:tx_state_changes' ? paths['/v2/transactions/{transaction_hash_param}/state-changes']['get'] :
 R extends 'core:tx_blobs' ? TxBlobs :
 R extends 'core:tx_interpretation' ? TxInterpretationResponse :
 R extends 'core:tx_external_transactions' ? Array<string> :
-R extends 'core:internal_txs' ? merged.paths['/v2/internal-transactions']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:internal_txs' ? paths['/v2/internal-transactions']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 

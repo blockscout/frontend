@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'src/features/advanced-filter/types/api';
 import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'src/features/chain-variants/beacon-chain/types/api';
 import type {
@@ -286,8 +286,7 @@ R extends 'core:stats_charts_txs' ? ChartTransactionResponse :
 R extends 'core:stats_charts_market' ? ChartMarketResponse :
 R extends 'core:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
 R extends 'core:stats_hot_contracts' ? HotContractsResponse :
-R extends 'core:homepage_blocks' ?
-  merged.paths['/v2/main-page/blocks']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:homepage_blocks' ? paths['/v2/main-page/blocks']['get'] :
 R extends 'core:homepage_txs' ? Array<Transaction> :
 R extends 'core:homepage_txs_watchlist' ? Array<Transaction> :
 R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :

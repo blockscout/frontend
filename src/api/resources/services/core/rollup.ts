@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type {
   AddressMudTables,
   AddressMudTablesFilter,
@@ -287,8 +287,7 @@ R extends 'core:optimistic_l2_txn_batches_count' ? number :
 R extends 'core:optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
 R extends 'core:optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
 R extends 'core:optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
-R extends 'core:optimistic_l2_txn_batch_blocks' ?
-  merged.paths['/v2/blocks/optimism-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:optimistic_l2_txn_batch_blocks' ? paths['/v2/blocks/optimism-batch/{batch_number_param}']['get'] :
 R extends 'core:optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 R extends 'core:optimistic_l2_output_roots_count' ? number :
 R extends 'core:optimistic_l2_withdrawals_count' ? number :
@@ -307,8 +306,7 @@ R extends 'core:arbitrum_l2_txn_batches_count' ? number :
 R extends 'core:arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
 R extends 'core:arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
 R extends 'core:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
-R extends 'core:arbitrum_l2_txn_batch_blocks' ?
-  merged.paths['/v2/blocks/arbitrum-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:arbitrum_l2_txn_batch_blocks' ? paths['/v2/blocks/arbitrum-batch/{batch_number_param}']['get'] :
 R extends 'core:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
 R extends 'core:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
 R extends 'core:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
@@ -316,8 +314,7 @@ R extends 'core:zksync_l2_txn_batches_count' ? number :
 R extends 'core:zksync_l2_txn_batch' ? ZkSyncBatch :
 R extends 'core:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 R extends 'core:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
-R extends 'core:scroll_l2_txn_batch_blocks' ?
-  merged.paths['/v2/blocks/scroll-batch/{batch_number_param}']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:scroll_l2_txn_batch_blocks' ? paths['/v2/blocks/scroll-batch/{batch_number_param}']['get'] :
 R extends 'core:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
 R extends 'core:scroll_l2_txn_batches_count' ? number :
 R extends 'core:scroll_l2_txn_batch' ? ScrollL2TxnBatch :

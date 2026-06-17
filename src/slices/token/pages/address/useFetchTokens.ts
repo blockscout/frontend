@@ -3,7 +3,7 @@
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 import type { AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
@@ -73,7 +73,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
           queryParams: { type: [ item.id as unknown as TokenType ] },
           chain,
           fetchParams: { signal },
-        }) as Promise<merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json']>;
+        }) as Promise<paths['/v2/addresses/{address_hash_param}/tokens']['get']>;
       },
       enabled: Boolean(hash) && enabled,
       refetchOnMount: false,
@@ -86,7 +86,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: Array.isArray(type) ? type : [ type ] } });
 
     queryClient.setQueryData(queryKey, (
-      prevData: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] | undefined,
+      prevData: paths['/v2/addresses/{address_hash_param}/tokens']['get'] | undefined,
     ) => {
       const items = prevData?.items.map((currentItem) => {
         const updatedData = payload.token_balances.find(tokenBalanceItemIdentityFactory(currentItem));

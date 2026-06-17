@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { DepositsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
 import type { TxsWithBlobsFilters } from 'src/features/data-availability/types/api';
 import type {
@@ -50,14 +50,11 @@ export type CoreApiBlockResourceName = `core:${ keyof typeof CORE_API_BLOCK_RESO
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiBlockResourcePayload<R extends CoreApiBlockResourceName> =
-R extends 'core:blocks' ?
-  merged.paths['/v2/blocks']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:block' ?
-  merged.paths['/v2/blocks/{block_hash_or_number_param}']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:blocks' ? paths['/v2/blocks']['get'] :
+R extends 'core:block' ? paths['/v2/blocks/{block_hash_or_number_param}']['get'] :
 R extends 'core:block_countdown' ? BlockCountdownResponse :
 R extends 'core:block_txs' ? BlockTransactionsResponse :
-R extends 'core:block_internal_txs' ?
-  merged.paths['/v2/blocks/{block_hash_or_number_param}/internal-transactions']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:block_internal_txs' ? paths['/v2/blocks/{block_hash_or_number_param}/internal-transactions']['get'] :
 R extends 'core:block_withdrawals' ? BlockWithdrawalsResponse :
 R extends 'core:block_deposits' ? DepositsResponse :
 never;
