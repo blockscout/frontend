@@ -1,10 +1,10 @@
 /* eslint-disable max-len */
 import type { RpcTransactionReceipt } from 'viem';
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Transaction } from 'src/slices/tx/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as decodedInputDataMock from 'src/slices/log/mocks/decoded-input';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 
@@ -29,7 +29,7 @@ export const base: Transaction = {
   },
   from: {
     hash: '0x047A81aFB05D9B1f8844bf60fcA05DCCFbC584B9',
-    implementations: null,
+    implementations: [],
     is_contract: false,
     name: null,
     is_verified: null,
@@ -37,6 +37,10 @@ export const base: Transaction = {
     public_tags: [ publicTag ],
     watchlist_names: [],
     ens_domain_name: 'kitty.kitty.cat.eth',
+    is_scam: false,
+    metadata: null,
+    proxy_type: null,
+    reputation: 'ok',
   },
   gas_limit: '800000',
   gas_price: '48000000000',
@@ -54,8 +58,8 @@ export const base: Transaction = {
   status: 'ok',
   timestamp: '2022-10-10T14:34:30.000000Z',
   to: {
-    hash: addressMock.hash,
-    implementations: null,
+    hash: addressParamMock.hash,
+    implementations: [],
     is_contract: false,
     is_verified: true,
     name: null,
@@ -63,6 +67,10 @@ export const base: Transaction = {
     public_tags: [],
     watchlist_names: [ watchlistName ],
     ens_domain_name: null,
+    is_scam: false,
+    metadata: null,
+    proxy_type: null,
+    reputation: 'ok',
   },
   token_transfers: [],
   token_transfers_overflow: false,
@@ -97,10 +105,9 @@ export const withProtocolTag: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194',
   to: {
-    ...(base.to as AddressParam),
+    ...(base.to as schemas['Address']),
     metadata: {
       tags: [ protocolTag ],
-      reputation: null,
     },
     private_tags: [],
     watchlist_names: [],
@@ -119,15 +126,10 @@ export const withContractCreation: Transaction = {
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',
   to: null,
   created_contract: {
+    ...addressParamMock.withoutName,
     hash: '0xdda21946FF3FAa027104b15BE6970CA756439F5a',
-    implementations: null,
     is_contract: true,
-    is_verified: null,
     name: 'Shavuha token',
-    private_tags: [],
-    public_tags: [],
-    watchlist_names: [],
-    ens_domain_name: null,
   },
   transaction_types: [
     'contract_creation',
@@ -138,15 +140,13 @@ export const withTokenTransfer: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3196',
   to: {
-    hash: addressMock.hash,
-    implementations: null,
+    ...addressParamMock.withoutName,
+    hash: addressParamMock.hash,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
     private_tags: [ privateTag ],
-    public_tags: [],
     watchlist_names: [ watchlistName ],
-    ens_domain_name: null,
   },
   token_transfers: [
     tokenTransferMock.erc20,
@@ -194,15 +194,11 @@ export const withRawRevertReason: Transaction = {
     raw: '4f6e6c79206368616972706572736f6e2063616e206769766520726967687420746f20766f74652e',
   },
   to: {
-    hash: addressMock.hash,
-    implementations: null,
+    ...addressParamMock.withoutName,
+    hash: addressParamMock.hash,
     is_verified: true,
     is_contract: true,
     name: 'Bad guy',
-    private_tags: [ ],
-    public_tags: [],
-    watchlist_names: [ ],
-    ens_domain_name: null,
   },
 };
 
@@ -234,7 +230,7 @@ export const base2 = {
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   from: {
     ...base.from,
-    hash: addressMock.hash,
+    hash: addressParamMock.hash,
   },
 };
 
@@ -243,7 +239,7 @@ export const base3 = {
   hash: '0x12d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   from: {
     ...base.from,
-    hash: addressMock.hash,
+    hash: addressParamMock.hash,
   },
 };
 
@@ -254,22 +250,22 @@ export const base4 = {
 
 export const withRecipientName = {
   ...base,
-  to: addressMock.withName,
+  to: addressParamMock.withName,
 };
 
 export const withRecipientEns = {
   ...base,
-  to: addressMock.withEns,
+  to: addressParamMock.withEns,
 };
 
 export const withRecipientNameTag = {
   ...withRecipientEns,
-  to: addressMock.withNameTag,
+  to: addressParamMock.withNameTag,
 };
 
 export const withRecipientContract = {
   ...withRecipientEns,
-  to: addressMock.contract,
+  to: addressParamMock.contract,
 };
 
 export const rpcTxReceipt: RpcTransactionReceipt = {

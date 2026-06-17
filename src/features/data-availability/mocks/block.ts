@@ -1,8 +1,8 @@
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { base } from 'src/slices/block/mocks/block';
+import { base } from 'src/slices/block/mocks/details';
 
-export const withBlobTxs: Block = {
+export const withBlobTxs: schemas['BlockResponse'] = {
   ...base,
   blob_gas_price: '21518435987',
   blob_gas_used: '393216',

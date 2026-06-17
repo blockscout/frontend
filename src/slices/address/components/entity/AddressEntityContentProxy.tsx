@@ -45,7 +45,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
         { implementations.map((item) => (
           <AddressEntity
             key={ item.address_hash }
-            address={{ hash: item.address_hash, filecoin: { robust: item.filecoin_robust_address } }}
+            address={{ hash: item.address_hash, filecoin: { robust: item.filecoin_robust_address ?? null, actor_type: null, id: null } }}
             noLink
             noIcon
             noHighlight

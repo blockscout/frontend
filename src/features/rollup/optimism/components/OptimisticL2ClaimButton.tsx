@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { OptimisticL2WithdrawalClaimInfo } from 'src/features/rollup/optimism/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
 
 import { parentChain } from 'src/features/connect-wallet/utils/chains';
 import OptimisticL2ClaimModal from 'src/features/rollup/optimism/components/OptimisticL2ClaimModal';
@@ -32,7 +32,7 @@ export const canClaimDirectlyGuard = (data: OptimisticL2WithdrawalClaimInfo) => 
 
 interface Props {
   data: OptimisticL2WithdrawalClaimInfo;
-  from: AddressParam | null;
+  from: schemas['Address'] | null;
   onSuccess: (txHash: string) => void;
   source: 'list' | 'tx';
 }

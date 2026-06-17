@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface ValidatorBlackfort {
-  address: AddressParam;
+  address: schemas['Address'];
   name: string;
   commission: number;
   delegated_amount: string;

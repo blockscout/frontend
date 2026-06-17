@@ -3,6 +3,7 @@ import React from 'react';
 import type { AddressCountersQuery } from 'src/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'src/slices/address/hooks/useAddressQuery';
 import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as countersMock from 'src/slices/address/mocks/counters';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 
@@ -16,7 +17,7 @@ import MockAddressPage from '../AddressPageMock';
 import AddressDetails from './AddressDetails';
 
 const WIDGETS_CONFIG_URL = 'http://localhost:4000/address-3rd-party-widgets-config.json';
-const ADDRESS_HASH = addressMock.hash;
+const ADDRESS_HASH = addressParamMock.hash;
 const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },

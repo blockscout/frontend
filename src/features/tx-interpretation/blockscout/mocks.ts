@@ -1,6 +1,7 @@
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 
-import { hash } from 'src/slices/address/mocks/address';
+import { withoutName } from 'src/slices/address/mocks/address-param';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 export const txInterpretation: TxInterpretationResponse = {
   data: {
@@ -11,7 +12,7 @@ export const txInterpretation: TxInterpretationResponse = {
         amount: { type: 'currency', value: '100' },
         token: {
           type: 'token',
-          value: {
+          value: toTokenModel({
             name: 'Duck',
             type: 'ERC-20',
             symbol: 'DUCK',
@@ -23,21 +24,11 @@ export const txInterpretation: TxInterpretationResponse = {
             exchange_rate: null,
             circulating_market_cap: null,
             reputation: 'ok',
-          },
+          }),
         },
         to_address: {
           type: 'address',
-          value: {
-            hash: hash,
-            implementations: null,
-            is_contract: false,
-            is_verified: false,
-            name: null,
-            private_tags: [],
-            public_tags: [],
-            watchlist_names: [],
-            ens_domain_name: null,
-          },
+          value: withoutName,
         },
         timestamp: {
           type: 'timestamp',

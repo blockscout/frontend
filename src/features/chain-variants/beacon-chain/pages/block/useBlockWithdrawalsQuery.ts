@@ -10,7 +10,7 @@ import type { BlockWithdrawalsResponse } from 'src/features/chain-variants/beaco
 import { retry } from 'src/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'src/api/resources';
 
-import { unknownAddress } from 'src/slices/address/utils/consts';
+import { toAddressModel } from 'src/slices/address/utils/model';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import { GET_BLOCK } from 'src/slices/block/stubs/rpc';
 
@@ -89,7 +89,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
               amount: hexToDecimal(withdrawal.amount).toString(),
               index: hexToDecimal(withdrawal.index),
               validator_index: hexToDecimal(withdrawal.validatorIndex),
-              receiver: { ...unknownAddress, hash: withdrawal.address },
+              receiver: toAddressModel({ hash: withdrawal.address }),
             };
           })
           .sort((a, b) => b.index - a.index) ?? [],

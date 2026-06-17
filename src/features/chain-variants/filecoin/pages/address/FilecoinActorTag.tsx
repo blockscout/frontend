@@ -2,9 +2,11 @@
 
 import React from 'react';
 
-import type { FilecoinActorType } from 'src/features/chain-variants/filecoin/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
+
+type FilecoinActorType = NonNullable<NonNullable<schemas['Address']['filecoin']>['actor_type']>;
 
 const ACTOR_TYPES: Record<FilecoinActorType, string> = {
   account: 'Account',
@@ -18,6 +20,7 @@ const ACTOR_TYPES: Record<FilecoinActorType, string> = {
   miner: 'Storage Provider',
   multisig: 'Multi-Signature Wallet',
   paych: 'Payment Channel',
+  paymentchannel: 'Payment Channel',
   placeholder: 'Placeholder Address',
   power: 'Power Management',
   reward: 'Incentives and Rewards',

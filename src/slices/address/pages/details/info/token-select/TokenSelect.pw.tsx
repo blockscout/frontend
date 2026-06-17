@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import MockAddressPage from 'src/slices/address/pages/details/AddressPageMock';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 import { tokenInfoERC20c, tokenInfoERC20a } from 'src/slices/token/mocks/info';
@@ -11,7 +12,7 @@ import { test, expect, devices } from 'playwright/lib';
 import TokenSelect from './TokenSelect';
 
 const ASSET_URL = tokenInfoERC20a.icon_url as string;
-const ADDRESS_HASH = addressMock.hash;
+const ADDRESS_HASH = addressParamMock.hash;
 const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },

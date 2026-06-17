@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -16,7 +16,7 @@ import NftMedia from '../nft-media/NftMedia';
 const Container = EntityBase.Container;
 
 type IconProps = EntityBase.IconBaseProps & {
-  instance?: TokenInstance | null;
+  instance?: schemas['TokenInstance'] | null;
 };
 
 const ICON_MEDIA_TYPES = [ 'image' as const ];
@@ -94,7 +94,7 @@ const Content = chakra((props: ContentProps) => {
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
   id: string;
-  instance?: TokenInstance | null;
+  instance?: schemas['TokenInstance'] | null;
 }
 
 const NftEntity = (props: EntityProps) => {

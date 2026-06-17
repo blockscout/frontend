@@ -4,14 +4,14 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TokenTransferListItem from './TokenTransferListItem';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   baseAddress?: string;
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
@@ -27,7 +27,7 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement,
       { data.map((item, index) => (
         <TokenTransferListItem
           key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
-          { ...item }
+          data={ item }
           baseAddress={ baseAddress }
           showTxInfo={ showTxInfo }
           enableTimeIncrement={ enableTimeIncrement }

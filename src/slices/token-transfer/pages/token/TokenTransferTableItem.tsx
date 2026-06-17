@@ -3,9 +3,8 @@
 import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInstance } from 'src/slices/token/types/api';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -21,16 +20,16 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean; instance?: TokenInstance; chainData?: ClusterChainConfig };
+interface Props {
+  data: schemas['TokenTransfer'];
+  tokenId?: string;
+  isLoading?: boolean;
+  instance?: schemas['TokenInstance'];
+  chainData?: ClusterChainConfig;
+}
 
 const TokenTransferTableItem = ({
-  token,
-  total,
-  transaction_hash: txHash,
-  from,
-  to,
-  method,
-  timestamp,
+  data,
   tokenId,
   isLoading,
   instance,
@@ -46,9 +45,9 @@ const TokenTransferTableItem = ({
       ) }
       <TableCell>
         <Flex flexDirection="column" alignItems="flex-start" mt="5px" rowGap={ 3 }>
-          { txHash ? (
+          { data.transaction_hash ? (
             <TxEntity
-              hash={ txHash }
+              hash={ data.transaction_hash }
               isLoading={ isLoading }
               fontWeight={ 600 }
               noIcon
@@ -56,7 +55,7 @@ const TokenTransferTableItem = ({
             />
           ) : <Skeleton loading={ isLoading }>-</Skeleton> }
           <TimeWithTooltip
-            timestamp={ timestamp }
+            timestamp={ data.timestamp }
             enableIncrement
             isLoading={ isLoading }
             display="inline-block"
@@ -66,46 +65,46 @@ const TokenTransferTableItem = ({
         </Flex>
       </TableCell>
       <TableCell>
-        { method ? (
+        { data.method ? (
           <Box my="3px">
-            <Badge loading={ isLoading } truncated>{ method }</Badge>
+            <Badge loading={ isLoading } truncated>{ data.method }</Badge>
           </Box>
         ) : null }
       </TableCell>
       <TableCell>
         <AddressFromTo
-          from={ from }
-          to={ to }
+          from={ data.from }
+          to={ data.to }
           isLoading={ isLoading }
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
-          tokenHash={ token?.address_hash }
-          tokenSymbol={ token?.symbol ?? undefined }
+          tokenHash={ data.token?.address_hash }
+          tokenSymbol={ data.token?.symbol ?? undefined }
         />
       </TableCell>
-      { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
+      { (data.token?.type && NFT_TOKEN_TYPE_IDS.includes(data.token.type)) && (
         <TableCell>
-          { total && 'token_id' in total && token && total.token_id !== null ? (
+          { data.total && 'token_id' in data.total && data.token && data.total.token_id !== null ? (
             <NftEntity
-              hash={ token.address_hash }
-              id={ total.token_id }
-              instance={ instance || total.token_instance }
-              noLink={ Boolean(tokenId && tokenId === total.token_id) }
+              hash={ data.token.address_hash }
+              id={ data.total.token_id }
+              instance={ instance || data.total.token_instance }
+              noLink={ Boolean(tokenId && tokenId === data.total.token_id) }
               isLoading={ isLoading }
             />
           ) : ''
           }
         </TableCell>
       ) }
-      { token && (hasTokenTransferValue(token.type, chainData?.app_config)) && (
+      { data.token && (hasTokenTransferValue(data.token.type, chainData?.app_config)) && (
         <TableCell isNumeric verticalAlign="top">
-          { isConfidentialTokenType(token.type) ? (
+          { isConfidentialTokenType(data.token.type) ? (
             <ConfidentialValue loading={ isLoading } mt="7px" wordBreak="break-all"/>
           ) : (
             <AssetValue
-              amount={ total && 'value' in total ? total.value : null }
-              decimals={ total && 'decimals' in total ? total.decimals || '0' : '0' }
-              exchangeRate={ token?.exchange_rate }
+              amount={ data.total && 'value' in data.total ? data.total.value : null }
+              decimals={ data.total && 'decimals' in data.total ? data.total.decimals || '0' : '0' }
+              exchangeRate={ data.token?.exchange_rate }
               loading={ isLoading }
               layout="vertical"
               mt="7px"

@@ -4,8 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { Address } from 'src/slices/address/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
@@ -25,7 +25,7 @@ import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 import { SECOND } from 'src/toolkit/utils/consts';
 
 interface Props extends Pick<RoutedTabsProps, 'leftSlot' | 'leftSlotProps'> {
-  addressData: Address | undefined;
+  addressData: schemas['AddressResponse'] | undefined;
   isLoading?: boolean;
   hasMudTab?: boolean;
 }

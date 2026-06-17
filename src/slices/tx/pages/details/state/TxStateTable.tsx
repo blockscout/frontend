@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxStateChange } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -11,7 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TxStateTableItem from './TxStateTableItem';
 
 interface Props {
-  data: Array<TxStateChange>;
+  data: Array<schemas['StateChange']>;
   isLoading?: boolean;
   top: number;
 }

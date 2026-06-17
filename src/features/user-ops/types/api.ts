@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParamBasic } from 'src/slices/address/types/api';
-import type { DecodedInput } from 'src/slices/log/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface SearchResultUserOp {
   type: 'user_operation';
@@ -14,7 +13,7 @@ export type UserOpsItem = {
   hash: string;
   block_number: string;
   transaction_hash: string;
-  address: string | AddressParamBasic;
+  address: string | schemas['Address'];
   timestamp: string;
   status: boolean;
   fee: string;
@@ -32,7 +31,7 @@ export type UserOpSponsorType = 'paymaster_hybrid' | 'paymaster_sponsor' | 'wall
 
 export type UserOp = {
   hash: string;
-  sender: string | AddressParamBasic;
+  sender: string | schemas['Address'];
   status: boolean;
   revert_reason: string | null;
   timestamp: string | null;
@@ -41,7 +40,7 @@ export type UserOp = {
   transaction_hash: string;
   block_number: string;
   block_hash: string;
-  entry_point: string | AddressParamBasic;
+  entry_point: string | schemas['Address'];
   call_gas_limit: string;
   verification_gas_limit: string;
   pre_verification_gas: string;
@@ -49,17 +48,17 @@ export type UserOp = {
   max_priority_fee_per_gas: string;
   aggregator: string | null;
   aggregator_signature: string | null;
-  bundler: string | AddressParamBasic;
+  bundler: string | schemas['Address'];
   factory: string | null;
-  paymaster: string | AddressParamBasic | null;
+  paymaster: string | schemas['Address'] | null;
   sponsor_type: UserOpSponsorType;
   signature: string;
   nonce: string;
   call_data: string;
-  decoded_call_data: DecodedInput | null;
+  decoded_call_data: schemas['DecodedInput'] | null;
   execute_call_data: string | null;
-  execute_target?: AddressParamBasic | null;
-  decoded_execute_call_data: DecodedInput | null;
+  execute_target?: schemas['Address'] | null;
+  decoded_execute_call_data: schemas['DecodedInput'] | null;
   user_logs_start_index: number;
   user_logs_count: number;
   raw: {

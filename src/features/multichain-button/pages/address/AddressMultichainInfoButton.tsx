@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 
@@ -12,7 +12,7 @@ import { Link } from 'src/toolkit/chakra/link';
 const feature = config.features.multichainButton;
 
 interface Props extends LinkProps {
-  addressData?: Address;
+  addressData?: schemas['AddressResponse'];
 }
 
 const AddressMultichainInfoButton = ({ addressData, ...rest }: Props) => {

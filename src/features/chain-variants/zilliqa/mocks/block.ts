@@ -1,10 +1,9 @@
 /* eslint-disable max-len */
-import type { ZilliqaBlockData } from 'src/features/chain-variants/zilliqa/types/api';
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { base } from 'src/slices/block/mocks/block';
+import { base } from 'src/slices/block/mocks/details';
 
-export const zilliqaWithAggregateQuorumCertificate: Block = {
+export const zilliqaWithAggregateQuorumCertificate: schemas['BlockResponse'] = {
   ...base,
   zilliqa: {
     view: 1137735,
@@ -35,10 +34,10 @@ export const zilliqaWithAggregateQuorumCertificate: Block = {
   },
 };
 
-export const zilliqaWithoutAggregateQuorumCertificate: Block = {
+export const zilliqaWithoutAggregateQuorumCertificate: schemas['BlockResponse'] = {
   ...base,
   zilliqa: {
     ...zilliqaWithAggregateQuorumCertificate.zilliqa,
-    aggregate_quorum_certificate: null,
-  } as ZilliqaBlockData,
+    aggregate_quorum_certificate: undefined,
+  } as schemas['BlockResponse']['zilliqa'],
 };

@@ -3,7 +3,7 @@
 import type { BoxProps } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { EntityProps as TokenEntityProps } from 'src/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -14,7 +14,7 @@ import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';
 
 interface Props extends Omit<AssetValueProps, 'asset'> {
-  token: TokenInfo;
+  token: schemas['Token'];
   tokenEntityProps?: Omit<TokenEntityProps, 'token'> & BoxProps;
   layer?: 'L1';
 }

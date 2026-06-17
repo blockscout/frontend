@@ -1,8 +1,6 @@
-import type { Block } from 'src/slices/block/types/api';
+import { base } from 'src/slices/block/mocks/details';
 
-import { base } from 'src/slices/block/mocks/block';
-
-export const withWithdrawals: Block = {
+export const withWithdrawals = {
   ...base,
   withdrawals_count: 2,
 };

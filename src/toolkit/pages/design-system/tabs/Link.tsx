@@ -3,15 +3,14 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/details';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { toTokenModel } from 'src/slices/token/utils/model';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import * as txMock from 'src/slices/tx/mocks/tx';
 
@@ -26,7 +25,7 @@ import { Link, LinkBox, LinkOverlay } from 'src/toolkit/chakra/link';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 
-export const TOKEN = {
+export const TOKEN = toTokenModel({
   address_hash: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
   circulating_market_cap: '139446916652.6728',
   decimals: '6',
@@ -38,7 +37,7 @@ export const TOKEN = {
   total_supply: '76923002799740785',
   type: 'ERC-20' as const,
   reputation: 'ok' as const,
-} satisfies TokenInfo;
+});
 
 const LinkShowcase = () => {
 
@@ -97,31 +96,31 @@ const LinkShowcase = () => {
         <SectionSubHeader>Address link</SectionSubHeader>
         <SamplesStack>
           <Sample label="Without name" vertical>
-            <AddressEntity address={ addressMock.withoutName }/>
-            <AddressEntity address={ addressMock.withoutName } link={{ external: true }}/>
-            <AddressEntity address={{ ...addressMock.filecoin, name: null }}/>
+            <AddressEntity address={ addressParamMock.withoutName }/>
+            <AddressEntity address={ addressParamMock.withoutName } link={{ external: true }}/>
+            <AddressEntity address={{ ...addressParamMock.filecoin, name: null }}/>
             <Box maxW="200px">
-              <AddressEntity address={ addressMock.withoutName }/>
+              <AddressEntity address={ addressParamMock.withoutName }/>
             </Box>
-            <AddressEntity address={ addressMock.withoutName } isLoading/>
+            <AddressEntity address={ addressParamMock.withoutName } isLoading/>
           </Sample>
           <Sample label="Variant: content, subheading" vertical>
-            <AddressEntity address={ addressMock.withoutName } variant="content"/>
-            <AddressEntity address={ addressMock.withoutName } variant="subheading"/>
+            <AddressEntity address={ addressParamMock.withoutName } variant="content"/>
+            <AddressEntity address={ addressParamMock.withoutName } variant="subheading"/>
           </Sample>
           <Sample label="With name" vertical>
-            <AddressEntity address={ addressMock.withName }/>
-            <AddressEntity address={ addressMock.withNameTag }/>
-            <AddressEntity address={ addressMock.withEns }/>
+            <AddressEntity address={ addressParamMock.withName }/>
+            <AddressEntity address={ addressParamMock.withNameTag }/>
+            <AddressEntity address={ addressParamMock.withEns }/>
             <Box maxW="150px">
-              <AddressEntity address={ addressMock.withEns }/>
+              <AddressEntity address={ addressParamMock.withEns }/>
             </Box>
           </Sample>
           <Sample label="Contract" vertical>
-            <AddressEntity address={{ ...addressMock.contract, is_verified: false, name: null, implementations: [] }}/>
-            <AddressEntity address={{ ...addressMock.contract, implementations: [] }}/>
-            <AddressEntity address={{ ...addressMock.contract, implementations: implementationsMock.multiple }}/>
-            <AddressEntity address={ addressMock.contract }/>
+            <AddressEntity address={{ ...addressParamMock.contract, is_verified: false, name: null, implementations: [] }}/>
+            <AddressEntity address={{ ...addressParamMock.contract, implementations: [] }}/>
+            <AddressEntity address={{ ...addressParamMock.contract, implementations: implementationsMock.multiple }}/>
+            <AddressEntity address={ addressParamMock.contract }/>
           </Sample>
         </SamplesStack>
 

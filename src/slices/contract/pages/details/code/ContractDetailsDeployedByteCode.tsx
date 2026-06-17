@@ -3,7 +3,7 @@
 import { Flex, createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 import RawDataSnippet from 'src/shared/data/RawDataSnippet';
@@ -30,7 +30,7 @@ export type DataType = (typeof OPTIONS)[number]['value'];
 interface Props {
   bytecode: string;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
   showVerificationButton?: boolean;
 }
 

@@ -6,7 +6,7 @@ import { sumBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -37,12 +37,12 @@ const TokenSelect = () => {
   const addressHash = getQueryParamString(router.query.hash);
   const addressResourceKey = getResourceKey('core:address', { pathParams: { hash: addressHash }, chainId: multichainContext?.chain?.id });
 
-  const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
+  const addressQueryData = queryClient.getQueryData<schemas['AddressResponse']>(addressResourceKey);
 
   const { data, isError, isPending } = useFetchTokens({ hash: addressQueryData?.hash });
   const tokensResourceKey = getResourceKey('core:address_tokens', {
     pathParams: { hash: addressQueryData?.hash },
-    queryParams: { type: 'ERC-20' },
+    queryParams: { type: [ 'ERC-20' ] },
     chainId: multichainContext?.chain?.id,
   });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });

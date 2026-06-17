@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import { Alert } from 'src/toolkit/chakra/alert';
@@ -14,7 +14,7 @@ import ContractDetailsVerificationButton from '../ContractDetailsVerificationBut
 interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
 }
 
 const ContractDetailsAlertVerificationStatus = ({ data, isLoading, addressData }: Props) => {

@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxStateChange } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -12,7 +12,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { getStateElements } from './utils';
 
 interface Props {
-  data: TxStateChange;
+  data: schemas['StateChange'];
   isLoading?: boolean;
 }
 

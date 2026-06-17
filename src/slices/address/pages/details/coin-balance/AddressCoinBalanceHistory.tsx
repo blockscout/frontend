@@ -3,8 +3,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { merged } from '@blockscout/api-types';
 import type { PaginationParams } from 'src/shared/pagination/types';
-import type { AddressCoinBalanceHistoryResponse } from 'src/slices/address/types/api';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -23,7 +23,10 @@ import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderStic
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
-  query: UseQueryResult<AddressCoinBalanceHistoryResponse, ResourceError<unknown>> & {
+  query: UseQueryResult<
+    merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['responses']['200']['content']['application/json'],
+    ResourceError<unknown>
+  > & {
     pagination: PaginationParams;
   };
 }
@@ -52,7 +55,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
           { query.data.items.map((item, index) => (
             <AddressCoinBalanceTableItem
               key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
-              { ...item }
+              data={ item }
               page={ query.pagination.page }
               isLoading={ query.isPlaceholderData }
               chainData={ chainData }

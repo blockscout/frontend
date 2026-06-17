@@ -6,6 +6,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { ADDRESS_INFO } from 'src/slices/address/stubs/address';
+import { toAddressModel } from 'src/slices/address/utils/model';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 
@@ -30,14 +31,15 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
     return null;
   }
 
-  const creatorAddress = {
+  const creatorAddress = toAddressModel({
     hash: addressQuery.data.creator_address_hash,
-    filecoin: {
+    filecoin: addressQuery.data.creator_filecoin_robust_address ? {
       robust: addressQuery.data.creator_filecoin_robust_address,
-    },
+      actor_type: null,
+      id: null,
+    } : undefined,
     is_contract: false,
-    implementations: null,
-  };
+  });
 
   return (
     <>

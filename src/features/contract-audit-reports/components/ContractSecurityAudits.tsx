@@ -26,7 +26,7 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
     pathParams: { hash: addressHash },
     queryOptions: {
       refetchOnMount: false,
-      placeholderData: { items: [] },
+      placeholderData: { items: [], next_page_params: null },
       enabled: Boolean(addressHash),
     },
   });

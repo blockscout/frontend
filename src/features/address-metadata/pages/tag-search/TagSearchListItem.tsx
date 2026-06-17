@@ -3,7 +3,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -14,7 +14,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 type Props = {
-  item: AddressesItem;
+  item: schemas['TopAddress'];
   isLoading?: boolean;
 };
 

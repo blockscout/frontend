@@ -1,74 +1,14 @@
-import type { Address, AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { tokenInfo } from 'src/slices/token/mocks/info';
 
 import { publicTag, privateTag, watchlistName } from 'src/features/account/mocks/address-tags';
 
-export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
+import * as addressParamMock from './address-param';
 
-export const withName: AddressParam = {
-  hash: hash,
-  implementations: null,
-  is_contract: false,
-  is_verified: null,
-  name: 'ArianeeStore',
-  private_tags: [],
-  watchlist_names: [],
-  public_tags: [],
-  ens_domain_name: null,
-};
-
-export const withEns: AddressParam = {
-  hash: hash,
-  implementations: null,
-  is_contract: false,
-  is_verified: null,
-  name: 'ArianeeStore',
-  private_tags: [],
-  watchlist_names: [],
-  public_tags: [],
-  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
-};
-
-export const withNameTag: AddressParam = {
-  hash: hash,
-  implementations: null,
-  is_contract: false,
-  is_verified: null,
-  name: 'ArianeeStore',
-  private_tags: [],
-  watchlist_names: [],
-  public_tags: [],
-  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
-  metadata: {
-    reputation: null,
-    tags: [
-      { tagType: 'name', name: 'Mrs. Duckie', slug: 'mrs-duckie', ordinal: 0, meta: null },
-    ],
-  },
-};
-
-export const withoutName: AddressParam = {
-  hash: hash,
-  implementations: null,
-  is_contract: false,
-  is_verified: null,
-  name: null,
-  private_tags: [],
-  watchlist_names: [],
-  public_tags: [],
-  ens_domain_name: null,
-};
-
-export const delegated: AddressParam = {
-  ...withoutName,
-  is_verified: true,
-  proxy_type: 'eip7702',
-};
-
-export const token: Address = {
-  hash: hash,
-  implementations: null,
+export const token: schemas['AddressResponse'] = {
+  hash: addressParamMock.hash,
+  implementations: [],
   is_contract: true,
   is_verified: false,
   name: null,
@@ -88,9 +28,14 @@ export const token: Address = {
   has_tokens: true,
   has_validated_blocks: false,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
-export const eoa: Address = {
+export const eoa: schemas['AddressResponse'] = {
   block_number_balance_updated_at: 30811263,
   coin_balance: '2782650189688719421432220500',
   creation_transaction_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
@@ -101,7 +46,7 @@ export const eoa: Address = {
   has_token_transfers: false,
   has_tokens: true,
   has_validated_blocks: false,
-  hash: hash,
+  hash: addressParamMock.hash,
   implementations: [],
   is_contract: false,
   is_verified: false,
@@ -112,9 +57,14 @@ export const eoa: Address = {
   watchlist_names: [ watchlistName ],
   watchlist_address_id: 42,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
-export const contract: Address = {
+export const contract: schemas['AddressResponse'] = {
   block_number_balance_updated_at: 30811263,
   coin_balance: '27826501896887194214322205',
   creation_transaction_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
@@ -125,7 +75,7 @@ export const contract: Address = {
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: false,
-  hash: hash,
+  hash: addressParamMock.hash,
   implementations: [
     { address_hash: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
   ],
@@ -138,9 +88,14 @@ export const contract: Address = {
   watchlist_names: [ watchlistName ],
   watchlist_address_id: 42,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
-export const validator: Address = {
+export const validator: schemas['AddressResponse'] = {
   block_number_balance_updated_at: 30811932,
   coin_balance: '22910462800601256910890',
   creation_transaction_hash: null,
@@ -151,7 +106,7 @@ export const validator: Address = {
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: true,
-  hash: hash,
+  hash: addressParamMock.hash,
   implementations: [],
   is_contract: false,
   is_verified: false,
@@ -162,9 +117,14 @@ export const validator: Address = {
   watchlist_names: [],
   watchlist_address_id: null,
   ens_domain_name: null,
+  is_scam: false,
+  metadata: null,
+  proxy_type: null,
+  reputation: 'ok',
+  has_beacon_chain_withdrawals: false,
 };
 
-export const filecoin = {
+export const filecoin: schemas['AddressResponse'] = {
   ...validator,
   filecoin: {
     actor_type: 'evm' as const,

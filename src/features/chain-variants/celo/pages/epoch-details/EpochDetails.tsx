@@ -52,9 +52,9 @@ const EpochDetails = ({ data, isLoading }: Props) => {
     if (data.distribution?.transfers_total?.token) {
       return (
         <TokenValue
-          amount={ data.distribution?.transfers_total?.total?.value }
-          token={ data.distribution?.transfers_total.token }
-          decimals={ data.distribution?.transfers_total?.total?.decimals }
+          amount={ data.distribution.transfers_total.total?.value }
+          token={ data.distribution.transfers_total.token }
+          decimals={ data.distribution.transfers_total.total?.decimals }
           accuracy={ 0 }
           loading={ isLoading }
         />

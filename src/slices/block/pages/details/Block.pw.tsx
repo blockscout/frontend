@@ -1,7 +1,8 @@
 import React from 'react';
 import { numberToHex } from 'viem';
 
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/details';
+import * as rpcMock from 'src/slices/block/mocks/rpc';
 
 import config from 'src/config';
 
@@ -29,14 +30,14 @@ test('degradation view, details tab', async({ render, mockApiResponse, mockRpcRe
       Method: 'eth_getBlockByNumber',
       Parameters: [ 'latest', false ],
       ReturnType: {
-        ...blockMock.rpcBlockBase,
+        ...rpcMock.rpcBlockBase,
         number: String(Number(height) + 1_000) as `0x${ string }`,
       },
     },
     {
       Method: 'eth_getBlockByNumber',
       Parameters: [ numberToHex(Number(height)), false ],
-      ReturnType: blockMock.rpcBlockBase,
+      ReturnType: rpcMock.rpcBlockBase,
     },
   ]);
 
@@ -61,14 +62,14 @@ test('degradation view, txs tab', async({ render, mockApiResponse, mockRpcRespon
       Method: 'eth_getBlockByNumber',
       Parameters: [ 'latest', false ],
       ReturnType: {
-        ...blockMock.rpcBlockWithTxsInfo,
+        ...rpcMock.rpcBlockWithTxsInfo,
         number: String(Number(height) + 1_000) as `0x${ string }`,
       },
     },
     {
       Method: 'eth_getBlockByNumber',
       Parameters: [ numberToHex(Number(height)), true ],
-      ReturnType: blockMock.rpcBlockWithTxsInfo,
+      ReturnType: rpcMock.rpcBlockWithTxsInfo,
     },
   ]);
 
@@ -94,14 +95,14 @@ test('degradation view, withdrawals tab', async({ render, mockApiResponse, mockR
       Method: 'eth_getBlockByNumber',
       Parameters: [ 'latest', false ],
       ReturnType: {
-        ...blockMock.rpcBlockBase,
+        ...rpcMock.rpcBlockBase,
         number: String(Number(height) + 1_000) as `0x${ string }`,
       },
     },
     {
       Method: 'eth_getBlockByNumber',
       Parameters: [ numberToHex(Number(height)), false ],
-      ReturnType: blockMock.rpcBlockBase,
+      ReturnType: rpcMock.rpcBlockBase,
     },
   ]);
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export type BlockWithdrawalsResponse = {
   items: Array<BlockWithdrawalsItem>;
@@ -13,7 +13,7 @@ export type BlockWithdrawalsResponse = {
 export type BlockWithdrawalsItem = {
   amount: string;
   index: number;
-  receiver: AddressParam;
+  receiver: schemas['Address'];
   validator_index: number;
 };
 
@@ -36,9 +36,9 @@ export type DepositsItem = {
   pubkey: string;
   signature: string;
   status: DepositStatus;
-  from_address: AddressParam;
+  from_address: schemas['Address'];
   transaction_hash: string;
-  withdrawal_address: AddressParam;
+  withdrawal_address: schemas['Address'];
 };
 
 export type DepositsCounters = {
@@ -57,7 +57,7 @@ export type WithdrawalsItem = {
   amount: string;
   block_number: number;
   index: number;
-  receiver: AddressParam;
+  receiver: schemas['Address'];
   timestamp: string;
   validator_index: number;
 };

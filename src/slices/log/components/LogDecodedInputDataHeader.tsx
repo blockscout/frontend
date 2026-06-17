@@ -8,8 +8,8 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  methodId: string;
-  methodCall: string;
+  methodId: string | null;
+  methodCall: string | null;
   isLoading?: boolean;
   rightSlot?: React.ReactNode;
 }

@@ -6,8 +6,8 @@ import { getAbiItem, getAddress, slice } from 'viem';
 import type { PublicClient, GetLogsParameters, Log } from 'viem';
 
 import type { AllowanceType, ContractAllowanceType } from '../types';
+import type { schemas } from '@blockscout/api-types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
@@ -146,7 +146,7 @@ function useGetNftAllowances() {
             fetchParams: {
               signal,
             },
-          }) as TokenInfo;
+          }) as schemas['Token'];
 
           const tokenApprovals = approvals.filter(
             (approval) => getAddress(approval.address) === tokenAddress,

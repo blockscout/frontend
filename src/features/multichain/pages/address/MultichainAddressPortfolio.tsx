@@ -7,10 +7,10 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import AddressCollections from 'src/slices/token/pages/address/AddressCollections';
-import AddressNftDisplayTypeRadio from 'src/slices/token/pages/address/AddressNftDisplayTypeRadio';
-import AddressNFTs from 'src/slices/token/pages/address/AddressNFTs';
-import AddressNftTypeFilter from 'src/slices/token/pages/address/AddressNftTypeFilter';
+import AddressNftDisplayTypeRadio from 'src/slices/token/pages/address/nfts/AddressNftDisplayTypeRadio';
+import AddressNfts from 'src/slices/token/pages/address/nfts/AddressNfts';
+import AddressNftsCollections from 'src/slices/token/pages/address/nfts/AddressNftsCollections';
+import AddressNftTypeFilter from 'src/slices/token/pages/address/nfts/AddressNftTypeFilter';
 import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuery';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
@@ -120,11 +120,16 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
       title: 'NFT',
       component: nftDisplayType === 'list' ? (
         <MultichainProvider chainId={ nftsQuery.chainValue?.[0] }>
-          <AddressNFTs tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
+          <AddressNfts tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
         </MultichainProvider>
       ) : (
         <MultichainProvider chainId={ collectionsQuery.chainValue?.[0] }>
-          <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
+          <AddressNftsCollections
+            collectionsQuery={ collectionsQuery }
+            address={ hash }
+            tokenTypes={ nftTokenTypes }
+            onTokenTypesChange={ onTokenTypesChange }
+          />
         </MultichainProvider>
       ),
     },

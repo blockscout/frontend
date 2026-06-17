@@ -5,8 +5,8 @@ import { route } from 'nextjs-routes';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { Address } from 'src/slices/address/types/api';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import useSocketMessage from 'src/api/socket/useSocketMessage';
@@ -22,7 +22,7 @@ import ContractDetailsAlertVerificationStatus from './ContractDetailsAlertVerifi
 export interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
   channel?: Channel;
 }
 
@@ -62,11 +62,15 @@ const ContractDetailsAlerts = ({ data, isLoading, addressData, channel }: Props)
           Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
         </Alert>
       ) }
-      { !data?.is_verified && data?.verified_twin_address_hash && (!addressData.proxy_type || addressData.proxy_type === 'unknown') && (
+      { !data?.is_verified && data?.verified_twin_address_hash && !addressData.proxy_type && (
         <Alert status="warning" whiteSpace="pre-wrap">
           <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
           <AddressEntity
-            address={{ hash: data.verified_twin_address_hash, filecoin: { robust: data.verified_twin_filecoin_robust_address }, is_contract: true }}
+            address={{
+              hash: data.verified_twin_address_hash,
+              filecoin: { robust: data.verified_twin_filecoin_robust_address ?? null, actor_type: null, id: null },
+              is_contract: true,
+            }}
             truncation="constant"
             fontSize="sm"
             fontWeight="500"

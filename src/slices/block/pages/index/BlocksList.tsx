@@ -3,15 +3,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Block } from 'src/slices/block/types/api';
 
 import BlocksListItem from 'src/slices/block/pages/index/BlocksListItem';
 
 import useInitialList from 'src/shared/lists/useInitialList';
 
 interface Props {
-  data: Array<Block>;
+  data: Array<schemas['Block']>;
   isLoading: boolean;
   page: number;
   chainData?: ClusterChainConfig;

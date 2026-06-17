@@ -3,7 +3,7 @@
 import { useRouter } from 'next/router';
 import type React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
@@ -88,7 +88,7 @@ const responseInit = {
 it('returns correct data if there is only one page', async() => {
   const params: Params<'core:address_txs'> = {
     resourceName: 'core:address_txs',
-    pathParams: { hash: addressMock.hash },
+    pathParams: { hash: addressParamMock.hash },
   };
   fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
   mockUseRouter.mockReturnValue(router);
@@ -110,7 +110,7 @@ it('returns correct data if there is only one page', async() => {
 describe('if there are multiple pages', () => {
   const params: Params<'core:address_txs'> = {
     resourceName: 'core:address_txs',
-    pathParams: { hash: addressMock.hash },
+    pathParams: { hash: addressParamMock.hash },
   };
 
   it('return correct data for the first page', async() => {
@@ -368,7 +368,7 @@ describe('if there are multiple pages', () => {
     };
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
       scrollRef: scrollRef as unknown as React.RefObject<HTMLDivElement>,
     };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
@@ -394,7 +394,7 @@ describe('if there is page query param in URL', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
     };
     fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
 
@@ -417,7 +417,7 @@ describe('if there is page query param in URL', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
     };
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);
@@ -461,7 +461,7 @@ describe('queries with filters', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
 
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
@@ -512,7 +512,7 @@ describe('queries with filters', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
     };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
@@ -548,7 +548,7 @@ describe('queries with sorting', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
       filters: { filter: 'from' },
     };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
@@ -599,7 +599,7 @@ describe('queries with sorting', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
 
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
@@ -646,7 +646,7 @@ describe('router query changes', () => {
 
     const params: Params<'core:address_txs'> = {
       resourceName: 'core:address_txs',
-      pathParams: { hash: addressMock.hash },
+      pathParams: { hash: addressParamMock.hash },
     };
 
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);

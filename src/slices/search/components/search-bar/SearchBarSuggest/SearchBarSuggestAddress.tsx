@@ -9,6 +9,7 @@ import type { SearchResultAddressOrContract, SearchResultMetadataTag as TSearchR
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
+import { toAddressModel } from 'src/slices/address/utils/model';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
 import SearchResultMetadataTag from 'src/slices/search/pages/search-results/SearchResultMetadataTag';
 
@@ -43,14 +44,12 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
 
   const icon = (
     <AddressEntity.Icon
-      address={{
+      address={ toAddressModel({
         hash: data.address_hash,
         is_contract: isContract,
         name: '',
         is_verified: isVerified,
-        ens_domain_name: null,
-        implementations: null,
-      }}
+      }) }
     />
   );
   const addressName = (() => {

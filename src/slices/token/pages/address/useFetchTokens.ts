@@ -3,8 +3,9 @@
 import { useQueries, useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { merged, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { AddressTokenBalance, AddressTokensBalancesSocketMessage, AddressTokensResponse } from 'src/slices/address/types/api';
+import type { AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
@@ -24,7 +25,8 @@ interface Props {
   enabled?: boolean;
 }
 
-const tokenBalanceItemIdentityFactory = (match: AddressTokenBalance) => (item: AddressTokenBalance) => ((
+const tokenBalanceItemIdentityFactory = (match: schemas['TokenBalance']) => (item: schemas['TokenBalance']) => ((
+  match.token && item.token &&
   match.token.address_hash === item.token.address_hash &&
   match.token_id === item.token_id &&
   match.token_instance?.id === item.token_instance?.id
@@ -40,22 +42,22 @@ const additionalTypes = config.slices.token.additionalTypes;
 export default function useFetchTokens({ hash, enabled }: Props) {
   const erc20query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-20' },
+    queryParams: { type: [ 'ERC-20' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc721query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-721' },
+    queryParams: { type: [ 'ERC-721' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc1155query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-1155' },
+    queryParams: { type: [ 'ERC-1155' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const erc404query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
-    queryParams: { type: 'ERC-404' },
+    queryParams: { type: [ 'ERC-404' ] },
     queryOptions: { enabled: Boolean(hash) && enabled, refetchOnMount: false },
   });
   const apiFetch = useApiFetch();
@@ -64,14 +66,14 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
   const additionalTokenQueries = useQueries({
     queries: additionalTypes.map((item) => ({
-      queryKey: getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: item.id as unknown as TokenType }, chainId: chain?.id }),
+      queryKey: getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: [ item.id as unknown as TokenType ] }, chainId: chain?.id }),
       queryFn: async({ signal }) => {
         return apiFetch('core:address_tokens', {
           pathParams: { hash },
-          queryParams: { type: item.id as unknown as TokenType },
+          queryParams: { type: [ item.id as unknown as TokenType ] },
           chain,
           fetchParams: { signal },
-        }) as Promise<AddressTokensResponse>;
+        }) as Promise<merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json']>;
       },
       enabled: Boolean(hash) && enabled,
       refetchOnMount: false,
@@ -81,9 +83,11 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const queryClient = useQueryClient();
 
   const updateTokensData = React.useCallback((type: TokenType | Array<TokenType>, payload: AddressTokensBalancesSocketMessage) => {
-    const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type } });
+    const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: Array.isArray(type) ? type : [ type ] } });
 
-    queryClient.setQueryData(queryKey, (prevData: AddressTokensResponse | undefined) => {
+    queryClient.setQueryData(queryKey, (
+      prevData: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] | undefined,
+    ) => {
       const items = prevData?.items.map((currentItem) => {
         const updatedData = payload.token_balances.find(tokenBalanceItemIdentityFactory(currentItem));
         return updatedData ?? currentItem;

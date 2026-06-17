@@ -2,19 +2,21 @@
 
 import BigNumber from 'bignumber.js';
 
-import type { AddressTokenBalance } from 'src/slices/address/types/api';
-import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
+import type { schemas } from '@blockscout/api-types';
+import { getTokenTypes, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import config from 'src/config';
 import sumBnReducer from 'src/shared/numbers/sumBnReducer';
 
 import { ZERO } from 'src/toolkit/utils/consts';
 
+export const FUNGIBLE_TOKEN_TYPES = Object.keys(getTokenTypes('fungible'));
+
 const isNativeToken = (token: TokenEnhancedData) =>
   config.slices.address.nativeTokenAddress &&
-  token.token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
+  token.token?.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
 
-export type TokenEnhancedData = AddressTokenBalance & {
+export type TokenEnhancedData = schemas['TokenBalance'] & {
   usd?: BigNumber ;
   chain_values?: Record<string, string>;
 };
@@ -54,7 +56,7 @@ export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
   return groupA[0].localeCompare(groupB[0]);
 };
 
-const sortErc1155or404Tokens = (sort: Sort) => (dataA: AddressTokenBalance, dataB: AddressTokenBalance) => {
+const sortErc1155or404Tokens = (sort: Sort) => (dataA: schemas['TokenBalance'], dataB: schemas['TokenBalance']) => {
   if (dataA.value === dataB.value) {
     return 0;
   }
@@ -98,27 +100,27 @@ export const getSortingFn = (typeId: string) => {
   return sortingFns[typeId as keyof typeof sortingFns] || sortErc20Tokens;
 };
 
-export const filterTokens = (searchTerm: string) => ({ token }: AddressTokenBalance) => {
-  if (!token.name) {
-    return !searchTerm ? true : token.address_hash.toLowerCase().includes(searchTerm);
+export const filterTokens = (searchTerm: string) => ({ token }: schemas['TokenBalance']) => {
+  if (!token?.name) {
+    return !searchTerm ? true : token?.address_hash.toLowerCase().includes(searchTerm);
   }
 
   return token.name?.toLowerCase().includes(searchTerm);
 };
 
-export const calculateUsdValue = (data: AddressTokenBalance): TokenEnhancedData => {
-  const isFungibleToken = isFungibleTokenType(data.token.type);
+export const calculateUsdValue = (data: schemas['TokenBalance']): TokenEnhancedData => {
+  const isFungibleToken = isFungibleTokenType(data.token?.type);
 
   if (!isFungibleToken) {
     return data;
   }
 
-  const exchangeRate = data.token.exchange_rate;
+  const exchangeRate = data.token?.exchange_rate;
   if (!exchangeRate) {
     return data;
   }
 
-  const decimals = Number(data.token.decimals || '18');
+  const decimals = Number(data.token?.decimals || '18');
   return {
     ...data,
     usd: BigNumber(data.value ?? '0').div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),

@@ -4,10 +4,9 @@ import { Flex, useToken } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
-import type { Address } from 'src/slices/address/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import type { ResourceError } from 'src/api/resources';
@@ -37,8 +36,8 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 const PREDEFINED_TAG_PRIORITY = 100;
 
 interface Props {
-  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
-  addressQuery: UseQueryResult<Address, ResourceError<unknown>>;
+  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
+  addressQuery: UseQueryResult<schemas['Address'], ResourceError<unknown>>;
   verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo, ResourceError<unknown>>;
   hash: string;
 }
@@ -61,11 +60,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
 
   const tags: Array<MetadataTag> = React.useMemo(() => {
     return [
-      tokenQuery.data ? {
-        slug: tokenQuery.data?.type,
+      tokenQuery.data && tokenQuery.data.type ? {
+        slug: tokenQuery.data.type,
         name: getTokenTypeName(tokenQuery.data.type, multichainContext?.chain?.app_config),
         tagType: 'custom' as const,
         ordinal: PREDEFINED_TAG_PRIORITY,
+        meta: null,
       } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
         {
@@ -78,7 +78,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
         undefined,
       ...formatAccountTags(addressQuery.data),
       verifiedInfoQuery.data?.projectSector ?
-        { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30 } :
+        { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30, meta: null } :
         undefined,
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
     ].filter(Boolean).sort(sortMetadataTags);

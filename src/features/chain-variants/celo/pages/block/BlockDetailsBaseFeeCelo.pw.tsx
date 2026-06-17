@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { BlockBaseFeeCelo } from 'src/features/chain-variants/celo/types/api';
 
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/details';
 
 import { test, expect } from 'playwright/lib';
 

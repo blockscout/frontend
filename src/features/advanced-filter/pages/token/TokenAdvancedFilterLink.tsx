@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -15,7 +15,7 @@ import AdvancedFilterLink from '../../components/AdvancedFilterLink';
 
 interface Props extends LinkProps {
   isLoading?: boolean;
-  token?: TokenInfo;
+  token?: schemas['Token'];
 }
 
 const TokenAdvancedFilterLink = ({ isLoading, token, ...rest }: Props) => {

@@ -100,7 +100,7 @@ const MultichainTokens = () => {
       <TokenTypeFilter<TokenType>
         onChange={ handleTokenTypesChange }
         defaultValue={ tokenTypes }
-        nftOnly={ false }
+        category="all"
         chainConfig={ chainConfigs }
       />
     </PopoverFilter>

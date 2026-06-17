@@ -20,7 +20,7 @@ export interface MultichainConfig {
 // moreover, the default values of the fields (= undefined) cannot be stripped off from the generated types
 // so we need to manually re-define the type to match it with core API token info type
 export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo, 'chain_infos' | 'address_hash'> {
-  type: TokenType;
+  type: TokenType | 'NATIVE';
   circulating_market_cap: string | null;
   decimals: string | null;
   holders_count: string | null;
