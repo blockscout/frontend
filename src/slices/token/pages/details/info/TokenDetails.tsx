@@ -96,6 +96,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     exchange_rate: exchangeRate,
     total_supply: totalSupply,
     circulating_market_cap: marketCap,
+    circulating_supply: circulatingSupply,
     decimals,
     symbol,
     type,
@@ -151,6 +152,32 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailedInfo.ItemValue>
         </>
       ) }
+
+      { circulatingSupply && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Number of publicly available tokens"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Circulating supply
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue
+            alignSelf="center"
+            wordBreak="break-word"
+            whiteSpace="pre-wrap"
+          >
+            <AssetValue
+              amount={ circulatingSupply }
+              asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
+              accuracy={ 3 }
+              decimals={ decimals ?? '0' }
+              loading={ tokenQuery.isPlaceholderData }
+              w="100%"
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       { type && !isConfidentialTokenType(type) && (
         <>
           <DetailedInfo.ItemLabel

@@ -5,13 +5,14 @@ import { toTokenModel } from '../utils/model';
 export const tokenInfo = toTokenModel({
   address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
   circulating_market_cap: '117629601.61913824',
+  circulating_supply: '58519576000000000',
   decimals: '18',
   exchange_rate: '2.0101',
   holders_count: '46554',
   name: 'ARIANEE',
   symbol: 'ARIA',
   type: 'ERC-20',
-  total_supply: '1235',
+  total_supply: '12353463663000000000000',
   icon_url: 'http://localhost:3000/token-icon.png',
   reputation: 'ok',
 });
