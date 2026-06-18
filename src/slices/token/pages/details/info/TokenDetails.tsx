@@ -143,7 +143,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             hint="Circulating supply * Price"
             isLoading={ tokenQuery.isPlaceholderData }
           >
-            Market cap
+            Circulating market cap
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
@@ -184,7 +184,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
             hint="The total amount of tokens issued"
             isLoading={ tokenQuery.isPlaceholderData }
           >
-            Max total supply
+            Total supply
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue
             alignSelf="center"
