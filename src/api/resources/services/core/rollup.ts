@@ -286,8 +286,6 @@ R extends 'core:scroll_l2_withdrawals_count' ? number :
 never;
 /* eslint-enable @stylistic/indent */
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export type CoreApiRollupPaginationFilters<R extends CoreApiRollupResourceName> = never;
+export type CoreApiRollupPaginationFilters = never;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export type CoreApiRollupPaginationSorting<R extends CoreApiRollupResourceName> = never;
+export type CoreApiRollupPaginationSorting = never;
