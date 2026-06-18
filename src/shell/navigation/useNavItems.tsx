@@ -133,12 +133,6 @@ export default function useNavItems(): ReturnType {
       icon: 'navigation/games',
       isActive: pathname === '/dispute-games',
     } : null;
-    const mudWorlds = config.features.mudFramework.isEnabled ? {
-      text: 'MUD worlds',
-      nextRoute: { pathname: '/mud-worlds' as const },
-      icon: 'navigation/mud',
-      isActive: pathname === '/mud-worlds',
-    } : null;
     const epochs = config.features.celo.isEnabled ? {
       text: 'Epochs',
       nextRoute: { pathname: '/epochs' as const },
@@ -179,7 +173,6 @@ export default function useNavItems(): ReturnType {
         [
           userOps,
           topAccounts,
-          mudWorlds,
           validators,
           verifiedContracts,
           nameLookup,

@@ -11,7 +11,6 @@ export const CONTRACT_MAIN_TAB_IDS = [
   'read_custom_methods',
   'write_custom_methods',
   'read_write_custom_methods',
-  'mud_system',
 ] as const;
 
 export const CONTRACT_DETAILS_TAB_IDS = [

@@ -25,7 +25,6 @@ export { default as hotContracts } from 'src/features/hot-contracts/config';
 export { default as marketplace } from 'src/features/marketplace/config';
 export { default as megaEth } from 'src/features/chain-variants/mega-eth/config';
 export { default as metasuites } from 'src/features/metasuites/config';
-export { default as mudFramework } from 'src/features/chain-variants/mud/config';
 export { default as multichain } from 'src/features/multichain/config';
 export { default as multichainButton } from 'src/features/multichain-button/config';
 export { default as nameServices } from 'src/features/name-services/config';

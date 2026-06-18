@@ -298,14 +298,6 @@ export const disputeGames: Guard = (chainConfig: typeof config) => async() => {
   }
 };
 
-export const mud: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.mudFramework.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-};
-
 export const tac: Guard = (chainConfig: typeof config) => async() => {
   if (!chainConfig.features.tac.isEnabled) {
     return {
