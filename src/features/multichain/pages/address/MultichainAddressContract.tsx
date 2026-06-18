@@ -66,7 +66,6 @@ const MultichainAddressContract = ({ addressHash, isLoading, data }: Props) => {
         <Contract
           addressData={ addressQuery.data }
           isLoading={ isLoading || addressQuery.isPlaceholderData }
-          hasMudTab={ false }
           leftSlot={ leftSlot }
           leftSlotProps={ LEFT_SLOT_PROPS }
         />

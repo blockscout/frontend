@@ -32,3 +32,4 @@
 | NEXT_PUBLIC_SAVE_ON_GAS_ENABLED | `boolean` | Set to "true" to enable the feature | - | - | `true` | v1.35.0+ | v2.7.0+ | Feature is deprecated. |
 | NEXT_PUBLIC_API_SPEC_URL | `string` | Spec of Blockscout core API to be displayed on the page. | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | v1.0.x+ | v2.7.0+ | The URL is now constructed automatically based on the configuration received from the API. |
 | NEXT_PUBLIC_ROLLUP_L1_BASE_URL | `string` | Blockscout base URL for parent network. | Required | - | `'http://eth-goerli.blockscout.com'` | v1.24.0+ | v2.7.0+ | Replaced with NEXT_PUBLIC_ROLLUP_PARENT_CHAIN |
+| NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | - | - | `true` | v1.33.0+ | v2.8.0+ | Feature is deprecated. |
