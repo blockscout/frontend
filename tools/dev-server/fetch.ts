@@ -73,7 +73,9 @@ async function run() {
     entries.push(...Object.entries(localEnvs));
   }
 
-  const sorted = entries.sort(([ a ], [ b ]) => a.localeCompare(b));
+  // eslint-disable-next-line no-restricted-syntax
+  const collator = new Intl.Collator('en');
+  const sorted = entries.sort(([ a ], [ b ]) => collator.compare(a, b));
 
   // Raw KEY=value lines (no surrounding quotes), matching the format dotenv-cli expects —
   // the same format the committed preset files use. The container entrypoint reads this via a

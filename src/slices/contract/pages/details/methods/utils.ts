@@ -5,6 +5,8 @@ import { toFunctionSelector } from 'viem';
 
 import type { MethodType, SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
+import { collator } from 'src/shared/texts/collator';
+
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
     return BigInt(0);
@@ -76,7 +78,7 @@ export const formatAbi = (abi: Abi) => {
     .sort((a, b) => {
       const aName = getNameForSorting(a);
       const bName = getNameForSorting(b);
-      return aName.localeCompare(bName);
+      return collator.compare(aName, bName);
     });
 };
 

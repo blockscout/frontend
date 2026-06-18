@@ -25,6 +25,7 @@ import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { collator } from 'src/shared/texts/collator';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
@@ -67,7 +68,7 @@ const VerifiedAddresses = () => {
       select: (data) => {
         return {
           ...data,
-          submissions: data.submissions.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
+          submissions: data.submissions.sort((a, b) => collator.compare(b.updatedAt, a.updatedAt)),
         };
       },
     },
