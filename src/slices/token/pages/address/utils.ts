@@ -7,6 +7,7 @@ import { getTokenTypes, isFungibleTokenType } from 'src/slices/token/utils/token
 
 import config from 'src/config';
 import sumBnReducer from 'src/shared/numbers/sumBnReducer';
+import { collator } from 'src/shared/texts/collator';
 
 import { ZERO } from 'src/toolkit/utils/consts';
 
@@ -53,7 +54,7 @@ export const sortTokenGroups = (groupA: TokenGroup, groupB: TokenGroup) => {
     return normalizedA > normalizedB ? 1 : -1;
   }
 
-  return groupA[0].localeCompare(groupB[0]);
+  return collator.compare(groupA[0], groupB[0]);
 };
 
 const sortErc1155or404Tokens = (sort: Sort) => (dataA: schemas['TokenBalance'], dataB: schemas['TokenBalance']) => {
