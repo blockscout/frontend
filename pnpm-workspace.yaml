@@ -17,7 +17,7 @@ verifyDepsBeforeRun: warn
 
 overrides:
   '@wagmi/connectors': "6.2.0"
-  ws: "8.17.1"
+  ws: "8.21.0"
   axios: "1.12.0"
   tar-fs: "2.1.4"
   node-forge: "1.3.2"
@@ -52,6 +52,7 @@ allowBuilds:
 
 minimumReleaseAge: 10080 # 1 week
 minimumReleaseAgeExclude:
+  # permanent
   - '@blockscout/api-types'
   - '@blockscout/bens-types'
   - '@blockscout/interchain-indexer-types'
@@ -61,3 +62,12 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
+  # remove after 20.06.2026
+  - form-data@4.0.6
+  - '@opentelemetry/core@2.8.0'
+  - '@opentelemetry/sdk-trace-node@2.8.0'
+  - '@opentelemetry/resources@2.8.0'
+  - '@opentelemetry/sdk-metrics@2.8.0'
+  - '@opentelemetry/exporter-jaeger@2.8.0'
+  - '@opentelemetry/context-async-hooks@2.8.0'
+  - '@opentelemetry/sdk-trace-base@2.8.0'
