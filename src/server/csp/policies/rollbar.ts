@@ -4,8 +4,8 @@ import type CspDev from 'csp-dev';
 
 import config from 'src/config';
 
-export function rollbar(): CspDev.DirectiveDescriptor {
-  if (!config.services.rollbar.clientToken) {
+export function rollbar(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!config.services.rollbar.clientToken || isPrivateMode) {
     return {};
   }
 
