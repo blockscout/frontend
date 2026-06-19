@@ -4,8 +4,8 @@ import type CspDev from 'csp-dev';
 
 import config from 'src/config';
 
-export function googleReCaptcha(): CspDev.DirectiveDescriptor {
-  if (!config.services.reCaptcha.siteKey) {
+export function reCaptcha(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!config.services.reCaptcha.siteKey || isPrivateMode) {
     return {};
   }
 

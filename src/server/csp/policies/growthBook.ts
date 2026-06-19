@@ -4,8 +4,8 @@ import type CspDev from 'csp-dev';
 
 import config from 'src/config';
 
-export function growthBook(): CspDev.DirectiveDescriptor {
-  if (!config.services.growthBook.clientKey) {
+export function growthbook(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!config.services.growthBook.clientKey || isPrivateMode) {
     return {};
   }
 

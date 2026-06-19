@@ -8,8 +8,8 @@ import config from 'src/config';
 
 const feature = config.features.marketplace;
 
-export function marketplace(): CspDev.DirectiveDescriptor {
-  if (!feature.isEnabled) {
+export function marketplace(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!feature.isEnabled || isPrivateMode) {
     return {};
   }
 

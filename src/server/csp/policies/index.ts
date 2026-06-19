@@ -1,22 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export { ad } from './ad';
+export { addressProfileApi } from './address-profile-api';
+export { ads } from './ads';
 export { app } from './app';
 export { connectWallet } from './connect-wallet';
-export { cloudFlare } from './cloudFlare';
+export { cloudFlare } from './cloud-flare';
 export { flashblocks } from './flashblocks';
-export { googleAnalytics } from './googleAnalytics';
-export { googleFonts } from './googleFonts';
-export { googleReCaptcha } from './googleReCaptcha';
-export { growthBook } from './growthBook';
-export { helia } from './helia';
+export { googleAnalytics } from './google-analytics';
+export { growthbook } from './growthbook';
 export { marketplace } from './marketplace';
-export { megaEth } from './megaEth';
+export { megaEth } from './mega-eth';
 export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { multichain } from './multichain';
+export { reCaptcha } from './re-captcha';
 export { rollbar } from './rollbar';
 export { rollup } from './rollup';
 export { safe } from './safe';
-export { usernameApi } from './usernameApi';
+export { verifiedFetch } from './verified-fetch';
 export { zetachain } from './zetachain';

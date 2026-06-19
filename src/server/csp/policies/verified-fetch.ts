@@ -6,7 +6,7 @@ import config from 'src/config';
 
 import { KEY_WORDS } from '../utils';
 
-export function helia(): CspDev.DirectiveDescriptor {
+export function verifiedFetch(): CspDev.DirectiveDescriptor {
   if (!config.slices.token.nft.verifiedFetch.isEnabled) {
     return {};
   }
