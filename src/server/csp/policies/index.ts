@@ -7,7 +7,7 @@ export { connectWallet } from './connect-wallet';
 export { cloudFlare } from './cloud-flare';
 export { flashblocks } from './flashblocks';
 export { googleAnalytics } from './google-analytics';
-export { growthbook } from './growthbook';
+export { growthbook } from './growthBook';
 export { marketplace } from './marketplace';
 export { megaEth } from './mega-eth';
 export { mixpanel } from './mixpanel';
