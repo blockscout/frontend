@@ -2,38 +2,18 @@
 
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
-import type { TransactionsResponseWatchlist } from 'src/features/account/types/api';
-import type { TransactionsResponseWithBlobs, TxsWithBlobsFilters, TxBlobs } from 'src/features/data-availability/types/api';
-import type { FheOperationsResponse } from 'src/features/fhe-operations/types/api';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { InternalTransactionFilters } from 'src/slices/internal-tx/types/api';
 import type { TokenTransferFilters } from 'src/slices/token-transfer/types/api';
-import type {
-  TransactionsResponseValidated,
-  TransactionsResponsePending,
-  Transaction,
-  TransactionsStats,
-  TxsFilters,
-  TxRawTracesResponse,
-} from 'src/slices/tx/types/api';
+import type { TxsFilters } from 'src/slices/tx/types/api';
 
 export const CORE_API_TX_RESOURCES = {
   txs_stats: {
     path: '/api/v2/transactions/stats',
   },
-  txs_validated: {
+  txs: {
     path: '/api/v2/transactions',
-    filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
-    paginated: true,
-  },
-  txs_pending: {
-    path: '/api/v2/transactions',
-    filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
-    paginated: true,
-  },
-  txs_with_blobs: {
-    path: '/api/v2/transactions',
-    filterFields: [ 'type' as const ],
+    filterFields: [ 'filter' as const, 'type' as const ],
     paginated: true,
   },
   txs_watchlist: {
@@ -87,7 +67,6 @@ export const CORE_API_TX_RESOURCES = {
   tx_blobs: {
     path: '/api/v2/transactions/:hash/blobs',
     pathParams: [ 'hash' as const ],
-    paginated: true,
   },
   tx_interpretation: {
     path: '/api/v2/transactions/:hash/summary',
@@ -108,30 +87,27 @@ export type CoreApiTxResourceName = `core:${ keyof typeof CORE_API_TX_RESOURCES 
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTxResourcePayload<R extends CoreApiTxResourceName> =
-R extends 'core:txs_stats' ? TransactionsStats :
-R extends 'core:txs_validated' ? TransactionsResponseValidated :
-R extends 'core:txs_pending' ? TransactionsResponsePending :
-R extends 'core:txs_with_blobs' ? TransactionsResponseWithBlobs :
-R extends 'core:txs_watchlist' ? TransactionsResponseWatchlist :
-R extends 'core:txs_execution_node' ? TransactionsResponseValidated :
-R extends 'core:tx_internal_txs' ? paths['/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :
-R extends 'core:tx' ? Transaction :
+R extends 'core:txs' ? paths['/v2/transactions']['get'] :
+R extends 'core:txs_stats' ? paths['/v2/transactions/stats']['get'] :
+R extends 'core:txs_watchlist' ? paths['/v2/transactions/watchlist']['get'] :
+R extends 'core:txs_execution_node' ? paths['/v2/transactions/execution-node/{execution_node_hash_param}']['get'] :
+R extends 'core:tx' ? paths['/v2/transactions/{transaction_hash_param}']['get'] :
 R extends 'core:tx_logs' ? paths['/v2/transactions/{transaction_hash_param}/logs']['get'] :
 R extends 'core:tx_token_transfers' ? paths['/v2/transactions/{transaction_hash_param}/token-transfers']['get'] :
-R extends 'core:tx_fhe_operations' ? FheOperationsResponse :
-R extends 'core:tx_raw_trace' ? TxRawTracesResponse :
+R extends 'core:tx_internal_txs' ? paths['/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :
+R extends 'core:tx_fhe_operations' ? paths['/v2/transactions/{transaction_hash_param}/fhe-operations']['get'] :
+R extends 'core:tx_raw_trace' ? paths['/v2/transactions/{transaction_hash_param}/raw-trace']['get'] :
 R extends 'core:tx_state_changes' ? paths['/v2/transactions/{transaction_hash_param}/state-changes']['get'] :
-R extends 'core:tx_blobs' ? TxBlobs :
+R extends 'core:tx_blobs' ? paths['/v2/transactions/{transaction_hash_param}/blobs']['get'] :
 R extends 'core:tx_interpretation' ? TxInterpretationResponse :
-R extends 'core:tx_external_transactions' ? Array<string> :
+R extends 'core:tx_external_transactions' ? paths['/v2/transactions/{transaction_hash_param}/external-transactions']['get'] :
 R extends 'core:internal_txs' ? paths['/v2/internal-transactions']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTxPaginationFilters<R extends CoreApiTxResourceName> =
-R extends 'core:txs_validated' | 'core:txs_pending' ? TxsFilters :
-R extends 'core:txs_with_blobs' ? TxsWithBlobsFilters :
+R extends 'core:txs' ? TxsFilters :
 R extends 'core:tx_token_transfers' ? TokenTransferFilters :
 R extends 'core:internal_txs' ? InternalTransactionFilters :
 never;

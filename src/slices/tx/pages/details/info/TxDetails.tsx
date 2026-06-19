@@ -12,9 +12,9 @@ import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import { SCROLL_L2_BLOCK_STATUSES } from 'src/features/rollup/scroll/types/api';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -74,7 +74,7 @@ import TxHash from './parts/TxHash';
 import TxRevertReason from './parts/TxRevertReason';
 
 interface Props {
-  data: Transaction | undefined;
+  data: schemas['TransactionResponse'] | undefined;
   isLoading: boolean;
   socketStatus?: 'close' | 'error';
   noTxActions?: boolean;
@@ -239,7 +239,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { data.zksync && !config.slices.tx.hiddenFields?.L1_status && (
+      { !config.slices.tx.hiddenFields?.L1_status && data.zksync?.status && (
         <>
           <DetailedInfo.ItemLabel
             hint="Status is the short interpretation of the batch lifecycle"
@@ -370,7 +370,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       <DetailedInfo.ItemDivider/>
 
-      { !noTxActions && <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/> }
+      { !noTxActions && <TxDetailsActions hash={ data.hash } isTxDataLoading={ isLoading }/> }
 
       <DetailedInfo.ItemLabel
         hint="Address (external or contract) sending the transaction"
@@ -436,7 +436,12 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         ) }
       </DetailedInfo.ItemValue>
 
-      { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
+      { data.token_transfers && (
+        <TxDetailsTokenTransfers
+          data={ data.token_transfers }
+          txHash={ data.hash }
+          isOverflow={ Boolean(data.token_transfers_overflow) }/>
+      ) }
 
       { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainTransfers hash={ data.hash } isLoading={ isLoading }/> }
 
@@ -451,8 +456,10 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
           <DetailedInfo.ItemValue>
             <VStack gap={ 2 } w="100%" overflow="hidden" alignItems="flex-start">
               { data.op_interop_messages
-                .filter((message) => message.target_address_hash)
                 .map((message) => {
+                  if (!message.target_address_hash) {
+                    return null;
+                  }
                   return message.relay_chain !== undefined ? (
                     <AddressEntityInterop
                       chain={ message.relay_chain }
@@ -472,10 +479,10 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       <DetailedInfo.ItemDivider/>
 
-      { (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
+      { (data.arbitrum?.commitment_transaction?.hash || data.arbitrum?.confirmation_transaction?.hash) &&
       (
         <>
-          { data.arbitrum?.commitment_transaction.hash && (
+          { data.arbitrum?.commitment_transaction?.hash && (
             <>
               <DetailedInfo.ItemLabel
                 hint={ `${ layerLabels.parent } transaction containing this batch commitment` }
@@ -489,7 +496,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
               </DetailedInfo.ItemValue>
             </>
           ) }
-          { data.arbitrum?.confirmation_transaction.hash && (
+          { data.arbitrum?.confirmation_transaction?.hash && (
             <>
               <DetailedInfo.ItemLabel
                 hint={ `${ layerLabels.parent } transaction containing confirmation of this batch` }
@@ -499,7 +506,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
                 <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+                { data.arbitrum?.commitment_transaction?.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
               </DetailedInfo.ItemValue>
             </>
           ) }

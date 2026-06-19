@@ -5,14 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
-import type { BlockTransactionsResponse } from 'src/slices/block/types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
 import { retry } from 'src/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'src/api/resources';
 
 import { toAddressModel } from 'src/slices/address/utils/model';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'src/slices/block/stubs/rpc';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import { publicClient } from 'src/features/connect-wallet/utils/public-client';
 
@@ -46,7 +46,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     pathParams: { height_or_hash: heightOrHash },
     options: {
       enabled: Boolean(tab === 'txs' && !blockQuery.isPlaceholderData && !blockQuery.isDegradedData),
-      placeholderData: generateListStub<'core:block_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:block_txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9004925,
         index: 49,
         items_count: 50,
@@ -65,7 +65,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     },
   });
 
-  const rpcQuery = useQuery<RpcResponseType, unknown, BlockTransactionsResponse | null>({
+  const rpcQuery = useQuery<RpcResponseType, unknown, operations['BlockController.transactions']['json'] | null>({
     queryKey: [ 'RPC', 'block_txs', { heightOrHash } ],
     queryFn: async() => {
       if (!publicClient) {
@@ -91,11 +91,11 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
 
             return {
               from: toAddressModel({ hash: tx.from as string }),
-              to: tx.to ? toAddressModel({ hash: tx.to as string }) : null,
+              to: toAddressModel({ hash: tx.to as string | undefined }),
               hash: tx.hash as string,
               timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
-              confirmation_duration: null,
-              status: undefined,
+              confirmation_duration: [],
+              status: null,
               block_number: Number(block.number),
               value: tx.value.toString(),
               gas_price: tx.gasPrice?.toString() ?? null,
@@ -127,8 +127,10 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
               method: null,
               transaction_types: [],
               transaction_tag: null,
-              actions: [],
-            };
+              authorization_list: [],
+              fhe_operations_count: 0,
+              is_pending_update: false,
+            } satisfies schemas['Transaction'];
           })
           .filter(Boolean),
         next_page_params: null,
@@ -164,7 +166,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
   ) && rpcQuery.data && publicClient);
 
   const rpcQueryWithPages: QueryWithPagesResult<'core:block_txs'> = {
-    ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
+    ...rpcQuery as UseQueryResult<operations['BlockController.transactions']['json'], ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},
     onSortingChange: () => {},

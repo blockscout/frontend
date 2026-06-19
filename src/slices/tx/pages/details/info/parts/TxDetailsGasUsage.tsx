@@ -3,7 +3,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import TextSeparator from 'src/shared/texts/TextSeparator';
@@ -13,7 +13,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
   isLoading?: boolean;
-  data: Transaction;
+  data: Pick<schemas['TransactionResponse'], 'gas_used' | 'gas_limit'>;
 }
 
 const TxDetailsGasUsage = ({ isLoading, data }: Props) => {

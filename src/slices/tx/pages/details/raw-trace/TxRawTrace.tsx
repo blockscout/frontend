@@ -3,8 +3,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { TxRawTracesResponse } from 'src/slices/tx/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
@@ -25,7 +25,7 @@ interface Props {
 
 const TxRawTrace = ({ txQuery }: Props) => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
-  const [ rawTraces, setRawTraces ] = React.useState<TxRawTracesResponse>();
+  const [ rawTraces, setRawTraces ] = React.useState<schemas['RawTrace']>();
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 

@@ -2,15 +2,15 @@
 
 import type { Channel } from 'phoenix';
 
+import type { schemas } from '@blockscout/api-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 import type { NewArbitrumBatchSocketResponse } from 'src/features/rollup/arbitrum/types/api';
-import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
+import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage, AddressTransactionsSocketMessage } from 'src/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
-import type { Transaction, TxRawTracesResponse } from 'src/slices/tx/types/api';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.NewBlockMultichain |
@@ -59,7 +59,7 @@ export namespace SocketMessage {
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type TxStatusUpdate = SocketMessageParamsGeneric<'collated', NewBlockSocketResponse>;
-  export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', TxRawTracesResponse>;
+  export type TxRawTrace = SocketMessageParamsGeneric<'raw_trace', schemas['RawTrace']>;
   export type NewTx = SocketMessageParamsGeneric<'transaction', { transaction: number }>;
   export type NewInteropMessage = SocketMessageParamsGeneric<'new_messages', Array<multichain.InteropMessage>>;
   export type NewPendingTx = SocketMessageParamsGeneric<'pending_transaction', { pending_transaction: number }>;
@@ -74,8 +74,8 @@ export namespace SocketMessage {
   export type AddressTokenBalancesErc1155 = SocketMessageParamsGeneric<'updated_token_balances_erc_1155', AddressTokensBalancesSocketMessage>;
   export type AddressTokenBalancesErc404 = SocketMessageParamsGeneric<'updated_token_balances_erc_404', AddressTokensBalancesSocketMessage>;
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', AddressCoinBalanceSocketMessage>;
-  export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transactions: Array<Transaction> }>;
-  export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transactions: Array<Transaction> }>;
+  export type AddressTxs = SocketMessageParamsGeneric<'transaction', AddressTransactionsSocketMessage>;
+  export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', AddressTransactionsSocketMessage>;
   export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type AddressFetchedBytecode = SocketMessageParamsGeneric<'fetched_bytecode', { fetched_bytecode: string }>;

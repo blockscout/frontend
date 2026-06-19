@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AdditionalInfoButton from 'src/shared/buttons/AdditionalInfoButton';
 
@@ -21,7 +21,7 @@ type Props =
   } |
   {
     hash?: undefined;
-    tx: Transaction;
+    tx: schemas['Transaction'];
   }) & {
     isMobile?: boolean;
     isLoading?: boolean;

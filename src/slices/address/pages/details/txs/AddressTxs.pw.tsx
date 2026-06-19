@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';

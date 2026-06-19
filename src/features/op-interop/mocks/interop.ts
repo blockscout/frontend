@@ -1,7 +1,7 @@
 import type { ChainInfo, InteropMessage } from 'src/features/op-interop/types/api';
 
 export const chain: ChainInfo = {
-  chain_id: 1,
+  chain_id: '1',
   chain_name: 'Ethereum',
   chain_logo: 'https://example.com/logo.png',
   instance_url: 'https://example.com',

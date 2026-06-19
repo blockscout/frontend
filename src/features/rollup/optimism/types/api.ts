@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { Block } from 'src/slices/block/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 export type OptimisticL2DepositsItem = {
   l1_block_number: number;
@@ -114,7 +112,7 @@ export type OptimismL2TxnBatch =
   OptimismL2TxnBatchTypeEigenda;
 
 export type OptimismL2BatchTxs = {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     block_number: number;
     index: number;
@@ -123,7 +121,7 @@ export type OptimismL2BatchTxs = {
 };
 
 export type OptimismL2BatchBlocks = {
-  items: Array<Block>;
+  items: Array<schemas['Block']>;
   next_page_params: {
     batch_number: number;
     items_count: number;
@@ -187,14 +185,8 @@ export type OptimisticL2DisputeGamesItem = {
   status: string;
 };
 
-export interface OpWithdrawal extends OptimisticL2WithdrawalClaimInfo {
-  l1_transaction_hash: string;
-  nonce: number;
-  status: OptimisticL2WithdrawalStatus;
-}
-
 export interface TransactionOptimistic {
-  op_withdrawals?: Array<OpWithdrawal>;
+  op_withdrawals?: Array<schemas['OptimismTransactionWithdrawal']>;
   operator_fee?: string;
 }
 

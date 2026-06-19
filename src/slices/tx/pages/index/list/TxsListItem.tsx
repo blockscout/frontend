@@ -6,9 +6,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { NovesDescribeTxsResponse } from 'src/features/tx-interpretation/noves/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -30,7 +30,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  tx: Transaction;
+  tx: schemas['Transaction'];
   showBlockInfo: boolean;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
@@ -83,7 +83,7 @@ const TxsListItem = ({
           fontWeight="700"
           icon={ !tx.is_pending_update && tx.transaction_types.includes('blob_transaction') ? { name: 'blob' } : undefined }
           chain={ chainData }
-          isPendingUpdate={ tx.is_pending_update }
+          isPendingUpdate={ tx.is_pending_update ?? undefined }
         />
         <TimeWithTooltip
           timestamp={ tx.timestamp }

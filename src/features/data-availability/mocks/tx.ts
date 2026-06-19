@@ -1,8 +1,10 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas, operations } from '@blockscout/api-types';
 
-import { base } from 'src/slices/tx/mocks/tx';
+import { base } from 'src/slices/tx/mocks/details';
 
-export const withBlob: Transaction = {
+import * as blobsMock from './blobs';
+
+export const withBlob: schemas['TransactionResponse'] = {
   ...base,
   blob_gas_price: '21518435987',
   blob_gas_used: '131072',
@@ -14,4 +16,17 @@ export const withBlob: Transaction = {
   max_fee_per_blob_gas: '60000000000',
   transaction_types: [ 'blob_transaction' as const ],
   type: 3,
+};
+
+export const itemWithBlob: schemas['Transaction'] = {
+  ...base,
+  op_interop_messages: undefined,
+};
+
+export const txBlobs: operations['TransactionController.blobs']['json'] = {
+  items: [
+    blobsMock.base1 as schemas['BlobResponse'],
+    blobsMock.base2 as schemas['BlobResponse'],
+    blobsMock.withoutData as schemas['BlobResponse'],
+  ],
 };

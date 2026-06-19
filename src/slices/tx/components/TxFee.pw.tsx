@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/details';
 
 import * as txMockCelo from 'src/features/chain-variants/celo/mocks/tx';
 import * as txMockStability from 'src/features/chain-variants/stability/mocks/tx';

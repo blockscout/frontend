@@ -4,10 +4,9 @@ import { useQueries, useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import { formatBlockListData } from 'src/slices/block/utils/format-rpc-data';
-import formatTxRpcData from 'src/slices/tx/utils/format-rpc-data';
+import { formatTxListRpcData } from 'src/slices/tx/utils/format-rpc-data';
 
 import { publicClient } from 'src/features/connect-wallet/utils/public-client';
 
@@ -17,7 +16,7 @@ export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';
 
 interface HomeRpcDataContext {
   blocks: Array<schemas['Block']>;
-  txs: Array<Transaction>;
+  txs: Array<schemas['Transaction']>;
   totalTxs: number;
   isError: boolean;
   isLoading: boolean;
@@ -32,7 +31,7 @@ const ITEMS_LIMIT = 5;
 
 export function HomeRpcDataContextProvider({ children }: { children: React.ReactNode }) {
   const [ blocks, setBlocks ] = React.useState<Array<schemas['Block']>>([]);
-  const [ txs, setTxs ] = React.useState<Array<Transaction>>([]);
+  const [ txs, setTxs ] = React.useState<Array<schemas['Transaction']>>([]);
   const [ totalTxs, setTotalTxs ] = React.useState(0);
   const [ isLoading, setIsLoading ] = React.useState(true);
   const [ isError, setIsError ] = React.useState(false);
@@ -50,7 +49,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
         onBlock: (block) => {
           setTxs((prevTxs) => {
             try {
-              const newTxs = block.transactions.map((tx) => formatTxRpcData(tx, null, null, block)).filter(Boolean);
+              const newTxs = block.transactions.map((tx) => formatTxListRpcData({ tx, receipt: null, confirmations: null, block })).filter(Boolean);
               const nextTxs = prevTxs.length < ITEMS_LIMIT ? [ ...prevTxs, ...newTxs ].slice(0, ITEMS_LIMIT) : prevTxs;
 
               const totalTxs = prevTxs.length + newTxs.length;

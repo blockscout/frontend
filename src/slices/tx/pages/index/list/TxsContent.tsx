@@ -2,9 +2,10 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { PaginationParams } from 'src/shared/pagination/types';
 import type { AddressFromToFilter } from 'src/slices/address/types/api';
-import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
+import type { TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
 import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -37,7 +38,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
-  items?: Array<Transaction>;
+  items?: Array<schemas['Transaction']>;
   isPlaceholderData: boolean;
   isError: boolean;
   setSorting?: (value: TransactionsSortingValue) => void;

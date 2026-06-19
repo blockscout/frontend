@@ -2,7 +2,6 @@
 
 import type { schemas } from '@blockscout/api-types';
 import type { NftTokenType, TokenType } from 'src/slices/token/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface AddressImplementation {
   address_hash: string;
@@ -30,13 +29,8 @@ export interface AddressCoinBalanceSocketMessage {
   coin_balance: schemas['CoinBalance'];
 }
 
-export interface AddressTransactionsResponse {
-  items: Array<Transaction>;
-  next_page_params: {
-    block_number: number;
-    index: number;
-    items_count: number;
-  } | null;
+export interface AddressTransactionsSocketMessage {
+  transactions: Array<schemas['Transaction']>;
 }
 
 export const AddressFromToFilterValues = [ 'from', 'to' ] as const;

@@ -10,7 +10,7 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 import getChainValidationActionText from 'src/slices/chain/verification-type/utils/get-chain-validation-action-text';
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import TxsStats from 'src/slices/tx/pages/index/stats/TxsStats';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import AdvancedFilterLink from 'src/features/advanced-filter/components/AdvancedFilterLink';
 
@@ -37,11 +37,11 @@ const ZetaChainEvmTransactions = () => {
   const isMobile = useIsMobile();
 
   const txsValidatedQuery = useQueryWithPages({
-    resourceName: 'core:txs_validated',
+    resourceName: 'core:txs',
     filters: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'zetachain' || tab === 'zetachain_validated',
-      placeholderData: generateListStub<'core:txs_validated'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -51,11 +51,11 @@ const ZetaChainEvmTransactions = () => {
   });
 
   const txsPendingQuery = useQueryWithPages({
-    resourceName: 'core:txs_pending',
+    resourceName: 'core:txs',
     filters: { filter: 'pending' },
     options: {
       enabled: tab === 'zetachain_pending',
-      placeholderData: generateListStub<'core:txs_pending'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
         filter: 'pending',

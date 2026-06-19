@@ -3,11 +3,10 @@ import type { WebSocket } from 'ws';
 import { WebSocketServer } from 'ws';
 
 import type { schemas } from '@blockscout/api-types';
-import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
+import type { AddressCoinBalanceSocketMessage, AddressTransactionsSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import { port as socketPort } from '../utils/socket';
 
@@ -62,9 +61,9 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'coin_bala
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_balance', payload: { block_number: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: `updated_token_balances_${ string }`, payload: AddressTokensBalancesSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transaction: number }): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: { transactions: Array<Transaction> }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transaction', payload: AddressTransactionsSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
-export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transactions: Array<Transaction> }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: AddressTransactionsSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number }): void;

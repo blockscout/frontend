@@ -1,16 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus, type ArbitrumL2TxData } from '../types/api';
+import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import config from 'src/config';
 
 const rollupFeature = config.features.rollup;
-
-type Args = {
-  status: ArbitrumBatchStatus;
-  commitment_transaction: ArbitrumL2TxData;
-  confirmation_transaction: ArbitrumL2TxData;
-};
 
 const parentChainName = rollupFeature.isEnabled ? rollupFeature.parentChain.name : undefined;
 
@@ -31,14 +27,14 @@ export function getVerificationStepStatus({
   status,
   commitment_transaction: commitTx,
   confirmation_transaction: confirmTx,
-}: Args) {
+}: Pick<ExcludeUndefined<schemas['TransactionResponse']['arbitrum']>, 'status' | 'commitment_transaction' | 'confirmation_transaction'>) {
   if (status === 'Sent to base') {
-    if (commitTx.status === 'unfinalized') {
+    if (commitTx?.status === 'unfinalized') {
       return 'pending';
     }
   }
   if (status === 'Confirmed on base') {
-    if (confirmTx.status === 'unfinalized') {
+    if (confirmTx?.status === 'unfinalized') {
       return 'pending';
     }
   }

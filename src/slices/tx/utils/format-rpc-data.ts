@@ -2,25 +2,27 @@
 
 import type { Chain, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { toAddressModel } from 'src/slices/address/utils/model';
 
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
 import dayjs from 'src/shared/date-and-time/dayjs';
 
-export default function formatRpcData(
-  tx: GetTransactionReturnType<Chain, 'latest'>,
-  receipt: TransactionReceipt | null,
-  confirmations: bigint | null,
-  block: { timestamp: bigint | null; baseFeePerGas: bigint | null | undefined } | null,
-): Transaction | null {
+interface Params {
+  tx: GetTransactionReturnType<Chain, 'latest'>;
+  receipt: TransactionReceipt | null;
+  confirmations: bigint | null;
+  block: { timestamp: bigint | null; baseFeePerGas: bigint | null | undefined } | null;
+}
+
+function getBaseTxData({ tx, receipt, confirmations, block }: Params) {
   const status = (() => {
     if (!receipt) {
       return null;
     }
 
-    return receipt.status === 'success' ? 'ok' : 'error';
+    return receipt.status === 'success' ? 'ok' as const : 'error' as const;
   })();
 
   const gasPrice = receipt?.effectiveGasPrice ?? tx.gasPrice;
@@ -30,7 +32,7 @@ export default function formatRpcData(
     to: tx.to ? toAddressModel({ hash: tx.to as string }) : null,
     hash: tx.hash as string,
     timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
-    confirmation_duration: null,
+    confirmation_duration: [],
     status,
     block_number: tx.blockNumber ? Number(tx.blockNumber) : null,
     value: tx.value.toString(),
@@ -47,7 +49,7 @@ export default function formatRpcData(
     confirmations: confirmations && confirmations > 0 ? Number(confirmations) : 0,
     fee: {
       value: receipt && gasPrice ? (receipt.gasUsed * gasPrice).toString() : null,
-      type: 'actual',
+      type: 'actual' as const,
     },
     created_contract: receipt?.contractAddress ?
       toAddressModel({ hash: receipt.contractAddress, is_contract: true }) :
@@ -65,6 +67,17 @@ export default function formatRpcData(
     method: null,
     transaction_types: [],
     transaction_tag: null,
-    actions: [],
+    authorization_list: [],
+    fhe_operations_count: 0,
+    is_pending_update: false,
   };
+}
+
+export function formatTxDetailsRpcData({ tx, receipt, confirmations, block }: Params): schemas['TransactionResponse'] | null {
+
+  return getBaseTxData({ tx, receipt, confirmations, block });
+}
+
+export function formatTxListRpcData({ tx, receipt, confirmations, block }: Params): schemas['Transaction'] | null {
+  return getBaseTxData({ tx, receipt, confirmations, block });
 }

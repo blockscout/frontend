@@ -3,7 +3,7 @@
 import { uniq, chunk } from 'es-toolkit';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ReturnType } from 'src/api/hooks/useApiQueries';
 import useApiQueries from 'src/api/hooks/useApiQueries';
@@ -17,7 +17,7 @@ const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 export type TxsTranslationQuery = ReturnType<'core:noves_describe_txs'> | undefined;
 
 export default function useDescribeTxs(
-  items: Array<Transaction> | undefined,
+  items: Array<schemas['Transaction']> | undefined,
   viewAsAccountAddress: string | undefined,
   isPlaceholderData: boolean,
 ): TxsTranslationQuery {

@@ -1,4 +1,4 @@
-import type { Blob, TxBlobs } from 'src/features/data-availability/types/api';
+import type { Blob } from 'src/features/data-availability/types/api';
 
 export const base1: Blob = {
   blob_data: '0x004242004242004242004242004242004242',
@@ -28,9 +28,4 @@ export const withoutData: Blob = {
   transaction_hashes: [
     { block_consensus: true, transaction_hash: '0x22d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193' },
   ],
-};
-
-export const txBlobs: TxBlobs = {
-  items: [ base1, base2, withoutData ],
-  next_page_params: null,
 };

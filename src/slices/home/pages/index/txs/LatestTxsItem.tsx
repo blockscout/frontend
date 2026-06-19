@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -28,7 +28,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  tx: Transaction;
+  tx: schemas['Transaction'];
   isLoading?: boolean;
 };
 

@@ -37,9 +37,6 @@ import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguages
 import type { IndexingStatus } from 'src/slices/chain/indexing-status/types';
 import type { HomeStats, ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'src/slices/home/types/api';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'src/slices/search/types/api';
-import type {
-  Transaction,
-} from 'src/slices/tx/types/api';
 
 export const CORE_API_MISC_RESOURCES = {
   // WITHDRAWALS
@@ -287,8 +284,8 @@ R extends 'core:stats_charts_market' ? ChartMarketResponse :
 R extends 'core:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
 R extends 'core:stats_hot_contracts' ? HotContractsResponse :
 R extends 'core:homepage_blocks' ? paths['/v2/main-page/blocks']['get'] :
-R extends 'core:homepage_txs' ? Array<Transaction> :
-R extends 'core:homepage_txs_watchlist' ? Array<Transaction> :
+R extends 'core:homepage_txs' ? paths['/v2/main-page/transactions']['get'] :
+R extends 'core:homepage_txs_watchlist' ? paths['/v2/main-page/transactions/watchlist']['get'] :
 R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
 R extends 'core:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 R extends 'core:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :

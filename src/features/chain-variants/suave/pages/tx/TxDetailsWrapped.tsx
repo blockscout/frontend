@@ -4,8 +4,8 @@ import { Flex, Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
@@ -21,20 +21,24 @@ import DetailedInfoNativeCoinValue from 'src/shared/detailed-info/DetailedInfoNa
 import { Badge } from 'src/toolkit/chakra/badge';
 
 interface Props {
-  data: ExcludeUndefined<Transaction['wrapped']>;
+  data: ExcludeUndefined<schemas['Transaction']['wrapped']>;
 }
 
 const TxDetailsWrapped = ({ data }: Props) => {
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
-      <DetailedInfo.ItemLabel
-        hint="Unique character string (TxID) assigned to every verified transaction"
-      >
-        Transaction hash
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <TxEntity hash={ data.hash } noIcon noLink/>
-      </DetailedInfo.ItemValue>
+      { data.hash && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Unique character string (TxID) assigned to every verified transaction"
+          >
+            Transaction hash
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <TxEntity hash={ data.hash } noIcon noLink/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Transaction method name"
@@ -73,7 +77,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfoNativeCoinValue amount={ data.value }/>
 
-      { data.fee.value !== null && (
+      { data.fee?.value !== null && (
         <>
           <DetailedInfo.ItemLabel
             hint="Total transaction fee"
@@ -86,7 +90,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
         </>
       ) }
 
-      <TxDetailsGasPrice gasPrice={ data.gas_price }/>
+      <TxDetailsGasPrice gasPrice={ data.gas_price ?? null }/>
 
       { data.gas_limit && (
         <>
@@ -103,16 +107,20 @@ const TxDetailsWrapped = ({ data }: Props) => {
 
       <DetailedInfo.ItemDivider/>
 
-      <TxDetailsOther type={ data.type } nonce={ data.nonce } position={ null }/>
+      <TxDetailsOther type={ data.type ?? null } nonce={ data.nonce ?? 0 } position={ null }/>
 
-      <DetailedInfo.ItemLabel
-        hint="Binary data included with the transaction. See logs tab for additional info"
-      >
-        Raw input
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <RawInputData hex={ data.raw_input }/>
-      </DetailedInfo.ItemValue>
+      { data.raw_input && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Binary data included with the transaction. See logs tab for additional info"
+          >
+            Raw input
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <RawInputData hex={ data.raw_input }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       { data.decoded_input && (
         <>

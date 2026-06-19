@@ -2,8 +2,6 @@
 
 import type { schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
-import type { Block } from 'src/slices/block/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface ArbitrumLatestDepositsItem {
   completion_transaction_hash: string;
@@ -102,7 +100,7 @@ export type ArbitrumL2TxnBatch = {
 };
 
 export type ArbitrumL2BatchTxs = {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     batch_number: string;
     block_number: number;
@@ -112,7 +110,7 @@ export type ArbitrumL2BatchTxs = {
 };
 
 export type ArbitrumL2BatchBlocks = {
-  items: Array<Block>;
+  items: Array<schemas['Block']>;
   next_page_params: {
     batch_number: string;
     block_number: number;

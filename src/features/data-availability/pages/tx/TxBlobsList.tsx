@@ -3,11 +3,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxBlob } from 'src/features/data-availability/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxBlobListItem from './TxBlobListItem';
 
-const TxBlobsList = ({ data, isLoading }: { data: Array<TxBlob>; isLoading?: boolean }) => {
+const TxBlobsList = ({ data, isLoading }: { data: Array<schemas['BlobResponse']>; isLoading?: boolean }) => {
   return (
     <Box>
       { data.map((item, index) => (

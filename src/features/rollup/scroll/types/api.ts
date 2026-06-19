@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Block } from 'src/slices/block/types/api';
-import type { TransactionFee, Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export const SCROLL_L2_BLOCK_STATUSES = [
   'Confirmed by Sequencer' as const,
@@ -14,7 +13,7 @@ export type ScrollL2BlockStatus = typeof SCROLL_L2_BLOCK_STATUSES[number];
 export interface TransactionScroll {
   scroll?: {
     l1_fee: string;
-    l2_fee: TransactionFee;
+    l2_fee: schemas['TransactionResponse']['fee'];
     l1_fee_commit_scalar: number;
     l1_base_fee: number;
     l1_blob_base_fee: number;
@@ -60,7 +59,7 @@ export type ScrollL2TxnBatch = {
 };
 
 export type ScrollL2TxnBatchTxs = {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     batch_number: number;
     block_number: number;
@@ -70,7 +69,7 @@ export type ScrollL2TxnBatchTxs = {
 };
 
 export type ScrollL2TxnBatchBlocks = {
-  items: Array<Block>;
+  items: Array<schemas['Block']>;
   next_page_params: {
     batch_number: number;
     block_number: number;

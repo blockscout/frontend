@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as txMockBlob from 'src/features/data-availability/mocks/tx';
 
@@ -21,7 +21,7 @@ test('regular transaction +@mobile -@default', async({ render, page }) => {
 });
 
 test('blob transaction', async({ render, page }) => {
-  const component = await render(<TxAdditionalInfo tx={ txMockBlob.withBlob }/>);
+  const component = await render(<TxAdditionalInfo tx={ txMockBlob.itemWithBlob }/>);
   await component.getByLabel('Transaction info').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 400, height: 650 } });
 });

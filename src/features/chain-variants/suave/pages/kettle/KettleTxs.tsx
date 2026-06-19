@@ -7,7 +7,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
@@ -22,7 +22,7 @@ const KettleTxs = () => {
     resourceName: 'core:txs_execution_node',
     pathParams: { hash },
     options: {
-      placeholderData: generateListStub<'core:txs_execution_node'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_execution_node'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

@@ -5,7 +5,6 @@ import type { paths } from '@blockscout/api-types';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'src/features/address-metadata/types/api';
 import type {
   AddressXStarResponse,
-  AddressTransactionsResponse,
   AddressTxsFilters,
   AddressTokenTransferFilters,
   AddressTokensFilter,
@@ -163,7 +162,7 @@ R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchResult :
 R extends 'core:address' ? paths['/v2/addresses/{address_hash_param}']['get'] :
 R extends 'core:address_counters' ? paths['/v2/addresses/{address_hash_param}/counters']['get'] :
 R extends 'core:address_tabs_counters' ? paths['/v2/addresses/{address_hash_param}/tabs-counters']['get'] :
-R extends 'core:address_txs' ? AddressTransactionsResponse :
+R extends 'core:address_txs' ? paths['/v2/addresses/{address_hash_param}/transactions']['get'] :
 R extends 'core:address_internal_txs' ? paths['/v2/addresses/{address_hash_param}/internal-transactions']['get'] :
 R extends 'core:address_token_transfers' ? paths['/v2/addresses/{address_hash_param}/token-transfers']['get'] :
 R extends 'core:address_blocks_validated' ? paths['/v2/addresses/{address_hash_param}/blocks-validated']['get'] :

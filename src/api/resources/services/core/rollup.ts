@@ -15,7 +15,6 @@ import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
-  ArbitrumL2BatchTxs,
   ArbitrumL2TxnWithdrawalsResponse,
   ArbitrumL2MessageClaimResponse,
 } from 'src/features/rollup/arbitrum/types/api';
@@ -26,16 +25,14 @@ import type {
   OptimisticL2WithdrawalsResponse,
   OptimisticL2DisputeGamesResponse,
   OptimismL2TxnBatch,
-  OptimismL2BatchTxs,
 } from 'src/features/rollup/optimism/types/api';
 import type {
   ScrollL2BatchesResponse,
   ScrollL2TxnBatch,
-  ScrollL2TxnBatchTxs,
   ScrollL2MessagesResponse,
 } from 'src/features/rollup/scroll/types/api';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'src/features/rollup/shibarium/types/api';
-import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'src/features/rollup/zk-sync/types/api';
+import type { ZkSyncBatch, ZkSyncBatchesResponse } from 'src/features/rollup/zk-sync/types/api';
 
 export const CORE_API_ROLLUP_RESOURCES = {
   optimistic_l2_deposits: {
@@ -286,7 +283,7 @@ R extends 'core:optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
 R extends 'core:optimistic_l2_txn_batches_count' ? number :
 R extends 'core:optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
 R extends 'core:optimistic_l2_txn_batch_celestia' ? OptimismL2TxnBatch :
-R extends 'core:optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
+R extends 'core:optimistic_l2_txn_batch_txs' ? paths['/v2/transactions/optimism-batch/{batch_number_param}']['get'] :
 R extends 'core:optimistic_l2_txn_batch_blocks' ? paths['/v2/blocks/optimism-batch/{batch_number_param}']['get'] :
 R extends 'core:optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 R extends 'core:optimistic_l2_output_roots_count' ? number :
@@ -305,15 +302,15 @@ R extends 'core:arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
 R extends 'core:arbitrum_l2_txn_batches_count' ? number :
 R extends 'core:arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
 R extends 'core:arbitrum_l2_txn_batch_celestia' ? ArbitrumL2TxnBatch :
-R extends 'core:arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
+R extends 'core:arbitrum_l2_txn_batch_txs' ? paths['/v2/transactions/arbitrum-batch/{batch_number_param}']['get'] :
 R extends 'core:arbitrum_l2_txn_batch_blocks' ? paths['/v2/blocks/arbitrum-batch/{batch_number_param}']['get'] :
 R extends 'core:arbitrum_l2_txn_withdrawals' ? ArbitrumL2TxnWithdrawalsResponse :
 R extends 'core:arbitrum_l2_message_claim' ? ArbitrumL2MessageClaimResponse :
 R extends 'core:zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 R extends 'core:zksync_l2_txn_batches_count' ? number :
 R extends 'core:zksync_l2_txn_batch' ? ZkSyncBatch :
-R extends 'core:zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
-R extends 'core:scroll_l2_txn_batch_txs' ? ScrollL2TxnBatchTxs :
+R extends 'core:zksync_l2_txn_batch_txs' ? paths['/v2/transactions/zksync-batch/{batch_number_param}']['get'] :
+R extends 'core:scroll_l2_txn_batch_txs' ? paths['/v2/transactions/scroll-batch/{batch_number_param}']['get'] :
 R extends 'core:scroll_l2_txn_batch_blocks' ? paths['/v2/blocks/scroll-batch/{batch_number_param}']['get'] :
 R extends 'core:scroll_l2_txn_batches' ? ScrollL2BatchesResponse :
 R extends 'core:scroll_l2_txn_batches_count' ? number :

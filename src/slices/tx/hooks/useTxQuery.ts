@@ -5,8 +5,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import { retry } from 'src/api/hooks/useQueryClientConfig';
@@ -21,7 +21,7 @@ import delay from 'src/shared/utils/delay';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
-export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {
+export type TxQuery = UseQueryResult<schemas['TransactionResponse'], ResourceError<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
   setRefetchEnabled: (value: boolean) => void;
 };

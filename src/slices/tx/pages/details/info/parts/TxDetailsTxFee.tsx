@@ -3,7 +3,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxFee from 'src/slices/tx/components/TxFee';
 
@@ -14,7 +14,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 interface Props {
   isLoading: boolean;
-  data: Transaction;
+  data: schemas['TransactionResponse'];
 }
 
 const TxDetailsTxFee = ({ isLoading, data }: Props) => {
