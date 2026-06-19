@@ -82,7 +82,7 @@ R extends CoreApiAddressResourceName ? CoreApiAddressPaginationFilters<R> :
 R extends CoreApiBlockResourceName ? CoreApiBlockPaginationFilters<R> :
 R extends CoreApiContractResourceName ? CoreApiContractPaginationFilters<R> :
 R extends CoreApiMiscResourceName ? CoreApiMiscPaginationFilters<R> :
-R extends CoreApiRollupResourceName ? CoreApiRollupPaginationFilters<R> :
+R extends CoreApiRollupResourceName ? CoreApiRollupPaginationFilters :
 R extends CoreApiTokenResourceName ? CoreApiTokenPaginationFilters<R> :
 R extends CoreApiTxResourceName ? CoreApiTxPaginationFilters<R> :
 never;
@@ -93,7 +93,7 @@ export type CoreApiPaginationSorting<R extends CoreApiResourceName> =
 R extends CoreApiAddressResourceName ? CoreApiAddressPaginationSorting<R> :
 R extends CoreApiContractResourceName ? CoreApiContractPaginationSorting<R> :
 R extends CoreApiMiscResourceName ? CoreApiMiscPaginationSorting<R> :
-R extends CoreApiRollupResourceName ? CoreApiRollupPaginationSorting<R> :
+R extends CoreApiRollupResourceName ? CoreApiRollupPaginationSorting :
 R extends CoreApiTokenResourceName ? CoreApiTokenPaginationSorting<R> :
 never;
 /* eslint-enable @stylistic/indent */

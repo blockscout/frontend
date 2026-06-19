@@ -27,10 +27,9 @@ import { SECOND } from 'src/toolkit/utils/consts';
 interface Props extends Pick<RoutedTabsProps, 'leftSlot' | 'leftSlotProps'> {
   addressData: schemas['AddressResponse'] | undefined;
   isLoading?: boolean;
-  hasMudTab?: boolean;
 }
 
-const AddressContract = ({ addressData, isLoading = false, hasMudTab, ...rest }: Props) => {
+const AddressContract = ({ addressData, isLoading = false, ...rest }: Props) => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ autoVerificationStatus, setAutoVerificationStatus ] = React.useState<TContractAutoVerificationStatus | null>(null);
 
@@ -57,7 +56,6 @@ const AddressContract = ({ addressData, isLoading = false, hasMudTab, ...rest }:
   const contractTabs = useContractTabs({
     addressData,
     isEnabled: isQueryEnabled && !isLoading,
-    hasMudTab,
     channel,
   });
 

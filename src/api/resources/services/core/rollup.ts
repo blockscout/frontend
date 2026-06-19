@@ -3,14 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
 import type {
-  AddressMudTables,
-  AddressMudTablesFilter,
-  AddressMudRecords,
-  AddressMudRecordsFilter,
-  AddressMudRecordsSorting,
-  AddressMudRecord,
-  SmartContractMudSystemsResponse, SmartContractMudSystemInfo, MudWorldsResponse } from 'src/features/chain-variants/mud/types/api';
-import type { InteropMessageListResponse } from 'src/features/op-interop/types/api';
+  InteropMessageListResponse } from 'src/features/op-interop/types/api';
 import type {
   ArbitrumL2MessagesResponse,
   ArbitrumL2TxnBatch,
@@ -104,41 +97,6 @@ export const CORE_API_ROLLUP_RESOURCES = {
   },
   optimistic_l2_interop_messages_count: {
     path: '/api/v2/optimism/interop/messages/count',
-  },
-
-  // MUD
-  mud_worlds: {
-    path: '/api/v2/mud/worlds',
-    filterFields: [],
-    paginated: true,
-  },
-  mud_tables: {
-    path: '/api/v2/mud/worlds/:hash/tables',
-    pathParams: [ 'hash' as const ],
-    filterFields: [ 'q' as const ],
-    paginated: true,
-  },
-  mud_tables_count: {
-    path: '/api/v2/mud/worlds/:hash/tables/count',
-    pathParams: [ 'hash' as const ],
-  },
-  mud_records: {
-    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records',
-    pathParams: [ 'hash' as const, 'table_id' as const ],
-    filterFields: [ 'filter_key0' as const, 'filter_key1' as const ],
-    paginated: true,
-  },
-  mud_record: {
-    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records/:record_id',
-    pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
-  },
-  mud_systems: {
-    path: '/api/v2/mud/worlds/:hash/systems',
-    pathParams: [ 'hash' as const ],
-  },
-  mud_system_info: {
-    path: '/api/v2/mud/worlds/:hash/systems/:system_address',
-    pathParams: [ 'hash' as const, 'system_address' as const ],
   },
 
   // ARBITRUM
@@ -319,25 +277,9 @@ R extends 'core:scroll_l2_deposits' ? ScrollL2MessagesResponse :
 R extends 'core:scroll_l2_deposits_count' ? number :
 R extends 'core:scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
 R extends 'core:scroll_l2_withdrawals_count' ? number :
-R extends 'core:mud_worlds' ? MudWorldsResponse :
-R extends 'core:mud_tables' ? AddressMudTables :
-R extends 'core:mud_tables_count' ? number :
-R extends 'core:mud_records' ? AddressMudRecords :
-R extends 'core:mud_record' ? AddressMudRecord :
-R extends 'core:mud_systems' ? SmartContractMudSystemsResponse :
-R extends 'core:mud_system_info' ? SmartContractMudSystemInfo :
 never;
 /* eslint-enable @stylistic/indent */
 
-/* eslint-disable @stylistic/indent */
-export type CoreApiRollupPaginationFilters<R extends CoreApiRollupResourceName> =
-R extends 'core:mud_tables' ? AddressMudTablesFilter :
-R extends 'core:mud_records' ? AddressMudRecordsFilter :
-never;
-/* eslint-enable @stylistic/indent */
+export type CoreApiRollupPaginationFilters = never;
 
-/* eslint-disable @stylistic/indent */
-export type CoreApiRollupPaginationSorting<R extends CoreApiRollupResourceName> =
-R extends 'core:mud_records' ? AddressMudRecordsSorting :
-never;
-/* eslint-enable @stylistic/indent */
+export type CoreApiRollupPaginationSorting = never;

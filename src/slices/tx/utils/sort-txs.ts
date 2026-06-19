@@ -4,6 +4,7 @@ import type { schemas } from '@blockscout/api-types';
 import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import compareBns from 'src/shared/numbers/compareBns';
+import { collator } from 'src/shared/texts/collator';
 
 export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
   return function sortingFn(tx1: schemas['Transaction'], tx2: schemas['Transaction']) {
@@ -42,6 +43,6 @@ export function sortTxsFromSocket(sorting: TransactionsSortingValue | undefined)
       return 1;
     }
 
-    return tx2.timestamp.localeCompare(tx1.timestamp);
+    return collator.compare(tx2.timestamp, tx1.timestamp);
   };
 }

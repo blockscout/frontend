@@ -522,7 +522,17 @@ export default tseslint.config(
       'one-var': [ 'error', 'never' ],
       'prefer-const': 'error',
 
-      // restricted imports and properties
+      // restricted imports, properties and syntax
+      'no-restricted-syntax': [ 'error',
+        {
+          selector: 'CallExpression[callee.property.name=\'localeCompare\']',
+          message: 'Use the shared collator from src/shared/texts/collator.ts (collator.compare) instead of String.prototype.localeCompare.',
+        },
+        {
+          selector: 'NewExpression[callee.object.name=\'Intl\'][callee.property.name=\'Collator\']',
+          message: 'Use the shared collator from src/shared/texts/collator.ts instead of constructing Intl.Collator inline.',
+        },
+      ],
       'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
       'no-restricted-properties': [ 2, {
         object: 'process',

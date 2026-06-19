@@ -20,14 +20,30 @@ unnecessary.
 | File | Role |
 |---|---|
 | `registry.json` | **Single source of truth**: `alias` → instance URL map. |
-| `envs-rules.json` | `localEnvs` (local APP_* substitutions) + `ignoredEnvs` (deprecated/build-time vars to drop). |
-| `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
+| `envs-rules.json` | `localEnvs` (local APP_* substitutions) + `ignoredEnvs` / `deprecatedEnvs` (keys to drop — see "Dropped envs" below). |
+| `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs` + `deprecatedEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
 | `dev.preset.sh` | `pnpm dev:preset <alias>` — fetch + run `next dev`. |
 | `dev.local.sh` | `pnpm dev:local` — run against a local backend using `.env.localhost` (no fetch). |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
+
+## Dropped envs: `ignoredEnvs` vs `deprecatedEnvs`
+
+`envs-rules.json` lists two sets of keys that `fetch.ts` strips from the fetched
+instance config before writing `.env.tmp`. Both are dropped identically; the split
+is about churn and intent (JSON can't carry inline comments, so the distinction
+lives here):
+
+- **`ignoredEnvs`** — build-time / injected keys a live instance always exposes but a
+  fetched preset must not carry (`NEXT_PUBLIC_GIT_COMMIT_SHA`, `…_GIT_TAG`,
+  `…_ICON_SPRITE_HASH`). Stable; rarely changes.
+- **`deprecatedEnvs`** — variables removed from the app. A live instance still serves
+  the old key from its config, so unless it's dropped the demo deploy's envs-validator
+  fails on a variable that no longer exists in the schema. This list grows every time a
+  variable is removed for good (see the `deprecate-env-var` skill) — add the removed
+  variable here.
 
 ## Gotchas (these bit us; don't re-learn them)
 

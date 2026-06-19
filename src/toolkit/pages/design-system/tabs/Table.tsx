@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
+import { collator } from 'src/shared/texts/collator';
 
 import { TableColumnHeader, TableHeaderSticky, TableRoot, TableRow, TableCell, TableBody, TableColumnHeaderSortable } from 'src/toolkit/chakra/table';
 
@@ -37,10 +38,10 @@ const TableShowcase = () => {
 
   const sortFn = (a: Item, b: Item) => {
     if (sort === 'category-asc') {
-      return a.category.localeCompare(b.category);
+      return collator.compare(a.category, b.category);
     }
     if (sort === 'category-desc') {
-      return b.category.localeCompare(a.category);
+      return collator.compare(b.category, a.category);
     }
     if (sort === 'price-asc') {
       return a.price - b.price;

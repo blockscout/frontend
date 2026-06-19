@@ -31,7 +31,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Blob** | entity | An individual EIP-4844 data blob attached to a transaction; a single tx can carry multiple. The entity is `Blob`; the feature folder/flag that surfaces it uses the name `data-availability`. |
 | **Block Reward** | entity | On-chain payout to a block producer (miner, validator, etc.). Entirely distinct from the **Rewards** (Merits) program — no shared code, API, or folder. |
 | **CCTX (Cross-Chain Transaction)** | entity | ZetaChain-specific transaction type that spans multiple chains. Displayed as a separate tab on the transactions list. Distinct from the general cross-chain transactions feature (**Interchain Indexer**). |
-| **Chain Variant** | concept | A non-rollup chain that ships custom UI or domain entities (e.g. Celo, TAC, ZetaChain, Beacon Chain, MUD, Zilliqa). Contrast with **Rollup**, which implies an L1/L2 settlement relationship. |
+| **Chain Variant** | concept | A non-rollup chain that ships custom UI or domain entities (e.g. Celo, TAC, ZetaChain, Beacon Chain, Zilliqa). Contrast with **Rollup**, which implies an L1/L2 settlement relationship. |
 | **Clusters** | service | Address identity and grouping service: aggregates multiple addresses under a named cluster (individual, protocol, organization). Co-located with **BENS** in the name-services UI. |
 | **Connect Wallet** | feature | Lets users write to contracts, sign transactions, and connect a wallet to the explorer. Previously named `blockchain-interaction`; the current config key is `connectWallet`. Distinct from **Web3 Wallet**. |
 | **Dispute Games** | entity | Part of the Optimism **Fault Proof System**. On-chain games used to challenge and resolve disputed L2 output roots. |
@@ -45,7 +45,6 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Kettle** | entity | In the **SUAVE** architecture, a Kettle is a trusted execution environment (TEE) node that processes MEV bundles. SUAVE transactions are associated with a Kettle. |
 | **Marketplace** | feature | Curated directory of dApps and DeFi applications integrated with Blockscout. |
 | **MetaSuites** | service | Third-party browser extension that enhances the Blockscout UI with additional data and links. |
-| **MUD Worlds** | entity | Instances of the MUD framework — an on-chain autonomous world / game engine. |
 | **Multichain** | feature | Aggregates data across multiple Blockscout-indexed chains into a single explorer view. |
 | **Operation** | entity | **TAC**-specific entity representing a bridge operation between the TON and EVM ecosystems. No equivalent on standard EVM chains. |
 | **Pools** | entity | DEX liquidity pool positions tracked on-chain. |
