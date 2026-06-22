@@ -44,6 +44,7 @@
 	| "contracts/regular"
 	| "contracts/verified_many"
 	| "contracts/verified"
+	| "cookie"
 	| "copy_check"
 	| "copy"
 	| "cross"

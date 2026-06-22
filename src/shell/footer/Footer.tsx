@@ -26,6 +26,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { copy } from 'src/toolkit/utils/htmlEntities';
 
+import FooterCookieSettings from './FooterCookieSettings';
 import FooterLinkItem from './FooterLinkItem';
 import { getApiVersionUrl } from './get-api-version-url';
 
@@ -210,6 +211,14 @@ const Footer = () => {
     );
   };
 
+  const renderCookieSettings = (gridArea?: GridProps['gridArea']) => {
+    if (!config.services.usercentrics) {
+      return <Box gridArea={ gridArea }/>;
+    }
+
+    return <FooterCookieSettings gridArea={ gridArea }/>;
+  };
+
   if (config.shell.footer.links) {
     return (
       <Box { ...containerProps }>
@@ -218,6 +227,7 @@ const Footer = () => {
             { renderNetworkInfo() }
             { renderProjectInfo() }
             { renderRecaptcha() }
+            { renderCookieSettings() }
           </div>
 
           <Grid
@@ -260,6 +270,7 @@ const Footer = () => {
           "network links-top"
           "info links-bottom"
           "recaptcha links-bottom"
+          "cookie-settings links-bottom"
         `,
         }}
       >
@@ -267,6 +278,7 @@ const Footer = () => {
         { renderNetworkInfo({ lg: 'network' }) }
         { renderProjectInfo({ lg: 'info' }) }
         { renderRecaptcha({ lg: 'recaptcha' }) }
+        { renderCookieSettings({ lg: 'cookie-settings' }) }
 
         <Grid
           gridArea={{ lg: 'links-bottom' }}

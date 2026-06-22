@@ -11,6 +11,7 @@ import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
 
+import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 import PageMetadata from 'src/server/PageMetadata';
 
 import useQueryClientConfig from 'src/api/hooks/useQueryClientConfig';
@@ -27,7 +28,6 @@ import { MarketplaceContextProvider } from 'src/features/marketplace/context';
 
 import config from 'src/config';
 import GoogleAnalytics from 'src/services/google-analytics/GoogleAnalytics';
-import { initGrowthBook } from 'src/services/growthbook/init';
 import useLoadFeatures from 'src/services/growthbook/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'src/services/rollbar';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
@@ -45,8 +45,8 @@ import 'src/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
 import 'src/server/global.css';
 
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
+type AppPropsWithLayout = AppProps<PageProps<'/'>> & {
+  Component: NextPageWithLayout<PageProps<'/'>>;
 };
 
 const ERROR_SCREEN_STYLES: HTMLChakraProps<'div'> = {
@@ -69,10 +69,8 @@ const CONSOLE_SCAM_WARNING_DELAY_MS = 500;
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
-  const growthBook = initGrowthBook(pageProps.uuid);
-  useLoadFeatures(growthBook);
-
   const queryClient = useQueryClientConfig();
+  const growthBook = useLoadFeatures(pageProps.uuid);
 
   React.useEffect(() => {
     // after the app is rendered/hydrated, show the console scam warning

@@ -62,7 +62,7 @@ export default function useMixpanelInit() {
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, [ ]);
+  }, []);
 
   return isInitialized;
 }
