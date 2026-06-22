@@ -1,5 +1,4 @@
 import type { paths, schemas } from '@blockscout/api-types';
-import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
@@ -14,7 +13,7 @@ import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import { generateListStub } from 'src/shared/pagination/utils';
 
-export const TOKEN_TRANSFER_ERC_20_TOTAL: Erc20TotalPayload = {
+export const TOKEN_TRANSFER_ERC_20_TOTAL: schemas['Total'] = {
   decimals: '18',
   value: '9851351626684503',
 };

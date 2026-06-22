@@ -6,10 +6,14 @@ import type { schemas } from '@blockscout/api-types';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type * as zetaChainCCTXType from '@blockscout/zetachain-cctx-types';
 import type { NewArbitrumBatchSocketResponse } from 'src/features/rollup/arbitrum/types/api';
-import type { AddressCoinBalanceSocketMessage, AddressTokensBalancesSocketMessage, AddressTransactionsSocketMessage } from 'src/slices/address/types/api';
+import type {
+  AddressCoinBalanceSocketMessage,
+  AddressTokenTransferSocketMessage,
+  AddressTokensBalancesSocketMessage,
+  AddressTransactionsSocketMessage,
+} from 'src/slices/address/types/api';
 import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
@@ -76,7 +80,7 @@ export namespace SocketMessage {
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', AddressCoinBalanceSocketMessage>;
   export type AddressTxs = SocketMessageParamsGeneric<'transaction', AddressTransactionsSocketMessage>;
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', AddressTransactionsSocketMessage>;
-  export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', { token_transfers: Array<TokenTransfer> }>;
+  export type AddressTokenTransfer = SocketMessageParamsGeneric<'token_transfer', AddressTokenTransferSocketMessage>;
   export type AddressChangedBytecode = SocketMessageParamsGeneric<'changed_bytecode', Record<string, never>>;
   export type AddressFetchedBytecode = SocketMessageParamsGeneric<'fetched_bytecode', { fetched_bytecode: string }>;
   export type EthBytecodeDbLookupStarted = SocketMessageParamsGeneric<'eth_bytecode_db_lookup_started', Record<string, never>>;

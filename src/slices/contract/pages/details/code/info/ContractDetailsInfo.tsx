@@ -17,6 +17,7 @@ import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { castToString } from 'src/toolkit/utils/guards';
 
 import ContractDetailsInfoCreator from './ContractDetailsInfoCreator';
 import ContractDetailsInfoImplementations from './ContractDetailsInfoImplementations';
@@ -62,14 +63,18 @@ const ContractDetailsInfo = ({ data, isLoading, addressData }: Props) => {
       return null;
     }
 
-    const { owner, repo } = getGitHubOwnerAndRepo(data.github_repository_metadata.repository_url) || {};
+    const repoUrl = castToString(data.github_repository_metadata.repository_url) ;
+    const commit = castToString(data.github_repository_metadata.commit);
+    const pathPrefix = castToString(data.github_repository_metadata.path_prefix);
 
-    const repoUrl = data.github_repository_metadata.repository_url;
-    const commit = data.github_repository_metadata.commit;
-    const pathPrefix = data.github_repository_metadata.path_prefix;
+    if (!repoUrl || !commit) {
+      return null;
+    }
+
+    const { owner, repo } = repoUrl ? getGitHubOwnerAndRepo(repoUrl) ?? {} : {};
     return (
       <Link external href={ `${ repoUrl }/tree/${ commit }${ pathPrefix ? `/${ pathPrefix }` : '' }` }>
-        { owner && repo ? `${ owner }/${ repo }` : data.github_repository_metadata.repository_url }
+        { owner && repo ? `${ owner }/${ repo }` : repoUrl }
       </Link>
     );
   })();

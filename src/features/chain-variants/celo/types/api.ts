@@ -2,7 +2,6 @@
 
 import type { schemas } from '@blockscout/api-types';
 import type { ExcludeNull, ExcludeUndefined } from 'src/shared/types/utils';
-import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
 
 export type AddressCeloAccount = NonNullable<ExcludeUndefined<ExcludeNull<ExcludeUndefined<schemas['AddressResponse']>['celo']>>['account']>;
 
@@ -37,9 +36,9 @@ export type CeloEpochListItem = {
   end_block_number: number | null;
   timestamp: string | null;
   distribution: {
-    carbon_offsetting_transfer: Erc20TotalPayload | null;
-    community_transfer: Erc20TotalPayload | null;
-    transfers_total: Erc20TotalPayload | null;
+    carbon_offsetting_transfer: schemas['Total'] | null;
+    community_transfer: schemas['Total'] | null;
+    transfers_total: schemas['Total'] | null;
   } | null;
 };
 
@@ -67,7 +66,7 @@ export type CeloEpochDetails = {
     community_transfer: schemas['TokenTransfer'] | null;
     transfers_total: {
       token: schemas['Token'] | null;
-      total: Erc20TotalPayload | null;
+      total: schemas['Total'] | null;
     } | null;
   } | null;
   aggregated_election_rewards: Record<CeloEpochRewardsType, CeloEpochElectionReward | null> | null;

@@ -3,23 +3,6 @@
 import type { schemas } from '@blockscout/api-types';
 import type { NftTokenType, TokenType } from 'src/slices/token/types/api';
 
-export interface AddressImplementation {
-  address_hash: string;
-  filecoin_robust_address?: string | null;
-  name?: string | null;
-}
-
-export interface AddressTag {
-  label: string;
-  display_name: string;
-  address_hash: string;
-}
-
-export interface WatchlistName {
-  label: string;
-  display_name: string;
-}
-
 export interface AddressTokensBalancesSocketMessage {
   overflow: boolean;
   token_balances: Array<schemas['TokenBalance']>;
@@ -31,6 +14,10 @@ export interface AddressCoinBalanceSocketMessage {
 
 export interface AddressTransactionsSocketMessage {
   transactions: Array<schemas['Transaction']>;
+}
+
+export interface AddressTokenTransferSocketMessage {
+  token_transfers: Array<schemas['TokenTransfer']>;
 }
 
 export const AddressFromToFilterValues = [ 'from', 'to' ] as const;

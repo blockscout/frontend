@@ -3,14 +3,13 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { AddressImplementation } from 'src/slices/address/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 
 interface Props {
-  data: Array<AddressImplementation>;
+  data: Array<schemas['Implementation']>;
   isLoading?: boolean;
   proxyType?: schemas['ProxyType'];
 }

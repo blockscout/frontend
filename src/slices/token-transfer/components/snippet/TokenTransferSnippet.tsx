@@ -4,12 +4,6 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type {
-  Erc20TotalPayload,
-  Erc721TotalPayload,
-  Erc1155TotalPayload,
-  Erc404TotalPayload,
-} from 'src/slices/token-transfer/types/api';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
@@ -41,7 +35,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
     switch (data.token?.type) {
       case 'ERC-20': {
-        const total = data.total as Erc20TotalPayload | null;
+        const total = data.total as schemas['Total'] | null;
         if (total === null || total.value === null) {
           return null;
         }
@@ -49,50 +43,51 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       }
 
       case 'ERC-721': {
-        const total = data.total as Erc721TotalPayload;
-        return (
-          <TokenTransferSnippetNft
-            token={ data.token }
-            tokenId={ total.token_id }
-            instance={ total.token_instance }
-            value="1"
-          />
-        );
-      }
-
-      case 'ERC-1155': {
-        const total = data.total as Erc1155TotalPayload;
-        return (
-          <TokenTransferSnippetNft
-            key={ total.token_id }
-            token={ data.token }
-            tokenId={ total.token_id }
-            instance={ total.token_instance }
-            value={ total.value }
-          />
-        );
-      }
-
-      case 'ERC-404': {
-        const total = data.total as Erc404TotalPayload | null;
-        if (total === null) {
-          return null;
-        }
-
-        if (total.token_id !== null) {
+        if (data.total && 'token_id' in data.total && 'token_instance' in data.total) {
           return (
             <TokenTransferSnippetNft
               token={ data.token }
-              tokenId={ total.token_id }
+              tokenId={ data.total.token_id }
+              instance={ data.total.token_instance }
+              value="1"
+            />
+          );
+        }
+        return null;
+      }
+
+      case 'ERC-1155': {
+        if (data.total && 'token_id' in data.total && 'token_instance' in data.total && 'value' in data.total) {
+          return (
+            <TokenTransferSnippetNft
+              token={ data.token }
+              tokenId={ data.total.token_id }
+              instance={ data.total.token_instance }
+              value={ data.total.value || '1' }
+            />
+          );
+        }
+        return null;
+      }
+
+      case 'ERC-404': {
+        if (data.total === null) {
+          return null;
+        }
+
+        if ('token_id' in data.total && data.total.token_id !== null) {
+          return (
+            <TokenTransferSnippetNft
+              token={ data.token }
+              tokenId={ data.total.token_id }
               value="1"
             />
           );
         } else {
-          if (total.value === null) {
-            return null;
+          if ('value' in data.total && data.total.value) {
+            return <TokenTransferSnippetFiat token={ data.token } value={ data.total.value } decimals={ data.total.decimals }/>;
           }
-
-          return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
+          return null;
         }
       }
 

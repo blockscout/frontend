@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { SmartContractCreationStatus } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
@@ -11,7 +11,7 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 interface Props extends BadgeProps {
-  status: SmartContractCreationStatus;
+  status: schemas['SmartContract']['creation_status'];
 }
 
 const ContractCreationStatus = ({ status, ...rest }: Props) => {
