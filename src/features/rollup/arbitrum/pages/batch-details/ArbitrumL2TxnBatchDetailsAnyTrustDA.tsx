@@ -3,7 +3,7 @@
 import { Grid, Text, Flex, Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchDAAnytrust } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -14,7 +14,7 @@ import TextSeparator from 'src/shared/texts/TextSeparator';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 type Props = {
-  data: ArbitrumL2TxnBatchDAAnytrust;
+  data: schemas['ArbitrumDataAvailabilityAnytrust'];
 };
 
 const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
@@ -26,30 +26,41 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
         Signature
       </DetailedInfo.ItemLabel><DetailedInfo.ItemValue wordBreak="break-all" whiteSpace="break-spaces">
         { data.bls_signature }
-      </DetailedInfo.ItemValue><DetailedInfo.ItemLabel
-        hint="The hash of the data blob stored by the AnyTrust committee"
-      >
-        Data hash
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue whiteSpace="pre-wrap" wordBreak="break-all" alignItems={{ base: 'flex-start', lg: 'center' }}>
-        { data.data_hash }
-        <CopyToClipboard text={ data.data_hash } ml={ 2 }/>
       </DetailedInfo.ItemValue>
-      <DetailedInfo.ItemLabel
-        hint="Expiration timeout for the data blob"
-      >
-        Timeout
-      </DetailedInfo.ItemLabel><DetailedInfo.ItemValue multiRow>
-        { dayjs(data.timeout) < dayjs() ?
-          <DetailsTimestamp timestamp={ data.timeout }/> :
-          (
-            <>
-              <DetailsTimestamp timestamp={ data.timeout } noRelativeTime/>
-              <TextSeparator/>
-              <Text color="red.500">{ dayjs(data.timeout).diff(dayjs(), 'day') } days left</Text>
-            </>
-          ) }
-      </DetailedInfo.ItemValue>
+
+      { data.data_hash && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The hash of the data blob stored by the AnyTrust committee"
+          >
+            Data hash
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue whiteSpace="pre-wrap" wordBreak="break-all" alignItems={{ base: 'flex-start', lg: 'center' }}>
+            { data.data_hash }
+            <CopyToClipboard text={ data.data_hash } ml={ 2 }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
+      { data.timeout && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Expiration timeout for the data blob"
+          >
+            Timeout
+          </DetailedInfo.ItemLabel><DetailedInfo.ItemValue multiRow>
+            { dayjs(data.timeout) < dayjs() ?
+              <DetailsTimestamp timestamp={ data.timeout }/> :
+              (
+                <>
+                  <DetailsTimestamp timestamp={ data.timeout } noRelativeTime/>
+                  <TextSeparator/>
+                  <Text color="red.500">{ dayjs(data.timeout).diff(dayjs(), 'day') } days left</Text>
+                </>
+              ) }
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
       <DetailedInfo.ItemLabel
         hint="Members of AnyTrust committee"
       >

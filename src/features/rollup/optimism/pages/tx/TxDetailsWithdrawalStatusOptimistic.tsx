@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { OptimisticL2WithdrawalStatus } from 'src/features/rollup/optimism/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -20,7 +19,7 @@ interface Props {
   txHash: string;
 }
 
-const WITHDRAWAL_STATUS_STEPS: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_STEPS: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'In challenge period',
@@ -28,14 +27,14 @@ const WITHDRAWAL_STATUS_STEPS: Array<OptimisticL2WithdrawalStatus> = [
   'Relayed',
 ];
 
-const WITHDRAWAL_STATUS_ORDER_PROVEN: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_ORDER_PROVEN: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'Proven',
   'Relayed',
 ];
 
-const WITHDRAWAL_STATUS_ORDER_GAME: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_ORDER_GAME: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'Waiting a game to resolve',
@@ -114,7 +113,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
 
   return (
     <VerificationSteps
-      steps={ steps as unknown as Array<OptimisticL2WithdrawalStatus> }
+      steps={ steps }
       currentStep={ data.status }
       rightSlot={ rightSlot }
     />

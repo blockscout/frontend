@@ -3,7 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'src/features/advanced-filter/types/api';
-import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'src/features/chain-variants/beacon-chain/types/api';
 import type {
   ValidatorsBlackfortCountersResponse,
   ValidatorsBlackfortResponse,
@@ -23,13 +23,6 @@ import type {
 import type { CsvExportItemResponse, CsvExportConfig } from 'src/features/csv-export/types/api';
 import type { Blob } from 'src/features/data-availability/types/api';
 import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'src/features/hot-contracts/types/api';
-import type {
-  ArbitrumL2TxnBatchesItem,
-  ArbitrumLatestDepositsResponse,
-} from 'src/features/rollup/arbitrum/types/api';
-import type {
-  OptimisticL2DepositsItem,
-} from 'src/features/rollup/optimism/types/api';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'src/features/tx-interpretation/noves/types/api';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'src/features/user-ops/types/api';
@@ -286,9 +279,9 @@ R extends 'core:stats_hot_contracts' ? HotContractsResponse :
 R extends 'core:homepage_blocks' ? paths['/v2/main-page/blocks']['get'] :
 R extends 'core:homepage_txs' ? paths['/v2/main-page/transactions']['get'] :
 R extends 'core:homepage_txs_watchlist' ? paths['/v2/main-page/transactions/watchlist']['get'] :
-R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
-R extends 'core:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
-R extends 'core:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
+R extends 'core:homepage_optimistic_deposits' ? paths['/v2/main-page/optimism-deposits']['get'] :
+R extends 'core:homepage_arbitrum_deposits' ? paths['/v2/main-page/arbitrum/messages/to-rollup']['get'] :
+R extends 'core:homepage_arbitrum_l2_batches' ? paths['/v2/main-page/arbitrum/batches/committed']['get'] :
 R extends 'core:homepage_indexing_status' ? IndexingStatus :
 R extends 'core:homepage_zksync_latest_batch' ? number :
 R extends 'core:homepage_arbitrum_latest_batch' ? number :
@@ -319,7 +312,7 @@ R extends 'core:noves_address_history' ? NovesAccountHistoryResponse :
 R extends 'core:noves_describe_txs' ? NovesDescribeTxsResponse :
 R extends 'core:withdrawals' ? WithdrawalsResponse :
 R extends 'core:withdrawals_counters' ? WithdrawalsCounters :
-R extends 'core:deposits' ? DepositsResponse :
+R extends 'core:deposits' ? paths['/v2/beacon/deposits']['get'] :
 R extends 'core:deposits_counters' ? DepositsCounters :
 R extends 'core:advanced_filter' ? AdvancedFilterResponse :
 R extends 'core:advanced_filter_methods' ? AdvancedFilterMethodsResponse :

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -16,7 +16,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ScrollL2DepositsTableItem from './ScrollL2DepositsTableItem';
 
 type Props = {
-  items: Array<ScrollL2MessageItem>;
+  items: Array<schemas['ScrollBridge']>;
   top: number;
   isLoading?: boolean;
 };

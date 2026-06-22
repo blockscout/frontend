@@ -13,7 +13,7 @@ import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import { generateListStub } from 'src/shared/pagination/utils';
 
-export const TOKEN_TRANSFER_ERC_20_TOTAL: schemas['Total'] = {
+export const TOKEN_TRANSFER_ERC_20_TOTAL: schemas['TokenTransferTotalFungible'] = {
   decimals: '18',
   value: '9851351626684503',
 };

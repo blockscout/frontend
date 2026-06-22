@@ -1,9 +1,9 @@
-import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatch, ArbitrumL2MessagesItem, ArbitrumL2TxnWithdrawalsItem } from './types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const ARBITRUM_MESSAGES_ITEM: ArbitrumL2MessagesItem = {
+export const ARBITRUM_MESSAGES_ITEM: schemas['ArbitrumMessage'] = {
   completion_transaction_hash: TX_HASH,
   id: 181920,
   origination_address_hash: ADDRESS_HASH,
@@ -13,7 +13,7 @@ export const ARBITRUM_MESSAGES_ITEM: ArbitrumL2MessagesItem = {
   status: 'relayed',
 };
 
-export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
+export const ARBITRUM_L2_TXN_BATCHES_ITEM: schemas['ArbitrumBatchForList'] = {
   number: 12345,
   blocks_count: 12345,
   transactions_count: 10000,
@@ -26,7 +26,7 @@ export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
   batch_data_container: 'in_blob4844',
 };
 
-export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {
+export const ARBITRUM_L2_TXN_BATCH: schemas['ArbitrumBatch'] = {
   ...ARBITRUM_L2_TXN_BATCHES_ITEM,
   after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
   before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
@@ -37,7 +37,16 @@ export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {
   },
 };
 
-export const ARBITRUM_L2_TXN_WITHDRAWALS_ITEM: ArbitrumL2TxnWithdrawalsItem = {
+export const ARBITRUM_L2_TXN_BATCH_CELESTIA: schemas['ArbitrumBatchByCelestia'] = {
+  ...ARBITRUM_L2_TXN_BATCH,
+  data_availability: {
+    batch_data_container: 'in_celestia',
+    height: 4520041,
+    transaction_commitment: '0x3ebe5a43',
+  },
+};
+
+export const ARBITRUM_L2_TXN_WITHDRAWALS_ITEM: schemas['ArbitrumWithdrawal'] = {
   arb_block_number: 70889261,
   caller_address_hash: '0x507f55d716340fc836ba52c1a8daebcfeedeef1a',
   completion_transaction_hash: null,

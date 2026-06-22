@@ -4,7 +4,7 @@ import { HStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
@@ -22,7 +22,7 @@ import ArbitrumL2TxnBatchStatus from '../../components/ArbitrumL2TxnBatchStatus'
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ArbitrumL2TxnBatchesItem; isLoading?: boolean };
+type Props = { item: schemas['ArbitrumBatchForList']; isLoading?: boolean };
 
 const ArbitrumL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
@@ -46,21 +46,25 @@ const ArbitrumL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         </HStack>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <BlockEntityL1
-          number={ item.commitment_transaction.block_number }
-          isLoading={ isLoading }
-        />
+        { item.commitment_transaction.block_number ? (
+          <BlockEntityL1
+            number={ item.commitment_transaction.block_number }
+            isLoading={ isLoading }
+          />
+        ) : 'N/A' }
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">{ item.blocks_count ? item.blocks_count.toLocaleString() : 'N/A' }</Skeleton>
       </TableCell>
       <TableCell pr={ 12 } verticalAlign="middle">
-        <TxEntityL1
-          hash={ item.commitment_transaction.hash }
-          isLoading={ isLoading }
-          truncation="constant_long"
-          noCopy
-        />
+        { item.commitment_transaction.hash ? (
+          <TxEntityL1
+            hash={ item.commitment_transaction.hash }
+            isLoading={ isLoading }
+            truncation="constant_long"
+            noCopy
+          />
+        ) : 'N/A' }
       </TableCell>
       <TableCell verticalAlign="middle">
         <TimeWithTooltip

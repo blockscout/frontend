@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ArbitrumL2MessagesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -14,7 +14,7 @@ import type { MessagesDirection } from './ArbitrumL2Messages';
 import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
 
 type Props = {
-  items: Array<ArbitrumL2MessagesItem>;
+  items: Array<schemas['ArbitrumMessage']>;
   direction: MessagesDirection;
   top: number;
   isLoading?: boolean;

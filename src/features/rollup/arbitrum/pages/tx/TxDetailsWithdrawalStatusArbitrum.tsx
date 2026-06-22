@@ -77,7 +77,7 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
         <DetailedInfo.ItemValue>
           { data.arbitrum.message_related_info.message_status ? (
             <VerificationSteps
-              steps={ steps as unknown as Array<ArbitrumTransactionMessageStatus> }
+              steps={ steps }
               currentStep={ data.arbitrum.message_related_info.message_status }
             />
           ) : <Text color="text.secondary">Could not determine</Text> }

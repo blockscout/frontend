@@ -7,7 +7,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { Abi } from 'viem';
 import { useSwitchChain, useWaitForTransactionReceipt, useWalletClient } from 'wagmi';
 
-import type { OptimisticL2WithdrawalClaimInfo } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 
@@ -53,7 +53,7 @@ interface FormFields {
 }
 
 interface Props {
-  data: OptimisticL2WithdrawalClaimInfo;
+  data: Omit<schemas['OptimismTransactionWithdrawal'], 'nonce'>;
   onOpenChange: ({ open }: { open: boolean }) => void;
   proofSubmitterAddress?: string;
   onSuccess: (txHash: string) => void;

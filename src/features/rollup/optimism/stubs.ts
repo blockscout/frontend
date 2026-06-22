@@ -1,16 +1,9 @@
-import type {
-  OptimismL2TxnBatch,
-  OptimisticL2DepositsItem,
-  OptimisticL2DisputeGamesItem,
-  OptimisticL2OutputRootsItem,
-  OptimisticL2TxnBatchesItem,
-  OptimisticL2WithdrawalsItem,
-} from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_HASH, ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const L2_DEPOSIT_ITEM: OptimisticL2DepositsItem = {
+export const L2_DEPOSIT_ITEM: schemas['OptimismDeposit'] = {
   l1_block_number: 9045233,
   l1_block_timestamp: '2023-05-22T18:00:36.000000Z',
   l1_transaction_hash: TX_HASH,
@@ -19,7 +12,7 @@ export const L2_DEPOSIT_ITEM: OptimisticL2DepositsItem = {
   l2_transaction_hash: TX_HASH,
 };
 
-export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
+export const L2_WITHDRAWAL_ITEM: schemas['OptimismWithdrawal'] = {
   challenge_period_end: null,
   from: ADDRESS_PARAMS,
   l1_transaction_hash: TX_HASH,
@@ -33,11 +26,11 @@ export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
   msg_target_address_hash: null,
   msg_data: null,
   msg_gas_limit: null,
-  msg_nonce_raw: null,
+  msg_nonce_raw: '',
   msg_value: null,
 };
 
-export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
+export const L2_TXN_BATCHES_ITEM: schemas['OptimismBatch'] = {
   number: 260991,
   batch_data_container: 'in_blob4844',
   l1_timestamp: '2023-06-01T14:46:48.000000Z',
@@ -49,7 +42,7 @@ export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
   transactions_count: 9,
 };
 
-export const L2_TXN_BATCH: OptimismL2TxnBatch = {
+export const L2_TXN_BATCH: schemas['OptimismBatchDetailed'] = {
   ...L2_TXN_BATCHES_ITEM,
   batch_data_container: 'in_blob4844',
   blobs: [
@@ -61,7 +54,7 @@ export const L2_TXN_BATCH: OptimismL2TxnBatch = {
   ],
 };
 
-export const L2_OUTPUT_ROOTS_ITEM: OptimisticL2OutputRootsItem = {
+export const L2_OUTPUT_ROOTS_ITEM: schemas['OptimismOutputRoot'] = {
   l1_block_number: 9103684,
   l1_timestamp: '2023-06-01T15:26:12.000000Z',
   l1_transaction_hash: TX_HASH,
@@ -70,7 +63,7 @@ export const L2_OUTPUT_ROOTS_ITEM: OptimisticL2OutputRootsItem = {
   output_root: TX_HASH,
 };
 
-export const L2_DISPUTE_GAMES_ITEM: OptimisticL2DisputeGamesItem = {
+export const L2_DISPUTE_GAMES_ITEM: schemas['OptimismGame'] = {
   contract_address_hash: ADDRESS_HASH,
   created_at: '2023-06-01T15:26:12.000000Z',
   game_type: 0,

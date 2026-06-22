@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { toTokenModel } from 'src/slices/token/utils/model';
 
@@ -12,7 +12,7 @@ import TokenValue from 'src/shared/values/entity/TokenValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: ArbitrumL2TxnWithdrawalsItem;
+  data: schemas['ArbitrumWithdrawal'];
   loading?: boolean;
 }
 
@@ -20,15 +20,9 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
 
   if (data.token) {
     const token = toTokenModel({
-      ...data.token,
+      address_hash: data.token.address_hash ?? '',
       decimals: String(data.token.decimals),
       type: 'ERC-20',
-      holders_count: null,
-      exchange_rate: null,
-      total_supply: null,
-      circulating_market_cap: null,
-      icon_url: null,
-      reputation: null,
     });
 
     return (

@@ -1,8 +1,8 @@
-import type { ScrollL2MessageItem, ScrollL2TxnBatch } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const SCROLL_L2_TXN_BATCH: ScrollL2TxnBatch = {
+export const SCROLL_L2_TXN_BATCH: schemas['ScrollBatch'] = {
   commitment_transaction: {
     block_number: 4053979,
     hash: '0xd04d626495ef69abd37ae3ea585ed03319a3d3b50cf10874f7f36741c7b45a18',
@@ -22,7 +22,7 @@ export const SCROLL_L2_TXN_BATCH: ScrollL2TxnBatch = {
   },
 };
 
-export const SCROLL_L2_MESSAGE_ITEM: ScrollL2MessageItem = {
+export const SCROLL_L2_MESSAGE_ITEM: schemas['ScrollBridge'] = {
   id: 930795,
   origination_transaction_block_number: 20639178,
   origination_transaction_hash: TX_HASH,

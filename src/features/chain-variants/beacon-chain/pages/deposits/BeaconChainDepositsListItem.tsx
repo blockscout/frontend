@@ -20,7 +20,7 @@ import BeaconChainValidatorLink from '../../components/BeaconChainValidatorLink'
 const feature = config.features.beaconChain;
 
 interface Props {
-  item: schemas['Deposit'];
+  item: schemas['BeaconDeposit'];
   view: 'list' | 'address' | 'block';
   isLoading?: boolean;
 };

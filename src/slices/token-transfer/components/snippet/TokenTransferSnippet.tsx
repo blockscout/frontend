@@ -35,7 +35,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
     switch (data.token?.type) {
       case 'ERC-20': {
-        const total = data.total as schemas['Total'] | null;
+        const total = data.total as schemas['TokenTransferTotalFungible'] | null;
         if (total === null || total.value === null) {
           return null;
         }

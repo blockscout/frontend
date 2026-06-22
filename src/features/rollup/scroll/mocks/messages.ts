@@ -1,6 +1,6 @@
-import type { ScrollL2MessagesResponse } from 'src/features/rollup/scroll/types/api';
+import type { operations } from '@blockscout/api-types';
 
-export const baseResponse: ScrollL2MessagesResponse = {
+export const baseResponse: operations['ScrollController.withdrawals']['json'] = {
   items: [
     {
       id: 930795,

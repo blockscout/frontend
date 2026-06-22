@@ -4,7 +4,7 @@ import { chakra } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2MessagesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -25,7 +25,7 @@ import ArbitrumL2MessageStatus from './ArbitrumL2MessageStatus';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ArbitrumL2MessagesItem; isLoading?: boolean; direction: MessagesDirection };
+type Props = { item: schemas['ArbitrumMessage']; isLoading?: boolean; direction: MessagesDirection };
 
 const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
@@ -53,7 +53,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
         </>
       ) }
 
-      { direction === 'from-rollup' && (
+      { direction === 'from-rollup' && item.origination_address_hash && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -104,7 +104,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.status === 'confirmed' && direction === 'from-rollup' ?
+        { item.status === 'confirmed' && direction === 'from-rollup' && item.origination_transaction_hash ?
           <Link href={ route({ pathname: '/txn-withdrawals', query: { q: item.origination_transaction_hash } }) }>Ready for relay</Link> :
           <ArbitrumL2MessageStatus status={ item.status } isLoading={ isLoading }/> }
       </ListItemMobileGrid.Value>

@@ -19,7 +19,7 @@ const feature = config.features.beaconChain;
 interface Props {
   top: number;
   isLoading?: boolean;
-  items: Array<schemas['Deposit']>;
+  items: Array<schemas['BeaconDeposit']>;
   view: 'list' | 'address' | 'block';
 };
 

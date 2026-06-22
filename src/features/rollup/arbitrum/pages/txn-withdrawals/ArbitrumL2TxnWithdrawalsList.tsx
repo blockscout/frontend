@@ -3,12 +3,12 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import ArbitrumL2TxnWithdrawalsListItem from './ArbitrumL2TxnWithdrawalsListItem';
 
 interface Props {
-  data: Array<ArbitrumL2TxnWithdrawalsItem>;
+  data: Array<schemas['ArbitrumWithdrawal']>;
   isLoading: boolean;
   txHash: string | undefined;
 }

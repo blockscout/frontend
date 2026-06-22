@@ -36,9 +36,9 @@ export type CeloEpochListItem = {
   end_block_number: number | null;
   timestamp: string | null;
   distribution: {
-    carbon_offsetting_transfer: schemas['Total'] | null;
-    community_transfer: schemas['Total'] | null;
-    transfers_total: schemas['Total'] | null;
+    carbon_offsetting_transfer: schemas['TokenTransferTotalFungible'] | null;
+    community_transfer: schemas['TokenTransferTotalFungible'] | null;
+    transfers_total: schemas['TokenTransferTotalFungible'] | null;
   } | null;
 };
 
@@ -66,7 +66,7 @@ export type CeloEpochDetails = {
     community_transfer: schemas['TokenTransfer'] | null;
     transfers_total: {
       token: schemas['Token'] | null;
-      total: schemas['Total'] | null;
+      total: schemas['TokenTransferTotalFungible'] | null;
     } | null;
   } | null;
   aggregated_election_rewards: Record<CeloEpochRewardsType, CeloEpochElectionReward | null> | null;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { OptimisticL2DepositsItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -15,7 +15,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import OptimisticDepositsTableItem from './OptimisticDepositsTableItem';
 
 type Props = {
-  items: Array<OptimisticL2DepositsItem>;
+  items: Array<schemas['OptimismDeposit']>;
   top: number;
   isLoading?: boolean;
 };

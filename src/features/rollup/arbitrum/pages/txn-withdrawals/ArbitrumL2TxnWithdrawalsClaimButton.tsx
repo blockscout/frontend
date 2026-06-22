@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import { useSendTransaction, useSwitchChain } from 'wagmi';
 
-import type { ArbitrumL2MessageClaimResponse, ArbitrumL2TxnWithdrawalsResponse } from '../../types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -51,7 +51,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
     try {
       setIsPending(true);
 
-      const response = await apiFetch<'core:arbitrum_l2_message_claim', ArbitrumL2MessageClaimResponse, ResourceError<unknown>>(
+      const response = await apiFetch<'core:arbitrum_l2_message_claim', schemas['ArbitrumClaimMessage'], ResourceError<unknown>>(
         'core:arbitrum_l2_message_claim',
         { pathParams: { id: messageId.toString() },
         });
@@ -90,7 +90,7 @@ const ArbitrumL2TxnWithdrawalsClaimButton = ({ messageId, txHash, completionTxHa
   const handleSuccess = React.useCallback(() => {
     queryClient.setQueryData(
       getResourceKey('core:arbitrum_l2_txn_withdrawals', { pathParams: { hash: txHash } }),
-      (prevData: ArbitrumL2TxnWithdrawalsResponse | undefined) => {
+      (prevData: operations['ArbitrumController.withdrawals']['json'] | undefined) => {
         if (!prevData) {
           return;
         }

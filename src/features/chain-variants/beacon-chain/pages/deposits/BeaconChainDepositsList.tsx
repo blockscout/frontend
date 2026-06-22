@@ -11,7 +11,7 @@ import BeaconChainDepositsListItem from './BeaconChainDepositsListItem';
 
 interface Props {
   isLoading?: boolean;
-  items: Array<schemas['Deposit']>;
+  items: Array<schemas['BeaconDeposit']>;
   view: 'list' | 'block' | 'address';
 }
 

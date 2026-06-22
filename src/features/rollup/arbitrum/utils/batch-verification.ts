@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES, type ArbitrumBatchStatus } from '../types/api';
+import { type ArbitrumBatchStatus } from '../types/api';
 import type { schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
 
@@ -18,6 +18,12 @@ export const VERIFICATION_STEPS_MAP: Record<ArbitrumBatchStatus, string> = {
     `Confirmed on ${ parentChainName }` :
     'Confirmed on parent chain',
 };
+
+export const ARBITRUM_L2_TX_BATCH_STATUSES: Array<ArbitrumBatchStatus> = [
+  'Processed on rollup' as const,
+  'Sent to base' as const,
+  'Confirmed on base' as const,
+];
 
 export const verificationSteps = (() => {
   return ARBITRUM_L2_TX_BATCH_STATUSES.map((status) => VERIFICATION_STEPS_MAP[status]);

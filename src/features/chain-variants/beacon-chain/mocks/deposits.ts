@@ -1,8 +1,8 @@
-import type { DepositsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import { withoutName } from 'src/slices/address/mocks/address-param';
 
-export const data: DepositsResponse = {
+export const data: operations['BlockController.beacon_deposits']['json'] = {
   items: [
     {
       amount: '192175000000000',
@@ -22,6 +22,7 @@ export const data: DepositsResponse = {
         ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       },
+      withdrawal_credentials: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
     },
     {
       amount: '192175000000000',
@@ -41,6 +42,7 @@ export const data: DepositsResponse = {
         ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       },
+      withdrawal_credentials: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
     },
     {
       amount: '182773000000000',
@@ -60,6 +62,7 @@ export const data: DepositsResponse = {
         ...withoutName,
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
       },
+      withdrawal_credentials: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
     },
   ],
   next_page_params: {
