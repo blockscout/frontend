@@ -817,14 +817,6 @@ This feature allows users to view tokens that have been bridged from other EVM c
 | NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | v2.4.0+ |
 | NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC | `string` | Public WebSocket endpoint for streaming RPC node data, including mini-block data. | - | - | `wss://carrot.megaeth.com/mafia/ws` | v2.4.0+ |
 
-#### MUD framework
-
-Optimistic-stack rollups that use the MUD framework. Requires [Rollup](#rollup) feature with `optimistic` type.
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | Required | - | `true` | v1.33.0+ |
-
 #### SUAVE
 
 For blockchains that implement SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transactions for a particular Kettle in the separate view.

@@ -49,3 +49,7 @@ Every `NEXT_PUBLIC_*` variable is validated at container startup against a schem
 ## How to add a new variable
 
 Use the `add-env-var` skill — it's the step-by-step checklist for documenting, exposing, validating, and (when applicable) CSP-allowing or download-registering a new `NEXT_PUBLIC_*` variable.
+
+## How to deprecate a variable
+
+Use the `deprecate-env-var` skill — the checklist for immediate removal or a grace-period deprecation.

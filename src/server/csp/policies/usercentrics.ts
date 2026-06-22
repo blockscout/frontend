@@ -4,8 +4,8 @@ import type CspDev from 'csp-dev';
 
 import config from 'src/config';
 
-export function usercentrics(): CspDev.DirectiveDescriptor {
-  if (!config.services.usercentrics) {
+export function usercentrics(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!config.services.usercentrics || isPrivateMode) {
     return {};
   }
 

@@ -16,7 +16,11 @@ import path from 'path';
 //   --out=<path>       output file (default ./.env.tmp, relative to cwd)
 
 type Registry = Record<string, string>;
-type EnvsRules = { localEnvs: Record<string, string>; ignoredEnvs: Array<string> };
+type EnvsRules = {
+  localEnvs: Record<string, string>;
+  ignoredEnvs: Array<string>;
+  deprecatedEnvs: Array<string>;
+};
 
 function readJson<T>(fileName: string): T {
   return JSON.parse(fs.readFileSync(path.resolve(__dirname, fileName), 'utf8')) as T;
@@ -45,7 +49,8 @@ async function run() {
   }
 
   const registry = readJson<Registry>('./registry.json');
-  const { localEnvs, ignoredEnvs } = readJson<EnvsRules>('./envs-rules.json');
+  const { localEnvs, ignoredEnvs, deprecatedEnvs } = readJson<EnvsRules>('./envs-rules.json');
+  const droppedEnvs = [ ...ignoredEnvs, ...deprecatedEnvs ];
 
   const instanceUrl = registry[alias];
   if (!instanceUrl) {
@@ -65,15 +70,17 @@ async function run() {
   const localEnvKeys = Object.keys(localEnvs);
 
   const entries = Object.entries(instanceConfig.envs)
-    // drop deprecated / build-time vars and the local-only keys (we set them ourselves below)
-    .filter(([ key ]) => !ignoredEnvs.includes(key) && !localEnvKeys.includes(key));
+    // drop build-time + deprecated vars and the local-only keys (we set them ourselves below)
+    .filter(([ key ]) => !droppedEnvs.includes(key) && !localEnvKeys.includes(key));
 
   // localEnvs: substitute local values for dev, or omit entirely for the container
   if (!omitLocalEnvs) {
     entries.push(...Object.entries(localEnvs));
   }
 
-  const sorted = entries.sort(([ a ], [ b ]) => a.localeCompare(b));
+  // eslint-disable-next-line no-restricted-syntax
+  const collator = new Intl.Collator('en');
+  const sorted = entries.sort(([ a ], [ b ]) => collator.compare(a, b));
 
   // Raw KEY=value lines (no surrounding quotes), matching the format dotenv-cli expects —
   // the same format the committed preset files use. The container entrypoint reads this via a

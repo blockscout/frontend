@@ -4,8 +4,8 @@ import type CspDev from 'csp-dev';
 
 import config from 'src/config';
 
-export function googleAnalytics(): CspDev.DirectiveDescriptor {
-  if (!config.services.googleAnalytics.propertyId) {
+export function googleAnalytics(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!config.services.googleAnalytics.propertyId || isPrivateMode) {
     return {};
   }
 

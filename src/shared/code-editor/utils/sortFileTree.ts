@@ -2,6 +2,8 @@
 
 import type { FileTree } from '../types';
 
+import { collator } from 'src/shared/texts/collator';
+
 export default function sortFileTree(a: FileTree[number], b: FileTree[number]) {
   if ('children' in a && !('children' in b)) {
     return -1;
@@ -11,5 +13,5 @@ export default function sortFileTree(a: FileTree[number], b: FileTree[number]) {
     return 1;
   }
 
-  return a.name.localeCompare(b.name);
+  return collator.compare(a.name, b.name);
 }

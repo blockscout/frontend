@@ -8,8 +8,8 @@ import { KEY_WORDS } from '../utils';
 
 const feature = config.features.connectWallet;
 
-export function connectWallet(): CspDev.DirectiveDescriptor {
-  if (!feature.isEnabled) {
+export function connectWallet(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
+  if (!feature.isEnabled || isPrivateMode) {
     return {};
   }
 

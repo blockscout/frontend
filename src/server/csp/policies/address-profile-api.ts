@@ -6,7 +6,7 @@ import config from 'src/config';
 
 const feature = config.features.addressProfileAPI;
 
-export function usernameApi(): CspDev.DirectiveDescriptor {
+export function addressProfileApi(): CspDev.DirectiveDescriptor {
   if (!feature.isEnabled) {
     return {};
   }

@@ -13,10 +13,6 @@
         "-y",
         "next-devtools-mcp@latest"
       ]
-    },
-    "grepika": {
-      "command": "npx",
-      "args": ["-y", "@agentika/grepika", "--mcp"]
     }
   }
 }
