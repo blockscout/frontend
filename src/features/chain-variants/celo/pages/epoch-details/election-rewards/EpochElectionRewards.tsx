@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochDetails } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Heading } from 'src/toolkit/chakra/heading';
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -12,7 +12,7 @@ import EpochElectionRewardsListItem from './EpochElectionRewardsListItem';
 import EpochElectionRewardsTableItem from './EpochElectionRewardsTableItem';
 
 interface Props {
-  data: CeloEpochDetails;
+  data: schemas['CeloEpochDetailed'];
   isLoading?: boolean;
 }
 
@@ -36,7 +36,7 @@ const EpochElectionRewards = ({ data, isLoading }: Props) => {
           </TableHeaderSticky>
           <TableBody>
             { Object.entries(data.aggregated_election_rewards).map((entry) => {
-              const key = entry[0] as keyof CeloEpochDetails['aggregated_election_rewards'];
+              const key = entry[0] as keyof schemas['CeloEpochDetailed']['aggregated_election_rewards'];
               const value = entry[1];
 
               if (!value) {
@@ -57,7 +57,7 @@ const EpochElectionRewards = ({ data, isLoading }: Props) => {
       </Box>
       <Box hideFrom="lg">
         { Object.entries(data.aggregated_election_rewards).map((entry) => {
-          const key = entry[0] as keyof CeloEpochDetails['aggregated_election_rewards'];
+          const key = entry[0] as keyof schemas['CeloEpochDetailed']['aggregated_election_rewards'];
           const value = entry[1];
 
           if (!value) {

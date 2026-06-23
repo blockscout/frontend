@@ -3,7 +3,7 @@
 import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPriceInfo } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import GasPrice from 'src/slices/gas/components/GasPrice';
 
@@ -11,7 +11,7 @@ import { space } from 'src/toolkit/utils/htmlEntities';
 
 interface Props {
   name: string;
-  info: GasPriceInfo | null;
+  info: schemas['StatsGasPriceInfo'] | null;
 }
 
 const GasInfoTooltipRow = ({ name, info }: Props) => {

@@ -4,7 +4,7 @@ import { HStack } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { HotContract } from 'src/features/hot-contracts/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { Reputation } from 'src/slices/token/components/entity/TokenEntity';
@@ -17,7 +17,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: HotContract;
+  data: schemas['HotContract'];
   isLoading?: boolean;
   exchangeRate: string | null;
 }

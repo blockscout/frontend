@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { CsvExportItemStatus } from './api';
+import type { schemas } from '@blockscout/api-types';
 
 export type CsvExportType =
     'address_txs' |
@@ -11,4 +11,4 @@ export type CsvExportType =
     'address_epoch_rewards' |
     'advanced_filters';
 
-export type CsvExportDownloadStatus = CsvExportItemStatus | 'expired';
+export type CsvExportDownloadStatus = schemas['CSVExportResponse']['status'] | 'expired';

@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { ChartMarketResponse } from 'src/slices/home/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -33,7 +33,7 @@ export default function useChartDataQuery({ indicatorId }: Props) {
 
   const marketCapQuery = useQuery({
     queryKey: [ 'parent_chain', 'stats', 'charts', 'market' ],
-    queryFn: () => parentChainApiFetch({ path: '/stats/charts/market' }) as Promise<ChartMarketResponse>,
+    queryFn: () => parentChainApiFetch({ path: '/stats/charts/market' }) as Promise<operations['StatsController.market_chart']['json']>,
     refetchOnMount: false,
     enabled: indicatorId === 'market_cap' || indicatorId === 'coin_price',
   });

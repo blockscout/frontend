@@ -4,7 +4,7 @@ import { chakra } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { HomeStats } from 'src/slices/home/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenLogoPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
@@ -22,7 +22,7 @@ const NativeTokenIcon = ({ isLoading, className }: Props) => {
   const parentChainApiFetch = useFetchParentChainApi();
   const parentChainStatsQuery = useQuery({
     queryKey: [ 'parent_chain', 'stats' ],
-    queryFn: () => parentChainApiFetch({ path: '/stats' }) as Promise<HomeStats>,
+    queryFn: () => parentChainApiFetch({ path: '/stats' }) as Promise<schemas['StatsResponse']>,
     refetchOnMount: false,
   });
 

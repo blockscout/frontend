@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { GasPriceInfo } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { GasUnit } from 'src/slices/gas/types/config';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
-export default function formatGasValue(data: GasPriceInfo, unit: GasUnit) {
+export default function formatGasValue(data: schemas['StatsGasPriceInfo'], unit: GasUnit) {
   switch (unit) {
     case 'gwei': {
       if (!data.price) {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOp } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import RawInputData from 'src/shared/data/RawInputData';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -10,7 +10,7 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
 
 interface Props {
-  data: UserOp;
+  data: schemas['UserOperation'];
 }
 
 const UserOpDecodedCallData = ({ data }: Props) => {

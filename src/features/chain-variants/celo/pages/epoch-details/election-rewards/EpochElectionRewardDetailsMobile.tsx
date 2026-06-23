@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { CeloEpochDetails } from 'src/features/chain-variants/celo/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -18,7 +17,7 @@ import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import { formatRewardType } from './utils';
 
 interface Props {
-  type: keyof CeloEpochDetails['aggregated_election_rewards'];
+  type: keyof schemas['CeloEpochAggregatedElectionRewards'];
   token: schemas['Token'];
 }
 

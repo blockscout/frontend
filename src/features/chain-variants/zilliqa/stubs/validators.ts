@@ -1,17 +1,14 @@
-import type {
-  ValidatorsZilliqaItem,
-  ValidatorZilliqa,
-} from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 
-export const VALIDATORS_ZILLIQA_ITEM: ValidatorsZilliqaItem = {
+export const VALIDATORS_ZILLIQA_ITEM: schemas['ZilliqaStaker'] = {
   index: 420,
   bls_public_key: '0x95125dca41be848801f9bd75254f1faf1ae3194b1da53e9a5684ed7f67b729542482bc521924603b9703c33bf831a100',
   balance: '80000000000000000000000000',
 };
 
-export const VALIDATOR_ZILLIQA: ValidatorZilliqa = {
+export const VALIDATOR_ZILLIQA: schemas['ZilliqaStakerDetailed'] = {
   index: 420,
   bls_public_key: '0x95125dca41be848801f9bd75254f1faf1ae3194b1da53e9a5684ed7f67b729542482bc521924603b9703c33bf831a100',
   balance: '1000000000000000000',

@@ -12,6 +12,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import GasInfoUpdateTimer from 'src/slices/gas/components/GasInfoUpdateTimer';
+import discriminateDetailedPrices from 'src/slices/gas/utils/price';
 import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
@@ -58,7 +59,7 @@ const GasTracker = () => {
         <Skeleton loading={ isLoading } whiteSpace="pre" display="flex" alignItems="center">
           <span>Last updated </span>
           <Time timestamp={ data.gas_price_updated_at } format="DD MMM, HH:mm:ss" color="text.secondary"/>
-          { data.gas_prices_update_in !== 0 && (
+          { data.gas_prices_update_in !== null && data.gas_prices_update_in !== 0 && (
             <GasInfoUpdateTimer
               key={ dataUpdatedAt }
               startTime={ dataUpdatedAt }
@@ -83,7 +84,9 @@ const GasTracker = () => {
       return <Alert status="warning">No recent data available</Alert>;
     }
 
-    return data?.gas_prices ? <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> : null;
+    const prices = discriminateDetailedPrices(data?.gas_prices);
+
+    return prices ? <GasTrackerPrices prices={ prices } isLoading={ isLoading }/> : null;
   })();
 
   const faq = config.metadata.seo.enhancedDataEnabled ? <GasTrackerFaq/> : null;

@@ -8,6 +8,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'src/slices/gas/components/GasPrice';
+import discriminateDetailedPrices from 'src/slices/gas/utils/price';
 import { useHomeDataContext } from 'src/slices/home/contexts/home-data-context';
 import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 import type { HomeStatsItem } from 'src/slices/home/utils/stats';
@@ -82,6 +83,8 @@ const Stats = () => {
     if (!statsData && !apiData) {
       return [];
     }
+
+    const gasPrices = discriminateDetailedPrices(apiData?.gas_prices);
 
     const gasInfoTooltip = hasGasTracker && apiData?.gas_prices && apiData.gas_prices.average ? (
       <GasInfoTooltip data={ apiData } dataUpdatedAt={ apiQuery.dataUpdatedAt }>
@@ -162,11 +165,11 @@ const Stats = () => {
         value: Number(statsData?.total_addresses?.value || apiData?.total_addresses).toLocaleString(),
         isLoading,
       },
-      hasGasTracker && apiData?.gas_prices && {
+      hasGasTracker && gasPrices && {
         id: 'gas_tracker' as const,
         icon: 'gas' as const,
         label: 'Gas tracker',
-        value: apiData.gas_prices.average ? <GasPrice data={ apiData.gas_prices.average }/> : 'N/A',
+        value: gasPrices?.average ? <GasPrice data={ gasPrices.average }/> : 'N/A',
         hint: gasInfoTooltip,
         isLoading,
       },

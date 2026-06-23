@@ -5,7 +5,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { UserOp } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -36,7 +36,7 @@ import UserOpDecodedCallData from './UserOpDecodedCallData';
 import UserOpDetailsActions from './UserOpDetailsActions';
 
 interface Props {
-  query: UseQueryResult<UserOp, ResourceError>;
+  query: UseQueryResult<schemas['UserOperation'], ResourceError>;
 }
 
 const UserOpDetails = ({ query }: Props) => {
