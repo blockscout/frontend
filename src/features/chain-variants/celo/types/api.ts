@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
-import type { Erc20TotalPayload, TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { ExcludeNull, ExcludeUndefined } from 'src/shared/types/utils';
+import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
+
+export type AddressCeloAccount = NonNullable<ExcludeUndefined<ExcludeNull<ExcludeUndefined<schemas['AddressResponse']>['celo']>>['account']>;
 
 export interface TransactionCelo {
   celo?: {
-    gas_token: TokenInfo | null;
+    gas_token: schemas['Token'] | null;
   };
 }
 
 export interface BlockBaseFeeCelo {
   amount: string;
-  breakdown: Array<{ amount: string; percentage: number; address: AddressParam }>;
-  recipient: AddressParam;
-  token: TokenInfo;
+  breakdown: Array<{ amount: string; percentage: number; address: schemas['Address'] }>;
+  recipient: schemas['Address'];
+  token: schemas['Token'];
 }
 
 export interface BlockCelo {
@@ -61,10 +63,10 @@ export type CeloEpochDetails = {
   end_processing_block_hash: string | null;
   end_processing_block_number: number | null;
   distribution: {
-    carbon_offsetting_transfer: TokenTransfer | null;
-    community_transfer: TokenTransfer | null;
+    carbon_offsetting_transfer: schemas['TokenTransfer'] | null;
+    community_transfer: schemas['TokenTransfer'] | null;
     transfers_total: {
-      token: TokenInfo | null;
+      token: schemas['Token'] | null;
       total: Erc20TotalPayload | null;
     } | null;
   } | null;
@@ -73,16 +75,16 @@ export type CeloEpochDetails = {
 
 export interface CeloEpochElectionReward {
   count: number;
-  token: TokenInfo;
+  token: schemas['Token'];
   total: string;
 }
 
 export type CeloEpochRewardsType = 'group' | 'validator' | 'delegated_payment' | 'voter';
 
 export interface CeloEpochElectionRewardDetails {
-  account: AddressParam;
+  account: schemas['Address'];
   amount: string;
-  associated_account: AddressParam;
+  associated_account: schemas['Address'];
 }
 
 export interface CeloEpochElectionRewardDetailsResponse {
@@ -103,10 +105,10 @@ export type AddressEpochRewardsResponse = {
 
 export type AddressEpochRewardsItem = {
   type: CeloEpochRewardsType;
-  token: TokenInfo;
+  token: schemas['Token'];
   amount: string;
   block_timestamp: string;
-  account: AddressParam;
+  account: schemas['Address'];
   epoch_number: number;
-  associated_account: AddressParam;
+  associated_account: schemas['Address'];
 };

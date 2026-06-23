@@ -4,7 +4,7 @@ import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
@@ -18,7 +18,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { ZERO } from 'src/toolkit/utils/consts';
 
 interface Props {
-  data: Block;
+  data: schemas['BlockResponse'];
 }
 
 const BlockDetailsBlobInfo = ({ data }: Props) => {

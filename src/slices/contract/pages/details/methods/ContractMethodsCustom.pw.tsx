@@ -2,7 +2,7 @@ import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 import type { Abi } from 'viem';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as methodsMock from 'src/slices/contract/mocks/methods';
 
 import { contextWithAuth } from 'playwright/fixtures/auth';
@@ -10,7 +10,7 @@ import { test, expect } from 'playwright/lib';
 
 import ContractMethodsCustom from './ContractMethodsCustom';
 
-const addressHash = addressMock.hash;
+const addressHash = addressParamMock.hash;
 
 const authTest = test.extend<{ context: BrowserContext }>({
   context: contextWithAuth,
@@ -32,7 +32,7 @@ authTest('with data', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:custom_abi', [ {
     abi,
     contract_address_hash: addressHash,
-    contract_address: addressMock.withName,
+    contract_address: addressParamMock.withName,
     id: 1,
     name: 'Test',
   } ]);

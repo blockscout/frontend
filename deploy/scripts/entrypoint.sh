@@ -1,39 +1,37 @@
 #!/bin/bash
 
 
-export_envs_from_preset() {
-  if [ -z "$ENVS_PRESET" ]; then
-      return
-  fi
-
-  if [ "$ENVS_PRESET" = "none" ]; then
-      return
-  fi
-
-  local preset_file="./configs/envs/.env.$ENVS_PRESET"
-
-  if [ ! -f "$preset_file" ]; then
-      return
-  fi
-
-  local blacklist=(
-    "NEXT_PUBLIC_APP_PROTOCOL"
-    "NEXT_PUBLIC_APP_HOST"
-    "NEXT_PUBLIC_APP_PORT"
-    "NEXT_PUBLIC_APP_ENV"
-    "NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL"
-  )
-
+# Export KEY=value lines from a file into the environment (skips blank lines and # comments).
+export_envs_from_file() {
+  local file="$1"
+  [ -f "$file" ] || return 0
   while IFS='=' read -r name value; do
-      name="${name#"${name%%[![:space:]]*}"}"  # Trim leading whitespace
-      if [[ -n $name && $name == "NEXT_PUBLIC_"* && ! "${blacklist[*]}" =~ "$name" ]]; then
+      if [[ -n "$name" && "$name" != \#* ]]; then
           export "$name"="$value"
       fi
-  done < <(grep "^[^#;]" "$preset_file")
+  done < "$file"
 }
 
-# If there is a preset, load the environment variables from the its file
-export_envs_from_preset
+# If there is a preset, fetch the source instance's public config and load it into the environment.
+load_envs_from_preset() {
+  if [ -z "$ENVS_PRESET" ] || [ "$ENVS_PRESET" = "none" ]; then
+      return
+  fi
+
+  local tmp_file="/tmp/.env.tmp"
+
+  # --omit-local-envs drops the local APP_* keys so the deployment's own values are preserved.
+  if ! node ./tools/dev-server/fetch.js "$ENVS_PRESET" --omit-local-envs --out="$tmp_file"; then
+      echo "🛑 Failed to fetch ENVs for preset '$ENVS_PRESET'. The application cannot start."
+      exit 1
+  fi
+
+  # Instance config first, then committed branch/feature overrides (.env.extra) win.
+  export_envs_from_file "$tmp_file"
+  export_envs_from_file ./.env.extra
+}
+
+load_envs_from_preset
 
 # Download external assets
 ./download_assets.sh ./public/assets/configs

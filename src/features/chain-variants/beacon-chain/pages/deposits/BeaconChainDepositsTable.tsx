@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -19,7 +19,7 @@ const feature = config.features.beaconChain;
 type Props = {
   top: number;
   isLoading?: boolean;
-  items: Array<DepositsItem>;
+  items: Array<schemas['Deposit']>;
   view: 'list' | 'address' | 'block';
 };
 

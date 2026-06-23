@@ -1,6 +1,6 @@
-import type { AddressTabsCounters } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const base: AddressTabsCounters = {
+export const base: schemas['AddressTabsCounters'] = {
   internal_transactions_count: 13,
   logs_count: 51,
   token_balances_count: 3,

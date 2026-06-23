@@ -94,7 +94,7 @@ const Tokens = () => {
 
     return (
       <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ allTokensQuery.tokenTypes?.length }>
-        <TokenTypeFilter<TokenType> onChange={ allTokensQuery.onTokenTypesChange } defaultValue={ allTokensQuery.tokenTypes } nftOnly={ false }/>
+        <TokenTypeFilter<TokenType> onChange={ allTokensQuery.onTokenTypesChange } defaultValue={ allTokensQuery.tokenTypes } category="all"/>
       </PopoverFilter>
     );
   })();

@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { schemas } from '@blockscout/api-types';
 import type { AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
 import type { SearchResultTacOperation } from 'src/features/chain-variants/tac/types/api';
 import type { SearchResultBlob } from 'src/features/data-availability/types/api';
 import type { SearchResultCluster } from 'src/features/name-services/clusters/types/api';
 import type { SearchResultDomain } from 'src/features/name-services/domains/types/api';
 import type { SearchResultUserOp } from 'src/features/user-ops/types/api';
-import type { TokenReputation, TokenType } from 'src/slices/token/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 export const SEARCH_RESULT_TYPES = {
   token: 'token',
@@ -41,7 +42,7 @@ export interface SearchResultToken {
   is_smart_contract_address: boolean;
   filecoin_robust_address?: string | null;
   certified?: boolean;
-  reputation: TokenReputation | null;
+  reputation: schemas['Token']['reputation'] | null;
 }
 
 type SearchResultEnsInfo = {

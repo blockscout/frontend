@@ -3,9 +3,11 @@
 import { castArray } from 'es-toolkit/compat';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AdvancedFilterAge } from 'src/features/advanced-filter/types/api';
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'src/features/chain-variants/zeta-chain/types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
+
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import TableColumnFilterWrapper from 'src/shared/filters/TableColumnFilterWrapper';
 
@@ -84,12 +86,12 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
       );
     }
     case 'asset': {
-      let value: TokenInfo | null = null;
+      let value: schemas['Token'] | null = null;
       if (filters.coin_type && castArray(filters.coin_type).includes(ZETA_CHAIN_CCTX_COIN_TYPE_FILTER)) {
         value = ZETA_NATIVE_TOKEN;
       }
       if (filters.token_symbol?.[0]) {
-        value = {
+        value = toTokenModel({
           address_hash: '',
           symbol: filters.token_symbol[0],
           name: filters.token_symbol[0],
@@ -101,7 +103,7 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
           exchange_rate: null,
           circulating_market_cap: null,
           reputation: null,
-        };
+        });
       }
 
       return (

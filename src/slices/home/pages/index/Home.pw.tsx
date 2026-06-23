@@ -2,7 +2,8 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/list';
+import * as blockRpcMock from 'src/slices/block/mocks/rpc';
 import * as dailyTxsMock from 'src/slices/home/mocks/charts';
 import * as statsMock from 'src/slices/home/mocks/stats';
 import * as txMock from 'src/slices/tx/mocks/tx';
@@ -23,10 +24,7 @@ test.describe('default view', () => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats:pages_main', statsMainMock.base);
     await mockApiResponse('core:stats', statsMock.base);
-    await mockApiResponse('core:homepage_blocks', [
-      blockMock.base,
-      blockMock.base2,
-    ]);
+    await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
     await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
@@ -65,10 +63,7 @@ test.describe('mobile', () => {
     await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats:pages_main', statsMainMock.base);
     await mockApiResponse('core:stats', statsMock.base);
-    await mockApiResponse('core:homepage_blocks', [
-      blockMock.base,
-      blockMock.base2,
-    ]);
+    await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
     await mockApiResponse('core:homepage_txs', [
       txMock.base,
       txMock.withContractCreation,
@@ -89,7 +84,7 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
   test.slow();
 
   const txs: Array<RpcTransaction> = Array(10)
-    .fill(blockMock.rpcBlockWithTxsInfo.transactions[0])
+    .fill(blockRpcMock.rpcBlockWithTxsInfo.transactions[0])
     .map((tx, index) => ({
       ...tx,
       hash: tx.hash.slice(0, -1) + index.toString(),
@@ -106,7 +101,7 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
       Method: 'eth_getBlockByNumber',
       Parameters: [ 'latest', true ],
       ReturnType: {
-        ...blockMock.rpcBlockWithTxsInfo,
+        ...blockRpcMock.rpcBlockWithTxsInfo,
         transactions: txs,
       },
     },
@@ -151,7 +146,7 @@ test('error view', async({ render, mockApiResponse, mockRpcResponse, page }) => 
     {
       Method: 'eth_getBlockByNumber',
       Parameters: [ 'latest', true ],
-      ReturnType: blockMock.rpcBlockBase,
+      ReturnType: blockRpcMock.rpcBlockBase,
       status: 500,
     },
     {

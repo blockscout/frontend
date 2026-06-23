@@ -1,5 +1,9 @@
 environments:
   {{ .Environment.Name }}:
+    values:
+      # Overridden per-deploy via `helmfile --state-values-set envsPreset=<alias>`.
+      # Read in values/*/values.yaml.gotmpl and passed to the container as ENVS_PRESET.
+      - envsPreset: none
 ---
 helmDefaults:
   timeout: 600

@@ -3,7 +3,7 @@
 import { Text, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useFetchTokens from 'src/slices/token/pages/address/useFetchTokens';
 import { getTokensTotalInfo } from 'src/slices/token/pages/address/utils';
@@ -23,7 +23,7 @@ const multichainFeature = config.features.multichainButton;
 
 type Props = {
   addressHash: string;
-  addressData?: Address;
+  addressData?: schemas['AddressResponse'];
   isLoading?: boolean;
 };
 

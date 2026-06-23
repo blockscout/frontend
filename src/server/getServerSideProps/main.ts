@@ -45,7 +45,6 @@ export const batchCelestia = factory([ guards.batchCelestia ]);
 export const txnWithdrawals = factory([ guards.txnWithdrawals ]);
 export const outputRoots = factory([ guards.outputRoots ]);
 export const disputeGames = factory([ guards.disputeGames ]);
-export const mud = factory([ guards.mud ]);
 export const tac = factory([ guards.tac ]);
 export const celo = factory([ guards.celo ]);
 export const interopMessages = factory([ guards.interopMessages ]);

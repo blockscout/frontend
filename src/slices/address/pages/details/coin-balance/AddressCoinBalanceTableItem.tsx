@@ -4,8 +4,8 @@ import { Stat } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { AddressCoinBalanceHistoryItem } from 'src/slices/address/types/api';
 
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -20,36 +20,37 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { ZERO } from 'src/toolkit/utils/consts';
 
-type Props = AddressCoinBalanceHistoryItem & {
+interface Props {
+  data: schemas['CoinBalance'];
   page: number;
   isLoading: boolean;
   chainData?: ClusterChainConfig;
 };
 
-const AddressCoinBalanceTableItem = (props: Props) => {
-  const deltaBn = BigNumber(props.delta).div(WEI);
+const AddressCoinBalanceTableItem = ({ data, page, isLoading, chainData }: Props) => {
+  const deltaBn = BigNumber(data.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
 
   return (
     <TableRow>
-      { props.chainData && (
+      { chainData && (
         <TableCell>
-          <ChainIcon data={ props.chainData } isLoading={ props.isLoading }/>
+          <ChainIcon data={ chainData } isLoading={ isLoading }/>
         </TableCell>
       ) }
       <TableCell>
         <BlockEntity
-          isLoading={ props.isLoading }
-          number={ props.block_number }
+          isLoading={ isLoading }
+          number={ data.block_number }
           noIcon
           fontWeight={ 700 }
         />
       </TableCell>
       <TableCell>
-        { props.transaction_hash && (
+        { data.transaction_hash && (
           <TxEntity
-            hash={ props.transaction_hash }
-            isLoading={ props.isLoading }
+            hash={ data.transaction_hash }
+            isLoading={ isLoading }
             noIcon
             fontWeight={ 700 }
             maxW="150px"
@@ -58,28 +59,28 @@ const AddressCoinBalanceTableItem = (props: Props) => {
       </TableCell>
       <TableCell>
         <TimeWithTooltip
-          timestamp={ props.block_timestamp }
-          enableIncrement={ props.page === 1 }
-          isLoading={ props.isLoading }
+          timestamp={ data.block_timestamp }
+          enableIncrement={ page === 1 }
+          isLoading={ isLoading }
           color="text.secondary"
           display="inline-block"
         />
       </TableCell>
       <TableCell isNumeric pr={ 1 }>
         <NativeCoinValue
-          amount={ props.value }
+          amount={ data.value }
           noSymbol
-          loading={ props.isLoading }
+          loading={ isLoading }
           color="text.secondary"
         />
       </TableCell>
       <TableCell isNumeric display="flex" justifyContent="end">
-        <Skeleton loading={ props.isLoading }>
+        <Skeleton loading={ isLoading }>
           <Stat.Root flexGrow="0" size="sm" positive={ isPositiveDelta }>
             <Stat.ValueText fontWeight={ 600 }>
               <SimpleValue
                 value={ deltaBn }
-                loading={ props.isLoading }
+                loading={ isLoading }
               />
             </Stat.ValueText>
             { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }

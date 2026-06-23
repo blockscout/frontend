@@ -6,13 +6,13 @@ import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
   TxInterpretationVariableString,
 } from 'src/features/tx-interpretation/common/types/api';
-import type { AddressParam } from 'src/slices/address/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -49,7 +49,7 @@ const nameServicesFeature = config.features.nameServices;
 interface Props extends BoxProps {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
-  addressDataMap?: Record<string, AddressParam>;
+  addressDataMap?: Record<string, schemas['Address']>;
   className?: string;
   isNoves?: boolean;
   chainData?: ClusterChainConfig;
@@ -58,7 +58,7 @@ interface Props extends BoxProps {
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
 
 const TxInterpretationElementByType = (
-  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },
+  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, schemas['Address']> },
 ) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });

@@ -98,6 +98,15 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
   }, [ colorMode, instance?.editor ]);
 
+  React.useEffect(() => {
+    return () => {
+      const loadedModels = instance?.editor.getModels() ?? [];
+      loadedModels.forEach((model) => {
+        model.dispose();
+      });
+    };
+  }, [ instance?.editor ]);
+
   const handleEditorDidMount = React.useCallback((editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => {
     setInstance(monaco);
     setEditor(editor);

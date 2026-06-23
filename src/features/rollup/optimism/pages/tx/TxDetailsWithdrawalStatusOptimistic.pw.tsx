@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { OpWithdrawal } from 'src/features/rollup/optimism/types/api';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -38,7 +38,7 @@ test('status=Waiting for state root', async({ render, mockEnvs }) => {
       <TxDetailsWithdrawalStatusOptimistic
         data={ data }
         txHash={ TX_HASH }
-        from={ addressMock.withoutName }
+        from={ addressParamMock.withoutName }
       />
     </Box>,
   );
@@ -60,7 +60,7 @@ test.describe('status=Ready for relay', () => {
         <TxDetailsWithdrawalStatusOptimistic
           data={ data }
           txHash={ TX_HASH }
-          from={ addressMock.withoutName }
+          from={ addressParamMock.withoutName }
         />
       </Box>,
     );
@@ -84,7 +84,7 @@ test.describe('status=Ready for relay', () => {
         <TxDetailsWithdrawalStatusOptimistic
           data={ data }
           txHash={ TX_HASH }
-          from={ addressMock.withoutName }
+          from={ addressParamMock.withoutName }
         />
       </Box>,
     );
@@ -106,7 +106,7 @@ test('status=Relayed', async({ render, mockEnvs }) => {
       <TxDetailsWithdrawalStatusOptimistic
         data={ data }
         txHash={ TX_HASH }
-        from={ addressMock.withoutName }
+        from={ addressParamMock.withoutName }
       />
     </Box>,
   );

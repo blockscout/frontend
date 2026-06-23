@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export type ShibariumDepositsItem = {
   l1_block_number: number;
   l1_transaction_hash: string;
   l2_transaction_hash: string;
   timestamp: string;
-  user: AddressParam | string;
+  user: schemas['Address'] | string;
 };
 
 export type ShibariumDepositsResponse = {
@@ -23,7 +23,7 @@ export type ShibariumWithdrawalsItem = {
   l2_block_number: number;
   l2_transaction_hash: string;
   timestamp: string;
-  user: AddressParam | string;
+  user: schemas['Address'] | string;
 };
 
 export type ShibariumWithdrawalsResponse = {

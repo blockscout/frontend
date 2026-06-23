@@ -131,7 +131,7 @@ const MultichainAddress = () => {
           hash: checkSummedHash,
           name: '',
           ens_domain_name: '',
-          implementations: null,
+          implementations: [],
           is_contract: isContract,
           is_verified: isVerified,
         }}

@@ -3,7 +3,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { VerifiedContract } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -19,7 +19,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: VerifiedContract;
+  data: schemas['SmartContractListItem'];
   isLoading?: boolean;
 }
 
@@ -74,7 +74,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink="0">Language</Skeleton>
         <Skeleton loading={ isLoading } display="flex" flexWrap="wrap">
-          <Box>{ formatLanguageName(data.language) }</Box>
+          <Box>{ data.language ? formatLanguageName(data.language) : '-' }</Box>
           <Box color="text.secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
         </Skeleton>
       </Flex>

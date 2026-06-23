@@ -16,6 +16,7 @@ const parentChainName = rollupFeature.isEnabled ? rollupFeature.parentChain.name
 
 export const VERIFICATION_STEPS_MAP: Record<ArbitrumBatchStatus, string> = {
   'Processed on rollup': 'Processed on rollup',
+  'Sealed on rollup': 'Sealed on rollup',
   'Sent to base': parentChainName ? `Sent to ${ parentChainName }` : 'Sent to parent chain',
   'Confirmed on base': parentChainName ?
     `Confirmed on ${ parentChainName }` :

@@ -2,8 +2,7 @@
 
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import { hasTokenIds, hasTokenTransferValue, isConfidentialTokenType, isFungibleTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -19,15 +18,15 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   top: number;
   showSocketInfo: boolean;
   showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   tokenId?: string;
   isLoading?: boolean;
-  token: TokenInfo;
-  instance?: TokenInstance;
+  token: schemas['Token'];
+  instance?: schemas['TokenInstance'];
 }
 
 const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, socketInfoNum, tokenId, isLoading, token, instance }: Props) => {
@@ -47,7 +46,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
             </TableColumnHeader>
             <TableColumnHeader width="200px">Method</TableColumnHeader>
             <TableColumnHeader width={{ lg: '224px', xl: '380px' }}>From/To</TableColumnHeader>
-            { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
+            { (tokenType && NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
               <TableColumnHeader width={ hasTokenIds(tokenType) ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }
             { hasTokenTransferValue(tokenType, chainData?.app_config) && (
@@ -72,7 +71,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
           { data.map((item, index) => (
             <TokenTransferTableItem
               key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
-              { ...item }
+              data={ item }
               tokenId={ tokenId }
               instance={ instance }
               isLoading={ isLoading }

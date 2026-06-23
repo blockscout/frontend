@@ -1,0 +1,17 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"module": "node16",
+    	"target": "es2022",
+		"resolveJsonModule": false,
+		"isolatedModules": false,
+		"noEmit": false,
+		// Disable incremental (inherited from the root config): fetch.js is git-ignored and
+		// compiled on demand, so a stale .tsbuildinfo must never short-circuit the emit.
+		"incremental": false,
+		"moduleResolution": "node16"
+	},
+	"include": [
+		"./fetch.ts",
+	]
+}

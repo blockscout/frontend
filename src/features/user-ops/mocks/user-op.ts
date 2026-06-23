@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import type { UserOp } from 'src/features/user-ops/types/api';
 
+import { withoutName } from 'src/slices/address/mocks/address-param';
+
 export const userOpData: UserOp = {
   timestamp: '2024-01-19T12:42:12.000000Z',
   transaction_hash: '0x715fe1474ac7bea3d6f4a03b1c5b6d626675fb0b103be29f849af65e9f1f9c6a',
@@ -23,21 +25,15 @@ export const userOpData: UserOp = {
   block_number: '10399597',
   gas_used: '118810',
   sender: {
-    ens_domain_name: null,
+    ...withoutName,
     hash: '0xF0C14FF4404b188fAA39a3507B388998c10FE284',
-    implementations: null,
     is_contract: true,
-    is_verified: null,
-    name: null,
   },
   nonce: '0x000000000000000000000000000000000000000000000000000000000000004f',
   entry_point: {
-    ens_domain_name: null,
+    ...withoutName,
     hash: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-    implementations: null,
     is_contract: true,
-    is_verified: null,
-    name: null,
   },
   sponsor_type: 'paymaster_sponsor',
   raw: {
@@ -57,19 +53,14 @@ export const userOpData: UserOp = {
   max_priority_fee_per_gas: '1575000898',
   revert_reason: null,
   bundler: {
-    ens_domain_name: null,
+    ...withoutName,
     hash: '0xd53Eb5203e367BbDD4f72338938224881Fc501Ab',
-    implementations: null,
-    is_contract: false,
-    is_verified: null,
-    name: null,
   },
   call_data: '0xb61d27f600000000000000000000000059f6aa952df7f048fd076e33e0ea8bb552d5ffd8000000000000000000000000000000000000000000000000003f3d017500800000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000000',
   execute_call_data: '0x3cf80e6c',
   execute_target: {
-    ens_domain_name: null,
+    ...withoutName,
     hash: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'FiatTokenProxy',
@@ -101,11 +92,8 @@ export const userOpData: UserOp = {
     parameters: [],
   },
   paymaster: {
-    ens_domain_name: null,
+    ...withoutName,
     hash: '0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25',
-    implementations: null,
     is_contract: true,
-    is_verified: null,
-    name: null,
   },
 };

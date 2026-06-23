@@ -3,7 +3,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -32,7 +32,7 @@ import TxTokenTransferLocal from './TxTokenTransferLocal';
 
 interface Props {
   txQuery: TxQuery;
-  tokenTransferFilter?: (data: TokenTransfer) => boolean;
+  tokenTransferFilter?: (data: schemas['TokenTransfer']) => boolean;
   noCrossChain?: boolean;
 }
 

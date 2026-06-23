@@ -37,9 +37,12 @@ order and then `exec`s the Next.js server. Most steps depend on the
 container's environment, which is why they happen here and not at build
 time.
 
-1. **Load preset** — if `ENVS_PRESET` is set, source the matching file from
-   `configs/envs/`. Presets are convenience bundles of env vars for common
-   deployments.
+1. **Load preset** — if `ENVS_PRESET` is set (and not `none`), run
+   `tools/dev-server/fetch.js` to fetch that instance's public config over HTTP
+   from `<url>/node-api/config` (URL resolved via `tools/dev-server/registry.json`),
+   write it to a temp file, and export it into the environment. `--omit-local-envs`
+   drops the local APP_* keys so the deployment's own values survive; the committed
+   `.env.extra` is then layered on top.
 2. **`download_assets.sh`** — fetches the external assets referenced by env
    vars (network logo, marketplace config JSON, featured-networks list,
    etc.) into `public/assets/configs/` so the app serves them same-origin

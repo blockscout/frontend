@@ -1,12 +1,13 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressTokenBalance, AddressTokensResponse } from 'src/slices/address/types/api';
+import type { merged, schemas } from '@blockscout/api-types';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 import * as tokenInfo from 'src/slices/token/mocks/info';
 import * as tokenInstance from 'src/slices/token/mocks/instance';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';
@@ -24,19 +25,19 @@ const nextPageParams = {
 };
 
 test.beforeEach(async({ mockApiResponse }) => {
-  const response20: AddressTokensResponse = {
+  const response20: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
     items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d ],
     next_page_params: nextPageParams,
   };
-  const response721: AddressTokensResponse = {
+  const response721: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
     items: [ tokensMock.erc721a, tokensMock.erc721b, tokensMock.erc721c ],
     next_page_params: nextPageParams,
   };
-  const response1155: AddressTokensResponse = {
+  const response1155: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
     items: [ tokensMock.erc1155a, tokensMock.erc1155b ],
     next_page_params: nextPageParams,
   };
-  const response404: AddressTokensResponse = {
+  const response404: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
     items: [ tokensMock.erc404a, tokensMock.erc404b ],
     next_page_params: nextPageParams,
   };
@@ -240,7 +241,7 @@ test.describe('update balances via socket', () => {
           token: {
             ...tokensMock.erc20a.token,
             exchange_rate: '0.01',
-          },
+          } as schemas['Token'],
         },
         {
           ...tokensMock.erc20c,
@@ -250,7 +251,7 @@ test.describe('update balances via socket', () => {
             address_hash: '0xE2cf36D00C57e01371b94B4206ae2CF841931Adc',
             name: 'Tether USD',
             symbol: 'USDT',
-          },
+          } as schemas['Token'],
         },
       ],
     });
@@ -262,7 +263,7 @@ test.describe('update balances via socket', () => {
           token: {
             ...tokensMock.erc721c.token,
             exchange_rate: '20',
-          },
+          } as schemas['Token'],
         },
       ],
     });
@@ -317,9 +318,9 @@ test.describe('update balances via socket', () => {
 
     await expect(component).toHaveScreenshot();
 
-    const zrc2TokenBalance: AddressTokenBalance = {
+    const zrc2TokenBalance: schemas['TokenBalance'] = {
       ...tokensMock.erc20a,
-      token: {
+      token: toTokenModel({
         ...tokensMock.erc20a.token,
         // custom token type enabled via NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES
         type: 'ZRC-2',
@@ -327,7 +328,7 @@ test.describe('update balances via socket', () => {
         name: 'ZRC-2 Token',
         symbol: 'ZRC2',
         exchange_rate: '0.02',
-      } as unknown as AddressTokenBalance['token'],
+      }),
       value: '1234500000000000000',
     };
 

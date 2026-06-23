@@ -3,9 +3,8 @@
 /* eslint-disable max-len */
 import React from 'react';
 
-import type { TokenInfo } from 'src/slices/token/types/api';
-
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import { publicTag, privateTag, watchlistName } from 'src/features/account/mocks/address-tags';
 import formatAccountTags from 'src/features/address-metadata/components/tag/format-account-tags';
@@ -16,7 +15,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import PageTitle from '../PageTitle';
 
 const LongNameAndManyTags = () => {
-  const tokenData: TokenInfo = {
+  const tokenData = toTokenModel({
     address_hash: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
     circulating_market_cap: null,
     decimals: null,
@@ -28,7 +27,7 @@ const LongNameAndManyTags = () => {
     total_supply: '13747',
     type: 'ERC-721',
     reputation: 'ok',
-  };
+  });
 
   const contentAfter = (
     <>

@@ -4,14 +4,15 @@ import { Flex, Text, Spinner } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { Token } from '@blockscout/zetachain-cctx-types';
 import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from 'src/features/chain-variants/zeta-chain/types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
+import { toTokenModel } from 'src/slices/token/utils/model';
 
 import config from 'src/config';
 import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
@@ -41,16 +42,16 @@ const getFilterParamsFromValue = (value: Value) => {
 };
 
 // ZETA native token constant
-export const ZETA_NATIVE_TOKEN = {
+export const ZETA_NATIVE_TOKEN = toTokenModel({
   name: config.chain.currency.name,
   icon_url: '',
   symbol: config.chain.currency.symbol,
   address_hash: 'native',
   type: 'ERC-20',
-} as TokenInfo;
+});
 
 // We can't implement multivalue search here, because we have different search params for native coin and for tokens.
-type Value = TokenInfo | null;
+type Value = schemas['Token'] | null;
 
 type Props = {
   value: Value;
@@ -104,9 +105,9 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
     return;
   }, [ handleFilterChange, currentValue ]);
 
-  const onTokenClick = React.useCallback((token: Token | TokenInfo) => () => {
-    // Convert to TokenInfo for compatibility
-    const tokenInfo: TokenInfo = 'zrc20_contract_address' in token ? {
+  const onTokenClick = React.useCallback((token: Token | schemas['Token']) => () => {
+    // Convert to schemas['Token'] for compatibility
+    const tokenInfo = 'zrc20_contract_address' in token ? toTokenModel({
       address_hash: token.zrc20_contract_address,
       symbol: token.symbol,
       name: token.name,
@@ -118,7 +119,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
       exchange_rate: null,
       circulating_market_cap: null,
       reputation: null,
-    } : token;
+    }) : token;
     setCurrentValue(tokenInfo);
     const filterParams = getFilterParamsFromValue(tokenInfo);
     handleFilterChange(FILTER_PARAM_COIN_TYPE, filterParams[ FILTER_PARAM_COIN_TYPE ]);
@@ -158,7 +159,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
         <>
           <Text color="text.secondary" fontWeight="600" mt={ 3 }>Popular</Text>
           <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mb={ 2 }>
-            { [ ZETA_NATIVE_TOKEN, ...filteredTokens.map(token => ({
+            { [ ZETA_NATIVE_TOKEN, ...filteredTokens.map(token => toTokenModel({
               address_hash: token.zrc20_contract_address,
               symbol: token.symbol,
               name: token.name,
@@ -169,7 +170,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
               holders_count: null,
               exchange_rate: null,
               circulating_market_cap: null,
-            } as TokenInfo)) ].map(token => (
+            })) ].map(token => (
               <PopoverCloseTriggerWrapper key={ token.address_hash }>
                 <Tag
                   data-id={ token.address_hash }
@@ -200,7 +201,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
                 onClick={ onTokenClick(token) }
               >
                 { /* FIXME: I'd use TokenEntity here, but it prevents onTokenClick callback from being called */ }
-                <TokenEntity.Icon token={{
+                <TokenEntity.Icon token={ toTokenModel({
                   address_hash: token.zrc20_contract_address,
                   symbol: token.symbol,
                   name: token.name,
@@ -211,7 +212,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
                   holders_count: null,
                   exchange_rate: null,
                   circulating_market_cap: null,
-                } as TokenInfo}/>
+                }) }/>
                 { token.symbol || token.name || token.zrc20_contract_address }
               </Flex>
             </PopoverCloseTriggerWrapper>

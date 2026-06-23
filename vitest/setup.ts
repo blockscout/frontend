@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { vi } from 'vitest';
 import createFetchMock from 'vitest-fetch-mock';
 
-const envs = dotenv.config({ path: './configs/envs/.env.vitest' });
+const envs = dotenv.config({ path: './vitest/.env.vitest' });
 
 const fetchMocker = createFetchMock(vi);
 fetchMocker.enableMocks();

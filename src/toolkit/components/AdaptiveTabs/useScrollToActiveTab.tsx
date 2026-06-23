@@ -20,7 +20,7 @@ export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef
       window.setTimeout(() => {
         const activeTabRef = tabsRefs[activeTabIndex];
 
-        if (activeTabRef.current && listRef.current) {
+        if (activeTabRef?.current && listRef?.current) {
           const containerWidth = listRef.current.getBoundingClientRect().width;
           const activeTabWidth = activeTabRef.current.getBoundingClientRect().width;
           const left = tabsRefs.slice(0, activeTabIndex)

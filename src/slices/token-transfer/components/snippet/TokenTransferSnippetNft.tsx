@@ -3,16 +3,16 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenInfo, TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 interface Props {
-  token: TokenInfo;
+  token: schemas['Token'];
   value: string;
   tokenId: string | null;
-  instance?: TokenInstance | null;
+  instance?: schemas['TokenInstance'] | null;
 }
 
 const NftTokenTransferSnippet = ({ value, token, tokenId, instance }: Props) => {

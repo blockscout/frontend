@@ -90,6 +90,30 @@ const apiUrl = (() => {
   return `${ baseUrl }${ basePath }/api/v2`;
 })();
 
+const statsApiUrl = (() => {
+  const baseUrl = process.env.NEXT_PUBLIC_STATS_API_HOST;
+  if (!baseUrl) {
+    return;
+  }
+
+  const basePath = stripTrailingSlash(process.env.NEXT_PUBLIC_STATS_API_BASE_PATH || '');
+
+  return `${ stripTrailingSlash(baseUrl) }${ basePath }/api/v1`;
+})();
+
+const fetchStatsCharts = async() => {
+  if (!statsApiUrl) {
+    return;
+  }
+
+  return fetchResource(
+    `${ statsApiUrl }/lines`,
+    (data) => (data.sections || []).flatMap(
+      (section) => (section.charts || []).map(({ id }) => ({ path: `/stats/${ id }` })),
+    ),
+  );
+}
+
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl,
@@ -115,11 +139,6 @@ module.exports = {
   ],
   transform: async({ lastmod, ...config }, path) => {
     switch (path) {
-      case '/mud-worlds':
-        if (process.env.NEXT_PUBLIC_HAS_MUD_FRAMEWORK !== 'true') {
-          return null;
-        }
-        break;
       case '/batches':
       case '/deposits':
         if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE && (process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN !== 'true' || process.env.NEXT_PUBLIC_BEACON_CHAIN_WITHDRAWALS_ONLY === 'true')) {
@@ -289,6 +308,7 @@ module.exports = {
         })),
       );
     const dapps = fetchDapps();
+    const statsCharts = fetchStatsCharts();
 
     return Promise.all([
       ...(await addresses || []),
@@ -297,6 +317,7 @@ module.exports = {
       ...(await tokens || []),
       ...(await contracts || []),
       ...(await dapps || []),
+      ...(await statsCharts || []),
     ].map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
   },
 };

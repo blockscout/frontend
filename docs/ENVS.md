@@ -104,6 +104,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Mixpanel](#mixpanel)
   - [OpenTelemetry](#opentelemetry)
   - [Rollbar](#rollbar)
+  - [Usercentrics CMP](#usercentrics-cmp)
 - [Misc](#misc)
   - [Design system](#design-system)
   - [Pro API support](#pro-api-support)
@@ -575,8 +576,12 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | `tx_fee` | Total transaction fee |
 | `gas_fees` | Gas fees breakdown |
 | `burnt_fees` | Amount of native coin burnt for transaction |
-| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `L1_gas_used` | Amount of L1 gas used by transaction (applicable for Rollup chains) |
+| `L1_gas_price` | L1 gas price (applicable for Rollup chains) |
+| `L1_fee` | L1 data fee (applicable for Rollup chains) |
+| `L1_fee_scalar` | Dynamic overhead fee scalar (applicable for Rollup chains) |
 
 #### Transaction additional fields list
 | Id | Description |
@@ -811,14 +816,6 @@ This feature allows users to view tokens that have been bridged from other EVM c
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS | `string` | Public WebSocket endpoint for streaming statistics data, used to display information on the uptime dashboard page. | - | - | `wss://testnet-dashboard.megaeth.com/metrics` | v2.4.0+ |
 | NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC | `string` | Public WebSocket endpoint for streaming RPC node data, including mini-block data. | - | - | `wss://carrot.megaeth.com/mafia/ws` | v2.4.0+ |
-
-#### MUD framework
-
-Optimistic-stack rollups that use the MUD framework. Requires [Rollup](#rollup) feature with `optimistic` type.
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_HAS_MUD_FRAMEWORK | `boolean` | Set to `true` for instances that use MUD framework (Optimistic stack only) | Required | - | `true` | v1.33.0+ |
 
 #### SUAVE
 
@@ -1312,6 +1309,17 @@ OpenTelemetry SDK for the Node.js server-side process. Configure the OpenTelemet
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN | `string` | Client token for your Rollbar project | Required | - | `<your-secret>` | v1.37.x+ |
+
+&nbsp;
+
+### Usercentrics CMP
+
+Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management Platform (CMP). When configured, Blockscout loads the Usercentrics script and waits for marketing consent before enabling analytics providers.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | upcoming |
+| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | upcoming |
 
 ## Misc
 

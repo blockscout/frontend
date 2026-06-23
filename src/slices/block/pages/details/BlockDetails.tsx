@@ -178,7 +178,7 @@ const BlockDetails = ({ query }: Props) => {
         />
       </DetailedInfo.ItemValue>
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.l1_block_number && (
         <>
           <DetailedInfo.ItemLabel
             hint={ `The most recent ${ layerLabels.parent } block height as of this ${ layerLabels.current } block` }
@@ -715,15 +715,19 @@ const BlockDetails = ({ query }: Props) => {
               { data.arbitrum.send_root }
             </DetailedInfo.ItemValue>
 
-            <DetailedInfo.ItemLabel
-              hint={ `The number of delayed ${ layerLabels.parent } to ${ layerLabels.current } messages read as of this block` }
-              isLoading={ isPlaceholderData }
-            >
-              Delayed messages
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { data.arbitrum.delayed_messages.toLocaleString() }
-            </DetailedInfo.ItemValue>
+            { data.arbitrum.delayed_messages && (
+              <>
+                <DetailedInfo.ItemLabel
+                  hint={ `The number of delayed ${ layerLabels.parent } to ${ layerLabels.current } messages read as of this block` }
+                  isLoading={ isPlaceholderData }
+                >
+                  Delayed messages
+                </DetailedInfo.ItemLabel>
+                <DetailedInfo.ItemValue>
+                  { data.arbitrum.delayed_messages.toLocaleString() }
+                </DetailedInfo.ItemValue>
+              </>
+            ) }
           </>
         ) }
 
@@ -740,10 +744,10 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { data.zilliqa && (
+        { data.zilliqa && (data.zilliqa?.quorum_certificate || data.zilliqa?.aggregate_quorum_certificate) && (
           <>
             <DetailedInfo.ItemDivider/>
-            <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/>
+            { data.zilliqa?.quorum_certificate && <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/> }
             { data.zilliqa?.aggregate_quorum_certificate && (
               <>
                 <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>

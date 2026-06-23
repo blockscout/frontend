@@ -4,8 +4,9 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AddressImplementation } from 'src/slices/address/types/api';
-import type { SmartContractConflictingImplementation, SmartContractProxyType } from 'src/slices/contract/types/api';
+import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -22,7 +23,7 @@ import { formatAbi } from './utils';
 interface Props {
   implementations: Array<AddressImplementation>;
   isLoading?: boolean;
-  proxyType?: SmartContractProxyType;
+  proxyType?: schemas['ProxyType'];
   conflictingImplementations?: Array<SmartContractConflictingImplementation>;
 }
 

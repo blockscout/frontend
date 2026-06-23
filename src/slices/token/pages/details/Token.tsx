@@ -5,9 +5,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 import type { PaginationParams } from 'src/shared/pagination/types';
-import type { TokenInfo } from 'src/slices/token/types/api';
 import { NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
@@ -81,7 +81,7 @@ const TokenPageContent = () => {
 
   React.useEffect(() => {
     if (tokenQuery.data && totalSupplySocket) {
-      queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+      queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: schemas['Token'] | undefined) => {
         if (prevData) {
           return { ...prevData, total_supply: totalSupplySocket.toString() };
         }
@@ -94,7 +94,7 @@ const TokenPageContent = () => {
     if (!prevData) {
       setTotalSupplySocket(payload.total_supply);
     }
-    queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: TokenInfo | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:token', { pathParams: { hash: hashString } }), (prevData: schemas['Token'] | undefined) => {
       if (prevData) {
         return { ...prevData, total_supply: payload.total_supply.toString() };
       }

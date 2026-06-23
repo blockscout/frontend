@@ -2,18 +2,18 @@
 
 import React from 'react';
 
-import type { CeloEpochRewardsType } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 type Props = {
-  type: CeloEpochRewardsType;
+  type: schemas['CeloElectionRewardType'];
   isLoading?: boolean;
 };
 
-const TYPE_TAGS: Record<CeloEpochRewardsType, { text: string; label: string; color: BadgeProps['colorPalette'] }> = {
+const TYPE_TAGS: Record<schemas['CeloElectionRewardType'], { text: string; label: string; color: BadgeProps['colorPalette'] }> = {
   group: {
     text: 'Validator group rewards',
     // eslint-disable-next-line max-len
@@ -26,6 +26,12 @@ const TYPE_TAGS: Record<CeloEpochRewardsType, { text: string; label: string; col
     color: 'purple',
   },
   delegated_payment: {
+    text: 'Delegated payments',
+    // eslint-disable-next-line max-len
+    label: 'Reward portion delegated by a validator to another address. The address being viewed is the beneficiary receiving the reward; the associated address is the validator who set the delegation.',
+    color: 'blue',
+  },
+  'delegated-payment': {
     text: 'Delegated payments',
     // eslint-disable-next-line max-len
     label: 'Reward portion delegated by a validator to another address. The address being viewed is the beneficiary receiving the reward; the associated address is the validator who set the delegation.',

@@ -158,7 +158,10 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
               <AddressEntity
-                address={{ hash: creatorAddressHash, filecoin: { robust: data.creator_filecoin_robust_address } }}
+                address={{
+                  hash: creatorAddressHash,
+                  filecoin: data.creator_filecoin_robust_address ? { robust: data.creator_filecoin_robust_address, actor_type: null, id: null } : undefined,
+                }}
                 truncation="constant"
                 noIcon
               />
@@ -247,7 +250,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
           </>
         ) }
 
-        { countersQuery.data?.gas_usage_count && (
+        { countersQuery.data?.gas_usage_count && Number(countersQuery.data.gas_usage_count) > 0 && (
           <>
             <DetailedInfo.ItemLabel
               hint="Gas used by the address"

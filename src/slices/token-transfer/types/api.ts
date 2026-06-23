@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
-import type { TokenInfo, TokenInstance, TokenType } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TokenType } from 'src/slices/token/types/api';
 
 export type Erc20TotalPayload = {
   decimals: string | null;
@@ -10,41 +10,41 @@ export type Erc20TotalPayload = {
 
 export type Erc721TotalPayload = {
   token_id: string | null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type Erc1155TotalPayload = {
   decimals: string | null;
   value: string;
   token_id: string | null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type Erc404TotalPayload = {
   decimals: string;
   value: string;
   token_id: null;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 } | {
   token_id: string;
-  token_instance: TokenInstance | null;
+  token_instance: schemas['TokenInstance'] | null;
 };
 
 export type TokenTransfer = (
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc20TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc721TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc1155TotalPayload | null;
   } |
   {
-    token: TokenInfo | null;
+    token: schemas['Token'] | null;
     total: Erc404TotalPayload | null;
   }
 ) & TokenTransferBase;
@@ -55,24 +55,13 @@ interface TokenTransferBase {
   type: 'token_transfer' | 'token_burning' | 'token_spawning' | 'token_minting';
   token_type: TokenType;
   transaction_hash: string | null;
-  from: AddressParam;
-  to: AddressParam;
+  from: schemas['Address'];
+  to: schemas['Address'];
   timestamp: string;
   block_number: string;
   block_hash: string;
   log_index: string;
   method?: string;
-}
-
-export type TokenTransferPagination = {
-  block_number: number;
-  index: number;
-  items_count: number;
-};
-
-export interface TokenTransferResponse {
-  items: Array<TokenTransfer>;
-  next_page_params: TokenTransferPagination | null;
 }
 
 export interface TokenTransferFilters {

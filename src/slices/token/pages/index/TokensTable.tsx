@@ -2,8 +2,9 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AggregatedTokenInfo } from 'src/features/multichain/types/client';
-import type { TokenInfo, TokensSortingField, TokensSortingValue } from 'src/slices/token/types/api';
+import type { TokensSortingField, TokensSortingValue } from 'src/slices/token/types/api';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -23,7 +24,7 @@ const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue>> = {
 const getNextSortValue = (getNextSortValueShared<TokensSortingField, TokensSortingValue>).bind(undefined, SORT_SEQUENCE);
 
 type Props = {
-  items: Array<TokenInfo> | Array<AggregatedTokenInfo>;
+  items: Array<schemas['Token']> | Array<AggregatedTokenInfo>;
   page: number;
   sorting?: TokensSortingValue;
   setSorting?: OnValueChangeHandler;

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface DecodedInput {
   method_call: string;
@@ -16,7 +16,7 @@ export interface DecodedInputParams {
 }
 
 export interface TransactionLog {
-  address: AddressParam;
+  address: schemas['Address'];
   topics: Array<string | null>;
   data: string;
   index: number;

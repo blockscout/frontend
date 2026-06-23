@@ -3,7 +3,7 @@
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
@@ -13,7 +13,7 @@ import { ZERO } from 'src/toolkit/utils/consts';
 import AddressesTableItem from './AddressesTableItem';
 
 interface Props {
-  items: Array<AddressesItem>;
+  items: Array<schemas['TopAddress']>;
   totalSupply: BigNumber;
   pageStartIndex: number;
   top: number;

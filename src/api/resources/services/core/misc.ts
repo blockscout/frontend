@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
+import type { merged } from '@blockscout/api-types';
 import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'src/features/advanced-filter/types/api';
 import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'src/features/chain-variants/beacon-chain/types/api';
 import type {
@@ -32,7 +33,6 @@ import type {
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'src/features/tx-interpretation/noves/types/api';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'src/features/user-ops/types/api';
-import type { Block } from 'src/slices/block/types/api';
 import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'src/slices/chain/backend-config/types/api';
 import type { IndexingStatus } from 'src/slices/chain/indexing-status/types';
 import type { HomeStats, ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'src/slices/home/types/api';
@@ -286,7 +286,8 @@ R extends 'core:stats_charts_txs' ? ChartTransactionResponse :
 R extends 'core:stats_charts_market' ? ChartMarketResponse :
 R extends 'core:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
 R extends 'core:stats_hot_contracts' ? HotContractsResponse :
-R extends 'core:homepage_blocks' ? Array<Block> :
+R extends 'core:homepage_blocks' ?
+  merged.paths['/v2/main-page/blocks']['get']['responses']['200']['content']['application/json'] :
 R extends 'core:homepage_txs' ? Array<Transaction> :
 R extends 'core:homepage_txs_watchlist' ? Array<Transaction> :
 R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :

@@ -4,8 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { merged } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { AddressBlocksValidatedResponse } from 'src/slices/address/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -72,7 +72,8 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
 
     queryClient.setQueryData(
       getResourceKey('core:address_blocks_validated', { pathParams: { hash: addressHash } }),
-      (prevData: AddressBlocksValidatedResponse | undefined) => {
+      (prevData:
+        merged.operations['BlockScoutWeb.API.V2.AddressController.blocks_validated']['responses']['200']['content']['application/json'] | undefined) => {
         if (!prevData) {
           return;
         }
@@ -131,7 +132,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
           { query.data.items.map((item, index) => (
             <AddressBlocksValidatedTableItem
               key={ item.height + (query.isPlaceholderData ? String(index) : '') }
-              { ...item }
+              data={ item }
               page={ query.pagination.page }
               isLoading={ query.isPlaceholderData }
             />

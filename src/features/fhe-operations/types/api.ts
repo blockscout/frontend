@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface TransactionFheOperations {
   fhe_operations_count?: number;
@@ -45,7 +45,7 @@ export interface FheOperation {
   is_scalar: boolean;
   hcu_cost: number;
   hcu_depth: number;
-  caller: AddressParam | null;
+  caller: schemas['Address'] | null;
   inputs: FheOperationInputs;
   result: string;
   block_number: number;

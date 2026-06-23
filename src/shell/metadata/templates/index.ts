@@ -572,17 +572,6 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
     },
     og: OG_ROOT_PAGE,
   },
-  '/mud-worlds': {
-    metadata: {
-      title: {
-        'default': '%chain_name% MUD worlds list',
-      },
-      description: {
-        'default': 'Browse MUD worlds on %chain_name%. Explore autonomous worlds and their on-chain state.',
-      },
-    },
-    og: OG_ROOT_PAGE,
-  },
   '/token-transfers': {
     metadata: {
       title: {

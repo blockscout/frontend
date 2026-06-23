@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
-import type { TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface TxInterpretationResponse {
   data: {
@@ -63,12 +62,12 @@ export type TxInterpretationVariableExternalLink = {
 
 export type TxInterpretationVariableToken = {
   type: 'token';
-  value: TokenInfo;
+  value: schemas['Token'];
 };
 
 export type TxInterpretationVariableAddress = {
   type: 'address';
-  value: AddressParam;
+  value: schemas['Address'];
 };
 
 export type TxInterpretationVariableDomain = {

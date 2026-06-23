@@ -2,6 +2,7 @@ import React from 'react';
 import { numberToHex } from 'viem';
 
 import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as addressCountersMock from 'src/slices/address/mocks/counters';
 import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
 
@@ -15,7 +16,7 @@ import Address from './Address';
 
 const hooksConfig = {
   router: {
-    query: { hash: addressMock.hash },
+    query: { hash: addressParamMock.hash },
   },
 };
 
@@ -25,14 +26,14 @@ test.beforeEach(async({ mockTextAd }) => {
 
 test.describe('fetched bytecode', () => {
   test('should refetch address query', async({ render, mockApiResponse, createSocket, page }) => {
-    const addressApiUrl = await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('core:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.hash } });
+    const addressApiUrl = await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: addressParamMock.hash } });
+    await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
+    await mockApiResponse('core:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressParamMock.hash } });
+    await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressParamMock.hash } });
     await render(<Address/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, `addresses:${ addressMock.hash.toLowerCase() }`);
+    const channel = await socketServer.joinChannel(socket, `addresses:${ addressParamMock.hash.toLowerCase() }`);
     socketServer.sendMessage(socket, channel, 'fetched_bytecode', { fetched_bytecode: '0x0123' });
 
     const request = await page.waitForRequest(addressApiUrl);
@@ -42,13 +43,13 @@ test.describe('fetched bytecode', () => {
 });
 
 test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse }) => {
-  await mockApiResponse('core:address', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
-  await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
-  await mockApiResponse('core:address_tabs_counters', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
-  await mockApiResponse('core:address_txs', null as never, { pathParams: { hash: addressMock.hash }, status: 500 });
+  await mockApiResponse('core:address', null as never, { pathParams: { hash: addressParamMock.hash }, status: 500 });
+  await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('core:address_tabs_counters', null as never, { pathParams: { hash: addressParamMock.hash }, status: 500 });
+  await mockApiResponse('core:address_txs', null as never, { pathParams: { hash: addressParamMock.hash }, status: 500 });
   await mockRpcResponse([ {
     Method: 'eth_getBalance',
-    Parameters: [ addressMock.hash, 'latest' ],
+    Parameters: [ addressParamMock.hash, 'latest' ],
     ReturnType: numberToHex(1234567890123456),
   } ]);
 

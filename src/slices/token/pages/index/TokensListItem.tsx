@@ -4,8 +4,8 @@ import { Flex, HStack, Grid, GridItem } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { AggregatedTokenInfo } from 'src/features/multichain/types/client';
-import type { TokenInfo } from 'src/slices/token/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -24,7 +24,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 type Props = {
-  token: TokenInfo | AggregatedTokenInfo;
+  token: schemas['Token'] | AggregatedTokenInfo;
   index: number;
   page: number;
   isLoading?: boolean;
@@ -96,7 +96,7 @@ const TokensListItem = ({
       { type !== 'NATIVE' && (
         <Flex justifyContent="space-between" alignItems="center" width="150px" ml={ 7 } mt={ -2 }>
           <AddressEntity
-            address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress } }}
+            address={{ hash: addressHash, filecoin: { robust: filecoinRobustAddress ?? null, actor_type: null, id: null } }}
             isLoading={ isLoading }
             truncation="constant"
             link={{ variant: 'secondary' }}

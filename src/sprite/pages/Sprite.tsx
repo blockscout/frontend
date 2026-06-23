@@ -10,6 +10,7 @@ import useFetch from 'src/api/hooks/useFetch';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import { collator } from 'src/shared/texts/collator';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
@@ -81,7 +82,7 @@ const Sprite = () => {
 
     const items = data
       .filter((icon) => icon.name.includes(searchTerm))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => collator.compare(a.name, b.name));
 
     if (items.length === 0) {
       return <EmptyState description="No icons found"/>;

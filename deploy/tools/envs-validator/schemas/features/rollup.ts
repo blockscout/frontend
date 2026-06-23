@@ -92,16 +92,6 @@ export const rollupSchema = yup
           value => value === undefined,
         ),
       }),
-    NEXT_PUBLIC_HAS_MUD_FRAMEWORK: yup.boolean()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: 'optimistic',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_HAS_MUD_FRAMEWORK can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
-          value => value === undefined,
-        ),
-      }),
     NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: yup
       .boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {

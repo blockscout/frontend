@@ -36,7 +36,7 @@ const ConflictingImplementationsModal = ({ data, children }: Props) => {
             { data.map((item) => {
               const addressNum = item.implementations.length;
               const addressText = addressNum === 1 ? 'Implementation:' : 'Implementations:';
-              const proxyType = PROXY_TYPES[item.proxy_type]?.name || PROXY_TYPES.unknown?.name;
+              const proxyType = PROXY_TYPES[item.proxy_type]?.name || 'Unknown';
 
               return (
                 <Grid

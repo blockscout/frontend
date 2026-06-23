@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { AddressEpochRewardsItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -17,7 +17,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 type Props = {
-  item: AddressEpochRewardsItem;
+  item: schemas['ElectionReward'];
   isLoading?: boolean;
 };
 
@@ -36,19 +36,21 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/>
+        { item.type ? <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/> : '-' }
       </TableCell>
       <TableCell verticalAlign="middle">
         <AddressEntity address={ item.associated_account } isLoading={ isLoading } truncation="constant"/>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        <TokenValue
-          amount={ item.amount }
-          token={ item.token }
-          loading={ isLoading }
-          layout="vertical"
-          rowGap="10px"
-        />
+        { item.token ? (
+          <TokenValue
+            amount={ item.amount }
+            token={ item.token }
+            loading={ isLoading }
+            layout="vertical"
+            rowGap="10px"
+          />
+        ) : '-' }
       </TableCell>
     </TableRow>
   );

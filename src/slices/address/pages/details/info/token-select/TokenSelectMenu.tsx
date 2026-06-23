@@ -67,7 +67,7 @@ const TokenSelectMenu = ({ getSort, filteredData, onInputChange, onSortClick, se
                 ) }
               </Flex>
               { tokenInfo.items.sort(getSortingFn(type)(sortDirection)).map((data) =>
-                <TokenSelectItem key={ data.token.address_hash + data.token_id } data={ data }/>) }
+                <TokenSelectItem key={ (data.token?.address_hash ?? '') + (data.token_id ?? '') } data={ data }/>) }
             </Box>
           );
         }) }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import { currencyUnits } from 'src/slices/chain/units';
@@ -16,7 +16,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import InternalTxsTableItem from './InternalTxsTableItem';
 
 interface Props {
-  data: Array<InternalTransaction>;
+  data: Array<schemas['InternalTransaction']>;
   currentAddress?: string;
   isLoading?: boolean;
   top?: number;
@@ -49,7 +49,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
           { data.map((item, index) => (
             <InternalTxsTableItem
               key={ item.transaction_hash + '_' + index }
-              { ...item }
+              data={ item }
               currentAddress={ currentAddress }
               isLoading={ isLoading }
               showBlockInfo={ showBlockInfo }

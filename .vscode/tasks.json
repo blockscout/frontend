@@ -25,27 +25,6 @@
                 "instanceLimit": 1
             }
         },
-        {
-            "type": "shell",
-            "command": "pnpm dev:preset:sync --name=${input:dev_config_preset}",
-            "problemMatcher": [],
-            "label": "dev preset sync",
-            "detail": "synchronize dev preset",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiMagenta",
-                "id": "repo-sync"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            }
-        },
 
         // CODE CHECKS
         {
@@ -336,37 +315,33 @@
             "id": "dev_config_preset",
             "description": "Choose dev server config preset:",
             "options": [
-              "all",
-              "main",
-              "localhost",
+              // presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
               "arbitrum",
               "arbitrum_sepolia",
-              "arbitrum_nova",
               "base",
               "blackfort_testnet",
               "celo",
               "celo_sepolia",
-              "garnet",
-              "gnosis",
-              "immutable",
               "eth",
               "eth_sepolia",
               "filecoin",
+              "garnet",
+              "gnosis",
+              "immutable",
               "mega_eth",
-              "mekong",
-              "multichain_dev",
-              "multichain_prod",
+              "multichain",
               "neon_devnet",
               "numine",
               "optimism",
               "optimism_sepolia",
               "polygon",
-              "rari_testnet",
               "rootstock",
               "rootstock_testnet",
               "scroll_sepolia",
               "shibarium",
               "stability_testnet",
+              "staging",
+              "staging_multichain",
               "tac",
               "tac_spb",
               "zetachain",
@@ -374,8 +349,9 @@
               "zilliqa",
               "zksync",
               "zora",
+              // presets:end
             ],
-            "default": "main"
+            "default": "staging"
         },
     ],
 }

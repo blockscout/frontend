@@ -28,7 +28,7 @@ export type Props = {
   withSocket?: boolean;
   withWalletClient?: boolean;
   appContext?: {
-    pageProps: PageProps;
+    pageProps: Partial<PageProps>;
   };
   marketplaceContext?: {
     isAutoConnectDisabled: boolean;
@@ -36,7 +36,7 @@ export type Props = {
   };
 };
 
-const defaultAppContext = {
+export const defaultAppContext = {
   pageProps: {
     cookies: '',
     referrer: '',
@@ -68,7 +68,7 @@ const wagmiConfig = createConfig({
   },
 });
 
-const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
+const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaultMarketplaceContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -78,11 +78,13 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
     },
   }));
 
+  const pageProps = { ...defaultAppContext.pageProps, ...appContext?.pageProps };
+
   return (
     <ChakraProvider>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
-          <AppContextProvider { ...appContext }>
+          <AppContextProvider pageProps={ pageProps }>
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <SettingsContextProvider>
                 <GrowthBookProvider>

@@ -3,17 +3,16 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TokenTransferListItem from 'src/slices/token-transfer/pages/token/TokenTransferListItem';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 interface Props {
-  data: Array<TokenTransfer>;
+  data: Array<schemas['TokenTransfer']>;
   tokenId?: string;
-  instance?: TokenInstance;
+  instance?: schemas['TokenInstance'];
   isLoading?: boolean;
 }
 
@@ -26,7 +25,7 @@ const TokenTransferList = ({ data, tokenId, instance, isLoading }: Props) => {
       { data.map((item, index) => (
         <TokenTransferListItem
           key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
-          { ...item }
+          data={ item }
           tokenId={ tokenId }
           instance={ instance }
           isLoading={ isLoading }

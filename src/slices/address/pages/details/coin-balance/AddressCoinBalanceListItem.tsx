@@ -4,8 +4,8 @@ import { Stat, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { AddressCoinBalanceHistoryItem } from 'src/slices/address/types/api';
 
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -19,30 +19,31 @@ import { WEI } from 'src/shared/values/entity/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { ZERO } from 'src/toolkit/utils/consts';
 
-type Props = AddressCoinBalanceHistoryItem & {
+interface Props {
+  data: schemas['CoinBalance'];
   page: number;
   isLoading: boolean;
   chainData?: ClusterChainConfig;
 };
 
-const AddressCoinBalanceListItem = (props: Props) => {
-  const deltaBn = BigNumber(props.delta).div(WEI);
+const AddressCoinBalanceListItem = ({ data, page, isLoading, chainData }: Props) => {
+  const deltaBn = BigNumber(data.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
 
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex justifyContent="space-between" w="100%">
         <NativeCoinValue
-          amount={ props.value }
-          loading={ props.isLoading }
+          amount={ data.value }
+          loading={ isLoading }
           fontWeight={ 600 }
         />
-        <Skeleton loading={ props.isLoading }>
+        <Skeleton loading={ isLoading }>
           <Stat.Root flexGrow="0" positive={ isPositiveDelta } size="sm">
             <Stat.ValueText fontWeight={ 600 }>
               <SimpleValue
                 value={ deltaBn }
-                loading={ props.isLoading }
+                loading={ isLoading }
               />
             </Stat.ValueText>
             { isPositiveDelta ? <Stat.UpIndicator/> : <Stat.DownIndicator/> }
@@ -50,21 +51,21 @@ const AddressCoinBalanceListItem = (props: Props) => {
         </Skeleton>
       </Flex>
       <Flex columnGap={ 2 } w="100%">
-        <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Block</Skeleton>
+        <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Block</Skeleton>
         <BlockEntity
-          isLoading={ props.isLoading }
-          number={ props.block_number }
-          noIcon={ !props.chainData }
+          isLoading={ isLoading }
+          number={ data.block_number }
+          noIcon={ !chainData }
           fontWeight={ 700 }
-          chain={ props.chainData }
+          chain={ chainData }
         />
       </Flex>
-      { props.transaction_hash && (
+      { data.transaction_hash && (
         <Flex columnGap={ 2 } w="100%">
-          <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txs</Skeleton>
+          <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txs</Skeleton>
           <TxEntity
-            hash={ props.transaction_hash }
-            isLoading={ props.isLoading }
+            hash={ data.transaction_hash }
+            isLoading={ isLoading }
             noIcon
             fontWeight={ 700 }
             maxW="150px"
@@ -72,11 +73,11 @@ const AddressCoinBalanceListItem = (props: Props) => {
         </Flex>
       ) }
       <Flex columnGap={ 2 } w="100%">
-        <Skeleton loading={ props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Age</Skeleton>
+        <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Age</Skeleton>
         <TimeWithTooltip
-          timestamp={ props.block_timestamp }
-          enableIncrement={ props.page === 1 }
-          isLoading={ props.isLoading }
+          timestamp={ data.block_timestamp }
+          enableIncrement={ page === 1 }
+          isLoading={ isLoading }
           color="text.secondary"
         />
       </Flex>

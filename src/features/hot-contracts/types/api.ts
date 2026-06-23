@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { AddressParam } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface HotContract {
-  contract_address: AddressParam;
+  contract_address: schemas['Address'];
   balance: string;
   transactions_count: string;
   total_gas_used: string;

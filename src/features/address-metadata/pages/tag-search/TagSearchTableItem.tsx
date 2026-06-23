@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { AddressesItem } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -12,7 +12,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 type Props = {
-  item: AddressesItem;
+  item: schemas['TopAddress'];
   isLoading?: boolean;
 };
 

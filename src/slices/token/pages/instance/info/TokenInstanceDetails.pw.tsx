@@ -1,6 +1,7 @@
 import React from 'react';
 
-import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { AddressMetadataInfo } from 'src/features/address-metadata/types/api';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import { tokenInfoERC721a } from 'src/slices/token/mocks/info';
@@ -25,7 +26,7 @@ const addressMetadataQueryParams = {
   tagsLimit: '20',
 };
 
-function generateAddressMetadataResponse(tag: AddressMetadataTagApi) {
+function generateAddressMetadataResponse(tag: schemas['MetadataTag']) {
   return {
     addresses: {
       [ hash.toLowerCase() as string ]: {

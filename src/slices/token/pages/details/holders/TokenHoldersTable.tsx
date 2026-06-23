@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenHolder, TokenInfo } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenHoldersTableItem';
@@ -10,8 +10,8 @@ import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenH
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  data: Array<TokenHolder>;
-  token: TokenInfo;
+  data: Array<schemas['TokenHolderResponse']>;
+  token: schemas['Token'];
   top: number;
   isLoading?: boolean;
 }

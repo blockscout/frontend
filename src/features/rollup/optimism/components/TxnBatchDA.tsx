@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { OptimisticL2TxnBatchesItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
-export interface Props extends BadgeProps {
-  container: ExcludeUndefined<OptimisticL2TxnBatchesItem['batch_data_container']>;
+export interface Props extends Omit<BadgeProps, 'container'> {
+  container: ExcludeUndefined<schemas['BlockResponse']['optimism']>['batch_data_container'];
   isLoading?: boolean;
 }
 

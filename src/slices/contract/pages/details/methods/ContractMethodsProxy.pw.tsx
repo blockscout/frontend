@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as addressMock from 'src/slices/address/mocks/address';
+import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as contractMock from 'src/slices/contract/mocks/info';
 import * as methodsMock from 'src/slices/contract/mocks/methods';
 
@@ -8,7 +8,7 @@ import { test, expect } from 'playwright/lib';
 
 import ContractMethodsProxy from './ContractMethodsProxy';
 
-const addressHash = addressMock.hash;
+const addressHash = addressParamMock.hash;
 
 test('with one implementation +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {

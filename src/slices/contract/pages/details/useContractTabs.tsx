@@ -3,8 +3,8 @@
 import type { Channel } from 'phoenix';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { Address } from 'src/slices/address/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -14,12 +14,7 @@ import ContractMethodsProxy from 'src/slices/contract/pages/details/methods/Cont
 import ContractMethodsRegular from 'src/slices/contract/pages/details/methods/ContractMethodsRegular';
 import * as stubs from 'src/slices/contract/stubs';
 
-import ContractMethodsMudSystem from 'src/features/chain-variants/mud/pages/contract/ContractMethodsMudSystem';
-import { MUD_SYSTEMS } from 'src/features/chain-variants/mud/stubs/contract';
-
 import config from 'src/config';
-
-import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from '../../utils/tabs';
 import { CONTRACT_DETAILS_TAB_IDS } from '../../utils/tabs';
@@ -38,31 +33,21 @@ interface ReturnType {
 }
 
 interface Props {
-  addressData: Address | undefined;
+  addressData: schemas['AddressResponse'] | undefined;
   isEnabled: boolean;
-  hasMudTab?: boolean;
   channel?: Channel;
   chain?: ClusterChainConfig;
 }
 
-export default function useContractTabs({ addressData, isEnabled, hasMudTab, channel, chain }: Props): ReturnType {
+export default function useContractTabs({ addressData, isEnabled, channel, chain }: Props): ReturnType {
   const contractQuery = useApiQuery('core:contract', {
     pathParams: { hash: addressData?.hash },
     queryOptions: {
-      enabled: isEnabled && addressData?.is_contract,
+      enabled: isEnabled && Boolean(addressData?.is_contract),
       refetchOnMount: false,
       placeholderData: addressData?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
     },
     chain,
-  });
-
-  const mudSystemsQuery = useApiQuery('core:mud_systems', {
-    pathParams: { hash: addressData?.hash },
-    queryOptions: {
-      enabled: Boolean(isEnabled && hasMudTab && addressData?.is_contract),
-      refetchOnMount: false,
-      placeholderData: MUD_SYSTEMS,
-    },
   });
 
   const verifiedImplementations = React.useMemo(() => {
@@ -115,13 +100,6 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
           title: 'Custom ABI',
           component: <ContractMethodsCustom isLoading={ contractQuery.isPlaceholderData }/>,
         },
-        hasMudTab && {
-          id: 'mud_system' as const,
-          title: 'MUD System',
-          component: mudSystemsQuery.isPlaceholderData ?
-            <ContentLoader/> :
-            <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
-        },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
       isPartiallyVerified: !contractQuery.isPlaceholderData ? contractQuery.data?.is_partially_verified || undefined : undefined,
@@ -131,8 +109,5 @@ export default function useContractTabs({ addressData, isEnabled, hasMudTab, cha
     contractQuery,
     channel,
     verifiedImplementations,
-    hasMudTab,
-    mudSystemsQuery.isPlaceholderData,
-    mudSystemsQuery.data?.items,
   ]);
 }

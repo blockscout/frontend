@@ -2,9 +2,9 @@
 
 import BigNumber from 'bignumber.js';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export default function getBlockReward(block: Block) {
+export default function getBlockReward(block: schemas['BlockResponse']) {
   const txFees = BigNumber(block.transaction_fees || 0);
   const burntFees = BigNumber(block.burnt_fees || 0);
   const minerReward = block.rewards?.find(({ type }) => type === 'Miner Reward' || type === 'Validator Reward')?.reward;

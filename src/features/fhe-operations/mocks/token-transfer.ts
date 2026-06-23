@@ -1,11 +1,11 @@
-import type { TokenTransfer } from 'src/slices/token-transfer/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { erc7984Token } from './token';
 
-export const erc7984: TokenTransfer = {
+export const erc7984: schemas['TokenTransfer'] = {
   from: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementations: null,
+    implementations: [],
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
@@ -13,10 +13,14 @@ export const erc7984: TokenTransfer = {
     public_tags: [],
     watchlist_names: [],
     ens_domain_name: null,
+    is_scam: false,
+    metadata: null,
+    proxy_type: null,
+    reputation: 'ok',
   },
   to: {
     hash: '0x7d20a8D54F955b4483A66aB335635ab66e151c51',
-    implementations: null,
+    implementations: [],
     is_contract: true,
     is_verified: false,
     name: null,
@@ -24,6 +28,10 @@ export const erc7984: TokenTransfer = {
     public_tags: [],
     watchlist_names: [],
     ens_domain_name: null,
+    is_scam: false,
+    metadata: null,
+    proxy_type: null,
+    reputation: 'ok',
   },
   token: erc7984Token,
   total: null,
@@ -31,8 +39,8 @@ export const erc7984: TokenTransfer = {
   type: 'token_transfer',
   token_type: 'ERC-20',
   timestamp: '2022-10-10T14:34:30.000000Z',
-  block_number: '12345',
+  block_number: 12345,
   block_hash: '1',
-  log_index: '1',
+  log_index: 1,
   method: 'transfer',
 };

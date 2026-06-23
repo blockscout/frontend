@@ -4,7 +4,7 @@ import { Text, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import getBlockTotalReward from 'src/slices/block/utils/get-block-total-reward';
@@ -18,7 +18,7 @@ import SimpleValue from 'src/shared/values/entity/SimpleValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-type Props = Block & {
+type Props = schemas['Block'] & {
   page: number;
   isLoading: boolean;
 };

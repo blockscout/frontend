@@ -1,5 +1,6 @@
-import type { Erc20TotalPayload, TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'src/slices/token-transfer/types/api';
-import type { TokenType, TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'src/slices/token/types/api';
+import type { merged, schemas } from '@blockscout/api-types';
+import type { Erc20TotalPayload } from 'src/slices/token-transfer/types/api';
+import type { TokenType } from 'src/slices/token/types/api';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import {
@@ -18,11 +19,11 @@ export const TOKEN_TRANSFER_ERC_20_TOTAL: Erc20TotalPayload = {
   value: '9851351626684503',
 };
 
-export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
+export const TOKEN_TRANSFER_ERC_20: schemas['TokenTransfer'] = {
   block_hash: BLOCK_HASH,
-  block_number: '123456',
+  block_number: 123456,
   from: ADDRESS_PARAMS,
-  log_index: '4',
+  log_index: 4,
   method: 'addLiquidity',
   timestamp: '2022-06-24T10:22:11.000000Z',
   to: ADDRESS_PARAMS,
@@ -33,7 +34,7 @@ export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
   token_type: 'ERC-20',
 };
 
-export const TOKEN_TRANSFER_ERC_721: TokenTransfer = {
+export const TOKEN_TRANSFER_ERC_721: schemas['TokenTransfer'] = {
   ...TOKEN_TRANSFER_ERC_20,
   total: {
     token_id: '35870',
@@ -42,7 +43,7 @@ export const TOKEN_TRANSFER_ERC_721: TokenTransfer = {
   token: TOKEN_INFO_ERC_721,
 };
 
-export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
+export const TOKEN_TRANSFER_ERC_1155: schemas['TokenTransfer'] = {
   ...TOKEN_TRANSFER_ERC_20,
   total: {
     token_id: '35870',
@@ -53,7 +54,7 @@ export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
   token: TOKEN_INFO_ERC_1155,
 };
 
-export const TOKEN_TRANSFER_ERC_404: TokenTransfer = {
+export const TOKEN_TRANSFER_ERC_404: schemas['TokenTransfer'] = {
   ...TOKEN_TRANSFER_ERC_20,
   total: {
     token_id: '35870',
@@ -64,7 +65,8 @@ export const TOKEN_TRANSFER_ERC_404: TokenTransfer = {
   token: TOKEN_INFO_ERC_404,
 };
 
-export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
+export const getTokenTransfersStub = (type?: TokenType | null, pagination: Record<string, unknown> | null = null):
+merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['application/json'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
@@ -77,7 +79,10 @@ export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransfe
   }
 };
 
-export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: TokenInstanceTransferPagination | null = null): TokenInstanceTransferResponse => {
+export const getTokenInstanceTransfersStub = (
+  type?: TokenType | null,
+  pagination: Record<string, unknown> | null = null,
+): merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get']['responses']['200']['content']['application/json'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });

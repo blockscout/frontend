@@ -3,11 +3,11 @@
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
-const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: DepositsItem['status']; isLoading: boolean }) => {
+const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: schemas['Deposit']['status']; isLoading: boolean }) => {
   const statusValue = (() => {
     switch (status) {
       case 'pending':
@@ -21,7 +21,7 @@ const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: DepositsIt
     }
   })();
 
-  return <StatusTag type={ statusValue } text={ capitalize(status) } loading={ isLoading }/>;
+  return <StatusTag type={ statusValue } text={ capitalize(status ?? 'unknown') } loading={ isLoading }/>;
 };
 
 export default BeaconChainDepositStatusTag;

@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { DecodedInput } from 'src/slices/log/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import LogDecodedInputDataHeader from './LogDecodedInputDataHeader';
 import LogDecodedInputDataTable from './LogDecodedInputDataTable';
 interface Props {
-  data: DecodedInput;
+  data: schemas['DecodedLogInput'] | schemas['DecodedInput'];
   isLoading?: boolean;
   rightSlot?: React.ReactNode;
 }

@@ -4,8 +4,8 @@ import { Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { TokenInstance } from 'src/slices/token/types/api';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -96,7 +96,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
     }
 
     const queryKey = getResourceKey('core:token_instance', { queryParams: { hash, id } });
-    queryClient.setQueryData(queryKey, (prevData: TokenInstance | undefined): TokenInstance | undefined => {
+    queryClient.setQueryData(queryKey, (prevData: schemas['TokenInstance'] | undefined): schemas['TokenInstance'] | undefined => {
       if (!prevData) {
         return;
       }

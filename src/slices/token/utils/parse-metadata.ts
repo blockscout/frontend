@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { TokenInstance } from 'src/slices/token/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { Metadata } from 'src/slices/token/types/client';
 
 import attributesParser from 'src/slices/token/utils/metadata/attributes-parser';
 
-export default function parseMetadata(raw: TokenInstance['metadata'] | undefined): Metadata | undefined {
+export default function parseMetadata(raw: schemas['TokenInstance']['metadata'] | undefined): Metadata | undefined {
   if (!raw) {
     return;
   }

@@ -71,7 +71,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/internal-txs">
     | StaticRoute<"/interop-messages">
     | StaticRoute<"/login">
-    | StaticRoute<"/mud-worlds">
     | StaticRoute<"/name-services">
     | DynamicRoute<"/name-services/clusters/[name]", { "name": string }>
     | DynamicRoute<"/name-services/domains/[name]", { "name": string }>

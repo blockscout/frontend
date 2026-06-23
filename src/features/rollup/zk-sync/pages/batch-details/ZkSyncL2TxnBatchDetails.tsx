@@ -152,18 +152,22 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           <CopyToClipboard text={ data.root_hash }/>
         </DetailedInfo.ItemValue>
 
-        <DetailedInfo.ItemLabel
-          hint={ `Gas price for the batch settlement transaction on ${ layerLabels.parent }` }
-        >
-          { layerLabels.parent } gas price
-        </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue multiRow>
-          <GasPriceValue
-            amount={ data.l1_gas_price }
-            loading={ isPlaceholderData }
-            asset={ parentChainCurrency || currencyUnits.ether }
-          />
-        </DetailedInfo.ItemValue>
+        { !config.slices.tx.hiddenFields?.L1_gas_price && (
+          <>
+            <DetailedInfo.ItemLabel
+              hint={ `Gas price for the batch settlement transaction on ${ layerLabels.parent }` }
+            >
+              { layerLabels.parent } gas price
+            </DetailedInfo.ItemLabel>
+            <DetailedInfo.ItemValue multiRow>
+              <GasPriceValue
+                amount={ data.l1_gas_price }
+                loading={ isPlaceholderData }
+                asset={ parentChainCurrency || currencyUnits.ether }
+              />
+            </DetailedInfo.ItemValue>
+          </>
+        ) }
 
         <DetailedInfo.ItemLabel
           hint='The gas price below which the "baseFee" of the batch should not fall'

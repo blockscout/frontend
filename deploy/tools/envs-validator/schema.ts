@@ -137,6 +137,25 @@ const schema = yup
       }),
     NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_USERCENTRICS_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have settingsId or rulesetId', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object().transform(replaceQuotes).json().shape({
+          settingsId: yup.string(),
+          rulesetId: yup.string(),
+        });
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_USERCENTRICS_DRAFT: yup.boolean().when('NEXT_PUBLIC_USERCENTRICS_CONFIG', {
+      is: (value: string) => Boolean(value),
+      then: (schema) => schema,
+      otherwise: (schema) => schema.test(
+        'not-exist',
+        'NEXT_PUBLIC_USERCENTRICS_DRAFT can only be used with NEXT_PUBLIC_USERCENTRICS_CONFIG',
+        value => value === undefined,
+      ),
+    }),
 
     // Misc
     NEXT_PUBLIC_PRO_API_SUPPORTED: yup.boolean(),

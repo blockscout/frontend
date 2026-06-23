@@ -1,4 +1,5 @@
-import type { SmartContract, VerifiedContract, VerifiedContractsCounters } from './types/api';
+import type { SmartContract, VerifiedContractsCounters } from './types/api';
+import type { schemas } from '@blockscout/api-types';
 import type * as stats from '@blockscout/stats-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
@@ -61,8 +62,11 @@ export const CONTRACT_CODE_VERIFIED = {
   license_type: 'mit',
 } as unknown as SmartContract;
 
-export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
-  address: { ...ADDRESS_PARAMS, name: 'StubContract' },
+export const VERIFIED_CONTRACT_INFO: schemas['SmartContractListItem'] = {
+  address: {
+    ...ADDRESS_PARAMS,
+    name: 'StubContract',
+  },
   coin_balance: '30319033612988277',
   compiler_version: 'v0.8.17+commit.8df45f5f',
   has_constructor_args: true,
@@ -72,6 +76,8 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   transactions_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
   license_type: 'mit',
+  certified: true,
+  reputation: 'ok',
 };
 
 export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {

@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import RawDataSnippet from 'src/shared/data/RawDataSnippet';
@@ -16,7 +16,7 @@ import ContractDetailsVerificationButton from './ContractDetailsVerificationButt
 interface Props {
   data: SmartContract;
   isLoading: boolean;
-  addressData: Address;
+  addressData: schemas['AddressResponse'];
 }
 
 const ContractDetailsByteCode = ({ data, isLoading, addressData }: Props) => {

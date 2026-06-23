@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -19,26 +19,23 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Badge } from 'src/toolkit/chakra/badge';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
-type Props = InternalTransaction & { currentAddress?: string; isLoading?: boolean; showBlockInfo?: boolean; chainData?: ClusterChainConfig };
+interface Props {
+  data: schemas['InternalTransaction'];
+  currentAddress?: string;
+  isLoading?: boolean;
+  showBlockInfo?: boolean;
+  chainData?: ClusterChainConfig;
+}
 
 const InternalTxsTableItem = ({
-  type,
-  from,
-  to,
-  value,
-  success,
-  error,
-  created_contract: createdContract,
-  transaction_hash: txnHash,
-  block_number: blockNumber,
-  timestamp,
+  data,
   currentAddress,
   isLoading,
   showBlockInfo = true,
   chainData,
 }: Props) => {
-  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
-  const toData = to ? to : createdContract;
+  const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === data.type)?.title;
+  const toData = data.to ? data.to : data.created_contract;
 
   return (
     <TableRow alignItems="top">
@@ -50,14 +47,14 @@ const InternalTxsTableItem = ({
       <TableCell>
         <Flex rowGap={ 3 } flexDir="column" my="2px">
           <TxEntity
-            hash={ txnHash }
+            hash={ data.transaction_hash }
             isLoading={ isLoading }
             fontWeight={ 700 }
             noIcon
             truncation="constant_long"
           />
           <TimeWithTooltip
-            timestamp={ timestamp }
+            timestamp={ data.timestamp }
             enableIncrement
             isLoading={ isLoading }
             color="text.secondary"
@@ -72,14 +69,14 @@ const InternalTxsTableItem = ({
           { typeTitle && (
             <Badge colorPalette="cyan" loading={ isLoading }>{ typeTitle }</Badge>
           ) }
-          { !success && <TxStatus status="error" errorText={ error } isLoading={ isLoading }/> }
+          { !data.success && <TxStatus status="error" errorText={ data.error } isLoading={ isLoading }/> }
         </Flex>
       </TableCell>
       { showBlockInfo && (
         <TableCell>
           <BlockEntity
             isLoading={ isLoading }
-            number={ blockNumber }
+            number={ data.block_number }
             noIcon
             textStyle="sm"
             fontWeight={ 500 }
@@ -89,7 +86,7 @@ const InternalTxsTableItem = ({
       ) }
       <TableCell>
         <AddressFromTo
-          from={ from }
+          from={ data.from }
           to={ toData }
           current={ currentAddress }
           isLoading={ isLoading }
@@ -98,7 +95,7 @@ const InternalTxsTableItem = ({
       </TableCell>
       <TableCell isNumeric>
         <NativeCoinValue
-          amount={ value }
+          amount={ data.value }
           noSymbol
           accuracy={ 0 }
           loading={ isLoading }

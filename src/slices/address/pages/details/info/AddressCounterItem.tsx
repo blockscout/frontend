@@ -4,7 +4,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { AddressCounters } from 'src/slices/address/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -14,8 +14,8 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  prop: keyof AddressCounters;
-  query: UseQueryResult<AddressCounters, ResourceError<unknown>>;
+  prop: keyof schemas['AddressCounters'];
+  query: UseQueryResult<schemas['AddressCounters'], ResourceError<unknown>>;
   address: string;
   isAddressQueryLoading: boolean;
   isDegradedData: boolean;

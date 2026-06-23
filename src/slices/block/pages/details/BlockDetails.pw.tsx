@@ -1,7 +1,10 @@
 import React from 'react';
 
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
-import * as blockMock from 'src/slices/block/mocks/block';
+import * as blockMock from 'src/slices/block/mocks/details';
+
+import { rootstock } from 'src/features/chain-variants/rootstock/mocks/block';
+import { withBlobTxs } from 'src/features/data-availability/mocks/block';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -18,7 +21,7 @@ test('regular block +@mobile +@dark-mode', async({ render, page }) => {
   const query = {
     data: blockMock.base,
     isPending: false,
-  } as BlockQuery;
+  } as unknown as BlockQuery;
 
   const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
 
@@ -31,7 +34,7 @@ test('genesis block', async({ render, page }) => {
   const query = {
     data: blockMock.genesis,
     isPending: false,
-  } as BlockQuery;
+  } as unknown as BlockQuery;
 
   const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
 
@@ -45,7 +48,7 @@ test('with blob txs', async({ render, page, mockEnvs }) => {
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ]);
   const query = {
-    data: blockMock.withBlobTxs,
+    data: withBlobTxs,
     isPending: false,
   } as BlockQuery;
 
@@ -59,7 +62,7 @@ test('with blob txs', async({ render, page, mockEnvs }) => {
 test('rootstock custom fields', async({ render, page, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.blockHiddenFields);
   const query = {
-    data: blockMock.rootstock,
+    data: rootstock,
     isPending: false,
   } as BlockQuery;
 

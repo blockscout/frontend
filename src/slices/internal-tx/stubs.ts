@@ -1,9 +1,9 @@
-import type { InternalTransaction } from 'src/slices/internal-tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const INTERNAL_TX: InternalTransaction = {
+export const INTERNAL_TX: schemas['InternalTransaction'] = {
   block_number: 9006105,
   created_contract: null,
   error: null,
@@ -16,4 +16,5 @@ export const INTERNAL_TX: InternalTransaction = {
   transaction_hash: TX_HASH,
   type: 'staticcall',
   value: '22324344900000000',
+  transaction_index: 0,
 };
