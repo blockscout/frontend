@@ -42,7 +42,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% blockchain explorer - View %chain_name% stats',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Explore %chain_name% blockchain data. Search transactions, addresses, tokens, blocks, and more.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -53,7 +53,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transactions - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse the latest %chain_name% transactions on the %chain_explorer_title%. Track transaction status, fees, and details in real time.',
+        'default': 'Browse %chain_name% transactions. Track transaction status, fees, and details in real time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -64,7 +64,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% internal transactions - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse the latest %chain_name% internal transactions on the %chain_explorer_title%. Track contract-to-contract value transfers and details.',
+        'default': 'Browse contract internal transactions on %chain_name%.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -75,7 +75,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% kettle %hash% transactions',
       },
       description: {
-        'default': 'View transactions for kettle %hash% on the %chain_explorer_title%.',
+        'default': 'View transactions for kettle %hash% on %chain_name%.',
       },
     },
   },
@@ -85,7 +85,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transaction %hash%',
       },
       description: {
-        'default': 'View transaction %hash% on %chain_explorer_title%',
+        'default': '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
       },
     },
   },
@@ -95,7 +95,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% blocks',
       },
       description: {
-        'default': 'Browse the latest %chain_name% blocks on the %chain_explorer_title%. Track block height, validators, gas used, and included transactions.',
+        'default': 'Browse the latest %chain_name% blocks.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -106,7 +106,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block %height_or_hash%',
       },
       description: {
-        'default': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
+        'default': '%chain_name% block details include timestamp, block reward, difficulty, gas used, and transactions in the block.',
       },
     },
   },
@@ -116,7 +116,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block countdown index',
       },
       description: {
-        'default': 'Track upcoming %chain_name% block countdowns on the %chain_explorer_title% and estimate when a target block will be reached.',
+        'default': 'Countdown to the specified block on %chain_name%.',
       },
     },
   },
@@ -126,7 +126,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block %height% countdown',
       },
       description: {
-        'default': 'Track the countdown to %chain_name% block %height% on the %chain_explorer_title% and estimate its arrival time.',
+        'default': 'Countdown to the block %height% on %chain_name%.',
       },
     },
   },
@@ -136,7 +136,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% top accounts',
       },
       description: {
-        'default': 'Explore the top %chain_name% accounts by balance on the %chain_explorer_title%. View address holdings, rankings, and activity.',
+        'default': 'Explore the top %chain_name% accounts. View address holdings, rankings, and activity.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -147,7 +147,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% addresses search by label',
       },
       description: {
-        'default': 'Browse %chain_name% addresses tagged with the %slug% label on the %chain_explorer_title%.',
+        'default': 'Browse %chain_name% addresses tagged with the %slug% label.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -159,7 +159,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: '%chain_name% address details for %domain_name%',
       },
       description: {
-        'default': 'View the account balance, transactions, and other data for %hash% on the %chain_explorer_title%',
+        'default': 'View the account balance, transactions, and more for %hash% on %chain_name%.',
         enhanced: 'View the account balance, transactions, and other data for %domain_name% on the %chain_explorer_title%',
       },
     },
@@ -170,7 +170,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': 'Verified %chain_name% contracts lookup - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse verified smart contracts on the %chain_explorer_title%. Search %chain_name% contract source code, ABIs, and compiler details.',
+        'default': 'Browse verified smart contracts on %chain_name%.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -181,7 +181,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% verify contract',
       },
       description: {
-        'default': 'Verify and publish your smart contract source code on the %chain_explorer_title% to make your %chain_name% contract transparent and trustworthy.',
+        'default': 'Verify and publish your smart contract source code on the %chain_explorer_title% to make your contract transparent and trustworthy.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -192,7 +192,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% contract verification for %hash%',
       },
       description: {
-        'default': 'View the account balance, transactions, and other data for %hash% on the %chain_explorer_title%',
+        'default': 'View verified smart contract on %chain_name%.',
       },
     },
   },
@@ -202,7 +202,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': 'Tokens list - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse all tokens on the %chain_explorer_title%. Search %chain_name% ERC-20, ERC-721, and ERC-1155 tokens by name, symbol, or address.',
+        'default': 'Browse all tokens on the %chain_name%. Search for ERC-20, ERC-721, and ERC-1155 tokens by name, symbol, or address.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -214,7 +214,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: '%chain_name% %symbol_or_name% token details',
       },
       description: {
-        'default': 'View token details, holders, transfers and analytics for %hash% on the %chain_explorer_title%',
+        'default': 'View token details, holders, transfers and analytics for %hash% on %chain_name%.',
         enhanced: '%symbol_or_name% token on %chain_name% — view holders, transfers, total supply and analytics on the %chain_explorer_title%',
       },
     },
@@ -226,7 +226,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: '%chain_name% token instance for %symbol_or_name%',
       },
       description: {
-        'default': 'View NFT instance %id% details, metadata and transfers for %hash% on the %chain_explorer_title%',
+        'default': 'View NFT instance %id% details, metadata and transfers for %hash% on the %chain_name%.',
         enhanced: '%symbol_or_name% NFT instance %id% — view metadata, transfers and analytics on the %chain_explorer_title%',
       },
     },
@@ -237,7 +237,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': `%chain_name% ${ dappEntityName }s - Explore top ${ dappEntityName }s`,
       },
       description: {
-        'default': `Discover and explore top %chain_name% ${ dappEntityName }s in the marketplace on the %chain_explorer_title%.`,
+        'default': 'Discover and try top %chain_name% dapps.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -249,7 +249,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: `%title% - %chain_name% ${ dappEntityName }`,
       },
       description: {
-        'default': `Open and use this ${ dappEntityName } on %chain_name% via the %chain_explorer_title% marketplace.`,
+        'default': `Try ${ dappEntityName } dapp on %chain_name%.`,
         enhanced: '%description%',
       },
     },
@@ -261,7 +261,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: `%title% - %chain_name% ${ dappEntityName } details`,
       },
       description: {
-        'default': `Learn about this ${ dappEntityName } on %chain_name%: features, links, and details on the %chain_explorer_title%.`,
+        'default': `Learn about this ${ dappEntityName } on %chain_name%: features, links, and details.`,
         enhanced: '%shortDescription%',
       },
     },
@@ -272,7 +272,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%id_formatted%',
       },
       description: {
-        'default': 'Explore %id_formatted% on the %chain_explorer_title%.',
+        'default': 'Try %id_formatted% essential dapp on %chain_name%.',
       },
     },
   },
@@ -282,7 +282,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% stats - %chain_name% network insights',
       },
       description: {
-        'default': 'Explore %chain_name% network stats and charts on the %chain_explorer_title%. Track transactions, gas, accounts, and on-chain activity over time.',
+        'default': 'Explore %chain_name% blockchain stats and charts. Track transactions, blocks, gas, accounts, contracts and other on-chain activity over time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -294,7 +294,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: '%title% chart on %chain_name%',
       },
       description: {
-        'default': 'Explore the %id% chart with historical %chain_name% network data on the %chain_explorer_title%.',
+        'default': 'Explore the %id% chart on %chain_name%.',
         enhanced: '%description%',
       },
     },
@@ -305,7 +305,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% uptime',
       },
       description: {
-        'default': 'Monitor %chain_name% network uptime and availability on the %chain_explorer_title%.',
+        'default': 'Monitor %chain_name% network uptime and availability.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -316,7 +316,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% hot contracts',
       },
       description: {
-        'default': 'Discover the most active %chain_name% smart contracts on the %chain_explorer_title%, ranked by recent transaction activity.',
+        'default': 'Discover the most active %chain_name% smart contracts.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -347,7 +347,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - public tag requests',
       },
       description: {
-        'default': 'Propose a new public tag for your address, contract or set of contracts for your dApp. Our team will review and approve your submission. Public tags are incredible tool which helps users identify contracts and addresses.',
+        'default': 'Propose a new public tag for address or contract on %chain_name%.',
       },
     },
   },
@@ -357,7 +357,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% withdrawals - track on %chain_name% explorer',
       },
       description: {
-        'default': 'Track %chain_name% withdrawals on the %chain_explorer_title%. Monitor withdrawal status, amounts, and timestamps.',
+        'default': 'Track %chain_name% withdrawals. Monitor withdrawal status, amounts, and timestamps.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -368,7 +368,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': `${ layerLabels.current } to ${ layerLabels.parent } message relayer`,
       },
       description: {
-        'default': `Relay ${ layerLabels.current } to ${ layerLabels.parent } messages and track withdrawal status on the %chain_explorer_title%.`,
+        'default': 'Track %chain_name% withdrawals. Monitor withdrawal status, amounts, and timestamps.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -389,7 +389,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% deposits - track on %chain_name% explorer',
       },
       description: {
-        'default': 'Track %chain_name% deposits on the %chain_explorer_title%. Monitor deposit status, amounts, and timestamps.',
+        'default': 'Track %chain_name% deposits. Monitor deposit status, amounts, and timestamps.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -400,7 +400,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% output roots',
       },
       description: {
-        'default': 'Browse %chain_name% output roots on the %chain_explorer_title% and track state commitments posted to the parent chain.',
+        'default': 'Browse %chain_name% output roots and track data posted to the parent chain.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -411,7 +411,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% dispute games',
       },
       description: {
-        'default': 'Browse %chain_name% dispute games on the %chain_explorer_title% and monitor fault proof challenges and their status.',
+        'default': 'Browse %chain_name% dispute games and monitor fault proof challenges and their status.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -422,7 +422,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% txn batches',
       },
       description: {
-        'default': 'Browse %chain_name% transaction batches on the %chain_explorer_title%. Track batch status, size, and parent chain commitments.',
+        'default': 'Browse %chain_name% transaction batches. Track batch status, size, and parent chain commitments.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -433,7 +433,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': `%chain_name% ${ layerLabels.current } txn batch %number%`,
       },
       description: {
-        'default': 'View details for %chain_name% transaction batch %number% on the %chain_explorer_title%, including its transactions and status.',
+        'default': 'View details for %chain_name% transaction batch %number%, including its transactions and status.',
       },
     },
   },
@@ -443,7 +443,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': `%chain_name% ${ layerLabels.current } txn batch %height% %commitment%`,
       },
       description: {
-        'default': 'View details for the %chain_name% transaction batch at Celestia height %height% on the %chain_explorer_title%.',
+        'default': 'View details for the %chain_name% transaction batch at height %height%.',
       },
     },
   },
@@ -453,7 +453,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% blob %hash% details',
       },
       description: {
-        'default': 'View details for blob %hash% on the %chain_explorer_title%, including its data and associated transactions.',
+        'default': 'View details for blob %hash% on the %chain_name%, including its data and associated transactions.',
       },
     },
   },
@@ -463,7 +463,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': 'User operations on %chain_name% - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse %chain_name% user operations (ERC-4337) on the %chain_explorer_title%. Track account abstraction activity in real time.',
+        'default': 'Browse %chain_name% user operations (ERC-4337). Track account abstraction activity in real time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -474,7 +474,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% user operation %hash%',
       },
       description: {
-        'default': 'View user operation %hash% on the %chain_explorer_title%, including its status, fees, and associated transaction.',
+        'default': 'View user operation %hash% on %chain_name%, including status, fees, and associated transaction.',
       },
     },
   },
@@ -484,7 +484,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% error - page not found',
       },
       description: {
-        'default': 'The page you are looking for could not be found on the %chain_explorer_title%.',
+        'default': 'Requested page is unavailable on %chain_name%.',
       },
     },
   },
@@ -494,7 +494,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% name services - %chain_name% explorer',
       },
       description: {
-        'default': 'Explore name services on the %chain_explorer_title%. Resolve %chain_name% domains and discover address-to-name mappings.',
+        'default': 'Explore name services on %chain_name%. Resolve domains and discover address-to-name mappings.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -505,7 +505,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% %name% domain details',
       },
       description: {
-        'default': 'View details for the %name% domain on the %chain_explorer_title%, including its resolved address, owner, and records.',
+        'default': 'View %name% domain details, including resolved address, owner, and records.',
       },
     },
   },
@@ -515,7 +515,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% %name% cluster details',
       },
       description: {
-        'default': 'View details for the %name% cluster on the %chain_explorer_title%, including its members and resolved addresses.',
+        'default': 'View %name% cluster details, including members and resolved addresses.',
       },
     },
   },
@@ -525,7 +525,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% validators list',
       },
       description: {
-        'default': 'Explore %chain_name% validators on the %chain_explorer_title%. View the validator set, blocks produced, and staking activity.',
+        'default': 'Explore %chain_name% validators. View validator set, blocks produced, and staking activity.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -536,7 +536,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% validator %id% details',
       },
       description: {
-        'default': 'View details for %chain_name% validator %id% on the %chain_explorer_title%, including blocks produced and performance.',
+        'default': 'View %chain_name% validator %id% details, including blocks produced and performance.',
       },
     },
   },
@@ -546,7 +546,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% epochs',
       },
       description: {
-        'default': 'Browse %chain_name% epochs on the %chain_explorer_title%. Track epoch rewards, validator activity, and finalization.',
+        'default': 'Browse %chain_name% epochs. Track epoch rewards, validator activity, and finalization.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -557,7 +557,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% epoch %number% details',
       },
       description: {
-        'default': 'View details for %chain_name% epoch %number% on the %chain_explorer_title%, including rewards and validator activity.',
+        'default': 'View %chain_name% epoch %number% details, including rewards and validator activity.',
       },
     },
   },
@@ -567,7 +567,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': 'Track %chain_name% gas fees in %gwei_name%',
       },
       description: {
-        'default': 'Explore real-time %chain_explorer_title% gas fees with Blockscout\'s advanced gas fee tracker. Get accurate %gwei_name% estimates and track transaction costs live.',
+        'default': 'Track %chain_name% gas fees in %gwei_name%. Get estimates and monitor transaction costs live.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -578,7 +578,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% MUD worlds list',
       },
       description: {
-        'default': 'Browse MUD worlds on the %chain_explorer_title%. Explore on-chain %chain_name% autonomous worlds and their state.',
+        'default': 'Browse MUD worlds on %chain_name%. Explore autonomous worlds and their on-chain state.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -589,7 +589,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% token transfers',
       },
       description: {
-        'default': 'Browse the latest %chain_name% token transfers on the %chain_explorer_title%. Track ERC-20, ERC-721, and ERC-1155 movements in real time.',
+        'default': 'Browse %chain_name% token transfers. Track ERC-20, ERC-721, and ERC-1155 movements in real time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -600,7 +600,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% advanced filter',
       },
       description: {
-        'default': 'Filter %chain_name% transactions and token transfers on the %chain_explorer_title% by address, asset, type, and time.',
+        'default': 'Filter %chain_name% transactions and token transfers by address, asset, type, and time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -611,7 +611,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% DEX pools',
       },
       description: {
-        'default': 'Explore %chain_name% DEX liquidity pools on the %chain_explorer_title%. View pool pairs, liquidity, and trading activity.',
+        'default': 'Explore %chain_name% DEX liquidity pools. View pool pairs, liquidity, and trading activity.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -622,7 +622,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% pool details',
       },
       description: {
-        'default': 'View details for %chain_name% liquidity pool %hash% on the %chain_explorer_title%, including reserves, pairs, and activity.',
+        'default': 'View %chain_name% liquidity pool %hash%, including reserves, pairs, and activity.',
       },
     },
   },
@@ -632,7 +632,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% interop messages',
       },
       description: {
-        'default': 'Track cross-chain interop messages on the %chain_explorer_title%. Monitor %chain_name% message status and delivery.',
+        'default': 'Track %chain_name% cross-chain interop messages. Monitor message status and delivery.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -643,7 +643,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% operations',
       },
       description: {
-        'default': 'Browse %chain_name% operations on the %chain_explorer_title% and track on-chain activity in real time.',
+        'default': 'Browse %chain_name% operations and track on-chain activity in real time.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -654,7 +654,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% operation %id%',
       },
       description: {
-        'default': 'View details for %chain_name% operation %id% on the %chain_explorer_title%.',
+        'default': 'View %chain_name% operation %id% details.',
       },
     },
   },
@@ -664,7 +664,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% cross-chain transaction %hash% details',
       },
       description: {
-        'default': 'View cross-chain transaction %hash% on the %chain_explorer_title%, including its source, destination, and status.',
+        'default': 'View cross-chain transaction %hash%, including source, destination, and status.',
       },
     },
   },
@@ -674,7 +674,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% cross-chain transaction %id% details',
       },
       description: {
-        'default': 'View cross-chain transaction %id% on the %chain_explorer_title%, including its source, destination, and status.',
+        'default': 'View cross-chain transaction %id%, including source, destination, and status.',
       },
     },
   },
@@ -684,7 +684,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% ICTT users',
       },
       description: {
-        'default': 'Explore Interchain Token Transfer (ICTT) users on the %chain_explorer_title% and track cross-chain token activity.',
+        'default': 'Explore Interchain Token Transfer (ICTT) users and track cross-chain token activity.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -718,7 +718,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - watchlist',
       },
       description: {
-        'default': 'Monitor your favorite %chain_name% addresses with the %chain_explorer_title% watchlist and get notified of balance changes and new transactions.',
+        'default': 'Monitor %chain_name% addresses and get notified of balance changes and new transactions.',
       },
     },
   },
@@ -728,7 +728,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - API keys',
       },
       description: {
-        'default': 'Create and manage your %chain_explorer_title% API keys to access %chain_name% blockchain data programmatically.',
+        'default': 'Create and manage API keys to access %chain_name% blockchain data programmatically.',
       },
     },
   },
@@ -738,7 +738,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - custom ABI',
       },
       description: {
-        'default': 'Add and manage custom ABIs on the %chain_explorer_title% to interact with unverified %chain_name% smart contracts.',
+        'default': 'Add and manage custom ABIs to interact with %chain_name% smart contracts.',
       },
     },
   },
@@ -748,7 +748,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - private tags',
       },
       description: {
-        'default': 'Create and manage private address tags on the %chain_explorer_title% to organize and label %chain_name% addresses.',
+        'default': 'Create and manage private address tags to organize %chain_name% addresses.',
       },
     },
   },
@@ -758,7 +758,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - my verified addresses',
       },
       description: {
-        'default': 'Manage your verified addresses on the %chain_explorer_title% and prove ownership of your %chain_name% contracts.',
+        'default': 'Manage verified addresses and prove ownership of %chain_name% contracts.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -771,7 +771,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% addresses search by label',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Browse addresses tagged with the %slug% label across supported chains.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -782,7 +782,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% advanced filter',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Filter transactions and token transfers across supported chains by address, asset, type, and time.',
       },
     },
   },
@@ -792,7 +792,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block %height_or_hash% details',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'View block %height_or_hash% details across supported chains.',
       },
     },
   },
@@ -802,7 +802,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block countdown index',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Countdown to a specified block across supported chains.',
       },
     },
   },
@@ -812,7 +812,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block %height% countdown',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Countdown to block %height% across supported chains.',
       },
     },
   },
@@ -822,7 +822,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% user operation %hash% details',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'View user operation %hash% details across supported chains.',
       },
     },
   },
@@ -832,7 +832,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% token details',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'View token details, holders, transfers and analytics for %hash% across supported chains.',
       },
     },
   },
@@ -842,7 +842,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% token NFT instance',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'View NFT instance %id% details, metadata and transfers for %hash% across supported chains.',
       },
     },
   },
@@ -852,7 +852,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transaction %hash% details',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'View transaction %hash% details across supported chains.',
       },
     },
   },
@@ -862,7 +862,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% Solidity UML diagram',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Generate Solidity UML class diagrams for smart contracts across supported chains.',
       },
     },
   },
@@ -872,7 +872,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% ecosystems',
       },
       description: {
-        'default': DESCRIPTION_DEFAULT,
+        'default': 'Explore ecosystems and blockchain networks supported by Blockscout.',
       },
     },
     og: OG_ROOT_PAGE,
