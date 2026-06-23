@@ -40,7 +40,7 @@ const TokenValueInterchain = ({ token, tokenEntityProps, chain, ...rest }: Props
       flexShrink={ 0 }
       w="fit-content"
       ml={ 2 }
-      icon={{ marginRight: 1 }}
+      icon={{ marginRight: 1, marginRightShield: '14px' }}
       { ...tokenEntityProps }
     />
   );
