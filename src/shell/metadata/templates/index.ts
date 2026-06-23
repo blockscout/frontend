@@ -126,7 +126,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% block %height% countdown',
       },
       description: {
-        'default': 'Countdown to the block %height% on %chain_name%.',
+        'default': 'Countdown to block %height% on %chain_name%.',
       },
     },
   },
@@ -202,7 +202,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': 'Tokens list - %chain_name% explorer',
       },
       description: {
-        'default': 'Browse all tokens on the %chain_name%. Search for ERC-20, ERC-721, and ERC-1155 tokens by name, symbol, or address.',
+        'default': 'Browse all tokens on %chain_name%. Search for ERC-20, ERC-721, and ERC-1155 tokens by name, symbol, or address.',
       },
     },
     og: OG_ROOT_PAGE,
@@ -226,7 +226,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         enhanced: '%chain_name% token instance for %symbol_or_name%',
       },
       description: {
-        'default': 'View NFT instance %id% details, metadata and transfers for %hash% on the %chain_name%.',
+        'default': 'View NFT instance %id% details, metadata and transfers for %hash% on %chain_name%.',
         enhanced: '%symbol_or_name% NFT instance %id% — view metadata, transfers and analytics on the %chain_explorer_title%',
       },
     },
@@ -347,7 +347,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% - public tag requests',
       },
       description: {
-        'default': 'Propose a new public tag for address or contract on %chain_name%.',
+        'default': 'Propose a new public tag for an address or contract on %chain_name%.',
       },
     },
   },
@@ -453,7 +453,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% blob %hash% details',
       },
       description: {
-        'default': 'View details for blob %hash% on the %chain_name%, including its data and associated transactions.',
+        'default': 'View details for blob %hash% on %chain_name%, including its data and associated transactions.',
       },
     },
   },
