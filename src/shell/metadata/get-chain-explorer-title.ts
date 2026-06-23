@@ -2,7 +2,6 @@
 
 import config from 'src/config';
 
-// TODO delete when page descriptions is refactored
-export default function getChainTitle() {
+export default function getChainExplorerTitle() {
   return config.chain.name + (config.chain.shortName ? ` (${ config.chain.shortName })` : '') + ' Explorer';
 }
