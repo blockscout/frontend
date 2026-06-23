@@ -16,9 +16,9 @@ interface Params {
 export default function generateTokenSchema({ hash, apiData }: Params): WithContext<Product> | undefined {
 
   if (!apiData.exchange_rate) {
-    // If there is no exchange rate, we cannot add offers to the schema
-    // And without offers, Google will complain that the schema is invalid
-    // So we don't generate the schema in this cases
+    // If there is no exchange rate, we cannot add offers to the schema.
+    // And without offers, Google will complain that the schema is invalid,
+    // so we don't generate the schema in these cases.
     return;
   }
 
