@@ -241,7 +241,7 @@ Chain statistics and charts.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` | v1.29.0+ |
-| NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | upcoming |
+| NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | v2.9.0+ |
 
 &nbsp;
 
@@ -1318,8 +1318,8 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | upcoming |
-| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | upcoming |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | v2.9.0+ |
+| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | v2.9.0+ |
 
 ## Misc
 
@@ -1343,4 +1343,4 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | upcoming |
+| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |
