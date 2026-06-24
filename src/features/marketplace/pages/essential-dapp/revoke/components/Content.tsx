@@ -56,12 +56,13 @@ const Content = ({
   }, [ approvalsQuery.data.totalValueAtRiskUsd, approvalsQuery.isPlaceholderData ]);
 
   const scrollToResultsTop = useCallback(() => {
-    if (isMobile) {
-      actionBarRef.current?.scrollIntoView(true);
+    const target = isMobile ? actionBarRef.current : scrollRef.current;
+
+    if (!target || target.getBoundingClientRect().top >= 0) {
       return;
     }
 
-    scrollRef.current?.scrollIntoView(true);
+    target.scrollIntoView(true);
   }, [ isMobile ]);
 
   const pagination = useMemo<PaginationParams>(() => ({
@@ -92,7 +93,6 @@ const Content = ({
         gap={ 2 }
         mt={ -2 }
         pt={ 2 }
-        pb={ 2 }
         position={ !isMobile && approvals?.length ? 'sticky' : 'unset' }
         top={ 0 }
         zIndex="3"

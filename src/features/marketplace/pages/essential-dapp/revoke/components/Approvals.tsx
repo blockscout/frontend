@@ -82,7 +82,7 @@ export default function Approvals({
     <DataList
       itemsNum={ approvals.length }
       isError={ Boolean(isError) }
-      mt={ isError ? 3 : 0 }
+      mt={ isError ? 5 : 0 }
       hasActiveFilters
       actionBar={ actionBar }
       showActionBarIfEmpty
