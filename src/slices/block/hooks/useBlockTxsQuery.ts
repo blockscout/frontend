@@ -95,7 +95,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
               hash: tx.hash as string,
               timestamp: block?.timestamp ? dayjs.unix(Number(block.timestamp)).format() : null,
               confirmation_duration: [],
-              status: null,
+              status: 'ok',
               block_number: Number(block.number),
               value: tx.value.toString(),
               gas_price: tx.gasPrice?.toString() ?? null,

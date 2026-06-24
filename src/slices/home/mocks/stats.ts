@@ -93,8 +93,8 @@ export const withSecondaryCoin: schemas['StatsResponse'] = {
 
 export const noChartData: schemas['StatsResponse'] = {
   ...base,
-  transactions_today: '0',
+  transactions_today: '',
   coin_price: null,
-  market_cap: '0',
+  market_cap: '',
   tvl: null,
 };

@@ -19,7 +19,7 @@ export const withBlob: schemas['TransactionResponse'] = {
 };
 
 export const itemWithBlob: schemas['Transaction'] = {
-  ...base,
+  ...withBlob,
   op_interop_messages: undefined,
 };
 

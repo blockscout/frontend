@@ -47,22 +47,22 @@ const EpochsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        { item.distribution?.community_transfer && 'value' in item.distribution.community_transfer && (
+        { item.distribution?.community_transfer && 'value' in item.distribution.community_transfer ? (
           <NativeCoinValue
             amount={ item.distribution.community_transfer.value }
             noSymbol
             loading={ isLoading }
           />
-        ) }
+        ) : '-' }
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
-        { item.distribution?.carbon_offsetting_transfer && 'value' in item.distribution.carbon_offsetting_transfer && (
+        { item.distribution?.carbon_offsetting_transfer && 'value' in item.distribution.carbon_offsetting_transfer ? (
           <NativeCoinValue
             amount={ item.distribution.carbon_offsetting_transfer.value }
             noSymbol
             loading={ isLoading }
           />
-        ) }
+        ) : '-' }
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <NativeCoinValue

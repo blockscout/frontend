@@ -20,6 +20,7 @@ const ArbitrumL2TxnWithdrawalsValue = ({ data, loading }: Props) => {
 
   if (data.token) {
     const token = toTokenModel({
+      ...data.token,
       address_hash: data.token.address_hash ?? '',
       decimals: String(data.token.decimals),
       type: 'ERC-20',

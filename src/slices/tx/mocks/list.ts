@@ -13,17 +13,17 @@ export const pending: schemas['Transaction'] = {
 };
 
 export const base2: schemas['Transaction'] = {
-  ...detailsMock.base,
+  ...detailsMock.base2,
   op_interop_messages: undefined,
 };
 
 export const base3: schemas['Transaction'] = {
-  ...detailsMock.base,
+  ...detailsMock.base3,
   op_interop_messages: undefined,
 };
 
 export const base4: schemas['Transaction'] = {
-  ...detailsMock.base,
+  ...detailsMock.base4,
   op_interop_messages: undefined,
 };
 
