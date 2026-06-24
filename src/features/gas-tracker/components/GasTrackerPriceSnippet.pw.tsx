@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { GasPriceInfo } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as statsMock from 'src/slices/home/mocks/stats';
 
@@ -11,7 +11,7 @@ import GasTrackerPriceSnippet from './GasTrackerPriceSnippet';
 
 test.use({ viewport: pwConfig.viewport.md });
 
-const data = statsMock.base.gas_prices?.fast as GasPriceInfo;
+const data = statsMock.base.gas_prices?.fast as schemas['StatsGasPriceInfo'];
 const clip = { x: 0, y: 0, width: 334, height: 204 };
 
 test('with usd as primary unit +@dark-mode', async({ render, page }) => {
@@ -57,6 +57,8 @@ test('with zero values', async({ render, page }) => {
     time: 0,
     base_fee: 0,
     priority_fee: 0,
+    priority_fee_wei: null,
+    wei: null,
   };
 
   await render(
@@ -76,6 +78,8 @@ test('with small values', async({ render, page }) => {
     time: 0,
     base_fee: 0,
     priority_fee: 0,
+    priority_fee_wei: null,
+    wei: null,
   };
 
   await render(

@@ -37,7 +37,7 @@ const BeaconChainDeposits = () => {
   const countersQuery = useApiQuery('core:deposits_counters', {
     queryOptions: {
       placeholderData: {
-        deposits_count: '19091878',
+        deposits_count: 19091878,
       },
     },
   });

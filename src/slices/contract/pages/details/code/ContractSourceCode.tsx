@@ -3,6 +3,7 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { File } from 'src/shared/code-editor/types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
 import { formatLanguageName } from 'src/slices/contract/utils/language';
@@ -21,7 +22,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import ContractCodeIdes from './ContractCodeIdes';
 import ContractExternalLibraries from './ContractExternalLibraries';
 
-function getEditorData(contractInfo: SmartContract | undefined) {
+function getEditorData(contractInfo: SmartContract | undefined): Array<File> | undefined {
   if (!contractInfo || !contractInfo.source_code) {
     return undefined;
   }
@@ -43,10 +44,17 @@ function getEditorData(contractInfo: SmartContract | undefined) {
     }
   })();
 
-  return [
+  const result: Array<File> = [
     { file_path: formatFilePath(contractInfo.file_path || `index.${ extension }`), source_code: contractInfo.source_code },
-    ...(contractInfo.additional_sources || []).map((source) => ({ ...source, file_path: formatFilePath(source.file_path) })),
+    ...(contractInfo.additional_sources || [])
+      .filter((source) => source.file_path && source.source_code)
+      .map((source) => ({
+        source_code: source.source_code || '',
+        file_path: formatFilePath(source.file_path || ''),
+      })),
   ];
+
+  return result;
 }
 
 interface Props {
@@ -102,6 +110,14 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
   ) :
     null;
 
+  const remappings = React.useMemo(() => {
+    return data?.compiler_settings?.remappings &&
+    Array.isArray(data.compiler_settings.remappings) &&
+    data?.compiler_settings?.remappings.every((item) => typeof item === 'string') ?
+      data.compiler_settings.remappings :
+      undefined;
+  }, [ data?.compiler_settings?.remappings ]);
+
   const content = (() => {
     if (isLoading) {
       return <Skeleton loading h="557px" w="100%"/>;
@@ -115,7 +131,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
       <CodeEditor
         key={ sourceAddress }
         data={ editorData }
-        remappings={ data?.compiler_settings?.remappings }
+        remappings={ remappings }
         libraries={ data?.external_libraries ?? undefined }
         language={ data?.language ?? undefined }
         mainFile={ editorData[0]?.file_path }

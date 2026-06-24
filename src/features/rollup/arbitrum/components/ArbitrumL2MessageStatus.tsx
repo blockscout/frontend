@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import type { ArbitrumL2MessagesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { StatusTagType } from 'src/shared/tags/status-tag/StatusTag';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
 export interface Props {
-  status: ArbitrumL2MessagesItem['status'];
+  status: schemas['ArbitrumMessage']['status'] | schemas['ArbitrumWithdrawal']['status'];
   isLoading?: boolean;
 }
 

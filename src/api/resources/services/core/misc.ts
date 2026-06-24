@@ -1,45 +1,25 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
-import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'src/features/advanced-filter/types/api';
-import type { DepositsResponse, DepositsCounters, WithdrawalsResponse, WithdrawalsCounters } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { paths } from '@blockscout/api-types';
+import type { AdvancedFilterParams } from 'src/features/advanced-filter/types/api';
 import type {
   ValidatorsBlackfortCountersResponse,
   ValidatorsBlackfortResponse,
   ValidatorsBlackfortSorting,
 } from 'src/features/chain-variants/blackfort/types/api';
-import type { CeloEpochDetails, CeloEpochElectionRewardDetailsResponse, CeloEpochListResponse } from 'src/features/chain-variants/celo/types/api';
 import type {
   ValidatorsStabilityCountersResponse,
   ValidatorsStabilityFilters,
   ValidatorsStabilityResponse,
   ValidatorsStabilitySorting,
 } from 'src/features/chain-variants/stability/types/api';
-import type {
-  ValidatorsZilliqaResponse,
-  ValidatorZilliqa,
-} from 'src/features/chain-variants/zilliqa/types/api';
-import type { CsvExportItemResponse, CsvExportConfig } from 'src/features/csv-export/types/api';
 import type { Blob } from 'src/features/data-availability/types/api';
-import type { HotContractsFilters, HotContractsResponse, HotContractsSorting } from 'src/features/hot-contracts/types/api';
-import type {
-  ArbitrumL2TxnBatchesItem,
-  ArbitrumLatestDepositsResponse,
-} from 'src/features/rollup/arbitrum/types/api';
-import type {
-  OptimisticL2DepositsItem,
-} from 'src/features/rollup/optimism/types/api';
+import type { HotContractsFilters, HotContractsSorting } from 'src/features/hot-contracts/types/api';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'src/features/tx-interpretation/noves/types/api';
-import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'src/features/user-ops/types/api';
-import type { BackendConfig, BackendVersionConfig, CeloConfig, ContractLanguagesConfig } from 'src/slices/chain/backend-config/types/api';
-import type { IndexingStatus } from 'src/slices/chain/indexing-status/types';
-import type { HomeStats, ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'src/slices/home/types/api';
-import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'src/slices/search/types/api';
-import type {
-  Transaction,
-} from 'src/slices/tx/types/api';
+import type { UserOpsFilters } from 'src/features/user-ops/types/api';
+import type { QuickSearchResult, SearchResult, SearchResultFilters } from 'src/slices/search/types/api';
 
 export const CORE_API_MISC_RESOURCES = {
   // WITHDRAWALS
@@ -281,53 +261,52 @@ export type CoreApiMiscResourceName = `core:${ keyof typeof CORE_API_MISC_RESOUR
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiMiscResourcePayload<R extends CoreApiMiscResourceName> =
-R extends 'core:stats' ? HomeStats :
-R extends 'core:stats_charts_txs' ? ChartTransactionResponse :
-R extends 'core:stats_charts_market' ? ChartMarketResponse :
-R extends 'core:stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
-R extends 'core:stats_hot_contracts' ? HotContractsResponse :
-R extends 'core:homepage_blocks' ?
-  merged.paths['/v2/main-page/blocks']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:homepage_txs' ? Array<Transaction> :
-R extends 'core:homepage_txs_watchlist' ? Array<Transaction> :
-R extends 'core:homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
-R extends 'core:homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
-R extends 'core:homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
-R extends 'core:homepage_indexing_status' ? IndexingStatus :
+R extends 'core:stats' ? paths['/v2/stats']['get'] :
+R extends 'core:stats_charts_txs' ? paths['/v2/stats/charts/transactions']['get'] :
+R extends 'core:stats_charts_market' ? paths['/v2/stats/charts/market']['get'] :
+R extends 'core:stats_charts_secondary_coin_price' ? paths['/v2/stats/charts/secondary-coin-market']['get'] :
+R extends 'core:stats_hot_contracts' ? paths['/v2/stats/hot-smart-contracts']['get'] :
+R extends 'core:homepage_blocks' ? paths['/v2/main-page/blocks']['get'] :
+R extends 'core:homepage_txs' ? paths['/v2/main-page/transactions']['get'] :
+R extends 'core:homepage_txs_watchlist' ? paths['/v2/main-page/transactions/watchlist']['get'] :
+R extends 'core:homepage_optimistic_deposits' ? paths['/v2/main-page/optimism-deposits']['get'] :
+R extends 'core:homepage_arbitrum_deposits' ? paths['/v2/main-page/arbitrum/messages/to-rollup']['get'] :
+R extends 'core:homepage_arbitrum_l2_batches' ? paths['/v2/main-page/arbitrum/batches/committed']['get'] :
+R extends 'core:homepage_indexing_status' ? paths['/v2/main-page/indexing-status']['get'] :
 R extends 'core:homepage_zksync_latest_batch' ? number :
-R extends 'core:homepage_arbitrum_latest_batch' ? number :
-R extends 'core:quick_search' ? Array<SearchResultItem> :
+R extends 'core:homepage_arbitrum_latest_batch' ? paths['/v2/main-page/arbitrum/batches/latest-number']['get'] :
+R extends 'core:quick_search' ? QuickSearchResult :
 R extends 'core:search' ? SearchResult :
-R extends 'core:search_check_redirect' ? SearchRedirectResult :
-R extends 'core:config_backend' ? BackendConfig :
-R extends 'core:config_backend_version' ? BackendVersionConfig :
-R extends 'core:config_csv_export' ? CsvExportConfig :
-R extends 'core:config_celo' ? CeloConfig :
-R extends 'core:config_contract_languages' ? ContractLanguagesConfig :
+R extends 'core:search_check_redirect' ? paths['/v2/search/check-redirect']['get'] :
+R extends 'core:config_backend' ? paths['/v2/config/backend']['get'] :
+R extends 'core:config_backend_version' ? paths['/v2/config/backend-version']['get'] :
+R extends 'core:config_csv_export' ? paths['/v2/config/csv-export']['get'] :
+R extends 'core:config_celo' ? paths['/v2/config/celo']['get'] :
+R extends 'core:config_contract_languages' ? paths['/v2/config/smart-contracts/languages']['get'] :
 R extends 'core:blob' ? Blob :
 R extends 'core:validators_stability' ? ValidatorsStabilityResponse :
 R extends 'core:validators_stability_counters' ? ValidatorsStabilityCountersResponse :
 R extends 'core:validators_blackfort' ? ValidatorsBlackfortResponse :
 R extends 'core:validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
-R extends 'core:validators_zilliqa' ? ValidatorsZilliqaResponse :
-R extends 'core:validator_zilliqa' ? ValidatorZilliqa :
-R extends 'core:epochs_celo' ? CeloEpochListResponse :
-R extends 'core:epoch_celo' ? CeloEpochDetails :
-R extends 'core:epoch_celo_election_rewards' ? CeloEpochElectionRewardDetailsResponse :
-R extends 'core:user_ops' ? UserOpsResponse :
-R extends 'core:user_op' ? UserOp :
-R extends 'core:user_ops_account' ? UserOpsAccount :
+R extends 'core:validators_zilliqa' ? paths['/v2/validators/zilliqa']['get'] :
+R extends 'core:validator_zilliqa' ? paths['/v2/validators/zilliqa/{bls_public_key}']['get'] :
+R extends 'core:epochs_celo' ? paths['/v2/celo/epochs']['get'] :
+R extends 'core:epoch_celo' ? paths['/v2/celo/epochs/{number}']['get'] :
+R extends 'core:epoch_celo_election_rewards' ? paths['/v2/celo/epochs/{number}/election-rewards/{type}']['get'] :
+R extends 'core:user_ops' ? paths['/v2/proxy/account-abstraction/operations']['get'] :
+R extends 'core:user_op' ? paths['/v2/proxy/account-abstraction/operations/{operation_hash_param}']['get'] :
+R extends 'core:user_ops_account' ? paths['/v2/proxy/account-abstraction/accounts/{address_hash_param}']['get'] :
 R extends 'core:user_op_interpretation' ? TxInterpretationResponse :
 R extends 'core:noves_transaction' ? NovesResponseData :
 R extends 'core:noves_address_history' ? NovesAccountHistoryResponse :
 R extends 'core:noves_describe_txs' ? NovesDescribeTxsResponse :
-R extends 'core:withdrawals' ? WithdrawalsResponse :
-R extends 'core:withdrawals_counters' ? WithdrawalsCounters :
-R extends 'core:deposits' ? DepositsResponse :
-R extends 'core:deposits_counters' ? DepositsCounters :
-R extends 'core:advanced_filter' ? AdvancedFilterResponse :
-R extends 'core:advanced_filter_methods' ? AdvancedFilterMethodsResponse :
-R extends 'core:csv_exports_item' ? CsvExportItemResponse :
+R extends 'core:withdrawals' ? paths['/v2/withdrawals']['get'] :
+R extends 'core:withdrawals_counters' ? paths['/v2/withdrawals/counters']['get'] :
+R extends 'core:deposits' ? paths['/v2/beacon/deposits']['get'] :
+R extends 'core:deposits_counters' ? paths['/v2/beacon/deposits/count']['get'] :
+R extends 'core:advanced_filter' ? paths['/v2/advanced-filters']['get'] :
+R extends 'core:advanced_filter_methods' ? paths['/v2/advanced-filters/methods']['get'] :
+R extends 'core:csv_exports_item' ? paths['/v2/csv-exports/{uuid_param}']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 

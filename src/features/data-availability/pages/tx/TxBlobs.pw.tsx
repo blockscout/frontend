@@ -1,9 +1,9 @@
 import React from 'react';
 
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/details';
 
-import * as blobsMock from 'src/features/data-availability/mocks/blobs';
+import * as blobsMock from 'src/features/data-availability/mocks/tx';
 
 import { test, expect } from 'playwright/lib';
 

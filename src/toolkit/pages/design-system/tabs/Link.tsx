@@ -12,7 +12,7 @@ import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import { toTokenModel } from 'src/slices/token/utils/model';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/details';
 
 import BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
 import * as blobsMock from 'src/features/data-availability/mocks/blobs';

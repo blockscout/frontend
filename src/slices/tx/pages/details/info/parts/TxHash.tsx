@@ -3,7 +3,7 @@
 import { Box, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -23,7 +23,7 @@ const externalTxFeature = config.features.externalTxs;
 interface Props {
   hash: string;
   isLoading: boolean;
-  status: Transaction['status'];
+  status: schemas['Transaction']['status'];
 }
 
 const TxHash = ({ hash, isLoading, status }: Props) => {

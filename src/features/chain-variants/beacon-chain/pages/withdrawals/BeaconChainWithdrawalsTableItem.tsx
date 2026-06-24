@@ -14,7 +14,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  item: schemas['Withdrawal'];
+  item: schemas['BeaconWithdrawal'];
   view: 'address' | 'block' | 'list';
   isLoading?: boolean;
 }

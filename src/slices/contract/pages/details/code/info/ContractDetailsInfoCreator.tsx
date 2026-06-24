@@ -3,7 +3,7 @@
 import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SmartContractCreationStatus } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import ContractCreationStatus from 'src/slices/contract/components/ContractCreationStatus';
@@ -14,7 +14,7 @@ import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 interface Props {
   addressHash: string;
   txHash: string;
-  creationStatus: SmartContractCreationStatus | null;
+  creationStatus: schemas['SmartContract']['creation_status'];
   isLoading: boolean;
 }
 

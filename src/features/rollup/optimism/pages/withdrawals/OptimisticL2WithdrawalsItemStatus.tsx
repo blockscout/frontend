@@ -3,7 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { OptimisticL2WithdrawalsItem, OptimisticL2WithdrawalsResponse } from 'src/features/rollup/optimism/types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -12,7 +12,7 @@ import OptimisticL2ClaimButton from 'src/features/rollup/optimism/components/Opt
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: OptimisticL2WithdrawalsItem;
+  data: schemas['OptimismWithdrawal'];
   isLoading?: boolean;
 }
 
@@ -26,7 +26,7 @@ const OptimisticL2WithdrawalsItemStatus = ({ data, isLoading }: Props) => {
       exact: false,
       type: 'active',
     },
-    (prevData: OptimisticL2WithdrawalsResponse | undefined) => {
+    (prevData: operations['OptimismController.withdrawals']['json'] | undefined) => {
       if (!prevData) {
         return;
       }
@@ -36,7 +36,7 @@ const OptimisticL2WithdrawalsItemStatus = ({ data, isLoading }: Props) => {
           return {
             ...withdrawal,
             l1_transaction_hash: l1TxHash,
-            status: 'Relayed',
+            status: 'Relayed' as const,
           };
         }
         return withdrawal;

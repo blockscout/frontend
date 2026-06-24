@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
+import type { operations } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -42,15 +42,17 @@ const LatestArbitrumL2Batches = () => {
   });
 
   const handleNewBatchMessage: SocketMessage.NewArbitrumL2Batch['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('core:homepage_arbitrum_l2_batches'), (prevData: { items: Array<ArbitrumL2TxnBatchesItem> } | undefined) => {
-      const newItems = prevData?.items ? [ ...prevData.items ] : [];
+    queryClient.setQueryData(
+      getResourceKey('core:homepage_arbitrum_l2_batches'),
+      (prevData: operations['ArbitrumController.batches_committed']['json'] | undefined) => {
+        const newItems = prevData?.items ? [ ...prevData.items ] : [];
 
-      if (newItems.some((batch => batch.number === payload.batch.number))) {
-        return { items: newItems };
-      }
+        if (newItems.some((batch => batch.number === payload.batch.number))) {
+          return { items: newItems };
+        }
 
-      return { items: [ payload.batch, ...newItems ].sort((b1, b2) => b2.number - b1.number).slice(0, batchesMaxCount) };
-    });
+        return { items: [ payload.batch, ...newItems ].sort((b1, b2) => b2.number - b1.number).slice(0, batchesMaxCount) };
+      });
   }, [ queryClient, batchesMaxCount ]);
 
   const channel = useSocketChannel({

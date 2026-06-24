@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxBlob } from 'src/features/data-availability/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlobDataType from 'src/features/data-availability/components/BlobDataType';
 import BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
@@ -12,7 +12,7 @@ import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: TxBlob;
+  data: schemas['BlobResponse'];
   isLoading?: boolean;
 }
 

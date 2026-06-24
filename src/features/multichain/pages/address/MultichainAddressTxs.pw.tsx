@@ -3,7 +3,7 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as countersMock from 'src/slices/address/mocks/counters';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as addressMock from 'src/features/multichain/mocks/address';
 import * as chainDataMock from 'src/features/multichain/mocks/chains';

@@ -1,8 +1,8 @@
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 
 import { base, base2 } from './details';
 
-export const baseListResponse: merged.paths['/v2/blocks']['get']['responses']['200']['content']['application/json'] = {
+export const baseListResponse: paths['/v2/blocks']['get'] = {
   items: [
     {
       ...base,

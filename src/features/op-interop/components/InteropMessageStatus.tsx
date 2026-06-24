@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import type { InteropMessage } from 'src/features/op-interop/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { StatusTagType } from 'src/shared/tags/status-tag/StatusTag';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
 export interface Props {
-  status: InteropMessage['status'];
+  status: schemas['OptimismInteropMessage']['status'];
   isLoading?: boolean;
 }
 

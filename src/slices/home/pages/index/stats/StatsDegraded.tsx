@@ -44,6 +44,8 @@ const StatsDegraded = () => {
         time: null,
         base_fee: null,
         priority_fee: null,
+        priority_fee_wei: null,
+        wei: null,
       };
     },
     enabled: Boolean(publicClient),

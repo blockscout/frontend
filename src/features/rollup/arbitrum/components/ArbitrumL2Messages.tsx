@@ -24,7 +24,7 @@ import ArbitrumL2MessagesTable from './ArbitrumL2MessagesTable';
 
 export type MessagesDirection = 'from-rollup' | 'to-rollup';
 
-type Props = {
+interface Props {
   direction: MessagesDirection;
 };
 

@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { SmartContractLicenseType } from './api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface ContractLicense {
-  type: SmartContractLicenseType;
+  type: NonNullable<schemas['SmartContract']['license_type']>;
   url: string;
   label: string;
   title: string;

@@ -16,10 +16,10 @@ import BeaconChainDepositsTableItem from './BeaconChainDepositsTableItem';
 
 const feature = config.features.beaconChain;
 
-type Props = {
+interface Props {
   top: number;
   isLoading?: boolean;
-  items: Array<schemas['Deposit']>;
+  items: Array<schemas['BeaconDeposit']>;
   view: 'list' | 'address' | 'block';
 };
 

@@ -12,7 +12,7 @@ import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPag
 import TxsContent from './TxsContent';
 
 type Props = {
-  query: QueryWithPagesResult<'core:txs_validated' | 'core:txs_pending'> |
+  query: QueryWithPagesResult<'core:txs'> |
     QueryWithPagesResult<'core:txs_watchlist'> |
     QueryWithPagesResult<'core:block_txs'>;
   showBlockInfo?: boolean;

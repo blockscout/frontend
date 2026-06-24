@@ -1,9 +1,9 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { toTokenModel } from 'src/slices/token/utils/model';
-import { base } from 'src/slices/tx/mocks/tx';
+import { base } from 'src/slices/tx/mocks/details';
 
-export const celoTxn: Transaction = {
+export const celoTxn: schemas['TransactionResponse'] = {
   ...base,
   celo: {
     gas_token: toTokenModel({

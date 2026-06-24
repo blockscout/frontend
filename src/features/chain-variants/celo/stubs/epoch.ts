@@ -1,10 +1,10 @@
-import type { CeloEpochListItem, CeloEpochDetails, CeloEpochElectionReward } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { BLOCK_HASH } from 'src/slices/block/stubs/block';
 import { TOKEN_TRANSFER_ERC_20, TOKEN_TRANSFER_ERC_20_TOTAL } from 'src/slices/token-transfer/stubs';
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 
-export const CELO_EPOCH_ITEM: CeloEpochListItem = {
+export const CELO_EPOCH_ITEM: schemas['CeloEpoch'] = {
   timestamp: '2025-06-10T01:27:52.000000Z',
   number: 1739,
   end_block_number: 48563551,
@@ -15,16 +15,17 @@ export const CELO_EPOCH_ITEM: CeloEpochListItem = {
     carbon_offsetting_transfer: TOKEN_TRANSFER_ERC_20_TOTAL,
     community_transfer: TOKEN_TRANSFER_ERC_20_TOTAL,
     transfers_total: TOKEN_TRANSFER_ERC_20_TOTAL,
+    reserve_bolster_transfer: null,
   },
 };
 
-const CELO_EPOCH_REWARD: CeloEpochElectionReward = {
+const CELO_EPOCH_REWARD: schemas['CeloEpochAggregatedElectionReward'] = {
   count: 10,
   total: '157705500305820107521',
   token: TOKEN_INFO_ERC_20,
 };
 
-export const CELO_EPOCH: CeloEpochDetails = {
+export const CELO_EPOCH: schemas['CeloEpochDetailed'] = {
   timestamp: '2025-06-10T01:27:52.000000Z',
   number: 1739,
   start_block_number: 48477132,
@@ -42,6 +43,7 @@ export const CELO_EPOCH: CeloEpochDetails = {
       token: TOKEN_INFO_ERC_20,
       total: TOKEN_TRANSFER_ERC_20_TOTAL,
     },
+    reserve_bolster_transfer: null,
   },
   aggregated_election_rewards: {
     group: CELO_EPOCH_REWARD,

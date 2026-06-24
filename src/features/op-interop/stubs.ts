@@ -8,7 +8,7 @@ export const INTEROP_MESSAGE: InteropMessage = {
   nonce: 52,
   payload: '0x4f0edcc90000000000000000000000007da521cbbe62e89cd75e0993c78b8c68c25f696b',
   relay_chain: {
-    chain_id: 420120000,
+    chain_id: '420120000',
     chain_name: 'Optimism Testnet',
     chain_logo: null,
     instance_url: 'https://optimism-interop-alpha-0.blockscout.com/',

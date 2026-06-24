@@ -6,7 +6,8 @@ import * as blockMock from 'src/slices/block/mocks/list';
 import * as blockRpcMock from 'src/slices/block/mocks/rpc';
 import * as dailyTxsMock from 'src/slices/home/mocks/charts';
 import * as statsMock from 'src/slices/home/mocks/stats';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
+import * as txRpcMock from 'src/slices/tx/mocks/rpc';
 
 import * as statsMainMock from 'src/features/chain-stats/mocks/home';
 
@@ -113,7 +114,7 @@ test('degradation view', async({ render, mockApiResponse, mockRpcResponse, page 
       Method: 'eth_getTransactionReceipt',
       Parameters: [ tx.hash ],
       ReturnType: {
-        ...txMock.rpcTxReceipt,
+        ...txRpcMock.rpcTxReceipt,
         transactionHash: tx.hash,
       },
     } satisfies PublicRpcSchema[number])),

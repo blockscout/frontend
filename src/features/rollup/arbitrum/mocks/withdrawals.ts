@@ -1,6 +1,6 @@
-import type { ArbitrumL2MessagesResponse } from '../types/api';
+import type { operations } from '@blockscout/api-types';
 
-export const baseResponse: ArbitrumL2MessagesResponse = {
+export const baseResponse: operations['ArbitrumController.messages']['json'] = {
   items: [
     {
       completion_transaction_hash: '0x0b7d58c0a6b4695ba28d99df928591fb931c812c0aab6d0093ff5040d2f9bc5e',

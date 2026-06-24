@@ -17,7 +17,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 const feature = config.features.beaconChain;
 
 interface Props {
-  item: schemas['Withdrawal'];
+  item: schemas['BeaconWithdrawal'];
   view: 'address' | 'block' | 'list';
   isLoading?: boolean;
 }

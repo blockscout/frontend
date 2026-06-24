@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import type { UserOp } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { withoutName } from 'src/slices/address/mocks/address-param';
 
-export const userOpData: UserOp = {
+export const userOpData: schemas['UserOperation'] = {
   timestamp: '2024-01-19T12:42:12.000000Z',
   transaction_hash: '0x715fe1474ac7bea3d6f4a03b1c5b6d626675fb0b103be29f849af65e9f1f9c6a',
   user_logs_start_index: 40,
@@ -96,4 +96,8 @@ export const userOpData: UserOp = {
     hash: '0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25',
     is_contract: true,
   },
+  bundle_index: 0,
+  consensus: true,
+  entry_point_version: 'v0.6',
+  index: 0,
 };

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { OptimisticL2DisputeGamesItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
@@ -17,7 +17,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: OptimisticL2DisputeGamesItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismGame']; isLoading?: boolean };
 
 const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {

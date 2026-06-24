@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export interface ChainInfo {
-  chain_id: number;
-  chain_name: string | null;
-  chain_logo: string | null;
-  instance_url: string;
-}
+import type { schemas } from '@blockscout/api-types';
+
+export type ChainInfo = NonNullable<schemas['OptimismInteropMessage']['init_chain']>;
 
 export type MessageStatus = 'Sent' | 'Relayed' | 'Failed';
 

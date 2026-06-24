@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { AddressesMetadataSearchFilters, AddressesMetadataSearchResult } from 'src/features/address-metadata/types/api';
 import type {
   AddressXStarResponse,
-  AddressTransactionsResponse,
   AddressTxsFilters,
   AddressTokenTransferFilters,
   AddressTokensFilter,
@@ -158,39 +157,25 @@ export type CoreApiAddressResourceName = `core:${ keyof typeof CORE_API_ADDRESS_
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiAddressResourcePayload<R extends CoreApiAddressResourceName> =
-R extends 'core:addresses' ?
-  merged.paths['/v2/addresses']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:addresses' ? paths['/v2/addresses']['get'] :
 R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchResult :
-R extends 'core:address' ?
-  merged.paths['/v2/addresses/{address_hash_param}']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_counters' ?
-  merged.paths['/v2/addresses/{address_hash_param}/counters']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_tabs_counters' ?
-  merged.paths['/v2/addresses/{address_hash_param}/tabs-counters']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_txs' ? AddressTransactionsResponse :
-R extends 'core:address_internal_txs' ?
-  merged.paths['/v2/addresses/{address_hash_param}/internal-transactions']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_token_transfers' ?
-  merged.paths['/v2/addresses/{address_hash_param}/token-transfers']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_blocks_validated' ?
-  merged.paths['/v2/addresses/{address_hash_param}/blocks-validated']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_coin_balance' ?
-  merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_coin_balance_chart' ?
-  merged.paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_logs' ? merged.paths['/v2/addresses/{address_hash_param}/logs']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_tokens' ? merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_token_balances' ?
-  merged.paths['/v2/addresses/{address_hash_param}/token-balances']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_nfts' ? merged.paths['/v2/addresses/{address_hash_param}/nft']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_collections' ?
-  merged.paths['/v2/addresses/{address_hash_param}/nft/collections']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_withdrawals' ?
-  merged.paths['/v2/addresses/{address_hash_param}/withdrawals']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_deposits' ?
-  merged.paths['/v2/addresses/{address_hash_param}/beacon/deposits']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:address_epoch_rewards' ?
-  merged.paths['/v2/addresses/{address_hash_param}/celo/election-rewards']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:address' ? paths['/v2/addresses/{address_hash_param}']['get'] :
+R extends 'core:address_counters' ? paths['/v2/addresses/{address_hash_param}/counters']['get'] :
+R extends 'core:address_tabs_counters' ? paths['/v2/addresses/{address_hash_param}/tabs-counters']['get'] :
+R extends 'core:address_txs' ? paths['/v2/addresses/{address_hash_param}/transactions']['get'] :
+R extends 'core:address_internal_txs' ? paths['/v2/addresses/{address_hash_param}/internal-transactions']['get'] :
+R extends 'core:address_token_transfers' ? paths['/v2/addresses/{address_hash_param}/token-transfers']['get'] :
+R extends 'core:address_blocks_validated' ? paths['/v2/addresses/{address_hash_param}/blocks-validated']['get'] :
+R extends 'core:address_coin_balance' ? paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get'] :
+R extends 'core:address_coin_balance_chart' ? paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get'] :
+R extends 'core:address_logs' ? paths['/v2/addresses/{address_hash_param}/logs']['get'] :
+R extends 'core:address_tokens' ? paths['/v2/addresses/{address_hash_param}/tokens']['get'] :
+R extends 'core:address_token_balances' ? paths['/v2/addresses/{address_hash_param}/token-balances']['get'] :
+R extends 'core:address_nfts' ? paths['/v2/addresses/{address_hash_param}/nft']['get'] :
+R extends 'core:address_collections' ? paths['/v2/addresses/{address_hash_param}/nft/collections']['get'] :
+R extends 'core:address_withdrawals' ? paths['/v2/addresses/{address_hash_param}/withdrawals']['get'] :
+R extends 'core:address_deposits' ? paths['/v2/addresses/{address_hash_param}/beacon/deposits']['get'] :
+R extends 'core:address_epoch_rewards' ? paths['/v2/addresses/{address_hash_param}/celo/election-rewards']['get'] :
 R extends 'core:address_xstar_score' ? AddressXStarResponse :
 R extends 'core:address_3rd_party_info' ? unknown :
 never;

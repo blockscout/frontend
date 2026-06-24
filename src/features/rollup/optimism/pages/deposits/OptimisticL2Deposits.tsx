@@ -50,7 +50,7 @@ const OptimisticL2Deposits = () => {
       <Box hideFrom="lg">
         { data.items.map(((item, index) => (
           <OptimisticDepositsListItem
-            key={ item.l2_transaction_hash + (isPlaceholderData ? index : '') }
+            key={ `${ (item.l2_transaction_hash ?? '') + (isPlaceholderData ? index : '') }` }
             isLoading={ isPlaceholderData }
             item={ item }
           />

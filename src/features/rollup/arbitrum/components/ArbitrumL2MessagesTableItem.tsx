@@ -4,7 +4,7 @@ import { chakra } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2MessagesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -24,7 +24,7 @@ import ArbitrumL2MessageStatus from './ArbitrumL2MessageStatus';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ArbitrumL2MessagesItem; isLoading?: boolean; direction: MessagesDirection };
+type Props = { item: schemas['ArbitrumMessage']; isLoading?: boolean; direction: MessagesDirection };
 
 const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
@@ -48,7 +48,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
           ) : <chakra.span color="text.secondary">N/A</chakra.span> }
         </TableCell>
       ) }
-      { direction === 'from-rollup' && (
+      { direction === 'from-rollup' && item.origination_address_hash && (
         <TableCell verticalAlign="middle">
           <AddressEntity
             address={{ hash: item.origination_address_hash }}
@@ -85,7 +85,7 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        { item.status === 'confirmed' && direction === 'from-rollup' ?
+        { item.status === 'confirmed' && direction === 'from-rollup' && item.origination_transaction_hash ?
           <Link href={ route({ pathname: '/txn-withdrawals', query: { q: item.origination_transaction_hash } }) }>Ready for relay</Link> :
           <ArbitrumL2MessageStatus status={ item.status } isLoading={ isLoading }/> }
       </TableCell>

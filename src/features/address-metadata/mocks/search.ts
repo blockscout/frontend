@@ -1,6 +1,6 @@
-import type { SearchResultMetadataTag } from 'src/features/address-metadata/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const metatag1: SearchResultMetadataTag = {
+export const metatag1: schemas['SearchResultMetadataTag'] = {
   address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: null,
   type: 'metadata_tag',
@@ -14,9 +14,14 @@ export const metatag1: SearchResultMetadataTag = {
     tagType: 'name',
     ordinal: 1,
   },
+  certified: false,
+  ens_info: null,
+  priority: 0,
+  reputation: 'ok',
 };
 
-export const metatag2: SearchResultMetadataTag = {
+export const metatag2: schemas['SearchResultMetadataTag'] = {
+  ...metatag1,
   address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131b',
   name: null,
   type: 'metadata_tag',
@@ -28,6 +33,8 @@ export const metatag2: SearchResultMetadataTag = {
     expiry_date: '2022-12-11T17:55:20Z',
     name: 'utko.eth',
     names_count: 1,
+    protocol_dapp_logo: null,
+    protocol_dapp_url: null,
   },
   metadata: {
     name: 'utko',
@@ -40,7 +47,8 @@ export const metatag2: SearchResultMetadataTag = {
   },
 };
 
-export const metatag3: SearchResultMetadataTag = {
+export const metatag3: schemas['SearchResultMetadataTag'] = {
+  ...metatag1,
   address_hash: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'Super utko',
   type: 'metadata_tag',

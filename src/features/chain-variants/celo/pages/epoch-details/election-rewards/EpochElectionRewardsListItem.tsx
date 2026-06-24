@@ -3,7 +3,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochElectionReward, CeloEpochDetails } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import EpochRewardTypeTag from 'src/features/chain-variants/celo/components/EpochRewardTypeTag';
 
@@ -18,8 +18,8 @@ import EpochElectionRewardDetailsMobile from './EpochElectionRewardDetailsMobile
 import { getRewardNumText } from './utils';
 
 interface Props {
-  data: CeloEpochElectionReward;
-  type: keyof CeloEpochDetails['aggregated_election_rewards'];
+  data: schemas['CeloEpochAggregatedElectionReward'];
+  type: keyof schemas['CeloEpochAggregatedElectionRewards'];
   isLoading?: boolean;
 }
 

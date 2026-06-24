@@ -18,8 +18,8 @@ test.describe('with custom links, max cols', () => {
     await mockApiResponse('core:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
-      indexed_internal_transactions_ratio: '0.1',
-      indexed_blocks_ratio: '0.1',
+      indexed_internal_transactions_ratio: 0.1,
+      indexed_blocks_ratio: 0.1,
     });
     await mockAssetResponse(FOOTER_LINKS[3].links[0].iconUrl?.[0]!, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(FOOTER_LINKS[3].links[0].iconUrl?.[1]!, './playwright/mocks/image_svg.svg');
@@ -64,8 +64,8 @@ test.describe('without custom links', () => {
     await mockApiResponse('core:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
-      indexed_internal_transactions_ratio: '0.1',
-      indexed_blocks_ratio: '0.1',
+      indexed_internal_transactions_ratio: 0.1,
+      indexed_blocks_ratio: 0.1,
     });
 
     const component = await render(<Footer/>);
@@ -77,8 +77,8 @@ test.describe('without custom links', () => {
     await mockApiResponse('core:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
-      indexed_internal_transactions_ratio: '0.1',
-      indexed_blocks_ratio: '0.1',
+      indexed_internal_transactions_ratio: 0.1,
+      indexed_blocks_ratio: 0.1,
     });
     await mockApiResponse('core:config_backend_version', { backend_version: 'v5.2.0-beta.+commit.1ce1a355' });
     await mockEnvs([

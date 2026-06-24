@@ -4,7 +4,7 @@ import { Text } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import type { FheOperation } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -14,53 +14,55 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 import { getTypeColor } from '../../utils/utils';
 
-type Props = FheOperation & { isLoading?: boolean };
+interface Props {
+  data: schemas['FheOperation'];
+  isLoading?: boolean;
+}
 
 const TxFHEOperationsTableItem = (props: Props) => {
-  const { log_index: logIndex, operation, type, fhe_type: fheType, is_scalar: isScalar, hcu_cost: hcuCost, hcu_depth: hcuDepth, caller, isLoading } = props;
-  const hcuDepthValue = hcuDepth;
+  const { data, isLoading } = props;
 
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading }>
-          { logIndex }
+          { data.log_index }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading }>
-          { operation }
+          { data.operation }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <Badge colorPalette={ getTypeColor(type) } loading={ isLoading }>
-          { capitalize(type) }
+        <Badge colorPalette={ getTypeColor(data.type) } loading={ isLoading }>
+          { capitalize(data.type) }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Badge colorPalette="gray" loading={ isLoading }>
-          { fheType }
+          { data.fhe_type }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Badge colorPalette="gray" loading={ isLoading }>
-          { isScalar ? 'Scalar' : 'Non-scalar' }
+          { data.is_scalar ? 'Scalar' : 'Non-scalar' }
         </Badge>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading }>
-          { hcuCost.toLocaleString() }
+          { data.hcu_cost.toLocaleString() }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading } color="text.secondary">
-          { hcuDepthValue.toLocaleString() }
+          { data.hcu_depth.toLocaleString() }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        { caller && caller.hash ? (
+        { data.caller && data.caller.hash ? (
           <AddressEntity
-            address={ caller }
+            address={ data.caller }
             truncation="dynamic"
             isLoading={ isLoading }
           />

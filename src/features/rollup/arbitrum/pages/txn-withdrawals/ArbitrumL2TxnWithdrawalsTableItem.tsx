@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntityL1 from 'src/features/rollup/common/components/AddressEntityL1';
 
@@ -16,7 +16,7 @@ import ArbitrumL2TxnWithdrawalsValue from './ArbitrumL2TxnWithdrawalsValue';
 
 interface Props {
   txHash: string | undefined;
-  data: ArbitrumL2TxnWithdrawalsItem;
+  data: schemas['ArbitrumWithdrawal'];
   isLoading?: boolean;
 }
 

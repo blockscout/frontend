@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { UserOpSponsorType as TUserOpSponsorType } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
 type Props = {
-  sponsorType: TUserOpSponsorType;
+  sponsorType: schemas['UserOperation']['sponsor_type'];
 };
 
 const UserOpSponsorType = ({ sponsorType }: Props) => {

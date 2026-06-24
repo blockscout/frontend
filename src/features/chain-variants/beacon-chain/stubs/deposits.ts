@@ -1,9 +1,9 @@
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
-export const DEPOSIT: DepositsItem = {
+export const DEPOSIT: schemas['BeaconDeposit'] = {
   amount: '12565723',
   index: 1,
   block_number: 1231111111,
@@ -15,4 +15,5 @@ export const DEPOSIT: DepositsItem = {
   transaction_hash: TX_HASH,
   withdrawal_address: ADDRESS_PARAMS,
   signature: '0x1234567890123456789012345678901234567890',
+  withdrawal_credentials: '0x1234',
 };

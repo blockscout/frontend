@@ -1,7 +1,7 @@
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 
 export const contractAudits:
-merged.paths['/v2/smart-contracts/{address_hash_param}/audit-reports']['get']['responses']['200']['content']['application/json'] = {
+paths['/v2/smart-contracts/{address_hash_param}/audit-reports']['get'] = {
   items: [
     {
       audit_company_name: 'OpenZeppelin',

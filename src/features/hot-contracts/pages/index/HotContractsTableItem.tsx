@@ -4,7 +4,7 @@ import { HStack } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { HotContract } from 'src/features/hot-contracts/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { Reputation } from 'src/slices/token/components/entity/TokenEntity';
@@ -18,7 +18,7 @@ import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
   isLoading?: boolean;
-  data: HotContract;
+  data: schemas['HotContract'];
   exchangeRate: string | null;
 };
 

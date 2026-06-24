@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
 export interface Props {
-  dataContainer: ArbitrumL2TxnBatchesItem['batch_data_container'];
+  dataContainer: schemas['ArbitrumBatch']['data_availability']['batch_data_container'];
   isLoading?: boolean;
 }
 

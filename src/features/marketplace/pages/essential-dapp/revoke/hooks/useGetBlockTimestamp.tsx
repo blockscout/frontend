@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect } from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
-import type { Block } from 'src/slices/block/types/api';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
@@ -40,7 +40,7 @@ export default function useGetBlockTimestamp() {
       fetchParams: {
         signal,
       },
-    }) as Promise<Block>)
+    }) as Promise<schemas['BlockResponse']>)
       .then((data) => data.timestamp ? Date.parse(data.timestamp) : 0)
       .catch((err) => {
         timestampCache.delete(cacheKey);

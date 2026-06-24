@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -13,7 +13,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ArbitrumL2TxnBatchesTableItem from './ArbitrumL2TxnBatchesTableItem';
 
 type Props = {
-  items: Array<ArbitrumL2TxnBatchesItem>;
+  items: Array<schemas['ArbitrumBatchForList']>;
   top: number;
   isLoading?: boolean;
 };

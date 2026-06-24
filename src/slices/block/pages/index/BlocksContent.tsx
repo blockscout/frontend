@@ -4,8 +4,8 @@ import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { operations, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { BlockType, BlocksResponse } from 'src/slices/block/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -32,7 +32,7 @@ const OVERLOAD_COUNT = 75;
 const TABS_HEIGHT = 88;
 
 export interface Props {
-  type?: BlockType;
+  type?: schemas['BlockResponse']['type'];
   query: QueryWithPagesResult<'core:blocks'> | QueryWithPagesResult<'core:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
   top?: number;
@@ -53,7 +53,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       chainId: multichainContext?.chain?.id,
     });
 
-    queryClient.setQueryData(queryKey, (prevData: BlocksResponse | undefined) => {
+    queryClient.setQueryData(queryKey, (prevData: operations['BlockController.blocks']['json'] | undefined) => {
       const shouldAddToList = !type || type === payload.block.type;
 
       if (!prevData) {

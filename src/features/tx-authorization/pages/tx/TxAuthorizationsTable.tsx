@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxAuthorization } from 'src/features/tx-authorization/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -11,7 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TxAuthorizationsTableItem from './TxAuthorizationsTableItem';
 
 interface Props {
-  data: Array<TxAuthorization> | undefined;
+  data: Array<schemas['SignedAuthorization']> | undefined;
   isLoading?: boolean;
 }
 
@@ -30,7 +30,7 @@ const TxAuthorizationsTable = ({ data, isLoading }: Props) => {
         </TableHeaderSticky>
         <TableBody>
           { data?.map((item, index) => (
-            <TxAuthorizationsTableItem key={ item.nonce.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+            <TxAuthorizationsTableItem key={ item.nonce.toString() + (isLoading ? index : '') } data={ item } isLoading={ isLoading }/>
           )) }
         </TableBody>
       </TableRoot>

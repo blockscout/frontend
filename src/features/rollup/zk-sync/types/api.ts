@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export const ZKSYNC_L2_TX_BATCH_STATUSES = [
   'Processed on L2' as const,
@@ -44,7 +44,7 @@ export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'transactions_count
 }
 
 export type ZkSyncBatchTxs = {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     batch_number: string;
     block_number: number;

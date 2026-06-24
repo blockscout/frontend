@@ -23,21 +23,21 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-type DepositsItem = {
+interface DepositsItem {
   l1BlockNumber: number | null;
   l1TxHash: string | null;
-  l2TxHash: string;
+  l2TxHash: string | null;
   timestamp: string | null;
 };
 
-type Props = {
+interface Props {
   isLoading?: boolean;
   items: Array<DepositsItem>;
   socketItemsNum: number;
   showSocketErrorAlert?: boolean;
 };
 
-type ItemProps = {
+interface ItemProps {
   item: DepositsItem;
   isLoading?: boolean;
 };
@@ -77,11 +77,19 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
     />
   );
 
-  const l2TxLink = (
+  const l2TxLink = item.l2TxHash ? (
     <TxEntity
       isLoading={ isLoading }
       hash={ item.l2TxHash }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
+    />
+  ) : (
+    <TxEntity
+      isLoading={ isLoading }
+      hash="To be determined"
+      truncation="none"
+      noLink
+      noCopy
     />
   );
 
@@ -169,7 +177,7 @@ const LatestDeposits = ({ isLoading, items, showSocketErrorAlert, socketItemsNum
       <Box mb={{ base: 3, lg: 4 }}>
         { items.map(((item, index) => (
           <LatestDepositsItem
-            key={ item.l1TxHash + item.l2TxHash + (isLoading ? index : '') }
+            key={ (item.l1TxHash ?? '') + (item.l2TxHash ?? '') + (isLoading ? index : '') }
             item={ item }
             isLoading={ isLoading }
           />

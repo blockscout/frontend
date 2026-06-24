@@ -1,11 +1,12 @@
-import type { Blob, TxBlob } from 'src/features/data-availability/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { Blob } from 'src/features/data-availability/types/api';
 
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 const BLOB_HASH = '0x0137cd898a9aaa92bbe94999d2a98241f5eabc829d9354160061789963f85995';
 const BLOB_PROOF = '0x82683d5d6e58a76f2a607b8712cad113621d46cb86a6bcfcffb1e274a70c7308b3243c6075ee22d904fecf8d4c147c6f';
 
-export const TX_BLOB: TxBlob = {
+export const TX_BLOB: schemas['BlobResponse'] = {
   blob_data: '0x010203040506070809101112',
   hash: BLOB_HASH,
   kzg_commitment: BLOB_PROOF,

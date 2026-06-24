@@ -3,11 +3,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ValidatorsZilliqaItem } from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import ValidatorsListItem from './ValidatorsListItem';
 
-const ValidatorsList = ({ data, isLoading }: { data: Array<ValidatorsZilliqaItem>; isLoading: boolean }) => {
+const ValidatorsList = ({ data, isLoading }: { data: Array<schemas['ZilliqaStaker']>; isLoading: boolean }) => {
   return (
     <Box>
       { data.map((item, index) => (

@@ -1,5 +1,5 @@
 import { hash as addressHash } from 'src/slices/address/mocks/address-param';
-import { base as transaction } from 'src/slices/tx/mocks/tx';
+import { base as transaction } from 'src/slices/tx/mocks/details';
 
 import { it, describe, expect } from 'vitest';
 

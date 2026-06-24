@@ -1,8 +1,8 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { base } from 'src/slices/tx/mocks/tx';
+import { base } from 'src/slices/tx/mocks/details';
 
-export const l2tx: Transaction = {
+export const l2tx: schemas['TransactionResponse'] = {
   ...base,
   l1_gas_price: '82702201886',
   l1_fee_scalar: '1.0',

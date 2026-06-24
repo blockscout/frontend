@@ -3,6 +3,7 @@
 import React from 'react';
 import { useSignMessage, useSwitchChain } from 'wagmi';
 
+import type { operations } from '@blockscout/api-types';
 import type * as rewards from '@blockscout/points-types';
 import type { UserInfo } from 'src/features/account/types/api';
 
@@ -93,7 +94,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
         type: 'shared',
       };
     } catch (error) {
-      const response = await apiFetch('core:auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
+      const response = await apiFetch('core:auth_siwe_message', { queryParams: { address } }) as operations['AuthenticateController.siwe_message']['json'];
       return {
         message: response.siwe_message,
         type: 'single',

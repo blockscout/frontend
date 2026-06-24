@@ -4,9 +4,10 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { operations, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { AddressFromToFilter, AddressTransactionsResponse } from 'src/slices/address/types/api';
-import type { Transaction, TransactionsSortingValue } from 'src/slices/tx/types/api';
+import type { AddressFromToFilter } from 'src/slices/address/types/api';
+import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
@@ -21,7 +22,7 @@ import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import { sortTxsFromSocket } from '../utils/sort-txs';
 import { SORT_OPTIONS } from './useTxsSort';
 
-const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction, address?: string) => {
+const matchFilter = (filterValue: AddressFromToFilter, transaction: schemas['Transaction'], address?: string) => {
   if (!filterValue) {
     return true;
   }
@@ -64,12 +65,12 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
 
     queryClient.setQueryData(
       queryKey,
-      (prevData: AddressTransactionsResponse | undefined) => {
+      (prevData: operations['AddressController.transactions']['json'] | undefined) => {
         if (!prevData) {
           return;
         }
 
-        const newItems: Array<Transaction> = [];
+        const newItems: Array<schemas['Transaction']> = [];
         let newCount = 0;
 
         payload.transactions.forEach(tx => {

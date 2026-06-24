@@ -3,12 +3,12 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPrices } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import GasTrackerPriceSnippet from './GasTrackerPriceSnippet';
 
 interface Props {
-  prices: GasPrices;
+  prices: schemas['StatsGasPricesDetailed'];
   isLoading: boolean;
 }
 

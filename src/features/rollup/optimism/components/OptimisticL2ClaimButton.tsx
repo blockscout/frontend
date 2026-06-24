@@ -3,7 +3,6 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { OptimisticL2WithdrawalClaimInfo } from 'src/features/rollup/optimism/types/api';
 
 import { parentChain } from 'src/features/connect-wallet/utils/chains';
 import OptimisticL2ClaimModal from 'src/features/rollup/optimism/components/OptimisticL2ClaimModal';
@@ -16,7 +15,7 @@ import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 const rollupFeature = config.features.rollup;
 
-export const canClaimDirectlyGuard = (data: OptimisticL2WithdrawalClaimInfo) => {
+export const canClaimDirectlyGuard = (data: Omit<schemas['OptimismTransactionWithdrawal'], 'nonce'>) => {
   return (
     config.features.connectWallet.isEnabled &&
     Boolean(parentChain) &&
@@ -31,7 +30,7 @@ export const canClaimDirectlyGuard = (data: OptimisticL2WithdrawalClaimInfo) => 
 };
 
 interface Props {
-  data: OptimisticL2WithdrawalClaimInfo;
+  data: Omit<schemas['OptimismTransactionWithdrawal'], 'nonce'>;
   from: schemas['Address'] | null;
   onSuccess: (txHash: string) => void;
   source: 'list' | 'tx';

@@ -3,7 +3,7 @@
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { OptimisticL2TxnBatchesItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
@@ -18,7 +18,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: OptimisticL2TxnBatchesItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismBatch']; isLoading?: boolean };
 
 const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {

@@ -10,7 +10,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import TextAd from 'src/features/ads/text/components/TextAd';
 import { ZKSYNC_L2_TXN_BATCH } from 'src/features/rollup/zk-sync/stubs';
@@ -54,7 +54,7 @@ const ZkSyncL2TxnBatch = () => {
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'core:zksync_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:zksync_l2_txn_batch_txs'>(TX_ITEM, 50, { next_page_params: {
         batch_number: '8122',
         block_number: 1338932,
         index: 0,

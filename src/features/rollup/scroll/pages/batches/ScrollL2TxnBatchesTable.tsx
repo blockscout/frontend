@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ScrollL2TxnBatch } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 
@@ -11,7 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ScrollL2TxnBatchesTableItem from './ScrollL2TxnBatchesTableItem';
 
 type Props = {
-  items: Array<ScrollL2TxnBatch>;
+  items: Array<schemas['ScrollBatch']>;
   top: number;
   isLoading?: boolean;
 };

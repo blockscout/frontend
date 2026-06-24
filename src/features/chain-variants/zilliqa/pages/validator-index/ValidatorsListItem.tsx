@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ValidatorsZilliqaItem } from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import ValidatorEntity from 'src/features/chain-variants/zilliqa/components/ValidatorEntity';
 
@@ -12,7 +12,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: ValidatorsZilliqaItem;
+  data: schemas['ZilliqaStaker'];
   isLoading?: boolean;
 }
 

@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2OutputRootsItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
@@ -18,7 +18,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: OptimisticL2OutputRootsItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismOutputRoot']; isLoading?: boolean };
 
 const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {

@@ -1,4 +1,4 @@
-import type { ScrollL2BatchesResponse } from 'src/features/rollup/scroll/types/api';
+import type { operations } from '@blockscout/api-types';
 
 export const batchData = {
   number: 66928,
@@ -20,7 +20,7 @@ export const batchData = {
   transactions_count: 654,
 };
 
-export const baseResponse: ScrollL2BatchesResponse = {
+export const baseResponse: operations['ScrollController.batches']['json'] = {
   items: [
     batchData,
     {

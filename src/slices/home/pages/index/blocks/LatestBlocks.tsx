@@ -90,7 +90,7 @@ const LatestBlocks = () => {
         <Heading level="3">Latest blocks</Heading>
         { isRpcData && <ApiDegradationRpcIcon/> }
       </HStack>
-      { statsQueryResult.data?.network_utilization_percentage !== undefined && (
+      { typeof statsQueryResult.data?.network_utilization_percentage === 'number' && (
         <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
           <Text as="span">
             Network utilization:{ nbsp }

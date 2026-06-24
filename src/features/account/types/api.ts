@@ -3,10 +3,9 @@
 import type { Abi } from 'viem';
 
 import type { schemas } from '@blockscout/api-types';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 export interface TransactionsResponseWatchlist {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     block_number: number;
     index: number;

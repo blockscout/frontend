@@ -6,7 +6,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-import { ARBITRUM_L2_TXN_BATCH } from '../../stubs';
+import { ARBITRUM_L2_TXN_BATCH, ARBITRUM_L2_TXN_BATCH_CELESTIA } from '../../stubs';
 
 export default function useBatchQuery() {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function useBatchQuery() {
     pathParams: { height, commitment },
     queryOptions: {
       enabled: Boolean(height && commitment),
-      placeholderData: ARBITRUM_L2_TXN_BATCH,
+      placeholderData: ARBITRUM_L2_TXN_BATCH_CELESTIA,
     },
   });
 
