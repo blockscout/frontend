@@ -1,0 +1,34 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+
+interface Props {
+  data: unknown;
+  isLoading?: boolean;
+}
+
+const __PageName__Details = ({ data, isLoading }: Props) => {
+  // TODO: replace placeholder rows with real fields from the fetched data.
+  // Each field is a label/value pair. Use DetailedInfo.ItemDivider to group sections.
+
+  return (
+    <DetailedInfo.Container>
+      <DetailedInfo.ItemLabel hint="TODO: describe this field" isLoading={ isLoading }>
+        Label
+      </DetailedInfo.ItemLabel>
+      <DetailedInfo.ItemValue>
+        <Skeleton loading={ isLoading }>
+          Value
+        </Skeleton>
+      </DetailedInfo.ItemValue>
+
+      { /* TODO: add more DetailedInfo.ItemLabel / DetailedInfo.ItemValue rows */ }
+    </DetailedInfo.Container>
+  );
+};
+
+export default __PageName__Details;

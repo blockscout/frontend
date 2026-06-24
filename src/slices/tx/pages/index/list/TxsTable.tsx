@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
 import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
@@ -23,7 +24,7 @@ import TxsSocketNotice from './socket/TxsSocketNotice';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
-  txs: Array<Transaction>;
+  txs: Array<schemas['Transaction']>;
   sort: TransactionsSortingValue;
   onSortToggle?: (field: TransactionsSortingField) => void;
   top: number;

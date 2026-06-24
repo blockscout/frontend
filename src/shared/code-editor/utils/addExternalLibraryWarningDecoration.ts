@@ -71,13 +71,13 @@ export default function addExternalLibraryWarningDecoration(model: monaco.editor
 }
 
 const getLibraryName = (model: monaco.editor.ITextModel) => (library: SmartContractExternalLibrary) => {
-  const containsFileName = library.name.includes(':');
+  const containsFileName = library.name?.includes(':');
 
   if (!containsFileName) {
     return library.name;
   }
 
-  const [ fileName, libraryName ] = library.name.split(':');
+  const [ fileName, libraryName ] = library.name?.split(':') ?? [];
 
   if (model.uri.path !== `/${ fileName }`) {
     return;

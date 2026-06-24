@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../../types';
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 import type { TokenTransferFilters } from 'src/slices/token-transfer/types/api';
 import type {
   TokenInventoryFilters,
@@ -92,22 +92,18 @@ export type CoreApiTokenResourceName = `core:${ keyof typeof CORE_API_TOKEN_RESO
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTokenResourcePayload<R extends CoreApiTokenResourceName> =
-R extends 'core:token' ? merged.paths['/v2/tokens/{address_hash_param}']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_counters' ? merged.paths['/v2/tokens/{address_hash_param}/counters']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_transfers' ? merged.paths['/v2/tokens/{address_hash_param}/transfers']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_holders' ? merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_instance' ?
-  merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_instance_transfers_count' ?
-  merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_instance_transfers' ?
-  merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_instance_holders' ?
-  merged.paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/holders']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_inventory' ? merged.paths['/v2/tokens/{address_hash_param}/instances']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:tokens' ? merged.paths['/v2/tokens/']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:tokens_bridged' ? merged.paths['/v2/tokens/bridged']['get']['responses']['200']['content']['application/json'] :
-R extends 'core:token_transfers_all' ? merged.paths['/v2/token-transfers']['get']['responses']['200']['content']['application/json'] :
+R extends 'core:token' ? paths['/v2/tokens/{address_hash_param}']['get'] :
+R extends 'core:token_counters' ? paths['/v2/tokens/{address_hash_param}/counters']['get'] :
+R extends 'core:token_transfers' ? paths['/v2/tokens/{address_hash_param}/transfers']['get'] :
+R extends 'core:token_holders' ? paths['/v2/tokens/{address_hash_param}/holders']['get'] :
+R extends 'core:token_instance' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get'] :
+R extends 'core:token_instance_transfers_count' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get'] :
+R extends 'core:token_instance_transfers' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] :
+R extends 'core:token_instance_holders' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/holders']['get'] :
+R extends 'core:token_inventory' ? paths['/v2/tokens/{address_hash_param}/instances']['get'] :
+R extends 'core:tokens' ? paths['/v2/tokens/']['get'] :
+R extends 'core:tokens_bridged' ? paths['/v2/tokens/bridged']['get'] :
+R extends 'core:token_transfers_all' ? paths['/v2/token-transfers']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 

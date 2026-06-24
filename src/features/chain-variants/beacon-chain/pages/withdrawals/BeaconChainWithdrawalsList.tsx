@@ -11,7 +11,7 @@ import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';
 
 interface Props {
   isLoading?: boolean;
-  items: Array<schemas['Withdrawal']>;
+  items: Array<schemas['BeaconWithdrawal']>;
   view: 'address' | 'block' | 'list';
 };
 

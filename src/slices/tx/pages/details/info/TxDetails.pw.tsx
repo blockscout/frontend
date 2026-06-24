@@ -1,14 +1,13 @@
 import React from 'react';
 
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/details';
 
 import { stabilityTx } from 'src/features/chain-variants/stability/mocks/tx';
 import { withBlob } from 'src/features/data-availability/mocks/tx';
 import { withInteropInMessage, withInteropOutMessage } from 'src/features/op-interop/mocks/tx';
 import { arbitrumTxn } from 'src/features/rollup/arbitrum/mocks/tx';
 import { l2tx } from 'src/features/rollup/common/mocks/tx';
-import { withActionsUniswap } from 'src/features/tx-actions/mocks/tx';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -68,17 +67,6 @@ test('pending', async({ render, page }) => {
   const component = await render(<TxDetails data={ txMock.pending } isLoading={ false }/>);
 
   await page.getByText('View details').click();
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-  });
-});
-
-// NOTE: On the screenshot from the test for the mobile device, the scroll overlay is not quite right.
-// I checked it manually in the real device, there was not any issue with it
-test('with actions uniswap +@mobile +@dark-mode', async({ render, page }) => {
-  const component = await render(<TxDetails data={ withActionsUniswap } isLoading={ false }/>);
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],

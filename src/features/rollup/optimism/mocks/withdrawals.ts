@@ -1,8 +1,8 @@
-import type { OptimisticL2WithdrawalsResponse } from 'src/features/rollup/optimism/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import { withoutName } from 'src/slices/address/mocks/address-param';
 
-export const data: OptimisticL2WithdrawalsResponse = {
+export const data: operations['OptimismController.withdrawals']['json'] = {
   items: [
     {
       challenge_period_end: null,
@@ -21,7 +21,7 @@ export const data: OptimisticL2WithdrawalsResponse = {
       msg_target_address_hash: null,
       msg_data: null,
       msg_gas_limit: null,
-      msg_nonce_raw: null,
+      msg_nonce_raw: '',
       msg_value: null,
     },
     {
@@ -38,7 +38,7 @@ export const data: OptimisticL2WithdrawalsResponse = {
       msg_target_address_hash: null,
       msg_data: null,
       msg_gas_limit: null,
-      msg_nonce_raw: null,
+      msg_nonce_raw: '',
       msg_value: null,
     },
     {
@@ -55,7 +55,7 @@ export const data: OptimisticL2WithdrawalsResponse = {
       msg_target_address_hash: null,
       msg_data: null,
       msg_gas_limit: null,
-      msg_nonce_raw: null,
+      msg_nonce_raw: '',
       msg_value: null,
     },
     {

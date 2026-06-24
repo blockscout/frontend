@@ -3,7 +3,7 @@
 import { Flex, GridItem, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2BlobTypeEigenda } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
@@ -15,7 +15,7 @@ import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic'
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 
 interface Props {
-  blobs: Array<OptimisticL2BlobTypeEigenda>;
+  blobs: schemas['OptimismBatchInEigenda']['blobs'];
   isLoading: boolean;
 }
 

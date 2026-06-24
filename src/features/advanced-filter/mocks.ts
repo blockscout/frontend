@@ -1,8 +1,8 @@
-import type { AdvancedFilterResponse } from './types/api';
+import type { operations } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
-export const baseResponse: AdvancedFilterResponse = {
+export const baseResponse: operations['AdvancedFilterController.list']['json'] = {
   items: [
     {
       timestamp: '2024-12-06T12:38:59.000000Z',
@@ -30,6 +30,13 @@ export const baseResponse: AdvancedFilterResponse = {
       },
       method: 'addSequencerL2BatchFromBlobs',
       fee: '2657475294553624',
+      block_number: 0,
+      internal_transaction_index: null,
+      transaction_index: 0,
+      created_contract: null,
+      status: 'ok',
+      token_transfer_batch_index: null,
+      token_transfer_index: null,
     },
     {
       timestamp: '2024-12-06T12:38:59.000000Z',
@@ -48,6 +55,13 @@ export const baseResponse: AdvancedFilterResponse = {
       },
       method: null,
       fee: '279416150328000',
+      block_number: 0,
+      internal_transaction_index: null,
+      transaction_index: 0,
+      created_contract: null,
+      status: 'ok',
+      token_transfer_batch_index: null,
+      token_transfer_index: null,
     },
     {
       timestamp: '2024-12-06T12:38:59.000000Z',
@@ -69,6 +83,13 @@ export const baseResponse: AdvancedFilterResponse = {
       },
       method: 'approve',
       fee: '620080096879104',
+      block_number: 0,
+      internal_transaction_index: null,
+      transaction_index: 0,
+      created_contract: null,
+      status: 'ok',
+      token_transfer_batch_index: null,
+      token_transfer_index: null,
     },
   ],
   next_page_params: {

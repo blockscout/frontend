@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { OptimisticL2WithdrawalsItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -20,7 +20,7 @@ import OptimisticL2WithdrawalsItemStatus from './OptimisticL2WithdrawalsItemStat
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: OptimisticL2WithdrawalsItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismWithdrawal']; isLoading?: boolean };
 
 const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';

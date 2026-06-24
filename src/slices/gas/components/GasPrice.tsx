@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPriceInfo } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { GasUnit } from 'src/slices/gas/types/config';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -18,7 +18,7 @@ const UNITS_TO_API_FIELD_MAP: Record<GasUnit, 'price' | 'fiat_price'> = {
 };
 
 interface Props {
-  data: GasPriceInfo | null;
+  data: schemas['StatsGasPriceInfo'] | null;
   className?: string;
   unitMode?: 'primary' | 'secondary';
   prefix?: string;

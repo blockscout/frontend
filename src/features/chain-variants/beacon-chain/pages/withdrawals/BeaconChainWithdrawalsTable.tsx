@@ -19,7 +19,7 @@ const feature = config.features.beaconChain;
 interface Props {
   top: number;
   isLoading?: boolean;
-  items: Array<schemas['Withdrawal']>;
+  items: Array<schemas['BeaconWithdrawal']>;
   view: 'address' | 'block' | 'list';
 };
 

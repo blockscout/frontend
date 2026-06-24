@@ -3,7 +3,7 @@
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ScrollL2TxnBatch } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
@@ -20,7 +20,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ScrollL2TxnBatch; isLoading?: boolean };
+type Props = { item: schemas['ScrollBatch']; isLoading?: boolean };
 
 const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
@@ -105,7 +105,7 @@ const ScrollL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           fontWeight={ 600 }
           minW="40px"
         >
-          { (item.end_block_number - item.start_block_number + 1).toLocaleString() }
+          { (item.end_block_number && item.start_block_number ? item.end_block_number - item.start_block_number + 1 : 0).toLocaleString() }
         </Link>
       </ListItemMobileGrid.Value>
 

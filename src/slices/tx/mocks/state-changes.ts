@@ -1,4 +1,4 @@
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { toTokenModel } from 'src/slices/token/utils/model';
@@ -132,7 +132,7 @@ export const sendERC20Token: schemas['StateChange'] = {
   type: 'token' as const,
 };
 
-export const baseResponse: merged.paths['/v2/transactions/{transaction_hash_param}/state-changes']['get']['responses']['200']['content']['application/json'] = {
+export const baseResponse: paths['/v2/transactions/{transaction_hash_param}/state-changes']['get'] = {
   items: [
     mintToken,
     receiveMintedToken,

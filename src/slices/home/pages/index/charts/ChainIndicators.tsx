@@ -65,7 +65,7 @@ const ChainIndicators = () => {
               return Number(statsMicroserviceQueryResult.data.yesterday_transactions.value).toLocaleString(undefined, STRING_FORMAT);
             }
           } else {
-            if (typeof statsApiQueryResult?.data?.transactions_today === 'string') {
+            if (typeof statsApiQueryResult?.data?.transactions_today === 'string' && statsApiQueryResult.data.transactions_today !== '') {
               return Number(statsApiQueryResult.data.transactions_today).toLocaleString(undefined, STRING_FORMAT);
             }
           }
@@ -144,7 +144,7 @@ const ChainIndicators = () => {
       {
         id: 'market_cap' as const,
         title: 'Market cap',
-        value: typeof statsApiQueryResult.data?.market_cap !== 'string' ?
+        value: typeof statsApiQueryResult.data?.market_cap !== 'string' || statsApiQueryResult.data.market_cap === '' ?
           '$N/A' :
           '$' + Number(statsApiQueryResult.data.market_cap).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
         // eslint-disable-next-line max-len

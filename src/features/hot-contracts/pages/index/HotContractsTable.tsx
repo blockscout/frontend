@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { HotContract, HotContractsSortingField, HotContractsSortingValue } from 'src/features/hot-contracts/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { HotContractsSortingField, HotContractsSortingValue } from 'src/features/hot-contracts/types/api';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -16,7 +17,7 @@ import { SORT_SEQUENCE } from '../../utils';
 import HotContractsTableItem from './HotContractsTableItem';
 
 interface Props {
-  items: Array<HotContract> | undefined;
+  items: Array<schemas['HotContract']> | undefined;
   isLoading?: boolean;
   sort: HotContractsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;

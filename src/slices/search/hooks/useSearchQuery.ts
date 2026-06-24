@@ -6,7 +6,7 @@ import React from 'react';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import { fromBech32Address, isBech32Address } from 'src/slices/address/utils/bech32';
-import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'src/slices/search/stubs';
+import { SEARCH_RESULT_ITEM } from 'src/slices/search/stubs';
 
 import { getExternalSearchItem } from 'src/features/chain-variants/zeta-chain/utils/external-search';
 
@@ -32,7 +32,7 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
     filters: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
     options: {
       enabled: debouncedSearchTerm.trim().length > 0,
-      placeholderData: generateListStub<'core:search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: SEARCH_RESULT_NEXT_PAGE_PARAMS }),
+      placeholderData: generateListStub<'core:search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: {} }),
     },
   });
 

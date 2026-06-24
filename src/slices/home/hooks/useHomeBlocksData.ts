@@ -4,8 +4,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { operations } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { Block } from 'src/slices/block/types/api';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import type { ResourceError, ResourcePayload } from 'src/api/resources';
@@ -44,7 +44,7 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
   });
 
   const handleNewBlockMessage: SocketMessage.NewBlock['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('core:homepage_blocks'), (prevData: Array<Block> | undefined) => {
+    queryClient.setQueryData(getResourceKey('core:homepage_blocks'), (prevData: operations['MainPageController.blocks']['json'] | undefined) => {
       const newData = prevData ? [ ...prevData ] : [];
 
       if (newData.some((block) => block.height === payload.block.height)) {

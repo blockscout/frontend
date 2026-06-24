@@ -1,24 +1,26 @@
-import type { UserOpsItem, UserOp, UserOpsAccount } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
+import { ADDRESS_HASH, ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import { BLOCK_HASH } from 'src/slices/block/stubs/block';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 const USER_OP_HASH = '0xb94fab8f31f83001a23e20b2ce3cdcfb284c57a64b9a073e0e09c018bc701978';
 
-export const USER_OPS_ITEM: UserOpsItem = {
+export const USER_OPS_ITEM: schemas['UserOperationInList'] = {
   hash: USER_OP_HASH,
   block_number: '10356381',
   transaction_hash: TX_HASH,
-  address: ADDRESS_HASH,
+  address: ADDRESS_PARAMS,
   timestamp: '2023-12-18T10:48:49.000000Z',
   status: true,
   fee: '48285720012071430',
+  entry_point: ADDRESS_PARAMS,
+  entry_point_version: 'v0.6',
 };
 
-export const USER_OP: UserOp = {
+export const USER_OP: schemas['UserOperation'] = {
   hash: USER_OP_HASH,
-  sender: ADDRESS_HASH,
+  sender: ADDRESS_PARAMS,
   nonce: '0x00b',
   call_data: '0x123',
   execute_call_data: null,
@@ -32,13 +34,13 @@ export const USER_OP: UserOp = {
   signature: '0x000',
   aggregator: null,
   aggregator_signature: null,
-  entry_point: ADDRESS_HASH,
+  entry_point: ADDRESS_PARAMS,
   transaction_hash: TX_HASH,
   block_number: '10358181',
   block_hash: BLOCK_HASH,
-  bundler: ADDRESS_HASH,
+  bundler: ADDRESS_PARAMS,
   factory: null,
-  paymaster: ADDRESS_HASH,
+  paymaster: ADDRESS_PARAMS,
   status: true,
   revert_reason: null,
   gas: '399596',
@@ -62,8 +64,18 @@ export const USER_OP: UserOp = {
     paymaster_and_data: '0x',
     signature: '0x000',
   },
+  bundle_index: 0,
+  consensus: null,
+  entry_point_version: 'v0.6',
+  execute_target: null,
+  index: 0,
 };
 
-export const USER_OPS_ACCOUNT: UserOpsAccount = {
+export const USER_OPS_ACCOUNT: schemas['AccountAbstractionAccount'] = {
   total_ops: 1,
+  address: ADDRESS_PARAMS,
+  creation_op_hash: USER_OP_HASH,
+  creation_timestamp: '2023-12-18T10:48:49.000000Z',
+  creation_transaction_hash: TX_HASH,
+  factory: ADDRESS_PARAMS,
 };

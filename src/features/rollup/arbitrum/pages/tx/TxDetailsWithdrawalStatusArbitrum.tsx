@@ -4,8 +4,8 @@ import { Text } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ArbitrumTransactionMessageStatus } from 'src/features/rollup/arbitrum/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
@@ -24,7 +24,7 @@ const WITHDRAWAL_STATUS_STEPS: Array<ArbitrumTransactionMessageStatus> = [
 ];
 
 interface Props {
-  data: Transaction;
+  data: schemas['TransactionResponse'];
 }
 
 const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
@@ -77,7 +77,7 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
         <DetailedInfo.ItemValue>
           { data.arbitrum.message_related_info.message_status ? (
             <VerificationSteps
-              steps={ steps as unknown as Array<ArbitrumTransactionMessageStatus> }
+              steps={ steps }
               currentStep={ data.arbitrum.message_related_info.message_status }
             />
           ) : <Text color="text.secondary">Could not determine</Text> }

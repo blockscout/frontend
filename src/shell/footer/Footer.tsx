@@ -44,7 +44,7 @@ const Footer = () => {
       refetchOnMount: false,
     },
   });
-  const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
+  const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version ?? undefined);
 
   const BLOCKSCOUT_LINKS = [
     {

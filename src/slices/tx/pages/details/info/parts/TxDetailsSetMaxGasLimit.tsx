@@ -3,7 +3,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
@@ -12,7 +12,7 @@ import DetailedInfoNativeCoinValue from 'src/shared/detailed-info/DetailedInfoNa
 import TxDetailsGasUsage from './TxDetailsGasUsage';
 
 interface Props {
-  data: Transaction;
+  data: schemas['TransactionResponse'];
 }
 
 const TxDetailsSetMaxGasLimit = ({ data }: Props) => {

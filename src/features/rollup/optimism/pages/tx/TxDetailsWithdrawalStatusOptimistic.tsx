@@ -4,8 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { OpWithdrawal, OptimisticL2WithdrawalStatus } from 'src/features/rollup/optimism/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -16,12 +14,12 @@ import config from 'src/config';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 
 interface Props {
-  data: OpWithdrawal;
+  data: schemas['OptimismTransactionWithdrawal'];
   from: schemas['Address'];
   txHash: string;
 }
 
-const WITHDRAWAL_STATUS_STEPS: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_STEPS: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'In challenge period',
@@ -29,14 +27,14 @@ const WITHDRAWAL_STATUS_STEPS: Array<OptimisticL2WithdrawalStatus> = [
   'Relayed',
 ];
 
-const WITHDRAWAL_STATUS_ORDER_PROVEN: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_ORDER_PROVEN: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'Proven',
   'Relayed',
 ];
 
-const WITHDRAWAL_STATUS_ORDER_GAME: Array<OptimisticL2WithdrawalStatus> = [
+const WITHDRAWAL_STATUS_ORDER_GAME: Array<schemas['OptimismWithdrawal']['status']> = [
   'Waiting for state root',
   'Ready to prove',
   'Waiting a game to resolve',
@@ -53,7 +51,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
   const handleClaimSuccess = React.useCallback((l1TxHash: string) => {
     queryClient.setQueryData(
       getResourceKey('core:tx', { pathParams: { hash: txHash } }),
-      (prevData: Transaction | undefined) => {
+      (prevData: schemas['Transaction'] | undefined) => {
         if (!prevData) {
           return;
         }
@@ -98,7 +96,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
       case 'Relayed': {
         if (data.l1_transaction_hash) {
           return WITHDRAWAL_STATUS_STEPS.map((status) => {
-            return status === 'Relayed' ? {
+            return status === 'Relayed' && data.l1_transaction_hash ? {
               content: <TxEntityL1 hash={ data.l1_transaction_hash } truncation="constant" text="Relayed" noIcon noCopy/>,
               label: status,
             } : status;
@@ -115,7 +113,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
 
   return (
     <VerificationSteps
-      steps={ steps as unknown as Array<OptimisticL2WithdrawalStatus> }
+      steps={ steps }
       currentStep={ data.status }
       rightSlot={ rightSlot }
     />

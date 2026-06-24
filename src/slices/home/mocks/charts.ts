@@ -1,3 +1,5 @@
+import type { operations } from '@blockscout/api-types';
+
 export const base = {
   chart_data: [
     {
@@ -127,7 +129,7 @@ export const base = {
   ],
 };
 
-export const partialData = {
+export const partialData: operations['StatsController.transactions_chart']['json'] = {
   chart_data: [
     { date: '2022-11-28', transactions_count: 26815 },
     { date: '2022-11-27', transactions_count: 34784 },

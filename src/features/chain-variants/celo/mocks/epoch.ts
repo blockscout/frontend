@@ -1,17 +1,12 @@
 import { padStart } from 'es-toolkit/compat';
 
-import type {
-  CeloEpochDetails,
-  CeloEpochElectionRewardDetails,
-  CeloEpochElectionRewardDetailsResponse,
-  CeloEpochListResponse,
-} from 'src/features/chain-variants/celo/types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 import * as tokenMock from 'src/slices/token/mocks/info';
 
-export const epoch1: CeloEpochDetails = {
+export const epoch1: schemas['CeloEpochDetailed'] = {
   number: 1739,
   is_finalized: true,
   type: 'L1',
@@ -32,6 +27,7 @@ export const epoch1: CeloEpochDetails = {
         decimals: '18',
       },
     },
+    reserve_bolster_transfer: null,
   },
   aggregated_election_rewards: {
     delegated_payment: {
@@ -57,7 +53,7 @@ export const epoch1: CeloEpochDetails = {
   },
 };
 
-export const epochUnfinalized: CeloEpochDetails = {
+export const epochUnfinalized: schemas['CeloEpochDetailed'] = {
   number: 1740,
   is_finalized: false,
   type: 'L2',
@@ -72,7 +68,7 @@ export const epochUnfinalized: CeloEpochDetails = {
   aggregated_election_rewards: null,
 };
 
-export const list: CeloEpochListResponse = {
+export const list: operations['CeloController.epochs']['json'] = {
   items: [
     {
       timestamp: '2022-11-10T01:27:52.000000Z',
@@ -103,13 +99,14 @@ export const list: CeloEpochListResponse = {
           decimals: '18',
           value: '1792127559820529495905',
         },
+        reserve_bolster_transfer: null,
       },
     },
   ],
   next_page_params: null,
 };
 
-function getRewardDetailsItem(index: number): CeloEpochElectionRewardDetails {
+function getRewardDetailsItem(index: number): schemas['ElectionReward'] {
   return {
     amount: `${ 100 - index }210001063118670575`,
     account: {
@@ -123,7 +120,7 @@ function getRewardDetailsItem(index: number): CeloEpochElectionRewardDetails {
   };
 }
 
-export const electionRewardDetails1: CeloEpochElectionRewardDetailsResponse = {
+export const electionRewardDetails1: operations['CeloController.election_rewards']['json'] = {
   items: Array(15).fill('').map((item, index) => getRewardDetailsItem(index)),
   next_page_params: null,
 };

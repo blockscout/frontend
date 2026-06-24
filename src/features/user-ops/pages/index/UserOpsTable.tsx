@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { UserOpsItem } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -16,7 +16,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import UserOpsTableItem from './UserOpsTableItem';
 
 type Props = {
-  items: Array<UserOpsItem>;
+  items: Array<schemas['UserOperationInList']>;
   isLoading?: boolean;
   top: number;
   showTx: boolean;

@@ -1,8 +1,8 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
-import { base } from 'src/slices/tx/mocks/tx';
+import { base } from 'src/slices/tx/mocks/details';
 
-export const arbitrumTxn: Transaction = {
+export const arbitrumTxn: schemas['TransactionResponse'] = {
   ...base,
   arbitrum: {
     batch_number: 743991,

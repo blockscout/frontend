@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { OptimisticL2OutputRootsItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -13,7 +13,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import OptimisticL2OutputRootsTableItem from './OptimisticL2OutputRootsTableItem';
 
 type Props = {
-  items: Array<OptimisticL2OutputRootsItem>;
+  items: Array<schemas['OptimismOutputRoot']>;
   top: number;
   isLoading?: boolean;
 };

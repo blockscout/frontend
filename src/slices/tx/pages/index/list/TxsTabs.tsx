@@ -8,7 +8,7 @@ import React from 'react';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
 import getChainValidationActionText from 'src/slices/chain/verification-type/utils/get-chain-validation-action-text';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'src/features/account/pages/tx-index-watchlist/TxsWatchlist';
@@ -50,14 +50,14 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
   const txsValidatedQuery = useQueryWithPages({
-    resourceName: 'core:txs_validated',
+    resourceName: 'core:txs',
     filters: { filter: 'validated' },
     options: {
       enabled: tab === getTabId('validated', parentTab) ||
         (parentTab ? tab === parentTab : false) ||
         !tab ||
         !(isBlobTxsTab || isPendingTab || isWatchlistTab),
-      placeholderData: generateListStub<'core:txs_validated'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -67,11 +67,11 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   });
 
   const txsPendingQuery = useQueryWithPages({
-    resourceName: 'core:txs_pending',
+    resourceName: 'core:txs',
     filters: { filter: 'pending' },
     options: {
       enabled: isPendingTab,
-      placeholderData: generateListStub<'core:txs_pending'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         inserted_at: '2024-02-05T07:04:47.749818Z',
         hash: '0x00',
         filter: 'pending',
@@ -80,11 +80,11 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   });
 
   const txsWithBlobsQuery = useQueryWithPages({
-    resourceName: 'core:txs_with_blobs',
+    resourceName: 'core:txs',
     filters: { type: 'blob_transaction' },
     options: {
       enabled: isBlobTxsTab,
-      placeholderData: generateListStub<'core:txs_with_blobs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
         items_count: 50,
@@ -96,7 +96,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     resourceName: 'core:txs_watchlist',
     options: {
       enabled: isWatchlistTab,
-      placeholderData: generateListStub<'core:txs_watchlist'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_watchlist'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

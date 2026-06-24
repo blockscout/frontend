@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2DisputeGamesItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
 
@@ -16,7 +16,7 @@ import HashStringShorten from 'src/shared/texts/HashStringShorten';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
-type Props = { item: OptimisticL2DisputeGamesItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismGame']; isLoading?: boolean };
 
 const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
   if (!getFeaturePayload(config.features.rollup)?.faultProofSystemEnabled) {

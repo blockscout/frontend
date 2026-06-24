@@ -3,7 +3,7 @@
 import { Grid, Text, Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { InteropTransactionInfo } from 'src/features/op-interop/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -22,7 +22,7 @@ import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
 const rollupFeature = config.features.rollup;
 
 type Props = {
-  data?: InteropTransactionInfo;
+  data?: schemas['OptimismInteropMessage'];
   isLoading: boolean;
 };
 
@@ -51,27 +51,35 @@ const TxDetailsInterop = ({ data, isLoading }: Props) => {
       <Box>
         <InteropMessageStatus status={ data.status }/>
       </Box>
-      <Text color="text.secondary">Sender</Text>
-      { data.init_chain !== undefined ? (
-        <AddressEntityInterop
-          chain={ data.init_chain }
-          address={{ hash: data.sender_address_hash }}
-          isLoading={ isLoading }
-          truncation="constant"
-        />
-      ) : (
-        <AddressEntity address={{ hash: data.sender_address_hash }} isLoading={ isLoading } truncation="constant"/>
+      { data.sender_address_hash && (
+        <>
+          <Text color="text.secondary">Sender</Text>
+          { data.init_chain !== undefined ? (
+            <AddressEntityInterop
+              chain={ data.init_chain }
+              address={{ hash: data.sender_address_hash }}
+              isLoading={ isLoading }
+              truncation="constant"
+            />
+          ) : (
+            <AddressEntity address={{ hash: data.sender_address_hash }} isLoading={ isLoading } truncation="constant"/>
+          ) }
+        </>
       ) }
-      <Text color="text.secondary">Target</Text>
-      { data.relay_chain !== undefined ? (
-        <AddressEntityInterop
-          chain={ data.relay_chain }
-          address={{ hash: data.target_address_hash }}
-          isLoading={ isLoading }
-          truncation="constant"
-        />
-      ) : (
-        <AddressEntity address={{ hash: data.target_address_hash }} isLoading={ isLoading } truncation="constant"/>
+      { data.target_address_hash && (
+        <>
+          <Text color="text.secondary">Target</Text>
+          { data.relay_chain !== undefined ? (
+            <AddressEntityInterop
+              chain={ data.relay_chain }
+              address={{ hash: data.target_address_hash }}
+              isLoading={ isLoading }
+              truncation="constant"
+            />
+          ) : (
+            <AddressEntity address={{ hash: data.target_address_hash }} isLoading={ isLoading } truncation="constant"/>
+          ) }
+        </>
       ) }
       <Text color="text.secondary">Payload</Text>
       <Flex overflow="hidden">

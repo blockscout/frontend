@@ -4,8 +4,7 @@ import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { WrappedTransactionFields } from 'src/features/chain-variants/suave/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
@@ -13,7 +12,7 @@ import TokenValue from 'src/shared/values/entity/TokenValue';
 
 interface Props extends BoxProps {
   loading?: boolean;
-  tx: Transaction | Pick<Transaction, WrappedTransactionFields>;
+  tx: Partial<Pick<schemas['TransactionResponse'], 'fee' | 'celo' | 'stability_fee' | 'exchange_rate' | 'historic_exchange_rate'>>;
   hasExchangeRateToggle?: boolean;
   accuracy?: number;
   accuracyUsd?: number;
@@ -28,7 +27,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
   if ('celo' in tx && tx.celo?.gas_token) {
     return (
       <TokenValue
-        amount={ tx.fee.value || '0' }
+        amount={ tx.fee?.value || '0' }
         token={ tx.celo.gas_token }
         accuracy={ accuracy }
         accuracyUsd={ accuracyUsd }
@@ -57,7 +56,7 @@ const TxFee = ({ tx, accuracy, accuracyUsd, loading, noSymbol: noSymbolProp, noU
 
   return (
     <NativeCoinValue
-      amount={ tx.fee.value || '0' }
+      amount={ tx.fee?.value || '0' }
       noSymbol={ noSymbol }
       exchangeRate={ noUsd ? null : exchangeRate }
       historicalExchangeRate={ noUsd ? null : historicalExchangeRate }

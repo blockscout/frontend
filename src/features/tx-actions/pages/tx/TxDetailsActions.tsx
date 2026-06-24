@@ -2,27 +2,18 @@
 
 import React from 'react';
 
-import type { TxAction } from '../../types/api';
-
 import config from 'src/config';
 
 import TxDetailsActionsInterpretation from './TxDetailsActionsInterpretation';
-import TxDetailsActionsRaw from './TxDetailsActionsRaw';
 
 type Props = {
   isTxDataLoading: boolean;
-  actions?: Array<TxAction>;
   hash?: string;
 };
 
-const TxDetailsActions = ({ isTxDataLoading, actions, hash }: Props) => {
+const TxDetailsActions = ({ isTxDataLoading, hash }: Props) => {
   if (config.features.txInterpretation.isEnabled) {
     return <TxDetailsActionsInterpretation hash={ hash } isTxDataLoading={ isTxDataLoading }/>;
-  }
-
-  /* if tx interpretation is not configured, show tx actions from tx info */
-  if (actions && actions.length > 0) {
-    return <TxDetailsActionsRaw actions={ actions } isLoading={ isTxDataLoading }/>;
   }
 
   return null;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TransactionType } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxType from 'src/slices/tx/components/TxType';
 
@@ -11,7 +11,7 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { camelCaseToSentence } from '../utils/translation';
 
 export interface Props {
-  txTypes: Array<TransactionType>;
+  txTypes: schemas['Transaction']['transaction_types'];
   isLoading?: boolean;
   type: string | undefined;
 }

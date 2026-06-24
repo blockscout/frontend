@@ -1,8 +1,8 @@
-import type { WithdrawalsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 
-export const WITHDRAWAL: WithdrawalsItem = {
+export const WITHDRAWAL: schemas['BeaconWithdrawal'] = {
   amount: '12565723',
   index: 3810697,
   receiver: ADDRESS_PARAMS,

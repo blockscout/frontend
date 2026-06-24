@@ -1,6 +1,6 @@
-import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatchesResponse } from '../types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
-export const finalized: ArbitrumL2TxnBatchesItem = {
+export const finalized: schemas['ArbitrumBatchForList'] = {
   number: 12345,
   blocks_count: 12345,
   transactions_count: 10000,
@@ -13,7 +13,7 @@ export const finalized: ArbitrumL2TxnBatchesItem = {
   batch_data_container: 'in_blob4844',
 };
 
-export const unfinalized: ArbitrumL2TxnBatchesItem = {
+export const unfinalized: schemas['ArbitrumBatchForList'] = {
   number: 12344,
   blocks_count: 10000,
   transactions_count: 103020,
@@ -27,7 +27,7 @@ export const unfinalized: ArbitrumL2TxnBatchesItem = {
 
 };
 
-export const baseResponse: ArbitrumL2TxnBatchesResponse = {
+export const baseResponse: operations['ArbitrumController.batches']['json'] = {
   items: [
     finalized,
     unfinalized,

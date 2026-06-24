@@ -48,6 +48,7 @@ Perform the following sub-steps **in order**.
   | Performance Improvements  | performance                                 |
   | Dependencies updates      | dependencies                                |
   | Design updates            | design                                      |
+  | DX & tooling              | refactoring                                 |
 
 If a PR has no matching labels, try to categorize it based on its description (the **body** field in the `release-prs-data.json` file). If the section remains unclear, categorize it as "Other Changes." Never exclude a PR from the notes. The list of PRs in the release notes must match exactly the list from "Get release notes draft." Always double-check this.
 

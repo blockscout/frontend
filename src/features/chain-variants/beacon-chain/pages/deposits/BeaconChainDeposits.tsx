@@ -37,7 +37,7 @@ const BeaconChainDeposits = () => {
   const countersQuery = useApiQuery('core:deposits_counters', {
     queryOptions: {
       placeholderData: {
-        deposits_count: '19091878',
+        deposits_count: 19091878,
       },
     },
   });
@@ -85,10 +85,7 @@ const BeaconChainDeposits = () => {
 
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } deposits` : 'Deposits' }
-        withTextAd
-      />
+      <PageTitle title="Deposits" withTextAd/>
       <DataList
         isError={ isError }
         itemsNum={ data?.items.length }

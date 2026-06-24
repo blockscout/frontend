@@ -1,9 +1,9 @@
-import type { AddressEpochRewardsItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 
-export const EPOCH_REWARD_ITEM: AddressEpochRewardsItem = {
+export const EPOCH_REWARD_ITEM: schemas['ElectionReward'] = {
   amount: '136609473658452408568',
   block_timestamp: '2022-05-15T13:16:24Z',
   type: 'voter',

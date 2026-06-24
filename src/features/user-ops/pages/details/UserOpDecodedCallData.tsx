@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { UserOp } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
 
@@ -13,7 +13,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
 
 interface Props {
-  data: UserOp;
+  data: schemas['UserOperation'];
 }
 
 const UserOpDecodedCallData = ({ data }: Props) => {

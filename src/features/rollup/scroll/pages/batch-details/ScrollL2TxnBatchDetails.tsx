@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ScrollL2TxnBatch } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -25,7 +25,7 @@ import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-e
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 interface Props {
-  query: UseQueryResult<ScrollL2TxnBatch, ResourceError>;
+  query: UseQueryResult<schemas['ScrollBatch'], ResourceError>;
 }
 
 const ScrollL2TxnBatchDetails = ({ query }: Props) => {
@@ -56,7 +56,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.end_block_number - data.start_block_number + 1;
+  const blocksCount = data.end_block_number && data.start_block_number ? data.end_block_number - data.start_block_number + 1 : 0;
 
   return (
     <DetailedInfo.Container

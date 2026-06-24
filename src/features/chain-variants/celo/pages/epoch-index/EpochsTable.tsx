@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { CeloEpochListItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
@@ -12,7 +12,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import EpochsTableItem from './EpochsTableItem';
 
 interface Props {
-  items: Array<CeloEpochListItem>;
+  items: Array<schemas['CeloEpoch']>;
   isLoading?: boolean;
   top: number;
 };

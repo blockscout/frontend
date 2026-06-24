@@ -1,11 +1,11 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
-import { base } from 'src/slices/tx/mocks/tx';
+import { base } from 'src/slices/tx/mocks/details';
 
 import * as interopMock from 'src/features/op-interop/mocks/interop';
 
-export const withInteropInMessage: Transaction = {
+export const withInteropInMessage: schemas['TransactionResponse'] = {
   ...base,
   op_interop_messages: [ {
     init_chain: interopMock.chain,
@@ -18,7 +18,7 @@ export const withInteropInMessage: Transaction = {
   } ],
 };
 
-export const withInteropOutMessage: Transaction = {
+export const withInteropOutMessage: schemas['TransactionResponse'] = {
   ...base,
   op_interop_messages: [ {
     relay_chain: interopMock.chain,

@@ -3,7 +3,8 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TransactionsSortingValue, TxsResponse } from 'src/slices/tx/types/api';
+import type { operations } from '@blockscout/api-types';
+import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -24,13 +25,13 @@ export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
 
 type SortingValue = TransactionsSortingValue;
 
-type HookResult = UseQueryResult<TxsResponse, ResourceError<unknown>> & {
+type HookResult = UseQueryResult<operations['TransactionController.transactions']['json'], ResourceError<unknown>> & {
   sorting: SortingValue;
   setSortByValue: (value: SortingValue) => void;
 };
 
 export default function useTxsSort(
-  queryResult: UseQueryResult<TxsResponse, ResourceError<unknown>>,
+  queryResult: UseQueryResult<operations['TransactionController.transactions']['json'], ResourceError<unknown>>,
 ): HookResult {
 
   const [ sorting, setSorting ] = React.useState<SortingValue>((cookies.get(cookies.NAMES.TXS_SORT) as SortingValue | undefined) ?? 'default');

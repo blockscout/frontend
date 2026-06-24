@@ -12,7 +12,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import TxsStats from 'src/slices/tx/pages/index/stats/TxsStats';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
 import TxsWatchlist from 'src/features/account/pages/tx-index-watchlist/TxsWatchlist';
@@ -39,11 +39,11 @@ const TransactionsZetaChain = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const txsWithBlobsQuery = useQueryWithPages({
-    resourceName: 'core:txs_with_blobs',
+    resourceName: 'core:txs',
     filters: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
-      placeholderData: generateListStub<'core:txs_with_blobs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
         items_count: 50,
@@ -55,7 +55,7 @@ const TransactionsZetaChain = () => {
     resourceName: 'core:txs_watchlist',
     options: {
       enabled: tab === 'watchlist',
-      placeholderData: generateListStub<'core:txs_watchlist'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:txs_watchlist'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,
@@ -145,10 +145,7 @@ const TransactionsZetaChain = () => {
 
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
-        withTextAd
-      />
+      <PageTitle title="Transactions" withTextAd/>
       <RoutedTabs tabs={ tabs } defaultTabId="zetachain"/>
     </>
   );

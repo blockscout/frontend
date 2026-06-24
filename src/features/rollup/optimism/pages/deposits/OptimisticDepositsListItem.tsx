@@ -3,7 +3,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { OptimisticL2DepositsItem } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -20,7 +20,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: OptimisticL2DepositsItem; isLoading?: boolean };
+type Props = { item: schemas['OptimismDeposit']; isLoading?: boolean };
 
 const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {

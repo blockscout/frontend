@@ -1,8 +1,8 @@
-import type { WithdrawalsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import { withoutName } from 'src/slices/address/mocks/address-param';
 
-export const data: WithdrawalsResponse = {
+export const data: operations['BlockController.withdrawals']['json'] = {
   items: [
     {
       amount: '192175000000000',

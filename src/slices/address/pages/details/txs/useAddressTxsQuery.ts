@@ -8,7 +8,7 @@ import { AddressFromToFilterValues } from 'src/slices/address/types/api';
 import type { TransactionsSorting, TransactionsSortingField, TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import { SORT_OPTIONS } from 'src/slices/tx/hooks/useTxsSort';
-import { TX } from 'src/slices/tx/stubs/tx';
+import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
@@ -40,7 +40,7 @@ export default function useAddressTxsQuery({ addressHash, enabled, isMultichain,
     sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
     options: {
       enabled: enabled,
-      placeholderData: generateListStub<'core:address_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:address_txs'>(TX_ITEM, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
         items_count: 50,

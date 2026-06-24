@@ -7,7 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
-const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: schemas['Deposit']['status']; isLoading: boolean }) => {
+const BeaconChainDepositStatusTag = ({ status, isLoading }: { status: schemas['BeaconDeposit']['status']; isLoading: boolean }) => {
   const statusValue = (() => {
     switch (status) {
       case 'pending':

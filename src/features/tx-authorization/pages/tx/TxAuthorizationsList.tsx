@@ -3,19 +3,19 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'src/features/tx-authorization/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxAuthorizationsListItem from './TxAuthorizationsListItem';
 
 interface Props {
-  data: Array<TxAuthorization> | undefined;
+  data: Array<schemas['SignedAuthorization']> | undefined;
   isLoading?: boolean;
 }
 
 const TxAuthorizationsList = ({ data, isLoading }: Props) => {
   return (
     <Box>
-      { data?.map((item, index) => <TxAuthorizationsListItem key={ item.nonce.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>) }
+      { data?.map((item, index) => <TxAuthorizationsListItem key={ item.nonce.toString() + (isLoading ? index : '') } data={ item } isLoading={ isLoading }/>) }
     </Box>
   );
 };

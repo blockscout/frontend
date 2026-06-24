@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { merged } from '@blockscout/api-types';
+import type { operations } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -65,7 +65,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
     queryClient.setQueryData(
       getResourceKey('core:address_coin_balance', { pathParams: { hash: addressHash } }),
       (prevData:
-        merged.operations['BlockScoutWeb.API.V2.AddressController.coin_balance_history']['responses']['200']['content']['application/json'] | undefined) => {
+        operations['AddressController.coin_balance_history']['json'] | undefined) => {
         if (!prevData) {
           return;
         }

@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test as base, expect, devices } from 'playwright/lib';

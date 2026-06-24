@@ -4,7 +4,7 @@ import { Box, Flex, VStack, Separator, HStack, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 import TxFee from 'src/slices/tx/components/TxFee';
@@ -22,7 +22,7 @@ import Utilization from 'src/shared/values/utilization/Utilization';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: Transaction; isLoading?: boolean }) => {
+const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: schemas['Transaction'] | schemas['TransactionResponse']; isLoading?: boolean }) => {
   const multichainContext = useMultichainContext();
 
   const sectionTitleProps = {

@@ -1,6 +1,6 @@
-import type { ArbitrumL2TxnWithdrawalsItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
-export const unclaimed: ArbitrumL2TxnWithdrawalsItem = {
+export const unclaimed: schemas['ArbitrumWithdrawal'] = {
   arb_block_number: 115114348,
   caller_address_hash: '0x07e1e36fe70cd58a05c00812d573dc39a127ee6d',
   callvalue: '21000000000000000000',
@@ -14,7 +14,7 @@ export const unclaimed: ArbitrumL2TxnWithdrawalsItem = {
   token: null,
 };
 
-export const claimed: ArbitrumL2TxnWithdrawalsItem = {
+export const claimed: schemas['ArbitrumWithdrawal'] = {
   arb_block_number: 115114348,
   caller_address_hash: '0x07e1e36fe70cd58a05c00812d573dc39a127ee6d',
   callvalue: '21000000000000000000',

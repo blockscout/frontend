@@ -5,8 +5,6 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { AddressImplementation } from 'src/slices/address/types/api';
-import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -21,10 +19,10 @@ import useMethodsFilters from './useMethodsFilters';
 import { formatAbi } from './utils';
 
 interface Props {
-  implementations: Array<AddressImplementation>;
+  implementations: Array<schemas['Implementation']>;
   isLoading?: boolean;
   proxyType?: schemas['ProxyType'];
-  conflictingImplementations?: Array<SmartContractConflictingImplementation>;
+  conflictingImplementations?: schemas['SmartContract']['conflicting_implementations'];
 }
 
 const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading, proxyType, conflictingImplementations }: Props) => {

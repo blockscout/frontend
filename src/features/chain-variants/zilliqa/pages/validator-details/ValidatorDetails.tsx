@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ValidatorZilliqa } from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -18,7 +18,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  data: ValidatorZilliqa;
+  data: schemas['ZilliqaStakerDetailed'];
   isLoading: boolean;
 }
 
@@ -51,50 +51,66 @@ const ValidatorDetails = ({ data, isLoading }: Props) => {
         />
       </DetailedInfo.ItemValue>
 
-      <DetailedInfo.ItemLabel
-        hint="libp2p peer ID, corresponding to the staker's BLS public key"
-        isLoading={ isLoading }
-      >
-        Peer ID
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <Flex alignItems="center" w="100%" minWidth={ 0 }>
-          <Skeleton loading={ isLoading } maxW="calc(100% - 28px)" overflow="hidden">
-            <HashStringShortenDynamic hash={ data.peer_id }/>
-          </Skeleton>
-          <CopyToClipboard text={ data.peer_id } isLoading={ isLoading }/>
-        </Flex>
-      </DetailedInfo.ItemValue>
+      { data.peer_id && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="libp2p peer ID, corresponding to the staker's BLS public key"
+            isLoading={ isLoading }
+          >
+            Peer ID
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Flex alignItems="center" w="100%" minWidth={ 0 }>
+              <Skeleton loading={ isLoading } maxW="calc(100% - 28px)" overflow="hidden">
+                <HashStringShortenDynamic hash={ data.peer_id }/>
+              </Skeleton>
+              <CopyToClipboard text={ data.peer_id } isLoading={ isLoading }/>
+            </Flex>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
-      <DetailedInfo.ItemLabel
-        hint="The address used for authenticating requests from this staker to the deposit contract"
-        isLoading={ isLoading }
-      >
-        Control address
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <AddressEntity address={ data.control_address } isLoading={ isLoading }/>
-      </DetailedInfo.ItemValue>
+      { data.control_address && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The address used for authenticating requests from this staker to the deposit contract"
+            isLoading={ isLoading }
+          >
+            Control address
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <AddressEntity address={ data.control_address } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
-      <DetailedInfo.ItemLabel
-        hint="The address which rewards for this staker will be sent to"
-        isLoading={ isLoading }
-      >
-        Reward address
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <AddressEntity address={ data.reward_address } isLoading={ isLoading }/>
-      </DetailedInfo.ItemValue>
+      { data.reward_address && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The address which rewards for this staker will be sent to"
+            isLoading={ isLoading }
+          >
+            Reward address
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <AddressEntity address={ data.reward_address } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
-      <DetailedInfo.ItemLabel
-        hint="The address whose key the validator uses to sign cross-chain events"
-        isLoading={ isLoading }
-      >
-        Signing address
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <AddressEntity address={ data.signing_address } isLoading={ isLoading }/>
-      </DetailedInfo.ItemValue>
+      { data.signing_address && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="The address whose key the validator uses to sign cross-chain events"
+            isLoading={ isLoading }
+          >
+            Signing address
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <AddressEntity address={ data.signing_address } isLoading={ isLoading }/>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Block number at which the staker was added"

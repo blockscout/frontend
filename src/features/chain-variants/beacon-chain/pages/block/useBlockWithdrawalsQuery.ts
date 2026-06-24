@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
-import type { BlockWithdrawalsResponse } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import { retry } from 'src/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'src/api/resources';
@@ -67,7 +67,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     },
   });
 
-  const rpcQuery = useQuery<RpcResponseType, unknown, BlockWithdrawalsResponse | null>({
+  const rpcQuery = useQuery<RpcResponseType, unknown, operations['BlockController.withdrawals']['json'] | null>({
     queryKey: [ 'RPC', 'block', { heightOrHash } ],
     queryFn: async() => {
       if (!publicClient) {
@@ -130,7 +130,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   ) && rpcQuery.data && publicClient);
 
   const rpcQueryWithPages: QueryWithPagesResult<'core:block_withdrawals'> = {
-    ...rpcQuery as UseQueryResult<BlockWithdrawalsResponse, ResourceError>,
+    ...rpcQuery as UseQueryResult<operations['BlockController.withdrawals']['json'], ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},
     onSortingChange: () => {},

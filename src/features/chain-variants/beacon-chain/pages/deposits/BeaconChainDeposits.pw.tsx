@@ -10,7 +10,7 @@ test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.beaconChain);
   await mockTextAd();
   await mockApiResponse('core:deposits', depositsData);
-  await mockApiResponse('core:deposits_counters', { deposits_count: '111111' });
+  await mockApiResponse('core:deposits_counters', { deposits_count: 111111 });
   const component = await render(<BeaconChainDeposits/>);
   await expect(component).toHaveScreenshot();
 });
@@ -21,7 +21,7 @@ test.describe('mobile', () => {
     await mockEnvs(ENVS_MAP.beaconChain);
     await mockTextAd();
     await mockApiResponse('core:deposits', depositsData);
-    await mockApiResponse('core:deposits_counters', { deposits_count: '111111' });
+    await mockApiResponse('core:deposits_counters', { deposits_count: 111111 });
     const component = await render(<BeaconChainDeposits/>);
     await expect(component).toHaveScreenshot();
   });

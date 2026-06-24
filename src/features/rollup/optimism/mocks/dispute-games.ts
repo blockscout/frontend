@@ -1,4 +1,6 @@
-export const data = {
+import type { operations } from '@blockscout/api-types';
+
+export const data: operations['OptimismController.games']['json'] = {
   items: [
     {
       contract_address_hash: '0x5cbe1b88b6357e6a8f0821bea72cc0b88c231f1c',

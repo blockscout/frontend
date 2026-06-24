@@ -241,7 +241,7 @@ Chain statistics and charts.
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` | v1.29.0+ |
-| NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | upcoming |
+| NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL | `Record<StatsApiResourceName, number>` | Map that holds information about time in milliseconds that the resources should be continuously refetched; possible values for `StatsApiResourceName` are: `stats:counters`, `stats:pages_main` | - | - | `{'stats:pages_main': 10000}` | v2.9.0+ |
 
 &nbsp;
 
@@ -338,10 +338,10 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE | `boolean` | Set to `true` to promote Blockscout in meta and OG titles | - | `true` | `true` | v1.12.0+ |
-| NEXT_PUBLIC_OG_DESCRIPTION | `string` | Custom OG description | - | - | `Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs for the %network_title% network.` | v1.12.0+ |
+| NEXT_PUBLIC_OG_DESCRIPTION | `string` | Custom OG description | - | - | `Open-source block explorer by Blockscout. Search transactions, verify smart contracts, analyze addresses, and track network activity. Complete blockchain data and APIs.` | v1.12.0+ |
 | NEXT_PUBLIC_OG_IMAGE_URL | `string` | OG image url. Minimum image size is 200 x 20 pixels (recommended: 1200 x 600); maximum supported file size is 8 MB; 2:1 aspect ratio; supported formats: image/jpeg, image/gif, image/png | - | `static/og_placeholder.png` | `https://placekitten.com/1200/600` | v1.12.0+ |
-| NEXT_PUBLIC_OG_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to populate OG tags (title, description) with API data for social preview robot requests | - | `false` | `true` | v1.29.0+ |
-| NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to pre-render page titles (e.g Token page) on the server side and inject page h1-tag to the markup before it is sent to the browser. | - | `false` | `true` | v1.30.0+ |
+| NEXT_PUBLIC_OG_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to populate OG tags (title, description) with API data for social preview robot requests | - | `true` | `false` | v1.29.0+ |
+| NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED | `boolean` | Set to `true` to pre-render page titles (e.g Token page) on the server side. | - | `false` | `true` | v1.30.0+ |
 
 &nbsp;
 
@@ -1318,8 +1318,8 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | upcoming |
-| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | upcoming |
+| NEXT_PUBLIC_USERCENTRICS_CONFIG | `{ settingsId?: string; rulesetId?:string }` | Usercentrics configuration with `settingsId` or `rulesetId`. When set, Blockscout injects the CMP script and gates Google Analytics, Mixpanel, Rollbar and other 3rd party services behind marketing consent. The feature is disabled in private mode. | Required | - | `{ 'settingsId': '<your-settings-id>','rulesetId':'<your-ruleset-id>'}` | v2.9.0+ |
+| NEXT_PUBLIC_USERCENTRICS_DRAFT | `boolean` | Set to `true` to load the Usercentrics CMP configuration in its draft (unpublished) version. Intended for previewing consent configuration changes before publishing. | - | - | `true` | v2.9.0+ |
 
 ## Misc
 
@@ -1343,4 +1343,4 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | upcoming |
+| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |

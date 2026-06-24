@@ -2,13 +2,12 @@
 
 import React from 'react';
 
-import type { ScrollL2TxnBatch } from 'src/features/rollup/scroll/types/api';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
+import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
 export interface Props {
-  container: ExcludeUndefined<ScrollL2TxnBatch['data_availability']['batch_data_container']>;
+  container: schemas['ScrollBatch']['data_availability']['batch_data_container'];
   isLoading?: boolean;
 }
 

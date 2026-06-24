@@ -3,7 +3,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { CeloEpochListItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import CeloEpochStatus from 'src/features/chain-variants/celo/components/CeloEpochStatus';
 import EpochEntity from 'src/features/chain-variants/celo/components/entity/EpochEntity';
@@ -17,7 +17,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  item: CeloEpochListItem;
+  item: schemas['CeloEpoch'];
   isLoading?: boolean;
 }
 
@@ -42,21 +42,21 @@ const EpochsListItem = ({ item, isLoading }: Props) => {
           <span>{ item.start_block_number } - { item.end_block_number || '' }</span>
         </Skeleton>
       </HStack>
-      { item.distribution?.community_transfer ? (
+      { item.distribution?.community_transfer && 'value' in item.distribution.community_transfer ? (
         <HStack minH="30px">
           <Skeleton loading={ isLoading }>Community</Skeleton>
           <NativeCoinValue
-            amount={ item.distribution?.community_transfer.value }
+            amount={ item.distribution.community_transfer.value }
             loading={ isLoading }
             color="text.secondary"
           />
         </HStack>
       ) : null }
-      { item.distribution?.carbon_offsetting_transfer ? (
+      { item.distribution?.carbon_offsetting_transfer && 'value' in item.distribution.carbon_offsetting_transfer ? (
         <HStack minH="30px">
           <Skeleton loading={ isLoading }>Carbon offset</Skeleton>
           <NativeCoinValue
-            amount={ item.distribution?.carbon_offsetting_transfer.value }
+            amount={ item.distribution.carbon_offsetting_transfer.value }
             loading={ isLoading }
             color="text.secondary"
           />

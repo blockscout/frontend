@@ -15,9 +15,9 @@ import type {
   FormFieldsVyperMultiPartFile,
   FormFieldsVyperStandardInput,
 } from './types';
+import type { schemas } from '@blockscout/api-types';
 import type {
   SmartContractVerificationError,
-  SmartContractLicenseType,
   SmartContractVerificationMethodApi,
   SmartContractVerificationConfigRaw,
 } from 'src/slices/contract/types/api';
@@ -210,7 +210,7 @@ export function sortVerificationMethods(methodA: SmartContractVerificationMethod
 }
 
 export function prepareRequestBody(data: FormFields): FetchParams['body'] {
-  const defaultLicenseType: SmartContractLicenseType = 'none';
+  const defaultLicenseType: NonNullable<schemas['SmartContract']['license_type']> = 'none';
 
   switch (data.method[0]) {
     case 'flattened-code': {

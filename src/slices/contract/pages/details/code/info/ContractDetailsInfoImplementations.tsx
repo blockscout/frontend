@@ -3,7 +3,6 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { AddressImplementation } from 'src/slices/address/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -12,7 +11,7 @@ import ContainerWithScrollY from 'src/shared/containers/ContainerWithScrollY';
 import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 
 interface Props {
-  implementations: Array<AddressImplementation>;
+  implementations: Array<schemas['Implementation']>;
   proxyType?: schemas['ProxyType'];
 }
 

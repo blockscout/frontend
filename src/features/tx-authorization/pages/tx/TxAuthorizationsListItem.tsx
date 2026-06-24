@@ -3,7 +3,7 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'src/features/tx-authorization/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -14,32 +14,33 @@ import ListItemMobile from 'src/shared/lists/ListItemMobile';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-interface Props extends TxAuthorization {
+interface Props {
+  data: schemas['SignedAuthorization'];
   isLoading?: boolean;
 }
 
-const TxAuthorizationsListItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading, status }: Props) => {
+const TxAuthorizationsListItem = ({ data, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 3 } fontSize="sm">
       <HStack gap={ 3 } w="100%">
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Authority</Skeleton>
-        <AddressEntity address={{ hash: authority }} isLoading={ isLoading } noIcon/>
+        <AddressEntity address={{ hash: data.authority }} isLoading={ isLoading } noIcon/>
       </HStack>
       <HStack gap={ 3 } w="100%">
         <Skeleton loading={ isLoading } fontWeight={ 500 } flexShrink={ 0 }>Delegated address</Skeleton>
-        <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
+        <AddressEntity address={{ hash: data.address_hash }} isLoading={ isLoading } noIcon/>
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Chain</Skeleton>
-        <Skeleton loading={ isLoading } color="text.secondary">{ chainId === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ data.chain_id === Number(config.chain.id) ? 'this' : 'any' }</Skeleton>
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Nonce</Skeleton>
-        <Skeleton loading={ isLoading } color="text.secondary">{ nonce }</Skeleton>
+        <Skeleton loading={ isLoading } color="text.secondary">{ data.nonce }</Skeleton>
       </HStack>
       <HStack gap={ 3 }>
         <Skeleton loading={ isLoading } fontWeight={ 500 }>Status</Skeleton>
-        <TxAuthorizationStatus status={ status } loading={ isLoading }/>
+        <TxAuthorizationStatus status={ data.status } loading={ isLoading }/>
       </HStack>
     </ListItemMobile>
   );

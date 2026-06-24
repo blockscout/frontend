@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export interface TxBlob {
   hash: string;
@@ -30,7 +30,7 @@ export interface TransactionDataAvailability {
 }
 
 export interface TransactionsResponseWithBlobs {
-  items: Array<Transaction>;
+  items: Array<schemas['Transaction']>;
   next_page_params: {
     block_number: number;
     index: number;
@@ -41,12 +41,6 @@ export interface TransactionsResponseWithBlobs {
 export type TxsWithBlobsFilters = {
   type: 'blob_transaction';
 };
-
-export interface SearchResultBlob {
-  type: 'blob';
-  blob_hash: string;
-  timestamp: null;
-}
 
 export interface BlockDataAvailability {
   blob_gas_price?: string;

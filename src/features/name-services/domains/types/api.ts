@@ -8,7 +8,7 @@ export interface SearchResultDomain {
   address_hash: string | null;
   is_smart_contract_verified: boolean;
   is_smart_contract_address: boolean;
-  certified?: true;
+  certified?: boolean;
   filecoin_robust_address?: string | null;
   url?: string;
   ens_info: {
@@ -20,6 +20,8 @@ export interface SearchResultDomain {
     protocol_dapp_logo?: string;
     protocol_dapp_url?: string;
   };
+  priority: number;
+  reputation: 'ok' | 'warning' | 'error';
 }
 export interface EnsAddressLookupFilters extends Pick<bens.LookupAddressRequest, 'address' | 'resolved_to' | 'owned_by' | 'only_active'> {
   protocols: Array<string> | undefined;

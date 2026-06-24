@@ -3,6 +3,7 @@
 import { useCallback, useEffect } from 'react';
 import type { PublicClient } from 'viem';
 
+import type { schemas } from '@blockscout/api-types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 
 // Cache for block timestamp requests across the session

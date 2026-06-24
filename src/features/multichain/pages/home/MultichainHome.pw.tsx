@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as chainStatsMock from 'src/slices/home/mocks/stats';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
 import * as metricsMock from 'src/features/multichain/mocks/metrics';

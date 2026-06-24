@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { StatusTagType } from 'src/shared/tags/status-tag/StatusTag';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
 export interface Props {
-  status: ArbitrumL2TxnBatchesItem['commitment_transaction']['status'];
+  status: schemas['ArbitrumCommitmentTransaction']['status'];
   isLoading?: boolean;
 }
 
@@ -24,7 +24,7 @@ const ArbitrumL2TxnBatchStatus = ({ status, isLoading }: Props) => {
       break;
   }
 
-  return <StatusTag type={ type } text={ status } loading={ isLoading }/>;
+  return <StatusTag type={ type } text={ status ?? 'Unfinalized' } loading={ isLoading }/>;
 };
 
 export default ArbitrumL2TxnBatchStatus;

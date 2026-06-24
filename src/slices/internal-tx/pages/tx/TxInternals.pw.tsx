@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as internalTxsMock from 'src/slices/internal-tx/mocks';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
-import * as txMock from 'src/slices/tx/mocks/tx';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import { test, expect } from 'playwright/lib';
 

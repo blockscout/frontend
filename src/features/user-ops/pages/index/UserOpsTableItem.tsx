@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type { UserOpsItem } from 'src/features/user-ops/types/api';
 
 import AddressStringOrParam from 'src/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -20,7 +20,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 type Props = {
-  item: UserOpsItem;
+  item: schemas['UserOperationInList'];
   isLoading?: boolean;
   showTx: boolean;
   showSender: boolean;
