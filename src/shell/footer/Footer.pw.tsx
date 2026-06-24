@@ -77,8 +77,8 @@ test.describe('without custom links', () => {
     await mockApiResponse('core:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
-      indexed_internal_transactions_ratio: '0.1',
-      indexed_blocks_ratio: '0.1',
+      indexed_internal_transactions_ratio: 0.1,
+      indexed_blocks_ratio: 0.1,
     });
     await mockApiResponse('core:config_backend_version', { backend_version: 'v5.2.0-beta.+commit.1ce1a355' });
     await mockEnvs([
