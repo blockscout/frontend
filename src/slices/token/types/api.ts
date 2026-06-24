@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { merged, schemas } from '@blockscout/api-types';
+import type { operations, schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 export type NftTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
@@ -28,8 +28,8 @@ export interface TokensBridgedFilters {
 }
 
 export interface TokensSorting {
-  sort: ExcludeUndefined<ExcludeUndefined<merged.operations['BlockScoutWeb.API.V2.TokenController.tokens_list']['parameters']['query']>['sort']>;
-  order: ExcludeUndefined<ExcludeUndefined<merged.operations['BlockScoutWeb.API.V2.TokenController.tokens_list']['parameters']['query']>['order']>;
+  sort: ExcludeUndefined<ExcludeUndefined<operations['TokenController.tokens_list']['params']['query']>['sort']>;
+  order: ExcludeUndefined<ExcludeUndefined<operations['TokenController.tokens_list']['params']['query']>['order']>;
 }
 
 export type TokensSortingField = TokensSorting['sort'];

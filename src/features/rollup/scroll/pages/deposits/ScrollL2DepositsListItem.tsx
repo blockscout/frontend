@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -20,7 +20,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
+type Props = { item: schemas['ScrollBridge']; isLoading?: boolean };
 
 const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
@@ -30,14 +30,17 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <BlockEntityL1
-          number={ item.origination_transaction_block_number }
-          isLoading={ isLoading }
-          fontWeight={ 600 }
-        />
-      </ListItemMobileGrid.Value>
+      { item.origination_transaction_block_number && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <BlockEntityL1
+              number={ item.origination_transaction_block_number }
+              isLoading={ isLoading }
+              fontWeight={ 600 }
+            />
+          </ListItemMobileGrid.Value></>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
@@ -46,15 +49,19 @@ const ScrollL2DepositsListItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TxEntityL1
-          isLoading={ isLoading }
-          hash={ item.origination_transaction_hash }
-          truncation="constant_long"
-          noCopy
-        />
-      </ListItemMobileGrid.Value>
+      { item.origination_transaction_hash && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } txn hash</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TxEntityL1
+              isLoading={ isLoading }
+              hash={ item.origination_transaction_hash }
+              truncation="constant_long"
+              noCopy
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

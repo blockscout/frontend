@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { AddressEpochRewardsItem } from 'src/features/chain-variants/celo/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -14,7 +14,7 @@ import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
 type Props = {
-  item: AddressEpochRewardsItem;
+  item: schemas['ElectionReward'];
   isLoading?: boolean;
 };
 
@@ -37,10 +37,14 @@ const AddressEpochRewardsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Reward type</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/>
-      </ListItemMobileGrid.Value>
+      { item.type && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Reward type</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Associated address</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
@@ -50,14 +54,18 @@ const AddressEpochRewardsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TokenValue
-          amount={ item.amount }
-          token={ item.token }
-          loading={ isLoading }
-        />
-      </ListItemMobileGrid.Value>
+      { item.token && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TokenValue
+              amount={ item.amount }
+              token={ item.token }
+              loading={ isLoading }
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
     </ListItemMobileGrid.Container>
   );

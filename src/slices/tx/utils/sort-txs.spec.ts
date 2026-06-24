@@ -1,4 +1,4 @@
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { describe, it, expect } from 'vitest';
 
@@ -10,7 +10,7 @@ describe('sortTxs', () => {
       { value: '42' },
       { value: '11' },
       { value: '24' },
-    ] as Array<Transaction>;
+    ] as Array<schemas['Transaction']>;
     const result = txs.sort(sortTxs('value-desc'));
     expect(result).toEqual([
       { value: '42' },
@@ -24,7 +24,7 @@ describe('sortTxs', () => {
       { value: '42' },
       { value: '11' },
       { value: '24' },
-    ] as Array<Transaction>;
+    ] as Array<schemas['Transaction']>;
     const result = txs.sort(sortTxs('value-asc'));
     expect(result).toEqual([
       { value: '11' },
@@ -38,7 +38,7 @@ describe('sortTxs', () => {
       { fee: { value: '42' } },
       { fee: { value: '11' } },
       { fee: { value: '24' } },
-    ] as Array<Transaction>;
+    ] as Array<schemas['Transaction']>;
     const result = txs.sort(sortTxs('fee-desc'));
     expect(result).toEqual([
       { fee: { value: '42' } },
@@ -52,7 +52,7 @@ describe('sortTxs', () => {
       { fee: { value: '42' } },
       { fee: { value: '11' } },
       { fee: { value: '24' } },
-    ] as Array<Transaction>;
+    ] as Array<schemas['Transaction']>;
     const result = txs.sort(sortTxs('fee-asc'));
     expect(result).toEqual([
       { fee: { value: '11' } },
@@ -69,7 +69,7 @@ describe('sortTxsFromSocket', () => {
       { timestamp: '2022-11-01T12:00:00Z' },
       { timestamp: null },
       { timestamp: '2022-11-03T03:03:00Z' },
-    ] as Array<Transaction>;
+    ] as Array<schemas['Transaction']>;
     const result = txs.sort(sortTxsFromSocket(undefined));
     expect(result).toEqual([
       { timestamp: null },

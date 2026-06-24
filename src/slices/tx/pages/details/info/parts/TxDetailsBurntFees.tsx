@@ -3,7 +3,7 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
@@ -17,7 +17,7 @@ import { ZERO } from 'src/toolkit/utils/consts';
 const rollupFeature = config.features.rollup;
 
 interface Props {
-  data: Transaction;
+  data: Pick<schemas['TransactionResponse'], 'transaction_burnt_fee' | 'blob_gas_used' | 'blob_gas_price' | 'exchange_rate' | 'historic_exchange_rate'>;
   isLoading?: boolean;
 }
 

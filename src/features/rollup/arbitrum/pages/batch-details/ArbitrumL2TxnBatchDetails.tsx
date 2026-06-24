@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2TxnBatch } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -32,7 +32,7 @@ import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyT
 import ArbitrumL2TxnBatchDetailsCelestiaDA from './ArbitrumL2TxnBatchDetailsCelestiaDA';
 
 interface Props {
-  query: UseQueryResult<ArbitrumL2TxnBatch, ResourceError>;
+  query: UseQueryResult<schemas['ArbitrumBatch'], ResourceError>;
 }
 
 const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
@@ -126,33 +126,41 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         </Link>
       </DetailedInfo.ItemValue>
 
-      <DetailedInfo.ItemLabel
-        isLoading={ isPlaceholderData }
-        hint={ `Hash of ${ layerLabels.parent } transaction in which transactions was committed` }
-      >
-        { layerLabels.parent } transaction hash
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <TxEntityL1
-          isLoading={ isPlaceholderData }
-          hash={ data.commitment_transaction.hash }
-          maxW="100%"
-          noCopy
-        />
-      </DetailedInfo.ItemValue>
+      { data.commitment_transaction.hash && (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isPlaceholderData }
+            hint={ `Hash of ${ layerLabels.parent } transaction in which transactions was committed` }
+          >
+            { layerLabels.parent } transaction hash
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <TxEntityL1
+              isLoading={ isPlaceholderData }
+              hash={ data.commitment_transaction.hash }
+              maxW="100%"
+              noCopy
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
-      <DetailedInfo.ItemLabel
-        isLoading={ isPlaceholderData }
-        hint={ `Height of ${ layerLabels.parent } block which includes ${ layerLabels.parent } transactions` }
-      >
-        { layerLabels.parent } block
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <BlockEntityL1
-          isLoading={ isPlaceholderData }
-          number={ data.commitment_transaction.block_number }
-        />
-      </DetailedInfo.ItemValue>
+      { data.commitment_transaction.block_number && (
+        <>
+          <DetailedInfo.ItemLabel
+            isLoading={ isPlaceholderData }
+            hint={ `Height of ${ layerLabels.parent } block which includes ${ layerLabels.parent } transactions` }
+          >
+            { layerLabels.parent } block
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <BlockEntityL1
+              isLoading={ isPlaceholderData }
+              number={ data.commitment_transaction.block_number }
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
 
       { data.data_availability.batch_data_container && (
         <>

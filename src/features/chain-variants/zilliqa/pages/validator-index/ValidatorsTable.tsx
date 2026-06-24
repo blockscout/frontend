@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ValidatorsZilliqaItem } from 'src/features/chain-variants/zilliqa/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
 
@@ -11,7 +11,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import ValidatorsTableItem from './ValidatorsTableItem';
 
 interface Props {
-  data: Array<ValidatorsZilliqaItem>;
+  data: Array<schemas['ZilliqaStaker']>;
   isLoading?: boolean;
   top?: number;
 }

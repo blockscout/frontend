@@ -3,7 +3,7 @@
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { ArbitrumL2TxnBatchesItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
 import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
@@ -22,7 +22,7 @@ import ArbitrumL2TxnBatchStatus from '../../components/ArbitrumL2TxnBatchStatus'
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ArbitrumL2TxnBatchesItem; isLoading?: boolean };
+type Props = { item: schemas['ArbitrumBatchForList']; isLoading?: boolean };
 
 const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
@@ -46,13 +46,17 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <ArbitrumL2TxnBatchStatus status={ item.commitment_transaction.status } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <BlockEntityL1
-          number={ item.commitment_transaction.block_number }
-          isLoading={ isLoading }
-        />
-      </ListItemMobileGrid.Value>
+      { item.commitment_transaction.block_number && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <BlockEntityL1
+              number={ item.commitment_transaction.block_number }
+              isLoading={ isLoading }
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       { item.blocks_count && (
         <>
@@ -63,15 +67,19 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         </>
       ) }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } transaction</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TxEntityL1
-          hash={ item.commitment_transaction.hash }
-          isLoading={ isLoading }
-          truncation="constant_long"
-          noCopy
-        />
-      </ListItemMobileGrid.Value>
+      { item.commitment_transaction.hash && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } transaction</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TxEntityL1
+              hash={ item.commitment_transaction.hash }
+              isLoading={ isLoading }
+              truncation="constant_long"
+              noCopy
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

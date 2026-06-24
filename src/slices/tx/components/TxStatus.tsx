@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { StatusTagType } from 'src/shared/tags/status-tag/StatusTag';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
@@ -10,7 +10,7 @@ import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 
 export interface Props extends BadgeProps {
-  status: Transaction['status'];
+  status: schemas['Transaction']['status'];
   errorText?: string | null;
   isLoading?: boolean;
 }

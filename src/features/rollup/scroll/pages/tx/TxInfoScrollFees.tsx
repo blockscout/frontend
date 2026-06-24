@@ -3,7 +3,7 @@
 import { Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -15,7 +15,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 type Props = {
-  data: Transaction;
+  data: Pick<schemas['TransactionResponse'], 'scroll' | 'exchange_rate' | 'historic_exchange_rate'>;
   isLoading: boolean;
 };
 

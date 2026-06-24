@@ -3,7 +3,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { IndexingStatus } from './types';
+import type { operations } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -39,14 +39,18 @@ const IndexingStatusBlocks = () => {
   const queryClient = useQueryClient();
 
   const handleBlocksIndexStatus: SocketMessage.BlocksIndexStatus['handler'] = React.useCallback((payload) => {
-    queryClient.setQueryData(getResourceKey('core:homepage_indexing_status'), (prevData: IndexingStatus | undefined) => {
+    queryClient.setQueryData(
+      getResourceKey('core:homepage_indexing_status'),
+      (prevData: operations['MainPageController.indexing_status']['json'] | undefined) => {
 
-      const newData = prevData ? { ...prevData } : {} as IndexingStatus;
-      newData.finished_indexing_blocks = payload.finished;
-      newData.indexed_blocks_ratio = payload.ratio;
+        const newData = prevData ? {
+          ...prevData,
+          finished_indexing_blocks: payload.finished,
+          indexed_blocks_ratio: payload.ratio,
+        } : undefined;
 
-      return newData;
-    });
+        return newData;
+      });
   }, [ queryClient ]);
 
   const blockIndexingChannel = useSocketChannel({

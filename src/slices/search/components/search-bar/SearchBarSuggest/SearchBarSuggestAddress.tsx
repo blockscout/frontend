@@ -4,8 +4,8 @@ import { chakra, Box, Text, Flex, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type { schemas } from '@blockscout/api-types';
 import type * as multichain from 'src/features/multichain/types/client';
-import type { SearchResultAddressOrContract, SearchResultMetadataTag as TSearchResultMetadataTag } from 'src/slices/search/types/api';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
@@ -21,7 +21,7 @@ import highlightText from 'src/shared/texts/highlight-text';
 
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
-type Props = ItemsProps<SearchResultAddressOrContract | TSearchResultMetadataTag | multichain.QuickSearchResultAddress>;
+type Props = ItemsProps<schemas['SearchResultAddressOrContract'] | schemas['SearchResultMetadataTag'] | multichain.QuickSearchResultAddress>;
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: Props) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);

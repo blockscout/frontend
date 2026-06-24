@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { SmartContractLicenseType } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { SmartContractVerificationMethod } from 'src/slices/contract/pages/contract-verification/utils';
 
@@ -13,13 +13,13 @@ export interface ContractLibrary {
 
 export interface LicenseOption {
   label: string;
-  value: SmartContractLicenseType;
+  value: NonNullable<schemas['SmartContract']['license_type']>;
 }
 
 interface FormFieldsBase {
   address: string;
   method: Array<SmartContractVerificationMethod>;
-  license_type: Array<SmartContractLicenseType>;
+  license_type: Array<NonNullable<schemas['SmartContract']['license_type']>>;
 }
 
 export interface FormFieldsFlattenSourceCode extends FormFieldsBase {

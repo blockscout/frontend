@@ -1,12 +1,6 @@
-import type {
-  OptimismL2TxnBatchTypeCallData,
-  OptimismL2TxnBatchTypeCelestia,
-  OptimismL2TxnBatchTypeEigenda,
-  OptimismL2TxnBatchTypeEip4844,
-  OptimisticL2TxnBatchesResponse,
-} from 'src/features/rollup/optimism/types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
-export const txnBatchesData: OptimisticL2TxnBatchesResponse = {
+export const txnBatchesData: operations['OptimismController.batches']['json'] = {
   items: [
     {
       batch_data_container: 'in_blob4844',
@@ -39,6 +33,7 @@ export const txnBatchesData: OptimisticL2TxnBatchesResponse = {
       l2_end_block_number: 124881612,
       l2_start_block_number: 124881380,
       transactions_count: 4490,
+      batch_data_container: 'in_eigenda',
     },
   ],
   next_page_params: {
@@ -47,7 +42,7 @@ export const txnBatchesData: OptimisticL2TxnBatchesResponse = {
   },
 };
 
-export const txnBatchTypeCallData: OptimismL2TxnBatchTypeCallData = {
+export const txnBatchTypeCallData: schemas['OptimismBatchInCalldata'] = {
   batch_data_container: 'in_calldata',
   number: 309123,
   l1_timestamp: '2022-08-10T10:30:24.000000Z',
@@ -59,7 +54,7 @@ export const txnBatchTypeCallData: OptimismL2TxnBatchTypeCallData = {
   transactions_count: 1608,
 };
 
-export const txnBatchTypeCelestia: OptimismL2TxnBatchTypeCelestia = {
+export const txnBatchTypeCelestia: schemas['OptimismBatchInCelestia'] = {
   batch_data_container: 'in_celestia',
   blobs: [
     {
@@ -80,7 +75,7 @@ export const txnBatchTypeCelestia: OptimismL2TxnBatchTypeCelestia = {
   transactions_count: 1574,
 };
 
-export const txnBatchTypeEip4844: OptimismL2TxnBatchTypeEip4844 = {
+export const txnBatchTypeEip4844: schemas['OptimismBatchInBlob4844'] = {
   batch_data_container: 'in_blob4844',
   blobs: [
     {
@@ -104,7 +99,7 @@ export const txnBatchTypeEip4844: OptimismL2TxnBatchTypeEip4844 = {
   transactions_count: 704,
 };
 
-export const txnBatchTypeEigenda: OptimismL2TxnBatchTypeEigenda = {
+export const txnBatchTypeEigenda: schemas['OptimismBatchInEigenda'] = {
   number: 8930,
   transactions_count: 9048,
   l1_timestamp: '2022-08-23T03:59:12.000000Z',

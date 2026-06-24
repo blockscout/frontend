@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ScrollL2MessageItem } from 'src/features/rollup/scroll/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -19,7 +19,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ScrollL2MessageItem; isLoading?: boolean };
+type Props = { item: schemas['ScrollBridge']; isLoading?: boolean };
 
 const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'scroll') {
@@ -29,12 +29,14 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <BlockEntity
-          number={ item.origination_transaction_block_number }
-          isLoading={ isLoading }
-          fontWeight={ 600 }
-          noIcon
-        />
+        { item.origination_transaction_block_number ? (
+          <BlockEntity
+            number={ item.origination_transaction_block_number }
+            isLoading={ isLoading }
+            fontWeight={ 600 }
+            noIcon
+          />
+        ) : '-' }
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading }>
@@ -42,12 +44,14 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TxEntity
-          isLoading={ isLoading }
-          hash={ item.origination_transaction_hash }
-          truncation="constant_long"
-          noIcon
-        />
+        { item.origination_transaction_hash ? (
+          <TxEntity
+            isLoading={ isLoading }
+            hash={ item.origination_transaction_hash }
+            truncation="constant_long"
+            noIcon
+          />
+        ) : '-' }
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
         <TimeWithTooltip

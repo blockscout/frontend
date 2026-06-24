@@ -4,6 +4,8 @@ import { chakra, createListCollection, Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
+
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import LinkNewTab from 'src/shared/links/LinkNewTab';
@@ -20,9 +22,9 @@ export interface Item {
 interface Props {
   className?: string;
   label: string;
-  selectedItem: Item;
-  onItemSelect: (item: Item) => void;
-  items: Array<Item>;
+  selectedItem: schemas['Implementation'];
+  onItemSelect: (item: schemas['Implementation']) => void;
+  items: Array<schemas['Implementation']>;
   isLoading?: boolean;
 }
 

@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FheOperation } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -12,7 +12,7 @@ import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from '
 import TxFHEOperationsTableItem from './TxFheOperationsTableItem';
 
 interface Props {
-  data: Array<FheOperation>;
+  data: Array<schemas['FheOperation']>;
   isLoading?: boolean;
 }
 
@@ -37,7 +37,7 @@ const TxFHEOperationsTable = ({ data, isLoading }: Props) => {
             { data.map((op) => (
               <TxFHEOperationsTableItem
                 key={ op.log_index }
-                { ...op }
+                data={ op }
                 isLoading={ isLoading }
               />
             )) }

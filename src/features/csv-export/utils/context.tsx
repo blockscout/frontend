@@ -4,7 +4,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { queryOptions, useQueries } from '@tanstack/react-query';
 import React from 'react';
 
-import type { CsvExportItemResponse } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -55,7 +55,7 @@ export function CsvExportContextProvider({ children }: CsvExportContextProviderP
                 pathParams: { id: item.request_id },
                 fetchParams: { signal },
                 chain,
-              }) as Promise<CsvExportItemResponse>);
+              }) as Promise<schemas['CSVExportResponse']>);
               if (response.status !== 'pending') {
                 const newItem = {
                   ...item,

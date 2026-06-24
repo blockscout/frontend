@@ -2,102 +2,14 @@
 
 import type { Abi, AbiType } from 'abitype';
 
-import type { schemas } from '@blockscout/api-types';
-import type { AddressImplementation } from 'src/slices/address/types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
-export type SmartContractCreationStatus = 'success' | 'failed' | 'selfdestructed';
-
-export type SmartContractLicenseType =
-'none' |
-'unlicense' |
-'mit' |
-'gnu_gpl_v2' |
-'gnu_gpl_v3' |
-'gnu_lgpl_v2_1' |
-'gnu_lgpl_v3' |
-'bsd_2_clause' |
-'bsd_3_clause' |
-'mpl_2_0' |
-'osl_3_0' |
-'apache_2_0' |
-'gnu_agpl_v3' |
-'bsl_1_1';
-
-export type SmartContractProxyType =
-  'eip1167' |
-  'eip1967' |
-  'eip1967_oz' |
-  'eip1967_beacon' |
-  'eip1822' |
-  'eip930' |
-  'eip2535' |
-  'eip7702' |
-  'erc7760' |
-  'master_copy' |
-  'basic_implementation' |
-  'basic_get_implementation' |
-  'comptroller' |
-  'clone_with_immutable_arguments' |
-  'resolved_delegate_proxy' |
-  'minimal_proxy' |
-  'unknown' |
-  null;
-
-export interface SmartContractConflictingImplementation {
-  proxy_type: NonNullable<schemas['ProxyType']>;
-  implementations: Array<AddressImplementation>;
-}
-
-// TODO @tom2drum remove this types
-export interface SmartContract {
-  deployed_bytecode: string | null;
-  creation_bytecode: string | null;
-  creation_status: SmartContractCreationStatus | null;
+export interface SmartContract extends Omit<schemas['SmartContract'], 'abi' | 'decoded_constructor_args'> {
   abi: Abi | null;
-  compiler_version: string | null;
-  evm_version: string | null;
-  optimization_enabled: boolean | null;
-  optimization_runs: number | string | null;
-  name: string | null;
-  verified_at: string | null;
-  is_blueprint: boolean | null;
-  is_verified: boolean | null;
-  is_verified_via_eth_bytecode_db: boolean | null;
-  is_changed_bytecode: boolean | null;
-  conflicting_implementations: Array<SmartContractConflictingImplementation> | null;
-
-  // sourcify info >>>
-  is_verified_via_sourcify: boolean | null;
-  is_fully_verified: boolean | null;
-  is_partially_verified: boolean | null;
-  sourcify_repo_url: string | null;
-  // <<<<
-  source_code: string | null;
-  constructor_args: string | null;
   decoded_constructor_args: Array<SmartContractDecodedConstructorArg> | null;
-  can_be_visualized_via_sol2uml: boolean | null;
-  file_path: string;
-  additional_sources: Array<{ file_path: string; source_code: string }>;
-  external_libraries: Array<SmartContractExternalLibrary> | null;
-  compiler_settings?: {
-    evmVersion?: string;
-    remappings?: Array<string>;
-  };
-  verified_twin_address_hash: string | null;
-  verified_twin_filecoin_robust_address?: string | null;
-  language: string | null;
-  license_type: SmartContractLicenseType | null;
-  certified?: boolean;
-  zk_compiler_version?: string;
-  github_repository_metadata?: {
-    commit?: string;
-    path_prefix?: string;
-    repository_url?: string;
-  };
-  package_name?: string;
 }
 
 export type SmartContractDecodedConstructorArg = [
@@ -109,10 +21,7 @@ export type SmartContractDecodedConstructorArg = [
   },
 ];
 
-export interface SmartContractExternalLibrary {
-  address_hash: string;
-  name: string;
-}
+export type SmartContractExternalLibrary = NonNullable<schemas['SmartContract']['external_libraries']>[number];
 
 // VERIFICATION
 
@@ -127,7 +36,7 @@ export interface SmartContractVerificationConfigRaw {
   stylus_compiler_versions?: Array<string>;
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
-  license_types: Record<SmartContractLicenseType, number>;
+  license_types: Record<NonNullable<schemas['SmartContract']['license_type']>, number>;
   zk_compiler_versions?: Array<string>;
   zk_optimization_modes?: Array<string>;
 }
@@ -148,50 +57,16 @@ export interface SmartContractVerificationError {
   name?: Array<string>;
 }
 
-// VERIFIED CONTRACTS
-
-// TODO @tom2drum remove this type
-export type VerifiedContractsLanguage = 'solidity' | 'vyper' | 'yul' | 'scilla' | 'stylus_rust' | 'geas';
-
-// The API doesn't return the full model but only these fields
-export interface VerifiedContract extends Pick<schemas['SmartContract'],
-  'certified' |
- 'coin_balance' |
- 'compiler_version' |
- 'language' |
- 'optimization_enabled' |
- 'transactions_count' |
- 'verified_at' |
- 'market_cap' |
- 'license_type' |
- 'zk_compiler_version'> {}
-
-export interface VerifiedContractsResponse {
-  items: Array<VerifiedContract>;
-  next_page_params: {
-    items_count: string;
-    smart_contract_id: string;
-  } | null;
-}
-
-export type VerifiedContractsFilter = VerifiedContractsLanguage;
+export type VerifiedContractsFilter = NonNullable<NonNullable<operations['SmartContractController.smart_contracts_list']['params']['query']>['filter']>;
 
 export interface VerifiedContractsFilters {
   q: string | undefined;
   filter: VerifiedContractsFilter | undefined;
 }
 
-// TODO @tom2drum remove this types
-export type VerifiedContractsCounters = {
-  new_smart_contracts_24h: string;
-  new_verified_smart_contracts_24h: string;
-  smart_contracts: string;
-  verified_smart_contracts: string;
-};
-
 export interface VerifiedContractsSorting {
-  sort: 'balance' | 'transactions_count';
-  order: 'asc' | 'desc';
+  sort: NonNullable<NonNullable<NonNullable<operations['SmartContractController.smart_contracts_list']['params']['query']>['sort']>>;
+  order: NonNullable<NonNullable<NonNullable<operations['SmartContractController.smart_contracts_list']['params']['query']>['order']>>;
 }
 
 export type VerifiedContractsSortingField = VerifiedContractsSorting['sort'];

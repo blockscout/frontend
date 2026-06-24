@@ -1,6 +1,5 @@
-import type { TxRawTracesResponse } from '../types/api';
+import type { operations, schemas } from '@blockscout/api-types';
 import type * as stats from '@blockscout/stats-types';
-import type { Transaction, TransactionsStats } from 'src/slices/tx/types/api';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 
@@ -8,7 +7,7 @@ import { CHAIN_STATS_COUNTER } from 'src/features/chain-stats/stubs/counters';
 
 export const TX_HASH = '0x3ed9d81e7c1001bdda1caa1dc62c0acbbe3d2c671cdc20dc1e65efdaa4186967';
 
-export const TX: Transaction = {
+export const TX: schemas['TransactionResponse'] = {
   timestamp: '2022-11-11T11:11:11.000000Z',
   fee: {
     type: 'actual',
@@ -26,7 +25,7 @@ export const TX: Transaction = {
   transaction_burnt_fee: null,
   max_fee_per_gas: null,
   result: 'success',
-  hash: '0x2b824349b320cfa72f292ab26bf525adb00083ba9fa097141896c3c8c74567cc',
+  hash: TX_HASH,
   gas_price: '100000000000',
   priority_fee: null,
   base_fee_per_gas: '24',
@@ -40,7 +39,6 @@ export const TX: Transaction = {
   position: 0,
   nonce: 295929,
   has_error_in_internal_transactions: false,
-  actions: [],
   decoded_input: null,
   token_transfers_overflow: false,
   raw_input: '0x',
@@ -52,11 +50,19 @@ export const TX: Transaction = {
     14545,
   ],
   transaction_tag: null,
+  authorization_list: [],
+  fhe_operations_count: 0,
+  is_pending_update: false,
 };
 
-export const TX_RAW_TRACE: TxRawTracesResponse = [];
+export const TX_ITEM: schemas['Transaction'] = {
+  ...TX,
+  op_interop_messages: undefined,
+};
 
-export const TXS_STATS: TransactionsStats = {
+export const TX_RAW_TRACE: schemas['RawTrace'] = [];
+
+export const TXS_STATS: operations['TransactionController.stats']['json'] = {
   pending_transactions_count: '4200',
   transaction_fees_avg_24h: '22342870314428',
   transaction_fees_sum_24h: '22184012506492688277',

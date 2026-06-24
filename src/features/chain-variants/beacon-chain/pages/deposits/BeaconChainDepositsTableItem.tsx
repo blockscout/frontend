@@ -18,7 +18,7 @@ import BeaconChainDepositStatusTag from '../../components/BeaconChainDepositStat
 import BeaconChainValidatorLink from '../../components/BeaconChainValidatorLink';
 
 type Props = {
-  item: schemas['Deposit'];
+  item: schemas['BeaconDeposit'];
   view: 'list' | 'address' | 'block';
   isLoading?: boolean;
 };

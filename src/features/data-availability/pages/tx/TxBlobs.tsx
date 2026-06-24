@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
@@ -12,9 +12,6 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import { TX_BLOB } from 'src/features/data-availability/stubs';
 
 import DataList from 'src/shared/lists/DataList';
-import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
-import { generateListStub } from 'src/shared/pagination/utils';
 
 import TxBlobsList from './TxBlobsList';
 import TxBlobsTable from './TxBlobsTable';
@@ -24,12 +21,11 @@ interface Props {
 }
 
 const TxBlobs = ({ txQuery }: Props) => {
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
-    resourceName: 'core:tx_blobs',
+  const { data, isPlaceholderData, isError } = useApiQuery('core:tx_blobs', {
     pathParams: { hash: txQuery.data?.hash },
-    options: {
+    queryOptions: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'core:tx_blobs'>(TX_BLOB, 3, { next_page_params: null }),
+      placeholderData: { items: Array(3).fill(TX_BLOB) },
     },
   });
 
@@ -37,10 +33,10 @@ const TxBlobs = ({ txQuery }: Props) => {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  const content = data ? (
+  const content = data?.items ? (
     <>
       <Box hideBelow="lg">
-        <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
+        <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData }/>
       </Box>
       <Box hideFrom="lg">
         <TxBlobsList data={ data.items } isLoading={ isPlaceholderData }/>
@@ -48,18 +44,11 @@ const TxBlobs = ({ txQuery }: Props) => {
     </>
   ) : null;
 
-  const actionBar = pagination.isVisible ? (
-    <ActionBar mt={ -6 } showShadow>
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
-  ) : null;
-
   return (
     <DataList
       isError={ isError || txQuery.isError }
-      itemsNum={ data?.items.length }
+      itemsNum={ data?.items?.length }
       emptyText="There are no blobs for this transaction."
-      actionBar={ actionBar }
     >
       { content }
     </DataList>

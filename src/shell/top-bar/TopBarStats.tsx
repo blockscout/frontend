@@ -7,6 +7,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'src/slices/gas/components/GasPrice';
+import discriminateDetailedPrices from 'src/slices/gas/utils/price';
 import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 
 import GetGasButton from 'src/features/get-gas-button/components/GetGasButton';
@@ -34,7 +35,7 @@ const TopBarStats = () => {
       return;
     }
 
-    const endDate = dayjs(dataUpdatedAt).add(data.gas_prices_update_in, 'ms');
+    const endDate = dayjs(dataUpdatedAt).add(data.gas_prices_update_in ?? 0, 'ms');
     const timeout = endDate.diff(dayjs(), 'ms');
 
     if (timeout <= 0) {
@@ -56,7 +57,8 @@ const TopBarStats = () => {
 
   const hasNativeCoinPrice = data?.coin_price && !config.chain.currency.isPriceHidden;
   const hasSecondaryCoinPrice = data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (hasNativeCoinPrice ? !isMobile : true);
-  const hasGasInfo = data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && !isMobile;
+  const gasPrices = discriminateDetailedPrices(data?.gas_prices);
+  const hasGasInfo = gasPrices !== undefined && config.features.gasTracker.isEnabled && !isMobile;
 
   return (
     <>
@@ -91,14 +93,16 @@ const TopBarStats = () => {
         { (hasNativeCoinPrice || hasSecondaryCoinPrice) && hasGasInfo && <TextSeparator/> }
         { hasGasInfo && (
           <>
-            <Skeleton loading={ isPlaceholderData } whiteSpace="pre-wrap">
-              <chakra.span color="text.secondary">Gas </chakra.span>
-              <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
-                <Link>
-                  <GasPrice data={ data.gas_prices?.average ?? null }/>
-                </Link>
-              </GasInfoTooltip>
-            </Skeleton>
+            { data && (
+              <Skeleton loading={ isPlaceholderData } whiteSpace="pre-wrap">
+                <chakra.span color="text.secondary">Gas </chakra.span>
+                <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
+                  <Link>
+                    <GasPrice data={ gasPrices.average ?? null }/>
+                  </Link>
+                </GasInfoTooltip>
+              </Skeleton>
+            ) }
             { !isPlaceholderData && <GetGasButton/> }
           </>
         ) }

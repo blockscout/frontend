@@ -3,12 +3,12 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Transaction } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
 interface Props {
-  tx: Transaction;
+  tx: schemas['Transaction'];
   isLoading?: boolean;
 }
 

@@ -3,7 +3,7 @@
 import { Grid, GridItem, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -14,7 +14,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { PROXY_TYPES } from './utils';
 
 interface Props {
-  data: Array<SmartContractConflictingImplementation>;
+  data: NonNullable<schemas['SmartContract']['conflicting_implementations']>;
   children: React.ReactNode;
 }
 
@@ -36,7 +36,7 @@ const ConflictingImplementationsModal = ({ data, children }: Props) => {
             { data.map((item) => {
               const addressNum = item.implementations.length;
               const addressText = addressNum === 1 ? 'Implementation:' : 'Implementations:';
-              const proxyType = PROXY_TYPES[item.proxy_type]?.name || 'Unknown';
+              const proxyType = item.proxy_type ? PROXY_TYPES[item.proxy_type]?.name || 'Unknown' : 'Unknown';
 
               return (
                 <Grid

@@ -1,4 +1,4 @@
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 import type {
   TokenType,
 } from 'src/slices/token/types/api';
@@ -62,7 +62,7 @@ export const TOKEN_HOLDER_ERC_1155: schemas['TokenHolderResponse'] = {
 };
 
 export const getTokenHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
-merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] => {
+paths['/v2/tokens/{address_hash_param}/holders']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
@@ -76,7 +76,7 @@ merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200
 };
 
 export const getTokenInstanceHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
-merged.paths['/v2/tokens/{address_hash_param}/holders']['get']['responses']['200']['content']['application/json'] => {
+paths['/v2/tokens/{address_hash_param}/holders']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });

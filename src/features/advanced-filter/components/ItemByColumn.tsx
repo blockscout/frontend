@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AdvancedFilterResponseItem } from '../types/api';
 import type { ColumnsIds } from '../types/client';
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
@@ -25,7 +25,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { getAdvancedFilterTypes } from '../utils/lib';
 
 type Props = {
-  item: AdvancedFilterResponseItem;
+  item: schemas['AdvancedFilterItem'];
   column: ColumnsIds;
   isLoading?: boolean;
   chainConfig?: ClusterChainConfig['app_config'];
@@ -47,11 +47,11 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
     case 'age':
       return <TimeWithTooltip timestamp={ item.timestamp } isLoading={ isLoading } color="text.secondary" fontWeight={ 400 }/>;
     case 'from':
-      return (
+      return item.from ? (
         <Flex w="100%">
           <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
         </Flex>
-      );
+      ) : null;
     case 'to': {
       const address = item.to ? item.to : item.created_contract;
       if (!address) {
@@ -77,7 +77,7 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
       if (item.token && isConfidentialTokenType(item.token.type)) {
         return <ConfidentialValue loading={ isLoading }/>;
       }
-      if (item.total) {
+      if (item.total && 'value' in item.total) {
         return (
           <AssetValue
             amount={ item.total?.value }

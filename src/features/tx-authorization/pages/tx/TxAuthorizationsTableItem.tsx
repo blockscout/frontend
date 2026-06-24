@@ -3,7 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAuthorization } from 'src/features/tx-authorization/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -14,35 +14,36 @@ import config from 'src/config';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'src/toolkit/chakra/table';
 
-interface Props extends TxAuthorization {
+interface Props {
+  data: schemas['SignedAuthorization'];
   isLoading?: boolean;
 }
 
-const TxAuthorizationsItem = ({ address_hash: addressHash, authority, chain_id: chainId, nonce, isLoading, status }: Props) => {
+const TxAuthorizationsItem = ({ data, isLoading }: Props) => {
   return (
     <TableRow alignItems="top">
       <TableCell>
         <Flex>
-          <AddressEntity address={{ hash: addressHash }} isLoading={ isLoading } noIcon/>
+          <AddressEntity address={{ hash: data.authority }} isLoading={ isLoading } noIcon/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Flex>
-          <AddressEntity address={{ hash: authority }} isLoading={ isLoading } noIcon/>
+          <AddressEntity address={{ hash: data.address_hash }} isLoading={ isLoading } noIcon/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
-          { chainId === Number(config.chain.id) ? 'this' : 'any' }
+          { data.chain_id === Number(config.chain.id) ? 'this' : 'any' }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
-          { nonce }
+          { data.nonce }
         </Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TxAuthorizationStatus status={ status } loading={ isLoading }/>
+        <TxAuthorizationStatus status={ data.status } loading={ isLoading }/>
       </TableCell>
     </TableRow>
   );

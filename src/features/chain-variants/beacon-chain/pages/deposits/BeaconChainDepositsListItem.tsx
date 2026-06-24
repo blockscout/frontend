@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -19,8 +19,8 @@ import BeaconChainValidatorLink from '../../components/BeaconChainValidatorLink'
 
 const feature = config.features.beaconChain;
 
-type Props = {
-  item: DepositsItem;
+interface Props {
+  item: schemas['BeaconDeposit'];
   view: 'list' | 'address' | 'block';
   isLoading?: boolean;
 };
@@ -33,30 +33,42 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="120px auto">
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Transaction hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long"/>
-      </ListItemMobileGrid.Value>
+      { item.transaction_hash && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Transaction hash</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long"/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       { view !== 'block' && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
-            <BlockEntity
-              number={ item.block_number }
-              hash={ item.block_hash }
-              isLoading={ isLoading }
-            />
-          </ListItemMobileGrid.Value>
+          { item.block_number && (
+            <>
+              <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
+              <ListItemMobileGrid.Value>
+                <BlockEntity
+                  number={ item.block_number }
+                  hash={ item.block_hash }
+                  isLoading={ isLoading }
+                />
+              </ListItemMobileGrid.Value>
+            </>
+          ) }
 
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
-          <ListItemMobileGrid.Value>
-            <TimeWithTooltip
-              timestamp={ item.block_timestamp }
-              isLoading={ isLoading }
-              display="inline-block"
-            />
-          </ListItemMobileGrid.Value>
+          { item.block_timestamp && (
+            <>
+              <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+              <ListItemMobileGrid.Value>
+                <TimeWithTooltip
+                  timestamp={ item.block_timestamp }
+                  isLoading={ isLoading }
+                  display="inline-block"
+                />
+              </ListItemMobileGrid.Value>
+            </>
+          ) }
         </>
       ) }
 
@@ -68,7 +80,7 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { view !== 'address' && (
+      { view !== 'address' && item.from_address && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -81,15 +93,23 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
         </>
       ) }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>PubKey</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <BeaconChainValidatorLink pubkey={ item.pubkey } isLoading={ isLoading }/>
-      </ListItemMobileGrid.Value>
+      { item.pubkey && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>PubKey</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <BeaconChainValidatorLink pubkey={ item.pubkey } isLoading={ isLoading }/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Signature</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/>
-      </ListItemMobileGrid.Value>
+      { item.signature && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Signature</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <BeaconChainDepositSignature signature={ item.signature } isLoading={ Boolean(isLoading) }/>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

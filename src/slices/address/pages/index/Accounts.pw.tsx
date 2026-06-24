@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { merged } from '@blockscout/api-types';
+import type { paths } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
@@ -8,7 +8,7 @@ import { test, expect } from 'playwright/lib';
 
 import Accounts from './Accounts';
 
-const addresses: merged.paths['/v2/addresses']['get']['responses']['200']['content']['application/json'] = {
+const addresses: paths['/v2/addresses']['get'] = {
   items: [
     {
       ...addressParamMock.withName,

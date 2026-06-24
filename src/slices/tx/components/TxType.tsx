@@ -2,17 +2,17 @@
 
 import React from 'react';
 
-import type { TransactionType } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
 export interface Props extends BadgeProps {
-  types: Array<TransactionType>;
+  types: schemas['Transaction']['transaction_types'];
   isLoading?: boolean;
 }
 
-const TYPES_ORDER: Array<TransactionType> = [
+const TYPES_ORDER: schemas['Transaction']['transaction_types'] = [
   'blob_transaction',
   'rootstock_remasc',
   'rootstock_bridge',

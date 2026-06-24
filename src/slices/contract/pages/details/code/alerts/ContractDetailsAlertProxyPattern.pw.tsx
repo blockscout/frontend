@@ -28,14 +28,14 @@ test('proxy type with conflicting implementations', async({ render, page }) => {
         {
           proxy_type: 'eip1967',
           implementations: [
-            { address_hash: '0x568AA6C21cCf558C47F2A01B60cc6D549cED2F59' },
+            { address_hash: '0x568AA6C21cCf558C47F2A01B60cc6D549cED2F59', name: null },
           ],
         },
         {
           proxy_type: 'eip1967_oz',
           implementations: [
             { address_hash: '0x7d608aBCf9a3BE6B869E745E6F8dB3434877D60F', name: 'Implementation 3' },
-            { address_hash: '0x568AA6C21cCf558C47F2A01B60cc6D549cED2F59' },
+            { address_hash: '0x568AA6C21cCf558C47F2A01B60cc6D549cED2F59', name: null },
           ],
         },
       ] }

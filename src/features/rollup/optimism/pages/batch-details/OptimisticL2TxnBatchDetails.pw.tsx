@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { OptimismL2TxnBatch } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -25,7 +25,7 @@ test.beforeEach(async({ mockEnvs }) => {
 test('call data blob container +@mobile', async({ render }) => {
   const query = {
     data: txnBatchesMock.txnBatchTypeCallData,
-  } as UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  } as UseQueryResult<schemas['OptimismBatchDetailed'], ResourceError>;
   const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
@@ -33,7 +33,7 @@ test('call data blob container +@mobile', async({ render }) => {
 test('celestia blob container +@mobile', async({ render }) => {
   const query = {
     data: txnBatchesMock.txnBatchTypeCelestia,
-  } as UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  } as UseQueryResult<schemas['OptimismBatchDetailed'], ResourceError>;
   const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
@@ -41,7 +41,7 @@ test('celestia blob container +@mobile', async({ render }) => {
 test('EIP-4844 blob container +@mobile', async({ render }) => {
   const query = {
     data: txnBatchesMock.txnBatchTypeEip4844,
-  } as UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  } as UseQueryResult<schemas['OptimismBatchDetailed'], ResourceError>;
   const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
@@ -49,7 +49,7 @@ test('EIP-4844 blob container +@mobile', async({ render }) => {
 test('Eigenda blob container +@mobile', async({ render }) => {
   const query = {
     data: txnBatchesMock.txnBatchTypeEigenda,
-  } as UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  } as UseQueryResult<schemas['OptimismBatchDetailed'], ResourceError>;
   const component = await render(<OptimisticL2TxnBatchDetails query={ query }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

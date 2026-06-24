@@ -22,7 +22,7 @@ const TxAuthorizations = ({ txQuery }: Props) => {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  const content = (
+  const content = txQuery.data?.authorization_list ? (
     <>
       <Box hideFrom="lg">
         <TxAuthorizationsList data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
@@ -31,7 +31,7 @@ const TxAuthorizations = ({ txQuery }: Props) => {
         <TxAuthorizationsTable data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
       </Box>
     </>
-  );
+  ) : null;
 
   return (
     <DataList

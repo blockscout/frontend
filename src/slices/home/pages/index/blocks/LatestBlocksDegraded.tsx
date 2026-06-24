@@ -4,7 +4,7 @@ import { Box, Flex, VStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { Block } from 'src/slices/block/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { BLOCK } from 'src/slices/block/stubs/block';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
@@ -34,7 +34,7 @@ const LatestBlocksDegraded = ({ maxNum }: Props) => {
   }, [ enable ]);
 
   const initialList = useInitialList({
-    data: [] as Array<Block>,
+    data: [] as Array<schemas['Block']>,
     idFn: (block) => block.height,
     enabled: !isError,
   });

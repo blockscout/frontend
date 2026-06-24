@@ -3,9 +3,9 @@
 import { Flex, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { NovesDescribeTxsResponse } from 'src/features/tx-interpretation/noves/types/api';
-import type { Transaction } from 'src/slices/tx/types/api';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import BlockPendingUpdateHint from 'src/slices/block/components/BlockPendingUpdateHint';
@@ -29,7 +29,7 @@ import { Badge } from 'src/toolkit/chakra/badge';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  tx: Transaction;
+  tx: schemas['Transaction'];
   showBlockInfo: boolean;
   currentAddress?: string;
   enableTimeIncrement?: boolean;

@@ -1,6 +1,6 @@
-import type { TransactionsStats } from 'src/slices/tx/types/api';
+import type { operations } from '@blockscout/api-types';
 
-export const base: TransactionsStats = {
+export const base: operations['TransactionController.stats']['json'] = {
   pending_transactions_count: '4200',
   transaction_fees_avg_24h: '22342870314428',
   transaction_fees_sum_24h: '22184012506492688277',

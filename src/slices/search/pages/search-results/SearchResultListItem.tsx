@@ -379,6 +379,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
       case 'transaction': {
+        if (!data.timestamp) {
+          return null;
+        }
         return (
           <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
         );
@@ -394,6 +397,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
       case 'user_operation': {
+        if (!data.timestamp) {
+          return null;
+        }
 
         return (
           <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>

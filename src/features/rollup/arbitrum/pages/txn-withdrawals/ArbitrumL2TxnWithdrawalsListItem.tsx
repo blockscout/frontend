@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import AddressEntityL1 from 'src/features/rollup/common/components/AddressEntityL1';
 
@@ -18,7 +18,7 @@ import ArbitrumL2TxnWithdrawalsValue from './ArbitrumL2TxnWithdrawalsValue';
 const rollupFeature = config.features.rollup;
 
 interface Props {
-  data: ArbitrumL2TxnWithdrawalsItem;
+  data: schemas['ArbitrumWithdrawal'];
   isLoading: boolean;
   txHash: string | undefined;
 }

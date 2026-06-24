@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { OptimismL2TxnBatch } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -28,7 +28,7 @@ import OptimisticL2TxnBatchBlobEigenda from './OptimisticL2TxnBatchBlobEigenda';
 import OptimisticL2TxnBatchBlobEip4844 from './OptimisticL2TxnBatchBlobEip4844';
 
 interface Props {
-  query: UseQueryResult<OptimismL2TxnBatch, ResourceError>;
+  query: UseQueryResult<schemas['OptimismBatchDetailed'], ResourceError>;
 }
 
 const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
@@ -59,7 +59,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const blocksCount = data.l2_end_block_number - data.l2_start_block_number + 1;
+  const blocksCount = data.l2_end_block_number && data.l2_start_block_number ? data.l2_end_block_number - data.l2_start_block_number + 1 : 0;
 
   return (
     <DetailedInfo.Container
@@ -107,7 +107,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
           <Link href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
+            { (data.transactions_count ?? 0).toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
           </Link>
           { ' ' }in this batch
         </Skeleton>
@@ -135,7 +135,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         Batch data container
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexDir="column" alignItems="flex-start" rowGap={ 2 }>
-        <TxnBatchDA container={ data.batch_data_container } isLoading={ isPlaceholderData } mt={{ base: 0, lg: 1 }}/>
+        <TxnBatchDA container={ data.batch_data_container ?? undefined } isLoading={ isPlaceholderData } mt={{ base: 0, lg: 1 }}/>
         { data.batch_data_container === 'in_blob4844' && data.blobs &&
           <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
         { data.batch_data_container === 'in_calldata' && (

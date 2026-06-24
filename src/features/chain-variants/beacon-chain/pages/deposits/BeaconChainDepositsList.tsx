@@ -3,18 +3,17 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { DepositsItem } from 'src/features/chain-variants/beacon-chain/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import BeaconChainDepositsListItem from './BeaconChainDepositsListItem';
 
-type Props = {
+interface Props {
   isLoading?: boolean;
-} & ({
-  items: Array<DepositsItem>;
+  items: Array<schemas['BeaconDeposit']>;
   view: 'list' | 'block' | 'address';
-});
+}
 
 const DepositsList = ({ items, view, isLoading }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
@@ -27,7 +26,7 @@ const DepositsList = ({ items, view, isLoading }: Props) => {
         return (
           <BeaconChainDepositsListItem
             key={ key }
-            item={ item as DepositsItem }
+            item={ item }
             view={ view }
             isLoading={ isLoading }
           />

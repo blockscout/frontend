@@ -1,4 +1,4 @@
-import type { SearchResultDomain } from 'src/features/name-services/domains/types/api';
+import type { SearchResultDomain } from '../types/api';
 
 export const domain1: SearchResultDomain = {
   address_hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
@@ -13,4 +13,7 @@ export const domain1: SearchResultDomain = {
   name: null,
   type: 'ens_domain',
   url: '/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  priority: 0,
+  reputation: 'ok',
+  certified: false,
 };

@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { CeloEpochDetails } from 'src/features/chain-variants/celo/types/api';
-import type { ExcludeNull } from 'src/shared/types/utils';
+import type { schemas } from '@blockscout/api-types';
 
-export function getRewardNumText(type: keyof CeloEpochDetails['aggregated_election_rewards'], num: number) {
+export function getRewardNumText(type: keyof schemas['CeloEpochAggregatedElectionRewards'], num: number) {
   const postfix1 = num !== 1 ? 's' : '';
   const postfix2 = num !== 1 ? 'es' : '';
 
@@ -29,7 +28,7 @@ export function getRewardNumText(type: keyof CeloEpochDetails['aggregated_electi
   return `${ num } ${ text }`;
 }
 
-export function getRewardDetailsTableTitles(type: keyof ExcludeNull<CeloEpochDetails['aggregated_election_rewards']>): [string, string] {
+export function getRewardDetailsTableTitles(type: keyof NonNullable<schemas['CeloEpochDetailed']['aggregated_election_rewards']>): [string, string] {
   switch (type) {
     case 'delegated_payment':
       return [ 'Beneficiary', 'Validator' ];
@@ -42,6 +41,6 @@ export function getRewardDetailsTableTitles(type: keyof ExcludeNull<CeloEpochDet
   }
 }
 
-export function formatRewardType(type: keyof ExcludeNull<CeloEpochDetails['aggregated_election_rewards']>) {
+export function formatRewardType(type: keyof NonNullable<schemas['CeloEpochDetailed']['aggregated_election_rewards']>) {
   return type.replaceAll('_', '-');
 }

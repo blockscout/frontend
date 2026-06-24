@@ -1,12 +1,13 @@
-import type { HomeStats } from 'src/slices/home/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 export const HOMEPAGE_HIGHLIGHTS_BANNER = {
   title: 'Duck Deep into Transactions',
   description: 'Explore and track all blockchain transactions',
 };
 
-export const HOMEPAGE_STATS: HomeStats = {
+export const HOMEPAGE_STATS: schemas['StatsResponse'] = {
   average_block_time: 14346,
+  coin_image: null,
   coin_price: '1807.68',
   coin_price_change_percentage: 42,
   gas_prices: {
@@ -16,6 +17,8 @@ export const HOMEPAGE_STATS: HomeStats = {
       time: 12283,
       base_fee: 2.22222,
       priority_fee: 12.424242,
+      priority_fee_wei: '12.424242',
+      wei: '12.424242',
     },
     fast: {
       fiat_price: '1.26',
@@ -23,6 +26,8 @@ export const HOMEPAGE_STATS: HomeStats = {
       time: 9321,
       base_fee: 4.44444,
       priority_fee: 22.242424,
+      priority_fee_wei: '22.242424',
+      wei: '22.242424',
     },
     slow: {
       fiat_price: '0.97',
@@ -30,6 +35,8 @@ export const HOMEPAGE_STATS: HomeStats = {
       time: 24543,
       base_fee: 1.11111,
       priority_fee: 7.8909,
+      priority_fee_wei: '7.8909',
+      wei: '7.8909',
     },
   },
   gas_price_updated_at: '2022-11-11T11:09:49.051171Z',
@@ -44,4 +51,6 @@ export const HOMEPAGE_STATS: HomeStats = {
   total_transactions: '193823272',
   transactions_today: '0',
   tvl: '1767425.102766552',
+  secondary_coin_image: null,
+  secondary_coin_price: null,
 };

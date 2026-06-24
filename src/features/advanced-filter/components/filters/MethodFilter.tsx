@@ -4,7 +4,8 @@ import { Flex, Spinner, chakra } from '@chakra-ui/react';
 import { isEqual, differenceBy } from 'es-toolkit';
 import React from 'react';
 
-import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from '../../types/api';
+import type { AdvancedFilterParams } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -21,15 +22,15 @@ const FILTER_PARAM = 'methods';
 const NAMES_PARAM = 'methods_names';
 
 type Props = {
-  value?: Array<AdvancedFilterMethodInfo>;
+  value?: Array<schemas['AdvancedFilterMethod']>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
 };
 
 const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
-  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>([ ...value ]);
+  const [ currentValue, setCurrentValue ] = React.useState<Array<schemas['AdvancedFilterMethod']>>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>([]);
+  const [ methodsList, setMethodsList ] = React.useState<Array<schemas['AdvancedFilterMethod']>>([]);
 
   const onSearchChange = React.useCallback((value: string) => {
     setSearchTerm(value);

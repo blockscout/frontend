@@ -9,7 +9,7 @@ import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
 export interface Props extends Omit<BadgeProps, 'container'> {
-  container: ExcludeUndefined<schemas['BlockResponse']['optimism']>['batch_data_container'];
+  container?: ExcludeUndefined<schemas['BlockResponse']['optimism']>['batch_data_container'];
   isLoading?: boolean;
 }
 

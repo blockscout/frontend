@@ -4,7 +4,6 @@ import { VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
 
 import ContractCodeProxyPattern from '../code/alerts/ContractDetailsAlertProxyPattern';
 import ConnectWalletAlert from './alerts/ConnectWalletAlert';
@@ -14,7 +13,7 @@ interface Props {
   isLoading?: boolean;
   isCustomAbi?: boolean;
   proxyType?: schemas['ProxyType'];
-  conflictingImplementations?: Array<SmartContractConflictingImplementation>;
+  conflictingImplementations?: schemas['SmartContract']['conflicting_implementations'];
 }
 
 const ContractMethodsAlerts = ({ isLoading, isCustomAbi, proxyType, conflictingImplementations }: Props) => {

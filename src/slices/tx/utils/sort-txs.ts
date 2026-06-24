@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Transaction, TransactionsSortingValue } from 'src/slices/tx/types/api';
+import type { schemas } from '@blockscout/api-types';
+import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import compareBns from 'src/shared/numbers/compareBns';
 import { collator } from 'src/shared/texts/collator';
 
 export default function sortTxs(sorting: TransactionsSortingValue | undefined) {
-  return function sortingFn(tx1: Transaction, tx2: Transaction) {
+  return function sortingFn(tx1: schemas['Transaction'], tx2: schemas['Transaction']) {
     switch (sorting) {
       case 'value-desc':
         return compareBns(tx2.value, tx1.value);
@@ -33,7 +34,7 @@ export function sortTxsFromSocket(sorting: TransactionsSortingValue | undefined)
     return sortTxs(sorting);
   }
 
-  return function sortingFn(tx1: Transaction, tx2: Transaction) {
+  return function sortingFn(tx1: schemas['Transaction'], tx2: schemas['Transaction']) {
     if (!tx1.timestamp) {
       return -1;
     }

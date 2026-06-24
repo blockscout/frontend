@@ -8,8 +8,8 @@ import {
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { schemas } from '@blockscout/api-types';
 import type { ExcludeUndefined } from 'src/shared/types/utils';
-import type { HomeStats } from 'src/slices/home/types/api';
 
 import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
@@ -18,12 +18,13 @@ import { Link } from 'src/toolkit/chakra/link';
 import type { TooltipProps } from 'src/toolkit/chakra/tooltip';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
+import discriminateDetailedPrices from '../utils/price';
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';
 
 interface Props {
   children: React.ReactNode;
-  data: HomeStats;
+  data: schemas['StatsResponse'];
   dataUpdatedAt: number;
   placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
 }
@@ -31,13 +32,14 @@ interface Props {
 const feature = config.features.gasTracker;
 
 const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => {
-  if (!data.gas_prices) {
+  const prices = discriminateDetailedPrices(data.gas_prices);
+  if (!prices) {
     return null;
   }
 
   const columnNum =
-    Object.values(data.gas_prices).some((price) => price?.fiat_price) &&
-    Object.values(data.gas_prices).some((price) => price?.price) &&
+    Object.values(prices).some((price) => price?.fiat_price) &&
+    Object.values(prices).some((price) => price?.price) &&
     feature.isEnabled && feature.units.length === 2 ?
       3 : 2;
 
@@ -48,15 +50,15 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, placement }: Props) => 
           <Box color="text.secondary">Last update</Box>
           <Flex color="text.secondary" justifyContent="flex-end" alignItems="center" columnGap={ 2 } ml={ 3 }>
             <Time timestamp={ data.gas_price_updated_at } format="MMM DD, HH:mm:ss"/>
-            { data.gas_prices_update_in !== 0 &&
+            { data.gas_prices_update_in !== null && data.gas_prices_update_in !== 0 &&
               <GasInfoUpdateTimer key={ dataUpdatedAt } startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }
           </Flex>
         </Flex>
       ) }
       <Grid rowGap={ 2 } columnGap="10px" gridTemplateColumns={ `repeat(${ columnNum }, minmax(min-content, auto))` }>
-        <GasInfoTooltipRow name="Fast" info={ data.gas_prices.fast }/>
-        <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
-        <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
+        <GasInfoTooltipRow name="Fast" info={ prices.fast }/>
+        <GasInfoTooltipRow name="Normal" info={ prices.average }/>
+        <GasInfoTooltipRow name="Slow" info={ prices.slow }/>
       </Grid>
       <Link href={ route({ pathname: '/gas-tracker' }) }>
         Gas tracker overview

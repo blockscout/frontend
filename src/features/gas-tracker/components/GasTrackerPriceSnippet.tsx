@@ -3,7 +3,7 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { GasPriceInfo, GasPrices } from 'src/slices/gas/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import GasPrice from 'src/slices/gas/components/GasPrice';
 
@@ -15,17 +15,17 @@ import { SECOND } from 'src/toolkit/utils/consts';
 import { asymp } from 'src/toolkit/utils/htmlEntities';
 
 interface Props {
-  type: keyof GasPrices;
-  data: GasPriceInfo;
+  type: keyof schemas['StatsGasPricesDetailed'];
+  data: schemas['StatsGasPriceInfo'];
   isLoading: boolean;
 }
 
-const TITLES: Record<keyof GasPrices, string> = {
+const TITLES: Record<keyof schemas['StatsGasPricesDetailed'], string> = {
   fast: 'Fast',
   average: 'Normal',
   slow: 'Slow',
 };
-const ICONS: Record<keyof GasPrices, IconName> = {
+const ICONS: Record<keyof schemas['StatsGasPricesDetailed'], IconName> = {
   fast: 'rocket_xl',
   average: 'gas_xl',
   slow: 'gas_xl',

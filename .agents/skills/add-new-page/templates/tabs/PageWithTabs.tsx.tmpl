@@ -1,0 +1,36 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import React from 'react';
+
+import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
+
+import PageTitle from 'src/shell/page/title/PageTitle';
+
+// Each tab's body lives in its own kebab-case sub-folder under the page dir
+// (mirrors src/slices/tx/pages/details/{info,logs,state,...}). Name components __PageName__<TabName>.
+import __PageName__Tab1 from 'src/__area__/__featureName__/pages/__pageDir__/tab1/__PageName__Tab1';
+import __PageName__Tab2 from 'src/__area__/__featureName__/pages/__pageDir__/tab2/__PageName__Tab2';
+
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+const __PageName__ = () => {
+  // Detail (entity) pages: read the route param here for the title, e.g.
+  //   const router = useRouter();
+  //   const __entityParam__ = getQueryParamString(router.query.__entityParam__);
+
+  // TODO: wire up data (useApiQuery / useQueryWithPages) — out of scaffold scope.
+
+  const tabs: Array<TabItemRegular> = [
+    { id: 'tab1', title: 'Tab 1', component: <__PageName__Tab1/> },
+    { id: 'tab2', title: 'Tab 2', component: <__PageName__Tab2/> },
+  ];
+
+  return (
+    <>
+      <PageTitle title="__title__"/>
+      <RoutedTabs tabs={ tabs }/>
+    </>
+  );
+};
+
+export default __PageName__;

@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { merged, schemas } from '@blockscout/api-types';
+import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
@@ -25,19 +25,19 @@ const nextPageParams = {
 };
 
 test.beforeEach(async({ mockApiResponse }) => {
-  const response20: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
+  const response20: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d ],
     next_page_params: nextPageParams,
   };
-  const response721: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
+  const response721: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc721a, tokensMock.erc721b, tokensMock.erc721c ],
     next_page_params: nextPageParams,
   };
-  const response1155: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
+  const response1155: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc1155a, tokensMock.erc1155b ],
     next_page_params: nextPageParams,
   };
-  const response404: merged.paths['/v2/addresses/{address_hash_param}/tokens']['get']['responses']['200']['content']['application/json'] = {
+  const response404: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc404a, tokensMock.erc404b ],
     next_page_params: nextPageParams,
   };

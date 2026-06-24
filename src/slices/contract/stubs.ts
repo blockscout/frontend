@@ -1,4 +1,4 @@
-import type { SmartContract, VerifiedContractsCounters } from './types/api';
+import type { SmartContract } from './types/api';
 import type { schemas } from '@blockscout/api-types';
 import type * as stats from '@blockscout/stats-types';
 
@@ -80,7 +80,7 @@ export const VERIFIED_CONTRACT_INFO: schemas['SmartContractListItem'] = {
   reputation: 'ok',
 };
 
-export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {
+export const VERIFIED_CONTRACTS_COUNTERS: schemas['SmartContractCounters'] = {
   smart_contracts: '123456789',
   new_smart_contracts_24h: '12345',
   verified_smart_contracts: '654321',

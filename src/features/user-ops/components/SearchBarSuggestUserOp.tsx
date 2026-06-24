@@ -3,7 +3,7 @@
 import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SearchResultUserOp } from 'src/features/user-ops/types/api';
+import type { schemas } from '@blockscout/api-types';
 import type { ItemsProps } from 'src/slices/search/components/search-bar/SearchBarSuggest/types';
 
 import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
@@ -11,7 +11,7 @@ import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEnt
 import Time from 'src/shared/date-and-time/Time';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
-const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserOp>) => {
+const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<schemas['SearchResultUserOperation']>) => {
   const icon = <UserOpEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
@@ -26,7 +26,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
           { icon }
           { hash }
         </Flex>
-        <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
+        { data.timestamp && <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> }
       </>
     );
   }
@@ -37,7 +37,7 @@ const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<SearchResultUserO
         { icon }
         { hash }
       </Flex>
-      <Time timestamp={ data.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/>
+      { data.timestamp && <Time timestamp={ data.timestamp } color="text.secondary" textAlign="end" flexShrink={ 0 } ml="auto" format="lll_s"/> }
     </Flex>
   );
 };

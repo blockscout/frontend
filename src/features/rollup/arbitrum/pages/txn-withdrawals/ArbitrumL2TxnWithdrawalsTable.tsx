@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { ArbitrumL2TxnWithdrawalsItem } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import ArbitrumL2TxnWithdrawalsTableItem from './ArbitrumL2TxnWithdrawalsTableItem';
 
 interface Props {
-  data: Array<ArbitrumL2TxnWithdrawalsItem>;
+  data: Array<schemas['ArbitrumWithdrawal']>;
   txHash: string | undefined;
   isLoading: boolean;
 }

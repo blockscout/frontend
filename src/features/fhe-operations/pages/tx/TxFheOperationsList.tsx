@@ -3,22 +3,22 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FheOperation } from '../../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import TxFHEOperationsListItem from './TxFheOperationsListItem';
 
 interface Props {
-  data: Array<FheOperation>;
+  data: Array<schemas['FheOperation']>;
   isLoading?: boolean;
 }
 
 const TxFHEOperationsList = ({ data, isLoading }: Props) => {
   return (
     <Box hideFrom="lg">
-      { data.map((op) => (
+      { data.map((item) => (
         <TxFHEOperationsListItem
-          key={ op.log_index }
-          { ...op }
+          key={ item.log_index }
+          data={ item }
           isLoading={ isLoading }
         />
       )) }

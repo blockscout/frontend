@@ -1,9 +1,9 @@
 /* eslint-disable max-len */
-import type { ArbitrumL2TxnBatch } from '../types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { finalized } from './txn-batches';
 
-export const batchData: ArbitrumL2TxnBatch = {
+export const batchData: schemas['ArbitrumBatch'] = {
   ...finalized,
   after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
   before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
@@ -14,7 +14,7 @@ export const batchData: ArbitrumL2TxnBatch = {
   },
 };
 
-export const batchDataAnytrust: ArbitrumL2TxnBatch = {
+export const batchDataAnytrust: schemas['ArbitrumBatch'] = {
   ...finalized,
   after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
   before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',
@@ -39,7 +39,7 @@ export const batchDataAnytrust: ArbitrumL2TxnBatch = {
   },
 };
 
-export const batchDataCelestia: ArbitrumL2TxnBatch = {
+export const batchDataCelestia: schemas['ArbitrumBatch'] = {
   ...finalized,
   after_acc_hash: '0xcd064f3409015e8e6407e492e5275a185e492c6b43ccf127f22092d8057a9ffb',
   before_acc_hash: '0x2ed7c4985eb778d76ec400a43805e7feecc8c2afcdb492dbe5caf227de6d37bc',

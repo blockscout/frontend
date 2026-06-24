@@ -3,7 +3,7 @@
 import { GridItem, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2BlobTypeEip4844 } from 'src/features/rollup/optimism/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import BlobEntityL1 from 'src/features/data-availability/components/entity/BlobEntityL1';
 import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
@@ -14,7 +14,7 @@ import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestam
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 
 interface Props {
-  blobs: Array<OptimisticL2BlobTypeEip4844>;
+  blobs: schemas['OptimismBatchInBlob4844']['blobs'];
   isLoading: boolean;
 }
 

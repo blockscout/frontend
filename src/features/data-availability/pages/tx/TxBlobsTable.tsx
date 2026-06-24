@@ -2,23 +2,22 @@
 
 import React from 'react';
 
-import type { TxBlob } from 'src/features/data-availability/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TxBlobsTableItem from './TxBlobsTableItem';
 
 interface Props {
-  data: Array<TxBlob>;
-  top: number;
+  data: Array<schemas['BlobResponse']>;
   isLoading?: boolean;
 }
 
-const TxBlobsTable = ({ data, top, isLoading }: Props) => {
+const TxBlobsTable = ({ data, isLoading }: Props) => {
 
   return (
     <TableRoot>
-      <TableHeaderSticky top={ top }>
+      <TableHeaderSticky>
         <TableRow>
           <TableColumnHeader width="60%">Blob hash</TableColumnHeader>
           <TableColumnHeader width="20%">Data type</TableColumnHeader>

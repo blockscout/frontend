@@ -24,7 +24,9 @@ function composeSources(contract: SmartContract | undefined): visualizer.Visuali
     return {};
   }
   const additionalSources = contract.additional_sources?.reduce<Record<string, string>>((result, item) => {
-    result[item.file_path] = item.source_code;
+    if (item.file_path && item.source_code) {
+      result[item.file_path] = item.source_code;
+    }
     return result;
   }, {});
 

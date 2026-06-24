@@ -1,9 +1,9 @@
-import type { AddressEpochRewardsResponse } from 'src/features/chain-variants/celo/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import { withEns, withName, withoutName } from 'src/slices/address/mocks/address-param';
 import { tokenInfo } from 'src/slices/token/mocks/info';
 
-export const epochRewards: AddressEpochRewardsResponse = {
+export const epochRewards: operations['AddressController.celo_election_rewards']['json'] = {
   items: [
     {
       type: 'delegated_payment',

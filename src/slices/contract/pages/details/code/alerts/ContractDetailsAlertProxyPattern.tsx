@@ -4,7 +4,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { SmartContractConflictingImplementation } from 'src/slices/contract/types/api';
+import type { SmartContract } from 'src/slices/contract/types/api';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { Link } from 'src/toolkit/chakra/link';
@@ -16,7 +16,7 @@ import { PROXY_TYPES } from './utils';
 interface Props {
   type: NonNullable<schemas['ProxyType']>;
   isLoading?: boolean;
-  conflictingImplementations?: Array<SmartContractConflictingImplementation>;
+  conflictingImplementations?: SmartContract['conflicting_implementations'];
 }
 
 const ContractCodeProxyPattern = ({ type, isLoading, conflictingImplementations }: Props) => {

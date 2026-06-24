@@ -22,8 +22,8 @@ importers:
   .:
     dependencies:
       '@blockscout/api-types':
-        specifier: 0.0.1-beta.1001113958
-        version: 0.0.1-beta.1001113958
+        specifier: 0.0.1-beta.06e7ef15c3
+        version: 0.0.1-beta.06e7ef15c3
       '@blockscout/bens-types':
         specifier: 1.7.1
         version: 1.7.1
@@ -1312,8 +1312,8 @@ packages:
   '@base-org/account@2.4.0':
     resolution: {integrity: sha512-A4Umpi8B9/pqR78D1Yoze4xHyQaujioVRqqO3d6xuDFw9VRtjg6tK3bPlwE0aW+nVH/ntllCpPa2PbI8Rnjcug==}
 
-  '@blockscout/api-types@0.0.1-beta.1001113958':
-    resolution: {integrity: sha512-1ctofHTxZ8BKMofUYgGi428bcM/pF0Zf+h7GDUlZRm3HQMxzhkgwxtCdqt1ONWBzKcyGm0dgXGTR6ci8v+fMpg==}
+  '@blockscout/api-types@0.0.1-beta.06e7ef15c3':
+    resolution: {integrity: sha512-ukuif5QgqTkZ4PD/DVHNvIYfRp1zM08QMBp4IhejBVYcJ5IJ/V4ECpDEWwJ8Bj/YdTsESQYWxdvdqUj+k0gcgg==}
 
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
@@ -14452,7 +14452,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@blockscout/api-types@0.0.1-beta.1001113958': {}
+  '@blockscout/api-types@0.0.1-beta.06e7ef15c3': {}
 
   '@blockscout/bens-types@1.7.1': {}
 
