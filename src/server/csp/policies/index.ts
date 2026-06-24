@@ -17,5 +17,6 @@ export { reCaptcha } from './re-captcha';
 export { rollbar } from './rollbar';
 export { rollup } from './rollup';
 export { safe } from './safe';
+export { usercentrics } from './usercentrics';
 export { verifiedFetch } from './verified-fetch';
 export { zetachain } from './zetachain';

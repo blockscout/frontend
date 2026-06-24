@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { kebabCase, upperFirst } from 'es-toolkit';
 import type { Route } from 'nextjs-routes';
 
 import type { ApiData, Metadata } from './types';
@@ -9,30 +10,32 @@ import { currencyUnits } from 'src/slices/chain/units';
 
 import config from 'src/config';
 
+import { castToString } from 'src/toolkit/utils/guards';
+
 import compileValue from './compile-value';
 import getCanonicalUrl from './get-canonical-url';
-import getChainTitle from './get-chain-title';
-import getPageOgType from './get-page-og-type';
+import getChainExplorerTitle from './get-chain-explorer-title';
 import { generateStructuredData } from './structured-data';
-import * as templates from './templates';
+import { TEMPLATE_MAP } from './templates';
 
 export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname> = null): Metadata {
-  const idCap = route.pathname === '/essential-dapps/[id]' && typeof route.query?.id === 'string' ?
-    route.query.id.charAt(0).toUpperCase() + route.query.id.slice(1) : undefined;
+  const idParam = castToString(route.query?.id);
+  const idFormatted = idParam ? upperFirst(kebabCase(idParam).replaceAll('-', ' ')) : undefined;
 
   const params = {
     ...route.query,
     ...apiData,
-    network_name: config.chain.name,
-    network_title: getChainTitle(),
-    network_gwei: currencyUnits.gwei,
-    id_cap: idCap,
+    chain_name: config.chain.name,
+    chain_explorer_title: getChainExplorerTitle(),
+    gwei_name: currencyUnits.gwei,
+    id_formatted: idFormatted,
   };
 
-  const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
-  const description = compileValue(templates.description.make(route.pathname, Boolean(apiData)), params);
+  const titlePostfix = config.metadata.promoteBlockscoutInTitle ? ' | Blockscout' : '';
 
-  const pageOgType = getPageOgType(route.pathname);
+  const title = compileValue(TEMPLATE_MAP[route.pathname].metadata.title, params) + titlePostfix;
+  const description = compileValue(TEMPLATE_MAP[route.pathname].metadata.description, params);
+
   const jsonLd = generateStructuredData({ route, apiData });
 
   return {
@@ -40,8 +43,8 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     description,
     opengraph: {
       title: title,
-      description: pageOgType !== 'Regular page' ? config.metadata.og.description : '',
-      imageUrl: pageOgType !== 'Regular page' ? config.metadata.og.imageUrl : '',
+      description: TEMPLATE_MAP[route.pathname].og?.description,
+      imageUrl: TEMPLATE_MAP[route.pathname].og?.image,
     },
     canonical: getCanonicalUrl(route.pathname),
     jsonLd,

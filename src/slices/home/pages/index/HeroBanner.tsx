@@ -58,9 +58,7 @@ const HeroBanner = () => {
       return config.slices.home.heroBanner.text;
     }
 
-    return config.metadata.seo.enhancedDataEnabled ?
-      `${ config.chain.name } blockchain explorer` :
-      `${ config.chain.name } explorer`;
+    return `${ config.chain.name } explorer`;
   })();
 
   return (

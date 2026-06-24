@@ -145,10 +145,7 @@ const TransactionsZetaChain = () => {
 
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
-        withTextAd
-      />
+      <PageTitle title="Transactions" withTextAd/>
       <RoutedTabs tabs={ tabs } defaultTabId="zetachain"/>
     </>
   );

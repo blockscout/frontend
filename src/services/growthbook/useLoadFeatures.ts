@@ -1,11 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { GrowthBook } from '@growthbook/growthbook-react';
 import React from 'react';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
-export default function useLoadFeatures(growthBook: GrowthBook | undefined) {
+import { initGrowthBook } from './init';
+
+export default function useLoadFeatures(uuid: string) {
+
+  const [ growthBook ] = React.useState(() => initGrowthBook(uuid));
+
   React.useEffect(() => {
     if (!growthBook) {
       return;
@@ -19,4 +23,6 @@ export default function useLoadFeatures(growthBook: GrowthBook | undefined) {
 
     growthBook.loadFeatures({ timeout: SECOND });
   }, [ growthBook ]);
+
+  return growthBook;
 }

@@ -89,15 +89,9 @@ const GasTracker = () => {
     return prices ? <GasTrackerPrices prices={ prices } isLoading={ isLoading }/> : null;
   })();
 
-  const faq = config.metadata.seo.enhancedDataEnabled ? <GasTrackerFaq/> : null;
-
   return (
     <>
-      <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `${ config.chain.name } gas tracker` : 'Gas tracker' }
-        secondRow={ titleSecondRow }
-        withTextAd
-      />
+      <PageTitle title="Gas tracker" secondRow={ titleSecondRow } withTextAd/>
       <Heading level="2" mt={ 8 } mb={ 4 }>{ `Track ${ config.chain.name } gas fees` }</Heading>
       { snippets }
       { config.features.stats.isEnabled && (
@@ -105,7 +99,7 @@ const GasTracker = () => {
           <GasTrackerChart/>
         </Box>
       ) }
-      { faq }
+      <GasTrackerFaq/>
     </>
   );
 };

@@ -1,0 +1,41 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type { NextPage } from 'next';
+import dynamic from 'next/dynamic';
+import React from 'react';
+
+import PageNextJs from 'src/server/PageNextJs';
+
+const __PageName__ = dynamic(() => import('src/__area__/__featureName__/pages/__pageDir__/__PageName__'), { ssr: false });
+
+const Page: NextPage = () => {
+  return (
+    <PageNextJs pathname="__pathname__">
+      <__PageName__/>
+    </PageNextJs>
+  );
+};
+
+export default Page;
+
+export { __gsspName__ as getServerSideProps } from 'src/server/getServerSideProps/main';
+
+/*
+  ── DYNAMIC ROUTE VARIANT ──────────────────────────────────────────────
+  If `__pathname__` contains a param (e.g. /__route__/[__entityParam__]),
+  thread `query` through so the param is available on first render. Replace
+  the two declarations above with:
+
+    import type { Props } from 'src/server/getServerSideProps/handlers';
+
+    const Page: NextPage<Props> = (props: Props) => {
+      return (
+        <PageNextJs pathname="__pathname__" query={ props.query }>
+          <__PageName__/>
+        </PageNextJs>
+      );
+    };
+
+  Real example: src/pages/tx/[hash].tsx
+  ───────────────────────────────────────────────────────────────────────
+*/

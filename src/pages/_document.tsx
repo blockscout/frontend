@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { pickBy } from 'es-toolkit';
 import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
@@ -11,6 +12,7 @@ import config from 'src/config';
 import * as svgSprite from 'src/sprite/SpriteIcon';
 
 const marketplaceFeature = config.features.marketplace;
+const usercentrics = config.services.usercentrics;
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -72,6 +74,20 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
           <link rel="preload" as="image" href={ svgSprite.href }/>
+
+          { usercentrics && (
+            <script
+              id="usercentrics-cmp"
+              src="https://web.cmp.usercentrics.eu/ui/loader.js"
+              { ...(pickBy({
+                'data-settings-id': usercentrics.settingsId,
+                'data-ruleset-id': usercentrics.rulesetId,
+                'data-draft': usercentrics.isDraft ? 'true' : undefined,
+              }, Boolean)) }
+              async
+            />
+          ) }
+
         </Head>
         <body>
           <Main/>

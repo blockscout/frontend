@@ -10,6 +10,7 @@ import useAdblockDetect from 'src/features/ads/common/hooks/useAdblockDetect';
 import useNotifyOnNavigation from 'src/features/metasuites/hooks/useNotifyOnNavigation';
 
 import * as mixpanel from 'src/services/mixpanel';
+import useUpdateUsercentricsConsent from 'src/services/usercentrics/useUpdateUsercentricsConsent';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 
 interface Props<Pathname extends Route['pathname']> {
@@ -25,6 +26,7 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   useGetCsrfToken();
   useAdblockDetect();
   useNotifyOnNavigation();
+  useUpdateUsercentricsConsent();
 
   const isMixPanelInitialized = mixpanel.useInit();
   mixpanel.useLogPageView(isMixPanelInitialized);

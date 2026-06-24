@@ -31,6 +31,7 @@ export default function useMixpanelInit() {
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
       persistence: 'localStorage',
+      api_host: 'https://api-eu.mixpanel.com',
       ...config.services.mixpanel.configOverrides,
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
@@ -62,7 +63,7 @@ export default function useMixpanelInit() {
     if (debugFlagQuery.current && !debugFlagCookie) {
       cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
     }
-  }, [ ]);
+  }, []);
 
   return isInitialized;
 }

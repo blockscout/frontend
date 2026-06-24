@@ -288,7 +288,7 @@ const Tokens = () => {
   return (
     <>
       <PageTitle
-        title={ config.metadata.seo.enhancedDataEnabled ? `Tokens on ${ config.chain.name }` : 'Tokens' }
+        title="Tokens"
         withTextAd
       />
       <RoutedTabs

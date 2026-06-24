@@ -19,6 +19,7 @@ function generateCspPolicy(isPrivateMode = false, nonce?: string) {
     descriptors.monaco(),
     descriptors.multichain(),
     descriptors.rollbar(isPrivateMode),
+    descriptors.usercentrics(isPrivateMode),
     descriptors.rollup(),
     descriptors.reCaptcha(isPrivateMode),
     descriptors.safe(),
