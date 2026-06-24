@@ -35,6 +35,7 @@ on:
             - filecoin
             - garnet
             - gnosis
+            - gnosis_chiado
             - immutable
             - mega_eth
             - multichain
