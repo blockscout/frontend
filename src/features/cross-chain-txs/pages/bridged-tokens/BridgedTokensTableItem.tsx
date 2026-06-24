@@ -35,6 +35,7 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
     return toTokenModel({
       ...token,
       decimals: String(token.decimals ?? '0'),
+      address_hash: token.token_address,
     });
   }, [ token ]);
 

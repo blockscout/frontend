@@ -3,6 +3,8 @@
 import { route } from 'nextjs-routes';
 import React from 'react';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 
@@ -18,10 +20,11 @@ interface Props {
 const TxDetailsCrossChainTransfers = ({ hash, isLoading: isLoadingProp }: Props) => {
 
   const { data, isPending } = useTxCrossChainTransfersQuery({ hash });
+  const multichainContext = useMultichainContext();
 
   const isLoading = isLoadingProp || isPending;
 
-  if ((!isPending && (!data || !data.items.length)) || !config.features.crossChainTxs.isEnabled) {
+  if ((!isPending && (!data || !data.items.length)) || !(multichainContext?.chain.app_config ?? config).features.crossChainTxs.isEnabled) {
     return null;
   }
 
