@@ -4,15 +4,15 @@ import { chakra, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ItemsProps } from './types';
+import type { schemas } from '@blockscout/api-types';
 import type * as multichain from 'src/features/multichain/types/client';
-import type { SearchResultTx } from 'src/slices/search/types/api';
 
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import Time from 'src/shared/date-and-time/Time';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
-const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<SearchResultTx | multichain.QuickSearchResultTransaction>) => {
+const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<schemas['SearchResultTransaction'] | multichain.QuickSearchResultTransaction>) => {
   const icon = <TxEntity.Icon chain={ chainInfo }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>

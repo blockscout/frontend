@@ -1,4 +1,4 @@
-import type { SearchResult, SearchResultItem } from 'src/slices/search/types/api';
+import type { SearchResultItem } from './types/api';
 
 import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 
@@ -17,16 +17,7 @@ export const SEARCH_RESULT_ITEM: SearchResultItem = {
   total_supply: null,
   token_type: 'ERC-20',
   reputation: 'ok',
-};
-
-export const SEARCH_RESULT_NEXT_PAGE_PARAMS: SearchResult['next_page_params'] = {
-  address_hash: ADDRESS_HASH,
-  block_hash: null,
-  holders_count: 11,
-  inserted_at: '2023-05-19T17:21:19.203681Z',
-  item_type: 'token',
-  items_count: 50,
-  name: 'USDCTest',
-  q: 'usd',
-  transaction_hash: null,
+  certified: false,
+  circulating_market_cap: null,
+  priority: 0,
 };

@@ -324,7 +324,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </TxEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
+              { data.timestamp && <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> }
             </TableCell>
           </>
         );
@@ -430,7 +430,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               </UserOpEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>
-              <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/>
+              { data.timestamp && <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> }
             </TableCell>
           </>
         );

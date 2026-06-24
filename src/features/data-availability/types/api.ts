@@ -42,12 +42,6 @@ export type TxsWithBlobsFilters = {
   type: 'blob_transaction';
 };
 
-export interface SearchResultBlob {
-  type: 'blob';
-  blob_hash: string;
-  timestamp: null;
-}
-
 export interface BlockDataAvailability {
   blob_gas_price?: string;
   blob_gas_used?: string;

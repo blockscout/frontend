@@ -19,7 +19,7 @@ import type { HotContractsFilters, HotContractsSorting } from 'src/features/hot-
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'src/features/tx-interpretation/noves/types/api';
 import type { UserOpsFilters } from 'src/features/user-ops/types/api';
-import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'src/slices/search/types/api';
+import type { QuickSearchResult, SearchResult, SearchResultFilters } from 'src/slices/search/types/api';
 
 export const CORE_API_MISC_RESOURCES = {
   // WITHDRAWALS
@@ -275,9 +275,9 @@ R extends 'core:homepage_arbitrum_l2_batches' ? paths['/v2/main-page/arbitrum/ba
 R extends 'core:homepage_indexing_status' ? paths['/v2/main-page/indexing-status']['get'] :
 R extends 'core:homepage_zksync_latest_batch' ? number :
 R extends 'core:homepage_arbitrum_latest_batch' ? paths['/v2/main-page/arbitrum/batches/latest-number']['get'] :
-R extends 'core:quick_search' ? Array<SearchResultItem> :
+R extends 'core:quick_search' ? QuickSearchResult :
 R extends 'core:search' ? SearchResult :
-R extends 'core:search_check_redirect' ? SearchRedirectResult :
+R extends 'core:search_check_redirect' ? paths['/v2/search/check-redirect']['get'] :
 R extends 'core:config_backend' ? paths['/v2/config/backend']['get'] :
 R extends 'core:config_backend_version' ? paths['/v2/config/backend-version']['get'] :
 R extends 'core:config_csv_export' ? paths['/v2/config/csv-export']['get'] :
