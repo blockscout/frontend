@@ -17,6 +17,10 @@ function tokenIdTopic(tokenId: number): `0x${ string }` {
   return `0x${ tokenId.toString(16).padStart(64, '0') }`;
 }
 
+function txHash(id: number): `0x${ string }` {
+  return tokenIdTopic(id);
+}
+
 function log(params: Pick<Log, 'address' | 'topics' | 'blockNumber' | 'logIndex' | 'transactionHash'>): Log {
   return params as Log;
 }
@@ -25,45 +29,45 @@ describe('getLatestNftApprovalEvents', () => {
   it('dedupes limited and unlimited NFT approvals by the latest event', () => {
     const erc20Approval = log({
       address: tokenAddress,
-      topics: [ '0xapproval', ownerTopic, addressTopic(operatorAddress) ],
+      topics: [ tokenIdTopic(100), ownerTopic, addressTopic(operatorAddress) ],
       blockNumber: BigInt(10),
       logIndex: 0,
-      transactionHash: '0xerc20',
+      transactionHash: txHash(1),
     });
     const olderLimitedApproval = log({
       address: tokenAddress,
-      topics: [ '0xapproval', ownerTopic, addressTopic(operatorAddress), tokenIdTopic(1) ],
+      topics: [ tokenIdTopic(100), ownerTopic, addressTopic(operatorAddress), tokenIdTopic(1) ],
       blockNumber: BigInt(11),
       logIndex: 0,
-      transactionHash: '0xolderlimited',
+      transactionHash: txHash(2),
     });
     const latestLimitedApproval = log({
       address: tokenAddress,
-      topics: [ '0xapproval', ownerTopic, addressTopic(operatorAddress), tokenIdTopic(1) ],
+      topics: [ tokenIdTopic(100), ownerTopic, addressTopic(operatorAddress), tokenIdTopic(1) ],
       blockNumber: BigInt(12),
       logIndex: 0,
-      transactionHash: '0xlatestlimited',
+      transactionHash: txHash(3),
     });
     const otherLimitedApproval = log({
       address: otherTokenAddress,
-      topics: [ '0xapproval', ownerTopic, addressTopic(operatorAddress), tokenIdTopic(2) ],
+      topics: [ tokenIdTopic(100), ownerTopic, addressTopic(operatorAddress), tokenIdTopic(2) ],
       blockNumber: BigInt(9),
       logIndex: 0,
-      transactionHash: '0xotherlimited',
+      transactionHash: txHash(4),
     });
     const olderUnlimitedApproval = log({
       address: tokenAddress,
-      topics: [ '0xapprovalforall', ownerTopic, addressTopic(operatorAddress) ],
+      topics: [ tokenIdTopic(200), ownerTopic, addressTopic(operatorAddress) ],
       blockNumber: BigInt(13),
       logIndex: 0,
-      transactionHash: '0xolderunlimited',
+      transactionHash: txHash(5),
     });
     const latestUnlimitedApproval = log({
       address: tokenAddress,
-      topics: [ '0xapprovalforall', ownerTopic, addressTopic(operatorAddress) ],
+      topics: [ tokenIdTopic(200), ownerTopic, addressTopic(operatorAddress) ],
       blockNumber: BigInt(13),
       logIndex: 1,
-      transactionHash: '0xlatestunlimited',
+      transactionHash: txHash(6),
     });
 
     const result = getLatestNftApprovalEvents(
@@ -71,7 +75,7 @@ describe('getLatestNftApprovalEvents', () => {
       [ olderUnlimitedApproval, latestUnlimitedApproval ],
     );
 
-    expect(result.limitedApprovalEvents.map((event) => event.transactionHash)).toEqual([ '0xlatestlimited', '0xotherlimited' ]);
-    expect(result.unlimitedApprovalEvents.map((event) => event.transactionHash)).toEqual([ '0xlatestunlimited' ]);
+    expect(result.limitedApprovalEvents.map((event) => event.transactionHash)).toEqual([ txHash(3), txHash(4) ]);
+    expect(result.unlimitedApprovalEvents.map((event) => event.transactionHash)).toEqual([ txHash(6) ]);
   });
 });
