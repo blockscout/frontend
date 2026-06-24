@@ -2,7 +2,7 @@
 
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
-import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'src/features/advanced-filter/types/api';
+import type { AdvancedFilterParams } from 'src/features/advanced-filter/types/api';
 import type {
   ValidatorsBlackfortCountersResponse,
   ValidatorsBlackfortResponse,
@@ -304,8 +304,8 @@ R extends 'core:withdrawals' ? paths['/v2/withdrawals']['get'] :
 R extends 'core:withdrawals_counters' ? paths['/v2/withdrawals/counters']['get'] :
 R extends 'core:deposits' ? paths['/v2/beacon/deposits']['get'] :
 R extends 'core:deposits_counters' ? paths['/v2/beacon/deposits/count']['get'] :
-R extends 'core:advanced_filter' ? AdvancedFilterResponse :
-R extends 'core:advanced_filter_methods' ? AdvancedFilterMethodsResponse :
+R extends 'core:advanced_filter' ? paths['/v2/advanced-filters']['get'] :
+R extends 'core:advanced_filter_methods' ? paths['/v2/advanced-filters/methods']['get'] :
 R extends 'core:csv_exports_item' ? paths['/v2/csv-exports/{uuid_param}']['get'] :
 never;
 /* eslint-enable @stylistic/indent */

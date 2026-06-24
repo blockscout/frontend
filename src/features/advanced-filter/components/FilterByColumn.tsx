@@ -2,8 +2,9 @@
 
 import React from 'react';
 
-import type { AdvancedFilterParams, AdvancedFiltersSearchParams } from '../types/api';
+import type { AdvancedFilterParams } from '../types/api';
 import type { ColumnsIds } from '../types/client';
+import type { schemas } from '@blockscout/api-types';
 
 import TableColumnFilterWrapper from 'src/shared/filters/TableColumnFilterWrapper';
 
@@ -20,7 +21,7 @@ import TypeFilter from './filters/TypeFilter';
 
 type Props = {
   filters: AdvancedFilterParams;
-  searchParams?: AdvancedFiltersSearchParams;
+  searchParams?: schemas['AdvancedFilterSearchParams'];
   column: ColumnsIds;
   columnName: string;
   handleFilterChange: <T extends keyof AdvancedFilterParams>(field: T, val: AdvancedFilterParams[T]) => void;
@@ -43,7 +44,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
       );
     }
     case 'method': {
-      const value = filters.methods?.map(m => ({ name: searchParams?.methods[m], method_id: m }));
+      const value = filters.methods?.map(m => ({ name: searchParams?.methods[m] || m, method_id: m }));
       return (
         <TableColumnFilterWrapper
           columnName="Method"
