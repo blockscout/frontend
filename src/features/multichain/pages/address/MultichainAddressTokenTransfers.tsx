@@ -10,6 +10,8 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 import { SocketProvider } from 'src/api/socket/context';
 import getSocketUrl from 'src/api/socket/get-socket-url';
 
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+
 import useAddressCountersQuery from 'src/slices/address/hooks/useAddressCountersQuery';
 import AddressTokenTransfersLocal from 'src/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'src/slices/address/pages/details/token-transfers/useAddressTokenTransfersQuery';
@@ -17,14 +19,19 @@ import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTrans
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
 import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/AddressAdvancedFilterLink';
+import TokenTransfersCrossChainContent from 'src/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainContent';
+import { INTERCHAIN_TRANSFER } from 'src/features/cross-chain-txs/stubs/messages';
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import ListCounterText from 'src/features/multichain/components/ListCounterText';
 import { MultichainProvider } from 'src/features/multichain/context';
 
+import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
@@ -61,6 +68,15 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
   const isLocalTab = tab === 'token_transfers_local' || tab === 'token_transfers';
 
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+
+  const transfersQueryCrossChain = useQueryWithPages({
+    resourceName: 'interchainIndexer:address_transfers',
+    pathParams: { hash },
+    options: {
+      placeholderData: generateListStub<'interchainIndexer:address_transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: undefined }),
+      enabled: !isLoading && !isLocalTab,
+    },
+  });
 
   const transfersQueryLocal = useAddressTokenTransfersQuery({
     currentAddress: hash,
@@ -164,14 +180,34 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
       );
     }
 
-    return null;
+    if (isMobile) {
+      return null;
+    }
+
+    return <Pagination ml="auto" { ...transfersQueryCrossChain.pagination }/>;
   })();
 
   const tabs: Array<TabItemRegular> = [
     {
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain',
-      component: <EmptyState type="coming_soon"/>,
+      component: config.features.crossChainTxs.isEnabled ? (
+        <>
+          { isMobile && !isLocalTab && transfersQueryCrossChain.pagination.isVisible && (
+            <ActionBar>
+              <Pagination ml="auto" { ...transfersQueryCrossChain.pagination }/>
+            </ActionBar>
+          ) }
+          <TokenTransfersCrossChainContent
+            items={ transfersQueryCrossChain.data?.items }
+            isLoading={ transfersQueryCrossChain.isPlaceholderData }
+            isError={ transfersQueryCrossChain.isError }
+            pagination={ transfersQueryCrossChain.pagination }
+            tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+            currentAddress={ hash }
+          />
+        </>
+      ) : <EmptyState type="coming_soon"/>,
     },
     {
       id: [ 'token_transfers_local', 'token_transfers' ],
