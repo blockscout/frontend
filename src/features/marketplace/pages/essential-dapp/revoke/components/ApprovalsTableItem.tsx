@@ -18,6 +18,7 @@ import { TableRow, TableCell } from 'src/toolkit/chakra/table';
 
 import useRevoke from '../hooks/useRevoke';
 import formatAllowance from '../lib/formatAllowance';
+import formatUsdValue from '../lib/formatUsdValue';
 
 type Props = {
   selectedChain: EssentialDappsChainConfig | undefined;
@@ -34,19 +35,20 @@ export default function ApprovalsTableItem({
   isAddressMatch,
   hideApproval,
 }: Props) {
-  const revoke = useRevoke();
+  const revoke = useRevoke(selectedChain);
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
+  const valueAtRiskUsd = formatUsdValue(approval.valueAtRiskUsd);
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    const success = await revoke(approval, selectedChain);
+    const success = await revoke(approval);
     if (success) {
       hideApproval(approval);
     }
     setIsPending(false);
-  }, [ revoke, hideApproval, approval, selectedChain ]);
+  }, [ revoke, hideApproval, approval ]);
 
   return (
     <TableRow fontWeight="500">
@@ -101,12 +103,7 @@ export default function ApprovalsTableItem({
       </TableCell>
       <TableCell isNumeric verticalAlign="middle">
         <Skeleton loading={ isLoading } display="inline-block">
-          { approval.valueAtRiskUsd && (
-            <NumberEntity
-              value={ approval.valueAtRiskUsd.toString() }
-              suffix="$"
-            />
-          ) }
+          { valueAtRiskUsd || '-' }
         </Skeleton>
       </TableCell>
       <TableCell></TableCell>
