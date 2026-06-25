@@ -17,7 +17,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableRow, TableCell } from 'src/toolkit/chakra/table';
 
 import useRevoke from '../hooks/useRevoke';
-import formatAllowance from '../lib/formatAllowance';
+import formatAllowance, { getAllowancePostfix } from '../lib/formatAllowance';
 import formatUsdValue from '../lib/formatUsdValue';
 
 type Props = {
@@ -39,6 +39,7 @@ export default function ApprovalsTableItem({
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
+  const allowancePostfix = getAllowancePostfix(approval, allowance);
   const valueAtRiskUsd = formatUsdValue(approval.valueAtRiskUsd);
 
   const handleRevoke = useCallback(async() => {
@@ -95,9 +96,7 @@ export default function ApprovalsTableItem({
         <Skeleton loading={ isLoading } display="inline-block">
           <NumberEntity
             value={ allowance }
-            postfix={
-              [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
-            }
+            postfix={ allowancePostfix }
           />
         </Skeleton>
       </TableCell>

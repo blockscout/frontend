@@ -8,7 +8,9 @@ export function getApprovalSpender(approval: Log): `0x${ string }` {
 }
 
 export function getApprovalTokenId(approval: Log): string {
-  return approval.topics.length === 4 ? approval.topics[3] as string : approval.data;
+  const tokenId = approval.topics.length === 4 ? approval.topics[3] : approval.data;
+
+  return BigInt(tokenId as `0x${ string }`).toString();
 }
 
 function isNewerLog(candidate: Log, current: Log): boolean {

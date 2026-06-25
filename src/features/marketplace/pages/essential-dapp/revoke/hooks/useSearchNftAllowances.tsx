@@ -19,6 +19,7 @@ function throwIfAborted(signal?: AbortSignal) {
 }
 
 async function getLimitedNftRecord(
+  ownerAddress: string,
   approval: Log,
   publicClient: PublicClient,
   signal?: AbortSignal,
@@ -27,16 +28,26 @@ async function getLimitedNftRecord(
 
   const tokenAddress = getAddress(approval.address);
   const tokenId = getApprovalTokenId(approval);
+  const tokenIdValue = BigInt(tokenId);
 
   try {
     const spender = await publicClient.readContract({
       address: tokenAddress,
       abi: NftArtifact.abi,
       functionName: 'getApproved',
-      args: [ tokenId ],
+      args: [ tokenIdValue ],
     }) as `0x${ string }`;
 
     if (spender === ZERO_ADDRESS) return undefined;
+
+    const owner = await publicClient.readContract({
+      address: tokenAddress,
+      abi: NftArtifact.abi,
+      functionName: 'ownerOf',
+      args: [ tokenIdValue ],
+    }) as `0x${ string }`;
+
+    if (getAddress(owner) !== getAddress(ownerAddress)) return undefined;
 
     return {
       type: 'ERC-721',
@@ -108,7 +119,7 @@ export default function useSearchNftAllowances() {
 
     const [ limitedRecords, unlimitedRecords ] = await Promise.all([
       Promise.all(
-        limitedApprovalEvents.map((approval) => getLimitedNftRecord(approval, publicClient, signal)),
+        limitedApprovalEvents.map((approval) => getLimitedNftRecord(ownerAddress, approval, publicClient, signal)),
       ),
       Promise.all(
         unlimitedApprovalEvents.map((approval) => getUnlimitedNftRecord(ownerAddress, approval, publicClient, signal)),

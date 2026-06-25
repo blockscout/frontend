@@ -2,7 +2,7 @@ import type { Log } from 'viem';
 
 import { describe, expect, it } from 'vitest';
 
-import { getLatestNftApprovalEvents } from './nftApprovalEvents';
+import { getApprovalTokenId, getLatestNftApprovalEvents } from './nftApprovalEvents';
 
 const tokenAddress = '0x1111111111111111111111111111111111111111';
 const otherTokenAddress = '0x2222222222222222222222222222222222222222';
@@ -26,6 +26,18 @@ function log(params: Pick<Log, 'address' | 'topics' | 'blockNumber' | 'logIndex'
 }
 
 describe('getLatestNftApprovalEvents', () => {
+  it('decodes indexed token ID topics to decimal strings', () => {
+    const approval = log({
+      address: tokenAddress,
+      topics: [ tokenIdTopic(100), ownerTopic, addressTopic(operatorAddress), tokenIdTopic(42) ],
+      blockNumber: BigInt(10),
+      logIndex: 0,
+      transactionHash: txHash(1),
+    });
+
+    expect(getApprovalTokenId(approval)).toBe('42');
+  });
+
   it('dedupes limited and unlimited NFT approvals by the latest event', () => {
     const erc20Approval = log({
       address: tokenAddress,
