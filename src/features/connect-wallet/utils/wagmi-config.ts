@@ -59,7 +59,7 @@ const wagmi = (() => {
         ...reduceExternalChainsToTransportConfig(true),
       },
       ssr: true,
-      batch: { multicall: { wait: 100, batchSize: 5 } },
+      batch: { multicall: { wait: 100, batchSize: 1024 } },
       multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? false : true,
     });
 
@@ -76,7 +76,7 @@ const wagmi = (() => {
     },
     projectId: feature.reown.projectId,
     ssr: true,
-    batch: { multicall: { wait: 100, batchSize: 5 } },
+    batch: { multicall: { wait: 100, batchSize: 1024 } },
     syncConnectedChain: false,
   });
 

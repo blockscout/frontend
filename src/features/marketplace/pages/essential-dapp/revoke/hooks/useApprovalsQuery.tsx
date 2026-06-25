@@ -2,9 +2,9 @@
 
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { formatUnits, getAbiItem, isAddress } from 'viem';
+import { formatUnits, getAbiItem, getAddress, isAddress } from 'viem';
 import type { GetLogsParameters, PublicClient } from 'viem';
 import { usePublicClient } from 'wagmi';
 
@@ -14,9 +14,10 @@ import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/c
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
-import { PUBLIC_RPC_BATCH_SIZE } from '../constants';
+import { PUBLIC_RPC_BLOCK_BATCH_SIZE } from '../constants';
 import { filterHiddenBaseAllowances, getApprovalHiddenKey, getPageBaseAllowances, getTotalValueAtRiskUsd } from '../lib/approvalKeys';
 import createRevokeBlockscoutClient from '../lib/createRevokeBlockscoutClient';
+import type { TokenBalanceInfo } from '../lib/erc20ValueAtRisk';
 import { shouldRethrowLocalError, shouldRetryRevokeQuery } from '../lib/errors';
 import getLogs from '../lib/getLogs';
 import { retryOnHttp429 } from '../lib/retry';
@@ -74,6 +75,49 @@ function sortBaseAllowances(records: Array<BaseAllowanceType>): Array<BaseAllowa
   });
 }
 
+function getTokenBalanceInfo(response: Array<schemas['TokenBalance']>): Map<`0x${ string }`, TokenBalanceInfo> {
+  const balances = new Map<`0x${ string }`, TokenBalanceInfo>();
+
+  response.forEach((entry) => {
+    if (!entry.token?.address_hash) return;
+
+    const tokenAddress = getAddress(entry.token.address_hash as `0x${ string }`);
+
+    balances.set(tokenAddress, {
+      balance: entry.value ? BigInt(entry.value) : undefined,
+      exchangeRate: entry.token.exchange_rate || undefined,
+      decimals: entry.token.decimals === undefined || entry.token.decimals === null ? undefined : Number(entry.token.decimals),
+      symbol: entry.token.symbol || undefined,
+      name: entry.token.name || undefined,
+      tokenIcon: entry.token.icon_url || undefined,
+      tokenReputation: entry.token.reputation,
+      totalSupply: entry.token.total_supply ? BigInt(entry.token.total_supply) : undefined,
+    });
+  });
+
+  return balances;
+}
+
+async function getTokenBalances(
+  apiFetch: ReturnType<typeof useApiFetch>,
+  ownerAddress: string,
+  chain: EssentialDappsChainConfig | undefined,
+  signal?: AbortSignal,
+): Promise<Map<`0x${ string }`, TokenBalanceInfo>> {
+  const response = await retryOnHttp429(
+    () => apiFetch('core:address_token_balances', {
+      pathParams: { hash: ownerAddress },
+      chain,
+      fetchParams: {
+        signal,
+      },
+    }) as Promise<Array<schemas['TokenBalance']>>,
+    signal,
+  );
+
+  return getTokenBalanceInfo(response);
+}
+
 async function getTokenData(
   apiFetch: ReturnType<typeof useApiFetch>,
   tokenAddress: `0x${ string }`,
@@ -125,7 +169,6 @@ function buildAllowance(record: BaseAllowanceType, tokenData: schemas['Token'] |
 }
 
 export default function useApprovalsQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string, page: number) {
-  const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
   const getBlockTimestamp = useGetBlockTimestamp();
   const searchErc20Allowances = useSearchErc20Allowances();
@@ -175,18 +218,21 @@ export default function useApprovalsQuery(chain: EssentialDappsChainConfig | und
       args: { owner: userAddress },
     } as unknown as GetLogsParameters;
 
+    const tokenBalancesPromise = getTokenBalances(apiFetch, userAddress, chain, signal);
+    void tokenBalancesPromise.catch(() => undefined);
+
     const [ approvalEvents, approvalForAllEvents ] = await Promise.all([
       getLogs(blockscoutClient, approvalFilter, BigInt(0), latestBlockNumber, signal),
       getLogs(blockscoutClient, approvalForAllFilter, BigInt(0), latestBlockNumber, signal),
     ]);
 
     const [ erc20Allowances, nftAllowances ] = await Promise.all([
-      searchErc20Allowances(chain, userAddress, approvalEvents, publicClient, signal),
+      searchErc20Allowances(userAddress, approvalEvents, tokenBalancesPromise, publicClient, signal),
       searchNftAllowances(userAddress, approvalEvents, approvalForAllEvents, publicClient, signal),
     ]);
 
     return sortBaseAllowances([ ...erc20Allowances, ...nftAllowances ]);
-  }, [ blockscoutClient, chain, publicClient, searchErc20Allowances, searchNftAllowances, userAddress ]);
+  }, [ apiFetch, blockscoutClient, chain, publicClient, searchErc20Allowances, searchNftAllowances, userAddress ]);
 
   const baseQuery = useQuery({
     queryKey: [ 'revoke:approvals:base', chain?.id, userAddress ],
@@ -200,37 +246,27 @@ export default function useApprovalsQuery(chain: EssentialDappsChainConfig | und
     return filterHiddenBaseAllowances(baseQuery.data ?? [], hiddenApprovalKeys);
   }, [ baseQuery.data, hiddenApprovalKeys ]);
 
-  const enrichApproval = useCallback(async(record: BaseAllowanceType, signal?: AbortSignal): Promise<AllowanceType> => {
-    return queryClient.fetchQuery({
-      queryKey: [ 'revoke:approval:item', chain?.id, userAddress, baseQuery.dataUpdatedAt, getApprovalHiddenKey(record) ],
-      queryFn: async() => {
-        throwIfAborted(signal);
-
-        const [ tokenData, timestamp ] = await Promise.all([
-          getTokenData(apiFetch, record.address, chain, signal),
-          getBlockTimestamp(chain, publicClient, record.blockNumber, signal),
-        ]);
-
-        return buildAllowance(record, tokenData, timestamp);
-      },
-      staleTime: Infinity,
-    });
-  }, [ apiFetch, baseQuery.dataUpdatedAt, chain, getBlockTimestamp, publicClient, queryClient, userAddress ]);
-
   const enrichApprovals = useCallback(async(records: Array<BaseAllowanceType>, signal?: AbortSignal): Promise<ApprovalsQueryData> => {
     throwIfAborted(signal);
 
     const pageRecords = getPageBaseAllowances(records, page);
-    const items = await runParallelBatches(pageRecords, PUBLIC_RPC_BATCH_SIZE, async(record) => {
-      return enrichApproval(record, signal);
-    });
+    const tokenDataPromise = Promise.all(
+      pageRecords.map((record) => getTokenData(apiFetch, record.address, chain, signal)),
+    );
+    const timestampsPromise = runParallelBatches(
+      pageRecords,
+      PUBLIC_RPC_BLOCK_BATCH_SIZE,
+      (record) => getBlockTimestamp(chain, publicClient, record.blockNumber, signal),
+    );
+    const [ tokenData, timestamps ] = await Promise.all([ tokenDataPromise, timestampsPromise ]);
+    const items = pageRecords.map((record, index) => buildAllowance(record, tokenData[index], timestamps[index] as number));
 
     return {
       items,
       total: records.length,
       totalValueAtRiskUsd: getTotalValueAtRiskUsd(records),
     };
-  }, [ enrichApproval, page ]);
+  }, [ apiFetch, chain, getBlockTimestamp, page, publicClient ]);
 
   const pageQuery = useQuery({
     queryKey: [ 'revoke:approvals:page', chain?.id, userAddress, page, baseQuery.dataUpdatedAt, hiddenApprovalKeysKey ],

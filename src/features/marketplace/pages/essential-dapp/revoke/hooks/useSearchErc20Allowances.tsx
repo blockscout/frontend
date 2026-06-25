@@ -6,18 +6,11 @@ import { getAddress, slice } from 'viem';
 import type { Log, PublicClient } from 'viem';
 
 import type { BaseAllowanceType } from '../types';
-import type { schemas } from '@blockscout/api-types';
-import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
 
-import useApiFetch from 'src/api/hooks/useApiFetch';
-
-import { PUBLIC_RPC_BATCH_SIZE } from '../constants';
 import { shouldKeepErc20Allowance } from '../lib/allowance';
 import type { TokenBalanceInfo } from '../lib/erc20ValueAtRisk';
 import { getValueAtRiskUsd } from '../lib/erc20ValueAtRisk';
 import { shouldRethrowLocalError } from '../lib/errors';
-import { retryOnHttp429 } from '../lib/retry';
-import runParallelBatches from '../lib/runParallelBatches';
 
 function throwIfAborted(signal?: AbortSignal) {
   if (signal?.aborted) {
@@ -59,36 +52,11 @@ export function getLatestErc20ApprovalEvents(approvalEvents: Array<Log>) {
   return Array.from(latestApprovals.values());
 }
 
-function getTokenBalanceInfo(response: Array<schemas['TokenBalance']>): Map<`0x${ string }`, TokenBalanceInfo> {
-  const balances = new Map<`0x${ string }`, TokenBalanceInfo>();
-
-  response.forEach((entry) => {
-    if (!entry.token?.address_hash) return;
-
-    const tokenAddress = getAddress(entry.token.address_hash as `0x${ string }`);
-
-    balances.set(tokenAddress, {
-      balance: entry.value ? BigInt(entry.value) : undefined,
-      exchangeRate: entry.token.exchange_rate || undefined,
-      decimals: entry.token.decimals === undefined || entry.token.decimals === null ? undefined : Number(entry.token.decimals),
-      symbol: entry.token.symbol || undefined,
-      name: entry.token.name || undefined,
-      tokenIcon: entry.token.icon_url || undefined,
-      tokenReputation: entry.token.reputation,
-      totalSupply: entry.token.total_supply ? BigInt(entry.token.total_supply) : undefined,
-    });
-  });
-
-  return balances;
-}
-
 export default function useSearchErc20Allowances() {
-  const apiFetch = useApiFetch();
-
   return useCallback(async(
-    chain: EssentialDappsChainConfig | undefined,
     ownerAddress: string,
     approvalEvents: Array<Log>,
+    tokenBalancesPromise: Promise<Map<`0x${ string }`, TokenBalanceInfo>>,
     publicClient: PublicClient,
     signal?: AbortSignal,
   ): Promise<Array<BaseAllowanceType>> => {
@@ -97,18 +65,7 @@ export default function useSearchErc20Allowances() {
     const erc20Events = approvalEvents.filter((ev) => ev.topics.length === 3);
     const latestApprovalEvents = getLatestErc20ApprovalEvents(erc20Events);
 
-    const tokenBalancesPromise = retryOnHttp429(
-      () => apiFetch('core:address_token_balances', {
-        pathParams: { hash: ownerAddress },
-        chain,
-        fetchParams: {
-          signal,
-        },
-      }) as Promise<Array<schemas['TokenBalance']>>,
-      signal,
-    );
-
-    const recordsPromise: Promise<Array<BaseAllowanceType | undefined>> = runParallelBatches(latestApprovalEvents, PUBLIC_RPC_BATCH_SIZE, async(approval) => {
+    const recordsPromise: Promise<Array<BaseAllowanceType | undefined>> = Promise.all(latestApprovalEvents.map(async(approval) => {
       throwIfAborted(signal);
 
       const tokenAddress = getAddress(approval.address);
@@ -143,10 +100,9 @@ export default function useSearchErc20Allowances() {
 
         return undefined;
       }
-    });
+    }));
 
-    const [ records, tokenBalancesResponse ] = await Promise.all([ recordsPromise, tokenBalancesPromise ]);
-    const tokenBalances = getTokenBalanceInfo(tokenBalancesResponse);
+    const [ records, tokenBalances ] = await Promise.all([ recordsPromise, tokenBalancesPromise ]);
 
     return records
       .filter((record): record is BaseAllowanceType => Boolean(record))
@@ -159,5 +115,5 @@ export default function useSearchErc20Allowances() {
           valueAtRiskUsd: getValueAtRiskUsd(record.allowance as bigint, tokenInfo),
         };
       });
-  }, [ apiFetch ]);
+  }, []);
 }

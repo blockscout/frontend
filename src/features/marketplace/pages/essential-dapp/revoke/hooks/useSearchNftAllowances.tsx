@@ -9,10 +9,8 @@ import type { BaseAllowanceType } from '../types';
 
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 
-import { PUBLIC_RPC_BATCH_SIZE } from '../constants';
 import { shouldRethrowLocalError } from '../lib/errors';
 import { getApprovalSpender, getApprovalTokenId, getLatestNftApprovalEvents } from '../lib/nftApprovalEvents';
-import runParallelBatches from '../lib/runParallelBatches';
 
 function throwIfAborted(signal?: AbortSignal) {
   if (signal?.aborted) {
@@ -109,15 +107,11 @@ export default function useSearchNftAllowances() {
     const { limitedApprovalEvents, unlimitedApprovalEvents } = getLatestNftApprovalEvents(approvalEvents, approvalForAllEvents);
 
     const [ limitedRecords, unlimitedRecords ] = await Promise.all([
-      runParallelBatches(
-        limitedApprovalEvents,
-        PUBLIC_RPC_BATCH_SIZE,
-        (approval) => getLimitedNftRecord(approval, publicClient, signal),
+      Promise.all(
+        limitedApprovalEvents.map((approval) => getLimitedNftRecord(approval, publicClient, signal)),
       ),
-      runParallelBatches(
-        unlimitedApprovalEvents,
-        PUBLIC_RPC_BATCH_SIZE,
-        (approval) => getUnlimitedNftRecord(ownerAddress, approval, publicClient, signal),
+      Promise.all(
+        unlimitedApprovalEvents.map((approval) => getUnlimitedNftRecord(ownerAddress, approval, publicClient, signal)),
       ),
     ]);
 

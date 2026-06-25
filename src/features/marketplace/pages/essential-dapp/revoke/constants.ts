@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export const PUBLIC_RPC_BATCH_SIZE = 20;
+export const PUBLIC_RPC_BLOCK_BATCH_SIZE = 15;
 export const APPROVALS_PAGE_SIZE = 50;
 export const API_RATE_LIMIT_RETRY_DELAY = 5_000;
 export const API_RATE_LIMIT_RETRY_COUNT = 2;
