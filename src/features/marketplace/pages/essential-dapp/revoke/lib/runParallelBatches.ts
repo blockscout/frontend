@@ -5,6 +5,10 @@ export default async function runParallelBatches<Item, Result>(
   batchSize: number,
   worker: (item: Item, index: number) => Promise<Result>,
 ): Promise<Array<Result>> {
+  if (!Number.isInteger(batchSize) || batchSize <= 0) {
+    throw new RangeError('batchSize must be a positive integer');
+  }
+
   const results: Array<Result> = [];
 
   for (let index = 0; index < items.length; index += batchSize) {

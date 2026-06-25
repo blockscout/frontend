@@ -13,12 +13,16 @@ async function sleep(ms: number, signal?: AbortSignal) {
   throwIfAborted(signal);
 
   await new Promise<void>((resolve, reject) => {
-    const timeout = globalThis.setTimeout(resolve, ms);
-
-    signal?.addEventListener('abort', () => {
+    const onAbort = () => {
       globalThis.clearTimeout(timeout);
       reject(new DOMException('Aborted', 'AbortError'));
-    }, { once: true });
+    };
+    const timeout = globalThis.setTimeout(() => {
+      signal?.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+
+    signal?.addEventListener('abort', onAbort, { once: true });
   });
 }
 
