@@ -13,6 +13,7 @@ import useChartQuery from 'src/features/chain-stats/hooks/useChartQuery';
 import ChainStatsDetailsCrossChainTxs from 'src/features/cross-chain-txs/components/ChainStatsDetailsCrossChainTxs';
 import useCrossChainChartQuery from 'src/features/cross-chain-txs/hooks/useCrossChainChartQuery';
 import { CROSS_CHAIN_TXS_CHARTS } from 'src/features/cross-chain-txs/utils/chain-stats';
+import multichainConfig from 'src/features/multichain/chains-config';
 
 import config from 'src/config';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
@@ -33,6 +34,7 @@ const ChainStatsDetails = () => {
   const { updateQuery } = useQueryParams();
 
   const id = getQueryParamString(router.query.id);
+  const chainId = getQueryParamString(router.query.chain_id);
   const intervalFromQuery = getIntervalFromQuery(router);
   const resolutionFromQuery = getResolutionFromQuery(router);
   const counterPartyChainIdsFromQuery = Array.isArray(router.query.counterparty_chain_ids) ?
@@ -47,10 +49,18 @@ const ChainStatsDetails = () => {
     counterPartyChainIdsFromQuery.length > 0 ? counterPartyChainIdsFromQuery : [ ALL_OPTION.value ],
   );
 
-  const crossChainTxsChart = config.features.crossChainTxs.isEnabled ? CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) : undefined;
+  const chainData = React.useMemo(() => {
+    if (chainId) {
+      return multichainConfig()?.chains.find(({ id }) => id === chainId);
+    }
+  }, [ chainId ]);
+
+  const crossChainTxsChart = (chainData?.app_config ?? config).features.crossChainTxs.isEnabled ?
+    CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) :
+    undefined;
 
   const queryBase = useChartQuery({ id, resolution, interval, enabled: !crossChainTxsChart });
-  const queryCrossChain = useCrossChainChartQuery({ id, interval, counterPartyChainIds, enabled: Boolean(crossChainTxsChart) });
+  const queryCrossChain = useCrossChainChartQuery({ id, interval, counterPartyChainIds, enabled: Boolean(crossChainTxsChart), chainData });
 
   const query = crossChainTxsChart ? queryCrossChain : queryBase;
   const isInitialLoading = useIsInitialLoading(query.isPlaceholderData);
@@ -108,6 +118,7 @@ const ChainStatsDetails = () => {
         <ChainStatsDetailsCrossChainTxs
           chart={ crossChainTxsChart }
           data={ query.data?.data }
+          baseChain={ chainData }
           isLoading={ query.isPlaceholderData }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }

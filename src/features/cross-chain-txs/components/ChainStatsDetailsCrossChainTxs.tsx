@@ -4,6 +4,7 @@ import { Flex, HStack, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainStatsChart, StatsIntervalIds } from 'src/features/chain-stats/types/client';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { SankeyChartData } from 'src/toolkit/components/charts/sankey/types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -22,6 +23,7 @@ import { SankeyChartContent } from 'src/toolkit/components/charts/sankey/SankeyC
 interface Props {
   chart: ChainStatsChart;
   data?: SankeyChartData;
+  baseChain?: ClusterChainConfig;
   isLoading: boolean;
   isError: boolean;
   isInitialLoading: boolean;
@@ -34,6 +36,7 @@ interface Props {
 const ChainStatsDetailsCrossChainTxs = ({
   chart,
   data,
+  baseChain,
   isLoading,
   isError,
   isInitialLoading,
@@ -52,14 +55,14 @@ const ChainStatsDetailsCrossChainTxs = ({
 
   const chainsConfig = React.useMemo(() => {
     return chainsQuery.data?.items
-      .filter((chain) => chain.id !== config.chain.id)
+      .filter((chain) => chain.id !== (baseChain?.app_config ?? config).chain.id)
       .map((chain) => ({
         id: chain.id,
         name: chain.name,
         logo: chain.logo,
         explorer_url: chain.explorer_url,
       })) || [];
-  }, [ chainsQuery.data ]);
+  }, [ baseChain?.app_config, chainsQuery.data?.items ]);
 
   const chainSelect = (
     <ChainSelect
@@ -73,7 +76,7 @@ const ChainStatsDetailsCrossChainTxs = ({
   );
 
   const chainFilter = (() => {
-    const chainNameElement = <chakra.span fontWeight="medium" color="text.primary">{ config.chain.name }</chakra.span>;
+    const chainNameElement = <chakra.span fontWeight="medium" color="text.primary">{ (baseChain?.app_config ?? config).chain.name }</chakra.span>;
     if (chart.id === 'outgoing-messages-paths') {
       return (
         <HStack color="text.secondary">
@@ -130,11 +133,11 @@ const ChainStatsDetailsCrossChainTxs = ({
       <VStack gap={ 1 } color="text.secondary" textStyle="xs" alignItems="flex-start" mt={{ base: 3, lg: 6 }}>
         <Skeleton loading={ isInitialLoading }>
           <chakra.span fontWeight="semibold">Source </chakra.span>
-          <span>{ isOutgoing ? config.chain.name : counterPartyChainNames }</span>
+          <span>{ isOutgoing ? (baseChain?.app_config ?? config).chain.name : counterPartyChainNames }</span>
         </Skeleton>
         <Skeleton loading={ isInitialLoading }>
           <chakra.span fontWeight="semibold">Destination </chakra.span>
-          <span>{ isOutgoing ? counterPartyChainNames : config.chain.name }</span>
+          <span>{ isOutgoing ? counterPartyChainNames : (baseChain?.app_config ?? config).chain.name }</span>
         </Skeleton>
         <Skeleton loading={ isInitialLoading || isLoading }>
           <chakra.span fontWeight="semibold">Txns { isOutgoing ? 'sent' : 'received' } </chakra.span>
