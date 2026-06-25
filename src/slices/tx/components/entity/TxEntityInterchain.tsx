@@ -23,7 +23,7 @@ const TxEntityInterchain = ({ chain, ...props }: Props) => {
   const multichainChainInfo = multichainConfig()?.chains.find(({ id }) => id === chain?.id);
 
   if (isCurrentChain || multichainChainInfo) {
-    return <TxEntity { ...props } chain={ multichainChainInfo }/>;
+    return <TxEntity { ...props } chain={ multichainConfig() ? multichainChainInfo : chain }/>;
   }
 
   return <TxEntityExternal { ...props } chain={ chain }/>;
