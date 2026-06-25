@@ -12,7 +12,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import { APPROVALS_STICKY_SUMMARY_HEIGHT } from '../constants';
+import { APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING, APPROVALS_STICKY_SUMMARY_HEIGHT } from '../constants';
 import ApprovalsListItem from './ApprovalsListItem';
 import ApprovalsTable from './ApprovalsTable';
 
@@ -37,14 +37,15 @@ export default function Approvals({
   pagination,
   actionBarRef,
 }: Props) {
-  const tableHeaderTop = APPROVALS_STICKY_SUMMARY_HEIGHT + ACTION_BAR_HEIGHT_DESKTOP;
+  const stickySummaryHeight = APPROVALS_STICKY_SUMMARY_HEIGHT + (pagination.isVisible ? 0 : APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING);
+  const tableHeaderTop = stickySummaryHeight + (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0);
 
   const actionBar = pagination.isVisible ? (
     <>
       <Box ref={ actionBarRef }/>
       <ActionBar
         mt={ 0 }
-        top={{ base: 0, lg: `${ APPROVALS_STICKY_SUMMARY_HEIGHT }px` }}
+        top={{ base: 0, lg: `${ stickySummaryHeight }px` }}
       >
         <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
@@ -82,7 +83,6 @@ export default function Approvals({
     <DataList
       itemsNum={ approvals.length }
       isError={ Boolean(isError) }
-      mt={ isError ? 5 : 0 }
       hasActiveFilters
       actionBar={ actionBar }
       showActionBarIfEmpty

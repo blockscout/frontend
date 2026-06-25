@@ -18,7 +18,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-import { APPROVALS_PAGE_SIZE } from '../constants';
+import { APPROVALS_PAGE_SIZE, APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING } from '../constants';
 import type useApprovalsQuery from '../hooks/useApprovalsQuery';
 import type useCoinBalanceQuery from '../hooks/useCoinBalanceQuery';
 import formatUsdValue from '../lib/formatUsdValue';
@@ -48,12 +48,13 @@ const Content = ({
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const actionBarRef = React.useRef<HTMLDivElement>(null);
   const approvals = approvalsQuery.data.items;
+  const isInitialLoading = approvalsQuery.isPlaceholderData && approvalsPage === 1;
 
   const totalValueAtRiskUsd = useMemo(() => {
-    if (approvalsQuery.isPlaceholderData) return '$0';
+    if (isInitialLoading) return '$0';
 
     return formatUsdValue(approvalsQuery.data.totalValueAtRiskUsd) || '$0';
-  }, [ approvalsQuery.data.totalValueAtRiskUsd, approvalsQuery.isPlaceholderData ]);
+  }, [ approvalsQuery.data.totalValueAtRiskUsd, isInitialLoading ]);
 
   const scrollToResultsTop = useCallback(() => {
     const target = isMobile ? actionBarRef.current : scrollRef.current;
@@ -65,26 +66,38 @@ const Content = ({
     target.scrollIntoView(true);
   }, [ isMobile ]);
 
-  const pagination = useMemo<PaginationParams>(() => ({
-    page: approvalsPage,
-    onNextPageClick: () => {
-      setApprovalsPage((page) => page + 1);
-      scrollToResultsTop();
-    },
-    onPrevPageClick: () => {
-      setApprovalsPage((page) => Math.max(page - 1, 1));
-      scrollToResultsTop();
-    },
-    resetPage: () => {
-      setApprovalsPage(1);
-      scrollToResultsTop();
-    },
-    hasPages: approvalsQuery.data.total > APPROVALS_PAGE_SIZE,
-    hasNextPage: approvalsPage * APPROVALS_PAGE_SIZE < approvalsQuery.data.total,
-    canGoBackwards: approvalsPage > 1,
-    isLoading: approvalsQuery.isPlaceholderData,
-    isVisible: approvalsQuery.data.total > 0 && !approvalsQuery.isError,
-  }), [ approvalsPage, approvalsQuery.data.total, approvalsQuery.isError, approvalsQuery.isPlaceholderData, scrollToResultsTop, setApprovalsPage ]);
+  const pagination = useMemo<PaginationParams>(() => {
+    const hasMultiplePages = approvalsQuery.data.total > APPROVALS_PAGE_SIZE;
+
+    return {
+      page: approvalsPage,
+      onNextPageClick: () => {
+        setApprovalsPage((page) => page + 1);
+        scrollToResultsTop();
+      },
+      onPrevPageClick: () => {
+        setApprovalsPage((page) => Math.max(page - 1, 1));
+        scrollToResultsTop();
+      },
+      resetPage: () => {
+        setApprovalsPage(1);
+        scrollToResultsTop();
+      },
+      hasPages: hasMultiplePages,
+      hasNextPage: approvalsPage * APPROVALS_PAGE_SIZE < approvalsQuery.data.total,
+      canGoBackwards: approvalsPage > 1,
+      isLoading: approvalsQuery.isPlaceholderData,
+      isVisible: hasMultiplePages && !isInitialLoading && !approvalsQuery.isError,
+    };
+  }, [
+    approvalsPage,
+    approvalsQuery.data.total,
+    approvalsQuery.isError,
+    approvalsQuery.isPlaceholderData,
+    isInitialLoading,
+    scrollToResultsTop,
+    setApprovalsPage,
+  ]);
 
   return (
     <Flex ref={ scrollRef } flexDir="column" w="full">
@@ -93,6 +106,7 @@ const Content = ({
         gap={ 2 }
         mt={ -2 }
         pt={ 2 }
+        pb={ pagination.isVisible ? 0 : `${ APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING }px` }
         position={ !isMobile && approvals?.length ? 'sticky' : 'unset' }
         top={ 0 }
         zIndex="3"
@@ -186,7 +200,7 @@ const Content = ({
               Total approvals
             </Text>
             <Skeleton
-              loading={ approvalsQuery.isPlaceholderData }
+              loading={ isInitialLoading }
               minW="40px"
               textAlign="center"
             >
@@ -210,7 +224,7 @@ const Content = ({
               Total value at risk
             </Text>
             <Skeleton
-              loading={ approvalsQuery.isPlaceholderData }
+              loading={ isInitialLoading }
               minW="40px"
               textAlign="center"
             >
