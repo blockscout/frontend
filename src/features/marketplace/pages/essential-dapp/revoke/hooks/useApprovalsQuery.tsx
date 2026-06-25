@@ -15,8 +15,9 @@ import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/c
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
 import { PUBLIC_RPC_BLOCK_BATCH_SIZE } from '../constants';
-import { filterHiddenBaseAllowances, getApprovalHiddenKey, getPageBaseAllowances, getTotalValueAtRiskUsd } from '../lib/approvalKeys';
+import { filterHiddenBaseAllowances, getApprovalHiddenKey, getPageBaseAllowances } from '../lib/approvalKeys';
 import createRevokeBlockscoutClient from '../lib/createRevokeBlockscoutClient';
+import { getTotalValueAtRiskUsd } from '../lib/erc20ValueAtRisk';
 import type { TokenBalanceInfo } from '../lib/erc20ValueAtRisk';
 import { shouldRethrowLocalError, shouldRetryRevokeQuery } from '../lib/errors';
 import getLogs from '../lib/getLogs';

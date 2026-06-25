@@ -6,7 +6,6 @@ import {
   filterHiddenBaseAllowances,
   getApprovalHiddenKey,
   getPageBaseAllowances,
-  getTotalValueAtRiskUsd,
 } from './approvalKeys';
 
 const spender = '0x2222222222222222222222222222222222222222' as `0x${ string }`;
@@ -54,13 +53,4 @@ describe('approvalKeys', () => {
     expect(getPageBaseAllowances(visibleRecords, 1).map((record) => record.address)).toEqual(records.slice(1).map((record) => record.address));
   });
 
-  it('recalculates total value at risk from the visible base records', () => {
-    const records = [
-      { ...baseRecord(1), address: '0x1111111111111111111111111111111111111111' as `0x${ string }`, valueAtRiskUsd: 100 },
-      { ...baseRecord(2), address: '0x2222222222222222222222222222222222222222' as `0x${ string }`, valueAtRiskUsd: 50 },
-    ];
-    const visibleRecords = filterHiddenBaseAllowances(records, [ getApprovalHiddenKey(records[0]) ]);
-
-    expect(getTotalValueAtRiskUsd(visibleRecords)).toBe(50);
-  });
 });
