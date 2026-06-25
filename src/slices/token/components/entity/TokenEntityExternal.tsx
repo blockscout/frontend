@@ -8,6 +8,8 @@ import type { ExternalChain } from 'src/shared/external-chains/types';
 import type { EntityProps } from 'src/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
+import multichainConfig from 'src/features/multichain/chains-config';
+
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
 interface Props extends EntityProps, JsxStyleProps {
@@ -38,6 +40,7 @@ const TokenEntityExternal = ({ chain, ...props }: Props) => {
       href={ href }
       noLink={ props.noLink || !href }
       link={{ external: true }}
+      chain={ multichainConfig() ? chain : undefined }
     />
   );
 };

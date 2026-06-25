@@ -114,7 +114,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
             { data.transfers.length }
           </Link>
         ) : (
-          <Skeleton loading={ isLoading } color="text.secondary">{ data.transfers.length }</Skeleton>
+          <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.transfers.length }</span></Skeleton>
         ) }
         <Skeleton loading={ isLoading }>
           Sender

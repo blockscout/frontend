@@ -23,7 +23,7 @@ frontend:
   replicaCount: 1
   image:
     repository: ghcr.io/blockscout/frontend-private
-    tag: review-2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    tag: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true

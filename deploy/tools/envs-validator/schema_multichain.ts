@@ -69,6 +69,7 @@ const schema = yup
   .concat(uiSchemas.footerSchema)
   .concat(uiSchemas.miscSchema)
   .concat(featuresSchemas.adsSchema)
+  .concat(featuresSchemas.crossChainTxsSchema)
   .concat(featuresSchemas.defiDropdownSchema)
   .concat(featuresSchemas.multichainButtonSchema)
   .concat(featuresSchemas.userOpsSchema)

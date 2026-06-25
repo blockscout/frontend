@@ -17,6 +17,7 @@ import { distributeEntityProps, getContentProps, getIconProps } from 'src/shared
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
 import { route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
+import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
@@ -129,7 +130,7 @@ const Icon = (props: IconProps) => {
           size={ props.size ?? (props.variant === 'heading' ? 30 : 20) }
           hash={ getDisplayedAddress(props.address) }
         />
-        { shield && <EntityBase.IconShield { ...shield }/> }
+        { shield && <EntityBase.IconShield { ...shield } fallback={ <SpriteIcon name="networks/icon-placeholder"/> }/> }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
       </Flex>
     </Tooltip>

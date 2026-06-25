@@ -50,7 +50,7 @@
   "dependencies": {
     "@blockscout/api-types": "0.0.1-beta.06e7ef15c3",
     "@blockscout/bens-types": "1.7.1",
-    "@blockscout/interchain-indexer-types": "1.3.0",
+    "@blockscout/interchain-indexer-types": "1.5.0-beta3",
     "@blockscout/multichain-aggregator-types": "2.1.6",
     "@blockscout/points-types": "1.4.0-alpha.1",
     "@blockscout/stats-types": "2.11.1",

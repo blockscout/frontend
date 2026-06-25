@@ -12,10 +12,12 @@ import useTokenTransfersQuery from 'src/slices/token-transfer/hooks/useTokenTran
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
+import TokenTransfersCrossChain from 'src/features/cross-chain-txs/pages/token-transfers/TokenTransfersCrossChain';
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
 
+import config from 'src/config';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -67,7 +69,7 @@ const MultichainTokenTransfers = () => {
       {
         id: 'index',
         title: 'Cross-chain',
-        component: <EmptyState type="coming_soon"/>,
+        component: config.features.crossChainTxs.isEnabled ? <TokenTransfersCrossChain/> : <EmptyState type="coming_soon"/>,
       },
       {
         id: 'local',
