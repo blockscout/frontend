@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useCallback, useEffect } from 'react';
+import type { PublicClient } from 'viem';
 
-import type { schemas } from '@blockscout/api-types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
-
-import useApiFetch from 'src/api/hooks/useApiFetch';
 
 // Cache for block timestamp requests across the session
 const timestampCache = new Map<string, Promise<number>>();
 let activeInstances = 0;
 
 export default function useGetBlockTimestamp() {
-  const apiFetch = useApiFetch();
-
   // Clear entire cache when the last consumer unmounts
   useEffect(() => {
     activeInstances += 1;
@@ -27,21 +23,24 @@ export default function useGetBlockTimestamp() {
 
   return useCallback(async(
     chain: EssentialDappsChainConfig | undefined,
+    publicClient: PublicClient | undefined,
     blockNumber: bigint,
     signal?: AbortSignal,
   ): Promise<number> => {
+    if (signal?.aborted) {
+      throw new DOMException('Aborted', 'AbortError');
+    }
+
+    if (!publicClient) {
+      throw new Error('Public client not found');
+    }
+
     const cacheKey = `${ chain?.id }:${ blockNumber.toString() }`;
     const cached = timestampCache.get(cacheKey);
     if (cached) return cached;
 
-    const response = (apiFetch('core:block', {
-      pathParams: { height_or_hash: blockNumber.toString() },
-      chain,
-      fetchParams: {
-        signal,
-      },
-    }) as Promise<schemas['BlockResponse']>)
-      .then((data) => data.timestamp ? Date.parse(data.timestamp) : 0)
+    const response = publicClient.getBlock({ blockNumber })
+      .then((data) => Number(data.timestamp) * 1_000)
       .catch((err) => {
         timestampCache.delete(cacheKey);
         throw err;
@@ -50,5 +49,5 @@ export default function useGetBlockTimestamp() {
     timestampCache.set(cacheKey, response);
 
     return response;
-  }, [ apiFetch ]);
+  }, []);
 }

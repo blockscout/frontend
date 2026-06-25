@@ -17,6 +17,7 @@ type Props = {
   isLoading?: boolean;
   isAddressMatch?: boolean;
   hideApproval: (approval: AllowanceType) => void;
+  tableHeaderTop: number;
 };
 
 export default function ApprovalsTable({
@@ -25,10 +26,11 @@ export default function ApprovalsTable({
   isLoading,
   isAddressMatch,
   hideApproval,
+  tableHeaderTop,
 }: Props) {
   return (
     <TableRoot>
-      <TableHeaderSticky top={ 136 }>
+      <TableHeaderSticky top={ tableHeaderTop }>
         <TableRow>
           <TableColumnHeader w="30%">Token</TableColumnHeader>
           <TableColumnHeader w="15%">Approved spender</TableColumnHeader>

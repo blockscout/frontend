@@ -1,242 +1,119 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
-import { uniq } from 'es-toolkit';
 import { useCallback } from 'react';
-import { getAddress, formatUnits, slice } from 'viem';
-import type { PublicClient, Log } from 'viem';
+import { getAddress, slice } from 'viem';
+import type { Log, PublicClient } from 'viem';
 
-import type { AllowanceType, ContractAllowanceType } from '../types';
-import type { schemas } from '@blockscout/api-types';
-import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
+import type { BaseAllowanceType } from '../types';
 
-import useApiFetch from 'src/api/hooks/useApiFetch';
+import { shouldKeepErc20Allowance } from '../lib/allowance';
+import type { TokenBalanceInfo } from '../lib/erc20ValueAtRisk';
+import { getValueAtRiskUsd } from '../lib/erc20ValueAtRisk';
+import { shouldRethrowLocalError } from '../lib/errors';
 
-import useGetBlockTimestamp from './useGetBlockTimestamp';
+function throwIfAborted(signal?: AbortSignal) {
+  if (signal?.aborted) {
+    throw new DOMException('Aborted', 'AbortError');
+  }
+}
 
-function formatAllowance(
-  allowance: bigint,
-  decimals: number = 18,
-  totalSupply: bigint | undefined,
-): string {
-  if (totalSupply && allowance > totalSupply) {
-    return 'Unlimited';
+function getApprovalSpender(approval: Log): `0x${ string }` {
+  return getAddress(slice(approval.topics[2] as `0x${ string }`, 12));
+}
+
+function getApprovalIdentity(approval: Log): string {
+  return `${ getAddress(approval.address) }:${ getApprovalSpender(approval) }`;
+}
+
+function isNewerLog(candidate: Log, current: Log): boolean {
+  const candidateBlock = candidate.blockNumber ?? BigInt(0);
+  const currentBlock = current.blockNumber ?? BigInt(0);
+
+  if (candidateBlock !== currentBlock) {
+    return candidateBlock > currentBlock;
   }
 
-  return formatUnits(allowance, decimals);
+  return (candidate.logIndex ?? 0) > (current.logIndex ?? 0);
 }
 
-async function getERC20AllowanceFromApproval(
-  tokenAddress: `0x${ string }`,
-  ownerAddress: string,
-  approval: Log,
-  publicClient: PublicClient,
-): Promise<ContractAllowanceType> {
-  const spender = getAddress(slice(approval.topics[2] as `0x${ string }`, 12));
-  const allowance = await publicClient
-    .readContract({
-      address: tokenAddress,
-      abi: ERC20Artifact.abi,
-      functionName: 'allowance',
-      args: [ ownerAddress, spender ],
-    })
-    .catch(() => undefined);
+export function getLatestErc20ApprovalEvents(approvalEvents: Array<Log>) {
+  const latestApprovals = new Map<string, Log>();
 
-  return {
-    transactionId: approval.transactionHash,
-    spender,
-    allowance: allowance as bigint | undefined,
-    blockNumber: approval.blockNumber as bigint,
-  };
-}
+  approvalEvents.forEach((approval) => {
+    const identity = getApprovalIdentity(approval);
+    const current = latestApprovals.get(identity);
 
-async function getERC20AllowancesFromApprovals(
-  tokenAddress: `0x${ string }`,
-  ownerAddress: string,
-  approvals: Array<Log>,
-  publicClient: PublicClient,
-) {
-  const deduplicatedApprovals = approvals.filter(
-    (approval, i) =>
-      i ===
-      approvals.findIndex((other) => approval.topics[2] === other.topics[2]),
-  );
-
-  const allowances: Array<ContractAllowanceType> = await Promise.all(
-    deduplicatedApprovals.map((approval) =>
-      getERC20AllowanceFromApproval(
-        tokenAddress,
-        ownerAddress,
-        approval,
-        publicClient,
-      ),
-    ),
-  );
-
-  return allowances;
-}
-
-const useGetERC20TokenData = () => {
-  const apiFetch = useApiFetch();
-
-  return useCallback(async(
-    tokenAddress: `0x${ string }`,
-    chain: EssentialDappsChainConfig | undefined,
-    signal?: AbortSignal,
-  ) => {
-    try {
-      const data = await apiFetch('core:token', {
-        pathParams: { hash: tokenAddress },
-        chain,
-        fetchParams: {
-          signal,
-        },
-      }) as schemas['Token'];
-
-      return {
-        symbol: data.symbol || undefined,
-        decimals: data.decimals ? Number(data.decimals) : undefined,
-        totalSupply: data.total_supply ? BigInt(data.total_supply) : undefined,
-        name: data.name || undefined,
-        tokenIcon: data.icon_url || undefined,
-        price: data.exchange_rate || undefined,
-        tokenReputation: data.reputation,
-        balance: undefined,
-      };
-    } catch {
-      return undefined;
+    if (!current || isNewerLog(approval, current)) {
+      latestApprovals.set(identity, approval);
     }
-  }, [ apiFetch ]);
-};
+  });
 
-const useGetERC20Allowances = () => {
-  const getERC20TokenData = useGetERC20TokenData();
-  const getBlockTimestamp = useGetBlockTimestamp();
-  const apiFetch = useApiFetch();
-
-  return useCallback(async(
-    chain: EssentialDappsChainConfig | undefined,
-    tokenAddresses: Array<`0x${ string }`>,
-    searchQuery: string,
-    approvals: Array<Log>,
-    publicClient: PublicClient,
-    signal?: AbortSignal,
-  ) => {
-    const allowances: Array<AllowanceType> = [];
-    let balances: Record<string, bigint> = {};
-
-    const response = await apiFetch('core:address_token_balances', {
-      pathParams: { hash: searchQuery },
-      chain,
-      fetchParams: {
-        signal,
-      },
-    }) as Array<schemas['TokenBalance']>;
-
-    balances = Object.fromEntries(
-      response
-        .map((entry) => entry.token && entry.value ? [ entry.token.address_hash, BigInt(entry.value) ] : undefined)
-        .filter(Boolean),
-    );
-
-    await Promise.all(
-      tokenAddresses.map(async(tokenAddress) => {
-        if (signal?.aborted) {
-          throw new DOMException('Aborted', 'AbortError');
-        }
-        const tokenData = await getERC20TokenData(tokenAddress, chain, signal);
-
-        if (tokenData) {
-          const tokenApprovals = approvals.filter(
-            (approval) => getAddress(approval.address) === tokenAddress,
-          );
-
-          if (tokenApprovals.length > 0) {
-            const tokenAllowances = await getERC20AllowancesFromApprovals(
-              tokenAddress,
-              searchQuery,
-              tokenApprovals,
-              publicClient,
-            );
-
-            await Promise.all(
-              tokenAllowances.map(async(allowance) => {
-                if (signal?.aborted) {
-                  throw new DOMException('Aborted', 'AbortError');
-                }
-                const timestampMs = await getBlockTimestamp(chain, allowance.blockNumber, signal);
-
-                let valueAtRiskUsd;
-
-                if (
-                  allowance.allowance &&
-                  balances[tokenAddress] &&
-                  tokenData.price &&
-                  tokenData.decimals
-                ) {
-                  const valueAtRisk = allowance.allowance > balances[tokenAddress] ?
-                    balances[tokenAddress] :
-                    allowance.allowance;
-
-                  valueAtRiskUsd = Number(
-                    (
-                      parseFloat(formatUnits(valueAtRisk, tokenData.decimals)) *
-                      parseFloat(tokenData.price)
-                    ).toFixed(2),
-                  );
-                }
-
-                if (allowance.allowance && allowance.allowance !== BigInt(0)) {
-                  allowances.push({
-                    ...tokenData,
-                    type: 'ERC-20',
-                    address: tokenAddress,
-                    transactionId: allowance.transactionId,
-                    spender: allowance.spender,
-                    timestamp: timestampMs,
-                    allowance: allowance.allowance ?
-                      formatAllowance(
-                        allowance.allowance,
-                        tokenData.decimals,
-                        tokenData.totalSupply,
-                      ) : undefined,
-                    valueAtRiskUsd,
-                  });
-                }
-              }),
-            );
-          }
-        }
-      }),
-    );
-
-    return allowances;
-  }, [ getERC20TokenData, apiFetch, getBlockTimestamp ]);
-};
+  return Array.from(latestApprovals.values());
+}
 
 export default function useSearchErc20Allowances() {
-  const getERC20Allowances = useGetERC20Allowances();
-
   return useCallback(async(
-    chain: EssentialDappsChainConfig | undefined,
-    searchQuery: string,
+    ownerAddress: string,
     approvalEvents: Array<Log>,
+    tokenBalancesPromise: Promise<Map<`0x${ string }`, TokenBalanceInfo>>,
     publicClient: PublicClient,
     signal?: AbortSignal,
-  ) => {
+  ): Promise<Array<BaseAllowanceType>> => {
+    throwIfAborted(signal);
+
     const erc20Events = approvalEvents.filter((ev) => ev.topics.length === 3);
+    const latestApprovalEvents = getLatestErc20ApprovalEvents(erc20Events);
 
-    const erc20Addresses = uniq(
-      erc20Events.map((event) => getAddress(event.address)),
-    );
+    const recordsPromise: Promise<Array<BaseAllowanceType | undefined>> = Promise.all(latestApprovalEvents.map(async(approval) => {
+      throwIfAborted(signal);
 
-    return getERC20Allowances(
-      chain,
-      erc20Addresses,
-      searchQuery,
-      erc20Events,
-      publicClient,
-      signal,
-    );
-  }, [ getERC20Allowances ]);
+      const tokenAddress = getAddress(approval.address);
+      const spender = getApprovalSpender(approval);
+
+      try {
+        const allowance = await publicClient.readContract({
+          address: tokenAddress,
+          abi: ERC20Artifact.abi,
+          functionName: 'allowance',
+          args: [ ownerAddress, spender ],
+        }) as bigint | undefined;
+
+        if (!shouldKeepErc20Allowance(allowance)) {
+          return undefined;
+        }
+
+        const record: BaseAllowanceType = {
+          type: 'ERC-20',
+          address: tokenAddress,
+          transactionId: approval.transactionHash,
+          spender,
+          allowance,
+          blockNumber: approval.blockNumber as bigint,
+        };
+
+        return record;
+      } catch (error) {
+        if (shouldRethrowLocalError(error)) {
+          throw error;
+        }
+
+        return undefined;
+      }
+    }));
+
+    const [ records, tokenBalances ] = await Promise.all([ recordsPromise, tokenBalancesPromise ]);
+
+    return records
+      .filter((record): record is BaseAllowanceType => Boolean(record))
+      .map((record) => {
+        const tokenInfo = tokenBalances.get(record.address);
+
+        return {
+          ...record,
+          ...tokenInfo,
+          valueAtRiskUsd: getValueAtRiskUsd(record.allowance as bigint, tokenInfo),
+        };
+      });
+  }, []);
 }

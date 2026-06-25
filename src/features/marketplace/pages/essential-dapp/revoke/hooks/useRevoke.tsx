@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
-import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useCallback } from 'react';
+import type { PublicClient } from 'viem';
 import { waitForTransactionReceipt } from 'viem/actions';
-import { useAccount, useWriteContract, useSwitchChain } from 'wagmi';
+import { useAccount, useWriteContract, useSwitchChain, usePublicClient } from 'wagmi';
 
 import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
@@ -18,30 +17,30 @@ import * as mixpanel from 'src/services/mixpanel';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
 
-import createPublicClient from '../lib/createPublicClient';
+import { getRevokeContractCall } from '../lib/revokeContractCall';
 
-export default function useRevoke() {
+export default function useRevoke(chain?: EssentialDappsChainConfig) {
   const { address: userAddress } = useAccount();
   const { switchChainAsync } = useSwitchChain();
   const { writeContractAsync } = useWriteContract();
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
+  const publicClient = usePublicClient({ chainId: chain?.id ? Number(chain.id) : undefined }) as PublicClient | undefined;
 
-  return useCallback(async(approval: AllowanceType, chain?: EssentialDappsChainConfig) => {
+  return useCallback(async(approval: AllowanceType) => {
     try {
       if (!userAddress) return;
+      if (!chain?.id) throw new Error('Chain not found');
 
       await switchChainAsync({ chainId: Number(chain?.id) });
 
       const activityResponse = await trackTransaction(userAddress, approval.address, chain?.id);
 
-      const isErc20 = approval.type === 'ERC-20';
+      const contractCall = getRevokeContractCall(approval);
 
       const hash = await writeContractAsync({
         account: userAddress,
         address: approval.address,
-        abi: isErc20 ? ERC20Artifact.abi : NftArtifact.abi,
-        functionName: isErc20 ? 'approve' : 'setApprovalForAll',
-        args: [ approval.spender, isErc20 ? 0 : false ],
+        ...contractCall,
         chainId: Number(chain?.id),
       });
 
@@ -57,7 +56,6 @@ export default function useRevoke() {
         await trackTransactionConfirm(hash, activityResponse.token);
       }
 
-      const publicClient = createPublicClient(chain?.id);
       if (!publicClient) {
         throw new Error('Public client not found');
       }
@@ -106,5 +104,7 @@ export default function useRevoke() {
     switchChainAsync,
     trackTransaction,
     trackTransactionConfirm,
+    publicClient,
+    chain,
   ]);
 }
