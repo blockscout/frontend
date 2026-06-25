@@ -10,6 +10,8 @@ import type { SankeyChartData } from 'src/toolkit/components/charts/sankey/types
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ChartIntervalSelect from 'src/features/chain-stats/components/ChartIntervalSelect';
+import ChainSelectMultichain from 'src/features/multichain/components/ChainSelect';
+import type useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
@@ -24,6 +26,7 @@ interface Props {
   chart: ChainStatsChart;
   data?: SankeyChartData;
   baseChain?: ClusterChainConfig;
+  baseChainSelectProps?: ReturnType<typeof useRoutedChainSelect>;
   isLoading: boolean;
   isError: boolean;
   isInitialLoading: boolean;
@@ -37,6 +40,7 @@ const ChainStatsDetailsCrossChainTxs = ({
   chart,
   data,
   baseChain,
+  baseChainSelectProps,
   isLoading,
   isError,
   isInitialLoading,
@@ -64,33 +68,66 @@ const ChainStatsDetailsCrossChainTxs = ({
       })) || [];
   }, [ baseChain?.app_config, chainsQuery.data?.items ]);
 
-  const chainSelect = (
-    <ChainSelect
-      value={ counterPartyChainIds }
-      onValueChange={ onCounterPartyChainIdsChange }
-      chainsConfig={ chainsConfig }
-      withAllOption
-      loading={ chainsQuery.isLoading }
-      multiple
-    />
-  );
-
   const chainFilter = (() => {
-    const chainNameElement = <chakra.span fontWeight="medium" color="text.primary">{ (baseChain?.app_config ?? config).chain.name }</chakra.span>;
+    const counterPartyChainSelect = (
+      <ChainSelect
+        value={ counterPartyChainIds }
+        onValueChange={ onCounterPartyChainIdsChange }
+        chainsConfig={ chainsConfig }
+        withAllOption
+        loading={ chainsQuery.isLoading }
+        multiple
+      />
+    );
+
+    const baseChainSelect = baseChainSelectProps ? (
+      <ChainSelectMultichain
+        value={ baseChainSelectProps.value }
+        onValueChange={ baseChainSelectProps.onValueChange }
+        loading={ chainsQuery.isLoading }
+      />
+    ) : null;
+
+    const chainName = <chakra.span fontWeight="medium" color="text.primary">{ (baseChain?.app_config ?? config).chain.name }</chakra.span>;
+
     if (chart.id === 'outgoing-messages-paths') {
+      if (baseChainSelect) {
+        return (
+          <HStack>
+            { baseChainSelect }
+            <span>to</span>
+            { counterPartyChainSelect }
+          </HStack>
+        );
+      }
+
       return (
         <HStack color="text.secondary">
-          <Skeleton loading={ isInitialLoading }><span>From { chainNameElement } to</span></Skeleton>
-          { chainSelect }
+          <Skeleton loading={ isInitialLoading }>
+            <span>From { chainName } to </span>
+          </Skeleton>
+          { counterPartyChainSelect }
         </HStack>
       );
     }
 
     if (chart.id === 'incoming-messages-paths') {
+      if (baseChainSelect) {
+        return (
+          <HStack>
+            { counterPartyChainSelect }
+            <span>to</span>
+            { baseChainSelect }
+          </HStack>
+        );
+      }
+
       return (
         <HStack color="text.secondary">
-          { chainSelect }
-          <Skeleton loading={ isInitialLoading }><span>to { chainNameElement }</span></Skeleton>
+          { counterPartyChainSelect }
+          <Skeleton loading={ isInitialLoading }>
+            <span>to { chainName }</span>
+          </Skeleton>
         </HStack>
       );
     }

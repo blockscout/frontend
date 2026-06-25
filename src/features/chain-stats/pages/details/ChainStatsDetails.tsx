@@ -14,6 +14,7 @@ import ChainStatsDetailsCrossChainTxs from 'src/features/cross-chain-txs/compone
 import useCrossChainChartQuery from 'src/features/cross-chain-txs/hooks/useCrossChainChartQuery';
 import { CROSS_CHAIN_TXS_CHARTS } from 'src/features/cross-chain-txs/utils/chain-stats';
 import multichainConfig from 'src/features/multichain/chains-config';
+import useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
 import config from 'src/config';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
@@ -34,7 +35,6 @@ const ChainStatsDetails = () => {
   const { updateQuery } = useQueryParams();
 
   const id = getQueryParamString(router.query.id);
-  const chainId = getQueryParamString(router.query.chain_id);
   const intervalFromQuery = getIntervalFromQuery(router);
   const resolutionFromQuery = getResolutionFromQuery(router);
   const counterPartyChainIdsFromQuery = Array.isArray(router.query.counterparty_chain_ids) ?
@@ -49,11 +49,22 @@ const ChainStatsDetails = () => {
     counterPartyChainIdsFromQuery.length > 0 ? counterPartyChainIdsFromQuery : [ ALL_OPTION.value ],
   );
 
+  const chainIdsWithCrossChain = React.useMemo(() => {
+    return multichainConfig()?.chains
+      .filter((chain) => chain.app_config.features.crossChainTxs.isEnabled)
+      .map((chain) => chain.id);
+  }, []);
+
+  const chainSelectCrossChain = useRoutedChainSelect({
+    chainIds: chainIdsWithCrossChain,
+  });
+
   const chainData = React.useMemo(() => {
+    const chainId = chainSelectCrossChain.value?.[0];
     if (chainId) {
       return multichainConfig()?.chains.find(({ id }) => id === chainId);
     }
-  }, [ chainId ]);
+  }, [ chainSelectCrossChain.value ]);
 
   const crossChainTxsChart = (chainData?.app_config ?? config).features.crossChainTxs.isEnabled ?
     CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) :
@@ -119,6 +130,7 @@ const ChainStatsDetails = () => {
           chart={ crossChainTxsChart }
           data={ query.data?.data }
           baseChain={ chainData }
+          baseChainSelectProps={ chainSelectCrossChain }
           isLoading={ query.isPlaceholderData }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
