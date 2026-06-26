@@ -6,9 +6,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 
-type FilecoinActorType = NonNullable<NonNullable<schemas['Address']['filecoin']>['actor_type']>;
-
-const ACTOR_TYPES: Record<FilecoinActorType, string> = {
+const ACTOR_TYPES: Record<schemas['FilecoinActorType'], string> = {
   account: 'Account',
   cron: 'Scheduled Tasks',
   datacap: 'Data Cap Management',
@@ -28,8 +26,8 @@ const ACTOR_TYPES: Record<FilecoinActorType, string> = {
   verifreg: 'Verification Registry',
 };
 
-type Props = {
-  actorType: FilecoinActorType;
+interface Props {
+  actorType: schemas['FilecoinActorType'];
 };
 
 const FilecoinActorTag = ({ actorType }: Props) => {

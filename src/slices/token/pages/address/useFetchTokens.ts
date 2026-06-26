@@ -73,7 +73,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
           queryParams: { type: [ item.id as unknown as TokenType ] },
           chain,
           fetchParams: { signal },
-        }) as Promise<paths['/v2/addresses/{address_hash_param}/tokens']['get']>;
+        }) as Promise<paths['/api/v2/addresses/{address_hash_param}/tokens']['get']>;
       },
       enabled: Boolean(hash) && enabled,
       refetchOnMount: false,
@@ -86,7 +86,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: Array.isArray(type) ? type : [ type ] } });
 
     queryClient.setQueryData(queryKey, (
-      prevData: paths['/v2/addresses/{address_hash_param}/tokens']['get'] | undefined,
+      prevData: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] | undefined,
     ) => {
       const items = prevData?.items.map((currentItem) => {
         const updatedData = payload.token_balances.find(tokenBalanceItemIdentityFactory(currentItem));

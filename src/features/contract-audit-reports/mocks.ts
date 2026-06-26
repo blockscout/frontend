@@ -1,7 +1,7 @@
 import type { paths } from '@blockscout/api-types';
 
 export const contractAudits:
-paths['/v2/smart-contracts/{address_hash_param}/audit-reports']['get'] = {
+paths['/api/v2/smart-contracts/{address_hash_param}/audit-reports']['get'] = {
   items: [
     {
       audit_company_name: 'OpenZeppelin',

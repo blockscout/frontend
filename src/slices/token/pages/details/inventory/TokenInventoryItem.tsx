@@ -18,7 +18,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
 
 interface Props {
-  item: schemas['TokenInstance'];
+  item: schemas['TokenInstanceInTokenInstancesList'];
   token: schemas['Token'];
   isLoading: boolean;
 };

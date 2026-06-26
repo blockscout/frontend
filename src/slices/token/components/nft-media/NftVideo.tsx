@@ -11,7 +11,7 @@ import type { MediaElementProps, Size } from './utils';
 import { videoPlayProps } from './utils';
 
 interface Props extends MediaElementProps<'video'> {
-  instance: schemas['TokenInstance'];
+  instance: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
   autoPlay?: boolean;
   size?: Size;
 }

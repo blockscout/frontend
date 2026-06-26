@@ -10,8 +10,6 @@ import TokenInventory from './TokenInventory';
 
 test('base view +@mobile', async({ render, mockAssetResponse }) => {
 
-  const item = { ...tokenInstance, image_url: null };
-
   await mockAssetResponse(tokenInstance.image_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(
@@ -21,7 +19,11 @@ test('base view +@mobile', async({ render, mockAssetResponse }) => {
         // @ts-ignore:
         inventoryQuery={{
           data: {
-            items: [ tokenInstance, item, item ],
+            items: [
+              { ...tokenInstance, token_type: 'ERC-721' },
+              { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
+              { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
+            ],
             next_page_params: { unique_token: 1 },
           },
 

@@ -62,7 +62,7 @@ export const TOKEN_HOLDER_ERC_1155: schemas['TokenHolderResponse'] = {
 };
 
 export const getTokenHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
-paths['/v2/tokens/{address_hash_param}/holders']['get'] => {
+paths['/api/v2/tokens/{address_hash_param}/holders']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
@@ -76,7 +76,7 @@ paths['/v2/tokens/{address_hash_param}/holders']['get'] => {
 };
 
 export const getTokenInstanceHoldersStub = (type?: TokenType | null | undefined, pagination: Record<string, unknown> | null = null):
-paths['/v2/tokens/{address_hash_param}/holders']['get'] => {
+paths['/api/v2/tokens/{address_hash_param}/holders']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
@@ -108,3 +108,14 @@ export const TOKEN_INSTANCE: schemas['TokenInstance'] = {
   media_type: null,
   media_url: null,
 };
+
+export const TOKEN_INSTANCE_ITEM: schemas['TokenInstanceInTokenInstancesList'] = {
+  ...TOKEN_INSTANCE,
+  token_type: 'ERC-721',
+};
+
+// export const TOKEN_INSTANCE_ADDRESS_ITEM: schemas['TokenInstanceInList'] = {
+//   ...TOKEN_INSTANCE,
+//   token_type: 'ERC-721',
+
+// }

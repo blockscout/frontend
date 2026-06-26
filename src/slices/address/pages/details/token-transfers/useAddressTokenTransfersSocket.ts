@@ -43,7 +43,7 @@ const matchFilters = (filters: Filters, tokenTransfer: schemas['TokenTransfer'],
 
 const OVERLOAD_COUNT = 75;
 
-type AddressTokenTransferResponse = paths['/v2/addresses/{address_hash_param}/token-transfers']['get'];
+type AddressTokenTransferResponse = paths['/api/v2/addresses/{address_hash_param}/token-transfers']['get'];
 
 interface Props {
   filters: Filters;

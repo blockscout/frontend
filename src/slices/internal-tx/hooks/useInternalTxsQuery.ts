@@ -34,6 +34,10 @@ export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
             transaction_hash: '0x123',
             transaction_index: 1,
           },
+          meta: {
+            message: null,
+            status: 1,
+          },
         },
       ),
     },

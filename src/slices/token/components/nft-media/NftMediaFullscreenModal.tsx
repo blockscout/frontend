@@ -17,7 +17,7 @@ import type { MediaType } from './utils';
 interface Props {
   open: boolean;
   onOpenChange: ({ open }: { open: boolean }) => void;
-  data: schemas['TokenInstance'];
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
 }

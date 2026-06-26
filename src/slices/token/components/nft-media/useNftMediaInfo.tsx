@@ -13,7 +13,7 @@ import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
-  data: schemas['TokenInstance'];
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
   size: Size;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
@@ -54,7 +54,10 @@ export default function useNftMediaInfo({ data, size, allowedTypes, field, isEna
   return query;
 }
 
-async function getMediaType(data: schemas['TokenInstance'], field: Params['field']): Promise<MediaType | undefined> {
+async function getMediaType(
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'],
+  field: Params['field'],
+): Promise<MediaType | undefined> {
   const url = data[field];
 
   if (!url) {
@@ -117,7 +120,7 @@ function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | unde
   }
 }
 
-function getCdnData(data: schemas['TokenInstance'], size: Size, mediaType: MediaType): MediaInfo | undefined {
+function getCdnData(data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'], size: Size, mediaType: MediaType): MediaInfo | undefined {
   // CDN is only used for images
   if (mediaType !== 'image') {
     return;

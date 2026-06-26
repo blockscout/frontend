@@ -5,7 +5,7 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import type { SmartContractSecurityAuditSubmission } from 'src/features/contract-audit-reports/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import type { ResourceError } from 'src/api/resources';
@@ -53,7 +53,11 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
 
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {
     try {
-      await apiFetch<'core:contract_security_audits', SmartContractSecurityAuditSubmission, AuditSubmissionErrors>('core:contract_security_audits', {
+      await apiFetch<
+        'core:contract_security_audits',
+        operations['SmartContractController.audit_report_submission']['requestBody'],
+        AuditSubmissionErrors
+      >('core:contract_security_audits', {
         pathParams: { hash: address },
         fetchParams: {
           method: 'POST',

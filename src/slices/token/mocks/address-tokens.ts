@@ -119,7 +119,7 @@ export const erc404b: schemas['TokenBalance'] = {
   token_id: null,
 };
 
-export const erc20List: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+export const erc20List: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
   items: [
     erc20a,
     erc20b,
@@ -128,7 +128,7 @@ export const erc20List: paths['/v2/addresses/{address_hash_param}/tokens']['get'
   next_page_params: null,
 };
 
-export const erc721List: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+export const erc721List: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
   items: [
     erc721a,
     erc721b,
@@ -137,7 +137,7 @@ export const erc721List: paths['/v2/addresses/{address_hash_param}/tokens']['get
   next_page_params: null,
 };
 
-export const erc1155List: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+export const erc1155List: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
   items: [
     erc1155withoutName,
     erc1155a,
@@ -146,7 +146,7 @@ export const erc1155List: paths['/v2/addresses/{address_hash_param}/tokens']['ge
   next_page_params: null,
 };
 
-export const erc404List: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+export const erc404List: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
   items: [
     erc404a,
     erc404b,
@@ -154,7 +154,7 @@ export const erc404List: paths['/v2/addresses/{address_hash_param}/tokens']['get
   next_page_params: null,
 };
 
-export const nfts: paths['/v2/addresses/{address_hash_param}/nft']['get'] = {
+export const nfts: paths['/api/v2/addresses/{address_hash_param}/nft']['get'] = {
   items: [
     {
       ...tokenInstance.base,
@@ -189,7 +189,7 @@ const nftInstanceWithoutImage = {
   image_url: null,
 };
 
-export const collections: paths['/v2/addresses/{address_hash_param}/nft/collections']['get'] = {
+export const collections: paths['/api/v2/addresses/{address_hash_param}/nft/collections']['get'] = {
   items: [
     {
       token: tokens.tokenInfoERC1155a,

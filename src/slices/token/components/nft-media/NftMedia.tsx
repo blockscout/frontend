@@ -20,7 +20,7 @@ import type { MediaType, Size } from './utils';
 import { mediaStyleProps } from './utils';
 
 interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
-  data: schemas['TokenInstance'];
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
   size?: Size;
   allowedTypes?: Array<MediaType>;
   isLoading?: boolean;

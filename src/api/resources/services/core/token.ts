@@ -92,18 +92,18 @@ export type CoreApiTokenResourceName = `core:${ keyof typeof CORE_API_TOKEN_RESO
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTokenResourcePayload<R extends CoreApiTokenResourceName> =
-R extends 'core:token' ? paths['/v2/tokens/{address_hash_param}']['get'] :
-R extends 'core:token_counters' ? paths['/v2/tokens/{address_hash_param}/counters']['get'] :
-R extends 'core:token_transfers' ? paths['/v2/tokens/{address_hash_param}/transfers']['get'] :
-R extends 'core:token_holders' ? paths['/v2/tokens/{address_hash_param}/holders']['get'] :
-R extends 'core:token_instance' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get'] :
-R extends 'core:token_instance_transfers_count' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get'] :
-R extends 'core:token_instance_transfers' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] :
-R extends 'core:token_instance_holders' ? paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/holders']['get'] :
-R extends 'core:token_inventory' ? paths['/v2/tokens/{address_hash_param}/instances']['get'] :
-R extends 'core:tokens' ? paths['/v2/tokens/']['get'] :
-R extends 'core:tokens_bridged' ? paths['/v2/tokens/bridged']['get'] :
-R extends 'core:token_transfers_all' ? paths['/v2/token-transfers']['get'] :
+R extends 'core:token' ? paths['/api/v2/tokens/{address_hash_param}']['get'] :
+R extends 'core:token_counters' ? paths['/api/v2/tokens/{address_hash_param}/counters']['get'] :
+R extends 'core:token_transfers' ? paths['/api/v2/tokens/{address_hash_param}/transfers']['get'] :
+R extends 'core:token_holders' ? paths['/api/v2/tokens/{address_hash_param}/holders']['get'] :
+R extends 'core:token_instance' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get'] :
+R extends 'core:token_instance_transfers_count' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get'] :
+R extends 'core:token_instance_transfers' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] :
+R extends 'core:token_instance_holders' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/holders']['get'] :
+R extends 'core:token_inventory' ? paths['/api/v2/tokens/{address_hash_param}/instances']['get'] :
+R extends 'core:tokens' ? paths['/api/v2/tokens/']['get'] :
+R extends 'core:tokens_bridged' ? paths['/api/v2/tokens/bridged']['get'] :
+R extends 'core:token_transfers_all' ? paths['/api/v2/token-transfers']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 
