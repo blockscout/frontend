@@ -1,7 +1,7 @@
 import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_HASH, ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
-import { BLOCK_HASH } from 'src/slices/block/stubs/block';
+import { BLOCK_HASH } from 'src/slices/block/stubs/list';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 const USER_OP_HASH = '0xb94fab8f31f83001a23e20b2ce3cdcfb284c57a64b9a073e0e09c018bc701978';

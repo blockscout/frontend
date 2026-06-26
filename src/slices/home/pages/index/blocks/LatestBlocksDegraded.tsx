@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { BLOCK } from 'src/slices/block/stubs/block';
+import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
 
 import { publicClient } from 'src/features/connect-wallet/utils/public-client';
@@ -43,7 +43,7 @@ const LatestBlocksDegraded = ({ maxNum }: Props) => {
     return <LatestBlocksFallback/>;
   }
 
-  const items = isLoading ? Array(maxNum).fill(BLOCK) : blocks.slice(0, maxNum);
+  const items = isLoading ? Array(maxNum).fill(BLOCK_ITEM) : blocks.slice(0, maxNum);
 
   if (items.length === 0) {
     return <Box textStyle="sm">No latest blocks found.</Box>;

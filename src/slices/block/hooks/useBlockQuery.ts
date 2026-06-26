@@ -11,7 +11,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import { retry } from 'src/api/hooks/useQueryClientConfig';
 import type { ResourceError } from 'src/api/resources';
 
-import { BLOCK } from 'src/slices/block/stubs/block';
+import { BLOCK } from 'src/slices/block/stubs/details';
 import { GET_BLOCK } from 'src/slices/block/stubs/rpc';
 import { formatBlockDetailsData } from 'src/slices/block/utils/format-rpc-data';
 

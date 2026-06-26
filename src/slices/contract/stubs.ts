@@ -76,7 +76,7 @@ export const VERIFIED_CONTRACT_INFO: schemas['SmartContractListItem'] = {
   transactions_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
   license_type: 'mit',
-  certified: true,
+  certified: false,
   reputation: 'ok',
 };
 
