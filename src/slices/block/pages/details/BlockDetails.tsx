@@ -408,11 +408,12 @@ const BlockDetails = ({ query }: Props) => {
           <React.Fragment key={ type }>
             <DetailedInfo.ItemLabel
               hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
+              isLoading={ isPlaceholderData }
             >
               { type }
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <NativeCoinValue amount={ reward.toString() } accuracy={ 0 }/>
+              <NativeCoinValue amount={ reward.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
             </DetailedInfo.ItemValue>
           </React.Fragment>
         ))
