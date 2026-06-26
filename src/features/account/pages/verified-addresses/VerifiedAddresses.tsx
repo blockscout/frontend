@@ -5,7 +5,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, VerifiedAddressResponse } from 'src/features/account/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
+import type { TokenInfoApplication, TokenInfoApplications } from 'src/features/account/types/api';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -88,10 +89,10 @@ const VerifiedAddresses = () => {
     setSelectedAddress(address);
   }, []);
 
-  const handleAddressSubmit = React.useCallback((newItem: VerifiedAddress) => {
+  const handleAddressSubmit = React.useCallback((newItem: contractsInfo.VerifiedAddress) => {
     queryClient.setQueryData(
       getResourceKey('contractInfo:verified_addresses', { pathParams: { instanceId: config.apis.contractInfo?.instanceId } }),
-      (prevData: VerifiedAddressResponse | undefined) => {
+      (prevData: contractsInfo.ListUserVerifiedAddressesResponse | undefined) => {
         if (!prevData) {
           return { verifiedAddresses: [ newItem ] };
         }
@@ -137,7 +138,7 @@ const VerifiedAddresses = () => {
 
   if (selectedAddress) {
     const addressInfo = addressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === selectedAddress.toLowerCase());
-    const tokenName = addressInfo ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
+    const tokenName = addressInfo?.metadata ? `${ addressInfo.metadata.tokenName } (${ addressInfo.metadata.tokenSymbol })` : '';
     const beforeTitle = <BackToButton onClick={ handleGoBack } hint="Back to my verified addresses" mr={ 3 }/>;
 
     return (

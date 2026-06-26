@@ -8,11 +8,10 @@ import { FormProvider, useForm } from 'react-hook-form';
 
 import type {
   AddressVerificationResponseError,
-  AddressCheckResponseSuccess,
-  AddressCheckStatusSuccess,
   AddressVerificationFormFirstStepFields,
   RootFields,
 } from '../types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import type { ResourceError } from 'src/api/resources';
@@ -30,7 +29,7 @@ type Fields = RootFields & AddressVerificationFormFirstStepFields;
 
 interface Props {
   defaultAddress?: string;
-  onContinue: (data: AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess) => void;
+  onContinue: (data: AddressVerificationFormFirstStepFields & contractsInfo.PrepareAddressResponse_Success) => void;
 }
 
 const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) => {
@@ -54,7 +53,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       const body = {
         contractAddress: data.address,
       };
-      const response = await apiFetch<'contractInfo:address_verification', AddressCheckResponseSuccess, AddressVerificationResponseError>(
+      const response = await apiFetch<'contractInfo:address_verification', contractsInfo.PrepareAddressResponse, AddressVerificationResponseError>(
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
@@ -62,7 +61,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
         },
       );
 
-      if (response.status !== 'SUCCESS') {
+      if (response.status !== 'SUCCESS' || !response.result) {
         const type = typeof response.status === 'number' ? 'UNKNOWN_ERROR' : response.status;
         const message = ('payload' in response ? response.payload?.message : undefined) || 'Oops! Something went wrong';
         return setError('root', { type, message });

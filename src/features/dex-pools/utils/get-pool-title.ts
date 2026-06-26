@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
-export const getPoolTitle = (pool: Pool) => {
+export const getPoolTitle = (pool: contractsInfo.Pool) => {
   return `${ pool.base_token_symbol } / ${ pool.quote_token_symbol } ${ pool.fee ? `(${ pool.fee }%)` : '' }`;
 };

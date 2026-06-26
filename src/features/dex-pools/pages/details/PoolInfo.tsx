@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
@@ -12,7 +12,7 @@ import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSpon
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 type Props = {
-  data: Pool;
+  data: contractsInfo.Pool;
   isPlaceholderData: boolean;
 };
 
@@ -32,7 +32,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
             address_hash: data.base_token_address,
             name: data.base_token_symbol,
             symbol: data.base_token_symbol,
-            icon_url: data.base_token_icon_url,
+            icon_url: data.base_token_icon_url ?? null,
             reputation: null,
           }}
           isLoading={ isPlaceholderData }
@@ -52,7 +52,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
             address_hash: data.quote_token_address,
             name: data.quote_token_symbol,
             symbol: data.quote_token_symbol,
-            icon_url: data.quote_token_icon_url,
+            icon_url: data.quote_token_icon_url ?? null,
             reputation: null,
           }}
           isLoading={ isPlaceholderData }
@@ -139,7 +139,7 @@ const PoolInfo = ({ data, isPlaceholderData }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ isPlaceholderData }>
-          { data.dex.name }
+          { data.dex?.name ?? 'N/A' }
         </Skeleton>
       </DetailedInfo.ItemValue>
 

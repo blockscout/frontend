@@ -150,21 +150,6 @@ export type TransactionTagErrors = {
   identity_id?: Array<string>;
 };
 
-export interface VerifiedAddress {
-  userId: string;
-  chainId: string;
-  contractAddress: string;
-  verifiedDate: string;
-  metadata: {
-    tokenName: string | null;
-    tokenSymbol: string | null;
-  };
-}
-
-export interface VerifiedAddressResponse {
-  verifiedAddresses: Array<VerifiedAddress>;
-}
-
 export interface TokenInfoApplicationConfig {
   projectSectors: Array<string>;
 }

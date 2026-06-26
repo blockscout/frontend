@@ -3,7 +3,7 @@
 import { Flex, Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -20,8 +20,8 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-type Props = {
-  item: Pool;
+interface Props {
+  item: contractsInfo.Pool;
   index: number;
   page: number;
   isLoading?: boolean;
@@ -62,7 +62,7 @@ const PoolsTableItem = ({
         </Flex>
       </TableCell>
       <TableCell>
-        <Skeleton loading={ isLoading }>{ item.dex.name }</Skeleton>
+        <Skeleton loading={ isLoading }>{ item.dex?.name ?? '' }</Skeleton>
       </TableCell>
       <TableCell isNumeric>
         <Skeleton loading={ isLoading }>

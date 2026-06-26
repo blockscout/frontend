@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../types';
-import type { VerifiedAddressResponse } from 'src/features/account/types/api';
-import type { Pool, PoolsResponse } from 'src/features/dex-pools/types/api';
-import type { TokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 export const CONTRACT_INFO_API_RESOURCES = {
   address_verification: {
@@ -34,10 +32,10 @@ export type ContractInfoApiResourceName = `contractInfo:${ keyof typeof CONTRACT
 
 /* eslint-disable @stylistic/indent */
 export type ContractInfoApiResourcePayload<R extends ContractInfoApiResourceName> =
-R extends 'contractInfo:verified_addresses' ? VerifiedAddressResponse :
-R extends 'contractInfo:token_verified_info' ? TokenVerifiedInfo :
-R extends 'contractInfo:pools' ? PoolsResponse :
-R extends 'contractInfo:pool' ? Pool :
+R extends 'contractInfo:verified_addresses' ? contractsInfo.ListUserVerifiedAddressesResponse :
+R extends 'contractInfo:token_verified_info' ? contractsInfo.TokenInfo :
+R extends 'contractInfo:pools' ? contractsInfo.ListPoolsResponse :
+R extends 'contractInfo:pool' ? contractsInfo.Pool :
 never;
 /* eslint-enable @stylistic/indent */
 

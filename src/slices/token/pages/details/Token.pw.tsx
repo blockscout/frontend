@@ -51,7 +51,7 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
   test.slow();
   await mockApiResponse(
     'contractInfo:token_verified_info',
-    verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+    verifiedAddressesMocks.TOKEN_INFO,
     { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
   );
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
@@ -86,7 +86,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
   await mockApiResponse(
     'contractInfo:token_verified_info',
-    verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+    verifiedAddressesMocks.TOKEN_INFO,
     { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
   );
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
@@ -139,7 +139,7 @@ test.describe('mobile', () => {
     test.slow();
     await mockApiResponse(
       'contractInfo:token_verified_info',
-      verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED,
+      verifiedAddressesMocks.TOKEN_INFO,
       { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash } },
     );
     await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');

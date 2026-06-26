@@ -8,13 +8,11 @@ import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
-  AddressCheckStatusSuccess,
   AddressVerificationFormFirstStepFields,
   RootFields,
   AddressVerificationResponseError,
-  AddressValidationResponseSuccess,
 } from '../types';
-import type { VerifiedAddress } from 'src/features/account/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
@@ -37,8 +35,8 @@ type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 type SignMethod = 'wallet' | 'manual';
 
-interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess {
-  onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
+interface Props extends AddressVerificationFormFirstStepFields, contractsInfo.PrepareAddressResponse_Success {
+  onContinue: (newItem: contractsInfo.VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
 
@@ -71,7 +69,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         signature: data.signature,
       };
 
-      const response = await apiFetch<'contractInfo:address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>(
+      const response = await apiFetch<'contractInfo:address_verification', contractsInfo.VerifyAddressResponse, AddressVerificationResponseError>(
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
@@ -79,9 +77,12 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         },
       );
 
-      if (response.status !== 'SUCCESS') {
+      if (response.status !== 'SUCCESS' || !response.result?.verifiedAddress) {
         const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;
-        return setError('root', { type, message: response.status === 'INVALID_SIGNER_ERROR' ? response.invalidSigner.signer : undefined });
+        return setError('root', {
+          type,
+          message: response.status === 'INVALID_SIGNER_ERROR' && response.invalidSigner ? response.invalidSigner.signer : undefined,
+        });
       }
 
       onContinue(response.result.verifiedAddress, signMethod);

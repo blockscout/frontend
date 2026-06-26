@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
-
-type PoolLink = {
+interface PoolLink {
   url: string;
   image: string;
   title: string;
 };
 
-export default function getPoolLinks(pool?: Pool): Array<PoolLink> {
+export default function getPoolLinks(pool?: contractsInfo.Pool): Array<PoolLink> {
   if (!pool) {
     return [];
   }

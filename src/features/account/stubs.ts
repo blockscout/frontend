@@ -1,4 +1,5 @@
-import type { AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'src/features/account/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
+import type { AddressTag, TransactionTag, ApiKey, CustomAbi, TokenInfoApplication, WatchlistAddress } from 'src/features/account/types/api';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
@@ -72,7 +73,7 @@ export const CUSTOM_ABI: CustomAbi = {
   name: 'placeholder',
 };
 
-export const VERIFIED_ADDRESS: VerifiedAddress = {
+export const VERIFIED_ADDRESS: contractsInfo.VerifiedAddress = {
   userId: 'john.doe@gmail.com',
   chainId: '5',
   contractAddress: ADDRESS_HASH,

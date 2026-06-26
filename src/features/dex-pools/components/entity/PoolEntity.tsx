@@ -4,7 +4,7 @@ import { Flex, chakra } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
@@ -47,7 +47,7 @@ const Icon = (props: IconProps) => {
           marginRight={ 0 }
           variant={ props.variant }
           token={{
-            icon_url: props.pool.base_token_icon_url,
+            icon_url: props.pool.base_token_icon_url ?? null,
             symbol: props.pool.base_token_symbol,
             address_hash: props.pool.base_token_address,
             name: '',
@@ -68,7 +68,7 @@ const Icon = (props: IconProps) => {
           marginRight={ 0 }
           variant={ props.variant }
           token={{
-            icon_url: props.pool.quote_token_icon_url,
+            icon_url: props.pool.quote_token_icon_url ?? null,
             symbol: props.pool.quote_token_symbol,
             address_hash: props.pool.quote_token_address,
             name: '',
@@ -106,7 +106,7 @@ const Content = chakra((props: ContentProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  pool: Pool;
+  pool: contractsInfo.Pool;
 }
 
 const PoolEntity = (props: EntityProps) => {

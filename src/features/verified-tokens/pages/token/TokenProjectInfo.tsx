@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { TokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import InfoPopoverButton from 'src/shared/buttons/InfoPopoverButton';
 
 import Content, { hasContent } from './project-info/Content';
 
 interface Props {
-  data: TokenVerifiedInfo;
+  data: contractsInfo.TokenInfo;
 }
 
 const TokenProjectInfo = ({ data }: Props) => {

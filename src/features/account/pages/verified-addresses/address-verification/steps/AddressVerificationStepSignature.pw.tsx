@@ -23,6 +23,7 @@ test('base view', async({ render, page }) => {
     noWeb3Provider: true,
     address: mocks.VERIFIED_ADDRESS.NEW_ITEM.contractAddress,
     signingMessage: mocks.ADDRESS_CHECK_RESPONSE.SUCCESS.result.signingMessage,
+    contractCreator: mocks.ADDRESS_CHECK_RESPONSE.SUCCESS.result.contractCreator,
   };
 
   await render(<AddressVerificationStepSignature { ...props }/>);

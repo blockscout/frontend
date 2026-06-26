@@ -3,7 +3,7 @@
 import { Flex, Text, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import DocsLink from './DocsLink';
 import type { Props as ServiceLinkProps } from './ServiceLink';
@@ -11,7 +11,7 @@ import ServiceLink from './ServiceLink';
 import SupportLink from './SupportLink';
 
 interface Props {
-  data: TokenVerifiedInfo;
+  data: contractsInfo.TokenInfo;
 }
 
 const SOCIAL_LINKS: Array<Omit<ServiceLinkProps, 'href'>> = [
@@ -33,8 +33,8 @@ const PRICE_TICKERS: Array<Omit<ServiceLinkProps, 'href'>> = [
   { field: 'defiLlamaTicker', icon: 'social/defi_llama', title: 'DefiLlama' },
 ];
 
-export function hasContent(data: TokenVerifiedInfo): boolean {
-  const fields: Array<keyof TokenVerifiedInfo> = [
+export function hasContent(data: contractsInfo.TokenInfo): boolean {
+  const fields: Array<keyof contractsInfo.TokenInfo> = [
     'projectDescription',
     'docs',
     'support',
