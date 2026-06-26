@@ -12,16 +12,24 @@ import { videoPlayProps } from './utils';
 
 interface Props extends MediaElementProps<'video'> {
   instance: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
+  addressHash: string;
   autoPlay?: boolean;
   size?: Size;
 }
 
 const POSTER_ALLOWED_TYPES = [ 'image' as const ];
 
-const NftVideo = ({ src, transport, instance, autoPlay = true, onLoad, size = 'original', onError, onClick, ...rest }: Props) => {
+const NftVideo = ({ src, transport, instance, addressHash, autoPlay = true, onLoad, size = 'original', onError, onClick, ...rest }: Props) => {
   const ref = React.useRef<HTMLVideoElement>(null);
 
-  const mediaInfoQuery = useNftMediaInfo({ data: instance, size, field: 'image_url', isEnabled: true, allowedTypes: POSTER_ALLOWED_TYPES });
+  const mediaInfoQuery = useNftMediaInfo({
+    data: instance,
+    addressHash,
+    size,
+    field: 'image_url',
+    isEnabled: true,
+    allowedTypes: POSTER_ALLOWED_TYPES,
+  });
   const loadImageViaIpfs = useLoadImageViaIpfs();
 
   const handleMouseEnter = React.useCallback(() => {

@@ -9,6 +9,7 @@ import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import NftFallback from 'src/slices/token/components/nft-media/NftFallback';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
 
 import { route } from 'src/shared/router/routes';
@@ -41,13 +42,16 @@ const AddressNftItem = ({ isLoading, withTokenLink, chain, instance, token }: Pr
         <Tag background="gray.50" zIndex={ 1 } position="absolute" top="18px" right="18px">{ getTokenTypeName(token?.type) }</Tag>
       </Skeleton>
       <Link href={ isLoading ? undefined : tokenInstanceLink } display="inline">
-        <NftMedia
-          mb="18px"
-          data={ instance }
-          size="md"
-          isLoading={ isLoading }
-          autoplayVideo={ false }
-        />
+        { token ? (
+          <NftMedia
+            mb="18px"
+            data={ instance }
+            addressHash={ token.address_hash }
+            size="md"
+            isLoading={ isLoading }
+            autoplayVideo={ false }
+          />
+        ) : <NftFallback mb="18px"/> }
       </Link>
       <Flex justifyContent="space-between" w="100%" flexWrap="wrap">
         { token && (

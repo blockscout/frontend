@@ -32,6 +32,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
     <NftMedia
       mb="18px"
       data={ item }
+      addressHash={ token.address_hash }
       isLoading={ isLoading }
       autoplayVideo={ false }
       size="md"

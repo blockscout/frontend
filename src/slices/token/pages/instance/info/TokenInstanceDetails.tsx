@@ -113,6 +113,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
         </DetailedInfo.Container>
         <NftMedia
           data={ data }
+          addressHash={ token.address_hash }
           isLoading={ isLoading }
           size="md"
           withFullscreen
