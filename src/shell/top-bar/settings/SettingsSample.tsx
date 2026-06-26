@@ -41,7 +41,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
             borderStyle: 'solid',
             borderRadius: 'full',
             borderWidth: '2px',
-            borderColor: isActive ? activeBorderColor : 'transparent',
+            borderColor: isActive ? activeBorderColor : { _light: 'blackAlpha.300', _dark: 'whiteAlpha.300' },
           }}
           _hover={{
             _before: {
