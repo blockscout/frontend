@@ -6,7 +6,7 @@ import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import { WITHDRAWAL } from 'src/features/chain-variants/beacon-chain/stubs/rpc';
 
-import { BLOCK_HASH } from './block';
+import { BLOCK_HASH } from './list';
 
 export const GET_BLOCK: GetBlockReturnType<Chain, false, 'latest'> = {
   baseFeePerGas: BigInt(11),

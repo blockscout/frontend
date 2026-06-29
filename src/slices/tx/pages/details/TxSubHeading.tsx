@@ -73,6 +73,11 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       addressDataMap[data.hash] = data;
     });
 
+  const isLoading =
+    txQuery.isPlaceholderData ||
+    (hasNovesInterpretation && novesInterpretationQuery.isPlaceholderData) ||
+    (hasInternalInterpretation && txInterpretationQuery.isPlaceholderData);
+
   const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
       const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
@@ -128,14 +133,18 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         />
       );
     } else {
-      return <TxEntity hash={ hash } noLink variant="subheading" mr={{ base: 0, lg: 2 }} chain={ multichainContext?.chain }/>;
+      return (
+        <TxEntity
+          hash={ hash }
+          noLink
+          variant="subheading"
+          mr={{ base: 0, lg: 2 }}
+          chain={ multichainContext?.chain }
+          isLoading={ isLoading }
+        />
+      );
     }
   })();
-
-  const isLoading =
-    txQuery.isPlaceholderData ||
-    (hasNovesInterpretation && novesInterpretationQuery.isPlaceholderData) ||
-    (hasInternalInterpretation && txInterpretationQuery.isPlaceholderData);
 
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">

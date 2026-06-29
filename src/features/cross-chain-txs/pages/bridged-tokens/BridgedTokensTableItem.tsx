@@ -35,6 +35,8 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
     return toTokenModel({
       ...token,
       decimals: String(token.decimals ?? '0'),
+      address_hash: token.token_address,
+      type: 'ERC-20',
     });
   }, [ token ]);
 
@@ -79,7 +81,7 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
                 />
               </Flex>
             </Flex>
-          ) : <span>Unknown token</span> }
+          ) : <Skeleton loading={ isLoading } w="fit-content"><span>Unknown token</span></Skeleton> }
         </Flex>
       </TableCell>
       <TableCell>

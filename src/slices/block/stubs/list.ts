@@ -4,7 +4,7 @@ import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
-export const BLOCK: schemas['Block'] = {
+export const BLOCK_ITEM: schemas['Block'] = {
   base_fee_per_gas: '10000000000',
   burnt_fees: '92834504000000000',
   burnt_fees_percentage: 42.2,

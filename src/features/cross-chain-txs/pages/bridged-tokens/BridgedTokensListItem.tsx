@@ -57,7 +57,7 @@ const BridgedTokensListItem = ({ data, token, index, page, isLoading }: Props) =
             textStyle="sm"
             fontWeight="700"
           />
-        ) : <span>Unknown token</span> }
+        ) : <Skeleton loading={ isLoading } w="fit-content"><span>Unknown token</span></Skeleton> }
         <Skeleton loading={ isLoading } textStyle="sm" color="text.secondary" minW="24px" textAlign="right">
           <span>{ getItemIndex(index, page) }</span>
         </Skeleton>

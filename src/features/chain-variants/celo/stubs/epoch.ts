@@ -1,6 +1,6 @@
 import type { schemas } from '@blockscout/api-types';
 
-import { BLOCK_HASH } from 'src/slices/block/stubs/block';
+import { BLOCK_HASH } from 'src/slices/block/stubs/list';
 import { TOKEN_TRANSFER_ERC_20, TOKEN_TRANSFER_ERC_20_TOTAL } from 'src/slices/token-transfer/stubs';
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 
