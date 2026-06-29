@@ -4,7 +4,7 @@ import { Flex, Text } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import SearchBarSuggestItemLink from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
@@ -15,7 +15,7 @@ import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Image } from 'src/toolkit/chakra/image';
 
 interface Props {
-  data: MarketplaceApp;
+  data: MarketplaceDapp;
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;

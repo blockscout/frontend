@@ -1,5 +1,5 @@
+import * as adminRs from '@blockscout/admin-rs-types';
 import * as contractsInfo from '@blockscout/contracts-info-types';
-import type { TokenInfoApplication, TokenInfoApplications } from 'src/features/account/types/api';
 
 export const SIGNATURE = '0x96491e0cd1b99c14951552361b7f6ff64f41651b5d1c12501914342c8a6847e21e08726c3505e11ba2af9a40ac0b05c8d113e7fd1f74594224b9c7276ebb3a661b';
 
@@ -112,31 +112,31 @@ export const TOKEN_INFO_APPLICATION_BASE = {
   comment: '',
 };
 
-export const TOKEN_INFO_APPLICATION: Record<string, TokenInfoApplication> = {
+export const TOKEN_INFO_APPLICATION: Record<string, adminRs.TokenInfoSubmission> = {
   APPROVED: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_1.contractAddress,
     id: '1',
-    status: 'APPROVED',
+    status: adminRs.TokenInfoSubmissionStatus.APPROVED,
     updatedAt: '2022-11-08 12:47:10.149148Z',
   },
   IN_PROCESS: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_2.contractAddress,
     id: '2',
-    status: 'IN_PROCESS',
+    status: adminRs.TokenInfoSubmissionStatus.IN_PROCESS,
     updatedAt: '2022-11-10 08:11:10.149148Z',
   },
   UPDATED_ITEM: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_1.contractAddress,
     id: '1',
-    status: 'IN_PROCESS',
+    status: adminRs.TokenInfoSubmissionStatus.IN_PROCESS,
     updatedAt: '2022-11-11 05:11:10.149148Z',
   },
 };
 
-export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, TokenInfoApplications> = {
+export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, adminRs.ListTokenInfoSubmissionsResponse> = {
   DEFAULT: {
     submissions: [
       TOKEN_INFO_APPLICATION.APPROVED,
@@ -147,7 +147,7 @@ export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, TokenInfoApplicati
     submissions: [
       {
         ...TOKEN_INFO_APPLICATION.APPROVED,
-        status: 'UPDATE_REQUIRED',
+        status: adminRs.TokenInfoSubmissionStatus.UPDATE_REQUIRED,
       },
       TOKEN_INFO_APPLICATION.IN_PROCESS,
     ],

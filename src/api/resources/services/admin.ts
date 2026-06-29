@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { ApiResource } from '../types';
-import type { TokenInfoApplicationConfig, TokenInfoApplications } from 'src/features/account/types/api';
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type * as adminRs from '@blockscout/admin-rs-types';
 
 export const ADMIN_API_RESOURCES = {
   public_tag_application: {
@@ -35,9 +34,9 @@ export type AdminApiResourceName = `admin:${ keyof typeof ADMIN_API_RESOURCES }`
 
 /* eslint-disable @stylistic/indent */
 export type AdminApiResourcePayload<R extends AdminApiResourceName> =
-R extends 'admin:token_info_applications_config' ? TokenInfoApplicationConfig :
-R extends 'admin:token_info_applications' ? TokenInfoApplications :
-R extends 'admin:marketplace_dapps' ? Array<MarketplaceApp> :
-R extends 'admin:marketplace_dapp' ? MarketplaceApp :
+R extends 'admin:token_info_applications_config' ? adminRs.ListTokenInfoSubmissionSelectorsResponse :
+R extends 'admin:token_info_applications' ? adminRs.ListTokenInfoSubmissionsResponse :
+R extends 'admin:marketplace_dapps' ? Array<adminRs.MarketplaceDapp> :
+R extends 'admin:marketplace_dapp' ? adminRs.MarketplaceDapp :
 never;
 /* eslint-enable @stylistic/indent */

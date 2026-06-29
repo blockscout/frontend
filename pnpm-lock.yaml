@@ -21,6 +21,9 @@ importers:
 
   .:
     dependencies:
+      '@blockscout/admin-rs-types':
+        specifier: 0.0.1-beta.820070b
+        version: 0.0.1-beta.820070b
       '@blockscout/api-types':
         specifier: 0.0.1-beta.cf13c2de97
         version: 0.0.1-beta.cf13c2de97
@@ -1314,6 +1317,9 @@ packages:
 
   '@base-org/account@2.4.0':
     resolution: {integrity: sha512-A4Umpi8B9/pqR78D1Yoze4xHyQaujioVRqqO3d6xuDFw9VRtjg6tK3bPlwE0aW+nVH/ntllCpPa2PbI8Rnjcug==}
+
+  '@blockscout/admin-rs-types@0.0.1-beta.820070b':
+    resolution: {integrity: sha512-jxsu/7V0rScvOYvok0VewQ0QutaI3hAdwBxna3G4PbigWZTEQlUG+LMhbTy2jZaFQxIXf0MtcwaFuvUKCxCDIQ==}
 
   '@blockscout/api-types@0.0.1-beta.cf13c2de97':
     resolution: {integrity: sha512-Do7S5vBiZnBGQVg9Xk1uG3M0OA7G0OVccPbPDilsqcIkXTbVEAttvH26qWUq+tR4cudlgUolDbwp5Wcs95gNCQ==}
@@ -14457,6 +14463,8 @@ snapshots:
       - use-sync-external-store
       - utf-8-validate
       - zod
+
+  '@blockscout/admin-rs-types@0.0.1-beta.820070b': {}
 
   '@blockscout/api-types@0.0.1-beta.cf13c2de97': {}
 

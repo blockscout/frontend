@@ -2,8 +2,8 @@
 
 import React from 'react';
 
+import type * as adminRs from '@blockscout/admin-rs-types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
-import type { TokenInfoApplication } from 'src/features/account/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -21,7 +21,7 @@ import VerifiedAddressesStatus from './VerifiedAddressesStatus';
 
 interface Props {
   item: contractsInfo.VerifiedAddress;
-  application: TokenInfoApplication | undefined;
+  application: adminRs.TokenInfoSubmission | undefined;
   onAdd: (address: string) => void;
   onEdit: (address: string) => void;
   isLoading: boolean;

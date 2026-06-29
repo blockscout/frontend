@@ -4,7 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import AdBanner from 'src/features/ads/banner/components/AdBanner';
 import { apps as appsMock } from 'src/features/marketplace/mocks/dapps';
@@ -18,7 +18,7 @@ import IframeBanner from './IframeBanner';
 const feature = config.features.marketplace;
 
 type BannerProps = {
-  apps: Array<MarketplaceApp> | undefined;
+  apps: Array<MarketplaceDapp> | undefined;
   favoriteApps: Array<string>;
   isLoading: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;

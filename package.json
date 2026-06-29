@@ -48,6 +48,7 @@
     "postinstall": "chakra typegen ./src/toolkit/theme/theme.ts"
   },
   "dependencies": {
+    "@blockscout/admin-rs-types": "0.0.1-beta.820070b",
     "@blockscout/api-types": "0.0.1-beta.cf13c2de97",
     "@blockscout/bens-types": "1.7.1",
     "@blockscout/contracts-info-types": "0.0.1-beta.820070b",

@@ -5,7 +5,7 @@ import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Heading } from 'src/toolkit/chakra/heading';
@@ -18,7 +18,7 @@ import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
-interface Props extends MarketplaceApp {
+interface Props extends MarketplaceDapp {
   isFavorite: boolean;
   onFavoriteClick: () => void;
   isLoading: boolean;

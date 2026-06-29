@@ -6,37 +6,6 @@ import type { ExternalChain } from 'src/shared/external-chains/types';
 
 import type config from 'src/config';
 
-export interface MarketplaceAppBase {
-  id: string;
-  author: string;
-  site?: string;
-  external?: boolean;
-  title: string;
-  description: string;
-  logo: string;
-  logoDarkMode?: string;
-  shortDescription: string;
-  categories: Array<string>;
-  url: string;
-  internalWallet?: boolean;
-  priority?: number;
-};
-
-export interface MarketplaceAppRating {
-  rating?: number;
-  ratingsTotalCount?: number;
-  userRating?: number;
-};
-
-export interface MarketplaceAppSocialInfo {
-  twitter?: string;
-  telegram?: string;
-  github?: string | Array<string>;
-  discord?: string;
-};
-
-export interface MarketplaceApp extends MarketplaceAppBase, MarketplaceAppSocialInfo, MarketplaceAppRating {}
-
 export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',

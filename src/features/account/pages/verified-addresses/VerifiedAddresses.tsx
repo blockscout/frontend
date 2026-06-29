@@ -5,8 +5,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as adminRs from '@blockscout/admin-rs-types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
-import type { TokenInfoApplication, TokenInfoApplications } from 'src/features/account/types/api';
 
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 
@@ -103,11 +103,11 @@ const VerifiedAddresses = () => {
       });
   }, [ queryClient ]);
 
-  const handleApplicationSubmit = React.useCallback((newItem: TokenInfoApplication) => {
+  const handleApplicationSubmit = React.useCallback((newItem: adminRs.TokenInfoSubmission) => {
     setSelectedAddress(undefined);
     queryClient.setQueryData(
       getResourceKey('admin:token_info_applications', { pathParams: { instanceId: config.apis.admin?.instanceId, id: undefined } }),
-      (prevData: TokenInfoApplications | undefined) => {
+      (prevData: adminRs.ListTokenInfoSubmissionsResponse | undefined) => {
         if (!prevData) {
           return { submissions: [ newItem ] };
         }
