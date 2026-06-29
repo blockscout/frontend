@@ -4,13 +4,13 @@ import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Fields } from '../types';
-import type { TokenInfoApplicationConfig } from 'src/features/account/types/api';
+import type * as adminRs from '@blockscout/admin-rs-types';
 
 import { FormFieldSelect } from 'src/toolkit/components/forms/fields/FormFieldSelect';
 
 interface Props {
   readOnly?: boolean;
-  config: TokenInfoApplicationConfig['projectSectors'];
+  config: adminRs.ListTokenInfoSubmissionSelectorsResponse['projectSectors'];
 }
 
 const TokenInfoFieldProjectSector = ({ readOnly, config }: Props) => {

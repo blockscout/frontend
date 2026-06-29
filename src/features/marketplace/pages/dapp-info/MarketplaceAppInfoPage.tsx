@@ -98,7 +98,7 @@ export default function MarketplaceAppInfoPage() {
   ].filter(Boolean);
 
   if (data.github) {
-    (Array.isArray(data.github) ? data.github : [ data.github ]).forEach((githubUrl) => {
+    (Array.isArray(data.github) ? data.github : [ data.github ]).forEach((githubUrl: string) => {
       socialLinks.push({ icon: 'social/github_filled' as IconName, url: githubUrl });
     });
   }

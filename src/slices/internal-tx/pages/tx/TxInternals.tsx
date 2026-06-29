@@ -75,7 +75,7 @@ const TxInternals = ({ txQuery }: Props) => {
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'core:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null }),
+      placeholderData: generateListStub<'core:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null, meta: { message: null, status: 1 } }),
     },
   });
 

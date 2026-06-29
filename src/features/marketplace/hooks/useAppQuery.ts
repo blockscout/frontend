@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { MarketplaceApp } from '../types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import useFetch from 'src/api/hooks/useFetch';
@@ -20,14 +20,14 @@ export default function useAppQuery(id: string, isAuth: boolean = false) {
   const apiFetch = useApiFetch();
   const fetch = useFetch();
 
-  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceApp>({
+  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceDapp>({
     queryKey: [ 'marketplace-dapps', id ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return null;
       }
       if ('configUrl' in feature) {
-        const result = await fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+        const result = await fetch<Array<MarketplaceDapp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
         if (!Array.isArray(result)) {
           throw result;
         }

@@ -41,6 +41,10 @@ export default function useAddressInternalTxsQuery({ enabled, isMultichain, chai
             items_count: 50,
             transaction_index: 67,
           },
+          meta: {
+            message: null,
+            status: 1,
+          },
         },
       ),
     },

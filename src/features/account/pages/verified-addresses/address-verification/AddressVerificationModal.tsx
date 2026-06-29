@@ -3,8 +3,8 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess } from './types';
-import type { VerifiedAddress } from 'src/features/account/types/api';
+import type { AddressVerificationFormFirstStepFields } from './types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
@@ -18,7 +18,7 @@ import AddressVerificationStepAddress from './steps/AddressVerificationStepAddre
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
 import AddressVerificationStepSuccess from './steps/AddressVerificationStepSuccess';
 
-type StateData = AddressVerificationFormFirstStepFields & AddressCheckStatusSuccess & { isToken?: boolean };
+type StateData = AddressVerificationFormFirstStepFields & contractsInfo.PrepareAddressResponse_Success & { isToken?: boolean };
 
 const feature = config.features.connectWallet;
 // Dynamic providers cannot be nested, so a dummy provider is used here
@@ -27,7 +27,7 @@ const Web3Provider = feature.isEnabled && feature.connectorType === 'dynamic' ? 
 interface Props {
   open: boolean;
   onOpenChange: ({ open }: { open: boolean }) => void;
-  onSubmit: (address: VerifiedAddress) => void;
+  onSubmit: (address: contractsInfo.VerifiedAddress) => void;
   onAddTokenInfoClick: (address: string) => void;
   onShowListClick: () => void;
   defaultAddress?: string;
@@ -36,7 +36,7 @@ interface Props {
 
 const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit, onAddTokenInfoClick, onShowListClick, pageType }: Props) => {
   const [ stepIndex, setStepIndex ] = React.useState(0);
-  const [ data, setData ] = React.useState<StateData>({ address: '', signingMessage: '' });
+  const [ data, setData ] = React.useState<StateData>({ address: '', signingMessage: '', contractCreator: '' });
 
   React.useEffect(() => {
     open && mixpanel.logEvent(
@@ -54,10 +54,10 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
     );
   }, [ pageType ]);
 
-  const handleGoToThirdStep = React.useCallback((address: VerifiedAddress, signMethod: 'wallet' | 'manual') => {
+  const handleGoToThirdStep = React.useCallback((address: contractsInfo.VerifiedAddress, signMethod: 'wallet' | 'manual') => {
     onSubmit(address);
     setStepIndex((prev) => prev + 1);
-    setData((prev) => ({ ...prev, isToken: Boolean(address.metadata.tokenName) }));
+    setData((prev) => ({ ...prev, isToken: Boolean(address.metadata?.tokenName) }));
     mixpanel.logEvent(
       mixpanel.EventTypes.VERIFY_ADDRESS,
       { Action: 'Sign ownership', 'Page type': pageType, 'Sign method': signMethod },
@@ -72,7 +72,7 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
     onOpenChange({ open });
     if (!open) {
       setStepIndex(0);
-      setData({ address: '', signingMessage: '' });
+      setData({ address: '', signingMessage: '', contractCreator: '' });
     }
   }, [ onOpenChange ]);
 

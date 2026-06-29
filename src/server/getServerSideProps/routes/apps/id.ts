@@ -2,7 +2,7 @@
 
 import type { GetServerSideProps } from 'next';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import detectBotRequest from 'src/server/utils/detectBotRequest';
 import fetchApi from 'src/server/utils/fetchApi';
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps<Props<Pathname>> = async(ctx
 
           try {
             const response = await fetch(feature.configUrl, { signal: controller.signal });
-            const appList = await response.json() as Array<MarketplaceApp>;
+            const appList = await response.json() as Array<MarketplaceDapp>;
             clearTimeout(timeout);
 
             if (appList && Array.isArray(appList)) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
 import type { QuickSearchResultItem } from 'src/slices/search/types/client';
 import type { TokenType } from 'src/slices/token/types/api';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
@@ -26,12 +26,12 @@ export type Category = ApiCategory | 'app' | 'zetaChainCCTX';
 
 export type ItemsCategoriesMap =
 Record<ApiCategory, Array<QuickSearchResultItem>> &
-Record<'app', Array<MarketplaceApp>> &
+Record<'app', Array<MarketplaceDapp>> &
 Record<'zetaChainCCTX', Array<CctxListItem>>;
 
 export type SearchResultAppItem = {
   type: 'app';
-  app: MarketplaceApp;
+  app: MarketplaceDapp;
 };
 
 const hasConfidentialTokenType = (chainsConfig: Array<typeof config> = [ config ]) =>

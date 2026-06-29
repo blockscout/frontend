@@ -202,7 +202,7 @@ export const erc404B: schemas['TokenTransfer'] = {
   total: { token_id: '4625304364899952', token_instance: null },
 };
 
-export const mixTokens: paths['/v2/token-transfers']['get'] = {
+export const mixTokens: paths['/api/v2/token-transfers']['get'] = {
   items: [
     erc20,
     erc721,

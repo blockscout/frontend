@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 import { MarketplaceCategory } from 'src/features/marketplace/types/client';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
@@ -21,17 +21,17 @@ const feature = config.features.marketplace;
 
 const EMPTY_ARRAY: Array<string> = [];
 
-function isAppNameMatches(q: string, app: MarketplaceApp) {
+function isAppNameMatches(q: string, app: MarketplaceDapp) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: string, app: MarketplaceApp, favoriteApps: Array<string> = []) {
+function isAppCategoryMatches(category: string, app: MarketplaceDapp, favoriteApps: Array<string> = []) {
   return category === MarketplaceCategory.ALL ||
       (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceApp>, favoriteApps: Array<string> = [], sorting: SortValue | undefined) {
+function sortApps(apps: Array<MarketplaceDapp>, favoriteApps: Array<string> = [], sorting: SortValue | undefined) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
@@ -77,18 +77,18 @@ export default function useMarketplaceApps(
 
   const {
     isPlaceholderData, isError, error, data, refetch,
-  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceApp>>({
+  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceDapp>>({
     queryKey: [ 'marketplace-dapps' ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
       } else if ('configUrl' in feature) {
-        return fetch<Array<MarketplaceApp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+        return fetch<Array<MarketplaceDapp>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
         return apiFetch('admin:marketplace_dapps', { pathParams: { instanceId: config.apis.admin?.instanceId } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceApp>, favoriteAppsRef.current, sorting),
+    select: (data) => sortApps(data as Array<MarketplaceDapp>, favoriteAppsRef.current, sorting),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,

@@ -45,10 +45,10 @@ export type CoreApiContractResourceName = `core:${ keyof typeof CORE_API_CONTRAC
 export type CoreApiContractResourcePayload<R extends CoreApiContractResourceName> =
 R extends 'core:contract' ? SmartContract :
 R extends 'core:contract_solidity_scan_report' ? unknown :
-R extends 'core:verified_contracts' ? paths['/v2/smart-contracts/']['get'] :
-R extends 'core:verified_contracts_counters' ? paths['/v2/smart-contracts/counters']['get'] :
+R extends 'core:verified_contracts' ? paths['/api/v2/smart-contracts/']['get'] :
+R extends 'core:verified_contracts_counters' ? paths['/api/v2/smart-contracts/counters']['get'] :
 R extends 'core:contract_verification_config' ? SmartContractVerificationConfigRaw :
-R extends 'core:contract_security_audits' ? paths['/v2/smart-contracts/{address_hash_param}/audit-reports']['get'] :
+R extends 'core:contract_security_audits' ? paths['/api/v2/smart-contracts/{address_hash_param}/audit-reports']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 

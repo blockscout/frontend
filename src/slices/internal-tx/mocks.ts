@@ -68,5 +68,9 @@ operations['InternalTransactionController.internal_transactions']['json'] = {
     typeStaticCall,
     withContractCreated,
   ],
+  meta: {
+    message: null,
+    status: 1,
+  },
   next_page_params: null,
 };

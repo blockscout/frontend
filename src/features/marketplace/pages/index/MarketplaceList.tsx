@@ -5,7 +5,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -13,7 +13,7 @@ import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
-  apps: Array<MarketplaceApp>;
+  apps: Array<MarketplaceDapp>;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
@@ -62,6 +62,7 @@ const MarketplaceList = ({
             ratingsTotalCount={ app.ratingsTotalCount }
             userRating={ app.userRating }
             graphLinks={ graphLinksQuery.data?.[app.id] }
+            github={ app.github }
           />
         )) }
       </Grid>

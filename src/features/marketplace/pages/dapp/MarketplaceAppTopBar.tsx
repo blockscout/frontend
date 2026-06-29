@@ -4,7 +4,7 @@ import { chakra, Flex } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import { useAppContext } from 'src/shell/app/context';
 
@@ -26,7 +26,7 @@ import MarketplaceAppInfo from './info/MarketplaceAppInfo';
 
 type Props = {
   appId: string;
-  data: MarketplaceApp | undefined;
+  data: MarketplaceDapp | undefined;
   isLoading: boolean;
 };
 

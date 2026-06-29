@@ -157,25 +157,25 @@ export type CoreApiAddressResourceName = `core:${ keyof typeof CORE_API_ADDRESS_
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiAddressResourcePayload<R extends CoreApiAddressResourceName> =
-R extends 'core:addresses' ? paths['/v2/addresses']['get'] :
+R extends 'core:addresses' ? paths['/api/v2/addresses']['get'] :
 R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchResult :
-R extends 'core:address' ? paths['/v2/addresses/{address_hash_param}']['get'] :
-R extends 'core:address_counters' ? paths['/v2/addresses/{address_hash_param}/counters']['get'] :
-R extends 'core:address_tabs_counters' ? paths['/v2/addresses/{address_hash_param}/tabs-counters']['get'] :
-R extends 'core:address_txs' ? paths['/v2/addresses/{address_hash_param}/transactions']['get'] :
-R extends 'core:address_internal_txs' ? paths['/v2/addresses/{address_hash_param}/internal-transactions']['get'] :
-R extends 'core:address_token_transfers' ? paths['/v2/addresses/{address_hash_param}/token-transfers']['get'] :
-R extends 'core:address_blocks_validated' ? paths['/v2/addresses/{address_hash_param}/blocks-validated']['get'] :
-R extends 'core:address_coin_balance' ? paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get'] :
-R extends 'core:address_coin_balance_chart' ? paths['/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get'] :
-R extends 'core:address_logs' ? paths['/v2/addresses/{address_hash_param}/logs']['get'] :
-R extends 'core:address_tokens' ? paths['/v2/addresses/{address_hash_param}/tokens']['get'] :
-R extends 'core:address_token_balances' ? paths['/v2/addresses/{address_hash_param}/token-balances']['get'] :
-R extends 'core:address_nfts' ? paths['/v2/addresses/{address_hash_param}/nft']['get'] :
-R extends 'core:address_collections' ? paths['/v2/addresses/{address_hash_param}/nft/collections']['get'] :
-R extends 'core:address_withdrawals' ? paths['/v2/addresses/{address_hash_param}/withdrawals']['get'] :
-R extends 'core:address_deposits' ? paths['/v2/addresses/{address_hash_param}/beacon/deposits']['get'] :
-R extends 'core:address_epoch_rewards' ? paths['/v2/addresses/{address_hash_param}/celo/election-rewards']['get'] :
+R extends 'core:address' ? paths['/api/v2/addresses/{address_hash_param}']['get'] :
+R extends 'core:address_counters' ? paths['/api/v2/addresses/{address_hash_param}/counters']['get'] :
+R extends 'core:address_tabs_counters' ? paths['/api/v2/addresses/{address_hash_param}/tabs-counters']['get'] :
+R extends 'core:address_txs' ? paths['/api/v2/addresses/{address_hash_param}/transactions']['get'] :
+R extends 'core:address_internal_txs' ? paths['/api/v2/addresses/{address_hash_param}/internal-transactions']['get'] :
+R extends 'core:address_token_transfers' ? paths['/api/v2/addresses/{address_hash_param}/token-transfers']['get'] :
+R extends 'core:address_blocks_validated' ? paths['/api/v2/addresses/{address_hash_param}/blocks-validated']['get'] :
+R extends 'core:address_coin_balance' ? paths['/api/v2/addresses/{address_hash_param}/coin-balance-history']['get'] :
+R extends 'core:address_coin_balance_chart' ? paths['/api/v2/addresses/{address_hash_param}/coin-balance-history-by-day']['get'] :
+R extends 'core:address_logs' ? paths['/api/v2/addresses/{address_hash_param}/logs']['get'] :
+R extends 'core:address_tokens' ? paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] :
+R extends 'core:address_token_balances' ? paths['/api/v2/addresses/{address_hash_param}/token-balances']['get'] :
+R extends 'core:address_nfts' ? paths['/api/v2/addresses/{address_hash_param}/nft']['get'] :
+R extends 'core:address_collections' ? paths['/api/v2/addresses/{address_hash_param}/nft/collections']['get'] :
+R extends 'core:address_withdrawals' ? paths['/api/v2/addresses/{address_hash_param}/withdrawals']['get'] :
+R extends 'core:address_deposits' ? paths['/api/v2/addresses/{address_hash_param}/beacon/deposits']['get'] :
+R extends 'core:address_epoch_rewards' ? paths['/api/v2/addresses/{address_hash_param}/celo/election-rewards']['get'] :
 R extends 'core:address_xstar_score' ? AddressXStarResponse :
 R extends 'core:address_3rd_party_info' ? unknown :
 never;

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { MarketplaceAppSocialInfo } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';
@@ -10,7 +10,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 
 export interface Props {
-  field: keyof MarketplaceAppSocialInfo;
+  field: keyof MarketplaceDapp;
   icon: IconName;
   title: string;
   href?: string;

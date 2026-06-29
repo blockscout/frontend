@@ -24,7 +24,7 @@ import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
   query: UseQueryResult<
-    paths['/v2/addresses/{address_hash_param}/coin-balance-history']['get'],
+    paths['/api/v2/addresses/{address_hash_param}/coin-balance-history']['get'],
     ResourceError<unknown>
   > & {
     pagination: PaginationParams;

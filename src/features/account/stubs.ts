@@ -1,4 +1,6 @@
-import type { AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'src/features/account/types/api';
+import * as adminRs from '@blockscout/admin-rs-types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
+import type { AddressTag, TransactionTag, ApiKey, CustomAbi, WatchlistAddress } from 'src/features/account/types/api';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
@@ -72,7 +74,7 @@ export const CUSTOM_ABI: CustomAbi = {
   name: 'placeholder',
 };
 
-export const VERIFIED_ADDRESS: VerifiedAddress = {
+export const VERIFIED_ADDRESS: contractsInfo.VerifiedAddress = {
   userId: 'john.doe@gmail.com',
   chainId: '5',
   contractAddress: ADDRESS_HASH,
@@ -83,10 +85,10 @@ export const VERIFIED_ADDRESS: VerifiedAddress = {
   },
 };
 
-export const TOKEN_INFO_APPLICATION: TokenInfoApplication = {
+export const TOKEN_INFO_APPLICATION: adminRs.TokenInfoSubmission = {
   id: '1',
   tokenAddress: ADDRESS_HASH,
-  status: 'IN_PROCESS',
+  status: adminRs.TokenInfoSubmissionStatus.IN_PROCESS,
   updatedAt: '2022-11-11 13:49:48.031453Z',
   requesterName: 'John Doe',
   requesterEmail: 'john.doe@gmail.com',

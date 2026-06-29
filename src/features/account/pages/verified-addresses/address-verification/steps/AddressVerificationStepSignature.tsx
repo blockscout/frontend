@@ -8,13 +8,11 @@ import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
-  AddressCheckStatusSuccess,
   AddressVerificationFormFirstStepFields,
   RootFields,
   AddressVerificationResponseError,
-  AddressValidationResponseSuccess,
 } from '../types';
-import type { VerifiedAddress } from 'src/features/account/types/api';
+import * as contractsInfo from '@blockscout/contracts-info-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
@@ -37,8 +35,8 @@ type Fields = RootFields & AddressVerificationFormSecondStepFields;
 
 type SignMethod = 'wallet' | 'manual';
 
-interface Props extends AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess {
-  onContinue: (newItem: VerifiedAddress, signMethod: SignMethod) => void;
+interface Props extends AddressVerificationFormFirstStepFields, contractsInfo.PrepareAddressResponse_Success {
+  onContinue: (newItem: contractsInfo.VerifiedAddress, signMethod: SignMethod) => void;
   noWeb3Provider?: boolean;
 }
 
@@ -71,7 +69,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         signature: data.signature,
       };
 
-      const response = await apiFetch<'contractInfo:address_verification', AddressValidationResponseSuccess, AddressVerificationResponseError>(
+      const response = await apiFetch<'contractInfo:address_verification', contractsInfo.VerifyAddressResponse, AddressVerificationResponseError>(
         'contractInfo:address_verification',
         {
           fetchParams: { method: 'POST', body },
@@ -79,14 +77,19 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         },
       );
 
-      if (response.status !== 'SUCCESS') {
-        const type = typeof response.status === 'number' ? 'UNKNOWN_STATUS' : response.status;
-        return setError('root', { type, message: response.status === 'INVALID_SIGNER_ERROR' ? response.invalidSigner.signer : undefined });
+      if (response.status !== contractsInfo.VerifyAddressResponse_Status.SUCCESS || !response.result?.verifiedAddress) {
+        const type = typeof response.status === 'number' ? contractsInfo.VerifyAddressResponse_Status.UNKNOWN_STATUS : response.status;
+        return setError('root', {
+          type,
+          message: response.status === contractsInfo.VerifyAddressResponse_Status.INVALID_SIGNER_ERROR && response.invalidSigner ?
+            response.invalidSigner.signer :
+            undefined,
+        });
       }
 
       onContinue(response.result.verifiedAddress, signMethod);
     } catch (error) {
-      setError('root', { type: 'UNKNOWN_STATUS' });
+      setError('root', { type: contractsInfo.VerifyAddressResponse_Status.UNKNOWN_STATUS });
     }
   }, [ address, apiFetch, onContinue, setError, signMethod ]);
 
@@ -162,16 +165,16 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const rootError = (() => {
     switch (formState.errors.root?.type) {
-      case 'INVALID_SIGNATURE_ERROR': {
+      case contractsInfo.VerifyAddressResponse_Status.INVALID_SIGNATURE_ERROR: {
         return <span>The signature could not be processed.</span>;
       }
-      case 'VALIDITY_EXPIRED_ERROR': {
+      case contractsInfo.VerifyAddressResponse_Status.VALIDITY_EXPIRED_ERROR: {
         return <span>This verification message has expired. Add the contract address to restart the process.</span>;
       }
       case 'SIGNING_FAIL': {
         return <span>{ formState.errors.root.message }</span>;
       }
-      case 'INVALID_SIGNER_ERROR': {
+      case contractsInfo.VerifyAddressResponse_Status.INVALID_SIGNER_ERROR: {
         const signer = shortenString(formState.errors.root.message || '');
         const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(s => shortenString(s)).join(', ');
         return (
@@ -184,7 +187,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
           </Box>
         );
       }
-      case 'UNKNOWN_STATUS': {
+      case contractsInfo.VerifyAddressResponse_Status.UNKNOWN_STATUS: {
         return (
           <Box>
             <span>We are not able to process the verify account ownership for this contract address. Kindly </span>

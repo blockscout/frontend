@@ -87,21 +87,21 @@ export type CoreApiTxResourceName = `core:${ keyof typeof CORE_API_TX_RESOURCES 
 
 /* eslint-disable @stylistic/indent */
 export type CoreApiTxResourcePayload<R extends CoreApiTxResourceName> =
-R extends 'core:txs' ? paths['/v2/transactions']['get'] :
-R extends 'core:txs_stats' ? paths['/v2/transactions/stats']['get'] :
-R extends 'core:txs_watchlist' ? paths['/v2/transactions/watchlist']['get'] :
-R extends 'core:txs_execution_node' ? paths['/v2/transactions/execution-node/{execution_node_hash_param}']['get'] :
-R extends 'core:tx' ? paths['/v2/transactions/{transaction_hash_param}']['get'] :
-R extends 'core:tx_logs' ? paths['/v2/transactions/{transaction_hash_param}/logs']['get'] :
-R extends 'core:tx_token_transfers' ? paths['/v2/transactions/{transaction_hash_param}/token-transfers']['get'] :
-R extends 'core:tx_internal_txs' ? paths['/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :
-R extends 'core:tx_fhe_operations' ? paths['/v2/transactions/{transaction_hash_param}/fhe-operations']['get'] :
-R extends 'core:tx_raw_trace' ? paths['/v2/transactions/{transaction_hash_param}/raw-trace']['get'] :
-R extends 'core:tx_state_changes' ? paths['/v2/transactions/{transaction_hash_param}/state-changes']['get'] :
-R extends 'core:tx_blobs' ? paths['/v2/transactions/{transaction_hash_param}/blobs']['get'] :
+R extends 'core:txs' ? paths['/api/v2/transactions']['get'] :
+R extends 'core:txs_stats' ? paths['/api/v2/transactions/stats']['get'] :
+R extends 'core:txs_watchlist' ? paths['/api/v2/transactions/watchlist']['get'] :
+R extends 'core:txs_execution_node' ? paths['/api/v2/transactions/execution-node/{execution_node_hash_param}']['get'] :
+R extends 'core:tx' ? paths['/api/v2/transactions/{transaction_hash_param}']['get'] :
+R extends 'core:tx_logs' ? paths['/api/v2/transactions/{transaction_hash_param}/logs']['get'] :
+R extends 'core:tx_token_transfers' ? paths['/api/v2/transactions/{transaction_hash_param}/token-transfers']['get'] :
+R extends 'core:tx_internal_txs' ? paths['/api/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :
+R extends 'core:tx_fhe_operations' ? paths['/api/v2/transactions/{transaction_hash_param}/fhe-operations']['get'] :
+R extends 'core:tx_raw_trace' ? paths['/api/v2/transactions/{transaction_hash_param}/raw-trace']['get'] :
+R extends 'core:tx_state_changes' ? paths['/api/v2/transactions/{transaction_hash_param}/state-changes']['get'] :
+R extends 'core:tx_blobs' ? paths['/api/v2/transactions/{transaction_hash_param}/blobs']['get'] :
 R extends 'core:tx_interpretation' ? TxInterpretationResponse :
-R extends 'core:tx_external_transactions' ? paths['/v2/transactions/{transaction_hash_param}/external-transactions']['get'] :
-R extends 'core:internal_txs' ? paths['/v2/internal-transactions']['get'] :
+R extends 'core:tx_external_transactions' ? paths['/api/v2/transactions/{transaction_hash_param}/external-transactions']['get'] :
+R extends 'core:internal_txs' ? paths['/api/v2/internal-transactions']['get'] :
 never;
 /* eslint-enable @stylistic/indent */
 

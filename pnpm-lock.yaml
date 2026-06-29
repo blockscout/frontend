@@ -21,12 +21,18 @@ importers:
 
   .:
     dependencies:
+      '@blockscout/admin-rs-types':
+        specifier: 1.5.0
+        version: 1.5.0
       '@blockscout/api-types':
-        specifier: 0.0.1-beta.06e7ef15c3
-        version: 0.0.1-beta.06e7ef15c3
+        specifier: 0.0.1-beta.cf13c2de97
+        version: 0.0.1-beta.cf13c2de97
       '@blockscout/bens-types':
         specifier: 1.7.1
         version: 1.7.1
+      '@blockscout/contracts-info-types':
+        specifier: 1.5.2
+        version: 1.5.2
       '@blockscout/interchain-indexer-types':
         specifier: 1.3.0
         version: 1.3.0
@@ -34,8 +40,8 @@ importers:
         specifier: 2.1.6
         version: 2.1.6
       '@blockscout/points-types':
-        specifier: 1.4.0-alpha.1
-        version: 1.4.0-alpha.1
+        specifier: 1.4.1
+        version: 1.4.1
       '@blockscout/stats-types':
         specifier: 2.11.1
         version: 2.11.1
@@ -1312,11 +1318,17 @@ packages:
   '@base-org/account@2.4.0':
     resolution: {integrity: sha512-A4Umpi8B9/pqR78D1Yoze4xHyQaujioVRqqO3d6xuDFw9VRtjg6tK3bPlwE0aW+nVH/ntllCpPa2PbI8Rnjcug==}
 
-  '@blockscout/api-types@0.0.1-beta.06e7ef15c3':
-    resolution: {integrity: sha512-ukuif5QgqTkZ4PD/DVHNvIYfRp1zM08QMBp4IhejBVYcJ5IJ/V4ECpDEWwJ8Bj/YdTsESQYWxdvdqUj+k0gcgg==}
+  '@blockscout/admin-rs-types@1.5.0':
+    resolution: {integrity: sha512-QE+dpUaQDvOAb/wUJ98J3CBqfohbiBW/+AEqEmSdOOZ0XxPRUrke08krBnflq3GMACRwB+nwzQrsfl7KCrC1Eg==}
+
+  '@blockscout/api-types@0.0.1-beta.cf13c2de97':
+    resolution: {integrity: sha512-Do7S5vBiZnBGQVg9Xk1uG3M0OA7G0OVccPbPDilsqcIkXTbVEAttvH26qWUq+tR4cudlgUolDbwp5Wcs95gNCQ==}
 
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
+
+  '@blockscout/contracts-info-types@1.5.2':
+    resolution: {integrity: sha512-hlkCzYKAsSzsNdWmmluLXsWEnt4Hnp1HsPNuXwU2uyYe9MS1jHGl3w/mxocpm8dAFg8FZC0riTQTlsxXOEHQmg==}
 
   '@blockscout/interchain-indexer-types@1.3.0':
     resolution: {integrity: sha512-S+nbsMJ4g10yjwf+BnJ5JL1jlvVHRGsCCpCEx57wQs5sw+odo22iVcZ2LmHNv8Vdh7Tn1+2tJonJQ0nKwadrig==}
@@ -1324,8 +1336,8 @@ packages:
   '@blockscout/multichain-aggregator-types@2.1.6':
     resolution: {integrity: sha512-qpotHqUXhp8NFZ9JioCn2B/gewWQ5stTV9QoHKnUbO/0HzXkLvJXdsOjqhkBlaVcOKEMFY08+T3t9O0oI0wQEA==}
 
-  '@blockscout/points-types@1.4.0-alpha.1':
-    resolution: {integrity: sha512-DaN42ulieCLjoKyDqVc5jCuho/A8g1k7OUpOMnVgc7k8D1esSlCg+LclJ7vrcigdUXsJ5cx2nlCkySKUOfr4mA==}
+  '@blockscout/points-types@1.4.1':
+    resolution: {integrity: sha512-8aIE1od1zzXeVfQCIO8LU1aWT/CRx82t+1ZK4RbgFFrxWH8RX0Yo+I6haeraVj3qKjxiMkBda1xMbGohiKgXSg==}
 
   '@blockscout/stats-types@2.11.1':
     resolution: {integrity: sha512-Ti9RbekRfLR7dUnOp2dWU0VBu7uRkutnkFqKphvfxvbrY9fiXUJ/tT6Qg+OTNewK3RbuQ0O1ZPxbqMX5eRr0OQ==}
@@ -14452,15 +14464,19 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@blockscout/api-types@0.0.1-beta.06e7ef15c3': {}
+  '@blockscout/admin-rs-types@1.5.0': {}
+
+  '@blockscout/api-types@0.0.1-beta.cf13c2de97': {}
 
   '@blockscout/bens-types@1.7.1': {}
+
+  '@blockscout/contracts-info-types@1.5.2': {}
 
   '@blockscout/interchain-indexer-types@1.3.0': {}
 
   '@blockscout/multichain-aggregator-types@2.1.6': {}
 
-  '@blockscout/points-types@1.4.0-alpha.1': {}
+  '@blockscout/points-types@1.4.1': {}
 
   '@blockscout/stats-types@2.11.1': {}
 

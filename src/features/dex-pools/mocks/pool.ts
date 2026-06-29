@@ -1,6 +1,6 @@
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
-export const base: Pool = {
+export const base: contractsInfo.Pool = {
   pool_id: '0x06da0fd433c1a5d7a4faa01111c044910a184553',
   is_contract: true,
   chain_id: '1',
@@ -18,10 +18,11 @@ export const base: Pool = {
   dex: { id: 'sushiswap', name: 'SushiSwap' },
   fee: '0.03',
   coin_gecko_terminal_url: 'https://www.geckoterminal.com/eth/pools/0x06da0fd433c1a5d7a4faa01111c044910a184553',
+  contract_address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
 };
 
-export const noIcons: Pool = {
+export const noIcons: contractsInfo.Pool = {
   ...base,
-  base_token_icon_url: null,
-  quote_token_icon_url: null,
+  base_token_icon_url: undefined,
+  quote_token_icon_url: undefined,
 };

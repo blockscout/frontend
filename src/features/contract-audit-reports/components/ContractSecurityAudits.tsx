@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SmartContractSecurityAuditSubmission } from 'src/features/contract-audit-reports/types/api';
+import type { operations } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -59,7 +59,7 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
         </Box>
       ) }
       <Button variant="outline" size="sm" onClick={ modalProps.onOpen }>Submit audit</Button>
-      <FormModal<SmartContractSecurityAuditSubmission>
+      <FormModal<operations['SmartContractController.audit_report_submission']['requestBody']>
         open={ modalProps.open }
         onOpenChange={ modalProps.onOpenChange }
         title={ formTitle }

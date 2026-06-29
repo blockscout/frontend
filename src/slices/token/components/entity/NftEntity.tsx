@@ -17,6 +17,7 @@ const Container = EntityBase.Container;
 
 type IconProps = EntityBase.IconBaseProps & {
   instance?: schemas['TokenInstance'] | null;
+  hash: string;
 };
 
 const ICON_MEDIA_TYPES = [ 'image' as const ];
@@ -40,6 +41,7 @@ const Icon = (props: IconProps) => {
     return (
       <NftMedia
         data={ props.instance }
+        addressHash={ props.hash }
         isLoading={ props.isLoading }
         boxSize={ styles.boxSize }
         size="sm"

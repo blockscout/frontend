@@ -132,7 +132,7 @@ export const sendERC20Token: schemas['StateChange'] = {
   type: 'token' as const,
 };
 
-export const baseResponse: paths['/v2/transactions/{transaction_hash_param}/state-changes']['get'] = {
+export const baseResponse: paths['/api/v2/transactions/{transaction_hash_param}/state-changes']['get'] = {
   items: [
     mintToken,
     receiveMintedToken,

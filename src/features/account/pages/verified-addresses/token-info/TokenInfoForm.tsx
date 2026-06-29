@@ -6,7 +6,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { Fields } from './types';
-import type { TokenInfoApplication } from 'src/features/account/types/api';
+import * as adminRs from '@blockscout/admin-rs-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -37,8 +37,8 @@ import { getFormDefaultValues, prepareRequestBody } from './utils';
 interface Props {
   address: string;
   tokenName: string;
-  application?: TokenInfoApplication;
-  onSubmit: (application: TokenInfoApplication) => void;
+  application?: adminRs.TokenInfoSubmission;
+  onSubmit: (application: adminRs.TokenInfoSubmission) => void;
 }
 
 const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => {
@@ -68,9 +68,12 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     try {
       const submission = prepareRequestBody(data);
-      const isNewApplication = !application?.id || [ 'REJECTED', 'APPROVED' ].includes(application.status);
+      const isNewApplication = !application?.id || [
+        adminRs.TokenInfoSubmissionStatus.REJECTED,
+        adminRs.TokenInfoSubmissionStatus.APPROVED,
+      ].includes(application.status);
 
-      const result = await apiFetch<'admin:token_info_applications', TokenInfoApplication, { message: string }>('admin:token_info_applications', {
+      const result = await apiFetch<'admin:token_info_applications', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_applications', {
         pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
         fetchParams: {
           method: isNewApplication ? 'POST' : 'PUT',

@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { TokenInfoApplication, VerifiedAddress } from 'src/features/account/types/api';
+import type * as adminRs from '@blockscout/admin-rs-types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -19,8 +20,8 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import VerifiedAddressesStatus from './VerifiedAddressesStatus';
 
 interface Props {
-  item: VerifiedAddress;
-  application: TokenInfoApplication | undefined;
+  item: contractsInfo.VerifiedAddress;
+  application: adminRs.TokenInfoSubmission | undefined;
   onAdd: (address: string) => void;
   onEdit: (address: string) => void;
   isLoading: boolean;
@@ -46,7 +47,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
       return <Skeleton loading height={ 6 } width="140px"/>;
     }
 
-    if (!item.metadata.tokenName) {
+    if (!item.metadata?.tokenName) {
       return <span>Not a token</span>;
     }
 
@@ -97,7 +98,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
         />
       </ListItemMobileGrid.Value>
 
-      { item.metadata.tokenName && (
+      { item.metadata?.tokenName && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token Info</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value display="flex" alignItems="center">
@@ -106,7 +107,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
         </>
       ) }
 
-      { item.metadata.tokenName && application && (
+      { item.metadata?.tokenName && application && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -117,7 +118,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
         </>
       ) }
 
-      { item.metadata.tokenName && application && (
+      { item.metadata?.tokenName && application && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

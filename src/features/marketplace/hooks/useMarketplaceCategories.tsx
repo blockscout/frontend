@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import useApiFetch from 'src/api/hooks/useFetch';
 import type { ResourceError } from 'src/api/resources';
@@ -15,7 +15,7 @@ import config from 'src/config';
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
 
-export default function useMarketplaceCategories(apps: Array<MarketplaceApp> | undefined, isAppsPlaceholderData: boolean) {
+export default function useMarketplaceCategories(apps: Array<MarketplaceDapp> | undefined, isAppsPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
 
   const { isPlaceholderData, data } = useQuery<unknown, ResourceError<unknown>, Array<string>>({

@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-export const apps = [
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
+
+export const apps: Array<MarketplaceDapp> = [
   {
     author: 'Hop',
     id: 'hop-exchange',
@@ -16,6 +18,7 @@ export const apps = [
     twitter: 'https://twitter.com/HopProtocol',
     rating: 4.3,
     ratingsTotalCount: 15,
+    internalWallet: false,
   },
   {
     author: 'Blockscout',
@@ -27,5 +30,8 @@ export const apps = [
     site: 'https://docs.blockscout.com/for-users/blockscout-apps/token-approval-tracker',
     description: 'Token Approval Tracker shows all approvals for any ERC20-compliant tokens and NFTs and lets to revoke them or adjust the approved amount.',
     url: 'https://approval-tracker.apps.blockscout.com/',
+    external: false,
+    internalWallet: true,
+    github: [ 'https://github.com/blockscout/token-approval-tracker' ],
   },
 ];

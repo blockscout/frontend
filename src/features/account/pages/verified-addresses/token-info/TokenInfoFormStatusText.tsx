@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import type { TokenInfoApplication } from 'src/features/account/types/api';
+import * as adminRs from '@blockscout/admin-rs-types';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 
 interface Props {
-  application?: TokenInfoApplication;
+  application?: adminRs.TokenInfoSubmission;
 }
 
 const TokenInfoFormStatusText = ({ application }: Props) => {
@@ -17,7 +17,7 @@ const TokenInfoFormStatusText = ({ application }: Props) => {
   }
 
   switch (application.status) {
-    case 'IN_PROCESS': {
+    case adminRs.TokenInfoSubmissionStatus.IN_PROCESS: {
       return (
         <div>
           <div>Requests are sent to a moderator for review and approval. This process can take several days.</div>
@@ -26,7 +26,7 @@ const TokenInfoFormStatusText = ({ application }: Props) => {
       );
     }
 
-    case 'UPDATE_REQUIRED': {
+    case adminRs.TokenInfoSubmissionStatus.UPDATE_REQUIRED: {
       return (
         <div>
           { application.adminComments && <Alert status="warning" mt={ 6 }>{ application.adminComments }</Alert> }
@@ -34,7 +34,7 @@ const TokenInfoFormStatusText = ({ application }: Props) => {
       );
     }
 
-    case 'REJECTED': {
+    case adminRs.TokenInfoSubmissionStatus.REJECTED: {
       return (
         <div>
           { application.adminComments && <Alert status="warning" mt={ 6 }>{ application.adminComments }</Alert> }

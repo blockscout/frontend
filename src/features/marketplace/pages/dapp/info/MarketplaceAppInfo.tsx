@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import InfoPopoverButton from 'src/shared/buttons/InfoPopoverButton';
 
 import Content from './Content';
 
 interface Props {
-  data: MarketplaceApp | undefined;
+  data: MarketplaceDapp | undefined;
   isLoading?: boolean;
 }
 

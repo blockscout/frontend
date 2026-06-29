@@ -13,7 +13,8 @@ import type { MediaType, Size, TransportType } from './utils';
 import { getPreliminaryMediaType } from './utils';
 
 interface Params {
-  data: schemas['TokenInstance'];
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
+  addressHash: string;
   size: Size;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
@@ -27,13 +28,13 @@ interface MediaInfo {
   transport: TransportType;
 }
 
-export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+export default function useNftMediaInfo({ data, addressHash, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
   const url = data[field];
   const query = useQuery({
-    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
+    queryKey: [ 'nft-media-info', addressHash, data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
       const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
-      const mediaType = await getMediaType(data, field);
+      const mediaType = await getMediaType(data, addressHash, field);
 
       if (!mediaType || (allowedTypes ? !allowedTypes.includes(mediaType) : false)) {
         return null;
@@ -54,7 +55,11 @@ export default function useNftMediaInfo({ data, size, allowedTypes, field, isEna
   return query;
 }
 
-async function getMediaType(data: schemas['TokenInstance'], field: Params['field']): Promise<MediaType | undefined> {
+async function getMediaType(
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'],
+  addressHash: string,
+  field: Params['field'],
+): Promise<MediaType | undefined> {
   const url = data[field];
 
   if (!url) {
@@ -82,14 +87,11 @@ async function getMediaType(data: schemas['TokenInstance'], field: Params['field
   }
 
   try {
-    if (!data.token) {
-      return;
-    }
     const mediaTypeResourceUrl = route({
       // eslint-disable-next-line max-len
       pathname: '/node-api/tokens/[hash]/instances/[id]/media-type' as DynamicRoute<'/api/tokens/[hash]/instances/[id]/media-type', { hash: string; id: string }>['pathname'],
       query: {
-        hash: data.token.address_hash,
+        hash: addressHash,
         id: data.id,
         field,
       },
@@ -117,7 +119,7 @@ function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | unde
   }
 }
 
-function getCdnData(data: schemas['TokenInstance'], size: Size, mediaType: MediaType): MediaInfo | undefined {
+function getCdnData(data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'], size: Size, mediaType: MediaType): MediaInfo | undefined {
   // CDN is only used for images
   if (mediaType !== 'image') {
     return;

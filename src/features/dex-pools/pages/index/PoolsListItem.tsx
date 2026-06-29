@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -17,8 +17,8 @@ import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-type Props = {
-  item: Pool;
+interface Props {
+  item: contractsInfo.Pool;
   isLoading?: boolean;
 };
 
