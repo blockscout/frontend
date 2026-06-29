@@ -81,7 +81,7 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
                 />
               </Flex>
             </Flex>
-          ) : <span>Unknown token</span> }
+          ) : <Skeleton loading={ isLoading } w="fit-content"><span>Unknown token</span></Skeleton> }
         </Flex>
       </TableCell>
       <TableCell>
