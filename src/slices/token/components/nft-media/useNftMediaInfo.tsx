@@ -31,7 +31,7 @@ interface MediaInfo {
 export default function useNftMediaInfo({ data, addressHash, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
   const url = data[field];
   const query = useQuery({
-    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
+    queryKey: [ 'nft-media-info', addressHash, data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
       const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
       const mediaType = await getMediaType(data, addressHash, field);

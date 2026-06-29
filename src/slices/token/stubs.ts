@@ -113,9 +113,3 @@ export const TOKEN_INSTANCE_ITEM: schemas['TokenInstanceInTokenInstancesList'] =
   ...TOKEN_INSTANCE,
   token_type: 'ERC-721',
 };
-
-// export const TOKEN_INSTANCE_ADDRESS_ITEM: schemas['TokenInstanceInList'] = {
-//   ...TOKEN_INSTANCE,
-//   token_type: 'ERC-721',
-
-// }
