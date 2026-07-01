@@ -3,19 +3,14 @@
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-// import * as interchainTransferMock from 'src/features/cross-chain-txs/mocks/transfers';
-
 import AssetValue from 'src/shared/values/entity/AssetValue';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import TokenValue from 'src/shared/values/entity/TokenValue';
-// import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample, SectionSubHeader } from '../parts';
 import { TOKEN } from './Link';
-
-export const EXTERNAL_CHAIN_LOGO_URL = 'https://blockscout-icons.s3.us-east-1.amazonaws.com/ethereum.svg';
 
 const ValuesShowcase = () => {
   return (
@@ -175,22 +170,6 @@ const ValuesShowcase = () => {
           <Sample label="convertible token">
             <TokenValue amount="1000000000000000000000000" token={ TOKEN } maxW="400px"/>
           </Sample>
-          { /* <Sample label="interchain token">
-            <TokenValueInterchain
-              token={{
-                ...interchainTransferMock.transferA.source_token,
-                name: 'Duck Token',
-                symbol: 'DUCK-DUCK-DUCK-DUCK',
-                decimals: '6',
-              }}
-              amount="1000000000000000000000000"
-              chain={{
-                ...interchainTransferMock.transferA.source_chain,
-                logo: EXTERNAL_CHAIN_LOGO_URL,
-              }}
-              maxW="400px"
-            />
-          </Sample> */ }
         </SamplesStack>
       </Section>
 

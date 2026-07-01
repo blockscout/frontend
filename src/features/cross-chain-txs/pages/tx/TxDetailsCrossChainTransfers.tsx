@@ -19,12 +19,16 @@ interface Props {
 
 const TxDetailsCrossChainTransfers = ({ hash, isLoading: isLoadingProp }: Props) => {
 
-  const { data, isPending } = useTxCrossChainTransfersQuery({ hash });
   const multichainContext = useMultichainContext();
+  const chainConfig = multichainContext?.chain.app_config ?? config;
+  const { data, isPending } = useTxCrossChainTransfersQuery({
+    hash,
+    enabled: chainConfig.features.crossChainTxs.isEnabled,
+  });
 
   const isLoading = isLoadingProp || isPending;
 
-  if ((!isPending && (!data || !data.items.length)) || !(multichainContext?.chain.app_config ?? config).features.crossChainTxs.isEnabled) {
+  if ((!isPending && (!data || !data.items.length)) || !chainConfig.features.crossChainTxs.isEnabled) {
     return null;
   }
 

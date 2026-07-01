@@ -130,7 +130,12 @@ const Icon = (props: IconProps) => {
           size={ props.size ?? (props.variant === 'heading' ? 30 : 20) }
           hash={ getDisplayedAddress(props.address) }
         />
-        { shield && <EntityBase.IconShield { ...shield } fallback={ <SpriteIcon name="networks/icon-placeholder"/> }/> }
+        { shield && (
+          <EntityBase.IconShield
+            { ...shield }
+            { ...('src' in shield ? { fallback: <SpriteIcon name="networks/icon-placeholder"/> } : {}) }
+          />
+        ) }
         { isDelegatedAddress && <AddressIconDelegated isVerified={ Boolean(props.address.is_verified) }/> }
       </Flex>
     </Tooltip>

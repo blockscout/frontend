@@ -72,7 +72,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
     pathParams: { hash },
     options: {
       placeholderData: generateListStub<'interchainIndexer:address_messages'>(INTERCHAIN_MESSAGE, 50, { next_page_params: undefined }),
-      enabled: !isLoading && !isLocalTab,
+      enabled: !isLoading && !isLocalTab && config.features.crossChainTxs.isEnabled,
     },
   });
 
