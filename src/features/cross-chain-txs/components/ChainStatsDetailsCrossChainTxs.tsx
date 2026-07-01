@@ -10,6 +10,7 @@ import type { SankeyChartData } from 'src/toolkit/components/charts/sankey/types
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ChartIntervalSelect from 'src/features/chain-stats/components/ChartIntervalSelect';
+import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelectMultichain from 'src/features/multichain/components/ChainSelect';
 import type useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
@@ -57,7 +58,7 @@ const ChainStatsDetailsCrossChainTxs = ({
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: chart.id });
   }, [ chart.id ]);
 
-  const chainsConfig = React.useMemo(() => {
+  const counterPartyChainsConfig = React.useMemo(() => {
     return chainsQuery.data?.items
       .filter((chain) => chain.id !== (baseChain?.app_config ?? config).chain.id)
       .map((chain) => ({
@@ -68,12 +69,18 @@ const ChainStatsDetailsCrossChainTxs = ({
       })) || [];
   }, [ baseChain?.app_config, chainsQuery.data?.items ]);
 
+  const baseChainIds = React.useMemo(() => {
+    return multichainConfig()?.chains
+      .filter((chain) => chain.app_config.features.crossChainTxs.isEnabled)
+      .map((chain) => chain.id);
+  }, []);
+
   const chainFilter = (() => {
     const counterPartyChainSelect = (
       <ChainSelect
         value={ counterPartyChainIds }
         onValueChange={ onCounterPartyChainIdsChange }
-        chainsConfig={ chainsConfig }
+        chainsConfig={ counterPartyChainsConfig }
         withAllOption
         loading={ chainsQuery.isLoading }
         multiple
@@ -85,6 +92,7 @@ const ChainStatsDetailsCrossChainTxs = ({
         value={ baseChainSelectProps.value }
         onValueChange={ baseChainSelectProps.onValueChange }
         loading={ chainsQuery.isLoading }
+        chainIds={ baseChainIds }
       />
     ) : null;
 
@@ -141,7 +149,7 @@ const ChainStatsDetailsCrossChainTxs = ({
     }
 
     return counterPartyChainIds.map((chainId) => {
-      return chainsConfig.find((chain) => chain.id === chainId)?.name || `Chain ${ chainId }`;
+      return counterPartyChainsConfig.find((chain) => chain.id === chainId)?.name || `Chain ${ chainId }`;
     }).join(', ');
   })();
 

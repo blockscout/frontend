@@ -129,8 +129,8 @@ const ChainStatsDetails = () => {
         <ChainStatsDetailsCrossChainTxs
           chart={ crossChainTxsChart }
           data={ query.data?.data }
-          baseChain={ chainData }
-          baseChainSelectProps={ chainSelectCrossChain }
+          baseChain={ multichainConfig() ? chainData : undefined }
+          baseChainSelectProps={ multichainConfig() ? chainSelectCrossChain : undefined }
           isLoading={ query.isPlaceholderData }
           isError={ query.isError }
           isInitialLoading={ isInitialLoading }
