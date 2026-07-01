@@ -20,7 +20,8 @@ import type { MediaType, Size } from './utils';
 import { mediaStyleProps } from './utils';
 
 interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
-  data: schemas['TokenInstance'];
+  data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
+  addressHash: string;
   size?: Size;
   allowedTypes?: Array<MediaType>;
   isLoading?: boolean;
@@ -29,7 +30,7 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
   fallback?: React.ReactNode;
 }
 
-const NftMedia = ({ data, size = 'original', allowedTypes, isLoading, withFullscreen, autoplayVideo, fallback, ...rest }: Props) => {
+const NftMedia = ({ data, addressHash, size = 'original', allowedTypes, isLoading, withFullscreen, autoplayVideo, fallback, ...rest }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isMediaLoadingError, setIsMediaLoadingError ] = React.useState(false);
   const [ mediaInfoIndex, setMediaInfoIndex ] = React.useState(0);
@@ -37,7 +38,7 @@ const NftMedia = ({ data, size = 'original', allowedTypes, isLoading, withFullsc
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const mediaInfoQuery = useNftMediaInfo({ data, size, allowedTypes, field: mediaInfoField, isEnabled: !isLoading && inView });
+  const mediaInfoQuery = useNftMediaInfo({ data, addressHash, size, allowedTypes, field: mediaInfoField, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
     if (!mediaInfoQuery.isPending && !mediaInfoQuery.data) {
@@ -92,7 +93,16 @@ const NftMedia = ({ data, size = 'original', allowedTypes, isLoading, withFullsc
 
     switch (mediaInfo?.mediaType) {
       case 'video': {
-        return <NftVideo { ...props } src={ mediaInfo.src } transport={ mediaInfo.transport } autoPlay={ autoplayVideo } instance={ data }/>;
+        return (
+          <NftVideo
+            { ...props }
+            src={ mediaInfo.src }
+            transport={ mediaInfo.transport }
+            autoPlay={ autoplayVideo }
+            instance={ data }
+            addressHash={ addressHash }
+          />
+        );
       }
       case 'html':
         return <NftHtml { ...props } src={ mediaInfo.src } transport={ mediaInfo.transport }/>;
@@ -128,7 +138,14 @@ const NftMedia = ({ data, size = 'original', allowedTypes, isLoading, withFullsc
         </>
       </AspectRatio>
       { open && (
-        <NftMediaFullscreenModal open={ open } onOpenChange={ onOpenChange } data={ data } allowedTypes={ allowedTypes } field={ mediaInfoField }/>
+        <NftMediaFullscreenModal
+          open={ open }
+          onOpenChange={ onOpenChange }
+          data={ data }
+          addressHash={ addressHash }
+          allowedTypes={ allowedTypes }
+          field={ mediaInfoField }
+        />
       ) }
     </>
   );

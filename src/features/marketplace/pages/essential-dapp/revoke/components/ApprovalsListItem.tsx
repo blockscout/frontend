@@ -18,7 +18,8 @@ import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import useRevoke from '../hooks/useRevoke';
-import formatAllowance from '../lib/formatAllowance';
+import formatAllowance, { getAllowancePostfix } from '../lib/formatAllowance';
+import formatUsdValue from '../lib/formatUsdValue';
 
 type Props = {
   selectedChain: EssentialDappsChainConfig | undefined;
@@ -35,19 +36,21 @@ export default function ApprovalsListItem({
   isAddressMatch,
   hideApproval,
 }: Props) {
-  const revoke = useRevoke();
+  const revoke = useRevoke(selectedChain);
   const [ isPending, setIsPending ] = useState(false);
 
   const allowance = formatAllowance(approval);
+  const allowancePostfix = getAllowancePostfix(approval, allowance);
+  const valueAtRiskUsd = formatUsdValue(approval.valueAtRiskUsd);
 
   const handleRevoke = useCallback(async() => {
     setIsPending(true);
-    const success = await revoke(approval, selectedChain);
+    const success = await revoke(approval);
     if (success) {
       hideApproval(approval);
     }
     setIsPending(false);
-  }, [ revoke, hideApproval, approval, selectedChain ]);
+  }, [ revoke, hideApproval, approval ]);
 
   return (
     <ListItemMobileGrid.Container
@@ -104,21 +107,14 @@ export default function ApprovalsListItem({
         <Skeleton loading={ isLoading }>
           <NumberEntity
             value={ allowance }
-            postfix={
-              [ 'Unlimited', 'N/A' ].includes(allowance) ? '' : approval.symbol
-            }
+            postfix={ allowancePostfix }
           />
         </Skeleton>
       </ListItemMobileGrid.Value>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Value at risk</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value color="inherit">
         <Skeleton loading={ isLoading }>
-          { approval.valueAtRiskUsd ? (
-            <NumberEntity
-              value={ approval.valueAtRiskUsd.toString() }
-              suffix="$"
-            />
-          ) : '-' }
+          { valueAtRiskUsd || '-' }
         </Skeleton>
       </ListItemMobileGrid.Value>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Last updated</ListItemMobileGrid.Label>

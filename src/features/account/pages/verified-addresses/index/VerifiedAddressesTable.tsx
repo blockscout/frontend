@@ -2,15 +2,16 @@
 
 import React from 'react';
 
-import type { TokenInfoApplication, VerifiedAddress } from 'src/features/account/types/api';
+import type * as adminRs from '@blockscout/admin-rs-types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import VerifiedAddressesTableItem from './VerifiedAddressesTableItem';
 
 interface Props {
-  data: Array<VerifiedAddress>;
-  applications: Array<TokenInfoApplication> | undefined;
+  data: Array<contractsInfo.VerifiedAddress>;
+  applications: Array<adminRs.TokenInfoSubmission> | undefined;
   onItemAdd: (address: string) => void;
   onItemEdit: (address: string) => void;
   isLoading: boolean;

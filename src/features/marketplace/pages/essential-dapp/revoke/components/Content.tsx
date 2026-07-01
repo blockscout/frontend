@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text, Separator } from '@chakra-ui/react';
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import type { AllowanceType } from '../types';
 import type { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
+import type { PaginationParams } from 'src/shared/pagination/types';
 
 import TokenLogoPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
@@ -18,8 +18,10 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
+import { APPROVALS_PAGE_SIZE, APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING } from '../constants';
 import type useApprovalsQuery from '../hooks/useApprovalsQuery';
 import type useCoinBalanceQuery from '../hooks/useCoinBalanceQuery';
+import formatUsdValue from '../lib/formatUsdValue';
 import AddressEntity from './AddressEntity';
 import Approvals from './Approvals';
 
@@ -29,6 +31,8 @@ type Props = {
   isAddressMatch: boolean;
   coinBalanceQuery: ReturnType<typeof useCoinBalanceQuery>;
   approvalsQuery: ReturnType<typeof useApprovalsQuery>;
+  approvalsPage: number;
+  setApprovalsPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const Content = ({
@@ -37,52 +41,75 @@ const Content = ({
   isAddressMatch,
   coinBalanceQuery,
   approvalsQuery,
+  approvalsPage,
+  setApprovalsPage,
 }: Props) => {
   const isMobile = useIsMobile();
-  const [ hiddenApprovals, setHiddenApprovals ] = useState<Array<AllowanceType>>([]);
-
-  const approvals = useMemo(() => {
-    return approvalsQuery.data?.filter((approval) => !hiddenApprovals.includes(approval));
-  }, [ approvalsQuery.data, hiddenApprovals ]);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const actionBarRef = React.useRef<HTMLDivElement>(null);
+  const approvals = approvalsQuery.data.items;
+  const isInitialLoading = approvalsQuery.isPlaceholderData && approvalsPage === 1;
 
   const totalValueAtRiskUsd = useMemo(() => {
-    if (approvalsQuery.isPlaceholderData || !approvals) return 0;
+    if (isInitialLoading) return '$0';
 
-    const maxValues: Record<`0x${ string }`, number> = {};
+    return formatUsdValue(approvalsQuery.data.totalValueAtRiskUsd) || '$0';
+  }, [ approvalsQuery.data.totalValueAtRiskUsd, isInitialLoading ]);
 
-    approvals.forEach((item) => {
-      const { address, valueAtRiskUsd } = item;
+  const scrollToResultsTop = useCallback(() => {
+    const target = isMobile ? actionBarRef.current : scrollRef.current;
 
-      if (!valueAtRiskUsd) return;
+    if (!target || target.getBoundingClientRect().top >= 0) {
+      return;
+    }
 
-      if (
-        maxValues[address] === undefined ||
-        valueAtRiskUsd > maxValues[address]
-      ) {
-        maxValues[address] = valueAtRiskUsd;
-      }
-    });
+    target.scrollIntoView(true);
+  }, [ isMobile ]);
 
-    const sum = Object.values(maxValues).reduce((sum, val) => sum + val, 0);
+  const pagination = useMemo<PaginationParams>(() => {
+    const hasMultiplePages = approvalsQuery.data.total > APPROVALS_PAGE_SIZE;
 
-    return Number(sum.toFixed(2)).toLocaleString();
-  }, [ approvalsQuery.isPlaceholderData, approvals ]);
-
-  const hideApproval = useCallback((approval: AllowanceType) => {
-    setHiddenApprovals((prev) => [ ...prev, approval ]);
-  }, []);
+    return {
+      page: approvalsPage,
+      onNextPageClick: () => {
+        setApprovalsPage((page) => page + 1);
+        scrollToResultsTop();
+      },
+      onPrevPageClick: () => {
+        setApprovalsPage((page) => Math.max(page - 1, 1));
+        scrollToResultsTop();
+      },
+      resetPage: () => {
+        setApprovalsPage(1);
+        scrollToResultsTop();
+      },
+      hasPages: hasMultiplePages,
+      hasNextPage: approvalsPage * APPROVALS_PAGE_SIZE < approvalsQuery.data.total,
+      canGoBackwards: approvalsPage > 1,
+      isLoading: approvalsQuery.isPlaceholderData,
+      isVisible: hasMultiplePages && !isInitialLoading && !approvalsQuery.isError,
+    };
+  }, [
+    approvalsPage,
+    approvalsQuery.data.total,
+    approvalsQuery.isError,
+    approvalsQuery.isPlaceholderData,
+    isInitialLoading,
+    scrollToResultsTop,
+    setApprovalsPage,
+  ]);
 
   return (
-    <Flex flexDir="column" w="full">
+    <Flex ref={ scrollRef } flexDir="column" w="full">
       <Flex
         flexDir={{ base: 'column', lg: 'row' }}
         gap={ 2 }
         mt={ -2 }
         pt={ 2 }
-        pb={ 6 }
+        pb={ pagination.isVisible ? 0 : `${ APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING }px` }
         position={ !isMobile && approvals?.length ? 'sticky' : 'unset' }
         top={ 0 }
-        zIndex="1"
+        zIndex="3"
         bg={{ _light: 'white', _dark: 'black' }}
       >
         <Flex
@@ -173,12 +200,12 @@ const Content = ({
               Total approvals
             </Text>
             <Skeleton
-              loading={ approvalsQuery.isPlaceholderData }
+              loading={ isInitialLoading }
               minW="40px"
               textAlign="center"
             >
               <Heading level="3">
-                { approvals?.length || 0 }
+                { approvalsQuery.data.total }
               </Heading>
             </Skeleton>
           </Flex>
@@ -197,12 +224,12 @@ const Content = ({
               Total value at risk
             </Text>
             <Skeleton
-              loading={ approvalsQuery.isPlaceholderData }
+              loading={ isInitialLoading }
               minW="40px"
               textAlign="center"
             >
               <Heading level="3">
-                ${ totalValueAtRiskUsd }
+                { totalValueAtRiskUsd }
               </Heading>
             </Skeleton>
           </Flex>
@@ -212,8 +239,11 @@ const Content = ({
         selectedChain={ selectedChain }
         approvals={ approvals || [] }
         isLoading={ approvalsQuery.isPlaceholderData }
+        isError={ approvalsQuery.isError }
         isAddressMatch={ isAddressMatch }
-        hideApproval={ hideApproval }
+        hideApproval={ approvalsQuery.hideApproval }
+        pagination={ pagination }
+        actionBarRef={ actionBarRef }
       />
     </Flex>
   );

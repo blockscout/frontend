@@ -2,7 +2,8 @@
 
 import React from 'react';
 
-import type { TokenInfoApplication, VerifiedAddress } from 'src/features/account/types/api';
+import type * as adminRs from '@blockscout/admin-rs-types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -19,8 +20,8 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import VerifiedAddressesStatus from './VerifiedAddressesStatus';
 
 interface Props {
-  item: VerifiedAddress;
-  application: TokenInfoApplication | undefined;
+  item: contractsInfo.VerifiedAddress;
+  application: adminRs.TokenInfoSubmission | undefined;
   onAdd: (address: string) => void;
   onEdit: (address: string) => void;
   isLoading: boolean;
@@ -47,7 +48,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       return <Skeleton loading height={ 6 } width="140px"/>;
     }
 
-    if (!item.metadata.tokenName) {
+    if (!item.metadata?.tokenName) {
       return <span>Not a token</span>;
     }
 
@@ -59,7 +60,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       type: 'ERC-20' as const,
       icon_url: application.iconUrl,
       address_hash: application.tokenAddress,
-      name: item.metadata.tokenName,
+      name: item.metadata?.tokenName,
       symbol: '',
       reputation: null,
     };
@@ -87,7 +88,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
         { tokenInfo }
       </TableCell>
       <TableCell pl="0">
-        { item.metadata.tokenName && application && !isLoading ? (
+        { item.metadata?.tokenName && application && !isLoading ? (
           <Tooltip content="Edit" disabled={ isLoading } disableOnMobile>
             <IconButton
               aria-label="edit"
@@ -103,12 +104,12 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       </TableCell>
       <TableCell fontSize="sm">
         <Skeleton loading={ isLoading } display="inline-block">
-          <VerifiedAddressesStatus status={ item.metadata.tokenName ? application?.status : undefined }/>
+          <VerifiedAddressesStatus status={ item.metadata?.tokenName ? application?.status : undefined }/>
         </Skeleton>
       </TableCell>
       <TableCell fontSize="sm" color="text.secondary">
         <Skeleton loading={ isLoading } display="inline-block">
-          { item.metadata.tokenName && application ? dayjs(application.updatedAt).format('MMM DD, YYYY') : null }
+          { item.metadata?.tokenName && application ? dayjs(application.updatedAt).format('MMM DD, YYYY') : null }
         </Skeleton>
       </TableCell>
     </TableRow>

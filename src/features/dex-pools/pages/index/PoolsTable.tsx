@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { Pool } from 'src/features/dex-pools/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -10,8 +10,8 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 
 import PoolsTableItem from './PoolsTableItem';
 
-type Props = {
-  items: Array<Pool>;
+interface Props {
+  items: Array<contractsInfo.Pool>;
   page: number;
   isLoading?: boolean;
   top?: number;

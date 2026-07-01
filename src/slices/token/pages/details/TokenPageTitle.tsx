@@ -5,8 +5,8 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
-import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
 import { getTokenTypeName } from 'src/slices/token/utils/token-types';
 
 import type { ResourceError } from 'src/api/resources';
@@ -38,7 +38,7 @@ const PREDEFINED_TAG_PRIORITY = 100;
 interface Props {
   tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
   addressQuery: UseQueryResult<schemas['Address'], ResourceError<unknown>>;
-  verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo, ResourceError<unknown>>;
+  verifiedInfoQuery: UseQueryResult<contractsInfo.TokenInfo, ResourceError<unknown>>;
   hash: string;
 }
 

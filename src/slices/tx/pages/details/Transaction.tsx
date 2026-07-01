@@ -113,9 +113,11 @@ const TransactionPageContent = () => {
     txTags.push(...protocolTags);
   }
 
+  const isTabsLoading = txQuery.isPlaceholderData && !txQuery.errorUpdateCount;
+
   const tags = (
     <MetadataTags
-      isLoading={ !txQuery.isFetchedAfterMount }
+      isLoading={ isTabsLoading }
       tags={ txTags }
     />
   );
@@ -136,7 +138,7 @@ const TransactionPageContent = () => {
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      <RoutedTabs tabs={ tabs } isLoading={ !txQuery.isFetchedAfterMount }/>
+      <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </AddressHighlightProvider>
   );
 };

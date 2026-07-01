@@ -48,11 +48,13 @@
     "postinstall": "chakra typegen ./src/toolkit/theme/theme.ts"
   },
   "dependencies": {
-    "@blockscout/api-types": "0.0.1-beta.06e7ef15c3",
+    "@blockscout/admin-rs-types": "1.5.0",
+    "@blockscout/api-types": "0.0.1-beta.cf13c2de97",
     "@blockscout/bens-types": "1.7.1",
+    "@blockscout/contracts-info-types": "1.5.2",
     "@blockscout/interchain-indexer-types": "1.5.0-beta3",
     "@blockscout/multichain-aggregator-types": "2.1.6",
-    "@blockscout/points-types": "1.4.0-alpha.1",
+    "@blockscout/points-types": "1.4.1",
     "@blockscout/stats-types": "2.11.1",
     "@blockscout/tac-operation-lifecycle-types": "1.1.0",
     "@blockscout/visualizer-types": "0.2.0",

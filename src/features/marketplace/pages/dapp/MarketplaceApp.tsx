@@ -4,8 +4,6 @@ import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
-
 import * as metadata from 'src/shell/metadata';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';

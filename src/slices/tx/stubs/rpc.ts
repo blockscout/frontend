@@ -1,7 +1,7 @@
 import type { Chain, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
 import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
-import { BLOCK_HASH } from 'src/slices/block/stubs/block';
+import { BLOCK_HASH } from 'src/slices/block/stubs/list';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 export const GET_TRANSACTION: GetTransactionReturnType<Chain, 'latest'> = {

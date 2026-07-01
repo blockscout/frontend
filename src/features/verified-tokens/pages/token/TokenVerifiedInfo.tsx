@@ -3,7 +3,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -15,7 +15,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import TokenProjectInfo from './TokenProjectInfo';
 
 interface Props {
-  verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo, ResourceError<unknown>>;
+  verifiedInfoQuery: UseQueryResult<contractsInfo.TokenInfo, ResourceError<unknown>>;
 }
 
 const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {

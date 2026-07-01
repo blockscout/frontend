@@ -10,7 +10,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import BlocksContent from 'src/slices/block/pages/index/BlocksContent';
 import BlocksTabSlot from 'src/slices/block/pages/index/BlocksTabSlot';
-import { BLOCK } from 'src/slices/block/stubs/block';
+import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 
 import Flashblocks from 'src/features/flashblocks/pages/index/Flashblocks';
 
@@ -41,7 +41,7 @@ const BlocksPageContent = () => {
     filters: { type: 'block' },
     options: {
       enabled: tab === 'blocks' || !tab,
-      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),
@@ -52,7 +52,7 @@ const BlocksPageContent = () => {
     filters: { type: 'reorg' },
     options: {
       enabled: tab === 'reorgs',
-      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),
@@ -63,7 +63,7 @@ const BlocksPageContent = () => {
     filters: { type: 'uncle' },
     options: {
       enabled: tab === 'uncles',
-      placeholderData: generateListStub<'core:blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
       } }),

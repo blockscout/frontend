@@ -8,7 +8,7 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import BlocksContent from 'src/slices/block/pages/index/BlocksContent';
-import { BLOCK } from 'src/slices/block/stubs/block';
+import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
@@ -63,7 +63,7 @@ const OptimisticL2TxnBatch = () => {
     pathParams: { number: String(batchQuery.data?.number) },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
-      placeholderData: generateListStub<'core:optimistic_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+      placeholderData: generateListStub<'core:optimistic_l2_txn_batch_blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         batch_number: 1338932,
         items_count: 50,
       } }),

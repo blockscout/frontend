@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenVerifiedInfo } from 'src/features/verified-tokens/types/api';
+import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';
@@ -10,7 +10,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 
 export interface Props {
-  field: keyof TokenVerifiedInfo;
+  field: keyof contractsInfo.TokenInfo;
   icon: IconName;
   title: string;
   href?: string;

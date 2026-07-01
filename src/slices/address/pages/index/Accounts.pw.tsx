@@ -8,7 +8,7 @@ import { test, expect } from 'playwright/lib';
 
 import Accounts from './Accounts';
 
-const addresses: paths['/v2/addresses']['get'] = {
+const addresses: paths['/api/v2/addresses']['get'] = {
   items: [
     {
       ...addressParamMock.withName,

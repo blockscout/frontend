@@ -1,8 +1,8 @@
-import type { FheOperation, FheOperationsResponse } from './types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import { ADDRESS_PARAMS } from 'src/slices/address/stubs/address-params';
 
-export const FHE_OPERATION: FheOperation = {
+export const FHE_OPERATION: schemas['FheOperation'] = {
   log_index: 0,
   operation: 'fhe_add',
   type: 'arithmetic',
@@ -16,7 +16,7 @@ export const FHE_OPERATION: FheOperation = {
   block_number: 9004925,
 };
 
-export const FHE_OPERATIONS_RESPONSE: FheOperationsResponse = {
+export const FHE_OPERATIONS_RESPONSE: schemas['FheOperationsResponse'] = {
   items: [
     { ...FHE_OPERATION, log_index: 0 },
     { ...FHE_OPERATION, log_index: 1 },

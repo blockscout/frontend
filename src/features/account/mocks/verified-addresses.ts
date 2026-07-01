@@ -1,9 +1,9 @@
-import type { AddressValidationResponseSuccess } from 'src/features/account/pages/verified-addresses/address-verification/types';
-import type { TokenInfoApplication, TokenInfoApplications, VerifiedAddress, VerifiedAddressResponse } from 'src/features/account/types/api';
+import * as adminRs from '@blockscout/admin-rs-types';
+import * as contractsInfo from '@blockscout/contracts-info-types';
 
 export const SIGNATURE = '0x96491e0cd1b99c14951552361b7f6ff64f41651b5d1c12501914342c8a6847e21e08726c3505e11ba2af9a40ac0b05c8d113e7fd1f74594224b9c7276ebb3a661b';
 
-export const VERIFIED_ADDRESS: Record<string, VerifiedAddress> = {
+export const VERIFIED_ADDRESS: Record<string, contractsInfo.VerifiedAddress> = {
   NEW_ITEM: {
     userId: '1',
     chainId: '99',
@@ -51,22 +51,23 @@ export const ADDRESS_CHECK_RESPONSE = {
   },
 };
 
-export const ADDRESS_VERIFY_RESPONSE: Record<string, AddressValidationResponseSuccess> = {
+export const ADDRESS_VERIFY_RESPONSE: Record<string, contractsInfo.VerifyAddressResponse> = {
   SUCCESS: {
-    status: 'SUCCESS',
+    status: contractsInfo.VerifyAddressResponse_Status.SUCCESS,
     result: {
       verifiedAddress: VERIFIED_ADDRESS.NEW_ITEM,
     },
   },
   INVALID_SIGNER_ERROR: {
-    status: 'INVALID_SIGNER_ERROR',
+    status: contractsInfo.VerifyAddressResponse_Status.INVALID_SIGNER_ERROR,
     invalidSigner: {
       signer: '0xF822070D07067D1519490dBf49448a7E30EE9ea5',
+      validAddresses: [ '0xF822070D07067D1519490dBf49448a7E30EE9ea5' ],
     },
   },
 };
 
-export const VERIFIED_ADDRESS_RESPONSE: Record<string, VerifiedAddressResponse> = {
+export const VERIFIED_ADDRESS_RESPONSE: Record<string, contractsInfo.ListUserVerifiedAddressesResponse> = {
   DEFAULT: {
     verifiedAddresses: [
       VERIFIED_ADDRESS.ITEM_1,
@@ -75,20 +76,14 @@ export const VERIFIED_ADDRESS_RESPONSE: Record<string, VerifiedAddressResponse> 
   },
 };
 
-export const TOKEN_INFO_APPLICATION_BASE = {
-  id: '1',
+export const TOKEN_INFO: contractsInfo.TokenInfo = {
   tokenAddress: VERIFIED_ADDRESS.ITEM_1.contractAddress,
-  status: 'APPROVED',
-  updatedAt: '2022-11-08 12:47:10.149148Z',
-  requesterName: 'Tom',
-  requesterEmail: 'tom@example.com',
   projectName: 'My project',
   projectWebsite: 'http://example.com',
   projectEmail: 'token@example.com',
   iconUrl: 'https://placekitten.com/100',
   projectDescription: 'description',
   projectSector: 'DeFi',
-  comment: '',
   docs: 'https://example.com/docs',
   github: 'https://github.com',
   telegram: 'https://telegram.com',
@@ -104,33 +99,44 @@ export const TOKEN_INFO_APPLICATION_BASE = {
   coinMarketCapTicker: 'https://coinmarketcap.com',
   coinGeckoTicker: 'https://coingecko.com',
   defiLlamaTicker: 'https://defillama.com',
+  chainId: '1',
 };
 
-export const TOKEN_INFO_APPLICATION: Record<string, TokenInfoApplication> = {
+export const TOKEN_INFO_APPLICATION_BASE = {
+  ...TOKEN_INFO,
+  id: '1',
+  status: 'APPROVED',
+  updatedAt: '2022-11-08 12:47:10.149148Z',
+  requesterName: 'Tom',
+  requesterEmail: 'tom@example.com',
+  comment: '',
+};
+
+export const TOKEN_INFO_APPLICATION: Record<string, adminRs.TokenInfoSubmission> = {
   APPROVED: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_1.contractAddress,
     id: '1',
-    status: 'APPROVED',
+    status: adminRs.TokenInfoSubmissionStatus.APPROVED,
     updatedAt: '2022-11-08 12:47:10.149148Z',
   },
   IN_PROCESS: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_2.contractAddress,
     id: '2',
-    status: 'IN_PROCESS',
+    status: adminRs.TokenInfoSubmissionStatus.IN_PROCESS,
     updatedAt: '2022-11-10 08:11:10.149148Z',
   },
   UPDATED_ITEM: {
     ...TOKEN_INFO_APPLICATION_BASE,
     tokenAddress: VERIFIED_ADDRESS.ITEM_1.contractAddress,
     id: '1',
-    status: 'IN_PROCESS',
+    status: adminRs.TokenInfoSubmissionStatus.IN_PROCESS,
     updatedAt: '2022-11-11 05:11:10.149148Z',
   },
 };
 
-export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, TokenInfoApplications> = {
+export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, adminRs.ListTokenInfoSubmissionsResponse> = {
   DEFAULT: {
     submissions: [
       TOKEN_INFO_APPLICATION.APPROVED,
@@ -141,7 +147,7 @@ export const TOKEN_INFO_APPLICATIONS_RESPONSE: Record<string, TokenInfoApplicati
     submissions: [
       {
         ...TOKEN_INFO_APPLICATION.APPROVED,
-        status: 'UPDATE_REQUIRED',
+        status: adminRs.TokenInfoSubmissionStatus.UPDATE_REQUIRED,
       },
       TOKEN_INFO_APPLICATION.IN_PROCESS,
     ],

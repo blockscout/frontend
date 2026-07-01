@@ -25,19 +25,19 @@ const nextPageParams = {
 };
 
 test.beforeEach(async({ mockApiResponse }) => {
-  const response20: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+  const response20: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d ],
     next_page_params: nextPageParams,
   };
-  const response721: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+  const response721: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc721a, tokensMock.erc721b, tokensMock.erc721c ],
     next_page_params: nextPageParams,
   };
-  const response1155: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+  const response1155: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc1155a, tokensMock.erc1155b ],
     next_page_params: nextPageParams,
   };
-  const response404: paths['/v2/addresses/{address_hash_param}/tokens']['get'] = {
+  const response404: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc404a, tokensMock.erc404b ],
     next_page_params: nextPageParams,
   };

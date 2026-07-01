@@ -53,8 +53,10 @@ allowBuilds:
 minimumReleaseAge: 10080 # 1 week
 minimumReleaseAgeExclude:
   # permanent
+  - '@blockscout/admin-rs-types'
   - '@blockscout/api-types'
   - '@blockscout/bens-types'
+  - '@blockscout/contracts-info-types'
   - '@blockscout/interchain-indexer-types'
   - '@blockscout/multichain-aggregator-types'
   - '@blockscout/points-types'

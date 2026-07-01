@@ -5,7 +5,7 @@ import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import * as mixpanel from 'src/services/mixpanel';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
@@ -23,7 +23,7 @@ import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
 type FeaturedAppProps = {
-  app: MarketplaceApp;
+  app: MarketplaceDapp;
   isFavorite: boolean;
   isLoading: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;

@@ -1,4 +1,4 @@
-import type { schemas, publicApi } from '@blockscout/api-types';
+import type { schemas, operations } from '@blockscout/api-types';
 
 export const contract1 = {
   address: {
@@ -87,7 +87,7 @@ export const contract3 = {
   reputation: 'ok',
 } satisfies schemas['SmartContractListItem'];
 
-export const baseResponse: publicApi.paths['/v2/smart-contracts/']['get']['responses']['200']['content']['application/json'] = {
+export const baseResponse: operations['SmartContractController.smart_contracts_list']['json'] = {
   items: [
     contract1,
     contract2,

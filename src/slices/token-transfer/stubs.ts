@@ -65,7 +65,7 @@ export const TOKEN_TRANSFER_ERC_404: schemas['TokenTransfer'] = {
 };
 
 export const getTokenTransfersStub = (type?: TokenType | null, pagination: Record<string, unknown> | null = null):
-paths['/v2/token-transfers']['get'] => {
+paths['/api/v2/token-transfers']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
@@ -81,7 +81,7 @@ paths['/v2/token-transfers']['get'] => {
 export const getTokenInstanceTransfersStub = (
   type?: TokenType | null,
   pagination: Record<string, unknown> | null = null,
-): paths['/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] => {
+): paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'core:token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });

@@ -169,7 +169,7 @@ const TokenPageContent = () => {
           tab === 'inventory'
         ),
       ),
-      placeholderData: generateListStub<'core:token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
+      placeholderData: generateListStub<'core:token_inventory'>(tokenStubs.TOKEN_INSTANCE_ITEM, 50, { next_page_params: { unique_token: 1 } }),
     },
   });
 

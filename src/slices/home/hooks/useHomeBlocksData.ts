@@ -12,7 +12,7 @@ import type { ResourceError, ResourcePayload } from 'src/api/resources';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
-import { BLOCK } from 'src/slices/block/stubs/block';
+import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 
 import config from 'src/config';
 
@@ -39,7 +39,7 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
   const blocksQuery = useApiQuery('core:homepage_blocks', {
     queryOptions: {
       enabled: isHomepageBlocksDataEnabled,
-      placeholderData: Array(HOME_BLOCKS_QUERY_LIMIT).fill(BLOCK),
+      placeholderData: Array(HOME_BLOCKS_QUERY_LIMIT).fill(BLOCK_ITEM),
     },
   });
 

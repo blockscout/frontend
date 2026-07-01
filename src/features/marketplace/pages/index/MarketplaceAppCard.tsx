@@ -4,7 +4,7 @@ import { chakra, Flex, Text } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import * as mixpanel from 'src/services/mixpanel';
 import { route } from 'src/shared/router/routes';
@@ -22,7 +22,7 @@ import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 
-interface Props extends MarketplaceApp {
+interface Props extends MarketplaceDapp {
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;

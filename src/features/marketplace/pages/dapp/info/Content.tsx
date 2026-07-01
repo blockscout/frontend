@@ -3,14 +3,14 @@
 import { Flex, Text, Grid } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceApp } from 'src/features/marketplace/types/client';
+import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import SocialLink from './SocialLink';
 import type { Props as SocialLinkProps } from './SocialLink';
 import WebsiteLink from './WebsiteLink';
 
 interface Props {
-  data: MarketplaceApp | undefined;
+  data: MarketplaceDapp | undefined;
 }
 
 const SOCIAL_LINKS: Array<Omit<SocialLinkProps, 'href'>> = [
@@ -27,7 +27,7 @@ const Content = ({ data }: Props) => {
     if (href) {
       if (Array.isArray(href)) {
         href.forEach((href) => socialLinks.push({ ...link, href }));
-      } else {
+      } else if (typeof href === 'string') {
         socialLinks.push({ ...link, href });
       }
     }

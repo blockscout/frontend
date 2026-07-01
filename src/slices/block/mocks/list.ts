@@ -2,7 +2,7 @@ import type { paths } from '@blockscout/api-types';
 
 import { base, base2 } from './details';
 
-export const baseListResponse: paths['/v2/blocks']['get'] = {
+export const baseListResponse: paths['/api/v2/blocks']['get'] = {
   items: [
     {
       ...base,

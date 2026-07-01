@@ -3,14 +3,14 @@
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
-import type { TxAuthorization } from 'src/features/tx-authorization/types/api';
+import type { schemas } from '@blockscout/api-types';
 
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 
 export interface Props extends BadgeProps {
-  status: TxAuthorization['status'];
+  status: schemas['SignedAuthorization']['status'];
 }
 
 const TxAuthorizationStatus = ({ status, ...rest }: Props) => {
