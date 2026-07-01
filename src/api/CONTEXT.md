@@ -27,10 +27,10 @@ Resources are registered per service under `resources/services/**` (see
 token: { path: '/api/v2/tokens/:hash', pathParams: [ 'hash' ] }
 ```
 
-The matching `…ResourcePayload` type in the same file ties the response to a
-`paths[...]` type from `@blockscout/api-types` — that's the response schema. The
+The matching `…ResourcePayload` type in the same file ties the resource to its response
+type (see *Where a resource's response types come from* below). The
 `service:` prefix (`core:`, `contractInfo:`, `stats:`, …) selects which service config
-applies; `getResourceParams` (`utils/build-url.ts`) resolves `service:name` →
+applies; `getResourceParams` (`utils/get-resource-params.ts`) resolves `service:name` →
 `{ api, resource }`.
 
 ### 2. Repo → which env vars build the URL (`config.ts`)
@@ -189,13 +189,13 @@ If any cell is unknown, discover it with `gh workflow list --repo <repo>` and
   - **Filter & sorting param types** (e.g. `TokensFilters`, `TokenTransferFilters` in
     `src/slices/**/types/api.ts`) — not cleanly derivable from the generated schemas, so
     they're shaped to be sensible in our code.
-  - **Socket message types** - cannot be typed with Open API spec.
+  - **Socket message types** — cannot be typed from an OpenAPI spec.
   - **Convenience type aliases** for deep-nested generated types (e.g. `ArbitrumBatchStatus`,
     `AddressCeloAccount`).
 - **Feature-owned sub-types for data the Core API only proxies.** Some Core API responses
   embed data the Core API merely proxies from a micro-service and doesn't fully describe in
-  its own OpenAPI spec — it doesn't know those shapes (e.g. the `tac_operation` field in search-result
-  variant with `type: 'tac_operaton'`). In the generated `@blockscout/api-types` schema such data
+  its own OpenAPI spec — it doesn't know those shapes (e.g. the `tac_operation` field in the
+  search-result variant with `type: 'tac_operation'`). In the generated `@blockscout/api-types` schema such data
   therefore shows up only as **optional properties** or **loose members of a type union**.
   The precise shape is owned by the **feature** and must live under
   `src/features/**/types/api.ts` (the feature owns the rendering, so it owns the type). A
