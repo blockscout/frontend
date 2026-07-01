@@ -46,7 +46,7 @@ All application source lives under `/src`. Code is co-located by **slice** (core
 
 | Path | Role |
 |---|---|
-| `src/api/` | Transport, fetch utilities, query client, WebSocket, data-fetching hooks |
+| `src/api/` | Transport, fetch utilities, query client, WebSocket, data-fetching hooks, per-service resource registry (`resources/`) |
 | `src/shell/` | App chrome: layout, header, footer, navigation, top-bar, root contexts |
 | `src/slices/` | Core explorer entities — always present on any vanilla EVM chain |
 | `src/features/` | Optional / config-gated product areas |
