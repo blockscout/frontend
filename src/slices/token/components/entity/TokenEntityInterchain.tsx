@@ -9,6 +9,8 @@ import type { EntityProps } from 'src/slices/token/components/entity/TokenEntity
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import TokenEntityExternal from 'src/slices/token/components/entity/TokenEntityExternal';
 
+import multichainConfig from 'src/features/multichain/chains-config';
+
 import config from 'src/config';
 
 interface Props extends EntityProps, JsxStyleProps {
@@ -18,9 +20,10 @@ interface Props extends EntityProps, JsxStyleProps {
 const TokenEntityInterchain = ({ chain, ...props }: Props) => {
 
   const isCurrentChain = chain?.id === config.chain.id;
+  const multichainChainInfo = multichainConfig()?.chains.find(({ id }) => id === chain?.id);
 
-  if (isCurrentChain) {
-    return <TokenEntity { ...props }/>;
+  if (isCurrentChain || multichainChainInfo) {
+    return <TokenEntity { ...props } chain={ multichainChainInfo }/>;
   }
 
   return <TokenEntityExternal { ...props } chain={ chain }/>;

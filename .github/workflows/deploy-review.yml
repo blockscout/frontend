@@ -35,6 +35,7 @@ on:
             - filecoin
             - garnet
             - gnosis
+            - gnosis_chiado
             - immutable
             - mega_eth
             - multichain
@@ -85,8 +86,11 @@ jobs:
     if: ${{ inputs.build_image }}
     uses: './.github/workflows/publish-image.yml'
     with:
+        # Variant-independent tag: the image is preset- AND variant-agnostic,
+        # so one image serves both the `review` and `review-2` demos. This lets a
+        # deploy for one variant reuse (build_image=false) an image built under the other.
         tags: |
-          type=raw,value=${{ inputs.variant }}-${{ needs.make_slug.outputs.REF_SLUG }}
+          type=raw,value=review-${{ needs.make_slug.outputs.REF_SLUG }}
         platforms: linux/amd64
     secrets: inherit
 

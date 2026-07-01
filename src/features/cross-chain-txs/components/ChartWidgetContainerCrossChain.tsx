@@ -6,6 +6,7 @@ import React from 'react';
 
 import type { Props as ChartWidgetContainerProps } from 'src/features/chain-stats/components/ChartWidgetContainer';
 import { getChartUrl } from 'src/features/chain-stats/utils/chart';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import { SankeyChartWidget } from 'src/toolkit/components/charts/sankey/SankeyChartWidget';
 
@@ -18,7 +19,8 @@ interface Props extends Omit<ChartWidgetContainerProps, 'id'> {
 
 const ChartWidgetContainerCrossChain = ({ id, interval, isLoading, onLoadingError, className, href, title, description }: Props) => {
 
-  const query = useCrossChainChartQuery({ id, interval, enabled: !isLoading });
+  const chainData = useMultichainContext()?.chain;
+  const query = useCrossChainChartQuery({ id, interval, enabled: !isLoading, chainData });
 
   React.useEffect(() => {
     if (query.isError) {
