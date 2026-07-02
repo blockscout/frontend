@@ -13,7 +13,7 @@ const __PageName__ = () => {
   const router = useRouter();
   const __entityParam__ = getQueryParamString(router.query.__entityParam__);
 
-  // TODO: wire up data (useApiQuery keyed by __entityParam__) — out of scaffold scope.
+  // TODO (api-data): wire up data (useApiQuery keyed by __entityParam__) — see wiring.md in the add-new-page skill.
   // Drive `isLoading` from the query's `isPlaceholderData` once wired.
   const isLoading = false;
   const data: unknown = {};

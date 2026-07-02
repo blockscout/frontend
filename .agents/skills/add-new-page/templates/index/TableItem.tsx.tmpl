@@ -6,7 +6,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  // TODO: replace `unknown` with the real item type
+  // TODO (api-data): replace `unknown` with the real item type
   item: unknown;
   isLoading?: boolean;
 }
@@ -14,7 +14,7 @@ interface Props {
 const __PageName__TableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
-      { /* TODO: one TableCell per column in __PageName__Table; render values from `item` */ }
+      { /* TODO (api-data): one TableCell per column in __PageName__Table; render values from `item` */ }
       <TableCell>
         <Skeleton loading={ isLoading }>Value 1</Skeleton>
       </TableCell>

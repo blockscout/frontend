@@ -1,6 +1,6 @@
 ---
 name: add-new-page
-description: Scaffold and wire up a new page (index / detail / general). Use when adding any new route to the app.
+description: Scaffold a new page (index / detail / general) and optionally wire it to API data. Use when adding any new route to the app.
 ---
 
 # Add a new page
@@ -8,10 +8,18 @@ description: Scaffold and wire up a new page (index / detail / general). Use whe
 This skill scaffolds the **page layout** from a per-type template and wires the page into every system that
 must know about it (navigation, metadata, server guard, route types, analytics, sitemap).
 
-**Scope — layout only.** The scaffold produces layout skeletons with clearly-marked `TODO`s. **Wiring up API
-data, pagination, filtering, sorting, and action bars is out of scope** and left to follow-up work. No stubs,
-mocks, or tests are produced here. As a consequence, a freshly-scaffolded page contains intentional `TODO`s
-and will not fully pass `lint`/`tsc` until its data is wired — that is expected.
+**Two phases.** The **scaffold** phase (Steps 0–9) produces layout skeletons with clearly-marked `TODO`s. The
+optional **data-wiring** phase (Step 10, procedure in `wiring.md`) then connects those skeletons to real API
+resources and renders the data plainly — Step 0 decides whether it runs now or is deferred. Filtering,
+sorting, search, socket live-updates, mocks, tests, and design polish are out of scope in both phases. If
+wiring is deferred, the freshly-scaffolded page keeps its intentional `TODO`s and will not fully pass
+`lint`/`tsc` until its data is wired — that is expected.
+
+**TODO tags.** Every deferred piece of work is marked with a stage-tagged TODO so later stages can find their
+worklist mechanically: **`TODO (api-data):`** — resolved by the data-wiring phase (`wiring.md`); grep for the
+tag to find every spot. **`TODO (design):`** — content/representation decisions left for the design stage
+(icons, field hints, uncertain value formatting); the wiring phase leaves these behind, never resolves them.
+Keep the tags when scaffolding, and use them for any new deferred work you mark.
 
 **Rule of thumb: never guess.** Whenever information is missing or required to proceed, **pause and ask the
 user, or confirm your findings**, before writing files.
@@ -97,6 +105,11 @@ obvious from the conversation or the codebase.
    belongs to.
 5. **Metadata** — **suggest** a default page title and description; let the user confirm or refine. Default
    only — do **not** add `enhanced` variants.
+6. **Data — wire data now, or layout only?** If now, collect for **each content body** (per tab if tabbed):
+   the API **service + endpoint path** that feeds it — given by the user, **never hunted for** (the
+   `service:name` key if the resource is already declared) — and the **live instance** to sample data from
+   (a `tools/dev-server/registry.json` alias or a full URL; a new endpoint may exist only on staging). If
+   the endpoint isn't deployed anywhere yet, wiring is deferred — layout only.
 
 Proceed only once these are settled.
 
@@ -157,7 +170,7 @@ Use the single page shell that embeds its one content body directly:
    `GeneralInfo`), **named after the tab** (`__PageName__<TabName>`, see the folders & naming rule above).
    Wire the renamed components into the shell's `tabs` array and imports.
 
-Leave the `// TODO: wire up data …` markers in place — data fetching is out of scope.
+Leave the `// TODO (api-data): …` markers in place — data fetching belongs to the wiring phase (Step 10).
 
 ## Step 3 — Route file + server guard
 
@@ -195,12 +208,12 @@ In `src/shell/navigation/useNavItems.tsx` add a `NavItem` to the group agreed in
 const __featureName__: NavItem | null = config.features.__featureName__.isEnabled ? {
   text: '__title__',
   nextRoute: { pathname: '__route__' as const },
-  // TODO: set nav icon
+  // TODO (design): set nav icon
   isActive: pathname.startsWith('__route__'),
 } : null;
 ```
 For a core slice page drop the `config.features.*` guard (or gate on `config.slices.*`). **Do not invent an
-icon** — leave the `// TODO: set nav icon` comment and omit the `icon` field so the user assigns the correct
+icon** — leave the `// TODO (design): set nav icon` comment and omit the `icon` field so the user assigns the correct
 sprite later. Then insert the item into the appropriate group array.
 
 ## Step 6 — Metadata
@@ -248,4 +261,14 @@ case '__route__':
 Run `pnpm run lint:tsc` (`tsc -p ./tsconfig.json`) to confirm the new files type-check. The scaffold uses the
 `unknown` item type and never reads properties off it, so TypeScript should pass as-is. **ESLint is expected
 to fail** on the scaffold's intentional `TODO`s (unused `item` props, single-value `const`s) until the data
-is wired — don't gate on it at this stage.
+is wired (Step 10, or deferred follow-up work) — don't gate on it at this stage.
+
+## Step 10 — Wire data (if agreed in Step 0)
+
+If Step 0 settled on wiring data now, read **`wiring.md`** (next to this file) and follow it: it declares the
+resources via the `add-api-resource` skill, adds minimal loading stubs, wires `useApiQuery` /
+`useQueryWithPages` (+ pagination controls for paginated lists), and renders every payload field plainly.
+After it, both `tsc` and ESLint must pass.
+
+**Direct entry** — for a page scaffolded earlier (its `TODO (api-data):` markers are still in place), skip
+Steps 1–9: run only the *Data* item of the Step 0 interview, then start at `wiring.md`.
