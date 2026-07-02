@@ -12,12 +12,12 @@ interface Props {
 }
 
 const __PageName__Details = ({ data, isLoading }: Props) => {
-  // TODO: replace placeholder rows with real fields from the fetched data.
+  // TODO (api-data): replace placeholder rows with real fields from the fetched data.
   // Each field is a label/value pair. Use DetailedInfo.ItemDivider to group sections.
 
   return (
     <DetailedInfo.Container>
-      <DetailedInfo.ItemLabel hint="TODO: describe this field" isLoading={ isLoading }>
+      <DetailedInfo.ItemLabel hint="TODO (design): describe this field" isLoading={ isLoading }>
         Label
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
@@ -26,7 +26,7 @@ const __PageName__Details = ({ data, isLoading }: Props) => {
         </Skeleton>
       </DetailedInfo.ItemValue>
 
-      { /* TODO: add more DetailedInfo.ItemLabel / DetailedInfo.ItemValue rows */ }
+      { /* TODO (api-data): add more DetailedInfo.ItemLabel / DetailedInfo.ItemValue rows */ }
     </DetailedInfo.Container>
   );
 };
