@@ -11,7 +11,7 @@ from the **target instance's** runtime config. So resolution means reading the r
 *which env vars* apply, then reading the instance's config to get their values. Background
 facts: *How a request URL is assembled* in `src/api/CONTEXT.md`.
 
-**Rule of thumb: never guess.** Don't guess hosts, and don't transcribe `config.ts` logic
+**Rule of thumb: never guess.** Don't guess hosts, and don't transcribe `src/api/config.ts` logic
 from memory — read the files each time (they change).
 
 ## Step 0 — Inputs
@@ -22,16 +22,16 @@ The **`service:name` resource key** and the **target instance** (a
 ## Step 1 — Repo → path template
 
 Find the resource in its service registry file under `src/api/resources/services/**`
-(see `resources/index.ts`); the entry gives the `path` template and its `:param`
+(see `src/api/resources/index.ts`); the entry gives the `path` template and its `:param`
 placeholders:
 
 ```ts
-// resources/services/core/token.ts
+// src/api/resources/services/core/token.ts
 token: { path: '/api/v2/tokens/:hash', pathParams: [ 'hash' ] }
 ```
 
 The `service:` prefix (`core:`, `contractInfo:`, `stats:`, …) selects which service config
-applies in the next step (`getResourceParams` in `utils/get-resource-params.ts` resolves it).
+applies in the next step (`getResourceParams` in `src/api/utils/get-resource-params.ts` resolves it).
 
 ## Step 2 — Repo → which env vars build the URL
 

@@ -11,13 +11,13 @@ The frontend never hardcodes a full API URL. A request is assembled as:
 ```
 
 - **The `path` template lives in the repo.** Resources are registered per service under
-  `resources/services/**` (see `resources/index.ts`); each entry maps a `service:name` key
+  `src/api/resources/services/**` (see `src/api/resources/index.ts`); each entry maps a `service:name` key
   to a `path` template with `:param` placeholders. The matching `…ResourcePayload` type in
   the same file ties the resource to its response type (see *Where a resource's response
   types come from* below). The `service:` prefix (`core:`, `contractInfo:`, `stats:`, …)
   selects which service config applies; `getResourceParams`
-  (`utils/get-resource-params.ts`) resolves `service:name` → `{ api, resource }`.
-- **`endpoint` / `basePath` are per-service runtime config.** `config.ts` builds one config
+  (`src/api/utils/get-resource-params.ts`) resolves `service:name` → `{ api, resource }`.
+- **`endpoint` / `basePath` are per-service runtime config.** `src/api/config.ts` builds one config
   object per service from `NEXT_PUBLIC_*` env vars; the env-var → field mapping changes, so
   the file is the source of truth.
 - **Every deployed instance exposes its full public config** at
@@ -26,9 +26,9 @@ The frontend never hardcodes a full API URL. A request is assembled as:
   It also carries the "secret-ish" public keys (WalletConnect, reCAPTCHA, GA) by design;
   treat it as a config source, not secrets.
 - **The `/node-api/proxy` rewrite is a browser-CORS workaround only.** In local dev /
-  review environments (or with `NEXT_PUBLIC_USE_NEXT_JS_PROXY`), `build-url.ts` routes the
+  review environments (or with `NEXT_PUBLIC_USE_NEXT_JS_PROXY`), `src/api/utils/build-url.ts` routes the
   request through the app's own origin with the true upstream in the `x-endpoint` header
-  (`utils/is-need-proxy.ts`); server-side/Node requests never need this form.
+  (`src/api/utils/is-need-proxy.ts`); server-side/Node requests never need this form.
 
 **To resolve the concrete URL of a resource on a live instance, use the `resolve-api-url`
 skill** — it holds the step-by-step recipe (env-var lookup, instance host registry,
@@ -36,7 +36,7 @@ runtime-config fetch).
 
 ## Where a resource's response types come from
 
-Each service registry file (`resources/services/**`) declares a `…ResourcePayload` type
+Each service registry file (`src/api/resources/services/**`) declares a `…ResourcePayload` type
 mapping every `service:name` to its response type. Follow that type's import to learn its
 origin — there are two:
 

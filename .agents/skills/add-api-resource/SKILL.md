@@ -63,15 +63,15 @@ them for a sample body instead.
 ## Step 2 — Add the resource entry
 
 All edits for an existing service live in its registry file — Core API:
-`resources/services/core/<group>.ts` (e.g. `token.ts`); micro-service:
-`resources/services/<name>.ts`. Add the entry to the `*_API_RESOURCES` object — shape is
-`ApiResource` (`resources/types.ts`): `{ path, pathParams?, filterFields?, paginated?,
+`src/api/resources/services/core/<group>.ts` (e.g. `token.ts`); micro-service:
+`src/api/resources/services/<name>.ts`. Add the entry to the `*_API_RESOURCES` object — shape is
+`ApiResource` (`src/api/resources/types.ts`): `{ path, pathParams?, filterFields?, paginated?,
 headers? }`.
 
 - `path` uses `:param` placeholders; list each one in `pathParams`.
 - `paginated: true` **only** if the Step 1 sample has `next_page_params`.
 
-**No `resources/index.ts` edit is needed** — the `ResourceName` union and the dispatch types
+**No `src/api/resources/index.ts` edit is needed** — the `ResourceName` union and the dispatch types
 aggregate per-service keys automatically.
 
 ## Step 3 — Add the payload-type branch
@@ -124,7 +124,7 @@ design).
 ## Step 5 — Verify
 
 Run `pnpm run lint:tsc`. To catch a missed Step 3 branch (the silent `never`), use the inline
-type-assertion pattern already present in `resources/index.ts` (e.g. the
+type-assertion pattern already present in `src/api/resources/index.ts` (e.g. the
 `ResourcePayload<'core:api_keys'>` / `ResourcePathParams<'bens:address_domain'>` checks) as a
 temporary probe for your new key — or hover/`tsc`-check a `ResourcePayload<'service:new'>`
 usage and confirm it is not `never`.
