@@ -39,11 +39,15 @@ See `./rules/env-vars.mdc`.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.mdc`.
 - Visual component tests (`*.pw.tsx`): See `./rules/tests-visual.mdc`.
 
-## Cursor Cloud specific instructions
+## Running locally — gotchas
 
-Setup/run/test commands are already documented — see `docs/CONTRIBUTING.md` ("Toolkit", "Local development", "Commands list") and `tools/dev-server/CONTEXT.md`. Deps install with `pnpm install`. Only non-obvious caveats are captured below.
+Commands are defined in `package.json` `scripts`. Agent-facing references: the `./rules/*.mdc` files and per-directory `CONTEXT.md` files (`tools/dev-server/CONTEXT.md` covers the env/dev-server model). Deps install with `pnpm install`. Non-obvious runtime caveats:
 
-- `pnpm dev:preset <alias>` (e.g. `eth`) needs outbound internet at startup — it fetches the instance config + assets over HTTP. Plain `pnpm dev` needs a hand-written `.env.local`, so a preset is the quickest way to get a running app here.
-- First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. This is expected, not a hang.
+- `pnpm dev:preset <alias>` (e.g. `eth`) needs outbound internet at startup — it fetches the instance config + assets over HTTP. Plain `pnpm dev` needs a hand-written `.env.local`, so a preset is the quickest way to get a running app.
+- First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. Expected, not a hang.
 - `pnpm test:vitest` starts watch mode — pass `run` (`pnpm test:vitest run`) for a one-shot run.
 - `next.config.js` prints a harmless `Unrecognized key(s) in object: 'outDir'` warning on startup; ignore it.
+
+## Cursor Cloud specific instructions
+
+The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally — gotchas" above.
