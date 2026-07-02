@@ -109,7 +109,10 @@ obvious from the conversation or the codebase.
    the API **service + endpoint path** that feeds it — given by the user, **never hunted for** (the
    `service:name` key if the resource is already declared) — and the **live instance** to sample data from
    (a `tools/dev-server/registry.json` alias or a full URL; a new endpoint may exist only on staging). If
-   the endpoint isn't deployed anywhere yet, wiring is deferred — layout only.
+   the endpoint isn't deployed anywhere yet, wiring is deferred — layout only. For each resource that
+   doesn't exist yet, also run the **Step 0 interview of the `add-api-resource` skill** here (it adds the
+   types-package-state question, among others) — after this step, no question should remain for the middle
+   of the work.
 
 Proceed only once these are settled.
 

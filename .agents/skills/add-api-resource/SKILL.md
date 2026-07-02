@@ -37,7 +37,16 @@ Collect for **each** resource, and confirm with the user:
 2. **A live instance that has the endpoint deployed** — an alias from
    `tools/dev-server/registry.json` or a full instance URL. A brand-new endpoint may exist
    only on a staging instance; ask which. This powers Step 1.
-3. **Filters / sorting** — note only the filters/sorts the task description explicitly names
+3. **Types-package state** — ask whether the response interface is already available in a
+   **published** version of the service's types package. For a brand-new endpoint it often
+   isn't (stable versions are published only on API releases). If yes, the user should provide
+   the exact version of the package. If not — or the user is unsure — collect the 
+   `publish-beta-types` Step 0 inputs **now** (most importantly the API source-repo branch to 
+   publish from), so the publish can run later without another interview. If the user already
+   knows publishing is **impossible** (no repo access, broken workflow, no spec/types
+   generated for the endpoint yet), settle the fallback now too: temporary local type, or
+   defer the resource — see *Worst case* in Step 3.
+4. **Filters / sorting** — note only the filters/sorts the task description explicitly names
    (see Step 4). Do not derive any from the API.
 
 ## Step 1 — Fetch a real sample response
@@ -86,6 +95,28 @@ depends on the API:
   choice with the user** before relying on it.
 - **Local types** — some payloads are hand-typed in a slice/feature `types/api.ts` rather
   than generated; see *Where a resource's response types come from* in `src/api/CONTEXT.md`.
+
+**Type not published yet?** If Step 0 established the interface isn't in any published
+package version, don't hand-type a stopgap: **invoke the `publish-beta-types` skill** with
+the inputs already collected in Step 0, then continue with this step. Same move if you only
+discover the gap here (the interface missing from `node_modules` even at `latest` despite
+the interview answer) — in that case the publish inputs still need collecting.
+
+**Worst case — no published types *and* no publish possible** (no access to the API repo,
+publish workflow broken, or the API branch doesn't generate types for the endpoint yet, so
+there's nothing to publish). Confirm the blocker, then **the user picks** one of two paths —
+never pick silently:
+
+- **Temporary local type** — hand-type the payload in the owning slice/feature
+  `types/api.ts` (the usual home for local types — see *Where a resource's response types
+  come from* in `src/api/CONTEXT.md`; some `core:*` payloads already live this way), derived
+  from the Step 1 sample body, and reference it from the payload branch. Mark it
+  `// TODO (api-types): replace with the generated @blockscout/<pkg> type once published` so
+  the swap can be found with a grep later. Caveat: one sample can't reveal **optional/nullable** fields —
+  confirm optionality with the user instead of inferring it from a single body.
+- **Defer the resource** — stop here, leaving the resource undeclared until types can be
+  published. In a page flow this degrades to layout-only (the page's `TODO (api-data):`
+  markers stay in place).
 
 ## Step 4 — Filters / sorting (only when the task names them)
 

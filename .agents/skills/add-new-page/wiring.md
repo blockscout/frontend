@@ -20,9 +20,11 @@ polish — unless the task explicitly names them.
 ## Step W1 — Declare missing resources
 
 For each content body's resource that doesn't exist yet in `src/api/resources/services/**`,
-**invoke the `add-api-resource` skill** — all resource-level questions (endpoint path, live
-instance, pagination detection, payload typing) happen there, and it hands back the
-`service:name` key, payload type, paginated flag, and a sample response body.
+**invoke the `add-api-resource` skill** — its Step 0 answers (endpoint path, live instance,
+types-package state, …) were already collected in the page interview, so don't re-ask; the
+skill does the work (sample fetch, pagination detection, payload typing — publishing beta
+types first if needed) and hands back the `service:name` key, payload type, paginated flag,
+and a sample response body.
 
 For resources that already exist, still fetch a sample body (recipe: *Resolving a resource's
 real request URL* in `src/api/CONTEXT.md`) if you don't have one — Steps W2 and W4 need it

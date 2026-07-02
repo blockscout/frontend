@@ -112,8 +112,8 @@ origin — there are two:
 - **Generated types from an `@blockscout/*` npm package** (the general case). These are
   generated from the API's OpenAPI spec **in the API's own source repo** and published to
   npm per API version; this repo only pins the version in `package.json`. Each service
-  maps to one package in one of **four** source repos — see the table under *Publishing a
-  beta yourself* below. Authoritative pointer for any package's repo: its `repository`
+  maps to one package in one of the source repos — see the mapping table in the
+  `publish-beta-types` skill. Authoritative pointer for any package's repo: its `repository`
   field in `node_modules/@blockscout/<pkg>/package.json`.
 - **Locally-defined types** in `src/**/types/api.ts` (the exceptions — see below).
 
@@ -138,37 +138,12 @@ the API branch, or the publish workflow run's logs. You **cannot** reliably deri
 a running/staging instance (not every commit is published as a beta, and micro-services
 don't expose it), so there's no `/node-api/config`-style shortcut here.
 
-### Publishing a beta yourself (cross-repo, via `gh`)
+### Publishing a beta yourself
 
-When staging has a new (unreleased) API version, you can publish its beta types package
-yourself and pin it here. The publish is a **manual (`workflow_dispatch`) workflow in the
-API source repo**. Requires `gh` authenticated with access to that repo (private is fine)
-and `workflow` token scope — see the `check-github-cli` skill.
-
-1. Find the package, repo, and workflow for your service in the table below.
-2. Trigger: `gh workflow run <workflow> --repo <repo> --ref <branch> <inputs>`.
-3. Read output: `gh run list --repo <repo> --workflow <workflow>`, then
-   `gh run watch <id> --repo <repo>` and `gh run view <id> --repo <repo> --log`.
-4. The run publishes `0.0.1-beta.<hash>`; set that exact version in `package.json`,
-   reinstall, and let the typecheck surface the diffs.
-
-If any cell is unknown, discover it with `gh workflow list --repo <repo>` and
-`gh workflow view <workflow> --repo <repo>` (shows the dispatch inputs).
-
-| API service | npm package | Source repo | Publish workflow | Dispatch inputs (`-f …`) |
-|---|---|---|---|---|
-| `core` | `@blockscout/api-types` | `blockscout/blockscout` | publish-api-types-npm-dev.yml | - |
-| `stats`| `@blockscout/stats-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: stats |
-| `bens` | `@blockscout/bens-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: blockscout-ens |
-| `multichainAggregator` | `@blockscout/multichain-aggregator-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: multichain-aggregator |
-| `multichainStats` | `@blockscout/stats-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: stats |
-| `interchainIndexer` | `@blockscout/interchain-indexer-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: interchain-indexer |
-| `tac` | `@blockscout/tac-operation-lifecycle-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: tac-operation-lifecycle |
-| `visualize` | `@blockscout/visualizer-types` | `blockscout/blockscout-rs` | npm-publisher-dev.yml | service: visualizer |
-| `contractInfo` | `@blockscout/contracts-info-types` | `blockscout/blockscout-admin` | publish-types-dev.yml | service: contracts-info |
-| `admin` | `@blockscout/admin-rs-types` | `blockscout/blockscout-admin` | publish-types-dev.yml | service: admin-rs |
-| `rewards` | `@blockscout/points-types` | `blockscout/points` | npm-publisher-dev.yml | - |
-| `zetachain` | `@blockscout/zetachain-cctx-types` | `blockscout/blockscout-rs` | manual / ad-hoc — not merged upstream, maintenance only | - |
+**Use the `publish-beta-types` skill** (`.agents/skills/publish-beta-types/`) — it holds the
+per-service package/repo/workflow mapping table and the `gh` procedure. Orientation: the
+publish is a manual (`workflow_dispatch`) workflow **in the API source repo**, run against an
+API feature branch; the run's logs give the exact `0.0.1-beta.<hash>` version to pin here.
 
 ### APIs with typings in the repo
 
