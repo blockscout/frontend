@@ -7,9 +7,9 @@ run the *Data* item of the Step 0 interview first.
 
 **The worklist is the tag.** Grep the page's directories for `TODO (api-data):` — every hit
 (page shell, `Content`, `Table`/`TableItem`, `List`/`ListItem`, `Details`, `GeneralInfo`) is
-a spot this phase must resolve, and the phase is done only when the grep comes back empty.
-`TODO (design):` markers are the next stage's worklist — leave them in place, and add new
-ones for any representation decision you defer (Step W4).
+a spot this phase must resolve (the done-condition is checked in Step W5). `TODO (design):`
+markers are the next stage's worklist — leave them in place, and add new ones for any
+representation decision you defer (Step W4).
 
 **In scope:** resource declaration (via the `add-api-resource` skill), minimal loading stubs,
 `useApiQuery` / `useQueryWithPages` wiring, pagination controls, plain rendering of every
@@ -20,11 +20,9 @@ polish — unless the task explicitly names them.
 ## Step W1 — Declare missing resources
 
 For each content body's resource that doesn't exist yet in `src/api/resources/services/**`,
-**invoke the `add-api-resource` skill** — its Step 0 answers (endpoint path, live instance,
-types-package state, …) were already collected in the page interview, so don't re-ask; the
-skill does the work (sample fetch, pagination detection, payload typing — publishing beta
-types first if needed) and hands back the `service:name` key, payload type, paginated flag,
-and a sample response body.
+**invoke the `add-api-resource` skill** — its Step 0 answers were already collected in the
+page interview, so don't re-ask. It hands back the `service:name` key, payload type,
+paginated flag, and a sample response body.
 
 For resources that already exist, still fetch a sample body (recipe: *Resolving a resource's
 real request URL* in `src/api/CONTEXT.md`) if you don't have one — Steps W2 and W4 need it
@@ -80,9 +78,8 @@ general:
   timestamp → the shared time-format helpers.
 - Everything else is **plain text**: numbers/strings as-is; nested objects either split into
   sub-fields or JSON-stringified. **Never invent formatting** (no rounding, units, or
-  truncation decisions). Add `// TODO (design): <field> representation` comment to it.
-- When unsure how a field should be represented, render it as plain text with a
-  `// TODO (design): <field> representation` comment — and **list all such fields to the
+  truncation decisions) — tag each plain-text field with
+  `// TODO (design): <field> representation` instead, and **list all tagged fields to the
   user at the end** so the design pass has a worklist.
 - Replace the scaffold's generic `DataList` placeholders with the real entity: plural
   sentence in `emptyText`, singular `emptyStateProps.term`.

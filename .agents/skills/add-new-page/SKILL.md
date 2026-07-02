@@ -1,6 +1,6 @@
 ---
 name: add-new-page
-description: Scaffold a new page (index / detail / general) and optionally wire it to API data. Use when adding any new route to the app.
+description: Scaffold a new page (index / detail / general) and optionally wire it to API data. Use when adding any new route to the app, or when wiring API data into an already-scaffolded page (one with `TODO (api-data):` markers).
 ---
 
 # Add a new page
@@ -15,11 +15,10 @@ sorting, search, socket live-updates, mocks, tests, and design polish are out of
 wiring is deferred, the freshly-scaffolded page keeps its intentional `TODO`s and will not fully pass
 `lint`/`tsc` until its data is wired — that is expected.
 
-**TODO tags.** Every deferred piece of work is marked with a stage-tagged TODO so later stages can find their
-worklist mechanically: **`TODO (api-data):`** — resolved by the data-wiring phase (`wiring.md`); grep for the
-tag to find every spot. **`TODO (design):`** — content/representation decisions left for the design stage
-(icons, field hints, uncertain value formatting); the wiring phase leaves these behind, never resolves them.
-Keep the tags when scaffolding, and use them for any new deferred work you mark.
+**TODO tags.** Every deferred piece of work is marked with a stage-tagged TODO, so each later stage can find
+its worklist with a grep: **`TODO (api-data):`** — resolved by the data-wiring phase (`wiring.md`);
+**`TODO (design):`** — content/representation decisions left for the design stage (icons, field hints,
+uncertain value formatting). Keep the tags when scaffolding, and use them for any new deferred work you mark.
 
 **Rule of thumb: never guess.** Whenever information is missing or required to proceed, **pause and ask the
 user, or confirm your findings**, before writing files.
@@ -110,9 +109,8 @@ obvious from the conversation or the codebase.
    `service:name` key if the resource is already declared) — and the **live instance** to sample data from
    (a `tools/dev-server/registry.json` alias or a full URL; a new endpoint may exist only on staging). If
    the endpoint isn't deployed anywhere yet, wiring is deferred — layout only. For each resource that
-   doesn't exist yet, also run the **Step 0 interview of the `add-api-resource` skill** here (it adds the
-   types-package-state question, among others) — after this step, no question should remain for the middle
-   of the work.
+   doesn't exist yet, also run the **Step 0 interview of the `add-api-resource` skill** here — after this
+   step, no question should remain for the middle of the work.
 
 Proceed only once these are settled.
 
@@ -268,10 +266,8 @@ is wired (Step 10, or deferred follow-up work) — don't gate on it at this stag
 
 ## Step 10 — Wire data (if agreed in Step 0)
 
-If Step 0 settled on wiring data now, read **`wiring.md`** (next to this file) and follow it: it declares the
-resources via the `add-api-resource` skill, adds minimal loading stubs, wires `useApiQuery` /
-`useQueryWithPages` (+ pagination controls for paginated lists), and renders every payload field plainly.
-After it, both `tsc` and ESLint must pass.
+If Step 0 settled on wiring data now, read **`wiring.md`** (next to this file) and follow it. This step is
+done when its verify step (W5) passes.
 
 **Direct entry** — for a page scaffolded earlier (its `TODO (api-data):` markers are still in place), skip
 Steps 1–9: run only the *Data* item of the Step 0 interview, then start at `wiring.md`.

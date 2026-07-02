@@ -1,6 +1,6 @@
 ---
 name: add-api-resource
-description: Declare new API resource(s) in an existing API service — registry entry, payload typing, pagination. Use whenever the app needs to call an endpoint that has no `service:name` resource yet.
+description: Declare new API resource(s) in an existing API service. Use whenever the app needs to call an endpoint that has no `service:name` resource yet.
 ---
 
 # Add an API resource (to an existing service)
@@ -10,10 +10,8 @@ under `src/api/resources/services/**` that maps a `service:name` key (e.g. `core
 `stats:lines`) to a path template and, via a sibling conditional type, to its response type.
 This skill declares new resource(s) in an **existing** service.
 
-**Out of scope — brand-new service.** Adding a whole new API service also touches
-`src/api/resources/index.ts` (register it in `RESOURCES` and add a branch to each dispatch
-type: `ResourcePayload`, `PaginationFilters`, `PaginationSorting`) plus a config block in
-`src/api/config.ts`. That is not covered here.
+**Out of scope — brand-new service.** That also touches `src/api/resources/index.ts`
+(registration + dispatch-type branches) and a `src/api/config.ts` block; not covered here.
 
 **Out of scope — consuming the resource.** Wiring it into UI (`useApiQuery` /
 `useQueryWithPages`, stubs) is the caller's job; this skill only makes the resource exist and
@@ -43,9 +41,8 @@ Collect for **each** resource, and confirm with the user:
    the exact version of the package. If not — or the user is unsure — collect the 
    `publish-beta-types` Step 0 inputs **now** (most importantly the API source-repo branch to 
    publish from), so the publish can run later without another interview. If the user already
-   knows publishing is **impossible** (no repo access, broken workflow, no spec/types
-   generated for the endpoint yet), settle the fallback now too: temporary local type, or
-   defer the resource — see *Worst case* in Step 3.
+   knows publishing is **impossible**, settle the fallback choice now too — see *Worst case*
+   in Step 3.
 4. **Filters / sorting** — note only the filters/sorts the task description explicitly names
    (see Step 4). Do not derive any from the API.
 

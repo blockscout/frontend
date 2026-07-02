@@ -1,6 +1,6 @@
 ---
 name: publish-beta-types
-description: Publish a beta version of a `@blockscout/*-types` npm package from an API feature branch and pin it in this repo. Use when a needed response type isn't in any published package version yet.
+description: Publish a beta version of a `@blockscout/*-types` npm package and pin it here. Use when a needed response type isn't in any published package version yet.
 ---
 
 # Publish a beta types package
@@ -62,10 +62,9 @@ gh workflow run <workflow> --repo <repo> --ref <branch> [-f <input>=<value>]
 `gh run watch <id> --repo <repo>` and `gh run view <id> --repo <repo> --log` to read the
 published version out of the logs (or check the package's versions on npm).
 
-**Copy the exact published version string — don't construct it.** The `0.0.1-beta.<hash>`
-template is workflow-defined and varies (the Core API workflow adds a `v` prefix; hash
-length has changed over time). And **never pin `@beta`**: multiple in-progress API branches
-publish under the same dist-tag, so it's ambiguous and can collide.
+**Copy the exact published version string — don't construct it** (the `0.0.1-beta.<hash>`
+template varies per workflow), and **never pin `@beta`** (in-progress API branches collide
+on that dist-tag) — full rationale in the background reading.
 
 ## Step 4 — Pin and verify
 

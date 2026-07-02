@@ -36,8 +36,7 @@ applies; `getResourceParams` (`utils/get-resource-params.ts`) resolves `service:
 ### 2. Repo → which env vars build the URL (`config.ts`)
 
 `config.ts` builds one config object per service. Find the block for your service and
-read which env vars feed the URL-relevant fields — that's the whole point of reading the
-file rather than a table here (the mapping changes; the file is the source of truth):
+read which env vars feed the URL-relevant fields:
 
 - **`endpoint`** — the origin. Sometimes a single host var; sometimes assembled from a
   protocol/host/port trio. Read the block to see which.
@@ -124,42 +123,28 @@ Publishing is done by workflows **in the API source repo**, not here. Two channe
 - **Stable** — normal semver (e.g. `2.11.1`) under npm dist-tag `latest`, published
   automatically when a release is published in the API repo.
 - **Beta / dev** — published **manually** from an API *feature* branch, versioned from the
-  publish commit's short SHA (roughly `0.0.1-beta.<sha>`; the exact string is
-  workflow-defined and varies — e.g. the Core API workflow adds a `v` prefix, and hash
-  length has changed over time). **Copy the exact published version string** from the run
-  output / npm — don't construct it. Used to try a not-yet-released API (e.g. one deployed
-  to staging) before its final release.
+  publish commit's short SHA (roughly `0.0.1-beta.<sha>`). Used to try a not-yet-released
+  API (e.g. one deployed to staging) before its final release.
 
-**Pin the exact `0.0.1-beta.<hash>`, never `@beta`.** Multiple in-progress API feature
-branches publish under the same `beta` dist-tag, so `@beta` is ambiguous and can collide;
-the commit hash identifies the specific branch/build. The hash is the API
-**feature-branch commit the manual publish ran against** — get it from whoever published,
-the API branch, or the publish workflow run's logs. You **cannot** reliably derive it from
-a running/staging instance (not every commit is published as a beta, and micro-services
-don't expose it), so there's no `/node-api/config`-style shortcut here.
+**A beta build is identified only by its exact version string.** The `beta`
+dist-tag is shared by all in-progress feature branches, so `@beta` is ambiguous and can
+collide; the hash — the API **feature-branch commit the manual publish ran against** — is
+what identifies a specific build. A running/staging instance doesn't reveal its types
+version (not every commit is published as a beta, and micro-services don't expose the
+commit), so there's no `/node-api/config`-style shortcut.
 
 ### Publishing a beta yourself
 
 **Use the `publish-beta-types` skill** (`.agents/skills/publish-beta-types/`) — it holds the
-per-service package/repo/workflow mapping table and the `gh` procedure. Orientation: the
-publish is a manual (`workflow_dispatch`) workflow **in the API source repo**, run against an
-API feature branch; the run's logs give the exact `0.0.1-beta.<hash>` version to pin here.
-
-### APIs with typings in the repo
-
-| API service | Comment |
-|---|---|
-| `metadata` | Typed locally for now; npm package may be added later |
-| `userOps` | No resources registered / consumed by the app right now |
-| `clusters` | External API (tRPC), not maintained by Blockscout; typed locally |
-
+per-service package/repo/workflow mapping table and the `gh` dispatch procedure.
 
 ### The exceptions (types not from an npm package)
 
-- **Whole APIs typed locally** — e.g. the **Metadata API** (`metadata:*` →
-  `src/features/address-metadata/types/api`). Also, not every **Core API** resource has an
-  OpenAPI schema yet, so some `core:*` payloads are still hand-typed locally (to be
-  improved over time).
+- **Whole APIs typed locally** — `metadata:*` (`src/features/address-metadata/types/api`;
+  an npm package may be added later), `userOps` (no resources registered / consumed by the
+  app right now), and `clusters` (external tRPC API, not maintained by Blockscout). Also,
+  not every **Core API** resource has an OpenAPI schema yet, so some `core:*` payloads are
+  still hand-typed locally (to be improved over time).
 - **Kept local by design even when generated types exist:**
   - **Filter & sorting param types** (e.g. `TokensFilters`, `TokenTransferFilters` in
     `src/slices/**/types/api.ts`) — not cleanly derivable from the generated schemas, so
