@@ -17,9 +17,8 @@ This skill declares new resource(s) in an **existing** service.
 `useQueryWithPages`, stubs) is the caller's job; this skill only makes the resource exist and
 be correctly typed.
 
-**Background reading:** `src/api/CONTEXT.md` — how a resource's real URL is resolved
-(*Resolving a resource's real request URL*) and where response types come from (*Where a
-resource's response types come from*). Both sections are used below; read them first.
+**Background reading:** *Where a resource's response types come from* in
+`src/api/CONTEXT.md` — read it before Step 3.
 
 **Rule of thumb: never guess.** Whenever information is missing or required to proceed,
 **pause and ask the user, or confirm your findings**, before writing files.
@@ -48,10 +47,9 @@ Collect for **each** resource, and confirm with the user:
 
 ## Step 1 — Fetch a real sample response
 
-Resolve the resource's real URL with the recipe in `src/api/CONTEXT.md` (path template +
-URL-relevant env-var names from `src/api/config.ts` + their values from the instance's
-`GET <host>/node-api/config`), then make **one GET per resource** and save each body to the
-scratchpad. This sample is load-bearing three times over:
+Resolve each resource's real URL with the **`resolve-api-url` skill**, then make **one GET
+per resource** and save each body to the scratchpad. This sample is load-bearing three
+times over:
 
 - it **proves the endpoint exists** on the chosen instance (a 404 here stops the task);
 - it **settles pagination deterministically** — the resource is paginated **iff** the body

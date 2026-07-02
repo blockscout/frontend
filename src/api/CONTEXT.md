@@ -2,7 +2,7 @@
 
 Non-obvious patterns for the `src/api/` layer.
 
-## Resolving a resource's real request URL
+## How a request URL is assembled
 
 The frontend never hardcodes a full API URL. A request is assembled as:
 
@@ -10,97 +10,29 @@ The frontend never hardcodes a full API URL. A request is assembled as:
 <endpoint><basePath><resource.path>   (+ compiled path params, + query string)
 ```
 
-`endpoint` / `basePath` come from per-service **runtime config** (env vars), while the
-`path` template lives in the repo. So resolving the real URL means reading the repo to
-learn *which env vars* apply, then reading the *target instance's* runtime config to get
-their values. Don't guess hosts, and don't transcribe `config.ts` logic into your head —
-read it each time (it changes).
+- **The `path` template lives in the repo.** Resources are registered per service under
+  `resources/services/**` (see `resources/index.ts`); each entry maps a `service:name` key
+  to a `path` template with `:param` placeholders. The matching `…ResourcePayload` type in
+  the same file ties the resource to its response type (see *Where a resource's response
+  types come from* below). The `service:` prefix (`core:`, `contractInfo:`, `stats:`, …)
+  selects which service config applies; `getResourceParams`
+  (`utils/get-resource-params.ts`) resolves `service:name` → `{ api, resource }`.
+- **`endpoint` / `basePath` are per-service runtime config.** `config.ts` builds one config
+  object per service from `NEXT_PUBLIC_*` env vars; the env-var → field mapping changes, so
+  the file is the source of truth.
+- **Every deployed instance exposes its full public config** at
+  **`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`; served by
+  `src/pages/api/config.ts`) — the canonical source for those values on a live instance.
+  It also carries the "secret-ish" public keys (WalletConnect, reCAPTCHA, GA) by design;
+  treat it as a config source, not secrets.
+- **The `/node-api/proxy` rewrite is a browser-CORS workaround only.** In local dev /
+  review environments (or with `NEXT_PUBLIC_USE_NEXT_JS_PROXY`), `build-url.ts` routes the
+  request through the app's own origin with the true upstream in the `x-endpoint` header
+  (`utils/is-need-proxy.ts`); server-side/Node requests never need this form.
 
-### 1. Repo → path template + which service the resource belongs to
-
-Resources are registered per service under `resources/services/**` (see
-`resources/index.ts`). Each entry maps a `service:name` key to a `path` template with
-`:param` placeholders:
-
-```ts
-// resources/services/core/token.ts
-token: { path: '/api/v2/tokens/:hash', pathParams: [ 'hash' ] }
-```
-
-The matching `…ResourcePayload` type in the same file ties the resource to its response
-type (see *Where a resource's response types come from* below). The
-`service:` prefix (`core:`, `contractInfo:`, `stats:`, …) selects which service config
-applies; `getResourceParams` (`utils/get-resource-params.ts`) resolves `service:name` →
-`{ api, resource }`.
-
-### 2. Repo → which env vars build the URL (`config.ts`)
-
-`config.ts` builds one config object per service. Find the block for your service and
-read which env vars feed the URL-relevant fields:
-
-- **`endpoint`** — the origin. Sometimes a single host var; sometimes assembled from a
-  protocol/host/port trio. Read the block to see which.
-- **`basePath`** — an optional path prefix prepended before `resource.path`. Present on
-  some services, absent on others. Don't drop it when present.
-- **`instanceId`** — fills an `:instanceId` path param on services that have one. Note
-  the fallback chains expressed in the file (e.g. a service-specific id var falling back
-  to `NEXT_PUBLIC_NETWORK_ID`).
-
-Collect the exact `NEXT_PUBLIC_*` names the block references for these fields.
-
-### 3. Find the instance host, then read its runtime config
-
-**Host** — the frontend host per instance is mapped in `tools/dev-server/registry.json`
-(alias → base URL, e.g. `immutable → https://explorer.immutable.com`). Use it rather than
-guessing: many instances don't follow the `<name>.blockscout.com` pattern (e.g.
-`explorer.immutable.com`, `www.shibariumscan.io`, `zetascan.com`, `explorer.zora.energy`).
-It lists ~30 common instances, not all of them — if yours is absent, find its explorer URL
-another way and don't assume the hostname.
-
-**Config** — every deployed instance exposes its full public config at
-**`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`; served by
-`src/pages/api/config.ts`). Look up the env names from step 2 there to get their real
-values. This is the canonical, deterministic source. (It also carries the "secret-ish"
-public keys — WalletConnect, reCAPTCHA, GA — by design; treat it as a config source, not
-secrets.)
-
-### Worked examples
-
-Each shows one of the three service-config shapes. Values are from the named instance's
-`/node-api/config` at the time of writing — always re-fetch, don't copy these.
-
-- **Core API — assembled origin + base path.** `core:token` →
-  `path = /api/v2/tokens/:hash`. `config.ts` builds `endpoint` from
-  `NEXT_PUBLIC_API_PROTOCOL` (default `https`) + `NEXT_PUBLIC_API_HOST` +
-  optional `NEXT_PUBLIC_API_PORT`, and `basePath` from `NEXT_PUBLIC_API_BASE_PATH`.
-  Runtime: host `eth.blockscout.com`, protocol/port unset, base path `/` (→ empty) ⇒
-  `https://eth.blockscout.com/api/v2/tokens/0xdAC17…ec7`.
-
-- **Contract-info — single host + instanceId.** `contractInfo:token_verified_info` →
-  `path = /api/v1/chains/:instanceId/token-infos/:hash`. `endpoint =
-  NEXT_PUBLIC_CONTRACT_INFO_API_HOST`, `instanceId = NEXT_PUBLIC_CONTRACT_INFO_INSTANCE_ID`
-  falling back to `NEXT_PUBLIC_NETWORK_ID`. Runtime: host
-  `https://contracts-info.services.blockscout.com`, instance-id var unset so it uses
-  `NETWORK_ID = 1` ⇒
-  `https://contracts-info.services.blockscout.com/api/v1/chains/1/token-infos/0xdAC17…ec7`.
-
-- **Stats — single host + base path (host from the registry).** `stats:lines` →
-  `path = /api/v1/lines`; `endpoint = NEXT_PUBLIC_STATS_API_HOST`,
-  `basePath = NEXT_PUBLIC_STATS_API_BASE_PATH`. Registry maps the `immutable` instance to
-  host `explorer.immutable.com`; its `/node-api/config` gives
-  `STATS_API_HOST = https://explorer.immutable.com`, `STATS_API_BASE_PATH = /stats-service`
-  ⇒ `https://explorer.immutable.com/stats-service/api/v1/lines`. The stats service is
-  mounted on the main origin under a base path — drop it and the URL is wrong.
-
-### Note for agents: ignore the proxy — use the direct URL
-
-`build-url.ts` can rewrite the URL through the app's own origin (`config.app.baseUrl` +
-`/node-api/proxy…`, true upstream in the `x-endpoint` header). Per `utils/is-need-proxy.ts`
-this only happens in **local dev / review** environments, or when
-`NEXT_PUBLIC_USE_NEXT_JS_PROXY` is explicitly set — i.e. to let the *browser* make
-credentialed cross-origin requests. An agent hitting the API from a Node environment
-(server-side, no browser CORS) is unaffected: **always use the direct resolved URL from
-step 3**, never the `/node-api/proxy` form.
+**To resolve the concrete URL of a resource on a live instance, use the `resolve-api-url`
+skill** — it holds the step-by-step recipe (env-var lookup, instance host registry,
+runtime-config fetch).
 
 ## Where a resource's response types come from
 

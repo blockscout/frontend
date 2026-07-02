@@ -24,9 +24,9 @@ For each content body's resource that doesn't exist yet in `src/api/resources/se
 page interview, so don't re-ask. It hands back the `service:name` key, payload type,
 paginated flag, and a sample response body.
 
-For resources that already exist, still fetch a sample body (recipe: *Resolving a resource's
-real request URL* in `src/api/CONTEXT.md`) if you don't have one — Steps W2 and W4 need it
-for stub values and the field inventory.
+For resources that already exist, still fetch a sample body (via the `resolve-api-url`
+skill) if you don't have one — Steps W2 and W4 need it for stub values and the field
+inventory.
 
 ## Step W2 — Loading stubs
 
