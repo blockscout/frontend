@@ -214,3 +214,45 @@ If any cell is unknown, discover it with `gh workflow list --repo <repo>` and
     SearchResultTacOperation |
     SearchResultDomain;
   ```
+
+## Declaring a new resource (in an existing API)
+
+Everything for an existing service lives in its registry file — for Core API,
+`resources/services/core/<group>.ts` (e.g. `token.ts`); for a micro-service,
+`resources/services/<name>.ts`. It's **two edits that must stay in sync**, and the second
+one fails silently:
+
+1. **Add the resource entry** to the `*_API_RESOURCES` object — shape is `ApiResource`
+   (`resources/types.ts`): `{ path, pathParams?, filterFields?, paginated?, headers? }`.
+   `path` uses `:param` placeholders; list each one in `pathParams`.
+
+2. **Add a matching branch** to the sibling `*ResourcePayload<R>` conditional type. Miss
+   this and `ResourcePayload<'service:new'>` resolves to **`never`** — no error at the
+   declaration, you just get untyped data downstream. Where the response type comes from
+   depends on the API:
+   - **Core API** — use the generated `@blockscout/api-types` package; its README *Usage*
+     section (`node_modules/@blockscout/api-types/README.md`) is the reference for how to
+     name a response type (`schemas[…]`, `operations[…]`, `paths[…]['get']`).
+   - **Micro-service APIs** — the types package has **no path → response-type map** like the
+     Core API's `paths`, so the connection can't be derived mechanically. Pick the interface
+     that looks right for the endpoint and **confirm the choice with the user** before
+     relying on it.
+   - **Local types** — some payloads are hand-typed in a slice/feature `types/api.ts` rather
+     than generated; see *Where a resource's response types come from*.
+
+3. **Pagination — only if the response is actually paginated.** A resource is paginated
+   **iff its response body has a `next_page_params` field** — set `paginated: true` only
+   then. If you can't tell whether a resource is paginated, **ask the user** rather than
+   assuming. Consume paginated resources with `useQueryWithPages`; everything else with
+   `useApiQuery('service:name', …)`.
+
+4. **Filters / sorting — only when the task says so.** Not every paginated resource has
+   them. Add `filterFields` and branches to the service's `*PaginationFilters<R>` /
+   `*PaginationSorting<R>` types **only** for the filters/sorts named in the feature task
+   description or conversation context — **never infer them** from the API. 
+   Define the filter/sort types themselves in the owning slice/feature `types/api.ts` 
+   (kept local by design).
+
+**No `resources/index.ts` edit is needed** for a new resource in an existing service.
+Only a brand-new *service* touches `index.ts`: register it in `RESOURCES`
+and add a branch to each of those dispatch types.
