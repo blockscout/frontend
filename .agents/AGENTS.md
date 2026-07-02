@@ -41,9 +41,9 @@ See `./rules/env-vars.mdc`.
 
 ## Cursor Cloud specific instructions
 
-This is a Next.js frontend (only service). Dependencies are installed via `pnpm install` (Node/pnpm versions come from `.nvmrc` / `package.json` `engines`; `postinstall` runs chakra typegen + husky). Standard commands live in `package.json` scripts and `docs/CONTRIBUTING.md`.
+Setup/run/test commands are already documented — see `docs/CONTRIBUTING.md` ("Toolkit", "Local development", "Commands list") and `tools/dev-server/CONTEXT.md`. Deps install with `pnpm install`. Only non-obvious caveats are captured below.
 
-- Run the app with `pnpm dev:preset <alias>` (e.g. `pnpm dev:preset eth`). This is the reliable way to run it here: it fetches a live instance's public config (with working public keys) from `<url>/node-api/config` into `.env.tmp`, so no manual env setup is needed. Aliases are in `tools/dev-server/registry.json`. Serves on `http://localhost:3000`. Requires outbound internet at startup (config + asset downloads). Plain `pnpm dev` needs a hand-written `.env.local` and is not recommended for a quick run.
-- First page load is slow (Turbopack compiles routes on demand); a single `curl localhost:3000` can take ~45s before returning 200. This is expected, not a hang.
-- Lint/test/build commands: `pnpm lint:eslint`, `pnpm lint:tsc`, `pnpm test:vitest run` (bare `pnpm test:vitest` starts watch mode — pass `run` for one-shot). Playwright component tests (`pnpm test:pw:*`) require Docker to generate CI-correct screenshots.
+- `pnpm dev:preset <alias>` (e.g. `eth`) needs outbound internet at startup — it fetches the instance config + assets over HTTP. Plain `pnpm dev` needs a hand-written `.env.local`, so a preset is the quickest way to get a running app here.
+- First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. This is expected, not a hang.
+- `pnpm test:vitest` starts watch mode — pass `run` (`pnpm test:vitest run`) for a one-shot run.
 - `next.config.js` prints a harmless `Unrecognized key(s) in object: 'outDir'` warning on startup; ignore it.
