@@ -1,5 +1,5 @@
 ---
-description: 
+description: TypeScript conventions for the Blockscout frontend
 globs: *.tsx,*.ts
 alwaysApply: false
 ---
