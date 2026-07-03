@@ -28,14 +28,50 @@ type Props =
     className?: string;
   };
 
+type Activation = 'pointer' | 'focus';
+
 const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
+  const [ activation, setActivation ] = React.useState<Activation | null>(null);
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+
+  const handlePointerEnter = React.useCallback(() => {
+    setActivation((prev) => prev ?? 'pointer');
+  }, []);
+
+  const handleFocus = React.useCallback(() => {
+    setActivation((prev) => prev ?? 'focus');
+  }, []);
+
+  // mounting the trigger swaps the button DOM node, so a focus-activated button
+  // must be re-focused to not interrupt keyboard navigation
+  React.useEffect(() => {
+    if (activation === 'focus') {
+      buttonRef.current?.focus({ preventScroll: true });
+    }
+  }, [ activation ]);
+
+  // Mounting PopoverRoot (or DialogRoot) creates a zag.js state machine per instance,
+  // which is expensive on pages with one popover per table row. Until the first
+  // pointer/focus interaction we render only the bare button — the interaction
+  // always precedes the click that opens the popover.
+  if (activation === null) {
+    return (
+      <AdditionalInfoButton
+        loading={ isLoading }
+        className={ className }
+        onPointerEnter={ handlePointerEnter }
+        onFocus={ handleFocus }
+      />
+    );
+  }
+
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
 
   if (isMobile) {
     return (
       <DialogRoot size="full">
         <DialogTrigger asChild>
-          <AdditionalInfoButton loading={ isLoading } className={ className }/>
+          <AdditionalInfoButton ref={ buttonRef } loading={ isLoading } className={ className }/>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -51,7 +87,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
   return (
     <PopoverRoot positioning={{ placement: 'right-start' }}>
       <PopoverTrigger>
-        <AdditionalInfoButton loading={ isLoading } className={ className }/>
+        <AdditionalInfoButton ref={ buttonRef } loading={ isLoading } className={ className }/>
       </PopoverTrigger>
       <PopoverContent w="330px">
         <PopoverBody>
