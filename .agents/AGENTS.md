@@ -1,5 +1,47 @@
 # Frontend application for Blockscout
 
+## Domain terminology
+
+Product and feature codenames used throughout the codebase (e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`) are defined in `.agents/GLOSSARY.md` — consult it whenever you encounter an unfamiliar term.
+
+## Architecture
+
+See `./rules/architecture.mdc` for project overview, tech stack, and directory layout.
+
+## Design System Rules
+
+See `./rules/design-system.mdc` for Chakra UI v3 design system configuration and styling rules.
+
+## Code Style & Quality
+
+See `./rules/code-quality.mdc` for code style, lint commands plus conventions linters don't catch.
+
+## TypeScript Conventions
+
+See `./rules/typescript.mdc` for established rules how to write Typescript code.
+
+## Environment Variables
+
+See `./rules/env-vars.mdc` for where environment variables live, how they're delivered at runtime, validated, and how to add or deprecate them.
+
+## Testing
+
+- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.mdc` for purpose, setup, utilities, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.mdc` for purpose, setup, fixtures, and conventions.
+
+## Running locally
+
+Three ways to start the dev server:
+
+- `pnpm dev:preset <alias>` (e.g. `eth`) — the quickest way to a running app. Fetches a live instance's config over HTTP at startup, so it needs outbound internet. Aliases are defined in `tools/dev-server/registry.json`; how the fetch and env layering work is documented in `tools/dev-server/CONTEXT.md`.
+- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`.
+- `pnpm dev` — plain Next.js dev; needs a hand-written `.env.local` with the instance config.
+
+Gotchas:
+
+- First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. Expected, not a hang.
+- `next.config.js` prints a harmless `Unrecognized key(s) in object: 'outDir'` warning on startup; ignore it.
+
 ## Per-directory context
 
 Some directories have a `CONTEXT.md` documenting non-obvious patterns specific to that area. Read the relevant one before working in (or reaching into) that directory:
@@ -14,40 +56,6 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
-## Architecture
-
-See `./rules/architecture.mdc`.
-
-## Design System Rules
-
-See `./rules/design-system.mdc`.
-
-## Code Style & Quality
-
-See `./rules/code-quality.mdc`.
-
-## TypeScript Conventions
-
-See `./rules/typescript.mdc`.
-
-## Environment Variables
-
-See `./rules/env-vars.mdc`.
-
-## Testing
-
-- Unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.mdc`.
-- Visual component tests (`*.pw.tsx`): See `./rules/tests-visual.mdc`.
-
-## Running locally — gotchas
-
-Commands are defined in `package.json` `scripts`. Agent-facing references: the `./rules/*.mdc` files and per-directory `CONTEXT.md` files (`tools/dev-server/CONTEXT.md` covers the env/dev-server model). Deps install with `pnpm install`. Non-obvious runtime caveats:
-
-- `pnpm dev:preset <alias>` (e.g. `eth`) needs outbound internet at startup — it fetches the instance config + assets over HTTP. Plain `pnpm dev` needs a hand-written `.env.local`, so a preset is the quickest way to get a running app.
-- First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. Expected, not a hang.
-- `pnpm test:vitest` starts watch mode — pass `run` (`pnpm test:vitest run`) for a one-shot run.
-- `next.config.js` prints a harmless `Unrecognized key(s) in object: 'outDir'` warning on startup; ignore it.
-
 ## Cursor Cloud specific instructions
 
-The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally — gotchas" above.
+The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally" above.

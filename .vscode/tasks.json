@@ -180,7 +180,7 @@
         // VITEST TESTS
         {
             "type": "npm",
-            "script": "test:vitest",
+            "script": "test:vitest:watch",
             "problemMatcher": [],
             "label": "vitest",
             "detail": "run unit tests",
