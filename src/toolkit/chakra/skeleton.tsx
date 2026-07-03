@@ -4,7 +4,7 @@ import type {
   SkeletonProps as ChakraSkeletonProps,
   CircleProps,
 } from '@chakra-ui/react';
-import { Skeleton as ChakraSkeleton, Circle, Stack } from '@chakra-ui/react';
+import { Skeleton as ChakraSkeleton, Circle, Stack, chakra, mergeRefs } from '@chakra-ui/react';
 import * as React from 'react';
 
 export interface SkeletonCircleProps extends ChakraSkeletonProps {
@@ -53,10 +53,44 @@ export interface SkeletonProps extends Omit<ChakraSkeletonProps, 'loading'> {
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   function Skeleton(props, ref) {
     const { loading = false, ...rest } = props;
+
+    // When the skeleton is inactive, skip ChakraSkeleton entirely — its recipe resolution
+    // is a top render-time offender on pages with many idle instances (~1000 per table page).
+    // The inactive skeleton contributes no visuals (its "none" variant only sets `animation: none`),
+    // so with asChild we merge our props directly into the only child, and otherwise render
+    // a plain chakra.div (ChakraSkeleton also renders a div).
+    if (!loading) {
+      const { asChild, children, ...styleProps } = rest;
+
+      if (asChild && React.isValidElement(children)) {
+        // all asChild call sites have a chakra-styled child, so it accepts style props;
+        // on conflicts the child's own props win, except the mergeable className/css/ref
+        const child = children as React.ReactElement<Record<string, unknown>>;
+        const mergedProps: Record<string, unknown> = { ...styleProps, ...child.props };
+
+        if (styleProps.className && child.props.className) {
+          mergedProps.className = `${ styleProps.className } ${ child.props.className }`;
+        }
+        if (styleProps.css && child.props.css) {
+          mergedProps.css = [ styleProps.css, child.props.css ];
+        }
+
+        const childRef = child.props.ref as React.Ref<HTMLDivElement> | undefined;
+        if (ref) {
+          mergedProps.ref = childRef ? mergeRefs(ref, childRef) : ref;
+        }
+
+        return React.cloneElement(child, mergedProps);
+      }
+
+      return <chakra.div ref={ ref } { ...styleProps }>{ children }</chakra.div>;
+    }
+
     return (
       <ChakraSkeleton
         ref={ ref }
-        { ...(loading ? { 'data-loading': true, state: 'loading' } : { variant: 'none' }) }
+        data-loading
+        state="loading"
         { ...rest }
       />
     );
