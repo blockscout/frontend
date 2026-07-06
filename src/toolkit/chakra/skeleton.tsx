@@ -64,15 +64,18 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
 
       if (asChild && React.isValidElement(children)) {
         // all asChild call sites have a chakra-styled child, so it accepts style props;
-        // on conflicts the child's own props win, except the mergeable className/css/ref
+        // on conflicts the skeleton's own props win — they are forwarded from the call site
+        // (e.g. w/h passed to SpriteIcon must override the inner svg's w="100%"), which is
+        // how the Chakra skeleton's class merge resolved these conflicts before the fast path;
+        // className/css/ref are merged rather than overridden
         const child = children as React.ReactElement<Record<string, unknown>>;
-        const mergedProps: Record<string, unknown> = { ...styleProps, ...child.props };
+        const mergedProps: Record<string, unknown> = { ...child.props, ...styleProps };
 
         if (styleProps.className && child.props.className) {
           mergedProps.className = `${ styleProps.className } ${ child.props.className }`;
         }
         if (styleProps.css && child.props.css) {
-          mergedProps.css = [ styleProps.css, child.props.css ];
+          mergedProps.css = [ child.props.css, styleProps.css ];
         }
 
         const childRef = child.props.ref as React.Ref<HTMLDivElement> | undefined;
