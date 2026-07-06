@@ -10,6 +10,7 @@ import AdditionalInfoButton from 'src/shared/buttons/AdditionalInfoButton';
 import { DialogContent, DialogHeader, DialogRoot, DialogTrigger, DialogBody } from 'src/toolkit/chakra/dialog';
 import { Heading } from 'src/toolkit/chakra/heading';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
+import { useLazyActivation } from 'src/toolkit/hooks/useLazyActivation';
 
 import TxAdditionalInfoContainer from './TxAdditionalInfoContainer';
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
@@ -28,39 +29,29 @@ type Props =
     className?: string;
   };
 
-type Activation = 'pointer' | 'focus';
-
 const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
-  const [ activation, setActivation ] = React.useState<Activation | null>(null);
+  const { activation, handlers } = useLazyActivation();
   const buttonRef = React.useRef<HTMLButtonElement>(null);
-
-  const handlePointerEnter = React.useCallback(() => {
-    setActivation((prev) => prev ?? 'pointer');
-  }, []);
-
-  const handleFocus = React.useCallback(() => {
-    setActivation((prev) => prev ?? 'focus');
-  }, []);
 
   // mounting the trigger swaps the button DOM node, so a focus-activated button
   // must be re-focused to not interrupt keyboard navigation
   React.useEffect(() => {
-    if (activation === 'focus') {
+    if (activation?.type === 'focus') {
       buttonRef.current?.focus({ preventScroll: true });
     }
   }, [ activation ]);
 
   // Mounting PopoverRoot (or DialogRoot) creates a zag.js state machine per instance,
   // which is expensive on pages with one popover per table row. Until the first
-  // pointer/focus interaction we render only the bare button — the interaction
-  // always precedes the click that opens the popover.
+  // interaction we render only the bare button; if the activating gesture was a tap/click
+  // (it has already been dispatched by the time the trigger mounts), the popover is
+  // opened right away via defaultOpen.
   if (activation === null) {
     return (
       <AdditionalInfoButton
         loading={ isLoading }
         className={ className }
-        onPointerEnter={ handlePointerEnter }
-        onFocus={ handleFocus }
+        { ...handlers }
       />
     );
   }
@@ -69,7 +60,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
 
   if (isMobile) {
     return (
-      <DialogRoot size="full">
+      <DialogRoot size="full" defaultOpen={ activation.clicked }>
         <DialogTrigger asChild>
           <AdditionalInfoButton ref={ buttonRef } loading={ isLoading } className={ className }/>
         </DialogTrigger>
@@ -85,7 +76,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) =
     );
   }
   return (
-    <PopoverRoot positioning={{ placement: 'right-start' }}>
+    <PopoverRoot positioning={{ placement: 'right-start' }} defaultOpen={ activation.clicked }>
       <PopoverTrigger>
         <AdditionalInfoButton ref={ buttonRef } loading={ isLoading } className={ className }/>
       </PopoverTrigger>

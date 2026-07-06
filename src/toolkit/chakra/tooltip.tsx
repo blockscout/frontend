@@ -7,6 +7,8 @@ import * as React from 'react';
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
+import { useLazyActivation } from '../hooks/useLazyActivation';
+
 export interface TooltipProps extends ChakraTooltip.RootProps {
   selected?: boolean;
   showArrow?: boolean;
@@ -215,15 +217,15 @@ const TooltipImpl = (props: TooltipImplProps) => {
 // Mounting ChakraTooltip.Root is expensive: every instance creates a zag.js state machine
 // plus several context providers, which dominates the render time of pages with many
 // tooltips (a table row easily holds a dozen of them, all closed). So until the first
-// pointer/focus interaction we render only the bare trigger element with a pair of
-// activation handlers, and mount the real tooltip on demand.
+// pointer/focus interaction we render only the bare trigger element with activation
+// handlers (gesture-safe, see useLazyActivation), and mount the real tooltip on demand.
 //
 // Trade-offs of the on-demand mount (handled in TooltipImpl):
 //  - the trigger DOM node is unmounted and remounted once upon activation;
 //  - the machine misses the activating event, so the first open is driven manually.
 export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
   function Tooltip(props, ref) {
-    const [ activation, setActivation ] = React.useState<Activation | null>(null);
+    const { activation, handlers } = useLazyActivation();
 
     // controlled or default-open tooltips cannot defer mounting
     const isOpenExternally = Boolean(props.open ?? props.defaultOpen);
@@ -235,20 +237,24 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
     if (activation === null && !isOpenExternally && React.isValidElement(props.children)) {
       const child = props.children as React.ReactElement<Record<string, unknown>>;
 
-      const activate = (type: Activation, handlerName: 'onPointerEnter' | 'onFocus') => (event: React.SyntheticEvent) => {
+      const withOriginal = (handlerName: keyof typeof handlers) => (event: never) => {
         const originalHandler = child.props[handlerName];
         if (typeof originalHandler === 'function') {
           originalHandler(event);
         }
-        setActivation((prev) => prev ?? type);
+        handlers[handlerName](event);
       };
 
       return React.cloneElement(child, {
-        onPointerEnter: activate('pointer', 'onPointerEnter'),
-        onFocus: activate('focus', 'onFocus'),
+        onPointerEnter: withOriginal('onPointerEnter'),
+        onPointerDown: withOriginal('onPointerDown'),
+        onPointerUp: withOriginal('onPointerUp'),
+        onPointerCancel: withOriginal('onPointerCancel'),
+        onFocus: withOriginal('onFocus'),
+        onClick: withOriginal('onClick'),
       });
     }
 
-    return <TooltipImpl { ...props } innerRef={ ref } activation={ activation ?? undefined }/>;
+    return <TooltipImpl { ...props } innerRef={ ref } activation={ activation?.type }/>;
   },
 );
