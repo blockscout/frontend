@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import * as React from 'react';
+import { flushSync } from 'react-dom';
 
 export interface LazyActivation {
   type: 'pointer' | 'focus';
@@ -55,7 +56,21 @@ export function useLazyActivation(): Result {
       return;
     }
     timeoutRef.current = window.setTimeout(() => {
-      setActivation((prev) => prev ?? { type: typeRef.current ?? 'pointer', clicked: clickedRef.current });
+      timeoutRef.current = null;
+
+      // a press may have started after this was scheduled — mounting now would swap the
+      // trigger node mid-gesture; the gesture's own click/pointerup will re-schedule
+      if (isPressedRef.current) {
+        return;
+      }
+
+      // Commit synchronously so the trigger swap happens atomically between input events.
+      // Some ports (Linux WebKit) interleave scheduler tasks between the individual events
+      // of a click sequence — an async commit can land between mousedown and mouseup, and
+      // the browser then never synthesizes the click (its mousedown target is detached).
+      flushSync(() => {
+        setActivation((prev) => prev ?? { type: typeRef.current ?? 'pointer', clicked: clickedRef.current });
+      });
     }, delay);
   }, []);
 
