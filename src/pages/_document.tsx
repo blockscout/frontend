@@ -9,7 +9,6 @@ import logRequestFromBot from 'src/server/utils/logRequestFromBot';
 import * as serverTiming from 'src/server/utils/serverTiming';
 
 import config from 'src/config';
-import * as svgSprite from 'src/sprite/SpriteIcon';
 
 const marketplaceFeature = config.features.marketplace;
 const usercentrics = config.services.usercentrics;
@@ -73,7 +72,6 @@ class MyDocument extends Document {
           <link rel="shortcut icon" href="/assets/favicon/favicon.ico"/>
           <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon-180x180.png"/>
           <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon/android-chrome-192x192.png"/>
-          <link rel="preload" as="image" href={ svgSprite.href }/>
 
           { usercentrics && (
             <script
