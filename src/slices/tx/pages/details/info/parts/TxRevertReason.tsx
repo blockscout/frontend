@@ -20,8 +20,8 @@ const TxRevertReason = (props: Props) => {
   if ('raw' in props) {
     if (!props.raw || !HEX_REGEXP.test(props.raw)) {
       return (
-        <Text w="100%" p={{ base: 3, lg: 4 }} bgColor={ bgColor } textStyle="sm" borderBottomRadius="md">
-          { props.raw ?? 'This transaction does not include a revert reason' }
+        <Text w="100%" p={{ base: 3, lg: 4 }} bgColor={ bgColor } textStyle="sm" borderBottomRadius="md" mb={ 4 }>
+          { props.raw || 'This transaction does not include a revert reason' }
         </Text>
       );
     }
@@ -32,6 +32,7 @@ const TxRevertReason = (props: Props) => {
       <Grid
         bgColor={ bgColor }
         p={{ base: 3, lg: 4 }}
+        mb={ 4 }
         textStyle="sm"
         borderBottomRadius="md"
         templateColumns="auto minmax(0, 1fr)"
@@ -53,7 +54,7 @@ const TxRevertReason = (props: Props) => {
   }
 
   return (
-    <Box mt={ 4 } w="100%">
+    <Box mt={ 4 } mb={ 4 } w="100%">
       <LogDecodedInputData data={ props } inputsTableProps={{ bgColor }}/>
     </Box>
   );
