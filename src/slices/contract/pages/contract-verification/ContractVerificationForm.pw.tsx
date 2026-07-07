@@ -87,6 +87,7 @@ test('flatten source code method +@dark-mode +@mobile', async({ render, page }) 
 
   await page.getByText(/add contract libraries/i).click();
   await page.locator('button[aria-label="Add item"]').click();
+  await page.getByText(/verify & publish/i).focus();
 
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
