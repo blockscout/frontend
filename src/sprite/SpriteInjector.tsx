@@ -30,6 +30,8 @@ const SpriteInjector = () => {
     container.setAttribute('aria-hidden', 'true');
     // not display:none — that breaks resolution of gradients/defs inside symbols in some browsers
     container.style.position = 'absolute';
+    container.style.top = '-9999px';
+    container.style.left = '-9999px';
     container.style.width = '0';
     container.style.height = '0';
     container.style.overflow = 'hidden';
