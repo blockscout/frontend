@@ -4,8 +4,8 @@ import type { PublicRpcSchema, RpcTransaction } from 'viem';
 
 import * as blockMock from 'src/slices/block/mocks/list';
 import * as blockRpcMock from 'src/slices/block/mocks/rpc';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 import * as dailyTxsMock from 'src/slices/home/mocks/charts';
-import * as statsMock from 'src/slices/home/mocks/stats';
 import * as txMock from 'src/slices/tx/mocks/list';
 import * as txRpcMock from 'src/slices/tx/mocks/rpc';
 

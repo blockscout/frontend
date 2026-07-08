@@ -12,6 +12,7 @@ import type { ResourceError } from 'src/api/resources';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressStringOrParam from 'src/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
@@ -42,6 +43,8 @@ interface Props {
 const UserOpDetails = ({ query }: Props) => {
   const { data, isPlaceholderData, isError, error } = query;
 
+  const statsQuery = useStatsQuery({ enabled: !isPlaceholderData && !isError });
+
   if (isError) {
     if (error?.status === 400 || isCustomAppError(error)) {
       throwOnResourceLoadError({ isError, error });
@@ -54,61 +57,63 @@ const UserOpDetails = ({ query }: Props) => {
     return null;
   }
 
+  const isLoading = isPlaceholderData || statsQuery.isPlaceholderData;
+
   return (
     <DetailedInfo.Container
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 220px) minmax(0, 1fr)' }}
     >
       <DetailedInfo.ItemLabel
         hint="Unique character string assigned to every User operation"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         User operation hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isPlaceholderData } overflow="hidden">
+        <Skeleton loading={ isLoading } overflow="hidden">
           <UserOpEntity hash={ data.hash } noIcon noLink/>
         </Skeleton>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="The address of the smart contract account"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Sender
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <AddressStringOrParam address={ data.sender } isLoading={ isPlaceholderData }/>
+        <AddressStringOrParam address={ data.sender } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       { data.execute_target && (
         <>
           <DetailedInfo.ItemLabel
             hint="Target smart contract called by the User operation"
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           >
             Target
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <AddressEntity address={ data.execute_target } isLoading={ isPlaceholderData }/>
+            <AddressEntity address={ data.execute_target } isLoading={ isLoading }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
 
       <DetailedInfo.ItemLabel
         hint="Current User operation state"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Status
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <UserOpStatus status={ data.status } isLoading={ isPlaceholderData }/>
+        <UserOpStatus status={ data.status } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       { data.revert_reason && (
         <>
           <DetailedInfo.ItemLabel
             hint="The revert reason of the User operation"
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           >
             Revert reason
           </DetailedInfo.ItemLabel>
@@ -116,7 +121,7 @@ const UserOpDetails = ({ query }: Props) => {
             wordBreak="break-all"
             whiteSpace="normal"
           >
-            <Skeleton loading={ isPlaceholderData }>
+            <Skeleton loading={ isLoading }>
               { data.revert_reason }
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -127,12 +132,12 @@ const UserOpDetails = ({ query }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Date and time of User operation"
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           >
             Timestamp
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
+            <DetailedInfoTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
           </DetailedInfo.ItemValue>
         </>
 
@@ -141,81 +146,82 @@ const UserOpDetails = ({ query }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Total User operation fee"
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           >
             Fee
           </DetailedInfo.ItemLabel>
           <DetailedInfoNativeCoinValue
             amount={ data.fee }
-            loading={ isPlaceholderData }
+            loading={ isLoading }
+            exchangeRate={ statsQuery.data?.coin_price }
           />
         </>
       ) }
 
       <DetailedInfo.ItemLabel
         hint="Gas limit for the User operation"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Gas limit
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isPlaceholderData }>
+        <Skeleton loading={ isLoading }>
           { BigNumber(data.gas).toFormat() }
         </Skeleton>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Actual gas amount used by the User operation"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Gas used
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ isPlaceholderData }>
+        <Skeleton loading={ isLoading }>
           { BigNumber(data.gas_used).toFormat() }
         </Skeleton>
         <Utilization
           ml={ 4 }
           colorScheme="gray"
           value={ BigNumber(data.gas_used).dividedBy(BigNumber(data.gas)).toNumber() }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Hash of the transaction this User operation belongs to"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Transaction hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData }/>
+        <TxEntity hash={ data.transaction_hash } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Block number containing this User operation"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Block
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <BlockEntity number={ Number(data.block_number) } isLoading={ isPlaceholderData }/>
+        <BlockEntity number={ Number(data.block_number) } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Contract that executes bundles of User operations"
-        isLoading={ isPlaceholderData }
+        isLoading={ isLoading }
       >
         Entry point
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <AddressStringOrParam address={ data.entry_point } isLoading={ isPlaceholderData }/>
+        <AddressStringOrParam address={ data.entry_point } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
-      { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isPlaceholderData }/> }
+      { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isLoading }/> }
 
       { /* ADDITIONAL INFO */ }
-      <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
+      <CollapsibleDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <DetailedInfo.ItemLabel
