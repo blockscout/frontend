@@ -53,7 +53,7 @@ const TxDetailsStatus = ({ data, isLoading, onShowDetailsClick }: Props) => {
         }
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="wrap" columnGap={ 3 } rowGap={ 1 }>
-        <TxStatus status={ data.status } errorText={ errorText } isLoading={ isLoading } my={ 1 }/>
+        <TxStatus status={ data.status } errorText={ errorText } isLoading={ isLoading } my={{ base: '3px', lg: 1 }}/>
         { data.method && (
           <Badge colorPalette={ data.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated>
             { data.method }
