@@ -16,7 +16,7 @@ import { Mb } from 'src/toolkit/utils/consts';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-type FileTypes = '.sol' | '.yul' | '.json' | '.vy';
+type FileTypes = '.sol' | '.yul' | '.json' | '.vy' | '.vyi';
 
 interface Props {
   name?: 'sources' | 'interfaces';

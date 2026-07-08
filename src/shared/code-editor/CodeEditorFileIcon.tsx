@@ -13,7 +13,7 @@ interface Props {
 
 const CodeEditorFileIcon = ({ className, fileName }: Props) => {
   const name: IconName = (() => {
-    if (/.vy$/.test(fileName)) {
+    if (/\.vyi?$/.test(fileName)) {
       return 'monaco/vyper';
     }
 
