@@ -17,23 +17,33 @@ export const HOME_STATS_WIDGET_IDS = [
 ] as const;
 export type HomeStatsWidgetId = typeof HOME_STATS_WIDGET_IDS[number];
 
+type ResponsiveValue = Array<string | undefined>;
+
 export interface HeroBannerButtonState {
-  background?: Array<string | undefined>;
-  text_color?: Array<string | undefined>;
+  background?: ResponsiveValue;
+  text_color?: ResponsiveValue;
+}
+
+export interface HeroBannerSearchBorderColorState {
+  _empty?: ResponsiveValue;
+  _hover?: ResponsiveValue;
+  _focus?: ResponsiveValue;
+  _filled?: ResponsiveValue;
 }
 
 export interface HeroBannerConfig {
-  background?: Array<string | undefined>;
-  text_color?: Array<string | undefined>;
-  border?: Array<string | undefined>;
+  background?: ResponsiveValue;
+  text_color?: ResponsiveValue;
+  border?: ResponsiveValue;
   button?: {
     _default?: HeroBannerButtonState;
     _hover?: HeroBannerButtonState;
     _selected?: HeroBannerButtonState;
   };
   search?: {
-    background?: Array<string | undefined>;
-    border_width?: Array<string | undefined>;
+    background?: ResponsiveValue;
+    border_width?: ResponsiveValue;
+    border_color?: HeroBannerSearchBorderColorState;
   };
   text?: string;
 }

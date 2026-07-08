@@ -9,12 +9,12 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Input } from 'src/toolkit/chakra/input';
 import { InputGroup } from 'src/toolkit/chakra/input-group';
 import { ClearButton } from 'src/toolkit/components/buttons/ClearButton';
 
 const nameServicesFeature = config.features.nameServices;
+const heroSearchConfig = config.slices.home.heroBanner?.search;
 
 interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onChange?: (value: string) => void;
@@ -37,18 +37,6 @@ const SearchBarInput = (
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const isMobile = useIsMobile();
-
-  const heroSearchConfig = config.slices.home.heroBanner?.search;
-
-  const borderWidthHeroBanner = useColorModeValue(
-    heroSearchConfig?.border_width?.[0] ?? '0px',
-    heroSearchConfig?.border_width?.[1] ?? heroSearchConfig?.border_width?.[0] ?? '0px',
-  );
-
-  const searchBackgroundHeroBanner = useColorModeValue(
-    heroSearchConfig?.background?.[0],
-    heroSearchConfig?.background?.[1] ?? heroSearchConfig?.background?.[0],
-  );
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange?.(event.target.value);
@@ -144,20 +132,48 @@ const SearchBarInput = (
           onChange={ handleChange }
           onFocus={ onFocus }
           tabIndex={ readOnly ? -1 : 0 }
-          borderWidth={ isHeroBanner ? borderWidthHeroBanner : '2px' }
+          borderWidth={ isHeroBanner ? {
+            _light: heroSearchConfig?.border_width?.[0] ?? '0px',
+            _dark: heroSearchConfig?.border_width?.[1] ?? heroSearchConfig?.border_width?.[0] ?? '0px',
+          } : '2px' }
           borderStyle="solid"
-          borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
+          borderColor={{
+            _light: heroSearchConfig?.border_color?._filled?.[0] ?? 'blackAlpha.100',
+            _dark: heroSearchConfig?.border_color?._filled?.[1] ?? heroSearchConfig?.border_color?._filled?.[0] ?? 'whiteAlpha.200',
+          }}
           color={{ _light: 'black', _dark: 'white' }}
           backgroundColor={
             isHeroBanner ?
-              (searchBackgroundHeroBanner ?? 'input.bg') :
+              ({
+                _light: heroSearchConfig?.background?.[0] ?? 'input.bg',
+                _dark: heroSearchConfig?.background?.[1] ?? heroSearchConfig?.background?.[0] ?? 'input.bg',
+              }) :
               { base: 'dialog.bg', lg: 'input.bg' }
           }
-          _hover={{ borderColor: 'input.border.hover' }}
+          _placeholderShown={{
+            borderColor: {
+              _light: heroSearchConfig?.border_color?._empty?.[0] ?? 'input.border.filled',
+              _dark: heroSearchConfig?.border_color?._empty?.[1] ?? heroSearchConfig?.border_color?._empty?.[0] ?? 'input.border.filled',
+            },
+          }}
+          _hover={{
+            borderColor: {
+              _light: heroSearchConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
+              _dark: heroSearchConfig?.border_color?._hover?.[1] ?? heroSearchConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
+            },
+          }}
           _focusWithin={{
             _placeholder: { color: 'gray.300' },
-            borderColor: 'input.border.focus',
-            _hover: { borderColor: 'input.border.focus' },
+            borderColor: {
+              _light: heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+              _dark: heroSearchConfig?.border_color?._focus?.[1] ?? heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+            },
+            _hover: {
+              borderColor: {
+                _light: heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+                _dark: heroSearchConfig?.border_color?._focus?.[1] ?? heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+              },
+            },
           }}
           enterKeyHint="search"
         />

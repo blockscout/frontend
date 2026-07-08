@@ -28,7 +28,16 @@ authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiRes
     background: [ 'lightpink', `no-repeat center/cover url(${ IMAGE_URL })` ],
     text_color: [ 'deepskyblue', 'white' ],
     border: [ '3px solid green', '3px dashed yellow' ],
-    search: { background: [ '#faebd7', '#ffffe0' ] },
+    search: {
+      background: [ '#faebd7', '#ffffe0' ],
+      border_width: [ '2px', '2px' ],
+      border_color: {
+        _empty: [ 'green', 'yellow' ],
+        _hover: [ 'blue', 'orange' ],
+        _focus: [ 'purple', 'cyan' ],
+        _filled: [ 'red', 'lime' ],
+      },
+    },
     button: {
       _default: { background: [ 'deeppink' ], text_color: [ 'white' ] },
       _selected: { background: [ 'lime' ] },
