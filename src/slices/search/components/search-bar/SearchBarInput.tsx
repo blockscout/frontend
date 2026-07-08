@@ -14,7 +14,8 @@ import { InputGroup } from 'src/toolkit/chakra/input-group';
 import { ClearButton } from 'src/toolkit/components/buttons/ClearButton';
 
 const nameServicesFeature = config.features.nameServices;
-const heroSearchConfig = config.slices.home.heroBanner?.search;
+
+const DEFAULT_BORDER_COLOR = { _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' } as const;
 
 interface Props extends Omit<HTMLChakraProps<'form'>, 'onChange'> {
   onChange?: (value: string) => void;
@@ -37,6 +38,9 @@ const SearchBarInput = (
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const isMobile = useIsMobile();
+
+  const inputConfig = isHeroBanner ? config.slices.home.heroBanner?.search : undefined;
+  const defaultBorderWidth = isHeroBanner ? '0px' : '2px';
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange?.(event.target.value);
@@ -132,46 +136,46 @@ const SearchBarInput = (
           onChange={ handleChange }
           onFocus={ onFocus }
           tabIndex={ readOnly ? -1 : 0 }
-          borderWidth={ isHeroBanner ? {
-            _light: heroSearchConfig?.border_width?.[0] ?? '0px',
-            _dark: heroSearchConfig?.border_width?.[1] ?? heroSearchConfig?.border_width?.[0] ?? '0px',
-          } : '2px' }
+          borderWidth={{
+            _light: inputConfig?.border_width?.[0] ?? defaultBorderWidth,
+            _dark: inputConfig?.border_width?.[1] ?? inputConfig?.border_width?.[0] ?? defaultBorderWidth,
+          }}
           borderStyle="solid"
           borderColor={{
-            _light: heroSearchConfig?.border_color?._filled?.[0] ?? 'blackAlpha.100',
-            _dark: heroSearchConfig?.border_color?._filled?.[1] ?? heroSearchConfig?.border_color?._filled?.[0] ?? 'whiteAlpha.200',
+            _light: inputConfig?.border_color?._filled?.[0] ?? DEFAULT_BORDER_COLOR._light,
+            _dark: inputConfig?.border_color?._filled?.[1] ?? inputConfig?.border_color?._filled?.[0] ?? DEFAULT_BORDER_COLOR._dark,
           }}
           color={{ _light: 'black', _dark: 'white' }}
           backgroundColor={
             isHeroBanner ?
               ({
-                _light: heroSearchConfig?.background?.[0] ?? 'input.bg',
-                _dark: heroSearchConfig?.background?.[1] ?? heroSearchConfig?.background?.[0] ?? 'input.bg',
+                _light: inputConfig?.background?.[0] ?? 'input.bg',
+                _dark: inputConfig?.background?.[1] ?? inputConfig?.background?.[0] ?? 'input.bg',
               }) :
               { base: 'dialog.bg', lg: 'input.bg' }
           }
           _placeholderShown={{
             borderColor: {
-              _light: heroSearchConfig?.border_color?._empty?.[0] ?? 'input.border.filled',
-              _dark: heroSearchConfig?.border_color?._empty?.[1] ?? heroSearchConfig?.border_color?._empty?.[0] ?? 'input.border.filled',
+              _light: inputConfig?.border_color?._empty?.[0] ?? DEFAULT_BORDER_COLOR._light,
+              _dark: inputConfig?.border_color?._empty?.[1] ?? inputConfig?.border_color?._empty?.[0] ?? DEFAULT_BORDER_COLOR._dark,
             },
           }}
           _hover={{
             borderColor: {
-              _light: heroSearchConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
-              _dark: heroSearchConfig?.border_color?._hover?.[1] ?? heroSearchConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
+              _light: inputConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
+              _dark: inputConfig?.border_color?._hover?.[1] ?? inputConfig?.border_color?._hover?.[0] ?? 'input.border.hover',
             },
           }}
           _focusWithin={{
             _placeholder: { color: 'gray.300' },
             borderColor: {
-              _light: heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
-              _dark: heroSearchConfig?.border_color?._focus?.[1] ?? heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+              _light: inputConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+              _dark: inputConfig?.border_color?._focus?.[1] ?? inputConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
             },
             _hover: {
               borderColor: {
-                _light: heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
-                _dark: heroSearchConfig?.border_color?._focus?.[1] ?? heroSearchConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+                _light: inputConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
+                _dark: inputConfig?.border_color?._focus?.[1] ?? inputConfig?.border_color?._focus?.[0] ?? 'input.border.focus',
               },
             },
           }}
