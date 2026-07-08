@@ -43,7 +43,7 @@ interface Props {
 const UserOpDetails = ({ query }: Props) => {
   const { data, isPlaceholderData, isError, error } = query;
 
-  const statsQuery = useStatsQuery({ enabled: !isPlaceholderData });
+  const statsQuery = useStatsQuery({ enabled: !isPlaceholderData && !isError });
 
   if (isError) {
     if (error?.status === 400 || isCustomAppError(error)) {

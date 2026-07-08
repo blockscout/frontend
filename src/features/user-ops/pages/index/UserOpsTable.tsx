@@ -60,7 +60,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
                 showSender={ showSender }
                 showTx={ showTx }
                 chainData={ chainData }
-                exchangeRate={ statsQuery.data?.coin_price ?? undefined }
+                exchangeRate={ statsQuery.isPlaceholderData ? undefined : statsQuery.data?.coin_price ?? undefined }
               />
             );
           }) }
