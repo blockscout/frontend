@@ -2,7 +2,7 @@ import React from 'react';
 
 import { base as baseBlock } from 'src/slices/block/mocks/details';
 import { baseListResponse } from 'src/slices/block/mocks/list';
-import * as statsMock from 'src/slices/home/mocks/stats';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';

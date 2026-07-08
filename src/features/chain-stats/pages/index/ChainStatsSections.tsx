@@ -5,8 +5,7 @@ import React from 'react';
 
 import type { ChainStatsSection, StatsIntervalIds } from '../../types/client';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 
 import ChartWidgetContainerCrossChain from 'src/features/cross-chain-txs/components/ChartWidgetContainerCrossChain';
@@ -51,12 +50,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
   const { chain } = useMultichainContext() || {};
   const isGasTrackerEnabled = config.features.gasTracker.isEnabled;
 
-  const homeStatsQuery = useApiQuery('core:stats', {
-    queryOptions: {
-      refetchOnMount: false,
-      enabled: isGasTrackerEnabled,
-    },
-  });
+  const homeStatsQuery = useStatsQuery({ enabled: isGasTrackerEnabled });
 
   const handleChartLoadingError = React.useCallback(
     () => setIsSomeChartLoadingError(true),
@@ -96,7 +90,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
                 <Heading level="2" id={ section.id }>
                   { section.title }
                 </Heading>
-                { isGasTrackerEnabled && section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
+                { isGasTrackerEnabled && section.id === 'gas' && !homeStatsQuery.isPlaceholderData && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
                     <SpriteIcon name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon.secondary" _hover={{ color: 'hover' }}/>
                   </GasInfoTooltip>

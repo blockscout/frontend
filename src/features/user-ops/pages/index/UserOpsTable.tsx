@@ -4,10 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -31,14 +29,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   const chainData = multichainContext?.chain;
   const chainConfig = (multichainContext?.chain.app_config || config);
 
-  const statsQuery = useApiQuery('core:stats', {
-    chain: multichainContext?.chain,
-    queryOptions: {
-      enabled: !isLoading,
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsQuery = useStatsQuery({ enabled: !isLoading });
 
   return (
     <AddressHighlightProvider>

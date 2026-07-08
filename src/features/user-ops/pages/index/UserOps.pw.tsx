@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as statsMock from 'src/slices/home/mocks/stats';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 
 import { userOpsData } from 'src/features/user-ops/mocks/user-ops';
 

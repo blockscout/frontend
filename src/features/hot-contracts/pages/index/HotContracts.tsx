@@ -6,12 +6,10 @@ import React from 'react';
 
 import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'src/features/hot-contracts/types/api';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import HotContractsIntervalSelect from 'src/features/hot-contracts/pages/index/HotContractsIntervalSelect';
 import HotContractsListItem from 'src/features/hot-contracts/pages/index/HotContractsListItem';
@@ -50,12 +48,9 @@ const HotContracts = () => {
     },
   });
 
-  const statsQuery = useApiQuery('core:stats', {
-    queryOptions: {
-      placeholderData: HOMEPAGE_STATS,
-      refetchOnMount: false,
-    },
-  });
+  const statsQuery = useStatsQuery();
+
+  const isLoading = isPlaceholderData || statsQuery.isPlaceholderData;
 
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSort(value[0] as HotContractsSortingValue);
@@ -73,7 +68,7 @@ const HotContracts = () => {
         { data?.items.map((item, index) => (
           <HotContractsListItem
             key={ item.contract_address.hash + (isPlaceholderData ? index : '') }
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
             data={ item }
             exchangeRate={ statsQuery.data?.coin_price ?? null }
           />
@@ -82,7 +77,7 @@ const HotContracts = () => {
       <Box hideBelow="lg">
         <HotContractsTable
           items={ data?.items }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
           sort={ sort }
           setSorting={ handleSortChange }
           exchangeRate={ statsQuery.data?.coin_price ?? null }
@@ -97,10 +92,10 @@ const HotContracts = () => {
         <HotContractsIntervalSelect
           interval={ interval }
           onIntervalChange={ handleIntervalChange }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
         { [ '1d', '7d', '30d' ].includes(interval) && (
-          <Skeleton loading={ isPlaceholderData } color="text.secondary" hideBelow="lg" textStyle="sm" ml={ 6 }>
+          <Skeleton loading={ isLoading } color="text.secondary" hideBelow="lg" textStyle="sm" ml={ 6 }>
             <span>The data is updated once a day.</span>
           </Skeleton>
         ) }
@@ -109,7 +104,7 @@ const HotContracts = () => {
           defaultValue={ [ sort ] }
           collection={ sortCollection }
           onValueChange={ handleSortChange }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
           hideFrom="lg"
           ml={ 2 }
         />

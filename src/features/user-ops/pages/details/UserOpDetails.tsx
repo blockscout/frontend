@@ -7,16 +7,14 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
 import type { ResourceError } from 'src/api/resources';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressStringOrParam from 'src/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import { useMultichainContext } from 'src/features/multichain/context';
 import UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
 import UserOpSponsorType from 'src/features/user-ops/components/UserOpSponsorType';
 import UserOpStatus from 'src/features/user-ops/components/UserOpStatus';
@@ -45,16 +43,7 @@ interface Props {
 const UserOpDetails = ({ query }: Props) => {
   const { data, isPlaceholderData, isError, error } = query;
 
-  const multichainContext = useMultichainContext();
-
-  const statsQuery = useApiQuery('core:stats', {
-    chain: multichainContext?.chain,
-    queryOptions: {
-      enabled: !isPlaceholderData,
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsQuery = useStatsQuery({ enabled: !isPlaceholderData });
 
   if (isError) {
     if (error?.status === 400 || isCustomAppError(error)) {
