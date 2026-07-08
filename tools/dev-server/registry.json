@@ -20,6 +20,7 @@
   "polygon": "https://polygon.blockscout.com",
   "rootstock": "https://rootstock.blockscout.com",
   "rootstock_testnet": "https://rootstock-testnet.blockscout.com",
+  "robinhood": "https://robinhoodchain.blockscout.com",
   "scroll_sepolia": "https://scroll-sepolia.blockscout.com",
   "shibarium": "https://www.shibariumscan.io",
   "stability_testnet": "https://stability-testnet.blockscout.com",

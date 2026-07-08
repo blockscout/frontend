@@ -45,6 +45,7 @@ on:
             - polygon
             - rootstock
             - rootstock_testnet
+            - robinhood
             - scroll_sepolia
             - shibarium
             - stability_testnet
