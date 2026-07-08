@@ -38,9 +38,16 @@ const SearchBarInput = (
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const isMobile = useIsMobile();
 
+  const heroSearchConfig = config.slices.home.heroBanner?.search;
+
   const borderWidthHeroBanner = useColorModeValue(
-    config.slices.home.heroBanner?.search?.border_width?.[0] ?? '0px',
-    config.slices.home.heroBanner?.search?.border_width?.[1] ?? '0px',
+    heroSearchConfig?.border_width?.[0] ?? '0px',
+    heroSearchConfig?.border_width?.[1] ?? heroSearchConfig?.border_width?.[0] ?? '0px',
+  );
+
+  const searchBackgroundHeroBanner = useColorModeValue(
+    heroSearchConfig?.background?.[0],
+    heroSearchConfig?.background?.[1] ?? heroSearchConfig?.background?.[0],
   );
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -141,9 +148,17 @@ const SearchBarInput = (
           borderStyle="solid"
           borderColor={{ _light: 'blackAlpha.100', _dark: 'whiteAlpha.200' }}
           color={{ _light: 'black', _dark: 'white' }}
-          backgroundColor={{ base: isHeroBanner ? 'input.bg' : 'dialog.bg', lg: 'input.bg' }}
+          backgroundColor={
+            isHeroBanner ?
+              (searchBackgroundHeroBanner ?? 'input.bg') :
+              { base: 'dialog.bg', lg: 'input.bg' }
+          }
           _hover={{ borderColor: 'input.border.hover' }}
-          _focusWithin={{ _placeholder: { color: 'gray.300' }, borderColor: 'input.border.focus', _hover: { borderColor: 'input.border.focus' } }}
+          _focusWithin={{
+            _placeholder: { color: 'gray.300' },
+            borderColor: 'input.border.focus',
+            _hover: { borderColor: 'input.border.focus' },
+          }}
           enterKeyHint="search"
         />
       </InputGroup>

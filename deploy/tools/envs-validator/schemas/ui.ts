@@ -38,6 +38,7 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
         _selected: heroBannerButtonStateSchema,
       }),
       search: yup.object({
+        background: yup.array().max(2).of(yup.string()),
         border_width: yup.array().max(2).of(yup.string()),
       }),
       text: yup.string(),

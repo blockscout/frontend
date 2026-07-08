@@ -32,6 +32,7 @@ export interface HeroBannerConfig {
     _selected?: HeroBannerButtonState;
   };
   search?: {
+    background?: Array<string | undefined>;
     border_width?: Array<string | undefined>;
   };
   text?: string;
