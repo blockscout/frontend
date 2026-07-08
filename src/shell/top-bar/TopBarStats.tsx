@@ -3,12 +3,10 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'src/slices/gas/components/GasPrice';
 import discriminateDetailedPrices from 'src/slices/gas/utils/price';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 
 import GetGasButton from 'src/features/get-gas-button/components/GetGasButton';
 
@@ -23,12 +21,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 const TopBarStats = () => {
   const isMobile = useIsMobile();
 
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('core:stats', {
-    queryOptions: {
-      placeholderData: HOMEPAGE_STATS,
-      refetchOnMount: false,
-    },
-  });
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useStatsQuery();
 
   React.useEffect(() => {
     if (isPlaceholderData || !data?.gas_price_updated_at) {

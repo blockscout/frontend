@@ -1,8 +1,8 @@
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import * as statsMock from 'src/slices/chain/stats/mocks';
 import * as dailyTxsMock from 'src/slices/home/mocks/charts';
-import * as statsMock from 'src/slices/home/mocks/stats';
 
 import { test, expect } from 'playwright/lib';
 

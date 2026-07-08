@@ -25,9 +25,10 @@ type Props = {
   showTx: boolean;
   showSender: boolean;
   chainData?: ClusterChainConfig;
+  exchangeRate?: string;
 };
 
-const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Props) => {
+const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData, exchangeRate }: Props) => {
   return (
     <TableRow>
       { chainData && (
@@ -78,7 +79,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData }: Pr
       </TableCell>
       { !config.slices.tx.hiddenFields?.tx_fee && (
         <TableCell verticalAlign="middle" isNumeric>
-          <NativeCoinValue amount={ item.fee } loading={ isLoading } noSymbol/>
+          <NativeCoinValue amount={ item.fee } loading={ isLoading } exchangeRate={ exchangeRate } layout="vertical" noSymbol/>
         </TableCell>
       ) }
     </TableRow>

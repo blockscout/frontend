@@ -6,8 +6,8 @@ import type { TChainIndicator } from 'src/slices/home/types/client';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import useChartDataQuery from 'src/slices/home/hooks/useChartDataQuery';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 import { isIndicatorEnabled, sortIndicators } from 'src/slices/home/utils/indicators';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
@@ -41,12 +41,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const statsApiQueryResult = useApiQuery('core:stats', {
-    queryOptions: {
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsApiQueryResult = useStatsQuery();
 
   const indicators: Array<TChainIndicator> = React.useMemo(() => {
     return [

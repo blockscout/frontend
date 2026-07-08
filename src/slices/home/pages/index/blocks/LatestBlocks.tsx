@@ -7,12 +7,10 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
 import getChainUtilizationParams from 'src/slices/chain/get-chain-utilization-params';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import { useHomeDataContext } from 'src/slices/home/contexts/home-data-context';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 
 import config from 'src/config';
 import ApiDegradationRpcIcon from 'src/shared/api-degradation/ApiDegradationRpcIcon';
@@ -44,12 +42,7 @@ const LatestBlocks = () => {
     enabled: Boolean(blocksQuery && !blocksQuery.isPlaceholderData),
   });
 
-  const statsQueryResult = useApiQuery('core:stats', {
-    queryOptions: {
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsQueryResult = useStatsQuery();
 
   const rpcDataContext = useHomeRpcDataContext();
   const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-blocks');

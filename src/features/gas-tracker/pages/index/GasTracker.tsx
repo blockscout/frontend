@@ -7,13 +7,11 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
 import PageTitle from 'src/shell/page/title/PageTitle';
 
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import GasInfoUpdateTimer from 'src/slices/gas/components/GasInfoUpdateTimer';
 import discriminateDetailedPrices from 'src/slices/gas/utils/price';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
 import GasTrackerChart from 'src/features/gas-tracker/components/GasTrackerChart';
@@ -29,12 +27,7 @@ import { Heading } from 'src/toolkit/chakra/heading';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const GasTracker = () => {
-  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('core:stats', {
-    queryOptions: {
-      placeholderData: HOMEPAGE_STATS,
-      refetchOnMount: false,
-    },
-  });
+  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useStatsQuery();
 
   if (isError) {
     throw new Error(undefined, { cause: error });

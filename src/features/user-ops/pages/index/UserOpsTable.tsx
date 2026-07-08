@@ -5,6 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -28,9 +29,11 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   const chainData = multichainContext?.chain;
   const chainConfig = (multichainContext?.chain.app_config || config);
 
+  const statsQuery = useStatsQuery({ enabled: !isLoading });
+
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="1000px">
+      <TableRoot minW="1050px">
         <TableHeaderSticky top={ top }>
           <TableRow>
             { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
@@ -57,6 +60,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
                 showSender={ showSender }
                 showTx={ showTx }
                 chainData={ chainData }
+                exchangeRate={ statsQuery.isPlaceholderData ? undefined : statsQuery.data?.coin_price ?? undefined }
               />
             );
           }) }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as chainStatsMock from 'src/slices/home/mocks/stats';
+import * as chainStatsMock from 'src/slices/chain/stats/mocks';
 import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
