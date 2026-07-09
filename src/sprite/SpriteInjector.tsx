@@ -6,7 +6,8 @@ import config from 'src/config';
 
 const CONTAINER_ID = 'svg-sprite';
 
-const HREF = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteHash }.svg` : '/icons/sprite.svg';
+// single source of truth for the sprite URL — also used by _document.tsx to preload it
+export const SPRITE_URL = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteHash }.svg` : '/icons/sprite.svg';
 
 // Fetches the SVG sprite once and injects it into the document, so that SpriteIcon can
 // reference symbols with a same-document fragment (href="#name").
@@ -37,7 +38,7 @@ const SpriteInjector = () => {
     container.style.overflow = 'hidden';
     document.body.appendChild(container);
 
-    fetch(HREF)
+    fetch(SPRITE_URL)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Failed to load the icon sprite: ${ response.status }`);

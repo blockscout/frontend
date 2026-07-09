@@ -9,6 +9,7 @@ import logRequestFromBot from 'src/server/utils/logRequestFromBot';
 import * as serverTiming from 'src/server/utils/serverTiming';
 
 import config from 'src/config';
+import { SPRITE_URL } from 'src/sprite/SpriteInjector';
 
 const marketplaceFeature = config.features.marketplace;
 const usercentrics = config.services.usercentrics;
@@ -37,6 +38,9 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          { /* Warm the SVG sprite request during HTML parse; SpriteInjector's fetch reuses this */ }
+          { /* preload (as="fetch" + crossOrigin match the fetch destination/credentials mode). */ }
+          <link rel="preload" as="fetch" crossOrigin="anonymous" href={ SPRITE_URL }/>
           { /* FONTS */ }
           { /* Instruct browsers to preconnect to fonts.gstatic.com for speeding up font loading */ }
           { !(config.misc.fonts.heading?.url && config.misc.fonts.body?.url) &&

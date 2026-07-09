@@ -16,7 +16,6 @@ export interface TooltipProps extends ChakraTooltip.RootProps {
   portalRef?: React.RefObject<HTMLElement>;
   content: React.ReactNode;
   contentProps?: ChakraTooltip.ContentProps;
-  triggerProps?: ChakraTooltip.TriggerProps;
   disabled?: boolean;
   disableOnMobile?: boolean;
 }
@@ -48,7 +47,6 @@ const TooltipImpl = (props: TooltipImplProps) => {
     defaultOpen = false,
     lazyMount = true,
     unmountOnExit = true,
-    triggerProps,
     closeDelay = 100,
     openDelay = 100,
     interactive,
@@ -189,7 +187,6 @@ const TooltipImpl = (props: TooltipImplProps) => {
         ref={ setTriggerRef }
         asChild
         onClick={ isMobile ? handleTriggerClick : undefined }
-        { ...triggerProps }
       >
         { children }
       </ChakraTooltip.Trigger>
