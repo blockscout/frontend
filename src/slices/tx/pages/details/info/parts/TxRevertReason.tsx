@@ -15,7 +15,7 @@ type Props = NonNullable<schemas['Transaction']['revert_reason']>;
 
 const TxRevertReason = (props: Props) => {
 
-  const bgColor = { _light: 'red.50', _dark: 'red.900/80' };
+  const bgColor = { _light: 'red.50', _dark: 'red.900/30' };
 
   if ('raw' in props) {
     if (!props.raw || !HEX_REGEXP.test(props.raw)) {

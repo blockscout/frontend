@@ -15,6 +15,7 @@ test.describe('error', () => {
         <TxDetailsStatus data={ txMock.withDecodedRevertReason } isLoading={ false }/>
       </Container>,
     );
+    await component.getByText('Show revert reason').click();
 
     await expect(component).toHaveScreenshot();
   });
@@ -25,6 +26,7 @@ test.describe('error', () => {
         <TxDetailsStatus data={ txMock.withRawRevertReason } isLoading={ false }/>
       </Container>,
     );
+    await component.getByText('Show revert reason').click();
 
     await expect(component).toHaveScreenshot();
   });
@@ -35,6 +37,7 @@ test.describe('error', () => {
         <TxDetailsStatus data={ txMock.withoutRevertReason } isLoading={ false }/>
       </Container>,
     );
+    await component.getByText('Show revert reason').click();
 
     await expect(component).toHaveScreenshot();
   });
@@ -45,6 +48,7 @@ test.describe('error', () => {
         <TxDetailsStatus data={ txMock.withRevertReasonParam } isLoading={ false }/>
       </Container>,
     );
+    await component.getByText('Show revert reason').click();
     await component.getByText('failed').hover();
 
     await expect(component).toHaveScreenshot();

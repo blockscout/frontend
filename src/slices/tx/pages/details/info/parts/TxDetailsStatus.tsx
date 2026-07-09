@@ -67,7 +67,7 @@ const TxDetailsStatus = ({ data, isLoading, onShowDetailsClick }: Props) => {
           </Skeleton>
         ) }
         { data.revert_reason && (
-          <CollapsibleDetails text={ REVERT_REASON_TRIGGER_TEXT } variant="secondary" noScroll isExpanded id="CollapsibleDetails__revert-reason">
+          <CollapsibleDetails text={ REVERT_REASON_TRIGGER_TEXT } variant="secondary" noScroll id="CollapsibleDetails__revert-reason">
             <TxRevertReason { ...data.revert_reason }/>
           </CollapsibleDetails>
         ) }
