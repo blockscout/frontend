@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
-import type { PaginationParams } from 'src/shared/pagination/types';
 import { NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
@@ -21,26 +19,19 @@ import * as addressStubs from 'src/slices/address/stubs/address';
 import Contract from 'src/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
 import TokenTransfer from 'src/slices/token-transfer/pages/token/TokenTransfer';
-import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 import useTokenQuery from 'src/slices/token/hooks/useTokenQuery';
 import TokenHolders from 'src/slices/token/pages/details/holders/TokenHolders';
 import TokenDetails from 'src/slices/token/pages/details/info/TokenDetails';
 import TokenInventory from 'src/slices/token/pages/details/inventory/TokenInventory';
 import TokenPageTitle from 'src/slices/token/pages/details/TokenPageTitle';
-import * as tokenStubs from 'src/slices/token/stubs';
-import { getTokenHoldersStub } from 'src/slices/token/stubs';
+import { TOKEN_COUNTERS } from 'src/slices/token/stubs';
 
 import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
 import TextAd from 'src/features/ads/text/components/TextAd';
-import TokenAdvancedFilterLink from 'src/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
-import CsvExport from 'src/features/csv-export/components/CsvExport';
 
 import config from 'src/config';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
-import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
-import { generateListStub } from 'src/shared/pagination/utils';
+import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import useEtherscanRedirects from 'src/shared/router/useEtherscanRedirects';
 import SpriteIcon from 'src/sprite/SpriteIcon';
@@ -49,21 +40,12 @@ import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
-const TABS_RIGHT_SLOT_PROPS = {
-  display: 'flex',
-  alignItems: 'center',
-};
-
 const TokenPageContent = () => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
-  const isMobile = useIsMobile();
-
-  const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const hashString = getQueryParamString(router.query.hash);
-  const tab = getQueryParamString(router.query.tab);
   const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
   useEtherscanRedirects();
@@ -134,77 +116,40 @@ const TokenPageContent = () => {
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData, verifiedInfoQuery.isPlaceholderData, verifiedInfoQuery.data ]);
 
-  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (addressQuery.data && !addressQuery.isPlaceholderData);
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
-  const isFirstTabTokenTransfer = !hasInventoryTab && !tab;
 
-  const transfersQuery = useQueryWithPages({
-    resourceName: 'core:token_transfers',
+  const tokenCountersQuery = useApiQuery('core:token_counters', {
     pathParams: { hash: hashString },
-    scrollRef,
-    options: {
-      enabled: Boolean(
-        hasData &&
-        hashString &&
-        (
-          (!hasInventoryTab && !tab) ||
-          tab === 'token_transfers'
-        ),
-      ),
-      placeholderData: getTokenTransfersStub(tokenQuery.data?.type),
-    },
-  });
-
-  const inventoryQuery = useQueryWithPages({
-    resourceName: 'core:token_inventory',
-    pathParams: { hash: hashString },
-    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
-    scrollRef,
-    options: {
-      enabled: Boolean(
-        hasData &&
-        hashString &&
-        (
-          (hasInventoryTab && !tab) ||
-          tab === 'inventory'
-        ),
-      ),
-      placeholderData: generateListStub<'core:token_inventory'>(tokenStubs.TOKEN_INSTANCE_ITEM, 50, { next_page_params: { unique_token: 1 } }),
-    },
-  });
-
-  const holdersQuery = useQueryWithPages({
-    resourceName: 'core:token_holders',
-    pathParams: { hash: hashString },
-    scrollRef,
-    options: {
-      enabled: Boolean(hashString && tab === 'holders' && hasData),
-      placeholderData: getTokenHoldersStub(tokenQuery.data?.type, null),
-    },
+    queryOptions: { enabled: Boolean(hashString), placeholderData: TOKEN_COUNTERS },
   });
 
   const address3rdPartyWidgets = useAddress3rdPartyWidgets('token', false, isQueryEnabled);
 
-  const isLoading =
-    tokenQuery.isPlaceholderData ||
-    addressQuery.isPlaceholderData ||
-    (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
+  throwOnResourceLoadError(tokenQuery);
+
+  const isMainDataLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
+  const isFullDataLoading = isMainDataLoading || (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
+
+  const transfersCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.transfers_count ?
+    Number(tokenCountersQuery.data.transfers_count) :
+    undefined;
+  const holdersCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.token_holders_count ?
+    Number(tokenCountersQuery.data.token_holders_count) :
+    undefined;
 
   const tabs: Array<TabItemRegular> = [
-    hasInventoryTab ? {
-      id: 'inventory',
-      title: 'Inventory',
-      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter } shouldRender={ !isLoading }/>,
-    } : undefined,
     {
-      id: 'token_transfers',
-      title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>,
-    },
-    {
-      id: 'holders',
-      title: 'Holders',
-      component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery } shouldRender={ !isLoading }/>,
+      id: 'index',
+      title: 'Details',
+      component: (
+        <TokenDetails
+          data={ tokenQuery.data }
+          counters={ tokenCountersQuery.data }
+          isLoading={ isMainDataLoading }
+          isLoadingCounters={ tokenCountersQuery.isPlaceholderData }
+          address3rdPartyWidgets={ address3rdPartyWidgets.items }
+        />
+      ),
     },
     addressQuery.data?.is_contract ? {
       id: 'contract',
@@ -220,70 +165,33 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <Contract addressData={ addressQuery.data } isLoading={ isLoading }/>,
+      component: <Contract addressData={ addressQuery.data } isLoading={ isMainDataLoading }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
+    hasInventoryTab ? {
+      id: 'inventory',
+      title: 'Inventory',
+      component: <TokenInventory hash={ hashString } token={ tokenQuery.data } isLoading={ isMainDataLoading } ownerFilter={ ownerFilter }/>,
+    } : undefined,
+    {
+      id: 'token_transfers',
+      title: 'Token transfers',
+      count: transfersCount,
+      component: <TokenTransfer token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
+    },
+    {
+      id: 'holders',
+      title: 'Holders',
+      count: holdersCount,
+      component: <TokenHolders token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
+    },
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
       id: 'widgets',
       title: 'Widgets',
       count: address3rdPartyWidgets.items.length,
-      component: <Address3rdPartyWidgets shouldRender={ !isLoading } addressType="token" showAll/>,
+      component: <Address3rdPartyWidgets shouldRender={ !isFullDataLoading } addressType="token" showAll/>,
     } : undefined,
   ].filter(Boolean);
-
-  let pagination: PaginationParams | undefined;
-
-  if (isFirstTabTokenTransfer || tab === 'token_transfers') {
-    pagination = transfersQuery.pagination;
-  }
-
-  if (router.query.tab === 'holders') {
-    pagination = holdersQuery.pagination;
-  }
-
-  // default tab for nfts is token inventory
-  if ((hasInventoryTab && !tab) || tab === 'inventory') {
-    pagination = inventoryQuery.pagination;
-  }
-
-  const tabListProps = React.useCallback(() => {
-    if (isMobile) {
-      return { mt: 8 };
-    }
-
-    return {
-      pt: 6,
-      pb: 6,
-      marginBottom: 0,
-    };
-  }, [ isMobile ]);
-
-  const tabsRightSlot = React.useMemo(() => {
-    if (isMobile) {
-      return null;
-    }
-
-    return (
-      <>
-        { (tab === 'token_transfers' || tab === '') && (
-          <TokenAdvancedFilterLink token={ tokenQuery.data } ml={ 6 }/>
-        ) }
-        { tab === 'holders' && (
-          <CsvExport
-            type="token_holders"
-            resourceName="core:token_csv_export_holders"
-            pathParams={{ hash: hashString }}
-            queryParams={{ from_period: null, to_period: null }}
-            extraParams={{ token_name: tokenQuery.data?.name || 'Unknown token' }}
-            periodFilter={ false }
-            loadingInitial={ pagination?.isLoading }
-            ml={ 6 }
-          />
-        ) }
-        { pagination?.isVisible && <Pagination ml={ 6 } { ...pagination }/> }
-      </>
-    );
-  }, [ hashString, isMobile, pagination, tab, tokenQuery.data ]);
 
   return (
     <>
@@ -296,18 +204,9 @@ const TokenPageContent = () => {
         hash={ hashString }
       />
 
-      <TokenDetails tokenQuery={ tokenQuery }/>
-
-      { /* should stay before tabs to scroll up with pagination */ }
-      <Box ref={ scrollRef }></Box>
-
       <RoutedTabs
         tabs={ tabs }
-        listProps={ tabListProps }
-        rightSlot={ tabsRightSlot }
-        rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
-        stickyEnabled={ !isMobile }
-        isLoading={ isLoading }
+        isLoading={ isFullDataLoading }
       />
     </>
   );

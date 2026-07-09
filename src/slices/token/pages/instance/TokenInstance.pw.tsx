@@ -30,6 +30,22 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockAssetResponse(tokenInstanceMock.base.image_url as string, './playwright/mocks/image_md.jpg');
 });
 
+test('base view', async({ render, page }) => {
+  const hooksConfig = {
+    router: {
+      query: { hash, id },
+      pathname: '/token/[hash]/instance/[id]',
+    },
+  };
+
+  const component = await render(<TokenInstance/>, { hooksConfig });
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
 test('metadata update', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
   const hooksConfig = {
     router: {

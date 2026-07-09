@@ -1,22 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
-import { scroller } from 'react-scroll';
 
 import type { schemas } from '@blockscout/api-types';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-import type { ResourceError } from 'src/api/resources';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { TokenTabs } from 'src/slices/token/pages/details/Token';
-import { TOKEN_COUNTERS } from 'src/slices/token/stubs';
 
+import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
 import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -24,7 +19,6 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
-import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import AssetValue from 'src/shared/values/entity/AssetValue';
 
@@ -34,10 +28,14 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
-  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
+  data: schemas['Token'] | undefined;
+  counters: schemas['TokenCountersResponse'] | undefined;
+  isLoading: boolean;
+  isLoadingCounters: boolean;
+  address3rdPartyWidgets?: Array<string>;
 }
 
-const TokenDetails = ({ tokenQuery }: Props) => {
+const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rdPartyWidgets }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -46,15 +44,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   const multichainContext = useMultichainContext();
   const chainSlug = multichainContext?.chain?.slug;
 
-  const tokenCountersQuery = useApiQuery('core:token_counters', {
-    pathParams: { hash },
-    queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
-  });
-
   const appActionData = useAppActionData(hash);
 
-  const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
-
+  const changeTab = useCallback((tab: TokenTabs) => () => {
     router.push(
       chainSlug ?
         { pathname: '/chain/[chain_slug_or_id]/token/[hash]', query: { hash: hash || '', tab, chain_slug_or_id: chainSlug } } :
@@ -62,14 +54,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       undefined,
       { shallow: true },
     );
-    scroller.scrollTo('token-tabs', {
-      duration: 500,
-      smooth: true,
-    });
   }, [ chainSlug, hash, router ]);
 
   const countersItem = useCallback((item: 'token_holders_count' | 'transfers_count') => {
-    const itemValue = tokenCountersQuery.data?.[item];
+    const itemValue = counters?.[item];
     if (!itemValue) {
       return 'N/A';
     }
@@ -80,13 +68,11 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     const tab: TokenTabs = item === 'token_holders_count' ? 'holders' : 'token_transfers';
 
     return (
-      <Link onClick={ changeUrlAndScroll(tab) } loading={ tokenCountersQuery.isPlaceholderData }>
+      <Link onClick={ changeTab(tab) } loading={ isLoadingCounters }>
         { Number(itemValue).toLocaleString() }
       </Link>
     );
-  }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
-
-  throwOnResourceLoadError(tokenQuery);
+  }, [ counters, isLoadingCounters, changeTab ]);
 
   if (!isMounted) {
     return null;
@@ -101,7 +87,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     symbol,
     type,
     zilliqa,
-  } = tokenQuery.data || {};
+  } = data || {};
 
   return (
     <DetailedInfo.Container>
@@ -109,13 +95,13 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="ZRC-2 address of the token"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             ZRC-2 Address
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
-              <AddressEntity address={{ hash: zilliqa.zrc2_address_hash }} isLoading={ tokenQuery.isPlaceholderData }/>
+            <Skeleton loading={ isLoading } display="inline-block">
+              <AddressEntity address={{ hash: zilliqa.zrc2_address_hash }} isLoading={ isLoading }/>
             </Skeleton>
           </DetailedInfo.ItemValue>
         </>
@@ -125,12 +111,12 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Price per token on the exchanges"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             Price
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ isLoading } display="inline-block">
               <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -141,12 +127,12 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Circulating supply * Price"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             Circulating market cap
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } display="inline-block">
+            <Skeleton loading={ isLoading } display="inline-block">
               <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -157,7 +143,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Number of publicly available tokens"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             Circulating supply
           </DetailedInfo.ItemLabel>
@@ -171,7 +157,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
               asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
               accuracy={ 3 }
               decimals={ decimals ?? '0' }
-              loading={ tokenQuery.isPlaceholderData }
+              loading={ isLoading }
               w="100%"
             />
           </DetailedInfo.ItemValue>
@@ -182,7 +168,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="The total amount of tokens issued"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             Total supply
           </DetailedInfo.ItemLabel>
@@ -196,7 +182,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
               asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
               accuracy={ 3 }
               decimals={ decimals ?? '0' }
-              loading={ tokenQuery.isPlaceholderData }
+              loading={ isLoading }
               w="100%"
             />
           </DetailedInfo.ItemValue>
@@ -205,24 +191,24 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
       <DetailedInfo.ItemLabel
         hint="Number of accounts holding the token"
-        isLoading={ tokenQuery.isPlaceholderData }
+        isLoading={ isLoading }
       >
         Holders
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ isLoading || isLoadingCounters }>
           { countersItem('token_holders_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
 
       <DetailedInfo.ItemLabel
         hint="Number of transfer for the token"
-        isLoading={ tokenQuery.isPlaceholderData }
+        isLoading={ isLoading }
       >
         Transfers
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <Skeleton loading={ tokenCountersQuery.isPlaceholderData }>
+        <Skeleton loading={ isLoading || isLoadingCounters }>
           { countersItem('transfers_count') }
         </Skeleton>
       </DetailedInfo.ItemValue>
@@ -231,12 +217,12 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <>
           <DetailedInfo.ItemLabel
             hint="Number of digits that come after the decimal place when displaying token value"
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
           >
             Decimals
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <Skeleton loading={ tokenQuery.isPlaceholderData } minW={ 6 }>
+            <Skeleton loading={ isLoading } minW={ 6 }>
               { decimals }
             </Skeleton>
           </DetailedInfo.ItemValue>
@@ -246,7 +232,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       { type !== 'ERC-20' && (
         <TokenNftMarketplaces
           hash={ hash }
-          isLoading={ tokenQuery.isPlaceholderData }
+          isLoading={ isLoading }
           appActionData={ appActionData }
           source="NFT collection"
         />
@@ -267,7 +253,24 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </>
       ) }
 
-      <DetailedInfoSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
+      <DetailedInfoSponsoredItem isLoading={ isLoading }/>
+
+      { ((address3rdPartyWidgets ?? []).length > 0) && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Metrics provided by third party partners"
+            isLoading={ isLoading }
+          >
+            Widgets
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <Address3rdPartyWidgets
+              addressType="token"
+              isLoading={ isLoading }
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
     </DetailedInfo.Container>
   );
 };
