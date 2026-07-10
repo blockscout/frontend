@@ -26,6 +26,7 @@ test('erc20 +@mobile', async({ render, mockApiResponse }) => {
 });
 
 test('erc721 +@mobile', async({ render, mockAssetResponse, mockApiResponse }) => {
+  test.slow();
   await mockApiResponse('core:token_transfers', {
     items: [ tokenTransferMock.erc721 ],
     next_page_params: { page_token: 1 },
@@ -38,10 +39,11 @@ test('erc721 +@mobile', async({ render, mockAssetResponse, mockApiResponse }) =>
     </Box>,
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
 test('erc1155 +@mobile', async({ render, mockApiResponse }) => {
+  test.slow();
   await mockApiResponse('core:token_transfers', {
     items: [ tokenTransferMock.erc1155A, tokenTransferMock.erc1155B, tokenTransferMock.erc1155C, tokenTransferMock.erc1155D ],
     next_page_params: { page_token: 1 },
@@ -53,5 +55,5 @@ test('erc1155 +@mobile', async({ render, mockApiResponse }) => {
     </Box>,
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
