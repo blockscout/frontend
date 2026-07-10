@@ -20,14 +20,20 @@ says which steps an agent does and which a developer does by hand.
    (small / medium / large), tags every subtask `[agent]` or `[human]` per the delegation boundary, then
    drafts the open questions as Slack messages grouped by owner — you approve, it sends, and each thread's
    permalink lands in the spec. (`to-spec` also works standalone, from any conversation worth capturing.)
+   Commit the spec to the feature branch and **open a draft PR right away** (`to-spec` walks you through
+   branch, commit, and draft PR at the end of the run) — a spec-only draft is the cheap moment to catch a
+   wrong split or a missed requirement, it links the issue to the work, and CI and demo deploys hang off it
+   for the rest of the task.
 3. **Answers** — when colleagues reply, run `to-spec` on the spec again: it harvests the Slack threads,
    proposes resolutions, folds accepted decisions into the spec, and sends approved follow-ups.
 4. **Implement** — run the `implement-task` skill repeatedly, one subtask per run: it executes `[agent]`
    subtasks (composing `add-api-resource`, `add-new-page`, `add-env-var`, …) and verifies them, or hands
    `[human]` subtasks (styling to Figma mockups) over to you. You review the diff and commit between runs.
    A subtask can't start while a question blocking it is `pending` — unrelated subtasks can.
-5. **Land** — the feature branch merges to `main` as one PR, spec included. Big subtasks may have had their
-   own sub-branch + PR into the feature branch along the way; simple ones are single commits on it. Branch
+5. **Land** — flip the draft PR to **ready for review** when the spec's last box is checked; the feature
+   branch merges to `main` as one PR, spec included. Big subtasks may have had their own sub-branch + PR
+   into the feature branch along the way (same pattern: draft when the step starts with its sub-spec as the
+   first commit, ready when the step's boxes are checked); simple ones are single commits on it. Branch
    names carry the addressing — feature branch is `issue-<number>` (`issue-3219`), a big step's sub-branch
    adds `-step-<N>` (`issue-3219-step-2`) — so `implement-task` needs no arguments on a task branch.
 

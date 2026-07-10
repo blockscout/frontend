@@ -38,11 +38,18 @@ subtask is a single commit directly on the feature branch. Remind the developer 
 starts, but **never commit, push, or open PRs yourself** — the developer reviews the diff and commits between
 runs.
 
+**PR timing (developer's action — prompt, don't do):** a draft PR opens as soon as the spec is the branch's
+first commit (feature branch → `main`; a big step's sub-branch → feature branch, with its sub-spec as the
+first commit) and flips to ready for review when its breakdown's last box is checked. Nudge accordingly: on
+a first run with no PR yet, suggest opening the draft; when checking off the final subtask (or a big step's
+final step), suggest marking it ready.
+
 **Branch names carry the addressing.** The feature branch is `issue-<number>` (e.g. `issue-3219`); a big
-step's sub-branch adds a `-step-<N>` postfix (e.g. `issue-3219-step-2`). A dash postfix, **not** a slash —
-git forbids `X` and `X/…` coexisting. The names are fully mechanical (no slug to invent), which is what
-lets the skill construct branches itself and infer the spec (and the current big step) with no arguments.
-Ad-hoc specs without an issue have no convention — for them, pass the task dir explicitly.
+step's sub-branch adds a `-step-<N>` postfix (e.g. `issue-3219-step-2`). An **ad-hoc** spec's branch is its
+task-dir slug (`.agents/tasks/<slug>/` → branch `<slug>`). Dash postfixes, **not** slashes — git forbids
+`X` and `X/…` coexisting. The names are fully mechanical, which is what lets the skill construct branches
+itself and infer the spec (and the current big step) with no arguments: `issue-<n>` matches the task dir by
+issue number, any other branch matches by exact dir name.
 
 ## Workflow
 
