@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -27,14 +26,12 @@ import { getTokenTransfersStub } from '../../stubs';
 
 interface Props {
   token: schemas['Token'] | undefined;
-  isLoading: boolean;
+  isLoading?: boolean;
   tokenId?: string;
   tokenInstance?: schemas['TokenInstance'];
 };
 
 const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance }: Props) => {
-  const router = useRouter();
-
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
   const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
 
@@ -60,7 +57,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
   }, []);
 
   const channel = useSocketChannel({
-    topic: `tokens:${ router.query.hash?.toString().toLowerCase() }`,
+    topic: `tokens:${ token?.address_hash.toLowerCase() }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
     isDisabled: transfersQuery.isPlaceholderData || transfersQuery.isError || transfersQuery.pagination.page !== 1,

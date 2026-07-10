@@ -23,7 +23,7 @@ import TokenInventoryItem from './TokenInventoryItem';
 interface Props {
   hash: string;
   token: schemas['Token'] | undefined;
-  isLoading: boolean;
+  isLoading?: boolean;
   ownerFilter?: string;
 };
 
