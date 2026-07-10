@@ -5,42 +5,42 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import ActionBar from 'src/shell/page/action-bar/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+
+import { getTokenHoldersStub } from 'src/slices/token/stubs';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
-import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
 
-const TABS_HEIGHT = 88;
-
-type Props = {
-  token?: schemas['Token'];
-  holdersQuery: QueryWithPagesResult<'core:token_holders'>;
-  shouldRender?: boolean;
-  tabsHeight?: number;
+interface Props {
+  token: schemas['Token'] | undefined;
+  tokenId?: string;
+  isLoading: boolean;
 };
 
-const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = TABS_HEIGHT }: Props) => {
-  const isMobile = useIsMobile();
-  const isMounted = useIsMounted();
+const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
 
-  if (!isMounted || !shouldRender) {
-    return null;
-  }
+  const holdersQuery = useQueryWithPages({
+    resourceName: tokenId ? 'core:token_instance_holders' : 'core:token_holders',
+    pathParams: { hash: token?.address_hash, id: tokenId },
+    options: {
+      enabled: Boolean(token?.address_hash) && !isLoading,
+      placeholderData: getTokenHoldersStub(token?.type, null),
+    },
+  });
 
   if (holdersQuery.isError) {
     return <ApiFetchAlert/>;
   }
 
-  const actionBar = isMobile && (
+  const actionBar = (
     <ActionBar mt={ -6 }>
       { token && (
         <CsvExport
@@ -52,7 +52,7 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
           loadingInitial={ holdersQuery.pagination.isLoading }
         />
       ) }
-      <Pagination ml="auto" { ...holdersQuery.pagination }/>
+      { holdersQuery.pagination.isVisible && <Pagination ml="auto" { ...holdersQuery.pagination }/> }
     </ActionBar>
   );
 
@@ -64,7 +64,7 @@ const TokenHolders = ({ holdersQuery, token, shouldRender = true, tabsHeight = T
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ tabsHeight }
+          top={ ACTION_BAR_HEIGHT_DESKTOP }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>

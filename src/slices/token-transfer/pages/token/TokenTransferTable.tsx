@@ -19,7 +19,7 @@ import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
 interface Props {
   data: Array<schemas['TokenTransfer']>;
-  top: number;
+  top?: number;
   showSocketInfo: boolean;
   showSocketErrorAlert?: boolean;
   socketInfoNum?: number;

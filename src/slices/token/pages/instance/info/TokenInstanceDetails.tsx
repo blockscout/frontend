@@ -29,19 +29,11 @@ interface Props {
   data?: schemas['TokenInstance'];
   token?: schemas['Token'];
   isLoading?: boolean;
-  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
+const TokenInstanceDetails = ({ data, token, isLoading }: Props) => {
   const appActionData = useAppActionData(token?.address_hash, !isLoading);
   const isMounted = useIsMounted();
-
-  const handleCounterItemClick = React.useCallback(() => {
-    window.setTimeout(() => {
-      // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
-  }, [ scrollRef ]);
 
   if (!data || !token || !isMounted) {
     return null;
@@ -88,7 +80,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailedInfo.ItemValue>
 
-          <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address_hash } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
+          <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address_hash } id={ isLoading ? '' : data.id }/>
 
           <TokenNftMarketplaces
             isLoading={ isLoading }

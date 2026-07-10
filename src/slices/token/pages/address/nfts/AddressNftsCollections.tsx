@@ -54,7 +54,6 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
         hash: item.token.address_hash,
         tab: 'inventory',
         holder_address_hash: address,
-        scroll_to_tabs: 'true',
       },
     }, { chain: multichainContext?.chain });
     const hasOverload = Number(item.amount) > item.token_instances.length;

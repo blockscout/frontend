@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { tokenInfoERC721a } from 'src/slices/token/mocks/info';
@@ -8,35 +7,27 @@ import { test, expect } from 'playwright/lib';
 
 import TokenInventory from './TokenInventory';
 
-test('base view +@mobile', async({ render, mockAssetResponse }) => {
+test('base view +@mobile', async({ render, mockAssetResponse, mockApiResponse }) => {
 
+  await mockApiResponse('core:token_inventory', {
+    items: [
+      { ...tokenInstance, token_type: 'ERC-721' },
+      { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
+      { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
+    ],
+    next_page_params: { unique_token: 1 },
+  }, {
+    pathParams: { hash: tokenInfoERC721a.address_hash },
+    queryParams: { holder_address_hash: tokenInfoERC721a.address_hash },
+  });
   await mockAssetResponse(tokenInstance.image_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(
-    <Box pt={{ base: '134px', lg: 0 }}>
-      <TokenInventory
-
-        // @ts-ignore:
-        inventoryQuery={{
-          data: {
-            items: [
-              { ...tokenInstance, token_type: 'ERC-721' },
-              { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
-              { ...tokenInstance, image_url: null, token_type: 'ERC-721' },
-            ],
-            next_page_params: { unique_token: 1 },
-          },
-
-          // @ts-ignore:
-          pagination: { page: 1, isVisible: true },
-        }}
-
-        // @ts-ignore:
-        tokenQuery={{
-          data: tokenInfoERC721a,
-        }}
-      />
-    </Box>,
+    <TokenInventory
+      hash={ tokenInfoERC721a.address_hash }
+      token={ tokenInfoERC721a }
+      ownerFilter={ tokenInfoERC721a.address_hash }
+    />,
   );
 
   await expect(component).toHaveScreenshot();
