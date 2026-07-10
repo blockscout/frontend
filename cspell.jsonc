@@ -18,7 +18,8 @@
         "playwright/fixtures/rewards.ts",
         "public/static/capybara/index.js",
         "src/toolkit/pages/design-system/utils.ts",
-        "src/features/external-txs/components/TxExternalTxs.pw.tsx"
+        "src/features/external-txs/components/TxExternalTxs.pw.tsx",
+        ".agents/TEAM.md"
     ],
     "enableGlobDot": true,
     "ignoreRandomStrings": true,
