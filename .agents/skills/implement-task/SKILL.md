@@ -42,7 +42,8 @@ runs.
 first commit (feature branch → `main`; a big step's sub-branch → feature branch, with its sub-spec as the
 first commit) and flips to ready for review when its breakdown's last box is checked. Nudge accordingly: on
 a first run with no PR yet, suggest opening the draft; when checking off the final subtask (or a big step's
-final step), suggest marking it ready.
+final step), suggest finalizing it via the `create-pr` skill (finalize-draft mode: real description from the
+diff, labels, then ready for review).
 
 **Branch names carry the addressing.** The feature branch is `issue-<number>` (e.g. `issue-3219`); a big
 step's sub-branch adds a `-step-<N>` postfix (e.g. `issue-3219-step-2`). An **ad-hoc** spec's branch is its
