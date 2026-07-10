@@ -1,25 +1,23 @@
 ---
 name: grill-the-task
 description: >-
-  Interview the developer about a poorly-specified product task (GitHub issue) until it becomes an
-  implementable spec. Researches the issue, codebase, live API, and Figma mockups first, then grills one
-  question at a time and hands off to the to-spec skill. Also elaborates sub-specs for big steps of large
-  tasks. Use before starting any product task.
+  Grill a product task (GitHub issue) into an implementable spec — research first, then a
+  one-question-at-a-time interview; also elaborates sub-specs for big steps of large tasks.
 disable-model-invocation: true
 ---
 
 # Grill the task
 
-Product task issues are often thin — a title and a couple of links. Passing such a task straight to an agent
-(or a developer) produces guesswork. This skill closes the gap: research everything researchable, then
-interview the developer about everything that is a *decision*, tracking what they can't answer as open
-questions for the responsible people. The output is a spec, written by the `to-spec` skill.
+Product task issues arrive thin — a title and a couple of links. This skill closes the gap: research
+everything researchable, then grill the developer about everything that is a *decision*, tracking what they
+can't answer as open questions for the responsible people. The output is a spec, written by the `to-spec`
+skill.
 
 **Two modes.**
 
 - **Task mode** (default): input is a GitHub issue URL; output is the task's main spec.
 - **Subtask mode**: input is an existing spec plus a step number (a big step of a `large` task); the session
-  scopes research and questions to that step and outputs its sub-spec (`subtasks/<NN>-<slug>.md>`). Run it
+  scopes research and questions to that step and outputs its sub-spec (`subtasks/<NN>-<slug>.md`). Run it
   just-in-time, right before the step starts, against the by-then-current code.
 
 ## Step 1 — Research
@@ -53,11 +51,14 @@ Then run two mechanical cross-checks; every mismatch becomes an open question fo
   that displays that piece of information and verify each backing resource carries the new field — including
   proxy paths (e.g. BENS microservice data proxied through the core API, search results carrying the same info).
 
+Research is complete when every linked source is read or flagged inaccessible, every named endpoint has a
+real sample response, and both cross-checks have run with each mismatch recorded as an open question.
+
 ## Step 2 — Classify the size
 
 Propose a size to the developer and confirm it:
 
-- **small** — one step; implementable by an agent or an user right after this session.
+- **small** — one step; implementable by an agent or a user right after this session.
 - **medium** — a flat list of small subtasks in one spec.
 - **large** — many steps; the main spec lists them, small steps fully specified now, big steps as one-liners
   each getting its own subtask-mode grilling session later.
@@ -66,13 +67,13 @@ Propose a size to the developer and confirm it:
 
 **Invoke the `grilling` skill** and run the interview under its discipline: one question at a time with a
 recommended answer, decisions put to the developer while facts are looked up, and no enactment (Step 4)
-until shared understanding is confirmed. Skip anything the research already answered. **Start by picking
-the task's contacts**: for each
-relevant team in `.agents/TEAM.md`, ask which member owns this task (recommending the roster's default) —
-these go into the spec header. Also ask whether the task has (or deserves) a **dedicated Slack channel** —
-large features often get one, and it changes where open questions are sent (see the `to-spec` skill); record
-it in the spec header. When the developer doesn't know an answer, don't press — record the question with the
-owning contact and move on.
+until shared understanding is confirmed. Skip anything the research already answered.
+
+**Start by picking the task's contacts**: for each relevant team in `.agents/TEAM.md`, ask which member
+owns this task (recommending the roster's default) — these go into the spec header. Also ask whether the
+task has (or deserves) a **dedicated Slack channel** — large features often get one, and it changes where
+open questions are sent (see the `to-spec` skill); record it in the spec header. When the developer doesn't
+know an answer, don't press — record the question with the owning contact and move on.
 
 Cover these domains:
 
@@ -99,6 +100,10 @@ current text — don't work from memory of its questions. The answers are record
 spec, so `implement-task` can later execute without stopping to ask. Do this in whichever session fully
 specifies the subtask: here for small/medium tasks and small steps, in the just-in-time subtask session for
 big steps.
+
+The interview is complete when every domain is covered or explicitly skipped as research-answered, the
+contacts and channel are settled, every unanswered question has an owner, and every fully-specified
+`[agent]` subtask has its executor skill's inputs collected.
 
 ## Step 4 — Hand off to `to-spec`
 

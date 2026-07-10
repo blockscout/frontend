@@ -1,9 +1,8 @@
 ---
 name: implement-task
 description: >-
-  Execute the next subtask of a product-task spec from .agents/tasks/ — exactly one per run. Runs [agent]
-  subtasks by composing the project skills and verifying the result; hands [human] subtasks over to the
-  developer. Use when starting or continuing implementation of a task that has a spec.
+  Execute a product-task spec one leaf subtask per run — [agent] subtasks via the project skills,
+  [human] subtasks handed off to the developer.
 disable-model-invocation: true
 ---
 
@@ -16,9 +15,8 @@ task from the branch alone.
 
 ## Invocation
 
-- `/implement-task` — no arguments, the usual case: infer everything from the current branch. An
-  `issue-<number>` branch locates the task dir in `.agents/tasks/` by issue number; a `-step-<N>` postfix
-  narrows the run to big step N's sub-spec. Execute the next eligible subtask (Step 3 below).
+- `/implement-task` — no arguments, the usual case: infer the spec (and the current big step) from the
+  branch name, per the Branch model below. Execute the next eligible subtask (Step 3).
 - `/implement-task 4` — a **specific** subtask, out of order. Pending questions still refuse the run;
   unchecked dependencies are pointed out and need the developer's explicit confirmation to proceed.
 - `/implement-task 2.3` — large tasks address **leaf steps** with dotted numbers: step 3 inside big step 2's

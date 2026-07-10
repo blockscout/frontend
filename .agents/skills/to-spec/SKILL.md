@@ -54,6 +54,9 @@ For every open question with status `pending` and a recorded Slack permalink:
 4. If a reply raises a follow-up: draft it (in Russian, like all outreach), get the user's approval, send it
    **into the same thread**, and keep the question `pending`.
 
+The harvest is complete when every `pending` question with a permalink has had its thread read and is now
+resolved, followed up, or confirmed still unanswered.
+
 ### Step 3 — Write or merge the spec
 
 Extract from the conversation: decisions, requirements, data/API facts, UI inventory, size classification,
@@ -88,6 +91,9 @@ For `pending` questions that have **no** Slack permalink yet:
 If the Slack MCP tools are unavailable, record the questions with owners anyway and tell the user to route
 them manually.
 
+Outreach is complete when every `pending` question has a recorded permalink — or an explicit note that the
+developer routes it manually.
+
 ### Step 5 — Branch and draft PR (first creation only)
 
 When this run **created** the spec (or sub-spec), bootstrap the workflow's draft-PR-first policy — each
@@ -99,10 +105,9 @@ action only with the developer's explicit approval, never unprompted:
    header.
 2. **Commit** — propose committing the spec as the branch's first commit; show what will be committed and
    wait for confirmation.
-3. **Draft PR** — suggest opening it right away (feature branch → `main`, or sub-branch → feature branch)
-   via the `create-pr` skill, **as a draft**: a spec-only draft is the cheap moment for someone to catch a
-   wrong split or missed requirement before implementation starts, and CI and demo deploys hang off it for
-   the rest of the task. It flips to ready for review when the breakdown's last box is checked (the
+3. **Draft PR** — suggest opening it right away via the `create-pr` skill (draft-placeholder mode; feature
+   branch → `main`, sub-branch → feature branch). Why drafts open this early is documented in
+   `.agents/tasks/README.md`; the PR flips to ready when the breakdown's last box is checked (the
    `implement-task` skill nudges at that moment).
 
 For ad-hoc specs the draft PR doubles as a **parking spot**: an idea captured as a spec today can sit in

@@ -1,9 +1,8 @@
 ---
 name: create-pr
 description: >-
-  Create or finalize a pull request. Three modes: open a placeholder draft PR at spec time (spec-first
-  workflow), finalize a draft PR into ready-for-review with the real description and labels, or create a
-  regular PR right away for work done outside the task workflow.
+  Create or finalize a pull request — three modes: placeholder draft PR at spec time, finalize a draft
+  into ready-for-review, or a regular PR right away for work done outside the task workflow.
 ---
 # Create PR
 
