@@ -35,6 +35,7 @@ type Props = {
   isLoading?: boolean;
   stickyHeader?: boolean;
   translationQuery?: TxsTranslationQuery;
+  resetKey?: string;
 };
 
 const TxsTable = ({
@@ -49,8 +50,9 @@ const TxsTable = ({
   isLoading,
   stickyHeader = true,
   translationQuery,
+  resetKey,
 }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading });
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading, resetKey });
   const initialList = useInitialList({
     data: txs ?? [],
     idFn: (item) => item.hash,

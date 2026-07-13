@@ -23,10 +23,11 @@ interface Props {
   isLoading: boolean;
   items: Array<schemas['Transaction']>;
   translationQuery?: TxsTranslationQuery;
+  resetKey?: string;
 }
 
 const TxsList = (props: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: props.items, isEnabled: !props.isLoading });
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: props.items, isEnabled: !props.isLoading, resetKey: props.resetKey });
   const initialList = useInitialList({
     data: props.items ?? [],
     idFn: (item) => item.hash,

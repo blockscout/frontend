@@ -45,6 +45,7 @@ type Props = {
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
   showTableView?: boolean;
+  resetKey?: string;
 };
 
 const TxsContent = ({
@@ -63,6 +64,7 @@ const TxsContent = ({
   sort,
   stickyHeader = true,
   showTableView,
+  resetKey,
 }: Props) => {
   const isMobile = useIsMobile();
 
@@ -93,6 +95,7 @@ const TxsContent = ({
               isLoading={ isLoading }
               stickyHeader={ !isMobile && stickyHeader }
               translationQuery={ translationQuery }
+              resetKey={ resetKey }
             />
           </TableContainerScrollable>
         );
@@ -106,6 +109,7 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           items={ items }
           translationQuery={ translationQuery }
+          resetKey={ resetKey }
         />
       );
     }
