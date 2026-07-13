@@ -8,7 +8,9 @@ const STEP = 10;
 const MIN_ITEMS_NUM = 20;
 
 export interface Params {
-  list: Array<unknown>;
+  // only the length is read, so `undefined` (no data yet) is accepted — callers don't need to
+  // fall back to a fresh `[]` on every render
+  list: Array<unknown> | undefined;
   isEnabled: boolean;
   minItemsNum?: number;
   resetKey?: unknown;
@@ -28,6 +30,8 @@ export default function useLazyRenderedList({
   minItemsNum = MIN_ITEMS_NUM,
   resetKey,
 }: Params) {
+  const itemsNum = list?.length ?? 0;
+
   const [ renderedItemsNum, setRenderedItemsNum ] = React.useState(minItemsNum);
   const [ prevResetKey, setPrevResetKey ] = React.useState(resetKey);
 
@@ -42,14 +46,14 @@ export default function useLazyRenderedList({
   const { ref, inView } = useInView({
     rootMargin: '300px',
     triggerOnce: false,
-    skip: !isEnabled || list.length <= minItemsNum,
+    skip: !isEnabled || itemsNum <= minItemsNum,
   });
 
   React.useEffect(() => {
     if (inView) {
-      setRenderedItemsNum((prev) => clamp(prev + STEP, 0, list.length));
+      setRenderedItemsNum((prev) => clamp(prev + STEP, 0, itemsNum));
     }
-  }, [ inView, list.length ]);
+  }, [ inView, itemsNum ]);
 
   return { cutRef: ref, renderedItemsNum };
 }
