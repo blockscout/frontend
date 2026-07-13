@@ -77,6 +77,12 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     });
   }, [ multichainContext?.chain?.id, queryClient, type ]);
 
+  const handleNewBlockCountMessage: SocketMessage.NewBlockCount['handler'] = React.useCallback((payload) => {
+    if (payload.count > 0 && (!type || type === 'block')) {
+      setNewItemsCount((prev) => prev + payload.count);
+    }
+  }, [ type ]);
+
   const handleSocketClose = React.useCallback(() => {
     setShowSocketAlert(true);
   }, []);
@@ -95,6 +101,11 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     channel,
     event: 'new_block',
     handler: handleNewBlockMessage,
+  });
+  useSocketMessage({
+    channel,
+    event: 'new_blocks_count',
+    handler: handleNewBlockCountMessage,
   });
 
   const chainData = multichainContext?.chain;

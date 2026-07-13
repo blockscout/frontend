@@ -17,6 +17,7 @@ import type { SmartContractVerificationResponse } from 'src/slices/contract/type
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
+SocketMessage.NewBlockCount |
 SocketMessage.NewBlockMultichain |
 SocketMessage.BlocksIndexStatus |
 SocketMessage.InternalTxsIndexStatus |
@@ -59,6 +60,7 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
+  export type NewBlockCount = SocketMessageParamsGeneric<'new_blocks_count', { count: number }>;
   export type NewBlockMultichain = SocketMessageParamsGeneric<'new_blocks', Array<{ block_number: number; chain_id: number }>>;
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
