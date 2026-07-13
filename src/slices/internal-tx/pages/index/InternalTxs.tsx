@@ -52,10 +52,10 @@ const InternalTxs = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;

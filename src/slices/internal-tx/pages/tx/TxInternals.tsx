@@ -70,7 +70,7 @@ const TxInternals = ({ txQuery }: Props) => {
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>('default');
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
@@ -103,7 +103,7 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const content = filteredData ? (
     <>
-      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData }/></Box>
+      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData } resetKey={ queryHash }/></Box>
       <Box hideBelow="lg">
         <TxInternalsTable
           data={ filteredData }
@@ -111,6 +111,7 @@ const TxInternals = ({ txQuery }: Props) => {
           onSortToggle={ handleSortToggle }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
         />
       </Box>
     </>

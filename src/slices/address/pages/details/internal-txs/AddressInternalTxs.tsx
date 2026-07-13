@@ -33,7 +33,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const content = data?.items ? (
     <TableContainerScrollable>
-      <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
+      <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
     </TableContainerScrollable>
   ) : null ;
 

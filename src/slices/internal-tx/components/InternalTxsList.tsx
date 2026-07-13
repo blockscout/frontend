@@ -7,6 +7,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import InternalTxsListItem from './InternalTxsListItem';
 
 interface Props {
@@ -14,15 +16,17 @@ interface Props {
   currentAddress?: string;
   isLoading?: boolean;
   showBlockInfo?: boolean;
+  resetKey?: string;
 };
 
-const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true }: Props) => {
+const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
     <Box>
-      { data.map((item, index) => (
+      { data.slice(0, renderedItemsNum).map((item, index) => (
         <InternalTxsListItem
           key={ item.transaction_hash + '_' + index }
           data={ item }
@@ -32,6 +36,7 @@ const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true
           chainData={ chainData }
         />
       )) }
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };
