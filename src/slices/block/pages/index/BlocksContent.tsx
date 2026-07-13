@@ -110,7 +110,13 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
             isLoading={ query.isPlaceholderData }
           />
         ) }
-        <BlocksList data={ query.data.items } isLoading={ query.isPlaceholderData } page={ query.pagination.page } chainData={ chainData }/>
+        <BlocksList
+          data={ query.data.items }
+          isLoading={ query.isPlaceholderData }
+          page={ query.pagination.page }
+          chainData={ chainData }
+          resetKey={ query.queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <BlocksTable
@@ -122,6 +128,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
           socketInfoNum={ newItemsCount }
           showSocketErrorAlert={ showSocketAlert }
           chainData={ chainData }
+          resetKey={ query.queryHash }
         />
       </Box>
     </>
