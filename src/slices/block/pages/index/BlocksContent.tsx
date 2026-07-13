@@ -78,7 +78,9 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   }, [ multichainContext?.chain?.id, queryClient, type ]);
 
   const handleNewBlockCountMessage: SocketMessage.NewBlockCount['handler'] = React.useCallback((payload) => {
-    if (payload.count > 0 && (!type || type === 'block')) {
+    const listType = type ?? 'block';
+    const payloadType = payload.type ?? 'block';
+    if (payload.count > 0 && (listType === payloadType)) {
       setNewItemsCount((prev) => prev + payload.count);
     }
   }, [ type ]);
