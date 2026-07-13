@@ -11,6 +11,7 @@ import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
@@ -19,23 +20,30 @@ import TokenTransfersTable from './TokenTransfersTable';
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: query.data?.items,
+    isEnabled: !query.isPlaceholderData,
+    resetKey: query.queryHash,
+  });
 
   const content = (
     <>
       <Box hideFrom="lg">
-        { query.data?.items.map((item, index) => (
+        { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
             key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') }
             isLoading={ query.isPlaceholderData }
             item={ item }
           />
         )) }
+        <Box ref={ cutRef } h={ 0 }/>
       </Box>
       <Box hideBelow="lg">
         <TokenTransfersTable
           items={ query.data?.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ query.isPlaceholderData }
+          resetKey={ query.queryHash }
         />
       </Box>
     </>

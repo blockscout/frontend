@@ -8,6 +8,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import TokenTransferListItem from './TokenTransferListItem';
 
 interface Props {
@@ -16,15 +18,17 @@ interface Props {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement, isLoading }: Props) => {
+const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement, isLoading, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
     <Box>
-      { data.map((item, index) => (
+      { data.slice(0, renderedItemsNum).map((item, index) => (
         <TokenTransferListItem
           key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
           data={ item }
@@ -35,6 +39,7 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement,
           chainData={ chainData }
         />
       )) }
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };
