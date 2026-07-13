@@ -14,9 +14,13 @@ import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
+
+// log rows are tall, so the initial window is smaller than the default
+const INITIAL_RENDERED_ITEMS_NUM = 10;
 
 interface Props {
   txQuery: TxQuery;
@@ -24,13 +28,20 @@ interface Props {
 }
 
 const TxLogs = ({ txQuery, logsFilter }: Props) => {
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:tx_logs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
       placeholderData: generateListStub<'core:tx_logs'>(LOG, 3, { next_page_params: null }),
     },
+  });
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: data?.items,
+    isEnabled: !isPlaceholderData,
+    minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
+    resetKey: queryHash,
   });
 
   if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
@@ -62,7 +73,7 @@ const TxLogs = ({ txQuery, logsFilter }: Props) => {
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
-      { items.map((item, index) => (
+      { items.slice(0, renderedItemsNum).map((item, index) => (
         <LogItem
           key={ index }
           data={ item }
@@ -71,6 +82,7 @@ const TxLogs = ({ txQuery, logsFilter }: Props) => {
           defaultDataType={ txQuery.data?.zilliqa?.is_scilla ? 'UTF-8' : undefined }
         />
       )) }
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };
