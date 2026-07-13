@@ -34,7 +34,7 @@ interface Props {
   overloadCount?: number;
 }
 
-const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, overloadCount }: Props) => {
+const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, overloadCount }: Props) => {
   const { isError, isPlaceholderData, data, pagination } = query;
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
@@ -61,6 +61,7 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
         showSocketErrorAlert={ showSocketAlert }
         socketInfoNum={ newItemsCount }
         isLoading={ isPlaceholderData }
+        resetKey={ query.queryHash }
       />
     </TableContainerScrollable>
   ) : null;
@@ -115,4 +116,4 @@ const TokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, 
   );
 };
 
-export default React.memo(TokenTransfersLocal);
+export default React.memo(AddressTokenTransfersLocal);

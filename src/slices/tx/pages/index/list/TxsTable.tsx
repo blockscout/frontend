@@ -50,7 +50,7 @@ const TxsTable = ({
   stickyHeader = true,
   translationQuery,
 }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading });
   const initialList = useInitialList({
     data: txs ?? [],
     idFn: (item) => item.hash,

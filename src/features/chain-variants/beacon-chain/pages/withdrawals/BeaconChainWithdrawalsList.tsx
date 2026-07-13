@@ -16,7 +16,7 @@ interface Props {
 };
 
 const WithdrawalsList = ({ items, view, isLoading }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading });
 
   return (
     <Box>

@@ -26,7 +26,7 @@ interface Props {
 }
 
 const TxsList = (props: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(props.items, !props.isLoading);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: props.items, isEnabled: !props.isLoading });
   const initialList = useInitialList({
     data: props.items ?? [],
     idFn: (item) => item.hash,

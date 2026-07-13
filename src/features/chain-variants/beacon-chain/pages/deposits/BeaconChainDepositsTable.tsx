@@ -24,7 +24,7 @@ interface Props {
 };
 
 const BeaconChainDepositsTable = ({ items, isLoading, top, view }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading });
 
   if (!feature.isEnabled || feature.withdrawalsOnly) {
     return null;

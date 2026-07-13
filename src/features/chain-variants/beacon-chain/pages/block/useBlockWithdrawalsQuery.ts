@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
+import { hashKey, useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
@@ -67,8 +67,9 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     },
   });
 
+  const rpcQueryKey = [ 'RPC', 'block', { heightOrHash } ];
   const rpcQuery = useQuery<RpcResponseType, unknown, operations['BlockController.withdrawals']['json'] | null>({
-    queryKey: [ 'RPC', 'block', { heightOrHash } ],
+    queryKey: rpcQueryKey,
     queryFn: async() => {
       if (!publicClient) {
         return null;
@@ -136,6 +137,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     onSortingChange: () => {},
     chainValue: undefined,
     onChainValueChange: () => {},
+    queryHash: hashKey(rpcQueryKey),
   };
 
   const query = isRpcQuery ? rpcQueryWithPages : apiQuery;

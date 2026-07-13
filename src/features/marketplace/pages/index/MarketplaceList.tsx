@@ -26,7 +26,7 @@ const MarketplaceList = ({
   apps, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
   onAppClick, graphLinksQuery,
 }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: apps, isEnabled: !isLoading, minItemsNum: 16 });
 
   const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
     onFavoriteClick(id, isFavorite, 'Discovery view');
