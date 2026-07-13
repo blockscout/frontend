@@ -14,11 +14,15 @@ import { TOKEN_INSTANCE_ITEM } from 'src/slices/token/stubs';
 import ResetFilterButton from 'src/shared/filters/ResetFilterButton';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import TokenInventoryItem from './TokenInventoryItem';
+
+// grid layout (not a table), so the initial window is larger than the default
+const INITIAL_RENDERED_ITEMS_NUM = 30;
 
 interface Props {
   hash: string;
@@ -40,6 +44,13 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
   });
 
   const isLoading = isLoadingProp || Boolean(inventoryQuery.isPlaceholderData);
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: inventoryQuery.data?.items,
+    isEnabled: !isLoading,
+    minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
+    resetKey: inventoryQuery.queryHash,
+  });
 
   const resetOwnerFilter = React.useCallback(() => {
     inventoryQuery.onFilterChange({});
@@ -78,7 +89,7 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
         rowGap={{ base: 3, lg: 6 }}
         gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
       >
-        { items.map((item, index) => (
+        { items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenInventoryItem
             key={ item.id + '_' + index + (inventoryQuery.isPlaceholderData ? '_' + 'placeholder' : '') }
             item={ item }
@@ -87,6 +98,7 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
           />
         )) }
       </Grid>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   ) : null;
 

@@ -5,18 +5,23 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import TokenHoldersListItem from './TokenHoldersListItem';
 
 interface Props {
   data: Array<schemas['TokenHolderResponse']>;
   token: schemas['Token'];
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const TokenHoldersList = ({ data, token, isLoading }: Props) => {
+const TokenHoldersList = ({ data, token, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
   return (
     <Box>
-      { data.map((item, index) => {
+      { data.slice(0, renderedItemsNum).map((item, index) => {
         const tokenId = 'token_id' in item ? item.token_id : null;
         return (
           <TokenHoldersListItem
@@ -27,6 +32,7 @@ const TokenHoldersList = ({ data, token, isLoading }: Props) => {
           />
         );
       }) }
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };

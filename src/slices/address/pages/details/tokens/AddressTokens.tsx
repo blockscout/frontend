@@ -79,6 +79,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
           isError={ fungibleTokensQuery.isError }
           tokenTypes={ fungibleTokenTypes }
           onTokenTypesChange={ handleFungibleTokenTypesChange }
+          resetKey={ fungibleTokensQuery.queryHash }
         />
       ),
     },

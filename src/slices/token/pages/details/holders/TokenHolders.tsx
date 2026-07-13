@@ -66,6 +66,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
           token={ token }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           isLoading={ holdersQuery.isPlaceholderData }
+          resetKey={ holdersQuery.queryHash }
         />
       </Box>
       <Box display={{ base: 'block', lg: 'none' }}>
@@ -73,6 +74,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
           data={ items }
           token={ token }
           isLoading={ holdersQuery.isPlaceholderData }
+          resetKey={ holdersQuery.queryHash }
         />
       </Box>
     </>

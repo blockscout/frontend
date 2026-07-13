@@ -7,6 +7,8 @@ import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/tok
 
 import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenHoldersTableItem';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
@@ -14,9 +16,12 @@ interface Props {
   token: schemas['Token'];
   top: number;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
+const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
   return (
     <TableRoot>
       <TableHeaderSticky top={ top }>
@@ -30,12 +35,13 @@ const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => {
+        { data.slice(0, renderedItemsNum).map((item, index) => {
           const tokenId = 'token_id' in item ? item.token_id : null;
           return (
             <TokenHoldersTableItem key={ item.address.hash + tokenId + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
           );
         }) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );
