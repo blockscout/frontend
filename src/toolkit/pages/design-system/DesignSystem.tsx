@@ -19,6 +19,7 @@ import ClipboardShowcase from './tabs/Clipboard';
 import CloseButtonShowcase from './tabs/CloseButton';
 import CollapsibleShowcase from './tabs/Collapsible';
 import ContentLoaderShowcase from './tabs/ContentLoader';
+import DatePickerShowcase from './tabs/DatePicker';
 import DialogShowcase from './tabs/Dialog';
 import EmptyStateShowcase from './tabs/EmptyState';
 import FieldShowcase from './tabs/Field';
@@ -56,6 +57,7 @@ const tabs = [
   { label: 'Close button', value: 'close-button', component: <CloseButtonShowcase/> },
   { label: 'Collapsible', value: 'collapsible', component: <CollapsibleShowcase/> },
   { label: 'Content loader', value: 'content-loader', component: <ContentLoaderShowcase/> },
+  { label: 'Date picker', value: 'date-picker', component: <DatePickerShowcase/> },
   { label: 'Dialog', value: 'dialog', component: <DialogShowcase/> },
   { label: 'Empty state', value: 'empty-state', component: <EmptyStateShowcase/> },
   { label: 'Field', value: 'field', component: <FieldShowcase/> },

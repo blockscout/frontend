@@ -8,6 +8,7 @@ import { recipe as checkbox } from './checkbox.recipe';
 import { recipe as checkmark } from './checkmark.recipe';
 import { recipe as closeButton } from './close-button.recipe';
 import { recipe as code } from './code.recipe';
+import { recipe as datePicker } from './date-picker.recipe';
 import { recipe as dialog } from './dialog.recipe';
 import { recipe as drawer } from './drawer.recipe';
 import { recipe as emptyState } from './empty-state.recipe';
@@ -56,6 +57,7 @@ export const slotRecipes = {
   accordion,
   alert,
   checkbox,
+  datePicker,
   dialog,
   drawer,
   emptyState,
