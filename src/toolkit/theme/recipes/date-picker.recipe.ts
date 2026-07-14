@@ -217,28 +217,28 @@ export const recipe = defineSlotRecipe({
       },
       '&[data-selected]': {
         bg: 'selected.option.bg',
-        color: 'text.primary',
+        color: 'whiteAlpha.900',
         _hover: {
           bg: 'selected.option.bg',
-          color: 'text.primary',
+          color: 'whiteAlpha.900',
         },
       },
       '&[data-in-range]': {
         bg: 'selected.option.bg',
-        color: 'text.primary',
+        color: 'whiteAlpha.900',
         borderRadius: '0',
         _hover: {
           bg: 'selected.option.bg',
-          color: 'text.primary',
+          color: 'whiteAlpha.900',
         },
       },
       '&[data-in-range][data-selected]': {
         bg: 'selected.option.bg',
-        color: 'text.primary',
+        color: 'whiteAlpha.900',
         borderRadius: '0',
         _hover: {
           bg: 'selected.option.bg',
-          color: 'text.primary',
+          color: 'whiteAlpha.900',
         },
         '&[data-range-start][data-range-end]': {
           borderRadius: 'sm',
