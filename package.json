@@ -12,6 +12,7 @@
     "dev": "./tools/scripts/dev.sh",
     "dev:preset": "./tools/dev-server/dev.preset.sh",
     "dev:local": "./tools/dev-server/dev.local.sh",
+    "prod:preset": "./tools/dev-server/prod.preset.sh",
     "presets:sync": "node ./tools/dev-server/sync-preset-lists.mjs --write",
     "presets:lint": "node ./tools/dev-server/sync-preset-lists.mjs",
     "build": "next build",
