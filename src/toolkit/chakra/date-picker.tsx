@@ -1,13 +1,19 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal } from '@chakra-ui/react';
 
+import dayjs from 'src/shared/date-and-time/dayjs';
 import ArrowIcon from 'src/sprite/icons/arrows/east-mini.svg';
 import CalendarIcon from 'src/sprite/icons/calendar.svg';
 
 import { CloseButton } from './close-button';
 import { Field } from './field';
 import { InputGroup } from './input-group';
+
+const format = (date: DateValue) => {
+  return dayjs(date.toString()).format('MMM D, YYYY');
+};
 
 interface DatePickerProps extends ChakraDatePicker.RootProps {}
 
@@ -26,9 +32,9 @@ export const DatePicker = ({ placeholder, ...rest }: DatePickerProps) => {
   return (
     <ChakraDatePicker.Root
       closeOnSelect
-      openOnClick
       lazyMount
       unmountOnExit
+      format={ format }
       { ...rest }
       positioning={ positioning }
     >
