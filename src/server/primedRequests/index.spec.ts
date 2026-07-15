@@ -10,7 +10,7 @@ import { PRIMED_PAGES } from './registry';
 
 // the home page resources under the vitest config (feature-dependent entries may be absent —
 // the tests cover the default behavior, not the full list)
-const HOME_RESOURCES = PRIMED_PAGES['/']().map(({ resource }) => resource);
+const HOME_RESOURCES = PRIMED_PAGES['/'].resources().map(({ resource }) => resource);
 
 function runScript(script: string) {
   new Function(script)();
@@ -119,11 +119,75 @@ describe('inline script', () => {
   });
 });
 
+describe('inline script with route params (tx page)', () => {
+  const TX_HASH = '0xd829d43a222a4d0AC26b09fcaa4ea431a3b0327f8b2e29e26f4bd05a26cf2481';
+
+  const setUrl = (url: string) => window.history.replaceState(null, '', url);
+
+  // the tx page resources under the vitest config (interpretation feature may be absent)
+  const TX_RESOURCES = PRIMED_PAGES['/tx/[hash]'].resources().map(({ resource }) => resource);
+
+  afterEach(() => {
+    setUrl('/');
+  });
+
+  it('keeps the script independent of the request url', () => {
+    const script = getPrimerScript('/tx/[hash]');
+
+    expect(script).toContain('PRIMERROUTEPARAM0');
+    expect(script).not.toContain(TX_HASH);
+  });
+
+  it('substitutes route params from the pathname and primes the default tab requests', () => {
+    fetchMock.mockResponse(JSON.stringify({}));
+    setUrl(`/tx/${ TX_HASH }`);
+
+    runScript(getPrimerScript('/tx/[hash]'));
+
+    expect(window.__primedFetches?.size).toBe(TX_RESOURCES.length);
+
+    const entry = window.__primedFetches?.get(buildUrl('core:tx', { hash: TX_HASH }));
+    expect(entry).toBeDefined();
+    // buildHeaders + buildUrl run in the same jsdom — the invariant the consume-time
+    // comparison in primed-fetch.ts checks
+    expect(entry?.headers).toEqual(buildHeaders('core:tx'));
+  });
+
+  it('primes when the tab query param names the restricted tab explicitly', () => {
+    fetchMock.mockResponse(JSON.stringify({}));
+    setUrl(`/tx/${ TX_HASH }?tab=index`);
+
+    runScript(getPrimerScript('/tx/[hash]'));
+
+    expect(window.__primedFetches?.size).toBe(TX_RESOURCES.length);
+  });
+
+  it('does not prime tab-restricted requests on other tabs', () => {
+    fetchMock.mockResponse(JSON.stringify({}));
+    setUrl(`/tx/${ TX_HASH }?tab=logs`);
+
+    runScript(getPrimerScript('/tx/[hash]'));
+
+    expect(window.__primedFetches?.size).toBe(0);
+    expect(fetchMock.requests()).toHaveLength(0);
+  });
+
+  it('does not prime param-dependent requests when the pathname does not match the route pattern', () => {
+    fetchMock.mockResponse(JSON.stringify({}));
+    setUrl('/some/other/page');
+
+    runScript(getPrimerScript('/tx/[hash]'));
+
+    expect(window.__primedFetches?.size).toBe(0);
+    expect(fetchMock.requests()).toHaveLength(0);
+  });
+});
+
 describe('getPrimerScriptCspHashes', () => {
   it('produces one quoted sha256 token per registered page', async() => {
     const hashes = await getPrimerScriptCspHashes();
 
-    expect(hashes).toHaveLength(1);
+    expect(hashes).toHaveLength(Object.keys(PRIMED_PAGES).length);
     hashes.forEach((hash) => {
       expect(hash).toMatch(/^'sha256-[A-Za-z0-9+/]+={0,2}'$/);
     });

@@ -5,7 +5,7 @@
 // the JS bundle is still downloading/evaluating. The fetch layer consumes each primed
 // request instead of hitting the network a second time (src/api/utils/primed-fetch.ts).
 
-import type { GetPagePrimedResources, PrimedRequestTuple } from './types';
+import type { PagePrimerConfig, PrimedRequestTuple, PrimerPayload } from './types';
 
 import buildHeaders from 'src/api/utils/build-headers';
 import buildUrl from 'src/api/utils/build-url';
@@ -15,9 +15,22 @@ import getResourceParams from 'src/api/utils/get-resource-params';
 import { PRIMED_FETCH_SCRIPT } from './inlineScript';
 import { PRIMED_PAGES } from './registry';
 
-function getRequestTuples(getResources: GetPagePrimedResources): Array<PrimedRequestTuple> {
-  return getResources().map(({ resource, pathParams, queryParams }) => {
-    const url = buildUrl(resource, pathParams, queryParams);
+function getRequestTuples(pageConfig: PagePrimerConfig): Array<PrimedRequestTuple> {
+  return pageConfig.resources().map(({ resource, pathParams, queryParams, tabs }) => {
+    // route-param references become alphanumeric placeholders that survive buildUrl's
+    // path compilation unencoded; the inline script substitutes them in the browser
+    const routeParams: Array<[ string, string ]> = [];
+    const resolvedPathParams = pathParams && Object.fromEntries(Object.entries(pathParams).map(([ name, value ]) => {
+      if (typeof value === 'string') {
+        return [ name, value ];
+      }
+
+      const placeholder = `PRIMERROUTEPARAM${ routeParams.length }`;
+      routeParams.push([ placeholder, value.routeParam ]);
+      return [ name, placeholder ];
+    }));
+
+    const url = buildUrl(resource, resolvedPathParams, queryParams);
     // on the server buildHeaders resolves only the cookie-independent part of the headers
     // (proxy routing + static per-resource headers) — there are no cookies here
     const serverHeaders = buildHeaders(resource) as Record<string, string>;
@@ -28,6 +41,8 @@ function getRequestTuples(getResources: GetPagePrimedResources): Array<PrimedReq
       url,
       Object.keys(serverHeaders).length > 0 ? serverHeaders : null,
       cookieHeaders.length > 0 ? cookieHeaders : null,
+      routeParams.length > 0 ? routeParams : null,
+      tabs && tabs.length > 0 ? tabs : null,
     ];
   });
 }
@@ -38,18 +53,24 @@ function getRequestTuples(getResources: GetPagePrimedResources): Array<PrimedReq
  */
 export function getPrimerScript(page: string | undefined): string {
   try {
-    const getResources = page ? PRIMED_PAGES[page] : undefined;
-    if (!getResources) {
+    const pageConfig = page ? PRIMED_PAGES[page] : undefined;
+    if (!pageConfig) {
       return '';
     }
 
-    const requests = getRequestTuples(getResources);
+    const requests = getRequestTuples(pageConfig);
     if (requests.length === 0) {
       return '';
     }
 
+    const payload: PrimerPayload = {
+      route: page as string,
+      defaultTab: pageConfig.defaultTab ?? null,
+      requests,
+    };
+
     // escape "<" so that the JSON payload cannot terminate the surrounding <script> element
-    return `${ PRIMED_FETCH_SCRIPT }(${ JSON.stringify(requests).replace(/</g, '\\u003c') })`;
+    return `${ PRIMED_FETCH_SCRIPT }(${ JSON.stringify(payload).replace(/</g, '\\u003c') })`;
   } catch (error) {
     return '';
   }
