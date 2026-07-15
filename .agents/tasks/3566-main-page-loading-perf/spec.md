@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3566 |
-| Status | `ready` |
+| Status | `in progress` |
 | Size | `large` |
 | Feature branch | `issue-3566` |
 | PM | — (technical/perf task, no product questions) |
@@ -105,20 +105,8 @@ issue #3566.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1)
-  - inputs:
-    - Starting point: git stash `primed-fetch prototype (lever 1, issue #3566)` on the developer's
-      machine (files: `src/server/homePagePrimedRequests.ts`, `src/api/utils/primed-fetch.ts`,
-      `_document.tsx` inline script, `useFetch.ts` consumption, `global.d.ts` typing). An older
-      near-duplicate stash `perf: primed fetch` (on main) is obsolete.
-    - Hardening beyond the prototype: skip consuming a primed response when cookie-derived request
-      headers would differ (`api-v2-temp-token`, `show-scam-tokens`) — or embed those headers
-      server-side in `_document`, which sees the cookies; add a comment-pact + unit test keeping
-      the primed resource list in sync with the home page widgets (`Home.tsx`); make sure a primed
-      fetch rejection behaves identically to a normal fetch failure.
-    - GET-only, consume-once semantics (delete from the map on take).
-    - Out of scope for this subtask: extending the primer to other entry pages (address, tx) —
-      evaluate only after the home-page version has soaked.
+- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+      `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups)
 - [ ] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
   - inputs:
     - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets
