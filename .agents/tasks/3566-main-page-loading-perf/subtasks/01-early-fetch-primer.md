@@ -51,12 +51,31 @@ primer can roll out to other entry pages later with a simple resource descriptor
 - Fixed a latent `src/config` ↔ `cookies.ts` circular-import TDZ crash (entering the import
   graph via `cookies` first) by removing the late-initialized `isBrowser` binding use in
   `cookies.get`.
+- **Dynamic route params + tab gating** (added 2026-07-15 by developer request, tx page as
+  the pilot — pulled into this subtask from the original "other pages later" scope): a
+  descriptor's `pathParams` may reference a route param (`{ routeParam: 'hash' }`), which the
+  generator turns into an alphanumeric placeholder in the URL template; the inline script
+  matches the page's route pattern against `location.pathname`, extracts the raw segment, and
+  substitutes it (split/join — `replaceAll` would misread `$` in values). A `tabs` field
+  restricts a request to a set of tabs — a resource shared by several tabs lists them all, no
+  duplication; the active tab is the `tab` query param, falling back to the page's
+  `defaultTab` (declared in its registry entry, matching `useActiveTabFromQuery` semantics)
+  when the param is absent. Both are resolved in the browser, so the script stays
+  deterministic per config and the startup CSP hashing is unchanged. Unresolvable params or a
+  pattern mismatch → the request is simply not primed. `/tx/[hash]` primes `core:tx` plus the
+  config-gated interpretation resource (`core:tx_interpretation` / `core:noves_transaction`),
+  index tab only.
 
 ## Verification (2026-07-15)
 
-- Live on a dev preset of a production instance: script embedded for `/` only (proxy-form URLs +
-  `x-endpoint`), all 6 primed requests consumed exactly once, later refetches hit the network
-  as usual, page renders normally.
+- Live on a dev preset of a production instance, home page: script embedded for `/` only
+  (proxy-form URLs + `x-endpoint`), all 6 primed requests consumed exactly once, later
+  refetches hit the network as usual, page renders normally.
+- Same setup, tx page: the embedded script is request-independent (URL
+  templates with placeholders, no hash anywhere); the browser substitutes the hash from
+  `location.pathname` (map keys match `buildUrl` byte-for-byte); primed 200s are consumed and
+  the page renders; on `?tab=logs` the script primes nothing; a primed 500 (flaky dev proxy)
+  behaved exactly like a normal fetch failure — the app retried over the network.
 - Unit tests: `src/server/primedRequests/index.spec.ts` (script generation, inline-script
   behavior, primer/client header-equality invariant, CSP hash format) and
   `src/api/utils/primed-fetch.spec.ts` (consume-once, mismatch fallback). Expected resources
@@ -71,6 +90,21 @@ primer can roll out to other entry pages later with a simple resource descriptor
 - **Registry ↔ page drift**: there is deliberately no pact comment in `Home.tsx` (easy to get
   stale). Possible future tooling: an automated check that the primed resource list matches
   the requests the page actually makes on first render (e.g. a Playwright-based assertion).
-- **Deterministic registry vs. route params**: how to extend the primer to pages whose request
-  URLs depend on the route (address/tx pages) given the CSP hashing strategy — per-request
-  hashing in the proxy vs. the existing nonce mechanism. Discussion pending.
+- **Deterministic registry vs. route params** — investigated and **implemented** 2026-07-15
+  (see the design decision above; `/tx/[hash]` is the pilot). Rationale kept for the record:
+  no param validation — components don't validate router params before requesting either, and
+  the failure mode is benign (a param whose encoded pathname form differs from the client's
+  decode→re-encode round-trip yields a primed URL the consumer never looks up — one wasted
+  request; `compile()` keeps hex hashes and block numbers verbatim, so realistic params are
+  byte-identical). Browser-side substitution costs ~1 µs per page load for 6 requests
+  (measured), i.e. noise. Per-request server cost of the rejected alternatives (vitest bench,
+  Node, mean per page request):
+  | strategy | mean | notes |
+  | --- | --- | --- |
+  | static registry (chosen) | ~0 µs | cached policy, no per-request work |
+  | nonce, template-replace | ~0.5 µs | needs nonce threading + per-request policy string |
+  | nonce, naive regeneration | ~10 µs (max 44 ms) | today's sevio code path |
+  | per-request script hash | ~30 µs | route matching + script regeneration in the middleware |
+  Side finding: the existing sevio nonce path regenerates the full policy per request; a
+  prebuilt template with string replace would cut it ~20× and remove the fat tail — tracked
+  as https://github.com/blockscout/frontend/issues/3571.
