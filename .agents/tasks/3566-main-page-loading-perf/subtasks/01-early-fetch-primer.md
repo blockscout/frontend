@@ -1,7 +1,9 @@
 # Subtask 1 — productionize the early-fetch primer (lever 1)
 
-Sub-spec for subtask 1 of [the main spec](../spec.md). Status: implementation in the working
-tree; review + A/B measurement pending.
+Sub-spec for subtask 1 of [the main spec](../spec.md). Status: `done` (2026-07-16) — measured
+−1.2 s content-rendered on a single production run; numbers in the main spec's Impact tracking
+table. Open follow-up questions below (Q1, Q2) are tracked for later subtasks/tasks and do not
+block this one.
 
 ## Goal
 
@@ -84,10 +86,26 @@ primer can roll out to other entry pages later with a simple resource descriptor
 
 ## Follow-ups
 
-- **Multichain home page**: the primer returns no requests when `multichain` is enabled — the
-  multichain home renders a distinct widget set with its own resources. Whether to prime it is
-  a product question; the developer will ask the PMs. (2026-07-15)
-- **Registry ↔ page drift** — **implemented** 2026-07-15 as `*.primed.spec.tsx` drift tests
+### Q1 — Should the multichain home page get its own primed requests?
+
+- Owner: PM (asked by the developer)
+- Status: `pending`
+- Context: the primer returns no requests when `multichain` is enabled — the multichain home
+  renders a distinct widget set with its own resources. (2026-07-15)
+- Answer: —
+
+### Q2 — Which pages should the primed fetch roll out to (the full list)?
+
+- Owner: PM (asked by the developer)
+- Status: `pending`
+- Context: home and `/tx/[hash]` (default tab) are live; the mechanism is generic — a new page
+  is one registry entry plus a colocated drift spec. Candidates worth asking about: address,
+  block, token pages. (2026-07-16)
+- Answer: —
+
+### Q3 — Registry ↔ page drift tooling
+
+- Status: `resolved` — implemented 2026-07-15 as `*.primed.spec.tsx` drift tests
   (see the unit-testing rules for the convention). Each registered page has a spec next to its
   root component that executes the real inline script, mounts the real page component with its
   layout in jsdom, and asserts every primed request is fired by the page byte-identically
@@ -101,7 +119,10 @@ primer can roll out to other entry pages later with a simple resource descriptor
   registry bug on its first run: `core:homepage_indexing_status` is requested by the shell
   header's indexing alert and is config-gated (`chain.indexingStatus.blocks.isHidden`) — the
   registry now mirrors that gate instead of priming it unconditionally.
-- **Deterministic registry vs. route params** — investigated and **implemented** 2026-07-15
+
+### Q4 — Deterministic registry vs. route params
+
+- Status: `resolved` — investigated and implemented 2026-07-15
   (see the design decision above; `/tx/[hash]` is the pilot). Rationale kept for the record:
   no param validation — components don't validate router params before requesting either, and
   the failure mode is benign (a param whose encoded pathname form differs from the client's
@@ -116,6 +137,9 @@ primer can roll out to other entry pages later with a simple resource descriptor
   | nonce, template-replace | ~0.5 µs | needs nonce threading + per-request policy string |
   | nonce, naive regeneration | ~10 µs (max 44 ms) | today's sevio code path |
   | per-request script hash | ~30 µs | route matching + script regeneration in the middleware |
-  Side finding: the existing sevio nonce path regenerates the full policy per request; a
-  prebuilt template with string replace would cut it ~20× and remove the fat tail — tracked
-  as https://github.com/blockscout/frontend/issues/3571.
+
+### Q5 — Sevio CSP nonce path regenerates the full policy per request
+
+- Status: `resolved` — routed to https://github.com/blockscout/frontend/issues/3571 (a prebuilt
+  template with string replace cuts it ~20× and removes the fat tail); implemented outside this
+  task.

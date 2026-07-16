@@ -86,7 +86,7 @@ Baseline and prototype numbers below are single runs from the research session (
 | --- | --- | --- | --- | --- | --- | --- |
 | Baseline (single run) | 1526 ms | 916 ms | 2283 ms | 2534 ms | 1059 ms | 1840 KB |
 | After 1 (prototype, single run) | 1152 ms | 88 ms | 1894 ms¹ | 2044 ms¹ | 616 ms | 1840 KB |
-| After 1 (production impl) | | | | | | |
+| After 1 (production impl, single run) | 1230 ms | 90 ms | 1274 ms³ | 1307 ms³ | 598 ms | 1854 KB |
 | After 2 (mixpanel) | | | | | | |
 | After 3 (rollbar) | | | | | | |
 | After 4 (wallet stack) | | | | | | |
@@ -98,6 +98,10 @@ Baseline and prototype numbers below are single runs from the research session (
 and still came out ahead — normalized to equal backend latency the M4 gain is ~1.1 s.
 ² Assuming the instance's median transactions-endpoint latency (~1.3 s); the structural change is
 `content-ready = max(boot, backend)` instead of `boot + backend`.
+³ Single run, 2026-07-16. All 6 primed requests start at ~90 ms (vs 916–1372 ms in the baseline);
+this run drew a fast transactions response (1184 ms), putting M3/M4 already below the final
+estimate — treat the ~1.2 s M4 gain as this run's number, not the median. M6 +14 KB gz is the
+inline primer script + payload.
 
 After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
 the table. When the last box is checked, fill "Final (measured)" and post the completed table to
@@ -105,8 +109,10 @@ issue #3566.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
-      `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups)
+- [x] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+      `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups).
+      Done 2026-07-16: generic per-page registry + inline script (route params, tab gating),
+      CSP startup hashes, drift tests; measured −1.2 s content-rendered (see Impact tracking).
 - [ ] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
   - inputs:
     - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets
