@@ -657,7 +657,7 @@ importers:
     devDependencies:
       '@svgr/plugin-jsx':
         specifier: 8.1.0
-        version: 8.1.0(@svgr/core@8.1.0(typescript@7.0.2))
+        version: 8.1.0(@svgr/core@8.1.0(@typescript/typescript6@6.0.2))
       '@types/node':
         specifier: 20.16.7
         version: 20.16.7
@@ -667,24 +667,27 @@ importers:
       '@types/react-dom':
         specifier: 18.3.1
         version: 18.3.1
+      '@typescript/native':
+        specifier: npm:typescript@7.0.2
+        version: typescript@7.0.2
       '@vitejs/plugin-react':
         specifier: 4.3.4
         version: 4.3.4(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
       typescript:
-        specifier: 7.0.2
-        version: 7.0.2
+        specifier: npm:@typescript/typescript6@6.0.2
+        version: '@typescript/typescript6@6.0.2'
       vite:
         specifier: 6.4.3
         version: 6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)
       vite-plugin-dts:
         specifier: 4.5.4
-        version: 4.5.4(@types/node@20.16.7)(rollup@4.60.4)(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+        version: 4.5.4(@types/node@20.16.7)(@typescript/typescript6@6.0.2)(rollup@4.60.4)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
       vite-plugin-svgr:
         specifier: 4.5.0
-        version: 4.5.0(rollup@4.60.4)(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+        version: 4.5.0(@typescript/typescript6@6.0.2)(rollup@4.60.4)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
       vite-tsconfig-paths:
         specifier: 5.1.4
-        version: 5.1.4(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+        version: 5.1.4(@typescript/typescript6@6.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
 
 packages:
 
@@ -21351,17 +21354,6 @@ snapshots:
       - supports-color
       - typescript
 
-  '@svgr/core@8.1.0(typescript@7.0.2)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
-      camelcase: 6.3.0
-      cosmiconfig: 8.3.6(typescript@7.0.2)
-      snake-case: 3.0.4
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
   '@svgr/hast-util-to-babel-ast@6.5.1':
     dependencies:
       '@babel/types': 7.29.7
@@ -21387,16 +21379,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
       '@svgr/core': 8.1.0(@typescript/typescript6@6.0.2)
-      '@svgr/hast-util-to-babel-ast': 8.0.0
-      svg-parser: 2.0.4
-    transitivePeerDependencies:
-      - supports-color
-
-  '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@7.0.2))':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@svgr/babel-preset': 8.1.0(@babel/core@7.29.7)
-      '@svgr/core': 8.1.0(typescript@7.0.2)
       '@svgr/hast-util-to-babel-ast': 8.0.0
       svg-parser: 2.0.4
     transitivePeerDependencies:
@@ -22983,7 +22965,7 @@ snapshots:
       de-indent: 1.0.2
       he: 1.2.0
 
-  '@vue/language-core@2.2.0(typescript@7.0.2)':
+  '@vue/language-core@2.2.0(@typescript/typescript6@6.0.2)':
     dependencies:
       '@volar/language-core': 2.4.28
       '@vue/compiler-dom': 3.5.35
@@ -22994,7 +22976,7 @@ snapshots:
       muggle-string: 0.4.1
       path-browserify: 1.0.1
     optionalDependencies:
-      typescript: 7.0.2
+      typescript: '@typescript/typescript6@6.0.2'
 
   '@vue/reactivity@3.5.35':
     dependencies:
@@ -25760,15 +25742,6 @@ snapshots:
       path-type: 4.0.0
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
-
-  cosmiconfig@8.3.6(typescript@7.0.2):
-    dependencies:
-      import-fresh: 3.3.1
-      js-yaml: 4.1.1
-      parse-json: 5.2.0
-      path-type: 4.0.0
-    optionalDependencies:
-      typescript: 7.0.2
 
   country-list@2.3.0: {}
 
@@ -31576,10 +31549,6 @@ snapshots:
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
 
-  tsconfck@3.1.6(typescript@7.0.2):
-    optionalDependencies:
-      typescript: 7.0.2
-
   tsconfig-paths@3.15.0:
     dependencies:
       '@types/json5': 0.0.29
@@ -32073,18 +32042,18 @@ snapshots:
 
   visit-values@2.0.0: {}
 
-  vite-plugin-dts@4.5.4(@types/node@20.16.7)(rollup@4.60.4)(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
+  vite-plugin-dts@4.5.4(@types/node@20.16.7)(@typescript/typescript6@6.0.2)(rollup@4.60.4)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
     dependencies:
       '@microsoft/api-extractor': 7.58.7(@types/node@20.16.7)
       '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
       '@volar/typescript': 2.4.28
-      '@vue/language-core': 2.2.0(typescript@7.0.2)
+      '@vue/language-core': 2.2.0(@typescript/typescript6@6.0.2)
       compare-versions: 6.1.1
       debug: 4.4.3
       kolorist: 1.8.0
       local-pkg: 1.2.1
       magic-string: 0.30.21
-      typescript: 7.0.2
+      typescript: '@typescript/typescript6@6.0.2'
     optionalDependencies:
       vite: 6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)
     transitivePeerDependencies:
@@ -32092,11 +32061,11 @@ snapshots:
       - rollup
       - supports-color
 
-  vite-plugin-svgr@4.5.0(rollup@4.60.4)(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
+  vite-plugin-svgr@4.5.0(@typescript/typescript6@6.0.2)(rollup@4.60.4)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.60.4)
-      '@svgr/core': 8.1.0(typescript@7.0.2)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@7.0.2))
+      '@svgr/core': 8.1.0(@typescript/typescript6@6.0.2)
+      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(@typescript/typescript6@6.0.2))
       vite: 6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)
     transitivePeerDependencies:
       - rollup
@@ -32119,17 +32088,6 @@ snapshots:
       debug: 4.4.3
       globrex: 0.1.2
       tsconfck: 3.1.6(@typescript/typescript6@6.0.2)
-    optionalDependencies:
-      vite: 6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)
-    transitivePeerDependencies:
-      - supports-color
-      - typescript
-
-  vite-tsconfig-paths@5.1.4(typescript@7.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
-    dependencies:
-      debug: 4.4.3
-      globrex: 0.1.2
-      tsconfck: 3.1.6(typescript@7.0.2)
     optionalDependencies:
       vite: 6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)
     transitivePeerDependencies:
