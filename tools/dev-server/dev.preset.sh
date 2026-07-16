@@ -1,11 +1,45 @@
 #!/bin/bash
 
-if [ "$#" -ne 1 ]; then
-  echo "Usage: pnpm dev:preset <instance_alias>"
+usage="Usage: pnpm dev:preset <instance_alias> [--port <number>]"
+
+port=""
+positional=()
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --port)
+      if [ "$#" -lt 2 ]; then
+        echo "🚨 --port requires a value."
+        echo "$usage"
+        exit 1
+      fi
+      port="$2"; shift 2 ;;
+    --port=*)
+      port="${1#--port=}"; shift ;;
+    *)
+      positional+=( "$1" ); shift ;;
+  esac
+done
+
+if [ "${#positional[@]}" -ne 1 ]; then
+  echo "$usage"
   exit 1
 fi
 
-preset_name="$1"
+if [ -n "$port" ] && ! [[ "$port" =~ ^[0-9]+$ ]]; then
+  echo "🚨 Invalid --port value \"$port\" — expected a number."
+  echo "$usage"
+  exit 1
+fi
+
+preset_name="${positional[0]}"
+
+# --port overrides NEXT_PUBLIC_APP_PORT (dotenv-cli applies -v variables AFTER the -e files,
+# so this beats every env file). Overriding the env var — not just `next dev -p` — keeps the
+# generated envs.js and config.app.baseUrl consistent with the actual port.
+port_args=()
+if [ -n "$port" ]; then
+  port_args+=( -v NEXT_PUBLIC_APP_PORT="$port" )
+fi
 
 # Fetch the instance config into ./.env.tmp (compile-on-run)
 ./tools/dev-server/fetch.sh "$preset_name" || exit 1
@@ -60,6 +94,7 @@ dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
+  "${port_args[@]}" \
   "${env_args[@]}" \
   -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

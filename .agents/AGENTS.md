@@ -37,6 +37,8 @@ Three ways to start the dev server:
 - `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`.
 - `pnpm dev` — plain Next.js dev; needs a hand-written `.env.local` with the instance config.
 
+Both `dev:preset` and `dev:local` accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+
 Gotchas:
 
 - First page load is slow because Turbopack compiles routes on demand; a single `curl localhost:3000` can take ~45s before returning 200. Expected, not a hang.
