@@ -70,10 +70,13 @@ recommended answer, decisions put to the developer while facts are looked up, an
 until shared understanding is confirmed. Skip anything the research already answered.
 
 **Start by picking the task's contacts**: for each relevant team in `.agents/TEAM.md`, ask which member
-owns this task (recommending the roster's default) — these go into the spec header. Also ask whether the
-task has (or deserves) a **dedicated Slack channel** — large features often get one, and it changes where
-open questions are sent (see the `to-spec` skill); record it in the spec header. When the developer doesn't
-know an answer, don't press — record the question with the owning contact and move on.
+owns this task (recommending the roster's default) — these go into the spec header. Don't ask what can be
+inferred: when the issue's author maps to a roster member of the relevant team (match the GitHub handle in
+`.agents/TEAM.md`), record them as that team's contact without asking — the PM slot in particular is
+usually just the task's author. Ask about a **dedicated Slack channel** only for **large** tasks — big
+features often get one, and it changes where open questions are sent (see the `to-spec` skill); small and
+medium tasks always use the default routing (frontend channel or DMs), so record "—" without asking. When
+the developer doesn't know an answer, don't press — record the question with the owning contact and move on.
 
 Cover these domains:
 

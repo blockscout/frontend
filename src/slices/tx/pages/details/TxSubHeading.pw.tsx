@@ -117,7 +117,7 @@ test.describe('blockscout provider', () => {
   });
 
   test('no interpretation, has method called', async({ render, mockApiResponse, mockAssetResponse }) => {
-    const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
+    const newTxQuery = { ...txQuery, data: { ...txMock.withRecipientContract, status: 'error' } } as TxQuery;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');

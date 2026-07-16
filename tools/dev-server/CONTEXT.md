@@ -23,8 +23,8 @@ unnecessary.
 | `envs-rules.json` | `localEnvs` (local APP_* substitutions) + `ignoredEnvs` / `deprecatedEnvs` (keys to drop — see "Dropped envs" below). |
 | `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs` + `deprecatedEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
-| `dev.preset.sh` | `pnpm dev:preset <alias>` — fetch + run `next dev`. |
-| `dev.local.sh` | `pnpm dev:local` — run against a local backend using `.env.localhost` (no fetch). |
+| `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
+| `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
@@ -61,8 +61,14 @@ lives here):
 
 ## Env layering (highest → lowest priority)
 
-- `dev:preset`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
-- `dev:local`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+- `dev:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
+- `dev:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+
+The `--port` flag sets `NEXT_PUBLIC_APP_PORT` via dotenv-cli's `-v` (applied AFTER all `-e`
+files, so it beats every env file). It overrides the env var rather than just `next dev -p`
+so the generated `envs.js` / `config.app.baseUrl` stay consistent with the actual port.
+Without the flag, the port comes from the env files as before (default `3000` from
+`localEnvs` / `.env.localhost`; a persistent personal override belongs in `.env.local`).
 
 | File | Committed? | Purpose |
 |---|---|---|

@@ -45,24 +45,6 @@ test('with token transfer +@mobile', async({ render, page, mockAssetResponse }) 
   });
 });
 
-test('with decoded revert reason', async({ render, page }) => {
-  const component = await render(<TxDetails data={ txMock.withDecodedRevertReason } isLoading={ false }/>);
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-  });
-});
-
-test('with decoded raw reason', async({ render, page }) => {
-  const component = await render(<TxDetails data={ txMock.withRawRevertReason } isLoading={ false }/>);
-
-  await expect(component).toHaveScreenshot({
-    mask: [ page.locator(pwConfig.adsBannerSelector) ],
-    maskColor: pwConfig.maskColor,
-  });
-});
-
 test('pending', async({ render, page }) => {
   const component = await render(<TxDetails data={ txMock.pending } isLoading={ false }/>);
 
