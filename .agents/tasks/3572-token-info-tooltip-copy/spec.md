@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3572 |
-| Status | `ready` |
+| Status | `done` |
 | Size | `small` |
 | Feature branch | `issue-3572` |
 | PM | Ulyana (task author) |
@@ -47,8 +47,9 @@ None — no API, env var, or feature-flag changes.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Replace the tooltip copy in `TokenPageTitle.tsx` with the new text + "More details"
-  external link; make the tooltip `interactive`.
+- [x] 1 `[agent]` Replace the tooltip copy in `TokenPageTitle.tsx` with the new text + "More details"
+  external link; make the tooltip `interactive`. — Done: JSX tooltip content with `Link external` in
+  `src/slices/token/pages/details/TokenPageTitle.tsx`; `tsc` and ESLint clean.
 
 ## Open questions
 
