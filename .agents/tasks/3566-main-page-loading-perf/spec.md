@@ -158,24 +158,8 @@ issue #3566.
     - `checkIgnore`/`ignoredMessages` config moves into the lazy module. `_error.tsx` unchanged.
     - The lever-1 primed requests fail inside the deferral window — their `useFetch` warns must
       go through the buffer.
-- [ ] 4 `[agent]` Defer the wallet stack (lever 3) — sub-spec: `subtasks/04-wallet-stack.md`
-      (write just-in-time via a `grill-the-task` subtask session)
-  - inputs (constraints discovered in research, for the sub-spec session):
-    - `Web3Provider` at the app root currently blocks first render entirely; a chunk-load failure
-      blanks the page. Stage 1 = stop gating render on it; stage 2 = feature-local providers.
-    - Do NOT swap fallback→real provider at the root — the element-type change remounts the whole
-      tree (state loss, query refetches). Use feature-local `WagmiProvider` islands and/or a
-      permanent lightweight context fed by wagmi's non-React core API (`getAccount`/`watchAccount`).
-    - `createAppKit` runs at module scope (`ReownProvider.tsx`) — the deferral boundary is the
-      `import()`, not component mounting.
-    - Auto-reconnect flicker for returning users: mitigate with optimistic UI read synchronously
-      from wagmi's persisted `localStorage` state (`wagmi.store`).
-    - Route-based eager loading for flows that need the wallet at page load: marketplace dapp pages
-      (`useAutoConnectWallet`, iframe bridge), rewards login, contract pages opened on a write tab.
-    - "Connect wallet" clicked before the stack loads → trigger import, show loading state, open
-      the modal when ready.
-    - ~14 files import wagmi hooks directly (contract methods, revoke, L2 claims, rewards context,
-      sign-in-with-wallet) — enumerate and cover in the sub-spec.
+- [ ] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
+      from first paint on every page, without behavior changes — sub-spec: `subtasks/04-wallet-stack.md`
 - [ ] 5 `[agent]` Replace `react-icons` with sprite icons and drop the dependency
   - inputs: only usage is `LuCheck` / `LuChevronRight` in `src/toolkit/chakra/menu.tsx`; the sprite
     already has check/chevron icons (see `src/sprite/`). Remove the package from `package.json`.
