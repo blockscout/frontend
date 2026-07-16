@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3566 |
-| Status | `ready` |
+| Status | `in progress` |
 | Size | `large` |
 | Feature branch | `issue-3566` |
 | PM | — (technical/perf task, no product questions) |
@@ -87,7 +87,7 @@ Baseline and prototype numbers below are single runs from the research session (
 | Baseline (single run) | 1526 ms | 916 ms | 2283 ms | 2534 ms | 1059 ms | 1840 KB |
 | After 1 (prototype, single run) | 1152 ms | 88 ms | 1894 ms¹ | 2044 ms¹ | 616 ms | 1840 KB |
 | After 1 (production impl) | | | | | | |
-| After 2 (mixpanel) | | | | | | |
+| After 2 (mixpanel, single run)³ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
 | After 3 (rollbar) | | | | | | |
 | After 4 (wallet stack) | | | | | | |
 | After 5 (react-icons) | | | | | | |
@@ -98,6 +98,11 @@ Baseline and prototype numbers below are single runs from the research session (
 and still came out ahead — normalized to equal backend latency the M4 gain is ~1.1 s.
 ² Assuming the instance's median transactions-endpoint latency (~1.3 s); the structural change is
 `content-ready = max(boot, backend)` instead of `boot + backend`.
+³ Recorded 2026-07-16 from the mixpanel-deferral working tree **without** lever 1 in the build, so
+this row shows lever 2a standalone against the baseline (M2–M4 still boot-chained), not the
+cumulative "after 1+2" state. vs baseline: FCP −425 ms, JS before FCP −89 KB gz (the SDK chunk),
+blocking −450 ms. This run's transactions response was slower than the baseline run's (1184 ms vs
+914 ms); normalized to equal backend latency the M3 gain is ~390 ms.
 
 After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
 the table. When the last box is checked, fill "Final (measured)" and post the completed table to
@@ -119,7 +124,7 @@ issue #3566.
     - GET-only, consume-once semantics (delete from the map on take).
     - Out of scope for this subtask: extending the primer to other entry pages (address, tx) —
       evaluate only after the home-page version has soaked.
-- [ ] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
+- [x] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
   - inputs:
     - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets
       its own async chunk.
@@ -133,6 +138,13 @@ issue #3566.
       wrapper.
     - Consent (Usercentrics) and private-mode gating stay where they are (they null the token
       before init).
+  - done (2026-07-16): `src/services/mixpanel/queue.ts` buffers `track`/`people.*`/`reset` until
+    `queue.init` (dynamic import, deferred via `requestIdleCallback` in `useMixpanelInit`) flushes
+    after `register` + `identify` + the profile writes (all inside `setup`, so a buffered logout
+    `reset` cannot outrun them); cookie-derived state is snapshotted at mount; init is idempotent,
+    a failed SDK load resolves `false` and disables the wrapper (100-call buffer cap);
+    `log-event`/`user-profile`/`reset` and `Login.tsx` route through the queue. Unit tests:
+    `queue.spec.ts` (13 cases). Dev-verified end-to-end; measurement in footnote ³.
 - [ ] 3 `[agent]` Defer Rollbar behind first paint (lever 2b)
   - inputs:
     - Replace the `@rollbar/react` root provider with a thin context holding `Rollbar | undefined`
