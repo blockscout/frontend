@@ -39,11 +39,7 @@ pnpm test:vitest path/to/file.spec.ts
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app context:
-- `QueryClientProvider` (no retry, no window-focus refetch)
-- `AppContextProvider`
-- `GrowthBookProvider`
-- `SocketProvider`
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -73,3 +69,25 @@ fetchMock.mockResponseOnce(JSON.stringify({ data: 'value' }));
 ```
 
 Reset mocks between tests using `beforeEach` / `afterEach` if needed.
+
+## Overriding environment variables
+
+To exercise a feature-config branch, use `vitest/utils/mockEnvs.ts` (the Vitest counterpart of the Playwright `mockEnvs` fixture) instead of hand-mocking `src/config`:
+
+```tsx
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+import withEnvs from 'vitest/utils/mockEnvs';
+
+await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
+  const { default: config } = await import('src/config');
+  // …
+});
+```
+
+`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+
+## Primed-requests drift tests (`*.primed.spec.tsx`)
+
+Pages registered in the early-fetch primer (`src/server/primedRequests`; context and design decisions: `.agents/tasks/3566-main-page-loading-perf/subtasks/01-early-fetch-primer.md`) fire their first-render API requests from an inline script in the HTML document. Each registered page has a `<Component>.primed.spec.tsx` next to its root component that guards against drift: it runs the real inline script, mounts the real page component (with its layout) under the full provider stack, and asserts that every primed request is also fired by the page — byte-identical URL and headers. A completeness test in `src/server/primedRequests/index.spec.ts` fails when a registered page lacks its spec.
+
+Write these specs with the `checkPrimedRequests` harness (`vitest/utils/checkPrimedRequests.tsx`) — see the existing specs for the pattern; `envs` and `expectEmpty` cover feature-config variants and "nothing primed here" cases (wrong tab, disabled feature).

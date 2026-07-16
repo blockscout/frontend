@@ -23,7 +23,7 @@ const getResources = (): Array<PrimedResource> => {
 
   return [
     { resource: 'core:stats' },
-    { resource: 'core:homepage_indexing_status' },
+    ...(config.chain.indexingStatus.blocks.isHidden ? [] : [ { resource: 'core:homepage_indexing_status' } satisfies PrimedResource ]),
     { resource: 'core:homepage_txs' },
     ...leftWidget,
     ...(config.apis.stats ? [ { resource: 'stats:pages_main' } satisfies PrimedResource ] : []),

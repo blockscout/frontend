@@ -183,6 +183,39 @@ describe('inline script with route params (tx page)', () => {
   });
 });
 
+describe('drift-check coverage', () => {
+  it('every registered page has a colocated *.primed.spec.tsx claiming it', async() => {
+    const { readdirSync, readFileSync } = await import('node:fs');
+    const { join } = await import('node:path');
+
+    const specFiles: Array<string> = [];
+    const walk = (dir: string) => {
+      for (const entry of readdirSync(dir, { withFileTypes: true })) {
+        const path = join(dir, entry.name);
+        if (entry.isDirectory()) {
+          walk(path);
+        } else if (entry.name.endsWith('.primed.spec.tsx')) {
+          specFiles.push(path);
+        }
+      }
+    };
+    walk(join(process.cwd(), 'src'));
+
+    const claims = specFiles.flatMap((file) => {
+      const content = readFileSync(file, 'utf-8');
+      return Object.keys(PRIMED_PAGES).filter((page) => content.includes(`page: '${ page }'`)).map((page) => ({ page, file }));
+    });
+
+    // every registered page must be claimed by exactly one *.primed.spec.tsx colocated with
+    // its root component; a failure prints the offending pages with the files claiming them
+    const badCoverage = Object.keys(PRIMED_PAGES)
+      .map((page) => ({ page, claimedBy: claims.filter((claim) => claim.page === page).map((claim) => claim.file) }))
+      .filter(({ claimedBy }) => claimedBy.length !== 1);
+
+    expect(badCoverage).toEqual([]);
+  });
+});
+
 describe('getPrimerScriptCspHashes', () => {
   it('produces one quoted sha256 token per registered page', async() => {
     const hashes = await getPrimerScriptCspHashes();

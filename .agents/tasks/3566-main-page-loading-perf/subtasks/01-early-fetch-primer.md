@@ -87,9 +87,20 @@ primer can roll out to other entry pages later with a simple resource descriptor
 - **Multichain home page**: the primer returns no requests when `multichain` is enabled — the
   multichain home renders a distinct widget set with its own resources. Whether to prime it is
   a product question; the developer will ask the PMs. (2026-07-15)
-- **Registry ↔ page drift**: there is deliberately no pact comment in `Home.tsx` (easy to get
-  stale). Possible future tooling: an automated check that the primed resource list matches
-  the requests the page actually makes on first render (e.g. a Playwright-based assertion).
+- **Registry ↔ page drift** — **implemented** 2026-07-15 as `*.primed.spec.tsx` drift tests
+  (see the unit-testing rules for the convention). Each registered page has a spec next to its
+  root component that executes the real inline script, mounts the real page component with its
+  layout in jsdom, and asserts every primed request is fired by the page byte-identically
+  (URL + headers); responses are kept pending forever, so "first render" needs no response
+  stubs. A completeness test in `src/server/primedRequests/index.spec.ts` fails when a
+  registered page lacks its spec. Feature-config variants run through a new
+  `vitest/utils/mockEnvs.ts` utility (`vi.resetModules()` + dynamic imports) reusing the
+  Playwright env bundles, which moved to `src/config/test-utils/env-presets.ts` (the pw
+  fixture re-exports them). Enabling jsdom page mounts required stubbing `.svg` imports in
+  `vitest.config.ts` (the Next build runs them through @svgr/webpack). The check caught a real
+  registry bug on its first run: `core:homepage_indexing_status` is requested by the shell
+  header's indexing alert and is config-gated (`chain.indexingStatus.blocks.isHidden`) — the
+  registry now mirrors that gate instead of priming it unconditionally.
 - **Deterministic registry vs. route params** — investigated and **implemented** 2026-07-15
   (see the design decision above; `/tx/[hash]` is the pilot). Rationale kept for the record:
   no param validation — components don't validate router params before requesting either, and

@@ -12,7 +12,7 @@
 //    send (e.g. the inline script's cookie logic drifted from build-headers.ts), the primed
 //    response is discarded and the caller falls back to a normal network request.
 
-function normalizeHeaders(headers: HeadersInit | undefined): string {
+export function normalizeHeaders(headers: HeadersInit | undefined): string {
   const entries: Array<[ string, string ]> = [];
   new Headers(headers).forEach((value, key) => {
     entries.push([ key, value ]);
