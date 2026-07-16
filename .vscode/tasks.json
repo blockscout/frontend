@@ -6,7 +6,7 @@
         // DEV SERVER
         {
             "type": "shell",
-            "command": "pnpm dev:preset ${input:dev_config_preset}",
+            "command": "pnpm dev:preset ${input:dev_config_preset} --port ${input:dev_server_port}",
             "problemMatcher": [],
             "label": "dev server",
             "detail": "start local dev server",
@@ -309,6 +309,12 @@
               "--ui",
             ],
             "default": ""
+        },
+        {
+            "type": "promptString",
+            "id": "dev_server_port",
+            "description": "What port to run the dev server on?",
+            "default": "3000"
         },
         {
             "type": "pickString",

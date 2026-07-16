@@ -105,28 +105,32 @@ const UserOpDetails = ({ query }: Props) => {
       >
         Status
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <UserOpStatus status={ data.status } isLoading={ isLoading }/>
-      </DetailedInfo.ItemValue>
-
-      { data.revert_reason && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="The revert reason of the User operation"
-            isLoading={ isLoading }
+      <DetailedInfo.ItemValue flexWrap="wrap" columnGap={ 3 } rowGap={ 1 }>
+        <UserOpStatus status={ data.status } loading={ isLoading } my={{ base: '3px', lg: 1 }}/>
+        { data.revert_reason && (
+          <CollapsibleDetails
+            text={ [ 'Show revert reason', 'Hide revert reason' ] }
+            variant="secondary"
+            noScroll
+            isExpanded
+            id="CollapsibleDetails__revert-reason"
           >
-            Revert reason
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue
-            wordBreak="break-all"
-            whiteSpace="normal"
-          >
-            <Skeleton loading={ isLoading }>
+            <Skeleton
+              loading={ isLoading }
+              w="100%"
+              p={{ base: 3, lg: 4 }}
+              bgColor={{ _light: 'red.50', _dark: 'red.900/80' }}
+              textStyle="sm"
+              borderBottomRadius="md"
+              mb={ 4 }
+              whiteSpace="normal"
+              wordBreak="break-all"
+            >
               { data.revert_reason }
             </Skeleton>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+          </CollapsibleDetails>
+        ) }
+      </DetailedInfo.ItemValue>
 
       { data.timestamp && (
         <>

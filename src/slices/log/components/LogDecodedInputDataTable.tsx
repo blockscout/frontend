@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex, Grid } from '@chakra-ui/react';
+import { Flex, Grid, type JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -12,7 +12,7 @@ import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
-interface Props {
+interface Props extends JsxStyleProps {
   data: schemas['DecodedLogInput']['parameters'] | schemas['DecodedInput']['parameters'];
   isLoading?: boolean;
 }
@@ -79,7 +79,7 @@ const Row = ({
   );
 };
 
-const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
+const LogDecodedInputDataTable = ({ data, isLoading, ...rest }: Props) => {
   const hasIndexed = data.some((item) => 'indexed' in item && typeof item.indexed === 'boolean');
 
   const gridTemplateColumnsBase = hasIndexed ?
@@ -101,6 +101,7 @@ const LogDecodedInputDataTable = ({ data, isLoading }: Props) => {
       rowGap={ 5 }
       borderBottomLeftRadius="md"
       borderBottomRightRadius="md"
+      { ...rest }
     >
       <HeaderItem isLoading={ isLoading }>Name</HeaderItem>
       <HeaderItem isLoading={ isLoading }>Type</HeaderItem>

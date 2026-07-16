@@ -202,6 +202,26 @@ export const withRawRevertReason: schemas['TransactionResponse'] = {
   },
 };
 
+export const withoutRevertReason: schemas['TransactionResponse'] = {
+  ...withRawRevertReason,
+  revert_reason: {
+    raw: null,
+  },
+};
+
+export const withRevertReasonParam: schemas['TransactionResponse'] = {
+  ...base,
+  status: 'error',
+  result: 'Reverted',
+  revert_reason: {
+    method_call: 'Error(string reason)',
+    method_id: '0x08c379a0',
+    parameters: [
+      { name: 'reason', type: 'string', value: 'Only chairpersons can vote' },
+    ],
+  },
+};
+
 export const pending: schemas['TransactionResponse'] = {
   ...base,
   base_fee_per_gas: null,
