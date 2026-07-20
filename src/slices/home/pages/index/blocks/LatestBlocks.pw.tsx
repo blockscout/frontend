@@ -2,9 +2,9 @@ import React from 'react';
 
 import { base as baseBlock } from 'src/slices/block/mocks/details';
 import * as blockMock from 'src/slices/block/mocks/list';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 import { HomeDataContextProvider } from 'src/slices/home/contexts/home-data-context';
 import { HomeRpcDataContextProvider } from 'src/slices/home/contexts/rpc-data-context';
-import * as statsMock from 'src/slices/home/mocks/stats';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';

@@ -5,9 +5,7 @@ import React from 'react';
 
 import type { CrossChainTx } from '@blockscout/zetachain-cctx-types';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import AddressEntityZetaChain from 'src/features/chain-variants/zeta-chain/components/AddressEntityZetaChain';
 import TxEntityZetaChainCC from 'src/features/chain-variants/zeta-chain/components/TxEntityZetaChainCC';
@@ -46,12 +44,10 @@ const getTransactionsBeforeAndAfter = (data: CrossChainTx) => {
   return { transactionsBefore, transactionsAfter };
 };
 
-const ZetaChainCCTXDetails = ({ data, isLoading }: Props) => {
-  const statsQuery = useApiQuery('core:stats', {
-    queryOptions: {
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+const ZetaChainCCTXDetails = ({ data, isLoading: isLoadingProp }: Props) => {
+  const statsQuery = useStatsQuery({ enabled: !isLoadingProp });
+
+  const isLoading = isLoadingProp || statsQuery.isPlaceholderData;
 
   if (!data) {
     return null;

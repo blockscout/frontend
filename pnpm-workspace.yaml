@@ -64,14 +64,6 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
-  # remove after 20.06.2026
-  - form-data@4.0.6
-  - '@opentelemetry/core@2.8.0'
-  - '@opentelemetry/sdk-trace-node@2.8.0'
-  - '@opentelemetry/resources@2.8.0'
-  - '@opentelemetry/sdk-metrics@2.8.0'
-  - '@opentelemetry/exporter-jaeger@2.8.0'
-  - '@opentelemetry/context-async-hooks@2.8.0'
-  - '@opentelemetry/sdk-trace-base@2.8.0'
+  # remove after 27.07.2026
   - '@chakra-ui/cli@3.36.1'
   - '@chakra-ui/react@3.36.1'

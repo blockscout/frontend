@@ -6,7 +6,7 @@
         // DEV SERVER
         {
             "type": "shell",
-            "command": "pnpm dev:preset ${input:dev_config_preset}",
+            "command": "pnpm dev:preset ${input:dev_config_preset} --port ${input:dev_server_port}",
             "problemMatcher": [],
             "label": "dev server",
             "detail": "start local dev server",
@@ -180,7 +180,7 @@
         // VITEST TESTS
         {
             "type": "npm",
-            "script": "test:vitest",
+            "script": "test:vitest:watch",
             "problemMatcher": [],
             "label": "vitest",
             "detail": "run unit tests",
@@ -311,6 +311,12 @@
             "default": ""
         },
         {
+            "type": "promptString",
+            "id": "dev_server_port",
+            "description": "What port to run the dev server on?",
+            "default": "3000"
+        },
+        {
             "type": "pickString",
             "id": "dev_config_preset",
             "description": "Choose dev server config preset:",
@@ -337,6 +343,7 @@
               "polygon",
               "rootstock",
               "rootstock_testnet",
+              "robinhood",
               "scroll_sepolia",
               "shibarium",
               "stability_testnet",

@@ -6,7 +6,7 @@ import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'src/slices/tx/stubs/tx';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -43,11 +43,7 @@ const TxsStats = (props: Props) => {
     },
   });
 
-  const statsQuery = useApiQuery('core:stats', {
-    queryOptions: {
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsQuery = useStatsQuery();
 
   if ((isStatsFeatureEnabled && !txsStatsQuery.data) || (!isStatsFeatureEnabled && !txsStatsApiQuery.data)) {
     return null;

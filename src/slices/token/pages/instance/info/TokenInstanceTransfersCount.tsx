@@ -13,10 +13,9 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 interface Props {
   hash: string;
   id: string;
-  onClick: () => void;
 }
 
-const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
+const TokenInstanceTransfersCount = ({ hash, id }: Props) => {
   const transfersCountQuery = useApiQuery('core:token_instance_transfers_count', {
     pathParams: { hash, id },
     queryOptions: {
@@ -49,10 +48,7 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <Skeleton loading={ transfersCountQuery.isPlaceholderData } display="inline-block">
-          <Link
-            href={ url }
-            onClick={ transfersCountQuery.data.transfers_count > 0 ? onClick : undefined }
-          >
+          <Link href={ url }>
             { transfersCountQuery.data.transfers_count.toLocaleString() }
           </Link>
         </Skeleton>

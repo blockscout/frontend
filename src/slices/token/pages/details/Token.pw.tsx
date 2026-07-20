@@ -18,7 +18,7 @@ const hash = tokenInfo.address_hash;
 
 const hooksConfig = {
   router: {
-    query: { hash, tab: 'token_transfers' },
+    query: { hash },
     isReady: true,
   },
 };
@@ -75,7 +75,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   const hash = bridgedTokenA.address_hash;
   const hooksConfig = {
     router: {
-      query: { hash, tab: 'token_transfers' },
+      query: { hash },
     },
   };
 

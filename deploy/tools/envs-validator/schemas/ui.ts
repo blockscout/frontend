@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'src/slices/home/types/config';
+import { CHAIN_INDICATOR_IDS, type ChainIndicatorId, type HeroBannerConfig, type HeroBannerButtonState, type HeroBannerSearchBorderColorState, HOME_STATS_WIDGET_IDS, type HomeStatsWidgetId } from 'src/slices/home/types/config';
 import { replaceQuotes } from 'src/config/utils/envs';
 import { getYupValidationErrorMessage, urlTest } from '../utils';
 import { NavigationLayout, NavigationPromoBannerConfig, NavItemExternal } from 'src/shell/navigation/types';
@@ -25,6 +25,13 @@ const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup
     text_color: yup.array().max(2).of(yup.string()),
   });
 
+const heroBannerSearchBorderColorSchema: yup.ObjectSchema<HeroBannerSearchBorderColorState> = yup.object({
+    _empty: yup.array().max(2).of(yup.string()),
+    _hover: yup.array().max(2).of(yup.string()),
+    _focus: yup.array().max(2).of(yup.string()),
+    _filled: yup.array().max(2).of(yup.string()),
+  });
+
 const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
     .transform(replaceQuotes)
     .json()
@@ -38,7 +45,9 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
         _selected: heroBannerButtonStateSchema,
       }),
       search: yup.object({
+        background: yup.array().max(2).of(yup.string()),
         border_width: yup.array().max(2).of(yup.string()),
+        border_color: heroBannerSearchBorderColorSchema,
       }),
       text: yup.string(),
     });

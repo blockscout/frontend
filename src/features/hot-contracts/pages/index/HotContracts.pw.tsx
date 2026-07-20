@@ -1,6 +1,6 @@
 import React from 'react';
 
-import * as statsMock from 'src/slices/home/mocks/stats';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 
 import * as hotContractsMock from 'src/features/hot-contracts/mocks';
 import { getIntervalValueFromQuery } from 'src/features/hot-contracts/utils';

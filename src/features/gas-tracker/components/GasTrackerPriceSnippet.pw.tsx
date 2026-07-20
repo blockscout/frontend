@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import * as statsMock from 'src/slices/home/mocks/stats';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';

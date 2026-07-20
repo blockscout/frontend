@@ -61,6 +61,22 @@ const visibleItems = items.slice(0, MAX_VISIBLE_ITEMS);
 
 The same applies to magic strings used as discriminators, keys, or thresholds. In tests, unexplained magic values should also be extracted into named constants so their meaning is clear.
 
+#### Shared unit constants
+
+`src/toolkit/utils/consts.ts` already defines unit constants: `SECOND`, `MINUTE`, `HOUR`, `DAY`, `WEEK`, `MONTH`, `YEAR` (milliseconds), `Kb`, `Mb` (bytes), and the BigNumber `ZERO`. Never define local equivalents (e.g. `MS_IN_SECOND = 1_000`) or use raw duration literals — import from there and compose.
+
+```ts
+// BAD
+const REFETCH_INTERVAL = 2_000;
+setTimeout(handleTimeout, 5 * 60 * 1_000);
+
+// GOOD
+import { SECOND, MINUTE } from 'src/toolkit/utils/consts';
+
+const REFETCH_INTERVAL = 2 * SECOND;
+setTimeout(handleTimeout, 5 * MINUTE);
+```
+
 ### Static empty defaults
 
 Never define empty arrays or objects inline as default values — a new reference is created on every render, causing unnecessary re-renders or stale hook dependencies.
