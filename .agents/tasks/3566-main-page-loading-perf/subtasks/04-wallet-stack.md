@@ -74,11 +74,22 @@ Implementation facts (verified against installed packages, see research doc):
 - `wagmi.store` persists `{ state: { connections: Map-serialized, current, chainId }, version }`;
   optimistic read = parse, version-guard, `current` → connection → `accounts[0]`. Email/social login is
   disabled in this app's `createAppKit` config, so `wagmi.store` is the single optimistic source.
+  **Verified (2026-07-20, @wagmi/core 2.22.1):** localStorage key `wagmi.store`; value is
+  `{ state: { connections: { __type: 'Map', value: [ [uid, { accounts: [Address, …], chainId, connector }] … ] },
+  chainId, current }, version: 2 }` (store `version` = the `@wagmi/core` major). The Bridge parses this by
+  hand with `JSON.parse` (no wagmi import — stays off the critical path): version-guard `=== 2`, then
+  `current` → matching connection → `accounts[0]`.
 - `createConfig({ ssr: true })` sets `skipHydration` — the Runtime must explicitly hydrate the persisted
-  state and trigger reconnect (what wagmi's React `<Hydrate>` does today; use `hydrate()` from
-  `@wagmi/core` / `wagmi` — verify exact import at implementation).
-- `wagmi/actions` ships every needed action; the AppKit instance returned by `createAppKit` exposes
-  `open()`, `subscribeState()`, `setThemeMode()` — no React provider required for modal or theme.
+  state and trigger reconnect (what wagmi's React `<Hydrate>` does today). **Verified:** `<Hydrate>` calls
+  `hydrate(config, { reconnectOnMount: true }).onMount()` (rehydrate persisted state → `reconnect`).
+  `hydrate` lives only in `@wagmi/core` (not `wagmi`/`wagmi/actions`), so `@wagmi/core` is added as a
+  direct dep pinned to `2.22.1` (wagmi 2.19.5's exact transitive pin → dedupes to one instance).
+- `wagmi/actions` (= `@wagmi/core/actions`) ships every needed action; the AppKit instance returned by
+  `createAppKit` exposes `open()`, `subscribeState()`, `setThemeMode()` — no React provider required for
+  modal or theme. **Verified:** `createAppKit` (from `@reown/appkit/react`) returns an `AppKitBaseClient`
+  with `open(options)`, `subscribeState(cb) → unsubscribe`, `setThemeMode(mode)`; wagmi's own
+  `useAccountEffect` derives `isReconnected` as `prevData.status === 'reconnecting' || prevData.status ===
+  undefined` (replicated in the Bridge for `WALLET_CONNECT` parity).
 
 ## UI inventory
 
@@ -123,9 +134,9 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     `lint:tsc` clean, ESLint clean, vitest green.
   - M6 measured (2026-07-20): **−41 KB gz** vs the prior "After 2 (mixpanel)" trace — see the Impact
     addendum for the full row and A/B caveats.
-- [ ] 2 `[agent]` Bridge + Runtime modules with unit tests
+- [x] 2 `[agent]` Bridge + Runtime modules with unit tests — done (2026-07-20).
   - inputs:
-    - New modules under `src/features/connect-wallet/` (suggested: `bridge.ts`, `runtime.ts`).
+    - New modules under `src/features/connect-wallet/utils/` (`bridge.ts`, `runtime.ts`).
     - Bridge: module-level store + `useSyncExternalStore` hooks (`useWeb3Account()` with
       `{ address, status: 'disconnected' | 'optimistic' | 'connecting' | 'connected' | 'reconnecting' }`
       shape mapped to today's hub API); optimistic init from `wagmi.store` (resilient parse: bad JSON,
@@ -140,6 +151,30 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
       disabled runtime — Bridge flips to disconnected, actions reject with a typed error.
     - Unit tests (standing policy): optimistic parse cases, single-flight/idempotent init, pre-ready
       action queue/join, load-failure degradation, watcher → store propagation.
+  - done (2026-07-20): modules live in `utils/` (`utils/bridge.ts`, `utils/runtime.ts`, alongside
+    `chains`/`wagmi-config`/`public-client`). `bridge.ts` — module-level external store + `useWeb3Account()`
+    (`useSyncExternalStore`) with the `{ address, status }` shape; `readOptimisticAccount()` parses
+    `wagmi.store` by hand (no wagmi import) with the resilient guards; `applyAccountChange(data, prev)` is
+    the Runtime's feed (updates store + emits connect/disconnect events, `isReconnected` derived exactly
+    as wagmi's `useAccountEffect`); `subscribeConnection` / `reset` / `hasPersistedConnection` round it
+    out. `runtime.ts` — single-flight `getWeb3Runtime()` / `ensureLoaded()` that dynamic-imports
+    `wagmi-config` + `@wagmi/core` (+ `@reown/appkit/react` in reown mode), builds AppKit with the exact
+    `initReown` options (AppKit build kept non-fatal like the old try/catch), subscribes `watchAccount` →
+    Bridge **before** `hydrate(config,{reconnectOnMount:true}).onMount()`, exposes
+    `openModal`/`subscribeModalState`/`setThemeMode` + `disconnect`/`signMessage`/`switchChain` (bound to
+    config) + `config`; load failure → `DISABLED_RUNTIME` (`isReady:false`, actions reject
+    `Web3RuntimeUnavailableError`, Bridge reset). `startWeb3Runtime()` = eager on persisted connection,
+    else `requestIdleCallback`. **Not wired into the app yet** (slice 3 consumes them). Added `@wagmi/core`
+    `2.22.1` as a direct dep (only source of `hydrate`; = wagmi's exact transitive pin → single instance).
+    Unit tests: `bridge.spec.ts` (18) + `runtime.spec.ts` (9). `lint:tsc` clean, ESLint clean, vitest green.
+    NB for slice 3/4: the Runtime action surface is intentionally minimal — extend it (and backfill here)
+    if a consumer needs another action.
+  - ⚠️ watch (slice 3–5): `loadRuntime()` does `import('@wagmi/core')` (+ `wagmi-config`, which pulls
+    wagmi/viem) unconditionally, before the reown branch — so calling `getWeb3Runtime()` in
+    fallback/disabled mode still loads the wagmi chunks. That is intended for fallback **contract reads**
+    (they need the wagmi config), but once the call sites exist we should confirm the runtime is never
+    triggered in disabled mode when nothing consumes it (no wasted load). Not fixing now — no consumer
+    wired yet, so the trigger conditions aren't final.
 - [ ] 3 `[agent]` Boot-time consumers onto Bridge/Runtime; delete the TLA hubs
   - inputs:
     - Rewrite `hooks/useAccount.ts` and `hooks/useWallet.ts` as plain synchronous modules: reown →

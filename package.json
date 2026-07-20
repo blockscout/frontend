@@ -101,6 +101,7 @@
     "@types/papaparse": "^5.5.2",
     "@types/react-scroll": "^1.8.10",
     "@uidotdev/usehooks": "2.4.1",
+    "@wagmi/core": "2.22.1",
     "abitype": "1.2.3",
     "airtable": "^0.12.2",
     "bignumber.js": "^9.3.1",
