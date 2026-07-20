@@ -119,7 +119,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
           </InputElement>
         ) }
         { React.Children.map(children, (child: React.ReactElement<InputProps>) => {
-          if (getComponentDisplayName(child.type) !== 'FieldInput') {
+          if (getComponentDisplayName(child.type) !== 'FieldInput' && getComponentDisplayName(child.type) !== 'Input') {
             return child;
           }
           return React.cloneElement(child, {

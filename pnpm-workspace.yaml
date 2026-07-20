@@ -73,3 +73,5 @@ minimumReleaseAgeExclude:
   - '@opentelemetry/exporter-jaeger@2.8.0'
   - '@opentelemetry/context-async-hooks@2.8.0'
   - '@opentelemetry/sdk-trace-base@2.8.0'
+  - '@chakra-ui/cli@3.36.1'
+  - '@chakra-ui/react@3.36.1'
