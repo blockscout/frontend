@@ -9,7 +9,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
 import { TX } from 'src/slices/tx/stubs/tx';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import config from 'src/config';
 
@@ -36,7 +36,7 @@ const LatestTxsDegraded = ({ maxNum }: Props) => {
     };
   }, [ enable ]);
 
-  if (isError || !publicClient) {
+  if (isError || !isPublicClientAvailable) {
     return <LatestTxsFallback/>;
   }
 

@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../spec.md`](../spec.md) — step 4 of issue [#3566](https://github.com/blockscout/frontend/issues/3566) |
-| Status | `ready` |
+| Status | `in progress` |
 | Sub-branch | `issue-3566-step-4` (off `issue-3566`) |
 | PM / Designer / Backend | — (inherited from parent: technical/perf task) |
 | Slack channel | — |
@@ -99,7 +99,7 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Quick static-leak fixes + measurement
+- [x] 1 `[agent]` Quick static-leak fixes + measurement — done (2026-07-20); M6 −41 KB gz (see addendum).
   - inputs:
     - `NavigationPromoBanner.tsx`: lazy-import viem (`await import('viem')` inside the existing effect)
       for `keccak256`/`stringToBytes` — localStorage keys stay byte-identical, dismissals survive
@@ -110,6 +110,19 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
       `useBlockQuery`/`useBlockTxsQuery`, beacon `useBlockWithdrawalsQuery`) — all call sites are inside
       async query/watch functions already, so semantics don't change.
     - Measure M6 (median of 3) after this slice; record under Impact addendum below.
+  - done (2026-07-20): `public-client.ts` now exports a synchronous `isPublicClientAvailable` flag
+    (mirrors the old module-scope truthiness exactly — including the `currentChain === undefined` case
+    where viem still built a client) plus a memoized single-flight `getPublicClient()` that
+    `await import('viem')`s and constructs on first call (degrades to `undefined` on load/construct
+    failure). All 11 consumers migrated: sync `Boolean(publicClient)`/`!publicClient`/`publicClient !==
+    undefined` gates → `isPublicClientAvailable`; in-`queryFn`/watch usages → `const publicClient = await
+    getPublicClient()`. `NavigationPromoBanner.tsx` moved the `keccak256`/`stringToBytes` calls behind
+    `import('viem')` inside the mount effect (hash byte-identical). No static `viem` value import remains
+    in any critical-path chunk (`import type` only). Unit tests: `public-client.spec.ts` (8 cases —
+    availability mirror, lazy build, memoized single-flight, no-import-when-unavailable, degradation).
+    `lint:tsc` clean, ESLint clean, vitest green.
+  - M6 measured (2026-07-20): **−41 KB gz** vs the prior "After 2 (mixpanel)" trace — see the Impact
+    addendum for the full row and A/B caveats.
 - [ ] 2 `[agent]` Bridge + Runtime modules with unit tests
   - inputs:
     - New modules under `src/features/connect-wallet/` (suggested: `bridge.ts`, `runtime.ts`).
@@ -178,8 +191,19 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
 
 | Checkpoint | M1 FCP | M2 first API req | M3 tx data | M4 content | M5 blocking | M6 JS before FCP |
 | --- | --- | --- | --- | --- | --- | --- |
-| After slice 1 (leaks) | | | | | | |
+| After slice 1 (leaks) | 932 ms | 536 ms | n/a¹ | n/a¹ | 484 ms | 1710 KB |
 | After slice 5 (full flip) | | | | | | |
+
+¹ Single production-build trace (2026-07-20), same preset as the parent spec's baseline. The
+**headline metric for this slice is M6 (JS before FCP): 1751 → 1710 KB gz, −41 KB**, measured against
+the prior "After 2 (mixpanel)" trace — both builds carry the Mixpanel deferral and neither carries
+lever 1, so they differ only by this slice, isolating the removed viem bytes (nav promo-banner
+`keccak256` + the RPC-fallback public client) from the pre-FCP critical path. M6 is stable run-to-run
+(per `../tools/README.md`), so a single run suffices. M3/M4 are unavailable: this trace's
+`main-page/transactions` response never completed within the recording window (a slow backend draw,
+several endpoints >4 s) — those metrics are backend-latency dependent and untouched by this slice. The
+M1 −169 / M2 −138 / M5 −125 ms drops in the same A/B are within single-run noise and are **not** claimed
+for this slice; only the wagmi/appkit removal in slices 3–5 is expected to move FCP materially.
 
 ## Open questions
 

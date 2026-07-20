@@ -16,7 +16,7 @@ import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
 import TextAd from 'src/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'src/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 import TxBlobs from 'src/features/data-availability/pages/tx/TxBlobs';
 import TxFheOperations from 'src/features/fhe-operations/pages/tx/TxFheOperations';
 import TxAuthorizations from 'src/features/tx-authorization/pages/tx/TxAuthorizations';
@@ -52,7 +52,7 @@ const TransactionPageContent = () => {
 
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
-  const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
+  const showDegradedView = isPublicClientAvailable && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<TabItemRegular> = (() => {
     const detailsComponent = showDegradedView ?

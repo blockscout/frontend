@@ -12,7 +12,7 @@ import type { ResourceError } from 'src/api/resources';
 import { ADDRESS_COUNTERS } from 'src/slices/address/stubs/address';
 import { GET_TRANSACTIONS_COUNT } from 'src/slices/address/stubs/rpc';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 type RpcResponseType = [
   number | null,
@@ -46,6 +46,7 @@ export default function useAddressCountersQuery({ hash, isLoading, isDegradedDat
   const rpcQuery = useQuery<RpcResponseType, unknown, schemas['AddressCounters'] | null>({
     queryKey: [ 'RPC', 'address_counters', { hash } ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         throw new Error('No public RPC client');
       }
@@ -71,7 +72,7 @@ export default function useAddressCountersQuery({ hash, isLoading, isDegradedDat
     refetchOnMount: false,
   });
 
-  const isRpcQuery = Boolean((isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
+  const isRpcQuery = Boolean((isDegradedData || apiQuery.isError) && rpcQuery.data && isPublicClientAvailable);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<schemas['AddressCounters'], ResourceError<{ status: number }>> : apiQuery;
 
   return {
