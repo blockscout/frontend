@@ -175,7 +175,11 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     (they need the wagmi config), but once the call sites exist we should confirm the runtime is never
     triggered in disabled mode when nothing consumes it (no wasted load). Not fixing now — no consumer
     wired yet, so the trigger conditions aren't final.
-- [ ] 3 `[agent]` Boot-time consumers onto Bridge/Runtime; delete the TLA hubs
+    - slice 3 update: no stray disabled-mode trigger introduced — every `getWeb3Runtime()` call site added
+      (reown wallet connect/disconnect, rewards login, sign-in, signature) is guarded by a connection/
+      interaction that can't occur in fallback/disabled mode. Remaining triggers to verify: slice-4
+      contract-read islands (intended fallback load) and the slice-5 boot component.
+- [x] 3 `[agent]` Boot-time consumers onto Bridge/Runtime; delete the TLA hubs — done (2026-07-20).
   - inputs:
     - Rewrite `hooks/useAccount.ts` and `hooks/useWallet.ts` as plain synchronous modules: reown →
       Bridge-backed implementations (no top-level `await import`); dynamic → existing
@@ -190,6 +194,29 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
       login flow; `useSignInWithWallet` and `AddressVerificationStepSignature` likewise where they only
       need actions (the signature step also reads account state → Bridge).
     - `AdBannerContent`/`useAccountWithDomain` need no changes beyond the hub rewrite underneath them.
+  - done (2026-07-20): `hooks/useAccount.ts` + `hooks/useWallet.ts` are now sync (no TLA) —
+    reown → new Bridge-backed `account/useAccountReown.ts` + `wallet/useWalletReown.ts` (rewritten:
+    account state from Bridge; connect/disconnect/openModal via `ensureLoaded()`; modal `isOpen` from
+    `subscribeModalState`; `WALLET_CONNECT` Started/Connected + `userProfile.setOnce` preserved, reconnect
+    distinction via Bridge `subscribeConnection`); fallback → existing fallbacks. The **light** reown hooks
+    mean the header's module graph no longer awaits any wallet/appkit chunk. `optimistic`/`reconnecting`
+    map to the address-visible reconnecting style (no Connect flash), matching wagmi `getAccount` (which
+    keeps the persisted address during reconnect). Dynamic kept lazy (developer decision) via
+    `use()`-based wrappers `account/useAccountDynamicLazy.ts` + `wallet/useWalletDynamicLazy.ts` that
+    dynamic-import the **untouched** `useAccountDynamic`/`useWalletDynamic` — so `@dynamic-labs` stays in
+    its own async chunk, never on the reown/fallback critical path. **Verified** the pages-router
+    `next/dynamic(ssr:false)` does NOT provide a Suspense boundary (it uses `loadable.shared-runtime` /
+    `useSyncExternalStore`, not `React.lazy`), and there was none above the consumers — so `use()` would
+    have crashed dynamic mode. Added one explicit `<Suspense fallback={ null }>` in `_app.tsx` around
+    `Web3Provider`'s children: inert for reown/fallback (nothing suspends), and in dynamic mode the wallet
+    hooks suspend on first render (no prior commit → no remount, same null-gating window as `ssr:false`).
+    Rewards `context.tsx`,
+    `useSignInWithWallet.ts`, and `AddressVerificationStepSignature.tsx` migrated off wagmi React hooks
+    (`useSignMessage`/`useSwitchChain`/`useAccount`) to `getWeb3Runtime()` actions + the Bridge hub inside
+    their async flows. Unit tests: `useAccountReown.spec.tsx` (5), `useWalletReown.spec.tsx` (8).
+    `lint:tsc` clean, ESLint clean, all connect-wallet/rewards/account-hooks specs green (48).
+    Deferred to slice 5 (per input): theme sync (`setThemeMode` on color-mode change) — still lives in
+    `ReownProvider` until that provider is deleted and the boot component lands.
 - [ ] 4 `[agent]` `Web3Boundary` islands for route features + eager-load list
   - inputs:
     - Shared `Web3Boundary` component (connect-wallet/components): `ensureLoaded()` on mount, renders

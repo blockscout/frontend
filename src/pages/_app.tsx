@@ -114,23 +114,30 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
           >
             <QueryClientProvider client={ queryClient }>
               <Web3Provider>
-                <AppContextProvider pageProps={ pageProps }>
-                  <GrowthBookProvider growthbook={ growthBook }>
-                    <SocketProvider url={ socketUrl }>
-                      <RewardsProvider>
-                        <MarketplaceContextProvider>
-                          <SettingsContextProvider>
-                            <CsvExportContextProvider>
-                              { content }
-                            </CsvExportContextProvider>
-                          </SettingsContextProvider>
-                        </MarketplaceContextProvider>
-                      </RewardsProvider>
-                    </SocketProvider>
-                  </GrowthBookProvider>
-                  <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-                  <GoogleAnalytics/>
-                </AppContextProvider>
+                { /* Suspense boundary for the lazily-loaded `dynamic` connector hooks (useWalletDynamicLazy
+                  / useAccountDynamicLazy `use()` a dynamic import). Pages router `next/dynamic(ssr:false)`
+                  does not provide one. Inert for reown/fallback (nothing suspends); in Dynamic mode the
+                  wallet hooks suspend on first render into this null fallback — the same window as today's
+                  `ssr:false` gating, no remount. */ }
+                <React.Suspense fallback={ null }>
+                  <AppContextProvider pageProps={ pageProps }>
+                    <GrowthBookProvider growthbook={ growthBook }>
+                      <SocketProvider url={ socketUrl }>
+                        <RewardsProvider>
+                          <MarketplaceContextProvider>
+                            <SettingsContextProvider>
+                              <CsvExportContextProvider>
+                                { content }
+                              </CsvExportContextProvider>
+                            </SettingsContextProvider>
+                          </MarketplaceContextProvider>
+                        </RewardsProvider>
+                      </SocketProvider>
+                    </GrowthBookProvider>
+                    <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                    <GoogleAnalytics/>
+                  </AppContextProvider>
+                </React.Suspense>
               </Web3Provider>
             </QueryClientProvider>
           </AppErrorBoundary>
