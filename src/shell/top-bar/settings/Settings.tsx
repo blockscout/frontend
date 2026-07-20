@@ -40,7 +40,17 @@ const Settings = () => {
       // should be false to enable auto-switch to default color theme
       lazyMount={ false }
     >
-      <Tooltip content="Website settings" disableOnMobile open={ tooltip.open } onOpenChange={ handleTooltipOpenChange }>
+      { /* the tooltip must be fully disabled while the popover is open: the zag tooltip machine can
+           self-open a controlled tooltip when another tooltip is visible (the tooltip-group instant-open
+           transition is not guarded by isOpenControlled), and since handleTooltipOpenChange rejects opens
+           while the popover is up, the controlled prop would never change and never close it back */ }
+      <Tooltip
+        content="Website settings"
+        disableOnMobile
+        disabled={ popover.open }
+        open={ tooltip.open }
+        onOpenChange={ handleTooltipOpenChange }
+      >
         <Flex alignItems="center">
           <PopoverTrigger>
             <IconButton

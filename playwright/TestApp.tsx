@@ -18,6 +18,7 @@ import { MarketplaceContext } from 'src/features/marketplace/context';
 import { RewardsContextProvider } from 'src/features/rewards/context';
 
 import config from 'src/config';
+import SpriteInjector from 'src/sprite/SpriteInjector';
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
 
@@ -82,6 +83,7 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
 
   return (
     <ChakraProvider>
+      <SpriteInjector/>
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider pageProps={ pageProps }>

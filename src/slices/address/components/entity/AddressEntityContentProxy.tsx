@@ -60,8 +60,8 @@ const AddressEntityContentProxy = (props: ContentProps) => {
   );
 
   return (
-    <Tooltip content={ content } interactive contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '410px' } }} triggerProps={{ minW: 0 }}>
-      <Box display="inline-flex" w="100%">
+    <Tooltip content={ content } interactive contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '410px' } }} >
+      <Box display="inline-flex" w="100%" minW={ 0 }>
         <EntityBase.Content
           { ...props }
           truncation={ nameTag || implementationName || props.address.name ? 'tail' : props.truncation }
