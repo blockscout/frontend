@@ -23,16 +23,16 @@ sync Slack replies: there is nothing to convert, so the run is just harvest (Ste
 - With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` (e.g. `.agents/tasks/3219-cross-chain-txs/spec.md`).
 - Ad-hoc (no issue): `.agents/tasks/<slug>/spec.md`.
 - Every subtask of a medium/large task gets its own folder `subtasks/<NN>-<slug>/`, holding:
-  - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet:
-    context gathered so far + what still needs research, prototyping, or decisions. Its presence (with no
-    `spec.md`) marks the subtask as not-yet-scoped.
+  - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet. Its
+    presence (with no `spec.md`) marks the subtask as not-yet-scoped. It carries: the subtask's goal in a
+    sentence or two; the context already gathered (relevant code, endpoints, mockups); the specific unknowns
+    to resolve (what to research, prototype, or decide) and who owns each; and links (issue, Figma, related
+    specs) — enough for a `grill-the-task` subtask session to start without re-deriving it.
   - `spec.md` — the subtask spec (same template), Status `draft | ready | in progress | done`. Written up
     front for a scoped subtask, or by the just-in-time subtask session for a deferred one — filled from the
     folder's `brief.md`.
   - `research.md` — optional; real research findings or prototype notes produced before the subtask
     session, feeding it alongside the brief.
-  - `review.md` — optional; where a local review agent drops findings and the implementer records
-    fix/reject responses (see `implement-task`).
 
 Use `spec-template.md` (next to this file) for every spec — main and subtask alike. Structure by size:
 
@@ -56,7 +56,8 @@ read the spec first and treat it as hand-editable — developers edit specs dire
 
 ### Step 2 — Harvest Slack answers (update runs only)
 
-For every open question with status `pending` and a recorded Slack permalink:
+Open questions live in the main `spec.md` **and** in any subtask `spec.md` under `subtasks/*/` — gather
+them from all of these files. For every open question with status `pending` and a recorded Slack permalink:
 
 1. Read the thread with the Slack MCP tools (`slack_read_thread`; parse `channel_id`/`message_ts` from the
    permalink as in the `create-issue-from-slack-thread` skill).
@@ -66,8 +67,8 @@ For every open question with status `pending` and a recorded Slack permalink:
 4. If a reply raises a follow-up: draft it (in Russian, like all outreach), get the user's approval, send it
    **into the same thread**, and keep the question `pending`.
 
-The harvest is complete when every `pending` question with a permalink has had its thread read and is now
-resolved, followed up, or confirmed still unanswered.
+The harvest is complete when every `pending` question with a permalink — across the main spec and every
+subtask spec — has had its thread read and is now resolved, followed up, or confirmed still unanswered.
 
 ### Step 3 — Write or merge the spec
 

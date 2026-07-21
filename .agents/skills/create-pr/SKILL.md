@@ -50,7 +50,8 @@ description is a placeholder pointing at the plan:
    - `Resolves #<ISSUE_NUMBER>` when the branch matches `issue-\d+` (ad-hoc spec branches have no issue —
      omit).
    - One short paragraph: the task's goal, taken from the spec's **Context & goal**.
-   - A link to the spec file on this branch (`.agents/tasks/<dir>/spec.md`).
+   - A link to the spec file on this branch — the main `.agents/tasks/<dir>/spec.md`, or the subtask's
+     `.agents/tasks/<dir>/subtasks/<NN>-<slug>/spec.md` when this is a step sub-branch (`issue-N-step-M`).
    - A note that this is a **spec-first draft**: the branch will receive the task's work subtask by
      subtask, and the final description will be written when the PR is marked ready for review.
 3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.

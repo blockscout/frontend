@@ -2,7 +2,7 @@
 name: grill-the-task
 description: >-
   Grill a product task (GitHub issue) into an implementable spec — research first, then a
-  one-question-at-a-time interview; also elaborates sub-specs for big steps of large tasks.
+  one-question-at-a-time interview; also elaborates sub-specs for deferred subtasks of large tasks.
 disable-model-invocation: true
 ---
 
@@ -69,9 +69,10 @@ Propose a size to the developer and confirm it:
   prototyping, or decisions) into the folder — no `spec.md` — and each gets its own just-in-time
   subtask-mode session later that writes the sub-spec.
 
-For medium and large tasks, decide each subtask's readiness with the developer as the breakdown takes
-shape — scoped now (write its `spec.md`) or deferred (write a `brief.md`, no `spec.md`). The presence of a
-`spec.md` is the signal that a subtask is scoped; the main spec's index carries only the done checkbox.
+As the breakdown takes shape, decide each subtask's readiness with the developer — scoped now (write its
+`spec.md`) or deferred (write a `brief.md`, no `spec.md`). **A task with any deferred subtask is `large`; if
+every subtask is scoped now, it's `medium`.** The presence of a `spec.md` is the signal that a subtask is
+scoped; the main spec's index carries only the done checkbox.
 
 ## Step 3 — The interview
 

@@ -32,14 +32,12 @@ says which steps an agent does and which a developer does by hand.
 4. **Implement** — run the `implement-task` skill repeatedly, one subtask per run: it executes `[agent]`
    subtasks (composing `add-api-resource`, `add-new-page`, `add-env-var`, …) and verifies them, or hands
    `[human]` subtasks (styling to Figma mockups) over to you. You review the diff and commit between runs.
-   A subtask can't start while a question blocking it is `pending` — unrelated subtasks can. If you've
-   dropped a `review.md` in a subtask's folder (from a local review pass), the next `implement-task` run for
-   that subtask works through each finding and records a fix/reject response in it.
+   A subtask can't start while a question blocking it is `pending` — unrelated subtasks can.
 5. **Land** — flip the draft PR to **ready for review** when the spec's last box is checked; the feature
    branch merges to `main` as one PR, spec included. Big subtasks may have had their own sub-branch + PR
    into the feature branch along the way (same pattern: draft when the step starts with its sub-spec as the
    first commit, ready when the step's boxes are checked); simple ones are single commits on it. Branch
-   names carry the addressing — feature branch is `issue-<number>` (`issue-3219`), a big step's sub-branch
+   names carry the addressing — feature branch is `issue-<number>` (`issue-3219`), a big subtask's sub-branch
    adds `-step-<N>` (`issue-3219-step-2`) — so `implement-task` needs no arguments on a task branch.
 
 ## Task sizes
@@ -64,4 +62,4 @@ spec's breakdown carries only the done checkbox and a link to each subtask folde
 - `.agents/skills/to-spec/spec-template.md` — the spec template (used for both main and subtask specs).
 - Each `subtasks/NN-<slug>/` folder holds the subtask's `spec.md` (once scoped) or a `brief.md` (the
   handoff for a not-yet-scoped subtask), plus optional `research.md` (real research / prototype notes) and
-  `review.md` (local review-agent findings + the implementer's fix/reject responses).
+  `review.md` (a drop point for local review findings; the workflow that acts on them is a planned follow-up).

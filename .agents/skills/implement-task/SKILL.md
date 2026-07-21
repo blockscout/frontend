@@ -15,18 +15,19 @@ task from the branch alone.
 
 ## Invocation
 
-- `/implement-task` — no arguments, the usual case: infer the spec (and the current big step) from the
-  branch name, per the Branch model below. Execute the next eligible subtask (Step 3).
+- `/implement-task` — no arguments, the usual case: infer the spec (and the current subtask, from a
+  `-step-<N>` branch) from the branch name, per the Branch model below. Execute the next eligible subtask
+  (Step 3).
 - `/implement-task 4` — a **specific** subtask, out of order. Pending questions still refuse the run;
   unchecked dependencies are pointed out and need the developer's explicit confirmation to proceed.
-- `/implement-task 2.3` — large tasks address **leaf steps** with dotted numbers: step 3 inside subtask 2's
-  sub-spec (`subtasks/02-<slug>/spec.md`). The sub-spec's own breakdown is the checklist for that subtask;
-  its header status is maintained like a spec's.
+- `/implement-task 2.3` — when a subtask's own spec has a multi-step breakdown, address its **leaf steps**
+  with dotted numbers: step 3 inside subtask 2's sub-spec (`subtasks/02-<slug>/spec.md`). The sub-spec's own
+  breakdown is the checklist for that subtask; its header status is maintained like a spec's.
 - An explicit task dir as the first argument (e.g. `/implement-task 3219-cross-chain-views 4`) overrides
   branch inference — needed when not on the feature branch yet.
 
-The unit of one run is always a **leaf**: in a large task, "next eligible subtask" descends — if the next
-subtask is a big step with a sub-spec, execute the next eligible step *inside* it (one step, then stop).
+The unit of one run is always a **leaf**: "next eligible subtask" descends — if the next subtask has its
+own multi-step sub-spec, execute the next eligible leaf step *inside* it (one step, then stop).
 
 ## Branch model
 
@@ -37,17 +38,17 @@ starts, but **never commit, push, or open PRs yourself** — the developer revie
 runs.
 
 **PR timing (developer's action — prompt, don't do):** a draft PR opens as soon as the spec is the branch's
-first commit (feature branch → `main`; a big step's sub-branch → feature branch, with its sub-spec as the
-first commit) and flips to ready for review when its breakdown's last box is checked. Nudge accordingly: on
-a first run with no PR yet, suggest opening the draft; when checking off the final subtask (or a big step's
-final step), suggest finalizing it via the `create-pr` skill (finalize-draft mode: real description from the
-diff, labels, then ready for review).
+first commit (feature branch → `main`; a big subtask's sub-branch → feature branch, with its sub-spec as
+the first commit) and flips to ready for review when its breakdown's last box is checked. Nudge accordingly:
+on a first run with no PR yet, suggest opening the draft; when checking off the final subtask (or a big
+subtask's final leaf step), suggest finalizing it via the `create-pr` skill (finalize-draft mode: real
+description from the diff, labels, then ready for review).
 
 **Branch names carry the addressing.** The feature branch is `issue-<number>` (e.g. `issue-3219`); a big
-step's sub-branch adds a `-step-<N>` postfix (e.g. `issue-3219-step-2`). An **ad-hoc** spec's branch is its
+subtask's sub-branch adds a `-step-<N>` postfix (e.g. `issue-3219-step-2`). An **ad-hoc** spec's branch is its
 task-dir slug (`.agents/tasks/<slug>/` → branch `<slug>`). Dash postfixes, **not** slashes — git forbids
 `X` and `X/…` coexisting. The names are fully mechanical, which is what lets the skill construct branches
-itself and infer the spec (and the current big step) with no arguments: `issue-<n>` matches the task dir by
+itself and infer the spec (and the current subtask) with no arguments: `issue-<n>` matches the task dir by
 issue number, any other branch matches by exact dir name.
 
 ## Workflow
@@ -95,15 +96,24 @@ behavior that matters, not the obvious — per `.agents/rules/tests-unit.mdc`).
 
 ### Step 5 — Verify
 
-Run the repo's checks for what was touched (commands per `.agents/rules/code-quality.mdc`) and the relevant
-unit tests . Intentional scaffold `TODO`s may keep ESLint red in the same way the `add-new-page` skill 
-documents — say so explicitly rather than chasing green.
+Run every code-quality check the repo defines (per `.agents/rules/code-quality.mdc` — run all of them, not
+only the ones you remember) plus the relevant unit tests. Intentional scaffold `TODO`s may keep ESLint red
+in the same way the `add-new-page` skill documents — say so explicitly rather than chasing green.
 
 ### Step 6 — Update the spec and stop
 
-Check the subtask off with a **one-line** note of what was done (files/skills involved) — never a
-multi-line changelog; git and the PR carry the detail, and any durable decision (a new dependency, an
-architectural choice) is folded into the relevant spec section instead. Set the header status to
-`in progress` on the first executed subtask, and to `done` when the last box is checked. Then summarize the
-result and end the run — verification of the diff, the commit, and the next `implement-task` invocation
-belong to the developer.
+Check the box for what you did, with a **one-line** note (files/skills involved) — never a multi-line
+changelog; git and the PR carry the detail, and any durable decision (a new dependency, an architectural
+choice) is folded into the relevant spec section instead.
+
+Keep both checklist levels in sync when the subtask has its own sub-spec:
+
+- Check the **leaf step** in the sub-spec's breakdown; set the sub-spec's header `Status` to `in progress`
+  on its first step and `done` when its last box is checked.
+- When a sub-spec goes `done`, check its **subtask line in the main index** too.
+- Set the **main** header `Status` to `in progress` on the first executed subtask and `done` when the
+  index's last box is checked.
+
+The main index is what "done" and draft-PR finalization key off, so never leave it trailing a completed
+sub-spec. Then summarize the result and end the run — verification of the diff, the commit, and the next
+`implement-task` invocation belong to the developer.
