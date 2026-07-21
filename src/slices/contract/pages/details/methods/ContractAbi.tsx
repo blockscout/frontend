@@ -7,8 +7,11 @@ import React from 'react';
 
 import type { SmartContractMethod } from './types';
 
+import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
+
 import { AccordionRoot } from 'src/toolkit/chakra/accordion';
 import { Link } from 'src/toolkit/chakra/link';
+import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import { apos } from 'src/toolkit/utils/htmlEntities';
 
 import ContractAbiItem from './ContractAbiItem';
@@ -23,7 +26,7 @@ interface Props {
   sourceAddress?: string;
 }
 
-const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Props) => {
+const ContractAbiContent = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<string>>(abi.length === 1 ? [ '0' ] : []);
   const [ id, setId ] = React.useState(0);
 
@@ -98,5 +101,15 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
     </div>
   );
 };
+
+// Both read and write calls go through wagmi hooks (`useFormSubmit` → public/wallet client), so the
+// methods form lives inside a wallet island: the runtime loads lazily and provides the wagmi config to
+// just this subtree. In fallback (wallet-disabled) mode the read tab still works — the island loads the
+// runtime's public client. Transparent while the root/test WagmiProvider is still mounted.
+const ContractAbi = (props: Props) => (
+  <Web3Boundary fallback={ <ContentLoader w="fit-content"/> }>
+    <ContractAbiContent { ...props }/>
+  </Web3Boundary>
+);
 
 export default React.memo(ContractAbi);

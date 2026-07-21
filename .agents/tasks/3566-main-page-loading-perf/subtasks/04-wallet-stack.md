@@ -179,6 +179,13 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
       (reown wallet connect/disconnect, rewards login, sign-in, signature) is guarded by a connection/
       interaction that can't occur in fallback/disabled mode. Remaining triggers to verify: slice-4
       contract-read islands (intended fallback load) and the slice-5 boot component.
+    - slice 4 update: the contract-methods island (`ContractAbi`) is the **intended** disabled-mode
+      trigger — the read tab wraps in `Web3Boundary`, whose `ensureLoaded()` loads the plain wagmi config
+      so `usePublicClient` reads keep working with the wallet feature off. That's the one expected
+      fallback-mode load; the other new islands (L2 claim, revoke, marketplace bridge) only exist where
+      `connectWallet` is enabled. Still open for slice 5: the boot component must **not** call
+      `getWeb3Runtime()` in disabled mode when nothing consumes it (keep the eager trigger reown/dynamic-
+      only, or gated on `hasPersistedConnection()`).
 - [x] 3 `[agent]` Boot-time consumers onto Bridge/Runtime; delete the TLA hubs — done (2026-07-20).
   - inputs:
     - Rewrite `hooks/useAccount.ts` and `hooks/useWallet.ts` as plain synchronous modules: reown →
@@ -217,7 +224,7 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     `lint:tsc` clean, ESLint clean, all connect-wallet/rewards/account-hooks specs green (48).
     Deferred to slice 5 (per input): theme sync (`setThemeMode` on color-mode change) — still lives in
     `ReownProvider` until that provider is deleted and the boot component lands.
-- [ ] 4 `[agent]` `Web3Boundary` islands for route features + eager-load list
+- [x] 4 `[agent]` `Web3Boundary` islands for route features + eager-load list — done (2026-07-21).
   - inputs:
     - Shared `Web3Boundary` component (connect-wallet/components): `ensureLoaded()` on mount, renders
       the feature's existing loading/skeleton fallback until ready, then
@@ -231,6 +238,28 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
       (decided — idle + interaction suffices).
     - Existing `*.pw.tsx` tests for the wrapped features must keep passing (islands must be transparent
       when the runtime is mocked/loaded).
+  - done (2026-07-21): new `components/Web3Boundary.tsx` — reads `WagmiContext`; **transparent** when a
+    `<WagmiProvider>` already sits above it (nested islands, the Playwright `TestApp`, and the root
+    `Web3Provider` still mounted until slice 5) → renders children directly, never re-gating or shadowing
+    the (same singleton) config. Otherwise `ensureLoaded()` on mount, shows the `fallback` until
+    `runtime.config` resolves, then `<WagmiProvider config={runtime.config} reconnectOnMount={ false }>`
+    (`reconnectOnMount:false` because the Runtime already hydrated + reconnected — wagmi's `<Hydrate>`
+    would otherwise re-run it since the config is `ssr:true`). Chunk-load failure → disabled runtime (no
+    config) → fallback stays up (degraded, never blank). Wrapped, via in-file split (Content + island) or
+    at the single call site: `ContractAbi` (covers all three method tabs + read/write, fallback
+    `ContentLoader`), `OptimisticL2ClaimModal` (wrapped at its `OptimisticL2ClaimButton` call site),
+    `ArbitrumL2TxnWithdrawalsClaimButton` (+ its receipt child, fallback = loading Claim skeleton),
+    `MarketplaceAppIframe` (kept `chakra()` export, fallback `ContentLoader`), `Revoke` (fallback
+    `ContentLoader`). `AuthModalScreenConnectWallet` + `AddressVerificationStepSignature` needed **no**
+    island — slice 3 already moved them off wagmi React hooks onto the Bridge hub + `getWeb3Runtime()`
+    actions. Route-eager `ensureLoaded()` at mount added to `MarketplaceApp` + `MarketplaceEssentialDapp`
+    (`EssentialDapp`); contract pages left non-eager. Verified `DynamicProvider` renders the repo
+    `<WagmiProvider>`, so dynamic mode keeps a root `WagmiContext` → islands stay transparent there too.
+    Unit tests: `Web3Boundary.spec.tsx` (3 — transparency/no-load, loading→children, load-failure). pw
+    transparency confirmed structurally: `playwright/fixtures/render.tsx` mounts every component under
+    `TestApp`'s root `<WagmiProvider>` (mock connector) → boundary transparent, `ensureLoaded()` never
+    called; screenshot baselines unchanged (human re-run per delegation policy). `lint:tsc` clean, ESLint
+    clean, 55 unit specs green (connect-wallet + contract-methods utils).
 - [ ] 5 `[agent]` Flip `_app`: remove root gating for reown/fallback
   - inputs:
     - `_app.tsx`: for `connectorType === 'dynamic'` keep today's `DynamicProvider` wrapping (explicit

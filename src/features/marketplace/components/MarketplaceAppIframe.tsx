@@ -4,6 +4,7 @@ import { Center, chakra } from '@chakra-ui/react';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
+import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
 import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 
@@ -111,7 +112,7 @@ type Props = {
   className?: string;
 };
 
-const MarketplaceAppIframe = ({
+const MarketplaceAppIframeContent = ({
   appId, appUrl, message, isEssentialDapp, className,
 }: Props) => {
   const {
@@ -159,5 +160,14 @@ const MarketplaceAppIframe = ({
     </DappscoutIframeProvider>
   );
 };
+
+// The dapp bridge feeds wallet actions (send tx / sign / switch chain via `useMarketplaceWallet`) into the
+// iframe, so the host lives in a wallet island. Marketplace pages call `ensureLoaded()` at mount, so the
+// runtime is already loading by the time this renders; the fallback reuses the iframe's content loader.
+const MarketplaceAppIframe = (props: Props) => (
+  <Web3Boundary fallback={ <ContentLoader/> }>
+    <MarketplaceAppIframeContent { ...props }/>
+  </Web3Boundary>
+);
 
 export default chakra(MarketplaceAppIframe);
