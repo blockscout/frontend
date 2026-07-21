@@ -16,9 +16,11 @@ skill.
 **Two modes.**
 
 - **Task mode** (default): input is a GitHub issue URL; output is the task's main spec.
-- **Subtask mode**: input is an existing spec plus a step number (a big step of a `large` task); the session
-  scopes research and questions to that step and outputs its sub-spec (`subtasks/<NN>-<slug>.md`). Run it
-  just-in-time, right before the step starts, against the by-then-current code.
+- **Subtask mode**: input is an existing spec plus a subtask number (one that has only a `brief.md`, no
+  `spec.md` yet); the session scopes research and questions to that subtask, reads its folder's `brief.md`
+  (plus any `research.md` / prototype notes gathered since) as the starting point, and writes its sub-spec
+  (`subtasks/<NN>-<slug>/spec.md`). Run it just-in-time, right before the subtask starts, against the
+  by-then-current code.
 
 ## Step 1 — Research
 
@@ -58,10 +60,18 @@ real sample response, and both cross-checks have run with each mismatch recorded
 
 Propose a size to the developer and confirm it:
 
-- **small** — one step; implementable by an agent or a user right after this session.
-- **medium** — a flat list of small subtasks in one spec.
-- **large** — many steps; the main spec lists them, small steps fully specified now, big steps as one-liners
-  each getting its own subtask-mode grilling session later.
+- **small** — one step; a single `spec.md`, no `subtasks/` folder. Implementable by an agent or a user
+  right after this session.
+- **medium** — a breakdown of subtasks, each in its own folder `subtasks/<NN>-<slug>/`. The main spec is a
+  slim index; every subtask is scoped now (its `spec.md` written up front).
+- **large** — same folder-per-subtask layout, but some subtasks are too big to specify up front. For
+  those, this session writes only a `brief.md` (the context it gathered + what still needs research,
+  prototyping, or decisions) into the folder — no `spec.md` — and each gets its own just-in-time
+  subtask-mode session later that writes the sub-spec.
+
+For medium and large tasks, decide each subtask's readiness with the developer as the breakdown takes
+shape — scoped now (write its `spec.md`) or deferred (write a `brief.md`, no `spec.md`). The presence of a
+`spec.md` is the signal that a subtask is scoped; the main spec's index carries only the done checkbox.
 
 ## Step 3 — The interview
 
@@ -99,10 +109,10 @@ Testing is **not** an interview domain — the standing policy in `.agents/rules
 **Front-load the executor skills' inputs.** Once the task breakdown has taken shape, go through every
 `[agent]` subtask that will run a project skill (`add-new-page`, `add-api-resource`, `add-env-var`, …):
 **open that skill and run its user-facing interview now** (e.g. `add-new-page` Step 0), from the skill's
-current text — don't work from memory of its questions. The answers are recorded with the subtask in the
-spec, so `implement-task` can later execute without stopping to ask. Do this in whichever session fully
-specifies the subtask: here for small/medium tasks and small steps, in the just-in-time subtask session for
-big steps.
+current text — don't work from memory of its questions. The answers are recorded with the subtask in its
+own `spec.md`, so `implement-task` can later execute without stopping to ask. Do this in whichever session
+scopes the subtask: here for a subtask specced now, in the just-in-time subtask session for a deferred one
+(the one that starts from a `brief.md`).
 
 The interview is complete when every domain is covered or explicitly skipped as research-answered, the
 contacts and channel are settled, every unanswered question has an owner, and every fully-specified

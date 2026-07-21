@@ -13,6 +13,14 @@
 
 <!-- People default from `.agents/TEAM.md`; override here per task. -->
 
+<!-- SUBTASK SPECS reuse this same template, at `subtasks/<NN>-<slug>/spec.md`, with two header changes:
+swap the Issue row for `Parent spec | [../../spec.md](../../spec.md) — step <N> of #<issue>`, and add a
+`Sub-branch | issue-<N>-step-<N>` row. The Status vocabulary is the same as a main spec's
+(`draft | ready | in progress | done`). A subtask that hasn't been scoped yet has NO `spec.md` at all —
+only a `brief.md` in its folder (the handoff from the initial grilling session); the just-in-time subtask
+session reads that brief and writes this `spec.md`. People rows inherit from the parent unless a subtask
+overrides one. -->
+
 ## Context & goal
 
 <!-- The "why" and the user-facing outcome. A couple of paragraphs, no more. -->
@@ -39,16 +47,27 @@ belongs to the mockups and the [human] style subtasks. -->
 
 ## Task breakdown
 
-<!-- Ordered. Tag each subtask `[agent]` or `[human]` per `.agents/rules/delegation.mdc`. Reference the
-executing skill where one applies. A subtask blocked by open questions lists their ids — it may not start
-while any of them is `pending`. In a large task, a big step gets a one-line entry here plus its own
-sub-spec (written just-in-time via a `grill-the-task` subtask session); a UI component is two linked
-subtasks (scaffold → style). Record the executing skill's interview answers (collected during grilling)
-as an indented `inputs:` list under the subtask, so `implement-task` never has to stop and ask. -->
+<!-- Ordered checklist. The checkbox is the ONLY per-subtask state the spec tracks — done or not.
+Readiness is NOT recorded here; it lives in each subtask spec's Status and is inferred from there.
+
+MAIN spec of a medium/large task = a slim INDEX. One line per subtask, no inputs, no changelog — the
+detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`:
+
+  - [ ] 1 `[agent]` <plain-language subtask title> → `subtasks/01-<slug>/`
+  - [ ] 2 `[human]` <plain-language subtask title> → `subtasks/02-<slug>/`
+
+LEAF worklist (a small task's single spec.md, or the breakdown inside a subtask spec) = the actual
+steps. Tag each `[agent]`/`[human]` per `.agents/rules/delegation.mdc`; reference the executing skill;
+list blocking question ids (the step may not start while any is `pending`); and record the executor
+skill's interview answers as an indented `inputs:` list, so `implement-task` never stops to ask. A UI
+component is two linked leaves (scaffold → style). Keep each completion note to ONE line — no changelog
+blocks; fold durable decisions into the sections above and let git and the PR be the record of what
+changed. -->
 
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource` — questions: Q2
-- [ ] 2 `[agent]` <big step title> — sub-spec: `subtasks/02-<slug>.md`
-- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>)
+  - inputs:
+    - <executor-skill answer>
+- [ ] 2 `[human]` Style <component> to mockup — [Figma](<node URL>)
 
 ## Open questions
 

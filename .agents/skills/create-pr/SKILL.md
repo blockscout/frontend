@@ -28,6 +28,18 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 
 If the signals conflict or are ambiguous, ask the user which mode they mean.
 
+## PR title (all modes)
+
+The title must stand on its own — a reader who has never heard of the parent task should understand what
+the PR does from the title alone:
+
+- Describe the change in plain language, scoped **accurately** — derive it from the spec's (or subtask
+  spec's) **Context & goal**, not from a breakdown shorthand (e.g. a primer that covers several pages is
+  not a "main page" change).
+- **No** issue numbers, "step N", or internal codenames/jargon (`lever 3`) in the title — those are
+  abstract to an outside reader. The parent-task relationship lives in the **description** (`Resolves #N` +
+  the spec link).
+
 ## Mode A — Draft placeholder (spec time)
 
 At this stage nothing is implemented, so **do not** describe changes, env vars, or checklists — the
@@ -42,7 +54,8 @@ description is a placeholder pointing at the plan:
    - A note that this is a **spec-first draft**: the branch will receive the task's work subtask by
      subtask, and the final description will be written when the PR is marked ready for review.
 3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.
-   Title = the task title (not "spec for..."; the PR will become the task's PR).
+   Title per "PR title" above (not "spec for..."; the PR becomes the task's/subtask's PR) — a feature
+   branch's PR describes the whole task, a step sub-branch's PR describes just that subtask.
 4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
    labels — nothing is implemented yet; Mode B adds them from the real diff.
 5. Link the created PR in the output.

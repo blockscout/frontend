@@ -45,3 +45,6 @@ Every UI subtask in a spec is split into two linked subtasks by default:
 - Playwright visual test files are scaffolded by the agent in the scaffold subtask.
 - Screenshot baselines are generated and reviewed by the human **after** the style subtask — a baseline is
   only meaningful once the component matches the mockup.
+- Test the behavior that matters, not the obvious — follow the "What to test (and what not)" guidance in
+  `.agents/rules/tests-unit.mdc`. More tests are not better; a test that only asserts the framework or the
+  mock is noise.
