@@ -43,6 +43,7 @@ import TableShowcase from './tabs/Table';
 import TabsShowcase from './tabs/Tabs';
 import TagShowcase from './tabs/Tag';
 import TextareaShowcase from './tabs/Textarea';
+import TimePickerShowcase from './tabs/TimePicker';
 import ToastShowcase from './tabs/Toast';
 import TooltipShowcase from './tabs/Tooltip';
 import ValuesShowcase from './tabs/Values';
@@ -81,6 +82,7 @@ const tabs = [
   { label: 'Tabs', value: 'tabs', component: <TabsShowcase/> },
   { label: 'Tag', value: 'tag', component: <TagShowcase/> },
   { label: 'Textarea', value: 'textarea', component: <TextareaShowcase/> },
+  { label: 'Time picker', value: 'time-picker', component: <TimePickerShowcase/> },
   { label: 'Toast', value: 'toast', component: <ToastShowcase/> },
   { label: 'Tooltip', value: 'tooltip', component: <TooltipShowcase/> },
   { label: 'Values', value: 'values', component: <ValuesShowcase/> },
