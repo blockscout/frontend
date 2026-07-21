@@ -22,18 +22,30 @@ sync Slack replies: there is nothing to convert, so the run is just harvest (Ste
 
 - With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` (e.g. `.agents/tasks/3219-cross-chain-txs/spec.md`).
 - Ad-hoc (no issue): `.agents/tasks/<slug>/spec.md`.
-- Large tasks: big steps get sub-specs at `subtasks/<NN>-<slug>.md` next to `spec.md`, written **just-in-time**
-  by a `grill-the-task` subtask session — when invoked from one, write the sub-spec, not the main spec.
+- Every subtask of a medium/large task gets its own folder `subtasks/<NN>-<slug>/`, holding:
+  - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet. Its
+    presence (with no `spec.md`) marks the subtask as not-yet-scoped. It carries: the subtask's goal in a
+    sentence or two; the context already gathered (relevant code, endpoints, mockups); the specific unknowns
+    to resolve (what to research, prototype, or decide) and who owns each; and links (issue, Figma, related
+    specs) — enough for a `grill-the-task` subtask session to start without re-deriving it.
+  - `spec.md` — the subtask spec (same template), Status `draft | ready | in progress | done`. Written up
+    front for a scoped subtask, or by the just-in-time subtask session for a deferred one — filled from the
+    folder's `brief.md`.
+  - `research.md` — optional; real research findings or prototype notes produced before the subtask
+    session, feeding it alongside the brief.
 
-Use `spec-template.md` (next to this file) for every new spec and sub-spec. Structure by size:
+Use `spec-template.md` (next to this file) for every spec — main and subtask alike. Structure by size:
 
-- **small** — one-step task breakdown; the whole task is implementable right after the session.
-- **medium** — a flat list of small subtasks in one spec.
-- **large** — main spec with the ordered step list; small steps fully specified inline, big steps as
-  one-liners pointing at their (future) sub-spec.
+- **small** — one `spec.md`, no `subtasks/`; the whole task is a single leaf worklist.
+- **medium** — the main spec is a slim index; each subtask is a folder with a fully-specified `spec.md`.
+- **large** — same layout; big subtasks are deferred (a `brief.md` now, no `spec.md`; the sub-spec is
+  written just-in-time later).
 
-Tag every subtask `[agent]` or `[human]` per `.agents/rules/delegation.mdc` (UI work defaults to the
-scaffold → style split). Specs merge with the task's PR and accumulate in `.agents/tasks/` as precedent.
+**The main spec is an index, not a container.** Its Task breakdown is one line per subtask (checkbox +
+title + folder link) — never inline inputs, requirements, or changelogs; that detail belongs in the
+subtask's own `spec.md`. Tag every subtask `[agent]` or `[human]` per `.agents/rules/delegation.mdc` (UI
+work defaults to the scaffold → style split). Specs merge with the task's PR and accumulate in
+`.agents/tasks/` as precedent.
 
 ## Workflow
 
@@ -44,7 +56,8 @@ read the spec first and treat it as hand-editable — developers edit specs dire
 
 ### Step 2 — Harvest Slack answers (update runs only)
 
-For every open question with status `pending` and a recorded Slack permalink:
+Open questions live in the main `spec.md` **and** in any subtask `spec.md` under `subtasks/*/` — gather
+them from all of these files. For every open question with status `pending` and a recorded Slack permalink:
 
 1. Read the thread with the Slack MCP tools (`slack_read_thread`; parse `channel_id`/`message_ts` from the
    permalink as in the `create-issue-from-slack-thread` skill).
@@ -54,8 +67,8 @@ For every open question with status `pending` and a recorded Slack permalink:
 4. If a reply raises a follow-up: draft it (in Russian, like all outreach), get the user's approval, send it
    **into the same thread**, and keep the question `pending`.
 
-The harvest is complete when every `pending` question with a permalink has had its thread read and is now
-resolved, followed up, or confirmed still unanswered.
+The harvest is complete when every `pending` question with a permalink — across the main spec and every
+subtask spec — has had its thread read and is now resolved, followed up, or confirmed still unanswered.
 
 ### Step 3 — Write or merge the spec
 
@@ -63,9 +76,18 @@ Extract from the conversation: decisions, requirements, data/API facts, UI inven
 task breakdown, and unanswered questions with their owners — the per-team contacts picked during the
 session (defaults from `.agents/TEAM.md`), recorded in the header.
 
+**Write to the right file.** Task-level facts (context, shared data/API, overall UI inventory, out-of-scope,
+the index breakdown) go in the main `spec.md`; a subtask's own requirements, data, UI, executor-skill
+`inputs:`, and leaf worklist go in `subtasks/<NN>-<slug>/spec.md`. A subtask that isn't scoped yet gets a
+`brief.md` instead of a `spec.md`.
+
 **Merge surgically.** On update runs, never regenerate the file: preserve checked boxes, statuses, hand
 edits, and resolved-question records; only add or amend what the conversation actually changed. Show the
 user a summary of the changes and confirm before moving on.
+
+**No changelogs.** Record a subtask's completion as a one-line note on its checkbox, nothing more — the
+commit and the PR are the record of what changed. Durable decisions taken during work (a new dependency, an
+architectural choice) are folded into the relevant spec section, not appended as a "done: …" block.
 
 Status field: a new spec starts as `draft`; set it to `ready` once no `pending` question blocks the first
 subtask (per-subtask blocking — unblocked subtasks may proceed while unrelated questions are pending).

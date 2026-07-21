@@ -137,6 +137,29 @@ const STREAK_IMAGES: Record<number, string> = {
 
 Before writing custom utility logic (clamping, deep cloning, grouping, etc.), check whether `es-toolkit` already provides it. Prefer the library function over a manual implementation. Documentation: https://es-toolkit.dev/llms-full.txt
 
+### Comments
+
+Comment the *why*, not the *what*. The code already shows what it does; a good comment explains what the
+code can't — the rationale, a non-obvious constraint, a gotcha, a link to the issue or spec that motivated
+it.
+
+Never write *diff-narration* comments — what the code replaces, what it used to do, what behavior it
+preserves. That belongs in the commit message and the PR, not in the source, where it goes stale the moment
+the next change lands.
+
+```ts
+// BAD — narrates the change and restates the obvious
+// Replaces the old useEffect approach; now we memoize the filtered list
+const active = useMemo(() => items.filter(isActive), [ items ]);
+
+// GOOD — explains the non-obvious why
+// Memoized because <VirtualList> bails out of re-rendering on referential equality of `items`.
+const active = useMemo(() => items.filter(isActive), [ items ]);
+```
+
+Quick test: if a comment would confuse a reader who never saw the previous version of the file, it is
+diff-narration — delete it. If it still helps that reader understand a decision, keep it.
+
 ### Commented-out code
 
 Remove commented-out code blocks. The git history preserves anything that might be needed later. TODOs are acceptable only when paired with a clear follow-up plan or issue reference.
