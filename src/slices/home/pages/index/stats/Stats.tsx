@@ -6,11 +6,11 @@ import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import GasInfoTooltip from 'src/slices/gas/components/GasInfoTooltip';
 import GasPrice from 'src/slices/gas/components/GasPrice';
 import discriminateDetailedPrices from 'src/slices/gas/utils/price';
 import { useHomeDataContext } from 'src/slices/home/contexts/home-data-context';
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
 import type { HomeStatsItem } from 'src/slices/home/utils/stats';
 import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from 'src/slices/home/utils/stats';
 
@@ -51,12 +51,7 @@ const Stats = () => {
     },
   });
 
-  const apiQuery = useApiQuery('core:stats', {
-    queryOptions: {
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const apiQuery = useStatsQuery();
 
   const isPlaceholderData = statsQuery.isPlaceholderData || apiQuery.isPlaceholderData || blocksQuery?.isPlaceholderData;
 

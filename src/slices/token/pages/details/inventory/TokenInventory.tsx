@@ -1,74 +1,74 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Grid, Text } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-
-import type { ResourceError } from 'src/api/resources';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
+import { TOKEN_INSTANCE_ITEM } from 'src/slices/token/stubs';
 
 import ResetFilterButton from 'src/shared/filters/ResetFilterButton';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
-import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import { generateListStub } from 'src/shared/pagination/utils';
 
 import TokenInventoryItem from './TokenInventoryItem';
 
-type Props = {
-  inventoryQuery: QueryWithPagesResult<'core:token_inventory'>;
-  tokenQuery: UseQueryResult<schemas['Token'], ResourceError<unknown>>;
+interface Props {
+  hash: string;
+  token: schemas['Token'] | undefined;
+  isLoading?: boolean;
   ownerFilter?: string;
-  shouldRender?: boolean;
 };
 
-const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender = true }: Props) => {
+const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: Props) => {
   const isMobile = useIsMobile();
-  const isMounted = useIsMounted();
+
+  const inventoryQuery = useQueryWithPages({
+    resourceName: 'core:token_inventory',
+    pathParams: { hash },
+    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
+    options: {
+      placeholderData: generateListStub<'core:token_inventory'>(TOKEN_INSTANCE_ITEM, 50, { next_page_params: { unique_token: 1 } }),
+    },
+  });
+
+  const isLoading = isLoadingProp || Boolean(inventoryQuery.isPlaceholderData);
 
   const resetOwnerFilter = React.useCallback(() => {
     inventoryQuery.onFilterChange({});
   }, [ inventoryQuery ]);
 
-  if (!isMounted || !shouldRender) {
-    return null;
-  }
-
-  const isActionBarHidden = !ownerFilter && !inventoryQuery.data?.items.length;
-
   const ownerFilterComponent = ownerFilter && (
     <Flex
       alignItems="center"
       flexWrap="wrap"
-      mb={{ base: isActionBarHidden ? 3 : 6, lg: 3 }}
-      mr={ 4 }
+      mr={{ base: 0, lg: 4 }}
+      minH={{ lg: 8 }}
+      mb={{ base: 3, lg: 0 }}
     >
-      <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>Filtered by owner</Text>
-      <Flex alignItems="center" py={ 1 }>
+      <Text whiteSpace="nowrap" mr={ 2 }>Filtered by owner</Text>
+      <Flex alignItems="center">
         <AddressEntity address={{ hash: ownerFilter }} truncation={ isMobile ? 'constant' : 'none' }/>
         <ResetFilterButton onClick={ resetOwnerFilter }/>
       </Flex>
     </Flex>
   );
 
-  const actionBar = !isActionBarHidden && (
-    <>
-      { ownerFilterComponent }
-      <ActionBar mt={ -6 }>
-        { isMobile && <Pagination ml="auto" { ...inventoryQuery.pagination }/> }
-      </ActionBar>
-    </>
-  );
+  const actionBar = (ownerFilter || inventoryQuery.pagination.isVisible) ? (
+    <ActionBar mt={ -6 }>
+      { !isMobile && ownerFilterComponent }
+      { inventoryQuery.pagination.isVisible && <Pagination ml="auto" { ...inventoryQuery.pagination }/> }
+    </ActionBar>
+  ) : null;
 
   const items = inventoryQuery.data?.items;
-  const token = tokenQuery.data;
 
   const content = items && token ? (
     <AddressHighlightProvider>
@@ -82,7 +82,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
           <TokenInventoryItem
             key={ item.id + '_' + index + (inventoryQuery.isPlaceholderData ? '_' + 'placeholder' : '') }
             item={ item }
-            isLoading={ inventoryQuery.isPlaceholderData || tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
             token={ token }
           />
         )) }
@@ -101,6 +101,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender 
       }}
       actionBar={ actionBar }
     >
+      { isMobile && ownerFilterComponent }
       { content }
     </DataList>
   );

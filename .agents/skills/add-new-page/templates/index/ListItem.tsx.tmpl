@@ -7,7 +7,7 @@ import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  // TODO: replace `unknown` with the real item type
+  // TODO (api-data): replace `unknown` with the real item type
   item: unknown;
   isLoading?: boolean;
 }
@@ -15,7 +15,7 @@ interface Props {
 const __PageName__ListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
-      { /* TODO: one Label/Value pair per field; render values from `item` */ }
+      { /* TODO (api-data): one Label/Value pair per field; render values from `item` */ }
       <ListItemMobileGrid.Label isLoading={ isLoading }>Label 1</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton loading={ isLoading }>Value 1</Skeleton>

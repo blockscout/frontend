@@ -23,10 +23,6 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 | Visual tests | Playwright |
 | Package manager | pnpm (Node >=22.14.0) |
 
-## Domain terminology
-
-Feature and product codenames used throughout the codebase are defined in `.agents/GLOSSARY.md`. Consult it whenever you encounter an unfamiliar term — e.g. `tac`, `bens`, `cctx`, `kettle`, `epoch`, `blobs`.
-
 ## Directory layout
 
 All application source lives under `/src`. Code is co-located by **slice** (core explorer domain) or **feature** (optional / config-gated area).
@@ -46,7 +42,7 @@ All application source lives under `/src`. Code is co-located by **slice** (core
 
 | Path | Role |
 |---|---|
-| `src/api/` | Transport, fetch utilities, query client, WebSocket, data-fetching hooks |
+| `src/api/` | Transport, fetch utilities, query client, WebSocket, data-fetching hooks, per-service resource registry (`resources/`) |
 | `src/shell/` | App chrome: layout, header, footer, navigation, top-bar, root contexts |
 | `src/slices/` | Core explorer entities — always present on any vanilla EVM chain |
 | `src/features/` | Optional / config-gated product areas |

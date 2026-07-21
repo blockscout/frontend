@@ -12,7 +12,7 @@ import ContractVerificationFieldEvmVersion from '../fields/ContractVerificationF
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 
 const MAIN_SOURCES_TYPES = [ '.vy' as const ];
-const INTERFACE_TYPES = [ '.vy' as const, '.json' as const ];
+const INTERFACE_TYPES = [ '.vy' as const, '.vyi' as const, '.json' as const ];
 
 const ContractVerificationVyperMultiPartFile = ({ config }: { config: SmartContractVerificationConfig }) => {
 
@@ -43,7 +43,7 @@ const ContractVerificationVyperMultiPartFile = ({ config }: { config: SmartContr
         fileTypes={ INTERFACE_TYPES }
         multiple
         fullFilePath
-        title="Interfaces (.vy or .json)"
+        title="Interfaces (.vy, .vyi or .json)"
         hint={ interfacesHint }
       />
     </ContractVerificationMethod>

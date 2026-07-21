@@ -21,8 +21,14 @@ type Props = {
   timeFormat?: TimeFormat;
 };
 
-const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className, timeFormat: timeFormatProp }: Props) => {
+// Tooltip content is rendered only when the tooltip opens, so wrapping the dayjs call
+// in a component defers the parsing/formatting until the first hover — otherwise every
+// timestamp cell of a table pays for it during the initial render.
+const TimestampTooltipContent = ({ timestamp, isLocalTime }: { timestamp: string | number; isLocalTime?: boolean }) => {
+  return isLocalTime ? dayjs(timestamp).format('llll') : dayjs(timestamp).utc().format('llll');
+};
 
+const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className, timeFormat: timeFormatProp }: Props) => {
   const settings = useSettingsContext();
   const timeFormat = timeFormatProp || settings?.timeFormat || 'relative';
   const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading && timeFormat === 'relative');
@@ -37,7 +43,7 @@ const TimeWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, 
     }
 
     if (timeFormat === 'relative') {
-      const content = settings?.isLocalTime ? dayjs(timestamp).format('llll') : dayjs(timestamp).utc().format('llll');
+      const content = <TimestampTooltipContent timestamp={ timestamp } isLocalTime={ settings?.isLocalTime }/>;
       return <Tooltip content={ content }><span>{ timeAgo }</span></Tooltip>;
     }
 

@@ -46,7 +46,7 @@ test('can simulate method', async({ render, mockContractReadResponse }) => {
     address: addressHash,
     args: [ ADDRESS, AMOUNT ],
     rpcMethod: 'eth_estimateGas',
-    result: 42000,
+    result: '0xA410',
     noResultEncoding: true,
   });
   await mockContractReadResponse({

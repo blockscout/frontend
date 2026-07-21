@@ -9,7 +9,7 @@ import __PageName__Table from 'src/__area__/__featureName__/pages/index/__PageNa
 import DataList from 'src/shared/lists/DataList';
 
 const __PageName__Content = () => {
-  // TODO: wire up data (useQueryWithPages) — out of scaffold scope.
+  // TODO (api-data): wire up data (useQueryWithPages) — see wiring.md in the add-new-page skill.
   // Pagination, filtering, sorting and the action bar are intentionally omitted from
   // this scaffold. See src/slices/block/pages/index/BlocksContent.tsx for the full pattern.
   // Three placeholder items so the table/list render visible example rows — replace with fetched data.
@@ -18,7 +18,7 @@ const __PageName__Content = () => {
   const isLoading = false;
 
   return (
-    // TODO: replace the "items"/"item" placeholders below with this page's entity —
+    // TODO (api-data): replace the "items"/"item" placeholders below with this page's entity —
     // plural in `emptyText` ("There are no validators."), singular in `emptyStateProps.term` ("validator").
     <DataList
       isError={ isError }

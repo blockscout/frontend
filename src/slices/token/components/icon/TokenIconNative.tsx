@@ -3,9 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
-import { HOMEPAGE_STATS } from 'src/slices/home/stubs';
+import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import TokenIconPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
 import config from 'src/config';
@@ -20,12 +18,7 @@ type Props = {
 };
 
 const TokenIconNative = ({ isLoading, className, type }: Props) => {
-  const statsQueryResult = useApiQuery('core:stats', {
-    queryOptions: {
-      refetchOnMount: false,
-      placeholderData: HOMEPAGE_STATS,
-    },
-  });
+  const statsQueryResult = useStatsQuery();
 
   if (isLoading || statsQueryResult.isPlaceholderData) {
     return <Skeleton borderRadius="base" loading className={ className }/>;

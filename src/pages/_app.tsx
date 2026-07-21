@@ -33,6 +33,7 @@ import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'src/
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
+import SpriteInjector from 'src/sprite/SpriteInjector';
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
 import { Toaster } from 'src/toolkit/chakra/toaster';
@@ -106,6 +107,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   return (
     <>
       <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
+      <SpriteInjector/>
       <ChakraProvider>
         <RollbarProvider config={ rollbarConfig }>
           <AppErrorBoundary

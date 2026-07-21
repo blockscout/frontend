@@ -7,7 +7,7 @@ import __PageName__TableItem from 'src/__area__/__featureName__/pages/index/__Pa
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
-  // TODO: replace `unknown` with the real item type
+  // TODO (api-data): replace `unknown` with the real item type
   items: Array<unknown>;
   isLoading?: boolean;
 }
@@ -17,7 +17,7 @@ const __PageName__Table = ({ items, isLoading }: Props) => {
     <TableRoot>
       <TableHeaderSticky top={ 0 }>
         <TableRow>
-          { /* TODO: define columns */ }
+          { /* TODO (api-data): define columns */ }
           <TableColumnHeader>Column 1</TableColumnHeader>
           <TableColumnHeader>Column 2</TableColumnHeader>
           <TableColumnHeader>Column 3</TableColumnHeader>

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as statsMock from 'src/slices/chain/stats/mocks';
+
 import { userOpData } from 'src/features/user-ops/mocks/user-op';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -21,6 +23,8 @@ test.beforeEach(async({ mockEnvs }) => {
 test('base view', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
   await mockApiResponse('core:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
+  await mockApiResponse('core:stats', { ...statsMock.base, coin_price: '2442.789' });
+
   const component = await render(<UserOp/>, { hooksConfig });
   await component.getByText('View details').click();
   await expect(component).toHaveScreenshot();
@@ -32,6 +36,8 @@ test.describe('mobile', () => {
   test('base view', async({ render, mockTextAd, mockApiResponse }) => {
     await mockTextAd();
     await mockApiResponse('core:user_op', userOpData, { pathParams: { hash: userOpData.hash } });
+    await mockApiResponse('core:stats', { ...statsMock.base, coin_price: '2442.789' });
+
     const component = await render(<UserOp/>, { hooksConfig });
     await component.getByText('View details').click();
     await expect(component).toHaveScreenshot();
