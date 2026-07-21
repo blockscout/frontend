@@ -34,9 +34,10 @@ interface Props extends JsxStyleProps {
 
 const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAddress, ...rest }: Props) => {
   const timestamp = data.send_timestamp || data.receive_timestamp;
-  const firstTransfer = data.transfers.length > 0 ? data.transfers[0] : null;
+  const hasTransfers = data.transfers.length > 0;
+  const firstTransfer = hasTransfers ? data.transfers[0] : null;
   const txHashWithTransfers = (() => {
-    if (data.transfers.length === 0) {
+    if (!hasTransfers) {
       return;
     }
 
@@ -116,52 +117,56 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
         ) : (
           <Skeleton loading={ isLoading } color="text.secondary"><span>{ data.transfers.length }</span></Skeleton>
         ) }
-        <Skeleton loading={ isLoading }>
-          Sender
-        </Skeleton>
-        { firstTransfer?.sender ? (
-          <AddressEntityInterchain
-            chain={ data.source_chain }
-            address={ firstTransfer.sender }
-            isLoading={ isLoading }
-            noIcon
-            currentAddress={ currentAddress }
-          />
-        ) : dashElement }
-        <Skeleton loading={ isLoading }>
-          Source token
-        </Skeleton>
-        { firstTransfer?.source_token ? (
-          <TokenValueInterchain
-            token={ firstTransfer.source_token }
-            amount={ firstTransfer.source_amount }
-            chain={ firstTransfer.source_chain }
-            loading={ isLoading }
-          />
-        ) : dashElement }
-        <Skeleton loading={ isLoading }>
-          Recipient
-        </Skeleton>
-        { firstTransfer?.recipient ? (
-          <AddressEntityInterchain
-            chain={ data.destination_chain }
-            address={ firstTransfer.recipient }
-            isLoading={ isLoading }
-            noIcon
-            currentAddress={ currentAddress }
-          />
-        ) : dashElement }
-        <Skeleton loading={ isLoading }>
-          Target token
-        </Skeleton>
-        { firstTransfer?.destination_token ? (
-          <TokenValueInterchain
-            token={ firstTransfer.destination_token }
-            amount={ firstTransfer.destination_amount }
-            chain={ firstTransfer.destination_chain }
-            loading={ isLoading }
-          />
-        ) : dashElement }
+        { hasTransfers && (
+          <>
+            <Skeleton loading={ isLoading }>
+              Sender
+            </Skeleton>
+            { firstTransfer?.sender ? (
+              <AddressEntityInterchain
+                chain={ data.source_chain }
+                address={ firstTransfer.sender }
+                isLoading={ isLoading }
+                noIcon
+                currentAddress={ currentAddress }
+              />
+            ) : dashElement }
+            <Skeleton loading={ isLoading }>
+              Source token
+            </Skeleton>
+            { firstTransfer?.source_token ? (
+              <TokenValueInterchain
+                token={ firstTransfer.source_token }
+                amount={ firstTransfer.source_amount }
+                chain={ firstTransfer.source_chain }
+                loading={ isLoading }
+              />
+            ) : dashElement }
+            <Skeleton loading={ isLoading }>
+              Recipient
+            </Skeleton>
+            { firstTransfer?.recipient ? (
+              <AddressEntityInterchain
+                chain={ data.destination_chain }
+                address={ firstTransfer.recipient }
+                isLoading={ isLoading }
+                noIcon
+                currentAddress={ currentAddress }
+              />
+            ) : dashElement }
+            <Skeleton loading={ isLoading }>
+              Target token
+            </Skeleton>
+            { firstTransfer?.destination_token ? (
+              <TokenValueInterchain
+                token={ firstTransfer.destination_token }
+                amount={ firstTransfer.destination_amount }
+                chain={ firstTransfer.destination_chain }
+                loading={ isLoading }
+              />
+            ) : dashElement }
+          </>
+        ) }
         <Skeleton loading={ isLoading }>
           Protocol
         </Skeleton>

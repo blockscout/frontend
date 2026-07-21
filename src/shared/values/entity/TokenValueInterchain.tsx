@@ -47,7 +47,7 @@ const TokenValueInterchain = ({ token, tokenEntityProps, chain, ...rest }: Props
     <AssetValue
       asset={ asset }
       decimals={ token.decimals }
-      overflow="visible"
+      overflow={ rest.loading ? 'hidden' : 'visible' }
       { ...rest }
     />
   );
