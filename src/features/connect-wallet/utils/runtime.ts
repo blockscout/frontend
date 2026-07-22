@@ -70,6 +70,7 @@ async function loadRuntime(): Promise<Web3Runtime> {
 
     const payload = getFeaturePayload(feature);
     const reownPayload = payload?.connectorType === 'reown' ? payload : undefined;
+    const isDynamic = payload?.connectorType === 'dynamic';
 
     const [ { 'default': wagmi }, core ] = await Promise.all([
       import('./wagmi-config'),
@@ -133,14 +134,21 @@ async function loadRuntime(): Promise<Web3Runtime> {
       } catch {}
     }
 
-    // The config is built with `ssr: true` (`skipHydration`): persisted state is not restored and reconnect
-    // is not fired automatically, and with no `<WagmiProvider>` mounted at boot nothing else does it. So the
-    // runtime rehydrates and reconnects explicitly here. `onMount()` registers the EIP-6963-discovered
-    // wallet extensions as connectors (without which no injected wallet is connectable) and reconnects a
-    // persisted connection — wagmi owns reconnection in every mode, since AppKit's own reconnect path
-    // covers WalletConnect sessions only, not injected wallets. `reconnectOnMount` is gated on a persisted
-    // connection so the `connecting` spinner never flashes for a user who never connected.
-    await core.hydrate(wagmiConfig, { reconnectOnMount: shouldReconnect }).onMount();
+    // Dynamic mode keeps its own root `<WagmiProvider>` over this same config singleton, which hydrates and
+    // reconnects it; the runtime must not hydrate again, or a second `onMount()` re-runs on the live config
+    // and drops the connection. The runtime is still built for its wagmi-core actions, which shared
+    // consumers (rewards, sign-in, address verification) call in dynamic mode too.
+    //
+    // In reown/fallback there is no `<WagmiProvider>` at boot, so the runtime rehydrates explicitly. The
+    // config is `ssr: true` (`skipHydration`), so persisted state is not restored and reconnect is not fired
+    // automatically. `onMount()` registers the EIP-6963-discovered wallet extensions as connectors (without
+    // which no injected wallet is connectable) and reconnects a persisted connection — wagmi owns this,
+    // since AppKit's own reconnect path covers WalletConnect sessions only, not injected wallets.
+    // `reconnectOnMount` is gated on a persisted connection so the `connecting` spinner never flashes for a
+    // user who never connected.
+    if (!isDynamic) {
+      await core.hydrate(wagmiConfig, { reconnectOnMount: shouldReconnect }).onMount();
+    }
 
     return {
       isReady: true,

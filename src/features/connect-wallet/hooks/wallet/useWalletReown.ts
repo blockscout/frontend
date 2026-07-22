@@ -64,8 +64,13 @@ export function useWalletReown({ source, onConnect }: Params): Result {
     subscribeModal(runtime);
     await runtime.openModal();
     setIsOpening(false);
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
-    isConnectionStarted.current = true;
+    // Record a started connection only when the modal could actually open. A failed chunk load resolves to
+    // the disabled runtime whose `openModal` is a no-op — there is nothing for the user to complete, and no
+    // later bridge connect to attribute to this click.
+    if (runtime.isReady) {
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      isConnectionStarted.current = true;
+    }
   }, [ source, subscribeModal ]);
 
   const disconnect = React.useCallback(async() => {

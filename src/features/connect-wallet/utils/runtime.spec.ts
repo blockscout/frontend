@@ -206,6 +206,24 @@ describe('connect-wallet runtime', () => {
     });
   });
 
+  describe('dynamic mode', () => {
+    it('does not hydrate the config (DynamicProvider owns the root provider) but still exposes config + actions', async() => {
+      state.connectWallet = { isEnabled: true, connectorType: 'dynamic' };
+      const { getWeb3Runtime } = await importRuntime();
+      const runtime = await getWeb3Runtime();
+
+      expect(runtime.isReady).toBe(true);
+      expect(runtime.config).toBe(wagmiConfigMock.value.config);
+      // the root `<WagmiProvider>` from DynamicProvider already hydrated this same config singleton — a
+      // second onMount here would re-run on the live config and drop the connection
+      expect(coreMock.hydrate).not.toHaveBeenCalled();
+      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
+      // actions stay bound to the config for the shared signing consumers (rewards, sign-in, verification)
+      await runtime.signMessage({ message: 'hi' });
+      expect(coreMock.signMessage).toHaveBeenCalledWith(wagmiConfigMock.value.config, { message: 'hi' });
+    });
+  });
+
   describe('load-failure degradation', () => {
     it('resolves to a disabled runtime, resets the bridge, and rejects actions', async() => {
       coreMock.watchAccount.mockImplementation(() => {
