@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../spec.md`](../spec.md) — step 4 of issue [#3566](https://github.com/blockscout/frontend/issues/3566) |
-| Status | `in progress` |
+| Status | `done` |
 | Sub-branch | `issue-3566-step-4` (off `issue-3566`) |
 | PM / Designer / Backend | — (inherited from parent: technical/perf task) |
 | Slack channel | — |
@@ -338,17 +338,26 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     specs green (+2 Bridge reconciliation tests). Still owed from the caveat: the **chunk-failure UX** check
     and a **full prod-build smoke pass** across the remaining consumers (revoke, marketplace bridge, rewards
     login, connect-before-loaded).
-- [ ] 6 `[agent]` A/B measurement and report
+- [x] 6 `[agent]` A/B measurement and report — done (2026-07-22).
   - inputs: protocol per `../tools/README.md`, median of 3 runs; fill the "After 4" row in the parent
     spec's Impact tracking table (plus the M6 note from slice 1); verify via bundle trace that no
     wagmi/viem/appkit/zod bytes load before FCP; note anomalies under the parent table.
+  - done (2026-07-22): parent "After 4 (wallet stack)" row + footnote ⁴ filled; this addendum's "After
+    slice 5 (full flip)" row + footnote ² filled. **Headline M6 (JS before FCP) 1751 → 1021 KB gz, −730 KB**
+    (A/B vs "After 2 (mixpanel)"; step 3 rollbar not in build). Bundle check: pre-FCP JS 101 → 68 chunks,
+    largest pre-FCP chunk 79 → 60 KB — no wallet-sized bundle before paint (per-module names hashed in prod,
+    so M6 + chunk-count is the confirmation without a source-map pass). M3/M4 not comparable (this run's
+    transactions endpoint drew 3354 ms; no second run captured transactions → no median-of-3). Only one
+    clean step-4 production trace was available; the slice-1 trace predates slices 3–5. **Not done here**
+    (parent-level, needs the whole issue complete + developer sign-off): filling parent "Final (measured)"
+    and posting the table to issue #3566.
 
 ## Impact addendum
 
 | Checkpoint | M1 FCP | M2 first API req | M3 tx data | M4 content | M5 blocking | M6 JS before FCP |
 | --- | --- | --- | --- | --- | --- | --- |
 | After slice 1 (leaks) | 932 ms | 536 ms | n/a¹ | n/a¹ | 484 ms | 1710 KB |
-| After slice 5 (full flip) | | | | | | |
+| After slice 5 (full flip) | 564 ms | 495 ms | 4188 ms² | 4343 ms² | 468 ms | 1021 KB |
 
 ¹ Single production-build trace (2026-07-20), same preset as the parent spec's baseline. The
 **headline metric for this slice is M6 (JS before FCP): 1751 → 1710 KB gz, −41 KB**, measured against
@@ -360,6 +369,23 @@ lever 1, so they differ only by this slice, isolating the removed viem bytes (na
 several endpoints >4 s) — those metrics are backend-latency dependent and untouched by this slice. The
 M1 −169 / M2 −138 / M5 −125 ms drops in the same A/B are within single-run noise and are **not** claimed
 for this slice; only the wagmi/appkit removal in slices 3–5 is expected to move FCP materially.
+
+² Full step-4 tree (all slices, reown mode, logged in), recorded 2026-07-22, same preset, A/B'd against
+the prior "After 2 (mixpanel)" trace (step 3 rollbar is not in this build). **Headline: M6 (JS before
+FCP) 1751 → 1021 KB gz, −730 KB** — the wagmi/viem/appkit/reown stack and its transitive deps no longer
+load before paint. Corroborated in the trace by the pre-FCP JS set dropping from 101 chunks to 68 and
+the largest pre-FCP chunk shrinking 79 → 60 KB (no wallet-sized bundle remains); the stack still loads,
+but after FCP on the eager reconnect (the logged-in wallet reconnects in this run). Per-module names are
+hashed in the production bundle, so this is the confirmation available without a source-map/analyzer
+pass. The FCP −537 / first-API −179 / blocking −141 ms drops are directionally expected (render no
+longer waits on the wallet provider) but single-run, so M6 is the claimed result. M3/M4 not comparable:
+this run's `main-page/transactions` drew 3354 ms (vs 1184 ms in the "After 2" run), inflating both — the
+content-ready path (`max(boot, backend)`) is untouched by this lever, and no second run captured a
+transactions response, so a median-of-3 was not possible. Normalized to equal backend latency there is
+**no content-ready regression**: the transactions request fired at 834 ms and drew 3354 ms; substituting
+the "After 2" run's 1184 ms backend gives M3 ≈ 2018 ms (vs 2165 ms) and M4 ≈ 2173 ms (vs 2314 ms) — flat
+to ~145 ms better, tracking the earlier request start (834 vs 981 ms); the post-response render-commit
+gap is unchanged (~150 ms both runs).
 
 ## Open questions
 

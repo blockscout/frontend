@@ -89,7 +89,7 @@ Baseline and prototype numbers below are single runs from the research session (
 | After 1 (production impl) | | | | | | |
 | After 2 (mixpanel, single run)³ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
 | After 3 (rollbar) | | | | | | |
-| After 4 (wallet stack) | | | | | | |
+| After 4 (wallet stack) | 564 ms | 495 ms | 4188 ms⁴ | 4343 ms⁴ | 468 ms | 1021 KB |
 | After 5 (react-icons) | | | | | | |
 | **Final (estimate)** | ~750 ms | ~90 ms | ~1500 ms² | ~1700 ms² | ~450 ms | ~1550 KB |
 | **Final (measured)** | | | | | | |
@@ -103,6 +103,19 @@ this row shows lever 2a standalone against the baseline (M2–M4 still boot-chai
 cumulative "after 1+2" state. vs baseline: FCP −425 ms, JS before FCP −89 KB gz (the SDK chunk),
 blocking −450 ms. This run's transactions response was slower than the baseline run's (1184 ms vs
 914 ms); normalized to equal backend latency the M3 gain is ~390 ms.
+⁴ Recorded 2026-07-22 from the completed step-4 tree (all slices, reown mode). Compared against
+"after 2" because step 3 (rollbar) is not in this build. **Headline: JS before FCP 1751 → 1021 KB gz,
+−730 KB** — 33 fewer JS chunks load before FCP (101 → 68), and no large wallet bundle remains on the
+pre-FCP path; the wallet stack + its deps now load after paint, on the eager reconnect / first
+interaction. Supporting (single run each): FCP −537 ms, first API −179 ms, blocking −141 ms. M3/M4
+are **not comparable** — this run's transactions endpoint drew 3354 ms (vs 1184 ms for the "after 2"
+run), inflating both; the structural content-ready path is untouched by this lever, and only one
+step-4 run captured a transactions response (no median-of-3), so M3/M4 are shown for completeness only.
+Normalized to equal backend latency, there is **no content-ready regression**: the transactions request
+fired at 834 ms and drew 3354 ms; substituting the "after 2" run's 1184 ms backend gives M3 ≈ 2018 ms
+(vs 2165 ms) and M4 ≈ 2173 ms (vs 2314 ms) — flat to ~145 ms better, tracking the earlier request start
+(834 vs 981 ms, with less boot JS blocking the main thread). The render-commit gap after the response is
+unchanged (~150 ms both runs).
 
 After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
 the table. When the last box is checked, fill "Final (measured)" and post the completed table to
