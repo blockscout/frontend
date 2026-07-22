@@ -15,6 +15,10 @@ import { Input } from './input';
 import { InputGroup } from './input-group';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from './popover';
 
+const stripLeadingZero = (value?: string) => {
+  return value && value.length > 1 && value[0] === '0' ? value.slice(1) : value;
+};
+
 interface TimePickerItemButtonProps extends ButtonProps {
   value: string;
 }
@@ -62,7 +66,7 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
 
   const onHoursChange = React.useCallback((hours: string) => {
     const [ , minutes ] = value?.split(':') ?? [];
-    onChange?.(`${ hours }:${ minutes }`);
+    onChange?.(`${ hours }:${ minutes ?? '0' }`);
   }, [ value, onChange ]);
 
   const [ hours, setHours ] = useControllableState({
@@ -73,7 +77,7 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
 
   const onMinutesChange = React.useCallback((minutes: string) => {
     const [ hours ] = value?.split(':') ?? [];
-    onChange?.(`${ hours }:${ minutes }`);
+    onChange?.(`${ hours ?? '0' }:${ minutes }`);
   }, [ value, onChange ]);
 
   const [ minutes, setMinutes ] = useControllableState({
@@ -84,13 +88,14 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
 
   const handleHoursClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget as HTMLButtonElement;
-    setHours(button.dataset.value ?? '');
+    setHours(button.dataset.value ?? '0');
   }, [ setHours ]);
 
   const handleMinutesClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget as HTMLButtonElement;
-    setMinutes(button.dataset.value ?? '');
-  }, [ setMinutes ]);
+    setHours((prev) => prev ?? '0');
+    setMinutes(button.dataset.value ?? '0');
+  }, [ setHours, setMinutes ]);
 
   React.useEffect(() => {
     if (!open) {
@@ -126,8 +131,13 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
       open={ open }
     >
       <PopoverTrigger asChild>
-        <InputGroup endElement={ endElement } { ...rest }>
-          <Input placeholder="Select time" size="sm" value={ hours && minutes ? `${ padStart(hours, 2, '0') }:${ padStart(minutes, 2, '0') }` : '' }/>
+        <InputGroup endElement={ endElement }>
+          <Input
+            placeholder="Select time"
+            size="sm"
+            value={ hours && minutes ? `${ padStart(hours, 2, '0') }:${ padStart(minutes, 2, '0') }` : '' }
+            { ...rest }
+          />
         </InputGroup>
       </PopoverTrigger>
       <PopoverContent borderRadius="base" w="100%" >
@@ -139,7 +149,7 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
                   <TimePickerItemButton
                     key={ hour }
                     value={ hour.toString() }
-                    selected={ hours === hour.toString() }
+                    selected={ stripLeadingZero(hours) === hour.toString() }
                     onClick={ handleHoursClick }
                   />
                 );
@@ -151,7 +161,7 @@ export const TimePicker = ({ value, defaultValue, onChange, ...rest }: TimePicke
                   <TimePickerItemButton
                     key={ minute }
                     value={ minute.toString() }
-                    selected={ minutes === minute.toString() }
+                    selected={ stripLeadingZero(minutes) === minute.toString() }
                     onClick={ handleMinutesClick }
                   />
                 );

@@ -81,6 +81,9 @@ importers:
       '@helia/verified-fetch':
         specifier: 2.6.12
         version: 2.6.12(bufferutil@4.1.0)(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(utf-8-validate@6.0.6))(utf-8-validate@6.0.6)
+      '@internationalized/date':
+        specifier: 3.12.2
+        version: 3.12.2
       '@metamask/post-message-stream':
         specifier: ^7.0.0
         version: 7.0.0
@@ -2862,9 +2865,6 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
-
-  '@internationalized/date@3.12.1':
-    resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
   '@internationalized/date@3.12.2':
     resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
@@ -17044,10 +17044,6 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@internationalized/date@3.12.1':
-    dependencies:
-      '@swc/helpers': 0.5.23
-
   '@internationalized/date@3.12.2':
     dependencies:
       '@swc/helpers': 0.5.23
@@ -30364,7 +30360,7 @@ snapshots:
 
   react-aria@3.48.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)
@@ -30610,7 +30606,7 @@ snapshots:
 
   react-stately@3.46.0(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)
