@@ -22,7 +22,7 @@ import { AppContextProvider } from 'src/shell/app/context';
 import Layout from 'src/shell/layout/Layout';
 import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
 
-import Web3Provider from 'src/features/connect-wallet/components/Web3Provider';
+import Web3Boot from 'src/features/connect-wallet/components/Web3Boot';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'src/features/marketplace/context';
 
@@ -32,6 +32,7 @@ import useLoadFeatures from 'src/services/growthbook/useLoadFeatures';
 import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'src/services/rollbar';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
+import useIsMounted from 'src/shared/hooks/useIsMounted';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
@@ -40,6 +41,13 @@ import { Toaster } from 'src/toolkit/chakra/toaster';
 const RewardsContextProvider = dynamic(() => import('src/features/rewards/context').then(module => module.RewardsContextProvider), { ssr: false });
 const RewardsLoginModal = dynamic(() => import('src/features/rewards/components/login/RewardsLoginModal'), { ssr: false });
 const RewardsActivityTracker = dynamic(() => import('src/features/rewards/components/RewardsActivityTracker'), { ssr: false });
+
+// Dynamic connector mode still needs one root provider — its @dynamic-labs stack is not island-friendly
+// (tracked follow-up) — and `ssr: false` keeps that stack out of the server render. reown/fallback never
+// mount it, so this chunk stays out of their bundles.
+const DynamicProvider = dynamic(() => import('src/features/connect-wallet/components/providers/DynamicProvider'), { ssr: false });
+const connectWalletFeature = config.features.connectWallet;
+const walletConnectorType = connectWalletFeature.isEnabled ? connectWalletFeature.connectorType : undefined;
 
 import 'src/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
@@ -103,6 +111,50 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
 
+  // The app intentionally does not render on the server. Gating the shell on client mount preserves that
+  // without putting a wallet chunk on the critical path, which a provider-based gate would. `PageNextJs`
+  // already covers page content; this covers the layout shell.
+  const isShellMounted = useIsMounted();
+
+  const appTree = (
+    <AppContextProvider pageProps={ pageProps }>
+      <GrowthBookProvider growthbook={ growthBook }>
+        <SocketProvider url={ socketUrl }>
+          <RewardsProvider>
+            <MarketplaceContextProvider>
+              <SettingsContextProvider>
+                <CsvExportContextProvider>
+                  { content }
+                </CsvExportContextProvider>
+              </SettingsContextProvider>
+            </MarketplaceContextProvider>
+          </RewardsProvider>
+        </SocketProvider>
+      </GrowthBookProvider>
+      <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+      <GoogleAnalytics/>
+    </AppContextProvider>
+  );
+
+  const walletBoundary = walletConnectorType === 'dynamic' ? (
+    // The dynamic wallet hooks resolve their heavy connector through a dynamic import and suspend on first
+    // render; the pages-router dynamic() wrapper provides no Suspense boundary of its own, so one is needed
+    // here. A null fallback keeps the pre-connector window blank instead of remounting once it resolves.
+    <DynamicProvider>
+      <React.Suspense fallback={ null }>
+        { appTree }
+      </React.Suspense>
+    </DynamicProvider>
+  ) : (
+    // No root wallet provider: feature islands supply the wagmi config only where it is actually used, so
+    // first paint never waits for a wallet chunk. `Web3Boot` sits outside the gate so its eager-load and
+    // theme-sync work can start on the first client tick.
+    <>
+      <Web3Boot/>
+      { isShellMounted ? appTree : null }
+    </>
+  );
+
   return (
     <>
       <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
@@ -113,32 +165,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
             Container={ AppErrorGlobalContainer }
           >
             <QueryClientProvider client={ queryClient }>
-              <Web3Provider>
-                { /* Suspense boundary for the lazily-loaded `dynamic` connector hooks (useWalletDynamicLazy
-                  / useAccountDynamicLazy `use()` a dynamic import). Pages router `next/dynamic(ssr:false)`
-                  does not provide one. Inert for reown/fallback (nothing suspends); in Dynamic mode the
-                  wallet hooks suspend on first render into this null fallback — the same window as today's
-                  `ssr:false` gating, no remount. */ }
-                <React.Suspense fallback={ null }>
-                  <AppContextProvider pageProps={ pageProps }>
-                    <GrowthBookProvider growthbook={ growthBook }>
-                      <SocketProvider url={ socketUrl }>
-                        <RewardsProvider>
-                          <MarketplaceContextProvider>
-                            <SettingsContextProvider>
-                              <CsvExportContextProvider>
-                                { content }
-                              </CsvExportContextProvider>
-                            </SettingsContextProvider>
-                          </MarketplaceContextProvider>
-                        </RewardsProvider>
-                      </SocketProvider>
-                    </GrowthBookProvider>
-                    <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-                    <GoogleAnalytics/>
-                  </AppContextProvider>
-                </React.Suspense>
-              </Web3Provider>
+              { walletBoundary }
             </QueryClientProvider>
           </AppErrorBoundary>
         </RollbarProvider>

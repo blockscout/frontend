@@ -20,6 +20,7 @@ const appKitInstance = vi.hoisted(() => ({
   open: vi.fn(),
   subscribeState: vi.fn<(cb: ModalStateCb) => () => void>(),
   setThemeMode: vi.fn(),
+  ready: vi.fn<() => Promise<void>>(),
 }));
 
 const appKitMock = vi.hoisted(() => ({
@@ -84,6 +85,7 @@ describe('connect-wallet runtime', () => {
     coreMock.switchChain.mockResolvedValue({ id: 1 });
     appKitMock.createAppKit.mockReturnValue(appKitInstance);
     appKitInstance.subscribeState.mockReturnValue(() => {});
+    appKitInstance.ready.mockResolvedValue(undefined);
     bridgeMock.hasPersistedConnection.mockReturnValue(false);
     state.connectWallet = {
       isEnabled: true,
@@ -97,7 +99,8 @@ describe('connect-wallet runtime', () => {
   });
 
   describe('reown mode', () => {
-    it('builds the AppKit singleton, hydrates + reconnects, and subscribes watchAccount', async() => {
+    it('builds the AppKit singleton and reconnects via wagmi once AppKit is ready', async() => {
+      bridgeMock.hasPersistedConnection.mockReturnValue(true);
       const { getWeb3Runtime } = await importRuntime();
       const runtime = await getWeb3Runtime();
 
@@ -110,11 +113,15 @@ describe('connect-wallet runtime', () => {
         allowUnsupportedChain: true,
       }));
 
-      // hydrate(config, { reconnectOnMount: true }).onMount() — what wagmi's <Hydrate> does today
+      expect(coreMock.watchAccount).toHaveBeenCalledTimes(1);
+
+      // AppKit's connector setup must complete before wagmi reconnects, otherwise its account listener
+      // reads a not-yet-registered connector and throws.
+      expect(appKitInstance.ready).toHaveBeenCalledTimes(1);
+      // wagmi owns reconnection (AppKit's own path is WalletConnect-only); onMount reconnects the persisted
+      // connection and registers the EIP-6963 wallet connectors.
       expect(coreMock.hydrate).toHaveBeenCalledWith(wagmiConfigMock.value.config, { reconnectOnMount: true });
       expect(hydrateOnMount).toHaveBeenCalledTimes(1);
-
-      expect(coreMock.watchAccount).toHaveBeenCalledTimes(1);
     });
 
     it('is single-flight: repeated calls share one load', async() => {
@@ -191,6 +198,9 @@ describe('connect-wallet runtime', () => {
       expect(runtime.isReady).toBe(true);
       expect(runtime.config).toBe(wagmiConfigMock.value.config);
       expect(appKitMock.createAppKit).not.toHaveBeenCalled();
+      // with no AppKit to manage reconnection, the runtime hydrates + reconnects wagmi itself
+      expect(coreMock.hydrate).toHaveBeenCalledWith(wagmiConfigMock.value.config, { reconnectOnMount: false });
+      expect(hydrateOnMount).toHaveBeenCalledTimes(1);
       // modal controls are inert without an AppKit instance
       expect(() => runtime.openModal()).not.toThrow();
     });
@@ -198,7 +208,7 @@ describe('connect-wallet runtime', () => {
 
   describe('load-failure degradation', () => {
     it('resolves to a disabled runtime, resets the bridge, and rejects actions', async() => {
-      coreMock.hydrate.mockImplementation(() => {
+      coreMock.watchAccount.mockImplementation(() => {
         throw new Error('chunk load failed');
       });
       const { getWeb3Runtime, Web3RuntimeUnavailableError } = await importRuntime();
@@ -222,19 +232,50 @@ describe('connect-wallet runtime', () => {
       expect(coreMock.watchAccount).toHaveBeenCalledTimes(1);
     });
 
-    it('defers to an idle slot when no connection is persisted', async() => {
+    it('does not load at boot when no connection is persisted (no AppKit → no connecting flicker)', async() => {
       bridgeMock.hasPersistedConnection.mockReturnValue(false);
-      const idleSpy = vi.fn((cb: () => void) => {
-        cb();
-        return 1;
-      });
-      vi.stubGlobal('requestIdleCallback', idleSpy);
-      const { startWeb3Runtime, getWeb3Runtime } = await importRuntime();
+      const { startWeb3Runtime } = await importRuntime();
       startWeb3Runtime();
-      expect(idleSpy).toHaveBeenCalledTimes(1);
+      await Promise.resolve();
+      expect(coreMock.watchAccount).not.toHaveBeenCalled();
+      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
+    });
+
+    it('does not load at boot in fallback/disabled mode (no wasted wallet chunk)', async() => {
+      state.connectWallet = { isEnabled: false };
+      const { startWeb3Runtime } = await importRuntime();
+      startWeb3Runtime();
+      await Promise.resolve();
+      expect(bridgeMock.hasPersistedConnection).not.toHaveBeenCalled();
+      expect(coreMock.watchAccount).not.toHaveBeenCalled();
+      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('applyThemeMode', () => {
+    it('applies the recorded color mode to AppKit once the runtime loads', async() => {
+      const { applyThemeMode, getWeb3Runtime } = await importRuntime();
+      applyThemeMode('dark');
+      // nothing to apply to yet — the runtime (and its AppKit modal) has not loaded
+      expect(appKitInstance.setThemeMode).not.toHaveBeenCalled();
+
       await getWeb3Runtime();
-      expect(coreMock.watchAccount).toHaveBeenCalledTimes(1);
-      vi.unstubAllGlobals();
+      expect(appKitInstance.setThemeMode).toHaveBeenCalledWith('dark');
+    });
+
+    it('does not trigger a runtime load on its own', async() => {
+      const { applyThemeMode } = await importRuntime();
+      applyThemeMode('dark');
+      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
+    });
+
+    it('applies live once the runtime is loaded', async() => {
+      const { applyThemeMode, getWeb3Runtime } = await importRuntime();
+      await getWeb3Runtime();
+      appKitInstance.setThemeMode.mockClear();
+
+      applyThemeMode('light');
+      expect(appKitInstance.setThemeMode).toHaveBeenCalledWith('light');
     });
   });
 });

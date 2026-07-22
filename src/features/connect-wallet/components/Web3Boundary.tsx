@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import React from 'react';
-import { WagmiContext, WagmiProvider } from 'wagmi';
+import { WagmiContext } from 'wagmi';
 
 import { ensureLoaded } from 'src/features/connect-wallet/utils/runtime';
 import type { Web3Runtime } from 'src/features/connect-wallet/utils/runtime';
@@ -45,13 +45,15 @@ const Web3Boundary = ({ children, fallback = null }: Props) => {
     return fallback;
   }
 
-  // `reconnectOnMount={ false }`: the Runtime already hydrated the persisted state and triggered reconnect
-  // when it loaded (wagmi's `<Hydrate>` would otherwise re-run it because the config is `ssr: true`). This
-  // provider exists only to expose the config to the feature's wagmi React hooks.
+  // Publish the config straight onto wagmi's context, bypassing wagmi's `<WagmiProvider>`/`<Hydrate>`. The
+  // Runtime is the single owner of hydration and reconnection for this config; letting the provider hydrate
+  // again would reset the connections it just restored (wagmi's mount clears them whenever it isn't the one
+  // reconnecting), dropping a live wallet mid-session. The feature's wagmi hooks only need the config in
+  // context, which this supplies.
   return (
-    <WagmiProvider config={ runtime.config } reconnectOnMount={ false }>
+    <WagmiContext.Provider value={ runtime.config }>
       { children }
-    </WagmiProvider>
+    </WagmiContext.Provider>
   );
 };
 

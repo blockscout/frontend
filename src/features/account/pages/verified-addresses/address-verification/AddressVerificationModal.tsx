@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { AddressVerificationFormFirstStepFields } from './types';
@@ -8,21 +7,14 @@ import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
-import { FallbackProvider } from 'src/shared/utils/fallback-provider';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
-
-const Web3ProviderBase = dynamic(() => import('src/features/connect-wallet/components/Web3Provider'), { ssr: false });
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
 import AddressVerificationStepSignature from './steps/AddressVerificationStepSignature';
 import AddressVerificationStepSuccess from './steps/AddressVerificationStepSuccess';
 
 type StateData = AddressVerificationFormFirstStepFields & contractsInfo.PrepareAddressResponse_Success & { isToken?: boolean };
-
-const feature = config.features.connectWallet;
-// Dynamic providers cannot be nested, so a dummy provider is used here
-const Web3Provider = feature.isEnabled && feature.connectorType === 'dynamic' ? FallbackProvider : Web3ProviderBase;
 
 interface Props {
   open: boolean;
@@ -125,9 +117,9 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
           { step.title }
         </DialogHeader>
         <DialogBody mb={ 0 }>
-          <Web3Provider>
-            { step.content }
-          </Web3Provider>
+          { /* The signature step reads the wallet through the Bridge hub + `getWeb3Runtime()` actions
+            (no wagmi React hooks), so no root/scoped wallet provider is needed here. */ }
+          { step.content }
         </DialogBody>
       </DialogContent>
     </DialogRoot>

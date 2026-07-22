@@ -149,7 +149,18 @@ export function hasPersistedConnection(): boolean {
  * itself needs only `data`.
  */
 export function applyAccountChange(data: WagmiAccountSnapshot, prevData?: WagmiAccountSnapshot) {
-  setAccount({ address: data.address, status: data.status ?? 'disconnected' });
+  const rawStatus = data.status ?? 'disconnected';
+
+  // Restoring a persisted connection runs through wagmi's `connecting` status, which drops the address and
+  // would flash the "Connect" button between the optimistic seed and the confirmed connection. While the
+  // store is still mid-reconnect, present that interim as `reconnecting` and hold the last known address,
+  // so the header keeps the address in the reconnecting style the whole way through. A fresh user connect
+  // starts from `disconnected`, so its `connecting` passes through untouched (spinner, no stale address).
+  const isMidReconnect = account.status === 'optimistic' || account.status === 'reconnecting';
+  const nextStatus: Web3AccountStatus = rawStatus === 'connecting' && isMidReconnect ? 'reconnecting' : rawStatus;
+  const nextAddress = data.address ?? (nextStatus === 'reconnecting' ? account.address : undefined);
+
+  setAccount({ address: nextAddress, status: nextStatus });
 
   if (!prevData) {
     return;

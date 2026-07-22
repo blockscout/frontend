@@ -118,6 +118,21 @@ describe('connect-wallet bridge', () => {
       expect(bridge.getWeb3Account()).toEqual({ address: undefined, status: 'disconnected' });
     });
 
+    it('holds the optimistic address in the reconnecting style through the interim connecting phase', async() => {
+      window.localStorage.setItem('wagmi.store', persistedStore({ address: '0xabc' }));
+      const bridge = await importBridge();
+      // restoring a persisted connection surfaces as `connecting` with no address yet — the header must not
+      // flash "Connect", so the seeded address is held and the status presented as `reconnecting`
+      bridge.applyAccountChange({ address: undefined, status: 'connecting' }, { status: 'reconnecting', address: undefined });
+      expect(bridge.getWeb3Account()).toEqual({ address: '0xabc', status: 'reconnecting' });
+    });
+
+    it('leaves a fresh connect as connecting with no stale address', async() => {
+      const bridge = await importBridge(); // nothing persisted → starts disconnected
+      bridge.applyAccountChange({ address: undefined, status: 'connecting' }, { status: 'disconnected', address: undefined });
+      expect(bridge.getWeb3Account()).toEqual({ address: undefined, status: 'connecting' });
+    });
+
     it('fires onConnect with isReconnected=false for a fresh connection', async() => {
       const bridge = await importBridge();
       const onConnect = vi.fn();

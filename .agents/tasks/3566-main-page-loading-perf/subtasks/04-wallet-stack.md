@@ -242,9 +242,9 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     `<WagmiProvider>` already sits above it (nested islands, the Playwright `TestApp`, and the root
     `Web3Provider` still mounted until slice 5) → renders children directly, never re-gating or shadowing
     the (same singleton) config. Otherwise `ensureLoaded()` on mount, shows the `fallback` until
-    `runtime.config` resolves, then `<WagmiProvider config={runtime.config} reconnectOnMount={ false }>`
-    (`reconnectOnMount:false` because the Runtime already hydrated + reconnected — wagmi's `<Hydrate>`
-    would otherwise re-run it since the config is `ssr:true`). Chunk-load failure → disabled runtime (no
+    `runtime.config` resolves, then publishes the config straight onto `WagmiContext.Provider` (see the
+    2026-07-22 QA fix — the earlier `<WagmiProvider reconnectOnMount={false}>` re-ran wagmi's `<Hydrate>`
+    and wiped the Runtime's live reconnection). Chunk-load failure → disabled runtime (no
     config) → fallback stays up (degraded, never blank). Wrapped, via in-file split (Content + island) or
     at the single call site: `ContractAbi` (covers all three method tabs + read/write, fallback
     `ContentLoader`), `OptimisticL2ClaimModal` (wrapped at its `OptimisticL2ClaimButton` call site),
@@ -260,7 +260,8 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     `TestApp`'s root `<WagmiProvider>` (mock connector) → boundary transparent, `ensureLoaded()` never
     called; screenshot baselines unchanged (human re-run per delegation policy). `lint:tsc` clean, ESLint
     clean, 55 unit specs green (connect-wallet + contract-methods utils).
-- [ ] 5 `[agent]` Flip `_app`: remove root gating for reown/fallback
+- [x] 5 `[agent]` Flip `_app`: remove root gating for reown/fallback — done (2026-07-21); manual smoke
+  pass still owed (see caveat below).
   - inputs:
     - `_app.tsx`: for `connectorType === 'dynamic'` keep today's `DynamicProvider` wrapping (explicit
       branch + comment referencing the follow-up); otherwise render children directly under a new root
@@ -273,6 +274,70 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
     - Full manual wallet smoke pass on a local prod build (reown mode): connect, disconnect, reconnect
       on reload, connect-before-loaded, contract read+write, revoke, marketplace dapp bridge, rewards
       login.
+  - done (2026-07-21): `_app.tsx` now branches on `walletConnectorType`: `dynamic` keeps
+    `DynamicProvider` (`next/dynamic`, `ssr:false`) + the Suspense boundary for the lazy dynamic hooks;
+    reown/fallback render the app tree under a hydration-only gate (`useIsMounted` — nothing on the
+    server, no chunk wait) with no root wallet provider, plus an always-mounted `Web3Boot`. New
+    `components/Web3Boot.tsx` (render-nothing): `startWeb3Runtime()` once on mount + `applyThemeMode` on
+    color-mode change. `runtime.ts` gained `applyThemeMode` (records the app color mode, applies it to
+    AppKit on resolve and live thereafter — never forces a load) and `startWeb3Runtime` now boot-loads the
+    runtime **only for a reown user with a persisted connection** (see the QA-fix note below — closes the
+    ⚠️ watch item too, since fallback/disabled never boot-loads; the contract-read island stays the only
+    intended disabled-mode trigger). Deleted `Web3Provider.tsx`, `ReownProvider.tsx`
+    (module-scope `initReown` gone — the exact options already live in `runtime.loadRuntime`),
+    `WagmiProvider.tsx`; `DynamicProvider` inlines wagmi's `<WagmiProvider config={wagmiConfig.config}>`.
+    `AddressVerificationModal` dropped its now-dead `Web3Provider` wrapper (slice 3 moved the signature
+    step to the Bridge hub + `getWeb3Runtime()` actions). `useWalletReown.ts` kept — it is used by the hub.
+    Unit tests: new `Web3Boot.spec.tsx` (3) + `runtime.spec.ts` extended (fallback no-boot-load;
+    `applyThemeMode` records/applies/no-load — 4 new). `lint:tsc` clean, ESLint clean, 58 connect-wallet
+    specs green.
+  - ⚠️ verification caveat (developer): browser dev-preview verification was **inconclusive** — the
+    headless Turbopack dev preview (staging preset) renders a blank `#__next` even for the *committed*
+    slice-4.4 code (verified by stashing), so it can't distinguish working from broken here; console did
+    confirm the app tree renders (TopBar/query/form components mount) and the reown runtime initialises
+    (AppKit/Coinbase SDK) with **no** "must be used within WagmiProvider" / crash error. The two manual
+    input items above are therefore still owed and are the gating check before merge: (1) **chunk-failure
+    UX** — block the wallet chunk in DevTools, confirm the page stays functional; (2) **full wallet smoke
+    pass on a local prod build** (`next build && next start`, reown mode) — connect, disconnect, reconnect
+    on reload, connect-before-loaded, contract read+write, revoke, marketplace dapp bridge, rewards login.
+  - QA fix (2026-07-21, from manual QA): the header button flickered idle → spinner → idle on load for a
+    user with no connected wallet. Root cause (confirmed by instrumenting the Bridge in the dev preview):
+    the boot-time idle-load initialised AppKit, whose wagmi adapter drives the account through `connecting`
+    before settling back to `disconnected` — even with nothing to reconnect — and the header renders
+    `connecting` as a spinner. Fix: `startWeb3Runtime` boot-loads **only** when `hasPersistedConnection()`
+    (a returning user who actually reconnects); everyone else loads on the first wallet interaction. Also
+    gated `hydrate`'s `reconnectOnMount` on `hasPersistedConnection()`. The idle-preload (and its
+    `requestIdleCallback`/`IDLE_LOAD_TIMEOUT`) was removed. Still owed in the manual smoke pass: confirm a
+    **returning user with a persisted connection** reconnects with the address shown in the reconnecting
+    style and no "Connect" flash. Two behaviours seen during the same QA are **pre-existing, not from this
+    step** (verified — the step touches neither file): the `rewards:logout` 401 `{code:16}` after login is
+    the rewards context's stale-token cleanup (`context.tsx` init effect, address mismatch), and the home
+    "Watch list" tab appearing-but-not-auto-selected is `slices/home/.../txs/Transactions.tsx` behaviour.
+  - QA fix (2026-07-22, from manual QA — reown reconnect on a real wallet): resolves the reconnect half of
+    the ⚠️ caveat below. Three linked defects, all in returning-user reconnect:
+    1. **Reconnect owner.** wagmi's `reconnect` — not AppKit — is what restores an injected/EIP-6963 wallet
+       (AppKit's own `syncExistingConnection` covers WalletConnect only). `runtime.loadRuntime` now creates
+       AppKit, `await`s `appKit.ready()` (so its connectors are registered), then runs
+       `hydrate(config,{reconnectOnMount: hasPersistedConnection()}).onMount()` as the sole reconnect
+       driver. Ordering matters: firing wagmi's reconnect while AppKit is still initialising made AppKit's
+       account listener read a not-yet-registered connector and throw (`client.ts` `connector.id` on
+       `undefined`). `onMount` still always runs — it also registers the EIP-6963 connectors, without which
+       no injected wallet is connectable.
+    2. **Island re-hydration.** `Web3Boundary` mounted `<WagmiProvider reconnectOnMount={false}>`, whose
+       `<Hydrate>` re-ran `onMount` on the already-hydrated config and *reset* its connections to empty,
+       dropping the live wallet mid-session (crash + disconnect on the contract tab). It now publishes the
+       config via `WagmiContext.Provider` directly — the Runtime stays the single hydration owner.
+    3. **Reconnect flicker.** wagmi restores through the `connecting` status (address briefly undefined),
+       which the button read as "not connected" → a "Connect" flash between the optimistic seed and the
+       confirmed connection. The Bridge now coalesces that interim: while mid-reconnect
+       (`optimistic`/`reconnecting`) an incoming `connecting` is presented as `reconnecting` with the
+       last-known address held, so the address stays visible in the reconnecting style throughout. A fresh
+       connect starts from `disconnected`, so its `connecting` is untouched.
+    Verified on a real wallet (reown): fresh connect, persisted-reload reconnect (no crash, survives repeat
+    reloads), contract read/write tab, and no button flicker. `lint:tsc`/ESLint clean, 60 connect-wallet
+    specs green (+2 Bridge reconciliation tests). Still owed from the caveat: the **chunk-failure UX** check
+    and a **full prod-build smoke pass** across the remaining consumers (revoke, marketplace bridge, rewards
+    login, connect-before-loaded).
 - [ ] 6 `[agent]` A/B measurement and report
   - inputs: protocol per `../tools/README.md`, median of 3 runs; fill the "After 4" row in the parent
     spec's Impact tracking table (plus the M6 note from slice 1); verify via bundle trace that no
