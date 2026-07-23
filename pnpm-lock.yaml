@@ -34,8 +34,8 @@ importers:
         specifier: 1.5.2
         version: 1.5.2
       '@blockscout/interchain-indexer-types':
-        specifier: 1.5.0-beta3
-        version: 1.5.0-beta3
+        specifier: 1.6.0
+        version: 1.6.0
       '@blockscout/multichain-aggregator-types':
         specifier: 2.1.6
         version: 2.1.6
@@ -1336,8 +1336,8 @@ packages:
   '@blockscout/contracts-info-types@1.5.2':
     resolution: {integrity: sha512-hlkCzYKAsSzsNdWmmluLXsWEnt4Hnp1HsPNuXwU2uyYe9MS1jHGl3w/mxocpm8dAFg8FZC0riTQTlsxXOEHQmg==}
 
-  '@blockscout/interchain-indexer-types@1.5.0-beta3':
-    resolution: {integrity: sha512-mAsyYMyebFsOdzLZK2DzV1nhbsf/SDIyZlPiVNWalqcMzeDwJUancf6cPU7DEtYhEWBVBcwd3jeXDUG6X5/u/w==}
+  '@blockscout/interchain-indexer-types@1.6.0':
+    resolution: {integrity: sha512-zWrL3tWqXqvQre9SURlheD6jxp447Ujv7tP35a94K0Ovs3bYCT/ydsUmLoZY3CrqKyRr6cTu8V/1qUql5l9Cpw==}
 
   '@blockscout/multichain-aggregator-types@2.1.6':
     resolution: {integrity: sha512-qpotHqUXhp8NFZ9JioCn2B/gewWQ5stTV9QoHKnUbO/0HzXkLvJXdsOjqhkBlaVcOKEMFY08+T3t9O0oI0wQEA==}
@@ -14870,7 +14870,7 @@ snapshots:
 
   '@blockscout/contracts-info-types@1.5.2': {}
 
-  '@blockscout/interchain-indexer-types@1.5.0-beta3': {}
+  '@blockscout/interchain-indexer-types@1.6.0': {}
 
   '@blockscout/multichain-aggregator-types@2.1.6': {}
 

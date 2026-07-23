@@ -55,7 +55,7 @@
     "@blockscout/api-types": "0.0.1-beta.82839e44ce",
     "@blockscout/bens-types": "1.7.1",
     "@blockscout/contracts-info-types": "1.5.2",
-    "@blockscout/interchain-indexer-types": "1.5.0-beta3",
+    "@blockscout/interchain-indexer-types": "1.6.0",
     "@blockscout/multichain-aggregator-types": "2.1.6",
     "@blockscout/points-types": "1.4.1",
     "@blockscout/stats-types": "2.11.1",

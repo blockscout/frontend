@@ -232,7 +232,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
         ) }
       </TableCell>
       <TableCell>
-        <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } lineHeight="24px"/>
+        <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id } lineHeight="24px"/>
       </TableCell>
     </TableRow>
   );

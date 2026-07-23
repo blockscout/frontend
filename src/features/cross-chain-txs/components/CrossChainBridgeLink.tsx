@@ -11,17 +11,21 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 interface Props extends JsxStyleProps {
   data: BridgeInfo | undefined;
   isLoading?: boolean;
+  messageId?: string;
 }
 
-const CrossChainBridgeLink = ({ data, isLoading, ...rest }: Props) => {
+const CrossChainBridgeLink = ({ data, isLoading, messageId, ...rest }: Props) => {
 
   if (!data) {
     return null;
   }
 
-  if (data.ui_url) {
+  if (data.ui_url || data.docs_url) {
+
+    const uiUrl = messageId && data.ui_url ? data.ui_url.replace('{{message_id}}', messageId) : data.ui_url;
+
     return (
-      <Link href={ data.ui_url } external loading={ isLoading } { ...rest }>
+      <Link href={ uiUrl || data.docs_url } external loading={ isLoading } { ...rest }>
         { data.name }
       </Link>
     );
