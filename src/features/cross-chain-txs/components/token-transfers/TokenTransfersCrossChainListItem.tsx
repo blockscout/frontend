@@ -124,7 +124,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
           Protocol
         </Skeleton>
         { data.bridge ? (
-          <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading }/>
+          <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id }/>
         ) : dashElement }
         <Skeleton loading={ isLoading }>
           Message

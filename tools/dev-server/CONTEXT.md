@@ -52,7 +52,8 @@ lives here):
   (e.g. `HOMEPAGE_HERO_BANNER_CONFIG`, `MARKETPLACE_ESSENTIAL_DAPPS_CONFIG`). So `fetch.ts`
   emits raw values, exactly like the old committed presets. Because raw values are **not
   `source`-safe**, the container entrypoint reads `.env.tmp` via a `while IFS='=' read` loop,
-  never `source`.
+  never `source`. That loop uses `read … || [ -n "$name" ]` so a file with no trailing
+  newline doesn't silently drop its last variable (this bit us with `.env.extra`).
 - **dotenv-cli precedence: the FIRST `-e` file wins** (not the last). The run scripts therefore
   list env files **highest-priority-first**.
 - **`--omit-local-envs` is the dev/container switch.** Dev mode applies `localEnvs` (so APP_HOST

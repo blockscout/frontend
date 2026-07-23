@@ -10,7 +10,7 @@ import Pagination from 'src/shared/pagination/Pagination';
 import TransactionsCrossChainContent from '../../components/txs/TransactionsCrossChainContent';
 import type { Props } from '../../components/txs/TransactionsCrossChainContent';
 
-const AddressCrossChainTxs = ({ pagination, isLoading, ...rest }: Props) => {
+const AddressTxsCrossChain = ({ pagination, isLoading, ...rest }: Props) => {
   const isMobile = useIsMobile();
 
   return (
@@ -31,4 +31,4 @@ const AddressCrossChainTxs = ({ pagination, isLoading, ...rest }: Props) => {
   );
 };
 
-export default React.memo(AddressCrossChainTxs);
+export default React.memo(AddressTxsCrossChain);
