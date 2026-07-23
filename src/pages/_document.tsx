@@ -5,6 +5,7 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import { getPrimerScript } from 'src/server/primedRequests';
 import logRequestFromBot from 'src/server/utils/logRequestFromBot';
 import * as serverTiming from 'src/server/utils/serverTiming';
 
@@ -35,9 +36,14 @@ class MyDocument extends Document {
   }
 
   render() {
+    const primerScript = getPrimerScript(this.props.__NEXT_DATA__.page);
+
     return (
       <Html lang="en">
         <Head>
+          { /* Early-fetch primer: fire the page's first-render API requests before the JS bundle boots */ }
+          { primerScript && <script dangerouslySetInnerHTML={{ __html: primerScript }}/> }
+
           { /* FONTS */ }
           { /* Instruct browsers to preconnect to fonts.gstatic.com for speeding up font loading */ }
           { !(config.misc.fonts.heading?.url && config.misc.fonts.body?.url) &&

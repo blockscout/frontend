@@ -24,14 +24,21 @@ const bridgeMock = vi.hoisted(() => ({
 const colorModeMock = vi.hoisted(() => ({ colorMode: 'light' as 'light' | 'dark' }));
 const innerMock = vi.hoisted(() => ({ shouldFailImport: false }));
 
-// isReownMode is computed once at module eval from this payload, so the whole spec exercises reown mode —
-// the only mode where the eager reconnect runs (non-reown modes simply skip it).
-vi.mock('src/config', () => ({ 'default': { features: { connectWallet: { isEnabled: true } } } }));
-vi.mock('src/config/utils/features', () => ({ getFeaturePayload: () => ({ connectorType: 'reown' }) }));
+vi.mock('src/toolkit/chakra/color-mode', () => ({
+  useColorMode: () => ({ colorMode: colorModeMock.colorMode }),
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  ColorModeProvider: ({ children }: { children: React.ReactNode }) => children,
+}));
 
-vi.mock('src/toolkit/chakra/color-mode', () => ({ useColorMode: () => ({ colorMode: colorModeMock.colorMode }) }));
-
-vi.mock('./utils/bridge', () => bridgeMock);
+vi.mock('./utils/bridge', async(importOriginal) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+  const actual = await importOriginal<typeof import('./utils/bridge')>();
+  return {
+    ...actual,
+    reset: bridgeMock.reset,
+    hasPersistedConnection: bridgeMock.hasPersistedConnection,
+  };
+});
 vi.mock('./utils/runtime', () => ({
   applyThemeMode: runtimeMock.applyThemeMode,
   ensureLoaded: runtimeMock.ensureLoaded,

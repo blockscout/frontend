@@ -23,14 +23,27 @@ const bridgeMock = vi.hoisted(() => ({
   emitConnectionChange: vi.fn(),
 }));
 
-vi.mock('wagmi', () => ({
-  useAccount: () => ({ address: accountState.address, status: accountState.status }),
-  useAccountEffect: (handlers: UseAccountEffectParameters) => {
-    captured.handlers = handlers;
-  },
-}));
+vi.mock('wagmi', async(importOriginal) => {
+  const actual = await importOriginal<{}>();
+  return {
+    ...actual,
+    useAccount: () => ({ address: accountState.address, status: accountState.status }),
+    useAccountEffect: (handlers: UseAccountEffectParameters) => {
+      captured.handlers = handlers;
+    },
+  };
+});
 
-vi.mock('../utils/bridge', () => bridgeMock);
+vi.mock('../utils/bridge', async(importOriginal) => {
+  const actual = await importOriginal<{}>();
+  return {
+    ...actual,
+    setWeb3Account: bridgeMock.setWeb3Account,
+    setWalletFlag: bridgeMock.setWalletFlag,
+    clearWalletFlag: bridgeMock.clearWalletFlag,
+    emitConnectionChange: bridgeMock.emitConnectionChange,
+  };
+});
 
 describe('AccountPublisher', () => {
   beforeEach(() => {
@@ -95,7 +108,12 @@ describe('AccountPublisher', () => {
   });
 
   it('renders nothing', () => {
-    const { container } = render(<AccountPublisher/>);
-    expect(container.firstChild).toBeNull();
+    const { getByTestId } = render(
+      <div data-testid="host">
+        <AccountPublisher/>
+      </div>,
+    );
+    // TestApp may inject theme scripts into the RTL container; the publisher itself adds no nodes
+    expect(getByTestId('host').childElementCount).toBe(0);
   });
 });

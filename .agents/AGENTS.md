@@ -52,6 +52,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against yup schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
 - `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.

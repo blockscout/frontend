@@ -6,6 +6,7 @@ import { useRollbar } from 'src/services/rollbar';
 
 import type { ResourceError, ResourcePath } from '../resources';
 import isBodyAllowed from '../utils/is-body-allowed';
+import takePrimedFetch from '../utils/primed-fetch';
 
 export interface Params {
   method?: RequestInit['method'];
@@ -49,7 +50,13 @@ export default function useFetch() {
       },
     };
 
-    return fetch(path, reqParams).then(response => {
+    // early-fetch primer: a GET request primed by the inline script in the document may
+    // already be in flight — consume it instead of fetching again
+    const primedFetch = !params?.method || params.method === 'GET' ?
+      takePrimedFetch(path, reqParams.headers, params?.signal ?? undefined) :
+      undefined;
+
+    return (primedFetch ?? fetch(path, reqParams)).then(response => {
 
       const isJson = response.headers.get('content-type')?.includes('application/json');
 

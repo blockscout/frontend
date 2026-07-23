@@ -15,9 +15,13 @@ const runtimeMock = vi.hoisted(() => ({
 
 // A real context so the injected `WagmiContext` value can be read back by a probe consumer — this is how
 // feature wagmi hooks pick up the config the sibling provider owns.
-vi.mock('wagmi', async() => {
+vi.mock('wagmi', async(importOriginal) => {
   const ReactMod = await import('react');
-  return { WagmiContext: ReactMod.createContext<unknown>(undefined) };
+  const actual = await importOriginal<{}>();
+  return {
+    ...actual,
+    WagmiContext: ReactMod.createContext<unknown>(undefined),
+  };
 });
 
 vi.mock('../context', () => ({
@@ -105,13 +109,15 @@ describe('Web3Boundary', () => {
   });
 
   it('falls back to nothing when no fallback is provided', () => {
-    const { container } = render(
-      <Web3Boundary>
-        <div>feature</div>
-      </Web3Boundary>,
+    const { getByTestId } = render(
+      <div data-testid="host">
+        <Web3Boundary>
+          <div>feature</div>
+        </Web3Boundary>
+      </div>,
     );
 
     expect(screen.queryByText('feature')).toBeNull();
-    expect(container.textContent).toBe('');
+    expect(getByTestId('host').childElementCount).toBe(0);
   });
 });
