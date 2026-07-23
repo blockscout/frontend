@@ -22,7 +22,7 @@ import { AppContextProvider } from 'src/shell/app/context';
 import Layout from 'src/shell/layout/Layout';
 import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
 
-import Web3Boot from 'src/features/connect-wallet/components/Web3Boot';
+import { Web3Provider } from 'src/features/connect-wallet/context';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
 import { MarketplaceContextProvider } from 'src/features/marketplace/context';
 
@@ -45,7 +45,7 @@ const RewardsActivityTracker = dynamic(() => import('src/features/rewards/compon
 // Dynamic connector mode still needs one root provider — its @dynamic-labs stack is not island-friendly
 // (tracked follow-up) — and `ssr: false` keeps that stack out of the server render. reown/fallback never
 // mount it, so this chunk stays out of their bundles.
-const DynamicProvider = dynamic(() => import('src/features/connect-wallet/components/providers/DynamicProvider'), { ssr: false });
+const DynamicProvider = dynamic(() => import('src/features/connect-wallet/components/DynamicProvider'), { ssr: false });
 const connectWalletFeature = config.features.connectWallet;
 const walletConnectorType = connectWalletFeature.isEnabled ? connectWalletFeature.connectorType : undefined;
 
@@ -146,13 +146,13 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
       </React.Suspense>
     </DynamicProvider>
   ) : (
-    // No root wallet provider: feature islands supply the wagmi config only where it is actually used, so
-    // first paint never waits for a wallet chunk. `Web3Boot` sits outside the gate so its eager-load and
-    // theme-sync work can start on the first client tick.
-    <>
-      <Web3Boot/>
+    // reown / fallback: `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on
+    // the critical path) and swaps in a native `<WagmiProvider>` once the runtime loads — eagerly for a
+    // returning user, or on the first wallet interaction / wallet route. It also owns the eager-load and
+    // AppKit theme-sync that used to live in `Web3Boot`.
+    <Web3Provider>
       { isShellMounted ? appTree : null }
-    </>
+    </Web3Provider>
   );
 
   return (

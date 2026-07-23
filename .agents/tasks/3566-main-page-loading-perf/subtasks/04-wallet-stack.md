@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../spec.md`](../spec.md) — step 4 of issue [#3566](https://github.com/blockscout/frontend/issues/3566) |
-| Status | `done` |
+| Status | `done` — reworked 2026-07-22 to **approach A** (see the Rework section); re-measurement owed |
 | Sub-branch | `issue-3566-step-4` (off `issue-3566`) |
 | PM / Designer / Backend | — (inherited from parent: technical/perf task) |
 | Slack channel | — |
@@ -12,7 +12,130 @@ Read together with [`04-wallet-stack-research.md`](./04-wallet-stack-research.md
 research doc holds the *map* — gating mechanics, the full consumer audit, constraints; this spec holds
 the *decisions and the breakdown*. Where they differ, this spec wins.
 
+> **Two designs live in this document.** The **Rework** section immediately below is the current,
+> shipped architecture (approach A). Everything from **Context & goal** onward is the **original v1
+> design** (hybrid Bridge/Runtime/islands with hand-rolled hydration), kept verbatim for history — the
+> goals, functional requirements, consumer audit and slice-by-slice record there are still accurate,
+> **except** for the parts the Rework supersedes (called out below). Where the two disagree, the Rework
+> section wins.
+
+## Rework (2026-07-22): approach A — native lazy provider
+
+### Why we changed course
+
+v1 shipped and hit its performance goal (M6 −730 KB, wallet stack off the critical path), but landing it
+was a bug whack-a-mole, and the root cause was structural: **v1 reimplemented pieces of wagmi/reown's own
+hydration and reconnection logic** so the header could show account state before any provider mounted.
+Concretely, v1 owned:
+
+- a hand-written parse of wagmi's **internal** `localStorage` blob (`wagmi.store`) to seed the optimistic
+  address — coupled to wagmi's private serialization format and store `version`;
+- an explicit `hydrate(config, { reconnectOnMount }).onMount()` call plus a `watchAccount` subscription,
+  i.e. a second copy of what wagmi's React `<Hydrate>` does, with the AppKit-ready ordering constraint we
+  had to discover by hand;
+- a Bridge that *reinterpreted* wagmi status transitions (the `optimistic`/`connecting`→`reconnecting`
+  coalescing) to avoid a "Connect" flash.
+
+Every one of these was a place our code had to stay bug-for-bug compatible with wagmi/reown internals.
+The QA-fix trail in slices 5–6 below (reconnect owner, island re-hydration wiping the live connection,
+reconnect flicker) is the symptom: fix one, surface another. And it was **fragile against upgrades** —
+any change to wagmi's persistence format, reconnect timing, or AppKit's connector-registration order
+would break us silently. The developer's call (2026-07-22): optimize for **maintenance and low coupling**
+over squeezing the theoretical minimum, accepting a design that is "edgy" only in *where* the provider
+mounts, not in *reimplementing* the library.
+
+### The approach
+
+Mount wagmi's **own** `<WagmiProvider ssr: false>` (which runs its own `<Hydrate>` → reconnect) lazily,
+and let it — not us — own hydration/reconnection. The one non-obvious move is **where** it mounts:
+
+- **Trailing sibling, not wrapper.** `<Web3Provider>` renders `children` (the whole app) provider-less at
+  first paint, and once the runtime loads it mounts `<WagmiProvider>` as a **trailing sibling** of the app
+  that hosts **only** `AccountPublisher` — never the app tree. Adding a trailing sibling doesn't remount
+  the earlier siblings, so mounting the wallet stack leaves all app state intact (an email-authenticated
+  session survives connecting a wallet — the concern that motivated the sibling refinement over a plain
+  wrapper). This keeps the wallet chunks off the critical path (same M6 win as v1) **without** the
+  whole-app remount a lazy root wrapper would cause.
+- **`AccountPublisher` is the single writer of the Bridge.** It lives inside `<WagmiProvider>`, reads
+  wagmi's native `useAccount`/`useAccountEffect`, and mirrors them into the Bridge for boot-time
+  consumers. No status reinterpretation — wagmi's statuses (`connecting`/`reconnecting`/`connected`/
+  `disconnected`) map 1:1.
+- **Bridge is now a dumb mirror.** It carries no wallet logic: an external store plus an **own-format**
+  persisted flag (`bs:wallet`, holding just `{ address }` — a value *we* write on connect/disconnect, so
+  its shape is ours and a wagmi upgrade can't break it). The optimistic seed reads our flag, not
+  `wagmi.store`. `readOptimisticAccount`/`applyAccountChange`/the ongoing `wagmi.store` parser are **gone**.
+  - **One-time migration (kept, by review).** Because `bs:wallet` is only ever written by the new code, a
+    user who last connected on the pre-rework app has `wagmi.store` but no `bs:wallet`, and would lose the
+    optimistic seed + eager reconnect on their first post-release load until they reconnect once. `bridge.ts`
+    therefore reads `wagmi.store` **exactly once at init** and, if it holds a current connection, seeds
+    `bs:wallet` from it (wagmi still owns the actual reconnection). This is the **only** remaining touch of
+    wagmi's internal storage — a bounded, version-guarded, well-commented shim, safe to delete a release
+    cycle after users have re-persisted via `bs:wallet`. (Code-review finding #1, 2026-07-23.)
+- **Runtime no longer hydrates.** It only prepares `config` + AppKit + the imperative `wagmi/actions`
+  subset and hands them over; `hydrate`/`watchAccount` and the `@wagmi/core` direct dependency they
+  required are removed (`wagmi`/`wagmi/actions` suffice). It also stopped depending on the Bridge.
+- **`Web3Provider` absorbs boot duties.** Eager reconnect for a returning user (focus-guarded idle load,
+  skipped while an input is focused so it never interrupts typing) and AppKit theme-sync live here;
+  `Web3Boot` is deleted.
+- **`Web3Boundary` islands publish the config read-only.** Route features that use wagmi hooks get the
+  config injected via `WagmiContext.Provider` over just their subtree — no `<Hydrate>`, so they never
+  re-hydrate or double-reconnect. **Dynamic-mode fix:** when a `<WagmiProvider>` already sits above the
+  island (dynamic mode wraps the whole app in one via `DynamicProvider`, and never mounts `Web3Provider`),
+  the boundary is **transparent** and renders children directly — otherwise `useIsWeb3Ready` (only
+  `Web3Provider` supplies it) is never true and the feature is stuck on its fallback forever. This was a
+  real regression the rework introduced and then fixed (perpetual loader on the contract ABI tab in
+  dynamic mode).
+
+### File map (current)
+
+| File | Role |
+| --- | --- |
+| `utils/bridge.ts` | Dumb external store + own-format `bs:wallet` flag; sole reader for boot consumers, written only by `AccountPublisher`. |
+| `utils/runtime.ts` | Lazy single-flight loader of `config` + AppKit + actions; `subscribeRuntimeLoaded`/`getLoadedRuntime`/`applyThemeMode`. No hydrate/watch. |
+| `context.tsx` (feature root) | `<Web3Provider>` (sibling mount + ready-context) + `useIsWeb3Ready`; owns eager reconnect + theme sync. Lives at the feature root as the wallet context, matching the repo's `context.tsx` convention (marketplace/rewards). |
+| `components/DynamicProvider.tsx` | Root `<WagmiProvider>` for dynamic connector mode (flattened out of the former one-file `components/providers/`). |
+| `components/Web3ProviderInner.tsx` | The lazily-imported native `<WagmiProvider>` hosting only `AccountPublisher` (keeps the wagmi import in the wallet chunk). |
+| `components/AccountPublisher.tsx` | Inside `<WagmiProvider>`; mirrors `useAccount`/`useAccountEffect` into the Bridge; sole Bridge writer. |
+| `components/Web3Boundary.tsx` | Per-feature island: injects `WagmiContext` read-only in reown/fallback; transparent under an existing provider (dynamic). |
+
+Deleted vs v1: `components/Web3Boot.tsx` (folded into `Web3Provider`); the `@wagmi/core` direct dep and
+all hand-hydration code in `runtime.ts`; the `wagmi.store` parser + `readOptimisticAccount`/
+`applyAccountChange`/`'optimistic'` status in `bridge.ts`.
+
+### What carries over unchanged from v1
+
+The **goal** (first paint independent of all wallet chunks, zero behavior change), the **fallback/degrade**
+contract, the **analytics parity** requirements, the **dynamic-mode scoping** (still a root
+`DynamicProvider`, redesign still a follow-up), and the **measurement protocol**. The v1 functional
+requirements below all still hold; only the *mechanism* behind the optimistic seed and reconnection
+changed.
+
+### Verification
+
+- Unit suite green (68 connect-wallet specs): `bridge`/`runtime` rewritten to the new API; new
+  `AccountPublisher` + `web3-provider` specs (sibling mount, ready-context flip, theme sync, focus-guarded
+  eager reconnect); `Web3Boundary` covers the dynamic-transparency path. `lint:tsc` + ESLint clean.
+- Live: reown mode (connect opens the AppKit modal via lazy load, no wallet chunk before interaction; app
+  state — including a header search value — survives the wallet mount, confirming no remount); dynamic
+  mode (contract ABI read/write tab renders instead of a perpetual loader).
+- UX fix: the profile-popover "Connect" button now awaits the modal open before closing the popover
+  (was a fixed 300 ms timer that fired before the lazy modal appeared).
+
+### Owed
+
+- **Re-measurement — done (2026-07-22).** Fresh production A/B confirms no regression: **M6 1751 → 1030 KB
+  gz (−721)**, statistically identical to v1's 1021 KB (+9 KB, within noise) — the wallet stack still loads
+  only after FCP. See the Impact addendum "After rework (approach A)" row + footnote ³, and the parent
+  "After 4" row (updated to the reworked numbers).
+- Real-wallet smoke on the reworked tree (email-auth → connect state survival, connect/reconnect,
+  contract read/write) and the Dynamic-setup pass.
+
+---
+
 ## Context & goal
+<!-- Everything from here on is the original v1 design, preserved for history. See the Rework section
+     above for what supersedes it. -->
+
 
 The wallet stack (AppKit + wagmi + viem, ~150 KB gz) holds first paint hostage on **every** page through
 two mechanisms: the root `Web3Provider` (`next/dynamic`, `ssr: false`, no fallback) renders the whole
@@ -357,7 +480,8 @@ each feature's existing loading/skeleton states. No Figma involvement; no `[huma
 | Checkpoint | M1 FCP | M2 first API req | M3 tx data | M4 content | M5 blocking | M6 JS before FCP |
 | --- | --- | --- | --- | --- | --- | --- |
 | After slice 1 (leaks) | 932 ms | 536 ms | n/a¹ | n/a¹ | 484 ms | 1710 KB |
-| After slice 5 (full flip) | 564 ms | 495 ms | 4188 ms² | 4343 ms² | 468 ms | 1021 KB |
+| After slice 5 (v1, full flip) | 564 ms | 495 ms | 4188 ms² | 4343 ms² | 468 ms | 1021 KB |
+| After rework (approach A) | 591 ms | 533 ms | 3967 ms³ | 4131 ms³ | 484 ms | 1030 KB |
 
 ¹ Single production-build trace (2026-07-20), same preset as the parent spec's baseline. The
 **headline metric for this slice is M6 (JS before FCP): 1751 → 1710 KB gz, −41 KB**, measured against
@@ -386,6 +510,16 @@ transactions response, so a median-of-3 was not possible. Normalized to equal ba
 the "After 2" run's 1184 ms backend gives M3 ≈ 2018 ms (vs 2165 ms) and M4 ≈ 2173 ms (vs 2314 ms) — flat
 to ~145 ms better, tracking the earlier request start (834 vs 981 ms); the post-response render-commit
 gap is unchanged (~150 ms both runs).
+
+³ Reworked tree (approach A — native lazy **sibling** `<WagmiProvider>`, no hand-hydration), recorded
+2026-07-22, same preset, A/B'd against the same "After 2 (mixpanel)" trace as the v1 row. **M6 (JS before
+FCP) 1751 → 1030 KB gz, −721 KB** — statistically identical to the v1 "After slice 5" 1021 KB (+9 KB,
+within run-to-run noise), confirming approach A **preserves the deferral**: the wallet stack still loads
+only after FCP (on eager reconnect / first interaction), so moving the provider from a root wrapper to a
+trailing sibling changed *where* it attaches, not *when* the chunk loads — no perf regression from the
+rework. Supporting single-run drops vs "After 2": FCP −510, first API −141, blocking −125 ms. M3/M4 **not
+comparable** — this run's `main-page/transactions` drew 3080 ms (fired at 886 ms), inflating both; the
+content-ready path (`max(boot, backend)`) is untouched by this lever, and no median-of-3 was captured.
 
 ## Open questions
 

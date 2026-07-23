@@ -11,7 +11,8 @@ import { useWeb3Account } from 'src/features/connect-wallet/utils/bridge';
 //
 // The Bridge only tracks address + status; `chain`/`chainId`/`connector`/`addresses` are not needed by
 // any boot consumer, so they are filled with the same defaults the fallback/dynamic account hooks use.
-// The status mapping mirrors wagmi's own `getAccount` (the `optimistic` phase presents as `reconnecting`).
+// The status mapping mirrors wagmi's own `getAccount`: a returning user's persisted address surfaces as
+// `reconnecting` (address visible, no "Connect" flash) until the provider confirms or clears it.
 export default function useAccountReown(): UseAccountReturnType {
   const { address, status } = useWeb3Account();
 
@@ -35,7 +36,6 @@ export default function useAccountReown(): UseAccountReturnType {
           status: 'connected',
         } as unknown as UseAccountReturnType;
       case 'reconnecting':
-      case 'optimistic':
         return {
           ...base,
           address: address as `0x${ string }` | undefined,

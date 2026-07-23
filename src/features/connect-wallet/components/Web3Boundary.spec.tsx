@@ -2,45 +2,38 @@
 
 import React from 'react';
 
-import type { Web3Runtime } from 'src/features/connect-wallet/utils/runtime';
-
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from 'vitest/lib';
 
 import Web3Boundary from './Web3Boundary';
 
+const providerMock = vi.hoisted(() => ({ isReady: false }));
 const runtimeMock = vi.hoisted(() => ({
   ensureLoaded: vi.fn(),
+  config: undefined as unknown,
 }));
 
-// Mock `wagmi` with a real context so the "already inside a provider" transparency check is exercised
-// for real, and a passthrough `WagmiProvider` that simply publishes its `config` as the context value.
+// A real context so the injected `WagmiContext` value can be read back by a probe consumer — this is how
+// feature wagmi hooks pick up the config the sibling provider owns.
 vi.mock('wagmi', async() => {
   const ReactMod = await import('react');
-  const WagmiContext = ReactMod.createContext<unknown>(undefined);
-  const WagmiProvider = ({ config, children }: { config: unknown; children: React.ReactNode }) =>
-    ReactMod.createElement(WagmiContext.Provider, { value: config }, children);
-  return { WagmiContext, WagmiProvider };
+  return { WagmiContext: ReactMod.createContext<unknown>(undefined) };
 });
 
-vi.mock('src/features/connect-wallet/utils/runtime', () => ({
-  ensureLoaded: runtimeMock.ensureLoaded,
+vi.mock('../context', () => ({
+  useIsWeb3Ready: () => providerMock.isReady,
 }));
 
-function deferred<T>() {
-  let resolve!: (value: T) => void;
-  const promise = new Promise<T>((r) => {
-    resolve = r;
-  });
-  return { promise, resolve };
-}
-
-const readyRuntime = { isReady: true, config: {} } as unknown as Web3Runtime;
-const disabledRuntime = { isReady: false, config: undefined } as unknown as Web3Runtime;
+vi.mock('../utils/runtime', () => ({
+  ensureLoaded: runtimeMock.ensureLoaded,
+  getLoadedRuntime: () => (runtimeMock.config ? { config: runtimeMock.config } : undefined),
+}));
 
 describe('Web3Boundary', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    providerMock.isReady = false;
+    runtimeMock.config = undefined;
   });
 
   afterEach(() => {
@@ -48,16 +41,18 @@ describe('Web3Boundary', () => {
     vi.restoreAllMocks();
   });
 
-  it('is transparent when a WagmiProvider already sits above it (renders children, never loads)', async() => {
-    const { WagmiProvider } = await import('wagmi');
-    const config = {} as React.ComponentProps<typeof WagmiProvider>['config'];
+  it('is transparent when a WagmiProvider already sits above it (dynamic mode): renders children, never loads', async() => {
+    // dynamic mode wraps the whole app in a root WagmiProvider and never mounts Web3Provider, so
+    // useIsWeb3Ready is permanently false — the boundary must still render children, not the fallback
+    providerMock.isReady = false;
+    const { WagmiContext } = await import('wagmi');
 
     render(
-      <WagmiProvider config={ config }>
+      <WagmiContext.Provider value={{ id: 'root-config' } as never}>
         <Web3Boundary fallback={ <div>skeleton</div> }>
           <div>feature</div>
         </Web3Boundary>
-      </WagmiProvider>,
+      </WagmiContext.Provider>,
     );
 
     expect(screen.queryByText('feature')).not.toBeNull();
@@ -65,10 +60,7 @@ describe('Web3Boundary', () => {
     expect(runtimeMock.ensureLoaded).not.toHaveBeenCalled();
   });
 
-  it('shows the fallback while loading, then the children once the runtime resolves with a config', async() => {
-    const { promise, resolve } = deferred<Web3Runtime>();
-    runtimeMock.ensureLoaded.mockReturnValue(promise);
-
+  it('shows the fallback and kicks off the load while the runtime is not ready', () => {
     render(
       <Web3Boundary fallback={ <div>skeleton</div> }>
         <div>feature</div>
@@ -78,15 +70,29 @@ describe('Web3Boundary', () => {
     expect(screen.queryByText('skeleton')).not.toBeNull();
     expect(screen.queryByText('feature')).toBeNull();
     expect(runtimeMock.ensureLoaded).toHaveBeenCalledTimes(1);
-
-    resolve(readyRuntime);
-
-    expect(await screen.findByText('feature')).not.toBeNull();
-    expect(screen.queryByText('skeleton')).toBeNull();
   });
 
-  it('keeps the fallback up when the wallet chunks fail to load (disabled runtime, no config)', async() => {
-    runtimeMock.ensureLoaded.mockResolvedValue(disabledRuntime);
+  it('renders the children once ready with a config, and publishes that config on WagmiContext', async() => {
+    providerMock.isReady = true;
+    runtimeMock.config = { id: 'wagmi-config' };
+
+    const { WagmiContext } = await import('wagmi');
+    const Probe = () => <div>ctx: { String((React.useContext(WagmiContext) as { id?: string })?.id) }</div>;
+
+    render(
+      <Web3Boundary fallback={ <div>skeleton</div> }>
+        <Probe/>
+      </Web3Boundary>,
+    );
+
+    expect(screen.queryByText('skeleton')).toBeNull();
+    expect(screen.queryByText('ctx: wagmi-config')).not.toBeNull();
+  });
+
+  it('keeps the fallback up when the wallet chunks fail to load (ready never flips, no config)', () => {
+    // a failed load leaves `useIsWeb3Ready` false and no loaded config
+    providerMock.isReady = false;
+    runtimeMock.config = undefined;
 
     render(
       <Web3Boundary fallback={ <div>skeleton</div> }>
@@ -94,10 +100,18 @@ describe('Web3Boundary', () => {
       </Web3Boundary>,
     );
 
-    // let the resolved promise flush
-    await Promise.resolve();
-
     expect(screen.queryByText('skeleton')).not.toBeNull();
     expect(screen.queryByText('feature')).toBeNull();
+  });
+
+  it('falls back to nothing when no fallback is provided', () => {
+    const { container } = render(
+      <Web3Boundary>
+        <div>feature</div>
+      </Web3Boundary>,
+    );
+
+    expect(screen.queryByText('feature')).toBeNull();
+    expect(container.textContent).toBe('');
   });
 });

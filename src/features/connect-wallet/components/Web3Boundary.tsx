@@ -3,56 +3,49 @@
 import React from 'react';
 import { WagmiContext } from 'wagmi';
 
-import { ensureLoaded } from 'src/features/connect-wallet/utils/runtime';
-import type { Web3Runtime } from 'src/features/connect-wallet/utils/runtime';
+import { useIsWeb3Ready } from '../context';
+import { ensureLoaded, getLoadedRuntime } from '../utils/runtime';
 
 interface Props {
   children: React.ReactNode;
-  // the wrapped feature's existing loading/skeleton state, shown while the wallet chunks load (and left
-  // in place if they fail — the feature's wagmi hooks can't mount without a config). Defaults to nothing.
+  // the wrapped feature's existing loading/skeleton state, shown while the wallet chunks load (and left in
+  // place if they fail — the feature's wagmi hooks can't mount without a config). Defaults to nothing.
   fallback?: React.ReactNode;
 }
 
+// Island for route features that use wagmi hooks (contract methods, revoke, L2 claims, marketplace bridge).
+// In reown/fallback mode the app tree is NOT under a `<WagmiProvider>` (that would remount the whole app
+// when the wallet loads — see `context`), so each feature gets the wagmi config injected here, over
+// just its own subtree. It publishes the SAME config the sibling provider owns, read-only: no `<Hydrate>`,
+// so it never re-hydrates or double-reconnects — it only reads the connection state that provider maintains.
+//
+// The feature's real content mounts once, when ready — never before — so there is no lost-state remount:
+// before the runtime loads it shows the fallback; the `WagmiContext` value flips from undefined to the
+// config in place. If the chunks fail to load, `useIsWeb3Ready` stays false and the fallback stays up.
+//
+// Dynamic connector mode is different: `<DynamicProvider>` wraps the whole app in a root `<WagmiProvider>`,
+// so a config is already in context here. There is nothing to lazy-load or gate on — the boundary must be
+// transparent and render children straight away, otherwise `useIsWeb3Ready` (which only `<Web3Provider>`
+// supplies) is never true and the feature is stuck on its fallback forever.
 const Web3Boundary = ({ children, fallback = null }: Props) => {
   const existingConfig = React.useContext(WagmiContext);
-
-  const [ runtime, setRuntime ] = React.useState<Web3Runtime | undefined>();
+  const isReady = useIsWeb3Ready();
+  const config = getLoadedRuntime()?.config;
 
   React.useEffect(() => {
     if (existingConfig) {
       return;
     }
-
-    let isActive = true;
-    ensureLoaded().then((loaded) => {
-      if (isActive) {
-        setRuntime(loaded);
-      }
-    });
-
-    return () => {
-      isActive = false;
-    };
+    ensureLoaded();
   }, [ existingConfig ]);
 
   if (existingConfig) {
     return children;
   }
 
-  // Still loading, or the wallet chunks failed to load (disabled runtime → no config): the feature can't
-  // mount its wagmi hooks without a config, so we keep its own skeleton up — degraded, never a blank page.
-  if (!runtime?.config) {
-    return fallback;
-  }
-
-  // Publish the config straight onto wagmi's context, bypassing wagmi's `<WagmiProvider>`/`<Hydrate>`. The
-  // Runtime is the single owner of hydration and reconnection for this config; letting the provider hydrate
-  // again would reset the connections it just restored (wagmi's mount clears them whenever it isn't the one
-  // reconnecting), dropping a live wallet mid-session. The feature's wagmi hooks only need the config in
-  // context, which this supplies.
   return (
-    <WagmiContext.Provider value={ runtime.config }>
-      { children }
+    <WagmiContext.Provider value={ config }>
+      { isReady && config ? children : fallback }
     </WagmiContext.Provider>
   );
 };

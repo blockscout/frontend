@@ -79,9 +79,10 @@ export function useWalletReown({ source, onConnect }: Params): Result {
   }, []);
 
   // matches the old `isConnected = !isDisconnected && address !== undefined` (see wagmi getAccount);
-  // `optimistic`/`reconnecting` keep the address visible in the reconnecting style — no "Connect" flash
+  // `reconnecting` (which also covers the optimistic window) keeps the address visible in the reconnecting
+  // style — no "Connect" flash for a returning user.
   const isConnected = status !== 'disconnected' && status !== 'connecting' && Boolean(address);
-  const isReconnecting = status === 'reconnecting' || status === 'optimistic';
+  const isReconnecting = status === 'reconnecting';
 
   return React.useMemo(() => ({
     connect,

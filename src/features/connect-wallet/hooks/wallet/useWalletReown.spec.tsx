@@ -147,8 +147,8 @@ describe('useWalletReown', () => {
       expect(result.current.address).toBe('0x1');
     });
 
-    it('shows the optimistic address in reconnecting style (no Connect flash)', () => {
-      bridgeState.account = { address: '0x1', status: 'optimistic' };
+    it('shows the persisted address in reconnecting style (no Connect flash)', () => {
+      bridgeState.account = { address: '0x1', status: 'reconnecting' };
       const { result } = renderHook(() => useWalletReown({ source: 'Header' }));
       expect(result.current.isConnected).toBe(true);
       expect(result.current.isReconnecting).toBe(true);

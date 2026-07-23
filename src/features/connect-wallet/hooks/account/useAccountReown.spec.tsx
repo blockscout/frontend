@@ -26,18 +26,12 @@ describe('useAccountReown', () => {
     });
   });
 
-  it('maps the optimistic phase to a reconnecting account with the persisted address', () => {
-    state.account = { address: '0x1', status: 'optimistic' };
+  it('maps a reconnecting account with the persisted address (no "Connect" flash for a returning user)', () => {
+    state.account = { address: '0x1', status: 'reconnecting' };
     const { result } = renderHook(() => useAccountReown());
     expect(result.current).toMatchObject({
       address: '0x1', isConnected: true, isConnecting: false, isDisconnected: false, isReconnecting: true, status: 'reconnecting',
     });
-  });
-
-  it('maps a reconnecting account (address preserved by wagmi getAccount)', () => {
-    state.account = { address: '0x1', status: 'reconnecting' };
-    const { result } = renderHook(() => useAccountReown());
-    expect(result.current).toMatchObject({ address: '0x1', isConnected: true, isReconnecting: true, status: 'reconnecting' });
   });
 
   it('maps a connecting account (not yet connected, no address)', () => {

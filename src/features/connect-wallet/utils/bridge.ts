@@ -2,101 +2,123 @@
 
 import React from 'react';
 
-// The Bridge is a tiny, permanently-mounted external store that provides wallet **account state** to
-// boot-time consumers (header button, ad banner, ENS lookup) without any of them importing the
-// wagmi/appkit chunks. It is seeded *optimistically* from wagmi's persisted `localStorage` state so a
-// returning user sees their address immediately (no "Connect" flash), then corrected by the Runtime's
-// `watchAccount` once the wallet chunks load. It never swaps a provider element, so nothing remounts.
+// The Bridge is a tiny, permanently-mounted external store that hands wallet **account state** to
+// boot-time consumers (header button, ad banner, ENS lookup) that render before the wallet chunks load —
+// i.e. before any `<WagmiProvider>` exists, where calling wagmi's own hooks would throw. It carries no
+// wallet logic of its own: once the provider mounts, `AccountPublisher` mirrors wagmi's native
+// `useAccount` into this store, and that is the only writer. Reconnection, hydration and status
+// transitions are wagmi's job now — this file must not reimplement any of them.
 //
-// This module must stay free of any static wagmi/viem/appkit import — it runs on the critical path.
-// The persisted state is therefore parsed by hand rather than through wagmi's `deserialize`.
+// It stays free of any static wagmi/viem/appkit import, so it never pulls those chunks onto the critical
+// path. The one piece of persisted state it reads is an **own-format** flag (below), written by us on
+// connect/disconnect — never wagmi's internal `wagmi.store`, so a wagmi/reown upgrade can't break it.
 
 export type Web3AccountStatus =
   | 'disconnected' |
-  'optimistic' | // persisted address shown before the runtime confirms it (reconnecting-style)
+  'reconnecting' | // persisted address shown before wagmi confirms it (covers the optimistic window too)
   'connecting' |
-  'connected' |
-  'reconnecting';
+  'connected';
 
 export interface Web3Account {
   address: string | undefined;
   status: Web3AccountStatus;
 }
 
-// The status the Runtime feeds in from wagmi's `getAccount`/`watchAccount` — a subset of
-// `Web3AccountStatus` (never `optimistic`), with `undefined` possible for `prevData` on first change.
-export interface WagmiAccountSnapshot {
-  address?: string;
-  status: 'connecting' | 'connected' | 'reconnecting' | 'disconnected' | undefined;
-}
-
 export interface ConnectionHandlers {
   // fired when an account transitions to connected; `isReconnected` distinguishes auto-reconnect from a
-  // fresh user connection (mirrors wagmi's `useAccountEffect`), for the `WALLET_CONNECT` analytics
+  // fresh user connection (comes straight from wagmi's `useAccountEffect`), for the `WALLET_CONNECT` event
   onConnect?: (payload: { address: string | undefined; isReconnected: boolean }) => void;
   onDisconnect?: () => void;
 }
 
-// wagmi persists under this key (`createStorage` prefix `wagmi` + persist name `store`). `version` is the
-// `@wagmi/core` major (2.x → 2); a mismatch means the schema may differ, so we fall back to disconnected.
-// Comment pact: keep in sync with `@wagmi/core`'s persist `partialize` (createConfig.ts) — the Bridge
-// unit tests pin the exact shape asserted here.
-const WAGMI_STORE_KEY = 'wagmi.store';
-const WAGMI_STORE_VERSION = 2;
+// Our own persisted flag — a value WE write, so its shape is ours to keep stable across wagmi upgrades.
+// Holds just the last connected address, which is all the optimistic header display needs.
+const WALLET_FLAG_KEY = 'bs:wallet';
 
-// The persisted shape we read (a subset of `@wagmi/core`'s persist output). Everything is optional — the
-// value is untrusted, so the reader guards each hop and falls back to disconnected on any mismatch.
-interface PersistedConnection {
-  accounts?: ReadonlyArray<string>;
-}
-interface PersistedWagmiStore {
-  version?: number;
-  state?: {
-    current?: string | null;
-    connections?: { value?: Array<[ string, PersistedConnection ]> };
-  };
+interface WalletFlag {
+  address?: string;
 }
 
 const DISCONNECTED: Web3Account = Object.freeze({ address: undefined, status: 'disconnected' });
 
-/**
- * Read the optimistic account synchronously from persisted wagmi state. Resilient by design: bad JSON,
- * missing keys, an unexpected shape, or a version mismatch all resolve to `disconnected` rather than
- * throwing — a wrong optimistic guess is worse than none.
- */
-export function readOptimisticAccount(): Web3Account {
+/** Read the own-format flag. Resilient: anything that fails to parse resolves to "no persisted connection". */
+function readWalletFlag(): WalletFlag | undefined {
   try {
     if (typeof window === 'undefined') {
-      return DISCONNECTED;
+      return undefined;
     }
-
-    const raw = window.localStorage.getItem(WAGMI_STORE_KEY);
+    const raw = window.localStorage.getItem(WALLET_FLAG_KEY);
     if (!raw) {
-      return DISCONNECTED;
+      return undefined;
     }
-
-    const parsed = JSON.parse(raw) as PersistedWagmiStore | null;
-    if (!parsed || parsed.version !== WAGMI_STORE_VERSION) {
-      return DISCONNECTED;
-    }
-
-    const current = parsed.state?.current;
-    const entries = parsed.state?.connections?.value;
-    if (!current || !Array.isArray(entries)) {
-      return DISCONNECTED;
-    }
-
-    const connection = entries.find((entry) => Array.isArray(entry) && entry[0] === current)?.[1];
-    const address = connection?.accounts?.[0];
-    if (typeof address !== 'string' || !address) {
-      return DISCONNECTED;
-    }
-
-    return { address, status: 'optimistic' };
+    const parsed = JSON.parse(raw) as WalletFlag | null;
+    return parsed && typeof parsed.address === 'string' && parsed.address ? parsed : undefined;
   } catch {
-    return DISCONNECTED;
+    return undefined;
   }
 }
+
+/** Persist the own-format flag on a confirmed connection (called by `AccountPublisher` on connect). */
+export function setWalletFlag(address: string): void {
+  try {
+    window.localStorage.setItem(WALLET_FLAG_KEY, JSON.stringify({ address } satisfies WalletFlag));
+  } catch {}
+}
+
+/** Clear the own-format flag on disconnect / failed reconnect. */
+export function clearWalletFlag(): void {
+  try {
+    window.localStorage.removeItem(WALLET_FLAG_KEY);
+  } catch {}
+}
+
+/** True when the own flag holds a connection — used to decide the eager reconnect load + optimistic UI. */
+export function hasPersistedConnection(): boolean {
+  return Boolean(readWalletFlag());
+}
+
+// One-time migration onto the own-format flag. Before this module existed the app relied on wagmi's own
+// `wagmi.store` for the connection; a user who last connected then has `wagmi.store` but no `bs:wallet`,
+// so without this they would lose the optimistic seed and eager reconnect until they connect again. Read
+// `wagmi.store` exactly once at init and, if it holds a current connection, seed our flag from it — wagmi
+// still owns the real reconnection. This is the only place that touches wagmi's internal storage; it is
+// safe to delete a release cycle after users have re-persisted via `bs:wallet`.
+const LEGACY_WAGMI_STORE_KEY = 'wagmi.store';
+
+function migrateLegacyWalletFlag(): void {
+  try {
+    if (typeof window === 'undefined' || readWalletFlag()) {
+      return;
+    }
+    const raw = window.localStorage.getItem(LEGACY_WAGMI_STORE_KEY);
+    if (!raw) {
+      return;
+    }
+    // wagmi persists `{ state: { connections: {__type:'Map', value:[[uid,{accounts,…}],…]}, current }, version }`
+    // where `version` is @wagmi/core's major. Guard every step so a shape change just skips the migration.
+    const parsed = JSON.parse(raw) as {
+      version?: number;
+      state?: { current?: string; connections?: { __type?: string; value?: Array<[ string, { accounts?: Array<string> } ]> } };
+    } | null;
+    if (!parsed || parsed.version !== 2 || parsed.state?.connections?.__type !== 'Map') {
+      return;
+    }
+    const { current, connections } = parsed.state;
+    const address = current ? connections.value?.find(([ uid ]) => uid === current)?.[1]?.accounts?.[0] : undefined;
+    if (typeof address === 'string' && address) {
+      setWalletFlag(address);
+    }
+  } catch {}
+}
+
+// Seed optimistically from the own flag: a returning user sees their persisted address in the reconnecting
+// style immediately, with no "Connect" flash, before the provider confirms it.
+function readOptimisticAccount(): Web3Account {
+  const flag = readWalletFlag();
+  return flag ? { address: flag.address, status: 'reconnecting' } : DISCONNECTED;
+}
+
+migrateLegacyWalletFlag();
 
 let account: Web3Account = readOptimisticAccount();
 const listeners = new Set<() => void>();
@@ -123,68 +145,45 @@ function getSnapshot(): Web3Account {
   return account;
 }
 
-// Nothing is connected on the server; the root hydration gate (step 5) keeps this from mismatching.
+// Nothing is connected on the server; the root hydration gate keeps this from mismatching.
 function getServerSnapshot(): Web3Account {
   return DISCONNECTED;
 }
 
-/** Account state for boot-time consumers. Re-renders when the Runtime updates the store. */
+/** Account state for boot-time consumers. Re-renders when `AccountPublisher` updates the store. */
 export function useWeb3Account(): Web3Account {
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
-/** Snapshot outside React (e.g. for the Runtime's eager-load decision). */
+/** Snapshot outside React. */
 export function getWeb3Account(): Web3Account {
   return account;
 }
 
-/** True when persisted state holds a connection — used by the Runtime to load eagerly for reconnect. */
-export function hasPersistedConnection(): boolean {
-  return readOptimisticAccount().status === 'optimistic';
+/**
+ * Mirror wagmi's confirmed account status into the store. Called only by `AccountPublisher` (which reads
+ * wagmi's native `useAccount`), so the status values are wagmi's own — no reinterpretation here.
+ */
+export function setWeb3Account(next: Web3Account): void {
+  setAccount(next);
 }
 
-/**
- * Push a confirmed wagmi account change into the store. Called by the Runtime's `watchAccount`. Passing
- * `prevData` lets the Bridge emit connect/disconnect events with the reconnect flag; the store update
- * itself needs only `data`.
- */
-export function applyAccountChange(data: WagmiAccountSnapshot, prevData?: WagmiAccountSnapshot) {
-  const rawStatus = data.status ?? 'disconnected';
+/** Flip to disconnected — used when the wallet runtime fails to load. */
+export function reset() {
+  setAccount({ ...DISCONNECTED });
+}
 
-  // Restoring a persisted connection runs through wagmi's `connecting` status, which drops the address and
-  // would flash the "Connect" button between the optimistic seed and the confirmed connection. While the
-  // store is still mid-reconnect, present that interim as `reconnecting` and hold the last known address,
-  // so the header keeps the address in the reconnecting style the whole way through. A fresh user connect
-  // starts from `disconnected`, so its `connecting` passes through untouched (spinner, no stale address).
-  const isMidReconnect = account.status === 'optimistic' || account.status === 'reconnecting';
-  const nextStatus: Web3AccountStatus = rawStatus === 'connecting' && isMidReconnect ? 'reconnecting' : rawStatus;
-  const nextAddress = data.address ?? (nextStatus === 'reconnecting' ? account.address : undefined);
-
-  setAccount({ address: nextAddress, status: nextStatus });
-
-  if (!prevData) {
-    return;
-  }
-
-  const becameConnected =
-    (prevData.status === 'reconnecting' || (prevData.status === 'connecting' && prevData.address === undefined)) &&
-    data.status === 'connected';
-
-  if (becameConnected) {
-    const isReconnected = prevData.status === 'reconnecting' || prevData.status === undefined;
-    for (const handlers of connectionHandlers) {
-      handlers.onConnect?.({ address: data.address, isReconnected });
-    }
-  } else if (prevData.status === 'connected' && data.status === 'disconnected') {
-    for (const handlers of connectionHandlers) {
+/** Emit a connect/disconnect event to subscribers (for `WALLET_CONNECT` analytics in the wallet hooks). */
+export function emitConnectionChange(
+  event: { type: 'connect'; address: string | undefined; isReconnected: boolean } | { type: 'disconnect' },
+): void {
+  for (const handlers of connectionHandlers) {
+    if (event.type === 'connect') {
+      handlers.onConnect?.({ address: event.address, isReconnected: event.isReconnected });
+    } else {
       handlers.onDisconnect?.();
     }
   }
-}
-
-/** Flip the store to disconnected — used when the wallet runtime fails to load. */
-export function reset() {
-  setAccount({ ...DISCONNECTED });
 }
 
 /** Subscribe to connect/disconnect events (for `WALLET_CONNECT` analytics in the wallet hooks). */
