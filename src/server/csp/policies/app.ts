@@ -23,7 +23,7 @@ const externalFontsDomains = (() => {
   } catch (error) {}
 })();
 
-export function app(isPrivateMode = false): CspDev.DirectiveDescriptor {
+export function app(isPrivateMode = false, primerScriptHashes: Array<string> = []): CspDev.DirectiveDescriptor {
   return {
     'default-src': [
       // KEY_WORDS.NONE,
@@ -70,6 +70,9 @@ export function app(isPrivateMode = false): CspDev.DirectiveDescriptor {
 
       // CapybaraRunner
       '\'sha256-5+YTmTcBwCYdJ8Jetbr6kyjGp0Ry/H7ptpoun6CrSwQ=\'',
+
+      // early-fetch primer scripts (src/server/primedRequests), hashed at startup
+      ...primerScriptHashes,
     ],
 
     'style-src': [

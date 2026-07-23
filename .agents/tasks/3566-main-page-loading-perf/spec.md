@@ -86,10 +86,10 @@ Baseline and prototype numbers below are single runs from the research session (
 | --- | --- | --- | --- | --- | --- | --- |
 | Baseline (single run) | 1526 ms | 916 ms | 2283 ms | 2534 ms | 1059 ms | 1840 KB |
 | After 1 (prototype, single run) | 1152 ms | 88 ms | 1894 ms¹ | 2044 ms¹ | 616 ms | 1840 KB |
-| After 1 (production impl) | | | | | | |
-| After 2 (mixpanel, single run)³ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
+| After 1 (production impl, single run) | 1230 ms | 90 ms | 1274 ms³ | 1307 ms³ | 598 ms | 1854 KB |
+| After 2 (mixpanel, single run)⁴ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
 | After 3 (rollbar) | | | | | | |
-| After 4 (wallet stack) | 591 ms | 533 ms | 3967 ms⁴ | 4131 ms⁴ | 484 ms | 1030 KB |
+| After 4 (wallet stack) | 591 ms | 533 ms | 3967 ms⁵ | 4131 ms⁵ | 484 ms | 1030 KB |
 | After 5 (react-icons) | | | | | | |
 | **Final (estimate)** | ~750 ms | ~90 ms | ~1500 ms² | ~1700 ms² | ~450 ms | ~1550 KB |
 | **Final (measured)** | | | | | | |
@@ -98,12 +98,16 @@ Baseline and prototype numbers below are single runs from the research session (
 and still came out ahead — normalized to equal backend latency the M4 gain is ~1.1 s.
 ² Assuming the instance's median transactions-endpoint latency (~1.3 s); the structural change is
 `content-ready = max(boot, backend)` instead of `boot + backend`.
-³ Recorded 2026-07-16 from the mixpanel-deferral working tree **without** lever 1 in the build, so
+³ Single run, 2026-07-16. All 6 primed requests start at ~90 ms (vs 916–1372 ms in the baseline);
+this run drew a fast transactions response (1184 ms), putting M3/M4 already below the final
+estimate — treat the ~1.2 s M4 gain as this run's number, not the median. M6 +14 KB gz is the
+inline primer script + payload.
+⁴ Recorded 2026-07-16 from the mixpanel-deferral working tree **without** lever 1 in the build, so
 this row shows lever 2a standalone against the baseline (M2–M4 still boot-chained), not the
 cumulative "after 1+2" state. vs baseline: FCP −425 ms, JS before FCP −89 KB gz (the SDK chunk),
 blocking −450 ms. This run's transactions response was slower than the baseline run's (1184 ms vs
 914 ms); normalized to equal backend latency the M3 gain is ~390 ms.
-⁴ Recorded 2026-07-22 from the **reworked** step-4 tree (approach A — native lazy sibling `<WagmiProvider>`
+⁵ Recorded 2026-07-22 from the **reworked** step-4 tree (approach A — native lazy sibling `<WagmiProvider>`
 replacing v1's hand-rolled hydration; see the sub-spec's Rework section), reown mode. Compared against
 "after 2" because step 3 (rollbar) is not in this build. **Headline: JS before FCP 1751 → 1030 KB gz,
 −721 KB** — the wallet stack + its deps no longer load before paint (they load after FCP, on the eager
@@ -121,20 +125,13 @@ issue #3566.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1)
-  - inputs:
-    - Starting point: git stash `primed-fetch prototype (lever 1, issue #3566)` on the developer's
-      machine (files: `src/server/homePagePrimedRequests.ts`, `src/api/utils/primed-fetch.ts`,
-      `_document.tsx` inline script, `useFetch.ts` consumption, `global.d.ts` typing). An older
-      near-duplicate stash `perf: primed fetch` (on main) is obsolete.
-    - Hardening beyond the prototype: skip consuming a primed response when cookie-derived request
-      headers would differ (`api-v2-temp-token`, `show-scam-tokens`) — or embed those headers
-      server-side in `_document`, which sees the cookies; add a comment-pact + unit test keeping
-      the primed resource list in sync with the home page widgets (`Home.tsx`); make sure a primed
-      fetch rejection behaves identically to a normal fetch failure.
-    - GET-only, consume-once semantics (delete from the map on take).
-    - Out of scope for this subtask: extending the primer to other entry pages (address, tx) —
-      evaluate only after the home-page version has soaked.
+- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+      `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups).
+      Implemented: generic per-page registry + inline script (route params, tab gating, URL filter
+      forwarding), CSP startup hashes, drift tests; rolled out to home, tx, address, token,
+      token-instance, block, user-ops, tokens, chain-stats (default tab only). Measured −1.2 s
+      content-rendered on the home pilot (see Impact tracking); a full median re-measurement across
+      the newly primed pages is pending before this subtask closes.
 - [x] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
   - inputs:
     - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets
