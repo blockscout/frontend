@@ -31,6 +31,17 @@ describe('home page primed requests', () => {
   });
 
   checkPrimedRequests({
+    title: 'arbitrum batches widget does not prime latest_batch when the stats widget is off',
+    page: '/',
+    url: '/',
+    loadComponent,
+    envs: [
+      ...ENVS_MAP.arbitrumRollup,
+      [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["average_block_time","total_txs","wallet_addresses","gas_tracker"]' ],
+    ],
+  });
+
+  checkPrimedRequests({
     title: 'nothing is primed for the multichain home page',
     page: '/',
     url: '/',

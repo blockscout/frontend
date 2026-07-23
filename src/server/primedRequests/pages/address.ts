@@ -15,6 +15,7 @@ const getResources = (): Array<PrimedResource> => {
   return [
     { resource: 'core:address', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
     { resource: 'core:address_tabs_counters', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
+    // { resource: 'core:address_counters', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
     ...(config.features.userOps.isEnabled ?
       [ { resource: 'core:user_ops_account', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] } satisfies PrimedResource ] :
       []),

@@ -7,6 +7,8 @@
 
 import type { PagePrimerConfig, PrimedRequestTuple, PrimerPayload } from './types';
 
+import { httpLogger } from 'src/server/utils/logger';
+
 import buildHeaders from 'src/api/utils/build-headers';
 import buildUrl from 'src/api/utils/build-url';
 import { getCookieHeaderDescriptors } from 'src/api/utils/cookie-headers';
@@ -73,6 +75,11 @@ export function getPrimerScript(page: string | undefined): string {
     // escape "<" so that the JSON payload cannot terminate the surrounding <script> element
     return `${ PRIMED_FETCH_SCRIPT }(${ JSON.stringify(payload).replace(/</g, '\\u003c') })`;
   } catch (error) {
+    httpLogger.logger.error({
+      message: 'Failed to generate early-fetch primer script',
+      page,
+      error: error instanceof Error ? error.message : String(error),
+    });
     return '';
   }
 }

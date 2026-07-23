@@ -10,7 +10,10 @@
 //  - GET only (enforced by the caller);
 //  - safety net: if the headers the primer sent differ from the headers the client would
 //    send (e.g. the inline script's cookie logic drifted from build-headers.ts), the primed
-//    response is discarded and the caller falls back to a normal network request.
+//    response is discarded and the caller falls back to a normal network request;
+//  - AbortSignal: when the caller passes a signal (React Query does), an abort rejects the
+//    returned promise like a normal fetch — the in-flight primed request cannot be cancelled,
+//    but the consumer must not observe its result after cancel.
 
 export function normalizeHeaders(headers: HeadersInit | undefined): string {
   const entries: Array<[ string, string ]> = [];
@@ -20,7 +23,44 @@ export function normalizeHeaders(headers: HeadersInit | undefined): string {
   return JSON.stringify(entries.sort(([ a ], [ b ]) => a < b ? -1 : 1));
 }
 
-export default function takePrimedFetch(url: string, headers: HeadersInit | undefined): Promise<Response> | undefined {
+function abortError(signal: AbortSignal): unknown {
+  return signal.reason ?? new DOMException('The operation was aborted.', 'AbortError');
+}
+
+function withAbortSignal(promise: Promise<Response>, signal: AbortSignal): Promise<Response> {
+  if (signal.aborted) {
+    return Promise.reject(abortError(signal));
+  }
+
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      reject(abortError(signal));
+    };
+
+    signal.addEventListener('abort', onAbort, { once: true });
+
+    promise.then(
+      (response) => {
+        signal.removeEventListener('abort', onAbort);
+        if (signal.aborted) {
+          reject(abortError(signal));
+          return;
+        }
+        resolve(response);
+      },
+      (error) => {
+        signal.removeEventListener('abort', onAbort);
+        reject(error);
+      },
+    );
+  });
+}
+
+export default function takePrimedFetch(
+  url: string,
+  headers: HeadersInit | undefined,
+  signal?: AbortSignal,
+): Promise<Response> | undefined {
   if (typeof window === 'undefined') {
     return;
   }
@@ -36,5 +76,5 @@ export default function takePrimedFetch(url: string, headers: HeadersInit | unde
     return;
   }
 
-  return entry.promise;
+  return signal ? withAbortSignal(entry.promise, signal) : entry.promise;
 }

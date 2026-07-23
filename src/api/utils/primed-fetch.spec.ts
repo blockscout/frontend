@@ -49,4 +49,32 @@ describe('takePrimedFetch', () => {
     expect(takePrimedFetch('https://example.com/other', undefined)).toBeUndefined();
     expect(window.__primedFetches?.size).toBe(1);
   });
+
+  it('rejects when the signal is already aborted', async() => {
+    prime({});
+    const controller = new AbortController();
+    controller.abort();
+
+    const result = takePrimedFetch(URL, {}, controller.signal);
+    await expect(result).rejects.toMatchObject({ name: 'AbortError' });
+    expect(window.__primedFetches?.size).toBe(0);
+  });
+
+  it('rejects when the signal aborts before the primed response resolves', async() => {
+    let resolveResponse!: (response: Response) => void;
+    const promise = new Promise<Response>((resolve) => {
+      resolveResponse = resolve;
+    });
+    window.__primedFetches = new Map([ [ URL, { promise, headers: {} } ] ]);
+
+    const controller = new AbortController();
+    const result = takePrimedFetch(URL, {}, controller.signal);
+
+    controller.abort();
+    await expect(result).rejects.toMatchObject({ name: 'AbortError' });
+
+    // resolving the underlying primed fetch after abort must not settle the consumer as fulfilled
+    resolveResponse(new Response('{}'));
+    await promise;
+  });
 });

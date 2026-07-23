@@ -52,7 +52,9 @@ export default function useFetch() {
 
     // early-fetch primer: a GET request primed by the inline script in the document may
     // already be in flight — consume it instead of fetching again
-    const primedFetch = !params?.method || params.method === 'GET' ? takePrimedFetch(path, reqParams.headers) : undefined;
+    const primedFetch = !params?.method || params.method === 'GET' ?
+      takePrimedFetch(path, reqParams.headers, params?.signal ?? undefined) :
+      undefined;
 
     return (primedFetch ?? fetch(path, reqParams)).then(response => {
 
