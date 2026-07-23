@@ -109,10 +109,13 @@ issue #3566.
 
 ## Task breakdown
 
-- [x] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
       `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups).
-      Done 2026-07-16: generic per-page registry + inline script (route params, tab gating),
-      CSP startup hashes, drift tests; measured −1.2 s content-rendered (see Impact tracking).
+      Mechanism + home/tx pilot done 2026-07-16: generic per-page registry + inline script (route
+      params, tab gating), CSP startup hashes, drift tests; measured −1.2 s content-rendered (see
+      Impact tracking). In progress: rolling out to the full page list (address, token, block,
+      user-ops, token-instance, tokens, chain-stats), default tab only, plus a browser-side
+      query-param capability for the tokens filters (see the sub-spec rollout section).
 - [ ] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
   - inputs:
     - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets

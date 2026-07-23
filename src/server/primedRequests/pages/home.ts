@@ -6,9 +6,6 @@ import config from 'src/config';
 
 const rollupFeature = config.features.rollup;
 
-// This list mirrors the API requests the home page widgets make on their first render
-// (src/slices/home/pages/index/Home.tsx) — update it when a widget is added/removed or its
-// first-render query changes.
 const getResources = (): Array<PrimedResource> => {
   if (config.features.multichain.isEnabled) {
     // the multichain home page renders a different widget set with its own resources;

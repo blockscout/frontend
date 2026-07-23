@@ -18,6 +18,10 @@
 //    substitution uses split/join, NOT `String.prototype.replaceAll(str, value)` — a `$` in a
 //    path segment would be interpreted as a replacement pattern. A request whose params can't
 //    be resolved is simply not primed (the app falls back to a normal fetch).
+//  - forwarded query params come from `location.search`: the values a page copies from the URL
+//    into a list request (filters, sorting). Both sides serialize through `URLSearchParams`, so
+//    equal decoded values encode identically and the query string byte-matches; a URL value the
+//    client would reject just yields a primed URL nobody looks up (one wasted request).
 //  - the tab gate compares the active tab (the `tab` query param, or the page's default tab
 //    when the param is absent) against the tabs a request is restricted to.
 //  - cookie-derived headers must match the client fetch layer exactly: the 'value' / 'flag'
@@ -40,13 +44,23 @@ else if(part!==pathParts[index]){routeValues=null}
 });
 }
 var entries=payload.requests.map(function(req){
-if(req[4]&&(!activeTab||req[4].indexOf(activeTab)===-1)){return null}
+if(req[5]&&(!activeTab||req[5].indexOf(activeTab)===-1)){return null}
 var url=req[0];
 var routeParams=req[3]||[];
 for(var i=0;i<routeParams.length;i++){
 var value=routeValues&&routeValues[routeParams[i][1]];
 if(!value){return null}
 url=url.split(routeParams[i][0]).join(value)
+}
+if(req[4]){
+var currentSearch=new URLSearchParams(location.search);
+var extraSearch=new URLSearchParams();
+req[4].forEach(function(name){
+var searchValue=currentSearch.get(name);
+if(searchValue){extraSearch.append(name,searchValue)}
+});
+var extraStr=extraSearch.toString();
+if(extraStr){url+=(url.indexOf('?')===-1?'?':'&')+extraStr}
 }
 var headers=Object.assign({},req[1]);
 (req[2]||[]).forEach(function(descriptor){

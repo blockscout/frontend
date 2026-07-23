@@ -16,7 +16,7 @@ import { PRIMED_FETCH_SCRIPT } from './inlineScript';
 import { PRIMED_PAGES } from './registry';
 
 function getRequestTuples(pageConfig: PagePrimerConfig): Array<PrimedRequestTuple> {
-  return pageConfig.resources().map(({ resource, pathParams, queryParams, tabs }) => {
+  return pageConfig.resources().map(({ resource, pathParams, queryParams, searchParams, tabs }) => {
     // route-param references become alphanumeric placeholders that survive buildUrl's
     // path compilation unencoded; the inline script substitutes them in the browser
     const routeParams: Array<[ string, string ]> = [];
@@ -42,6 +42,7 @@ function getRequestTuples(pageConfig: PagePrimerConfig): Array<PrimedRequestTupl
       Object.keys(serverHeaders).length > 0 ? serverHeaders : null,
       cookieHeaders.length > 0 ? cookieHeaders : null,
       routeParams.length > 0 ? routeParams : null,
+      searchParams && searchParams.length > 0 ? searchParams : null,
       tabs && tabs.length > 0 ? tabs : null,
     ];
   });

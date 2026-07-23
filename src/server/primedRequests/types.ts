@@ -17,6 +17,17 @@ export interface PrimedResource {
   queryParams?: Record<string, string | Array<string> | number | boolean | null | undefined>;
 
   /**
+   * Names of URL query-string params to forward to this request, read from `location.search`
+   * in the browser and appended in the order given. Both the client (`buildUrl`) and the inline
+   * script serialize through `URLSearchParams`, so identical decoded values encode identically;
+   * the order must match the order the page assembles its params so the query string is
+   * byte-identical, and absent/empty params are skipped, mirroring `buildUrl`. Values never
+   * enter the generated script, so it stays deterministic per config. Used by list pages whose
+   * request reflects URL filters (e.g. the tokens page: `q`, `type`, `sort`, `order`).
+   */
+  searchParams?: Array<string>;
+
+  /**
    * Prime only when one of these tabs is active. The active tab is the `tab` query param,
    * falling back to the page's `defaultTab` when the param is absent. A resource shared by
    * several tabs lists them all here. Omit to prime on every tab.
@@ -53,6 +64,7 @@ export interface PagePrimerConfig {
  * [ url template (may contain route-param placeholders), headers resolved on the server,
  *   cookie-derived header descriptors ([ header, cookie, kind ] — see
  *   src/api/utils/cookie-headers.ts), route-param substitutions ([ placeholder, param ]),
+ *   URL query-string params to forward (read from location.search in the browser),
  *   tabs the request is restricted to ].
  */
 export type PrimedRequestTuple = [
@@ -60,6 +72,7 @@ export type PrimedRequestTuple = [
   serverHeaders: Record<string, string> | null,
   cookieHeaders: Array<[ header: string, cookie: string, kind: 'value' | 'flag' ]> | null,
   routeParams: Array<[ placeholder: string, param: string ]> | null,
+  searchParams: Array<string> | null,
   tabs: Array<string> | null,
 ];
 

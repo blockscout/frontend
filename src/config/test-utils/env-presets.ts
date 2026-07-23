@@ -43,6 +43,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
     [ 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST', 'http://localhost:3110' ],
   ],
+  xStarScore: [
+    [ 'NEXT_PUBLIC_XSTAR_SCORE_URL', 'https://localhost:3115' ],
+  ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
   ],

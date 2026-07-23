@@ -1,9 +1,9 @@
 # Subtask 1 — productionize the early-fetch primer (lever 1)
 
-Sub-spec for subtask 1 of [the main spec](../spec.md). Status: `done` (2026-07-16) — measured
-−1.2 s content-rendered on a single production run; numbers in the main spec's Impact tracking
-table. Open follow-up questions below (Q1, Q2) are tracked for later subtasks/tasks and do not
-block this one.
+Sub-spec for subtask 1 of [the main spec](../spec.md). Status: `in progress` — the mechanism
+plus the home/tx pilot shipped and were measured (−1.2 s content-rendered on a single production
+run; numbers in the main spec's Impact tracking table). Now rolling the primer out to the full
+page list (Q2) within this same subtask — all primer work lives here.
 
 ## Goal
 
@@ -84,24 +84,82 @@ primer can roll out to other entry pages later with a simple resource descriptor
   are derived from the registry, so the tests cover the default-config behavior rather than
   pinning a hardcoded list.
 
+## Rollout (2026-07-23)
+
+Extended the primer from the home/tx pilot to the full page list PM confirmed (Q2). Each page is
+one registry file in `src/server/primedRequests/pages/` (registered in `registry.ts`) plus a
+colocated `*.primed.spec.tsx` drift test. Multi-tab pages prime the **default tab only** — no
+external deep link targets a non-default tab, so priming others just wastes requests.
+
+| Page | Route id | Primed on first render (default tab) |
+| --- | --- | --- |
+| address | `/address/[hash]` | `core:address`, `core:address_tabs_counters`; `core:user_ops_account` (userOps), `core:address_xstar_score` (xStarScore) |
+| token | `/token/[hash]` | `core:token`, `core:token_counters` |
+| token instance | `/token/[hash]/instance/[id]` | `core:token`, `core:token_instance` |
+| block | `/block/[height_or_hash]` | `core:block` |
+| user ops | `/op/[hash]` | `core:user_op`; `core:user_op_interpretation` (txInterpretation) |
+| tokens | `/tokens` | `core:tokens` (+ forwarded URL filters, see below) |
+| chain stats | `/stats` | `stats:lines`, `stats:counters`; `core:stats` (gasTracker) — all gated on `config.apis.stats` |
+
+- **New capability — URL query-param forwarding** (for the tokens filters): a descriptor's
+  `searchParams` lists query-string params to forward, read from `location.search` in the browser
+  and appended in the order given. Both the client (`buildUrl`) and the inline script serialize
+  through `URLSearchParams`, so equal decoded values encode identically and the query string
+  byte-matches; the order mirrors how the page assembles its params (filters then sorting), and
+  absent/empty params are skipped like `buildUrl`. Values never enter the generated script, so it
+  stays deterministic per config (startup CSP hashing unchanged). The tokens page forwards
+  `q`, `type`, `sort`, `order`; the first list request carries no pagination cursor.
+- **Deliberately not primed — query-param-embedded enrichment**: the address/token headers also
+  fetch `metadata:info`, `bens:addresses_lookup` and `clusters:get_clusters_by_address`, which
+  carry the address in a query param (one JSON-encoded) rather than a path param. These are
+  enrichment (name tags, cluster names), not the blocking entity request, and the route-param
+  substitution can't express a param embedded in a query value — so they fetch normally. The
+  drift test only requires primed ⊆ first-render requests, so leaving them unprimed is safe.
+- **Multichain pages return `[]`** (address, tokens, stats swap to a distinct component under
+  `multichain`) — consistent with Q1 (multichain is a separate task).
+- **Second-render requests excluded**: data-dependent queries that wait on the entity response
+  (e.g. address counters, per-chart `stats:line`, token-instance details body behind a mount
+  effect) are not first-render requests and are not primed — verified per page by the drift test.
+- Added an `xStarScore` env preset to `src/config/test-utils/env-presets.ts` for the address
+  drift variant; `userOps` and `txInterpretation` presets already existed.
+- Verified: all primed drift specs pass (25 tests across the 9 registered pages, including the
+  tokens filtered-URL case that exercises `searchParams` byte-matching), `tsc` and `eslint`
+  clean. A live-preset re-measurement of the new pages is still worth doing before the PR leaves
+  draft.
+
 ## Follow-ups
 
 ### Q1 — Should the multichain home page get its own primed requests?
 
 - Owner: PM (asked by the developer)
-- Status: `pending`
+- Status: `resolved` (2026-07-23) — out of scope for this task. Multichain-mode pages will be
+  optimized together in a separate follow-up task. The primer already returns no requests when
+  `multichain` is enabled, so nothing regresses until that task runs.
 - Context: the primer returns no requests when `multichain` is enabled — the multichain home
   renders a distinct widget set with its own resources. (2026-07-15)
-- Answer: —
 
 ### Q2 — Which pages should the primed fetch roll out to (the full list)?
 
 - Owner: PM (asked by the developer)
-- Status: `pending`
+- Status: `resolved` (2026-07-23) — full list below; implemented within this subtask (all primer
+  work stays here). See the Rollout section for per-page status.
+- Answer — pages to prime (home and `/tx/[hash]` are already live):
+  - address details
+  - token details
+  - block details
+  - user ops details
+  - token instance
+  - tokens
+  - chain stats list
+
+  Multi-tab pages prime the **default tab only**: no external deep link targets a non-default
+  tab, so priming them would just waste requests. The **tokens** page carries its list filters
+  as query params that are forwarded to the API, so the primer needs a new capability —
+  query-param values read from `location.search` in the browser (analogous to the existing
+  route-param substitution), rather than only the static `queryParams` baked into the URL
+  template at startup. Every other page fits the current descriptor shape.
 - Context: home and `/tx/[hash]` (default tab) are live; the mechanism is generic — a new page
-  is one registry entry plus a colocated drift spec. Candidates worth asking about: address,
-  block, token pages. (2026-07-16)
-- Answer: —
+  is one registry entry plus a colocated drift spec. (2026-07-16)
 
 ### Q3 — Registry ↔ page drift tooling
 

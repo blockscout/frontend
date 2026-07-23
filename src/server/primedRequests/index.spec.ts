@@ -217,10 +217,15 @@ describe('drift-check coverage', () => {
 });
 
 describe('getPrimerScriptCspHashes', () => {
-  it('produces one quoted sha256 token per registered page', async() => {
+  it('produces one quoted sha256 token per registered page with a non-empty script', async() => {
+    // a page whose resources() is empty under the current config yields no script and no hash
+    const scriptCount = Object.keys(PRIMED_PAGES)
+      .map((page) => getPrimerScript(page))
+      .filter(Boolean).length;
+
     const hashes = await getPrimerScriptCspHashes();
 
-    expect(hashes).toHaveLength(Object.keys(PRIMED_PAGES).length);
+    expect(hashes).toHaveLength(scriptCount);
     hashes.forEach((hash) => {
       expect(hash).toMatch(/^'sha256-[A-Za-z0-9+/]+={0,2}'$/);
     });
