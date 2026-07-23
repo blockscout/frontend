@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import mixpanel from 'mixpanel-browser';
-
 import type { PickByType } from 'src/shared/types/utils';
+
+import { peopleIncrement, peopleSet, peopleSetOnce } from './queue';
 
 interface UserProfileProperties {
   'With Account': boolean;
@@ -14,13 +14,13 @@ interface UserProfileProperties {
 type UserProfilePropertiesNumerable = PickByType<UserProfileProperties, number>;
 
 export function set(props: Partial<UserProfileProperties>) {
-  mixpanel.people.set(props);
+  peopleSet(props);
 }
 
 export function setOnce(props: Partial<UserProfileProperties>) {
-  mixpanel.people.set_once(props);
+  peopleSetOnce(props);
 }
 
 export function increment(props: UserProfilePropertiesNumerable) {
-  mixpanel.people.increment(props);
+  peopleIncrement(props);
 }

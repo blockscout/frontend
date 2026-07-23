@@ -57,7 +57,6 @@ const UserWalletButton = ({ size, variant, isPending, isAutoConnectDisabled, add
           px={{ base: 2.5, lg: 3 }}
           fontWeight={ address ? 700 : 600 }
           loading={ isPending }
-          loadingText={ isMobile ? undefined : 'Connecting' }
           { ...rest }
         >
           { content }

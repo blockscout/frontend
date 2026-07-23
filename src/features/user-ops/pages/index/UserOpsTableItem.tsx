@@ -48,7 +48,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData, exch
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <UserOpStatus status={ item.status } isLoading={ isLoading }/>
+        <UserOpStatus status={ item.status } loading={ isLoading }/>
       </TableCell>
       { showSender && (
         <TableCell verticalAlign="middle">

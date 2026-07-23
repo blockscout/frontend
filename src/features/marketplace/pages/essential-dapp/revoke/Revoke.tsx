@@ -9,6 +9,7 @@ import { mainnet } from 'viem/chains';
 import { getEnsAddress, normalize } from 'viem/ens';
 import { useAccount, usePublicClient } from 'wagmi';
 
+import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
 import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 
@@ -21,6 +22,7 @@ import { useQueryParams } from 'src/shared/router/useQueryParams';
 import { Button } from 'src/toolkit/chakra/button';
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 
 import AddressEntity from './components/AddressEntity';
 import ChainSelect from './components/ChainSelect';
@@ -39,7 +41,7 @@ const defaultChainId = (
     dappConfig?.chains[0]
 ) as string;
 
-const Revoke = () => {
+const RevokeContent = () => {
   const router = useRouter();
   const { updateQuery } = useQueryParams();
   const chainIdFromQuery: string | undefined = getQueryParamString(router.query.chainId);
@@ -227,5 +229,14 @@ const Revoke = () => {
     </Flex>
   );
 };
+
+// Revoke reads the connected account and issues approvals reads/writes through wagmi hooks, so it renders
+// inside a wallet island. The essential-dapp page calls `ensureLoaded()` at mount, so the runtime is
+// already loading when this renders; the fallback reuses the shared content loader until it is ready.
+const Revoke = () => (
+  <Web3Boundary fallback={ <ContentLoader/> }>
+    <RevokeContent/>
+  </Web3Boundary>
+);
 
 export default Revoke;

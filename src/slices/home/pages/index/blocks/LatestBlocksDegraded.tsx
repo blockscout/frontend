@@ -9,7 +9,7 @@ import type { schemas } from '@blockscout/api-types';
 import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import useInitialList from 'src/shared/lists/useInitialList';
 
@@ -39,7 +39,7 @@ const LatestBlocksDegraded = ({ maxNum }: Props) => {
     enabled: !isError,
   });
 
-  if (isError || !publicClient) {
+  if (isError || !isPublicClientAvailable) {
     return <LatestBlocksFallback/>;
   }
 

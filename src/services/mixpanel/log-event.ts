@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import mixpanel from 'mixpanel-browser';
+import type { Mixpanel } from 'mixpanel-browser';
 
-import config from 'src/config';
-
+import { track } from './queue';
 import type { EventTypes, EventPayload } from './utils';
 
-type TrackFnArgs = Parameters<typeof mixpanel.track>;
+type TrackFnArgs = Parameters<Mixpanel['track']>;
 
 export default function logEvent<EventType extends EventTypes>(
   type: EventType,
@@ -14,8 +13,5 @@ export default function logEvent<EventType extends EventTypes>(
   optionsOrCallback?: TrackFnArgs[2],
   callback?: TrackFnArgs[3],
 ) {
-  if (!config.services.mixpanel.projectToken) {
-    return;
-  }
-  mixpanel.track(type, properties, optionsOrCallback, callback);
+  track(type, properties, optionsOrCallback, callback);
 }

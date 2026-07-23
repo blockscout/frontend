@@ -7,6 +7,7 @@ import { DynamicContextProvider, getAuthToken } from '@dynamic-labs/sdk-react-co
 import { DynamicWagmiConnector } from '@dynamic-labs/wagmi-connector';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
+import { WagmiProvider } from 'wagmi';
 
 import type { UserInfo } from 'src/features/account/types/api';
 
@@ -16,6 +17,7 @@ import { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useGetCsrfToken from 'src/features/account/hooks/useGetCsrfToken';
 import useLogout from 'src/features/account/hooks/useLogout';
 import { chains } from 'src/features/connect-wallet/utils/chains';
+import wagmiConfig from 'src/features/connect-wallet/utils/wagmi-config';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
@@ -23,8 +25,6 @@ import getErrorMessage from 'src/shared/errors/get-error-message';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
 import { castToString } from 'src/toolkit/utils/guards';
-
-import WagmiProvider from './WagmiProvider';
 
 const feature = config.features.connectWallet;
 
@@ -110,7 +110,7 @@ const DynamicProvider = ({ children }: Props) => {
     <DynamicContextProvider
       settings={ settings }
     >
-      <WagmiProvider>
+      <WagmiProvider config={ wagmiConfig.config }>
         <DynamicWagmiConnector>
           { children }
         </DynamicWagmiConnector>

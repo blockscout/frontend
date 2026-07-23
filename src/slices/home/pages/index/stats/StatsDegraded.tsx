@@ -10,7 +10,7 @@ import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context
 import type { HomeStatsWidgetItem } from 'src/slices/home/utils/stats';
 import { homeStatsWidgetCommonStyles, isHomeStatsItemEnabled, sortHomeStatsItems } from 'src/slices/home/utils/stats';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import ApiDegradationRpcIcon from 'src/shared/api-degradation/ApiDegradationRpcIcon';
 import dayjs from 'src/shared/date-and-time/dayjs';
@@ -28,6 +28,7 @@ const StatsDegraded = () => {
   const gasPriceQuery = useQuery({
     queryKey: [ 'RPC', 'gas-price' ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
@@ -48,7 +49,7 @@ const StatsDegraded = () => {
         wei: null,
       };
     },
-    enabled: Boolean(publicClient),
+    enabled: isPublicClientAvailable,
   });
 
   React.useEffect(() => {
