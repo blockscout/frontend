@@ -12,6 +12,6 @@ export default function useWalletFallback(): Result {
     isConnected: false,
     isReconnecting: false,
     address: undefined,
-    openModal: () => {},
+    openModal: () => Promise.resolve(),
   }), []);
 }
