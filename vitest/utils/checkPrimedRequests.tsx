@@ -46,15 +46,19 @@ export default function checkPrimedRequests(params: CheckPrimedRequestsParams) {
   const title = params.title ??
     `primed requests of ${ params.page } at "${ params.url }" ${ params.expectEmpty ? 'are empty' : 'match the page\'s first-render requests' }`;
 
-  it(title, { timeout: 20_000 }, async() => {
+  // page mounts pull in the full provider/layout graph after resetModules — under parallel
+  // load that routinely exceeds 20s on the heavier pages (tokens, address)
+  it(title, { timeout: 40_000 }, async() => {
     window.history.replaceState(null, '', params.url);
     // responses never resolve — see the module comment
     fetchMock.mockResponse(() => new Promise(() => {}));
 
-    mockNextRouter(params.page, params.url);
-
     try {
       await withEnvs(params.envs, async() => {
+        // register the router mock AFTER withEnvs' resetModules so the subsequent dynamic
+        // imports of Layout / page components pick it up (doMock before resetModules races)
+        mockNextRouter(params.page, params.url);
+
         const { getPrimerScript } = await import('src/server/primedRequests');
 
         const script = getPrimerScript(params.page);
@@ -117,6 +121,7 @@ export default function checkPrimedRequests(params: CheckPrimedRequestsParams) {
     } finally {
       vi.doUnmock('next/router');
       fetchMock.resetMocks();
+      window.__primedFetches = undefined;
       window.history.replaceState(null, '', '/');
     }
   });

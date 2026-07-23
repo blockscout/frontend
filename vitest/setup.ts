@@ -13,6 +13,22 @@ Object.defineProperty(globalThis, '__envs', {
   value: envs.parsed || {},
 });
 
+// FontFaceObserver schedules document-touching timeouts that outlive the jsdom
+// environment when page mounts tear down; primed (and other) layout mounts hit this.
+vi.mock('use-font-face-observer', () => ({
+  'default': () => true,
+}));
+
+// Default next/router so vitest/lib's TestApp.
+vi.mock('next/router', async() => {
+  const { buildRouterMock } = await import('./utils/mockRouter');
+  const router = buildRouterMock('/', '/');
+  return {
+    useRouter: () => router,
+    'default': router,
+  };
+});
+
 // browser APIs that jsdom does not implement but app components rely on
 if (typeof window !== 'undefined') {
   if (!window.matchMedia) {

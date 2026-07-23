@@ -1,10 +1,15 @@
 import { vi } from 'vitest';
 
-// A next/router mock for a concrete page + url. `buildRouterMock` returns the router object
-// (route params extracted from the url by matching the page pattern, e.g. '/tx/[hash]');
-// `mockNextRouter` registers it via `vi.doMock`, which applies to modules imported AFTER the
-// call — pair it with dynamic imports (see checkPrimedRequests.tsx), and clean up with
-// `vi.doUnmock('next/router')`.
+// next/router mocking for Vitest.
+//
+// Default: vitest/setup.ts registers a home-page mock via `vi.mock` so TestApp mounts
+// without each suite wiring the router. Suites that need a specific route/query should
+// override with their own top-level `vi.mock('next/router', …)` (see useQueryWithPages.spec).
+//
+// Primed drift tests: `mockNextRouter` uses `vi.doMock`, which applies only to modules
+// imported AFTER the call — pair it with `resetModules` + dynamic imports
+// (checkPrimedRequests.tsx), and clean up with `vi.doUnmock('next/router')`.
+// `buildRouterMock` is the shared shape used by both paths.
 
 export function buildRouterMock(page: string, url: string) {
   const { pathname, searchParams } = new URL(url, 'http://localhost');
