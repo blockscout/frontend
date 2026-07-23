@@ -130,7 +130,7 @@ issue #3566.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+- [x] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
       `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups).
       Implemented: generic per-page registry + inline script (route params, tab gating, URL filter
       forwarding), CSP startup hashes, drift tests; rolled out to home, tx, address, token,
