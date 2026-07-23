@@ -33,7 +33,7 @@ const IcttUsersTableItem = ({ data, isLoading }: Props) => {
       <TableCell isNumeric>
         <Skeleton loading={ isLoading } w="fit-content" ml="auto">
           <span>
-            { data.unique_transfer_users_count }
+            { Number(data.unique_transfer_users_count).toLocaleString() }
           </span>
         </Skeleton>
       </TableCell>
