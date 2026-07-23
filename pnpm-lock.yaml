@@ -300,9 +300,6 @@ importers:
       react-hook-form:
         specifier: 7.52.1
         version: 7.52.1(react@19.1.4)
-      react-icons:
-        specifier: 5.4.0
-        version: 5.4.0(react@19.1.4)
       react-identicons:
         specifier: ^1.2.5
         version: 1.2.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
@@ -11653,11 +11650,6 @@ packages:
       react-native:
         optional: true
 
-  react-icons@5.4.0:
-    resolution: {integrity: sha512-7eltJxgVt7X64oHh6wSWNwwbKTCtMfK35hcjvJS0yxEAhPM8oUKdS3+kqaW1vicIltw+kR2unHaa12S9pPALoQ==}
-    peerDependencies:
-      react: '*'
-
   react-identicons@1.2.5:
     resolution: {integrity: sha512-x7prkDoc2pD7wSl2C1pGxS+XAoSdq1ABWJWTBUimVTDVJArKOLd0B4wRUJpDm4r+9y7pgf8ylyPGsmlWSV5n2g==}
     peerDependencies:
@@ -16907,7 +16899,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -25554,7 +25546,7 @@ snapshots:
 
   chrome-launcher@0.15.2:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -25565,7 +25557,7 @@ snapshots:
 
   chromium-edge-launcher@0.3.0:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -28424,7 +28416,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -28441,13 +28433,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -30213,10 +30205,6 @@ snapshots:
     optionalDependencies:
       react-dom: 19.1.4(react@19.1.4)
       react-native: 0.85.3(@babel/core@7.29.7)(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(utf-8-validate@6.0.6)
-
-  react-icons@5.4.0(react@19.1.4):
-    dependencies:
-      react: 19.1.4
 
   react-identicons@1.2.5(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:

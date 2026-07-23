@@ -90,7 +90,7 @@ Baseline and prototype numbers below are single runs from the research session (
 | After 2 (mixpanel, single run)³ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
 | After 3 (rollbar) | | | | | | |
 | After 4 (wallet stack) | 591 ms | 533 ms | 3967 ms⁴ | 4131 ms⁴ | 484 ms | 1030 KB |
-| After 5 (react-icons) | | | | | | |
+| After 5 (react-icons) | 509 ms | 448 ms | 3431 ms⁵ | 3569 ms⁵ | 455 ms | 1030 KB |
 | **Final (estimate)** | ~750 ms | ~90 ms | ~1500 ms² | ~1700 ms² | ~450 ms | ~1550 KB |
 | **Final (measured)** | | | | | | |
 
@@ -114,6 +114,11 @@ where the provider mounts, not when the chunk loads. Supporting (single run each
 (vs 1184 ms for the "after 2" run), inflating both; the structural content-ready path is untouched by this
 lever, and no median-of-3 was captured. The superseded v1 step-4 numbers (M1 564, M6 1021 KB) are kept in
 the sub-spec's Impact addendum for history.
+⁵ Recorded 2026-07-23 from the react-icons removal tree (`.ai/traces/robinhood_5_icons.json`), compared
+against "After 4". **Headline: M6 unchanged at 1030 KB gz** — dropping two `react-icons` icons was never
+going to move pre-FCP JS; the dependency is gone but the byte win is below noise. Supporting (single run):
+FCP −82 ms, first API −84 ms, blocking −30 ms — favorable run-to-run noise, not a structural claim.
+M3/M4 **not comparable** — transactions endpoint drew 2670 ms (vs 3080 ms in the step-4 run).
 
 After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
 the table. When the last box is checked, fill "Final (measured)" and post the completed table to
@@ -169,9 +174,9 @@ issue #3566.
     - `checkIgnore`/`ignoredMessages` config moves into the lazy module. `_error.tsx` unchanged.
     - The lever-1 primed requests fail inside the deferral window — their `useFetch` warns must
       go through the buffer.
-- [ ] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
+- [x] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
       from first paint on every page, without behavior changes — sub-spec: `subtasks/04-wallet-stack.md`
-- [ ] 5 `[agent]` Replace `react-icons` with sprite icons and drop the dependency
+- [x] 5 `[human]` Replace `react-icons` with sprite icons and drop the dependency
   - inputs: only usage is `LuCheck` / `LuChevronRight` in `src/toolkit/chakra/menu.tsx`; the sprite
     already has check/chevron icons (see `src/sprite/`). Remove the package from `package.json`.
 - [ ] 6 `[agent]` Final measurement and report
