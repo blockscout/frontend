@@ -2,7 +2,7 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal, useControllableState } from '@chakra-ui/react';
-import { CalendarDateTime } from '@internationalized/date';
+import { CalendarDate, CalendarDateTime } from '@internationalized/date';
 import React from 'react';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
@@ -20,12 +20,40 @@ interface DatePickerValueChangeDetails {
   view: 'day' | 'month' | 'year';
 }
 
+const DATE_FORMAT = 'MMM D, YYYY';
+const DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
+
 const format = (date: DateValue) => {
-  return dayjs(date.toString()).format('MMM D, YYYY');
+  return dayjs(date.toString()).format(DATE_FORMAT);
 };
 
 const formatWithTime = (date: DateValue) => {
-  return dayjs(date.toString()).format('MMM D, YYYY H:mm');
+  return dayjs(date.toString()).format(DATE_TIME_FORMAT);
+};
+
+const parse = (value: string): DateValue | undefined => {
+  const parsed = dayjs(value);
+  if (!parsed.isValid()) return;
+
+  return new CalendarDate(parsed.year(), parsed.month() + 1, parsed.date());
+};
+
+const parseWithTime = (value: string): DateValue | undefined => {
+  const parsed = dayjs(value);
+  if (!parsed.isValid()) return;
+
+  return new CalendarDateTime(
+    parsed.year(),
+    parsed.month() + 1,
+    parsed.date(),
+    parsed.hour(),
+    parsed.minute(),
+  );
+};
+
+const getTimeParts = (date: DateValue | undefined) => {
+  if (!date || !('hour' in date)) return { hour: undefined, minute: undefined };
+  return { hour: date.hour, minute: date.minute };
 };
 
 const isToday = (date: DateValue): boolean => {
@@ -70,17 +98,13 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
 
     setValue((prev) => {
       const current = prev?.[0] ?? getDefaultDateValue(isToday(newDate));
-      return [
-        new CalendarDateTime(
-          newDate.year,
-          newDate.month,
-          newDate.day,
-          current && 'hour' in current ? current.hour : undefined,
-          current && 'minute' in current ? current.minute : undefined,
-        ),
-      ];
+      const fromNew = getTimeParts(newDate);
+      const fromCurrent = getTimeParts(current);
+      const hour = fromNew.hour ?? fromCurrent.hour;
+      const minute = fromNew.minute ?? fromCurrent.minute;
+
+      return [ new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute) ];
     });
-    // onValueChange?.({ value: details.value, valueAsString: details.valueAsString, view: 'day' });
   }, [ setValue ]);
 
   const handleTimeChange = React.useCallback((time: string) => {
@@ -109,6 +133,7 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
       lazyMount
       unmountOnExit
       format={ withTime ? formatWithTime : format }
+      parse={ withTime ? parseWithTime : parse }
       value={ value }
       onValueChange={ handleDateChange }
       { ...rest }
@@ -139,8 +164,7 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
                 size="lg"
               >
                 <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
-                  { /* TODO @tom2drum implement fix on blur or enable default one */ }
-                  <ChakraDatePicker.Input fixOnBlur={ false }/>
+                  <ChakraDatePicker.Input/>
                 </InputGroup>
               </Field>
             );
@@ -169,7 +193,7 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
                     { withTime && (
                       <TimePicker
                         bgColor="dialog.bg"
-                        value={ value?.[0] ? getTime(value?.[0]) : '00:00' }
+                        value={ value?.[0] ? getTime(value?.[0]) : undefined }
                         onChange={ handleTimeChange }
                         mt={ -2 }
                       />
