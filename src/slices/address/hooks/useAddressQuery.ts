@@ -13,7 +13,7 @@ import type { ResourceError } from 'src/api/resources';
 import { ADDRESS_INFO } from 'src/slices/address/stubs/address';
 import { GET_BALANCE } from 'src/slices/address/stubs/rpc';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
@@ -57,6 +57,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
   const rpcQuery = useQuery<RpcResponseType, unknown, schemas['AddressResponse'] | null>({
     queryKey: [ 'RPC', 'address', { hash } ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         throw new Error('No public RPC client');
       }
@@ -107,7 +108,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData || !publicClient) {
+    if (apiQuery.isPlaceholderData || !isPublicClientAvailable) {
       return;
     }
 
@@ -131,7 +132,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
     !NO_RPC_FALLBACK_ERROR_CODES.includes(apiQuery.error?.status ?? 999) &&
     apiQuery.errorUpdateCount > 0 &&
     rpcQuery.data &&
-    publicClient,
+    isPublicClientAvailable,
   );
 
   const query = isRpcQuery ? rpcQuery as UseQueryResult<schemas['AddressResponse'], ResourceError<{ status: number }>> : apiQuery;

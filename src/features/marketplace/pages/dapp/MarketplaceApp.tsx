@@ -7,6 +7,7 @@ import React, { useEffect, useMemo } from 'react';
 import * as metadata from 'src/shell/metadata';
 
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
+import { ensureLoaded as ensureWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 import { useMarketplaceContext } from 'src/features/marketplace/context';
 
 import config from 'src/config';
@@ -28,6 +29,12 @@ export default function MarketplaceApp() {
   const isAuth = useIsAuth();
   const { colorMode } = useColorMode();
   useAutoConnectWallet();
+
+  // Route-eager wallet load: dapp pages bridge the wallet into the iframe (and honour `?action=connect`),
+  // so start the runtime at mount rather than waiting for the boot-time idle trigger.
+  React.useEffect(() => {
+    ensureWeb3Runtime();
+  }, []);
 
   const query = useAppQuery(id, isAuth);
   const { data, isPlaceholderData } = query;

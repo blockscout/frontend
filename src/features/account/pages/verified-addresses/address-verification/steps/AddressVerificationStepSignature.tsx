@@ -4,7 +4,6 @@ import { Box, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { useSignMessage, useAccount, useSwitchChain } from 'wagmi';
 
 import type {
   AddressVerificationFormSecondStepFields,
@@ -16,7 +15,9 @@ import * as contractsInfo from '@blockscout/contracts-info-types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
+import useAccount from 'src/features/connect-wallet/hooks/useAccount';
 import useWallet from 'src/features/connect-wallet/hooks/useWallet';
+import { getWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 
 import config from 'src/config';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -45,6 +46,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const { isConnected } = useAccount();
   const { openModal: openWeb3Modal } = useWallet({ source: 'Smart contracts' });
+  const [ isSigning, setIsSigning ] = React.useState(false);
 
   const formApi = useForm<Fields>({
     mode: 'onBlur',
@@ -95,9 +97,6 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const onSubmit = handleSubmit(onFormSubmit);
 
-  const { signMessage, isPending: isSigning } = useSignMessage();
-  const { switchChainAsync } = useSwitchChain();
-
   const handleSignMethodChange = React.useCallback(({ value }: { value: string | null }) => {
     if (!value) {
       return;
@@ -119,18 +118,20 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       return setError('root', { type: 'manual', message: 'Please connect to your Web3 wallet first' });
     }
 
-    await switchChainAsync({ chainId: Number(config.chain.id) });
-    const message = getValues('message');
-    signMessage({ message }, {
-      onSuccess: (data) => {
-        setValue('signature', data);
-        onSubmit();
-      },
-      onError: (error) => {
-        return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
-      },
-    });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit, switchChainAsync ]);
+    setIsSigning(true);
+    try {
+      const runtime = await getWeb3Runtime();
+      await runtime.switchChain({ chainId: Number(config.chain.id) });
+      const message = getValues('message');
+      const data = await runtime.signMessage({ message });
+      setValue('signature', data);
+      onSubmit();
+    } catch (error) {
+      setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
+    } finally {
+      setIsSigning(false);
+    }
+  }, [ clearErrors, isConnected, getValues, setError, setValue, onSubmit ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');

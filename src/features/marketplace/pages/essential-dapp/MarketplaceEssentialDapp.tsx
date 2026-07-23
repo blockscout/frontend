@@ -8,6 +8,8 @@ import type { EssentialDappsConfig } from 'src/features/marketplace/types/client
 
 import PageTitle from 'src/shell/page/title/PageTitle';
 
+import { ensureLoaded as ensureWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
+
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -21,6 +23,12 @@ const feature = config.features.marketplace;
 const EssentialDapp = () => {
   const router = useRouter();
   useAutoConnectWallet();
+
+  // Route-eager wallet load: essential dapps (swap/revoke/multisend) all need the wallet, and honour
+  // `?action=connect`, so start the runtime at mount rather than waiting for the boot-time idle trigger.
+  React.useEffect(() => {
+    ensureWeb3Runtime();
+  }, []);
 
   const id = getQueryParamString(router.query.id);
 

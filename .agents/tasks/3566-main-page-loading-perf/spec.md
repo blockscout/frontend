@@ -89,7 +89,7 @@ Baseline and prototype numbers below are single runs from the research session (
 | After 1 (production impl) | | | | | | |
 | After 2 (mixpanel, single run)³ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
 | After 3 (rollbar) | | | | | | |
-| After 4 (wallet stack) | | | | | | |
+| After 4 (wallet stack) | 591 ms | 533 ms | 3967 ms⁴ | 4131 ms⁴ | 484 ms | 1030 KB |
 | After 5 (react-icons) | | | | | | |
 | **Final (estimate)** | ~750 ms | ~90 ms | ~1500 ms² | ~1700 ms² | ~450 ms | ~1550 KB |
 | **Final (measured)** | | | | | | |
@@ -103,6 +103,17 @@ this row shows lever 2a standalone against the baseline (M2–M4 still boot-chai
 cumulative "after 1+2" state. vs baseline: FCP −425 ms, JS before FCP −89 KB gz (the SDK chunk),
 blocking −450 ms. This run's transactions response was slower than the baseline run's (1184 ms vs
 914 ms); normalized to equal backend latency the M3 gain is ~390 ms.
+⁴ Recorded 2026-07-22 from the **reworked** step-4 tree (approach A — native lazy sibling `<WagmiProvider>`
+replacing v1's hand-rolled hydration; see the sub-spec's Rework section), reown mode. Compared against
+"after 2" because step 3 (rollbar) is not in this build. **Headline: JS before FCP 1751 → 1030 KB gz,
+−721 KB** — the wallet stack + its deps no longer load before paint (they load after FCP, on the eager
+reconnect / first interaction); corroborated by ~33 fewer pre-FCP JS chunks. This matches the earlier v1
+step-4 trace (1021 KB) within run-to-run noise (+9 KB), so **the rework preserved the win** — it changed
+where the provider mounts, not when the chunk loads. Supporting (single run each): FCP −510 ms, first API
+−141 ms, blocking −125 ms. M3/M4 are **not comparable** — this run's transactions endpoint drew 3080 ms
+(vs 1184 ms for the "after 2" run), inflating both; the structural content-ready path is untouched by this
+lever, and no median-of-3 was captured. The superseded v1 step-4 numbers (M1 564, M6 1021 KB) are kept in
+the sub-spec's Impact addendum for history.
 
 After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
 the table. When the last box is checked, fill "Final (measured)" and post the completed table to
@@ -158,24 +169,8 @@ issue #3566.
     - `checkIgnore`/`ignoredMessages` config moves into the lazy module. `_error.tsx` unchanged.
     - The lever-1 primed requests fail inside the deferral window — their `useFetch` warns must
       go through the buffer.
-- [ ] 4 `[agent]` Defer the wallet stack (lever 3) — sub-spec: `subtasks/04-wallet-stack.md`
-      (write just-in-time via a `grill-the-task` subtask session)
-  - inputs (constraints discovered in research, for the sub-spec session):
-    - `Web3Provider` at the app root currently blocks first render entirely; a chunk-load failure
-      blanks the page. Stage 1 = stop gating render on it; stage 2 = feature-local providers.
-    - Do NOT swap fallback→real provider at the root — the element-type change remounts the whole
-      tree (state loss, query refetches). Use feature-local `WagmiProvider` islands and/or a
-      permanent lightweight context fed by wagmi's non-React core API (`getAccount`/`watchAccount`).
-    - `createAppKit` runs at module scope (`ReownProvider.tsx`) — the deferral boundary is the
-      `import()`, not component mounting.
-    - Auto-reconnect flicker for returning users: mitigate with optimistic UI read synchronously
-      from wagmi's persisted `localStorage` state (`wagmi.store`).
-    - Route-based eager loading for flows that need the wallet at page load: marketplace dapp pages
-      (`useAutoConnectWallet`, iframe bridge), rewards login, contract pages opened on a write tab.
-    - "Connect wallet" clicked before the stack loads → trigger import, show loading state, open
-      the modal when ready.
-    - ~14 files import wagmi hooks directly (contract methods, revoke, L2 claims, rewards context,
-      sign-in-with-wallet) — enumerate and cover in the sub-spec.
+- [ ] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
+      from first paint on every page, without behavior changes — sub-spec: `subtasks/04-wallet-stack.md`
 - [ ] 5 `[agent]` Replace `react-icons` with sprite icons and drop the dependency
   - inputs: only usage is `LuCheck` / `LuChevronRight` in `src/toolkit/chakra/menu.tsx`; the sprite
     already has check/chevron icons (see `src/sprite/`). Remove the package from `package.json`.
