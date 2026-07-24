@@ -3,15 +3,15 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { schemas } from '@blockscout/api-types';
-import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
+import type { ChainInfo, StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
+import TokenEntityInterchain from 'src/slices/token/components/entity/TokenEntityInterchain';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
+import config from 'src/config';
 import getItemIndex from 'src/shared/lists/get-item-index';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -19,26 +19,27 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
   data: StatsBridgedTokenRow;
-  token: StatsBridgedTokenItem | undefined;
+  tokenInfo?: StatsBridgedTokenItem;
+  chainInfo?: ChainInfo;
   index: number;
   page: number;
   isLoading?: boolean;
 }
 
-const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) => {
+const BridgedTokensTableItem = ({ data, tokenInfo, chainInfo, index, page, isLoading }: Props) => {
 
-  const tokenInfo: schemas['Token'] | undefined = React.useMemo(() => {
-    if (!token) {
-      return;
+  const tokenModel = React.useMemo(() => {
+    if (!tokenInfo) {
+      return undefined;
     }
 
     return toTokenModel({
-      ...token,
-      decimals: String(token.decimals ?? '0'),
-      address_hash: token.token_address,
+      ...tokenInfo,
+      decimals: String(tokenInfo.decimals ?? '0'),
+      address_hash: tokenInfo.token_address,
       type: 'ERC-20',
     });
-  }, [ token ]);
+  }, [ tokenInfo ]);
 
   return (
     <TableRow className="group">
@@ -53,32 +54,38 @@ const BridgedTokensTableItem = ({ data, token, index, page, isLoading }: Props) 
           >
             { getItemIndex(index, page) }
           </Skeleton>
-          { tokenInfo ? (
+          { tokenModel ? (
             <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
-              <TokenEntity
-                token={ tokenInfo }
+              <TokenEntityInterchain
+                token={ tokenModel }
+                chain={ chainInfo }
                 isLoading={ isLoading }
                 jointSymbol
                 noCopy
+                noLink={ !chainInfo }
                 textStyle="sm"
                 fontWeight="700"
               />
               <Flex columnGap={ 2 } py="5px" alignItems="center">
-                <AddressEntity
-                  address={{ hash: tokenInfo.address_hash }}
+                <AddressEntityInterchain
+                  address={{ hash: tokenModel.address_hash }}
+                  chain={ chainInfo }
                   isLoading={ isLoading }
                   noIcon
                   textStyle="sm"
                   fontWeight={ 500 }
                   link={{ variant: 'secondary' }}
+                  noLink={ !chainInfo }
                 />
-                <TokenAddToWallet
-                  token={ tokenInfo }
-                  isLoading={ isLoading }
-                  iconSize={ 5 }
-                  opacity={ 0 }
-                  _groupHover={{ opacity: 1 }}
-                />
+                { chainInfo?.id === config.chain.id && (
+                  <TokenAddToWallet
+                    token={ tokenModel }
+                    isLoading={ isLoading }
+                    iconSize={ 5 }
+                    opacity={ 0 }
+                    _groupHover={{ opacity: 1 }}
+                  />
+                ) }
               </Flex>
             </Flex>
           ) : <Skeleton loading={ isLoading } w="fit-content"><span>Unknown token</span></Skeleton> }

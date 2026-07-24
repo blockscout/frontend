@@ -3,7 +3,7 @@
 import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortingField } from '../../types/api';
-import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
+import type { ChainInfo, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
@@ -21,9 +21,10 @@ interface Props {
   setSorting: ({ value }: { value: Array<string> }) => void;
   page: number;
   top?: number;
+  chains?: Array<ChainInfo>;
 }
 
-const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Props) => {
+const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chains }: Props) => {
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -66,12 +67,16 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Pr
       </TableHeaderSticky>
       <TableBody>
         { data.map((item, index) => {
-          const tokenCurrentChain = item.tokens.find((token) => String(token.chain_id) === config.chain.id);
+          const tokenInfo = item.tokens.find((token) => String(token.chain_id) === config.chain.id) ||
+            item.tokens.find((token) => String(token.chain_id) !== config.chain.id);
+          const chainInfo = chains?.find((chain) => chain.id === tokenInfo?.chain_id);
+
           return (
             <BridgedTokensTableItem
-              key={ String(tokenCurrentChain?.token_address) + (isLoading ? index : '') }
+              key={ String(tokenInfo?.token_address) + (isLoading ? index : '') }
               data={ item }
-              token={ tokenCurrentChain }
+              tokenInfo={ tokenInfo }
+              chainInfo={ chainInfo }
               index={ index }
               isLoading={ isLoading }
               page={ page }

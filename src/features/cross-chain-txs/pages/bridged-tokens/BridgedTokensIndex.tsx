@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
@@ -24,6 +26,8 @@ interface Props {
 }
 
 const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFilters, tableTop }: Props) => {
+  const chainsQuery = useApiQuery('interchainIndexer:chains');
+
   return (
     <DataList
       isError={ query.isError }
@@ -39,13 +43,16 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
         <>
           <Box hideFrom="lg">
             { query.data.items.map((item, index) => {
-              const tokenCurrentChain = item.tokens.find((token) => String(token.chain_id) === config.chain.id);
+              const tokenInfo = item.tokens.find((token) => String(token.chain_id) === config.chain.id) ||
+                item.tokens.find((token) => String(token.chain_id) !== config.chain.id);
+              const chainInfo = chainsQuery.data?.items?.find((chain) => chain.id === tokenInfo?.chain_id);
 
               return (
                 <BridgedTokensListItem
-                  key={ String(tokenCurrentChain?.token_address) + (query.isPlaceholderData ? index : '') }
+                  key={ String(tokenInfo?.token_address) + (query.isPlaceholderData ? index : '') }
                   data={ item }
-                  token={ tokenCurrentChain }
+                  tokenInfo={ tokenInfo }
+                  chainInfo={ chainInfo }
                   index={ index }
                   page={ query.pagination.page }
                   isLoading={ query.isPlaceholderData }
@@ -61,6 +68,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               isLoading={ query.isPlaceholderData }
               page={ query.pagination.page }
               top={ tableTop }
+              chains={ chainsQuery.data?.items }
             />
           </Box>
         </>
