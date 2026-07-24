@@ -158,27 +158,37 @@ issue #3566.
     a failed SDK load resolves `false` and disables the wrapper (100-call buffer cap);
     `log-event`/`user-profile`/`reset` and `Login.tsx` route through the queue. Unit tests:
     `queue.spec.ts` (13 cases). Dev-verified end-to-end; measurement in footnote ³.
-- [ ] 3 `[agent]` Defer Rollbar behind first paint (lever 2b)
+- [x] 3 `[agent]` Defer Rollbar behind first paint (lever 2b)
   - inputs:
-    - Replace the `@rollbar/react` root provider with a thin context holding `Rollbar | undefined`
-      plus a wrapper that buffers `warn/error/critical` payloads (with call-time timestamps) until
-      the lazily-imported instance is ready. All call sites already tolerate an absent instance
-      (the `FallbackProvider` pattern).
-    - Note: the main app currently has NO `captureUncaught`/`captureUnhandledRejections` (only
-      `_error.tsx` does). Optionally add tiny early `window.addEventListener('error'/'unhandledrejection')`
-      buffers replayed into Rollbar on load — this makes coverage strictly better than today.
-      Decide with the developer whether to include it in this subtask.
-    - `checkIgnore`/`ignoredMessages` config moves into the lazy module. `_error.tsx` unchanged.
+    - Replace the `@rollbar/react` root provider with a thin module-level client (same `useRollbar()`
+      API) that buffers `warn`/`error`/`critical` payloads (with call-time timestamps) until the
+      lazily-imported `rollbar` instance is ready. Drop `@rollbar/react`. All call sites already
+      tolerate an absent instance (the no-token `undefined` path).
+    - **Include** early `window` `error` / `unhandledrejection` listeners (decided 2026-07-23):
+      install on provider mount, buffer into the same queue, keep after init so post-load uncaught
+      errors are also reported (today the main app has neither `captureUncaught` nor
+      `captureUnhandledRejections` — only `_error.tsx` does). Do not enable Rollbar's built-in
+      capture flags (would double-report with our listeners).
+    - `checkIgnore`/`ignoredMessages` config moves into the module loaded with the SDK chunk.
+      `_error.tsx` unchanged.
     - The lever-1 primed requests fail inside the deferral window — their `useFetch` warns must
       go through the buffer.
+  - done (2026-07-23): `src/services/rollbar/queue.ts` buffers `warn`/`error`/`critical` until
+    `queue.init` (dynamic `import('rollbar')` + `clientConfig`, deferred via `requestIdleCallback`
+    in `Provider`) flushes with `client_timestamp`; early window listeners share the same queue and
+    stay for the page lifetime (`captureUncaught`/`captureUnhandledRejections` left false);
+    `@rollbar/react` removed; `_app` wires `<RollbarProvider>` with no config prop; `_error.tsx`
+    untouched. Unit tests: `queue.spec.ts` (9 cases). No separate "After 3" measurement — this was
+    the last code lever; numbers land in "Final (measured)" under subtask 6.
 - [x] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
       from first paint on every page, without behavior changes — sub-spec: `subtasks/04-wallet-stack.md`
 - [x] 5 `[human]` Replace `react-icons` with sprite icons and drop the dependency
   - inputs: only usage is `LuCheck` / `LuChevronRight` in `src/toolkit/chakra/menu.tsx`; the sprite
     already has check/chevron icons (see `src/sprite/`). Remove the package from `package.json`.
 - [ ] 6 `[agent]` Final measurement and report
-  - inputs: full protocol per `tools/README.md`, median of 3 runs; fill "Final (measured)" in the
-    Impact tracking table; post the completed table as a comment on issue #3566.
+  - inputs: full protocol per `tools/README.md`, median of 3 runs; fill "After 3 (rollbar)" and
+    "Final (measured)" in the Impact tracking table (same run — rollbar was the last code lever);
+    post the completed table as a comment on issue #3566.
 
 ## Open questions
 

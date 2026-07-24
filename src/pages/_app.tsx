@@ -29,7 +29,7 @@ import { MarketplaceContextProvider } from 'src/features/marketplace/context';
 import config from 'src/config';
 import GoogleAnalytics from 'src/services/google-analytics/GoogleAnalytics';
 import useLoadFeatures from 'src/services/growthbook/useLoadFeatures';
-import { clientConfig as rollbarConfig, Provider as RollbarProvider } from 'src/services/rollbar';
+import { Provider as RollbarProvider } from 'src/services/rollbar';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
@@ -159,7 +159,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
     <>
       <PageMetadata pathname={ router.pathname as Route['pathname'] } query={ pageProps.query } apiData={ pageProps.apiData }/>
       <ChakraProvider>
-        <RollbarProvider config={ rollbarConfig }>
+        <RollbarProvider>
           <AppErrorBoundary
             { ...ERROR_SCREEN_STYLES }
             Container={ AppErrorGlobalContainer }

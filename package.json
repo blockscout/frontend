@@ -90,7 +90,6 @@
     "@openzeppelin/contracts": "5.4.0",
     "@reown/appkit": "1.7.20",
     "@reown/appkit-adapter-wagmi": "1.7.20",
-    "@rollbar/react": "0.12.1",
     "@scure/base": "1.1.9",
     "@slise/embed-react": "^2.2.0",
     "@specify-sh/sdk": "0.4.2",
