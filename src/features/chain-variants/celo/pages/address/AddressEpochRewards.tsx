@@ -57,6 +57,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
         items={ rewardsQuery.data.items }
         top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         isLoading={ rewardsQuery.isPlaceholderData }
+        resetKey={ rewardsQuery.queryHash }
       />
     </TableContainerScrollable>
   ) : null;

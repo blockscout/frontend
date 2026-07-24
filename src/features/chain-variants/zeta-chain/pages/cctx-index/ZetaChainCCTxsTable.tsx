@@ -12,6 +12,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'src/shared/lists/useInitialList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -30,6 +31,7 @@ type Props = {
   showSocketInfo?: boolean;
   showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
+  resetKey?: string;
 };
 
 const ZetaChainCCTxsTable = ({
@@ -44,7 +46,9 @@ const ZetaChainCCTxsTable = ({
   showSocketInfo = false,
   showSocketErrorAlert = false,
   socketInfoNum = 0,
+  resetKey,
 }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading, resetKey });
   const initialList = useInitialList({
     data: txs ?? [],
     idFn: (item) => item.index,
@@ -132,7 +136,7 @@ const ZetaChainCCTxsTable = ({
               isLoading={ isLoading }
             />
           ) }
-          { txs.map((item, index) => (
+          { txs.slice(0, renderedItemsNum).map((item, index) => (
             <ZetaChainCCTxsTableItem
               key={ item.index + (isLoading ? index : '') }
               tx={ item }
@@ -141,6 +145,7 @@ const ZetaChainCCTxsTable = ({
               animation={ initialList.getAnimationProp(item) }
             />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

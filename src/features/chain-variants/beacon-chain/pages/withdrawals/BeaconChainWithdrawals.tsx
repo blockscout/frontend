@@ -21,13 +21,13 @@ import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
-import BeaconChainWithdrawalsListItem from './BeaconChainWithdrawalsListItem';
+import BeaconChainWithdrawalsList from './BeaconChainWithdrawalsList';
 import BeaconChainWithdrawalsTable from './BeaconChainWithdrawalsTable';
 
 const feature = config.features.beaconChain;
 
 const BeaconChainWithdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:withdrawals',
     options: {
       placeholderData: generateListStub<'core:withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
@@ -49,14 +49,12 @@ const BeaconChainWithdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <BeaconChainWithdrawalsListItem
-            key={ item.index + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            view="list"
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <BeaconChainWithdrawalsList
+          items={ data.items }
+          view="list"
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <BeaconChainWithdrawalsTable
@@ -64,6 +62,7 @@ const BeaconChainWithdrawals = () => {
           view="list"
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
         />
       </Box>
     </>

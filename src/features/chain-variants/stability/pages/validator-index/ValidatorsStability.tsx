@@ -51,7 +51,7 @@ const ValidatorsStability = () => {
 
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange, queryHash } = useQueryWithPages({
     resourceName: 'core:validators_stability',
     filters: {
       // address_hash: debouncedSearchTerm,
@@ -140,10 +140,16 @@ const ValidatorsStability = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ValidatorsTable data={ data.items } sort={ sort } setSorting={ handleSortChange } isLoading={ isPlaceholderData }/>
+        <ValidatorsTable
+          data={ data.items }
+          sort={ sort }
+          setSorting={ handleSortChange }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

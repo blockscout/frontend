@@ -14,7 +14,7 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import EpochsListItem from './EpochsListItem';
+import EpochsList from './EpochsList';
 import EpochsTable from './EpochsTable';
 
 const EpochsPageContent = () => {
@@ -48,16 +48,15 @@ const EpochsPageContent = () => {
             items={ epochsQuery.data.items }
             top={ epochsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
             isLoading={ isLoading }
+            resetKey={ epochsQuery.queryHash }
           />
         </Box>
         <Box hideFrom="lg">
-          { epochsQuery.data.items.map((item, index) => (
-            <EpochsListItem
-              key={ item.number + (epochsQuery.isPlaceholderData ? String(index) : '') }
-              item={ item }
-              isLoading={ isLoading }
-            />
-          )) }
+          <EpochsList
+            items={ epochsQuery.data.items }
+            isLoading={ isLoading }
+            resetKey={ epochsQuery.queryHash }
+          />
         </Box>
       </>
     ) : null;

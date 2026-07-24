@@ -13,10 +13,11 @@ interface Props {
   isLoading?: boolean;
   items: Array<schemas['BeaconDeposit']>;
   view: 'list' | 'block' | 'address';
+  resetKey?: string;
 }
 
-const DepositsList = ({ items, view, isLoading }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading });
+const DepositsList = ({ items, view, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
     <Box>
