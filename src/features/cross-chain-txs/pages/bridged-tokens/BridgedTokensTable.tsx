@@ -7,6 +7,7 @@ import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types'
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -21,9 +22,12 @@ interface Props {
   setSorting: ({ value }: { value: Array<string> }) => void;
   page: number;
   top?: number;
+  resetKey?: string;
 }
 
-const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Props) => {
+const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, resetKey }: Props) => {
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -65,7 +69,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Pr
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => {
+        { data.slice(0, renderedItemsNum).map((item, index) => {
           const tokenCurrentChain = item.tokens.find((token) => String(token.chain_id) === config.chain.id);
           return (
             <BridgedTokensTableItem
@@ -78,6 +82,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Pr
             />
           );
         }) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

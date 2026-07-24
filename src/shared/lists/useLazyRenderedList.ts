@@ -11,6 +11,7 @@ export interface Params {
   // only the length is read, so `undefined` (no data yet) is accepted — callers don't need to
   // fall back to a fresh `[]` on every render
   list: Array<unknown> | undefined;
+  step?: number;
   isEnabled: boolean;
   minItemsNum?: number;
   resetKey?: unknown;
@@ -27,6 +28,7 @@ export interface Params {
 export default function useLazyRenderedList({
   list,
   isEnabled,
+  step = STEP,
   minItemsNum = MIN_ITEMS_NUM,
   resetKey,
 }: Params) {
@@ -51,9 +53,12 @@ export default function useLazyRenderedList({
 
   React.useEffect(() => {
     if (inView) {
-      setRenderedItemsNum((prev) => clamp(prev + STEP, 0, itemsNum));
+      setRenderedItemsNum((prev) => {
+        const newNum = clamp(prev + step, 0, itemsNum);
+        return newNum;
+      });
     }
-  }, [ inView, itemsNum ]);
+  }, [ inView, itemsNum, step ]);
 
   return { cutRef: ref, renderedItemsNum };
 }

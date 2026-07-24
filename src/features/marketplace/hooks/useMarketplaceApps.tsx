@@ -89,7 +89,7 @@ export default function useMarketplaceApps(
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceDapp>, favoriteAppsRef.current, sorting),
-    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    placeholderData: feature.isEnabled ? Array(24).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,
   });
@@ -112,6 +112,7 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   }), [
@@ -120,6 +121,7 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   ]);

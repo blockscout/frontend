@@ -8,6 +8,7 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -19,9 +20,12 @@ interface Props {
   isLoading?: boolean;
   top?: number;
   currentAddress?: string;
+  resetKey?: string;
 }
 
-const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress }: Props) => {
+const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot tableLayout="auto">
@@ -45,7 +49,7 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress }:
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { data.map((item, index) => (
+          { data.slice(0, renderedItemsNum).map((item, index) => (
             <TokenTransfersCrossChainTableItem
               key={ getItemKey(item, isLoading ? index : undefined) }
               data={ item }
@@ -53,6 +57,7 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress }:
               currentAddress={ currentAddress }
             />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import {
-  Box,
   Text,
-  chakra,
   Flex,
   HStack,
 } from '@chakra-ui/react';
@@ -20,14 +18,10 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
-
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
-import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
-import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
@@ -39,15 +33,13 @@ import getValuesArrayFromQuery from 'src/shared/router/get-values-array-from-que
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
-import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 import ColumnsButton from '../../components/ColumnsButton';
-import FilterByColumn from '../../components/FilterByColumn';
-import ItemByColumn from '../../components/ItemByColumn';
 import { ADVANCED_FILTER_ITEM } from '../../stubs';
 import { TABLE_COLUMNS } from '../../utils/consts';
 import { getAdvancedFilterTypes, getDurationFromAge, getFilterTags } from '../../utils/lib';
+import AdvancedFilterTable from './AdvancedFilterTable';
 
 const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
 TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
@@ -84,7 +76,7 @@ const AdvancedFilter = () => {
   });
 
   const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
-  const { data, isError, isLoading, pagination, onFilterChange, isPlaceholderData } = useQueryWithPages({
+  const { data, isError, isLoading, pagination, onFilterChange, isPlaceholderData, queryHash } = useQueryWithPages({
     resourceName: 'core:advanced_filter',
     filters,
     options: {
@@ -152,89 +144,17 @@ const AdvancedFilter = () => {
 
   const filterTags = getFilterTags(filters, multichainContext?.chain?.app_config);
 
-  const content = (
-    <AddressHighlightProvider>
-      <Box maxW="100%" display="grid" overflowX="scroll" whiteSpace="nowrap">
-        <TableRoot tableLayout="fixed" minWidth="950px" w="100%">
-          <TableHeaderSticky>
-            <TableRow>
-              { multichainContext?.chain && <TableColumnHeader width="38px"/> }
-              { columnsToShow.map(column => {
-                return (
-                  <TableColumnHeader
-                    key={ column.id }
-                    isNumeric={ column.isNumeric }
-                    minW={ column.width }
-                    w={ column.width }
-                    wordBreak="break-word"
-                    whiteSpace="normal"
-                  >
-                    { Boolean(column.name) && (
-                      <chakra.span mr={ 2 } lineHeight="24px" verticalAlign="middle">
-                        { column.id === 'age' ? 'Timestamp' : column.name }
-                      </chakra.span>
-                    ) }
-                    <FilterByColumn
-                      column={ column.id }
-                      columnName={ column.name }
-                      handleFilterChange={ handleFilterChange }
-                      filters={ filters }
-                      searchParams={ data?.search_params }
-                      isLoading={ isPlaceholderData }
-                    />
-                    { column.id === 'age' && <TimeFormatToggle ml={ 1 } verticalAlign="middle"/> }
-                  </TableColumnHeader>
-                );
-              }) }
-            </TableRow>
-          </TableHeaderSticky>
-          <TableBody>
-            { data?.items.map((item, index) => (
-              <TableRow key={ item.hash + String(index) }>
-                { multichainContext?.chain && (
-                  <TableCell>
-                    <ChainIcon data={ multichainContext.chain } isLoading={ isPlaceholderData }/>
-                  </TableCell>
-                ) }
-                { columnsToShow.map(column => {
-                  const textAlign = (() => {
-                    if (column.id === 'or_and') {
-                      return 'center';
-                    }
-                    if (column.isNumeric) {
-                      return 'right';
-                    }
-                    return 'start';
-                  })();
-
-                  return (
-                    <TableCell
-                      key={ item.hash + column.id }
-                      isNumeric={ column.isNumeric }
-                      minW={ column.width }
-                      maxW={ column.width }
-                      w={ column.width }
-                      wordBreak="break-word"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textAlign={ textAlign }
-                    >
-                      <ItemByColumn
-                        item={ item }
-                        column={ column.id }
-                        isLoading={ isPlaceholderData }
-                        chainConfig={ multichainContext?.chain?.app_config }
-                      />
-                    </TableCell>
-                  );
-                }) }
-              </TableRow>
-            )) }
-          </TableBody>
-        </TableRoot>
-      </Box>
-    </AddressHighlightProvider>
-  );
+  const content = data?.items ? (
+    <AdvancedFilterTable
+      items={ data.items }
+      columns={ columnsToShow }
+      filters={ filters }
+      searchParams={ data.search_params }
+      handleFilterChange={ handleFilterChange }
+      isLoading={ isPlaceholderData }
+      resetKey={ queryHash }
+    />
+  ) : null;
 
   const actionBar = (
     <ActionBar mt={ -6 }>

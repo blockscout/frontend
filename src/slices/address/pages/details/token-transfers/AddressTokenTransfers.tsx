@@ -106,6 +106,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
             pagination={ crossChainQuery.pagination }
             tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
             currentAddress={ hash }
+            resetKey={ crossChainQuery.queryHash }
           />
         </>
       ),

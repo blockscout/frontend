@@ -13,6 +13,7 @@ import { CROSS_CHAIN_TXS_CHARTS } from 'src/features/cross-chain-txs/utils/chain
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
@@ -29,10 +30,20 @@ interface Props {
   isError: boolean;
   isLoading: boolean;
   initialFilterQuery: string;
+  filterQuery: string;
   interval: StatsIntervalIds;
 };
 
-const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, initialFilterQuery, sections, sectionId }: Props) => {
+const ChainStatsSections = ({
+  isError,
+  isLoading,
+  displayedSections,
+  interval,
+  initialFilterQuery,
+  filterQuery,
+  sections,
+  sectionId,
+}: Props) => {
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = React.useState(false);
 
   const hasCharts = sections?.some((section) => section.charts.length > 0);
@@ -51,6 +62,13 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
   const isGasTrackerEnabled = config.features.gasTracker.isEnabled;
 
   const homeStatsQuery = useStatsQuery({ enabled: isGasTrackerEnabled });
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: displayedSections,
+    isEnabled: !isLoading,
+    minItemsNum: 3,
+    resetKey: `${ chain?.id ?? '' }:${ sectionId }:${ filterQuery }`,
+  });
 
   const handleChartLoadingError = React.useCallback(
     () => setIsSomeChartLoadingError(true),
@@ -78,7 +96,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
 
       <section ref={ sectionRef }>
         {
-          displayedSections?.map((section) => (
+          displayedSections?.slice(0, renderedItemsNum).map((section) => (
             <Box
               key={ section.id }
               mb={{ base: 6, lg: 8 }}
@@ -137,6 +155,7 @@ const ChainStatsSections = ({ isError, isLoading, displayedSections, interval, i
           ))
         }
       </section>
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };
