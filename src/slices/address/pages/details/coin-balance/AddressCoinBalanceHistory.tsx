@@ -16,6 +16,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -29,11 +30,18 @@ interface Props {
   > & {
     pagination: PaginationParams;
   };
+  resetKey?: string;
 }
 
-const AddressCoinBalanceHistory = ({ query }: Props) => {
+const AddressCoinBalanceHistory = ({ query, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const items = query.data?.items ?? [];
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: items,
+    isEnabled: !query.isPlaceholderData,
+    resetKey,
+  });
 
   const content = query.data?.items ? (
     <TableContainerScrollable>
@@ -52,7 +60,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { query.data.items.map((item, index) => (
+          { items.slice(0, renderedItemsNum).map((item, index) => (
             <AddressCoinBalanceTableItem
               key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
               data={ item }
@@ -61,6 +69,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
               chainData={ chainData }
             />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </TableContainerScrollable>

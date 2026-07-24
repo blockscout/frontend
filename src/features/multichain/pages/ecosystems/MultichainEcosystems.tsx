@@ -11,7 +11,6 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import multichainConfig from 'src/features/multichain/chains-config';
 import { CHAIN_METRICS } from 'src/features/multichain/stubs';
 
 import DataList from 'src/shared/lists/DataList';
@@ -19,7 +18,7 @@ import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
-import MultichainEcosystemsListItem from './MultichainEcosystemsListItem';
+import MultichainEcosystemsList from './MultichainEcosystemsList';
 import MultichainEcosystemsTable from './MultichainEcosystemsTable';
 import { SORT_OPTIONS } from './utils';
 
@@ -40,8 +39,6 @@ const MultichainEcosystems = () => {
     },
   });
 
-  const chains = multichainConfig()?.chains;
-
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSort(value[0] as ChainMetricsSortingValue);
   }, [ setSort ]);
@@ -54,6 +51,7 @@ const MultichainEcosystems = () => {
           sort={ sort }
           setSorting={ handleSortChange }
           isLoading={ isPlaceholderData }
+          resetKey={ sort }
         />
       </Box>
       <Box hideFrom="lg">
@@ -66,14 +64,11 @@ const MultichainEcosystems = () => {
             isLoading={ isPlaceholderData }
           />
         </ActionBar>
-        { data.items.map((item, index) => (
-          <MultichainEcosystemsListItem
-            key={ item.chain_id + (isPlaceholderData ? String(index) : '') }
-            data={ item }
-            chainInfo={ chains?.find((chain) => chain.id === item.chain_id) }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
+        <MultichainEcosystemsList
+          data={ data.items }
+          isLoading={ isPlaceholderData }
+          resetKey={ sort }
+        />
       </Box>
     </>
   ) : null;

@@ -7,6 +7,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 import { ZERO } from 'src/toolkit/utils/consts';
 
@@ -18,9 +20,11 @@ interface Props {
   pageStartIndex: number;
   top: number;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: Props) => {
+const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
     <TableRoot>
@@ -34,7 +38,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: 
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.map((item, index) => (
+        { items.slice(0, renderedItemsNum).map((item, index) => (
           <AddressesTableItem
             key={ item.hash + (isLoading ? index : '') }
             item={ item }
@@ -44,6 +48,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: 
             isLoading={ isLoading }
           />
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );
