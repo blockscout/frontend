@@ -247,9 +247,12 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chain
             />
           );
         }
+        const trimmedChunk = chunk.trim();
+        const textColor = trimmedChunk.includes('failed to call') ? 'text.error' : 'text.secondary';
+
         return (
           <chakra.span key={ chunk + index }>
-            <chakra.span color="text.secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
+            <chakra.span color={ textColor }>{ trimmedChunk + (trimmedChunk && variablesNames[index] ? ' ' : '') }</chakra.span>
             { index < variablesNames.length && content }
           </chakra.span>
         );

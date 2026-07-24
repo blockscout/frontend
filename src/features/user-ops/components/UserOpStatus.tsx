@@ -4,18 +4,19 @@ import React from 'react';
 
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
-type Props = {
+import type { BadgeProps } from 'src/toolkit/chakra/badge';
+
+interface Props extends BadgeProps {
   status?: boolean;
-  isLoading?: boolean;
 };
 
-const UserOpStatus = ({ status, isLoading }: Props) => {
+const UserOpStatus = ({ status, ...rest }: Props) => {
   if (status === undefined) {
     return null;
   }
 
   return (
-    <StatusTag loading={ isLoading } type={ status === true ? 'ok' : 'error' } text={ status === true ? 'Success' : 'Failed' }/>
+    <StatusTag type={ status === true ? 'ok' : 'error' } text={ status === true ? 'Success' : 'Failed' } { ...rest }/>
   );
 };
 

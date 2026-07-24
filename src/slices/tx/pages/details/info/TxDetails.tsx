@@ -22,7 +22,6 @@ import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
-import TxStatus from 'src/slices/tx/components/TxStatus';
 import getConfirmationDuration from 'src/slices/tx/utils/get-confirmation-duration';
 
 import TxAllowedPeekers from 'src/features/chain-variants/suave/pages/tx/TxAllowedPeekers';
@@ -58,7 +57,6 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
-import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
@@ -68,10 +66,10 @@ import TxDetailsGasPrice from './parts/TxDetailsGasPrice';
 import TxDetailsGasUsage from './parts/TxDetailsGasUsage';
 import TxDetailsOther from './parts/TxDetailsOther';
 import TxDetailsSetMaxGasLimit from './parts/TxDetailsSetMaxGasLimit';
+import TxDetailsStatus from './parts/TxDetailsStatus';
 import TxDetailsTokenTransfers from './parts/TxDetailsTokenTransfers';
 import TxDetailsTxFee from './parts/TxDetailsTxFee';
 import TxHash from './parts/TxHash';
-import TxRevertReason from './parts/TxRevertReason';
 
 interface Props {
   data: schemas['TransactionResponse'] | undefined;
@@ -156,32 +154,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       <TxHash hash={ data.hash } isLoading={ isLoading } status={ data.status }/>
 
-      <DetailedInfo.ItemLabel
-        hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
-        isLoading={ isLoading }
-      >
-        {
-          rollupFeature.isEnabled &&
-          (rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'scroll') ?
-            `${ layerLabels.current } status and method` :
-            'Status and method'
-        }
-      </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue>
-        <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
-        { data.method && (
-          <Badge colorPalette={ data.method === 'Multicall' ? 'teal' : 'gray' } loading={ isLoading } truncated ml={ 3 }>
-            { data.method }
-          </Badge>
-        ) }
-        { data.arbitrum?.contains_message && (
-          <Skeleton loading={ isLoading } onClick={ showAssociatedL1Tx }>
-            <Link truncate ml={ 3 }>
-              { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
-            </Link>
-          </Skeleton>
-        ) }
-      </DetailedInfo.ItemValue>
+      <TxDetailsStatus data={ data } isLoading={ isLoading } onShowDetailsClick={ showAssociatedL1Tx }/>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
       !config.slices.tx.hiddenFields?.L1_status && (
@@ -222,19 +195,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
               steps={ arbitrum.verificationSteps }
               isLoading={ isLoading }
             />
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { data.revert_reason && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="The revert reason of the transaction"
-          >
-            Revert reason
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue flexWrap="wrap" mt={{ base: '5px', lg: '4px' }}>
-            <TxRevertReason { ...data.revert_reason }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

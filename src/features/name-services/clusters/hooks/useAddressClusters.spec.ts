@@ -1,5 +1,7 @@
 // @vitest-environment jsdom
 
+import type appConfig from 'src/config';
+
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';
 
@@ -13,15 +15,14 @@ vi.mock('src/api/hooks/useApiQuery', () => ({
   'default': mockUseApiQuery,
 }));
 
-vi.mock('src/config', async() => {
+vi.mock('src/config', async(importOriginal) => {
+  const original = await importOriginal<{ 'default': typeof appConfig }>();
+
   return {
     'default': {
-      UI: {
-        colorTheme: {},
-        homepage: {},
-        fonts: {},
-      },
+      ...original.default,
       features: {
+        ...original.default.features,
         nameServices: {
           isEnabled: true,
           ens: { isEnabled: true },

@@ -58,7 +58,9 @@ const wagmi = (() => {
         ...(parentChain ? { [parentChain.id]: http(parentChain.rpcUrls.default.http[0]) } : {}),
         ...reduceExternalChainsToTransportConfig(true),
       },
-      ssr: true,
+      // ssr:false — the config is only ever created client-side (lazily, off the critical path), so wagmi's
+      // <Hydrate> restores persisted state and reconnects synchronously; no manual hydration is needed.
+      ssr: false,
       batch: { multicall: { wait: 100, batchSize: 1024 } },
       multiInjectedProviderDiscovery: feature.isEnabled && feature.connectorType === 'dynamic' ? false : true,
     });
@@ -75,7 +77,8 @@ const wagmi = (() => {
       ...reduceExternalChainsToTransportConfig(false),
     },
     projectId: feature.reown.projectId,
-    ssr: true,
+    // ssr:false — see the note on the fallback config above; the adapter's config is client-only + lazy.
+    ssr: false,
     batch: { multicall: { wait: 100, batchSize: 1024 } },
     syncConnectedChain: false,
   });

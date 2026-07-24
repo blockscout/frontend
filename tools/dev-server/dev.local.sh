@@ -3,6 +3,41 @@
 # Runs the dev server against a LOCAL backend using the committed tools/dev-server/.env.localhost
 # config (no HTTP fetch). Layer your own overrides via .env.local / .env.extra / .env.secrets.
 
+usage="Usage: pnpm dev:local [--port <number>]"
+
+port=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --port)
+      if [ "$#" -lt 2 ]; then
+        echo "🚨 --port requires a value."
+        echo "$usage"
+        exit 1
+      fi
+      port="$2"; shift 2 ;;
+    --port=*)
+      port="${1#--port=}"; shift ;;
+    *)
+      echo "🚨 Unknown argument \"$1\"."
+      echo "$usage"
+      exit 1 ;;
+  esac
+done
+
+if [ -n "$port" ] && ! [[ "$port" =~ ^[0-9]+$ ]]; then
+  echo "🚨 Invalid --port value \"$port\" — expected a number."
+  echo "$usage"
+  exit 1
+fi
+
+# --port overrides NEXT_PUBLIC_APP_PORT (dotenv-cli applies -v variables AFTER the -e files,
+# so this beats every env file). Overriding the env var — not just `next dev -p` — keeps the
+# generated envs.js and config.app.baseUrl consistent with the actual port.
+port_args=()
+if [ -n "$port" ]; then
+  port_args+=( -v NEXT_PUBLIC_APP_PORT="$port" )
+fi
+
 # Env files in dotenv-cli precedence order: the FIRST -e file wins, so list highest priority first.
 #   .env.local                       (git-ignored, personal local overrides) — optional
 #   .env.extra                       (committed branch/feature ENVs)
@@ -46,6 +81,7 @@ dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
+  "${port_args[@]}" \
   "${env_args[@]}" \
   -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

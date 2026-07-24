@@ -36,9 +36,7 @@ export const CheckboxGroup = React.forwardRef<HTMLDivElement, CheckboxGroupProps
     const { children, orientation = 'vertical', ...rest } = props;
     return (
       <ChakraCheckboxGroup
-        // @ts-ignore: ChakraCheckboxGroup is not typed correctly
         ref={ ref }
-        orientation={ orientation }
         display="flex"
         flexDirection={ orientation === 'vertical' ? 'column' : 'row' }
         gap={ orientation === 'vertical' ? 3 : 8 }

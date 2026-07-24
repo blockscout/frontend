@@ -32,7 +32,8 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
         return;
       }
 
-      const json = route.request().postDataJSON();
+      const dataJson = route.request().postDataJSON();
+      const json = Array.isArray(dataJson) ? dataJson[0] : dataJson;
       const params = json?.params?.[0];
       const id = json?.id;
 
@@ -47,17 +48,20 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
       };
 
       if (isEqual(params, callParams) && id !== undefined && json?.method === rpcMethod) {
+
+        const json = {
+          id,
+          jsonrpc: '2.0',
+          result: noResultEncoding ? result : encodeFunctionResult({
+            abi: [ abiItem ],
+            functionName: abiItem.name,
+            result: result as never,
+          }),
+        };
+
         return route.fulfill({
           status: 200,
-          json: {
-            id,
-            jsonrpc: '2.0',
-            result: noResultEncoding ? result : encodeFunctionResult({
-              abi: [ abiItem ],
-              functionName: abiItem.name,
-              result: result as never,
-            }),
-          },
+          json: Array.isArray(dataJson) ? [ json ] : json,
         });
       }
     }, { times });

@@ -14,7 +14,7 @@ import { toAddressModel } from 'src/slices/address/utils/model';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import { GET_BLOCK } from 'src/slices/block/stubs/rpc';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import config from 'src/config';
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
@@ -71,6 +71,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   const rpcQuery = useQuery<RpcResponseType, unknown, operations['BlockController.withdrawals']['json'] | null>({
     queryKey: rpcQueryKey,
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
@@ -99,7 +100,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     },
     placeholderData: GET_BLOCK,
     enabled:
-      publicClient !== undefined &&
+      isPublicClientAvailable &&
       tab === 'withdrawals' &&
       config.features.beaconChain.isEnabled &&
       (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
@@ -108,7 +109,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData || !publicClient) {
+    if (apiQuery.isPlaceholderData || !isPublicClientAvailable) {
       return;
     }
 
@@ -128,7 +129,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   const isRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data && publicClient);
+  ) && rpcQuery.data && isPublicClientAvailable);
 
   const rpcQueryWithPages: QueryWithPagesResult<'core:block_withdrawals'> = {
     ...rpcQuery as UseQueryResult<operations['BlockController.withdrawals']['json'], ResourceError>,

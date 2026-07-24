@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import React from 'react';
-import { encodeFunctionData, getAddress } from 'viem';
+import { getAddress } from 'viem';
 import { usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
@@ -11,7 +11,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 
-import { getNativeCoinValue } from './utils';
+import { estimateTransactionGas, getNativeCoinValue } from './utils';
 
 interface Params {
   item: SmartContractMethod;
@@ -38,6 +38,8 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     const _args = args.slice(0, inputs.length);
     const value = getNativeCoinValue(args[inputs.length]);
 
+    const estimateGas = () => estimateTransactionGas({ account, to: address, value, abiItem: item, args: _args, chainId });
+
     if (item.type === 'fallback') {
       // if the fallback method acts as a read method, it can only have one input of type bytes
       // so we pass the input value as data without encoding it
@@ -48,31 +50,18 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
         value,
         data,
       });
-      const estimatedGas = await publicClient.estimateGas({
-        account,
-        to: address,
-        value,
-        data,
-      });
-
       return {
         source: 'public_client' as const,
         data: result.data,
-        estimatedGas,
+        estimatedGas: await estimateGas(),
       };
     }
 
     if (item.type === 'receive') {
-      const estimatedGas = await publicClient.estimateGas({
-        account,
-        to: address,
-        value,
-      });
-
       return {
         source: 'public_client' as const,
         data: undefined,
-        estimatedGas,
+        estimatedGas: await estimateGas(),
       };
     }
 
@@ -84,25 +73,14 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       account,
       value,
     };
-    const paramsForGasEstimate = {
-      account,
-      value,
-      to: address,
-      data: encodeFunctionData({
-        abi: [ item ],
-        functionName: item.name,
-        args: _args,
-      }),
-    };
 
     const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
-    const estimatedGas = strategy === 'simulate' ? await publicClient.estimateGas(paramsForGasEstimate) : undefined;
 
     return {
       source: 'public_client' as const,
       data: strategy === 'read' ? result : result.result,
-      estimatedGas,
+      estimatedGas: strategy === 'simulate' ? await estimateGas() : undefined,
     };
 
-  }, [ account, publicClient ]);
+  }, [ account, publicClient, chainId ]);
 }

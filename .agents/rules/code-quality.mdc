@@ -61,6 +61,22 @@ const visibleItems = items.slice(0, MAX_VISIBLE_ITEMS);
 
 The same applies to magic strings used as discriminators, keys, or thresholds. In tests, unexplained magic values should also be extracted into named constants so their meaning is clear.
 
+#### Shared unit constants
+
+`src/toolkit/utils/consts.ts` already defines unit constants: `SECOND`, `MINUTE`, `HOUR`, `DAY`, `WEEK`, `MONTH`, `YEAR` (milliseconds), `Kb`, `Mb` (bytes), and the BigNumber `ZERO`. Never define local equivalents (e.g. `MS_IN_SECOND = 1_000`) or use raw duration literals — import from there and compose.
+
+```ts
+// BAD
+const REFETCH_INTERVAL = 2_000;
+setTimeout(handleTimeout, 5 * 60 * 1_000);
+
+// GOOD
+import { SECOND, MINUTE } from 'src/toolkit/utils/consts';
+
+const REFETCH_INTERVAL = 2 * SECOND;
+setTimeout(handleTimeout, 5 * MINUTE);
+```
+
 ### Static empty defaults
 
 Never define empty arrays or objects inline as default values — a new reference is created on every render, causing unnecessary re-renders or stale hook dependencies.
@@ -120,6 +136,29 @@ const STREAK_IMAGES: Record<number, string> = {
 ### Prefer es-toolkit utilities
 
 Before writing custom utility logic (clamping, deep cloning, grouping, etc.), check whether `es-toolkit` already provides it. Prefer the library function over a manual implementation. Documentation: https://es-toolkit.dev/llms-full.txt
+
+### Comments
+
+Comment the *why*, not the *what*. The code already shows what it does; a good comment explains what the
+code can't — the rationale, a non-obvious constraint, a gotcha, a link to the issue or spec that motivated
+it.
+
+Never write *diff-narration* comments — what the code replaces, what it used to do, what behavior it
+preserves. That belongs in the commit message and the PR, not in the source, where it goes stale the moment
+the next change lands.
+
+```ts
+// BAD — narrates the change and restates the obvious
+// Replaces the old useEffect approach; now we memoize the filtered list
+const active = useMemo(() => items.filter(isActive), [ items ]);
+
+// GOOD — explains the non-obvious why
+// Memoized because <VirtualList> bails out of re-rendering on referential equality of `items`.
+const active = useMemo(() => items.filter(isActive), [ items ]);
+```
+
+Quick test: if a comment would confuse a reader who never saw the previous version of the file, it is
+diff-narration — delete it. If it still helps that reader understand a decision, keep it.
 
 ### Commented-out code
 

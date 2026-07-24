@@ -12,11 +12,12 @@ import type {
   AddressTokensBalancesSocketMessage,
   AddressTransactionsSocketMessage,
 } from 'src/slices/address/types/api';
-import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
+import type { NewBlockCountSocketResponse, NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
+SocketMessage.NewBlockCount |
 SocketMessage.NewBlockMultichain |
 SocketMessage.BlocksIndexStatus |
 SocketMessage.InternalTxsIndexStatus |
@@ -59,6 +60,7 @@ interface SocketMessageParamsGeneric<Event extends string | undefined, Payload e
 
 export namespace SocketMessage {
   export type NewBlock = SocketMessageParamsGeneric<'new_block', NewBlockSocketResponse>;
+  export type NewBlockCount = SocketMessageParamsGeneric<'new_blocks_count', NewBlockCountSocketResponse>;
   export type NewBlockMultichain = SocketMessageParamsGeneric<'new_blocks', Array<{ block_number: number; chain_id: number }>>;
   export type BlocksIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;
   export type InternalTxsIndexStatus = SocketMessageParamsGeneric<'index_status', { finished: boolean; ratio: string }>;

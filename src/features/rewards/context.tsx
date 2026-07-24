@@ -4,7 +4,6 @@ import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback, useState } from 'react';
-import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type * as rewards from '@blockscout/points-types';
 
@@ -14,6 +13,7 @@ import type { ResourceError } from 'src/api/resources';
 
 import useProfileQuery from 'src/features/account/hooks/useProfileQuery';
 import useAccount from 'src/features/connect-wallet/hooks/useAccount';
+import { getWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 
 import config from 'src/config';
 import decodeJWT from 'src/shared/auth/decode-jwt';
@@ -118,8 +118,6 @@ export function RewardsContextProvider({ children }: Props) {
   const queryClient = useQueryClient();
 
   const { address } = useAccount();
-  const { signMessageAsync } = useSignMessage();
-  const { switchChainAsync } = useSwitchChain();
   const profileQuery = useProfileQuery();
 
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useToggle(false);
@@ -218,9 +216,10 @@ export function RewardsContextProvider({ children }: Props) {
           isNewUser: false,
         };
       }
-      await switchChainAsync({ chainId: Number(config.chain.id) });
+      const runtime = await getWeb3Runtime();
+      await runtime.switchChain({ chainId: Number(config.chain.id) });
       const message = getMessageToSign(address, nonceResponse.nonce, checkUserQuery.data?.exists, refCode);
-      const signature = await signMessageAsync({ message });
+      const signature = await runtime.signMessage({ message });
       const loginResponse = await apiFetch('rewards:login', {
         fetchParams: {
           method: 'POST',
@@ -240,7 +239,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error);
       throw _error;
     }
-  }, [ address, apiFetch, switchChainAsync, checkUserQuery.data?.exists, signMessageAsync, onLoginSuccess, errorToast ]);
+  }, [ address, apiFetch, checkUserQuery.data?.exists, onLoginSuccess, errorToast ]);
 
   // Claim daily reward
   const claim = useCallback(async() => {

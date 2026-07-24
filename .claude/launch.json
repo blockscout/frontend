@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "dev-staging",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:preset", "staging"],
+      "port": 3000
+    },
+    {
+      "name": "dev-eth",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:preset", "eth"],
+      "port": 3000
+    }
+  ]
+}

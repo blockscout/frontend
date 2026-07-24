@@ -7,6 +7,11 @@ export interface NewBlockSocketResponse {
   block: schemas['BlockResponse'];
 }
 
+export interface NewBlockCountSocketResponse {
+  count: number;
+  type: schemas['BlockResponse']['type'];
+}
+
 export interface BlockFilters {
   type?: schemas['BlockResponse']['type'];
 }

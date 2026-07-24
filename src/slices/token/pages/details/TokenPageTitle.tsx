@@ -31,6 +31,7 @@ import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWall
 import config from 'src/config';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { Link } from 'src/toolkit/chakra/link';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 const PREDEFINED_TAG_PRIORITY = 100;
@@ -97,7 +98,17 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
     <>
       { tokenQuery.data && <TokenEntity.Reputation value={ tokenQuery.data.reputation } ml={ 0 }/> }
       { verifiedInfoQuery.data?.tokenAddress && (
-        <Tooltip content={ `Information on this token has been verified by ${ config.chain.name }` }>
+        <Tooltip
+          content={ (
+            <>
+              Token information was added manually or sourced from an external data provider.{ ' ' }
+              <Link href="https://docs.blockscout.com/using-blockscout/overviews/token-info" external className="dark">
+                More details
+              </Link>
+            </>
+          ) }
+          interactive
+        >
           <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
         </Tooltip>
       ) }

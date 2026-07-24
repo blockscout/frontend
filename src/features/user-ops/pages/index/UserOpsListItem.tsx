@@ -50,7 +50,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender, chainData }: Pro
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <UserOpStatus status={ item.status } isLoading={ isLoading }/>
+        <UserOpStatus status={ item.status } loading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
       { showSender && (
