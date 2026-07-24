@@ -19,16 +19,18 @@ const OptimisticL2WithdrawalsList = ({ items, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <OptimisticL2WithdrawalsListItem
-          key={ String(item.msg_nonce_version) + item.msg_nonce + (isLoading ? index : '') }
-          item={ item }
-          isLoading={ isLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <OptimisticL2WithdrawalsListItem
+            key={ String(item.msg_nonce_version) + item.msg_nonce + (isLoading ? index : '') }
+            item={ item }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

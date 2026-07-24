@@ -20,17 +20,19 @@ const ClustersDirectoryList = ({ data, isLoading, isClusterDetailsLoading, reset
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <ClustersDirectoryListItem
-          key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
-          item={ item }
-          isLoading={ isLoading }
-          isClusterDetailsLoading={ isClusterDetailsLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <ClustersDirectoryListItem
+            key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
+            item={ item }
+            isLoading={ isLoading }
+            isClusterDetailsLoading={ isClusterDetailsLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

@@ -21,17 +21,19 @@ const ArbitrumL2MessagesList = ({ items, direction, isLoading, resetKey }: Props
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <ArbitrumL2MessagesListItem
-          key={ String(item.id) + (isLoading ? index : '') }
-          isLoading={ isLoading }
-          item={ item }
-          direction={ direction }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <ArbitrumL2MessagesListItem
+            key={ String(item.id) + (isLoading ? index : '') }
+            isLoading={ isLoading }
+            item={ item }
+            direction={ direction }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

@@ -19,16 +19,18 @@ const NameDomainsList = ({ items, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <NameDomainsListItem
-          key={ item.id + (isLoading ? index : '') }
-          { ...item }
-          isLoading={ Boolean(isLoading) }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <NameDomainsListItem
+            key={ item.id + (isLoading ? index : '') }
+            { ...item }
+            isLoading={ Boolean(isLoading) }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

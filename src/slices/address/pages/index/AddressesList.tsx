@@ -22,18 +22,20 @@ const AddressesList = ({ items, totalSupply, pageStartIndex, isLoading, resetKey
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <AddressesListItem
-          key={ item.hash + (isLoading ? index : '') }
-          item={ item }
-          index={ pageStartIndex + index }
-          totalSupply={ totalSupply }
-          isLoading={ isLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <AddressesListItem
+            key={ item.hash + (isLoading ? index : '') }
+            item={ item }
+            index={ pageStartIndex + index }
+            totalSupply={ totalSupply }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

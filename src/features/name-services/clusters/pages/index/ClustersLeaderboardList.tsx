@@ -19,16 +19,18 @@ const ClustersLeaderboardList = ({ data, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <ClustersLeaderboardListItem
-          key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
-          item={ item }
-          isLoading={ isLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <ClustersLeaderboardListItem
+            key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
+            item={ item }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

@@ -19,16 +19,18 @@ const DepositsList = ({ items, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <DepositsListItem
-          key={ `${ item.l2_transaction_hash }-${ index }` }
-          isLoading={ isLoading }
-          item={ item }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <DepositsListItem
+            key={ `${ item.l2_transaction_hash }-${ index }` }
+            isLoading={ isLoading }
+            item={ item }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

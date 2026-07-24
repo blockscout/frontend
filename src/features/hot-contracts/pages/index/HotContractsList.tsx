@@ -20,17 +20,19 @@ const HotContractsList = ({ items, isLoading, exchangeRate, resetKey }: Props) =
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <HotContractsListItem
-          key={ item.contract_address.hash + (isLoading ? index : '') }
-          isLoading={ isLoading }
-          data={ item }
-          exchangeRate={ exchangeRate }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <HotContractsListItem
+            key={ item.contract_address.hash + (isLoading ? index : '') }
+            isLoading={ isLoading }
+            data={ item }
+            exchangeRate={ exchangeRate }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

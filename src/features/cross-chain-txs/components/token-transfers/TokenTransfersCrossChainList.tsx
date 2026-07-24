@@ -23,18 +23,20 @@ const TokenTransfersCrossChainList = ({ items, isLoading, currentAddress, resetK
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <TokenTransfersCrossChainListItem
-          key={ getItemKey(item, isLoading ? index : undefined) }
-          data={ item }
-          isLoading={ isLoading }
-          currentAddress={ currentAddress }
-          { ...listItemProps }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <TokenTransfersCrossChainListItem
+            key={ getItemKey(item, isLoading ? index : undefined) }
+            data={ item }
+            isLoading={ isLoading }
+            currentAddress={ currentAddress }
+            { ...listItemProps }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

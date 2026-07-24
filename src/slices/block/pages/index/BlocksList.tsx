@@ -28,19 +28,21 @@ const BlocksList = ({ data, isLoading, page, chainData, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <BlocksListItem
-          key={ item.height + (isLoading ? String(index) : '') }
-          data={ item }
-          isLoading={ isLoading }
-          enableTimeIncrement={ page === 1 && !isLoading }
-          animation={ initialList.getAnimationProp(item) }
-          chainData={ chainData }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <BlocksListItem
+            key={ item.height + (isLoading ? String(index) : '') }
+            data={ item }
+            isLoading={ isLoading }
+            enableTimeIncrement={ page === 1 && !isLoading }
+            animation={ initialList.getAnimationProp(item) }
+            chainData={ chainData }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

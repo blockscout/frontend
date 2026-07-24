@@ -27,20 +27,22 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement,
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <TokenTransferListItem
-          key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
-          data={ item }
-          baseAddress={ baseAddress }
-          showTxInfo={ showTxInfo }
-          enableTimeIncrement={ enableTimeIncrement }
-          isLoading={ isLoading }
-          chainData={ chainData }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <TokenTransferListItem
+            key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
+            data={ item }
+            baseAddress={ baseAddress }
+            showTxInfo={ showTxInfo }
+            enableTimeIncrement={ enableTimeIncrement }
+            isLoading={ isLoading }
+            chainData={ chainData }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

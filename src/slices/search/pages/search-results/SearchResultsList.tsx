@@ -24,18 +24,20 @@ const SearchResultsList = ({ items, searchTerm, isLoading, addressFormat, resetK
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <SearchResultListItem
-          key={ (isLoading ? 'placeholder_' : 'actual_') + index }
-          data={ item }
-          searchTerm={ searchTerm }
-          isLoading={ isLoading }
-          addressFormat={ addressFormat }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <SearchResultListItem
+            key={ (isLoading ? 'placeholder_' : 'actual_') + index }
+            data={ item }
+            searchTerm={ searchTerm }
+            isLoading={ isLoading }
+            addressFormat={ addressFormat }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

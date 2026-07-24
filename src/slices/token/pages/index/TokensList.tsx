@@ -43,19 +43,21 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
     <>
       <Box hideFrom="lg">
         { description }
-        { data.items.slice(0, renderedItemsNum).map((item, index) => {
-          const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
+        <Box>
+          { data.items.slice(0, renderedItemsNum).map((item, index) => {
+            const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
 
-          return (
-            <TokensListItem
-              key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
-              token={ item }
-              index={ index }
-              page={ pagination.page }
-              isLoading={ isPlaceholderData }
-            />
-          );
-        }) }
+            return (
+              <TokensListItem
+                key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
+                token={ item }
+                index={ index }
+                page={ pagination.page }
+                isLoading={ isPlaceholderData }
+              />
+            );
+          }) }
+        </Box>
         <Box ref={ cutRef } h={ 0 }/>
       </Box>
       <Box hideBelow="lg">

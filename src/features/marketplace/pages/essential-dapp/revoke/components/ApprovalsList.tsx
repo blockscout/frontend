@@ -30,18 +30,20 @@ export default function ApprovalsList({
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: approvals, isEnabled: !isLoading, resetKey });
 
   return (
-    <Flex flexDirection="column">
-      { approvals.slice(0, renderedItemsNum).map((approval, index) => (
-        <ApprovalsListItem
-          key={ index }
-          selectedChain={ selectedChain }
-          approval={ approval }
-          isLoading={ isLoading }
-          isAddressMatch={ isAddressMatch }
-          hideApproval={ hideApproval }
-        />
-      )) }
+    <>
+      <Flex flexDirection="column">
+        { approvals.slice(0, renderedItemsNum).map((approval, index) => (
+          <ApprovalsListItem
+            key={ index }
+            selectedChain={ selectedChain }
+            approval={ approval }
+            isLoading={ isLoading }
+            isAddressMatch={ isAddressMatch }
+            hideApproval={ hideApproval }
+          />
+        )) }
+      </Flex>
       <Box ref={ cutRef } h={ 0 }/>
-    </Flex>
+    </>
   );
 }

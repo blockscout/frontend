@@ -19,16 +19,18 @@ const OptimisticL2OutputRootsList = ({ items, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <OptimisticL2OutputRootsListItem
-          key={ item.l2_output_index + (isLoading ? String(index) : '') }
-          item={ item }
-          isLoading={ isLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <OptimisticL2OutputRootsListItem
+            key={ item.l2_output_index + (isLoading ? String(index) : '') }
+            item={ item }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

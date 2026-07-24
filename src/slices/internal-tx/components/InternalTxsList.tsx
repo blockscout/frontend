@@ -25,19 +25,21 @@ const InternalTxsList = ({ data, currentAddress, isLoading, showBlockInfo = true
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <InternalTxsListItem
-          key={ item.transaction_hash + '_' + index }
-          data={ item }
-          currentAddress={ currentAddress }
-          isLoading={ isLoading }
-          showBlockInfo={ showBlockInfo }
-          chainData={ chainData }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <InternalTxsListItem
+            key={ item.transaction_hash + '_' + index }
+            data={ item }
+            currentAddress={ currentAddress }
+            isLoading={ isLoading }
+            showBlockInfo={ showBlockInfo }
+            chainData={ chainData }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

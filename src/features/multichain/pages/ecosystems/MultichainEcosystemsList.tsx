@@ -22,17 +22,19 @@ const MultichainEcosystemsList = ({ data, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { data.slice(0, renderedItemsNum).map((item, index) => (
-        <MultichainEcosystemsListItem
-          key={ item.chain_id + (isLoading ? String(index) : '') }
-          data={ item }
-          chainInfo={ chains?.find((chain) => chain.id === item.chain_id) }
-          isLoading={ isLoading }
-        />
-      )) }
+    <>
+      <Box>
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <MultichainEcosystemsListItem
+            key={ item.chain_id + (isLoading ? String(index) : '') }
+            data={ item }
+            chainInfo={ chains?.find((chain) => chain.id === item.chain_id) }
+            isLoading={ isLoading }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 

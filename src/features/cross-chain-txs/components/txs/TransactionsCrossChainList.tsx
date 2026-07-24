@@ -20,17 +20,19 @@ const TransactionsCrossChainList = ({ items, isLoading, currentAddress, resetKey
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <Box>
-      { items.slice(0, renderedItemsNum).map((item, index) => (
-        <TransactionsCrossChainListItem
-          key={ item.message_id + (isLoading ? index : '') }
-          data={ item }
-          isLoading={ isLoading }
-          currentAddress={ currentAddress }
-        />
-      )) }
+    <>
+      <Box>
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <TransactionsCrossChainListItem
+            key={ item.message_id + (isLoading ? index : '') }
+            data={ item }
+            isLoading={ isLoading }
+            currentAddress={ currentAddress }
+          />
+        )) }
+      </Box>
       <Box ref={ cutRef } h={ 0 }/>
-    </Box>
+    </>
   );
 };
 
