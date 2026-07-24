@@ -59,7 +59,6 @@ const NameDomainHistory = ({ domain }: Props) => {
           items={ data.items }
           domain={ domain }
           isLoading={ isPlaceholderData }
-          resetKey={ `${ domainName }:${ protocolId }` }
         />
       </Box>
       <Box hideBelow="lg">
@@ -69,7 +68,6 @@ const NameDomainHistory = ({ domain }: Props) => {
           isLoading={ isPlaceholderData }
           sort={ sort }
           onSortToggle={ handleSortToggle }
-          resetKey={ `${ domainName }:${ protocolId }:${ sort }` }
         />
       </Box>
     </>

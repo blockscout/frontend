@@ -5,7 +5,6 @@ import React from 'react';
 import type * as bens from '@blockscout/bens-types';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
-import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -19,12 +18,10 @@ interface Props {
   isLoading?: boolean;
   sort: Sort;
   onSortToggle: (field: SortField) => void;
-  resetKey?: string;
 }
 
-const NameDomainHistoryTable = ({ items, domain, isLoading, sort, onSortToggle, resetKey }: Props) => {
+const NameDomainHistoryTable = ({ items, domain, isLoading, sort, onSortToggle }: Props) => {
   const sortedItems = React.useMemo(() => items.slice().sort(sortFn(sort)), [ items, sort ]);
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: sortedItems, isEnabled: !isLoading, resetKey });
 
   return (
     <TableRoot>
@@ -46,10 +43,9 @@ const NameDomainHistoryTable = ({ items, domain, isLoading, sort, onSortToggle, 
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { sortedItems.slice(0, renderedItemsNum).map((item, index) => (
+        { sortedItems.map((item, index) => (
           <NameDomainHistoryTableItem key={ index } event={ item } domain={ domain } isLoading={ isLoading }/>
         )) }
-        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

@@ -52,7 +52,7 @@ const NameDomainsTable = ({ items, isLoading, sort, onSortToggle, resetKey }: Pr
         </TableHeaderSticky>
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
-            <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>
+            <NameDomainsTableItem key={ item.id + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
           )) }
           <TableRow ref={ cutRef }/>
         </TableBody>
