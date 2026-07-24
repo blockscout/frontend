@@ -17,7 +17,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
 
   const { setShowDynamicUserProfile, setShowAuthFlow, setAuthMode, removeWallet, primaryWallet } = useDynamicContext();
 
-  const openModal = React.useCallback(() => {
+  const openModal = React.useCallback(async() => {
     setShowDynamicUserProfile(true);
     mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
   }, [ setShowDynamicUserProfile ]);

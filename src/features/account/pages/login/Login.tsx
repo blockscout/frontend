@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { VStack, Code, Flex, Box } from '@chakra-ui/react';
-import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import config from 'src/config';
 import useFeatureValue from 'src/services/growthbook/useFeatureValue';
+import { track } from 'src/services/mixpanel/queue';
 import { useRollbar } from 'src/services/rollbar';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 import * as cookies from 'src/shared/storage/cookies';
@@ -37,7 +37,7 @@ const Login = () => {
   }, [ rollbar ]);
 
   const checkMixpanel = React.useCallback(() => {
-    mixpanel.track('Test event', { my_prop: 'foo bar' });
+    track('Test event', { my_prop: 'foo bar' });
   }, []);
 
   const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {

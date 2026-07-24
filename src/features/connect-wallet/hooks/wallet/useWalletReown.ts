@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useAppKit, useAppKitState } from '@reown/appkit/react';
 import React from 'react';
-import { useAccountEffect, useAccount, useDisconnect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
@@ -10,58 +8,91 @@ import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import * as mixpanel from 'src/services/mixpanel';
 
+import { useWeb3Account, subscribeConnection } from '../../utils/bridge';
+import { ensureLoaded } from '../../utils/runtime';
 import useWalletFallback from './useWalletFallback';
 
+// Bridge/Runtime-backed reown wallet hook. Replaces the old `@reown/appkit/react` + wagmi-React
+// implementation so the header no longer awaits the wallet chunks: account state comes from the Bridge,
+// and connect/disconnect/modal go through the lazily-loaded Runtime (`ensureLoaded()` on interaction).
 export function useWalletReown({ source, onConnect }: Params): Result {
-  const { open: openModal } = useAppKit();
-  const { open: isOpen } = useAppKitState();
-  const { disconnect } = useDisconnect();
+  const { address, status } = useWeb3Account();
   const [ isOpening, setIsOpening ] = React.useState(false);
-  const [ isClientLoaded, setIsClientLoaded ] = React.useState(false);
+  const [ isModalOpen, setIsModalOpen ] = React.useState(false);
   const isConnectionStarted = React.useRef(false);
+  const modalUnsubRef = React.useRef<(() => void) | undefined>(undefined);
+  const onConnectRef = React.useRef(onConnect);
+  onConnectRef.current = onConnect;
 
+  // `WALLET_CONNECT` "Connected" analytics — fire only for a fresh, user-initiated connection
+  // (not an auto-reconnect), keyed off the isConnectionStarted ref set by `connect`.
   React.useEffect(() => {
-    setIsClientLoaded(true);
+    return subscribeConnection({
+      onConnect: ({ isReconnected }) => {
+        if (!isReconnected && isConnectionStarted.current) {
+          mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+          mixpanel.userProfile.setOnce({ 'With Connected Wallet': true });
+          onConnectRef.current?.();
+        }
+        isConnectionStarted.current = false;
+      },
+    });
+  }, [ source ]);
+
+  React.useEffect(() => () => modalUnsubRef.current?.(), []);
+
+  // Subscribe to the AppKit modal state once the runtime is loaded (idempotent). We never force the load
+  // just to observe modal state — the modal can only open via connect/openModal, which load it first.
+  const subscribeModal = React.useCallback((runtime: Awaited<ReturnType<typeof ensureLoaded>>) => {
+    if (modalUnsubRef.current) {
+      return;
+    }
+    modalUnsubRef.current = runtime.subscribeModalState(setIsModalOpen);
   }, []);
 
-  const handleConnect = React.useCallback(async() => {
+  const openModal = React.useCallback(async() => {
     setIsOpening(true);
-    await openModal();
+    const runtime = await ensureLoaded();
+    subscribeModal(runtime);
+    await runtime.openModal();
     setIsOpening(false);
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
-    isConnectionStarted.current = true;
-  }, [ openModal, source ]);
+  }, [ subscribeModal ]);
 
-  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    if (!isReconnected && isConnectionStarted.current) {
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
-      mixpanel.userProfile.setOnce({
-        'With Connected Wallet': true,
-      });
-      onConnect?.();
+  const connect = React.useCallback(async() => {
+    setIsOpening(true);
+    const runtime = await ensureLoaded();
+    subscribeModal(runtime);
+    await runtime.openModal();
+    setIsOpening(false);
+    // Record a started connection only when the modal could actually open. A failed chunk load resolves to
+    // the disabled runtime whose `openModal` is a no-op — there is nothing for the user to complete, and no
+    // later bridge connect to attribute to this click.
+    if (runtime.isReady) {
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      isConnectionStarted.current = true;
     }
-    isConnectionStarted.current = false;
-  }, [ source, onConnect ]);
+  }, [ source, subscribeModal ]);
 
-  const handleDisconnect = React.useCallback(() => {
-    disconnect();
-  }, [ disconnect ]);
+  const disconnect = React.useCallback(async() => {
+    const runtime = await ensureLoaded();
+    await runtime.disconnect();
+  }, []);
 
-  useAccountEffect({ onConnect: handleAccountConnected });
-
-  const account = useAccount();
-  const address = account.address;
-  const isConnected = isClientLoaded && !account.isDisconnected && account.address !== undefined;
+  // matches the old `isConnected = !isDisconnected && address !== undefined` (see wagmi getAccount);
+  // `reconnecting` (which also covers the optimistic window) keeps the address visible in the reconnecting
+  // style — no "Connect" flash for a returning user.
+  const isConnected = status !== 'disconnected' && status !== 'connecting' && Boolean(address);
+  const isReconnecting = status === 'reconnecting';
 
   return React.useMemo(() => ({
-    connect: handleConnect,
-    disconnect: handleDisconnect,
-    isOpen: isOpening || isOpen,
+    connect,
+    disconnect,
+    isOpen: isOpening || isModalOpen,
     isConnected,
-    isReconnecting: account.isReconnecting,
+    isReconnecting,
     address,
     openModal,
-  }), [ handleConnect, handleDisconnect, isOpening, isOpen, isConnected, account.isReconnecting, address, openModal ]);
+  }), [ connect, disconnect, isOpening, isModalOpen, isConnected, isReconnecting, address, openModal ]);
 }
 
 export default getFeaturePayload(config.features.connectWallet)?.connectorType === 'reown' ? useWalletReown : useWalletFallback;

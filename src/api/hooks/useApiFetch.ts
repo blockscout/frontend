@@ -1,19 +1,16 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { omit, pickBy } from 'es-toolkit';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { CsrfData } from 'src/features/account/types/client';
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
-import * as cookies from 'src/shared/storage/cookies';
-
 import type { ResourceName, ResourcePathParams } from '../resources';
+import buildHeaders from '../utils/build-headers';
 import buildUrl from '../utils/build-url';
 import getResourceParams from '../utils/get-resource-params';
-import isBodyAllowed from '../utils/is-body-allowed';
-import isNeedProxy from '../utils/is-need-proxy';
 import { getResourceKey } from './useApiQuery';
 import type { Params as FetchParams } from './useFetch';
 import useFetch from './useFetch';
@@ -36,28 +33,14 @@ export default function useApiFetch() {
     resourceName: R,
     { pathParams, queryParams, fetchParams, logError, chain }: Params<R> = {},
   ) => {
-    const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
-    const rewardsApiToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-    const apiTempToken = cookies.get(cookies.NAMES.API_TEMP_TOKEN);
-    const showScamTokens = cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS) === 'true';
-
-    const { api, apiName, resource } = getResourceParams(resourceName, chain);
+    const { resource } = getResourceParams(resourceName, chain);
     const url = buildUrl(resourceName, pathParams, queryParams, undefined, chain);
-    const withBody = isBodyAllowed(fetchParams?.method);
-    const headers = pickBy({
-      'x-endpoint': isNeedProxy() ? api.endpoint : undefined,
-      Authorization: [ 'admin', 'contractInfo' ].includes(apiName) ? apiToken : undefined,
-      'x-csrf-token': [ 'core', 'admin', 'contractInfo' ].includes(apiName) && withBody && csrfToken ? csrfToken : undefined,
-      ...(apiName === 'core' ? {
-        'api-v2-temp-token': apiTempToken,
-        'show-scam-tokens': showScamTokens ? 'true' : undefined,
-      } : {}),
-      ...(apiName === 'rewards' && rewardsApiToken ? {
-        Authorization: `Bearer ${ rewardsApiToken }`,
-      } : {}),
-      ...resource.headers,
-      ...fetchParams?.headers,
-    }, Boolean) as HeadersInit;
+    const headers = buildHeaders(resourceName, {
+      chain,
+      csrfToken,
+      method: fetchParams?.method,
+      extraHeaders: fetchParams?.headers,
+    });
 
     return fetch<SuccessType, ErrorType>(
       url,

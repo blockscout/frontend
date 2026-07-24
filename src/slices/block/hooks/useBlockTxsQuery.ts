@@ -14,7 +14,7 @@ import { toAddressModel } from 'src/slices/address/utils/model';
 import { GET_BLOCK_WITH_TRANSACTIONS } from 'src/slices/block/stubs/rpc';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
 import dayjs from 'src/shared/date-and-time/dayjs';
@@ -68,6 +68,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
   const rpcQuery = useQuery<RpcResponseType, unknown, operations['BlockController.transactions']['json'] | null>({
     queryKey: [ 'RPC', 'block_txs', { heightOrHash } ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
@@ -137,13 +138,13 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
       };
     },
     placeholderData: GET_BLOCK_WITH_TRANSACTIONS,
-    enabled: publicClient !== undefined && tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
+    enabled: isPublicClientAvailable && tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
     retry: false,
     refetchOnMount: false,
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData || !publicClient) {
+    if (apiQuery.isPlaceholderData || !isPublicClientAvailable) {
       return;
     }
 
@@ -163,7 +164,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
   const isRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data && publicClient);
+  ) && rpcQuery.data && isPublicClientAvailable);
 
   const rpcQueryWithPages: QueryWithPagesResult<'core:block_txs'> = {
     ...rpcQuery as UseQueryResult<operations['BlockController.transactions']['json'], ResourceError>,

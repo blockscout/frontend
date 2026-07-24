@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
 import { parentChain } from 'src/features/connect-wallet/utils/chains';
 import OptimisticL2ClaimModal from 'src/features/rollup/optimism/components/OptimisticL2ClaimModal';
 
@@ -44,12 +45,17 @@ const OptimisticL2ClaimButton = ({ data, from, onSuccess, source }: Props) => {
     return (
       <>
         { modal.open && (
-          <OptimisticL2ClaimModal
-            data={ data }
-            onOpenChange={ modal.onOpenChange }
-            proofSubmitterAddress={ from?.hash }
-            onSuccess={ onSuccess }
-          />
+          // The modal reads the wallet via wagmi hooks; the island loads the runtime lazily and provides
+          // the config. It only mounts on user intent (Claim clicked), by which point the runtime is
+          // typically already loaded, so no fallback is needed before the dialog appears.
+          <Web3Boundary>
+            <OptimisticL2ClaimModal
+              data={ data }
+              onOpenChange={ modal.onOpenChange }
+              proofSubmitterAddress={ from?.hash }
+              onSuccess={ onSuccess }
+            />
+          </Web3Boundary>
         ) }
         <Button variant="outline" size="sm" onClick={ modal.onOpen }>Claim</Button>
       </>
