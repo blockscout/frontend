@@ -81,7 +81,7 @@ const Transactions = () => {
   return (
     <>
       <HStack mb={ 3 }>
-        <Heading level="3" >Transactions</Heading>
+        <Heading level="3" >Latest transactions</Heading>
         { isRpcData && <ApiDegradationRpcIcon/> }
       </HStack>
       <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
