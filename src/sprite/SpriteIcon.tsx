@@ -5,11 +5,7 @@ import { chakra } from '@chakra-ui/react';
 import { type IconName } from 'public/icons/name';
 import React from 'react';
 
-import config from 'src/config';
-
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-
-export const href = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteHash }.svg` : '/icons/sprite.svg';
 
 export { IconName };
 
@@ -23,7 +19,9 @@ const SpriteIcon = React.forwardRef(
     return (
       <Skeleton loading={ isLoading } display="inline-block" flexShrink={ 0 } asChild { ...props } ref={ ref }>
         <chakra.svg w="100%" h="100%">
-          <use href={ `${ href }#${ name }` }/>
+          { /* the sprite is injected into the document by SpriteInjector, so the reference is same-document — */ }
+          { /* external references re-resolve asynchronously on every remount in WebKit and flicker */ }
+          <use href={ `#${ name }` }/>
         </chakra.svg>
       </Skeleton>
     );

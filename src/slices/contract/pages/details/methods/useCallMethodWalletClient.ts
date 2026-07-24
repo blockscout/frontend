@@ -12,7 +12,7 @@ import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
 import config from 'src/config';
 
-import { getNativeCoinValue } from './utils';
+import { estimateTransactionGas, getNativeCoinValue, withGasEstimateBuffer } from './utils';
 
 const feature = config.features.connectWallet;
 
@@ -32,7 +32,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
   const { writeContractAsync } = useWriteContract();
   const { sendTransactionAsync } = useSendTransaction();
-
   const { type: walletType } = useWallet({ source: 'Smart contracts' });
 
   return React.useCallback(async({ args, item, addressHash }) => {
@@ -52,15 +51,17 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const _args = args.slice(0, inputs.length);
     const value = getNativeCoinValue(args[inputs.length]);
 
+    // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
+    // so we do it manually here (with a buffer to avoid OOG between estimate and inclusion)
+    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
+      withGasEstimateBuffer(
+        await estimateTransactionGas({ account, to: address, value, abiItem: item, args: _args, chainId: targetChainId }),
+      ) : undefined;
+
     if (item.type === 'receive' || item.type === 'fallback') {
       // if the fallback method acts as a read method, it can only have one input of type bytes
       // so we pass the input value as data without encoding it
       const data = typeof _args[0] === 'string' && _args[0].startsWith('0x') ? _args[0] as `0x${ string }` : undefined;
-
-      // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
-      // so we pass 0 as gas here
-      const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
-        BigInt(0) : undefined;
 
       const hash = await sendTransactionAsync({
         to: address,
@@ -82,11 +83,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
-
-    // seems like Dynamic WaaS (assigned when user signed up with email) does not estimate gas for transactions
-    // so we pass 0 as gas here
-    const estimatedGas = feature.isEnabled && feature.connectorType === 'dynamic' && walletType === 'dynamicwaas' ?
-      BigInt(0) : undefined;
 
     const hash = await writeContractAsync({
       args: _args,

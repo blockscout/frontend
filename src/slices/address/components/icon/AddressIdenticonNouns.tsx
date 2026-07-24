@@ -37,13 +37,43 @@ export const getNumberFromString = (input: string): number => {
   return sum * str.length;
 };
 
-const AddressIdenticonNouns: React.FC<Props> = ({ hash, size }) => {
+// Generating the icon runs 5 crypto hashes and builds an SVG, which adds up when a table
+// mounts ~100 identicons at once (and the same address often repeats many times on a page),
+// so we cache the result by address; the SVG does not depend on the rendered size.
+// The number of distinct addresses viewed in an SPA session is unbounded, so the cache is
+// capped with LRU eviction — list pages re-render their rows (socket updates), which keeps
+// the current page's addresses fresh while old pages' entries age out.
+const CACHE_MAX_SIZE = 500;
+const svgDataCache = new Map<string, string>();
+
+const getSvgData = (hash: string): string => {
+  const cached = svgDataCache.get(hash);
+  if (cached !== undefined) {
+    // re-insert to mark the entry as recently used (Map preserves insertion order)
+    svgDataCache.delete(hash);
+    svgDataCache.set(hash, cached);
+    return cached;
+  }
+
   const id = getNumberFromString(hash);
   const seed = getNounSeedFromBlockHash(id, MAGIC_HASH);
 
   const { parts, background } = getNounData(seed);
   const svg = buildSVG(parts, palette, background);
   const svgData = btoa(svg);
+
+  if (svgDataCache.size >= CACHE_MAX_SIZE) {
+    const leastRecentlyUsedKey = svgDataCache.keys().next().value;
+    if (leastRecentlyUsedKey !== undefined) {
+      svgDataCache.delete(leastRecentlyUsedKey);
+    }
+  }
+  svgDataCache.set(hash, svgData);
+  return svgData;
+};
+
+const AddressIdenticonNouns: React.FC<Props> = ({ hash, size }) => {
+  const svgData = getSvgData(hash);
   if (!svgData) {
     return null;
   }

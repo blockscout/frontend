@@ -9,6 +9,28 @@ alwaysApply: false
 
 Unit tests cover logic that is independent of visual presentation: utility functions, custom hooks, and component behavior (state transitions, conditional rendering, event handling). If a change has no visual output to verify, prefer a Vitest test over a Playwright one — it is faster and cheaper.
 
+## What to test (and what not)
+
+More tests are not better. A test earns its place by pinning behavior that could plausibly break; a test
+that restates the implementation or the framework only adds maintenance cost and false confidence.
+
+**Worth testing:**
+- Branching and conditional logic — the non-obvious paths through a function.
+- State transitions, event handling, and the loading / empty / error / success states of a component.
+- Parsing, formatting, calculation, and data-shaping logic — especially edge cases (empty, zero, null,
+  boundary values, malformed input).
+- Regressions — a test that reproduces a fixed bug so it stays fixed.
+
+**Not worth testing:**
+- Framework or library behavior (that a Chakra prop renders, that `react-query` caches) — trust the deps.
+- Trivial pass-throughs: a getter that returns a field, a component that only forwards props with no logic.
+- Types — `tsc` already proves them; don't add a runtime test to check a type.
+- Tests whose assertions only echo the mock you set up, exercising no real code of your own.
+- Snapshotting large trees "for coverage" — a snapshot must capture something a human decision depends on.
+
+When in doubt, ask: *if I delete this test, what real defect could now ship unnoticed?* If the honest
+answer is "none", don't write it.
+
 ## File naming and location
 
 Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. Run all tests:
