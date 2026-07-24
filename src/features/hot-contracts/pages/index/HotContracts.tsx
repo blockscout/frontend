@@ -12,7 +12,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import HotContractsIntervalSelect from 'src/features/hot-contracts/pages/index/HotContractsIntervalSelect';
-import HotContractsListItem from 'src/features/hot-contracts/pages/index/HotContractsListItem';
+import HotContractsList from 'src/features/hot-contracts/pages/index/HotContractsList';
 import HotContractsTable from 'src/features/hot-contracts/pages/index/HotContractsTable';
 import { HOT_CONTRACTS } from 'src/features/hot-contracts/stubs';
 import { getIntervalValueFromQuery, SORT_OPTIONS } from 'src/features/hot-contracts/utils';
@@ -36,7 +36,7 @@ const HotContracts = () => {
   const [ sort, setSort ] =
       React.useState<HotContractsSortingValue>(getSortValueFromQuery<HotContractsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
 
-  const { data, isError, isPlaceholderData, pagination, onSortingChange, onFilterChange } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, onSortingChange, onFilterChange, queryHash } = useQueryWithPages({
     resourceName: 'core:stats_hot_contracts',
     filters: { scale: interval },
     sorting: getSortParamsFromValue<HotContractsSortingValue, HotContractsSortingField, HotContractsSorting['order']>(sort),
@@ -62,29 +62,28 @@ const HotContracts = () => {
     onFilterChange({ scale: newInterval });
   }, [ onFilterChange ]);
 
-  const content = (
+  const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data?.items.map((item, index) => (
-          <HotContractsListItem
-            key={ item.contract_address.hash + (isPlaceholderData ? index : '') }
-            isLoading={ isLoading }
-            data={ item }
-            exchangeRate={ statsQuery.data?.coin_price ?? null }
-          />
-        )) }
+        <HotContractsList
+          items={ data.items }
+          isLoading={ isLoading }
+          exchangeRate={ statsQuery.data?.coin_price ?? null }
+          resetKey={ queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <HotContractsTable
-          items={ data?.items }
+          items={ data.items }
           isLoading={ isLoading }
           sort={ sort }
           setSorting={ handleSortChange }
           exchangeRate={ statsQuery.data?.coin_price ?? null }
+          resetKey={ queryHash }
         />
       </Box>
     </>
-  );
+  ) : null;
 
   const actionBar = (
     <ActionBar mt={ -6 }>

@@ -51,8 +51,8 @@ const TxFHEOperations = ({ txQuery }: Props) => {
         isLoading={ isPlaceholderData }
       />
       <Box>
-        <TxFHEOperationsTable data={ data.items } isLoading={ isPlaceholderData }/>
-        <TxFHEOperationsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <TxFHEOperationsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ hash }/>
+        <TxFHEOperationsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ hash }/>
       </Box>
     </>
   ) : null;

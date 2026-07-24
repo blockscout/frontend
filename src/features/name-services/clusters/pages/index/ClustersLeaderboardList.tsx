@@ -3,27 +3,27 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { schemas } from '@blockscout/api-types';
+import type { ClustersLeaderboardObject } from 'src/features/name-services/clusters/types/api';
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
-import TxAuthorizationsListItem from './TxAuthorizationsListItem';
+import ClustersLeaderboardListItem from './ClustersLeaderboardListItem';
 
 interface Props {
-  data: Array<schemas['SignedAuthorization']>;
+  data: Array<ClustersLeaderboardObject>;
   isLoading?: boolean;
   resetKey?: string;
 }
 
-const TxAuthorizationsList = ({ data, isLoading, resetKey }: Props) => {
+const ClustersLeaderboardList = ({ data, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
     <Box>
       { data.slice(0, renderedItemsNum).map((item, index) => (
-        <TxAuthorizationsListItem
-          key={ item.nonce.toString() + (isLoading ? index : '') }
-          data={ item }
+        <ClustersLeaderboardListItem
+          key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
+          item={ item }
           isLoading={ isLoading }
         />
       )) }
@@ -32,4 +32,4 @@ const TxAuthorizationsList = ({ data, isLoading, resetKey }: Props) => {
   );
 };
 
-export default TxAuthorizationsList;
+export default React.memo(ClustersLeaderboardList);
