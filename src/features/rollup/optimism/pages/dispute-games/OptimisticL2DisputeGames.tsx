@@ -17,11 +17,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import OptimisticL2DisputeGamesListItem from './OptimisticL2DisputeGamesListItem';
+import OptimisticL2DisputeGamesList from './OptimisticL2DisputeGamesList';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';
 
 const OptimisticL2DisputeGames = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_dispute_games',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_dispute_games'>(
@@ -46,16 +46,15 @@ const OptimisticL2DisputeGames = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <OptimisticL2DisputeGamesListItem
-            key={ item.index + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <OptimisticL2DisputeGamesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <OptimisticL2DisputeGamesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2DisputeGamesTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

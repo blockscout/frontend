@@ -19,11 +19,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import ScrollL2WithdrawalsListItem from './ScrollL2WithdrawalsListItem';
+import ScrollL2WithdrawalsList from './ScrollL2WithdrawalsList';
 import ScrollL2WithdrawalsTable from './ScrollL2WithdrawalsTable';
 
 const ScrollL2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:scroll_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_withdrawals'>(
@@ -43,16 +43,15 @@ const ScrollL2Withdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <ScrollL2WithdrawalsListItem
-            key={ String(item.id) + (isPlaceholderData ? index : '') }
-            isLoading={ isPlaceholderData }
-            item={ item }
-          />
-        ))) }
+        <ScrollL2WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ScrollL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <ScrollL2WithdrawalsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -9,7 +9,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
-import OptimisticDepositsListItem from 'src/features/rollup/optimism/pages/deposits/OptimisticDepositsListItem';
+import OptimisticDepositsList from 'src/features/rollup/optimism/pages/deposits/OptimisticDepositsList';
 import OptimisticDepositsTable from 'src/features/rollup/optimism/pages/deposits/OptimisticDepositsTable';
 import { L2_DEPOSIT_ITEM } from 'src/features/rollup/optimism/stubs';
 
@@ -22,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Deposits = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_deposits',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_deposits'>(
@@ -48,16 +48,15 @@ const OptimisticL2Deposits = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <OptimisticDepositsListItem
-            key={ `${ (item.l2_transaction_hash ?? '') + (isPlaceholderData ? index : '') }` }
-            isLoading={ isPlaceholderData }
-            item={ item }
-          />
-        ))) }
+        <OptimisticDepositsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticDepositsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -16,11 +16,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from '../../stubs';
-import ArbitrumL2TxnBatchesListItem from './ArbitrumL2TxnBatchesListItem';
+import ArbitrumL2TxnBatchesList from './ArbitrumL2TxnBatchesList';
 import ArbitrumL2TxnBatchesTable from './ArbitrumL2TxnBatchesTable';
 
 const ArbitrumL2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:arbitrum_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:arbitrum_l2_txn_batches'>(
@@ -45,16 +45,15 @@ const ArbitrumL2TxnBatches = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <ArbitrumL2TxnBatchesListItem
-            key={ item.number + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <ArbitrumL2TxnBatchesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ArbitrumL2TxnBatchesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <ArbitrumL2TxnBatchesTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

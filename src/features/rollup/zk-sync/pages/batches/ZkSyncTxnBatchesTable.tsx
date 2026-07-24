@@ -5,6 +5,7 @@ import React from 'react';
 import type { ZkSyncBatchesItem } from 'src/features/rollup/zk-sync/types/api';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -14,9 +15,12 @@ type Props = {
   items: Array<ZkSyncBatchesItem>;
   top: number;
   isLoading?: boolean;
+  resetKey?: string;
 };
 
-const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
+const ZkSyncTxnBatchesTable = ({ items, top, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <TableRoot minW="1000px">
       <TableHeaderSticky top={ top }>
@@ -33,13 +37,14 @@ const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.map((item, index) => (
+        { items.slice(0, renderedItemsNum).map((item, index) => (
           <ZkSyncTxnBatchesTableItem
             key={ item.number + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
           />
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );
