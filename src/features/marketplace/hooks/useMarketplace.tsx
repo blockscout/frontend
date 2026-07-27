@@ -42,7 +42,7 @@ export default function useMarketplace() {
   }, []);
 
   const {
-    isPlaceholderData, isError, error, data, displayedApps, setSorting, refetch,
+    isPlaceholderData, isError, error, data, displayedApps, sorting, setSorting, refetch,
   } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
   const {
     isPlaceholderData: isCategoriesPlaceholderData, data: categories,
@@ -117,6 +117,7 @@ export default function useMarketplace() {
     showDisclaimer,
     appsTotal: data?.length || 0,
     isCategoriesPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   }), [
@@ -136,6 +137,7 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     isCategoriesPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   ]);

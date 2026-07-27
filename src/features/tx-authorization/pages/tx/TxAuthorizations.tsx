@@ -25,10 +25,18 @@ const TxAuthorizations = ({ txQuery }: Props) => {
   const content = txQuery.data?.authorization_list ? (
     <>
       <Box hideFrom="lg">
-        <TxAuthorizationsList data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
+        <TxAuthorizationsList
+          data={ txQuery.data.authorization_list }
+          isLoading={ txQuery.isPlaceholderData }
+          resetKey={ txQuery.data.hash }
+        />
       </Box>
       <Box hideBelow="lg">
-        <TxAuthorizationsTable data={ txQuery.data?.authorization_list } isLoading={ txQuery.isPlaceholderData }/>
+        <TxAuthorizationsTable
+          data={ txQuery.data.authorization_list }
+          isLoading={ txQuery.isPlaceholderData }
+          resetKey={ txQuery.data.hash }
+        />
       </Box>
     </>
   ) : null;

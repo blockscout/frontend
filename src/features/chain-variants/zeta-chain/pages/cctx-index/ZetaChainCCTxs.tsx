@@ -18,10 +18,9 @@ import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
-import useInitialList from 'src/shared/lists/useInitialList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import ZetaChainCCTxsListItem from './ZetaChainCCTXListItem';
+import ZetaChainCCTxsList from './ZetaChainCCTxsList';
 import ZetaChainCCTxsTable from './ZetaChainCCTxsTable';
 
 const OVERLOAD_COUNT = 75;
@@ -36,6 +35,7 @@ type Props = {
   onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
   showStatusFilter?: boolean;
   type: 'pending' | 'mined';
+  resetKey?: string;
 };
 
 const ZetaChainCCTxs = ({
@@ -48,17 +48,12 @@ const ZetaChainCCTxs = ({
   onFilterChange,
   showStatusFilter = true,
   type,
+  resetKey,
 }: Props) => {
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
   const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
   const [ showOverloadNotice, setShowOverloadNotice ] = React.useState(false);
-
-  const initialList = useInitialList({
-    data: items ?? [],
-    idFn: (item) => item.index,
-    enabled: !isPlaceholderData,
-  });
 
   // Socket handling for new CCTX messages
   const handleNewCCTXMessage: SocketMessage.NewZetaChainCCTXs['handler'] = React.useCallback((payload) => {
@@ -150,14 +145,11 @@ const ZetaChainCCTxs = ({
             num={ showOverloadNotice ? 1 : 0 }
           />
         ) }
-        { (items || []).map((item, index) => (
-          <ZetaChainCCTxsListItem
-            key={ item.index + (isPlaceholderData ? index : '') }
-            tx={ item }
-            isLoading={ isPlaceholderData }
-            animation={ initialList.getAnimationProp(item) }
-          />
-        )) }
+        <ZetaChainCCTxsList
+          txs={ items ?? [] }
+          isLoading={ isPlaceholderData }
+          resetKey={ resetKey }
+        />
       </Box>
       <Box hideBelow="lg">
         <ZetaChainCCTxsTable
@@ -171,6 +163,7 @@ const ZetaChainCCTxs = ({
           showSocketInfo={ pagination.page === 1 && !hasFilters }
           showSocketErrorAlert={ showSocketErrorAlert }
           socketInfoNum={ showOverloadNotice ? 1 : 0 }
+          resetKey={ resetKey }
         />
       </Box>
     </>

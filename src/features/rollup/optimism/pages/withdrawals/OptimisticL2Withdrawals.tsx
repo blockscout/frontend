@@ -9,7 +9,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
-import OptimisticL2WithdrawalsListItem from 'src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsListItem';
+import OptimisticL2WithdrawalsList from 'src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsList';
 import OptimisticL2WithdrawalsTable from 'src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTable';
 import { L2_WITHDRAWAL_ITEM } from 'src/features/rollup/optimism/stubs';
 
@@ -22,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_withdrawals'>(
@@ -47,16 +47,15 @@ const OptimisticL2Withdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <OptimisticL2WithdrawalsListItem
-            key={ String(item.msg_nonce_version) + item.msg_nonce + (isPlaceholderData ? index : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <OptimisticL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2WithdrawalsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

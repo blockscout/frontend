@@ -31,13 +31,12 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import * as regexp from 'src/toolkit/utils/regexp';
 
-import SearchResultListItem from './SearchResultListItem';
 import SearchResultsInput from './SearchResultsInput';
-import SearchResultTableItem from './SearchResultTableItem';
+import SearchResultsList from './SearchResultsList';
+import SearchResultsTable from './SearchResultsTable';
 
 const nameServicesFeature = config.features.nameServices;
 
@@ -192,38 +191,23 @@ const SearchResultsPageContent = () => {
     return (
       <>
         <Box hideFrom="lg">
-          { displayedItems.map((item, index) => (
-            <SearchResultListItem
-              key={ (isLoading ? 'placeholder_' : 'actual_') + index }
-              data={ item }
-              searchTerm={ debouncedSearchTerm }
-              isLoading={ isLoading }
-              addressFormat={ settingsContext?.addressFormat }
-            />
-          )) }
+          <SearchResultsList
+            items={ displayedItems }
+            searchTerm={ debouncedSearchTerm }
+            isLoading={ isLoading }
+            addressFormat={ settingsContext?.addressFormat }
+            resetKey={ `${ query.queryHash }:${ debouncedSearchTerm }` }
+          />
         </Box>
         <Box hideBelow="lg">
-          <TableRoot fontWeight={ 500 }>
-            <TableHeaderSticky top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
-              <TableRow>
-                <TableColumnHeader width="30%">Search result</TableColumnHeader>
-                <TableColumnHeader width="35%"/>
-                <TableColumnHeader width="35%" pr={ 10 }/>
-                <TableColumnHeader width="150px">Category</TableColumnHeader>
-              </TableRow>
-            </TableHeaderSticky>
-            <TableBody>
-              { displayedItems.map((item, index) => (
-                <SearchResultTableItem
-                  key={ (isLoading ? 'placeholder_' : 'actual_') + index }
-                  data={ item }
-                  searchTerm={ debouncedSearchTerm }
-                  isLoading={ isLoading }
-                  addressFormat={ settingsContext?.addressFormat }
-                />
-              )) }
-            </TableBody>
-          </TableRoot>
+          <SearchResultsTable
+            items={ displayedItems }
+            searchTerm={ debouncedSearchTerm }
+            isLoading={ isLoading }
+            addressFormat={ settingsContext?.addressFormat }
+            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+            resetKey={ `${ query.queryHash }:${ debouncedSearchTerm }` }
+          />
         </Box>
       </>
     );

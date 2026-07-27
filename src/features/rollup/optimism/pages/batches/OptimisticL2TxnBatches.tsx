@@ -8,7 +8,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import OptimisticL2TxnBatchesListItem from 'src/features/rollup/optimism/pages/batches/OptimisticL2TxnBatchesListItem';
+import OptimisticL2TxnBatchesList from 'src/features/rollup/optimism/pages/batches/OptimisticL2TxnBatchesList';
 import OptimisticL2TxnBatchesTable from 'src/features/rollup/optimism/pages/batches/OptimisticL2TxnBatchesTable';
 import { L2_TXN_BATCHES_ITEM } from 'src/features/rollup/optimism/stubs';
 
@@ -20,7 +20,7 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const OptimisticL2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_txn_batches'>(
@@ -45,16 +45,15 @@ const OptimisticL2TxnBatches = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <OptimisticL2TxnBatchesListItem
-            key={ item.number + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <OptimisticL2TxnBatchesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <OptimisticL2TxnBatchesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2TxnBatchesTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -17,11 +17,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import ScrollL2TxnBatchesListItem from './ScrollL2TxnBatchesListItem';
+import ScrollL2TxnBatchesList from './ScrollL2TxnBatchesList';
 import ScrollL2TxnBatchesTable from './ScrollL2TxnBatchesTable';
 
 const ScrollL2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:scroll_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_txn_batches'>(
@@ -46,16 +46,15 @@ const ScrollL2TxnBatches = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <ScrollL2TxnBatchesListItem
-            key={ item.number + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <ScrollL2TxnBatchesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ScrollL2TxnBatchesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <ScrollL2TxnBatchesTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -83,6 +83,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
           token={ token }
           instance={ tokenInstance }
           isLoading={ isLoading }
+          resetKey={ transfersQuery.queryHash }
         />
       </Box>
       <Box display={{ base: 'block', lg: 'none' }}>
@@ -94,7 +95,13 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
             isLoading={ isLoading }
           />
         ) }
-        <TokenTransferList data={ transfersQuery.data?.items } tokenId={ tokenId } instance={ tokenInstance } isLoading={ isLoading }/>
+        <TokenTransferList
+          data={ transfersQuery.data?.items }
+          tokenId={ tokenId }
+          instance={ tokenInstance }
+          isLoading={ isLoading }
+          resetKey={ transfersQuery.queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -9,6 +9,7 @@ import type { ChainMetricsSortingField, ChainMetricsSortingValue } from 'src/fea
 import multichainConfig from 'src/features/multichain/chains-config';
 import { MultichainProvider } from 'src/features/multichain/context';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -21,9 +22,11 @@ interface Props {
   sort: ChainMetricsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const MultichainEcosystemsTable = ({ data, isLoading, sort, setSorting }: Props) => {
+const MultichainEcosystemsTable = ({ data, isLoading, sort, setSorting, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const chains = multichainConfig()?.chains;
 
@@ -55,7 +58,7 @@ const MultichainEcosystemsTable = ({ data, isLoading, sort, setSorting }: Props)
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => (
+        { data.slice(0, renderedItemsNum).map((item, index) => (
           <MultichainProvider key={ item.chain_id + (isLoading ? `_${ index }` : '') } chainId={ item.chain_id }>
             <MultichainEcosystemsTableItem
               data={ item }
@@ -64,6 +67,7 @@ const MultichainEcosystemsTable = ({ data, isLoading, sort, setSorting }: Props)
             />
           </MultichainProvider>
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

@@ -9,6 +9,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -16,13 +17,16 @@ import NameDomainsTableItem from './NameDomainsTableItem';
 import type { SortField, Sort } from './utils';
 
 interface Props {
-  data: bens.LookupDomainNameResponse | undefined;
+  items: Array<bens.Domain>;
   isLoading?: boolean;
   sort: Sort;
   onSortToggle: (field: SortField) => void;
+  resetKey?: string;
 }
 
-const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
+const NameDomainsTable = ({ items, isLoading, sort, onSortToggle, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot>
@@ -47,7 +51,10 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { data?.items.map((item, index) => <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>) }
+          { items.slice(0, renderedItemsNum).map((item, index) => (
+            <NameDomainsTableItem key={ item.id + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+          )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

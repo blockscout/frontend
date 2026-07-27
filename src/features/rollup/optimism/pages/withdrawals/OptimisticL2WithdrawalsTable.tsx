@@ -9,6 +9,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -18,9 +19,12 @@ type Props = {
   items: Array<schemas['OptimismWithdrawal']>;
   top: number;
   isLoading?: boolean;
+  resetKey?: string;
 };
 
-const OptimisticL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
+const OptimisticL2WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot tableLayout="auto" minW="950px">
@@ -39,13 +43,14 @@ const OptimisticL2WithdrawalsTable = ({ items, top, isLoading }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { items.map((item, index) => (
+          { items.slice(0, renderedItemsNum).map((item, index) => (
             <OptimisticL2WithdrawalsTableItem
               key={ String(item.msg_nonce_version) + item.msg_nonce + (isLoading ? index : '') }
               item={ item }
               isLoading={ isLoading }
             />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

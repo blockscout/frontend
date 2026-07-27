@@ -19,10 +19,10 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
-import AddressAccountHistoryTableItem from './AddressAccountHistoryTableItem';
+import AddressAccountHistoryTable from './AddressAccountHistoryTable';
 
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
 
@@ -39,7 +39,7 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
 
   const [ filterValue, setFilterValue ] = React.useState<NovesHistoryFilterValue>(getFilterValue(router.query.filter));
 
-  const { data, isError, pagination, isPlaceholderData } = useQueryWithPages({
+  const { data, isError, pagination, isPlaceholderData, queryHash } = useQueryWithPages({
     resourceName: 'core:noves_address_history',
     pathParams: { address: currentAddress },
     options: {
@@ -73,35 +73,16 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
 
   const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
 
-  const content = (
+  const content = filteredData ? (
     <TableContainerScrollable>
-      <TableRoot minW="900px">
-        <TableHeaderSticky top={ 75 }>
-          <TableRow>
-            <TableColumnHeader width="120px">
-              Age
-            </TableColumnHeader>
-            <TableColumnHeader>
-              Action
-            </TableColumnHeader>
-            <TableColumnHeader width="320px">
-              From/To
-            </TableColumnHeader>
-          </TableRow>
-        </TableHeaderSticky>
-        <TableBody maxWidth="full">
-          { filteredData?.map((item, i) => (
-            <AddressAccountHistoryTableItem
-              key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
-              tx={ item }
-              currentAddress={ currentAddress }
-              isPlaceholderData={ isPlaceholderData }
-            />
-          )) }
-        </TableBody>
-      </TableRoot>
+      <AddressAccountHistoryTable
+        items={ filteredData }
+        currentAddress={ currentAddress }
+        isPlaceholderData={ isPlaceholderData }
+        resetKey={ `${ queryHash }:${ filterValue ?? '' }` }
+      />
     </TableContainerScrollable>
-  );
+  ) : null;
 
   return (
     <DataList

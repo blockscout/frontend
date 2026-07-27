@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
+import { hashKey, useQueryClient } from '@tanstack/react-query';
 import { clamp, omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import type { Route } from 'nextjs-routes';
@@ -11,7 +11,7 @@ import { animateScroll } from 'react-scroll';
 import type { PaginationParams } from './types';
 
 import type { Params as UseApiQueryParams } from 'src/api/hooks/useApiQuery';
-import useApiQuery from 'src/api/hooks/useApiQuery';
+import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'src/api/resources';
 import { SORTING_FIELDS } from 'src/api/resources';
 import getResourceParams from 'src/api/utils/get-resource-params';
@@ -70,6 +70,7 @@ UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   pagination: PaginationParams;
   chainValue: Array<string> | undefined;
   onChainValueChange: ({ value }: { value: Array<string> }) => void;
+  queryHash: string;
 };
 
 export default function useQueryWithPages<Resource extends PaginatedResourceName>({
@@ -117,6 +118,18 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
 
   const isMounted = React.useRef(false);
   const queryParams = { ...pageParams[page], ...filters, ...sorting, ...queryParamsFromProps };
+  const resolvedQueryParams = Object.keys(queryParams).length ? queryParams : undefined;
+
+  // Stable hash of the query identity (resource + path/query params + chain), mirroring the key
+  // useApiQuery builds below. Exposed as `queryHash` so list components can use it as the
+  // `resetKey` for useLazyRenderedList: it changes on filter/pagination/chain changes but is
+  // stable across in-place cache updates (socket prepends via setQueryData), which is exactly
+  // when the render window should / shouldn't reset.
+  const queryHash = hashKey(getResourceKey(resourceName, {
+    pathParams,
+    queryParams: resolvedQueryParams,
+    chainId: (selectedChain || multichainContext?.chain)?.id,
+  }));
 
   const scrollToTop = useCallback(() => {
     if (noScroll) {
@@ -127,7 +140,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
-    queryParams: Object.keys(queryParams).length ? queryParams : undefined,
+    queryParams: resolvedQueryParams,
     queryOptions: {
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
@@ -324,5 +337,5 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     setHasPages(pageFromQuery > 1);
   }, [ router.query, hasChainValue ]);
 
-  return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange };
+  return { ...queryResult, pagination, onFilterChange, onSortingChange, chainValue, onChainValueChange, queryHash };
 }

@@ -7,7 +7,7 @@ import React from 'react';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import PoolsListItem from 'src/features/dex-pools/pages/index/PoolsListItem';
+import PoolsList from 'src/features/dex-pools/pages/index/PoolsList';
 import PoolsTable from 'src/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'src/features/dex-pools/stubs';
 
@@ -41,27 +41,26 @@ const Pools = () => {
     setSearchTerm(value);
   }, [ poolsQuery ]);
 
-  const content = (
+  const content = poolsQuery.data?.items ? (
     <>
       <Box hideFrom="lg">
-        { poolsQuery.data?.items.map((item, index) => (
-          <PoolsListItem
-            key={ item.pool_id + (poolsQuery.isPlaceholderData ? index : '') }
-            isLoading={ poolsQuery.isPlaceholderData }
-            item={ item }
-          />
-        )) }
+        <PoolsList
+          items={ poolsQuery.data.items }
+          isLoading={ poolsQuery.isPlaceholderData }
+          resetKey={ poolsQuery.queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <PoolsTable
-          items={ poolsQuery.data?.items ?? [] }
+          items={ poolsQuery.data.items }
           top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ poolsQuery.isPlaceholderData }
           page={ poolsQuery.pagination.page }
+          resetKey={ poolsQuery.queryHash }
         />
       </Box>
     </>
-  );
+  ) : null;
 
   const filter = (
     <FilterInput

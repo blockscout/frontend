@@ -5,6 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -14,9 +15,12 @@ type Props = {
   items: Array<schemas['ScrollBatch']>;
   top: number;
   isLoading?: boolean;
+  resetKey?: string;
 };
 
-const ScrollL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
+const ScrollL2TxnBatchesTable = ({ items, top, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <TableRoot tableLayout="auto" minW="1000px">
       <TableHeaderSticky top={ top }>
@@ -37,13 +41,14 @@ const ScrollL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.map((item, index) => (
+        { items.slice(0, renderedItemsNum).map((item, index) => (
           <ScrollL2TxnBatchesTableItem
             key={ item.number + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
           />
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

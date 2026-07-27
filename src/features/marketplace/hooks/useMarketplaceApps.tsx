@@ -21,6 +21,8 @@ const feature = config.features.marketplace;
 
 const EMPTY_ARRAY: Array<string> = [];
 
+export const MARKETPLACE_APPS_PLACEHOLDER_COUNT = 20;
+
 function isAppNameMatches(q: string, app: MarketplaceDapp) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
@@ -89,7 +91,7 @@ export default function useMarketplaceApps(
       }
     },
     select: (data) => sortApps(data as Array<MarketplaceDapp>, favoriteAppsRef.current, sorting),
-    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    placeholderData: feature.isEnabled ? Array(MARKETPLACE_APPS_PLACEHOLDER_COUNT).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,
   });
@@ -112,6 +114,7 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   }), [
@@ -120,6 +123,7 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
+    sorting,
     setSorting,
     refetch,
   ]);

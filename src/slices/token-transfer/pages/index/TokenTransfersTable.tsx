@@ -8,6 +8,7 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -18,9 +19,12 @@ interface Props {
   top: number;
   isLoading?: boolean;
   chainData?: ClusterChainConfig;
+  resetKey?: string;
 }
 
-const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {
+const TokenTransferTable = ({ items, top, isLoading, chainData, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot minW="950px" tableLayout="auto">
@@ -39,7 +43,7 @@ const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { items?.map((item, index) => (
+          { items?.slice(0, renderedItemsNum).map((item, index) => (
             <TokenTransferTableItem
               key={ (item.transaction_hash ?? '') + item.log_index + (isLoading ? index : '') + (chainData ? chainData.id : '') }
               item={ item }
@@ -49,6 +53,7 @@ const TokenTransferTable = ({ items, top, isLoading, chainData }: Props) => {
           )) }
         </TableBody>
       </TableRoot>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

@@ -61,10 +61,10 @@ const MultichainInternalTxs = () => {
   const content = data?.items ? (
     <MultichainProvider chainId={ query.chainValue?.[0] }>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData }/>
+        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
     </MultichainProvider>
   ) : null;

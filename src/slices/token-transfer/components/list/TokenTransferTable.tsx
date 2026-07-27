@@ -11,6 +11,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -26,6 +27,7 @@ interface Props {
   showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
 const TokenTransferTable = ({
@@ -38,9 +40,16 @@ const TokenTransferTable = ({
   showSocketErrorAlert,
   socketInfoNum,
   isLoading,
+  resetKey,
 }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: data,
+    isEnabled: !isLoading,
+    resetKey,
+  });
 
   return (
     <AddressHighlightProvider>
@@ -70,7 +79,7 @@ const TokenTransferTable = ({
               isLoading={ isLoading }
             />
           ) }
-          { data.map((item, index) => (
+          { data.slice(0, renderedItemsNum).map((item, index) => (
             <TokenTransferTableItem
               key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
               data={ item }
@@ -83,6 +92,7 @@ const TokenTransferTable = ({
           )) }
         </TableBody>
       </TableRoot>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

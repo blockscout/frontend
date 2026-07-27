@@ -143,6 +143,7 @@ const ZetaChainCCTXsTab = () => {
           onFilterChange={ handleFilterChange }
           showStatusFilter={ true }
           type="mined"
+          resetKey={ cctxsValidatedQuery.queryHash }
         /> },
     {
       id: 'cctx_pending',
@@ -158,6 +159,7 @@ const ZetaChainCCTXsTab = () => {
           onFilterChange={ handleFilterChange }
           showStatusFilter={ false }
           type="pending"
+          resetKey={ cctxsPendingQuery.queryHash }
         />
       ),
     },

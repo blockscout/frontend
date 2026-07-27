@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import type React from 'react';
 
 import type { AllowanceType } from '../types';
@@ -13,7 +13,7 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
 import { APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING, APPROVALS_STICKY_SUMMARY_HEIGHT } from '../constants';
-import ApprovalsListItem from './ApprovalsListItem';
+import ApprovalsList from './ApprovalsList';
 import ApprovalsTable from './ApprovalsTable';
 
 type Props = {
@@ -25,6 +25,7 @@ type Props = {
   hideApproval: (approval: AllowanceType) => void;
   pagination: PaginationParams;
   actionBarRef?: React.RefObject<HTMLDivElement | null>;
+  resetKey?: string;
 };
 
 export default function Approvals({
@@ -36,6 +37,7 @@ export default function Approvals({
   hideApproval,
   pagination,
   actionBarRef,
+  resetKey,
 }: Props) {
   const stickySummaryHeight = APPROVALS_STICKY_SUMMARY_HEIGHT + (pagination.isVisible ? 0 : APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING);
   const tableHeaderTop = stickySummaryHeight + (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0);
@@ -54,18 +56,16 @@ export default function Approvals({
 
   const content = (
     <>
-      <Flex hideFrom="lg" flexDirection="column">
-        { approvals.map((approval, index) => (
-          <ApprovalsListItem
-            key={ index }
-            selectedChain={ selectedChain }
-            approval={ approval }
-            isLoading={ isLoading }
-            isAddressMatch={ isAddressMatch }
-            hideApproval={ hideApproval }
-          />
-        )) }
-      </Flex>
+      <Box hideFrom="lg">
+        <ApprovalsList
+          selectedChain={ selectedChain }
+          approvals={ approvals }
+          isLoading={ isLoading }
+          isAddressMatch={ isAddressMatch }
+          hideApproval={ hideApproval }
+          resetKey={ resetKey }
+        />
+      </Box>
       <Box hideBelow="lg">
         <ApprovalsTable
           selectedChain={ selectedChain }
@@ -74,6 +74,7 @@ export default function Approvals({
           isAddressMatch={ isAddressMatch }
           hideApproval={ hideApproval }
           tableHeaderTop={ tableHeaderTop }
+          resetKey={ resetKey }
         />
       </Box>
     </>
