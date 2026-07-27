@@ -66,8 +66,11 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         throw new Error('API temp token is not found');
       }
 
+      // token TTL in seconds
+      const ttl = response.headers.get('api-v2-temp-token-ttl');
+
       cookies.set(cookies.NAMES.API_TEMP_TOKEN, apiTempToken, {
-        expires: reset ? Number(reset) / DAY : 1 / 24,
+        expires: ttl ? Number(ttl) * SECOND / DAY : 1 / 24,
       });
 
       window.location.reload();
@@ -79,7 +82,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         type: 'error',
       });
     }
-  }, [ recaptcha, reset ]);
+  }, [ recaptcha ]);
 
   React.useEffect(() => {
     if (reset === undefined) {
