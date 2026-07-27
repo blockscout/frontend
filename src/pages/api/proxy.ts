@@ -49,6 +49,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
     'x-ratelimit-remaining',
     'x-ratelimit-reset',
     'api-v2-temp-token',
+    'api-v2-temp-token-ttl',
   ];
 
   HEADERS_TO_PROXY.forEach((header) => {
