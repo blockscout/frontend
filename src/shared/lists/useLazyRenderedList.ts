@@ -2,10 +2,11 @@
 
 import { clamp } from 'es-toolkit';
 import React from 'react';
-import { useInView } from 'react-intersection-observer';
 
 const STEP = 10;
 const MIN_ITEMS_NUM = 20;
+// how far below the viewport the sentinel may sit and still count as reached
+const REVEAL_MARGIN = 300;
 
 export interface Params {
   // only the length is read, so `undefined` (no data yet) is accepted — callers don't need to
@@ -45,20 +46,59 @@ export default function useLazyRenderedList({
     setRenderedItemsNum(minItemsNum);
   }
 
-  const { ref, inView } = useInView({
-    rootMargin: '300px',
-    triggerOnce: false,
-    skip: !isEnabled || itemsNum <= minItemsNum,
-  });
+  const nodeRef = React.useRef<Element | null>(null);
 
+  const cutRef = React.useCallback((node: Element | null) => {
+    nodeRef.current = node;
+  }, []);
+
+  const hasMore = renderedItemsNum < itemsNum;
+
+  // The reveal is driven by measuring the sentinel on scroll rather than by an IntersectionObserver.
+  // An observer only reports threshold *crossings*, and a step usually adds more content than the
+  // margin below the sentinel — so every reveal pushes the sentinel back out of the trigger zone and
+  // the next one depends on a fresh crossing. When the observer instead stays stuck reporting
+  // "intersecting" (it does, once rows are revealed underneath it without an intervening scroll),
+  // no crossing is left to report and the list stalls until the user scrolls far enough up to force
+  // one. Re-measuring on every scroll frame has no such edge to miss.
   React.useEffect(() => {
-    if (inView) {
-      setRenderedItemsNum((prev) => {
-        const newNum = clamp(prev + step, 0, itemsNum);
-        return newNum;
-      });
+    if (!isEnabled || !hasMore) {
+      return;
     }
-  }, [ inView, itemsNum, step ]);
 
-  return { cutRef: ref, renderedItemsNum };
+    let frame: number | null = null;
+
+    const reveal = () => {
+      frame = null;
+      const node = nodeRef.current;
+
+      if (!node || node.getBoundingClientRect().top <= window.innerHeight + REVEAL_MARGIN) {
+        setRenderedItemsNum((prev) => clamp(prev + step, 0, itemsNum));
+      }
+    };
+
+    const schedule = () => {
+      if (frame === null) {
+        frame = window.requestAnimationFrame(reveal);
+      }
+    };
+
+    // covers the sentinel already sitting within reach after the previous reveal or on mount,
+    // when no scroll follows to trigger the next step
+    schedule();
+
+    // capture phase, since scroll events from nested scroll containers don't bubble to window
+    window.addEventListener('scroll', schedule, { capture: true, passive: true });
+    window.addEventListener('resize', schedule, { passive: true });
+
+    return () => {
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+      }
+      window.removeEventListener('scroll', schedule, { capture: true });
+      window.removeEventListener('resize', schedule);
+    };
+  }, [ isEnabled, hasMore, renderedItemsNum, itemsNum, step ]);
+
+  return { cutRef, renderedItemsNum };
 }
