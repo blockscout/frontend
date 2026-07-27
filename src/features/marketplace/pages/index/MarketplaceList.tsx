@@ -9,6 +9,7 @@ import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
+import { MARKETPLACE_APPS_PLACEHOLDER_COUNT } from '../../hooks/useMarketplaceApps';
 import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
 
@@ -30,7 +31,8 @@ const MarketplaceList = ({
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: apps,
     isEnabled: !isLoading,
-    minItemsNum: 24,
+    minItemsNum: MARKETPLACE_APPS_PLACEHOLDER_COUNT,
+    step: 8,
     resetKey,
   });
 
