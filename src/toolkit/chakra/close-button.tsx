@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ButtonProps } from '@chakra-ui/react';
+import type { ButtonProps, JsxStyleProps } from '@chakra-ui/react';
 import { Icon, useRecipe } from '@chakra-ui/react';
 import * as React from 'react';
 
@@ -11,6 +11,7 @@ import { IconButton } from './icon-button';
 export interface CloseButtonProps extends Omit<ButtonProps, 'variant' | 'size'> {
   variant?: 'plain';
   size?: 'md';
+  iconProps?: JsxStyleProps;
 }
 
 export const CloseButton = React.forwardRef<
@@ -20,10 +21,11 @@ export const CloseButton = React.forwardRef<
   const recipe = useRecipe({ recipe: closeButtonRecipe });
   const [ recipeProps, restProps ] = recipe.splitVariantProps(props);
   const styles = recipe(recipeProps);
+  const { iconProps, ...rest } = restProps;
 
   return (
-    <IconButton aria-label="Close" ref={ ref } css={ styles } { ...restProps }>
-      { props.children ?? <Icon boxSize={ 5 }><CloseIcon/></Icon> }
+    <IconButton aria-label="Close" ref={ ref } css={ styles } { ...rest }>
+      { props.children ?? <Icon boxSize={ 5 } { ...iconProps }><CloseIcon/></Icon> }
     </IconButton>
   );
 });
