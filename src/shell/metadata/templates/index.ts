@@ -4,6 +4,8 @@
 
 import type { Route } from 'nextjs-routes';
 
+import type { TemplateValue } from '../types';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
@@ -13,23 +15,18 @@ const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.e
 
 interface RouteTemplateRecord {
   metadata: {
-    title: {
-      'default': string;
-      enhanced?: string;
-    };
-    description: {
-      'default': string;
-      enhanced?: string;
-    };
+    title: TemplateValue;
+    description: TemplateValue;
   };
   og?: {
-    description: string;
-    image: string;
+    title?: TemplateValue;
+    description?: TemplateValue;
+    image?: string;
   };
 }
 
 const OG_ROOT_PAGE = {
-  description: config.metadata.og.description,
+  description: { 'default': config.metadata.og.description },
   image: config.metadata.og.imageUrl,
 };
 

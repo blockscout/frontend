@@ -22,6 +22,12 @@ export type ApiData<Pathname extends Route['pathname']> =
 
 export type StructuredData = WithContext<Product> | WithContext<WebApplication>;
 
+// The `enhanced` variant is used only when every placeholder in it resolves to a truthy param.
+export interface TemplateValue {
+  'default': string;
+  enhanced?: string;
+}
+
 export interface Metadata {
   title: string;
   description: string;

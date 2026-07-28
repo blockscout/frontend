@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 1 of #3593 |
-| Status | `ready` |
+| Status | `done` |
 | Size | `medium` |
 | Sub-branch | — (single commit on `issue-3593`) |
 | PM | Ulyana (task author) |
@@ -36,7 +36,12 @@ changes. `/tx/[hash]`'s own templates land in subtask 4.
   resolution rule uniform with the title's.
 - New param `hash_short` — `shortenString(hash, 8)`, i.e. `0xda...671a`. Set to `undefined` (not `''`) when
   the route has no `hash` query param, so `compileValue`'s truthiness check behaves.
-- Every existing route's `title`, `description`, and `opengraph` output is byte-identical afterwards.
+- Every existing route's `title`, `description`, and `og:image` output is byte-identical afterwards. The
+  explicit description fallback is the one intended exception: routes that declare no `og.description` now
+  emit an `og:description` tag holding the same text crawlers previously inferred from
+  `<meta name="description">` — the preview a social client renders is unchanged, but five entries in
+  `generate.spec.ts.snap` move from `undefined` to that text. `OG_ROOT_PAGE` routes are untouched (their
+  compiled description stays `''`, so the tag is still omitted).
 
 ## Data & API
 
@@ -58,34 +63,37 @@ No visual surface. Files:
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Extend `RouteTemplateRecord` in `src/shell/metadata/templates/index.ts`
+- [x] 1 `[agent]` Extend `RouteTemplateRecord` in `src/shell/metadata/templates/index.ts`
+  — `TemplateValue` lives in `src/shell/metadata/types.ts` and is reused by `compile-value.ts`.
   - inputs:
     - Extract the repeated `{ 'default': string; enhanced?: string }` shape into a named interface and
       reuse it for `metadata.title`, `metadata.description`, `og.title`, `og.description`.
     - New shape: `og?: { title?: <that shape>; description?: <that shape>; image?: string }`.
     - Migrate `OG_ROOT_PAGE` to `{ description: { 'default': config.metadata.og.description }, image: config.metadata.og.imageUrl }`.
       It is referenced by many routes; the value must stay identical.
-- [ ] 2 `[agent]` Resolve OG title and description independently in `src/shell/metadata/generate.ts`
+- [x] 2 `[agent]` Resolve OG title and description independently in `src/shell/metadata/generate.ts`
   - inputs:
     - `const ogTemplates = TEMPLATE_MAP[route.pathname].og;`
     - `opengraph.title = ogTemplates?.title ? compileValue(ogTemplates.title, params) + titlePostfix : title`
     - `opengraph.description = ogTemplates?.description ? compileValue(ogTemplates.description, params) : description`
     - `opengraph.imageUrl = ogTemplates?.image`
     - Do **not** thread bot type into `generate()`; `apiData` presence is the only enhancement signal.
-- [ ] 3 `[agent]` Add the `hash_short` param in `generate.ts`
+- [x] 3 `[agent]` Add the `hash_short` param in `generate.ts`
   - inputs:
     - Derive from `castToString(route.query?.hash)` the same way `idParam` / `idFormatted` are derived above it.
     - `const hashParam = castToString(route.query?.hash); … hash_short: hashParam ? shortenString(hashParam, 8) : undefined`
     - Import `shortenString` from `src/shared/texts/shorten-string`. `charNumber: 8` is what
       `truncation="constant"` resolves to in the entity components, so titles and interpretation text
       shorten identically.
-- [ ] 4 `[agent]` Cover the new layer in `src/shell/metadata/generate.spec.ts`
+- [x] 4 `[agent]` Cover the new layer in `src/shell/metadata/generate.spec.ts`
+  — new `og template layer` describe, driven by a stand-in `TEMPLATE_MAP` (no route declares OG templates yet).
   - inputs:
     - Test what's actually new, per `.agents/rules/tests-unit.mdc`: a route with `og` templates only
       (title falls back to metadata), a route with both, `enhanced` chosen when all its params are present
       and `default` when one is missing, and `hash_short` compilation.
-    - The existing snapshot entries must come out unchanged — if `pnpm test` rewrites any of them, the
-      refactor changed behavior and is wrong. New `it` blocks appending new entries is expected.
+    - The existing snapshot entries must come out unchanged apart from the `opengraph.description` fallback
+      noted in the functional requirements — any rewrite of a `title` or `imageUrl` means the refactor
+      changed behavior and is wrong.
     - `OG_ROOT_PAGE` routes keep emitting the same `og:description` and `og:image` as before.
 
 ## Open questions

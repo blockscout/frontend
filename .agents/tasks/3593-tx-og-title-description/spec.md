@@ -4,7 +4,7 @@
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3593 |
 | PR | https://github.com/blockscout/frontend/pull/3596 (draft) |
-| Status | `ready` |
+| Status | `in progress` |
 | Size | `medium` |
 | Feature branch | `issue-3593` |
 | PM | Ulyana (task author) |
@@ -61,13 +61,16 @@ crawlers don't run JS and `metadata.update()` only ever touches `<title>` and `<
   every placeholder in it is truthy. Accepted loss cases — a **pending** transaction (its `timestamp` is
   `null`), an **unresolvable action**, and any **failed, timed-out, or 404** request.
 - No behavior change for any other route: after the template-layer refactor, every existing route's
-  `title` / `description` / `opengraph` output is byte-identical.
+  `title` / `description` / `og:title` / `og:image` output is byte-identical. One deliberate exception —
+  routes with no OG description template now emit `og:description` explicitly with the same text crawlers
+  already inferred from `<meta name="description">`; see subtask 1's spec.
 
 ### Verification
 
 - `curl -A Twitterbot http://localhost:3000/tx/<hash>` shows the new `og:title` / `og:description`; the same
   URL without a bot UA shows the unchanged SEO tags.
-- `src/shell/metadata/__snapshots__/generate.spec.ts.snap` — existing entries unchanged.
+- `src/shell/metadata/__snapshots__/generate.spec.ts.snap` — existing entries unchanged, except the
+  `opengraph.description` fallback introduced in subtask 1.
 - Metrics need no work and are checked, not built: `social_preview_bot_requests_total{route="/tx/[hash]"}`
   is already incremented globally from `_document.tsx` via `logRequestFromBot` using `ctx.pathname`, and
   `api_request_duration_seconds{route,code}` is recorded inside `fetchApi` itself (labelled by resource
@@ -146,7 +149,7 @@ verifies that the preview genuinely works in a real social client.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Turn the `og` block into a `default`/`enhanced` template layer → `subtasks/01-og-template-layer/`
+- [x] 1 `[agent]` Turn the `og` block into a `default`/`enhanced` template layer → `subtasks/01-og-template-layer/`
 - [ ] 2 `[agent]` Share the currency rounding and render interpretation summaries as plain text → `subtasks/02-interpretation-plain-text/`
 - [ ] 3 `[agent]` Derive the three OG description params for a transaction → `subtasks/03-tx-og-description-params/`
 - [ ] 4 `[agent]` Wire the bot-gated fetch and add the `/tx/[hash]` OG templates → `subtasks/04-gssp-wiring-and-templates/`
