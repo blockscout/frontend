@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 2 of #3593 |
-| Status | `ready` |
+| Status | `done` |
 | Size | `medium` |
 | Sub-branch | — (single commit on `issue-3593`) |
 | PM | Ulyana (task author) |
@@ -50,9 +50,12 @@ function that the component then calls, and adds a plain-text renderer beside it
   | `timestamp` | `dayjs(Number(value) * SECOND).format('MMM DD YYYY')` — the UI's variable format, **not** the OG description's own timestamp format |
   | `native` / `wei` | `currencyUnits.ether` / `currencyUnits.wei` |
 
-- `addressToPlainText(address)` mirrors `AddressEntity`'s `Content` with `truncation="constant"`:
-  metadata `name`-type tag (via `getTagName`) ?? `ens_domain_name` ?? `name` ?? `shortenString(hash, 8)`.
-  It is exported because subtask 3's fallback action branch needs it for `from` / `to`.
+- `getAddressName(address)` owns the name chain `AddressEntity`'s `Content` resolves — metadata `name`-type
+  tag (via `getTagName`) ?? `ens_domain_name` ?? `name`, `undefined` when the address has no name. It lives
+  in the address slice and the entity component calls it, so the two cannot drift.
+- `addressToPlainText(address)` composes that with the hash fallback (`shortenString(hash, 8)`, what
+  `truncation="constant"` resolves to). It is exported because subtask 3's fallback action branch needs it
+  twice in one template string.
 - Whitespace comes out clean: single spaces between parts, no leading or trailing space. Against the
   production sample in the parent spec the result is exactly `Swap 2.92M SPERPS for 0.016 WETH`.
 
@@ -69,6 +72,8 @@ covers all ten variable types.
   delegates. No other change; do not restructure the component to be render-agnostic.
 - New files in `src/features/tx-interpretation/common/utils/` (kebab-case, matching siblings elsewhere in
   the repo): the currency formatter, the plain-text renderer, the address-to-text helper.
+- `src/slices/address/utils/get-address-name.ts` — the address name chain, extracted from `AddressEntity`
+  so both the entity and the plain-text renderer read from one place.
 
 ## Out of scope
 
@@ -79,20 +84,22 @@ covers all ten variable types.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Extract the currency ladder into a shared function and call it from `TxInterpretation`
+- [x] 1 `[agent]` Extract the currency ladder into a shared function and call it from `TxInterpretation`
+  — `common/utils/format-currency-value.ts`.
   - inputs:
     - Signature `(value: string) => string`. Keep `BigNumber` as the implementation — same import, same
       thresholds, same order of comparisons.
     - The component's `currency` case becomes `<chakra.span>{ formatCurrencyValue(value) + ' ' }</chakra.span>` —
       the trailing space is the component's spacing concern and stays there, out of the shared function.
-- [ ] 2 `[agent]` Add `addressToPlainText`
+- [x] 2 `[agent]` Add `addressToPlainText`
+  — `common/utils/address-to-plain-text.ts` over the extracted `slices/address/utils/get-address-name.ts`.
   - inputs:
-    - Reproduce `AddressEntity`'s `Content` chain (`src/slices/address/components/entity/AddressEntity.tsx:142`):
-      the `metadata.tags` entry with `tagType === 'name'` through `getTagName`, then `ens_domain_name`,
-      then `name`, then `shortenString(hash, 8)`.
+    - Extract `AddressEntity`'s `Content` name chain into the address slice and call it from both the
+      component and the new helper, which appends the `shortenString(hash, 8)` fallback.
     - Ignore the proxy-implementation branch (`AddressEntityContentProxy`) and the bech32/Filecoin alt-hash
       handling — both are display concerns driven by client-side user settings, unavailable server-side.
-- [ ] 3 `[agent]` Add `summaryToPlainText`
+- [x] 3 `[agent]` Add `summaryToPlainText`
+  — `common/utils/summary-to-plain-text.ts`.
   - inputs:
     - Return `undefined` when `!checkSummary(template, variables)`.
     - Reuse the existing `fillStringVariables` → `extractVariables` → `getStringChunks` pipeline from
@@ -101,13 +108,14 @@ covers all ten variable types.
       space, then collapse runs of whitespace and trim. Don't try to replicate the component's per-element
       trailing spaces.
     - Handle `native` / `wei` by name before the type switch, exactly as the component does.
-- [ ] 4 `[agent]` Unit tests
+- [x] 4 `[agent]` Unit tests
+  — a spec per new util; the timestamp assertion pins `TZ` to UTC via `vi.stubEnv`.
   - inputs:
     - Reuse `txInterpretation` from `src/features/tx-interpretation/blockscout/mocks.ts` (it exercises
       `string`, `currency`, `token`, `address`, `timestamp` in one template) and `TX_INTERPRETATION` from
       `blockscout/stubs.ts`.
-    - Cover the four rounding branches at their boundaries, the `address` fallback chain (name tag / ENS /
-      name / short hash), `checkSummary` rejection returning `undefined`, and the whitespace result.
+    - Cover the four rounding branches at their boundaries, the name chain (name tag / ENS / name / none)
+      beside `getAddressName`, `checkSummary` rejection returning `undefined`, and the whitespace result.
     - Skip tests that only assert the mock or `BigNumber` itself.
 
 ## Open questions

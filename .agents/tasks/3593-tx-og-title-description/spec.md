@@ -150,7 +150,7 @@ verifies that the preview genuinely works in a real social client.
 ## Task breakdown
 
 - [x] 1 `[agent]` Turn the `og` block into a `default`/`enhanced` template layer → `subtasks/01-og-template-layer/`
-- [ ] 2 `[agent]` Share the currency rounding and render interpretation summaries as plain text → `subtasks/02-interpretation-plain-text/`
+- [x] 2 `[agent]` Share the currency rounding and render interpretation summaries as plain text → `subtasks/02-interpretation-plain-text/`
 - [ ] 3 `[agent]` Derive the three OG description params for a transaction → `subtasks/03-tx-og-description-params/`
 - [ ] 4 `[agent]` Wire the bot-gated fetch and add the `/tx/[hash]` OG templates → `subtasks/04-gssp-wiring-and-templates/`
 - [ ] 5 `[agent]` + `[human]` Deploy a demo, then verify the preview manually → `subtasks/05-demo-deploy/`
