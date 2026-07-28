@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 3 of #3593 |
-| Status | `ready` |
+| Status | `done` |
 | Size | `medium` |
 | Sub-branch | — (single commit on `issue-3593`) |
 | PM | Ulyana (task author) |
@@ -69,14 +69,17 @@ No visual surface. New file `src/slices/tx/utils/get-og-description-params.ts` (
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Write `get-og-description-params.ts`
+- [x] 1 `[agent]` Write `get-og-description-params.ts`
+  — exports `TxOgDescriptionParams` alongside the function, for subtask 4's `ApiData` entry.
   - inputs:
     - Return `null` unless all three strings resolve; assemble them independently first, then check.
     - Read the feature flag as `config.features.txInterpretation.isEnabled` at call time (not module load),
       so tests can vary it.
     - Import `dayjs` from `src/shared/date-and-time/dayjs` (never the package directly — the locale
       overrides live in that module).
-- [ ] 2 `[agent]` Unit tests
+- [x] 2 `[agent]` Unit tests
+  — the happy path uses the `TX_INTERPRETATION` stub, whose summary has no timestamp variable, so the only
+  date in the assertions is the util's own UTC one.
   - inputs:
     - Cover: the happy path against the parent spec's production sample (expect
       `Success · Swap 2.92M SPERPS for 0.016 WETH · Jul 27, 2026 22:39 UTC`); <!-- cspell:ignore SPERPS --> each status word; `undefined`
