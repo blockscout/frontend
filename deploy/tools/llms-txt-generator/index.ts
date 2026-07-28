@@ -18,8 +18,7 @@ function run(): void {
             return;
         }
 
-        const accountFeature = config.features.account;
-        const isInProApi = accountFeature.isEnabled && accountFeature.apiKeysButton === false;
+        const isInProApi = config.chain.isProApiSupported;
         const mode = isInProApi ? 'PRO API' : 'standard';
 
         console.log(`🌀 Generating llms.txt (${ mode } mode)...`);

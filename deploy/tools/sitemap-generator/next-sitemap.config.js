@@ -196,7 +196,11 @@ module.exports = {
         }
         break;
       case '/api-docs':
-        if (process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]') {
+        // on chains served by the Pro API the page only exists when tabs are configured explicitly
+        if (
+          process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]' ||
+          (process.env.NEXT_PUBLIC_PRO_API_SUPPORTED === 'true' && !process.env.NEXT_PUBLIC_API_DOCS_TABS)
+        ) {
           return null;
         }
         break;
