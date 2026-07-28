@@ -3,6 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3593 |
+| PR | https://github.com/blockscout/frontend/pull/3596 (draft) |
 | Status | `ready` |
 | Size | `medium` |
 | Feature branch | `issue-3593` |
