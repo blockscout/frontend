@@ -7,10 +7,12 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
 
+import TransactionsCrossChain from 'src/features/cross-chain-txs/pages/txs/TransactionsCrossChain';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
 import useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
+import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
@@ -35,7 +37,7 @@ const MultichainTxs = () => {
       {
         id: 'txs_cross_chain',
         title: 'Cross-chain',
-        component: <EmptyState type="coming_soon"/>,
+        component: config.features.crossChainTxs.isEnabled ? <TransactionsCrossChain/> : <EmptyState type="coming_soon"/>,
       },
       {
         id: 'txs_local',

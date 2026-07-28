@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
 import DataList from 'src/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
@@ -23,6 +25,8 @@ interface Props {
 }
 
 const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFilters, tableTop }: Props) => {
+  const chainsQuery = useApiQuery('interchainIndexer:chains');
+
   return (
     <DataList
       isError={ query.isError }
@@ -40,7 +44,8 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
             <BridgedTokensList
               data={ query.data.items }
               page={ query.pagination.page }
-              isLoading={ query.isPlaceholderData }
+              chainsData={ chainsQuery.data?.items }
+              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
               resetKey={ query.queryHash }
             />
           </Box>
@@ -49,10 +54,11 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               data={ query.data.items }
               sort={ sort }
               setSorting={ onSortChange }
-              isLoading={ query.isPlaceholderData }
+              chainsData={ chainsQuery.data?.items }
+              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
+              resetKey={ query.queryHash }
               page={ query.pagination.page }
               top={ tableTop }
-              resetKey={ query.queryHash }
             />
           </Box>
         </>

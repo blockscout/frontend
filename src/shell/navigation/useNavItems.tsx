@@ -293,7 +293,7 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/gas_tracker',
           isActive: pathname.startsWith('/gas-tracker'),
         },
-        config.features.crossChainTxs.isEnabled && {
+        config.features.crossChainTxs.isEnabled && !config.features.multichain.isEnabled && {
           text: 'ICTT users',
           nextRoute: { pathname: '/ictt-users' as const },
           icon: 'navigation/ictt_users',

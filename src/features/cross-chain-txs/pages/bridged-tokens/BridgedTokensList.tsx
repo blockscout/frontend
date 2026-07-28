@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
+import type { ChainInfo, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
@@ -15,21 +15,25 @@ interface Props {
   page: number;
   isLoading?: boolean;
   resetKey?: string;
+  chainsData?: Array<ChainInfo>;
 }
 
-const BridgedTokensList = ({ data, page, isLoading, resetKey }: Props) => {
+const BridgedTokensList = ({ data, page, isLoading, resetKey, chainsData }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
     <Box>
       { data.slice(0, renderedItemsNum).map((item, index) => {
-        const tokenCurrentChain = item.tokens.find((token) => String(token.chain_id) === config.chain.id);
+        const tokenInfo = item.tokens.find((token) => String(token.chain_id) === config.chain.id) ||
+        item.tokens.find((token) => String(token.chain_id) !== config.chain.id);
+        const chainInfo = chainsData?.find((chain) => chain.id === tokenInfo?.chain_id);
 
         return (
           <BridgedTokensListItem
-            key={ String(tokenCurrentChain?.token_address) + (isLoading ? index : '') }
+            key={ String(tokenInfo?.token_address) + (isLoading ? index : '') }
             data={ item }
-            token={ tokenCurrentChain }
+            tokenInfo={ tokenInfo }
+            chainInfo={ chainInfo }
             index={ index }
             page={ page }
             isLoading={ isLoading }

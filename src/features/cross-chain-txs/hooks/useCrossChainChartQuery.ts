@@ -3,6 +3,7 @@
 import { pickBy, uniqBy } from 'es-toolkit';
 
 import type { ChartDataPayloadSankey, StatsIntervalIds } from 'src/features/chain-stats/types/client';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
@@ -19,9 +20,10 @@ interface Props {
   interval: StatsIntervalIds;
   enabled?: boolean;
   counterPartyChainIds?: Array<string>;
+  chainData?: ClusterChainConfig;
 }
 
-export default function useCrossChainChartQuery({ id, interval, enabled = true, counterPartyChainIds }: Props) {
+export default function useCrossChainChartQuery({ id, interval, enabled = true, counterPartyChainIds, chainData }: Props) {
 
   const chart = CROSS_CHAIN_TXS_CHARTS.find((chart) => chart.id === id) ?? CROSS_CHAIN_TXS_CHARTS[0];
   const { start: startDate, end: endDate } = getDatesFromInterval(interval);
@@ -29,7 +31,8 @@ export default function useCrossChainChartQuery({ id, interval, enabled = true, 
   const resourceName = chart.resourceName;
 
   return useApiQuery<typeof resourceName, unknown, ChartDataPayloadSankey>(resourceName, {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: (chainData?.app_config ?? config).chain.id },
+    chain: chainData,
     queryParams: pickBy({
       from: startDate,
       to: endDate,

@@ -5,7 +5,9 @@
 export_envs_from_file() {
   local file="$1"
   [ -f "$file" ] || return 0
-  while IFS='=' read -r name value; do
+  # `|| [ -n "$name" ]` keeps the final line even when the file has no trailing
+  # newline — otherwise `read` returns non-zero at EOF and silently drops it.
+  while IFS='=' read -r name value || [ -n "$name" ]; do
       if [[ -n "$name" && "$name" != \#* ]]; then
           export "$name"="$value"
       fi

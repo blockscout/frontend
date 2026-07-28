@@ -37,7 +37,7 @@ const AddressEntityExternal = ({ chain, ...props }: Props) => {
       { ...props }
       href={ href }
       noLink={ props.noLink || !href }
-      link={{ external: true }}
+      link={{ ...props.link, external: true }}
       chain={ chain }
     />
   );
