@@ -44,7 +44,9 @@ lives here):
   the old key from its config, so unless it's dropped the demo deploy's envs-validator
   fails on a variable that no longer exists in the schema. This list grows every time a
   variable is removed for good (see the `deprecate-env-var` skill) — add the removed
-  variable here.
+  variable here. It also holds still-valid variables whose deployed value would mask the
+  app's default behavior locally (`NEXT_PUBLIC_API_DOCS_TABS`): hosted instances set them
+  while the defaults are what a local run should exercise.
 
 ## Gotchas (these bit us; don't re-learn them)
 

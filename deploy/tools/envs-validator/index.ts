@@ -152,7 +152,10 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
 }
 
 function printDeprecationWarning(envsMap: Record<string, string>) {
-  
+  if (envsMap.NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE) {
+    // eslint-disable-next-line max-len
+    console.warn('❗ The NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE variable no longer has any effect and will be removed in the next release. The alert is not displayed on the API documentation page anymore.');
+  }
 }
 
 function checkDeprecatedEnvs(envsMap: Record<string, string>) {

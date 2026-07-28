@@ -83,7 +83,9 @@ authTest.describe.skip('auth', () => {
 test.describe('with tooltips', () => {
   test.use({ viewport: pwConfig.viewport.xl });
 
-  test('base view', async({ render, page }) => {
+  test('base view', async({ render, page, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.proApi);
+
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
         <NavigationDesktop/>
@@ -92,9 +94,11 @@ test.describe('with tooltips', () => {
       { hooksConfig },
     );
 
+    await expect(component).toHaveScreenshot();
+
     await component.locator('header').hover();
     await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
-    await page.locator('a[aria-label="Dapps link"]').hover();
+    await page.locator('a[aria-label="API link"]').hover();
 
     await expect(component).toHaveScreenshot();
   });

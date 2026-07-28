@@ -3,15 +3,20 @@
 import type { ApiDocsTabId } from 'src/features/api-docs/types/config';
 import { API_DOCS_TABS } from 'src/features/api-docs/types/config';
 
+import chain from 'src/slices/chain/config';
+
 import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 import type { Feature } from 'src/config/utils/features';
 
+// Chains served by the Pro API send users straight to the developer portal,
+// so the in-app documentation is skipped unless an operator asks for it explicitly.
+const DEV_PORTAL_URL = 'https://dev.blockscout.com/?utm_source=blockscout&utm_medium=navigation';
+
+const tabsEnvValue = getEnvValue('NEXT_PUBLIC_API_DOCS_TABS');
+
 const tabs = (() => {
-  const DEFAULT_TABS = getEnvValue('NEXT_PUBLIC_PRO_API_SUPPORTED') === 'true' ?
-    API_DOCS_TABS :
-    API_DOCS_TABS.filter((tab) => tab !== 'pro_api');
   const value = (
-    parseEnvJson<Array<ApiDocsTabId>>(getEnvValue('NEXT_PUBLIC_API_DOCS_TABS')) || DEFAULT_TABS
+    parseEnvJson<Array<ApiDocsTabId>>(tabsEnvValue) || API_DOCS_TABS
   )
     .filter((tab) => API_DOCS_TABS.includes(tab));
 
@@ -20,16 +25,25 @@ const tabs = (() => {
 
 const title = 'API documentation';
 
-const config: Feature<{
-  tabs: Array<ApiDocsTabId>;
-  alertMessage: string | undefined;
-}> = (() => {
+const config: Feature<
+  { mode: 'internal'; tabs: Array<ApiDocsTabId> } |
+  { mode: 'external'; url: string }
+> = (() => {
+  if (chain.isProApiSupported && !tabsEnvValue) {
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      mode: 'external' as const,
+      url: DEV_PORTAL_URL,
+    });
+  }
+
   if (tabs) {
     return Object.freeze({
       title,
       isEnabled: true,
+      mode: 'internal' as const,
       tabs,
-      alertMessage: getEnvValue('NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE'),
     });
   }
 

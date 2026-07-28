@@ -66,7 +66,7 @@ const ApiKeysPage: React.FC = () => {
     deleteModalProps.onOpenChange({ open });
   }, [ deleteModalProps ]);
 
-  const description = feature.isEnabled && feature.apiKeys.button === false ? (
+  const description = config.chain.isProApiSupported ? (
     <AccountPageDescription>
       Blockscout APIs require a key. Create a <Link href="https://dev.blockscout.com" external noIcon>
         free PRO API key</Link> to access all multichain endpoints.
@@ -114,28 +114,14 @@ const ApiKeysPage: React.FC = () => {
       <AlertWithExternalHtml html={ feature.apiKeys.alertMessage } status="warning" mb={ 6 }/> :
       null;
 
-    const button = (() => {
-      if (!feature.isEnabled || feature.apiKeys.button === false) {
-        return null;
-      }
-
-      if (typeof feature.apiKeys.button === 'string') {
-        return (
-          <Link href={ feature.apiKeys.button } external noIcon>
-            <Button>Add API key</Button>
-          </Link>
-        );
-      }
-
-      return (
-        <Button
-          onClick={ apiKeyModalProps.onOpen }
-          disabled={ !canAdd }
-        >
-          Add API key
-        </Button>
-      );
-    })();
+    const button = !config.chain.isProApiSupported ? (
+      <Button
+        onClick={ apiKeyModalProps.onOpen }
+        disabled={ !canAdd }
+      >
+        Add API key
+      </Button>
+    ) : null;
 
     return (
       <>

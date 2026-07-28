@@ -8,7 +8,7 @@ import type { NavItem } from '../types';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
-import { Link } from 'src/toolkit/chakra/link';
+import { Link, LinkExternalIcon } from 'src/toolkit/chakra/link';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
@@ -36,11 +36,19 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
 
   const isHighlighted = checkRouteHighlight(item);
 
+  const content = (
+    <>
+      <span>{ item.text }</span>
+      { !isInternalLink && <LinkExternalIcon _groupHover={{ color: 'icon.secondary' }}/> }
+    </>
+  );
+
   return (
     <Box as="li" listStyleType="none" w="100%">
       <Link
         href={ isInternalLink ? route(item.nextRoute) : item.url }
         external={ !isInternalLink }
+        noIcon
         { ...styleProps.itemProps }
         w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
         display="flex"
@@ -56,13 +64,15 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
         }}
       >
         <Tooltip
-          content={ item.text }
+          content={ content }
           showArrow={ false }
           disabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
           positioning={{ placement: 'right', offset: { crossAxis: 0, mainAxis: 20 } }}
           variant="popover"
           contentProps={{
             color: isInternalLink && item.isActive ? 'link.navigation.fg.selected' : 'link.navigation.fg.hover',
+            display: 'inline-flex',
+            alignItems: 'center',
           }}
           interactive
         >
@@ -71,9 +81,10 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
             <chakra.span
               { ...styleProps.textProps }
               ml={ 3 }
-              display={{ base: 'inline', lg: isExpanded ? 'inline' : 'none', xl: isCollapsed ? 'none' : 'inline' }}
+              display={{ base: 'inline-flex', lg: isExpanded ? 'inline-flex' : 'none', xl: isCollapsed ? 'none' : 'inline-flex' }}
+              alignItems="center"
             >
-              <span>{ item.text }</span>
+              { content }
             </chakra.span>
             { isHighlighted && (
               <LightningLabel
