@@ -721,7 +721,14 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
       ) }
       <TxInfoScrollFees data={ data } isLoading={ isLoading }/>
 
-      <CollapsibleDetails loading={ isLoading } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }} isExpanded={ isExpanded } onClick={ handleCutLinkClick }>
+      <CollapsibleDetails
+        id="CollapsibleDetails__tx-details"
+        loading={ isLoading }
+        mt={ 6 }
+        gridColumn={{ base: undefined, lg: '1 / 3' }}
+        isExpanded={ isExpanded }
+        onClick={ handleCutLinkClick }
+      >
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
         <TxDetailsSetMaxGasLimit data={ data }/>
