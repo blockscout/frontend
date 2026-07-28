@@ -8,7 +8,6 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import useWeb3AccountWithDomain from 'src/features/connect-wallet/hooks/useAccountWithDomain';
 import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 
-import delay from 'src/shared/utils/delay';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -25,15 +24,16 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
 
+  // Await the modal open before closing the popover: the wallet chunks load lazily on this first click, so
+  // the modal isn't up for a moment. `openModal` resolves once it's actually open, so the popover stays put
+  // (showing its button spinner) until then, instead of closing on a fixed timer while the modal loads.
   const handleConnectWalletClick = React.useCallback(async() => {
-    web3Wallet.openModal();
-    await delay(300);
+    await web3Wallet.openModal();
     onClose?.();
   }, [ web3Wallet, onClose ]);
 
   const handleOpenWalletClick = React.useCallback(async() => {
-    web3Wallet.openModal();
-    await delay(300);
+    await web3Wallet.openModal();
     onClose?.();
   }, [ web3Wallet, onClose ]);
 

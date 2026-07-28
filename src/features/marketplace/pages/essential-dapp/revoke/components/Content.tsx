@@ -244,6 +244,7 @@ const Content = ({
         hideApproval={ approvalsQuery.hideApproval }
         pagination={ pagination }
         actionBarRef={ actionBarRef }
+        resetKey={ `${ selectedChain?.id ?? '' }:${ searchAddress }:${ approvalsPage }` }
       />
     </Flex>
   );

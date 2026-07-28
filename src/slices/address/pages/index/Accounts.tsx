@@ -15,11 +15,11 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import AddressesListItem from './AddressesListItem';
+import AddressesList from './AddressesList';
 import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
-  const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(
@@ -58,20 +58,17 @@ const Accounts = () => {
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
           isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
         />
       </Box>
       <Box hideFrom="lg">
-        { data.items.map((item, index) => {
-          return (
-            <AddressesListItem
-              key={ item.hash + (isPlaceholderData ? index : '') }
-              item={ item }
-              index={ pageStartIndex + index }
-              totalSupply={ totalSupply }
-              isLoading={ isPlaceholderData }
-            />
-          );
-        }) }
+        <AddressesList
+          items={ data.items }
+          totalSupply={ totalSupply }
+          pageStartIndex={ pageStartIndex }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

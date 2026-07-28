@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { LinkProps as ChakraLinkProps } from '@chakra-ui/react';
+import type { LinkProps as ChakraLinkProps, IconProps } from '@chakra-ui/react';
 import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay, Icon } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { LinkProps as NextLinkProps } from 'next/link';
@@ -11,7 +11,7 @@ import ArrowIcon from 'src/sprite/icons/link_external.svg';
 
 import { Skeleton } from './skeleton';
 
-export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }) => (
+export const LinkExternalIcon = ({ color, ...rest }: IconProps) => (
   <Icon
     boxSize={ 3 }
     verticalAlign="middle"
@@ -20,6 +20,7 @@ export const LinkExternalIcon = ({ color }: { color?: ChakraLinkProps['color'] }
       color: 'inherit',
     }}
     flexShrink={ 0 }
+    { ...rest }
   >
     <ArrowIcon/>
   </Icon>
@@ -54,7 +55,7 @@ const splitProps = (props: LinkProps): { chakra: LinkPropsChakra; next: NextLink
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
     const { chakra, next } = splitProps(props);
-    const { external, loading, href, children, disabled, noIcon, iconColor, ...rest } = chakra;
+    const { external, loading, href, children, disabled, noIcon, iconColor, className, ...rest } = chakra;
 
     if (external) {
       // Strip UTM parameters from external links if in private mode
@@ -64,7 +65,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
         <Skeleton loading={ loading } ref={ ref as React.ForwardedRef<HTMLDivElement> } asChild>
           <ChakraLink
             href={ processedHref }
-            className="group"
+            className={ className ? `group ${ className }` : 'group' }
             target="_blank"
             rel="noopener noreferrer"
             { ...(disabled ? { 'data-disabled': true } : {}) }
@@ -81,6 +82,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       <Skeleton loading={ loading } ref={ ref as React.ForwardedRef<HTMLDivElement> } asChild>
         <ChakraLink
           asChild
+          className={ className }
           { ...(disabled ? { 'data-disabled': true } : {}) }
           { ...rest }
         >

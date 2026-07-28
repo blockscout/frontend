@@ -7,7 +7,7 @@ import React from 'react';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import AddressesListItem from 'src/slices/address/pages/index/AddressesListItem';
+import AddressesList from 'src/slices/address/pages/index/AddressesList';
 import AddressesTable from 'src/slices/address/pages/index/AddressesTable';
 import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 
@@ -21,7 +21,7 @@ import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainAccounts = () => {
-  const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange, queryHash } = useQueryWithPages({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(TOP_ADDRESS, 50, {
@@ -51,18 +51,17 @@ const MultichainAccounts = () => {
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
           isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
         />
       </Box>
       <Box hideFrom="lg">
-        { data.items.map((item, index) => (
-          <AddressesListItem
-            key={ item.hash + (isPlaceholderData ? index : '') }
-            item={ item }
-            index={ pageStartIndex + index }
-            totalSupply={ totalSupply }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
+        <AddressesList
+          items={ data.items }
+          totalSupply={ totalSupply }
+          pageStartIndex={ pageStartIndex }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </MultichainProvider>
   ) : null;

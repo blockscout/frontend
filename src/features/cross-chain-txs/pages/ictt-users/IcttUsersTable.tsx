@@ -8,6 +8,7 @@ import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -20,9 +21,11 @@ interface Props {
   isLoading?: boolean;
   sort: CrossChainChainsStatsSortingValue;
   setSorting: ({ value }: { value: Array<string> }) => void;
+  resetKey?: string;
 }
 
-const IcttUsersTable = ({ data, isLoading, sort, setSorting }: Props) => {
+const IcttUsersTable = ({ data, isLoading, sort, setSorting, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: CrossChainChainsStatsSortingField) => {
     const value = getNextSortValue<CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue>(ICTT_USERS_SORT_SEQUENCE, field)(sort);
@@ -47,13 +50,14 @@ const IcttUsersTable = ({ data, isLoading, sort, setSorting }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => (
+        { data.slice(0, renderedItemsNum).map((item, index) => (
           <IcttUsersTableItem
             key={ String(item.id) + (isLoading ? index : '') }
             data={ item }
             isLoading={ isLoading }
           />
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

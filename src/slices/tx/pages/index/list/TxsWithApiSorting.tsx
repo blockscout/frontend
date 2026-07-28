@@ -61,6 +61,7 @@ const TxsWithApiSorting = ({
       sort={ sorting }
       pagination={ query.pagination }
       showTableView={ showTableView }
+      resetKey={ query.queryHash }
     />
   );
 };

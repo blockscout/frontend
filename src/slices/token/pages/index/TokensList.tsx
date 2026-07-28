@@ -7,6 +7,7 @@ import type { TokensSortingValue } from 'src/slices/token/types/api';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
@@ -28,6 +29,12 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
   const { isError, isPlaceholderData, data, pagination } = query;
 
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: data?.items,
+    isEnabled: !isPlaceholderData,
+    resetKey: query.queryHash,
+  });
+
   if (isError) {
     return <ApiFetchAlert/>;
   }
@@ -36,19 +43,22 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
     <>
       <Box hideFrom="lg">
         { description }
-        { data.items.map((item, index) => {
-          const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
+        <Box>
+          { data.items.slice(0, renderedItemsNum).map((item, index) => {
+            const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
 
-          return (
-            <TokensListItem
-              key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
-              token={ item }
-              index={ index }
-              page={ pagination.page }
-              isLoading={ isPlaceholderData }
-            />
-          );
-        }) }
+            return (
+              <TokensListItem
+                key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
+                token={ item }
+                index={ index }
+                page={ pagination.page }
+                isLoading={ isPlaceholderData }
+              />
+            );
+          }) }
+        </Box>
+        <Box ref={ cutRef } h={ 0 }/>
       </Box>
       <Box hideBelow="lg">
         { description }
@@ -59,6 +69,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
           setSorting={ onSortChange }
           sorting={ sort }
           top={ tableTop }
+          resetKey={ query.queryHash }
         />
       </Box>
     </>

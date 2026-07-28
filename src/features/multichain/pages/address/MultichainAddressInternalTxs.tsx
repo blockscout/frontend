@@ -49,10 +49,10 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   const content = data?.items ? (
     <MultichainProvider chainId={ chainValue?.[0] }>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
+        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData }/>
+        <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
     </MultichainProvider>
   ) : null ;

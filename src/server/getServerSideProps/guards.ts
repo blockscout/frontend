@@ -72,7 +72,8 @@ export const marketplaceEssentialDapp: Guard = (chainConfig: typeof config) => a
 };
 
 export const apiDocs: Guard = (chainConfig: typeof config) => async() => {
-  if (!chainConfig.features.apiDocs.isEnabled) {
+  const feature = getFeaturePayload(chainConfig.features.apiDocs);
+  if (!feature || feature.mode === 'external') {
     return {
       notFound: true,
     };

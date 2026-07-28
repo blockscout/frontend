@@ -7,6 +7,7 @@ import type { ChainInfo, StatsBridgedTokenRow } from '@blockscout/interchain-ind
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -21,10 +22,13 @@ interface Props {
   setSorting: ({ value }: { value: Array<string> }) => void;
   page: number;
   top?: number;
-  chains?: Array<ChainInfo>;
+  chainsData?: Array<ChainInfo>;
+  resetKey?: string;
 }
 
-const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chains }: Props) => {
+const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chainsData, resetKey }: Props) => {
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -66,10 +70,10 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => {
+        { data.slice(0, renderedItemsNum).map((item, index) => {
           const tokenInfo = item.tokens.find((token) => String(token.chain_id) === config.chain.id) ||
             item.tokens.find((token) => String(token.chain_id) !== config.chain.id);
-          const chainInfo = chains?.find((chain) => chain.id === tokenInfo?.chain_id);
+          const chainInfo = chainsData?.find((chain) => chain.id === tokenInfo?.chain_id);
 
           return (
             <BridgedTokensTableItem
@@ -83,6 +87,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
             />
           );
         }) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

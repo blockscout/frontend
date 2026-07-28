@@ -8,7 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import { formatBlockListData } from 'src/slices/block/utils/format-rpc-data';
 import { formatTxListRpcData } from 'src/slices/tx/utils/format-rpc-data';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
@@ -41,6 +41,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   const query = useQuery({
     queryKey: [ 'RPC', 'watch-blocks' ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
@@ -84,19 +85,20 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
         includeTransactions: true,
       });
     },
-    enabled: Boolean(publicClient) && isEnabled,
+    enabled: isPublicClientAvailable && isEnabled,
   });
 
   const receiptQueries = useQueries({
     queries: txs.map((tx) => ({
       queryKey: [ 'RPC', 'tx-receipt', { hash: tx.hash } ],
       queryFn: async() => {
+        const publicClient = await getPublicClient();
         if (!publicClient) {
           return null;
         }
         return publicClient.getTransactionReceipt({ hash: tx.hash as `0x${ string }` });
       },
-      enabled: txs.length > 0 && !isError && Boolean(publicClient),
+      enabled: txs.length > 0 && !isError && isPublicClientAvailable,
       staleTime: Infinity,
     })),
   });
@@ -132,7 +134,7 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   }, [ unwatch ]);
 
   const enable = React.useCallback((isEnabled: boolean, id: SubscriptionId) => {
-    if (!publicClient) {
+    if (!isPublicClientAvailable) {
       setIsError(true);
       setIsLoading(false);
       setIsEnabled(false);

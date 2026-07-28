@@ -9,7 +9,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
-import UserOpsListItem from 'src/features/user-ops/pages/index/UserOpsListItem';
+import UserOpsList from 'src/features/user-ops/pages/index/UserOpsList';
 import UserOpsTable from 'src/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
@@ -46,19 +46,18 @@ const MultichainUserOps = () => {
           isLoading={ query.isPlaceholderData }
           showTx
           showSender
+          resetKey={ query.queryHash }
         />
       </Box>
       <Box hideFrom="lg">
-        { query.data.items.map((item, index) => (
-          <UserOpsListItem
-            key={ item.hash + (query.isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ query.isPlaceholderData }
-            showTx
-            showSender
-            chainData={ chainConfig }
-          />
-        )) }
+        <UserOpsList
+          items={ query.data.items }
+          isLoading={ query.isPlaceholderData }
+          showTx
+          showSender
+          chainData={ chainConfig }
+          resetKey={ query.queryHash }
+        />
       </Box>
     </MultichainProvider>
   ) : null;

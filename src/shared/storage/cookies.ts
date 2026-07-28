@@ -4,8 +4,6 @@ import Cookies from 'js-cookie';
 
 import config from 'src/config';
 
-import { isBrowser } from 'src/toolkit/utils/isBrowser';
-
 /**
  * All cookie names that can be used in the application.
  */
@@ -50,7 +48,11 @@ export const getDefaultAttributes = () => ({
 });
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {
-  if (!isBrowser()) {
+  // a direct typeof check instead of the isBrowser() helper: this function runs during
+  // src/config initialization (config/app.ts reads the app_profile cookie at module scope),
+  // and config ↔ cookies is an import cycle — when the graph is entered through this module,
+  // an import binding placed after `src/config` above would still be uninitialized here
+  if (typeof window === 'undefined') {
     return serverCookie ? getFromCookieString(serverCookie, name) : undefined;
   }
 

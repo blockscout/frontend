@@ -4,6 +4,8 @@ import type { AuthProvider } from 'src/features/account/types/client';
 
 import apis from 'src/api/config';
 
+import chain from 'src/slices/chain/config';
+
 import verifiedTokens from 'src/features/verified-tokens/config';
 
 import app from 'src/config/app';
@@ -13,16 +15,14 @@ import type { Feature } from 'src/config/utils/features';
 
 const title = 'My account';
 
-const apiKeysButton = (() => {
-  const value = getEnvValue('NEXT_PUBLIC_ACCOUNT_API_KEYS_BUTTON');
-  if (value === undefined || value === 'true') {
-    return true;
-  }
-  if (value === 'false') {
-    return false;
-  }
-  return value;
-})();
+const API_KEYS_ALERT_MESSAGE_DEFAULT = '<b>Deprecation Notice:</b> Chain-specific API keys are deprecated.<br>' +
+  'Please migrate to the <a href="https://dev.blockscout.com/?utm_source=blockscout_account" target="_blank">Blockscout PRO API</a> ' +
+  'for multichain access.';
+
+// Chains served by the Pro API get the deprecation notice out of the box; an explicitly
+// empty value is how an instance opts out of it.
+const apiKeysAlertMessage = getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE') ??
+  (chain.isProApiSupported ? API_KEYS_ALERT_MESSAGE_DEFAULT : undefined);
 
 const config: Feature<{
   isEnabled: true;
@@ -32,7 +32,6 @@ const config: Feature<{
   };
   apiKeys: {
     alertMessage: string | undefined;
-    button: boolean | string;
   };
   addressVerificationEnabled: boolean;
 }> = (() => {
@@ -54,8 +53,7 @@ const config: Feature<{
           environmentId: dynamicEnvironmentId,
         },
         apiKeys: {
-          alertMessage: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
-          button: apiKeysButton,
+          alertMessage: apiKeysAlertMessage,
         },
         addressVerificationEnabled,
       });
@@ -67,8 +65,7 @@ const config: Feature<{
         isEnabled: true,
         authProvider: 'auth0',
         apiKeys: {
-          alertMessage: getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'),
-          button: apiKeysButton,
+          alertMessage: apiKeysAlertMessage,
         },
         addressVerificationEnabled,
       });

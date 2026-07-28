@@ -20,7 +20,7 @@ import Sort from 'src/shared/sort/Sort';
 
 import { INTERCHAIN_STATS_CHAINS_ITEM } from '../../stubs/messages';
 import { ICTT_USERS_SORT_OPTIONS } from '../../utils/ictt-sort';
-import IcttUsersListItem from './IcttUsersListItem';
+import IcttUsersList from './IcttUsersList';
 import IcttUsersTable from './IcttUsersTable';
 
 const sortCollection = createListCollection({
@@ -35,7 +35,7 @@ const IcttUsers = () => {
     getSortValueFromQuery<CrossChainChainsStatsSortingValue>(router.query, ICTT_USERS_SORT_OPTIONS) ?? 'default',
   );
 
-  const { data, isPlaceholderData, isError, onSortingChange, pagination } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, onSortingChange, pagination, queryHash } = useQueryWithPages({
     resourceName: 'interchainIndexer:stats_chains',
     sorting: getSortParamsFromValue<CrossChainChainsStatsSortingValue, CrossChainChainsStatsSortingField, CrossChainChainsStatsSorting['order']>(sort),
     options: {
@@ -82,12 +82,16 @@ const IcttUsers = () => {
         { data?.items ? (
           <>
             <Box hideFrom="lg">
-              { data.items.map((item, index) => (
-                <IcttUsersListItem key={ String(item.id) + (isPlaceholderData ? index : '') } data={ item } isLoading={ isPlaceholderData }/>
-              )) }
+              <IcttUsersList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
             </Box>
             <Box hideBelow="lg">
-              <IcttUsersTable data={ data.items } sort={ sort } setSorting={ handleSortChange } isLoading={ isPlaceholderData }/>
+              <IcttUsersTable
+                data={ data.items }
+                sort={ sort }
+                setSorting={ handleSortChange }
+                isLoading={ isPlaceholderData }
+                resetKey={ queryHash }
+              />
             </Box>
           </>
         ) : null }

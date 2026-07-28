@@ -19,11 +19,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import DepositsListItem from './DepositsListItem';
+import DepositsList from './DepositsList';
 import DepositsTable from './DepositsTable';
 
 const ShibariumDeposits = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:shibarium_deposits',
     options: {
       placeholderData: generateListStub<'core:shibarium_deposits'>(
@@ -48,16 +48,15 @@ const ShibariumDeposits = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <DepositsListItem
-            key={ `${ item.l2_transaction_hash }-${ index }` }
-            isLoading={ isPlaceholderData }
-            item={ item }
-          />
-        ))) }
+        <DepositsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <DepositsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

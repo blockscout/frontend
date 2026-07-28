@@ -16,6 +16,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
@@ -32,6 +33,11 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: query.data?.items,
+    isEnabled: !query.isPlaceholderData,
+    resetKey: query.queryHash,
+  });
 
   const actionBar = isMobile && (
     <ActionBar mt={ -6 }>
@@ -55,7 +61,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       actionBar={ actionBar }
     >
       <Box hideFrom="lg">
-        { query.data?.items.map((item, index) => (
+        { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
             key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
             isLoading={ query.isPlaceholderData }
@@ -63,6 +69,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
             chainData={ chainData }
           />
         )) }
+        <Box ref={ cutRef } h={ 0 }/>
       </Box>
       <Box hideBelow="lg">
         <TokenTransfersTable
@@ -70,6 +77,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT : 0 }
           isLoading={ query.isPlaceholderData }
           chainData={ chainData }
+          resetKey={ query.queryHash }
         />
       </Box>
     </DataList>

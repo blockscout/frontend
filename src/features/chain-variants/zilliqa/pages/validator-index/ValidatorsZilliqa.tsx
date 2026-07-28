@@ -18,7 +18,7 @@ import ValidatorsList from './ValidatorsList';
 import ValidatorsTable from './ValidatorsTable';
 
 const ValidatorsZilliqa = () => {
-  const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:validators_zilliqa',
     options: {
       enabled: config.features.validators.isEnabled,
@@ -39,10 +39,15 @@ const ValidatorsZilliqa = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ValidatorsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
+        <ValidatorsTable
+          data={ data.items }
+          isLoading={ isPlaceholderData }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

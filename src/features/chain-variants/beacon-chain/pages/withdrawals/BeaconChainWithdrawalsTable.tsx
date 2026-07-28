@@ -21,10 +21,11 @@ interface Props {
   isLoading?: boolean;
   items: Array<schemas['BeaconWithdrawal']>;
   view: 'address' | 'block' | 'list';
+  resetKey?: string;
 };
 
-const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
+const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   if (!feature.isEnabled) {
     return null;

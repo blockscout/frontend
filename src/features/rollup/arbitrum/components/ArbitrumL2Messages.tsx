@@ -19,7 +19,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 import { ARBITRUM_MESSAGES_ITEM } from '../stubs';
-import ArbitrumL2MessagesListItem from './ArbitrumL2MessagesListItem';
+import ArbitrumL2MessagesList from './ArbitrumL2MessagesList';
 import ArbitrumL2MessagesTable from './ArbitrumL2MessagesTable';
 
 export type MessagesDirection = 'from-rollup' | 'to-rollup';
@@ -30,7 +30,7 @@ interface Props {
 
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:arbitrum_l2_messages',
     pathParams: { direction },
     options: {
@@ -52,14 +52,12 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <ArbitrumL2MessagesListItem
-            key={ String(item.id) + (isPlaceholderData ? index : '') }
-            isLoading={ isPlaceholderData }
-            item={ item }
-            direction={ direction }
-          />
-        ))) }
+        <ArbitrumL2MessagesList
+          items={ data.items }
+          direction={ direction }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <ArbitrumL2MessagesTable
@@ -67,6 +65,7 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
           direction={ direction }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
         />
       </Box>
     </>

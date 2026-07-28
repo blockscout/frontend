@@ -7,6 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -16,9 +17,12 @@ type Props = {
   items: Array<schemas['ElectionReward']>;
   isLoading?: boolean;
   top: number;
+  resetKey?: string;
 };
 
-const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
+const AddressEpochRewardsTable = ({ items, isLoading, top, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot minW="1000px" style={{ tableLayout: 'auto' }}>
@@ -34,7 +38,7 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { items.map((item, index) => {
+          { items.slice(0, renderedItemsNum).map((item, index) => {
             return (
               <AddressEpochRewardsTableItem
                 key={
@@ -49,6 +53,7 @@ const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
               />
             );
           }) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

@@ -605,8 +605,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
 | NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
-| NEXT_PUBLIC_ACCOUNT_API_KEYS_BUTTON | `boolean \| string` | Pass `true` or `false` to enable or disable the "Add API key" button, or provide a URL to convert it into a link. | - | `true` | `https://example.com` | v2.7.0+ |
-| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout Pro API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
 
 **Dependencies**
 
@@ -740,15 +739,15 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `pro_api`, `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. The `pro_api` tab will be automatically added to the default value for chains supported in the Pro API. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
-| NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API documentation page. Could be a regular string or HTML code. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout Pro API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
+| NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API documentation page. Could be a regular string or HTML code. Deprecated — no longer has any effect and will be removed in the next release. | - | - | `Hello world! 🤪` | v2.7.0+ |
 
 **Dependencies**
 
 | Variable | Compulsoriness |
 | --- | --- |
 | [NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST](#user-operations-indexer-api) | Optional — adds user-ops tab |
-| [NEXT_PUBLIC_PRO_API_SUPPORTED](#misc) | Optional — adds Pro API tab (auto-set at startup) |
+| [NEXT_PUBLIC_PRO_API_SUPPORTED](#misc) | Optional — points the "API" navigation item at the Blockscout developer portal and disables this page unless `NEXT_PUBLIC_API_DOCS_TABS` is set (auto-set at startup) |
 
 &nbsp;
 

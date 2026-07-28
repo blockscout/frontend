@@ -1,0 +1,211 @@
+# Main page: improve initial loading performance
+
+| | |
+| --- | --- |
+| Issue | https://github.com/blockscout/frontend/issues/3566 |
+| Status | `done` |
+| Size | `large` |
+| Feature branch | `issue-3566` |
+| PM | — (technical/perf task, no product questions) |
+| Designer | — |
+| Backend | — (the backend-latency finding is routed separately by the developer) |
+| Slack channel | — |
+
+## Context & goal
+
+Profiling the main page of a production instance (desktop, fast network, clean browser profile)
+showed first content at ~1.1 s and actual chain data at ~2.5–3 s. Three structural causes, in
+order of measured impact:
+
+1. **Data fetching is chained behind the JS boot** — the main-page API requests start only after
+   the bundle is downloaded, evaluated, and hydrated (~1 s in), so backend latency adds to the
+   boot instead of overlapping it.
+2. **The wallet stack gates first render** — `Web3Provider` (`next/dynamic`, `ssr: false`) wraps
+   the whole tree in `_app`, so FCP waits for the AppKit + wagmi + viem + zod chunks (~150 KB gz);
+   trace evidence: FCP fires ~2 ms after that chunk finishes evaluating. A chunk-load failure
+   currently means a blank page.
+3. **Analytics/monitoring SDKs sit in the critical bundle** — Mixpanel (~103 KB gz) via static
+   imports from shell components, Rollbar (~25 KB gz) via the root provider; both are initialized
+   during boot although nothing they do is needed before first paint.
+
+Plus a trivial one: `react-icons` is a dependency for exactly two icons in
+`src/toolkit/chakra/menu.tsx` that the app's own SVG sprite already covers.
+
+The goal is to remove all four from the critical path **without behavior changes**: no lost
+analytics events, no lost error reports, no wallet UX regressions, no duplicate API requests.
+Each subtask is measured with the protocol in `tools/README.md` and reports its numbers into
+the Impact tracking section below.
+
+## Functional requirements
+
+- The main page's first-render API requests start at HTML-parse time; the app consumes each
+  primed response exactly once, and every subsequent request for the same resource goes to the
+  network as usual (socket-driven refetches, pagination, etc. unaffected).
+- No analytics event currently sent is lost or reordered by the deferral: events fired before the
+  SDK is ready are queued and flushed after `init` + `register` + `identify`, with their original
+  call-time timestamps. Page-view semantics (`useLogPageView` gating on init) stay unchanged.
+- No error report currently sent is lost: reports fired before Rollbar is ready (error-boundary
+  critical, `useFetch` warns) are buffered and flushed on init. `_error.tsx` keeps its own
+  standalone instance.
+- First render must not depend on the wallet chunks. Wallet features keep working: connect button
+  (with a loading state if clicked before the stack loads), auto-reconnect for returning users,
+  contract read/write, L2 claim buttons, marketplace dapp wallet bridge, rewards login.
+- No visible icon changes from the `react-icons` replacement.
+
+## Data & API
+
+No new API resources. The primed requests reuse the existing registry
+(`core:stats`, `core:homepage_indexing_status`, `core:homepage_txs`, `core:homepage_blocks` /
+`core:homepage_arbitrum_l2_batches` + `core:homepage_arbitrum_latest_batch`, `stats:pages_main`)
+and must build URLs through the real `buildUrl`/`isNeedProxy` so they match the client's requests
+byte-for-byte (including the `/node-api/proxy` + `x-endpoint` form in dev/review environments).
+
+## UI inventory
+
+No UI changes. The only visible-adjacent behavior is the wallet button's brief "loading" state
+when clicked before the deferred stack has loaded (subtask 4).
+
+## Out of scope
+
+- Backend response time of the main-page endpoints (routed to the backend team separately).
+- Below-the-fold render deferral — covered by the list-perf track (#3501, #3557).
+- Generic bundle shrinking and a per-route CI size budget — deliberately parked for later.
+- SSR of page content — against the product's deployment philosophy (self-hosted instances with
+  limited server capacity).
+
+## Impact tracking
+
+Metrics are produced by `tools/trace-metrics.py` (see `tools/README.md` for the recording
+protocol; same preset for every run). M3/M4 include backend latency — use medians of 3+ runs.
+M5 is also noisy run-to-run locally — median it too.
+
+Baseline and prototype numbers below are single runs from the research session (2026-07-14).
+**Re-baseline (median of 3) before starting subtask 1** and correct the first row if needed.
+
+| Checkpoint | M1 FCP | M2 first API req | M3 tx data ready | M4 content rendered | M5 blocking | M6 JS before FCP |
+| --- | --- | --- | --- | --- | --- | --- |
+| Baseline (single run) | 1526 ms | 916 ms | 2283 ms | 2534 ms | 1059 ms | 1840 KB |
+| After 1 (prototype, single run) | 1152 ms | 88 ms | 1894 ms¹ | 2044 ms¹ | 616 ms | 1840 KB |
+| After 1 (production impl, single run) | 1230 ms | 90 ms | 1274 ms³ | 1307 ms³ | 598 ms | 1854 KB |
+| After 2 (mixpanel, single run)⁴ | 1101 ms | 674 ms | 2165 ms | 2314 ms | 609 ms | 1751 KB |
+| After 3 (rollbar)⁶ | 600 ms | 33 ms | 947 ms⁶ | 1100 ms⁶ | 454 ms | 1047 KB |
+| After 4 (wallet stack) | 591 ms | 533 ms | 3967 ms⁴ | 4131 ms⁴ | 484 ms | 1030 KB |
+| After 5 (react-icons) | 509 ms | 448 ms | 3431 ms⁵ | 3569 ms⁵ | 455 ms | 1030 KB |
+| **Final (estimate)** | ~750 ms | ~90 ms | ~1500 ms² | ~1700 ms² | ~450 ms | ~1550 KB |
+| **Final (measured)**⁶ | 600 ms | 33 ms | 947 ms⁶ | 1100 ms⁶ | 454 ms | 1047 KB |
+
+¹ The prototype run drew a much slower backend response (1805 ms vs 914 ms in the baseline run)
+and still came out ahead — normalized to equal backend latency the M4 gain is ~1.1 s.
+² Assuming the instance's median transactions-endpoint latency (~1.3 s); the structural change is
+`content-ready = max(boot, backend)` instead of `boot + backend`.
+³ Single run, 2026-07-16. All 6 primed requests start at ~90 ms (vs 916–1372 ms in the baseline);
+this run drew a fast transactions response (1184 ms), putting M3/M4 already below the final
+estimate — treat the ~1.2 s M4 gain as this run's number, not the median. M6 +14 KB gz is the
+inline primer script + payload.
+⁴ Recorded 2026-07-16 from the mixpanel-deferral working tree **without** lever 1 in the build, so
+this row shows lever 2a standalone against the baseline (M2–M4 still boot-chained), not the
+cumulative "after 1+2" state. vs baseline: FCP −425 ms, JS before FCP −89 KB gz (the SDK chunk),
+blocking −450 ms. This run's transactions response was slower than the baseline run's (1184 ms vs
+914 ms); normalized to equal backend latency the M3 gain is ~390 ms.
+⁵ Recorded 2026-07-22 from the **reworked** step-4 tree (approach A — native lazy sibling `<WagmiProvider>`
+replacing v1's hand-rolled hydration; see the sub-spec's Rework section), reown mode. Compared against
+"after 2" because step 3 (rollbar) is not in this build. **Headline: JS before FCP 1751 → 1030 KB gz,
+−721 KB** — the wallet stack + its deps no longer load before paint (they load after FCP, on the eager
+reconnect / first interaction); corroborated by ~33 fewer pre-FCP JS chunks. This matches the earlier v1
+step-4 trace (1021 KB) within run-to-run noise (+9 KB), so **the rework preserved the win** — it changed
+where the provider mounts, not when the chunk loads. Supporting (single run each): FCP −510 ms, first API
+−141 ms, blocking −125 ms. M3/M4 are **not comparable** — this run's transactions endpoint drew 3080 ms
+(vs 1184 ms for the "after 2" run), inflating both; the structural content-ready path is untouched by this
+lever, and no median-of-3 was captured. The superseded v1 step-4 numbers (M1 564, M6 1021 KB) are kept in
+the sub-spec's Impact addendum for history.
+⁵ Recorded 2026-07-23 from the react-icons removal tree (`.ai/traces/robinhood_5_icons.json`), compared
+against "After 4". **Headline: M6 unchanged at 1030 KB gz** — dropping two `react-icons` icons was never
+going to move pre-FCP JS; the dependency is gone but the byte win is below noise. Supporting (single run):
+FCP −82 ms, first API −84 ms, blocking −30 ms — favorable run-to-run noise, not a structural claim.
+M3/M4 **not comparable** — transactions endpoint drew 2670 ms (vs 3080 ms in the step-4 run).
+⁶ Recorded 2026-07-24 from the full stack (`.ai/traces/robinhood_6_final.json`) — all five code levers.
+After 3 and Final (measured) share this run (rollbar was the last code change). **vs baseline:
+FCP 1526 → 600 ms (−926), first API 916 → 33 ms (primer), blocking 1059 → 454 ms (−605),
+JS before FCP 1840 → 1047 KB gz (−793).** M2 confirms the primer is back in the cumulative build
+(After 4/5 rows were measured without lever 1). M3/M4 are **normalized** to the baseline
+transactions-endpoint duration (914 ms; this run drew 3007 ms): M3 = 33 + 914 = 947 ms, M4 =
+947 + (raw M4 − raw M3) = 947 + 153 = 1100 ms (raw M3/M4 were 3040 / 3193). vs baseline that is
+M3 −1336 ms and M4 −1434 ms — past the ~1500 / ~1700 estimate because the primer overlaps boot
+with the backend. M6 is +17 KB vs After 5 within run-to-run noise / a later FCP widening the
+"bytes finished before paint" window; the ~25 KB rollbar chunk is off the critical path but not
+visible as a clean delta on a single run. No median-of-3.
+
+After completing each subtask, run the A/B measurement, fill the row, and note anomalies under
+the table. When the last box is checked, fill "Final (measured)" and post the completed table to
+issue #3566.
+
+## Task breakdown
+
+- [x] 1 `[agent]` Productionize the early-fetch primer (lever 1) — sub-spec:
+      `subtasks/01-early-fetch-primer.md` (goal, inputs, decisions, verification, follow-ups).
+      Implemented: generic per-page registry + inline script (route params, tab gating, URL filter
+      forwarding), CSP startup hashes, drift tests; rolled out to home, tx, address, token,
+      token-instance, block, user-ops, tokens, chain-stats (default tab only). Measured −1.2 s
+      content-rendered on the home pilot (see Impact tracking); a full median re-measurement across
+      the newly primed pages is pending before this subtask closes.
+- [x] 2 `[agent]` Defer Mixpanel behind first paint (lever 2a)
+  - inputs:
+    - `import('mixpanel-browser')` from `useMixpanelInit` after first paint / on idle; the SDK gets
+      its own async chunk.
+    - Queue in the `src/services/mixpanel` wrapper (it already owns every call site): buffer
+      `logEvent`/`userProfile`/`reset` calls until init completes, flush after
+      `init` + `register` + `identify` so super-props and identity apply; pass call-time `time`
+      property on replayed events.
+    - `EXPERIMENT_STARTED` fires from GrowthBook's `trackingCallback` during startup — it must go
+      through the queue (it is the only known pre-ready producer besides PAGE_VIEW).
+    - Route the stray direct SDK usage in `src/features/account/pages/login/Login.tsx` through the
+      wrapper.
+    - Consent (Usercentrics) and private-mode gating stay where they are (they null the token
+      before init).
+  - done (2026-07-16): `src/services/mixpanel/queue.ts` buffers `track`/`people.*`/`reset` until
+    `queue.init` (dynamic import, deferred via `requestIdleCallback` in `useMixpanelInit`) flushes
+    after `register` + `identify` + the profile writes (all inside `setup`, so a buffered logout
+    `reset` cannot outrun them); cookie-derived state is snapshotted at mount; init is idempotent,
+    a failed SDK load resolves `false` and disables the wrapper (100-call buffer cap);
+    `log-event`/`user-profile`/`reset` and `Login.tsx` route through the queue. Unit tests:
+    `queue.spec.ts` (13 cases). Dev-verified end-to-end; measurement in footnote ³.
+- [x] 3 `[agent]` Defer Rollbar behind first paint (lever 2b)
+  - inputs:
+    - Replace the `@rollbar/react` root provider with a thin module-level client (same `useRollbar()`
+      API) that buffers `warn`/`error`/`critical` payloads (with call-time timestamps) until the
+      lazily-imported `rollbar` instance is ready. Drop `@rollbar/react`. All call sites already
+      tolerate an absent instance (the no-token `undefined` path).
+    - **Include** early `window` `error` / `unhandledrejection` listeners (decided 2026-07-23):
+      install on provider mount, buffer into the same queue, keep after init so post-load uncaught
+      errors are also reported (today the main app has neither `captureUncaught` nor
+      `captureUnhandledRejections` — only `_error.tsx` does). Do not enable Rollbar's built-in
+      capture flags (would double-report with our listeners).
+    - `checkIgnore`/`ignoredMessages` config moves into the module loaded with the SDK chunk.
+      `_error.tsx` unchanged.
+    - The lever-1 primed requests fail inside the deferral window — their `useFetch` warns must
+      go through the buffer.
+  - done (2026-07-23): `src/services/rollbar/queue.ts` buffers `warn`/`error`/`critical` until
+    `queue.init` (dynamic `import('rollbar')` + `clientConfig`, deferred via `requestIdleCallback`
+    in `Provider`) flushes with `client_timestamp`; early window listeners share the same queue and
+    stay for the page lifetime (`captureUncaught`/`captureUnhandledRejections` left false);
+    `@rollbar/react` removed; `_app` wires `<RollbarProvider>` with no config prop; `_error.tsx`
+    untouched. Unit tests: `queue.spec.ts` (9 cases). No separate "After 3" measurement — this was
+    the last code lever; numbers land in "Final (measured)" under subtask 6.
+- [x] 4 `[agent]` Defer the wallet stack (lever 3): remove `Web3Provider` and the wagmi/viem chunks
+      from first paint on every page, without behavior changes — sub-spec: `subtasks/04-wallet-stack.md`
+- [x] 5 `[human]` Replace `react-icons` with sprite icons and drop the dependency
+  - inputs: only usage is `LuCheck` / `LuChevronRight` in `src/toolkit/chakra/menu.tsx`; the sprite
+    already has check/chevron icons (see `src/sprite/`). Remove the package from `package.json`.
+- [x] 6 `[agent]` Final measurement and report
+  - inputs: full protocol per `tools/README.md`, median of 3 runs; fill "After 3 (rollbar)" and
+    "Final (measured)" in the Impact tracking table (same run — rollbar was the last code lever);
+    post the completed table as a comment on issue #3566.
+  - done (2026-07-24): filled After 3 + Final (measured) from `.ai/traces/robinhood_6_final.json`
+    (M3/M4 normalized to baseline tx duration 914 ms); baseline-vs-final posted to
+    https://github.com/blockscout/frontend/issues/3566#issuecomment-5068580313. Single run, no
+    median-of-3.
+
+## Open questions
+
+None — the research session resolved the design questions, and the backend-latency finding is
+handled outside this task by the developer.

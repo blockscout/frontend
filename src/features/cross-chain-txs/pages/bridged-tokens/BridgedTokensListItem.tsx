@@ -24,6 +24,7 @@ interface Props {
 }
 
 const BridgedTokensListItem = ({ data, tokenInfo, chainInfo, index, page, isLoading }: Props) => {
+
   const tokenModel = React.useMemo(() => {
     if (!tokenInfo) {
       return;

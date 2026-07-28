@@ -3,10 +3,10 @@
 import * as descriptors from './policies';
 import { makePolicyString, mergeDescriptors } from './utils';
 
-function generateCspPolicy(isPrivateMode = false, nonce?: string) {
+function generateCspPolicy(isPrivateMode = false, nonce?: string, primerScriptHashes?: Array<string>) {
   const policyDescriptor = mergeDescriptors(
     descriptors.addressProfileApi(),
-    descriptors.app(isPrivateMode),
+    descriptors.app(isPrivateMode, primerScriptHashes),
     descriptors.ads(isPrivateMode, nonce),
     descriptors.connectWallet(isPrivateMode),
     descriptors.cloudFlare(isPrivateMode),

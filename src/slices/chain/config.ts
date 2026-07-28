@@ -56,6 +56,7 @@ const chain = Object.freeze({
   },
   rpcUrls,
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
+  isProApiSupported: getEnvValue('NEXT_PUBLIC_PRO_API_SUPPORTED') === 'true',
   verificationType,
   indexingStatus: {
     blocks: {

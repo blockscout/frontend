@@ -6,16 +6,21 @@ import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TxAuthorizationsTableItem from './TxAuthorizationsTableItem';
 
 interface Props {
-  data: Array<schemas['SignedAuthorization']> | undefined;
+  data: Array<schemas['SignedAuthorization']>;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const TxAuthorizationsTable = ({ data, isLoading }: Props) => {
+const TxAuthorizationsTable = ({ data, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
   return (
     <AddressHighlightProvider>
       <TableRoot>
@@ -29,9 +34,14 @@ const TxAuthorizationsTable = ({ data, isLoading }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { data?.map((item, index) => (
-            <TxAuthorizationsTableItem key={ item.nonce.toString() + (isLoading ? index : '') } data={ item } isLoading={ isLoading }/>
+          { data.slice(0, renderedItemsNum).map((item, index) => (
+            <TxAuthorizationsTableItem
+              key={ item.nonce.toString() + (isLoading ? index : '') }
+              data={ item }
+              isLoading={ isLoading }
+            />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

@@ -51,6 +51,7 @@ const TxsWithFrontendSorting = ({
       setSorting={ setSortByValue }
       sort={ sorting }
       pagination={ query.pagination }
+      resetKey={ query.queryHash }
     />
   );
 };

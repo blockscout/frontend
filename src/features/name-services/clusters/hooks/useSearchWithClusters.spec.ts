@@ -7,6 +7,8 @@ import useApiFetch from 'src/api/hooks/useApiFetch';
 
 import useQuickSearchQuery from 'src/slices/search/hooks/useQuickSearchQuery';
 
+import type appConfig from 'src/config';
+
 import type { Mock } from 'vitest';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from 'vitest/lib';
@@ -60,15 +62,14 @@ const defaultUseQueryResult: Partial<UseQueryResult> = {
   isPaused: false,
 };
 
-vi.mock('src/config', () => {
+vi.mock('src/config', async(importOriginal) => {
+  const original = await importOriginal<{ 'default': typeof appConfig }>();
+
   return {
     'default': {
-      UI: {
-        colorTheme: {},
-        homepage: {},
-        fonts: {},
-      },
+      ...original.default,
       features: {
+        ...original.default.features,
         nameServices: {
           isEnabled: true,
           ens: { isEnabled: true },
