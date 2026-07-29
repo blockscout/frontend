@@ -3,8 +3,10 @@
 import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal, useControllableState } from '@chakra-ui/react';
 import { CalendarDate, CalendarDateTime } from '@internationalized/date';
+import { padStart } from 'es-toolkit/compat';
 import React from 'react';
 
+// TODO @tom2drum remove dayjs as dependency
 import dayjs from 'src/shared/date-and-time/dayjs';
 import ArrowIcon from 'src/sprite/icons/arrows/east-mini.svg';
 import CalendarIcon from 'src/sprite/icons/calendar.svg';
@@ -80,7 +82,16 @@ interface DatePickerProps extends ChakraDatePicker.RootProps {
   withTime?: boolean;
 }
 
-export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultValue, onValueChange: onValueChangeProp, ...rest }: DatePickerProps) => {
+export const DatePicker = ({
+  placeholder,
+  withTime,
+  value: valueProp,
+  defaultValue,
+  onValueChange: onValueChangeProp,
+  min,
+  max,
+  ...rest
+}: DatePickerProps) => {
 
   const onValueChange = React.useCallback((value: Array<DateValue> | undefined) => {
     onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(format) ?? [], view: 'day' });
@@ -107,11 +118,11 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
     });
   }, [ setValue ]);
 
-  const handleTimeChange = React.useCallback((time: string) => {
-    const [ hours, minutes ] = time.split(':');
+  const handleTimeChange = React.useCallback((time: string | undefined) => {
+    const [ hours, minutes ] = time?.split(':') ?? [];
     setValue((prev) => {
       const current = prev?.[0] ?? getDefaultDateValue();
-      return [ current.set({ hour: Number(hours ?? '00'), minute: Number(minutes ?? '00') }) ];
+      return [ current.set({ hour: Number(hours ?? 0), minute: Number(minutes ?? 0) }) ];
     });
   }, [ setValue ]);
 
@@ -129,13 +140,15 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
   return (
     <ChakraDatePicker.Root
       openOnClick
-      closeOnSelect
+      closeOnSelect={ !withTime }
       lazyMount
       unmountOnExit
       format={ withTime ? formatWithTime : format }
       parse={ withTime ? parseWithTime : parse }
       value={ value }
       onValueChange={ handleDateChange }
+      min={ min }
+      max={ max }
       { ...rest }
       positioning={ positioning }
     >
@@ -190,14 +203,31 @@ export const DatePicker = ({ placeholder, withTime, value: valueProp, defaultVal
                 { view === 'day' && (
                   <>
                     <ChakraDatePicker.DayTable/>
-                    { withTime && (
-                      <TimePicker
-                        bgColor="dialog.bg"
-                        value={ value?.[0] ? getTime(value?.[0]) : undefined }
-                        onChange={ handleTimeChange }
-                        mt={ -2 }
-                      />
-                    ) }
+                    { withTime && (() => {
+
+                      const minTime = min && 'hour' in min ?
+                        `${ padStart(min.hour.toString(), 2, '0') }:${ padStart(min.minute.toString(), 2, '0') }` :
+                        undefined;
+
+                      const maxTime = max && 'hour' in max ?
+                        `${ padStart(max.hour.toString(), 2, '0') }:${ padStart(max.minute.toString(), 2, '0') }` :
+                        undefined;
+
+                      const currentDate = value?.[0];
+                      const isMinDay = currentDate && min && currentDate.year === min.year && currentDate.month === min.month && currentDate.day === min.day;
+                      const isMaxDay = currentDate && max && currentDate.year === max.year && currentDate.month === max.month && currentDate.day === max.day;
+
+                      return (
+                        <TimePicker
+                          bgColor="dialog.bg"
+                          value={ currentDate ? getTime(currentDate) : undefined }
+                          min={ isMinDay ? minTime : undefined }
+                          max={ isMaxDay ? maxTime : undefined }
+                          onChange={ handleTimeChange }
+                          disabled={ !currentDate }
+                        />
+                      );
+                    })() }
                   </>
                 ) }
                 { view === 'month' && <ChakraDatePicker.MonthTable/> }

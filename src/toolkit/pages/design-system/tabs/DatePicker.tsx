@@ -2,9 +2,11 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { Text } from '@chakra-ui/react';
+import { parseAbsolute } from '@internationalized/date';
 import React from 'react';
 
 import { DatePicker } from 'src/toolkit/chakra/date-picker';
+import { DAY, HOUR, MINUTE } from 'src/toolkit/utils/consts';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
 
@@ -16,6 +18,8 @@ const DatePickerShowcase = () => {
     setValue(details.value);
   }, [ setValue ]);
 
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   return (
     <Container value="date-picker">
       <Section>
@@ -23,6 +27,26 @@ const DatePickerShowcase = () => {
         <SamplesStack >
           <Sample label="variant: outline">
             <DatePicker placeholder="Select date" w="300px"/>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
+        <SectionHeader>Min and max date</SectionHeader>
+        <SamplesStack >
+          <Sample label="min: 10d ago; max: new Date()">
+            <DatePicker
+              w="300px"
+              min={ parseAbsolute(new Date(Date.now() - 10 * DAY).toISOString(), timeZone) }
+              max={ parseAbsolute(new Date().toISOString(), timeZone) }
+            />
+          </Sample>
+          <Sample label="min: 10d ago + 1h:42m; max: Date.now()">
+            <DatePicker
+              w="300px"
+              min={ parseAbsolute(new Date(Date.now() - 10 * DAY + HOUR + 42 * MINUTE).toISOString(), timeZone) }
+              max={ parseAbsolute(new Date().toISOString(), timeZone) }
+              withTime
+            />
           </Sample>
         </SamplesStack>
       </Section>

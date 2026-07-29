@@ -2,7 +2,7 @@
 
 import type { JsxStyleProps } from '@chakra-ui/react';
 import { HStack, Icon, VStack, useControllableState } from '@chakra-ui/react';
-import { clamp, range } from 'es-toolkit';
+import { clamp, delay, range } from 'es-toolkit';
 import { padStart } from 'es-toolkit/compat';
 import React from 'react';
 
@@ -134,12 +134,13 @@ const TimePickerItemButton = React.forwardRef<HTMLButtonElement, TimePickerItemB
 export interface TimePickerProps extends JsxStyleProps {
   value?: string;
   defaultValue?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: string | undefined) => void;
   min?: string;
   max?: string;
+  disabled?: boolean;
 }
 
-export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }: TimePickerProps) => {
+export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, ...rest }: TimePickerProps) => {
 
   const hoursContainerRef = React.useRef<HTMLDivElement>(null);
   const minutesContainerRef = React.useRef<HTMLDivElement>(null);
@@ -149,7 +150,7 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
 
   const onHoursChange = React.useCallback((hours: number | undefined) => {
     const [ , minutes ] = value?.split(':') ?? [];
-    onChange?.(hours ? formatValue(hours, Number(minutes ?? 0)) : '');
+    onChange?.(hours !== undefined ? formatValue(hours, Number(minutes ?? 0)) : undefined);
   }, [ value, onChange ]);
 
   const [ hours, setHours ] = useControllableState<number | undefined>({
@@ -160,7 +161,7 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
 
   const onMinutesChange = React.useCallback((minutes: number | undefined) => {
     const [ hours ] = value?.split(':') ?? [];
-    onChange?.(minutes ? formatValue(Number(hours ?? 0), minutes) : '');
+    onChange?.(minutes !== undefined ? formatValue(Number(hours ?? 0), minutes) : undefined);
   }, [ value, onChange ]);
 
   const [ minutes, setMinutes ] = useControllableState<number | undefined>({
@@ -180,7 +181,7 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
     });
   }, []);
 
-  const handleHoursClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleHoursClick = React.useCallback(async(event: React.MouseEvent<HTMLButtonElement>) => {
     const button = event.currentTarget as HTMLButtonElement;
     const newValue = Number(button.dataset.value);
     if (Number.isNaN(newValue)) {
@@ -200,6 +201,8 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
       type: 'minutes',
       timeValue: { hours: newValue, minutes }, limits,
     })) {
+      // FIXME: subsequent set state will override the previous one where we set hours
+      await delay(0);
       setMinutes(defaultValueMinutes);
       scrollToItem(undefined, defaultValueMinutes, 'smooth');
     }
@@ -222,11 +225,14 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
     });
   }, [ limits, scrollToItem, setHours, setMinutes ]);
 
-  const handleClear = React.useCallback(() => {
+  const handleClear = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
     setHours(undefined);
     setMinutes(undefined);
-    onChange?.('');
-  }, [ setHours, setMinutes, onChange ]);
+    scrollToItem(0, 0);
+  }, [ setHours, setMinutes, scrollToItem ]);
+
+  const timeValue = React.useMemo(() => ({ hours, minutes }), [ hours, minutes ]);
 
   React.useEffect(() => {
     if (!open) {
@@ -242,16 +248,31 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ open ]);
 
+  React.useEffect(() => {
+    if (limits) {
+      if (
+        (timeValue.hours && !isInLimits({ value: timeValue.hours, type: 'hours', timeValue, limits })) ||
+        (timeValue.minutes && !isInLimits({ value: timeValue.minutes, type: 'minutes', timeValue, limits }))
+      ) {
+        setHours(undefined);
+        setMinutes(undefined);
+        scrollToItem(0, 0);
+      }
+    }
+  }, [ limits, timeValue, setHours, setMinutes, scrollToItem ]);
+
   const endElement = (
     <HStack mr={ 2 } gap={ 1 }>
-      { (hours !== undefined || minutes !== undefined) && (
-        <CloseButton onClick={ handleClear } color="icon.primary" _hover={{ color: 'hover' }} iconProps={{ p: '1px' }}/>
-      ) }
+      <CloseButton
+        onClick={ handleClear }
+        opacity={ hours !== undefined || minutes !== undefined ? 1 : 0 }
+        color="icon.primary"
+        _hover={{ color: 'hover' }}
+        iconProps={{ p: '1px' }}
+      />
       <Icon boxSize={ 5 } p="3px" color="icon.primary" _hover={{ color: 'hover' }}><ClockIcon/></Icon>
     </HStack>
   );
-
-  const timeValue = { hours, minutes };
 
   return (
     <PopoverRoot
@@ -266,7 +287,8 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, ...rest }:
           <Input
             placeholder="Select time"
             size="sm"
-            value={ hours && minutes ? formatValue(hours, minutes) : '' }
+            value={ hours !== undefined && minutes !== undefined ? formatValue(hours, minutes) : '' }
+            disabled={ disabled }
             { ...rest }
           />
         </InputGroup>
