@@ -101,14 +101,27 @@ jobs:
                     docker-arm-host: ${{ secrets.ARM_RUNNER_HOSTNAME }}
                     docker-arm-host-key: ${{ secrets.ARM_RUNNER_KEY }}
 
+            # The registry cache exporter REPLACES the manifest at its tag rather than
+            # merging into it, so a single shared tag would let an amd64-only build
+            # (review/pre-release/main) wipe the arm64 records written by a release
+            # build. Scope the tag by platform set instead. Sorted + whitespace-stripped
+            # so the tag does not depend on how the input happens to be spelled.
+            -   name: Compute build cache tag
+                id: cache-tag
+                env:
+                    PLATFORMS: ${{ inputs.platforms }}
+                run: |
+                    slug=$(echo "$PLATFORMS" | tr -d '[:space:]' | tr ',' '\n' | grep -v '^$' | sort | tr '/' '-' | paste -sd '_' -)
+                    echo "tag=buildcache-${slug:-default}" >> "$GITHUB_OUTPUT"
+
             -   name: Build and push
                 uses: docker/build-push-action@v5
                 with:
                     context: .
                     file: ./Dockerfile
                     push: true
-                    cache-from: type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache
-                    cache-to: type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache,mode=max,image-manifest=true,oci-mediatypes=true,ignore-error=true
+                    cache-from: type=registry,ref=${{ steps.image-name.outputs.image-name }}:${{ steps.cache-tag.outputs.tag }}
+                    cache-to: type=registry,ref=${{ steps.image-name.outputs.image-name }}:${{ steps.cache-tag.outputs.tag }},mode=max,image-manifest=true,oci-mediatypes=true,ignore-error=true
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
