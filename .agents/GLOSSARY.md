@@ -7,7 +7,7 @@ disambiguation between easily-confused terms, etymology, and scope. Folder
 paths and env var names are intentionally **not** listed — paths follow
 predictably from feature names (`src/features/<kebab-case-name>/`), and env
 vars are documented in `docs/ENVS.md`. Architectural concepts like
-**slice** and **feature** are defined in `.agents/rules/architecture.mdc`.
+**slice** and **feature** are defined in `.agents/rules/architecture.md`.
 
 **Kinds** in the table below:
 

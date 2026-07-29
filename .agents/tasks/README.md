@@ -55,7 +55,7 @@ spec's breakdown carries only the done checkbox and a link to each subtask folde
 
 ## Supporting files
 
-- `.agents/rules/delegation.mdc` — the living agent/human boundary (incl. the scaffold → style split for UI
+- `.agents/delegation.md` — the living agent/human boundary (incl. the scaffold → style split for UI
   work and the standing testing policy). Loosen it via PR as the repo gets more agent-friendly.
 - `.agents/TEAM.md` — the team roster (members + Slack IDs); the grilling session picks one contact per
   team for the task and records the picks in the spec header.

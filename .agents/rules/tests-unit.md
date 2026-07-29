@@ -1,6 +1,8 @@
 ---
 description: Vitest unit tests — purpose, setup, utilities, and conventions
-globs: "*.spec.ts,*.spec.tsx"
+paths:
+  - "**/*.spec.{ts,tsx}"
+globs: "**/*.spec.ts,**/*.spec.tsx"
 alwaysApply: false
 ---
 # Unit Tests (Vitest)
