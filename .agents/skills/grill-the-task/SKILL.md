@@ -81,7 +81,9 @@ recommended answer, decisions put to the developer while facts are looked up, an
 until shared understanding is confirmed. Skip anything the research already answered.
 
 **Start by picking the task's contacts**: for each relevant team in `.agents/TEAM.md`, ask which member
-owns this task (recommending the roster's default) — these go into the spec header. Don't ask what can be
+owns this task, recommending the roster's `default` — and record that default whenever the developer has no
+task-specific pick. These go into the spec header, and `to-spec` routes each open question to the contact
+that owns it. Don't ask what can be
 inferred: when the issue's author maps to a roster member of the relevant team (match the GitHub handle in
 `.agents/TEAM.md`), record them as that team's contact without asking — the PM slot in particular is
 usually just the task's author. Ask about a **dedicated Slack channel** only for **large** tasks — big
