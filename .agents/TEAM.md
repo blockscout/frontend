@@ -1,9 +1,8 @@
 # Team roster for product tasks
 
-The teams involved in product tasks, with the members an agent may need to reach. Teams have several
-people — during a grilling session (`grill-the-task`) the developer picks **one contact per relevant team
-for the task**; the picks are recorded in the spec header and open questions are routed to those contacts.
-The member marked **default** is the fallback when the developer has no task-specific pick.
+The teams involved in product tasks, the members an agent may need to reach, and their addresses in Slack.
+A registry only — who gets asked what, and where, belongs to the skills that read it (`grill-the-task`,
+`to-spec`). The `default` marker in a team's table flags that team's fallback member.
 
 Slack **member IDs** are stored deliberately so routing is deterministic (no runtime name lookup). They are
 workspace-scoped identifiers, not credentials — knowing one grants no access. To find yours in Slack:
@@ -30,12 +29,25 @@ Own: mockups, missing screens/states, visual decisions.
 
 Own: API endpoints, response models, field propagation across services, backend release schedule.
 
+### People
+
 | Name | GitHub | Slack member ID | Focus | |
 | --- | --- | --- | --- | --- |
 | Victor | @vbaranov | U8L403FEG | Core API | default |
 | Nikita P. | @nikitosing | U0218K3MTC5 | Core API |  |
 | Leonid | @lok52 | U01KDJWBCV7 | Microservices API | default |
-| Evgenii | @EvgenKor | U026N2LB01E | Microservices API: Intercahin Indexer, TAC | |
+| Evgenii | @EvgenKor | U026N2LB01E | Microservices API: Interchain Indexer, TAC | |
+
+### Groups
+
+Slack **group IDs** start with `S`, and a group is addressed by ID rather than by handle:
+`<!subteam^SXXXXXXXX>`. To find one: the group's page in the workspace's user-group settings — its URL ends
+with the ID.
+
+| Team | Slack group ID |
+| --- | --- |
+| Core API | S064H6TD6MA |
+| Microservices API | S064073HASK |
 
 ## Frontend
 
@@ -47,11 +59,6 @@ Own: architecture, the delegation boundary.
 | Max | @maxaleks | UKP0RR9K9 | | default |
 
 ## Slack channels
-
-Product questions are asked **in a channel, not a DM**, so other teams (QA in particular) see the answers.
-The default is the frontend channel below; a large feature may have its own dedicated channel — recorded in
-the task's spec header — and then **all** of that task's questions go there. Channel posts always mention
-the addressee by member ID.
 
 | Purpose | Channel | Channel ID |
 | --- | --- | --- |
