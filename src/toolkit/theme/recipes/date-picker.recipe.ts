@@ -2,6 +2,8 @@
 
 import { defineSlotRecipe, defineStyle } from '@chakra-ui/react';
 
+import { recipe as inputRecipe } from './input.recipe';
+
 // PrevTrigger, NextTrigger
 const navTriggerStyle = defineStyle({
   display: 'inline-flex',
@@ -86,15 +88,17 @@ export const recipe = defineSlotRecipe({
       '--input-height': 'var(--datepicker-input-height)',
       px: 'var(--datepicker-input-px)',
       textStyle: 'sm',
-      bg: 'input.bg',
       borderRadius: 'base',
       outline: '0',
       appearance: 'none',
-      color: 'input.fg',
       fontWeight: '500',
-      '--error-color': 'input.border.error',
-      _invalid: {
-        borderColor: 'var(--error-color)',
+      _readOnly: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+      },
+      _disabled: {
+        cursor: 'not-allowed',
       },
     },
 
@@ -109,6 +113,16 @@ export const recipe = defineSlotRecipe({
       outline: 'none',
       _hover: {
         color: 'hover',
+      },
+      _disabled: {
+        cursor: 'not-allowed',
+      },
+      _readOnly: {
+        cursor: 'not-allowed',
+        _hover: {
+          color: 'icon.primary',
+          pointerEvents: 'none',
+        },
       },
     },
 
@@ -268,6 +282,9 @@ export const recipe = defineSlotRecipe({
       _hover: {
         color: 'hover',
       },
+      _disabled: {
+        cursor: 'not-allowed',
+      },
     },
   },
 
@@ -301,12 +318,7 @@ export const recipe = defineSlotRecipe({
 
     variant: {
       outline: {
-        input: {
-          bg: 'input.bg',
-          borderWidth: '2px',
-          borderColor: 'input.border.filled',
-          focusVisibleRing: 'none',
-        },
+        input: inputRecipe.variants?.variant.outline,
       },
     },
 

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { JsxStyleProps } from '@chakra-ui/react';
 import { HStack, Icon, VStack, useControllableState } from '@chakra-ui/react';
 import { clamp, delay, range } from 'es-toolkit';
 import { padStart } from 'es-toolkit/compat';
@@ -12,6 +11,9 @@ import { useDisclosure } from '../hooks/useDisclosure';
 import type { ButtonProps } from './button';
 import { Button } from './button';
 import { CloseButton } from './close-button';
+import type { FieldProps } from './field';
+import { Field } from './field';
+import type { InputProps } from './input';
 import { Input } from './input';
 import { InputGroup } from './input-group';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from './popover';
@@ -131,16 +133,16 @@ const TimePickerItemButton = React.forwardRef<HTMLButtonElement, TimePickerItemB
   );
 });
 
-export interface TimePickerProps extends JsxStyleProps {
+export interface TimePickerProps extends Omit<FieldProps, 'children'> {
   value?: string;
   defaultValue?: string;
-  onChange?: (value: string | undefined) => void;
+  onValueChange?: (value: string | undefined) => void;
+  inputProps?: InputProps;
   min?: string;
   max?: string;
-  disabled?: boolean;
 }
 
-export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, ...rest }: TimePickerProps) => {
+export const TimePicker = ({ value, defaultValue, onValueChange, min, max, disabled, inputProps, readOnly, ...rest }: TimePickerProps) => {
 
   const hoursContainerRef = React.useRef<HTMLDivElement>(null);
   const minutesContainerRef = React.useRef<HTMLDivElement>(null);
@@ -150,8 +152,8 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, 
 
   const onHoursChange = React.useCallback((hours: number | undefined) => {
     const [ , minutes ] = value?.split(':') ?? [];
-    onChange?.(hours !== undefined ? formatValue(hours, Number(minutes ?? 0)) : undefined);
-  }, [ value, onChange ]);
+    onValueChange?.(hours !== undefined ? formatValue(hours, Number(minutes ?? 0)) : undefined);
+  }, [ value, onValueChange ]);
 
   const [ hours, setHours ] = useControllableState<number | undefined>({
     value: value?.split(':')[0] ? Number(value.split(':')[0]) : undefined,
@@ -161,8 +163,8 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, 
 
   const onMinutesChange = React.useCallback((minutes: number | undefined) => {
     const [ hours ] = value?.split(':') ?? [];
-    onChange?.(minutes !== undefined ? formatValue(Number(hours ?? 0), minutes) : undefined);
-  }, [ value, onChange ]);
+    onValueChange?.(minutes !== undefined ? formatValue(Number(hours ?? 0), minutes) : undefined);
+  }, [ value, onValueChange ]);
 
   const [ minutes, setMinutes ] = useControllableState<number | undefined>({
     value: value?.split(':')[1] ? Number(value.split(':')[1]) : undefined,
@@ -263,14 +265,25 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, 
 
   const endElement = (
     <HStack mr={ 2 } gap={ 1 }>
-      <CloseButton
-        onClick={ handleClear }
-        opacity={ hours !== undefined || minutes !== undefined ? 1 : 0 }
+      { !readOnly && (
+        <CloseButton
+          onClick={ handleClear }
+          opacity={ hours !== undefined || minutes !== undefined ? 1 : 0 }
+          color="icon.primary"
+          _hover={{ color: 'hover' }}
+          iconProps={{ p: '1px' }}
+          disabled={ disabled }
+        />
+      ) }
+      <Icon
+        boxSize={ 5 }
+        p="3px"
         color="icon.primary"
-        _hover={{ color: 'hover' }}
-        iconProps={{ p: '1px' }}
-      />
-      <Icon boxSize={ 5 } p="3px" color="icon.primary" _hover={{ color: 'hover' }}><ClockIcon/></Icon>
+        cursor={ disabled || readOnly ? 'not-allowed' : 'pointer' }
+        _hover={{ color: disabled || readOnly ? 'icon.primary' : 'hover' }}
+      >
+        <ClockIcon/>
+      </Icon>
     </HStack>
   );
 
@@ -279,19 +292,20 @@ export const TimePicker = ({ value, defaultValue, onChange, min, max, disabled, 
       positioning={{ sameWidth: true }}
       lazyMount={ false }
       unmountOnExit={ false }
-      onOpenChange={ onOpenChange }
-      open={ open }
+      onOpenChange={ !disabled && !readOnly ? onOpenChange : undefined }
+      open={ !disabled && !readOnly && open }
     >
       <PopoverTrigger asChild>
-        <InputGroup endElement={ endElement }>
-          <Input
-            placeholder="Select time"
-            size="sm"
-            value={ hours !== undefined && minutes !== undefined ? formatValue(hours, minutes) : '' }
-            disabled={ disabled }
-            { ...rest }
-          />
-        </InputGroup>
+        <Field readOnly={ readOnly } disabled={ disabled } { ...rest }>
+          <InputGroup endElement={ endElement } >
+            <Input
+              placeholder="Select time"
+              size="sm"
+              value={ hours !== undefined && minutes !== undefined ? formatValue(hours, minutes) : '' }
+              { ...inputProps }
+            />
+          </InputGroup>
+        </Field>
       </PopoverTrigger>
       <PopoverContent borderRadius="base" w="100%" >
         <PopoverBody>

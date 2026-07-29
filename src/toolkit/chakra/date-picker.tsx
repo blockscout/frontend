@@ -80,6 +80,7 @@ const getDefaultDateValue = (isToday?: boolean): DateValue => {
 
 interface DatePickerProps extends ChakraDatePicker.RootProps {
   withTime?: boolean;
+  errorText?: string;
 }
 
 export const DatePicker = ({
@@ -90,6 +91,11 @@ export const DatePicker = ({
   onValueChange: onValueChangeProp,
   min,
   max,
+  disabled,
+  readOnly,
+  invalid,
+  errorText,
+  required,
   ...rest
 }: DatePickerProps) => {
 
@@ -149,6 +155,9 @@ export const DatePicker = ({
       onValueChange={ handleDateChange }
       min={ min }
       max={ max }
+      disabled={ disabled }
+      invalid={ invalid }
+      required={ required }
       { ...rest }
       positioning={ positioning }
     >
@@ -159,12 +168,15 @@ export const DatePicker = ({
 
             const endElement = (
               <HStack>
-                { isFilled && (
-                  <ChakraDatePicker.ClearTrigger asChild>
+                { isFilled && !readOnly && (
+                  <ChakraDatePicker.ClearTrigger asChild disabled={ disabled }>
                     <CloseButton/>
                   </ChakraDatePicker.ClearTrigger>
                 ) }
-                <ChakraDatePicker.Trigger>
+                <ChakraDatePicker.Trigger
+                  disabled={ disabled }
+                  { ...(readOnly ? { 'data-readOnly': true } : {}) }
+                >
                   <Icon boxSize={ 6 }><CalendarIcon/></Icon>
                 </ChakraDatePicker.Trigger>
               </HStack>
@@ -175,6 +187,10 @@ export const DatePicker = ({
                 label={ placeholder ?? 'Date' }
                 floating
                 size="lg"
+                readOnly={ readOnly }
+                invalid={ invalid }
+                errorText={ errorText }
+                required={ required }
               >
                 <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
                   <ChakraDatePicker.Input/>
@@ -219,12 +235,12 @@ export const DatePicker = ({
 
                       return (
                         <TimePicker
-                          bgColor="dialog.bg"
                           value={ currentDate ? getTime(currentDate) : undefined }
                           min={ isMinDay ? minTime : undefined }
                           max={ isMaxDay ? maxTime : undefined }
-                          onChange={ handleTimeChange }
+                          onValueChange={ handleTimeChange }
                           disabled={ !currentDate }
+                          inputProps={{ bgColor: 'dialog.bg' }}
                         />
                       );
                     })() }

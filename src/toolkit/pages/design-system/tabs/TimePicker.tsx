@@ -14,7 +14,10 @@ const TimePickerShowcase = () => {
         <SectionHeader>Variants</SectionHeader>
         <SamplesStack >
           <Sample label="default">
-            <TimePicker w="300px"/>
+            <TimePicker w="200px"/>
+            <TimePicker w="200px" value="12:00" disabled/>
+            <TimePicker w="200px" value="12:00" readOnly/>
+            <TimePicker w="200px" value="12:00" invalid/>
           </Sample>
         </SamplesStack>
       </Section>
@@ -22,7 +25,7 @@ const TimePickerShowcase = () => {
         <SectionHeader>Min and max time</SectionHeader>
         <SamplesStack >
           <Sample label="min: 03:45; max: 21:13">
-            <TimePicker min="03:45" max="21:13"/>
+            <TimePicker min="03:45" max="21:13" required/>
           </Sample>
         </SamplesStack>
       </Section>

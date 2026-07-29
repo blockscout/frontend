@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { DateValue } from '@chakra-ui/react';
-import { Text } from '@chakra-ui/react';
+import { parseDate, Text } from '@chakra-ui/react';
 import { parseAbsolute } from '@internationalized/date';
 import React from 'react';
 
@@ -27,6 +27,9 @@ const DatePickerShowcase = () => {
         <SamplesStack >
           <Sample label="variant: outline">
             <DatePicker placeholder="Select date" w="300px"/>
+            <DatePicker placeholder="Select date (disabled)" w="300px" value={ [ parseDate('2022-11-11') ] } disabled/>
+            <DatePicker placeholder="Select date (readOnly)" w="300px" readOnly/>
+            <DatePicker placeholder="Select date (invalid)" w="300px" value={ [ parseDate('2022-11-11') ] } required invalid errorText="Error"/>
           </Sample>
         </SamplesStack>
       </Section>
