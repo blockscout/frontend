@@ -102,9 +102,9 @@ jobs:
                     docker-arm-host-key: ${{ secrets.ARM_RUNNER_KEY }}
 
             # The registry cache exporter REPLACES the manifest at its tag rather than
-            # merging into it, so a single shared tag would let an amd64-only build
-            # (review/pre-release/main) wipe the arm64 records written by a release
-            # build. Scope the tag by platform set instead. Sorted + whitespace-stripped
+            # merging into it, so a single shared tag would let any of the amd64-only
+            # callers wipe the arm64 records written by a release build (only releases
+            # build arm64). Scope the tag by platform set. Sorted + whitespace-stripped
             # so the tag does not depend on how the input happens to be spelled.
             # Fails hard rather than falling back to a fixed tag: a shared fallback would
             # silently reintroduce the very clobbering this step prevents, and
@@ -125,9 +125,9 @@ jobs:
                     context: .
                     file: ./Dockerfile
                     push: true
-                    # Also read the amd64-only cache: it is warmed by every review /
-                    # pre-release / main build, so a multi-arch release gets its amd64
-                    # half for free. Redundant (same ref twice) for amd64-only callers.
+                    # Also read the amd64-only cache, kept warm by the four amd64
+                    # callers, so a multi-arch release gets its amd64 half for free.
+                    # Redundant (same ref twice) for those amd64-only callers.
                     cache-from: |
                         type=registry,ref=${{ steps.image-name.outputs.image-name }}:${{ steps.cache-tag.outputs.tag }}
                         type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache-linux-amd64
