@@ -57,7 +57,7 @@ detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`:
   - [ ] 2 `[human]` <plain-language subtask title> → `subtasks/02-<slug>/`
 
 LEAF worklist (a small task's single spec.md, or the breakdown inside a subtask spec) = the actual
-steps. Tag each `[agent]`/`[human]` per `.agents/rules/delegation.mdc`; reference the executing skill;
+steps. Tag each `[agent]`/`[human]` per `.agents/delegation.md`; reference the executing skill;
 list blocking question ids (the step may not start while any is `pending`); and record the executor
 skill's interview answers as an indented `inputs:` list, so `implement-task` never stops to ask. A UI
 component is two linked leaves (scaffold → style). Keep each completion note to ONE line — no changelog

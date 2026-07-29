@@ -1,41 +1,11 @@
 ---
 description: TypeScript conventions for the Blockscout frontend
-globs: *.tsx,*.ts
+paths:
+  - "**/*.{ts,tsx}"
+globs: "**/*.ts,**/*.tsx"
 alwaysApply: false
 ---
 # TypeScript Usage
-
-- Use TypeScript for all code
-- Prefer interfaces over types
-- Implement proper type safety and inference
-
-
-## Import types
-
-Use import type whenever you are importing a type.
-
-Prefer top-level `import type` over inline `import { type ... }`.
-
-```ts
-// BAD
-import { type User } from "./user";
-```
-
-```ts
-// GOOD
-import type { User } from "./user";
-```
-
-The reason for this is that in certain environments, the first version's import will not be erased. So you'll be left with:
-
-```ts
-// Before transpilation
-import { type User } from "./user";
-
-// After transpilation
-import "./user";
-```
-
 
 ## "any" inside generic function
 
@@ -98,41 +68,26 @@ function process(value: unknown) {
 
 ## Default exports
 
-Unless explicitly required by the framework, do not use default exports.
+**React components are exported as default** — that is the established convention here (the overwhelming
+majority of `.tsx` files in `src/` do this), and Next.js requires it for `src/pages/` files. The only
+exception is the `src/toolkit/` where we follow Chakra UI convention of named exports for components.
 
-```ts
-// BAD
-export default function myFunction() {
-  return <div>Hello</div>;
-}
-```
-
-```ts
+```tsx
 // GOOD
-export function myFunction() {
+export default function MyPage() {
   return <div>Hello</div>;
 }
 ```
 
-Default exports create confusion from the importing file.
+**Everything else is a named export** — hooks, utils, types, constants. A named export keeps the imported
+name honest and easy to search for:
 
 ```ts
 // BAD
 import myFunction from "./myFunction";
-```
 
-```ts
 // GOOD
 import { myFunction } from "./myFunction";
-```
-
-There are certain situations where a framework may require a default export. For instance, Next.js requires a default export for pages.
-
-```tsx
-// This is fine, if required by the framework
-export default function MyPage() {
-  return <div>Hello</div>;
-}
 ```
 
 
@@ -211,33 +166,6 @@ type UpperCaseEnum =
   (typeof backendToFrontendEnum)[LowerCaseEnum]; // "EXTRA_SMALL" | "SMALL" | "MEDIUM"
 ```
 
-Remember that numeric enums behave differently to string enums. Numeric enums produce a reverse mapping:
-
-```ts
-enum Direction {
-  Up,
-  Down,
-  Left,
-  Right,
-}
-
-const direction = Direction.Up; // 0
-const directionName = Direction[0]; // "Up"
-```
-
-This means that the enum `Direction` above will have eight keys instead of four.
-
-```ts
-enum Direction {
-  Up,
-  Down,
-  Left,
-  Right,
-}
-
-Object.keys(Direction).length; // 8
-```
-
 
 ## Interface extends
 
@@ -299,37 +227,12 @@ const add = (a: number, b: number) => a + b;
 
 ## Naming conventions
 
-- Use kebab-case for file names (e.g., `my-component.ts`)
-- Use camelCase for variables and function names (e.g., `myVariable`, `myFunction()`)
-- Use UpperCamelCase (PascalCase) for classes, types, and interfaces (e.g., `MyClass`, `MyInterface`)
-- Use ALL_CAPS for constants and enum values (e.g., `MAX_COUNT`, `Color.RED`)
-- Inside generic types, functions or classes, prefix type parameters with `T` (e.g., `TKey`, `TValue`)
+Casing is enforced by `@typescript-eslint/naming-convention`. The one convention it does *not* check:
+prefix type parameters with `T` (e.g. `TKey`, `TValue`). File naming lives in
+`.agents/rules/architecture.md`.
 
 ```ts
 type RecordOfArrays<TItem> = Record<string, TItem[]>;
-```
-
-
-## No unchecked indexed access
-
-If the user has this rule enabled in their `tsconfig.json`, indexing into objects and arrays will behave differently from how you expect.
-
-```ts
-const obj: Record<string, string> = {};
-
-// With noUncheckedIndexedAccess, value will
-// be `string | undefined`
-// Without it, value will be `string`
-const value = obj.key;
-```
-
-```ts
-const arr: string[] = [];
-
-// With noUncheckedIndexedAccess, value will
-// be `string | undefined`
-// Without it, value will be `string`
-const value = arr[0];
 ```
 
 
@@ -461,15 +364,10 @@ if (result.ok) {
 
 ## Type assertions and satisfies
 
-Prefer `satisfies` over `as` assertions for type validation. `as` silently widens or narrows the type; `satisfies` validates without losing inference.
-
-```ts
-// BAD
-const items = response.data as MyType[];
-
-// GOOD
-const items = response.data satisfies Array<MyType>;
-```
+Prefer `satisfies` over `as` when you are declaring a value and want it checked against a type: `as`
+silently widens or narrows, `satisfies` validates without losing inference. Note that `satisfies` only
+*checks* a value that already has a compatible type — it cannot narrow an `unknown` (an unvalidated API
+response, say), so it is not a drop-in replacement for `as` there. Validate that data instead.
 
 Avoid double-cast coercions (`as unknown as MyType`). If a cast is unavoidable, add a comment explaining why it is safe:
 

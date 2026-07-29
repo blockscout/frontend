@@ -41,6 +41,8 @@
   "exclude": [
     "node_modules",
     "node_modules_linux",
+    // agent worktrees are full checkouts of the repo, with no dependencies installed of their own
+    ".claude/worktrees",
     "./deploy/tools/envs-validator",
     "./deploy/tools/favicon-generator",
     "./deploy/tools/multichain-config-generator",

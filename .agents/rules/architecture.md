@@ -1,13 +1,15 @@
 ---
 description: Project overview, tech stack, and directory layout
-globs:
-alwaysApply: true
+paths:
+  - "src/**/*"
+globs: "src/**/*"
+alwaysApply: false
 ---
 # Project Architecture
 
 ## What this is
 
-Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image; configured entirely via environment variables at runtime (see `.agents/rules/env-vars.mdc`).
+Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image; configured entirely via environment variables at runtime (see `.agents/rules/env-vars.md`).
 
 ## Tech stack
 
@@ -15,7 +17,7 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 |---|---|
 | Framework | Next.js 16 — **Pages Router only** (not App Router) |
 | UI | React 19 |
-| Component library | Chakra UI v3 (see `.agents/rules/design-system.mdc`) |
+| Component library | Chakra UI v3 (see `.agents/rules/design-system.md`) |
 | Server state | React Query 5 |
 | Web3 | Wagmi 2 / Viem 2 |
 | Schema validation | Valibot |
@@ -77,7 +79,6 @@ Both slices and features share the same internal shape: `pages/`, `components/`,
 ### Key rules
 
 - **No re-export-only barrel `index.ts` files** inside `/src`. Aggregator files that curate a genuine public surface are fine.
-- **`src/api/resources` must not have runtime imports** from `src/slices/*` or `src/features/*`; `import type` is allowed.
 - **`config.ts` and `types/config.ts` files** must not import React, browser APIs, or code from other slices/features — they are executed by the Node.js env validator.
 - **`src/pages/` files are thin wrappers** — a dynamic import and optionally `getServerSideProps`; no UI components or business logic inline.
 - **Cross-domain type imports** go through `<slice|feature>/types/api.ts`, never deeper internal paths.
@@ -89,4 +90,4 @@ Both slices and features share the same internal shape: `pages/`, `components/`,
 - **Getting data:** pages fetch data via React Query. Query keys and fetcher functions live in `src/api/hooks` and `src/api/utils`.
 - **Global UI state:** React Context providers initialized in `src/pages/_app.tsx` — `AppContextProvider`, `SettingsContextProvider`, `MarketplaceContextProvider`, etc.
 - **Real-time data:** WebSocket via `SocketProvider` in `src/api/socket/`.
-- **App config:** always read via `src/config/` (which reads `window.__envs` at runtime) — never `process.env.*` directly in component code, except for server code (`src/server/`).
+- **App config:** always read via `src/config/`, which reads `window.__envs` (in the browser) or `process.envs` (on the server) at runtime.

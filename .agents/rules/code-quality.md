@@ -1,6 +1,8 @@
 ---
 description: Code quality rules for the Blockscout frontend
-globs: *.tsx,*.ts
+paths:
+  - "**/*.{ts,tsx}"
+globs: "**/*.ts,**/*.tsx"
 alwaysApply: false
 ---
 # Code Quality
@@ -17,19 +19,12 @@ Moreover, please find below the general sense rules that linters do not cover.
 
 ## Code Style and Structure
 
-### General Principles
-
-- Write concise, readable TypeScript code
-- Use functional and declarative programming patterns; avoid classes
-- Prefer iteration and modularization over code duplication
-- Implement early returns for better readability
 - Structure components logically: exports, subcomponents, helpers, types
 
 ### Naming Conventions
 
 - Prefer descriptive names with auxiliary verbs (isLoading, hasError)
 - Prefix event handlers with "handle" (handleClick, handleSubmit)
-- Favor default exports for React components
 
 Names should be specific and self-documenting. Vague names hide intent and make the codebase harder to navigate.
 
@@ -166,26 +161,8 @@ Remove commented-out code blocks. The git history preserves anything that might 
 
 ### Links
 
-- Use `toolkit/chakra/link` instead of `next/link`. Never import `Link` from `next/link` directly.
-- When links to **application pages** are constructed, verify that `nextjs-routes` or `src/shared/router/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
+When links to **application pages** are constructed, verify that `nextjs-routes` or `src/shared/router/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
 
 ### Date and time
 
-- Import `dayjs` only via `client/shared/date-and-time/dayjs.ts` — never directly from the `dayjs` package.
-- Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.
-
-### Strict comparison
-
-Use strict equality (`===`, `!==`) only — never loose equality (`==`, `!=`). Strict operators avoid type coercion surprises and align with TypeScript expectations.
-
-```ts
-// BAD
-if (count == 0) { ... }
-if (status != 'ok') { ... }
-
-// GOOD
-if (count === 0) { ... }
-if (status !== 'ok') { ... }
-```
-
-When you need to treat both `null` and `undefined` as missing, write `value === null || value === undefined` instead of `value == null`.
+Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.

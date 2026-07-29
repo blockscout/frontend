@@ -5,7 +5,7 @@ description: Step-by-step checklist for adding a new NEXT_PUBLIC_* environment v
 
 # Add a new env variable
 
-Read `.agents/rules/env-vars.mdc` first for background: how runtime delivery
+Read `.agents/rules/env-vars.md` first for background: how runtime delivery
 works, how the config object is structured, the three value types
 (primitive / JSON-encoded / JSON config URL), and where validation lives. This
 skill is the checklist; the rule is the concept doc.
@@ -14,7 +14,7 @@ skill is the checklist; the rule is the concept doc.
 
 Three answers drive every step below. Settle them first.
 
-1. **Value type** (see env-vars.mdc § "Value types"):
+1. **Value type** (see env-vars.md § "Value types"):
    - **Primitive** — string, boolean, number.
    - **JSON-encoded string** — small synchronous structured config.
    - **JSON config URL** — large async-loaded payload. Variable name ends in `_URL`.

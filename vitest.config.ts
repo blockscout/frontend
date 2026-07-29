@@ -25,6 +25,7 @@ export default defineConfig({
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],
     include: [ '**/*.spec.ts', '**/*.spec.tsx' ],
-    exclude: [ '**/node_modules/**', '**/node_modules_linux/**' ],
+    // agent worktrees are full checkouts of the repo; their specs would run a second time
+    exclude: [ '**/node_modules/**', '**/node_modules_linux/**', '.claude/worktrees/**' ],
   },
 });
