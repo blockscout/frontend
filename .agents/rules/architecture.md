@@ -90,4 +90,4 @@ Both slices and features share the same internal shape: `pages/`, `components/`,
 - **Getting data:** pages fetch data via React Query. Query keys and fetcher functions live in `src/api/hooks` and `src/api/utils`.
 - **Global UI state:** React Context providers initialized in `src/pages/_app.tsx` — `AppContextProvider`, `SettingsContextProvider`, `MarketplaceContextProvider`, etc.
 - **Real-time data:** WebSocket via `SocketProvider` in `src/api/socket/`.
-- **App config:** always read via `src/config/`, which reads `window.__envs` at runtime.
+- **App config:** always read via `src/config/`, which reads `window.__envs` (in the browser) or `process.envs` (on the server) at runtime.

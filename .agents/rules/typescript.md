@@ -69,7 +69,8 @@ function process(value: unknown) {
 ## Default exports
 
 **React components are exported as default** — that is the established convention here (the overwhelming
-majority of `.tsx` files in `src/` do this), and Next.js requires it for `src/pages/` files.
+majority of `.tsx` files in `src/` do this), and Next.js requires it for `src/pages/` files. The only
+exception is the `src/toolkit/` where we follow Chakra UI convention of named exports for components.
 
 ```tsx
 // GOOD
