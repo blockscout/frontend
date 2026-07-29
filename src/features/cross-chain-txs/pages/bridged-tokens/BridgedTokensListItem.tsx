@@ -3,10 +3,10 @@
 import { Grid, HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
+import type { ChainInfo, StatsBridgedTokenItem, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
+import TokenEntityInterchain from 'src/slices/token/components/entity/TokenEntityInterchain';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
 import getItemIndex from 'src/shared/lists/get-item-index';
@@ -16,40 +16,36 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
   data: StatsBridgedTokenRow;
-  token: StatsBridgedTokenItem | undefined;
+  tokenInfo?: StatsBridgedTokenItem;
+  chainInfo?: ChainInfo;
   index: number;
   page: number;
   isLoading?: boolean;
 }
 
-const BridgedTokensListItem = ({ data, token, index, page, isLoading }: Props) => {
-  const tokenInfo = React.useMemo(() => {
-    if (!token) {
+const BridgedTokensListItem = ({ data, tokenInfo, chainInfo, index, page, isLoading }: Props) => {
+
+  const tokenModel = React.useMemo(() => {
+    if (!tokenInfo) {
       return;
     }
 
     return toTokenModel({
-      symbol: token.symbol ?? null,
-      address_hash: token.token_address,
+      ...tokenInfo,
+      decimals: String(tokenInfo.decimals ?? '0'),
+      address_hash: tokenInfo.token_address,
       type: 'ERC-20',
-      name: token.name ?? null,
-      decimals: String(token.decimals ?? '0'),
-      holders_count: null,
-      exchange_rate: null,
-      total_supply: null,
-      icon_url: token.icon_url ?? null,
-      circulating_market_cap: null,
-      reputation: null,
     });
-  }, [ token ]);
+  }, [ tokenInfo ]);
 
   return (
     <ListItemMobile rowGap={ 3 } alignItems="stretch">
 
       <HStack justifyContent="space-between">
-        { tokenInfo ? (
-          <TokenEntity
-            token={ tokenInfo }
+        { tokenModel ? (
+          <TokenEntityInterchain
+            token={ tokenModel }
+            chain={ chainInfo }
             isLoading={ isLoading }
             jointSymbol
             noCopy
@@ -62,9 +58,10 @@ const BridgedTokensListItem = ({ data, token, index, page, isLoading }: Props) =
           <span>{ getItemIndex(index, page) }</span>
         </Skeleton>
       </HStack>
-      { tokenInfo && (
-        <AddressEntity
-          address={{ hash: tokenInfo.address_hash }}
+      { tokenModel && (
+        <AddressEntityInterchain
+          address={{ hash: tokenModel.address_hash }}
+          chain={ chainInfo }
           isLoading={ isLoading }
           truncation="constant"
           link={{ variant: 'secondary' }}

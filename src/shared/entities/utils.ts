@@ -12,13 +12,13 @@ export function getIconProps(props: IconBaseProps, withShield: boolean = false) 
     case 'subheading': {
       return {
         boxSize: props.boxSize ?? '20px', // for tables, lists, regular content and page subheadings
-        marginRight: props.marginRight ?? props.mr ?? (withShield ? '18px' : '8px'),
+        marginRight: withShield ? props.marginRightShield ?? '18px' : props.marginRight ?? props.mr ?? '8px',
       };
     }
     case 'heading': {
       return {
         boxSize: props.boxSize ?? '30px', // for page headings
-        marginRight: props.marginRight ?? props.mr ?? (withShield ? '14px' : '8px'),
+        marginRight: withShield ? props.marginRightShield ?? '14px' : props.marginRight ?? props.mr ?? '8px',
       };
     }
   }

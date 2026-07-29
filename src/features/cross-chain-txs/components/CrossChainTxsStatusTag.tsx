@@ -23,6 +23,8 @@ const CrossChainTxsStatusTag = ({ status: statusProp, mode = 'compact', ...rest 
         return { status: 'error' as const, text: 'Failed' };
       case MessageStatus.MESSAGE_STATUS_INITIATED:
         return { status: 'pending' as const, text: 'Initiated' };
+      case MessageStatus.MESSAGE_STATUS_READY_TO_CLAIM:
+        return { status: 'pending' as const, text: 'Ready to claim' };
       default:
         return { status: undefined, text: undefined };
     }

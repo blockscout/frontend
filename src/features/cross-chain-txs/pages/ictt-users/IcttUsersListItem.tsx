@@ -33,7 +33,7 @@ const IcttUsersListItem = ({ data, isLoading }: Props) => {
           <span>Number of unique ICTT users</span>
         </Skeleton>
         <Skeleton loading={ isLoading }>
-          <span>{ data.unique_transfer_users_count }</span>
+          <span>{ Number(data.unique_transfer_users_count).toLocaleString() }</span>
         </Skeleton>
       </Grid>
     </ListItemMobile>

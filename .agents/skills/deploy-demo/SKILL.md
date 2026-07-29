@@ -47,7 +47,7 @@ _Note:_ In the command output, format all URLs as clickable Markdown links: `[Li
 **c. `build_image`** — whether to build & publish a fresh image (default `true`).
 - The image is preset-agnostic, so **re-pointing an existing demo to a different chain does not need a rebuild**. If the user asks to *redeploy / re-point / switch an existing demo to another preset* ("redeploy it for celo", "switch the demo to base without rebuilding", "re-point to gnosis"), pass `-f build_image=false` — this skips the multi-minute image build and just re-runs the deploy (~1–2 min), changing `ENVS_PRESET` so the pods roll.
 - For a first/normal deploy, skip the flag (default `true`, builds fresh).
-- **Caveat:** `build_image=false` only works if an image for this branch + `variant` already exists (a prior successful build). If unsure, prefer building. Keep `variant` the same as the original deploy when re-pointing — the image tag and namespace are `<variant>-<branch-slug>`.
+- **Caveat:** `build_image=false` only works if an image for this branch already exists (a prior successful build). If unsure, prefer building. The image tag is `review-<branch-slug>` — **variant-independent** (the image is both preset- and variant-agnostic). So an image built under either variant can be reused by the other: e.g. after a `review` build you can deploy `review-2` with `build_image=false`. Only the namespace/hostname (`<variant>-<branch-slug>`) differ per variant, so the two demos coexist.
 
 ### 4. Trigger the workflow and capture the run ID
 
