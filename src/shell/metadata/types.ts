@@ -7,10 +7,13 @@ import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 import type { schemas } from '@blockscout/api-types';
 import type { LineChart } from '@blockscout/stats-types';
 
+import type { TxOgDescriptionParams } from 'src/slices/tx/utils/get-og-description-params';
+
 /* eslint-disable @stylistic/indent */
 export type ApiData<Pathname extends Route['pathname']> =
 (
     Pathname extends '/address/[hash]' ? { domain_name: string } :
+    Pathname extends '/tx/[hash]' ? TxOgDescriptionParams :
     Pathname extends '/token/[hash]' ? schemas['Token'] & { symbol_or_name: string; description?: string; projectName?: string } :
     Pathname extends '/token/[hash]/instance/[id]' ? { symbol_or_name: string } :
     Pathname extends '/apps/[id]' ? MarketplaceDapp :
@@ -27,6 +30,9 @@ export interface TemplateValue {
   'default': string;
   enhanced?: string;
 }
+
+// An OG template may omit its `default` and inherit the route's metadata one.
+export type OgTemplateValue = Partial<TemplateValue>;
 
 export interface Metadata {
   title: string;

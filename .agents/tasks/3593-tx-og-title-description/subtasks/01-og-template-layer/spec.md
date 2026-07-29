@@ -24,14 +24,16 @@ changes. `/tx/[hash]`'s own templates land in subtask 4.
 
 ## Functional requirements
 
-- `og.title` and `og.description` each accept `{ 'default': string; enhanced?: string }` and are compiled
+- `og.title` and `og.description` each accept `{ 'default'?: string; enhanced?: string }` and are compiled
   with `compileValue` against the same `params` object as the metadata templates.
 - `og.image` becomes independent of the other two — a route may declare an image with no templates, or
   templates with no image.
 - The ` | Blockscout` postfix is appended to the compiled OG title in **both** the `default` and `enhanced`
   cases, still gated by `config.metadata.promoteBlockscoutInTitle`.
 - A route with no `og.title` gets `opengraph.title = title`; with no `og.description`, it gets
-  `opengraph.description = description`. The description fallback is written **explicitly** even though
+  `opengraph.description = description`. An OG template that declares only an `enhanced` variant inherits
+  the metadata template's `default`, so a route needing just a richer bot description doesn't restate the
+  base text. The description fallback is written **explicitly** even though
   crawlers already do it implicitly when the tag is absent — it documents the intent and makes the
   resolution rule uniform with the title's.
 - New param `hash_short` — `shortenString(hash, 8)`, i.e. `0xda...671a`. Set to `undefined` (not `''`) when

@@ -36,7 +36,7 @@ exports[`dynamic route 1`] = `
   "opengraph": {
     "description": "Blockscout detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.",
     "imageUrl": undefined,
-    "title": "Blockscout transaction 0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193 | Blockscout",
+    "title": "Blockscout transaction 0x62...3193 | Blockscout",
   },
   "title": "Blockscout transaction 0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193 | Blockscout",
 }

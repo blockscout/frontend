@@ -76,7 +76,8 @@ crawlers don't run JS and `metadata.update()` only ever touches `<title>` and `<
   `api_request_duration_seconds{route,code}` is recorded inside `fetchApi` itself (labelled by resource
   name, with `504` on abort) — so the new server-side calls are instrumented for free.
 - On the demo: paste the link into Telegram and see the card; confirm from
-  `api_request_duration_seconds` that the 1 s timeouts are actually sufficient against the core API.
+  `api_request_duration_seconds` that the 2 s timeouts are actually sufficient against the core API — the
+  `504`-labelled samples are the ones that gave up.
 
 ## Data & API
 
@@ -109,9 +110,18 @@ grilling — no backend release to wait on, nothing to add via `add-api-resource
 
 **Fetch plan** — in `/tx/[hash]`'s `getServerSideProps`, gated on
 `config.metadata.og.enhancedDataEnabled && detectBotRequest(req)?.type === 'social_preview'` **and**
-`!config.features.multichain.isEnabled`. The two requests run in parallel with a **1 s** timeout each
+`!config.features.multichain.isEnabled`. The two requests run in parallel with a **2 s** timeout each
 (social-bot traffic is low per Grafana history); `/summary` is skipped entirely when
 `config.features.txInterpretation.isEnabled` is false.
+
+Why 2 s rather than the 500 ms–1 s the other routes use: both endpoints compute on the first request for a
+given transaction and cache the result, and a crawler is always that first request. Measured on eth mainnet
+(10 transactions × 5 calls), the cold `/summary` call averages 0.95 s and exceeds 1 s in 4 of 10 cases,
+against 0.30 s for every warm repeat; `/transactions/:hash` shows the same shape with a fatter tail. The
+ceiling is the crawler's own fetch timeout — unpublished, but practically single-digit seconds — and since
+the two calls are parallel the worst case adds ~2 s, well inside it. Overshooting the crawler would lose the
+whole card, whereas aborting only loses the enhanced description, so the budget stays deliberately short of
+what the envelope allows.
 
 **Trap to code against:** `fetchApi` returns the parsed body **regardless of HTTP status** — it logs
 non-200s but still `return await response.json()`. So a bad hash yields `{ message: "Not found" }` typed as
@@ -152,7 +162,7 @@ verifies that the preview genuinely works in a real social client.
 - [x] 1 `[agent]` Turn the `og` block into a `default`/`enhanced` template layer → `subtasks/01-og-template-layer/`
 - [x] 2 `[agent]` Share the currency rounding and render interpretation summaries as plain text → `subtasks/02-interpretation-plain-text/`
 - [x] 3 `[agent]` Derive the three OG description params for a transaction → `subtasks/03-tx-og-description-params/`
-- [ ] 4 `[agent]` Wire the bot-gated fetch and add the `/tx/[hash]` OG templates → `subtasks/04-gssp-wiring-and-templates/`
+- [x] 4 `[agent]` Wire the bot-gated fetch and add the `/tx/[hash]` OG templates → `subtasks/04-gssp-wiring-and-templates/`
 - [ ] 5 `[agent]` + `[human]` Deploy a demo, then verify the preview manually → `subtasks/05-demo-deploy/`
   — the agent deploys and checks the tags over `curl`; the human confirms the real card in Telegram and
   rules on whether the 1 s timeouts hold (Grafana isn't agent-reachable).

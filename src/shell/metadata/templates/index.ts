@@ -4,7 +4,7 @@
 
 import type { Route } from 'nextjs-routes';
 
-import type { TemplateValue } from '../types';
+import type { OgTemplateValue, TemplateValue } from '../types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
@@ -19,8 +19,8 @@ interface RouteTemplateRecord {
     description: TemplateValue;
   };
   og?: {
-    title?: TemplateValue;
-    description?: TemplateValue;
+    title?: OgTemplateValue;
+    description?: OgTemplateValue;
     image?: string;
   };
 }
@@ -83,6 +83,14 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
       description: {
         'default': '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+      },
+    },
+    og: {
+      title: {
+        'default': '%chain_name% transaction %hash_short%',
+      },
+      description: {
+        enhanced: '%tx_status% · %tx_action% · %tx_timestamp%',
       },
     },
   },

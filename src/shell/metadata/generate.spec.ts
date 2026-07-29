@@ -15,6 +15,23 @@ it('dynamic route', () => {
   expect(result).toMatchSnapshot();
 });
 
+it('transaction route with enhanced og data', () => {
+  const result = generate({ pathname: '/tx/[hash]', query: { hash: transaction.hash } }, {
+    tx_status: 'Success',
+    tx_action: 'Transfer 100 DUCK to 0xd7...5859',
+    tx_timestamp: 'Oct 10, 2022 14:34 UTC',
+  });
+
+  expect(result.opengraph.title).toBe('Blockscout transaction 0x62...3193 | Blockscout');
+  expect(result.opengraph.description).toBe('Success · Transfer 100 DUCK to 0xd7...5859 · Oct 10, 2022 14:34 UTC');
+
+  // the SEO tags keep the full hash and the generic copy
+  expect(result.title).toBe(`Blockscout transaction ${ transaction.hash } | Blockscout`);
+  expect(result.description).toBe(
+    'Blockscout detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+  );
+});
+
 describe('address route', () => {
   it('enhanced data', () => {
     const result = generate({ pathname: '/address/[hash]', query: { hash: addressHash } }, { domain_name: 'duck.eth' });

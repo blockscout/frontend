@@ -1,19 +1,37 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextPage } from 'next';
+import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
+import * as gSSP from 'src/server/getServerSideProps/main';
 import PageNextJs from 'src/server/PageNextJs';
+import detectBotRequest from 'src/server/utils/detectBotRequest';
+import fetchApi from 'src/server/utils/fetchApi';
+
+import getOgDescriptionParams from 'src/slices/tx/utils/get-og-description-params';
+
+import config from 'src/config';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { SECOND } from 'src/toolkit/utils/consts';
+
+const pathname: Route['pathname'] = '/tx/[hash]';
+
+// Both endpoints compute their response on the first request for a transaction and cache it afterwards,
+// and a crawler is always that first request — measured on eth mainnet, 40% of cold `/summary` calls need
+// more than a second. A crawler waiting is still cheaper than a preview with no description.
+const API_TIMEOUT = 2 * SECOND;
 
 const Transaction = dynamic(() => {
   return import('src/slices/tx/pages/details/Transaction');
 }, { ssr: false });
 
-const Page: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
-    <PageNextJs pathname="/tx/[hash]" query={ props.query }>
+    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <Transaction/>
     </PageNextJs>
   );
@@ -21,4 +39,25 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { tx as getServerSideProps } from 'src/server/getServerSideProps/main';
+export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
+  const baseResponse = await gSSP.tx<typeof pathname>(ctx);
+
+  // Only social-preview bots get the enhanced description, and only server-side: crawlers don't run JS,
+  // and the SEO tags this route emits need no API data.
+  const isSocialPreviewBot = config.metadata.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview';
+
+  if ('props' in baseResponse && !config.features.multichain.isEnabled && isSocialPreviewBot) {
+    const hash = getQueryParamString(ctx.query.hash);
+
+    const [ txData, interpretationData ] = await Promise.all([
+      fetchApi({ resource: 'core:tx', pathParams: { hash }, timeout: API_TIMEOUT }),
+      config.features.txInterpretation.isEnabled ?
+        fetchApi({ resource: 'core:tx_interpretation', pathParams: { hash }, timeout: API_TIMEOUT }) :
+        undefined,
+    ]);
+
+    (await baseResponse.props).apiData = getOgDescriptionParams(txData, interpretationData);
+  }
+
+  return baseResponse;
+};
