@@ -15,6 +15,9 @@ const config: PlaywrightTestConfig = defineConfig({
 
   testMatch: /.*\.pw\.tsx/,
 
+  // agent worktrees are full checkouts of the repo; their tests would run a second time
+  testIgnore: '.claude/worktrees/**',
+
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{projectName}_{arg}{ext}',
 
   /* Maximum time one test can run for. */

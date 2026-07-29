@@ -105,6 +105,8 @@ export default tseslint.config(
     'deploy/tools/',
     'public/',
     '.git/',
+    // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap
+    '.claude/worktrees/',
     'next.config.js',
   ] },
 
