@@ -71,13 +71,14 @@ crawlers don't run JS and `metadata.update()` only ever touches `<title>` and `<
   URL without a bot UA shows the unchanged SEO tags.
 - `src/shell/metadata/__snapshots__/generate.spec.ts.snap` — existing entries unchanged, except the
   `opengraph.description` fallback introduced in subtask 1.
-- Metrics need no work and are checked, not built: `social_preview_bot_requests_total{route="/tx/[hash]"}`
-  is already incremented globally from `_document.tsx` via `logRequestFromBot` using `ctx.pathname`, and
-  `api_request_duration_seconds{route,code}` is recorded inside `fetchApi` itself (labelled by resource
-  name, with `504` on abort) — so the new server-side calls are instrumented for free.
-- On the demo: paste the link into Telegram and see the card; confirm from
-  `api_request_duration_seconds` that the 2 s timeouts are actually sufficient against the core API — the
-  `504`-labelled samples are the ones that gave up.
+- Metrics need no work **in this task**, but they also don't currently work: `logRequestFromBot` and
+  `fetchApi` do increment `social_preview_bot_requests_total` and `api_request_duration_seconds`, yet those
+  writes happen in the SSR bundle while `/api/metrics` serves the API-route bundle's registry, so nothing is
+  ever exported. Proven on the demo — see subtask 5's findings. Fixing that is its own task; this task's
+  verification falls back to external sampling.
+- On the demo: paste the link into Telegram and see the card. The 2 s timeouts were checked by sampling the
+  instance's API directly, since `api_request_duration_seconds` never leaves the process (above) — see
+  subtask 5's findings for the numbers and the ruling.
 
 ## Data & API
 
@@ -194,3 +195,21 @@ or 3's behavior at the cost of an extra request per bot hit.
   nothing about its structure, the status word, the timestamp, the template shape, or the gSSP gate.
   Subtask 3 is built for the Blockscout provider; Noves folds in as an additive commit whenever the
   answer arrives.
+
+### Q2 — Why do the transaction endpoints take seconds on some instances, and can that change?
+
+Sampling one instance's API (numbers and method in subtask 5's findings) puts `/api/v2/transactions/:hash`
+at a p50 of 2.84 s with every single call over a second, and `/api/v2/transactions/:hash/summary` at a p50
+of 0.84 s with a tail to 10 s — against 0.56 s and 0.95 s for the same endpoints on eth mainnet. Since the
+status and the timestamp both come from the transaction endpoint, the enhanced description resolves on
+roughly one bot request in three there. Raising the timeout is not a fix: crawlers wait single-digit
+seconds, and a card that fails to render is worse than one with the generic description.
+
+- Owner: Backend (Core API)
+- Status: `pending`
+- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785325326478759 (sent 2026-07-29)
+- Answer: <decision + date, once resolved>
+- **Blocks nothing to build, but gates the release decision.** The code is complete and degrades correctly:
+  where the API is fast the preview enhances, where it isn't the card keeps today's generic description. The
+  question is whether shipping in that state is acceptable or whether the endpoint latency is fixed first —
+  a call for the PM once the backend team answers.
