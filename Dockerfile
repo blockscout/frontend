@@ -3,8 +3,8 @@
 # *****************************
 FROM node:22.14.0-alpine AS base
 # corepack prepare makes a single network request to the npm registry and has no
-# built-in retry. Transient failures (HTTP 429 rate-limit, timeout) are common on
-# shared CI egress IPs, so retry with a linear backoff.
+# built-in retry. Transient registry failures (HTTP 429, timeout, DNS) are not
+# uncommon, so retry with a linear backoff.
 RUN set -eu; \
     corepack enable; \
     n=0; \
