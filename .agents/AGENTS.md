@@ -68,7 +68,3 @@ interviews the developer to fill the issue's gaps, `to-spec` writes the spec int
 routes open questions to their owners via Slack, and `implement-task` executes the spec one subtask at a
 time. See `.agents/tasks/README.md` for the lifecycle, `.agents/rules/delegation.mdc` for what agents may
 implement vs. what stays human, and `.agents/TEAM.md` for who answers open questions.
-
-## Cursor Cloud specific instructions
-
-The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally" above.
