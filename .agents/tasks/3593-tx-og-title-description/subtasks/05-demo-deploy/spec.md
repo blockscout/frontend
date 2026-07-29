@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 5 of #3593 |
-| Status | `in progress` |
+| Status | `done` |
 | Size | `medium` |
 | Sub-branch | — (no code; runs the `deploy-demo` skill) |
 | PM | Ulyana (task author) |
@@ -58,8 +58,10 @@ Any code change. Findings that need one become a follow-up commit against the su
 ## Task breakdown
 
 - [x] 1 `[agent]` Deploy the demo — skill: `deploy-demo`
-  — https://review-issue-3593.k8s-dev.blockscout.com (the image build needed two retries; the runner's
-  outbound network was failing on npm and Alpine mirrors, unrelated to the branch).
+  — two demos, since one instance can't show both sides: `review-issue-3593` on the busy instance (where the
+  preview degrades, and whose metrics gave the `504` evidence) and `review-2-issue-3593` on eth mainnet
+  (where it works). Each image build needed a retry — the runner's outbound network keeps failing on the npm
+  and Alpine mirrors, unrelated to the branch.
   - inputs:
     - Preset: `robinhood`.
     - Deploy from the feature branch `issue-3593`.
@@ -69,13 +71,20 @@ Any code change. Findings that need one become a follow-up commit against the su
     - `curl -A Twitterbot` and `curl -A TelegramBot` against a settled transaction on that chain; confirm
       the title and the three-part description.
     - Also hit it with no special UA and confirm the SEO tags are unchanged.
-- [ ] 3 `[human]` Paste the link in Telegram and confirm the card really works
+- [x] 3 `[human]` Paste the link in Telegram and confirm the card really works
+  — confirmed in Telegram **and** X on a second demo pointed at eth mainnet
+  (`review-2-issue-3593.k8s-dev.blockscout.com`), where the endpoints answer fast enough for the enhanced
+  description to resolve on the first request.
   - inputs:
     - The acceptance check: a real card in a real client, not a `curl` assertion. Also the check Ulyana and
       QA will run themselves.
     - Worth trying a transaction with a long action string to see where Telegram truncates, and a pending
       one to see the fallback in the wild.
-- [ ] 4 `[human]` Read the metrics and rule on the timeouts
+- [x] 4 `[human]` Read the metrics and rule on the timeouts
+  — ruled: keep 2 s. The metrics did get read in the end, once they worked (see below), and they said the
+  quiet part out loud — on the busy instance `core:tx` aborted on 6 of 6 bot requests. Raising the timeout
+  is not the answer, so the backend team is adding an endpoint built for this feature instead; adopting it
+  is subtask 6.
   - inputs:
     - Human because Grafana isn't agent-reachable.
     - Look at the `api_request_duration_seconds` distribution for `core:tx` / `core:tx_interpretation` and
@@ -126,7 +135,14 @@ contention from our own burst.)
 crawler waits for 4 s. The finding goes to the backend team as an endpoint-latency issue on this instance;
 until then the preview degrades to the generic description there, which is the designed behavior.
 
-**The metrics this subtask planned to read do not work.** `PROMETHEUS_METRICS_ENABLED` *is* set for review
+**The metrics this subtask planned to read did not work, and now do.** The cause was found and fixed on
+`main` in #3600 (registry cached on `globalThis`, since Next.js instantiates the module once per server
+bundle and the second `register.clear()` unregistered the first's metrics). After merging it, the busy
+instance's demo answered the timeout question directly: 6 bot requests produced
+`api_request_duration_seconds_count{route="core:tx",code="504"} 6` — every mandatory call aborted at 2 s —
+against 3 of 6 succeeding for `core:tx_interpretation` at ~1.3 s each. The original diagnosis follows.
+
+**The bug as found.** `PROMETHEUS_METRICS_ENABLED` *is* set for review
 instances (`deploy/values/review/values.yaml.gotmpl`) and `/api/metrics` answers `200` — it returns `404`
 when disabled — but the registry it exposes only ever contains what **API routes** record. Posting to
 `/api/monitoring/invalid-api-schema` makes `invalid_api_schema` appear immediately, while

@@ -164,9 +164,15 @@ verifies that the preview genuinely works in a real social client.
 - [x] 2 `[agent]` Share the currency rounding and render interpretation summaries as plain text → `subtasks/02-interpretation-plain-text/`
 - [x] 3 `[agent]` Derive the three OG description params for a transaction → `subtasks/03-tx-og-description-params/`
 - [x] 4 `[agent]` Wire the bot-gated fetch and add the `/tx/[hash]` OG templates → `subtasks/04-gssp-wiring-and-templates/`
-- [ ] 5 `[agent]` + `[human]` Deploy a demo, then verify the preview manually → `subtasks/05-demo-deploy/`
+- [x] 5 `[agent]` + `[human]` Deploy a demo, then verify the preview manually → `subtasks/05-demo-deploy/`
   — the agent deploys and checks the tags over `curl`; the human confirms the real card in Telegram and
-  rules on whether the 1 s timeouts hold (Grafana isn't agent-reachable).
+  rules on the timeouts. Card confirmed in Telegram and X on an eth-mainnet demo; the timeout ruling is
+  "keep 2 s and move to the endpoint below".
+- [ ] 6 `[agent]` Fetch the preview data from the endpoint the backend is building for it → `subtasks/06-preview-endpoint/`
+  — not scoped yet (`brief.md` only): being built with switchable ens / metadata / summary preloads, going to
+  staging first. Blocked on the backend.
+- [ ] 7 `[agent]` Leave the preview alone on Noves-provider instances → `subtasks/07-noves-instances/`
+  — Q1's decision; independent of the endpoint, so it can land first.
 
 ## Open questions
 
@@ -188,13 +194,15 @@ hit the 1 s timeout anyway and land on whichever fallback we pick — meaning op
 or 3's behavior at the cost of an extra request per bot hit.
 
 - Owner: PM (Ulyana)
-- Status: `pending`
+- Status: `resolved`
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785255479554469 (sent 2026-07-28)
-- Answer: <decision + date, once resolved>
-- **Does not block any subtask.** The answer adds one branch at the front of the action chain and changes
-  nothing about its structure, the status word, the timestamp, the template shape, or the gSSP gate.
-  Subtask 3 is built for the Blockscout provider; Noves folds in as an additive commit whenever the
-  answer arrives.
+- Answer (2026-07-29, Ulyana): **option 3** — on Noves-provider instances emit no enhanced description at
+  all; the preview keeps the generic metadata description. The two providers are mutually exclusive on an
+  instance, and the deciding argument was that quietly adding social-bot traffic to a third party's slow API
+  is not ours to do: if Noves wants the richer preview on their instances, they can ask for it, conditional
+  on their API's performance.
+- Implemented as subtask 7 — without it a Noves instance lands on the `called … on …` fallback, which is
+  option 2, not the decision.
 
 ### Q2 — Why do the transaction endpoints take seconds on some instances, and can that change?
 
@@ -206,10 +214,32 @@ roughly one bot request in three there. Raising the timeout is not a fix: crawle
 seconds, and a card that fails to render is worse than one with the generic description.
 
 - Owner: Backend (Core API)
-- Status: `pending`
+- Status: `resolved`
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785325326478759 (sent 2026-07-29)
-- Answer: <decision + date, once resolved>
-- **Blocks nothing to build, but gates the release decision.** The code is complete and degrades correctly:
-  where the API is fast the preview enhances, where it isn't the card keeps today's generic description. The
-  question is whether shipping in that state is acceptable or whether the endpoint latency is fixed first —
-  a call for the PM once the backend team answers.
+- Answer (2026-07-29, Victor): known problem on that instance, which is under constant high load — not a
+  property of the endpoints. Disabling the BENS and metadata preloads would help a little, not enough.
+  Agreed instead to add an endpoint built for this feature, carrying only the fields the preview needs;
+  adopting it is subtask 6. Confirmed by sampling two quiet instances with the same method: eth-sepolia
+  answers `/transactions/:hash` in 0.54 s (p50, 0/25 over 2 s) and gnosis in 0.49 s, against 2.84 s on the
+  loaded one — and the eth-mainnet demo enhances the card on the first request.
+- The **release decision** it was gating is now a straight choice for the PM: ship as is (the preview
+  enhances where the API is fast and keeps today's card where it isn't) or wait for subtask 6.
+
+### Q3 — May the preview lose name tags and ENS names?
+
+The new endpoint is fast partly by skipping the BENS and metadata preloads. Those are what turn an address
+into the label the page shows, so without them the fallback action line degrades: the curated name tag gives
+way to the plain contract name where there is one (`OKX Labs: DexRouter` → `DexRouter`), and to a shortened
+hash where there isn't — an ENS domain always becomes a shortened hash. Only the social-preview text is
+affected; the transaction page itself keeps using the full endpoint.
+
+- Owner: PM (Ulyana)
+- Status: `resolved`
+- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785327005926429 (sent 2026-07-29)
+- Answer (2026-07-29): dropping ENS and the tags from the OG interpretation is allowed, though Ulyana called
+  it a degradation. It may not be necessary: per Nikita P. the ENS and metadata preloads are what cost the
+  second, they can be parallelised, and without third-party calls the endpoint should fit in ~1 s. He is
+  building it with the preloads **individually switchable** (ens / metadata / summary) and will put it on
+  staging to measure.
+- So the trade-off is now a dial rather than a decision: subtask 6 measures the endpoint with the preloads on
+  and only turns them off if the numbers demand it.
