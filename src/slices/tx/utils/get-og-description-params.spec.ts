@@ -64,6 +64,15 @@ describe('gives up when a part is missing', () => {
     const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
     expect(getOgDescriptionParams(base, TX_INTERPRETATION)).toBeNull();
   });
+
+  it('the provider is Noves, whose page text this summary is not', async() => {
+    const params = await withEnvs([ [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'noves' ] ], async() => {
+      const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
+      return getOgDescriptionParams(base, TX_INTERPRETATION);
+    });
+
+    expect(params).toBeNull();
+  });
 });
 
 describe('falls back to the called-method line', () => {

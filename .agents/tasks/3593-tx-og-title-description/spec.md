@@ -52,7 +52,7 @@ crawlers don't run JS and `metadata.update()` only ever touches `<title>` and `<
 
   | condition | action text |
   | --- | --- |
-  | interpretation feature off | none → fallback OG values (and `/summary` is not requested at all) |
+  | interpretation feature off, or its provider is Noves | none → fallback OG values, and neither request is made — see the fetch plan below and Q1 |
   | feature on, summary passes `checkSummary` | the summary rendered as plain text |
   | feature on, no usable summary, has `method` + `from` + `to` | `0xab...cd called\|failed to call M on 0xef...12` |
   | feature on, no usable summary, missing any of those | none → fallback OG values |
@@ -111,9 +111,13 @@ grilling — no backend release to wait on, nothing to add via `add-api-resource
 
 **Fetch plan** — in `/tx/[hash]`'s `getServerSideProps`, gated on
 `config.metadata.og.enhancedDataEnabled && detectBotRequest(req)?.type === 'social_preview'` **and**
-`!config.features.multichain.isEnabled`. The two requests run in parallel with a **2 s** timeout each
-(social-bot traffic is low per Grafana history); `/summary` is skipped entirely when
-`config.features.txInterpretation.isEnabled` is false.
+`!config.features.multichain.isEnabled` **and** the interpretation provider being `blockscout`. The two
+requests run in parallel with a **2 s** timeout each (social-bot traffic is low per Grafana history).
+
+The provider gate covers both requests, not just `/summary`: the description always needs an action, and
+without the Blockscout summary there is no action to be had — with the feature off there is none at all, and
+on a Noves instance its prose was ruled out (Q1). Fetching only to discard the result would spend a crawler's
+seconds for nothing.
 
 Why 2 s rather than the 500 ms–1 s the other routes use: both endpoints compute on the first request for a
 given transaction and cache the result, and a crawler is always that first request. Measured on eth mainnet
@@ -171,8 +175,8 @@ verifies that the preview genuinely works in a real social client.
 - [ ] 6 `[agent]` Fetch the preview data from the endpoint the backend is building for it → `subtasks/06-preview-endpoint/`
   — not scoped yet (`brief.md` only): being built with switchable ens / metadata / summary preloads, going to
   staging first. Blocked on the backend.
-- [ ] 7 `[agent]` Leave the preview alone on Noves-provider instances → `subtasks/07-noves-instances/`
-  — Q1's decision; independent of the endpoint, so it can land first.
+- [x] 7 `[agent]` Leave the preview alone on Noves-provider instances → `subtasks/07-noves-instances/`
+  — Q1's decision; landed ahead of the endpoint, since it is independent of it.
 
 ## Open questions
 

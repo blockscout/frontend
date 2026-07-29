@@ -7,6 +7,7 @@ import addressToPlainText from 'src/features/tx-interpretation/common/utils/addr
 import summaryToPlainText from 'src/features/tx-interpretation/common/utils/summary-to-plain-text';
 
 import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
 import dayjs from 'src/shared/date-and-time/dayjs';
 
 // Already `MMM D, YYYY H:mm` through the locale overrides in the dayjs module.
@@ -37,7 +38,7 @@ function getStatusText(status: schemas['Transaction']['status'] | undefined) {
 }
 
 function getActionText(tx: schemas['TransactionResponse'] | undefined, interpretation: TxInterpretationResponse | undefined) {
-  if (!config.features.txInterpretation.isEnabled) {
+  if (getFeaturePayload(config.features.txInterpretation)?.provider !== 'blockscout') {
     return;
   }
 

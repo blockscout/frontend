@@ -14,6 +14,7 @@ import fetchApi from 'src/server/utils/fetchApi';
 import getOgDescriptionParams from 'src/slices/tx/utils/get-og-description-params';
 
 import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { SECOND } from 'src/toolkit/utils/consts';
@@ -46,14 +47,14 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
   // and the SEO tags this route emits need no API data.
   const isSocialPreviewBot = config.metadata.og.enhancedDataEnabled && detectBotRequest(ctx.req)?.type === 'social_preview';
 
-  if ('props' in baseResponse && !config.features.multichain.isEnabled && isSocialPreviewBot) {
+  const hasBlockscoutInterpretation = getFeaturePayload(config.features.txInterpretation)?.provider === 'blockscout';
+
+  if ('props' in baseResponse && !config.features.multichain.isEnabled && isSocialPreviewBot && hasBlockscoutInterpretation) {
     const hash = getQueryParamString(ctx.query.hash);
 
     const [ txData, interpretationData ] = await Promise.all([
       fetchApi({ resource: 'core:tx', pathParams: { hash }, timeout: API_TIMEOUT }),
-      config.features.txInterpretation.isEnabled ?
-        fetchApi({ resource: 'core:tx_interpretation', pathParams: { hash }, timeout: API_TIMEOUT }) :
-        undefined,
+      fetchApi({ resource: 'core:tx_interpretation', pathParams: { hash }, timeout: API_TIMEOUT }),
     ]);
 
     (await baseResponse.props).apiData = getOgDescriptionParams(txData, interpretationData);

@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 7 of #3593 |
-| Status | `ready` |
+| Status | `done` |
 | Size | `small` |
 | Sub-branch | — (single commit on `issue-3593`) |
 | PM | Ulyana (task author) |
@@ -31,7 +31,10 @@ which has nothing to serve there — gets an empty `summaries` array, and falls 
 - Neither `core:tx` nor `core:tx_interpretation` is requested on those instances — the whole point is to add
   no crawler-driven load, and with no action available the other two params are useless anyway.
 - The OG **title** is unaffected: it carries the short hash on every instance, since it needs no API data.
-- No behavior change where the provider is `blockscout`, and none where the feature is off entirely.
+- No behavior change where the provider is `blockscout`.
+- Where the feature is off entirely the output is unchanged (it already had no action, so no enhanced
+  description), but the gate stops requesting `core:tx` there too — it could never produce a description, and
+  the provider defaults to `none`, so that request was pure waste on the majority of instances.
 
 ### Verification
 
@@ -55,7 +58,11 @@ None — this only removes requests.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Skip the enhanced description when the provider is `noves`
+- [x] 1 `[agent]` Skip the enhanced description when the provider is `noves`
+  — `getActionText` and `[hash].tsx`'s gate both now require `provider === 'blockscout'`, so a Noves instance
+  (and an instance with the feature off) makes no request at all. Verified with `curl -A Twitterbot` on the eth preset with the provider overridden: generic
+  `og:description`, short-hash title, no transaction request in the server log (103 ms of application code),
+  against `Success · Transfer 0.013 ETH to … · Jul 29, 2026 14:04 UTC` on the same hash with `blockscout`.
   - inputs:
     - Read the provider the way the rest of the code does: `getFeaturePayload(config.features.txInterpretation)?.provider`
       (`src/config/utils/features`), which is `undefined` when the feature is off. `TxSubHeading.tsx:39` is
@@ -65,7 +72,8 @@ None — this only removes requests.
       `null` without an action, so the second guard is what makes the first one's absence harmless.
     - Extend the feature check already in `getActionText` rather than adding a second branch — the condition
       becomes "interpretation on **and** provider is Blockscout".
-- [ ] 2 `[agent]` Cover it in the existing specs
+- [x] 2 `[agent]` Cover it in the existing specs
+  — one case in `get-og-description-params.spec.ts` under "gives up when a part is missing".
   - inputs:
     - `get-og-description-params.spec.ts` — a case with the Noves provider returning `null`, via
       `withEnvs` with `NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER` set to `noves` (the existing

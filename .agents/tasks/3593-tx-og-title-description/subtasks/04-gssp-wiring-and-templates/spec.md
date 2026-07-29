@@ -39,8 +39,8 @@ or not at all.
   `config.metadata.og.enhancedDataEnabled`, `detectBotRequest(ctx.req)?.type === 'social_preview'`,
   `!config.features.multichain.isEnabled`, and `'props' in baseResponse`.
 - The two requests run in parallel, **2 s** timeout each (see the parent spec's fetch plan for the
-  measurements behind the number); `core:tx_interpretation` is not requested at all when
-  `config.features.txInterpretation.isEnabled` is false.
+  measurements behind the number), and neither is made unless the interpretation provider is `blockscout`
+  (tightened in subtask 7, which is where the reasoning lives).
 - The page passes `apiData` through `PageNextJs` so `PageMetadata` can reach it.
 - Unchanged for everyone who isn't a social-preview bot: same SEO tags, no extra requests, no added latency.
 - `og:title` carries the short hash for **all** requests including search engines — it needs no API data, so
