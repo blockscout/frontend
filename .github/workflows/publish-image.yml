@@ -107,8 +107,8 @@ jobs:
                     context: .
                     file: ./Dockerfile
                     push: true
-                    cache-from: type=gha
-                    cache-to: type=gha,mode=max,ignore-error=true
+                    cache-from: type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache
+                    cache-to: type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache,mode=max,image-manifest=true,oci-mediatypes=true,ignore-error=true
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
