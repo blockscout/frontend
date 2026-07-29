@@ -36,6 +36,7 @@ on:
             - garnet
             - gnosis
             - gnosis_chiado
+            - hpp
             - immutable
             - mega_eth
             - multichain
