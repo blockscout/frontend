@@ -1,6 +1,12 @@
 ---
 description: Environment variables — where they live, how they're delivered at runtime, validated, and how to add or deprecate them
-globs:
+paths:
+  - "src/config/**/*"
+  - "**/config.ts"
+  - "**/types/config.ts"
+  - "deploy/tools/envs-validator/**/*"
+  - "docs/ENVS.md"
+globs: "src/config/**/*,**/config.ts,**/types/config.ts,deploy/tools/envs-validator/**/*,docs/ENVS.md"
 alwaysApply: false
 ---
 # Environment Variables

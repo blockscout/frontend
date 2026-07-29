@@ -1,8 +1,3 @@
----
-description: Agent/human delegation boundary for product-task work — what agents may implement today vs. what stays human
-globs:
-alwaysApply: false
----
 # Delegation boundary
 
 This is a **living document**. It records what work agents are trusted to do in this repo *today*, and what
@@ -46,5 +41,5 @@ Every UI subtask in a spec is split into two linked subtasks by default:
 - Screenshot baselines are generated and reviewed by the human **after** the style subtask — a baseline is
   only meaningful once the component matches the mockup.
 - Test the behavior that matters, not the obvious — follow the "What to test (and what not)" guidance in
-  `.agents/rules/tests-unit.mdc`. More tests are not better; a test that only asserts the framework or the
+  `.agents/rules/tests-unit.md`. More tests are not better; a test that only asserts the framework or the
   mock is noise.

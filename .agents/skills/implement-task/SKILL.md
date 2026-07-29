@@ -58,7 +58,7 @@ issue number, any other branch matches by exact dir name.
 Resolve the spec per the Invocation section (branch inference by default, explicit task dir wins); if
 neither yields a match in `.agents/tasks/`, ask. Read the main spec — and the target subtask's
 `subtasks/<NN>-<slug>/spec.md`, when a `-step-<N>` branch or a dotted target selects one — plus
-`.agents/rules/delegation.mdc`. If the header has no feature branch yet, construct it from the convention
+`.agents/delegation.md`. If the header has no feature branch yet, construct it from the convention
 above (`issue-<number>`), confirm with the developer, create it, and record it in the header.
 
 ### Step 2 — Reconcile the previous handoff
@@ -92,11 +92,11 @@ The spec should already contain the executing skill's inputs — the grilling se
 interview up front, so **skip any of the skill's questions the spec answers** and run uninterrupted. If an
 input is genuinely missing, ask the developer and **backfill the answer into the spec** before proceeding.
 Write the unit tests and Playwright scaffolds the standing testing policy assigns to this subtask (test the
-behavior that matters, not the obvious — per `.agents/rules/tests-unit.mdc`).
+behavior that matters, not the obvious — per `.agents/rules/tests-unit.md`).
 
 ### Step 5 — Verify
 
-Run every code-quality check the repo defines (per `.agents/rules/code-quality.mdc` — run all of them, not
+Run every code-quality check the repo defines (per `.agents/rules/code-quality.md` — run all of them, not
 only the ones you remember) plus the relevant unit tests. Intentional scaffold `TODO`s may keep ESLint red
 in the same way the `add-new-page` skill documents — say so explicitly rather than chasing green.
 

@@ -41,7 +41,7 @@ Gather, in roughly this order:
    is production-deployed or staging-only.
 4. **Figma mockups** — via the Figma MCP tools, **enumerate-only**: list screens/frames, their elements,
    columns, states, and record a node link per screen. Do **not** extract visual/styling details — appearance
-   stays with the mockups and the `[human]` style subtasks (see `.agents/rules/delegation.mdc`). If the Figma
+   stays with the mockups and the `[human]` style subtasks (see `.agents/delegation.md`). If the Figma
    MCP is not connected, have the developer describe the mockups instead.
 
 Then run two mechanical cross-checks; every mismatch becomes an open question for the backend owner or PM:
@@ -105,7 +105,7 @@ Cover these domains:
 6. **Delivery** — one question: deploy a demo after completion or not (executed via the `deploy-demo` skill
    as a final subtask if yes).
 
-Testing is **not** an interview domain — the standing policy in `.agents/rules/delegation.mdc` applies.
+Testing is **not** an interview domain — the standing policy in `.agents/delegation.md` applies.
 
 **Front-load the executor skills' inputs.** Once the task breakdown has taken shape, go through every
 `[agent]` subtask that will run a project skill (`add-new-page`, `add-api-resource`, `add-env-var`, …):

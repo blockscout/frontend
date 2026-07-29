@@ -1,6 +1,8 @@
 ---
 description: Design system and styling rules for the Blockscout frontend
-globs: *.tsx,*.ts
+paths:
+  - "src/**/*.tsx"
+globs: "src/**/*.tsx"
 alwaysApply: false
 ---
 # Design System
@@ -29,16 +31,9 @@ The `Provider` component at `toolkit/chakra/provider.tsx` wraps `ChakraProvider`
 
 ## Component import priority
 
-Always check `toolkit/chakra/` before importing from Chakra UI directly. If a custom wrapper exists there, use it — never the bare Chakra component.
-
-```ts
-// BAD
-import { Button } from '@chakra-ui/react';
-
-// GOOD
-import { Button } from 'toolkit/chakra/button';
-```
-
+Always check `toolkit/chakra/` before importing from Chakra UI directly; if a wrapper exists there, use it.
+ESLint blocks the wrapped components by name, but the list is not exhaustive — the rule applies to any
+component that has a wrapper, caught or not.
 
 ## Colors
 

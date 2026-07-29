@@ -1,6 +1,8 @@
 ---
 description: Playwright component visual tests — purpose, setup, fixtures, and conventions
-globs: "*.pw.tsx"
+paths:
+  - "**/*.pw.tsx"
+globs: "**/*.pw.tsx"
 alwaysApply: false
 ---
 # Visual Component Tests (Playwright)
