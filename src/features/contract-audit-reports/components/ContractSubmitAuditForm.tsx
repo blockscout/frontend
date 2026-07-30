@@ -52,7 +52,6 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
   });
   const { handleSubmit, formState, setError } = formApi;
 
-  // memoised so that the field's min/max validator is not rebuilt on every render
   const maxDate = React.useMemo(() => today(getLocalTimeZone()), []);
 
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {

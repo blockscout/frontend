@@ -43,7 +43,6 @@ const CsvExportFormDateField = ({ formApi, name }: Props) => {
     }
   }, [ formState.errors.from_period, formState.errors.to_period, getValues, name, trigger ]);
 
-  // memoised so that the field's min/max validator is not rebuilt on every render
   const maxDate = React.useMemo(() => parseAbsolute(new Date().toISOString(), getLocalTimeZone()), []);
 
   return (
