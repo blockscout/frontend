@@ -140,9 +140,21 @@ export interface TimePickerProps extends Omit<FieldProps, 'children'> {
   inputProps?: InputProps;
   min?: string;
   max?: string;
+  invalid?: boolean;
 }
 
-export const TimePicker = ({ value, defaultValue, onValueChange, min, max, disabled, inputProps, readOnly, ...rest }: TimePickerProps) => {
+export const TimePicker = ({
+  value,
+  defaultValue,
+  onValueChange,
+  min,
+  max,
+  disabled,
+  invalid: invalidProp,
+  readOnly,
+  inputProps,
+  ...rest
+}: TimePickerProps) => {
 
   const hoursContainerRef = React.useRef<HTMLDivElement>(null);
   const minutesContainerRef = React.useRef<HTMLDivElement>(null);
@@ -287,6 +299,18 @@ export const TimePicker = ({ value, defaultValue, onValueChange, min, max, disab
     </HStack>
   );
 
+  const invalid = React.useMemo(() => {
+    if (invalidProp === undefined || disabled || readOnly) {
+      return false;
+    }
+
+    if (!min && !max) {
+      return invalidProp;
+    }
+
+    return !isInLimits({ value: hours ?? 0, type: 'hours', timeValue, limits }) || !isInLimits({ value: minutes ?? 0, type: 'minutes', timeValue, limits });
+  }, [ invalidProp, disabled, readOnly, min, max, hours, minutes, timeValue, limits ]);
+
   return (
     <PopoverRoot
       positioning={{ sameWidth: true }}
@@ -296,7 +320,7 @@ export const TimePicker = ({ value, defaultValue, onValueChange, min, max, disab
       open={ !disabled && !readOnly && open }
     >
       <PopoverTrigger asChild>
-        <Field readOnly={ readOnly } disabled={ disabled } { ...rest }>
+        <Field readOnly={ readOnly } disabled={ disabled } invalid={ invalid } { ...rest }>
           <InputGroup endElement={ endElement } >
             <Input
               placeholder="Select time"

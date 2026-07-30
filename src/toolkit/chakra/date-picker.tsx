@@ -16,7 +16,7 @@ import { Field } from './field';
 import { InputGroup } from './input-group';
 import { TimePicker } from './time-picker';
 
-interface DatePickerValueChangeDetails {
+export interface DatePickerValueChangeDetails {
   value: Array<DateValue>;
   valueAsString: Array<string>;
   view: 'day' | 'month' | 'year';
@@ -78,181 +78,184 @@ const getDefaultDateValue = (isToday?: boolean): DateValue => {
   );
 };
 
-interface DatePickerProps extends ChakraDatePicker.RootProps {
+export interface DatePickerProps extends ChakraDatePicker.RootProps {
   withTime?: boolean;
   errorText?: string;
 }
 
-export const DatePicker = ({
-  placeholder,
-  withTime,
-  value: valueProp,
-  defaultValue,
-  onValueChange: onValueChangeProp,
-  min,
-  max,
-  disabled,
-  readOnly,
-  invalid,
-  errorText,
-  required,
-  ...rest
-}: DatePickerProps) => {
-
-  const onValueChange = React.useCallback((value: Array<DateValue> | undefined) => {
-    onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(format) ?? [], view: 'day' });
-  }, [ onValueChangeProp ]);
-
-  const [ value, setValue ] = useControllableState<Array<DateValue> | undefined>({
+export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
+  function Radio({
+    placeholder,
+    withTime,
     value: valueProp,
-    defaultValue: defaultValue,
-    onChange: onValueChange,
-  });
+    defaultValue,
+    onValueChange: onValueChangeProp,
+    min,
+    max,
+    disabled,
+    readOnly,
+    invalid,
+    errorText,
+    required,
+    ...rest
+  }, ref) {
 
-  const handleDateChange = React.useCallback((details: DatePickerValueChangeDetails) => {
-    const newDate = details.value[0];
-    if (!newDate) return setValue([]);
+    const onValueChange = React.useCallback((value: Array<DateValue> | undefined) => {
+      onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(format) ?? [], view: 'day' });
+    }, [ onValueChangeProp ]);
 
-    setValue((prev) => {
-      const current = prev?.[0] ?? getDefaultDateValue(isToday(newDate));
-      const fromNew = getTimeParts(newDate);
-      const fromCurrent = getTimeParts(current);
-      const hour = fromNew.hour ?? fromCurrent.hour;
-      const minute = fromNew.minute ?? fromCurrent.minute;
-
-      return [ new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute) ];
+    const [ value, setValue ] = useControllableState<Array<DateValue> | undefined>({
+      value: valueProp,
+      defaultValue: defaultValue,
+      onChange: onValueChange,
     });
-  }, [ setValue ]);
 
-  const handleTimeChange = React.useCallback((time: string | undefined) => {
-    const [ hours, minutes ] = time?.split(':') ?? [];
-    setValue((prev) => {
-      const current = prev?.[0] ?? getDefaultDateValue();
-      return [ current.set({ hour: Number(hours ?? 0), minute: Number(minutes ?? 0) }) ];
-    });
-  }, [ setValue ]);
+    const handleDateChange = React.useCallback((details: DatePickerValueChangeDetails) => {
+      const newDate = details.value[0];
+      if (!newDate) return setValue([]);
 
-  const positioning = {
-    placement: 'bottom-start' as const,
-    overflowPadding: 4,
-    sameWidth: true,
-    ...rest.positioning,
-    offset: {
-      mainAxis: 4,
-      ...rest.positioning?.offset,
-    },
-  };
+      setValue((prev) => {
+        const current = prev?.[0] ?? getDefaultDateValue(isToday(newDate));
+        const fromNew = getTimeParts(newDate);
+        const fromCurrent = getTimeParts(current);
+        const hour = fromNew.hour ?? fromCurrent.hour;
+        const minute = fromNew.minute ?? fromCurrent.minute;
 
-  return (
-    <ChakraDatePicker.Root
-      openOnClick
-      closeOnSelect={ !withTime }
-      lazyMount
-      unmountOnExit
-      format={ withTime ? formatWithTime : format }
-      parse={ withTime ? parseWithTime : parse }
-      value={ value }
-      onValueChange={ handleDateChange }
-      min={ min }
-      max={ max }
-      disabled={ disabled }
-      invalid={ invalid }
-      required={ required }
-      { ...rest }
-      positioning={ positioning }
-    >
-      <ChakraDatePicker.Control>
-        <ChakraDatePicker.Context>
-          { (context) => {
-            const isFilled = context.value.length > 0;
+        return [ new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute) ];
+      });
+    }, [ setValue ]);
 
-            const endElement = (
-              <HStack>
-                { isFilled && !readOnly && (
-                  <ChakraDatePicker.ClearTrigger asChild disabled={ disabled }>
-                    <CloseButton/>
-                  </ChakraDatePicker.ClearTrigger>
-                ) }
-                <ChakraDatePicker.Trigger
-                  disabled={ disabled }
-                  { ...(readOnly ? { 'data-readOnly': true } : {}) }
+    const handleTimeChange = React.useCallback((time: string | undefined) => {
+      const [ hours, minutes ] = time?.split(':') ?? [];
+      setValue((prev) => {
+        const current = prev?.[0] ?? getDefaultDateValue();
+        return [ current.set({ hour: Number(hours ?? 0), minute: Number(minutes ?? 0) }) ];
+      });
+    }, [ setValue ]);
+
+    const positioning = {
+      placement: 'bottom-start' as const,
+      overflowPadding: 4,
+      sameWidth: true,
+      ...rest.positioning,
+      offset: {
+        mainAxis: 4,
+        ...rest.positioning?.offset,
+      },
+    };
+
+    return (
+      <ChakraDatePicker.Root
+        ref={ ref }
+        openOnClick
+        closeOnSelect={ !withTime }
+        lazyMount
+        unmountOnExit
+        format={ withTime ? formatWithTime : format }
+        parse={ withTime ? parseWithTime : parse }
+        value={ value }
+        onValueChange={ handleDateChange }
+        min={ min }
+        max={ max }
+        disabled={ disabled }
+        invalid={ invalid }
+        required={ required }
+        { ...rest }
+        positioning={ positioning }
+      >
+        <ChakraDatePicker.Control>
+          <ChakraDatePicker.Context>
+            { (context) => {
+              const isFilled = context.value.length > 0;
+
+              const endElement = (
+                <HStack>
+                  { isFilled && !readOnly && (
+                    <ChakraDatePicker.ClearTrigger asChild disabled={ disabled }>
+                      <CloseButton/>
+                    </ChakraDatePicker.ClearTrigger>
+                  ) }
+                  <ChakraDatePicker.Trigger
+                    disabled={ disabled }
+                    { ...(readOnly ? { 'data-readOnly': true } : {}) }
+                  >
+                    <Icon boxSize={ 6 }><CalendarIcon/></Icon>
+                  </ChakraDatePicker.Trigger>
+                </HStack>
+              );
+
+              return (
+                <Field
+                  label={ placeholder ?? 'Date' }
+                  floating
+                  size="lg"
+                  readOnly={ readOnly }
+                  invalid={ invalid }
+                  errorText={ errorText }
+                  required={ required }
                 >
-                  <Icon boxSize={ 6 }><CalendarIcon/></Icon>
-                </ChakraDatePicker.Trigger>
-              </HStack>
-            );
+                  <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
+                    <ChakraDatePicker.Input/>
+                  </InputGroup>
+                </Field>
+              );
+            } }
+          </ChakraDatePicker.Context>
+        </ChakraDatePicker.Control>
+        <Portal>
+          <ChakraDatePicker.Positioner>
+            <ChakraDatePicker.Content>
+              { [ 'day' as const, 'month' as const, 'year' as const ].map((view) => (
+                <ChakraDatePicker.View key={ view } view={ view }>
+                  <ChakraDatePicker.ViewControl>
+                    <ChakraDatePicker.PrevTrigger>
+                      <Icon boxSize={ 6 }><ArrowIcon/></Icon>
+                    </ChakraDatePicker.PrevTrigger>
+                    <ChakraDatePicker.ViewTrigger>
+                      <ChakraDatePicker.RangeText/>
+                    </ChakraDatePicker.ViewTrigger>
+                    <ChakraDatePicker.NextTrigger>
+                      <Icon boxSize={ 6 } transform="rotate(180deg)"><ArrowIcon/></Icon>
+                    </ChakraDatePicker.NextTrigger>
+                  </ChakraDatePicker.ViewControl>
+                  { view === 'day' && (
+                    <>
+                      <ChakraDatePicker.DayTable/>
+                      { withTime && (() => {
 
-            return (
-              <Field
-                label={ placeholder ?? 'Date' }
-                floating
-                size="lg"
-                readOnly={ readOnly }
-                invalid={ invalid }
-                errorText={ errorText }
-                required={ required }
-              >
-                <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
-                  <ChakraDatePicker.Input/>
-                </InputGroup>
-              </Field>
-            );
-          } }
-        </ChakraDatePicker.Context>
-      </ChakraDatePicker.Control>
-      <Portal>
-        <ChakraDatePicker.Positioner>
-          <ChakraDatePicker.Content>
-            { [ 'day' as const, 'month' as const, 'year' as const ].map((view) => (
-              <ChakraDatePicker.View key={ view } view={ view }>
-                <ChakraDatePicker.ViewControl>
-                  <ChakraDatePicker.PrevTrigger>
-                    <Icon boxSize={ 6 }><ArrowIcon/></Icon>
-                  </ChakraDatePicker.PrevTrigger>
-                  <ChakraDatePicker.ViewTrigger>
-                    <ChakraDatePicker.RangeText/>
-                  </ChakraDatePicker.ViewTrigger>
-                  <ChakraDatePicker.NextTrigger>
-                    <Icon boxSize={ 6 } transform="rotate(180deg)"><ArrowIcon/></Icon>
-                  </ChakraDatePicker.NextTrigger>
-                </ChakraDatePicker.ViewControl>
-                { view === 'day' && (
-                  <>
-                    <ChakraDatePicker.DayTable/>
-                    { withTime && (() => {
+                        const minTime = min && 'hour' in min ?
+                          `${ padStart(min.hour.toString(), 2, '0') }:${ padStart(min.minute.toString(), 2, '0') }` :
+                          undefined;
 
-                      const minTime = min && 'hour' in min ?
-                        `${ padStart(min.hour.toString(), 2, '0') }:${ padStart(min.minute.toString(), 2, '0') }` :
-                        undefined;
+                        const maxTime = max && 'hour' in max ?
+                          `${ padStart(max.hour.toString(), 2, '0') }:${ padStart(max.minute.toString(), 2, '0') }` :
+                          undefined;
 
-                      const maxTime = max && 'hour' in max ?
-                        `${ padStart(max.hour.toString(), 2, '0') }:${ padStart(max.minute.toString(), 2, '0') }` :
-                        undefined;
+                        const currentDate = value?.[0];
+                        const isMinDay = currentDate && min && currentDate.year === min.year && currentDate.month === min.month && currentDate.day === min.day;
+                        const isMaxDay = currentDate && max && currentDate.year === max.year && currentDate.month === max.month && currentDate.day === max.day;
 
-                      const currentDate = value?.[0];
-                      const isMinDay = currentDate && min && currentDate.year === min.year && currentDate.month === min.month && currentDate.day === min.day;
-                      const isMaxDay = currentDate && max && currentDate.year === max.year && currentDate.month === max.month && currentDate.day === max.day;
-
-                      return (
-                        <TimePicker
-                          value={ currentDate ? getTime(currentDate) : undefined }
-                          min={ isMinDay ? minTime : undefined }
-                          max={ isMaxDay ? maxTime : undefined }
-                          onValueChange={ handleTimeChange }
-                          disabled={ !currentDate }
-                          inputProps={{ bgColor: 'dialog.bg' }}
-                        />
-                      );
-                    })() }
-                  </>
-                ) }
-                { view === 'month' && <ChakraDatePicker.MonthTable/> }
-                { view === 'year' && <ChakraDatePicker.YearTable/> }
-              </ChakraDatePicker.View>
-            )) }
-          </ChakraDatePicker.Content>
-        </ChakraDatePicker.Positioner>
-      </Portal>
-    </ChakraDatePicker.Root>
-  );
-};
+                        return (
+                          <TimePicker
+                            value={ currentDate ? getTime(currentDate) : undefined }
+                            min={ isMinDay ? minTime : undefined }
+                            max={ isMaxDay ? maxTime : undefined }
+                            onValueChange={ handleTimeChange }
+                            disabled={ !currentDate }
+                            inputProps={{ bgColor: 'dialog.bg' }}
+                            invalid={ invalid }
+                          />
+                        );
+                      })() }
+                    </>
+                  ) }
+                  { view === 'month' && <ChakraDatePicker.MonthTable/> }
+                  { view === 'year' && <ChakraDatePicker.YearTable/> }
+                </ChakraDatePicker.View>
+              )) }
+            </ChakraDatePicker.Content>
+          </ChakraDatePicker.Positioner>
+        </Portal>
+      </ChakraDatePicker.Root>
+    );
+  });
