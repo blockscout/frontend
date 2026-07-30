@@ -193,6 +193,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
                   invalid={ invalid }
                   errorText={ errorText }
                   required={ required }
+                  focusVisible={ context.open }
                 >
                   <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
                     <ChakraDatePicker.Input/>
@@ -243,7 +244,6 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
                             onValueChange={ handleTimeChange }
                             disabled={ !currentDate }
                             inputProps={{ bgColor: 'dialog.bg' }}
-                            invalid={ invalid }
                           />
                         );
                       })() }

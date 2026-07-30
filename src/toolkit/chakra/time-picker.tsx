@@ -140,7 +140,6 @@ export interface TimePickerProps extends Omit<FieldProps, 'children'> {
   inputProps?: InputProps;
   min?: string;
   max?: string;
-  invalid?: boolean;
 }
 
 export const TimePicker = ({
@@ -150,7 +149,6 @@ export const TimePicker = ({
   min,
   max,
   disabled,
-  invalid: invalidProp,
   readOnly,
   inputProps,
   ...rest
@@ -300,16 +298,12 @@ export const TimePicker = ({
   );
 
   const invalid = React.useMemo(() => {
-    if (invalidProp === undefined || disabled || readOnly) {
+    if (disabled || readOnly || (!min && !max)) {
       return false;
     }
 
-    if (!min && !max) {
-      return invalidProp;
-    }
-
     return !isInLimits({ value: hours ?? 0, type: 'hours', timeValue, limits }) || !isInLimits({ value: minutes ?? 0, type: 'minutes', timeValue, limits });
-  }, [ invalidProp, disabled, readOnly, min, max, hours, minutes, timeValue, limits ]);
+  }, [ disabled, readOnly, min, max, hours, minutes, timeValue, limits ]);
 
   return (
     <PopoverRoot

@@ -92,7 +92,7 @@ const DatePickerShowcase = () => {
       <Section>
         <SectionHeader>Form field</SectionHeader>
         <SamplesStack >
-          <Sample label="withTime: true">
+          <Sample>
             <FormProvider { ...formApi }>
               <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
                 <FormFieldDate<FormFields, 'date_of_birth'>
