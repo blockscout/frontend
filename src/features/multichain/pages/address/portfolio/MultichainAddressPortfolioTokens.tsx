@@ -201,6 +201,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
         data={ tokensQuery.data.items }
         top={ ACTION_BAR_HEIGHT_DESKTOP }
         isLoading={ tokensQuery.isPlaceholderData }
+        resetKey={ tokensQuery.queryHash }
       />
     </TableContainerScrollable>
   ) : null;

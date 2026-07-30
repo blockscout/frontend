@@ -3,10 +3,11 @@
 import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortingField } from '../../types/api';
-import type { StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
+import type { ChainInfo, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -21,9 +22,13 @@ interface Props {
   setSorting: ({ value }: { value: Array<string> }) => void;
   page: number;
   top?: number;
+  chainsData?: Array<ChainInfo>;
+  resetKey?: string;
 }
 
-const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Props) => {
+const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chainsData, resetKey }: Props) => {
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -65,19 +70,24 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top }: Pr
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => {
-          const tokenCurrentChain = item.tokens.find((token) => String(token.chain_id) === config.chain.id);
+        { data.slice(0, renderedItemsNum).map((item, index) => {
+          const tokenInfo = item.tokens.find((token) => String(token.chain_id) === config.chain.id) ||
+            item.tokens.find((token) => String(token.chain_id) !== config.chain.id);
+          const chainInfo = chainsData?.find((chain) => chain.id === tokenInfo?.chain_id);
+
           return (
             <BridgedTokensTableItem
-              key={ String(tokenCurrentChain?.token_address) + (isLoading ? index : '') }
+              key={ String(tokenInfo?.token_address) + (isLoading ? index : '') }
               data={ item }
-              token={ tokenCurrentChain }
+              tokenInfo={ tokenInfo }
+              chainInfo={ chainInfo }
               index={ index }
               isLoading={ isLoading }
               page={ page }
             />
           );
         }) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

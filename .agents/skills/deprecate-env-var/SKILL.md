@@ -5,7 +5,7 @@ description: Checklist for deprecating a NEXT_PUBLIC_* environment variable — 
 
 # Deprecate an env variable
 
-This is the reverse of the `add-env-var` skill. Read `.agents/rules/env-vars.mdc`
+This is the reverse of the `add-env-var` skill. Read `.agents/rules/env-vars.md`
 first for background: how runtime delivery works, how the config object is
 structured, the three value types, and where validation lives.
 
@@ -38,8 +38,9 @@ release: grep `deploy/tools/envs-validator/index.ts` for a
   phase. Go straight to **Branch B → Phase 2**; do **not** ask the user which
   branch.
 
-- **Not yet deprecated** — **ask the user explicitly** which branch applies
-  (do not infer it):
+- **Not yet deprecated** — run the deployment-values check below; it names the
+  branch. Put that recommendation to the user and **have them confirm it** — do
+  not pick a branch silently:
 
   - **Immediate removal** — the variable is deleted in this release. Operators
     who still pass it get a startup failure. Right when the feature is gone
@@ -58,11 +59,42 @@ release: grep `deploy/tools/envs-validator/index.ts` for a
 Also settle: **is there a replacement variable?** This changes the grace-period
 recipe and the `Comment` you write in the docs.
 
+### Where is the variable actually set? (deployment-values check)
+
+What is safe is decided by where hosted instances get the variable from, not by
+how dead the feature looks — so read the DevOps config repo
+`blockscout/deployment-values` rather than reasoning about it (private repo;
+`gh` must be authenticated for it — see the `check-github-cli` skill):
+
+```bash
+gh api "search/code?q=repo:blockscout/deployment-values+NEXT_PUBLIC_FOO" --jq '.total_count, (.items[].path)'
+```
+
+Open every match — the count alone decides nothing:
+
+```bash
+gh api "repos/blockscout/deployment-values/contents/<path>" --jq '.content' | base64 -d
+```
+
+Read **where** it is set, and **to what**. The sampled values bound how much of
+the variable's behaviour is really in use: `NEXT_PUBLIC_ACCOUNT_API_KEYS_BUTTON`
+was only ever set to `'false'`, which is what made dropping its URL-string mode
+safe.
+
+- **Per-instance files only** (`common/values/blockscout/<instance>/values*.yaml*`)
+  → **Branch A**. DevOps drops the value instance by instance as they roll the
+  release out.
+- **The common template** (`common/values/blockscout/values.yaml.gotmpl`) →
+  **Branch B**. Immediate removal breaks **every** hosted instance's startup
+  until the DevOps cleanup merges.
+- **No matches** → **Branch A**, nothing to coordinate at all.
+
 ---
 
 ## Branch A — Immediate removal
 
-Do all of the following in one PR.
+Do all of the following in one PR. Requires the Step 0 check to have cleared it:
+set only in per-instance files, or nowhere.
 
 ### A1 — Move the docs row
 
@@ -141,6 +173,11 @@ clear "use X instead" message, add a guard to `checkDeprecatedEnvs()` in
    with a fallback to the old at the call site:
    `getEnvValue('NEXT_PUBLIC_FOO') || getEnvValue('NEXT_PUBLIC_OLD')`.
 
+   **Inert variant** — when the feature is already gone there is nothing left to
+   read, and the grace period exists only so the common template can keep setting
+   the variable: stop reading it now, and let the schema, the docs row and the
+   warning carry the rest of Phase 1. Phase 2 is then a pure cleanup.
+
 3. **Validator schema** — keep the old variable accepted in `schema.ts` /
    `schema_multichain.ts`. If it was **Required**, make it optional now (the new
    variable carries the requirement). Keep its test-preset entries valid.
@@ -169,6 +206,11 @@ the warning block you added to `printDeprecationWarning()` and the guard in
   to the shipping tag.
 - **Label the PR `ENVs`** so the change is picked up into the "Changes in ENV
   variables" section of the release notes.
+- **Name every removed variable in the PR description**, and say the removal is
+  breaking. `prepare-release` reads `ENVs`-labelled PR bodies to build both the
+  release notes and the roll-up request to DevOps, so this description is how
+  DevOps learns what to drop from deployment-values, and for which release. It is
+  the only place that list needs to live.
 - **Run the validator suite and check the negative path:**
   ```bash
   pnpm --filter envs-validator test

@@ -8,9 +8,8 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import DataList from 'src/shared/lists/DataList';
 import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
-import TokenTransfersCrossChainListItem from '../../components/token-transfers/TokenTransfersCrossChainListItem';
+import TokenTransfersCrossChainList from '../../components/token-transfers/TokenTransfersCrossChainList';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
-import { getItemKey } from '../../components/token-transfers/utils';
 
 interface Props {
   txQuery: TxQuery;
@@ -23,19 +22,18 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
   const content = crossChainQuery.data?.items ? (
     <>
       <Box hideFrom="lg">
-        { crossChainQuery.data.items.map((item, index) => (
-          <TokenTransfersCrossChainListItem
-            key={ getItemKey(item, crossChainQuery.isPlaceholderData ? index : undefined) }
-            data={ item }
-            isLoading={ isLoading || crossChainQuery.isPlaceholderData }
-          />
-        )) }
+        <TokenTransfersCrossChainList
+          items={ crossChainQuery.data.items }
+          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
+          resetKey={ crossChainQuery.queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <TokenTransfersCrossChainTable
           data={ crossChainQuery.data.items }
           isLoading={ isLoading || crossChainQuery.isPlaceholderData }
           top={ tableTop }
+          resetKey={ crossChainQuery.queryHash }
         />
       </Box>
     </>

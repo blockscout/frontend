@@ -22,6 +22,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
           view="block"
+          resetKey={ blockWithdrawalsQuery.queryHash }
         />
       </Box>
       <Box hideBelow="lg">
@@ -30,6 +31,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
           top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
+          resetKey={ blockWithdrawalsQuery.queryHash }
         />
       </Box>
     </>

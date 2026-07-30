@@ -33,6 +33,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
         isLoading={ query.isPlaceholderData }
         showTx={ showTx }
         showSender={ showSender }
+        resetKey={ query.queryHash }
       />
     </TableContainerScrollable>
   ) : null;

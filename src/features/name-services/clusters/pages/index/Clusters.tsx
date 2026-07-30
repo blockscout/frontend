@@ -27,9 +27,9 @@ import { useQueryParams } from 'src/shared/router/useQueryParams';
 import { Link } from 'src/toolkit/chakra/link';
 
 import ClustersActionBar from './ClustersActionBar';
-import ClustersDirectoryListItem from './ClustersDirectoryListItem';
+import ClustersDirectoryList from './ClustersDirectoryList';
 import ClustersDirectoryTable from './ClustersDirectoryTable';
-import ClustersLeaderboardListItem from './ClustersLeaderboardListItem';
+import ClustersLeaderboardList from './ClustersLeaderboardList';
 import ClustersLeaderboardTable from './ClustersLeaderboardTable';
 
 const Clusters = () => {
@@ -88,26 +88,24 @@ const Clusters = () => {
 
   const hasActiveFilters = Boolean(debouncedSearchTerm);
 
+  const resetKey = `${ viewMode }:${ debouncedSearchTerm }:${ page }`;
+
   const content = (
     <>
       <Box hideFrom="lg">
         { showDirectoryView ? (
-          directoryData.map((item, index) => (
-            <ClustersDirectoryListItem
-              key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
-              item={ item }
-              isLoading={ isLoading }
-              isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
-            />
-          ))
+          <ClustersDirectoryList
+            data={ directoryData }
+            isLoading={ isLoading }
+            isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
+            resetKey={ resetKey }
+          />
         ) : (
-          leaderboardData.map((item, index) => (
-            <ClustersLeaderboardListItem
-              key={ `${ item.name }-${ index }${ isLoading ? '-loading' : '' }` }
-              item={ item }
-              isLoading={ isLoading }
-            />
-          ))
+          <ClustersLeaderboardList
+            data={ leaderboardData }
+            isLoading={ isLoading }
+            resetKey={ resetKey }
+          />
         ) }
       </Box>
       <Box hideBelow="lg">
@@ -117,12 +115,14 @@ const Clusters = () => {
             isLoading={ isLoading }
             isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
             top={ ACTION_BAR_HEIGHT_DESKTOP }
+            resetKey={ resetKey }
           />
         ) : (
           <ClustersLeaderboardTable
             data={ leaderboardData }
             isLoading={ isLoading }
             top={ ACTION_BAR_HEIGHT_DESKTOP }
+            resetKey={ resetKey }
           />
         ) }
       </Box>

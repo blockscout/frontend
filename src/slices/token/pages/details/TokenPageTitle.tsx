@@ -102,7 +102,9 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
           content={ (
             <>
               Token information was added manually or sourced from an external data provider.{ ' ' }
-              <Link href="https://docs.blockscout.com/using-blockscout/overviews/token-info" external>More details</Link>
+              <Link href="https://docs.blockscout.com/using-blockscout/overviews/token-info" external className="dark">
+                More details
+              </Link>
             </>
           ) }
           interactive

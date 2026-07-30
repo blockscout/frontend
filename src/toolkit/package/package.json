@@ -41,7 +41,7 @@
     "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
-    "@chakra-ui/react": ">=3.36.0",
+    "@chakra-ui/react": ">=3.36.1",
     "@emotion/react": ">=11.14.0",
     "@internationalized/date": ">=3.12.2",
     "@uidotdev/usehooks": ">=2.4.1",

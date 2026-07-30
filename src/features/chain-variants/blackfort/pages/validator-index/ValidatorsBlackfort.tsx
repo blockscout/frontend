@@ -40,7 +40,7 @@ const ValidatorsBlackfort = () => {
       getSortValueFromQuery<ValidatorsBlackfortSortingValue>(router.query, VALIDATORS_BLACKFORT_SORT_OPTIONS) ?? 'default',
     );
 
-  const { isError, isPlaceholderData, data, pagination, onSortingChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onSortingChange, queryHash } = useQueryWithPages({
     resourceName: 'core:validators_blackfort',
     sorting: getSortParamsFromValue<ValidatorsBlackfortSortingValue, ValidatorsBlackfortSortingField, ValidatorsBlackfortSorting['order']>(sort),
     options: {
@@ -84,7 +84,7 @@ const ValidatorsBlackfort = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ValidatorsTable
@@ -93,6 +93,7 @@ const ValidatorsBlackfort = () => {
           setSorting={ handleSortChange }
           isLoading={ isPlaceholderData }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          resetKey={ queryHash }
         />
       </Box>
     </>

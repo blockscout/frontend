@@ -22,6 +22,7 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
           items={ blockDepositsQuery.data.items }
           isLoading={ blockDepositsQuery.isPlaceholderData }
           view="block"
+          resetKey={ blockDepositsQuery.queryHash }
         />
       </Box>
       <Box hideBelow="lg">
@@ -30,6 +31,7 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
           isLoading={ blockDepositsQuery.isPlaceholderData }
           top={ blockDepositsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
+          resetKey={ blockDepositsQuery.queryHash }
         />
       </Box>
     </>

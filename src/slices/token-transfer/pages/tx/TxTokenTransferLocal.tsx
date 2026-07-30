@@ -37,10 +37,15 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   const content = tokenTransferQuery.data?.items ? (
     <>
       <Box hideBelow="lg">
-        <TokenTransferTable data={ items } top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferTable
+          data={ items }
+          top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP }
+          isLoading={ tokenTransferQuery.isPlaceholderData }
+          resetKey={ tokenTransferQuery.queryHash }
+        />
       </Box>
       <Box hideFrom="lg">
-        <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData } resetKey={ tokenTransferQuery.queryHash }/>
       </Box>
     </>
   ) : null;

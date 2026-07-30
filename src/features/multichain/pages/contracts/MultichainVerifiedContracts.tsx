@@ -83,10 +83,10 @@ const MultichainVerifiedContracts = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData }/>
+        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData }/>
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;

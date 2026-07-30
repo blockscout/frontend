@@ -1,0 +1,117 @@
+---
+description: Vitest unit tests — purpose, setup, utilities, and conventions
+paths:
+  - "**/*.spec.{ts,tsx}"
+globs: "**/*.spec.ts,**/*.spec.tsx"
+alwaysApply: false
+---
+# Unit Tests (Vitest)
+
+## Purpose
+
+Unit tests cover logic that is independent of visual presentation: utility functions, custom hooks, and component behavior (state transitions, conditional rendering, event handling). If a change has no visual output to verify, prefer a Vitest test over a Playwright one — it is faster and cheaper.
+
+## What to test (and what not)
+
+More tests are not better. A test earns its place by pinning behavior that could plausibly break; a test
+that restates the implementation or the framework only adds maintenance cost and false confidence.
+
+**Worth testing:**
+- Branching and conditional logic — the non-obvious paths through a function.
+- State transitions, event handling, and the loading / empty / error / success states of a component.
+- Parsing, formatting, calculation, and data-shaping logic — especially edge cases (empty, zero, null,
+  boundary values, malformed input).
+- Regressions — a test that reproduces a fixed bug so it stays fixed.
+
+**Not worth testing:**
+- Framework or library behavior (that a Chakra prop renders, that `react-query` caches) — trust the deps.
+- Trivial pass-throughs: a getter that returns a field, a component that only forwards props with no logic.
+- Types — `tsc` already proves them; don't add a runtime test to check a type.
+- Tests whose assertions only echo the mock you set up, exercising no real code of your own.
+- Snapshotting large trees "for coverage" — a snapshot must capture something a human decision depends on.
+
+When in doubt, ask: *if I delete this test, what real defect could now ship unnoticed?* If the honest
+answer is "none", don't write it.
+
+## File naming and location
+
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. Run all tests:
+
+```bash
+pnpm test:vitest
+```
+
+Run a single file:
+
+```bash
+pnpm test:vitest path/to/file.spec.ts
+```
+
+## Setup
+
+`vitest/setup.ts` runs before each test file and provides:
+- **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
+- **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
+
+`vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.
+
+## Rendering components
+
+**Never import from `@testing-library/react` directly.** Use the project's custom wrapper instead:
+
+```tsx
+import { render, screen } from 'vitest/lib';
+```
+
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
+
+The `wrapper` export is also available if you need to pass it separately to RTL hooks:
+
+```tsx
+import { wrapper } from 'vitest/lib';
+const { result } = renderHook(() => useMyHook(), { wrapper });
+```
+
+## Utilities
+
+**`vitest/utils/flushPromises.ts`** — call after an action that triggers async effects (e.g. a state update followed by a data fetch) to flush all pending microtasks before asserting:
+
+```tsx
+import flushPromises from 'vitest/utils/flushPromises';
+
+await userEvent.click(button);
+await flushPromises();
+expect(screen.getByText('Loaded')).toBeInTheDocument();
+```
+
+## Mocking fetch responses
+
+`vitest-fetch-mock` is active globally. Mock responses before the code under test runs:
+
+```tsx
+fetchMock.mockResponseOnce(JSON.stringify({ data: 'value' }));
+```
+
+Reset mocks between tests using `beforeEach` / `afterEach` if needed.
+
+## Overriding environment variables
+
+To exercise a feature-config branch, use `vitest/utils/mockEnvs.ts` (the Vitest counterpart of the Playwright `mockEnvs` fixture) instead of hand-mocking `src/config`:
+
+```tsx
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+import withEnvs from 'vitest/utils/mockEnvs';
+
+await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
+  const { default: config } = await import('src/config');
+  // …
+});
+```
+
+`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+
+## Primed-requests drift tests (`*.primed.spec.tsx`)
+
+Each page registered in the early-fetch primer has a `<Component>.primed.spec.tsx` next to its root component that guards the primer registry against drift from what the page actually requests on first render. What these tests guarantee and why lives in `src/server/primedRequests/CONTEXT.md`.
+
+Write them with the `checkPrimedRequests` harness (`vitest/utils/checkPrimedRequests.tsx`) — see the existing specs for the pattern.

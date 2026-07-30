@@ -8,6 +8,7 @@ import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -19,10 +20,12 @@ interface Props {
   top?: number;
   stickyHeader?: boolean;
   currentAddress?: string;
+  resetKey?: string;
 }
 
-const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, currentAddress }: Props) => {
+const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, currentAddress, resetKey }: Props) => {
   const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
     <AddressHighlightProvider>
@@ -49,7 +52,7 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
           </TableRow>
         </TableHeaderComponent>
         <TableBody>
-          { data.map((item, index) => (
+          { data.slice(0, renderedItemsNum).map((item, index) => (
             <TransactionsCrossChainTableItem
               key={ item.message_id + (isLoading ? String(index) : '') }
               data={ item }
@@ -57,6 +60,7 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
               currentAddress={ currentAddress }
             />
           )) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

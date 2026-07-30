@@ -13,14 +13,16 @@ import type { SortField, Sort } from './utils';
 import { sortFn } from './utils';
 
 interface Props {
-  history: bens.ListDomainEventsResponse | undefined;
+  items: Array<bens.DomainEvent>;
   domain: bens.DetailedDomain | undefined;
   isLoading?: boolean;
   sort: Sort;
   onSortToggle: (field: SortField) => void;
 }
 
-const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle }: Props) => {
+const NameDomainHistoryTable = ({ items, domain, isLoading, sort, onSortToggle }: Props) => {
+  const sortedItems = React.useMemo(() => items.slice().sort(sortFn(sort)), [ items, sort ]);
+
   return (
     <TableRoot>
       <TableHeaderSticky top={ 0 }>
@@ -41,12 +43,9 @@ const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        {
-          history?.items
-            .slice()
-            .sort(sortFn(sort))
-            .map((item, index) => <NameDomainHistoryTableItem key={ index } event={ item } domain={ domain } isLoading={ isLoading }/>)
-        }
+        { sortedItems.map((item, index) => (
+          <NameDomainHistoryTableItem key={ index } event={ item } domain={ domain } isLoading={ isLoading }/>
+        )) }
       </TableBody>
     </TableRoot>
   );

@@ -57,7 +57,7 @@ test.describe('mobile', () => {
     await mockApiResponse('core:arbitrum_l2_txn_batch', batchDataCelestia, { pathParams: { number: batchNumber } });
     const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
     await component.getByText('Show data availability info').click();
-    await page.mouse.move(0, 0);
+    await page.mouse.move(390, 900);
     await expect(component).toHaveScreenshot();
   });
 });

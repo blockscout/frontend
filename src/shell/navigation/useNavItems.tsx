@@ -293,7 +293,7 @@ export default function useNavItems(): ReturnType {
           icon: 'navigation/gas_tracker',
           isActive: pathname.startsWith('/gas-tracker'),
         },
-        config.features.crossChainTxs.isEnabled && {
+        config.features.crossChainTxs.isEnabled && !config.features.multichain.isEnabled && {
           text: 'ICTT users',
           nextRoute: { pathname: '/ictt-users' as const },
           icon: 'navigation/ictt_users',
@@ -314,12 +314,28 @@ export default function useNavItems(): ReturnType {
       };
     })();
 
-    const apiNavItem: NavItem | null = config.features.apiDocs.isEnabled ? {
-      text: 'API',
-      nextRoute: { pathname: '/api-docs' as const },
-      icon: 'navigation/api_docs',
-      isActive: pathname.startsWith('/api-docs'),
-    } : null;
+    const apiNavItem: NavItem | null = (() => {
+      const feature = getFeaturePayload(config.features.apiDocs);
+
+      if (!feature) {
+        return null;
+      }
+
+      if (feature.mode === 'external') {
+        return {
+          text: 'API',
+          url: feature.url,
+          icon: 'navigation/api_docs',
+        };
+      }
+
+      return {
+        text: 'API',
+        nextRoute: { pathname: '/api-docs' as const },
+        icon: 'navigation/api_docs',
+        isActive: pathname.startsWith('/api-docs'),
+      };
+    })();
 
     const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
       config.features.multichain.isEnabled ? {

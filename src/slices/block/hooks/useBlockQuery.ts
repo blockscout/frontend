@@ -15,7 +15,7 @@ import { BLOCK } from 'src/slices/block/stubs/details';
 import { GET_BLOCK } from 'src/slices/block/stubs/rpc';
 import { formatBlockDetailsData } from 'src/slices/block/utils/format-rpc-data';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
@@ -55,17 +55,19 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   const latestBlockQuery = useQuery({
     queryKey: [ 'RPC', 'block', 'latest' ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
       return publicClient.getBlock({ blockTag: 'latest' });
     },
-    enabled: publicClient !== undefined && (apiQuery.isError || apiQuery.errorUpdateCount > 0),
+    enabled: isPublicClientAvailable && (apiQuery.isError || apiQuery.errorUpdateCount > 0),
   });
 
   const rpcQuery = useQuery<RpcResponseType, unknown, schemas['BlockResponse'] | null>({
     queryKey: [ 'RPC', 'block', { heightOrHash } ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         return null;
       }
@@ -83,7 +85,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData || !publicClient) {
+    if (apiQuery.isPlaceholderData || !isPublicClientAvailable) {
       return;
     }
 
@@ -100,7 +102,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const isRpcQuery = Boolean(publicClient && (apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
+  const isRpcQuery = Boolean(isPublicClientAvailable && (apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<schemas['BlockResponse'], ResourceError<{ status: number }>> : apiQuery;
 
   return {

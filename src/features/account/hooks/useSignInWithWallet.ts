@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import React from 'react';
-import { useSignMessage, useSwitchChain } from 'wagmi';
 
 import type { operations } from '@blockscout/api-types';
 import type * as rewards from '@blockscout/points-types';
@@ -10,6 +9,7 @@ import type { UserInfo } from 'src/features/account/types/api';
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
 import useWalletReown from 'src/features/connect-wallet/hooks/wallet/useWalletReown';
+import { getWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 
 import config from 'src/config';
 import type * as mixpanel from 'src/services/mixpanel';
@@ -56,8 +56,6 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
 
   const apiFetch = useApiFetch();
   const web3Wallet = useWalletReown({ source });
-  const { signMessageAsync } = useSignMessage();
-  const { switchChainAsync } = useSwitchChain();
 
   const getSiweMessage = React.useCallback(async(address: string) => {
     try {
@@ -117,9 +115,10 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
 
   const proceedToAuth = React.useCallback(async(address: string) => {
     try {
-      await switchChainAsync({ chainId: Number(config.chain.id) });
+      const runtime = await getWeb3Runtime();
+      await runtime.switchChain({ chainId: Number(config.chain.id) });
       const siweMessage = await getSiweMessage(address);
-      const signature = await signMessageAsync({ message: siweMessage.message });
+      const signature = await runtime.signMessage({ message: siweMessage.message });
 
       const authResponse = await fetchProtectedResource(authFetchFactory(siweMessage.message, signature));
 
@@ -151,7 +150,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
     } finally {
       setIsPending(false);
     }
-  }, [ switchChainAsync, getSiweMessage, signMessageAsync, fetchProtectedResource, authFetchFactory, apiFetch, onSuccess, onError ]);
+  }, [ getSiweMessage, fetchProtectedResource, authFetchFactory, apiFetch, onSuccess, onError ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

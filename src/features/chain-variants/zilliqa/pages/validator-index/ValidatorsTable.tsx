@@ -5,6 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -14,9 +15,12 @@ interface Props {
   data: Array<schemas['ZilliqaStaker']>;
   isLoading?: boolean;
   top?: number;
+  resetKey?: string;
 }
 
-const ValidatorsTable = ({ data, isLoading, top }: Props) => {
+const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
   return (
     <TableRoot>
       <TableHeaderSticky top={ top }>
@@ -29,12 +33,13 @@ const ValidatorsTable = ({ data, isLoading, top }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => (
+        { data.slice(0, renderedItemsNum).map((item, index) => (
           <ValidatorsTableItem
             key={ item.bls_public_key + (isLoading ? index : '') }
             data={ item }
             isLoading={ isLoading }/>
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

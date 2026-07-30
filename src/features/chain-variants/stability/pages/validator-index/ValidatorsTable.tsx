@@ -10,6 +10,7 @@ import type {
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -22,9 +23,11 @@ interface Props {
   sort: ValidatorsStabilitySortingValue;
   setSorting: ({ value }: { value: Array<ValidatorsStabilitySortingValue> }) => void;
   isLoading?: boolean;
+  resetKey?: string;
 }
 
-const ValidatorsTable = ({ data, sort, setSorting, isLoading }: Props) => {
+const ValidatorsTable = ({ data, sort, setSorting, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const onSortToggle = React.useCallback((field: ValidatorsStabilitySortingField) => {
     const value = getNextSortValue<ValidatorsStabilitySortingField, ValidatorsStabilitySortingValue>(VALIDATORS_STABILITY_SORT_SEQUENCE, field)(sort);
@@ -56,12 +59,13 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading }: Props) => {
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.map((item, index) => (
+        { data.slice(0, renderedItemsNum).map((item, index) => (
           <ValidatorsTableItem
             key={ item.address.hash + (isLoading ? index : '') }
             data={ item }
             isLoading={ isLoading }/>
         )) }
+        <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>
   );

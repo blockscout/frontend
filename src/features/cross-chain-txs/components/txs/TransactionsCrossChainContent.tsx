@@ -11,7 +11,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import DataList from 'src/shared/lists/DataList';
 import type { Props as DataListProps } from 'src/shared/lists/DataList';
 
-import TransactionsCrossChainListItem from './TransactionsCrossChainListItem';
+import TransactionsCrossChainList from './TransactionsCrossChainList';
 import TransactionsCrossChainTable from './TransactionsCrossChainTable';
 
 export interface Props extends Omit<DataListProps, 'children'> {
@@ -21,20 +21,28 @@ export interface Props extends Omit<DataListProps, 'children'> {
   isTableView?: boolean;
   stickyHeader?: boolean;
   currentAddress?: string;
+  resetKey?: string;
 }
 
-const TransactionsCrossChainContent = ({ items, isLoading, pagination, isTableView, stickyHeader = true, currentAddress, ...rest }: Props) => {
+const TransactionsCrossChainContent = ({
+  items,
+  isLoading,
+  pagination,
+  isTableView,
+  stickyHeader = true,
+  currentAddress,
+  resetKey,
+  ...rest
+}: Props) => {
   const content = items ? (
     <>
       <Box display={{ base: isTableView ? 'none' : 'block', lg: 'none' }}>
-        { items.map((item, index) => (
-          <TransactionsCrossChainListItem
-            key={ item.message_id + (isLoading ? index : '') }
-            data={ item }
-            isLoading={ isLoading }
-            currentAddress={ currentAddress }
-          />
-        )) }
+        <TransactionsCrossChainList
+          items={ items }
+          isLoading={ isLoading }
+          currentAddress={ currentAddress }
+          resetKey={ resetKey }
+        />
       </Box>
       <Box
         display={{ base: isTableView ? 'block' : 'none', lg: 'block' }}
@@ -48,6 +56,7 @@ const TransactionsCrossChainContent = ({ items, isLoading, pagination, isTableVi
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           stickyHeader={ stickyHeader }
           currentAddress={ currentAddress }
+          resetKey={ resetKey }
         />
       </Box>
     </>

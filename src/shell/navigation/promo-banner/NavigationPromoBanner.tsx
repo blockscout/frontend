@@ -2,7 +2,6 @@
 
 import { Flex, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React, { useCallback, useState, useEffect } from 'react';
-import { keccak256, stringToBytes } from 'viem';
 
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
@@ -29,12 +28,22 @@ const NavigationPromoBanner = ({ isCollapsed }: Props) => {
   const [ promoBannerHash, setPromoBannerHash ] = useState('');
 
   useEffect(() => {
-    try {
-      const promoBannerClosedHash = window.localStorage.getItem(PROMO_BANNER_CLOSED_HASH_KEY);
-      const promoBannerHash = keccak256(stringToBytes(JSON.stringify(promoBanner)));
-      setIsShown(promoBannerHash !== promoBannerClosedHash);
-      setPromoBannerHash(promoBannerHash);
-    } catch {}
+    let isActive = true;
+    // viem is imported lazily so the nav shell (rendered on every page) keeps it out of the critical
+    // bundle; the hash stays byte-identical to before, so existing dismissals survive.
+    import('viem').then(({ keccak256, stringToBytes }) => {
+      try {
+        const promoBannerClosedHash = window.localStorage.getItem(PROMO_BANNER_CLOSED_HASH_KEY);
+        const promoBannerHash = keccak256(stringToBytes(JSON.stringify(promoBanner)));
+        if (isActive) {
+          setIsShown(promoBannerHash !== promoBannerClosedHash);
+          setPromoBannerHash(promoBannerHash);
+        }
+      } catch {}
+    }).catch(() => {});
+    return () => {
+      isActive = false;
+    };
   }, []);
 
   const handleClose = useCallback((e: React.MouseEvent<HTMLDivElement>) => {

@@ -101,13 +101,37 @@ jobs:
                     docker-arm-host: ${{ secrets.ARM_RUNNER_HOSTNAME }}
                     docker-arm-host-key: ${{ secrets.ARM_RUNNER_KEY }}
 
+            # The registry cache exporter REPLACES the manifest at its tag rather than
+            # merging into it, so a single shared tag would let any of the amd64-only
+            # callers wipe the arm64 records written by a release build (only releases
+            # build arm64). Scope the tag by platform set. Sorted + whitespace-stripped
+            # so the tag does not depend on how the input happens to be spelled.
+            # Fails hard rather than falling back to a fixed tag: a shared fallback would
+            # silently reintroduce the very clobbering this step prevents, and
+            # `ignore-error=true` on the exporter would hide the symptom.
+            -   name: Compute build cache tag
+                id: cache-tag
+                env:
+                    PLATFORMS: ${{ inputs.platforms }}
+                run: |
+                    set -euo pipefail
+                    slug=$(printf '%s' "$PLATFORMS" | tr -d '[:space:]' | tr ',' '\n' | awk 'NF' | LC_ALL=C sort | tr '/' '-' | paste -sd '_' -)
+                    [ -n "$slug" ] || { echo "platforms input resolved to no platforms" >&2; exit 1; }
+                    echo "tag=buildcache-$slug" >> "$GITHUB_OUTPUT"
+
             -   name: Build and push
                 uses: docker/build-push-action@v5
                 with:
                     context: .
                     file: ./Dockerfile
                     push: true
-                    cache-from: type=gha
+                    # Also read the amd64-only cache, kept warm by the four amd64
+                    # callers, so a multi-arch release gets its amd64 half for free.
+                    # Redundant (same ref twice) for those amd64-only callers.
+                    cache-from: |
+                        type=registry,ref=${{ steps.image-name.outputs.image-name }}:${{ steps.cache-tag.outputs.tag }}
+                        type=registry,ref=${{ steps.image-name.outputs.image-name }}:buildcache-linux-amd64
+                    cache-to: type=registry,ref=${{ steps.image-name.outputs.image-name }}:${{ steps.cache-tag.outputs.tag }},mode=max,image-manifest=true,oci-mediatypes=true,ignore-error=true
                     tags: ${{ steps.meta.outputs.tags }}
                     platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}

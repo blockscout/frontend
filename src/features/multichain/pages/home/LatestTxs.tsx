@@ -7,11 +7,13 @@ import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
 import useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
+import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
+import LatestTxsCrossChain from './LatestTxsCrossChain';
 import LatestTxsLocal from './LatestTxsLocal';
 
 const LatestTxs = () => {
@@ -25,7 +27,7 @@ const LatestTxs = () => {
     {
       id: 'cross_chain_txs',
       title: 'Cross-chain txns',
-      component: <EmptyState type="coming_soon" my={ 6 }/>,
+      component: config.features.crossChainTxs.isEnabled ? <LatestTxsCrossChain/> : <EmptyState type="coming_soon" my={ 6 }/>,
     },
     {
       id: 'txs_local',

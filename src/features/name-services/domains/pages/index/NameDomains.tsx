@@ -22,7 +22,7 @@ import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
 import NameDomainsActionBar from './NameDomainsActionBar';
-import NameDomainsListItem from './NameDomainsListItem';
+import NameDomainsList from './NameDomainsList';
 import NameDomainsTable from './NameDomainsTable';
 import type { Sort, SortField } from './utils';
 import { SORT_OPTIONS, getNextSortValue } from './utils';
@@ -102,7 +102,7 @@ const NameDomains = () => {
   const protocolsQuery = useApiQuery('bens:protocols');
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
-  const { data, isError, isPlaceholderData: isLoading, onFilterChange, onSortingChange } = query;
+  const { data, isError, isPlaceholderData: isLoading, onFilterChange, onSortingChange, queryHash } = query;
 
   React.useEffect(() => {
     const hasInactiveFilter = filterValue.some((value) => value === 'with_inactive');
@@ -206,27 +206,26 @@ const NameDomains = () => {
   const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 ||
     (protocolsQuery.data && availableProtocols.length > 1 ? protocolsFilter.length > 0 : false);
 
-  const content = (
+  const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data?.items.map((item, index) => (
-          <NameDomainsListItem
-            key={ item.id + (isLoading ? index : '') }
-            { ...item }
-            isLoading={ isLoading }
-          />
-        )) }
+        <NameDomainsList
+          items={ data.items }
+          isLoading={ isLoading }
+          resetKey={ queryHash }
+        />
       </Box>
       <Box hideBelow="lg">
         <NameDomainsTable
-          data={ data }
+          items={ data.items }
           isLoading={ isLoading }
           sort={ sort }
           onSortToggle={ handleSortToggle }
+          resetKey={ queryHash }
         />
       </Box>
     </>
-  );
+  ) : null;
 
   const protocolsData = React.useMemo(() => {
     return protocolsQuery.data?.items?.filter((item) => availableProtocols.includes(item.id));

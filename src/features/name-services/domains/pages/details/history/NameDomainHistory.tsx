@@ -14,7 +14,7 @@ import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-import NameDomainHistoryListItem from './NameDomainHistoryListItem';
+import NameDomainHistoryList from './NameDomainHistoryList';
 import NameDomainHistoryTable from './NameDomainHistoryTable';
 import { getNextSortValue, type Sort, type SortField } from './utils';
 
@@ -52,21 +52,18 @@ const NameDomainHistory = ({ domain }: Props) => {
     }
   }, [ isPlaceholderData ]);
 
-  const content = (
+  const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data?.items.map((item, index) => (
-          <NameDomainHistoryListItem
-            key={ index }
-            event={ item }
-            domain={ domain }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
+        <NameDomainHistoryList
+          items={ data.items }
+          domain={ domain }
+          isLoading={ isPlaceholderData }
+        />
       </Box>
       <Box hideBelow="lg">
         <NameDomainHistoryTable
-          history={ data }
+          items={ data.items }
           domain={ domain }
           isLoading={ isPlaceholderData }
           sort={ sort }
@@ -74,7 +71,7 @@ const NameDomainHistory = ({ domain }: Props) => {
         />
       </Box>
     </>
-  );
+  ) : null;
 
   return (
     <DataList

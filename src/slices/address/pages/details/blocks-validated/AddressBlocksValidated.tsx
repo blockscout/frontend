@@ -21,6 +21,7 @@ import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
@@ -102,6 +103,12 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
     handler: handleNewSocketMessage,
   });
 
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: query.data?.items,
+    isEnabled: !query.isPlaceholderData,
+    resetKey: query.queryHash,
+  });
+
   if (!isMounted || !shouldRender) {
     return null;
   }
@@ -129,7 +136,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
             type="block"
             isLoading={ query.isPlaceholderData }
           />
-          { query.data.items.map((item, index) => (
+          { query.data.items.slice(0, renderedItemsNum).map((item, index) => (
             <AddressBlocksValidatedTableItem
               key={ item.height + (query.isPlaceholderData ? String(index) : '') }
               data={ item }
@@ -139,6 +146,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
           )) }
         </TableBody>
       </TableRoot>
+      <div ref={ cutRef }/>
     </TableContainerScrollable>
   ) : null;
 

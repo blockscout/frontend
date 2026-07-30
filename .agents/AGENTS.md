@@ -6,28 +6,28 @@ Product and feature codenames used throughout the codebase (e.g. `tac`, `bens`, 
 
 ## Architecture
 
-See `./rules/architecture.mdc` for project overview, tech stack, and directory layout.
+See `./rules/architecture.md` for project overview, tech stack, and directory layout.
 
 ## Design System Rules
 
-See `./rules/design-system.mdc` for Chakra UI v3 design system configuration and styling rules.
+See `./rules/design-system.md` for Chakra UI v3 design system configuration and styling rules.
 
 ## Code Style & Quality
 
-See `./rules/code-quality.mdc` for code style, lint commands plus conventions linters don't catch.
+See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch.
 
 ## TypeScript Conventions
 
-See `./rules/typescript.mdc` for established rules how to write Typescript code.
+See `./rules/typescript.md` for established rules how to write Typescript code.
 
 ## Environment Variables
 
-See `./rules/env-vars.mdc` for where environment variables live, how they're delivered at runtime, validated, and how to add or deprecate them.
+See `./rules/env-vars.md` for where environment variables live, how they're delivered at runtime, validated, and how to add or deprecate them.
 
 ## Testing
 
-- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.mdc` for purpose, setup, utilities, and conventions.
-- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.mdc` for purpose, setup, fixtures, and conventions.
+- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for purpose, setup, fixtures, and conventions.
 
 ## Running locally
 
@@ -51,21 +51,19 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/scripts/` — how the frontend container is built and starts up (Dockerfile stages, entrypoint).
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against yup schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
+- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
+- `tools/profiling/` — React render profiling: production profiling build (`profile:preset`) and DevTools trace aggregation (`profile:analyze`).
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
 ## Product task workflow
 
-Product tasks (GitHub issues) are worked through a spec-driven workflow: the `grill-the-task` skill
-interviews the developer to fill the issue's gaps, `to-spec` writes the spec into `.agents/tasks/` and
-routes open questions to their owners via Slack, and `implement-task` executes the spec one subtask at a
-time. See `.agents/tasks/README.md` for the lifecycle, `.agents/rules/delegation.mdc` for what agents may
-implement vs. what stays human, and `.agents/TEAM.md` for who answers open questions.
-
-## Cursor Cloud specific instructions
-
-The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally" above.
+Product tasks (GitHub issues) are worked through a spec-driven workflow, run by the `grill-the-task`,
+`to-spec` and `implement-task` skills. Specs live in `.agents/tasks/`; read `.agents/tasks/README.md` for
+the lifecycle before touching one. `.agents/delegation.md` draws the agent/human boundary, and
+`.agents/TEAM.md` says who answers open questions.

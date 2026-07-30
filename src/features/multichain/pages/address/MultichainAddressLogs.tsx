@@ -17,12 +17,16 @@ import { MultichainProvider } from 'src/features/multichain/context';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import getAvailableChainIds from './get-available-chain-ids';
+
+// log rows are tall, so the initial window is smaller than the default
+const INITIAL_RENDERED_ITEMS_NUM = 10;
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -35,7 +39,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange, queryHash } = useQueryWithPages({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
@@ -49,6 +53,13 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
     },
     isMultichain: true,
     chainIds,
+  });
+
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({
+    list: data?.items,
+    isEnabled: !isPlaceholderData,
+    minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
+    resetKey: queryHash,
   });
 
   const chainData = React.useMemo(() => {
@@ -79,7 +90,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
     </ActionBar>
   );
 
-  const content = data?.items ? data.items.map((item, index) => (
+  const renderedLogs = data?.items?.slice(0, renderedItemsNum).map((item, index) => (
     <LogItem
       key={ index }
       data={ item }
@@ -87,7 +98,14 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       isLoading={ isPlaceholderData }
       chainData={ chainData }
     />
-  )) : null;
+  ));
+
+  const content = renderedLogs ? (
+    <>
+      { renderedLogs }
+      <div ref={ cutRef }/>
+    </>
+  ) : null;
 
   return (
     <DataList

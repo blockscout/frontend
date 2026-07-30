@@ -66,7 +66,8 @@ const RESTRICTED_MODULES = {
         'Select', 'SelectRoot', 'SelectControl', 'SelectContent', 'SelectItem', 'SelectValueText',
         'Heading', 'Badge', 'Tabs', 'Show', 'Hide', 'Checkbox', 'CheckboxGroup',
         'Table', 'TableRoot', 'TableBody', 'TableHeader', 'TableRow', 'TableCell',
-        'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuRadioItemGroup', 'MenuContextTrigger',
+        'Menu', 'MenuRoot', 'MenuTrigger', 'MenuContent', 'MenuItem', 'MenuTriggerItem', 'MenuCheckboxItem', 'MenuRadioItem', 'MenuRadioItemGroup',
+        'MenuContextTrigger',
         'Rating', 'RatingGroup', 'Textarea', 'Progress', 'ProgressCircle',
         'EmptyState',
       ],
@@ -104,6 +105,8 @@ export default tseslint.config(
     'deploy/tools/',
     'public/',
     '.git/',
+    // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap
+    '.claude/worktrees/',
     'next.config.js',
   ] },
 

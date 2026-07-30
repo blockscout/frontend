@@ -42,6 +42,7 @@ const MultichainStats = () => {
     onFilterChange,
     displayedSections,
     initialFilterQuery,
+    filterQuery,
   } = useChainStats({ chain });
 
   return (
@@ -79,6 +80,7 @@ const MultichainStats = () => {
           isLoading={ isLoading }
           interval={ interval }
           initialFilterQuery={ initialFilterQuery }
+          filterQuery={ filterQuery }
           sectionId={ sectionId }
         />
 

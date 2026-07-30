@@ -11,6 +11,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -22,12 +23,14 @@ type Props = {
   top: number;
   showTx: boolean;
   showSender: boolean;
+  resetKey?: string;
 };
 
-const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
+const UserOpsTable = ({ items, isLoading, top, showTx, showSender, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const chainConfig = (multichainContext?.chain.app_config || config);
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   const statsQuery = useStatsQuery({ enabled: !isLoading });
 
@@ -51,7 +54,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { items.map((item, index) => {
+          { items.slice(0, renderedItemsNum).map((item, index) => {
             return (
               <UserOpsTableItem
                 key={ item.hash + (isLoading ? String(index) : '') }
@@ -64,6 +67,7 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
               />
             );
           }) }
+          <TableRow ref={ cutRef }/>
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

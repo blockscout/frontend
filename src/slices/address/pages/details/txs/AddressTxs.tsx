@@ -110,6 +110,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           isLoading={ crossChainQuery.isPlaceholderData }
           isError={ crossChainQuery.isError }
           currentAddress={ hash }
+          resetKey={ crossChainQuery.queryHash }
         />
       ),
     },

@@ -18,11 +18,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import OptimisticL2OutputRootsListItem from './OptimisticL2OutputRootsListItem';
+import OptimisticL2OutputRootsList from './OptimisticL2OutputRootsList';
 import OptimisticL2OutputRootsTable from './OptimisticL2OutputRootsTable';
 
 const OptimisticL2OutputRoots = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_output_roots',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_output_roots'>(
@@ -47,16 +47,15 @@ const OptimisticL2OutputRoots = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <OptimisticL2OutputRootsListItem
-            key={ item.l2_output_index + (isPlaceholderData ? String(index) : '') }
-            item={ item }
-            isLoading={ isPlaceholderData }
-          />
-        ))) }
+        <OptimisticL2OutputRootsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <OptimisticL2OutputRootsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2OutputRootsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

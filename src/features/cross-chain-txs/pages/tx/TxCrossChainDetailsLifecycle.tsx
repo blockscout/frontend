@@ -22,7 +22,8 @@ const TxCrossChainDetailsLifecycle = ({ data, isLoading }: Props) => {
 
   const firstStepContent = (() => {
     if (!data.source_transaction_hash) {
-      return <Trigger status="unfinalized" text="Initiated" isFirst isLast isLoading={ isLoading } isDisabled/>;
+      const status = data.destination_transaction_hash ? 'success' : 'unfinalized';
+      return <Trigger status={ status } text="Initiated" isFirst isLast isLoading={ isLoading } isDisabled/>;
     }
 
     const isLast = isError && !data.destination_transaction_hash;

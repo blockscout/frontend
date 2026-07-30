@@ -16,6 +16,7 @@ import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useInitialList from 'src/shared/lists/useInitialList';
+import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -28,6 +29,7 @@ interface Props {
   showSocketErrorAlert?: boolean;
   showSocketInfo?: boolean;
   chainData?: ClusterChainConfig;
+  resetKey?: string;
 }
 
 const VALIDATOR_COL_WEIGHT = 23;
@@ -37,12 +39,13 @@ const FEES_COL_WEIGHT = 22;
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert, chainData }: Props) => {
+const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, showSocketErrorAlert, chainData, resetKey }: Props) => {
   const initialList = useInitialList({
     data: data ?? [],
     idFn: (item) => item.height,
     enabled: !isLoading,
   });
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   const widthBase =
     (!config.slices.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
@@ -85,7 +88,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               isLoading={ isLoading }
             />
           ) }
-          { data.map((item, index) => (
+          { data.slice(0, renderedItemsNum).map((item, index) => (
             <BlocksTableItem
               key={ item.height + (isLoading ? `${ index }_${ page }` : '') }
               data={ item }
@@ -97,6 +100,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
           )) }
         </TableBody>
       </TableRoot>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

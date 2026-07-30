@@ -27,7 +27,7 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:address_deposits',
     pathParams: { hash },
     options: {
@@ -50,6 +50,7 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
         view="address"
         top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         isLoading={ isPlaceholderData }
+        resetKey={ queryHash }
       />
     </TableContainerScrollable>
   ) : null ;

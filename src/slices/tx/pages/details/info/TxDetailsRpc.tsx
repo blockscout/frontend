@@ -13,7 +13,7 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import { GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'src/slices/tx/stubs/rpc';
 import { formatTxDetailsRpcData } from 'src/slices/tx/utils/format-rpc-data';
 
-import { publicClient } from 'src/features/connect-wallet/utils/public-client';
+import { getPublicClient } from 'src/features/connect-wallet/utils/public-client';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
@@ -43,6 +43,7 @@ const TxDetailsRpc = ({ hash, txQuery }: Props) => {
   const query = useQuery<RpcResponseType, unknown, schemas['TransactionResponse'] | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
+      const publicClient = await getPublicClient();
       if (!publicClient) {
         throw new Error('No public RPC client');
       }

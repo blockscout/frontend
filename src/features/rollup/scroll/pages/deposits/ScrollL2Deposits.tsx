@@ -19,11 +19,11 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import ScrollL2DepositsListItem from './ScrollL2DepositsListItem';
+import ScrollL2DepositsList from './ScrollL2DepositsList';
 import ScrollL2DepositsTable from './ScrollL2DepositsTable';
 
 const ScrollL2Deposits = () => {
-  const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
+  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:scroll_l2_deposits',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_deposits'>(
@@ -43,16 +43,15 @@ const ScrollL2Deposits = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <ScrollL2DepositsListItem
-            key={ String(item.id) + (isPlaceholderData ? index : '') }
-            isLoading={ isPlaceholderData }
-            item={ item }
-          />
-        ))) }
+        <ScrollL2DepositsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <ScrollL2DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+        <ScrollL2DepositsTable
+          items={ data.items }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+          resetKey={ queryHash }
+        />
       </Box>
     </>
   ) : null;

@@ -18,7 +18,7 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import { TAC_OPERATION } from '../../stubs';
-import TacOperationsListItem from './TacOperationsListItem';
+import TacOperationsList from './TacOperationsList';
 import TacOperationsTable from './TacOperationsTable';
 
 const TacOperations = () => {
@@ -29,7 +29,7 @@ const TacOperations = () => {
 
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange, queryHash } = useQueryWithPages({
     resourceName: 'tac:operations',
     filters: { q: debouncedSearchTerm },
     options: {
@@ -75,19 +75,10 @@ const TacOperations = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        { data.items.map(((item, index) => (
-          <TacOperationsListItem
-            key={ String(item.operation_id) + (isPlaceholderData ? index : '') }
-            isLoading={ isPlaceholderData }
-            item={ item }
-          />
-        ))) }
+        <TacOperationsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <TacOperationsTable
-          items={ data.items }
-          isLoading={ isPlaceholderData }
-        />
+        <TacOperationsTable items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
       </Box>
     </>
   ) : null;
