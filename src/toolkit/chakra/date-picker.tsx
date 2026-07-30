@@ -2,7 +2,7 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal, useControllableState } from '@chakra-ui/react';
-import { CalendarDate, CalendarDateTime, getLocalTimeZone, isSameDay, now, today } from '@internationalized/date';
+import { CalendarDate, CalendarDateTime, getLocalTimeZone, isSameDay, now, toCalendarDateTime, today } from '@internationalized/date';
 import dayjs from 'dayjs';
 import { padStart } from 'es-toolkit/compat';
 import React from 'react';
@@ -24,12 +24,16 @@ export interface DatePickerValueChangeDetails {
 const DATE_FORMAT = 'MMM D, YYYY';
 const DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
 
+// a ZonedDateTime stringifies with an IANA suffix ("...+02:00[Europe/Madrid]") that dayjs cannot parse,
+// so every value is narrowed to a plain calendar date-time before formatting
+const toDayjs = (date: DateValue) => dayjs(toCalendarDateTime(date).toString());
+
 const format = (date: DateValue) => {
-  return dayjs(date.toString()).format(DATE_FORMAT);
+  return toDayjs(date).format(DATE_FORMAT);
 };
 
 const formatWithTime = (date: DateValue) => {
-  return dayjs(date.toString()).format(DATE_TIME_FORMAT);
+  return toDayjs(date).format(DATE_TIME_FORMAT);
 };
 
 const parse = (value: string): DateValue | undefined => {
@@ -62,7 +66,7 @@ const isToday = (date: DateValue): boolean => {
 };
 
 const getTime = (date: DateValue): string => {
-  return dayjs(date.toString()).format('H:mm');
+  return toDayjs(date).format('H:mm');
 };
 
 const getDefaultDateValue = (withCurrentTime?: boolean): CalendarDateTime => {
@@ -95,6 +99,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     invalid,
     errorText,
     required,
+    bgColor,
     ...rest
   }, ref) {
 
@@ -112,6 +117,11 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
       const newDate = details.value[0];
       if (!newDate) return setValue([]);
 
+      // without a time picker there is no time to carry over, so the value stays a plain calendar date
+      if (!withTime) {
+        return setValue([ new CalendarDate(newDate.year, newDate.month, newDate.day) ]);
+      }
+
       setValue((prev) => {
         const current = prev?.[0] ?? getDefaultDateValue(isToday(newDate));
         const fromNew = getTimeParts(newDate);
@@ -121,12 +131,13 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
         return [ new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute) ];
       });
-    }, [ setValue ]);
+    }, [ setValue, withTime ]);
 
     const handleTimeChange = React.useCallback((time: string | undefined) => {
       const [ hours, minutes ] = time?.split(':') ?? [];
       setValue((prev) => {
-        const current = prev?.[0] ?? getDefaultDateValue();
+        // a date-only value would silently ignore the time fields, so it is widened first
+        const current = toCalendarDateTime(prev?.[0] ?? getDefaultDateValue());
         return [ current.set({ hour: Number(hours ?? 0), minute: Number(minutes ?? 0) }) ];
       });
     }, [ setValue ]);
@@ -192,6 +203,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
                   errorText={ errorText }
                   required={ required }
                   focusVisible={ context.open }
+                  bgColor={ bgColor }
                 >
                   <InputGroup endElement={ endElement } endElementProps={{ pl: 2, pr: 4 }}>
                     <ChakraDatePicker.Input/>

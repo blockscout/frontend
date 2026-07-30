@@ -137,7 +137,7 @@ export const recipe = defineSlotRecipe({
       boxShadow: 'popover',
       boxShadowColor: 'colors.popover.shadow',
       color: 'text.primary',
-      '--date-picker-z-index': 'zIndex.popover',
+      '--date-picker-z-index': 'zIndex.modal2',
       zIndex: 'calc(var(--date-picker-z-index) + var(--layer-index, 0))',
       outline: 'none',
       _open: {

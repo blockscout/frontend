@@ -2,7 +2,7 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { parseDate, Text } from '@chakra-ui/react';
-import { parseAbsolute } from '@internationalized/date';
+import { getLocalTimeZone, parseAbsolute } from '@internationalized/date';
 import { delay } from 'es-toolkit';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -28,7 +28,7 @@ const DatePickerShowcase = () => {
     setValue(details.value);
   }, [ setValue ]);
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const timeZone = getLocalTimeZone();
 
   const formApi = useForm<FormFields>({
     defaultValues: {

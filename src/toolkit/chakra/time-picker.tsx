@@ -325,7 +325,7 @@ export const TimePicker = ({
           </InputGroup>
         </Field>
       </PopoverTrigger>
-      <PopoverContent borderRadius="base" w="100%" >
+      <PopoverContent borderRadius="base" w="100%" zIndex="tooltip">
         <PopoverBody>
           <HStack gap={ 3 } alignItems="flex-start">
             <VStack ref={ hoursContainerRef } gap={ `${ GAP_HEIGHT }px` } maxH="232px" overflowY="scroll" scrollbarWidth="none" scrollSnapType="y mandatory">
