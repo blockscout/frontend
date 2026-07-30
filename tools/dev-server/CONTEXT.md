@@ -59,6 +59,10 @@ lives here):
   newline doesn't silently drop its last variable (this bit us with `.env.extra`).
 - **dotenv-cli precedence: the FIRST `-e` file wins** (not the last). The run scripts therefore
   list env files **highest-priority-first**.
+- **`dotenv-cli` must stay on a release that bundles `dotenv-expand` ≥ 10.** Instance configs contain
+  values with a bare `$` (regex anchors in `NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG`, say);
+  `dotenv-expand` 8 throws `Cannot read properties of undefined (reading 'split')` on them instead of
+  leaving the non-variable `$` alone, which kills every `dotenv` invocation in the run scripts.
 - **`--omit-local-envs` is the dev/container switch.** Dev mode applies `localEnvs` (so APP_HOST
   etc. point at `localhost`); the container passes `--omit-local-envs` so those keys are absent
   and the deployment's own APP_* values survive (this replaced the old entrypoint blacklist).
