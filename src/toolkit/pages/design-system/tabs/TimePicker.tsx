@@ -25,7 +25,7 @@ const TimePickerShowcase = () => {
         <SectionHeader>Min and max time</SectionHeader>
         <SamplesStack >
           <Sample label="min: 03:45; max: 21:13">
-            <TimePicker min="03:45" max="21:13" required/>
+            <TimePicker min="03:45" max="21:13" value="01:01"/>
           </Sample>
         </SamplesStack>
       </Section>
