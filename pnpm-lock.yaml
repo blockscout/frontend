@@ -642,6 +642,24 @@ importers:
       '@emotion/react':
         specifier: '>=11.14.0'
         version: 11.14.0(@types/react@18.3.12)(react@19.1.4)
+      '@internationalized/date':
+        specifier: '>=3.12.2'
+        version: 3.12.2
+      '@uidotdev/usehooks':
+        specifier: '>=2.4.1'
+        version: 2.4.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      d3:
+        specifier: '>=7.9.0'
+        version: 7.9.0
+      dayjs:
+        specifier: '>=1.11.21'
+        version: 1.11.21
+      dom-to-image:
+        specifier: '>=2.6.0'
+        version: 2.6.0
+      es-toolkit:
+        specifier: '>=1.39.10'
+        version: 1.39.10
       next:
         specifier: '>=16.2.6'
         version: 16.2.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.57.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
@@ -9556,7 +9574,7 @@ packages:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
   gradient-avatar@https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
+    resolution: {gitHosted: true, integrity: sha512-0O9zIUvqAKbiefYuC8lgxRIsCzSD07ectXRligCwEHxLEIP7WKfvDJiyLnXAudI4LGn6MNAkl1BC9/sTGtTTDg==, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
     version: 1.0.3
     engines: {node: '>=8'}
 

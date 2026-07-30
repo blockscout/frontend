@@ -26,8 +26,9 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children,
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      from_period: [ now(getLocalTimeZone()).subtract({ days: 1 }) ],
-      to_period: [ now(getLocalTimeZone()) ],
+      // truncated to whole minutes, matching what the picker itself can express
+      from_period: [ now(getLocalTimeZone()).set({ second: 0, millisecond: 0 }).subtract({ days: 1 }) ],
+      to_period: [ now(getLocalTimeZone()).set({ second: 0, millisecond: 0 }) ],
     },
   });
 

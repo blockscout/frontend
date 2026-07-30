@@ -2,7 +2,7 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal, useControllableState } from '@chakra-ui/react';
-import { CalendarDate, CalendarDateTime, getLocalTimeZone, isSameDay, now, toCalendarDateTime, today } from '@internationalized/date';
+import { CalendarDate, CalendarDateTime, getLocalTimeZone, isSameDay, now, toCalendarDate, toCalendarDateTime, today } from '@internationalized/date';
 import dayjs from 'dayjs';
 import { padStart } from 'es-toolkit/compat';
 import React from 'react';
@@ -69,6 +69,18 @@ const getTime = (date: DateValue): string => {
   return toDayjs(date).format('H:mm');
 };
 
+// a day can be selectable while a specific time on it is not, so the carried-over
+// time is pulled back inside the limits instead of producing an out-of-range value
+const clampToLimits = (date: CalendarDateTime, min?: DateValue, max?: DateValue): CalendarDateTime => {
+  if (min && date.compare(min) < 0) {
+    return toCalendarDateTime(min);
+  }
+  if (max && date.compare(max) > 0) {
+    return toCalendarDateTime(max);
+  }
+  return date;
+};
+
 const getDefaultDateValue = (withCurrentTime?: boolean): CalendarDateTime => {
   const current = now(getLocalTimeZone());
   return new CalendarDateTime(
@@ -86,7 +98,7 @@ export interface DatePickerProps extends ChakraDatePicker.RootProps {
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
-  function Radio({
+  function DatePicker({
     placeholder,
     withTime,
     value: valueProp,
@@ -104,8 +116,9 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
   }, ref) {
 
     const onValueChange = React.useCallback((value: Array<DateValue> | undefined) => {
-      onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(format) ?? [], view: 'day' });
-    }, [ onValueChangeProp ]);
+      const formatValue = withTime ? formatWithTime : format;
+      onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(formatValue) ?? [], view: 'day' });
+    }, [ onValueChangeProp, withTime ]);
 
     const [ value, setValue ] = useControllableState<Array<DateValue> | undefined>({
       value: valueProp,
@@ -129,16 +142,22 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         const hour = fromNew.hour ?? fromCurrent.hour;
         const minute = fromNew.minute ?? fromCurrent.minute;
 
-        return [ new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute) ];
+        return [ clampToLimits(new CalendarDateTime(newDate.year, newDate.month, newDate.day, hour, minute), min, max) ];
       });
-    }, [ setValue, withTime ]);
+    }, [ setValue, withTime, min, max ]);
 
     const handleTimeChange = React.useCallback((time: string | undefined) => {
-      const [ hours, minutes ] = time?.split(':') ?? [];
       setValue((prev) => {
+        const current = prev?.[0] ?? getDefaultDateValue();
+
+        // clearing the time keeps the selected day but drops its time component
+        if (time === undefined) {
+          return [ toCalendarDate(current) ];
+        }
+
+        const [ hours, minutes ] = time.split(':');
         // a date-only value would silently ignore the time fields, so it is widened first
-        const current = toCalendarDateTime(prev?.[0] ?? getDefaultDateValue());
-        return [ current.set({ hour: Number(hours ?? 0), minute: Number(minutes ?? 0) }) ];
+        return [ toCalendarDateTime(current).set({ hour: Number(hours), minute: Number(minutes) }) ];
       });
     }, [ setValue ]);
 
@@ -167,6 +186,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         min={ min }
         max={ max }
         disabled={ disabled }
+        readOnly={ readOnly }
         invalid={ invalid }
         required={ required }
         { ...rest }
@@ -248,7 +268,7 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
 
                         return (
                           <TimePicker
-                            value={ currentDate ? getTime(currentDate) : undefined }
+                            value={ currentDate && 'hour' in currentDate ? getTime(currentDate) : undefined }
                             min={ isMinDay ? minTime : undefined }
                             max={ isMaxDay ? maxTime : undefined }
                             onValueChange={ handleTimeChange }

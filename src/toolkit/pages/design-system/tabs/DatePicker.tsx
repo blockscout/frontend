@@ -17,7 +17,7 @@ import { DAY, HOUR, MINUTE, SECOND } from 'src/toolkit/utils/consts';
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
 
 interface FormFields {
-  date_of_birth: string;
+  date_of_birth: Array<DateValue>;
 }
 
 const DatePickerShowcase = () => {
@@ -32,7 +32,7 @@ const DatePickerShowcase = () => {
 
   const formApi = useForm<FormFields>({
     defaultValues: {
-      date_of_birth: '',
+      date_of_birth: [],
     },
     mode: 'onBlur',
   });

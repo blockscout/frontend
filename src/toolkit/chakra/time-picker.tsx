@@ -184,11 +184,11 @@ export const TimePicker = ({
 
   const scrollToItem = React.useCallback((hours: number | undefined, minutes: number | undefined, behavior: ScrollBehavior = 'instant') => {
     hours !== undefined && hoursContainerRef.current?.scrollTo({
-      top: (hours * BUTTON_HEIGHT) + ((hours - 1) * GAP_HEIGHT),
+      top: hours * (BUTTON_HEIGHT + GAP_HEIGHT),
       behavior,
     });
     minutes !== undefined && minutesContainerRef.current?.scrollTo({
-      top: (minutes * BUTTON_HEIGHT) + ((minutes - 1) * GAP_HEIGHT),
+      top: minutes * (BUTTON_HEIGHT + GAP_HEIGHT),
       behavior,
     });
   }, []);
@@ -228,7 +228,7 @@ export const TimePicker = ({
     }
     setMinutes(newValue);
     setHours((prev) => {
-      if (!prev || !isInLimits({ value: prev, type: 'hours', timeValue: { hours: prev, minutes: newValue }, limits })) {
+      if (prev === undefined || !isInLimits({ value: prev, type: 'hours', timeValue: { hours: prev, minutes: newValue }, limits })) {
         const defaultValue = getDefaultValue({ limits, type: 'hours', timeValue: { hours: prev ?? 0, minutes: newValue } });
         scrollToItem(defaultValue, undefined, 'smooth');
         return defaultValue;
@@ -263,8 +263,8 @@ export const TimePicker = ({
   React.useEffect(() => {
     if (limits) {
       if (
-        (timeValue.hours && !isInLimits({ value: timeValue.hours, type: 'hours', timeValue, limits })) ||
-        (timeValue.minutes && !isInLimits({ value: timeValue.minutes, type: 'minutes', timeValue, limits }))
+        (timeValue.hours !== undefined && !isInLimits({ value: timeValue.hours, type: 'hours', timeValue, limits })) ||
+        (timeValue.minutes !== undefined && !isInLimits({ value: timeValue.minutes, type: 'minutes', timeValue, limits }))
       ) {
         setHours(undefined);
         setMinutes(undefined);

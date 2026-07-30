@@ -20,7 +20,7 @@ const FormFieldDateContent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
 >(props: FormFieldDateProps<FormFields, Name>) => {
-  const { name, rules: rulesProp, controllerProps, ...rest } = props;
+  const { name, rules: rulesProp, controllerProps, value, onValueChange, ...rest } = props;
 
   const { control } = useFormContext<FormFields>();
 
