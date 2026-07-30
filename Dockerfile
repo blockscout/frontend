@@ -1,11 +1,27 @@
 # *****************************
+# *** STAGE 0: Shared base ****
+# *****************************
+FROM node:22.14.0-alpine AS base
+# corepack prepare makes a single network request to the npm registry and has no
+# built-in retry. Transient registry failures (HTTP 429, timeout, DNS) are not
+# uncommon, so retry with a linear backoff.
+RUN set -eu; \
+    corepack enable; \
+    n=0; \
+    until corepack prepare pnpm@11.5.1 --activate; do \
+      n=$((n + 1)); \
+      if [ "$n" -ge 5 ]; then echo "corepack prepare failed after $n attempts" >&2; exit 1; fi; \
+      echo "corepack prepare attempt $n failed, retrying in $((n * 10))s..." >&2; \
+      sleep $((n * 10)); \
+    done
+
+# *****************************
 # *** STAGE 1: Dependencies ***
 # *****************************
-FROM node:22.14.0-alpine AS deps
+FROM base AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat python3 make g++
 RUN ln -sf /usr/bin/python3 /usr/bin/python
-RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
 
 ### Install all workspace dependencies in one place
 WORKDIR /app
@@ -17,9 +33,8 @@ RUN pnpm install --frozen-lockfile
 # *****************************
 # ****** STAGE 2: Build *******
 # *****************************
-FROM node:22.14.0-alpine AS builder
+FROM base AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash jq
-RUN corepack enable && corepack prepare pnpm@11.5.1 --activate
 
 # pass build args to env variables
 ARG GIT_COMMIT_SHA
