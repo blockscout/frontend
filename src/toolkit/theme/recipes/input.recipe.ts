@@ -11,7 +11,6 @@ export const recipe = defineRecipe({
     appearance: 'textfield',
 
     // fix for datetime-local input in mobile Safari
-    // TODO @tom2drum remove when migrating to DatePicker
     '&[type="datetime-local"]': {
       appearance: 'none',
     },

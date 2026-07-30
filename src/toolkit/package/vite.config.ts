@@ -80,8 +80,10 @@ export default defineConfig({
         'next/router',
         'next-themes',
         'react-hook-form',
-        'es-toolkit',
-        'dayjs',
+        // regexps so subpath imports (es-toolkit/compat, dayjs/plugin/*) stay external too
+        /^es-toolkit(\/.*)?$/,
+        /^dayjs(\/.*)?$/,
+        '@internationalized/date',
         'd3',
         'dom-to-image',
         '@uidotdev/usehooks',

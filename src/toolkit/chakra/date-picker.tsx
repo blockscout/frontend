@@ -2,12 +2,11 @@
 
 import type { DateValue } from '@chakra-ui/react';
 import { DatePicker as ChakraDatePicker, HStack, Icon, Portal, useControllableState } from '@chakra-ui/react';
-import { CalendarDate, CalendarDateTime } from '@internationalized/date';
+import { CalendarDate, CalendarDateTime, getLocalTimeZone, isSameDay, now, today } from '@internationalized/date';
+import dayjs from 'dayjs';
 import { padStart } from 'es-toolkit/compat';
 import React from 'react';
 
-// TODO @tom2drum remove dayjs as dependency
-import dayjs from 'src/shared/date-and-time/dayjs';
 import ArrowIcon from 'src/sprite/icons/arrows/east-mini.svg';
 import CalendarIcon from 'src/sprite/icons/calendar.svg';
 
@@ -59,22 +58,21 @@ const getTimeParts = (date: DateValue | undefined) => {
 };
 
 const isToday = (date: DateValue): boolean => {
-  const now = new Date();
-  return date.year === now.getFullYear() && date.month === now.getMonth() && date.day === now.getDate();
+  return isSameDay(date, today(getLocalTimeZone()));
 };
 
 const getTime = (date: DateValue): string => {
   return dayjs(date.toString()).format('H:mm');
 };
 
-const getDefaultDateValue = (isToday?: boolean): DateValue => {
-  const now = new Date();
+const getDefaultDateValue = (withCurrentTime?: boolean): CalendarDateTime => {
+  const current = now(getLocalTimeZone());
   return new CalendarDateTime(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    isToday ? now.getHours() : undefined,
-    isToday ? now.getMinutes() : undefined,
+    current.year,
+    current.month,
+    current.day,
+    withCurrentTime ? current.hour : 0,
+    withCurrentTime ? current.minute : 0,
   );
 };
 
