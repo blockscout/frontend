@@ -67,3 +67,8 @@ Product tasks (GitHub issues) are worked through a spec-driven workflow, run by 
 `to-spec` and `implement-task` skills. Specs live in `.agents/tasks/`; read `.agents/tasks/README.md` for
 the lifecycle before touching one. `.agents/delegation.md` draws the agent/human boundary, and
 `.agents/TEAM.md` says who answers open questions.
+
+Agent-written code gets its own code review: `review-changes` finds and records the findings (three axes, in
+fresh subagent contexts), `resolve-review` adjudicates and closes them out. Both work inside the task
+workflow — always under `implement-task --auto`, on request in a manual run — and standalone on any branch
+or PR.

@@ -28,6 +28,10 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 
 If the signals conflict or are ambiguous, ask the user which mode they mean.
 
+**Unattended finalize.** When Mode B is reached from `implement-task --auto` clearing a task's last leaf, the
+`--auto` flag already granted the push and the flip — so proceed without the confirmation steps below, and
+report what was done instead of asking. Every other invocation keeps them.
+
 ## PR title (all modes)
 
 The title must stand on its own — a reader who has never heard of the parent task should understand what

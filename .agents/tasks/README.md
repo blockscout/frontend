@@ -33,12 +33,23 @@ says which steps an agent does and which a developer does by hand.
    subtasks (composing `add-api-resource`, `add-new-page`, `add-env-var`, …) and verifies them, or hands
    `[human]` subtasks (styling to Figma mockups) over to you. You review the diff and commit between runs.
    A subtask can't start while a question blocking it is `pending` — unrelated subtasks can.
-5. **Land** — flip the draft PR to **ready for review** when the spec's last box is checked; the feature
+5. **Review** — the `review-changes` skill reviews a subtask in a fresh subagent context on three axes (spec
+   compliance, repo standards, correctness). Findings land in the subtask folder's `review.md`, and
+   `resolve-review` adjudicates each one — fix, or reject with a written reason that an arbitration round
+   rules on. `implement-task --auto` runs that whole cycle unattended, then commits the cleared leaf and
+   chains to the next, stopping at the first `[verify]` leaf, `[human]` subtask, `needs-human` finding, or
+   unsettled dispute. In a manual run the review is optional: you either ask for it or read the diff
+   yourself.
+6. **Land** — flip the draft PR to **ready for review** when the spec's last box is checked; the feature
    branch merges to `main` as one PR, spec included. Big subtasks may have had their own sub-branch + PR
    into the feature branch along the way (same pattern: draft when the step starts with its sub-spec as the
    first commit, ready when the step's boxes are checked); simple ones are single commits on it. Branch
    names carry the addressing — feature branch is `issue-<number>` (`issue-3219`), a big subtask's sub-branch
-   adds `-step-<N>` (`issue-3219-step-2`) — so `implement-task` needs no arguments on a task branch.
+   adds `-step-<N>` (`issue-3219-step-2`) — so `implement-task` needs no arguments on a task branch. Once the
+   PR is ready, run `review-changes` **by hand** for the whole-task pass: per-subtask reviews structurally
+   cannot see inconsistency between subtasks, duplicated helpers, or dead scaffolding. On a pushed branch it
+   posts inline PR comments instead of a file, so your own review comments and the agent's sit side by side —
+   `resolve-review` closes out both, and never rejects a human's.
 
 ## Task sizes
 
@@ -53,13 +64,47 @@ says which steps an agent does and which a developer does by hand.
 A subtask is "scoped" once its folder has a `spec.md`; until then it holds only a `brief.md`. The main
 spec's breakdown carries only the done checkbox and a link to each subtask folder.
 
+## Subtask tags
+
+A breakdown line carries its per-subtask state as tags. **This section is the only definition of them** —
+other files point here rather than restating.
+
+- **`[agent]` / `[human]`** — who does the work. Which one applies follows the capability boundary in
+  `.agents/delegation.md` (where UI work defaults to the scaffold → style split). Exactly one per subtask.
+- **`[verify]`** — on an `[agent]` leaf only: once the code review comes back clear, a **human must verify
+  the running product** before the leaf is committed. Such a leaf also carries a `verify:` line saying how
+  to check it.
+
+`to-spec` writes every tag explicitly, never implicitly, because `implement-task` reads them as its state
+machine: it hands `[human]` subtasks over, and it leaves a cleared `[verify]` leaf **uncommitted** for the
+developer instead of committing it and chaining on.
+
+### When a leaf needs `[verify]`
+
+The test: *is there user-visible behaviour only a human can judge?* The review covers the code; it cannot
+tell whether the running product is right.
+
+- **No `[verify]`** — env vars, API resources and response types, route plumbing / metadata / sitemap /
+  analytics, unit tests, glossary and docs, behaviour-preserving refactors.
+- **`[verify]`** — anything that changes what a user sees or does: component scaffolds (placeholder ones
+  included), data wiring that renders, page behaviour, perf-sensitive changes, anything touching CSP or
+  security, and new dependencies.
+
+Getting it wrong costs in both directions: a needless `[verify]` stalls an unattended chain, and a missing
+one lets `--auto` commit something nobody looked at.
+
 ## Supporting files
 
 - `.agents/delegation.md` — the living agent/human boundary (incl. the scaffold → style split for UI
-  work and the standing testing policy). Loosen it via PR as the repo gets more agent-friendly.
+  work, the standing testing policy, and which leaves need human verification after review). Loosen it via
+  PR as the repo gets more agent-friendly.
 - `.agents/TEAM.md` — the team roster (members + Slack IDs); the grilling session picks one contact per
   team for the task and records the picks in the spec header.
 - `.agents/skills/to-spec/spec-template.md` — the spec template (used for both main and subtask specs).
+- `.agents/skills/review-changes/` — the reviewer: the three axes, the smell baseline (`smells.md`), the
+  record format (`review-template.md`), and the `gh` surface both review skills share (`gh-commands.md`).
+- `.agents/skills/resolve-review/SKILL.md` — adjudicating findings and closing them out.
 - Each `subtasks/NN-<slug>/` folder holds the subtask's `spec.md` (once scoped) or a `brief.md` (the
   handoff for a not-yet-scoped subtask), plus optional `research.md` (real research / prototype notes) and
-  `review.md` (a drop point for local review findings; the workflow that acts on them is a planned follow-up).
+  `review.md` (the review findings for that subtask, with each one's verdict and the exchange behind it —
+  written by `review-changes`, maintained by `resolve-review`).
