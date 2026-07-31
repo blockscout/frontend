@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 1 of #3583 |
-| Status | `ready` |
+| Status | `done` |
 | Sub-branch | `issue-3583-step-1` |
 | Backend | Nikita P. |
 
@@ -27,15 +27,20 @@ Three facts pin the approach down:
   Invalid: lock file's js-yaml@4.1.1 does not satisfy js-yaml@4.2.0
   ```
 
-  `@redocly/openapi-core` declares `js-yaml: "4.2.0"` while `node_modules/@redocly/openapi-core/node_modules/js-yaml`
-  still resolves `4.1.1`. Dependabot's fix ([#14623](https://github.com/blockscout/blockscout/pull/14623))
-  landed on `master`, so `dev`'s lock was never regenerated. Verified by a real dispatch:
-  [run 30566146869](https://github.com/blockscout/blockscout/actions/runs/30566146869).
+  `dev` carries `@redocly/openapi-core@1.34.16`, which declares `js-yaml: "4.2.0"`, while the nested
+  `node_modules/@redocly/openapi-core/node_modules/js-yaml` entry resolves `4.1.1`. `master` is consistent
+  because it still carries `1.34.15`, which declares `4.1.1`, so merging `master` into `dev` does not fix it
+  — the inconsistent pair is dev-only. Verified by a real dispatch:
+  [run 30566146869](https://github.com/blockscout/blockscout/actions/runs/30566146869) and reproduced
+  locally.
 
-Stable publishing is also switched off on purpose — the `release: [published]` trigger in
+Stable publishing is switched off separately: the `release: [published]` trigger in
 `.github/workflows/publish-api-types-npm.yml` is commented out with
-`# todo: re-enable once all fixes to OpenApi schemas will be made`. Re-enabling it rides along with the lock
-fix, since both are one-line changes to the same package's release path.
+`# todo: re-enable once all fixes to OpenApi schemas will be made` — on **`master`**.
+[#14515](https://github.com/blockscout/blockscout/pull/14515) already re-enabled it on `dev`, but GitHub
+runs a `release` event against the *default* branch's workflow file, so auto-publishing on release stays off
+until `master` gets the same change. That is the backend team's call and does not block this task, whose
+publish path is the manual `workflow_dispatch` one.
 
 ## Requirements
 
@@ -47,11 +52,13 @@ fix, since both are one-line changes to the same package's release path.
 
 ## Steps
 
-- [ ] 1 `[agent]` Open a PR against `blockscout/blockscout` **`dev`** with two changes: regenerate
-  `types-package/package-lock.json` (`npm install` in that directory), and uncomment the
-  `release: [published]` trigger in `.github/workflows/publish-api-types-npm.yml`. Merging is the backend
-  team's call — Nikita reviews.
-- [ ] 2 `[agent]` Once merged, publish — skill: `publish-beta-types`
+- [x] 1 `[agent]` Open a PR against `blockscout/blockscout` **`dev`** regenerating
+  `types-package/package-lock.json`. Merging is the backend team's call — Nikita reviews.
+  → [blockscout#14639](https://github.com/blockscout/blockscout/pull/14639), lock-only (nested `js-yaml`
+  `4.1.1` → `4.2.0`); the `release` trigger needed no change on `dev` (see *Context & goal*).
+- [x] 2 `[agent]` Once merged, publish — skill: `publish-beta-types`
+  → `@blockscout/api-types@0.0.1-beta.bb45bf1` from
+  [run 30609760755](https://github.com/blockscout/blockscout/actions/runs/30609760755).
   - inputs:
     - API service: `core` → package `@blockscout/api-types`
     - Source repo: `blockscout/blockscout`
@@ -60,11 +67,12 @@ fix, since both are one-line changes to the same package's release path.
     - Branch to publish from: **`dev`**
     - Note: the skill says never to publish from the default branch. `dev` is not the default branch
       (`master` is), and it is where the previous pinned beta came from, so this is the normal path here.
-- [ ] 3 `[agent]` Pin the exact published version in `package.json`, run `pnpm install`, then
-  `pnpm run lint:tsc`.
-- [ ] 4 `[agent]` If the typecheck surfaces breakage unrelated to the countdown endpoint, stop and report it
+- [x] 3 `[agent]` Pin the exact published version in `package.json`, run `pnpm install`, then
+  `pnpm run lint:tsc`. → `package.json` + `pnpm-lock.yaml`.
+- [x] 4 `[agent]` If the typecheck surfaces breakage unrelated to the countdown endpoint, stop and report it
   rather than fixing it inside this task. `dev` carries roughly four weeks of schema changes beyond the
-  currently pinned 2026-07-02 beta, so unrelated churn is plausible and would need its own scope.
+  previously pinned 2026-07-02 beta, so unrelated churn was plausible and would have needed its own scope.
+  → none surfaced; `lint:tsc`, `lint:eslint` and `lint:cspell` are all clean on the new pin.
 
 ## Out of scope
 

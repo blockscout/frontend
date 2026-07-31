@@ -3,9 +3,9 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3583 |
-| Status | `ready` |
+| Status | `in progress` |
 | Size | `medium` |
-| Feature branch | `issue-3583` (set on first `implement-task` run) |
+| Feature branch | `issue-3583` |
 | PM | — |
 | Designer | — |
 | Backend | Nikita P. |
@@ -93,17 +93,16 @@ them past 2^53 — a 30-digit height really does come back as
 returned them as strings, so this is a regression for absurd heights, and it is already under test (see
 *UI inventory*). This is **Q2**.
 
-**Types package.** No published `@blockscout/api-types` version carries the post-14612 schema — the newest
-publish is 2026-07-02, three weeks before the rename. Neither the pinned `0.0.1-beta.82839e44ce` nor
-`latest` (`0.1.0`) has the new field names. Worse, only the **`dev`** branch of `blockscout/blockscout`
-exports the `paths` / `operations` / `schemas` helpers this repo imports in 469 files — they came from
-[blockscout#14515](https://github.com/blockscout/blockscout/pull/14515), merged to `dev` on 2026-07-02 and
-not yet on `master`. So `dev` is the only publishable ref, and its `types-package/package-lock.json` is
-broken (`@redocly/openapi-core` requires `js-yaml@4.2.0`, the lock resolves `4.1.1`), which makes
-`npm ci` — and therefore the publish workflow — fail. Subtask 1 fixes this.
+**Types package.** The repo pins `@blockscout/api-types@0.0.1-beta.bb45bf1`, published from
+`blockscout/blockscout` **`dev`** by subtask 1 — `dev` is the only publishable ref, because the
+`paths` / `operations` / `schemas` helpers this repo imports in 469 files came from
+[blockscout#14515](https://github.com/blockscout/blockscout/pull/14515) and are not on `master`. The pin
+carries the post-14612 field names; the predecessor (`0.0.1-beta.82839e44ce`, 2026-07-02) predated the
+rename.
 
-Once published, the payload type is
-`paths['/api/v2/blocks/{block_number_param}/countdown']['get']` (key verified present in the merged spec).
+The payload type is `paths['/api/v2/blocks/{block_number_param}/countdown']['get']`, backed by the
+`BlockCountdown` schema — all four fields required, `estimated_time_in_seconds` a string and the other three
+`number`.
 
 **No env vars, no feature flags.** The endpoint is unconditional, exactly as the v1 call is today.
 
@@ -139,7 +138,7 @@ No route, navigation, metadata, sitemap or visual change. Routes `/block/countdo
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Unblock `@blockscout/api-types` publishing, publish a beta from `dev`, and pin it →
+- [x] 1 `[agent]` Unblock `@blockscout/api-types` publishing, publish a beta from `dev`, and pin it →
   [`subtasks/01-publish-api-types/`](subtasks/01-publish-api-types/spec.md)
 - [ ] 2 `[agent]` Migrate the resource and the countdown page to API v2 →
   [`subtasks/02-migrate-countdown-resource/`](subtasks/02-migrate-countdown-resource/spec.md)
