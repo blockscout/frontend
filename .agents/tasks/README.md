@@ -69,8 +69,10 @@ spec's breakdown carries only the done checkbox and a link to each subtask folde
 A breakdown line carries its per-subtask state as tags. **This section is the only definition of them** —
 other files point here rather than restating.
 
-- **`[agent]` / `[human]`** — who does the work. Which one applies follows the capability boundary in
-  `.agents/delegation.md` (where UI work defaults to the scaffold → style split). Exactly one per subtask.
+- **`[agent]` / `[human]`** — who does the work, per the capability boundary in `.agents/delegation.md`.
+  Exactly one per subtask. UI work is **two linked leaves** by default: an `[agent]` scaffold, then a
+  `[human]` style leaf that takes it to the mockup — layout, spacing, styling, icons — with the exact Figma
+  node linked on that leaf and the scaffold's `TODO (design):` markers as its worklist.
 - **`[verify]`** — on an `[agent]` leaf only: once the code review comes back clear, a **human must verify
   the running product** before the leaf is committed. Such a leaf also carries a `verify:` line saying how
   to check it.
@@ -95,9 +97,9 @@ one lets `--auto` commit something nobody looked at.
 
 ## Supporting files
 
-- `.agents/delegation.md` — the living agent/human boundary (incl. the scaffold → style split for UI
-  work, the standing testing policy, and which leaves need human verification after review). Loosen it via
-  PR as the repo gets more agent-friendly.
+- `.agents/delegation.md` — the living capability boundary: what agents are trusted to do in this repo
+  today, and what stays with a developer. It decides every `[agent]` / `[human]` tag above. Loosen it via
+  PR as the repo gets more agent-friendly, never per task.
 - `.agents/TEAM.md` — the team roster (members + Slack IDs); the grilling session picks one contact per
   team for the task and records the picks in the spec header.
 - `.agents/skills/to-spec/spec-template.md` — the spec template (used for both main and subtask specs).

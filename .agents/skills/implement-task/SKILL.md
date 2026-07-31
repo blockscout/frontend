@@ -104,8 +104,8 @@ presentation and `TODO (design):` markers, never final styling. Follow the sub-s
 The spec should already contain the executing skill's inputs — the grilling session runs each skill's
 interview up front, so **skip any of the skill's questions the spec answers** and run uninterrupted. If an
 input is genuinely missing, ask the developer and **backfill the answer into the spec** before proceeding.
-Write the unit tests and Playwright scaffolds the standing testing policy assigns to this subtask (test the
-behavior that matters, not the obvious — per `.agents/rules/tests-unit.md`).
+Write the unit tests and Playwright scaffolds `.agents/delegation.md` assigns to agents (test the behavior
+that matters, not the obvious — per `.agents/rules/tests-unit.md`).
 
 ### Step 5 — Verify
 

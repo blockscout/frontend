@@ -105,7 +105,7 @@ Cover these domains:
 6. **Delivery** — one question: deploy a demo after completion or not (executed via the `deploy-demo` skill
    as a final subtask if yes).
 
-Testing is **not** an interview domain — the standing policy in `.agents/delegation.md` applies. Neither is
+Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it. Neither is
 code review or human verification: agent-written code is always reviewed, and the `[verify]` tag follows the
 standing rule in the **Subtask tags** section of `.agents/tasks/README.md`. Only ask when a leaf sits
 genuinely on the line.
