@@ -279,7 +279,7 @@ export const TimePicker = ({
         <CloseButton
           onClick={ handleClear }
           opacity={ hours !== undefined || minutes !== undefined ? 1 : 0 }
-          color="icon.primary"
+          color="icon.secondary"
           _hover={{ color: 'hover' }}
           iconProps={{ p: '1px' }}
           disabled={ disabled }

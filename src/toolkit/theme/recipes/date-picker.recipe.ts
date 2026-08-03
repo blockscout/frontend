@@ -14,6 +14,7 @@ const navTriggerStyle = defineStyle({
   cursor: 'pointer',
   _hover: {
     color: 'hover',
+    bg: 'transparent',
   },
   _disabled: {
     opacity: 'control.disabled',
@@ -176,6 +177,7 @@ export const recipe = defineSlotRecipe({
       cursor: 'pointer',
       _hover: {
         color: 'hover',
+        bg: 'transparent',
       },
     },
 
@@ -219,6 +221,7 @@ export const recipe = defineSlotRecipe({
       position: 'relative',
       _hover: {
         color: 'hover',
+        bg: 'transparent',
       },
       '[data-view=month] &, [data-view=year] &': {
         width: 'calc(var(--table-cell-size) * 1.75)',
@@ -279,7 +282,7 @@ export const recipe = defineSlotRecipe({
       justifyContent: 'center',
       flexShrink: 0,
       textStyle: 'xs',
-      color: 'icon.primary',
+      color: 'icon.secondary',
       _hover: {
         color: 'hover',
       },
