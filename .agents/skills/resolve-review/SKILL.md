@@ -20,8 +20,15 @@ Which verdicts are even available depends on who raised the finding, so establis
 | Source | How you know it | Verdicts |
 | --- | --- | --- |
 | This workflow's review | a `review.md` finding, or a PR comment ending in a `— Reviewed by …` footer | `fix` · `reject` |
-| A human | a human `user.login`, no such footer | `fix` · `answered` |
-| A bot | `copilot…`, `coderabbitai…` | `fix` · `reject` |
+| A bot | `user.type == "Bot"` | `fix` · `reject` |
+| A human | neither of the above | `fix` · `answered` |
+
+Test in that order. The footer comes first because an agent posts through a human's account — `user.login`
+is the repo owner's in every case, so nothing but the footer distinguishes this workflow's own review.
+Bots are then caught by GitHub's own `user.type`, **not** by a list of logins: this repo alone sees
+`Copilot` (no `[bot]` suffix, capitalised), `coderabbitai[bot]`, `cursor[bot]` (Cursor Bugbot, which
+`.cursor/BUGBOT.md` aims at our smell baseline) and `github-advanced-security[bot]`, and a name list gets
+three of those four wrong — silently promoting them to human, whose comments may never be rejected.
 
 - **fix** — the concern is real *and* the fix belongs in this change.
 - **reject** — invalid premise, contradicts design intent, already addressed, or out of scope. Closes with
@@ -41,7 +48,8 @@ Two further rules on verdicts:
 ## Invocation
 
 - `/resolve-review` — the usual case: resolve the open findings for the current unit of work. A `review.md`
-  with open findings selects markdown mode; otherwise the current branch's PR selects PR mode.
+  with anything left to resolve (per step 2) selects markdown mode; otherwise the current branch's PR
+  selects PR mode.
 - `/resolve-review <PR url | comment url>` — that PR, or that single comment, scoping the whole run to it.
 
 Called from `implement-task --auto`, the skill runs in **no-gates posture** — see Gate 1.
@@ -122,18 +130,26 @@ for approval before anything is pushed or replied to.
 
 ## 7. Close out
 
-**Markdown mode** — update each finding's **Status** in `review.md` (`fixed`, `rejected-accepted` once the
-reviewer has agreed, `disputed`, `needs-human`, `deferred`) and append one exchange line per finding
-recording this round's verdict and its reasoning.
+**Markdown mode** — update each finding's **Status** in `review.md` and append one exchange line per finding
+recording this round's verdict and its reasoning. A verdict is not a Status; these are the Statuses it maps to:
+
+| Verdict | Status |
+| --- | --- |
+| `fix`, applied | `fixed` |
+| `reject` of a **bot's** finding | `rejected-accepted` — no arbitration exists for a bot, so the reject stands on posting |
+| `reject` of **this workflow's** finding | `rejected-pending` until an arbitration round agrees, then `rejected-accepted`; `disputed` if it comes back disagreeing |
+| `answered` | `needs-human` — the human still owns the call |
+| nit | `deferred` |
 
 **PR mode** — reply to each thread, then resolve the ones that are settled:
 
 - `fix` → what changed, plus the commit sha once it exists.
-- `reject` → the agreed explanation.
+- `reject` → the explanation.
 - `answered` → the reasoning, the alternatives, why this path won.
 
-Resolve `fix` and `rejected-accepted` threads. Leave `disputed`, `answered` and `needs-human` **unresolved**
-— those are the ones that must stay visible.
+Resolve the threads whose Status is `fixed` or `rejected-accepted`. Leave `rejected-pending`, `disputed`,
+`answered`, `needs-human` and `deferred` **unresolved** — those are the ones that must stay visible. A
+`deferred` nit stays open on purpose: nobody declined it, it is just not this change's work.
 
 **Done when**: every adjudicated finding carries its final Status in the record, or has been replied to and
 (where settled) resolved on the PR. Then report: counts per verdict, every `reject`/`answered` with its

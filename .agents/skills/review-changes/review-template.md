@@ -4,13 +4,14 @@
 reviewed unit — a leaf step, or the whole subtask when it has no sub-breakdown. Rounds do NOT get their
 own sections: a round updates the header and appends exchange lines under the findings it touched.
 
-Two writers share this file. `review-changes` adds findings and maintains the header. `resolve-review`
-maintains each finding's **Status** and appends the exchange lines. Finding ids are stable and continue
-numbering across rounds — the exchange log and PR replies reference them.
+Two writers share this file. `review-changes` adds findings, maintains the header, and sets each finding's
+**starting** Status — `open`, or `deferred` for a nit. `resolve-review` owns every Status transition after
+that and appends the exchange lines. Finding ids are stable and continue numbering across rounds — the
+exchange log and PR replies reference them.
 
 `Outcome` is the machine gate the auto-loop reads:
   `clear`       — no blocker or major left open; the chain may proceed
-  `blocked`     — a blocker or major is still open or disputed
+  `blocked`     — a blocker or major is still open, `rejected-pending`, or disputed
   `needs-human` — something needs the developer, whatever the severity -->
 
 ## Step <N> — <leaf title>
@@ -29,7 +30,7 @@ numbering across rounds — the exchange log and PR replies reference them.
 
 **Suggested fix.** <one or two lines.>
 
-**Status.** `open` \| `fixed` \| `rejected-accepted` \| `disputed` \| `needs-human` \| `deferred`
+**Status.** `open` \| `fixed` \| `rejected-pending` \| `rejected-accepted` \| `disputed` \| `needs-human` \| `deferred`
 
 <!-- One line per exchange, appended in order. `deferred` is for nits, which are never auto-fixed. -->
 

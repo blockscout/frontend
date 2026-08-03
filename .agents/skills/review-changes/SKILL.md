@@ -17,25 +17,55 @@ edits a file except the review record — which is also why it runs `lint:eslint
 
 ## Scope and mode
 
-Mode is not a choice; it follows from where the code is. An inline PR comment needs its line to exist
-in the PR diff, so work that has not been pushed can only produce a markdown record.
+Mode is not a choice; it follows from where the code is.
 
 | Working tree | Mode | Base |
 | --- | --- | --- |
 | Dirty — an uncommitted leaf | markdown record | `HEAD` |
-| Clean, PR open for the branch | inline PR comments | merge-base with the PR's base branch |
+| Clean, PR open, `HEAD` = the PR's head sha | inline PR comments | merge-base with the PR's base branch |
+| Clean, PR open, `HEAD` ≠ the PR's head sha | **stop — the branch must be synced first** | — |
 | Clean, no PR, inside a task dir | markdown record | last reviewed sha in the record, else merge-base with `main` |
 | Clean, no PR, no task dir | chat only, no file | merge-base with `main` |
 
-The skill takes no arguments — every case above is inferred.
+**First matching row wins.** A dirty tree short-circuits to a markdown record even on a branch whose draft PR
+has existed since spec time — that is what keeps a per-leaf review out of PR mode.
 
-**Round detection.** A prior review of this same unit — a `review.md` section with open findings, or
-prior review comments on the PR — means this run is **arbitration** (step 3), not a fresh review.
+**An open PR plus an out-of-sync branch stops the run.** Say which way it diverged and what to run — `git
+push` when `HEAD` is ahead, `git pull` when behind — then stop rather than review. There is no good outcome
+otherwise: lines that were never pushed are absent from the PR diff, so every anchor fails and the all-or-nothing
+POST discards the whole review; and a markdown record has nowhere to live once the unit is a whole PR rather
+than a leaf.
+
+The skill takes no invocation arguments — every case above is inferred. A dispatcher (`implement-task`) may
+still hand over context it already knows; the steps below name exactly what.
+
+**Round detection.** Any prior review of this same unit makes this run **arbitration** (step 3) rather than
+a fresh review: a `review.md` section for the unit *whatever its findings' Status*, prior review comments on
+the PR, or an explicit round ≥ 2 from the dispatcher. Keying this on *open* findings would break the moment
+`resolve-review` marks them `fixed` — every second round would silently become another three-axis pass.
 
 ## 1. Pin the ground
 
-Resolve mode and base from the table, then **fail fast before spawning anything**: a base that does not
-resolve (`git rev-parse`) or an empty diff stops the run here, not inside three subagents.
+Resolve the mode with exactly these three probes, then **fail fast before spawning anything**: a wrong mode,
+a base that does not resolve (`git rev-parse`), or an empty diff stops the run here, not inside three
+subagents.
+
+```bash
+git status --porcelain                                    # any output at all → dirty
+gh pr list --head "$(git branch --show-current)" --state open \
+  --json number,headRefOid,baseRefName
+git rev-parse HEAD                                        # compare against headRefOid
+```
+
+**The `gh` exit code answers "could I ask?"; its output answers "is there one?"** Exit ≠ 0 is a tooling
+failure that **aborts the run**; exit 0 with `[]` is genuinely no PR. Use `gh pr list --json` and never `gh pr
+view`, which exits 1 *both* when no PR exists and when it cannot reach GitHub — so nothing downstream can tell
+a missing PR from a sandbox with no network, and swallowing that (`2>/dev/null || echo NO_PR`) silently
+downgrades a PR review to a chat-only one nobody receives. Never wrap either command in `||`.
+
+`--state open` matters: a merged or closed PR must not select PR mode. `headRefOid` and `baseRefName` come
+back from that same call, so the base is read rather than guessed, and a plain string comparison against
+`HEAD` decides PR mode — unequal in *either* direction means out of sync.
 
 Collect, in the review's own context:
 
@@ -84,6 +114,10 @@ Each report is capped at **400 words**, which forces ranking instead of dumping.
 that are missing or partial; behaviour in the diff the spec never asked for; requirements that look
 implemented but are implemented wrongly. Quote the spec line behind each finding. Anything the spec's
 **Out of scope** section names is not a finding.
+
+In a **whole-task** review, read the main `spec.md` *and every* `subtasks/*/spec.md`, and add the one check
+no per-leaf review can make: leaves that contradict each other — the same concept named, modelled, or gated
+two different ways across subtasks.
 
 **Standards axis brief.** Read `.agents/rules/*.md` matching the touched file types, every `CONTEXT.md`
 for directories the diff touches, `.agents/delegation.md`, and
@@ -143,8 +177,10 @@ Zero findings still produces a report with `Outcome: clear` and zeroed counts �
 indistinguishable from a review that never ran.
 
 **Markdown mode.** Write `review.md` beside the spec it was reviewed against: in the subtask folder, or
-next to a small task's `spec.md`. One `##` section per reviewed unit, rounds nested beneath it. Format
-in [`review-template.md`](review-template.md).
+next to a small task's `spec.md`. One `##` section per reviewed unit — a round never opens a section of its
+own; it bumps the header's `Round` and appends exchange lines under the findings it touched. Give each new
+finding its starting **Status**: `open`, or `deferred` for a nit, which is never auto-fixed. Every later
+transition belongs to `resolve-review`. Format in [`review-template.md`](review-template.md).
 
 **PR mode.** One batched review event per round — never N separate comments — with the header table as
 the review body and `event: COMMENT`. Never `REQUEST_CHANGES` (it blocks the author's own PR) and never

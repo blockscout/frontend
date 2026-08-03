@@ -87,6 +87,10 @@ If the invocation named a subtask or leaf step, that's the pick (with the guardr
 section). Otherwise: the first unchecked subtask whose dependencies are all checked **and** whose listed
 questions are all `resolved` or `waived`, descending into sub-specs to a leaf step. Then:
 
+- **Nothing unchecked left** — the index's last box is checked → the task is done, so **finalize** rather
+  than reporting nothing to do: hand off to the `create-pr` skill in finalize-draft mode. This is the path a
+  task takes whenever its final leaf is `[human]` or `[verify]`, which the default UI split makes the common
+  case; without it a finished task would simply stall.
 - **All remaining subtasks blocked by `pending` questions** → tell the developer which questions block what,
   and suggest running `to-spec` to harvest Slack answers. Stop.
 - **Next subtask is `[human]`** → hand off: state what needs doing, link the Figma node, note that the
@@ -126,7 +130,8 @@ tree, so do not touch a file while it runs.
 
 Hand it four things, since it starts with an empty context: the **spec path** for this leaf (the sub-spec if
 there is one), the **leaf's number and title** — it names the record's section with them — the **round
-number**, and any check failure Step 5 declared intentional.
+number** (≥ 2 is what tells it to arbitrate instead of reviewing afresh), and any check failure Step 5
+declared intentional.
 
 Step 5 must be **settled** first — green, or red only for the intentional scaffold `TODO`s Step 5 documents.
 Reviewing code that does not compile spends three subagents on noise. Pass those known-intentional failures
@@ -134,7 +139,8 @@ to the agent so it does not report them back as findings.
 
 The agent returns the review record's path and an `Outcome`:
 
-- `clear` → skip to Step 8.
+- `clear` → skip to Step 8. Any nits already carry Status `deferred` from the review itself, so skipping
+  Step 7 loses nothing; they stay in the record for the whole-task pass.
 - `blocked` → Step 7.
 - `needs-human` → Step 7 adjudicates what it can, then the run stops with the open items.
 

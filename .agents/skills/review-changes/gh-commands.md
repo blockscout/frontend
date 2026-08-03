@@ -91,9 +91,10 @@ Fields worth reading per inline comment:
 
 **Telling the sources apart matters**, because they are adjudicated differently: a comment whose body ends
 in a `— Reviewed by …` footer is this workflow's own review, whichever provider produced it, and may be
-rejected; a human's may not; a bot's (`copilot…`, `coderabbitai…`) gets no deference at all. Match the
-footer, not a particular agent name — `user.login` is the repo owner's account in every case, so it cannot
-tell them apart.
+rejected; a bot's gets no deference at all; a human's may never be rejected. Test the footer **first** —
+`user.login` is the repo owner's account for every agent, so nothing else separates this workflow's review
+from a human's — then `user.type == "Bot"` for the bots. Never match bot logins by name; see the source
+table in `../resolve-review/SKILL.md` for why.
 
 ### Parse a comment / PR link
 

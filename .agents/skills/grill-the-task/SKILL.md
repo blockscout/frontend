@@ -106,9 +106,9 @@ Cover these domains:
    as a final subtask if yes).
 
 Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it. Neither is
-code review or human verification: agent-written code is always reviewed, and the `[verify]` tag follows the
-standing rule in the **Subtask tags** section of `.agents/tasks/README.md`. Only ask when a leaf sits
-genuinely on the line.
+code review or human verification: review is `implement-task`'s call at run time (always under `--auto`, the
+developer's choice in a manual run), and the `[verify]` tag follows the standing rule in the **Subtask tags**
+section of `.agents/tasks/README.md`. Only ask when a leaf sits genuinely on the line.
 
 **Front-load the executor skills' inputs.** Once the task breakdown has taken shape, go through every
 `[agent]` subtask that will run a project skill (`add-new-page`, `add-api-resource`, `add-env-var`, …):

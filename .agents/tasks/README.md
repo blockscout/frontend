@@ -19,8 +19,9 @@ says which steps an agent does and which a developer does by hand.
    answer becomes an open question with an owner.
 2. **Spec** — the session ends in the `to-spec` skill: it writes a slim index `spec.md` here plus one
    `subtasks/NN-<slug>/` folder per subtask (a `spec.md` if it's scoped now, or a `brief.md` if it's
-   deferred to its own later session), sizes the task (small / medium / large), tags every subtask
-   `[agent]` or `[human]` per the delegation boundary, then
+   deferred to its own later session), sizes the task (small / medium / large), tags every subtask per
+   **Subtask tags** below — `[agent]` / `[human]`, plus `[verify]` where a human must judge the running
+   product — then
    drafts the open questions as Slack messages grouped by owner — you approve, it sends, and each thread's
    permalink lands in the spec. (`to-spec` also works standalone, from any conversation worth capturing.)
    Commit the spec to the feature branch and **open a draft PR right away** (`to-spec` walks you through
@@ -31,7 +32,8 @@ says which steps an agent does and which a developer does by hand.
    proposes resolutions, folds accepted decisions into the spec, and sends approved follow-ups.
 4. **Implement** — run the `implement-task` skill repeatedly, one subtask per run: it executes `[agent]`
    subtasks (composing `add-api-resource`, `add-new-page`, `add-env-var`, …) and verifies them, or hands
-   `[human]` subtasks (styling to Figma mockups) over to you. You review the diff and commit between runs.
+   `[human]` subtasks (styling to Figma mockups) over to you. In a manual run you review the diff and commit
+   between runs; under `--auto` the run commits each cleared leaf itself (step 5).
    A subtask can't start while a question blocking it is `pending` — unrelated subtasks can.
 5. **Review** — the `review-changes` skill reviews a subtask in a fresh subagent context on three axes (spec
    compliance, repo standards, correctness). Findings land in the subtask folder's `review.md`, and

@@ -78,7 +78,9 @@ description is a placeholder pointing at the plan:
    changes confined to `scripts` or other fields; plus the issue's labels if not already copied.
 4. **Confirm with the user**, then flip: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
-5. Link the PR in the output.
+5. Link the PR in the output, and **nudge the whole-task review**: now that the PR is ready, `review-changes`
+   run by hand posts inline comments for the pass no per-leaf review could make (see Land in
+   `.agents/tasks/README.md`).
 
 ## Mode C — Regular PR (work already done)
 
@@ -107,4 +109,5 @@ description is a placeholder pointing at the plan:
   - **Good:** "Introduced a new option, `"fee reception"`, for the `NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE` variable."
 - **Checklist:** keep the "Checklist for PR Author" section from the template and check the items that
   apply (e.g. tested locally, tests added, ENVS/docs/validator updated if env vars changed).
-- Always **ask the user for confirmation or changes** before creating/updating the PR.
+- Always **ask the user for confirmation or changes** before creating/updating the PR — the one exception
+  being the unattended Mode B finalize described under "Pick the mode".
