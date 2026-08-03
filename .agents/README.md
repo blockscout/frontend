@@ -11,6 +11,8 @@ here; each tool reads it through its own directory via symlinks.
 | `delegation.md`, `GLOSSARY.md`, `TEAM.md` | Read on demand, by pointer from `AGENTS.md` or a skill | — |
 | `tasks/` | Product-task specs — see `tasks/README.md` | — |
 
+Cross-references between all of these are machine-checked: `pnpm lint:doc-links`.
+
 ## The rules contract
 
 Claude Code and Cursor discover rules differently and neither reads the other's format, so a rule file

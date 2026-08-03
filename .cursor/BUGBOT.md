@@ -28,6 +28,10 @@ See `.agents/rules/env-vars.md`.
 See `.agents/skills/review-changes/smells.md` — thirteen smells, each a judgement call, each overridden by
 anything the rules files above document.
 
+When the change touches the agent instruction surface instead of code — `.agents/`, `AGENTS.md`, any
+`CONTEXT.md`, `.cursor/` — use `.agents/skills/review-changes/prose-smells.md` in its place. Those files are
+code that runs on an agent, and none of the thirteen above apply to them.
+
 ## 7. Not findings
 
 See the **Out of bounds** section of `.agents/skills/review-changes/SKILL.md`. Most importantly: styling and

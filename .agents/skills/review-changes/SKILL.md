@@ -120,10 +120,21 @@ no per-leaf review can make: leaves that contradict each other — the same conc
 two different ways across subtasks.
 
 **Standards axis brief.** Read `.agents/rules/*.md` matching the touched file types, every `CONTEXT.md`
-for directories the diff touches, `.agents/delegation.md`, and
-[`smells.md`](smells.md). Report: places the diff breaks a documented rule — **cite the rule file and
-the rule** — and smells from the baseline, each named and quoted. A documented rule can be a hard
-breach; a smell is always a judgement call. Skip anything the checks in step 1 already cover.
+for directories the diff touches, `.agents/delegation.md`, and **one** smell baseline, picked by what the
+diff touches:
+
+| The diff touches | Baseline |
+| --- | --- |
+| code | [`smells.md`](smells.md) |
+| the instruction surface — `.agents/**`, `AGENTS.md`, any `CONTEXT.md`, `.cursor/**`, `.github/*instructions*` | [`prose-smells.md`](prose-smells.md) |
+| both | both, each applied only to the files it governs |
+
+Task specs under `.agents/tasks/**` are not the instruction surface — the Spec axis reads those as the
+source of truth rather than reviewing them as instructions.
+
+Report: places the diff breaks a documented rule — **cite the rule file and the rule** — and smells from
+the baseline, each named and quoted. A documented rule can be a hard breach; a smell is always a judgement
+call. Skip anything the checks in step 1 already cover.
 
 **Correctness axis brief.** Read the touched files **in full**, plus the files the change depends on —
 a hunk-only read produces exactly the shallow findings that make developers stop trusting review.
