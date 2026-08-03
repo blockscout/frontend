@@ -152,8 +152,8 @@ Most URL variables need a CSP allowance under `src/server/csp/policies/`.
 Gate the addition on the relevant config option being enabled — don't widen
 the CSP unconditionally.
 
-**Exceptions** — these are already auto-included by `policies/app.ts` and
-need no manual CSP work:
+**Exceptions** — these are already auto-included by `src/server/csp/policies/app.ts`
+and need no manual CSP work:
 
 - new API `endpoint` and `socketEndpoint` values that flow into `config.apis.*`.
 
