@@ -17,13 +17,11 @@ unnecessary.
 
 ## Files
 
-Two naming rules hold across this directory (and `tools/scripts/`, `deploy/scripts/`):
-**dotted names are entry points** — one per `pnpm` script, meant to be typed by a human
-(`dev.preset.sh`, `prod.preset.sh`, and elsewhere `docker.preset.sh`, `pw.docker.sh`);
-**snake_case names are internals** — invoked or sourced by another script, never directly
-(`run_steps.sh` here, `build_sprite.sh` / `download_assets.sh` in `deploy/scripts/`).
-`fetch.sh` predates the rules and is referenced by path from the Dockerfile and several
-generator scripts, so it keeps its name.
+Two naming rules hold here: **dotted names are entry points** — one per `pnpm` script, meant to
+be typed by a human (`dev.preset.sh`, `prod.preset.sh`); **snake_case names are internals** —
+invoked or sourced by another script, never directly (`run_steps.sh`). `fetch.sh` predates the
+rules and is referenced by path from the Dockerfile and several generator scripts, so it keeps
+its name.
 
 | File | Role |
 |---|---|

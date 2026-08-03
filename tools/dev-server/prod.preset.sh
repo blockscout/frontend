@@ -9,15 +9,8 @@
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
-#   --profile     Build a React-profileable production bundle (`next build --webpack --profile`):
-#                 --profile aliases react-dom to react-dom/profiling, so the React DevTools
-#                   Profiler works against an otherwise production build (minified, prod JSX
-#                   runtime, no dev-only checks);
-#                 --webpack because --profile is guaranteed on the webpack pipeline, while
-#                   Turbopack's (the Next 16 default) production profiling support is not
-#                   documented; next.config.js maintains both pipelines.
-#                 NOTE: most component names in this build are minified — use it to SIZE costs,
-#                 and the dev-mode profiler to ATTRIBUTE them by name (tools/profiling/CONTEXT.md).
+#   --profile     Build a React-profileable production bundle (`next build --webpack --profile`).
+#                 What that build is good for, and why those two flags: tools/profiling/CONTEXT.md.
 
 source ./tools/dev-server/run_steps.sh
 
@@ -42,6 +35,9 @@ while [ "$#" -gt 0 ]; do
       skip_build=true; shift ;;
     --profile)
       profile=true; shift ;;
+    --)
+      # `pnpm prod:preset -- eth` forwards the separator into the script; drop it
+      shift ;;
     *)
       positional+=( "$1" ); shift ;;
   esac

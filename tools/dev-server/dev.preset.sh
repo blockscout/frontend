@@ -20,6 +20,9 @@ while [ "$#" -gt 0 ]; do
       port="$2"; shift 2 ;;
     --port=*)
       port="${1#--port=}"; shift ;;
+    --)
+      # `pnpm dev:preset -- eth` forwards the separator into the script; drop it
+      shift ;;
     *)
       positional+=( "$1" ); shift ;;
   esac

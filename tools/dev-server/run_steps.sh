@@ -14,6 +14,11 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
   exit 1
 fi
 
+# The launch command is piped into pino-pretty, so without pipefail the script's exit status would
+# be pino-pretty's — a failure on the left of the pipe (a broken envs.js, a server that won't boot)
+# would report success. Set here because run_with_envs is what establishes that pipe.
+set -o pipefail
+
 port_args=()
 env_args=()
 

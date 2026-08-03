@@ -20,6 +20,9 @@ while [ "$#" -gt 0 ]; do
       port="$2"; shift 2 ;;
     --port=*)
       port="${1#--port=}"; shift ;;
+    --)
+      # `pnpm dev:local -- --port 3001` forwards the separator into the script; drop it
+      shift ;;
     *)
       echo "🚨 Unknown argument \"$1\"."
       echo "$usage"
