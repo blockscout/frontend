@@ -14,9 +14,9 @@ Three rules bind the baseline, mirroring `smells.md`:
   rule, suppress the smell that would contradict it.
 - **Always a judgement call.** Report a smell as a labelled possibility ("possible Sediment"), never as a
   violation.
-- **Skip what tooling enforces.** `lint:doc-links` already resolved every link, heading anchor and path —
-  including a path written short; cspell already ran. Their findings are facts, not smells — a reference that
-  does not resolve is never a finding here.
+- **Skip what tooling enforces.** `lint:doc-links` already resolved every link, heading anchor and path
+  reference, and flagged every path written short; cspell already ran. Their findings are facts, not smells —
+  neither a dead reference nor a shorthand path is ever a finding here.
 
 One defect, one label. Duplication and Shotgun Surgery describe the same mess from two directions — pick
 the sharper one.

@@ -7,11 +7,15 @@
 // what a rule says, not on whether the rule's target still exists.
 //
 // These documents also carry paths that are *illustrations* rather than references — a template's output
-// column, an `e.g.`, a kind of file that lives in many slices. Checking those would produce noise that
-// trains everyone to ignore the checker, so an illustration is exempt wherever it cannot be mistaken for a
-// reference: a `<placeholder>` segment, an `(e.g. …)` parenthetical, or the right-hand side of a `→`. Each
-// exemption is scoped to the path itself rather than to its whole line, so a real reference standing beside
-// an illustration is still checked. Anything unmarked is read as a reference and has to resolve.
+// column, a kind of file that lives in many slices. Checking those would produce noise that trains everyone
+// to ignore the checker, so an illustration is exempt where it carries a mark that cannot be read as a
+// reference; `ILLUSTRATION_FORMS` below is the only statement of what those marks are. Each exemption is
+// scoped to the path itself rather than to its whole line, so a real reference standing beside an
+// illustration is still checked, and anything unmarked is read as a reference and has to resolve.
+//
+// An `e.g.` is deliberately *not* a mark. Prose that introduces a real file as an example is the common
+// case by far, and exempting it would leave those references unprotected against a later rename — the drift
+// this script exists to catch. An example that names no real file gets a `<placeholder>` segment instead.
 
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -88,11 +92,15 @@ function withoutFences(body) {
   });
 }
 
-// Blanks the marked-illustration regions and leaves the rest of the line checkable. A `→` runs to the end of
-// its table cell, because what follows the arrow is the hypothetical output of the pattern before it.
-const withoutIllustrations = (line) => line
-  .replace(/\([^)]*e\.g\.[^)]*\)?/g, '')
-  .replace(/→[^|]*/g, '');
+// Stated once, and printed on failure so the convention reaches an author at the moment they trip it rather
+// than in a document they would have to know to read.
+const ILLUSTRATION_FORMS = 'give it a <placeholder> segment, or place it after a → in a table row as the ' +
+  'output of the pattern before it';
+
+// Blanks the marked regions and leaves the rest of the line checkable. The arrow form is confined to table
+// rows, where a cell pairs a pattern with its filled-in output; in prose an arrow is ordinary punctuation
+// and the path after it is a reference like any other. The `<placeholder>` form is per-path, below.
+const withoutIllustrations = (line) => (/^\s*\|/.test(line) ? line.replace(/→[^|]*/g, '') : line);
 
 const isPlaceholder = (target) => /[<>{}*]|__/.test(target);
 
@@ -111,6 +119,15 @@ function resolves(realDir, target) {
 function shorthandFor(target) {
   const matches = tracked.filter((f) => f.endsWith(`/${ target }`));
   return matches.length === 1 ? matches[0] : undefined;
+}
+
+// A path whose parent directory sits beside the file was written relative to it — `components/Provider.tsx`
+// in a CONTEXT.md is a reference to a neighbour, and its absence is a break. Without this the whole relative
+// class goes unprotected: once broken, such a path is indistinguishable from `types/api.ts` naming a kind of
+// file, so a renamed neighbour would fail silently.
+function nearby(realDir, target) {
+  const parent = path.dirname(target);
+  return parent !== '.' && !target.endsWith('/') && existsSync(path.resolve(realDir, parent));
 }
 
 async function checkFile(fileRel, failures) {
@@ -136,7 +153,7 @@ async function checkFile(fileRel, failures) {
       const full = shorthandFor(target);
       if (full) {
         report(`${ target } is shorthand; write it in full: ${ full }`);
-      } else if (target.startsWith('./') || TOP_LEVEL.has(target.split('/')[0])) {
+      } else if (target.startsWith('./') || TOP_LEVEL.has(target.split('/')[0]) || nearby(realDir, target)) {
         report(`path reference does not exist: ${ target }`);
       }
     }
@@ -185,9 +202,7 @@ if (failures.length > 0) {
   // eslint-disable-next-line no-console
   console.error(
     `\n${ failures.length } unresolved reference(s) across ${ files.length } file(s).\n` +
-    'A path naming a shape rather than a file has to be marked as one, or it is read as a reference: give ' +
-    'it a <placeholder> segment, put it in an (e.g. …) parenthetical, or place it after a → as the output ' +
-    'of the pattern before it.',
+    `A path naming a shape rather than a file has to be marked as one, or it is read as a reference: ${ ILLUSTRATION_FORMS }.`,
   );
   process.exit(1);
 }

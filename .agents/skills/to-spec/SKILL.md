@@ -20,7 +20,8 @@ sync Slack replies: there is nothing to convert, so the run is just harvest (Ste
 
 ## Spec location and structure
 
-- With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` (e.g. `.agents/tasks/3219-cross-chain-txs/spec.md`).
+- With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` — the bare issue number, then a
+  kebab-case slug naming the task.
 - Ad-hoc (no issue): `.agents/tasks/<slug>/spec.md`.
 - Every subtask of a medium/large task gets its own folder `subtasks/<NN>-<slug>/`, holding:
   - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet. Its
