@@ -17,6 +17,14 @@ unnecessary.
 
 ## Files
 
+Two naming rules hold across this directory (and `tools/scripts/`, `deploy/scripts/`):
+**dotted names are entry points** — one per `pnpm` script, meant to be typed by a human
+(`dev.preset.sh`, `prod.preset.sh`, and elsewhere `docker.preset.sh`, `pw.docker.sh`);
+**snake_case names are internals** — invoked or sourced by another script, never directly
+(`run_steps.sh` here, `build_sprite.sh` / `download_assets.sh` in `deploy/scripts/`).
+`fetch.sh` predates the rules and is referenced by path from the Dockerfile and several
+generator scripts, so it keeps its name.
+
 | File | Role |
 |---|---|
 | `registry.json` | **Single source of truth**: `alias` → instance URL map. |
@@ -24,8 +32,9 @@ unnecessary.
 | `fetch.ts` (→ `fetch.js`) | Fetches `<url>/node-api/config`, drops `ignoredEnvs` + `deprecatedEnvs`, applies/omits `localEnvs`, writes `.env.tmp`. |
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
 | `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
-| `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). |
-| `prod.preset.sh` | `pnpm prod:preset <alias> [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
+| `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). Skips the multichain config: a local backend serves a single chain. |
+| `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
+| `run_steps.sh` | Sourced by all three run scripts: env layering (`build_port_args`, `build_env_args`), asset regeneration (`prepare_assets`), and the launch wrapper (`run_with_envs`). What stays in a run script is its argument parsing and the command it finally runs. |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
@@ -69,7 +78,7 @@ lives here):
 
 ## Env layering (highest → lowest priority)
 
-- `dev:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
+- `dev:preset` / `prod:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
 - `dev:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
 
 The `--port` flag sets `NEXT_PUBLIC_APP_PORT` via dotenv-cli's `-v` (applied AFTER all `-e`
@@ -77,6 +86,8 @@ files, so it beats every env file). It overrides the env var rather than just `n
 so the generated `envs.js` / `config.app.baseUrl` stay consistent with the actual port.
 Without the flag, the port comes from the env files as before (default `3000` from
 `localEnvs` / `.env.localhost`; a persistent personal override belongs in `.env.local`).
+`prod:preset` therefore regenerates `envs.js` in its **start** step, not its build step —
+that's what lets a `--skip-build` restart move to a different port.
 
 | File | Committed? | Purpose |
 |---|---|---|
