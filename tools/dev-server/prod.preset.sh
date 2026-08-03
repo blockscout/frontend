@@ -4,24 +4,43 @@
 # Useful for performance measurements, where dev-mode overhead (React dev build, Turbopack
 # on-demand compile, StrictMode double-fetch) would skew the numbers.
 #
-# Usage: pnpm prod:preset <instance_alias> [--skip-build]
+# Usage: pnpm prod:preset <instance_alias> [--skip-build] [--profile]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
+#   --profile     Build a React-profileable production bundle (`next build --webpack --profile`):
+#                 --profile aliases react-dom to react-dom/profiling, so the React DevTools
+#                   Profiler works against an otherwise production build (minified, prod JSX
+#                   runtime, no dev-only checks);
+#                 --webpack because --profile is guaranteed on the webpack pipeline, while
+#                   Turbopack's (the Next 16 default) production profiling support is not
+#                   documented; next.config.js maintains both pipelines.
+#                 NOTE: most component names in this build are minified — use it to SIZE costs,
+#                 and the dev-mode profiler to ATTRIBUTE them by name (tools/profiling/CONTEXT.md).
 
 skip_build=false
+profile=false
 preset_name=""
 
 for arg in "$@"; do
   case "$arg" in
     --skip-build) skip_build=true ;;
+    --profile) profile=true ;;
     *) preset_name="$arg" ;;
   esac
 done
 
 if [ -z "$preset_name" ]; then
-  echo "Usage: pnpm prod:preset <instance_alias> [--skip-build]"
+  echo "Usage: pnpm prod:preset <instance_alias> [--skip-build] [--profile]"
   exit 1
+fi
+
+# the command the user actually typed, for error hints
+cmd="pnpm prod:preset $preset_name"
+build_flags=""
+if [ "$profile" = true ]; then
+  cmd="$cmd --profile"
+  build_flags=" --webpack --profile"
 fi
 
 # Env files in dotenv-cli precedence order: the FIRST -e file wins, so list highest priority first.
@@ -76,19 +95,19 @@ if [ "$skip_build" = false ]; then
     -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
     -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
     "${env_args[@]}" \
-    -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next build' || exit 1
+    -- bash -c "source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next build${build_flags}" || exit 1
   echo ""
 else
   if [ ! -f ./.env.tmp ]; then
-    echo "Error: .env.tmp not found. Run a full build first: pnpm prod:preset $preset_name"
+    echo "Error: .env.tmp not found. Run a full build first: $cmd"
     exit 1
   fi
   if [ ! -d ./.next ]; then
-    echo "Error: .next build output not found. Run a full build first: pnpm prod:preset $preset_name"
+    echo "Error: .next build output not found. Run a full build first: $cmd"
     exit 1
   fi
   if [ ! -f ./public/assets/envs.js ]; then
-    echo "Error: public/assets/envs.js not found. Run a full build first: pnpm prod:preset $preset_name"
+    echo "Error: public/assets/envs.js not found. Run a full build first: $cmd"
     exit 1
   fi
 fi
@@ -102,11 +121,12 @@ if [ -z "$NEXT_PUBLIC_ICON_SPRITE_HASH" ]; then
   fi
 fi
 
-# start the production server
+# start the production server; the pro-api flag is re-exported because the server reads it at
+# runtime and --skip-build never ran the build step that detects it
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
   "${env_args[@]}" \
-  -- bash -c 'next start -p $NEXT_PUBLIC_APP_PORT' |
+  -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && next start -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

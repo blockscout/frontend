@@ -25,7 +25,7 @@ unnecessary.
 | `fetch.sh` | Compile-on-run wrapper (`tsc` + `node fetch.js`). Resolves its own path, so callable from any cwd. |
 | `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
 | `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). |
-| `prod.preset.sh` | `pnpm prod:preset <alias> [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. |
+| `prod.preset.sh` | `pnpm prod:preset <alias> [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
 | `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
