@@ -43,9 +43,10 @@ Use `spec-template.md` (next to this file) for every spec — main and subtask a
 
 **The main spec is an index, not a container.** Its Task breakdown is one line per subtask (checkbox +
 title + folder link) — never inline inputs, requirements, or changelogs; that detail belongs in the
-subtask's own `spec.md`. Tag every subtask `[agent]` or `[human]` per `.agents/delegation.md` (UI
-work defaults to the scaffold → style split). Specs merge with the task's PR and accumulate in
-`.agents/tasks/` as precedent.
+subtask's own `spec.md`. Tag every subtask per the **Subtask tags** section of `.agents/tasks/README.md` —
+`[agent]`/`[human]` on every subtask, and `[verify]` (plus its `verify:` line) decided for every `[agent]`
+leaf. Never leave a tag implicit; `implement-task` reads them as its state machine. Specs merge with the
+task's PR and accumulate in `.agents/tasks/` as precedent.
 
 ## Workflow
 

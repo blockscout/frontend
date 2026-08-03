@@ -67,6 +67,9 @@ jobs:
           - name: Check spelling
             run: pnpm lint:cspell --no-progress
 
+          - name: Check agent doc references resolve
+            run: pnpm lint:doc-links
+
           - name: Check preset lists are in sync with registry
             run: pnpm presets:lint
 

@@ -63,7 +63,11 @@ If you encounter a `CONTEXT.md` not listed here, read it too (and consider addin
 
 ## Product task workflow
 
-Product tasks (GitHub issues) are worked through a spec-driven workflow, run by the `grill-the-task`,
-`to-spec` and `implement-task` skills. Specs live in `.agents/tasks/`; read `.agents/tasks/README.md` for
-the lifecycle before touching one. `.agents/delegation.md` draws the agent/human boundary, and
-`.agents/TEAM.md` says who answers open questions.
+Product tasks (GitHub issues) are worked through a spec-driven workflow — interview, spec, agent
+implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent record. See
+`./tasks/README.md` for the lifecycle, the skills that run it, and the spec conventions.
+
+## Editing this instruction set
+
+Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
+rules contract, the per-file symlink Cursor needs, and how references here are checked.
