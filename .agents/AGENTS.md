@@ -61,6 +61,19 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
+## Architecture decision records
+
+Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
+`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
+evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+
+- `0001-webpack-for-production-builds.md` — why production bundles are built with webpack while dev stays on Turbopack.
+
+Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
+it constrains future work, was reached by measurement or an investigation worth not repeating, or
+looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
+`superseded by <n>` and leave its reasoning intact.
+
 ## Product task workflow
 
 Product tasks (GitHub issues) are worked through a spec-driven workflow, run by the `grill-the-task`,

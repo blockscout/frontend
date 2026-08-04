@@ -4,6 +4,9 @@
 # Useful for performance measurements, where dev-mode overhead (React dev build, Turbopack
 # on-demand compile, StrictMode double-fetch) would skew the numbers.
 #
+# Builds with `--webpack`, like the shipped image does — see .agents/adr/0001-webpack-for-production-builds.md.
+# Measuring a Turbopack build here would not represent what users get.
+#
 # Usage: pnpm prod:preset <instance_alias> [--skip-build]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
@@ -76,7 +79,7 @@ if [ "$skip_build" = false ]; then
     -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
     -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
     "${env_args[@]}" \
-    -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next build' || exit 1
+    -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next build --webpack' || exit 1
   echo ""
 else
   if [ ! -f ./.env.tmp ]; then

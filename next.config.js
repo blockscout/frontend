@@ -39,7 +39,16 @@ const moduleExports = {
         use: [ '@svgr/webpack' ],
       },
     );
-    config.resolve.fallback = { fs: false, net: false, tls: false };
+    config.resolve.fallback = {
+      fs: false,
+      net: false,
+      tls: false,
+      // @metamask/sdk (reached via @wagmi/connectors -> @reown/appkit-adapter-wagmi) imports the
+      // React Native storage adapter unconditionally. It is an optional peer dep of a code path a
+      // browser bundle never takes, so resolve it to an empty module instead of letting webpack
+      // warn about it on every production build.
+      '@react-native-async-storage/async-storage': false,
+    };
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
     
     config.experiments = { ...config.experiments, topLevelAwait: true };
