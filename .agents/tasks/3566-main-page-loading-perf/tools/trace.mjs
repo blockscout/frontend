@@ -11,6 +11,9 @@
 //
 // Writes <out-prefix>-<n>.json for n in 1..runs.
 
+/* eslint-disable no-console -- a CLI tool: stdout is its interface, for the usage hint and for
+   reporting each trace it wrote. */
+
 import { chromium } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
