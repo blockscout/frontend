@@ -117,6 +117,7 @@ export const recipe = defineSlotRecipe({
       },
       _disabled: {
         cursor: 'not-allowed',
+        opacity: 'control.disabled',
       },
       _readOnly: {
         cursor: 'default',
