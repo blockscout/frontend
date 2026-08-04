@@ -29,6 +29,7 @@
 	| "brands/tac"
 	| "brands/ton"
 	| "burger"
+	| "calendar"
 	| "certified"
 	| "check"
 	| "checkered_flag"

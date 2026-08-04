@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { DateValue } from '@chakra-ui/react';
+import { getLocalTimeZone, parseAbsolute } from '@internationalized/date';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
-import dayjs from 'src/shared/date-and-time/dayjs';
-
-import { FormFieldText } from 'src/toolkit/components/forms/fields/FormFieldText';
+import { FormFieldDate } from 'src/toolkit/components/forms/fields/FormFieldDate';
 
 interface Props {
   formApi: UseFormReturn<FormFields>;
@@ -18,18 +18,23 @@ interface Props {
 const CsvExportFormDateField = ({ formApi, name }: Props) => {
   const { formState, getValues, trigger } = formApi;
 
-  const validate = React.useCallback((newValue: string) => {
+  const validate = React.useCallback((newValue: Array<DateValue>) => {
+    const [ date ] = newValue ?? [];
+    if (!date) {
+      return;
+    }
+
     if (name === 'from_period') {
-      const toValue = getValues('to_period');
-      if (toValue && dayjs(newValue) > dayjs(toValue)) {
+      const [ toDate ] = getValues('to_period') ?? [];
+      if (toDate && date.compare(toDate) > 0) {
         return 'Incorrect date';
       }
       if (formState.errors.to_period) {
         trigger('to_period');
       }
     } else {
-      const fromValue = getValues('from_period');
-      if (fromValue && dayjs(fromValue) > dayjs(newValue)) {
+      const [ fromDate ] = getValues('from_period') ?? [];
+      if (fromDate && fromDate.compare(date) > 0) {
         return 'Incorrect date';
       }
       if (formState.errors.from_period) {
@@ -38,13 +43,19 @@ const CsvExportFormDateField = ({ formApi, name }: Props) => {
     }
   }, [ formState.errors.from_period, formState.errors.to_period, getValues, name, trigger ]);
 
+  const maxDate = React.useMemo(() => parseAbsolute(new Date().toISOString(), getLocalTimeZone()), []);
+
   return (
-    <FormFieldText<FormFields, typeof name>
+    <FormFieldDate<FormFields, typeof name>
       name={ name }
-      inputProps={{ type: 'datetime-local', max: dayjs().format('YYYY-MM-DDTHH:mm') }}
+      max={ maxDate }
       placeholder={ capitalize(name.replace('_period', '')) }
       required
-      rules={{ validate }}
+      withTime
+      bgColor="dialog.bg"
+      // a bare function would be lost: FormFieldDate spreads rules.validate into an object
+      // in order to add its own min/max validator
+      rules={{ validate: { period: validate } }}
     />
   );
 };
