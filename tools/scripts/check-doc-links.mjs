@@ -27,7 +27,7 @@ const ROOT = path.resolve(import.meta.dirname, '../..');
 // The instruction surface: the agent config directories, plus every per-directory CONTEXT.md wherever it
 // lives. Task specs are excluded — they describe files that do not exist yet by design.
 const ROOTS = [ '.agents', '.claude', '.cursor' ];
-const EXCLUDED = [ '.agents/tasks' ];
+const EXCLUDED = [ '.agents/tasks', '.claude/worktrees' ];
 const SKIPPED_DIRS = new Set([ 'node_modules', '.git', '.next' ]);
 
 const PATH_EXTENSIONS = /\.(?:md|mdc|mjs|json|jsonc|ya?ml|sh|tsx?)$/;
