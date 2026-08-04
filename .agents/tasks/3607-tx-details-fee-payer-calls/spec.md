@@ -3,12 +3,12 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3607 |
-| Status | `draft` |
+| Status | `in progress` |
 | Size | `small` |
-| Feature branch | `issue-3607` (set on first `implement-task` run) |
+| Feature branch | `issue-3607` |
 | PM | Ulyana |
 | Designer | — |
-| Backend | Victor (issue author) |
+| Backend | Victor (issue author); v11.2.4+ |
 | Slack channel | — (default routing per `to-spec`) |
 
 ## Context & goal
@@ -33,8 +33,7 @@ and to omit them cleanly on every other chain (where they are absent from the re
 3. The Calls table has three columns — `To`, `Value`, `Input`:
    - `To` — `AddressEntity` with `truncation="dynamic"`. When `to` is `null` the cell reads
      `[ Contract creation ]` (the same string [`TxDetails.tsx:395`](../../../src/slices/tx/pages/details/info/TxDetails.tsx)
-     already uses). `to` being null is a real case, not defensive typing — the backend's `EdenView` comment
-     states it is `nil` for a contract-creation call.
+     already uses). `to` being null is a real case, confirmed by the backend owner (**Q3**).
    - `Value` — `NativeCoinValue` with symbol, no exchange-rate toggle.
    - `Input` — `TruncatedText` + `CopyToClipboard`, matching the `Data` cell of
      [`LogDecodedInputDataTable`](../../../src/slices/log/components/LogDecodedInputDataTable.tsx).
@@ -57,8 +56,8 @@ and to omit them cleanly on every other chain (where they are absent from the re
 **Endpoint** — `GET /api/v2/transactions/{hash}` (existing `core:tx` resource; no new API resource needed).
 
 **Readiness** — merged to backend `master` on 2026-07-31 and already deployed on
-`eden-testnet.blockscout.com` (`backend_version: v11.2.4.+commit.ac947295`). Which tagged release ships it
-is **Q3**.
+`eden-testnet.blockscout.com` (`backend_version: v11.2.4.+commit.ac947295`). Ships in backend tag **11.2.4**
+(Q3) — worth naming in the frontend release notes.
 
 **Field shapes** — read from
 [`schemas/api/v2/transaction.ex`](https://github.com/blockscout/blockscout/pull/14643/files) and verified
@@ -80,20 +79,20 @@ Sample (`0x35310fd76c45f1441226c102f4dc1070b41ac66cb1e6ed3354da78aa69824a67` on 
 }
 ```
 
-> The issue text names the call's address field `address_hash`. The API returns **`to`** — see **Q3**.
+The call's `to` is `null` on a contract creation — confirmed by the backend owner (**Q3**), not defensive
+typing.
 
 **Scope of each field across endpoints** — `calls` is rendered for single-transaction responses only
 (`prepare_calls` returns `nil` otherwise, the same policy the backend applies to token transfers).
 `fee_payer` *is* returned on list endpoints too, but showing it there is out of scope.
 
-**Types package** — the pinned `@blockscout/api-types@0.0.1-beta.82839e44ce` (published 2026-07-02)
-predates the backend PR, so it has neither `eden.schema` nor the two fields in `merged.schema`. The newest
-published beta, `0.0.1-beta.bb45bf1`, was published 2026-07-31 06:37Z — before the PR merged at 11:55Z — so
-it very likely lacks them as well. See leaf 3.
+**Types package** — pinned at `@blockscout/api-types@0.0.1-beta.8e1692a`, published from backend `dev` once
+`master` had been merged into it (**Q4**). It carries `eden.schema`, both fields on the transaction, and the
+`operations` / `paths` shorthands the app depends on.
 
 Because `merged.schema` marks chain-specific properties **optional**, the fields type as
-`Address | null | undefined` and `Array<Call> | null | undefined`. Guards must handle `undefined` as well
-as `null`.
+`Address | null | undefined` and `Array<Call> | null | undefined`. Guards must handle `undefined` as well as
+`null`.
 
 **Env vars / feature flags** — none added.
 
@@ -141,27 +140,33 @@ as `null`.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Add `eden` and `sponsored transaction` to `.agents/GLOSSARY.md` — skill: `update-glossary`
+- [x] 1 `[agent]` Add `eden` and `sponsored transaction` to `.agents/GLOSSARY.md` — skill: `update-glossary`
+  - done: `Eden` (chain) and `Sponsored Transaction` (entity) rows, cross-referencing each other
   - inputs:
     - `eden` — the chain type (`CHAIN_TYPE=eden`): an `ev-reth` / evstack rollup, explorers at
       `eden.blockscout.com` and `eden-testnet.blockscout.com`
     - `sponsored transaction` — scoped to Eden: EIP-2718 type `0x76` (decimal `118`); an executor submits an
       ordered batch of calls and a separate sponsor signs for and pays the fee
     - Also gets `eden` past cSpell, which has no entry for it today
-- [ ] 2 `[agent]` Add the `eden_testnet` dev-server preset
+- [x] 2 `[agent]` Add the `eden_testnet` dev-server preset
+  - done: `tools/dev-server/registry.json` + `pnpm presets:sync` (`deploy-review.yml`, `.vscode/tasks.json`)
   - inputs:
     - `"eden_testnet": "https://eden-testnet.blockscout.com"` in `tools/dev-server/registry.json`
     - then `pnpm presets:sync` — regenerates the marker-bracketed alias lists in
       `.github/workflows/deploy-review.yml` and `.vscode/tasks.json`; CI fails on drift
     - Ordered before the UI leaves so their verification has a preset to run against
-- [ ] 3 `[agent]` Get `fee_payer` / `calls` into the pinned API types
+- [x] 3 `[agent]` Get `fee_payer` / `calls` into the pinned API types
   - inputs:
     - First check whether `@blockscout/api-types@0.0.1-beta.bb45bf1` already contains them; if so just bump
       the pin in `package.json`
     - Otherwise publish a beta from backend `master` via the `publish-beta-types` skill and pin that
     - Verify afterwards that `schemas['TransactionResponse']` exposes `fee_payer` and `calls`, and that
       `transaction_types` includes `sponsored_transaction`
-- [ ] 4 `[agent]` `[verify]` Build `TxDetailsEden.tsx` and wire it into the details page — requirements 1–4
+  - done: pinned `0.0.1-beta.8e1692a`, published from `dev` after `master` was merged into it (**Q4**).
+    `schemas['TransactionResponse']` exposes `fee_payer` and `calls`, and `transaction_types` includes
+    `sponsored_transaction`; `pnpm lint:tsc` is clean, so the merge cost the app no type churn. The interim
+    `eden/types/api.ts` shim is gone — the component reads both fields off the pinned schema.
+- [x] 4 `[agent]` `[verify]` Build `TxDetailsEden.tsx` and wire it into the details page — requirements 1–4
   - inputs:
     - New file `src/features/chain-variants/eden/pages/tx/TxDetailsEden.tsx`; no `config.ts`
     - Composed unconditionally in `TxDetails.tsx` after `<TxDetailsOther/>`, before the `Raw input` label
@@ -172,6 +177,12 @@ as `null`.
     `/tx/0x35310fd76c45f1441226c102f4dc1070b41ac66cb1e6ed3354da78aa69824a67`, expand *View details*, confirm
     the Fee payer and Calls rows render correctly between Other and Raw input; adjust styles if needed. Also
     open any non-Eden preset (e.g. `eth`) and confirm neither row appears.
+  - implemented: `TxDetailsEden.tsx` in the new `eden` feature folder, composed in
+    `TxDetails.tsx`; `dev-eden-testnet` added to `.claude/launch.json`. Functional check done on
+    `eden_testnet`: both rows render between Other and Raw input on the sponsored transaction, and both are
+    absent on a type-2 one; the table's computed styles match the reference (16px padding, 20px gaps, 12px
+    radius, `whiteAlpha.50`, 14px text, three equal columns). Styles reviewed and accepted by the developer
+    on 2026-08-04, with the column template tuned to `minmax(140px, 1fr) minmax(50px, 1fr) 1fr`.
 - [ ] 5 `[agent]` `[verify]` Handle `sponsored_transaction` in `TxType` — requirement 6 — questions: Q1
   - inputs:
     - Add `sponsored_transaction` to `TYPES_ORDER` regardless of Q1's outcome, so it stops masking more
@@ -219,6 +230,28 @@ UI relies on it), and — if so — a request to correct #3607, which names the 
 API and the OpenAPI schema both use **`to`**.
 
 - Owner: Backend (Victor)
-- Status: `pending`
+- Status: `resolved`
 - Slack: https://blockscout.slack.com/archives/D040DB9J5QQ/p1785778264416959
-- Answer: <decision + date, once resolved>
+- Answer: 2026-08-03 — backend tag **11.2.4**, planned for release that week. A call's `to` is confirmed
+  `null` on a contract creation, and #3607's description was corrected to name the field `to`.
+
+### Q4 — Which backend ref can publish api-types with both the Eden fields and the response shorthands?
+
+`@blockscout/api-types` betas are published from `dev`, which has no `eden` chain type. A beta published from
+`master` (`0.0.1-beta.cf4c6f5`) has `eden.schema` plus `fee_payer` / `calls`, but its `index.ts` lacks the
+`operations` and `paths` shorthands added by
+[blockscout#14515](https://github.com/blockscout/blockscout/pull/14515) — the app imports those in 60+
+modules, and pinning that build yields 384 type errors across 227 files. So neither ref serves the frontend.
+Can `master` be merged into `dev` (or #14515 forward-ported to `master`) so one ref carries both? Until then
+the two fields are declared locally in the `eden` feature.
+
+- Owner: Backend (Victor)
+- Status: `resolved`
+- Slack: https://blockscout.slack.com/archives/D040DB9J5QQ/p1785780964199699 (compile failure reported at
+  https://blockscout.slack.com/archives/D040DB9J5QQ/p1785781999313979, the `HexString` rename at
+  https://blockscout.slack.com/archives/D040DB9J5QQ/p1785838420460469)
+- Answer: 2026-08-04 — `dev` is the ref, once `master` was merged into it. Two follow-up fixes were needed:
+  a compile break the merge left in `read_system_config/2` (`7b60189`), then the Eden call schema still
+  naming `General.HexString`, which `dev` had renamed to `General.HexData`
+  ([#14656](https://github.com/blockscout/blockscout/pull/14656)). The publish from `8e1692a` then succeeded.
+- Blocks: leaf 3
