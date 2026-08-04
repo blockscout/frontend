@@ -45,7 +45,7 @@ time.
    `.env.extra` is then layered on top.
 2. **`download_assets.sh`** — fetches the external assets referenced by env
    vars (network logo, marketplace config JSON, featured-networks list,
-   etc.) into `public/assets/configs/` so the app serves them same-origin
+   etc.) into `public/assets/configs/<downloaded>/` so the app serves them same-origin
    and not depend on 3rd-party insfrastructure.
 3. **`validate_envs.sh`** → `envs-validator` — fail-fast check that the
    container's env vars conform to the schema. Skippable via
