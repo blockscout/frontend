@@ -105,7 +105,10 @@ Cover these domains:
 6. **Delivery** — one question: deploy a demo after completion or not (executed via the `deploy-demo` skill
    as a final subtask if yes).
 
-Testing is **not** an interview domain — the standing policy in `.agents/delegation.md` applies.
+Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it. Neither is
+code review or human verification: review is `implement-task`'s call at run time (always under `--auto`, the
+developer's choice in a manual run), and the `[verify]` tag follows the standing rule in the **Subtask tags**
+section of `.agents/tasks/README.md`. Only ask when a leaf sits genuinely on the line.
 
 **Front-load the executor skills' inputs.** Once the task breakdown has taken shape, go through every
 `[agent]` subtask that will run a project skill (`add-new-page`, `add-api-resource`, `add-env-var`, …):
@@ -121,6 +124,6 @@ contacts and channel are settled, every unanswered question has an owner, and ev
 
 ## Step 4 — Hand off to `to-spec`
 
-Invoke the **`to-spec`** skill. It writes the spec (or sub-spec, in subtask mode), tags subtasks
-`[agent]`/`[human]` per the delegation boundary, and runs the open-question outreach (grouping by owner,
+Invoke the **`to-spec`** skill. It writes the spec (or sub-spec, in subtask mode), tags subtasks per the
+Subtask tags section of `.agents/tasks/README.md`, and runs the open-question outreach (grouping by owner,
 drafting Slack messages for the developer's approval, recording thread permalinks).

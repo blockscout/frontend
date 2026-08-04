@@ -12,7 +12,10 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 - Page scaffolding and route plumbing — navigation, metadata, guards, route types, sitemap, page-type
   analytics (`add-new-page` skill).
 - Data wiring: hooks, query integration, rendering fetched data plainly.
-- Component **scaffolds** (see the UI split below).
+- Component **scaffolds** — file placement, props and types, data fetching, behavioral states
+  (loading / empty / error / pagination), semantic structure built from existing toolkit components, and
+  placeholder presentation. Every deferred visual decision is marked `TODO (design):` (the convention the
+  `add-new-page` templates use), which is what makes the handover to a human explicit.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`) and Playwright test **scaffolds** (`*.pw.tsx` files, fixtures, mock data).
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
 
@@ -20,26 +23,6 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 
 - Final markup and styling that must match the designer's Figma mockups; visual polish of any kind.
 - Choosing nav/sprite icons and other visual assets.
-- Generating and eyeballing Playwright screenshot baselines.
+- Generating and eyeballing Playwright screenshot baselines — and only **once the component matches the
+  mockup**, because a baseline of placeholder presentation is worse than no baseline at all.
 - Design sign-off.
-
-## Default UI split: scaffold → style
-
-Every UI subtask in a spec is split into two linked subtasks by default:
-
-1. **`[agent]` scaffold** — file placement, props and types, data fetching, behavioral states
-   (loading / empty / error / pagination), semantic structure built from existing toolkit components,
-   placeholder presentation. Deferred visual decisions are marked `TODO (design):` (same convention as the
-   `add-new-page` templates).
-2. **`[human]` style** — take the scaffold to the mockup: layout, spacing, styling, icons. The spec links the
-   exact Figma node for this step.
-
-## Testing policy (standing — not asked per task)
-
-- Unit tests are written by the agent as part of whichever `[agent]` subtask they cover.
-- Playwright visual test files are scaffolded by the agent in the scaffold subtask.
-- Screenshot baselines are generated and reviewed by the human **after** the style subtask — a baseline is
-  only meaningful once the component matches the mockup.
-- Test the behavior that matters, not the obvious — follow the "What to test (and what not)" guidance in
-  `.agents/rules/tests-unit.md`. More tests are not better; a test that only asserts the framework or the
-  mock is noise.
