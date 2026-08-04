@@ -273,12 +273,35 @@ export const TimePicker = ({
     }
   }, [ limits, timeValue, setHours, setMinutes, scrollToItem ]);
 
+  const closeButtonOpacity = (() => {
+    if (hours !== undefined || minutes !== undefined) {
+      if (disabled || readOnly) {
+        return 'control.disabled';
+      }
+      return 1;
+    }
+
+    return 0;
+  })();
+
+  const clockIconTrigger = (() => {
+    if (disabled) {
+      return 'not-allowed';
+    }
+
+    if (readOnly) {
+      return 'default';
+    }
+
+    return 'pointer';
+  })();
+
   const endElement = (
     <HStack mr={ 2 } gap={ 1 }>
       { !readOnly && (
         <CloseButton
           onClick={ handleClear }
-          opacity={ hours !== undefined || minutes !== undefined ? 1 : 0 }
+          opacity={ closeButtonOpacity }
           color="icon.secondary"
           _hover={{ color: 'hover' }}
           iconProps={{ p: '1px' }}
@@ -289,8 +312,9 @@ export const TimePicker = ({
         boxSize={ 5 }
         p="3px"
         color="icon.primary"
-        cursor={ disabled || readOnly ? 'not-allowed' : 'pointer' }
+        cursor={ clockIconTrigger }
         _hover={{ color: disabled || readOnly ? 'icon.primary' : 'hover' }}
+        opacity={ disabled || readOnly ? 'control.disabled' : 1 }
       >
         <ClockIcon/>
       </Icon>

@@ -119,7 +119,8 @@ export const recipe = defineSlotRecipe({
         cursor: 'not-allowed',
       },
       _readOnly: {
-        cursor: 'not-allowed',
+        cursor: 'default',
+        opacity: 'control.disabled',
         _hover: {
           color: 'icon.primary',
           pointerEvents: 'none',
