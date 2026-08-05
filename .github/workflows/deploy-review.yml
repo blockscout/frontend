@@ -30,12 +30,14 @@ on:
             - blackfort_testnet
             - celo
             - celo_sepolia
+            - eden_testnet
             - eth
             - eth_sepolia
             - filecoin
             - garnet
             - gnosis
             - gnosis_chiado
+            - hpp
             - immutable
             - mega_eth
             - multichain

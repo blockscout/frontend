@@ -57,13 +57,30 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
-- `tools/profiling/` — React render profiling: production profiling build (`profile:preset`) and DevTools trace aggregation (`profile:analyze`).
+- `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
+## Architecture decision records
+
+Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
+`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
+evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+
+- `0001-webpack-for-production-builds.md` — why production bundles are built with webpack while dev stays on Turbopack.
+
+Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
+it constrains future work, was reached by measurement or an investigation worth not repeating, or
+looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
+`superseded by <n>` and leave its reasoning intact.
+
 ## Product task workflow
 
-Product tasks (GitHub issues) are worked through a spec-driven workflow, run by the `grill-the-task`,
-`to-spec` and `implement-task` skills. Specs live in `.agents/tasks/`; read `.agents/tasks/README.md` for
-the lifecycle before touching one. `.agents/delegation.md` draws the agent/human boundary, and
-`.agents/TEAM.md` says who answers open questions.
+Product tasks (GitHub issues) are worked through a spec-driven workflow — interview, spec, agent
+implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent record. See
+`./tasks/README.md` for the lifecycle, the skills that run it, and the spec conventions.
+
+## Editing this instruction set
+
+Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
+rules contract, the per-file symlink Cursor needs, and how references here are checked.

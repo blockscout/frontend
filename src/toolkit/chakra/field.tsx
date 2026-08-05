@@ -15,11 +15,12 @@ export interface FieldProps extends Omit<ChakraField.RootProps, 'label' | 'child
   optionalText?: React.ReactNode;
   children: React.ReactElement<InputProps> | React.ReactElement<InputGroupProps>;
   size?: 'sm' | 'md' | 'lg' | '2xl';
+  focusVisible?: boolean;
 }
 
 export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
   function Field(props, ref) {
-    const { label, children, helperText, errorText, optionalText, ...rest } = props;
+    const { label, children, helperText, errorText, optionalText, focusVisible, ...rest } = props;
 
     // A floating field cannot be without a label.
     if (rest.floating && label) {
@@ -31,6 +32,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
         bgColor: rest.bgColor,
         disabled: rest.disabled,
         readOnly: rest.readOnly,
+        ...(focusVisible ? { 'data-focus-visible': true } : {}),
       };
 
       const labelElement = (

@@ -73,7 +73,9 @@ publish path is the manual `workflow_dispatch` one.
   rather than fixing it inside this task. `dev` carries roughly four weeks of schema changes beyond the
   previously pinned 2026-07-02 beta, so unrelated churn was plausible and would have needed its own scope.
   → none surfaced; `lint:tsc`, `lint:eslint` and `lint:cspell` are all clean on the new pin.
-- [x] 5 `[agent]` Re-publish and re-pin once
+- [x] 5 `[agent]` Re-publish and re-pin once — the published `0.0.1-beta.50eadc8` was later dropped in favour
+  of `main`'s `0.0.1-beta.8e1692a`, which carries the same countdown contract (see the parent spec's
+  *Types package*).
   [blockscout#14646](https://github.com/blockscout/blockscout/pull/14646) is on `dev`. The
   `0.0.1-beta.bb45bf1` pin predates it and still types the three block numbers as `number`, so subtask 2
   cannot be written against it. Repeat steps 2–4; `dev` is still the only ref exporting `paths`, so the

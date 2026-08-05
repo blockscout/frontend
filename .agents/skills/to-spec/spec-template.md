@@ -57,7 +57,8 @@ detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`:
   - [ ] 2 `[human]` <plain-language subtask title> → `subtasks/02-<slug>/`
 
 LEAF worklist (a small task's single spec.md, or the breakdown inside a subtask spec) = the actual
-steps. Tag each `[agent]`/`[human]` per `.agents/delegation.md`; reference the executing skill;
+steps. Tag each per the Subtask tags section of `.agents/tasks/README.md` (`[agent]`/`[human]`, plus
+`[verify]` and its `verify:` line on `[agent]` leaves); reference the executing skill;
 list blocking question ids (the step may not start while any is `pending`); and record the executor
 skill's interview answers as an indented `inputs:` list, so `implement-task` never stops to ask. A UI
 component is two linked leaves (scaffold → style). Keep each completion note to ONE line — no changelog
@@ -67,7 +68,11 @@ changed. -->
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource` — questions: Q2
   - inputs:
     - <executor-skill answer>
-- [ ] 2 `[human]` Style <component> to mockup — [Figma](<node URL>)
+- [ ] 2 `[agent]` `[verify]` <title> — skill: `add-new-page`
+  - inputs:
+    - <executor-skill answer>
+  - verify: `pnpm dev:preset <alias>`, open <route>, confirm <the behaviour a human must judge>
+- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>)
 
 ## Open questions
 

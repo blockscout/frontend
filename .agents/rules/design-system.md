@@ -15,23 +15,23 @@ The app uses **Chakra UI v3** as its component and styling foundation.
 
 ## Project configuration
 
-The design system is layered on top of Chakra UI inside `toolkit/`:
+The design system is layered on top of Chakra UI inside `src/toolkit/`:
 
 | Path | Purpose |
 |---|---|
-| `toolkit/chakra/` | Custom wrappers for Chakra components — always prefer these over bare Chakra imports |
-| `toolkit/theme/theme.ts` | Theme entry point; uses Chakra v3's `createSystem` API to merge defaults with project config |
-| `toolkit/theme/foundations/semanticTokens.ts` | Full list of semantic color tokens (text, bg, border, icon, component-level tokens) |
-| `toolkit/theme/foundations/colors.ts` | Raw color palette referenced by semantic tokens |
-| `toolkit/theme/recipes/` | Component style recipes (slot recipes and simple recipes) |
-| `toolkit/components/` | Custom business components (forms, charts, tabs, etc.) built on top of Chakra |
-| `toolkit/hooks/` | Shared React hooks (useDisclosure, useClipboard, etc.) |
+| `src/toolkit/chakra/` | Custom wrappers for Chakra components — always prefer these over bare Chakra imports |
+| `src/toolkit/theme/theme.ts` | Theme entry point; uses Chakra v3's `createSystem` API to merge defaults with project config |
+| `src/toolkit/theme/foundations/semanticTokens.ts` | Full list of semantic color tokens (text, bg, border, icon, component-level tokens) |
+| `src/toolkit/theme/foundations/colors.ts` | Raw color palette referenced by semantic tokens |
+| `src/toolkit/theme/recipes/` | Component style recipes (slot recipes and simple recipes) |
+| `src/toolkit/components/` | Custom business components (forms, charts, tabs, etc.) built on top of Chakra |
+| `src/toolkit/hooks/` | Shared React hooks (useDisclosure, useClipboard, etc.) |
 
-The `Provider` component at `toolkit/chakra/provider.tsx` wraps `ChakraProvider` with the custom theme and color mode support. It must be mounted at the app root.
+The `Provider` component at `src/toolkit/chakra/provider.tsx` wraps `ChakraProvider` with the custom theme and color mode support. It must be mounted at the app root.
 
 ## Component import priority
 
-Always check `toolkit/chakra/` before importing from Chakra UI directly; if a wrapper exists there, use it.
+Always check `src/toolkit/chakra/` before importing from Chakra UI directly; if a wrapper exists there, use it.
 ESLint blocks the wrapped components by name, but the list is not exhaustive — the rule applies to any
 component that has a wrapper, caught or not.
 
@@ -39,7 +39,7 @@ component that has a wrapper, caught or not.
 
 Never use raw color values (hex, RGB, HSL). Always reference a token. Three sources are valid:
 
-1. **Semantic tokens** — context-aware, light/dark aware. Full list in `toolkit/theme/foundations/semanticTokens.ts`. Prefer these whenever a semantic meaning exists.
+1. **Semantic tokens** — context-aware, light/dark aware. Full list in `src/toolkit/theme/foundations/semanticTokens.ts`. Prefer these whenever a semantic meaning exists.
 
    ```tsx
    <Text color="text.secondary" />
@@ -48,13 +48,13 @@ Never use raw color values (hex, RGB, HSL). Always reference a token. Three sour
 
    Common groups: `text.*`, `bg.*`, `border.*`, `icon.*`, `link.*`, `button.*`, `badge.*`.
 
-2. **Project color palette** — scale and alpha colors defined in `toolkit/theme/foundations/colors.ts`: `gray`, `blue`, `red`, `orange`, `yellow`, `green`, `teal`, `cyan`, `purple`, `pink` (steps 50–900), `black`, `white`, `whiteAlpha.*`, `blackAlpha.*`.
+2. **Project color palette** — scale and alpha colors defined in `src/toolkit/theme/foundations/colors.ts`: `gray`, `blue`, `red`, `orange`, `yellow`, `green`, `teal`, `cyan`, `purple`, `pink` (steps 50–900), `black`, `white`, `whiteAlpha.*`, `blackAlpha.*`.
 
    ```tsx
    <Box bg="blue.50" color="gray.700" />
    ```
 
-3. **Brand colors** — also defined in `toolkit/theme/foundations/colors.ts`: `github`, `telegram`, `linkedin`, `discord`, `slack`, `twitter`, `opensea`, `facebook`, `medium`, `reddit`, `celo`, `clusters`.
+3. **Brand colors** — also defined in `src/toolkit/theme/foundations/colors.ts`: `github`, `telegram`, `linkedin`, `discord`, `slack`, `twitter`, `opensea`, `facebook`, `medium`, `reddit`, `celo`, `clusters`.
 
    ```tsx
    <Icon color="github" />
@@ -64,16 +64,16 @@ If a raw color value is truly unavoidable (e.g. a third-party embed), leave a co
 
 ## Design tokens
 
-The project customizes the following Chakra token categories in `toolkit/theme/`. Always use these tokens instead of raw CSS values:
+The project customizes the following Chakra token categories in `src/toolkit/theme/`. Always use these tokens instead of raw CSS values:
 
 | Token type | File | Example |
 |---|---|---|
-| Border radius | `foundations/borders.ts` | `borderRadius="md"` instead of `borderRadius="12px"` |
-| Shadows | `foundations/shadows.ts` | `boxShadow="size.md"` instead of a custom `box-shadow` |
-| Z-index | `foundations/zIndex.ts` | `zIndex="modal"` instead of a raw number |
-| Font weights | `theme.ts` (inline) | `fontWeight="semibold"` instead of `fontWeight={600}` |
-| Durations | `foundations/durations.ts` | Use duration tokens for CSS transitions |
-| Keyframes | `foundations/animations.ts` | Reference named keyframes for custom animations |
+| Border radius | `src/toolkit/theme/foundations/borders.ts` | `borderRadius="md"` instead of `borderRadius="12px"` |
+| Shadows | `src/toolkit/theme/foundations/shadows.ts` | `boxShadow="size.md"` instead of a custom `box-shadow` |
+| Z-index | `src/toolkit/theme/foundations/zIndex.ts` | `zIndex="modal"` instead of a raw number |
+| Font weights | `src/toolkit/theme/theme.ts` (inline) | `fontWeight="semibold"` instead of `fontWeight={600}` |
+| Durations | `src/toolkit/theme/foundations/durations.ts` | Use duration tokens for CSS transitions |
+| Keyframes | `src/toolkit/theme/foundations/animations.ts` | Reference named keyframes for custom animations |
 
 Available `radii` tokens: `none`, `sm` (4px), `base` (8px), `md` (12px), `lg` (16px), `xl` (24px), `full`.
 
@@ -91,7 +91,7 @@ Do not set `fontSize` or `lineHeight` directly. Apply the appropriate `textStyle
 <Text textStyle="text.sm">Label</Text>
 ```
 
-Available text styles (defined in `toolkit/theme/foundations/typography.ts`):
+Available text styles (defined in `src/toolkit/theme/foundations/typography.ts`):
 
 | Token | fontSize / lineHeight |
 |---|---|
@@ -111,7 +111,7 @@ For a regular text block, the `text.` prefix can be omitted.
 
 Do not override the default spacing of **internal parts** of compound components (e.g. adding custom padding to `DialogHeader` inside a `Dialog`, or to a `MenuList` item). The root component itself may be spaced freely; its sub-parts may not.
 
-This rule applies to all components from `toolkit/chakra/`.
+This rule applies to all components from `src/toolkit/chakra/`.
 
 ## Duplicated style props
 

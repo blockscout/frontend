@@ -2,6 +2,7 @@
 
 export * from './address';
 export * from './color';
+export * from './date';
 export * from './email';
 export * from './signature';
 export * from './text';

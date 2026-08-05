@@ -20,7 +20,8 @@ sync Slack replies: there is nothing to convert, so the run is just harvest (Ste
 
 ## Spec location and structure
 
-- With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` (e.g. `.agents/tasks/3219-cross-chain-txs/spec.md`).
+- With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` — the bare issue number, then a
+  kebab-case slug naming the task.
 - Ad-hoc (no issue): `.agents/tasks/<slug>/spec.md`.
 - Every subtask of a medium/large task gets its own folder `subtasks/<NN>-<slug>/`, holding:
   - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet. Its
@@ -43,9 +44,10 @@ Use `spec-template.md` (next to this file) for every spec — main and subtask a
 
 **The main spec is an index, not a container.** Its Task breakdown is one line per subtask (checkbox +
 title + folder link) — never inline inputs, requirements, or changelogs; that detail belongs in the
-subtask's own `spec.md`. Tag every subtask `[agent]` or `[human]` per `.agents/delegation.md` (UI
-work defaults to the scaffold → style split). Specs merge with the task's PR and accumulate in
-`.agents/tasks/` as precedent.
+subtask's own `spec.md`. Tag every subtask per the **Subtask tags** section of `.agents/tasks/README.md` —
+`[agent]`/`[human]` on every subtask, and `[verify]` (plus its `verify:` line) decided for every `[agent]`
+leaf. Never leave a tag implicit; `implement-task` reads them as its state machine. Specs merge with the
+task's PR and accumulate in `.agents/tasks/` as precedent.
 
 ## Workflow
 

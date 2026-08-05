@@ -105,9 +105,10 @@ intact (`"remaining_blocks_count":"123456789012345678901223143418"`). One quirk 
 `estimated_time_in_seconds` is a stringified Elixir float, so an absurd height yields
 `"1.5413580108191357e30"`. The UI only feeds it to `Number()`, which parses that correctly.
 
-**Types package.** The repo pins `@blockscout/api-types@0.0.1-beta.50eadc8`, published from `dev` after
+**Types package.** The repo pins `@blockscout/api-types@0.0.1-beta.8e1692a`, published from `dev` after
 [#14646](https://github.com/blockscout/blockscout/pull/14646), so all four fields are string-typed in the
-generated schema. `dev` remains the only publishable ref: the
+generated schema. Subtask 1 published `0.0.1-beta.50eadc8`, but `main` landed `8e1692a` first and it carries
+the same countdown contract, so the merge kept `main`'s pin rather than adding an unrelated bump here. `dev` remains the only publishable ref: the
 `paths` / `operations` helpers this repo imports in 469 files came from
 [blockscout#14515](https://github.com/blockscout/blockscout/pull/14515) and are on neither `master` nor the
 `v11.2.4` tag (verified — a build from either exports only `schemas`).
