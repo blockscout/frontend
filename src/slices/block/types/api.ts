@@ -15,12 +15,3 @@ export interface NewBlockCountSocketResponse {
 export interface BlockFilters {
   type?: schemas['BlockResponse']['type'];
 }
-
-export interface BlockCountdownResponse {
-  result: {
-    CountdownBlock: string;
-    CurrentBlock: string;
-    EstimateTimeInSec: string;
-    RemainingBlock: string;
-  } | null;
-}

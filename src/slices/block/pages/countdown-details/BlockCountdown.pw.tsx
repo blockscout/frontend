@@ -15,18 +15,12 @@ test.describe('short period until the block', () => {
 
   test.beforeEach(async({ mockApiResponse }) => {
     await mockApiResponse('core:block_countdown', {
-      result: {
-        CountdownBlock: height,
-        CurrentBlock: '1234567700',
-        RemainingBlock: '190',
-        EstimateTimeInSec: String(24 * 60 * 60 + 3 * 60 * 60 + 42 * 60 + 11),
-      },
+      countdown_block_number: height,
+      current_block_number: '1234567700',
+      remaining_blocks_count: '190',
+      estimated_time_in_seconds: String(24 * 60 * 60 + 3 * 60 * 60 + 42 * 60 + 11),
     }, {
-      queryParams: {
-        module: 'block',
-        action: 'getblockcountdown',
-        blockno: height,
-      },
+      pathParams: { height },
     });
   });
 
@@ -54,18 +48,12 @@ test.describe('long period until the block', () => {
 
   test.beforeEach(async({ mockApiResponse }) => {
     await mockApiResponse('core:block_countdown', {
-      result: {
-        CountdownBlock: height,
-        CurrentBlock: '1234567700',
-        RemainingBlock: '123456789012345678900000000190',
-        EstimateTimeInSec: String(1234567890 * 24 * 60 * 60 + 3 * 60 * 60 + 42 * 60 + 11),
-      },
+      countdown_block_number: height,
+      current_block_number: '1234567700',
+      remaining_blocks_count: '123456789012345678900000000190',
+      estimated_time_in_seconds: String(1234567890 * 24 * 60 * 60 + 3 * 60 * 60 + 42 * 60 + 11),
     }, {
-      queryParams: {
-        module: 'block',
-        action: 'getblockcountdown',
-        blockno: height,
-      },
+      pathParams: { height },
     });
   });
 

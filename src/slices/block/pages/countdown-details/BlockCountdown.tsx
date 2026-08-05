@@ -40,36 +40,35 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
   const height = getQueryParamString(router.query.height);
 
   const { data, isPending, isError, error } = useApiQuery('core:block_countdown', {
-    queryParams: {
-      module: 'block',
-      action: 'getblockcountdown',
-      blockno: height,
-    },
+    pathParams: { height },
   });
 
+  // the API answers 404 when the block is already mined, which is the same outcome as the countdown running out
+  const isBlockMined = isError && error.status === 404;
+
   const handleAddToAppleCalClick = React.useCallback(() => {
-    if (!data?.result?.EstimateTimeInSec) {
+    if (!data?.estimated_time_in_seconds) {
       return;
     }
-    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's'), multichainContext });
+    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.estimated_time_in_seconds), 's'), multichainContext });
     downloadBlob(fileBlob, `Block #${ height } creation event.ics`);
-  }, [ data?.result?.EstimateTimeInSec, height, multichainContext ]);
+  }, [ data?.estimated_time_in_seconds, height, multichainContext ]);
 
   const handleTimerFinish = React.useCallback(() => {
     window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }, multichainContext));
   }, [ height, multichainContext ]);
 
   React.useEffect(() => {
-    if (!isError && !isPending && !data.result) {
+    if (isBlockMined) {
       handleTimerFinish();
     }
-  }, [ data?.result, handleTimerFinish, isError, isPending ]);
+  }, [ handleTimerFinish, isBlockMined ]);
 
-  if (isError) {
+  if (isError && !isBlockMined) {
     throwOnResourceLoadError({ isError, error, resource: 'core:block_countdown' });
   }
 
-  if (isPending || !data?.result) {
+  if (isPending || isBlockMined || !data) {
     return <Center h="100%"><ContentLoader/></Center>;
   }
 
@@ -85,7 +84,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
-              <Time timestamp={ dayjs().add(Number(data.result.EstimateTimeInSec), 's').valueOf() }/>
+              <Time timestamp={ dayjs().add(Number(data.estimated_time_in_seconds), 's').valueOf() }/>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
               <Link
@@ -94,7 +93,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
                 textStyle="sm"
                 px={ 2 }
                 display="inline-flex"
-                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec), multichainContext }) }
+                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.estimated_time_in_seconds), multichainContext }) }
               >
                 <Image src="/static/google_calendar.svg" alt="Google calendar logo" boxSize={ 5 } mr={ 2 }/>
                 <span>Google</span>
@@ -136,15 +135,13 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             ) }
           </Box>
         </Flex>
-        { data.result.EstimateTimeInSec && (
-          <BlockCountdownTimer
-            value={ Math.ceil(Number(data.result.EstimateTimeInSec)) }
-            onFinish={ handleTimerFinish }
-          />
-        ) }
+        <BlockCountdownTimer
+          value={ Math.ceil(Number(data.estimated_time_in_seconds)) }
+          onFinish={ handleTimerFinish }
+        />
         <Grid gridTemplateColumns="repeat(2, calc(50% - 4px))" columnGap={ 2 } mt={ 2 }>
-          <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps"/>
-          <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block"/>
+          <StatsWidget label="Remaining blocks" value={ data.remaining_blocks_count } icon="apps"/>
+          <StatsWidget label="Current block" value={ data.current_block_number } icon="block"/>
         </Grid>
         { !hideCapybaraRunner && <CapybaraRunner/> }
       </Flex>
