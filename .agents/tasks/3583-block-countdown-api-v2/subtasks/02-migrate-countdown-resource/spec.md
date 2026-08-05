@@ -3,8 +3,8 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 2 of #3583 |
-| Status | `ready` |
-| Sub-branch | `issue-3583-step-2` |
+| Status | `in progress` |
+| Sub-branch | — (single commit on the feature branch) |
 | Backend | Nikita P. |
 
 ## Context & goal
@@ -41,18 +41,27 @@ block_countdown: {
 hash returns 422), and `height` matches the existing route param in `/block/countdown/[height]`, so the call
 site reads `pathParams: { height }`.
 
-Payload type — the generated 200 body, used as-is. `paths[…][method]` already resolves to the 200
-`application/json` body, so there is no manual response indexing and no local consolidation: with #14646 a
-200 always carries all four fields, and the message bodies live under their own status codes.
+Payload type — the generated 200 body, referenced inline in the payload branch like every other generated
+sibling in that file. `paths[…][method]` already resolves to the 200 `application/json` body, so there is no
+manual response indexing and no local consolidation: with #14646 a 200 always carries all four fields, and
+the message bodies live under their own status codes.
 
 ```ts
-// src/slices/block/types/api.ts
-export type BlockCountdownResponse = paths['/api/v2/blocks/{block_number_param}/countdown']['get'];
+R extends 'core:block_countdown' ? paths['/api/v2/blocks/{block_number_param}/countdown']['get'] :
 ```
+
+`BlockCountdownResponse` in `src/slices/block/types/api.ts` is deleted rather than re-aliased to the
+generated type: local types exist for payloads a schema cannot express (see *Where a resource's response
+types come from* in [src/api/CONTEXT.md](../../../../../src/api/CONTEXT.md)), and nothing outside the registry
+ever imported it.
 
 ## Steps
 
-- [ ] 1 `[agent]` Declare the resource — skill: `add-api-resource`
+Steps 1–4 land together: with the key present in both registries the later spread in
+[core/index.ts](../../../../../src/api/resources/services/core/index.ts) would win and keep routing to `/api`,
+and the consumer plus its mocks stop typechecking the moment the payload type changes. One commit.
+
+- [x] 1 `[agent]` Declare the resource — skill: `add-api-resource`
   - inputs:
     - Service + endpoint path: `core`, `/api/v2/blocks/:height/countdown`; key `core:block_countdown`
       (the key already exists — it moves from `v1.ts` into `block.ts`)
@@ -63,14 +72,16 @@ export type BlockCountdownResponse = paths['/api/v2/blocks/{block_number_param}/
       `paths['/api/v2/blocks/{block_number_param}/countdown']['get']`.
       **No temporary local type** — this step waits for the pin rather than hand-typing a stopgap.
     - Filters / sorting: none. Unpaginated — the sample body has no `next_page_params`.
-- [ ] 2 `[agent]` Remove the v1 resource: drop the `block_countdown` entry and its
+- [x] 2 `[agent]` Remove the v1 resource: drop the `block_countdown` entry and its
   `CoreApiV1ResourcePayload` branch from
   [src/api/resources/services/core/v1.ts](../../../../../src/api/resources/services/core/v1.ts), leaving only
   `graphql`. Also delete the pre-existing dead `core:block_countdown` branch in
   [block.ts](../../../../../src/api/resources/services/core/block.ts) if it is still the v1 shape — it has no
   matching entry in `CORE_API_BLOCK_RESOURCES` today, so it resolves to nothing and must not be left
   duplicated once the real entry lands.
-- [ ] 3 `[agent]` Rework
+  → `CoreApiV1ResourcePayload` went with it: `graphql` never had a payload branch (it is only used through
+  `buildUrl`), so the type was left vacuous. Its branch in `core/index.ts` is gone too.
+- [x] 3 `[agent]` Rework
   [BlockCountdown.tsx](../../../../../src/slices/block/pages/countdown-details/BlockCountdown.tsx):
   - call the resource with `pathParams: { height }` instead of the `module`/`action`/`blockno` query params;
   - read the four renamed fields — all strings, so `Number(estimated_time_in_seconds)` and the
@@ -78,21 +89,30 @@ export type BlockCountdownResponse = paths['/api/v2/blocks/{block_number_param}/
   - replace the `!data.result` redirect effect with one keyed off `error?.status === 404`, reusing the
     existing `handleTimerFinish` redirect;
   - keep `throwOnResourceLoadError` for every other error — it must not fire on the 404.
-- [ ] 4 `[agent]` Update the mocks in
+  → the guard reads `isError && error.status === 404`, a bare literal like the repo's six other 404 checks
+  (e.g. [Block.tsx:170](../../../../../src/slices/block/pages/details/Block.tsx)). The
+  `estimated_time_in_seconds &&` guard around the timer is gone — the schema makes the field required.
+- [x] 4 `[agent]` Update the mocks in
   [BlockCountdown.pw.tsx](../../../../../src/slices/block/pages/countdown-details/BlockCountdown.pw.tsx) to
   the v2 field names and drop the `queryParams` matcher in favour of `pathParams`. Values stay strings, so
   keep them identical to today's — both cases ("short period", "long period until the block") should render
   the same text they do now. **Do not** regenerate baselines — that is subtask 3.
-- [ ] 5 `[agent]` Unit-test the 404-means-redirect branch if step 3 extracts it into a helper — deciding
+- [x] 5 `[agent]` Unit-test the 404-means-redirect branch if step 3 extracts it into a helper — deciding
   "countdown available vs. redirect" is the one piece of real logic this migration introduces. Skip if it
   stays an inline `error?.status === 404` guard in the component; per
   [.agents/rules/tests-unit.md](../../../../../.agents/rules/tests-unit.md) a test that only re-asserts an
   inline conditional is noise.
-- [ ] 6 `[agent]` Verify: `pnpm run lint:tsc`, `pnpm run lint:eslint`, and a manual check on the `staging`
+  → skipped; no helper was extracted, so the branch is covered by the dev verification in step 6.
+- [x] 6 `[agent]` Verify: `pnpm run lint:tsc`, `pnpm run lint:eslint`, and a manual check on the `staging`
   preset — a future block renders a countdown, an already-mined block redirects to the block page, a
   non-numeric height shows the error page.
+  → all three confirmed on the `staging` preset (backend v11.2.4); `lint:tsc`, `lint:eslint`, `lint:cspell`
+  and 430 vitest tests pass. The payload type was probed against a temporary
+  `ResourcePayload<'core:block_countdown'>` assertion (with a negative control) to rule out a silent `never`.
 - [ ] 7 `[agent]` PR paperwork: `breaking changes` label, and a description plus release-note line stating
-  the countdown page now requires backend **v11.2.4+**.
+  the countdown page now requires backend **v11.2.4+**. Runs with the `create-pr` finalize-draft pass on
+  [#3605](https://github.com/blockscout/frontend/pull/3605) once subtask 3 is checked, not as its own commit —
+  which is why this box stays open while the code work above is complete.
 
 ## Out of scope
 

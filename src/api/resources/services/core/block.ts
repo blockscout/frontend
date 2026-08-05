@@ -3,7 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
 import type { TxsWithBlobsFilters } from 'src/features/data-availability/types/api';
-import type { BlockCountdownResponse, BlockFilters } from 'src/slices/block/types/api';
+import type { BlockFilters } from 'src/slices/block/types/api';
 
 export const CORE_API_BLOCK_RESOURCES = {
   blocks: {
@@ -14,6 +14,10 @@ export const CORE_API_BLOCK_RESOURCES = {
   block: {
     path: '/api/v2/blocks/:height_or_hash',
     pathParams: [ 'height_or_hash' as const ],
+  },
+  block_countdown: {
+    path: '/api/v2/blocks/:height/countdown',
+    pathParams: [ 'height' as const ],
   },
   block_txs: {
     path: '/api/v2/blocks/:height_or_hash/transactions',
@@ -46,7 +50,7 @@ export type CoreApiBlockResourceName = `core:${ keyof typeof CORE_API_BLOCK_RESO
 export type CoreApiBlockResourcePayload<R extends CoreApiBlockResourceName> =
 R extends 'core:blocks' ? paths['/api/v2/blocks']['get'] :
 R extends 'core:block' ? paths['/api/v2/blocks/{block_hash_or_number_param}']['get'] :
-R extends 'core:block_countdown' ? BlockCountdownResponse :
+R extends 'core:block_countdown' ? paths['/api/v2/blocks/{block_number_param}/countdown']['get'] :
 R extends 'core:block_txs' ? paths['/api/v2/blocks/{block_hash_or_number_param}/transactions']['get'] :
 R extends 'core:block_internal_txs' ? paths['/api/v2/blocks/{block_hash_or_number_param}/internal-transactions']['get'] :
 R extends 'core:block_withdrawals' ? paths['/api/v2/blocks/{block_hash_or_number_param}/withdrawals']['get'] :
