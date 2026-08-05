@@ -2,7 +2,6 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -35,6 +34,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { SECOND } from 'src/toolkit/utils/consts';
 
+import formatCurrencyValue from '../utils/format-currency-value';
 import {
   extractVariables,
   getStringChunks,
@@ -125,17 +125,7 @@ const TxInterpretationElementByType = (
       return <chakra.span color="text.secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
     }
     case 'currency': {
-      let numberString = '';
-      if (BigNumber(value).isLessThan(0.1)) {
-        numberString = BigNumber(value).toPrecision(2);
-      } else if (BigNumber(value).isLessThan(10000)) {
-        numberString = BigNumber(value).dp(2).toFormat();
-      } else if (BigNumber(value).isLessThan(1000000)) {
-        numberString = BigNumber(value).dividedBy(1000).toFormat(2) + 'K';
-      } else {
-        numberString = BigNumber(value).dividedBy(1000000).toFormat(2) + 'M';
-      }
-      return <chakra.span>{ numberString + ' ' }</chakra.span>;
+      return <chakra.span>{ formatCurrencyValue(value) + ' ' }</chakra.span>;
     }
     case 'timestamp': {
       return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * SECOND).format('MMM DD YYYY') }</chakra.span>;
