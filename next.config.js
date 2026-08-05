@@ -2,8 +2,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.BUNDLE_ANALYZER === 'true',
 });
 
+// Destination of the generated nextjs-routes.d.ts. It has to be passed to nextjs-routes twice:
+// the webpack plugin below takes it as an option, while the CLI (pnpm routes:generate) only reads
+// it off the resolved Next.js config, hence the `outDir` key at the bottom of moduleExports.
+const ROUTES_OUT_DIR = 'src/shared/router';
+
 const withRoutes = require('nextjs-routes/config')({
-  outDir: 'src/server',
+  outDir: ROUTES_OUT_DIR,
 });
 
 const headers = require('./src/server/headers');
@@ -75,8 +80,9 @@ const moduleExports = {
     },
   },
 
-  // workaround for passing outDir to nextjs-routes CLI
-  outDir: 'src/shared/router',
+  // workaround for passing outDir to nextjs-routes CLI, see ROUTES_OUT_DIR above.
+  // Next.js warns about this unrecognized key on startup; the warning is harmless.
+  outDir: ROUTES_OUT_DIR,
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));
