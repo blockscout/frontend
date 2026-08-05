@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 3 of #3583 |
-| Status | `ready` |
+| Status | `done` |
 | Sub-branch | — (commit on the feature branch) |
 | Designer | — |
 

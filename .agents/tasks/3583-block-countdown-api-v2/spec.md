@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3583 |
-| Status | `in progress` |
+| Status | `done` |
 | Size | `medium` |
 | Feature branch | `issue-3583` |
 | PM | — |

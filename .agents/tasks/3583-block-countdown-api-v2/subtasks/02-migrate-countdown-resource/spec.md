@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 2 of #3583 |
-| Status | `in progress` |
+| Status | `done` |
 | Sub-branch | — (single commit on the feature branch) |
 | Backend | Nikita P. |
 
@@ -109,10 +109,9 @@ and the consumer plus its mocks stop typechecking the moment the payload type ch
   → all three confirmed on the `staging` preset (backend v11.2.4); `lint:tsc`, `lint:eslint`, `lint:cspell`
   and 430 vitest tests pass. The payload type was probed against a temporary
   `ResourcePayload<'core:block_countdown'>` assertion (with a negative control) to rule out a silent `never`.
-- [ ] 7 `[agent]` PR paperwork: `breaking changes` label, and a description plus release-note line stating
+- [x] 7 `[agent]` PR paperwork: `breaking changes` label, and a description plus release-note line stating
   the countdown page now requires backend **v11.2.4+**. Runs with the `create-pr` finalize-draft pass on
-  [#3605](https://github.com/blockscout/frontend/pull/3605) once subtask 3 is checked, not as its own commit —
-  which is why this box stays open while the code work above is complete.
+  [#3605](https://github.com/blockscout/frontend/pull/3605) once subtask 3 is checked, not as its own commit.
 
 ## Out of scope
 
