@@ -38,8 +38,11 @@ staging-only) and the backend release version that ships the changes (for releas
 ## UI inventory
 
 <!-- Affected pages/tabs/components: routes, navigation entry points, cross-links to existing entity
-pages. One Figma node link per screen. Behavioral facts only — never visual/styling prose; appearance
-belongs to the mockups and the [human] style subtasks. -->
+pages. One Figma node link per screen. State behavioral facts and placement; leave appearance to the
+mockups and the [human] style subtasks. When you must lean on existing code, point to it by component or
+symbol name ("match `LogDecodedInputDataTable`") — never transcribe its values, class names, or line
+numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What a
+spec holds" in `.agents/tasks/README.md`. -->
 
 ## Out of scope
 
@@ -62,8 +65,8 @@ steps. Tag each per the Subtask tags section of `.agents/tasks/README.md` (`[age
 list blocking question ids (the step may not start while any is `pending`); and record the executor
 skill's interview answers as an indented `inputs:` list, so `implement-task` never stops to ask. A UI
 component is two linked leaves (scaffold → style). Keep each completion note to ONE line — no changelog
-blocks; fold durable decisions into the sections above and let git and the PR be the record of what
-changed. -->
+blocks; fold durable decisions into the sections above, send findings to the folder's `notes.md`, and let
+git and the PR be the record of what changed. -->
 
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource` — questions: Q2
   - inputs:
@@ -85,4 +88,4 @@ section above that it affects AND record it here. -->
 - Owner: <role> (<name>)
 - Status: `pending` \| `resolved` \| `waived`
 - Slack: <permalink, once sent>
-- Answer: <decision + date, once resolved>
+- Answer: <the decision as a phrase, + date — the decision, not the deliberation; the Slack link holds the reasoning and any internal detail this public spec shouldn't carry>

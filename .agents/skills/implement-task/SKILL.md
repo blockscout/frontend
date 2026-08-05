@@ -160,7 +160,11 @@ Nits never gate: `deferred` findings leave the `Outcome` `clear`.
 
 Check the box for what you did, with a **one-line** note (files/skills involved) — never a multi-line
 changelog; git and the PR carry the detail, and any durable decision (a new dependency, an architectural
-choice) is folded into the relevant spec section instead.
+choice) is folded into the relevant spec section instead. A finding worth keeping — a gotcha, a bug you hit
+— goes to the task folder's `notes.md` as evidence the PR can quote, or graduates to a `CONTEXT.md`, a rule,
+or the glossary if it's durable repo knowledge; it never lands in the spec as a report. If the work uncovers
+a bug from an **earlier, finished** task, fix it here and note it in *this* task's PR — never reopen or edit
+that task's frozen spec. See "What a spec holds" in `.agents/tasks/README.md`.
 
 Keep both checklist levels in sync when the subtask has its own sub-spec:
 

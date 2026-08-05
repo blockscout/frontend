@@ -65,7 +65,9 @@ them from all of these files. For every open question with status `pending` and 
    permalink as in the `create-issue-from-slack-thread` skill).
 2. If there are replies, summarize them and propose a resolution to the user.
 3. On acceptance: fold the decision into the affected spec section(s), set the question's status to
-   `resolved`, and record the answer and date in its entry.
+   `resolved`, and record the answer as a phrase (the decision + date) in its entry — the decision, not the
+   deliberation, and nothing this public repo shouldn't carry (see "What a spec holds" in
+   `.agents/tasks/README.md`); the recorded permalink holds the rest.
 4. If a reply raises a follow-up: draft it (in Russian, like all outreach), get the user's approval, send it
    **into the same thread**, and keep the question `pending`.
 
@@ -89,7 +91,9 @@ user a summary of the changes and confirm before moving on.
 
 **No changelogs.** Record a subtask's completion as a one-line note on its checkbox, nothing more — the
 commit and the PR are the record of what changed. Durable decisions taken during work (a new dependency, an
-architectural choice) are folded into the relevant spec section, not appended as a "done: …" block.
+architectural choice) are folded into the relevant spec section, not appended as a "done: …" block. See
+"What a spec holds" in `.agents/tasks/README.md` for what stays in the spec versus what lives in its thread,
+the code, or the PR.
 
 Status field: a new spec starts as `draft`; set it to `ready` once no `pending` question blocks the first
 subtask (per-subtask blocking — unblocked subtasks may proceed while unrelated questions are pending).
