@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3607 |
-| Status | `in progress` |
+| Status | `done` |
 | Size | `small` |
 | Feature branch | `issue-3607` |
 | PM | Ulyana |
@@ -46,10 +46,11 @@ and to omit them cleanly on every other chain (where they are absent from the re
    [`TxDetails.tsx:308`](../../../src/slices/tx/pages/details/info/TxDetails.tsx) do the same, even though
    SUAVE has an `NEXT_PUBLIC_IS_SUAVE_CHAIN` flag for its nav and pages. `do_with_chain_type_fields` only
    extends the response for `:eden`, so presence is a sufficient and self-maintaining gate.
-6. `TxType` gains handling for the new `sponsored_transaction` member of `transaction_types` — see **Q1**
-   for the label decision. Independently of that decision, the member must be added to `TYPES_ORDER`:
-   it is absent today, so `indexOf` returns `-1`, sorting it ahead of every real type and making a
-   sponsored contract call badge as the generic "Transaction" instead of "Contract call".
+6. A **Sponsored** tag appears in the transaction details page header when `transaction_types` includes
+   `sponsored_transaction`, alongside the other header tags. Transaction **lists** get no badge for it
+   (**Q1**) — there is no room. `sponsored_transaction` is still added to `TYPES_ORDER`, last and with no
+   label of its own: absent from that list, `indexOf` returns `-1` and sorts it ahead of every real type,
+   making a sponsored contract call read as the generic "Transaction" instead of "Contract call".
 
 ## Data & API
 
@@ -115,8 +116,10 @@ Because `merged.schema` marks chain-specific properties **optional**, the fields
   corners are rounded** (`borderRadius="md"`), where the reference rounds only the bottom two because
   `LogDecodedInputDataHeader` sits above it. Column template is `repeat(3, minmax(0, 1fr))` — equal widths
   to start, tuned during verification (leaf 4).
-- **Also affected by leaf 5**: [`TxType`](../../../src/slices/tx/components/TxType.tsx), which renders in
-  the txs list, the home page latest-transactions widget, and the address transactions tab.
+- **Also affected by leaf 5**: the page header tags in
+  [`Transaction.tsx`](../../../src/slices/tx/pages/details/Transaction.tsx), and
+  [`TxType`](../../../src/slices/tx/components/TxType.tsx), which renders in the txs list, the home page
+  latest-transactions widget, and the address transactions tab.
 - No new routes, navigation entries, or cross-links.
 - No custom Mixpanel events: the only interactive elements are `AddressEntity` links and `CopyToClipboard`,
   neither tracked elsewhere; there is no new page (view tracking is auto-wired) and no hardcoded external
@@ -182,16 +185,27 @@ Because `merged.schema` marks chain-specific properties **optional**, the fields
     `eden_testnet`: both rows render between Other and Raw input on the sponsored transaction, and both are
     absent on a type-2 one; the table's computed styles match the reference (16px padding, 20px gaps, 12px
     radius, `whiteAlpha.50`, 14px text, three equal columns). Styles reviewed and accepted by the developer
-    on 2026-08-04, with the column template tuned to `minmax(140px, 1fr) minmax(50px, 1fr) 1fr`.
-- [ ] 5 `[agent]` `[verify]` Handle `sponsored_transaction` in `TxType` — requirement 6 — questions: Q1
+    on 2026-08-04, with the column template tuned to `minmax(140px, 1fr) minmax(50px, 1fr) 1fr`; the designer
+    signed them off on the interim demo the same day.
+- [x] 5 `[agent]` `[verify]` Show the **Sponsored** tag in the page header — requirement 6
   - inputs:
-    - Add `sponsored_transaction` to `TYPES_ORDER` regardless of Q1's outcome, so it stops masking more
-      useful labels
-    - Label, colour and sort priority per Q1
-  - verify: on `eden_testnet`, find a sponsored transaction in `/txs` and confirm its badge
-- [ ] 6 `[agent]` Deploy a demo — skill: `deploy-demo`
+    - Push a `{ slug: 'sponsored', name: 'Sponsored', tagType: 'custom' }` tag in `Transaction.tsx`, next to
+      the `relay_tx` / `init_tx` pushes that already feed `MetadataTags`
+    - Add `sponsored_transaction` to `TYPES_ORDER` last, with no `switch` case, so lists keep showing no
+      badge for it while the type stops masking more useful labels
+  - verify: on `eden_testnet`, open a sponsored transaction and confirm the header tag; check `/txs` still
+    labels a sponsored contract call as "Contract call"
+  - implemented: the header tag keys off `transaction_types`, so it carries no Eden-specific coupling.
+    `TxType.spec.tsx` pins both ordering outcomes. The dev server would not hydrate in the agent's browser
+    pane (Next dev's `_clientMiddlewareManifest.js` is served as JSON), so the header tag is verified by
+    types and tests only — confirm it visually on the next demo.
+- [x] 6 `[agent]` Deploy a demo — skill: `deploy-demo`
   - inputs:
     - Run last, once every other box is checked
+  - done: deployed on 2026-08-04 from `2442fb48c` with the `eden_testnet` preset —
+    https://review-issue-3607.k8s-dev.blockscout.com — and shared in the Q1/Q2 thread, where the designer
+    signed off the styles. It covers leaves 1–4; the developer waived a redeploy for leaf 5, so the
+    **Sponsored** header tag is not on the demo.
 
 ## Open questions
 
@@ -204,9 +218,12 @@ what colour (`purple` is the fallback's; `green` is unused), and what priority r
 "Token transfer" when a transaction is both?
 
 - Owner: PM (Ulyana)
-- Status: `pending`
-- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785778160250149
-- Answer: <decision + date, once resolved>
+- Status: `resolved`
+- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785778160250149 (reminder with the interim demo
+  at https://blockscout.slack.com/archives/C03MMUTQDNU/p1785851465775779)
+- Answer: 2026-08-04 — answered by Nikita S. rather than Ulyana: a **Sponsored** tag in the details page
+  header, skipped in lists where it would not fit. Tags are in the SoW, but how to render them was left to
+  the team.
 - Blocks: leaf 5
 
 ### Q2 — Should the compatibility fields be adapted on a multi-call sponsored transaction?
@@ -217,9 +234,10 @@ hidden, relabelled, or annotated for Eden, as the backend issue's UI requirement
 for now.
 
 - Owner: PM (Ulyana)
-- Status: `pending`
+- Status: `waived`
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1785778160250149
-- Answer: <decision + date, once resolved>
+- Answer: 2026-08-04 — deferred out of this task. Shipping the narrow scope; the team waits for client
+  feedback on whether the compatibility fields mislead in practice, and adapts them only if it does.
 
 ### Q3 — Which backend release ships the Eden transaction fields?
 
