@@ -21,6 +21,10 @@ const TYPES_ORDER: schemas['Transaction']['transaction_types'] = [
   'token_transfer',
   'contract_call',
   'coin_transfer',
+  // Listed last and deliberately given no label of its own — the details page header carries the
+  // "Sponsored" tag instead, and lists have no room for it. An unlisted type would score -1 here and sort
+  // ahead of every real one, masking labels like "Contract call".
+  'sponsored_transaction',
 ];
 
 const TxType = ({ types, isLoading, ...rest }: Props) => {

@@ -25,8 +25,8 @@ importers:
         specifier: 1.5.0
         version: 1.5.0
       '@blockscout/api-types':
-        specifier: 0.0.1-beta.82839e44ce
-        version: 0.0.1-beta.82839e44ce
+        specifier: 0.0.1-beta.8e1692a
+        version: 0.0.1-beta.8e1692a
       '@blockscout/bens-types':
         specifier: 1.7.1
         version: 1.7.1
@@ -1321,8 +1321,8 @@ packages:
   '@blockscout/admin-rs-types@1.5.0':
     resolution: {integrity: sha512-QE+dpUaQDvOAb/wUJ98J3CBqfohbiBW/+AEqEmSdOOZ0XxPRUrke08krBnflq3GMACRwB+nwzQrsfl7KCrC1Eg==}
 
-  '@blockscout/api-types@0.0.1-beta.82839e44ce':
-    resolution: {integrity: sha512-DIyMKLqHqXmKCbf1eYCKbWsNY3VQ2NMXAlLyAgEkM7UYffEasUfAL0othyHfGyxvM4FMwU5tm9hlKHRFPmKYew==}
+  '@blockscout/api-types@0.0.1-beta.8e1692a':
+    resolution: {integrity: sha512-itkaQdbtJSwsJL6LQBAPQlSWuejDhuuUXxZTcfwDAup/6L/OOw0l0XwIEVEtqTaLVIxG1DyGOrr7gKz2fPrukQ==}
 
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
@@ -14846,7 +14846,7 @@ snapshots:
 
   '@blockscout/admin-rs-types@1.5.0': {}
 
-  '@blockscout/api-types@0.0.1-beta.82839e44ce': {}
+  '@blockscout/api-types@0.0.1-beta.8e1692a': {}
 
   '@blockscout/bens-types@1.7.1': {}
 
