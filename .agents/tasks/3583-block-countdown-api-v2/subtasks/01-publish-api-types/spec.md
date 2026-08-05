@@ -73,6 +73,15 @@ publish path is the manual `workflow_dispatch` one.
   rather than fixing it inside this task. `dev` carries roughly four weeks of schema changes beyond the
   previously pinned 2026-07-02 beta, so unrelated churn was plausible and would have needed its own scope.
   → none surfaced; `lint:tsc`, `lint:eslint` and `lint:cspell` are all clean on the new pin.
+- [x] 5 `[agent]` Re-publish and re-pin once
+  [blockscout#14646](https://github.com/blockscout/blockscout/pull/14646) is on `dev`. The
+  `0.0.1-beta.bb45bf1` pin predates it and still types the three block numbers as `number`, so subtask 2
+  cannot be written against it. Repeat steps 2–4; `dev` is still the only ref exporting `paths`, so the
+  `v11.2.4` tag is not an option. Expect more unrelated churn than last time — `dev` now carries v12.0.0-era
+  changes that no release includes, and step 4's stop-and-report rule applies to them.
+  → `0.0.1-beta.50eadc8` from
+  [run 31010579751](https://github.com/blockscout/blockscout/actions/runs/31010579751); all four countdown
+  fields string-typed, and the v12-era churn broke nothing (`lint:tsc`, `lint:eslint`, `lint:cspell` clean).
 
 ## Out of scope
 
