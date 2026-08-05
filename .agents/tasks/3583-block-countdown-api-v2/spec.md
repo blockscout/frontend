@@ -151,9 +151,9 @@ No route, navigation, metadata, sitemap or visual change. Routes `/block/countdo
 
 - [x] 1 `[agent]` Unblock `@blockscout/api-types` publishing, publish a beta from `dev`, and pin it →
   [`subtasks/01-publish-api-types/`](subtasks/01-publish-api-types/spec.md)
-- [ ] 2 `[agent]` Migrate the resource and the countdown page to API v2 →
+- [x] 2 `[agent]` Migrate the resource and the countdown page to API v2 →
   [`subtasks/02-migrate-countdown-resource/`](subtasks/02-migrate-countdown-resource/spec.md)
-- [ ] 3 `[human]` Confirm the countdown screenshot baselines are unchanged →
+- [x] 3 `[human]` Confirm the countdown screenshot baselines are unchanged →
   [`subtasks/03-countdown-baselines/`](subtasks/03-countdown-baselines/spec.md)
 
 ## Open questions

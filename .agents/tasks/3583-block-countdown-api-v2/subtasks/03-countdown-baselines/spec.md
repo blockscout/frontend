@@ -21,14 +21,14 @@ acceptable is a human step.
 
 ## Steps
 
-- [ ] 1 `[human]` Run the countdown component tests and inspect the diff for
+- [x] 1 `[human]` Run the countdown component tests and inspect the diff for
   [BlockCountdown.pw.tsx](../../../../../src/slices/block/pages/countdown-details/BlockCountdown.pw.tsx).
   Both cases are expected to pass untouched.
-- [ ] 2 `[human]` If either case did move, decide whether the new rendering is acceptable before accepting it.
+- [x] 2 `[human]` If either case did move, decide whether the new rendering is acceptable before accepting it.
   Scientific notation in the long-period case means the pinned package predates
   [#14646](https://github.com/blockscout/blockscout/pull/14646) and the block numbers are still `number` —
   that is a subtask 1 problem, not a baseline to accept.
-- [ ] 3 `[human]` Regenerate and commit baselines only if step 2 accepted a change.
+- [x] 3 `[human]` Regenerate and commit baselines only if step 2 accepted a change.
 
 ## Out of scope
 
