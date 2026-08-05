@@ -22,7 +22,6 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import config from 'src/config';
 import ReCaptcha from 'src/services/re-captcha/ReCaptcha';
 import useReCaptcha from 'src/services/re-captcha/useReCaptcha';
-import dayjs from 'src/shared/date-and-time/dayjs';
 import getErrorMessage from 'src/shared/errors/get-error-message';
 import getErrorObjStatusCode from 'src/shared/errors/get-error-obj-status-code';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
@@ -37,6 +36,7 @@ import { downloadBlob } from 'src/toolkit/utils/file';
 
 import { useCsvExportContext } from '../utils/context';
 import getFileName from '../utils/get-file-name';
+import serializeFormFields from '../utils/serialize-form-fields';
 import type { StorageItem } from '../utils/storage';
 import CsvExportDialog from './dialog/CsvExportDialog';
 import CsvExportDialogDescription from './dialog/CsvExportDialogDescription';
@@ -101,7 +101,7 @@ const CsvExport = <R extends ResourceName>({
   const fetchFactorySync = React.useCallback((data?: FormFields) => {
     return async(recaptchaToken?: string) => {
       const url = buildUrl(resourceName, pathParams, {
-        ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
+        ...serializeFormFields(data),
         ...queryParams,
       }, undefined, chain);
 
@@ -135,7 +135,7 @@ const CsvExport = <R extends ResourceName>({
       return apiFetch<typeof resourceName>(resourceName, {
         pathParams,
         queryParams: {
-          ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
+          ...serializeFormFields(data),
           ...queryParams,
         },
         chain,
@@ -158,7 +158,7 @@ const CsvExport = <R extends ResourceName>({
         blob,
         getFileName({
           type,
-          params: { ...mergedParams, ...data },
+          params: { ...mergedParams, ...serializeFormFields(data) },
           chainConfig,
         }),
       );
@@ -186,7 +186,7 @@ const CsvExport = <R extends ResourceName>({
           status: 'pending',
           type,
           params: pickBy({
-            ...mapValues(data || {}, (value) => dayjs(value).toISOString()),
+            ...serializeFormFields(data),
             ...mergedParams,
             chain_id: chain?.id,
           }, (value) => value !== '' && value !== undefined && value !== null),

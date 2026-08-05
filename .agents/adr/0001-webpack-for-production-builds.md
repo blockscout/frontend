@@ -18,7 +18,7 @@ Applies to every entry point that emits a production bundle:
 | `pnpm build` — what the `Dockerfile` runs for the shipped image | webpack |
 | `pnpm build:next` | webpack |
 | `pnpm prod:preset <alias>` — local production build, incl. perf measurements | webpack |
-| `pnpm build:analyze`, `pnpm profile:preset` | webpack (already were) |
+| `pnpm build:analyze`, `pnpm prod:preset <alias> --profile` | webpack (already were) |
 | `pnpm dev`, `pnpm dev:preset`, `pnpm dev:local` | Turbopack |
 
 Dev stays on Turbopack because it is roughly 3× faster to compile and the crash class below only

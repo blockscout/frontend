@@ -2,6 +2,9 @@
 
 # Runs the dev server against a LOCAL backend using the committed tools/dev-server/.env.localhost
 # config (no HTTP fetch). Layer your own overrides via .env.local / .env.extra / .env.secrets.
+# The shared steps live in run_steps.sh.
+
+source ./tools/dev-server/run_steps.sh
 
 usage="Usage: pnpm dev:local [--port <number>]"
 
@@ -17,6 +20,9 @@ while [ "$#" -gt 0 ]; do
       port="$2"; shift 2 ;;
     --port=*)
       port="${1#--port=}"; shift ;;
+    --)
+      # `pnpm dev:local -- --port 3001` forwards the separator into the script; drop it
+      shift ;;
     *)
       echo "🚨 Unknown argument \"$1\"."
       echo "$usage"
@@ -24,64 +30,12 @@ while [ "$#" -gt 0 ]; do
   esac
 done
 
-if [ -n "$port" ] && ! [[ "$port" =~ ^[0-9]+$ ]]; then
-  echo "🚨 Invalid --port value \"$port\" — expected a number."
-  echo "$usage"
-  exit 1
-fi
+build_port_args "$port" "$usage"
+build_env_args ./tools/dev-server/.env.localhost
 
-# --port overrides NEXT_PUBLIC_APP_PORT (dotenv-cli applies -v variables AFTER the -e files,
-# so this beats every env file). Overriding the env var — not just `next dev -p` — keeps the
-# generated envs.js and config.app.baseUrl consistent with the actual port.
-port_args=()
-if [ -n "$port" ]; then
-  port_args+=( -v NEXT_PUBLIC_APP_PORT="$port" )
-fi
-
-# Env files in dotenv-cli precedence order: the FIRST -e file wins, so list highest priority first.
-#   .env.local                       (git-ignored, personal local overrides) — optional
-#   .env.extra                       (committed branch/feature ENVs)
-#   .env.secrets                     (git-ignored local secrets) — optional
-#   tools/dev-server/.env.localhost  (local-backend base config)
-env_args=()
-if [ -f ./.env.local ]; then
-  env_args+=( -e ./.env.local )
-fi
-env_args+=( -e ./.env.extra )
-if [ -f ./.env.secrets ]; then
-  env_args+=( -e ./.env.secrets )
-fi
-env_args+=( -e ./tools/dev-server/.env.localhost )
-
-# remove previous assets
-rm -rf ./public/assets/configs
-rm -rf ./public/assets/multichain
-rm -rf ./public/assets/essential-dapps
-rm -rf ./public/assets/envs.js
-
-# download assets for the running instance
-dotenv \
-  "${env_args[@]}" \
-  -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
-
-# generate essential dapps chains config if marketplace essential dapps enabled
-dotenv \
-  "${env_args[@]}" \
-  -- bash -c 'cd deploy/tools/essential-dapps-chains-config-generator && pnpm build && pnpm generate' || exit 1
-
-source ./deploy/scripts/build_sprite.sh
-echo ""
-
-# generate routes
-pnpm routes:generate
-echo ""
+# no preset name: a local backend serves a single chain, so there is no multichain config
+prepare_assets
 
 # generate envs.js file and run the app
-dotenv \
-  -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
-  -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
-  -v NEXT_PUBLIC_ICON_SPRITE_HASH="${NEXT_PUBLIC_ICON_SPRITE_HASH}" \
-  "${port_args[@]}" \
-  "${env_args[@]}" \
-  -- bash -c 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
+run_with_envs 'source ./deploy/scripts/export_pro_api_flag.sh && ./deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

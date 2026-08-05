@@ -10,6 +10,7 @@ export * from '../../chakra/checkbox';
 export * from '../../chakra/close-button';
 export * from '../../chakra/collapsible';
 export * from '../../chakra/color-mode';
+export * from '../../chakra/date-picker';
 export * from '../../chakra/dialog';
 export * from '../../chakra/drawer';
 export * from '../../chakra/empty-state';
@@ -37,6 +38,7 @@ export * from '../../chakra/table';
 export * from '../../chakra/tabs';
 export * from '../../chakra/tag';
 export * from '../../chakra/textarea';
+export * from '../../chakra/time-picker';
 export * from '../../chakra/toaster';
 export * from '../../chakra/tooltip';
 

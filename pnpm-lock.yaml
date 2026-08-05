@@ -81,6 +81,9 @@ importers:
       '@helia/verified-fetch':
         specifier: 2.6.12
         version: 2.6.12(bufferutil@4.1.0)(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(utf-8-validate@6.0.6))(utf-8-validate@6.0.6)
+      '@internationalized/date':
+        specifier: 3.12.2
+        version: 3.12.2
       '@metamask/post-message-stream':
         specifier: ^7.0.0
         version: 7.0.0
@@ -425,8 +428,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.107.2(esbuild@0.25.12)(postcss@8.5.15))
       dotenv-cli:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: 10.0.0
+        version: 10.0.0
       eslint:
         specifier: 9.39.2
         version: 9.39.2
@@ -633,6 +636,24 @@ importers:
       '@emotion/react':
         specifier: '>=11.14.0'
         version: 11.14.0(@types/react@18.3.12)(react@19.1.4)
+      '@internationalized/date':
+        specifier: '>=3.12.2'
+        version: 3.12.2
+      '@uidotdev/usehooks':
+        specifier: '>=2.4.1'
+        version: 2.4.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      d3:
+        specifier: '>=7.9.0'
+        version: 7.9.0
+      dayjs:
+        specifier: '>=1.11.21'
+        version: 1.11.21
+      dom-to-image:
+        specifier: '>=2.6.0'
+        version: 2.6.0
+      es-toolkit:
+        specifier: '>=1.39.10'
+        version: 1.39.10
       next:
         specifier: '>=16.2.6'
         version: 16.2.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.57.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
@@ -2858,9 +2879,6 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
-
-  '@internationalized/date@3.12.1':
-    resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
   '@internationalized/date@3.12.2':
     resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
@@ -8633,10 +8651,6 @@ packages:
     resolution: {integrity: sha512-lnOnttzfrzkRx2echxJHQRB6vOAMSCzzZg79IxpC00tU42wZPuZkQxNNrrwVAxaQZIIh001l4PxVlCrBxngBzA==}
     hasBin: true
 
-  dotenv-cli@6.0.0:
-    resolution: {integrity: sha512-qXlCOi3UMDhCWFKe0yq5sg3X+pJAz+RQDiFN38AMSbUrnY3uZshSfDJUAge951OS7J9gwLZGfsBlWRSOYz/TRg==}
-    hasBin: true
-
   dotenv-cli@7.4.4:
     resolution: {integrity: sha512-XkBYCG0tPIes+YZr4SpfFv76SQrV/LeCE8CI7JSEMi3VR9MvTihCGTOtbIexD6i2mXF+6px7trb1imVCXSNMDw==}
     hasBin: true
@@ -8647,10 +8661,6 @@ packages:
 
   dotenv-expand@11.0.7:
     resolution: {integrity: sha512-zIHwmZPRshsCdpMDyVsqGmgyP0yT8GAgXUnkdAoJisxvf33k7yO6OuoKmcTGuXPWSsm8Oh88nZicRLA9Y0rUeA==}
-    engines: {node: '>=12'}
-
-  dotenv-expand@8.0.3:
-    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
     engines: {node: '>=12'}
 
   dotenv@16.6.1:
@@ -9554,7 +9564,7 @@ packages:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
   gradient-avatar@https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045:
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
+    resolution: {gitHosted: true, integrity: sha512-0O9zIUvqAKbiefYuC8lgxRIsCzSD07ectXRligCwEHxLEIP7WKfvDJiyLnXAudI4LGn6MNAkl1BC9/sTGtTTDg==, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
     version: 1.0.3
     engines: {node: '>=8'}
 
@@ -17040,10 +17050,6 @@ snapshots:
   '@img/sharp-win32-x64@0.34.5':
     optional: true
 
-  '@internationalized/date@3.12.1':
-    dependencies:
-      '@swc/helpers': 0.5.23
-
   '@internationalized/date@3.12.2':
     dependencies:
       '@swc/helpers': 0.5.23
@@ -17127,7 +17133,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       '@types/yargs': 17.0.35
       chalk: 4.1.2
 
@@ -22792,7 +22798,7 @@ snapshots:
       debug: 4.4.3
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.8.1
+      semver: 7.8.4
       tsutils: 3.21.0(@typescript/typescript6@6.0.2)
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -22806,7 +22812,7 @@ snapshots:
       debug: 4.4.3
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.8.1
+      semver: 7.8.4
       tsutils: 3.21.0(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
@@ -22821,7 +22827,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.9
-      semver: 7.8.1
+      semver: 7.8.4
       ts-api-utils: 1.4.3(@typescript/typescript6@6.0.2)
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -22851,7 +22857,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.60.0
       debug: 4.4.3
       minimatch: 10.2.5
-      semver: 7.8.1
+      semver: 7.8.4
       tinyglobby: 0.2.16
       ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
       typescript: '@typescript/typescript6@6.0.2'
@@ -25760,7 +25766,7 @@ snapshots:
 
   chrome-launcher@0.15.2:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -25771,7 +25777,7 @@ snapshots:
 
   chromium-edge-launcher@0.3.0:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -26625,13 +26631,6 @@ snapshots:
       dotenv-expand: 11.0.7
       minimist: 1.2.8
 
-  dotenv-cli@6.0.0:
-    dependencies:
-      cross-spawn: 7.0.6
-      dotenv: 16.6.1
-      dotenv-expand: 8.0.3
-      minimist: 1.2.8
-
   dotenv-cli@7.4.4:
     dependencies:
       cross-spawn: 7.0.6
@@ -26644,8 +26643,6 @@ snapshots:
   dotenv-expand@11.0.7:
     dependencies:
       dotenv: 16.6.1
-
-  dotenv-expand@8.0.3: {}
 
   dotenv@16.6.1: {}
 
@@ -28671,7 +28668,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -28688,13 +28685,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 20.16.7
+      '@types/node': 22.12.0
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -30363,7 +30360,7 @@ snapshots:
 
   react-aria@3.48.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)
@@ -30605,7 +30602,7 @@ snapshots:
 
   react-stately@3.46.0(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)
@@ -31100,7 +31097,7 @@ snapshots:
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
-      semver: 7.8.1
+      semver: 7.8.4
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.5
       '@img/sharp-darwin-x64': 0.34.5
