@@ -184,7 +184,10 @@ sub-spec.
 
 **Under `--auto`**, when the `Outcome` is `clear` and the leaf is **not** tagged `[verify]`: commit the leaf
 on the task branch — one commit with the review fixes folded in, a plain descriptive subject, and the repo's
-`Co-Authored-By` trailer — then return to **Step 3** for the next leaf.
+`Co-Authored-By` trailer — then return to **Step 3** for the next leaf. Keep the issue out of the commit: no
+`#<issue>` or issue URL in the subject or body. GitHub adds a timeline reference to the issue on every push
+that names it, so a per-leaf chain spams it; the PR's `Resolves #N` already carries the link and closes the
+issue on merge.
 
 Stop the chain, pushing nothing, on any of:
 
