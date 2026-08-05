@@ -71,3 +71,10 @@ implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent
 
 Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
 rules contract, the per-file symlink Cursor needs, and how references here are checked.
+
+## Reaching people & channels on Slack
+
+`./TEAM.md` is the directory for everyone and every channel the team reaches on Slack. Refer to people,
+teams, and channels **by name** in specs, skills, and requests; whenever you actually need to send a message
+or build a mention or permalink, resolve the Slack IDs from that file. Draft and get approval
+before sending anything.

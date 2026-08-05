@@ -3,9 +3,14 @@
 Used in the final step of the `prepare-release` skill to ask the DevOps team to roll up
 a freshly published **frontend** pre-release on the staging instances.
 
-- **Channel:** `#blockscout-devops-requests` (ID `C050U1F2E9M`)
-- **QA cc:** the QA team user group, mention token `<!subteam^S06015J7WVD>`
+- **Channel:** the DevOps *requests* channel — resolve its ID from `.agents/TEAM.md` (DevOps → Channels,
+  `blockscout-devops-requests`).
+- **QA cc:** the QA team user group — resolve its group ID from `.agents/TEAM.md` (QA → Groups) and build the
+  mention token `<!subteam^<group-id>>`.
 - **Always draft first** and get the user's approval before sending.
+
+Slack IDs are **not** duplicated here on purpose — `.agents/TEAM.md` is the single source of truth for every
+channel and group ID, so a moved channel or renamed group is fixed in one place.
 
 ## Placeholders
 
@@ -14,6 +19,7 @@ a freshly published **frontend** pre-release on the staging instances.
 | `<alpha-tag>`            | The pre-release tag, e.g. `v1.3.0-alpha`.                               |
 | `<breaking-env-changes>` | Bulleted list of breaking ENV changes, or the single line `None.`       |
 | `<release-url>`          | Link to the published GitHub pre-release.                              |
+| `<qa-group-mention>`     | QA team group mention token `<!subteam^<group-id>>`, built from `.agents/TEAM.md`. |
 
 A change is **breaking** if a deployment must change its config to keep working: a
 **removed** variable, a **renamed** variable, or a change to a **required**/default value
@@ -32,7 +38,7 @@ Could you please roll up this pre-release tag on the staging instances?
 
 Release notes: <release-url>
 
-cc <!subteam^S06015J7WVD>
+cc <qa-group-mention>
 ```
 
 ### Example — with breaking changes
@@ -49,7 +55,7 @@ Could you please roll up this pre-release tag on the staging instances?
 
 Release notes: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
 
-cc <!subteam^S06015J7WVD>
+cc <qa-group-mention>
 ```
 
 ### Example — no breaking changes
@@ -63,5 +69,5 @@ Could you please roll up this pre-release tag on the staging instances?
 
 Release notes: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
 
-cc <!subteam^S06015J7WVD>
+cc <qa-group-mention>
 ```
