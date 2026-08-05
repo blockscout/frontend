@@ -24,6 +24,7 @@ import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import getConfirmationDuration from 'src/slices/tx/utils/get-confirmation-duration';
 
+import TxDetailsEden from 'src/features/chain-variants/eden/pages/tx/TxDetailsEden';
 import TxAllowedPeekers from 'src/features/chain-variants/suave/pages/tx/TxAllowedPeekers';
 import TxDetailsTacOperation from 'src/features/chain-variants/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsCrossChainMessages from 'src/features/cross-chain-txs/pages/tx/TxDetailsCrossChainMessages';
@@ -806,6 +807,8 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         ) }
 
         <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position } queueIndex={ data.scroll?.queue_index }/>
+
+        <TxDetailsEden data={ data } isLoading={ isLoading }/>
 
         <DetailedInfo.ItemLabel
           hint="Binary data included with the transaction. See logs tab for additional info"

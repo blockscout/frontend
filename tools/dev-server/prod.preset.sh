@@ -5,6 +5,10 @@
 # on-demand compile, StrictMode double-fetch) would skew the numbers.
 # The shared steps live in run_steps.sh.
 #
+# Builds with `--webpack`, like the shipped image does — see
+# .agents/adr/0001-webpack-for-production-builds.md. Measuring a Turbopack build here would not
+# represent what users get (and on some module graphs it miscompiles).
+#
 # Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build] [--profile]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
@@ -52,7 +56,7 @@ preset_name="${positional[0]}"
 
 # the command the user actually typed, for error hints
 cmd="pnpm prod:preset $preset_name"
-build_flags=""
+build_flags=" --webpack"
 if [ "$profile" = true ]; then
   cmd="$cmd --profile"
   build_flags=" --webpack --profile"

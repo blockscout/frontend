@@ -30,6 +30,7 @@ on:
             - blackfort_testnet
             - celo
             - celo_sepolia
+            - eden_testnet
             - eth
             - eth_sepolia
             - filecoin
