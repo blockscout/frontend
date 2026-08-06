@@ -162,7 +162,6 @@
 	| "revoke"
 	| "rocket_xl"
 	| "rocket"
-	| "RPC"
 	| "scam"
 	| "scope"
 	| "score/score-not-ok"

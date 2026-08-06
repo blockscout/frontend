@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { BoxProps } from '@chakra-ui/react';
 import { Box, Flex, Text, chakra } from '@chakra-ui/react';
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -13,8 +14,25 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
 import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
 
-export type Props = {
-  className?: string;
+interface ContainerProps extends BoxProps {
+  href?: Route;
+}
+
+const Container = React.forwardRef<HTMLDivElement, ContainerProps>(({ href, children, ...props }, ref) => {
+  const content = href ? (
+    <Link href={ route(href) } variant="plain" w="full" h="full" display="flex">
+      { children }
+    </Link>
+  ) : children;
+
+  return (
+    <Box ref={ ref } display="flex" h="100%" { ...props }>
+      { content }
+    </Box>
+  );
+});
+
+export interface Props extends BoxProps {
   label: string;
   value: string | React.ReactNode;
   valuePrefix?: string;
@@ -30,22 +48,7 @@ export type Props = {
   isFallback?: boolean;
 };
 
-const Container = ({ href, children, className }: { href?: Route; children: React.JSX.Element; className?: string }) => {
-  const content = href ? (
-    <Link href={ route(href) } variant="plain" w="full" h="full" display="flex">
-      { children }
-    </Link>
-  ) : children;
-
-  return (
-    <Box className={ className } display="flex" h="100%">
-      { content }
-    </Box>
-  );
-};
-
-const StatsWidget = ({
-  className,
+const StatsWidget = React.forwardRef<HTMLDivElement, Props>(({
   icon,
   label,
   value,
@@ -59,9 +62,10 @@ const StatsWidget = ({
   period,
   href,
   isFallback,
-}: Props) => {
+  ...containerProps
+}, ref) => {
   return (
-    <Container href={ !isLoading ? href : undefined } className={ className }>
+    <Container ref={ ref } href={ !isLoading ? href : undefined } { ...containerProps }>
       <Flex
         alignItems="center"
         bgColor={ isLoading ? { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' } : { _light: 'theme.stats.bg._light', _dark: 'theme.stats.bg._dark' } }
@@ -132,6 +136,6 @@ const StatsWidget = ({
       </Flex>
     </Container>
   );
-};
+});
 
 export default chakra(StatsWidget);
