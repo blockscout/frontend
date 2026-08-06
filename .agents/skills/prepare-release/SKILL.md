@@ -68,10 +68,19 @@ If a PR has no matching labels, try to categorize it based on its description (t
     - #2968
       - Added `NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS` to display information on the uptime dashboard page.
 
+- **"Compatibility" section:**
+  - List only the API versions this release *raises* — the diff, not the full set of services the app needs.
+    A service whose required version is unchanged from before is not mentioned.
+  - From `release-prs-data.json`, read each PR body's **Minimum API version** section. For every service a PR
+    names, add a row at the **highest** version among all PRs that name it. Ignore PRs whose section says
+    "None" or that have no such section (PRs opened before it existed).
+  - Map the PR's service to a row: "Core API" → the **Blockscout API** row; a microservice → its
+    **`<name>` microservice API** row.
+  - If no PR names an API version, the section lists no services — leave the table empty.
+
 - **Final edits in the release notes file:**
   - Update "Full list of the ENV variables" and "Full Changelog" with the correct version tags/links.
   - Update the "New Contributors" section if the "Get release notes draft" response included new contributors.
-  - Leave the "Compatibility" section content unchanged.
 
 ### 4. Verify with the user (stop and wait)
 

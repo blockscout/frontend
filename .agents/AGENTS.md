@@ -84,3 +84,8 @@ implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent
 
 Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
 rules contract, the per-file symlink Cursor needs, and how references here are checked.
+
+## Reaching people & channels on Slack
+
+To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
+before sending anything.

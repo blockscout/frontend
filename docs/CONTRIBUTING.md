@@ -183,6 +183,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 *Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
 
+*Note*, if your Pull Request adds a feature that is not privacy-compliant (e.g. tracking, analytics, or a third-party service), make sure it is disabled in private mode, so a privacy-focused deployment can turn it off.
+
 &nbsp;
 
 ## Commands list

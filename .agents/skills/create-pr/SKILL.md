@@ -96,18 +96,18 @@ description is a placeholder pointing at the plan:
 
 - Use the template from `./docs/PULL_REQUEST_TEMPLATE.md` as the base. Read it and fill in each section.
 - **Issue number from branch name:** If the branch name matches `issue-\d+`, extract the number, fetch the
-  issue (`gh issue view <N>`), and start the **"Description and Related Issue(s)"** section with
-  `Resolves #<ISSUE_NUMBER>`.
+  issue (`gh issue view <N>`), and start the **Description** section with `Resolves #<ISSUE_NUMBER>`.
 - **Summary of changes:** clear and concise, at most two paragraphs; bullet points if needed. Be precise;
-  keep it short.
-- **Environment variable changes:** if any env vars were added, changed, or documented, compare or read
-  `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and add a separate section listing each
-  variable change and its **purpose**:
+  keep it short. This is the **Description** section.
+- **Environment variables:** if any env vars were added, changed, or removed, compare or read
+  `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and fill the **Environment variables** section
+  with each variable change and its **purpose** (write "None" if there are none):
   - **Bad:** "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` environment variable to the documentation."
   - **Good:** "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` to group transaction fees into one section on the transaction page."
   - **Good:** "Extended possible values for `NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS` with set_max_gas_limit to display the maximum gas price set by the transaction sender."
   - **Good:** "Introduced a new option, `"fee reception"`, for the `NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE` variable."
-- **Checklist:** keep the "Checklist for PR Author" section from the template and check the items that
-  apply (e.g. tested locally, tests added, ENVS/docs/validator updated if env vars changed).
+- **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
+  version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
+  microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
 - Always **ask the user for confirmation or changes** before creating/updating the PR — the one exception
   being the unattended Mode B finalize described under "Pick the mode".

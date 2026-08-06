@@ -12,6 +12,30 @@ that a developer fills the gaps with guesswork. The spec workflow fixes the inpu
 gaps, unanswerable questions get routed to the people who own the answers, and the resulting spec explicitly
 says which steps an agent does and which a developer does by hand.
 
+## What a spec holds
+
+A spec is an **index of decisions**, not a worklog: *what* to build and *why*, pointing at detail instead of
+copying it — so it stays legible and never drifts out of sync with its sources.
+
+- **Rationale lives in its Slack thread.** A resolved question records the **decision, not the
+  deliberation** — the outcome as a phrase, never who proposed what or the iterations that reached it; the
+  recorded permalink holds all of that. And the repo is **public**: client specifics, roadmap, and dates
+  stay in the thread too. Keep only what executing the task needs — a shipped backend version for the
+  release notes, yes; the date it's planned to ship, no.
+- **Values live in the code.** Reference existing code by pointer ("match `LogDecodedInputDataTable`"), not
+  by copying its values, class names, or line numbers — those rot, and the code already owns them. Capture
+  only a deliberate deviation and its reason.
+- **What-was-done lives in the PR.** Completion is the checked box plus a one-line note; the diff is the
+  record. A finding worth keeping goes to the task or subtask folder's `notes.md` (task-scoped evidence the
+  PR can quote), or graduates to a `CONTEXT.md`, a rule, or the glossary if it's durable repo knowledge —
+  never into the spec as a report.
+
+The one thing that flows *back into* a spec is a **durable decision** taken mid-task (a new dependency, an
+architectural choice): fold it into the section it changes, as revised intent.
+
+Once its task is **done**, a spec is frozen — a record of what was decided then. A later task that finds a
+bug from an earlier one fixes it in its *own* spec and PR; it never rewrites the finished spec.
+
 ## Lifecycle
 
 1. **Grill** — run the `grill-the-task` skill with the issue URL. It researches first (issue, codebase, live
@@ -109,6 +133,7 @@ one lets `--auto` commit something nobody looked at.
   record format (`review-template.md`), and the `gh` surface both review skills share (`gh-commands.md`).
 - `.agents/skills/resolve-review/SKILL.md` — adjudicating findings and closing them out.
 - Each `subtasks/NN-<slug>/` folder holds the subtask's `spec.md` (once scoped) or a `brief.md` (the
-  handoff for a not-yet-scoped subtask), plus optional `research.md` (real research / prototype notes) and
+  handoff for a not-yet-scoped subtask), plus optional `research.md` (real research / prototype notes),
+  `notes.md` (implementation findings kept as evidence for the PR — an appendix, never a second spec), and
   `review.md` (the review findings for that subtask, with each one's verdict and the exchange behind it —
   written by `review-changes`, maintained by `resolve-review`).

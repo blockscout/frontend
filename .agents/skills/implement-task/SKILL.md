@@ -160,7 +160,11 @@ Nits never gate: `deferred` findings leave the `Outcome` `clear`.
 
 Check the box for what you did, with a **one-line** note (files/skills involved) — never a multi-line
 changelog; git and the PR carry the detail, and any durable decision (a new dependency, an architectural
-choice) is folded into the relevant spec section instead.
+choice) is folded into the relevant spec section instead. A finding worth keeping — a gotcha, a bug you hit
+— goes to the task folder's `notes.md` as evidence the PR can quote, or graduates to a `CONTEXT.md`, a rule,
+or the glossary if it's durable repo knowledge; it never lands in the spec as a report. If the work uncovers
+a bug from an **earlier, finished** task, fix it here and note it in *this* task's PR — never reopen or edit
+that task's frozen spec. See "What a spec holds" in `.agents/tasks/README.md`.
 
 Keep both checklist levels in sync when the subtask has its own sub-spec:
 
@@ -180,7 +184,10 @@ sub-spec.
 
 **Under `--auto`**, when the `Outcome` is `clear` and the leaf is **not** tagged `[verify]`: commit the leaf
 on the task branch — one commit with the review fixes folded in, a plain descriptive subject, and the repo's
-`Co-Authored-By` trailer — then return to **Step 3** for the next leaf.
+`Co-Authored-By` trailer — then return to **Step 3** for the next leaf. Keep the issue out of the commit: no
+`#<issue>` or issue URL in the subject or body. GitHub adds a timeline reference to the issue on every push
+that names it, so a per-leaf chain spams it; the PR's `Resolves #N` already carries the link and closes the
+issue on merge.
 
 Stop the chain, pushing nothing, on any of:
 
