@@ -200,14 +200,14 @@ const Stats = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item) => {
+      { items.map(({ id, ...item }) => {
         if ('component' in item) {
-          return <React.Fragment key={ item.id }>{ item.component }</React.Fragment>;
+          return <React.Fragment key={ id }>{ item.component }</React.Fragment>;
         }
 
         return (
           <StatsWidget
-            key={ item.id }
+            key={ id }
             { ...item }
             { ...homeStatsWidgetCommonStyles }
             isLoading={ isLoading }

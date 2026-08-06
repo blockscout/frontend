@@ -172,16 +172,22 @@ const StatsDegraded = () => {
       flexBasis="50%"
       flexGrow={ 1 }
     >
-      { items.map((item) => (
-        <Tooltip key={ item.id } content={ item.value !== mdash ? TOOLTIP_CONTENT_VALUE : TOOLTIP_CONTENT_NO_VALUE }>
-          <StatsWidget
-            { ...item }
-            isLoading={ isLoading || item.isLoading }
-            { ...homeStatsWidgetCommonStyles }
-          />
-        </Tooltip>
-      ),
-      ) }
+      { items.map(({ id, ...item }) => {
+        const isLoadingState = item.isLoading || isLoading;
+        return (
+          <Tooltip
+            key={ id }
+            content={ item.value !== mdash ? TOOLTIP_CONTENT_VALUE : TOOLTIP_CONTENT_NO_VALUE }
+            disabled={ isLoadingState }
+          >
+            <StatsWidget
+              { ...item }
+              isLoading={ isLoadingState }
+              { ...homeStatsWidgetCommonStyles }
+            />
+          </Tooltip>
+        );
+      }) }
     </Grid>
 
   );
