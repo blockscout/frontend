@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { SocketProvider } from 'src/api/socket/context';
-
-import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
 
 import useAuth from 'src/features/account/hooks/useIsAuth';
 import LatestWatchlistTxs from 'src/features/account/pages/home/LatestWatchlistTxs';
@@ -16,7 +13,6 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 import LatestOptimisticDeposits from 'src/features/rollup/optimism/pages/home/LatestOptimisticDeposits';
 
 import config from 'src/config';
-import ApiDegradationRpcIcon from 'src/shared/api-degradation/ApiDegradationRpcIcon';
 
 import { Heading } from 'src/toolkit/chakra/heading';
 import AdaptiveTabs from 'src/toolkit/components/AdaptiveTabs/AdaptiveTabs';
@@ -30,8 +26,6 @@ const crossChainTxsFeature = config.features.crossChainTxs;
 const Transactions = () => {
 
   const isAuth = useAuth();
-  const rpcDataContext = useHomeRpcDataContext();
-  const isRpcData = rpcDataContext.isEnabled && !rpcDataContext.isLoading && !rpcDataContext.isError && rpcDataContext.subscriptions.includes('latest-txs');
 
   const tabs = [
     zetachainFeature.isEnabled && {
@@ -80,10 +74,7 @@ const Transactions = () => {
 
   return (
     <>
-      <HStack mb={ 3 }>
-        <Heading level="3" >Latest transactions</Heading>
-        { isRpcData && <ApiDegradationRpcIcon/> }
-      </HStack>
+      <Heading level="3" mb={ 3 }>Latest transactions</Heading>
       <AdaptiveTabs tabs={ tabs } unmountOnExit={ false } listProps={{ mb: 3 }}/>
     </>
   );
