@@ -76,6 +76,11 @@ export function buildClientConfig(accessToken: string): Configuration {
 
       // Filter out client-side navigation cancellations
       'cancelled navigation',
+
+      // Opaque cross-origin script errors: the browser masks the details of an uncaught error
+      // thrown by a different-origin script (CORS), leaving only this string with no stack or
+      // payload. Unactionable, and sourced from third-party scripts we don't control.
+      'Script error',
     ],
     maxItems: 10, // Max items per page load
     // uncaught / unhandledrejection coverage is owned by the early window listeners in queue.ts —
