@@ -1,15 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import { MultisenderWidget } from '@multisender.app/multisender-react-widget';
 import React from 'react';
 
 import AdBanner from 'src/features/ads/banner/components/AdBanner';
+import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+
+import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 
 const feature = getFeaturePayload(config.features.marketplace);
 const dappConfig = feature?.essentialDapps?.multisend;
@@ -522,16 +525,18 @@ const Multisend = () => {
   return (
     <>
       <Container>
-        <MultisenderWidget
-          config={ widgetConfig }
-          logoType="minified"
-          posthogKey={ dappConfig?.posthogKey }
-          posthogHost={ dappConfig?.posthogHost }
-          classNames={{
-            theme: 'multisenderTheme',
-            mantineProvider: 'multisenderMantineProvider',
-          }}
-        />
+        <Web3Boundary fallback={ <Center h="500px"><ContentLoader/></Center> }>
+          <MultisenderWidget
+            config={ widgetConfig }
+            logoType="minified"
+            posthogKey={ dappConfig?.posthogKey }
+            posthogHost={ dappConfig?.posthogHost }
+            classNames={{
+              theme: 'multisenderTheme',
+              mantineProvider: 'multisenderMantineProvider',
+            }}
+          />
+        </Web3Boundary>
       </Container>
       { (feature?.essentialDappsAdEnabled && !isMobile) && (
         <AdBanner
