@@ -133,10 +133,32 @@ function withClientTimestamp(args: Array<Rollbar.LogArgument>, timestamp: number
   return next;
 }
 
+const UNCAUGHT_ERROR_FALLBACK_MESSAGE = 'Uncaught error';
+
 /**
- * Captures uncaught errors / unhandled rejections during (and after) the SDK deferral window.
- * Kept for the page lifetime on success — removed if init fails. Rollbar's own capture flags stay
- * off to avoid double-reporting.
+ * Coerces a thrown value into arguments Rollbar can build an occurrence from. Passed a bare
+ * non-Error object (or `null`) as its sole argument, Rollbar discards the payload and files a
+ * generic "Item sent with null or missing arguments." occurrence — so anything that is not an
+ * `Error` or `string` is reported under {@link UNCAUGHT_ERROR_FALLBACK_MESSAGE} with the raw value
+ * preserved as custom data.
+ */
+function toReport(value: unknown, message: string): Array<Rollbar.LogArgument> {
+  if (value instanceof Error || typeof value === 'string') {
+    return [ value ];
+  }
+  if (value === null || value === undefined) {
+    return [ message || UNCAUGHT_ERROR_FALLBACK_MESSAGE ];
+  }
+  return [ message || UNCAUGHT_ERROR_FALLBACK_MESSAGE, { error: value } ];
+}
+
+/**
+ * Captures uncaught errors during (and after) the SDK deferral window. Kept for the page lifetime
+ * on success — removed if init fails. Rollbar's own `captureUncaught` stays off to avoid
+ * double-reporting; `captureUnhandledRejections` is left off deliberately — on public instances
+ * unhandled rejections are dominated by wallet-extension / third-party noise with no usable
+ * payload (they file empty "null or missing arguments" items), and genuine page crashes surface as
+ * `critical` through the React error boundary, not here.
  */
 export function installEarlyListeners(): () => void {
   if (!isEnabled() || earlyListenersInstalled || typeof window === 'undefined') {
@@ -152,19 +174,13 @@ export function installEarlyListeners(): () => void {
     if (event.target instanceof Element) {
       return;
     }
-    log('error', [ event.error ?? event.message ]);
-  };
-
-  const handleRejection = (event: PromiseRejectionEvent) => {
-    log('error', [ event.reason ]);
+    log('error', toReport(event.error, event.message));
   };
 
   window.addEventListener('error', handleError, true);
-  window.addEventListener('unhandledrejection', handleRejection);
 
   const uninstall = () => {
     window.removeEventListener('error', handleError, true);
-    window.removeEventListener('unhandledrejection', handleRejection);
     earlyListenersInstalled = false;
     if (uninstallEarlyListeners === uninstall) {
       uninstallEarlyListeners = undefined;
