@@ -152,7 +152,6 @@ describe('rollbar queue', () => {
       expect(rollbarInstance.warn).not.toHaveBeenCalled();
       expect(errorHandler).toBeTypeOf('function');
       expect(removeEventListenerSpy).toHaveBeenCalledWith('error', errorHandler, true);
-      expect(removeEventListenerSpy).toHaveBeenCalledWith('unhandledrejection', expect.any(Function));
     });
   });
 
@@ -175,21 +174,33 @@ describe('rollbar queue', () => {
       remove();
     });
 
-    it('should buffer unhandledrejection events until init', async() => {
+    it('should report a non-Error thrown value under a fallback message with the value as custom data', async() => {
       const queue = await importQueue();
       const remove = queue.installEarlyListeners();
-      const reason = new Error('rejected promise');
+      // A synchronous `throw` of a non-Error value would otherwise reach Rollbar as a bare object
+      // and be filed as a generic "null or missing arguments." item (issue #3566, subtask 3).
+      const thrown = { code: 'BOOM' };
 
-      window.dispatchEvent(new PromiseRejectionEvent('unhandledrejection', {
-        promise: Promise.resolve(),
-        reason,
-      }));
-      expect(rollbarInstance.error).not.toHaveBeenCalled();
-
+      window.dispatchEvent(new ErrorEvent('error', { message: 'Uncaught object', error: thrown }));
       await queue.init();
 
       expect(rollbarInstance.error).toHaveBeenCalledWith(
-        reason,
+        'Uncaught object',
+        { client_timestamp: CALL_TIME_S, error: thrown },
+      );
+
+      remove();
+    });
+
+    it('should fall back to the event message when there is no error object', async() => {
+      const queue = await importQueue();
+      const remove = queue.installEarlyListeners();
+
+      window.dispatchEvent(new ErrorEvent('error', { message: 'Script error.', error: null }));
+      await queue.init();
+
+      expect(rollbarInstance.error).toHaveBeenCalledWith(
+        'Script error.',
         { client_timestamp: CALL_TIME_S },
       );
 
