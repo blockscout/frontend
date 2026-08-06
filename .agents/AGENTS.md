@@ -87,7 +87,5 @@ rules contract, the per-file symlink Cursor needs, and how references here are c
 
 ## Reaching people & channels on Slack
 
-`./TEAM.md` is the directory for everyone and every channel the team reaches on Slack. Refer to people,
-teams, and channels **by name** in specs, skills, and requests; whenever you actually need to send a message
-or build a mention or permalink, resolve the Slack IDs from that file. Draft and get approval
+To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
 before sending anything.

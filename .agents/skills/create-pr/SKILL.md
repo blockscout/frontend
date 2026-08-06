@@ -106,8 +106,8 @@ description is a placeholder pointing at the plan:
   - **Good:** "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` to group transaction fees into one section on the transaction page."
   - **Good:** "Extended possible values for `NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS` with set_max_gas_limit to display the maximum gas price set by the transaction sender."
   - **Good:** "Introduced a new option, `"fee reception"`, for the `NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE` variable."
-- **Minimum API version:** fill the **Minimum API version** section from the spec's `Backend` header row
-  and its Data & API readiness (e.g. "Core API v11.2.4+"), naming Core API or the microservice it depends
-  on. Write "None" when the change relies on no new backend fields or endpoints.
+- **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
+  version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
+  microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
 - Always **ask the user for confirmation or changes** before creating/updating the PR — the one exception
   being the unattended Mode B finalize described under "Pick the mode".

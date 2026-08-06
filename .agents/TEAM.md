@@ -61,12 +61,6 @@ Own: core API endpoints and response models, field propagation across services, 
 | --- | --- |
 | Core API | S064H6TD6MA |
 
-### Channels
-
-| Purpose | Channel | Channel ID |
-| --- | --- | --- |
-| Core API questions | none of its own — use the frontend channel and tag the group | — |
-
 ## Microservices API
 
 Own: microservice API endpoints and their response models (metadata, stats, admin, interchain, etc.).

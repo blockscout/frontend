@@ -5,10 +5,11 @@
 | Issue | <GitHub issue URL, or "—" for ad-hoc specs> |
 | Status | `draft` \| `ready` \| `in progress` \| `done` |
 | Size | `small` \| `medium` \| `large` |
-| Feature branch | `<branch name>` (set on first `implement-task` run) |
+| Feature branch | `<branch name>` |
 | PM | <name> |
 | Designer | <name> |
 | Backend | <name> |
+| Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise; "—" if none> |
 | Slack channel | <#feature-channel if the task has one; otherwise "—" (default routing per `to-spec`)> |
 
 <!-- People default from `.agents/TEAM.md`; override here per task. -->
