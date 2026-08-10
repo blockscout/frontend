@@ -160,6 +160,12 @@ function toReport(value: unknown, message: string): Array<Rollbar.LogArgument> {
  * payload (they file empty "null or missing arguments" items), and genuine page crashes surface as
  * `critical` through the React error boundary, not here.
  */
+const APP_BUNDLE_PATH = '/_next/';
+
+function isOwnBundleError(event: ErrorEvent): boolean {
+  return typeof event.filename === 'string' && event.filename.includes(APP_BUNDLE_PATH);
+}
+
 export function installEarlyListeners(): () => void {
   if (!isEnabled() || earlyListenersInstalled || typeof window === 'undefined') {
     return () => {};
@@ -172,6 +178,11 @@ export function installEarlyListeners(): () => void {
     // to Rollbar's `window.onerror` capture — skip them so we don't burn `maxItems` on noise.
     // Listener is capture-phase so those events are observable here at all (they do not bubble).
     if (event.target instanceof Element) {
+      return;
+    }
+    // Only report uncaught errors from our own bundle. Everything else on a public page is
+    // unactionable third-party noise, and Rollbar offers no positive allowlist to express this.
+    if (!isOwnBundleError(event)) {
       return;
     }
     log('error', toReport(event.error, event.message));
