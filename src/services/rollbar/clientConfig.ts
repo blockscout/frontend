@@ -11,10 +11,8 @@ import {
   isHeadlessBrowser,
   isNextJsChunkError,
   getRequestInfo,
-  getExceptionOriginFileName,
   isIgnoredExceptionClass,
   isMonacoCdnError,
-  isInjectedScriptError,
 } from './utils';
 
 /**
@@ -24,6 +22,10 @@ import {
  * This `checkIgnore` reads `window` (the bot / headless checks) and only ever runs in the browser.
  * The server-side error-page instance has its own config in `serverConfig.ts` and must not reuse
  * this predicate — see the note there.
+ *
+ * Uncaught errors are already filtered by origin in the queue's early listener (only our own
+ * `/_next/` bundle is forwarded), so the rules here handle what still gets through: explicit
+ * `rollbar` calls, and own-bundle traces that reach third-party code deeper in the stack.
  */
 export function buildClientConfig(accessToken: string): Configuration {
   return {
@@ -50,22 +52,7 @@ export function buildClientConfig(accessToken: string): Configuration {
         return true;
       }
 
-      const originFileName = getExceptionOriginFileName(item);
-      const IGNORED_ORIGIN_FILE_NAMES_CHUNKS = [
-        '/node_modules/@walletconnect',
-        '/node_modules/@reown',
-        'chrome-extension://',
-      ];
-
-      if (originFileName && IGNORED_ORIGIN_FILE_NAMES_CHUNKS.some((chunk) => originFileName.includes(chunk))) {
-        return true;
-      }
-
       if (isMonacoCdnError(item)) {
-        return true;
-      }
-
-      if (isInjectedScriptError(item)) {
         return true;
       }
 
@@ -95,18 +82,6 @@ export function buildClientConfig(accessToken: string): Configuration {
       // class check can't see — so match the shared DOM-exception tail here too. Covers all three
       // node ops (…removeChild/insertBefore/replaceChild… "is not a child of this node.").
       'is not a child of this node',
-
-      // Opaque cross-origin script errors: the browser masks the details of an uncaught error
-      // thrown by a different-origin script (CORS), leaving only this string with no stack or
-      // payload. Unactionable, and sourced from third-party scripts we don't control.
-      'Script error',
-
-      // Benign browser signal, not a fault: fired when a ResizeObserver callback mutates layout
-      // and the browser defers the remaining notifications to the next frame. The deferred
-      // notifications still arrive, so there is no user-visible impact and nothing to fix. Comes
-      // through as a message-only window error with no stack. Substring covers both spellings:
-      // "...loop completed with undelivered notifications." and "...loop limit exceeded".
-      'ResizeObserver loop',
 
       // WalletConnect/AppKit rejects a pending pairing when its TTL elapses before the user
       // completes the connect flow (opened the modal, walked away). Expected user behaviour, not a
