@@ -103,18 +103,31 @@ export function isMonacoCdnError(item: Dictionary) {
   return frames.some((frame) => castToString(get(frame, 'filename'))?.includes(MONACO_CDN_PATH));
 }
 
+// Failure modes injected scripts produce as noise: a ReferenceError for a global only defined in
+// their environment, or a RangeError (stack overflow) from a DOM walker recursing over a large page.
+const INJECTED_SCRIPT_ERROR_CLASSES = [ 'ReferenceError', 'RangeError' ];
+
+function haveSameOrigin(urlA: string, urlB: string): boolean {
+  try {
+    return new URL(urlA).origin === new URL(urlB).origin;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Errors thrown by scripts injected into the page by the visitor's environment rather than by us:
  * userscripts (Tampermonkey/Greasemonkey) and in-app browsers (messaging / social apps, …) that add
- * their own inline scripts referencing globals that only exist in that environment. Unactionable and
- * invisible to real users of the app.
+ * their own inline scripts to the document. Unactionable and invisible to real users of the app.
  *
- * Generalised so the specific missing global name and its wording
- * ("Can't find variable" vs "X is not defined") do not matter — we key on where the script lives:
+ * Generalised so neither the exact wording nor the specific offending symbol matters — we key on
+ * where the script lives:
  *   - a `user-script:*` origin is never ours, whatever it threw;
- *   - an inline script in the page document reports the document URL as its origin file, so a
- *     ReferenceError from there is an injected global reference. Our own code always lives under
- *     `/_next/`, and the ReferenceError gate keeps genuine errors from our inline bootstrap visible.
+ *   - an inline script in the page document is attributed to a document URL on our own origin (not a
+ *     `/_next/` bundle asset — that is where our real code lives). Matched only for {@link
+ *     INJECTED_SCRIPT_ERROR_CLASSES}, the classes such scripts throw as noise, so genuine app errors
+ *     still surface. Same-origin (rather than an exact URL match) because a client-side navigation
+ *     leaves the injected script attributed to the document it was parsed in, not the current route.
  */
 export function isInjectedScriptError(item: Dictionary) {
   const originFileName = getExceptionOriginFileName(item);
@@ -126,6 +139,13 @@ export function isInjectedScriptError(item: Dictionary) {
     return true;
   }
 
-  const documentUrl = getRequestInfo(item)?.url?.split('?')[0];
-  return getExceptionClass(item) === 'ReferenceError' && documentUrl === originFileName;
+  if (!INJECTED_SCRIPT_ERROR_CLASSES.includes(getExceptionClass(item) ?? '')) {
+    return false;
+  }
+
+  const requestUrl = getRequestInfo(item)?.url;
+  return Boolean(requestUrl) &&
+    haveSameOrigin(originFileName, requestUrl as string) &&
+    !originFileName.includes('/_next/') &&
+    !originFileName.endsWith('.js');
 }

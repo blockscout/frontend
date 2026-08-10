@@ -97,7 +97,7 @@ describe('isInjectedScriptError', () => {
     expect(isInjectedScriptError(item)).toBe(false);
   });
 
-  it('does not match a non-ReferenceError thrown by an inline document script', () => {
+  it('does not match a non-injected class (e.g. TypeError) thrown by an inline document script', () => {
     const documentUrl = 'https://host.blockscout.com/token/0xabc';
     const item = {
       request: { url: documentUrl },
@@ -105,6 +105,36 @@ describe('isInjectedScriptError', () => {
         trace: {
           exception: { 'class': 'TypeError', message: 'Cannot read properties of null' },
           frames: [ { filename: documentUrl, method: 'global code' } ],
+        },
+      },
+    } as unknown as Dictionary;
+
+    expect(isInjectedScriptError(item)).toBe(false);
+  });
+
+  it('matches a stack-overflow RangeError from an injected script, even after a client-side navigation', () => {
+    // The injected script was parsed in the /tx/… document; a client-side nav moved the current
+    // route to /token-transfers, so origin frame and request URL differ but share an origin.
+    const item = {
+      request: { url: 'https://host.blockscout.com/token-transfers' },
+      body: {
+        trace: {
+          exception: { 'class': 'RangeError', message: 'Maximum call stack size exceeded.' },
+          frames: [ { filename: 'https://host.blockscout.com/tx/0xabc', method: 'Hk' } ],
+        },
+      },
+    } as unknown as Dictionary;
+
+    expect(isInjectedScriptError(item)).toBe(true);
+  });
+
+  it('does not match a stack-overflow RangeError originating from our own app bundle', () => {
+    const item = {
+      request: { url: 'https://host.blockscout.com/token-transfers' },
+      body: {
+        trace: {
+          exception: { 'class': 'RangeError', message: 'Maximum call stack size exceeded.' },
+          frames: [ { filename: 'https://host.blockscout.com/_next/static/chunks/123.js', method: 't' } ],
         },
       },
     } as unknown as Dictionary;
