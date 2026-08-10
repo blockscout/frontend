@@ -74,6 +74,25 @@ export function getExceptionOriginFileName(item: Dictionary) {
   return castToString(originFileName);
 }
 
+const IGNORED_EXCEPTION_CLASSES = [
+  // React errors — "NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed
+  // is not a child of this node." — provoked by browser extensions mutating the DOM React owns.
+  // See https://github.com/facebook/react/issues/11538
+  'NotFoundError',
+
+  'AbortError',
+];
+
+/**
+ * Exception classes we drop wherever they surface. Window-free by design so both the browser instance
+ * and the server-side error-page instance can share it — the error-page `checkIgnore` reuses only this
+ * check, not the browser instance's bot / headless checks, which read `window` (absent on the server).
+ */
+export function isIgnoredExceptionClass(item: Dictionary): boolean {
+  const exceptionClass = getExceptionClass(item);
+  return exceptionClass !== undefined && IGNORED_EXCEPTION_CLASSES.includes(exceptionClass);
+}
+
 // Versionless so it keeps matching across Monaco version bumps; if Monaco is ever bundled locally
 // instead of loaded from the CDN, filenames become app-owned, this stops matching, and genuine
 // editor errors surface again — which is the behaviour we'd want then.

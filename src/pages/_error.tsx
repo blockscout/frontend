@@ -8,19 +8,12 @@ import Rollbar from 'rollbar';
 import type { Props as ServerSidePropsCommon } from 'src/server/getServerSideProps/handlers';
 
 import config from 'src/config';
+import { buildServerConfig } from 'src/services/rollbar/serverConfig';
 import * as cookies from 'src/shared/storage/cookies';
 
-const rollbar = config.services.rollbar.clientToken ? new Rollbar({
-  accessToken: config.services.rollbar.clientToken,
-  environment: config.services.rollbar.environment,
-  payload: {
-    code_version: config.services.rollbar.codeVersion,
-    app_instance: config.services.rollbar.instance,
-  },
-  maxItems: 10,
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-}) : undefined;
+const rollbar = config.services.rollbar.clientToken ?
+  new Rollbar(buildServerConfig(config.services.rollbar.clientToken)) :
+  undefined;
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;

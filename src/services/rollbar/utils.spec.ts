@@ -2,7 +2,39 @@ import type { Dictionary } from 'rollbar';
 
 import { describe, expect, it } from 'vitest';
 
-import { isMonacoCdnError, isInjectedScriptError } from './utils';
+import { isMonacoCdnError, isInjectedScriptError, isIgnoredExceptionClass } from './utils';
+
+describe('isIgnoredExceptionClass', () => {
+  it('matches an AbortError so both Rollbar instances drop it', () => {
+    const item = {
+      body: { trace: { exception: { 'class': 'AbortError', message: 'signal is aborted without reason' } } },
+    } as unknown as Dictionary;
+
+    expect(isIgnoredExceptionClass(item)).toBe(true);
+  });
+
+  it('matches a NotFoundError provoked by a DOM-mutating extension', () => {
+    const item = {
+      body: { trace: { exception: { 'class': 'NotFoundError', message: 'Failed to execute \'removeChild\' on \'Node\'' } } },
+    } as unknown as Dictionary;
+
+    expect(isIgnoredExceptionClass(item)).toBe(true);
+  });
+
+  it('does not match a genuine application error class', () => {
+    const item = {
+      body: { trace: { exception: { 'class': 'TypeError', message: 'Cannot read properties of undefined' } } },
+    } as unknown as Dictionary;
+
+    expect(isIgnoredExceptionClass(item)).toBe(false);
+  });
+
+  it('does not match a message-only item with no exception class', () => {
+    const item = { body: { message: { body: 'Something went wrong' } } } as unknown as Dictionary;
+
+    expect(isIgnoredExceptionClass(item)).toBe(false);
+  });
+});
 
 describe('isMonacoCdnError', () => {
   it('matches a worker importScripts failure reported as a message with no stack', () => {

@@ -11,8 +11,8 @@ import {
   isHeadlessBrowser,
   isNextJsChunkError,
   getRequestInfo,
-  getExceptionClass,
   getExceptionOriginFileName,
+  isIgnoredExceptionClass,
   isMonacoCdnError,
   isInjectedScriptError,
 } from './utils';
@@ -20,6 +20,10 @@ import {
 /**
  * Rollbar client options — imported only once the SDK chunk is loaded so the ignore helpers and
  * message constants stay out of the critical path until then (they ride along with `rollbar`).
+ *
+ * This `checkIgnore` reads `window` (the bot / headless checks) and only ever runs in the browser.
+ * The server-side error-page instance has its own config in `serverConfig.ts` and must not reuse
+ * this predicate — see the note there.
  */
 export function buildClientConfig(accessToken: string): Configuration {
   return {
@@ -42,18 +46,7 @@ export function buildClientConfig(accessToken: string): Configuration {
         return true;
       }
 
-      const exceptionClass = getExceptionClass(item);
-      const IGNORED_EXCEPTION_CLASSES = [
-        // these are React errors - "NotFoundError: Failed to execute 'removeChild' on 'Node': The node to be removed is not a child of this node."
-        // they could be caused by browser extensions
-        // one of the examples - https://github.com/facebook/react/issues/11538
-        // we can ignore them for now
-        'NotFoundError',
-
-        'AbortError',
-      ];
-
-      if (exceptionClass && IGNORED_EXCEPTION_CLASSES.includes(exceptionClass)) {
+      if (isIgnoredExceptionClass(item)) {
         return true;
       }
 
