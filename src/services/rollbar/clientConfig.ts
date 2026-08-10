@@ -6,7 +6,16 @@ import config from 'src/config';
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'src/shared/errors/throw-on-absent-param-error';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'src/shared/errors/throw-on-resource-load-error';
 
-import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName, isMonacoCdnError } from './utils';
+import {
+  isBot,
+  isHeadlessBrowser,
+  isNextJsChunkError,
+  getRequestInfo,
+  getExceptionClass,
+  getExceptionOriginFileName,
+  isMonacoCdnError,
+  isInjectedScriptError,
+} from './utils';
 
 /**
  * Rollbar client options — imported only once the SDK chunk is loaded so the ignore helpers and
@@ -63,6 +72,10 @@ export function buildClientConfig(accessToken: string): Configuration {
         return true;
       }
 
+      if (isInjectedScriptError(item)) {
+        return true;
+      }
+
       return false;
     },
     hostSafeList: [ config.app.host ].filter(Boolean),
@@ -92,6 +105,14 @@ export function buildClientConfig(accessToken: string): Configuration {
       // through as a message-only window error with no stack. Substring covers both spellings:
       // "...loop completed with undelivered notifications." and "...loop limit exceeded".
       'ResizeObserver loop',
+
+      // WalletConnect/AppKit rejects a pending pairing when its TTL elapses before the user
+      // completes the connect flow (opened the modal, walked away). Expected user behaviour, not a
+      // fault, surfaced from vendored SDK code. Covers the whole expiry family since the noun
+      // varies (proposal / pairing / session request) but "expired" is the shared, WC-specific tail.
+      'Proposal expired',
+      'Pairing expired',
+      'Session request expired',
     ],
     maxItems: 10, // Max items per page load
     // uncaught / unhandledrejection coverage is owned by the early window listeners in queue.ts —

@@ -102,3 +102,30 @@ export function isMonacoCdnError(item: Dictionary) {
 
   return frames.some((frame) => castToString(get(frame, 'filename'))?.includes(MONACO_CDN_PATH));
 }
+
+/**
+ * Errors thrown by scripts injected into the page by the visitor's environment rather than by us:
+ * userscripts (Tampermonkey/Greasemonkey) and in-app browsers (messaging / social apps, …) that add
+ * their own inline scripts referencing globals that only exist in that environment. Unactionable and
+ * invisible to real users of the app.
+ *
+ * Generalised so the specific missing global name and its wording
+ * ("Can't find variable" vs "X is not defined") do not matter — we key on where the script lives:
+ *   - a `user-script:*` origin is never ours, whatever it threw;
+ *   - an inline script in the page document reports the document URL as its origin file, so a
+ *     ReferenceError from there is an injected global reference. Our own code always lives under
+ *     `/_next/`, and the ReferenceError gate keeps genuine errors from our inline bootstrap visible.
+ */
+export function isInjectedScriptError(item: Dictionary) {
+  const originFileName = getExceptionOriginFileName(item);
+  if (!originFileName) {
+    return false;
+  }
+
+  if (originFileName.startsWith('user-script')) {
+    return true;
+  }
+
+  const documentUrl = getRequestInfo(item)?.url?.split('?')[0];
+  return getExceptionClass(item) === 'ReferenceError' && documentUrl === originFileName;
+}
