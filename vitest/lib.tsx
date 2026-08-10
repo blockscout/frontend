@@ -49,9 +49,14 @@ const wagmiConfig = createConfig({
   },
 });
 
-// The full app provider stack (mirrors playwright/TestApp.tsx; socket and wallet client stay
-// inert) — heavy enough to mount whole page slices in jsdom.
-const TestApp = ({ children }: { children: React.ReactNode }) => {
+interface TestAppProps {
+  children: React.ReactNode;
+  socketUrl?: string;
+}
+
+// The full app provider stack (mirrors playwright/TestApp.tsx; the wallet client stays inert, and
+// so does the socket unless `socketUrl` is given) — heavy enough to mount whole page slices in jsdom.
+const TestApp = ({ children, socketUrl }: TestAppProps) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -64,7 +69,7 @@ const TestApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <ChakraProvider>
       <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ undefined }>
+        <SocketProvider url={ socketUrl }>
           <AppContextProvider pageProps={ PAGE_PROPS }>
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <SettingsContextProvider>
