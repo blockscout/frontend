@@ -87,6 +87,15 @@ export function buildClientConfig(accessToken: string): Configuration {
       // Filter out client-side navigation cancellations
       'cancelled navigation',
 
+      // Browser auto-translate (Google Translate et al.) and DOM-mutating extensions move nodes
+      // React owns, so React's commit-phase removeChild / insertBefore / replaceChild then fails
+      // with a NotFoundError. Environmental and unactionable — React owns that DOM, the only way a
+      // node "is not a child" is an outside mutation. The NotFoundError class is already dropped via
+      // checkIgnore, but our error boundary re-reports it as a message (no body.trace), which the
+      // class check can't see — so match the shared DOM-exception tail here too. Covers all three
+      // node ops (…removeChild/insertBefore/replaceChild… "is not a child of this node.").
+      'is not a child of this node',
+
       // Opaque cross-origin script errors: the browser masks the details of an uncaught error
       // thrown by a different-origin script (CORS), leaving only this string with no stack or
       // payload. Unactionable, and sourced from third-party scripts we don't control.
