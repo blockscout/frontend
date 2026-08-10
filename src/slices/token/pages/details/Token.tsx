@@ -127,7 +127,7 @@ const TokenPageContent = () => {
 
   throwOnResourceLoadError(tokenQuery);
 
-  const isMainDataLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
+  const isMainDataLoading = tokenQuery.isPlaceholderData;
   const isFullDataLoading = isMainDataLoading || (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
 
   const transfersCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.transfers_count ?
@@ -154,18 +154,15 @@ const TokenPageContent = () => {
     addressQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
-        if (addressQuery.data?.is_verified) {
-          return (
-            <>
-              <span>Contract</span>
-              <SpriteIcon name="status/success" boxSize="14px" color="green.500"/>
-            </>
-          );
-        }
-
-        return 'Contract';
+        return (
+          <>
+            <span>Contract</span>
+            { addressQuery.data?.is_verified &&
+              <SpriteIcon name="status/success" boxSize="14px" color="green.500" isLoading={ addressQuery.isPlaceholderData }/> }
+          </>
+        );
       },
-      component: <Contract addressData={ addressQuery.data } isLoading={ isMainDataLoading }/>,
+      component: <Contract addressData={ addressQuery.data } isLoading={ isMainDataLoading || addressQuery.isPlaceholderData }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
     hasInventoryTab ? {

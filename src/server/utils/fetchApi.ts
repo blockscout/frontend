@@ -36,6 +36,7 @@ export default async function fetchApi<R extends ResourceName = never, S = Resou
       httpLogger.logger.info({ message: 'API fetch', url, code: response.status, duration });
     } else {
       httpLogger.logger.error({ message: 'API fetch', url, code: response.status, duration });
+      return;
     }
 
     return await response.json() as Promise<S>;
