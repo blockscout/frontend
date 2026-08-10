@@ -158,7 +158,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth, log
       proceedToAuth(web3Wallet.address);
     } else {
       isConnectingWalletRef.current = true;
-      web3Wallet.openModal();
+      web3Wallet.connect();
     }
   }, [ proceedToAuth, web3Wallet ]);
 

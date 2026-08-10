@@ -50,20 +50,23 @@ export function useWalletReown({ source, onConnect }: Params): Result {
     modalUnsubRef.current = runtime.subscribeModalState(setIsModalOpen);
   }, []);
 
-  const openModal = React.useCallback(async() => {
+  // Loads the runtime and opens the AppKit modal, returning the runtime so `connect` can gate its analytics
+  // on `isReady`. The exposed `openModal` discards it (the `Result` contract is `Promise<void>`).
+  const loadAndOpenModal = React.useCallback(async() => {
     setIsOpening(true);
     const runtime = await ensureLoaded();
     subscribeModal(runtime);
     await runtime.openModal();
     setIsOpening(false);
+    return runtime;
   }, [ subscribeModal ]);
 
+  const openModal = React.useCallback(async() => {
+    await loadAndOpenModal();
+  }, [ loadAndOpenModal ]);
+
   const connect = React.useCallback(async() => {
-    setIsOpening(true);
-    const runtime = await ensureLoaded();
-    subscribeModal(runtime);
-    await runtime.openModal();
-    setIsOpening(false);
+    const runtime = await loadAndOpenModal();
     // Record a started connection only when the modal could actually open. A failed chunk load resolves to
     // the disabled runtime whose `openModal` is a no-op — there is nothing for the user to complete, and no
     // later bridge connect to attribute to this click.
@@ -71,7 +74,7 @@ export function useWalletReown({ source, onConnect }: Params): Result {
       mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
       isConnectionStarted.current = true;
     }
-  }, [ source, subscribeModal ]);
+  }, [ source, loadAndOpenModal ]);
 
   const disconnect = React.useCallback(async() => {
     const runtime = await ensureLoaded();
