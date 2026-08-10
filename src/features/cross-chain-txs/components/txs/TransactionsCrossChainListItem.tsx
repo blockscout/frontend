@@ -58,7 +58,9 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         { currentAddress && (
           <CrossChainFromToTag
-            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            currentAddress={ currentAddress }
+            sender={ data.sender?.hash }
+            recipient={ data.recipient?.hash }
             isLoading={ isLoading }
           />
         ) }

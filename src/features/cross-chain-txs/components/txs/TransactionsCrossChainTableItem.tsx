@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, VStack } from '@chakra-ui/react';
+import { chakra, HStack, VStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -21,7 +21,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import CrossChainBridgeLink from '../CrossChainBridgeLink';
-import CrossChainFromToTag from '../CrossChainFromToTag';
+import CrossChainFromToTagTx from '../CrossChainFromToTagTx';
 import CrossChainMessageEntity from '../CrossChainMessageEntity';
 import CrossChainTxsStatusTag from '../CrossChainTxsStatusTag';
 
@@ -54,16 +54,17 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
   return (
     <TableRow>
       <TableCell w="42px">
-        <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+        <HStack gap={ 1 }>
+          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+          { currentAddress && (
+            <CrossChainFromToTagTx
+              data={ data }
+              currentAddress={ currentAddress }
+              isLoading={ isLoading }
+            />
+          ) }
+        </HStack>
       </TableCell>
-      { currentAddress && (
-        <TableCell>
-          <CrossChainFromToTag
-            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
-            isLoading={ isLoading }
-          />
-        </TableCell>
-      ) }
       <TableCell>
         <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
       </TableCell>

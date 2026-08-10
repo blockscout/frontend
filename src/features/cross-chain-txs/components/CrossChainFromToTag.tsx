@@ -4,21 +4,44 @@ import React from 'react';
 
 import { Badge, type BadgeProps } from 'src/toolkit/chakra/badge';
 
+const SELF_TAG = { text: 'Self', colorPalette: 'gray' as const };
+const OUT_TAG = { text: 'Out', colorPalette: 'orange' as const };
+const IN_TAG = { text: 'In', colorPalette: 'purple' as const };
+
 interface Props extends BadgeProps {
-  type: 'in' | 'out';
+  currentAddress: string;
+  sender?: string;
+  recipient?: string;
   isLoading?: boolean;
 }
 
-const CrossChainFromToTag = ({ type, isLoading, ...rest }: Props) => {
+const CrossChainFromToTag = ({ currentAddress, sender, recipient, isLoading, ...rest }: Props) => {
+
+  const { text, colorPalette } = (() => {
+    if (sender?.toLowerCase() === currentAddress.toLowerCase() && recipient?.toLowerCase() === currentAddress.toLowerCase()) {
+      return SELF_TAG;
+    }
+
+    if (sender?.toLowerCase() === currentAddress.toLowerCase()) {
+      return OUT_TAG;
+    }
+
+    if (recipient?.toLowerCase() === currentAddress.toLowerCase()) {
+      return IN_TAG;
+    }
+
+    return SELF_TAG;
+  })();
+
   return (
     <Badge
       loading={ isLoading }
-      colorPalette={ type === 'in' ? 'purple' : 'orange' }
-      minW={ 8 }
+      colorPalette={ colorPalette }
+      minW={ 10 }
       justifyContent="center"
       { ...rest }
     >
-      { type === 'in' ? 'In' : 'Out' }
+      { text }
     </Badge>
   );
 };

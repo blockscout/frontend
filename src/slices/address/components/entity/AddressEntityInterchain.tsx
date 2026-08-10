@@ -21,8 +21,8 @@ interface Props extends EntityProps, JsxStyleProps {
 const AddressEntityInterchain = ({ chain, currentAddress, ...props }: Props) => {
 
   const isCurrentChain = chain?.id === config.chain.id;
-  const isCurrentAddress = isCurrentChain && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
   const isMultichainAddress = multichainConfig()?.chains.some(({ id }) => id === chain?.id);
+  const isCurrentAddress = (isCurrentChain || isMultichainAddress) && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
 
   if (isCurrentChain || isMultichainAddress) {
     return <AddressEntity { ...props } chain={ isMultichainAddress ? undefined : chain } noLink={ isCurrentAddress }/>;
