@@ -6,7 +6,7 @@ import config from 'src/config';
 import { ABSENT_PARAM_ERROR_MESSAGE } from 'src/shared/errors/throw-on-absent-param-error';
 import { RESOURCE_LOAD_ERROR_MESSAGE } from 'src/shared/errors/throw-on-resource-load-error';
 
-import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName } from './utils';
+import { isBot, isHeadlessBrowser, isNextJsChunkError, getRequestInfo, getExceptionClass, getExceptionOriginFileName, isMonacoCdnError } from './utils';
 
 /**
  * Rollbar client options — imported only once the SDK chunk is loaded so the ignore helpers and
@@ -59,6 +59,10 @@ export function buildClientConfig(accessToken: string): Configuration {
         return true;
       }
 
+      if (isMonacoCdnError(item)) {
+        return true;
+      }
+
       return false;
     },
     hostSafeList: [ config.app.host ].filter(Boolean),
@@ -81,6 +85,13 @@ export function buildClientConfig(accessToken: string): Configuration {
       // thrown by a different-origin script (CORS), leaving only this string with no stack or
       // payload. Unactionable, and sourced from third-party scripts we don't control.
       'Script error',
+
+      // Benign browser signal, not a fault: fired when a ResizeObserver callback mutates layout
+      // and the browser defers the remaining notifications to the next frame. The deferred
+      // notifications still arrive, so there is no user-visible impact and nothing to fix. Comes
+      // through as a message-only window error with no stack. Substring covers both spellings:
+      // "...loop completed with undelivered notifications." and "...loop limit exceeded".
+      'ResizeObserver loop',
     ],
     maxItems: 10, // Max items per page load
     // uncaught / unhandledrejection coverage is owned by the early window listeners in queue.ts —

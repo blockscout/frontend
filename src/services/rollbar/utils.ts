@@ -73,3 +73,32 @@ export function getExceptionOriginFileName(item: Dictionary) {
 
   return castToString(originFileName);
 }
+
+// Versionless so it keeps matching across Monaco version bumps; if Monaco is ever bundled locally
+// instead of loaded from the CDN, filenames become app-owned, this stops matching, and genuine
+// editor errors surface again — which is the behaviour we'd want then.
+const MONACO_CDN_PATH = 'cdn.jsdelivr.net/npm/monaco-editor';
+
+/**
+ * Errors originating from the Monaco editor bundle, which we load from a third-party CDN. Their
+ * failure modes — worker `importScripts` failures, AMD `define` collisions with browser-extension
+ * scripts, CDN/adblock load failures — are environmental and unactionable by us, the same class we
+ * already drop for `@walletconnect` / `chrome-extension://`. Render-time failures still reach users
+ * through the editor's own ErrorBoundary, so dropping them here loses no user-facing signal.
+ *
+ * Checks the message (worker failures arrive message-only, with no stack) and every frame (some
+ * traces enter through our own code and only reach the CDN bundle deeper in the stack).
+ */
+export function isMonacoCdnError(item: Dictionary) {
+  const message = castToString(get(item, 'body.message.body'));
+  if (message?.includes(MONACO_CDN_PATH)) {
+    return true;
+  }
+
+  const frames = get(item, 'body.trace.frames');
+  if (!Array.isArray(frames)) {
+    return false;
+  }
+
+  return frames.some((frame) => castToString(get(frame, 'filename'))?.includes(MONACO_CDN_PATH));
+}
