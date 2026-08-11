@@ -4,23 +4,15 @@
 | --- | --- |
 | Issue | <GitHub issue URL, or "—" for ad-hoc specs> |
 | Status | `draft` \| `ready` \| `in progress` \| `done` |
-| Size | `small` \| `medium` \| `large` |
 | Feature branch | `<branch name>` |
 | PM | <name> |
 | Designer | <name> |
 | Backend | <name> |
 | Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise; "—" if none> |
-| Slack channel | <#feature-channel if the task has one; otherwise "—" (default routing per `to-spec`)> |
+| Slack channel | <#feature-channel if the task has one; otherwise "—" (default routing per `grill-the-task`)> |
 
-<!-- People default from `.agents/TEAM.md`; override here per task. -->
-
-<!-- SUBTASK SPECS reuse this same template, at `subtasks/<NN>-<slug>/spec.md`, with two header changes:
-swap the Issue row for `Parent spec | [../../spec.md](../../spec.md) — step <N> of #<issue>`, and add a
-`Sub-branch | issue-<N>-step-<N>` row. The Status vocabulary is the same as a main spec's
-(`draft | ready | in progress | done`). A subtask that hasn't been scoped yet has NO `spec.md` at all —
-only a `brief.md` in its folder (the handoff from the initial grilling session); the just-in-time subtask
-session reads that brief and writes this `spec.md`. People rows inherit from the parent unless a subtask
-overrides one. -->
+<!-- People default from `.agents/TEAM.md`; override here per task. Subtask specs use
+`subtask-template.md` and inherit these rows. -->
 
 ## Context & goal
 
@@ -28,7 +20,8 @@ overrides one. -->
 
 ## Functional requirements
 
-<!-- User stories / testable statements. What the feature must do, not how it looks. -->
+<!-- What the feature must do at task level, as testable statements. Per-subtask detail belongs to that
+subtask's acceptance criteria, not here. -->
 
 ## Data & API
 
@@ -40,7 +33,7 @@ staging-only) and the backend release version that ships the changes (for releas
 
 <!-- Affected pages/tabs/components: routes, navigation entry points, cross-links to existing entity
 pages. One Figma node link per screen. State behavioral facts and placement; leave appearance to the
-mockups and the [human] style subtasks. When you must lean on existing code, point to it by component or
+mockups and the [human] style leaves. When you must lean on existing code, point to it by component or
 symbol name ("match `LogDecodedInputDataTable`") — never transcribe its values, class names, or line
 numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What a
 spec holds" in `.agents/tasks/README.md`. -->
@@ -51,38 +44,26 @@ spec holds" in `.agents/tasks/README.md`. -->
 
 ## Task breakdown
 
-<!-- Ordered checklist. The checkbox is the ONLY per-subtask state the spec tracks — done or not.
-Readiness is NOT recorded here; it lives in each subtask spec's Status and is inferred from there.
+<!-- A slim INDEX of vertical slices — one line per subtask, nothing else. No inputs, no leaf steps, no
+changelog: that detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`.
 
-MAIN spec of a medium/large task = a slim INDEX. One line per subtask, no inputs, no changelog — the
-detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`:
+Each line carries exactly three things: the done checkbox (the ONLY per-subtask state this file tracks —
+readiness is derived, never stored), the title, and the blocking edges. Numbers are identity, not order;
+a new subtask is appended and its edges placed, never renumbered. See "The subtask model" in
+`.agents/tasks/README.md`.
 
-  - [ ] 1 `[agent]` <plain-language subtask title> → `subtasks/01-<slug>/`
-  - [ ] 2 `[human]` <plain-language subtask title> → `subtasks/02-<slug>/`
+A deferred subtask links its `brief.md` instead, and is scoped just-in-time by a `grill-the-task` subtask
+session. -->
 
-LEAF worklist (a small task's single spec.md, or the breakdown inside a subtask spec) = the actual
-steps. Tag each per the Subtask tags section of `.agents/tasks/README.md` (`[agent]`/`[human]`, plus
-`[verify]` and its `verify:` line on `[agent]` leaves); reference the executing skill;
-list blocking question ids (the step may not start while any is `pending`); and record the executor
-skill's interview answers as an indented `inputs:` list, so `implement-task` never stops to ask. A UI
-component is two linked leaves (scaffold → style). Keep each completion note to ONE line — no changelog
-blocks; fold durable decisions into the sections above, send findings to the folder's `notes.md`, and let
-git and the PR be the record of what changed. -->
-
-- [ ] 1 `[agent]` <title> — skill: `add-api-resource` — questions: Q2
-  - inputs:
-    - <executor-skill answer>
-- [ ] 2 `[agent]` `[verify]` <title> — skill: `add-new-page`
-  - inputs:
-    - <executor-skill answer>
-  - verify: `pnpm dev:preset <alias>`, open <route>, confirm <the behaviour a human must judge>
-- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>)
+- [ ] 01 <title> → [`subtasks/01-<slug>/`](subtasks/01-<slug>/spec.md) — blocked by: none
+- [ ] 02 <title> → [`subtasks/02-<slug>/`](subtasks/02-<slug>/brief.md) — blocked by: 01
 
 ## Open questions
 
 <!-- One entry per question. Status is the gate `implement-task` checks. The Slack permalink is recorded
-when the question is sent, so answers can be harvested later. When resolved, fold the decision into the
-section above that it affects AND record it here. -->
+when the question is sent, so answers can be folded in later. When resolved, fold the decision into the
+section above that it affects AND record it here. A question scoped to one subtask lives in that subtask's
+spec instead. -->
 
 ### Q1 — <question>
 

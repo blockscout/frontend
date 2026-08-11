@@ -28,7 +28,7 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 
 If the signals conflict or are ambiguous, ask the user which mode they mean.
 
-**Unattended finalize.** When Mode B is reached from `implement-task --auto` clearing a task's last leaf, the
+**Unattended finalize.** When Mode B is reached from `implement-task --auto` clearing a task's last subtask, the
 `--auto` flag already granted the push and the flip — so proceed without the confirmation steps below, and
 report what was done instead of asking. Every other invocation keeps them.
 
@@ -54,13 +54,11 @@ description is a placeholder pointing at the plan:
    - `Resolves #<ISSUE_NUMBER>` when the branch matches `issue-\d+` (ad-hoc spec branches have no issue —
      omit).
    - One short paragraph: the task's goal, taken from the spec's **Context & goal**.
-   - A link to the spec file on this branch — the main `.agents/tasks/<dir>/spec.md`, or the subtask's
-     `.agents/tasks/<dir>/subtasks/<NN>-<slug>/spec.md` when this is a step sub-branch (`issue-N-step-M`).
+   - A link to the spec file on this branch: `.agents/tasks/<dir>/spec.md`.
    - A note that this is a **spec-first draft**: the branch will receive the task's work subtask by
      subtask, and the final description will be written when the PR is marked ready for review.
 3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.
-   Title per "PR title" above (not "spec for..."; the PR becomes the task's/subtask's PR) — a feature
-   branch's PR describes the whole task, a step sub-branch's PR describes just that subtask.
+   Title per "PR title" above (not "spec for..."; the PR becomes the task's PR, describing the whole task).
 4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
    labels — nothing is implemented yet; Mode B adds them from the real diff.
 5. Link the created PR in the output.
@@ -79,13 +77,14 @@ description is a placeholder pointing at the plan:
 4. **Confirm with the user**, then flip: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
 5. Link the PR in the output, and **nudge the whole-task review**: now that the PR is ready, `review-changes`
-   run by hand posts inline comments for the pass no per-leaf review could make (see Land in
+   run by hand posts inline comments for the pass no per-subtask review could make (see Land in
    `.agents/tasks/README.md`).
 
 ## Mode C — Regular PR (work already done)
 
 1. **Prepare the branch** — as Mode B step 1, plus commit any outstanding changes (with the user's
-   approval, clear message).
+   approval, clear message). When the work sits on `main`, create the branch first: `issue-<number>` when
+   it came from an issue, otherwise a kebab-case slug naming the change.
 2. **Write the description** — see "Writing the description" below.
 3. **Confirm with the user**, then create: `gh pr create --title "..." --body-file ...` (add `--draft`
    only if the user asked for it).
@@ -99,6 +98,17 @@ description is a placeholder pointing at the plan:
   issue (`gh issue view <N>`), and start the **Description** section with `Resolves #<ISSUE_NUMBER>`.
 - **Summary of changes:** clear and concise, at most two paragraphs; bullet points if needed. Be precise;
   keep it short. This is the **Description** section.
+- **The why, whenever there is no spec to hold it.** A diff shows *what* changed; the Description is the
+  only place the reasoning survives, and most PRs through this skill have no spec behind them — work done
+  by hand, and tasks small enough to finish inside their own grilling session. Add the problem the change
+  solves and any decision a reader would otherwise have to reverse-engineer, sourced from wherever it
+  actually is:
+  - **This conversation**, when the work happened here — the decisions and the alternatives ruled out are
+    already in context; use them.
+  - **The issue**, when the branch names one — its body states the problem the diff only implies.
+  - **The diff and the surrounding code**, otherwise. Infer the intent and write it plainly, then let the
+    user correct it at the confirmation step — that is what the confirmation is for. Where the reasoning
+    genuinely cannot be recovered, ask the user for it rather than inventing a rationale.
 - **Environment variables:** if any env vars were added, changed, or removed, compare or read
   `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and fill the **Environment variables** section
   with each variable change and its **purpose** (write "None" if there are none):

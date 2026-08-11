@@ -1,0 +1,57 @@
+# 0002 — subtasks cut vertically, leaves run along layers
+
+| | |
+| --- | --- |
+| Status | accepted |
+| Date | 2026-08-11 |
+| Deciders | @tom2drum |
+| Supersedes | — |
+
+## Decision
+
+**A subtask is a vertical slice; the leaves inside it are layer-shaped.**
+
+A subtask cuts a narrow but complete path through every layer it touches and is verifiable on its own. Its
+leaves do the opposite — each is one project skill's worth of work in one layer: `add-api-resource`, then
+`add-new-page`, then the `[human]` styling.
+
+```
+subtasks/01-cross-chain-list/     ← vertical: demoable, one context window, one commit
+  leaf 1 [agent] add-api-resource — declare the resource
+  leaf 2 [agent] add-new-page    — tab route + scaffold
+  leaf 3 [agent] wire the resource into the table
+  leaf 4 [human] style to mockup
+```
+
+The full model lives in "The subtask model" in `.agents/tasks/README.md`; this record holds only the
+reasoning, which that file should not have to carry.
+
+## Why
+
+The tracer-bullet norm says every unit of work should be a vertical slice, all the way down. Ours stops one
+level short, deliberately.
+
+**Layer-shaped leaves are what make execution mechanical.** The project skills are layer-shaped by
+construction — `add-api-resource` declares a resource, `add-new-page` scaffolds a route. A leaf that mapped
+one skill to one step lets `implement-task` execute it without deciding anything: open the skill, read the
+`inputs:` the grilling session already collected, run. Force a leaf to be vertical and it spans three
+skills, so the executor has to compose them itself — the interesting decisions move from the spec, where a
+human reviewed them, into an unattended run.
+
+**Vertical subtasks are what make review and verification meaningful.** An API resource reviewed alone
+cannot be judged against the thing that consumes it, and a scaffold with no data cannot be verified by
+looking at the running product. Grouping the leaves into a slice that renders gives both a real target: the
+review reads one coherent diff, and a `(human)` acceptance criterion has something to be true about.
+
+So the two levels answer two different questions. *What can an agent execute without judgement?* — a leaf.
+*What can a human judge?* — a subtask. Aligning both to the same axis would sacrifice one of them.
+
+## Consequences
+
+- Leaves are not run boundaries. A run executes a whole subtask; leaf checkboxes exist so a run interrupted
+  by a `[human]` leaf can resume, since nothing is committed until the subtask finishes.
+- The review unit is the subtask, so a leaf's code can be wrong for as long as it takes the slice to
+  finish. Accepted deliberately: reviewing every leaf spent three subagents per step, and most of what it
+  caught was churn the next leaf rewrote anyway.
+- Nesting is unnecessary. Work too big for one subtask becomes more subtasks with blocking edges between
+  them, never subtasks inside subtasks — which is what let the sub-branch and sub-PR machinery go.

@@ -116,7 +116,7 @@ Implement the confirmed `fix` items only, following the conventions in `.agents/
 those files define for the code you touched. Leave `reject`, `answered`, `deferred` and `needs-human`
 findings untouched.
 
-Do **not** commit. In auto mode `implement-task` owns the commit, folding these fixes into the leaf's
+Do **not** commit. In auto mode `implement-task` owns the commit, folding these fixes into the subtask's
 single commit; in manual mode the developer commits.
 
 **Done when**: every confirmed fix is applied and locally verified.

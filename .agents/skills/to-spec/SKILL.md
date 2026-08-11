@@ -1,53 +1,50 @@
 ---
 name: to-spec
 description: >-
-  Convert the current conversation into a product-task spec in .agents/tasks/, or update an existing
-  spec — folding in new decisions, harvesting colleague replies from Slack threads, and sending open
-  questions to their owners. Use at the end of a grilling session, when the user wants to capture any
-  conversation as a spec, or to sync a spec's open questions with Slack.
+  Write the current conversation into a product-task spec in .agents/tasks/, or update an existing spec —
+  folding in decisions taken since, including answers that came back from colleagues. Use at the end of a
+  grilling session, when the user wants a conversation captured as a spec, or when a spec needs updating.
 ---
 
 # To spec
 
-Turn the current conversation into a spec file — or merge it into one that already exists. The spec is the
-single source of truth for a product task: `implement-task` executes from it, humans work from it, and its
-open questions drive the Slack round-trip with PMs, designers, and backend engineers.
+Turn the current conversation into a spec — or merge it into one that already exists. **Synthesize what
+the conversation already settled; do not interview.** The decisions, the breakdown, and the open questions
+were made in the session that hands off to this skill (`grill-the-task`, normally); this skill's whole job
+is writing them down in the right files.
 
-This skill is **conversation-agnostic**: it is normally invoked at the end of a `grill-the-task` session,
-but works from any conversation that contains decisions worth capturing — including an **empty** one. A
-fresh session invoking it on an existing spec (e.g. `/to-spec 3219-cross-chain-txs`) is the normal way to
-sync Slack replies: there is nothing to convert, so the run is just harvest (Step 2) plus outreach (Step 4).
+That boundary cuts both ways. Reading Slack replies is **not** this skill's job either — the developer
+reads the threads in their own session and brings the answers into the conversation; what arrives here is
+a decision to fold in, like any other.
+
+The spec is the single source of truth for a product task: `implement-task` executes from it and humans
+work from it. Not every task gets one — see "Not every task needs a spec" in `.agents/tasks/README.md`.
 
 ## Spec location and structure
 
 - With a GitHub issue: `.agents/tasks/<issue-number>-<slug>/spec.md` — the bare issue number, then a
   kebab-case slug naming the task.
 - Ad-hoc (no issue): `.agents/tasks/<slug>/spec.md`.
-- Every subtask of a medium/large task gets its own folder `subtasks/<NN>-<slug>/`, holding:
-  - `brief.md` — the handoff from the initial grilling session for a subtask that isn't scoped yet. Its
-    presence (with no `spec.md`) marks the subtask as not-yet-scoped. It carries: the subtask's goal in a
-    sentence or two; the context already gathered (relevant code, endpoints, mockups); the specific unknowns
-    to resolve (what to research, prototype, or decide) and who owns each; and links (issue, Figma, related
-    specs) — enough for a `grill-the-task` subtask session to start without re-deriving it.
-  - `spec.md` — the subtask spec (same template), Status `draft | ready | in progress | done`. Written up
-    front for a scoped subtask, or by the just-in-time subtask session for a deferred one — filled from the
-    folder's `brief.md`.
-  - `research.md` — optional; real research findings or prototype notes produced before the subtask
-    session, feeding it alongside the brief.
+- Every subtask gets its own folder `subtasks/<NN>-<slug>/`, holding either:
+  - `spec.md` — the subtask spec, written from `subtask-template.md` (next to this file). Status
+    `draft | ready | in progress | done`.
+  - `brief.md` — for a subtask that **isn't scoped yet**; its presence with no `spec.md` is the only marker
+    of a deferred subtask. It carries: the subtask's goal in a sentence or two; the context already gathered
+    (relevant code, endpoints, mockups); the specific unknowns to resolve (what to research, prototype, or
+    decide) and who owns each; and links (issue, Figma, related specs) — enough for a `grill-the-task`
+    subtask session to start without re-deriving it.
+  - `research.md` — optional; research findings or prototype notes produced before the subtask session,
+    feeding it alongside the brief.
 
-Use `spec-template.md` (next to this file) for every spec — main and subtask alike. Structure by size:
+**The main spec is an index, not a container.** Its Task breakdown is one line per subtask — checkbox,
+title, folder link, blocking edges — and never inlines requirements, inputs, or changelogs. Write it from
+`spec-template.md`; write every subtask from `subtask-template.md`. The two templates are shaped
+differently on purpose: the main spec holds the task's shared facts, a subtask spec holds one vertical
+slice's contract. "The subtask model" in `.agents/tasks/README.md` is the definition of both — follow it
+rather than restating it, and tag every leaf explicitly, since `implement-task` reads the tags as its state
+machine.
 
-- **small** — one `spec.md`, no `subtasks/`; the whole task is a single leaf worklist.
-- **medium** — the main spec is a slim index; each subtask is a folder with a fully-specified `spec.md`.
-- **large** — same layout; big subtasks are deferred (a `brief.md` now, no `spec.md`; the sub-spec is
-  written just-in-time later).
-
-**The main spec is an index, not a container.** Its Task breakdown is one line per subtask (checkbox +
-title + folder link) — never inline inputs, requirements, or changelogs; that detail belongs in the
-subtask's own `spec.md`. Tag every subtask per the **Subtask tags** section of `.agents/tasks/README.md` —
-`[agent]`/`[human]` on every subtask, and `[verify]` (plus its `verify:` line) decided for every `[agent]`
-leaf. Never leave a tag implicit; `implement-task` reads them as its state machine. Specs merge with the
-task's PR and accumulate in `.agents/tasks/` as precedent.
+Specs merge with the task's PR and accumulate in `.agents/tasks/` as precedent.
 
 ## Workflow
 
@@ -56,87 +53,50 @@ task's PR and accumulate in `.agents/tasks/` as precedent.
 Derive the path from the issue (or ask for a slug). If the file already exists, this is an **update** run:
 read the spec first and treat it as hand-editable — developers edit specs directly between runs.
 
-### Step 2 — Harvest Slack answers (update runs only)
+### Step 2 — Write or merge
 
-Open questions live in the main `spec.md` **and** in any subtask `spec.md` under `subtasks/*/` — gather
-them from all of these files. For every open question with status `pending` and a recorded Slack permalink:
-
-1. Read the thread with the Slack MCP tools (`slack_read_thread`; parse `channel_id`/`message_ts` from the
-   permalink as in the `create-issue-from-slack-thread` skill).
-2. If there are replies, summarize them and propose a resolution to the user.
-3. On acceptance: fold the decision into the affected spec section(s), set the question's status to
-   `resolved`, and record the answer as a phrase (the decision + date) in its entry — the decision, not the
-   deliberation, and nothing this public repo shouldn't carry (see "What a spec holds" in
-   `.agents/tasks/README.md`); the recorded permalink holds the rest.
-4. If a reply raises a follow-up: draft it (in Russian, like all outreach), get the user's approval, send it
-   **into the same thread**, and keep the question `pending`.
-
-The harvest is complete when every `pending` question with a permalink — across the main spec and every
-subtask spec — has had its thread read and is now resolved, followed up, or confirmed still unanswered.
-
-### Step 3 — Write or merge the spec
-
-Extract from the conversation: decisions, requirements, data/API facts, UI inventory, size classification,
-task breakdown, and unanswered questions with their owners — the per-team contacts picked during the
-session (defaults from `.agents/TEAM.md`), recorded in the header.
+Extract from the conversation: decisions, requirements, data/API facts, UI inventory, the approved task
+breakdown with its blocking edges, and unanswered questions with their owners — the per-team contacts
+picked during the session (defaults from `.agents/TEAM.md`), recorded in the header. Record the Slack
+permalink of every question the session already sent.
 
 **Write to the right file.** Task-level facts (context, shared data/API, overall UI inventory, out-of-scope,
-the index breakdown) go in the main `spec.md`; a subtask's own requirements, data, UI, executor-skill
-`inputs:`, and leaf worklist go in `subtasks/<NN>-<slug>/spec.md`. A subtask that isn't scoped yet gets a
-`brief.md` instead of a `spec.md`.
+the index breakdown) go in the main `spec.md`; a subtask's own what-to-build, acceptance criteria, blocking
+edges, executor-skill `inputs:`, and leaf worklist go in `subtasks/<NN>-<slug>/spec.md`. A subtask that
+isn't scoped yet gets a `brief.md` instead.
 
 **Merge surgically.** On update runs, never regenerate the file: preserve checked boxes, statuses, hand
-edits, and resolved-question records; only add or amend what the conversation actually changed. Show the
-user a summary of the changes and confirm before moving on.
+edits, and resolved-question records; only add or amend what the conversation actually changed. When an
+answer resolves a question, fold the decision into the section it affects, set the question's status to
+`resolved`, and record the answer as a phrase plus its date — the decision, not the deliberation, and
+nothing this public repo shouldn't carry. Show the user a summary of the changes and confirm before moving
+on.
 
-**No changelogs.** Record a subtask's completion as a one-line note on its checkbox, nothing more — the
-commit and the PR are the record of what changed. Durable decisions taken during work (a new dependency, an
-architectural choice) are folded into the relevant spec section, not appended as a "done: …" block. See
-"What a spec holds" in `.agents/tasks/README.md` for what stays in the spec versus what lives in its thread,
-the code, or the PR.
+**Scoping a deferred subtask.** A subtask session hands off with its folder's `spec.md` to write, plus
+whatever else the spike revealed. Append those as new sibling subtasks and retarget the `Blocked by:` edges
+that pointed at the deferred one; never renumber, and never nest a subtask inside a subtask.
+
+**No changelogs.** A subtask's completion is its checked box plus a one-line note — the commit and the PR
+are the record of what changed. Durable decisions taken during work (a new dependency, an architectural
+choice) are folded into the relevant section, not appended as a "done: …" block. See "What a spec holds" in
+`.agents/tasks/README.md` for what stays in the spec versus what lives in its thread, the code, or the PR.
 
 Status field: a new spec starts as `draft`; set it to `ready` once no `pending` question blocks the first
-subtask (per-subtask blocking — unblocked subtasks may proceed while unrelated questions are pending).
+subtask — blocking is per-subtask, so unblocked subtasks may proceed while unrelated questions are pending.
 
-### Step 4 — Send open questions (outreach)
+### Step 3 — Branch and draft PR (first creation only)
 
-For `pending` questions that have **no** Slack permalink yet:
+When this run **created** the spec, bootstrap the workflow's draft-PR-first policy — each action only with
+the developer's explicit approval, never unprompted:
 
-1. Group them by owner.
-2. Pick each group's destination:
-   - Task has a **dedicated feature channel** (spec header) → **all** questions go there, API ones included.
-   - Otherwise, **product questions go to the frontend channel** (see `.agents/TEAM.md`) — never a DM — so
-     colleagues from other teams (QA in particular) build the same understanding of the feature.
-   - Other questions (API, design) default to a DM with the owner.
-   - When posting to a channel, **always mention the addressee** — `<@member ID>` from `.agents/TEAM.md`
-     (people missing from the roster: resolve by name via `slack_search_users` and suggest adding them).
-3. Draft one message per owner: brief task context (issue link), the questions, and why they block progress.
-   Write all Slack messages in **Russian** — the team's internal language (the spec itself stays in English).
-4. **Show every draft (with its destination) to the user and wait for explicit approval** — never send
-   unreviewed outreach.
-5. Send (`slack_send_message`), then record each thread's permalink in the question's entry.
-
-If the Slack MCP tools are unavailable, record the questions with owners anyway and tell the user to route
-them manually.
-
-Outreach is complete when every `pending` question has a recorded permalink — or an explicit note that the
-developer routes it manually.
-
-### Step 5 — Branch and draft PR (first creation only)
-
-When this run **created** the spec (or sub-spec), bootstrap the workflow's draft-PR-first policy — each
-action only with the developer's explicit approval, never unprompted:
-
-1. **Branch** — main spec: `issue-<number>` off `main`; sub-spec (subtask mode): `issue-<number>-step-<N>`
-   off the feature branch; **ad-hoc spec** (no issue): the task-dir slug itself (spec in
-   `.agents/tasks/<slug>/` → branch `<slug>`). Create/switch if needed and record the branch in the spec
-   header.
+1. **Branch** — `issue-<number>` off `main`, or, for an **ad-hoc spec** (no issue), the task-dir slug
+   itself (spec in `.agents/tasks/<slug>/` → branch `<slug>`). Create/switch if needed and record the
+   branch in the spec header.
 2. **Commit** — propose committing the spec as the branch's first commit; show what will be committed and
    wait for confirmation.
-3. **Draft PR** — suggest opening it right away via the `create-pr` skill (draft-placeholder mode; feature
-   branch → `main`, sub-branch → feature branch). Why drafts open this early is documented in
-   `.agents/tasks/README.md`; the PR flips to ready when the breakdown's last box is checked (the
-   `implement-task` skill nudges at that moment).
+3. **Draft PR** — suggest opening it right away via the `create-pr` skill (draft-placeholder mode, feature
+   branch → `main`). Why drafts open this early is documented in `.agents/tasks/README.md`; the PR flips to
+   ready when the breakdown's last box is checked (the `implement-task` skill nudges at that moment).
 
 For ad-hoc specs the draft PR doubles as a **parking spot**: an idea captured as a spec today can sit in
 its draft PR and be picked up, refined, or implemented days later — visible on GitHub instead of only in a
