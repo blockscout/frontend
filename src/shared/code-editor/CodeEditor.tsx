@@ -10,6 +10,7 @@ import React from 'react';
 import type { File, Monaco } from './types';
 import type { SmartContractExternalLibrary } from 'src/slices/contract/types/api';
 
+import { useRollbar } from 'src/services/rollbar';
 import ErrorBoundary from 'src/shared/errors/ErrorBoundary';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import isMetaKey from 'src/shared/utils/is-meta-key';
@@ -72,6 +73,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   const [ borderRadius ] = useToken('radii', 'md');
   const isMobile = useIsMobile();
   const themeColors = useThemeColors();
+  const rollbar = useRollbar();
 
   const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
 
@@ -285,6 +287,14 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     return <Center bgColor={ themeColors['editor.background'] } w="100%" h="100%" borderRadius="md">Oops! Something went wrong!</Center>;
   }, [ themeColors ]);
 
+  // Reported with the error as plain data, not the Error instance: passing the instance makes Rollbar
+  // build a stack trace, and an editor render crash's frames run through the Monaco CDN bundle, so
+  // `isMonacoCdnError` would drop the very report we want to keep. Fires only when the editor subtree
+  // actually crashed in render and the user saw the fallback — the signal worth keeping.
+  const handleEditorError = React.useCallback((error: Error) => {
+    rollbar?.error('Code editor failed to render', { cause: error.cause, stack: error.stack });
+  }, [ rollbar ]);
+
   if (data.length === 1) {
     const css = {
       ...containerCss,
@@ -298,7 +308,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
     return (
       <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" css={ css } ref={ containerNodeRef }>
-        <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+        <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleEditorError }>
           <MonacoEditor
             className="editor-container"
             language={ editorLanguage }
@@ -327,7 +337,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       onKeyDown={ handleKeyDown }
       onKeyUp={ handleKeyUp }
     >
-      <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+      <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleEditorError }>
         <Box flexGrow={ 1 }>
           <CodeEditorTabs
             tabs={ tabs }

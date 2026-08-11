@@ -36,6 +36,9 @@ const ACCESS_TOKEN = 'test-token';
 const CALL_TIME_MS = 1_752_600_000_000;
 const CALL_TIME_S = CALL_TIME_MS / 1_000;
 const QUEUE_CAP = 100;
+// Uncaught errors are only forwarded when the browser attributes them to a script in our own bundle
+// (`/_next/`); this is the filename such an event carries.
+const APP_BUNDLE_FILENAME = 'https://host.blockscout.com/_next/static/chunks/main.js';
 
 async function importQueue() {
   return await import('./queue');
@@ -161,7 +164,7 @@ describe('rollbar queue', () => {
       const remove = queue.installEarlyListeners();
       const uncaught = new Error('uncaught boom');
 
-      window.dispatchEvent(new ErrorEvent('error', { message: 'uncaught boom', error: uncaught }));
+      window.dispatchEvent(new ErrorEvent('error', { message: 'uncaught boom', error: uncaught, filename: APP_BUNDLE_FILENAME }));
       expect(rollbarInstance.error).not.toHaveBeenCalled();
 
       await queue.init();
@@ -181,7 +184,7 @@ describe('rollbar queue', () => {
       // and be filed as a generic "null or missing arguments." item (issue #3566, subtask 3).
       const thrown = { code: 'BOOM' };
 
-      window.dispatchEvent(new ErrorEvent('error', { message: 'Uncaught object', error: thrown }));
+      window.dispatchEvent(new ErrorEvent('error', { message: 'Uncaught object', error: thrown, filename: APP_BUNDLE_FILENAME }));
       await queue.init();
 
       expect(rollbarInstance.error).toHaveBeenCalledWith(
@@ -196,13 +199,38 @@ describe('rollbar queue', () => {
       const queue = await importQueue();
       const remove = queue.installEarlyListeners();
 
-      window.dispatchEvent(new ErrorEvent('error', { message: 'Script error.', error: null }));
+      window.dispatchEvent(new ErrorEvent('error', { message: 'Boom with no error object', error: null, filename: APP_BUNDLE_FILENAME }));
       await queue.init();
 
       expect(rollbarInstance.error).toHaveBeenCalledWith(
-        'Script error.',
+        'Boom with no error object',
         { client_timestamp: CALL_TIME_S },
       );
+
+      remove();
+    });
+
+    it('should ignore uncaught errors that did not originate in our own bundle', async() => {
+      const queue = await importQueue();
+      const remove = queue.installEarlyListeners();
+
+      // Opaque cross-origin error: masked to "Script error." with no source (e.g. #338).
+      window.dispatchEvent(new ErrorEvent('error', { message: 'Script error.', error: null }));
+      // Browser extension.
+      window.dispatchEvent(new ErrorEvent('error', {
+        message: 'boom',
+        error: new Error('boom'),
+        filename: 'chrome-extension://abcdef/inject.js',
+      }));
+      // In-app-browser / userscript inline script attributed to the document URL, not `/_next/`.
+      window.dispatchEvent(new ErrorEvent('error', {
+        message: 'boom',
+        error: new Error('boom'),
+        filename: 'https://host.blockscout.com/address/0xabc',
+      }));
+      await queue.init();
+
+      expect(rollbarInstance.error).not.toHaveBeenCalled();
 
       remove();
     });
