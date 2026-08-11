@@ -9,6 +9,7 @@ import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransfersListItem from 'src/slices/token-transfer/pages/index/TokenTransfersListItem';
 import TokenTransfersTable from 'src/slices/token-transfer/pages/index/TokenTransfersTable';
+import { getTokenTransferKey } from 'src/slices/token-transfer/utils/get-token-transfer-key';
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -63,7 +64,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       <Box hideFrom="lg">
         { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
-            key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
+            key={ getTokenTransferKey(item) + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
             isLoading={ query.isPlaceholderData }
             item={ item }
             chainData={ chainData }

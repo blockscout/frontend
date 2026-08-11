@@ -10,6 +10,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
+import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransferListItem from './TokenTransferListItem';
 
 interface Props {
@@ -31,7 +32,7 @@ const TokenTransferList = ({ data, baseAddress, showTxInfo, enableTimeIncrement,
       <Box>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransferListItem
-            key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
+            key={ getTokenTransferKey(item) + (isLoading ? index : '') }
             data={ item }
             baseAddress={ baseAddress }
             showTxInfo={ showTxInfo }
