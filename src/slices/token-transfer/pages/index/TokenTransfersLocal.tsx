@@ -15,6 +15,7 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
+import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersListItem from './TokenTransfersListItem';
 import TokenTransfersTable from './TokenTransfersTable';
 
@@ -31,7 +32,7 @@ const TokenTransfersLocal = () => {
       <Box hideFrom="lg">
         { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
-            key={ (item.transaction_hash ?? '') + item.log_index + (query.isPlaceholderData ? index : '') }
+            key={ getTokenTransferKey(item) + (query.isPlaceholderData ? index : '') }
             isLoading={ query.isPlaceholderData }
             item={ item }
           />
