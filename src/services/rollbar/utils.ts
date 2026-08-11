@@ -104,7 +104,7 @@ const MONACO_CDN_PATH = 'cdn.jsdelivr.net/npm/monaco-editor';
  * Checks the message (worker failures arrive message-only, with no stack) and every frame (some
  * traces enter through our own code and only reach the CDN bundle deeper in the stack).
  */
-export function isMonacoCdnError(item: Dictionary) {
+export function isMonacoCdnError(item: Dictionary): boolean {
   const message = castToString(get(item, 'body.message.body'));
   if (message?.includes(MONACO_CDN_PATH)) {
     return true;

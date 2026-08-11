@@ -7,7 +7,7 @@ import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
 
 import { chains, parentChain } from 'src/features/connect-wallet/utils/chains';
-import installEip6963AnnounceGuard from 'src/features/connect-wallet/utils/installEip6963AnnounceGuard';
+import { installEip6963AnnounceGuard } from 'src/features/connect-wallet/utils/install-eip6963-announce-guard';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 import multichainConfig from 'src/features/multichain/chains-config';
 

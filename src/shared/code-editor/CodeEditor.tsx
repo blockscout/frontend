@@ -287,11 +287,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     return <Center bgColor={ themeColors['editor.background'] } w="100%" h="100%" borderRadius="md">Oops! Something went wrong!</Center>;
   }, [ themeColors ]);
 
-  // Reported as a message rather than the raw error so it stays distinct from the CDN-load / worker
-  // noise that `isMonacoCdnError` drops: this fires only when the editor subtree actually crashed in
-  // render and the user saw the fallback — the signal worth keeping. The error rides along as data.
+  // Reported with the error as plain data, not the Error instance: passing the instance makes Rollbar
+  // build a stack trace, and an editor render crash's frames run through the Monaco CDN bundle, so
+  // `isMonacoCdnError` would drop the very report we want to keep. Fires only when the editor subtree
+  // actually crashed in render and the user saw the fallback — the signal worth keeping.
   const handleEditorError = React.useCallback((error: Error) => {
-    rollbar?.error('Code editor failed to render', error);
+    rollbar?.error('Code editor failed to render', { cause: error.cause, stack: error.stack });
   }, [ rollbar ]);
 
   if (data.length === 1) {

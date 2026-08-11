@@ -18,7 +18,7 @@ let isInstalled = false;
  * `stopImmediatePropagation()` the malformed event, neutralising it for every downstream consumer at
  * once. Idempotent.
  */
-export default function installEip6963AnnounceGuard(): void {
+export function installEip6963AnnounceGuard(): void {
   if (isInstalled || typeof window === 'undefined') {
     return;
   }

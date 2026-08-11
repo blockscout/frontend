@@ -2,7 +2,7 @@
 
 import { describe, expect, it, vi } from 'vitest';
 
-import installEip6963AnnounceGuard from './installEip6963AnnounceGuard';
+import { installEip6963AnnounceGuard } from './install-eip6963-announce-guard';
 
 const ANNOUNCE_EVENT = 'eip6963:announceProvider';
 
