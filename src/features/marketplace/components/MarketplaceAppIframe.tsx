@@ -80,11 +80,11 @@ const Content = chakra(({ appUrl, address, message, isEssentialDapp, className }
       minW="100%"
       className={ className }
     >
-      { (isFrameLoading) && (
+      { (isFrameLoading || !appUrl) && (
         <ContentLoader/>
       ) }
 
-      { isReady && (
+      { isReady && appUrl && (
         <chakra.iframe
           key={ iframeKey }
           allow={ IFRAME_ALLOW_ATTRIBUTE }
