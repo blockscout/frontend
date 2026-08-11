@@ -11,27 +11,100 @@ alwaysApply: false
 
 Unit tests cover logic that is independent of visual presentation: utility functions, custom hooks, and component behavior (state transitions, conditional rendering, event handling). If a change has no visual output to verify, prefer a Vitest test over a Playwright one — it is faster and cheaper.
 
-## What to test (and what not)
+## What a good test is
 
-More tests are not better. A test earns its place by pinning behavior that could plausibly break; a test
-that restates the implementation or the framework only adds maintenance cost and false confidence.
+Tests verify behavior through public interfaces, not implementation details. Code can change entirely; tests shouldn't. 
+A good test reads like a specification — "user can checkout with valid cart" tells you exactly what capability exists — 
+and survives refactors because it doesn't care about internal structure.
 
-**Worth testing:**
-- Branching and conditional logic — the non-obvious paths through a function.
-- State transitions, event handling, and the loading / empty / error / success states of a component.
-- Parsing, formatting, calculation, and data-shaping logic — especially edge cases (empty, zero, null,
-  boundary values, malformed input).
-- Regressions — a test that reproduces a fixed bug so it stays fixed.
+### Good Tests
 
-**Not worth testing:**
-- Framework or library behavior (that a Chakra prop renders, that `react-query` caches) — trust the deps.
-- Trivial pass-throughs: a getter that returns a field, a component that only forwards props with no logic.
-- Types — `tsc` already proves them; don't add a runtime test to check a type.
-- Tests whose assertions only echo the mock you set up, exercising no real code of your own.
-- Snapshotting large trees "for coverage" — a snapshot must capture something a human decision depends on.
+**Integration-style**: Test through real interfaces, not mocks of internal parts.
 
-When in doubt, ask: *if I delete this test, what real defect could now ship unnoticed?* If the honest
-answer is "none", don't write it.
+```typescript
+// GOOD: Tests observable behavior
+test("user can checkout with valid cart", async () => {
+  const cart = createCart();
+  cart.add(product);
+  const result = await checkout(cart, paymentMethod);
+  expect(result.status).toBe("confirmed");
+});
+```
+
+**Characteristics:**
+
+- Tests behavior users/callers care about
+- Uses public API only
+- Survives internal refactors
+- Describes WHAT, not HOW
+
+### Bad Tests
+
+**Implementation-detail tests**: Coupled to internal structure.
+
+```typescript
+// BAD: Tests implementation details
+test("checkout calls paymentService.process", async () => {
+  const mockPayment = jest.mock(paymentService);
+  await checkout(cart, payment);
+  expect(mockPayment.process).toHaveBeenCalledWith(cart.total);
+});
+```
+
+**Red flags:**
+
+- Mocking internal collaborators
+- Testing private methods
+- Asserting on call counts/order
+- Test breaks when refactoring without behavior change
+- Test name describes HOW not WHAT
+- Verifying through external means instead of interface
+
+```typescript
+// BAD: Bypasses interface to verify
+test("createUser saves to database", async () => {
+  await createUser({ name: "Alice" });
+  const row = await db.query("SELECT * FROM users WHERE name = ?", ["Alice"]);
+  expect(row).toBeDefined();
+});
+
+// GOOD: Verifies through interface
+test("createUser makes user retrievable", async () => {
+  const user = await createUser({ name: "Alice" });
+  const retrieved = await getUser(user.id);
+  expect(retrieved.name).toBe("Alice");
+});
+```
+
+**Tautological tests**: Expected value restates the implementation, so the test passes by construction.
+
+```typescript
+// BAD: Expected value is recomputed the way the code computes it
+test("calculateTotal sums line items", () => {
+  const items = [{ price: 10 }, { price: 5 }];
+  const expected = items.reduce((sum, i) => sum + i.price, 0);
+  expect(calculateTotal(items)).toBe(expected);
+});
+
+// GOOD: Expected value is an independent, known literal
+test("calculateTotal sums line items", () => {
+  expect(calculateTotal([{ price: 10 }, { price: 5 }])).toBe(15);
+});
+```
+
+## Mocking guidelines
+
+Mock at **system boundaries** only:
+
+- External APIs (payment, email, etc.)
+- Time/randomness
+- File system (sometimes)
+
+Don't mock:
+
+- Your own classes/modules
+- Internal collaborators
+- Anything you control
 
 ## File naming and location
 
