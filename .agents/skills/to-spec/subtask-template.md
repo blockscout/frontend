@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | `.agents/tasks/<dir>/spec.md` → link it as `../../spec.md`, subtask <NN> of #<issue> |
-| Status | `draft` \| `ready` \| `in progress` \| `done` |
+| Status | `draft` \| `in progress` \| `done` |
 | Blocked by | <subtask numbers that must be checked first, or "none"> |
 
 <!-- People rows are inherited from the parent spec; add one here only to override it. A subtask that
@@ -13,9 +13,8 @@ hasn't been scoped yet has NO `spec.md` at all — only a `brief.md` in its fold
 ## What to build
 
 <!-- The end-to-end behaviour this subtask makes work, from the user's perspective — a paragraph, not a
-layer-by-layer plan. A subtask is a vertical slice: it cuts a narrow but complete path through every layer
-it touches and is verifiable on its own. If it does not fit in one fresh context window, it is two
-subtasks. -->
+layer-by-layer plan. What makes a well-formed subtask, and the bounds it has to satisfy: "The subtask
+model" in `.agents/tasks/README.md`. -->
 
 ## Acceptance criteria
 

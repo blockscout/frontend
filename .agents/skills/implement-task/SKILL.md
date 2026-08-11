@@ -71,11 +71,14 @@ it in the header.
 A run can arrive mid-subtask, because a `[human]` leaf inside one stops the chain. Before anything else:
 
 - **An unchecked `[human]` leaf in a subtask already in progress** — ask the developer whether it's done.
-  Check it off if so; stop if it's still in progress. Then resume that subtask at its next unchecked leaf
-  rather than picking a new one.
-- **A finished subtask left uncommitted for verification** — ask whether the `(human)` acceptance criteria
-  passed. If they did, the developer commits before this run starts new work; if they didn't, fix what
-  failed inside that subtask instead of moving on.
+  Check it off if so; stop if it's still in progress. Then continue that subtask rather than picking a new
+  one: at its next unchecked leaf, or — when that leaf was the subtask's **last**, which the default UI
+  split makes the common case — at **Step 5**, so the finished subtask still gets its verification, review,
+  and commit.
+- **A subtask left uncommitted for verification** — every leaf checked, its index box not. Ask whether the
+  `(human)` acceptance criteria passed. If they did, the developer commits, and this run then checks the
+  index box and sets that subtask's `Status` to `done` before starting anything new; if they didn't, fix
+  what failed inside that subtask instead of moving on.
 
 ### Step 3 — Pick the next subtask
 
@@ -160,7 +163,8 @@ Nits never gate: `deferred` findings leave the `Outcome` `clear`.
 
 ### Step 8 — Update the spec
 
-Check the subtask's box in the main index, with a **one-line** note (files/skills involved) — never a
+Record the work in the subtask's **own** spec: its leaf boxes checked, its header `Status` set to
+`in progress`, and a **one-line** note (files/skills involved) — never a
 multi-line changelog; git and the PR carry the detail, and any durable decision (a new dependency, an
 architectural choice) is folded into the relevant spec section instead. A finding worth keeping — a gotcha,
 a bug you hit — goes to the subtask folder's `notes.md` as evidence the PR can quote, or graduates to a
@@ -169,15 +173,14 @@ report. If the work uncovers a bug from an **earlier, finished** task, fix it he
 task's PR — never reopen or edit that task's frozen spec. See "What a spec holds" in
 `.agents/tasks/README.md`.
 
-Keep both levels in sync:
+**The main index waits for the commit.** A checked index box means *landed*: `Blocked by:` edges read it to
+release dependents, and the last box checked is what finalizes the PR. Checking it here — before Step 9's
+`(human)` gate and its commit — would let an unverified, uncommitted subtask release the work that depends
+on it. So the index box and the subtask's `done` Status are set **at commit time**: by Step 9 under
+`--auto`, and by the next run's Step 2 when the developer commits a verified subtask themselves.
 
-- Set the subtask spec's header `Status` to `in progress` on its first leaf and `done` when its last box is
-  checked, then check its line in the **main index**.
-- Set the **main** header `Status` to `in progress` on the first executed subtask and `done` when the
-  index's last box is checked.
-
-The main index is what "done" and draft-PR finalization key off, so never leave it trailing a completed
-subtask spec.
+Set the **main** header `Status` to `in progress` on the first executed subtask, and `done` once the index's
+last box is checked.
 
 ### Step 9 — Commit and chain, or hand off
 
@@ -185,16 +188,18 @@ subtask spec.
 `implement-task` invocation belong to the developer.
 
 **Under `--auto`**, when the `Outcome` is `clear` and the subtask has **no `(human)` acceptance criterion**:
-commit it on the task branch — one commit for the whole subtask with the review fixes folded in, a plain
-descriptive subject, and the repo's `Co-Authored-By` trailer — then return to **Step 3** for the next
-subtask. Keep the issue out of the commit: no `#<issue>` or issue URL in the subject or body. GitHub adds a
+check its box in the main index, set its `Status` to `done`, and commit it on the task branch — one commit
+for the whole subtask with the review fixes and the spec updates folded in, a plain descriptive subject, and
+the repo's `Co-Authored-By` trailer — then return to **Step 3** for the next subtask. Keep the issue out of
+the commit: no `#<issue>` or issue URL in the subject or body. GitHub adds a
 timeline reference to the issue on every push that names it, so a chain of commits spams it; the PR's
 `Resolves #N` already carries the link and closes the issue on merge.
 
 Stop the chain, pushing nothing, on any of:
 
-- the subtask has a `(human)` acceptance criterion → leave it **uncommitted**; the developer checks it
-  against the running product per the spec's "How to verify" line, then commits what they verified
+- the subtask has a `(human)` acceptance criterion → leave it **uncommitted, its index box unchecked**; the
+  developer checks it against the running product per the spec's "How to verify" line, then commits what
+  they verified, and the next run's Step 2 checks the box
 - the next leaf inside this subtask is `[human]`
 - the next subtask is blocked, or has only a `brief.md`
 - a `pending` question blocks every remaining subtask

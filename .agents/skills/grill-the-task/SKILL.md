@@ -118,13 +118,13 @@ Two things to look for while drafting it:
 - **Defer what can't be scoped.** A subtask blocked on a prototype, a spike, or an answer nobody has yet
   gets a `brief.md` and no `spec.md`; a just-in-time subtask-mode session scopes it later.
 
-**Then front-load the executor skills' inputs — only when the breakdown has more than one subtask**, since
-that is what makes a later session execute it blind. Go through every `[agent]` leaf that will run a project
+**Then front-load the executor skills' inputs, whenever a later session will execute the work** — every
+subtask-mode run, and any task-mode breakdown with more than one subtask. That session starts blind, and
+these answers are what let it run without stopping. Go through every `[agent]` leaf that will run a project
 skill (`add-new-page`, `add-api-resource`, `add-env-var`, …): **open that skill and run its user-facing
 interview now** (e.g. `add-new-page` Step 0), from the skill's current text — don't work from memory of its
-questions. The answers are recorded with the subtask in its own `spec.md`, so `implement-task` never stops
-to ask. A single-subtask task skips this entirely: this session runs the skill itself, so it can just ask
-as it goes.
+questions. The answers are recorded with the subtask in its own `spec.md`. Only a task-mode single-subtask
+task skips this: this session runs the skill itself, so it can just ask as it goes.
 
 ## Step 4 — Send open questions
 
@@ -154,13 +154,17 @@ routes it manually.
 
 ## Step 5 — Hand off
 
-**One subtask** — this session finishes the job. Create the feature branch (`issue-<number>` off `main`)
+**Subtask mode** — always invoke **`to-spec`**, however small the scoped subtask turns out to be. The work
+is being written down for a later `implement-task` run, which is the whole reason the subtask was deferred;
+the in-session path below never applies here.
+
+**Task mode, one subtask** — this session finishes the job. Create the feature branch (`issue-<number>` off `main`)
 with the developer's approval, implement the work, and hand off to the `create-pr` skill, which writes the
 reasoning from this conversation into the PR description. No spec is written: nothing is being handed to a
 session that wasn't in the room. If a `pending` question blocks the work, wait for the reply and pick the
 implementation back up in this same session — and write a spec instead only if the developer asks for one,
 which is worth doing when the work will sit before it starts.
 
-**Several subtasks** — invoke the **`to-spec`** skill. It writes the `spec.md` index plus every subtask
+**Task mode, several subtasks** — invoke the **`to-spec`** skill. It writes the `spec.md` index plus every subtask
 folder, records the Slack permalinks from Step 4, and walks the developer through branch, first commit, and
 the draft PR.

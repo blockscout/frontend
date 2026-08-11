@@ -11,10 +11,6 @@
 
 **A subtask is a vertical slice; the leaves inside it are layer-shaped.**
 
-A subtask cuts a narrow but complete path through every layer it touches and is verifiable on its own. Its
-leaves do the opposite — each is one project skill's worth of work in one layer: `add-api-resource`, then
-`add-new-page`, then the `[human]` styling.
-
 ```
 subtasks/01-cross-chain-list/     ← vertical: demoable, one context window, one commit
   leaf 1 [agent] add-api-resource — declare the resource
@@ -23,8 +19,8 @@ subtasks/01-cross-chain-list/     ← vertical: demoable, one context window, on
   leaf 4 [human] style to mockup
 ```
 
-The full model lives in "The subtask model" in `.agents/tasks/README.md`; this record holds only the
-reasoning, which that file should not have to carry.
+"The subtask model" in `.agents/tasks/README.md` defines both levels and every rule that follows from them;
+this record holds only the reasoning, which that file should not have to carry.
 
 ## Why
 
@@ -48,10 +44,10 @@ So the two levels answer two different questions. *What can an agent execute wit
 
 ## Consequences
 
-- Leaves are not run boundaries. A run executes a whole subtask; leaf checkboxes exist so a run interrupted
-  by a `[human]` leaf can resume, since nothing is committed until the subtask finishes.
 - The review unit is the subtask, so a leaf's code can be wrong for as long as it takes the slice to
-  finish. Accepted deliberately: reviewing every leaf spent three subagents per step, and most of what it
-  caught was churn the next leaf rewrote anyway.
+  finish. Accepted deliberately: reviewing every leaf spent a subagent per axis on every step, and most of
+  what it caught was churn the next leaf rewrote anyway.
+- Leaves stop being run boundaries, which buys the review unit above at the cost of needing a resumption
+  mechanism inside a subtask that has no commits yet. The workflow layer owns how that works.
 - Nesting is unnecessary. Work too big for one subtask becomes more subtasks with blocking edges between
   them, never subtasks inside subtasks — which is what let the sub-branch and sub-PR machinery go.

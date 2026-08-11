@@ -78,9 +78,8 @@ looks wrong without its context. Supersede rather than rewrite — flip the old 
 ## Product task workflow
 
 Product tasks (GitHub issues) are worked through a spec-driven workflow — interview, spec, agent
-implementation, code review. A task small enough to finish in its grilling session skips the spec
-entirely. Specs accumulate in `.agents/tasks/` as a permanent record. See `./tasks/README.md` for the
-lifecycle, the skills that run it, and the spec conventions.
+implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent record. See
+`./tasks/README.md` for the lifecycle, the skills that run it, and the spec conventions.
 
 ## Editing this instruction set
 
