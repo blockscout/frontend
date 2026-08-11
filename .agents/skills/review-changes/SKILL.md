@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 # Review changes
 
-Review a change the way a lead reviewer would: three **axes** in parallel, each in its own fresh
+Review a change the way a lead reviewer would: the **axes** that apply, in parallel, each in its own fresh
 subagent context, then one normalized report.
 
 You produce **findings** and nothing else. Fixing them is `resolve-review`'s job, so this skill never
@@ -21,20 +21,20 @@ Mode is not a choice; it follows from where the code is.
 
 | Working tree | Mode | Base |
 | --- | --- | --- |
-| Dirty — an uncommitted leaf | markdown record | `HEAD` |
+| Dirty — an uncommitted subtask | markdown record | `HEAD` |
 | Clean, PR open, `HEAD` = the PR's head sha | inline PR comments | merge-base with the PR's base branch |
 | Clean, PR open, `HEAD` ≠ the PR's head sha | **stop — the branch must be synced first** | — |
 | Clean, no PR, inside a task dir | markdown record | last reviewed sha in the record, else merge-base with `main` |
 | Clean, no PR, no task dir | chat only, no file | merge-base with `main` |
 
 **First matching row wins.** A dirty tree short-circuits to a markdown record even on a branch whose draft PR
-has existed since spec time — that is what keeps a per-leaf review out of PR mode.
+has existed since spec time — that is what keeps a per-subtask review out of PR mode.
 
 **An open PR plus an out-of-sync branch stops the run.** Say which way it diverged and what to run — `git
 push` when `HEAD` is ahead, `git pull` when behind — then stop rather than review. There is no good outcome
 otherwise: lines that were never pushed are absent from the PR diff, so every anchor fails and the all-or-nothing
 POST discards the whole review; and a markdown record has nowhere to live once the unit is a whole PR rather
-than a leaf.
+than a subtask.
 
 The skill takes no invocation arguments — every case above is inferred. A dispatcher (`implement-task`) may
 still hand over context it already knows; the steps below name exactly what.
@@ -72,7 +72,7 @@ Collect, in the review's own context:
 - `git diff --stat <base>` and `git diff --name-only <base>`, plus untracked files
   (`git ls-files --others --exclude-standard`) — a new file is the most review-worthy thing in a change
   and `git diff` alone misses it.
-- The subtask's `spec.md` (or the task's, or the sub-spec for a leaf step) and `.agents/delegation.md`.
+- The subtask's `spec.md` (or the main `spec.md` in a whole-task review) and `.agents/delegation.md`.
 - The prior review record, if any.
 
 **In markdown and chat modes**, run the repo's checks yourself — do not take "checks pass" on trust,
@@ -95,8 +95,16 @@ and the diff is known non-empty.
 
 ## 2. Round 1 — spawn the axes
 
-Send **one** message with three `general-purpose` subagents. Each gets: the base ref, the touched-file
-list plus untracked files, the check output as established fact, and the paths it must read.
+Send **one** message with the `general-purpose` subagents the change actually has axes for. Each gets: the
+base ref, the touched-file list plus untracked files, the check output as established fact, and the paths it
+must read.
+
+**The spec axis is gated on a spec existing.** Plenty of changes have none — work done outside the task
+workflow, and any task finished inside its own grilling session (see "Not every task needs a spec" in
+`.agents/tasks/README.md`). Confirm the file is there before dispatching: the subtask `spec.md` a
+dispatcher named, or the task dir's specs in a whole-task review. With no spec, run **two** axes and say so
+in the report — the spec axis with nothing to read invents a standard to judge against, which is worse than
+the gap it papers over. Standards and correctness carry the review on their own.
 
 Every axis returns findings in this shape, and nothing else — no preamble, no summary:
 
@@ -110,14 +118,16 @@ fix: <one or two lines>
 
 Each report is capped at **400 words**, which forces ranking instead of dumping.
 
-**Spec axis brief.** Read the spec (path given) and the diff. Report: requirements the spec asks for
-that are missing or partial; behaviour in the diff the spec never asked for; requirements that look
+**Spec axis brief.** Read the spec (path given) and the diff. Its **acceptance criteria** are the primary
+target: take each unmarked criterion in turn and report whether the diff actually satisfies it. A criterion
+marked `(human)` is out of bounds — only a person judging the running product can rule on it. Then report
+what the criteria don't cover: behaviour in the diff the spec never asked for, and requirements that look
 implemented but are implemented wrongly. Quote the spec line behind each finding. Anything the spec's
 **Out of scope** section names is not a finding.
 
 In a **whole-task** review, read the main `spec.md` *and every* `subtasks/*/spec.md`, and add the one check
-no per-leaf review can make: leaves that contradict each other — the same concept named, modelled, or gated
-two different ways across subtasks.
+no per-subtask review can make: subtasks that contradict each other — the same concept named, modelled, or
+gated two different ways across the task.
 
 **Standards axis brief.** Read `.agents/rules/*.md` matching the touched file types, every `CONTEXT.md`
 for directories the diff touches, `.agents/delegation.md`, and **one** smell baseline, picked by what the
@@ -142,7 +152,7 @@ Report: logic errors; mishandled loading / empty / error / pagination paths; pla
 claim something the runtime does not; and tests that assert the framework or the mock rather than real
 behaviour (per the "What to test (and what not)" section of `.agents/rules/tests-unit.md`).
 
-**Done when**: all three axes have returned, or an axis has failed and you have noted which.
+**Done when**: every dispatched axis has returned, or one has failed and you have noted which.
 
 ## 3. Round 2+ — arbitration
 
@@ -163,7 +173,7 @@ the current diff. It does exactly three things:
 
 ## 4. Normalize
 
-Only this context sees all three axes, so only it can calibrate. Left alone, each axis inflates its own
+Only this context sees every axis, so only it can calibrate. Left alone, each axis inflates its own
 findings to `blocker` because that axis is all it can see.
 
 - **Severity.** `blocker` — a spec requirement missing or wrong, a correctness bug, or a rule breach
@@ -187,8 +197,8 @@ findings to `blocker` because that axis is all it can see.
 Zero findings still produces a report with `Outcome: clear` and zeroed counts — a missing record is
 indistinguishable from a review that never ran.
 
-**Markdown mode.** Write `review.md` beside the spec it was reviewed against: in the subtask folder, or
-next to a small task's `spec.md`. One `##` section per reviewed unit — a round never opens a section of its
+**Markdown mode.** Write `review.md` beside the spec it was reviewed against, in the subtask folder. One
+`##` section per reviewed unit — a round never opens a section of its
 own; it bumps the header's `Round` and appends exchange lines under the findings it touched. Give each new
 finding its starting **Status**: `open`, or `deferred` for a nit, which is never auto-fixed. Every later
 transition belongs to `resolve-review`. Format in [`review-template.md`](review-template.md).
@@ -217,7 +227,7 @@ reader to skim past real problems.
 
 **Always out of bounds**
 
-- **Any visual or styling judgement.** Presentation belongs to the `[human]` style subtask.
+- **Any visual or styling judgement.** Presentation belongs to the `[human]` style leaf.
 - **Anything the spec's Out of scope section names.**
 - **Missing Playwright screenshot baselines** — human-generated, per `.agents/delegation.md`.
 - **Style preferences with no basis** in `.agents/rules/`, a `CONTEXT.md`, or the surrounding code. No
@@ -226,7 +236,7 @@ reader to skim past real problems.
 - **A primitive or shortcut with a why-comment on it.** The comment is an override signal: read it and
   back off rather than arguing with it.
 
-**Tolerated in a per-leaf review only**, because an `[agent]` scaffold leaf is deliberately unfinished:
+**Tolerated in a per-subtask review only**, because an `[agent]` scaffold leaf is deliberately unfinished:
 
 - **`TODO (design):` markers** — the scaffold working as designed. This tolerance **expires** at the
   whole-task review, where the PR is ready for review, belongs to no subtask, and the `[human]` style leaves

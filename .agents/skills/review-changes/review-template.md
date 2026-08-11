@@ -1,8 +1,8 @@
 # Review — <task or subtask title>
 
-<!-- One `review.md` per subtask folder (or beside a small task's `spec.md`). One `##` section per
-reviewed unit — a leaf step, or the whole subtask when it has no sub-breakdown. Rounds do NOT get their
-own sections: a round updates the header and appends exchange lines under the findings it touched.
+<!-- One `review.md` per subtask folder. One `##` section per reviewed unit — the subtask, or the whole
+task in a whole-task review. Rounds do NOT get their own sections: a round updates the header and appends
+exchange lines under the findings it touched.
 
 Two writers share this file. `review-changes` adds findings, maintains the header, and sets each finding's
 **starting** Status — `open`, or `deferred` for a nit. `resolve-review` owns every Status transition after
@@ -14,7 +14,7 @@ exchange log and PR replies reference them.
   `blocked`     — a blocker or major is still open, `rejected-pending`, or disputed
   `needs-human` — something needs the developer, whatever the severity -->
 
-## Step <N> — <leaf title>
+## Subtask <NN> — <subtask title>
 
 | | |
 | --- | --- |
