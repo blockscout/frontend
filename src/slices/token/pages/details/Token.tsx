@@ -50,6 +50,10 @@ const TokenPageContent = () => {
   useEtherscanRedirects();
   const queryClient = useQueryClient();
 
+  // Ideally, with the current API setup, we should wait until the socket connection is established before fetching the token data
+  // so the client does not miss events related to total supply changes.
+  // However, this would require moving the token request out of the primed list, which would reduce page-loading speed.
+  // Therefore, we decided not to do this, as we expect a very small number of affected users.
   const tokenQuery = useTokenQuery(hashString);
 
   const addressQuery = useApiQuery('core:address', {
