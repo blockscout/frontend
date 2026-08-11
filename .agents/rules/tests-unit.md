@@ -136,7 +136,7 @@ pnpm test:vitest path/to/file.spec.ts
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -156,6 +156,19 @@ await userEvent.click(button);
 await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
+
+**`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
+
+```tsx
+import { mockSocket, MOCK_SOCKET_URL } from 'vitest/utils/mockSocket';
+
+mockSocket();
+const { default: Token } = await import('./Token');
+render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
+await flushPromises();
+```
+
+It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all. Server-sent events are not simulated yet.
 
 ## Mocking fetch responses
 

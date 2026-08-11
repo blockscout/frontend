@@ -9,6 +9,7 @@ import { expect, it, vi } from 'vitest';
 import flushPromises from './flushPromises';
 import withEnvs from './mockEnvs';
 import { mockNextRouter } from './mockRouter';
+import { mockSocket, MOCK_SOCKET_URL } from './mockSocket';
 
 // Drift check for the early-fetch primer (src/server/primedRequests): asserts that every
 // request the primer would fire for a page is also fired — with byte-identical URL and
@@ -58,6 +59,9 @@ export default function checkPrimedRequests(params: CheckPrimedRequestsParams) {
         // register the router mock AFTER withEnvs' resetModules so the subsequent dynamic
         // imports of Layout / page components pick it up (doMock before resetModules races)
         mockNextRouter(params.page, params.url);
+        // pages gate some queries on their socket channel joining; the mock joins right away so
+        // those requests belong to the first render here, as they effectively do in a browser
+        mockSocket();
 
         const { getPrimerScript } = await import('src/server/primedRequests');
 
@@ -86,7 +90,7 @@ export default function checkPrimedRequests(params: CheckPrimedRequestsParams) {
           params.loadComponent(),
         ]);
 
-        const { unmount } = render(<TestApp><Component/></TestApp>);
+        const { unmount } = render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Component/></TestApp>);
 
         try {
           // let mount effects fire their queries and any second-wave queries subscribe
@@ -120,6 +124,7 @@ export default function checkPrimedRequests(params: CheckPrimedRequestsParams) {
       });
     } finally {
       vi.doUnmock('next/router');
+      vi.doUnmock('phoenix');
       fetchMock.resetMocks();
       window.__primedFetches = undefined;
       window.history.replaceState(null, '', '/');
