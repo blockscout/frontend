@@ -31,7 +31,7 @@ const TacOperation = () => {
   throwOnResourceLoadError(query);
 
   const titleContentAfter = query.data ? (
-    <TacOperationTag type={ query.data.type } loading={ query.isPlaceholderData }/>
+    <TacOperationTag type={ query.data.type } isRollback={ query.data.rollback } loading={ query.isPlaceholderData }/>
   ) : null;
 
   const titleSecondRow = (

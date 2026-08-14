@@ -11,9 +11,14 @@ import { getTacOperationRoute } from '../utils/tac-operation';
 
 interface Props extends BadgeProps {
   type: tac.V2OperationType;
+  isRollback?: boolean;
 }
 
-const TacOperationTag = ({ type, ...rest }: Props) => {
+const TacOperationTag = ({ type, isRollback, ...rest }: Props) => {
+
+  if (isRollback) {
+    return <Badge { ...rest }>Rollback</Badge>;
+  }
 
   const text = getTacOperationRoute(type);
 

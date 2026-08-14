@@ -31,7 +31,7 @@ const TacOperationsTableItem = ({ item, isLoading }: Props) => {
             isLoading={ isLoading }
             isRollback={ item.rollback }
           />
-          { item.rollback && <Badge colorPalette="gray" loading={ isLoading }>Rollback</Badge> }
+          { item.rollback && <Badge loading={ isLoading }>Rollback</Badge> }
         </HStack>
       </TableCell>
       <TableCell verticalAlign="middle">

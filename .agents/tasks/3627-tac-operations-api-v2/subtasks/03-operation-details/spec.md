@@ -21,15 +21,15 @@ How to verify: `pnpm dev:preset tac_spb` with `NEXT_PUBLIC_TAC_OPERATION_LIFECYC
 staging service host from the issue, open `/operation/[id]` for a success, a failure, a rollback and a
 pending operation
 
-- [ ] `tac:operation` resolves to `/api/v2/tac/operations/:id` and its payload is typed from the v2 types
-- [ ] The Status row renders the shared status tag from subtask 02, with the rollback tag beside it when
+- [x] `tac:operation` resolves to `/api/v2/tac/operations/:id` and its payload is typed from the v2 types
+- [x] The Status row renders the shared status tag from subtask 02, with the rollback tag beside it when
       `rollback: true`
-- [ ] The title renders one badge: `Rollback` when `rollback: true`, otherwise the route — never both
-- [ ] The trailing synthetic pending lifecycle item is driven by `status`, not `type`
-- [ ] The per-stage `note` is reachable for a failed stage
-- [ ] `(human)` The page matches the mockup for success, failure, failure with a reason, rollback and
+- [x] The title renders one badge: `Rollback` when `rollback: true`, otherwise the route — never both
+- [x] The trailing synthetic pending lifecycle item is driven by `status`, not `type`
+- [x] The per-stage `note` is reachable for a failed stage
+- [x] `(human)` The page matches the mockup for success, failure, failure with a reason, rollback and
       pending — including the title badge and the expanded stage card
-- [ ] `(human)` The stage timeline is unchanged versus the v1-backed page on the same operation
+- [x] `(human)` The stage timeline is unchanged versus the v1-backed page on the same operation
 
 ## Details
 
@@ -41,8 +41,8 @@ only extend if a failed stage's note is actually unreachable.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Wire the details page and its Status row to the v2 fields, reusing the components from subtask 02
-- [ ] 2 `[agent]` Drive the title badge from `rollback` / `type`, and the accordion's synthetic pending item from `status`
-- [ ] 3 `[agent]` Confirm the failed-stage `note` is reachable; extend the accordion only if it is not
-- [ ] 4 `[agent]` Update `TacOperation.pw.tsx` cases and the details mocks to the v2 shape
-- [ ] 5 `[human]` Style the details page to the mockup and regenerate its screenshot baselines — [Figma](https://www.figma.com/design/1UWWsK0bg6ifzS9O1NLlo4/TAC-TON-TAC-operations?node-id=4001-37444)
+- [x] 1 `[agent]` Wire the details page and its Status row to the v2 fields, reusing the components from subtask 02
+- [x] 2 `[agent]` Drive the title badge from `rollback` / `type`, and the accordion's synthetic pending item from `status`
+- [x] 3 `[agent]` Confirm the failed-stage `note` is reachable; extend the accordion only if it is not
+- [x] 4 `[agent]` Update `TacOperation.pw.tsx` cases and the details mocks to the v2 shape
+- [x] 5 `[human]` Style the details page to the mockup and regenerate its screenshot baselines — [Figma](https://www.figma.com/design/1UWWsK0bg6ifzS9O1NLlo4/TAC-TON-TAC-operations?node-id=4001-37444)
