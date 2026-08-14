@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — subtask 01 of #3627 |
-| Status | `draft` |
+| Status | `in progress` |
 | Blocked by | none |
 
 ## What to build
@@ -24,20 +24,24 @@ contain `dist/tac-operation-lifecycle-proto/proto/v2/` with `status`, `rollback`
 
 ## Acceptance criteria
 
-- [ ] `package.json` pins `@blockscout/tac-operation-lifecycle-types` to the exact version above, with
+- [x] `package.json` pins `@blockscout/tac-operation-lifecycle-types` to the exact version above, with
       `pnpm-lock.yaml` updated by a real `pnpm install`
-- [ ] `tac.V2OperationBriefDetails`, `tac.V2OperationDetails`, `tac.V2OperationStatus`, `tac.V2OperationType`
+- [x] `tac.V2OperationBriefDetails`, `tac.V2OperationDetails`, `tac.V2OperationStatus`, `tac.V2OperationType`
       and `tac.V2OperationStage` all resolve from the existing `@blockscout/tac-operation-lifecycle-types`
       import
-- [ ] `pnpm lint:tsc` passes — the v1 exports are untouched, so nothing that reads them should break
-- [ ] Any typecheck breakage unrelated to the tac feature is reported rather than fixed here
+- [x] `pnpm lint:tsc` passes — the v1 exports are untouched, so nothing that reads them should break
+- [x] Any typecheck breakage unrelated to the tac feature is reported rather than fixed here — none surfaced
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Pin the exact version, `pnpm install`, then `pnpm lint:tsc` — skill: `publish-beta-types` (steps 3–4 only; the publish itself is done)
+- [x] 1 `[agent]` Pin the exact version, `pnpm install`, then `pnpm lint:tsc` — skill: `publish-beta-types` (steps 3–4 only; the publish itself is done)
   - inputs:
     - API service: `tac` → package `@blockscout/tac-operation-lifecycle-types`
     - Version to pin: `0.0.1-beta.71a05d5`
     - Publish is already done — do not re-run the workflow; `main` is the ref it came from, which is
       acceptable here because the v2 protos are merged and the skill's "never the default branch" rule
       exists to protect the stable channel, not this pin
+
+## Work log
+
+- `package.json` + `pnpm-lock.yaml` only — pin bumped from `1.1.0`; skill: `publish-beta-types` (steps 3–4).

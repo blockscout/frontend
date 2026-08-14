@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3627 |
-| Status | `ready` |
+| Status | `in progress` |
 | Feature branch | `issue-3627` |
 | PM | Ulyana |
 | Designer | Tatyana |
