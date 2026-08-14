@@ -13,9 +13,12 @@ import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
+import { useAppContext } from 'src/shell/app/context';
+
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import * as cookies from 'src/shared/storage/cookies';
 
 import type { TokenEnhancedData } from './utils';
 import { calculateUsdValue } from './utils';
@@ -24,6 +27,8 @@ interface Props {
   hash?: string;
   enabled?: boolean;
 }
+
+const EMPTY_TOKEN_BALANCES: Array<schemas['TokenBalance']> = [];
 
 const tokenBalanceItemIdentityFactory = (match: schemas['TokenBalance']) => (item: schemas['TokenBalance']) => ((
   match.token && item.token &&
@@ -40,6 +45,12 @@ const socketEventForTokenType = (tokenTypeId: string): string => {
 const additionalTypes = config.slices.token.additionalTypes;
 
 export default function useFetchTokens({ hash, enabled }: Props) {
+  const { cookies: appCookies } = useAppContext();
+
+  // the socket carries no request headers, so the backend pushes balances unfiltered —
+  // the scam filter it applies to the REST response has to be repeated here
+  const shouldHideScamTokens = config.slices.token.hideScamTokensEnabled && !(cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS, appCookies) === 'true');
+
   const erc20query = useApiQuery('core:address_tokens', {
     pathParams: { hash },
     queryParams: { type: [ 'ERC-20' ] },
@@ -85,19 +96,34 @@ export default function useFetchTokens({ hash, enabled }: Props) {
   const updateTokensData = React.useCallback((type: TokenType | Array<TokenType>, payload: AddressTokensBalancesSocketMessage) => {
     const queryKey = getResourceKey('core:address_tokens', { pathParams: { hash }, queryParams: { type: Array.isArray(type) ? type : [ type ] } });
 
+    const tokenBalances = shouldHideScamTokens ?
+      payload.token_balances.filter((item) => item.token?.reputation !== 'scam') :
+      payload.token_balances;
+    const scamBalances = shouldHideScamTokens ?
+      payload.token_balances.filter((item) => item.token?.reputation === 'scam') :
+      EMPTY_TOKEN_BALANCES;
+
     queryClient.setQueryData(queryKey, (
       prevData: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] | undefined,
     ) => {
-      const items = prevData?.items.map((currentItem) => {
-        const updatedData = payload.token_balances.find(tokenBalanceItemIdentityFactory(currentItem));
-        return updatedData ?? currentItem;
-      }) || [];
+      // a token can be flagged as scam while the page is open, so a cached row has to go
+      // when the socket reports its identity as scam
+      const items = prevData?.items
+        .filter((currentItem) => !scamBalances.some(tokenBalanceItemIdentityFactory(currentItem)))
+        .map((currentItem) => {
+          const updatedData = tokenBalances.find(tokenBalanceItemIdentityFactory(currentItem));
+          return updatedData ?? currentItem;
+        }) || [];
 
       const extraItems = prevData?.next_page_params ?
         [] :
-        payload.token_balances.filter((socketItem) => !items.some(tokenBalanceItemIdentityFactory(socketItem)));
+        tokenBalances.filter((socketItem) => !items.some(tokenBalanceItemIdentityFactory(socketItem)));
 
       if (!prevData) {
+        if (extraItems.length === 0) {
+          return undefined;
+        }
+
         return {
           items: extraItems,
           next_page_params: null,
@@ -109,7 +135,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
         next_page_params: prevData.next_page_params,
       };
     });
-  }, [ hash, queryClient ]);
+  }, [ hash, queryClient, shouldHideScamTokens ]);
 
   const additionalTokenTypesIds = React.useMemo(() => {
     return additionalTypes.map((item) => item.id);
