@@ -200,7 +200,7 @@ Mocks live in `mocks/operations.ts` and `mocks/search.ts`, and placeholder data 
 - [x] 02 Repoint the resources and rebuild the status tag on the operations list → [`subtasks/02-list-and-status-tag/`](subtasks/02-list-and-status-tag/spec.md) — blocked by: 01
 - [x] 03 Operation details page → [`subtasks/03-operation-details/`](subtasks/03-operation-details/spec.md) — blocked by: 02
 - [x] 04 By-transaction operations block → [`subtasks/04-by-tx-block/`](subtasks/04-by-tx-block/spec.md) — blocked by: 02
-- [ ] 05 Remove the v1 client and refresh the generated API docs → [`subtasks/05-remove-v1/`](subtasks/05-remove-v1/spec.md) — blocked by: 02, 03, 04
+- [x] 05 Remove the v1 client and refresh the generated API docs → [`subtasks/05-remove-v1/`](subtasks/05-remove-v1/spec.md) — blocked by: 02, 03, 04
 - [ ] 06 Point the search surfaces at the v2 shape → [`subtasks/06-search-surfaces/`](subtasks/06-search-surfaces/brief.md) — blocked by: 02
 
 ## Open questions

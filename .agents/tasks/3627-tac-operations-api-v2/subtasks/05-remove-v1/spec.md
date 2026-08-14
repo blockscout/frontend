@@ -19,14 +19,14 @@ which is what keeps this subtask honest rather than blocked.
 
 ## Acceptance criteria
 
-- [ ] No tac-service code path references `OperationType.PENDING`, `ROLLBACK`, `INSUFFICIENT_FEE` or `ERROR`
-- [ ] The `stat_operations` resource is gone from the tac service registry, with its payload-map and
+- [x] No tac-service code path references `OperationType.PENDING`, `ROLLBACK`, `INSUFFICIENT_FEE` or `ERROR`
+- [x] The `stat_operations` resource is gone from the tac service registry, with its payload-map and
       pagination entries
-- [ ] `/api/v1/tac/operations` and `/api/v1/tac/operations/{operation_id}` no longer appear in the
+- [x] `/api/v1/tac/operations` and `/api/v1/tac/operations/{operation_id}` no longer appear in the
       llms-txt generators
-- [ ] The remaining v1 type usage is confined to the search payload and its rendering, and is the only such
+- [x] The remaining v1 type usage is confined to the search payload and its rendering, and is the only such
       usage left
-- [ ] `pnpm lint:tsc`, `pnpm lint:eslint` and `pnpm lint:cspell` all pass
+- [x] `pnpm lint:tsc`, `pnpm lint:eslint` and `pnpm lint:cspell` all pass
 
 ## Details
 
@@ -38,6 +38,6 @@ and the search payload keeps typechecking.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Delete `stat_operations` and any now-unused v1 label mapping from the tac feature
-- [ ] 2 `[agent]` Update both llms-txt generators to the v2 paths
-- [ ] 3 `[agent]` Grep the repo for remaining legacy `type` value usage and confirm only the search payload remains
+- [x] 1 `[agent]` Delete `stat_operations` and any now-unused v1 label mapping from the tac feature
+- [x] 2 `[agent]` Update both llms-txt generators to the v2 paths
+- [x] 3 `[agent]` Grep the repo for remaining legacy `type` value usage and confirm only the search payload remains

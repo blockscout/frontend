@@ -17,9 +17,6 @@ export const TAC_OPERATION_LIFECYCLE_API_RESOURCES = {
     path: '/api/v2/tac/operations\\:byTx/:tx_hash',
     pathParams: [ 'tx_hash' ],
   },
-  stat_operations: {
-    path: '/api/v1/stat/operations',
-  },
 } satisfies Record<string, ApiResource>;
 
 export type TacOperationLifecycleApiResourceName = `tac:${ keyof typeof TAC_OPERATION_LIFECYCLE_API_RESOURCES }`;
@@ -29,7 +26,6 @@ export type TacOperationLifecycleApiResourcePayload<R extends TacOperationLifecy
 R extends 'tac:operations' ? tac.V2OperationsResponse :
 R extends 'tac:operation' ? tac.V2OperationDetails :
 R extends 'tac:operation_by_tx_hash' ? tac.V2OperationsFullResponse :
-R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
