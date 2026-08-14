@@ -43,6 +43,54 @@ Rough shape, to be confirmed when the endpoint's contract is known:
   fallback, or gate the feature on the endpoint's presence. This is the main open design question and needs
   the backend's release plan.
 
+## What the endpoint actually returns (sampled 2026-08-14)
+
+`GET /api/v2/transactions/:hash/preview`, 404 + `{"message":"Not found"}` for an unknown hash — so the
+`fetchApi` trap the parent spec describes still applies. Payload:
+
+```json
+{ "status": "ok", "timestamp": "2026-08-14T08:46:24.000000Z", "method": "exactInputSingle",
+  "from": { "hash": "0x…", "name": null, "ens_domain_name": null },
+  "to":   { "hash": "0x…", "name": "SwapRouter02", "ens_domain_name": null } }
+```
+
+Three boolean query parameters, all defaulting to **false**: `preload_ens`, `preload_metadata`,
+`decode_input`. The endpoint rejects an unknown field with a 400 (`Unexpected field: <name>`), so the accepted
+set is exactly those three.
+
+- `decode_input=true` is what turns `method` from the raw selector into the name — `0x04e45aaf` becomes
+  `exactInputSingle`, matching `/transactions/:hash`. **Without it the fallback action line would show the
+  selector**, so this task must send it.
+- `preload_ens=true` works: an ENS name on `from` appears only with the parameter.
+- `preload_metadata=true` is accepted but **serializes nothing** — no `metadata` key reaches the address
+  objects with or without it, so where `/transactions/:hash` returns a curated name tag the preview response
+  carries only the plain contract name (Q3's `OKX Labs: DexRouter` → `DexRouter` case). Reported and
+  **confirmed as a bug by the backend on 2026-08-14, fix coming**, so the spec should assume the tags arrive
+  and Q3's dial stays where the PM left it.
+
+### Latency
+
+Paced sampling on the loaded instance the parent spec's Q2 is about — the hard case — with disjoint
+transaction sets per variant so nothing is warmed by a sibling call, and `/stats` as the network control at
+0.37 s:
+
+| request | p50 | p90 | max | over 2 s |
+| --- | --- | --- | --- | --- |
+| `/preview` bare | 0.76 s | 1.11 s | 1.31 s | 0 / 8 |
+| `/preview?decode_input=true` | 0.91 s | 1.17 s | 1.96 s | 0 / 8 |
+| `/preview` + all three parameters | 0.66 s | 0.92 s | 1.66 s | 0 / 8 |
+| `/transactions/:hash` | 1.90 s | 2.64 s | 3.34 s | 4 / 8 |
+| `/transactions/:hash/summary` | 4.31 s | 5.56 s | 11.16 s | 7 / 8 |
+
+The preloads cost nothing measurable — the spread between the three preview rows is smaller than the run-to-run
+noise — so **request all of them**. The endpoint solves the mandatory half of the description outright: status
+and timestamp now arrive inside the budget on the instance where they never did.
+
+The summary does not, and that is the shape of the change: the two requests stay **separate**, each with its
+own timeout, so a `/summary` that misses the budget degrades to the preview's own fields (status, timestamp,
+and the `called … on …` line) instead of taking the whole description down with it. Folding the summary into
+the preview response would have coupled them, which is why it was rejected.
+
 ## Where it stands (2026-07-29)
 
 Nikita P. is building the endpoint with the **ens / metadata / summary preloads individually switchable**, and
@@ -56,3 +104,8 @@ the script from the earlier measurements takes a host as input.
 
 Blocked on the endpoint reaching staging. Thread:
 https://blockscout.slack.com/archives/C03MMUTQDNU/p1785325326478759
+
+**Update (2026-08-14):** deployed and measured (tables above). The endpoint delivers what it was asked for —
+status and timestamp inside the budget on the loaded instance, with the preloads on. Ready to scope; the one
+loose thread is `preload_metadata` serializing no tags, which changes the action text but not the shape of
+the change.
