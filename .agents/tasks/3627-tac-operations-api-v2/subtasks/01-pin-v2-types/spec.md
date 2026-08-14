@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — subtask 01 of #3627 |
-| Status | `in progress` |
+| Status | `done` |
 | Blocked by | none |
 
 ## What to build
