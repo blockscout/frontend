@@ -19,8 +19,9 @@ import { getItemCategory, getSearchCategories } from 'src/slices/search/utils/se
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
+import SearchResultTacOperationStatus from 'src/features/chain-variants/tac/components/SearchResultTacOperationStatus';
 import * as TacOperationEntity from 'src/features/chain-variants/tac/components/TacOperationEntity';
-import TacOperationStatus from 'src/features/chain-variants/tac/components/TacOperationStatus';
+import { getLegacyTacOperationStatus } from 'src/features/chain-variants/tac/utils/tac-operation-legacy';
 import * as BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
 import * as EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
@@ -363,7 +364,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
           <>
             <TableCell colSpan={ 2 } fontSize="sm">
               <TacOperationEntity.Container>
-                <TacOperationEntity.Icon type={ data.tac_operation.type }/>
+                <TacOperationEntity.Icon status={ getLegacyTacOperationStatus(data.tac_operation.type) }/>
                 <TacOperationEntity.Link
                   isLoading={ isLoading }
                   id={ data.tac_operation.operation_id }
@@ -377,7 +378,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                     mr={ 2 }
                   />
                 </TacOperationEntity.Link>
-                <TacOperationStatus status={ data.tac_operation.type }/>
+                <SearchResultTacOperationStatus type={ data.tac_operation.type }/>
               </TacOperationEntity.Container>
             </TableCell>
             <TableCell fontSize="sm" verticalAlign="middle" isNumeric>

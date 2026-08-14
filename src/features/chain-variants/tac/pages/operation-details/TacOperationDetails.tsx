@@ -14,7 +14,7 @@ import TacOperationLifecycleAccordion from './TacOperationLifecycleAccordion';
 
 interface Props {
   isLoading?: boolean;
-  data: tac.OperationDetails;
+  data: tac.V2OperationDetails;
 }
 
 const TacOperationDetails = ({ isLoading, data }: Props) => {
@@ -50,7 +50,13 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
         Status
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <TacOperationStatus status={ data.type } isLoading={ isLoading }/>
+        <TacOperationStatus
+          status={ data.status }
+          type={ data.type }
+          errorReason={ data.error_reason }
+          isLoading={ isLoading }
+          isRollback={ data.rollback }
+        />
       </DetailedInfo.ItemValue>
 
       { data.timestamp && (
@@ -76,7 +82,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             Lifecycle
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue mt={ 1 }>
-            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } type={ data.type }/>
+            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } status={ data.status }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

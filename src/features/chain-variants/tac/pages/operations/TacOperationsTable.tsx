@@ -14,7 +14,7 @@ import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } 
 import TacOperationsTableItem from './TacOperationsTableItem';
 
 type Props = {
-  items: Array<tac.OperationBriefDetails>;
+  items: Array<tac.V2OperationBriefDetails>;
   isLoading?: boolean;
   resetKey?: string;
 };
@@ -27,7 +27,7 @@ const TacOperationsTable = ({ items, isLoading, resetKey }: Props) => {
       <TableRoot minW="950px">
         <TableHeaderSticky top={ 68 }>
           <TableRow>
-            <TableColumnHeader w="200px">Status</TableColumnHeader>
+            <TableColumnHeader w="250px">Status</TableColumnHeader>
             <TableColumnHeader w="100%">Operation</TableColumnHeader>
             <TableColumnHeader w="200px">
               Timestamp
