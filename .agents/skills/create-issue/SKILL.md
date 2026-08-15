@@ -34,6 +34,8 @@ Follow the `check-github-cli` skill before any `gh` command below. Do not procee
 
 **Repository.** Recommend one: this workspace's `origin` when it is a `blockscout/*` repo and the topic fits; otherwise a best-guess `blockscout/*` repo from the topic. Skip fork remotes. If they say it is the wrong place, list `blockscout` source repos (`gh repo list blockscout --source --no-archived --limit 100 --json name,description`) or take an `owner/name` they type.
 
+**Type.** Infer one of `Bug`, `Task`, or `Feature` from the topic: unexpected broken behavior → `Bug`; new user-facing capability → `Feature`; otherwise `Task`.
+
 **Labels.** `gh label list --repo <owner>/<name> --json name,description --limit 100`. Pick labels that match the topic; zero is fine.
 
 **Title.** Imperative mood ("Fix X", "Add support for Y").
@@ -66,7 +68,7 @@ Follow the `check-github-cli` skill before any `gh` command below. Do not procee
 
 ## Step 4 — Confirm, create, stop
 
-Present repository, title, body, labels (or "None"), and project board (or "None") and wait. Apply requested edits and re-confirm.
+Present repository, type, title, body, labels (or "None"), and project board (or "None") and wait. Apply requested edits and re-confirm.
 
 Then create:
 
@@ -75,10 +77,11 @@ gh issue create \
   --repo <owner>/<name> \
   --title "<title>" \
   --body-file <path> \
+  --type "<Bug|Task|Feature>" \
   --label "<label>"
 ```
 
-Omit `--label` when there are none. Repeat `--label` for each label. Write the body to a temp file so shell escaping cannot mangle it.
+Omit `--label` when there are none. Repeat `--label` for each label. Always pass `--type`. Write the body to a temp file so shell escaping cannot mangle it.
 
 If the repo is in the table, add the new issue to the specified project board:
 
