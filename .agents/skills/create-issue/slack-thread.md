@@ -18,7 +18,6 @@ If the URL cannot be parsed, ask for `channel_id` and `message_ts`.
 
 ```
 Tool: slack_read_thread
-Server: plugin-slack-slack
 Arguments:
   channel_id: "<channel_id>"
   message_ts: "<message_ts>"

@@ -1,14 +1,14 @@
 ---
 name: create-issue
 description: >-
-  Create a GitHub issue from the available context. Use when they ask
-  to file or create an issue from a discussion, Slack link, meeting notes, or
-  a document.
+  Create a GitHub issue from the available context. Use when the user asks
+  to file an issue from a source they name (Slack thread, notes, document)
+  or from this conversation.
 ---
 
 # Create issue
 
-Turn a provided information into a thin, public-safe GitHub issue. Then stop.
+Turn the provided material into a thin, public-safe GitHub issue. Then stop.
 
 ## Step 1 — Resolve the source
 
@@ -18,7 +18,7 @@ Done when one body of material is in hand, or the run has stopped.
 - They named nothing → this conversation is the source.
 - Use only that pointer, or this conversation.
 
-**Fetch a pointer.** Content already in the chat (paste, attachment) is the source. For a URL or an id a connected tool can read, try those tools. For reading Slack threads use [`slack-thread.md`](slack-thread.md) instruction. If fetch fails (no tool, auth error, unknown host), ask the user to paste the relevant notes. If they decline or paste nothing useful, stop and tell them the issue cannot be created.
+**Fetch a pointer.** Content already in the chat (paste, attachment) is the source. For a URL or an id a connected tool can read, try those tools. To read a Slack thread, follow [`slack-thread.md`](slack-thread.md). If fetch fails (no tool, auth error, unknown host), ask the user to paste the relevant notes. If they decline or paste nothing useful, stop and tell them the issue cannot be created.
 
 ## Step 2 — Pick the topic
 
@@ -30,6 +30,8 @@ Done when exactly one topic is selected, or the run has stopped.
 
 ## Step 3 — Draft
 
+Done when repository, type, labels, title and body are all decided.
+
 Follow the `check-github-cli` skill before any `gh` command below. Do not proceed with `gh` until `gh auth status` succeeds.
 
 **Repository.** Recommend one: this workspace's `origin` when it is a `blockscout/*` repo and the topic fits; otherwise a best-guess `blockscout/*` repo from the topic. Skip fork remotes. If they say it is the wrong place, list `blockscout` source repos (`gh repo list blockscout --source --no-archived --limit 100 --json name,description`) or take an `owner/name` they type.
@@ -40,7 +42,7 @@ Follow the `check-github-cli` skill before any `gh` command below. Do not procee
 
 **Title.** Imperative mood ("Fix X", "Add support for Y").
 
-**Body.** Neutral third-person technical language that can stand on a public tracker. From this conversation, take the ask plus concrete technical facts already established (errors, affected surface) — not the debugging transcript or references to the existing code. Omit empty sections:
+**Body.** Neutral third-person technical language that can stand on a public tracker. From the source, take the ask plus concrete technical facts already established (errors, affected surface) — not the debugging transcript or references to the existing code. Omit empty sections:
 
 ```markdown
 ## Description
@@ -81,9 +83,9 @@ gh issue create \
   --label "<label>"
 ```
 
-Omit `--label` when there are none. Repeat `--label` for each label. Always pass `--type`. Write the body to a temp file so shell escaping cannot mangle it.
+Omit `--label` when there are none. Repeat `--label` for each label. Pass `--type` for `blockscout/*` repos; on a type-resolution error, retry the same create without `--type`. Write the body to a temp file so shell escaping cannot mangle it.
 
-If the repo is in the table, add the new issue to the specified project board:
+If the repo is in the table, add the new issue to the specified project board. Before `item-add`, check that `gh auth status` lists a `project` scope; if it does not, tell the user to run `gh auth refresh -s project` and wait until it does:
 
 | Repo | Owner | Project number |
 |---|---|---|
