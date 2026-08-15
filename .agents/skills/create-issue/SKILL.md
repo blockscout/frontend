@@ -66,7 +66,7 @@ Follow the `check-github-cli` skill before any `gh` command below. Do not procee
 
 ## Step 4 — Confirm, create, stop
 
-Present repository, title, body, and labels (or "None") and wait. Apply requested edits and re-confirm.
+Present repository, title, body, labels (or "None"), and project board (or "None") and wait. Apply requested edits and re-confirm.
 
 Then create:
 
@@ -79,5 +79,18 @@ gh issue create \
 ```
 
 Omit `--label` when there are none. Repeat `--label` for each label. Write the body to a temp file so shell escaping cannot mangle it.
+
+If the repo is in the table, add the new issue to the specified project board:
+
+| Repo | Owner | Project number |
+|---|---|---|
+| `blockscout/frontend` | `blockscout` | 6 |
+| `blockscout/blockscout` | `blockscout` | 8 |
+
+```bash
+gh project item-add <number> --owner <owner> --url <issue-url>
+```
+
+Unlisted repos skip the board. A board failure does not undo the issue — report it and still show the issue link.
 
 Show a clickable Markdown link to the new issue. The skill is done — no grilling, speccing, or implementing unless they ask in a follow-up.
