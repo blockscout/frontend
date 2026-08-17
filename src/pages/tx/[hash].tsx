@@ -21,10 +21,9 @@ import { SECOND } from 'src/toolkit/utils/consts';
 
 const pathname: Route['pathname'] = '/tx/[hash]';
 
-// Both endpoints compute their response on the first request for a transaction and cache it afterwards,
-// and a crawler is always that first request — measured on eth mainnet, 40% of cold `/summary` calls need
-// more than a second. A crawler waiting is still cheaper than a preview with no description.
 const API_TIMEOUT = 2 * SECOND;
+
+const PREVIEW_QUERY_PARAMS = { decode_input: 'true', preload_ens: 'true', preload_metadata: 'true' };
 
 const Transaction = dynamic(() => {
   return import('src/slices/tx/pages/details/Transaction');
@@ -53,7 +52,7 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
     const hash = getQueryParamString(ctx.query.hash);
 
     const [ txData, interpretationData ] = await Promise.all([
-      fetchApi({ resource: 'core:tx', pathParams: { hash }, timeout: API_TIMEOUT }),
+      fetchApi({ resource: 'core:tx_preview', pathParams: { hash }, queryParams: PREVIEW_QUERY_PARAMS, timeout: API_TIMEOUT }),
       fetchApi({ resource: 'core:tx_interpretation', pathParams: { hash }, timeout: API_TIMEOUT }),
     ]);
 

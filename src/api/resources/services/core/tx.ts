@@ -31,6 +31,10 @@ export const CORE_API_TX_RESOURCES = {
     path: '/api/v2/transactions/:hash',
     pathParams: [ 'hash' as const ],
   },
+  tx_preview: {
+    path: '/api/v2/transactions/:hash/preview',
+    pathParams: [ 'hash' as const ],
+  },
   tx_internal_txs: {
     path: '/api/v2/transactions/:hash/internal-transactions',
     pathParams: [ 'hash' as const ],
@@ -92,6 +96,7 @@ R extends 'core:txs_stats' ? paths['/api/v2/transactions/stats']['get'] :
 R extends 'core:txs_watchlist' ? paths['/api/v2/transactions/watchlist']['get'] :
 R extends 'core:txs_execution_node' ? paths['/api/v2/transactions/execution-node/{execution_node_hash_param}']['get'] :
 R extends 'core:tx' ? paths['/api/v2/transactions/{transaction_hash_param}']['get'] :
+R extends 'core:tx_preview' ? paths['/api/v2/transactions/{transaction_hash_param}/preview']['get'] :
 R extends 'core:tx_logs' ? paths['/api/v2/transactions/{transaction_hash_param}/logs']['get'] :
 R extends 'core:tx_token_transfers' ? paths['/api/v2/transactions/{transaction_hash_param}/token-transfers']['get'] :
 R extends 'core:tx_internal_txs' ? paths['/api/v2/transactions/{transaction_hash_param}/internal-transactions']['get'] :

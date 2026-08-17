@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 6 of #3593 |
-| Status | `ready` |
+| Status | `in progress` |
 | Size | `small` |
 | Sub-branch | — (commits land directly on `issue-3593`, as in subtasks 1–5) |
 | PM | Ulyana (task author) |
@@ -121,14 +121,19 @@ No visual output — `<meta>` tags only.
 
 ## Task breakdown
 
-- [ ] 1 `[agent]` Publish the beta types and pin the exact version — skill: `publish-beta-types`
+- [x] 1 `[agent]` Publish the beta types and pin the exact version — skill: `publish-beta-types`
+  — `0.0.1-beta.e709d22`, published from `dev` ([run](https://github.com/blockscout/blockscout/actions/runs/32009994992))
+  and pinned in `package.json`; the schema types the three query parameters and a `PreviewAddress` with
+  `metadata`.
   - inputs:
     - Service `core` → package `@blockscout/api-types`, repo `blockscout/blockscout`, workflow
       `publish-api-types-npm-dev.yml` (no dispatch inputs).
     - Branch: **`dev`** — it carries both the endpoint and the metadata fix (Q1). `master` has only partial OpenAPI
       schema support, so a package built from it would not be correct.
     - Pin the exact published version in `package.json` — never the `@beta` tag.
-- [ ] 2 `[agent]` Declare the `core:tx_preview` resource — skill: `add-api-resource`
+- [x] 2 `[agent]` Declare the `core:tx_preview` resource — skill: `add-api-resource`
+  — entry and payload branch in `src/api/resources/services/core/tx.ts`, typed from the package's
+  `paths[…/preview]['get']`; verified with a throwaway `ResourcePayload` probe (positive and negative).
   - inputs:
     - Service `core`, key `core:tx_preview`, path `/api/v2/transactions/:hash/preview`, path param `hash`.
     - Live instance for the sample response: the loaded instance from the parent spec's Q2 (the developer
@@ -136,7 +141,10 @@ No visual output — `<meta>` tags only.
     - Types-package state: published by step 1; type comes from
       `paths['/api/v2/transactions/{transaction_hash_param}/preview']['get']`.
     - No filters, no sorting, not paginated.
-- [ ] 3 `[agent]` Switch the page to the preview resource
+- [x] 3 `[agent]` Switch the page to the preview resource
+  — `[hash].tsx` calls `core:tx_preview` with the three parameters; `getOgDescriptionParams` and the mocks
+  take `schemas['Preview']`, and `addressToPlainText` now takes the same name-source type `getAddressName`
+  defines, since the preview's address carries only those fields.
   - inputs:
     - In `src/pages/tx/[hash].tsx`, replace the `core:tx` call with `core:tx_preview` plus
       `queryParams: { preload_ens: true, preload_metadata: true, decode_input: true }`; leave the

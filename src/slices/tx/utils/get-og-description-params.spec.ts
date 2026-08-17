@@ -1,7 +1,7 @@
 import type { schemas } from '@blockscout/api-types';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 
-import { base } from 'src/slices/tx/mocks/details';
+import { preview } from 'src/slices/tx/mocks/details';
 
 import { TX_INTERPRETATION } from 'src/features/tx-interpretation/blockscout/stubs';
 
@@ -11,7 +11,7 @@ import { it, expect, describe } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 // The interpretation feature is off in the test env, so every case that needs an action runs with it on.
-function getParamsWithInterpretation(tx: schemas['TransactionResponse'] | undefined, interpretation?: TxInterpretationResponse) {
+function getParamsWithInterpretation(tx: schemas['Preview'] | undefined, interpretation?: TxInterpretationResponse) {
   return withEnvs(ENVS_MAP.txInterpretation, async() => {
     const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
     return getOgDescriptionParams(tx, interpretation);
@@ -19,7 +19,7 @@ function getParamsWithInterpretation(tx: schemas['TransactionResponse'] | undefi
 }
 
 it('derives the three params from the summary and the transaction', async() => {
-  expect(await getParamsWithInterpretation(base, TX_INTERPRETATION)).toEqual({
+  expect(await getParamsWithInterpretation(preview, TX_INTERPRETATION)).toEqual({
     tx_status: 'Success',
     tx_action: 'Wrap 0.7 Ether into 0.7 STUB',
     tx_timestamp: 'Oct 10, 2022 14:34 UTC',
@@ -32,13 +32,13 @@ describe('status', () => {
     [ 'error' as const, 'Failed' ],
     [ null, 'Pending' ],
   ])('%s → %s', async(status, expected) => {
-    const result = await getParamsWithInterpretation({ ...base, status }, TX_INTERPRETATION);
+    const result = await getParamsWithInterpretation({ ...preview, status }, TX_INTERPRETATION);
     expect(result?.tx_status).toBe(expected);
   });
 
   it('gives up when the field never arrived', async() => {
-    const { status, ...txWithoutStatus } = base;
-    expect(await getParamsWithInterpretation(txWithoutStatus as schemas['TransactionResponse'], TX_INTERPRETATION)).toBeNull();
+    const { status, ...txWithoutStatus } = preview;
+    expect(await getParamsWithInterpretation(txWithoutStatus as schemas['Preview'], TX_INTERPRETATION)).toBeNull();
   });
 });
 
@@ -48,27 +48,27 @@ describe('gives up when a part is missing', () => {
   });
 
   it('a pending transaction, which has no timestamp', async() => {
-    expect(await getParamsWithInterpretation({ ...base, status: null, timestamp: null }, TX_INTERPRETATION)).toBeNull();
+    expect(await getParamsWithInterpretation({ ...preview, status: null, timestamp: null }, TX_INTERPRETATION)).toBeNull();
   });
 
   it('an error body, which `fetchApi` hands back as data', async() => {
-    const notFound = { message: 'Not found' } as unknown as schemas['TransactionResponse'];
+    const notFound = { message: 'Not found' } as unknown as schemas['Preview'];
     expect(await getParamsWithInterpretation(notFound, TX_INTERPRETATION)).toBeNull();
   });
 
   it('no usable summary and no method to fall back on', async() => {
-    expect(await getParamsWithInterpretation({ ...base, method: null })).toBeNull();
+    expect(await getParamsWithInterpretation({ ...preview, method: null })).toBeNull();
   });
 
   it('the interpretation feature is off', async() => {
     const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
-    expect(getOgDescriptionParams(base, TX_INTERPRETATION)).toBeNull();
+    expect(getOgDescriptionParams(preview, TX_INTERPRETATION)).toBeNull();
   });
 
   it('the provider is Noves, whose page text this summary is not', async() => {
     const params = await withEnvs([ [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'noves' ] ], async() => {
       const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
-      return getOgDescriptionParams(base, TX_INTERPRETATION);
+      return getOgDescriptionParams(preview, TX_INTERPRETATION);
     });
 
     expect(params).toBeNull();
@@ -77,12 +77,12 @@ describe('gives up when a part is missing', () => {
 
 describe('falls back to the called-method line', () => {
   it('names the addresses the way the page does', async() => {
-    const result = await getParamsWithInterpretation(base);
+    const result = await getParamsWithInterpretation(preview);
     expect(result?.tx_action).toBe('kitty.kitty.cat.eth called updateSmartAsset on 0xd7...5859');
   });
 
   it('reads as a failed call for a failed transaction', async() => {
-    const result = await getParamsWithInterpretation({ ...base, status: 'error' });
+    const result = await getParamsWithInterpretation({ ...preview, status: 'error' });
     expect(result?.tx_action).toBe('kitty.kitty.cat.eth failed to call updateSmartAsset on 0xd7...5859');
   });
 });
