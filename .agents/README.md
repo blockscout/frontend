@@ -8,7 +8,7 @@ here; each tool reads it through its own directory via symlinks.
 | `AGENTS.md` | Always-loaded project context | `.claude/CLAUDE.md` → here; Cursor reads `AGENTS.md` natively |
 | `rules/*.md` | Coding rules, scoped to file patterns | `.claude/rules/` and `.cursor/rules/` — see below |
 | `skills/*/SKILL.md` | Workflows loaded on invocation | `.claude/skills/` → here |
-| `delegation.md`, `GLOSSARY.md`, `TEAM.md` | Read on demand, by pointer from `AGENTS.md` or a skill | — |
+| `delegation.md`, `GLOSSARY.md`, `TEAM.md`, `slack-thread.md` | Read on demand, by pointer from `AGENTS.md` or a skill | — |
 | `tasks/` | Product-task specs — see `tasks/README.md` | — |
 
 Cross-references between all of these are machine-checked: `pnpm lint:doc-links`.

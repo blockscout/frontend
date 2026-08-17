@@ -1,10 +1,8 @@
-# Slack thread pointer
+# Read a Slack thread
 
-Parse a Slack thread URL and read it with the Slack MCP. If the tool is missing, unauthenticated, or errors, return to the parent skill's paste fallback — Slack is not a hard gate.
+Parse a Slack thread URL and read the full conversation, including replies.
 
 ## Parse the URL
-
-Patterns:
 
 - `https://<workspace>.slack.com/archives/<channel_id>/p<timestamp_without_dot>`
 - `https://app.slack.com/client/<workspace_id>/<channel_id>/thread/<channel_id>-<timestamp_without_dot>`
@@ -25,3 +23,7 @@ Arguments:
 ```
 
 If the thread has more than 200 messages, paginate with `cursor` until the full conversation is read.
+
+Attachments often carry the actual content. The Slack connector reports metadata only — download each file.
+
+**Done when:** every message and attachment in the thread is in hand.
