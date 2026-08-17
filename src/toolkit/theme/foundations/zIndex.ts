@@ -12,7 +12,7 @@ export const zIndex = {
   banner: { value: 1200 },
   overlay: { value: 1300 },
   modal: { value: 1400 },
-  modal2: { value: 14001 },
+  modal2: { value: 1401 },
   tooltip: { value: 1550 }, // otherwise tooltips will not be visible in modals
   tooltip2: { value: 1551 }, // for tooltips in tooltips
   toast: { value: 1700 },

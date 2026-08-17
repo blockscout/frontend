@@ -1,22 +1,35 @@
 # React render profiling — context
 
 Tooling for measuring and attributing React render cost of heavy pages (large tables,
-long lists). Born out of the July 2026 `TokenTransferTable` optimization (dev 1275→646ms,
-prod 554→259ms); kept generic so any page can be profiled the same way.
+long lists).
 
 ## Files
 
 | File | Role |
 |---|---|
-| `profile.preset.sh` | `pnpm profile:preset <alias>` — production build + serve with the profiling `react-dom`, env-wired to a live instance exactly like `pnpm dev:preset` (see `tools/dev-server/CONTEXT.md`). `--skip-build` re-serves the existing build. |
 | `aggregate-react-profile.mjs` | `pnpm profile:analyze <profile.json> [profileB.json]` — turns a React DevTools Profiler export into a per-component cost table (total self ms / instances / avg). With two files, also prints a delta table. |
+
+## Running a profileable build
+
+There is no dedicated profiling script — the production run script takes a flag:
+
+```
+pnpm prod:preset <alias> --profile               # fetch envs, build, serve
+pnpm prod:preset <alias> --profile --skip-build  # re-serve the existing build
+```
+
+That is the ordinary `pnpm prod:preset` production build + serve (env-wired to a live instance —
+see `tools/dev-server/CONTEXT.md` for the env layering and the preset registry), with `--profile`
+switching the build to `next build --webpack --profile` so the profiling `react-dom` is aliased in.
+With `--skip-build` nothing is rebuilt, so `--profile` has no effect there: you get whatever
+flavor is already in `.next` — profileable only if the last full build had the flag.
 
 ## Workflow
 
 1. **Attribute in dev** — `pnpm dev:preset <alias>`, record the scenario in the React DevTools
    Profiler, export ("Save profile...", the down-arrow button), run `pnpm profile:analyze` on it.
    Dev numbers are inflated (~2.5× vs prod) but component names are real.
-2. **Size in prod** — `pnpm profile:preset <alias>`, record the same scenario. Numbers are close
+2. **Size in prod** — `pnpm prod:preset <alias> --profile`, record the same scenario. Numbers are close
    to what users pay; most names are minified.
 3. **Compare** — `pnpm profile:analyze a.json b.json` (e.g. baseline vs patched: `git stash` around
    the rebuild). Only compare traces from the **same build flavor** — minified names differ across builds.

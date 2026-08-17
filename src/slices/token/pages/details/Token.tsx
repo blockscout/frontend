@@ -41,7 +41,6 @@ import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
 
@@ -51,12 +50,16 @@ const TokenPageContent = () => {
   useEtherscanRedirects();
   const queryClient = useQueryClient();
 
+  // Ideally, with the current API setup, we should wait until the socket connection is established before fetching the token data
+  // so the client does not miss events related to total supply changes.
+  // However, this would require moving the token request out of the primed list, which would reduce page-loading speed.
+  // Therefore, we decided not to do this, as we expect a very small number of affected users.
   const tokenQuery = useTokenQuery(hashString);
 
   const addressQuery = useApiQuery('core:address', {
     pathParams: { hash: hashString },
     queryOptions: {
-      enabled: isQueryEnabled && Boolean(router.query.hash),
+      enabled: Boolean(router.query.hash),
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
@@ -83,13 +86,9 @@ const TokenPageContent = () => {
     });
   }, [ queryClient, hashString ]);
 
-  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
-
   const channel = useSocketChannel({
     topic: `tokens:${ hashString?.toLowerCase() }`,
     isDisabled: !hashString,
-    onJoin: enableQuery,
-    onSocketError: enableQuery,
   });
   useSocketMessage({
     channel,
@@ -123,11 +122,11 @@ const TokenPageContent = () => {
     queryOptions: { enabled: Boolean(hashString), placeholderData: TOKEN_COUNTERS },
   });
 
-  const address3rdPartyWidgets = useAddress3rdPartyWidgets('token', false, isQueryEnabled);
+  const address3rdPartyWidgets = useAddress3rdPartyWidgets('token', false);
 
   throwOnResourceLoadError(tokenQuery);
 
-  const isMainDataLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
+  const isMainDataLoading = tokenQuery.isPlaceholderData;
   const isFullDataLoading = isMainDataLoading || (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.configQuery.isPlaceholderData);
 
   const transfersCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.transfers_count ?
@@ -154,18 +153,15 @@ const TokenPageContent = () => {
     addressQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
-        if (addressQuery.data?.is_verified) {
-          return (
-            <>
-              <span>Contract</span>
-              <SpriteIcon name="status/success" boxSize="14px" color="green.500"/>
-            </>
-          );
-        }
-
-        return 'Contract';
+        return (
+          <>
+            <span>Contract</span>
+            { addressQuery.data?.is_verified &&
+              <SpriteIcon name="status/success" boxSize="14px" color="green.500" isLoading={ addressQuery.isPlaceholderData }/> }
+          </>
+        );
       },
-      component: <Contract addressData={ addressQuery.data } isLoading={ isMainDataLoading }/>,
+      component: <Contract addressData={ addressQuery.data } isLoading={ isMainDataLoading || addressQuery.isPlaceholderData }/>,
       subTabs: CONTRACT_TAB_IDS,
     } : undefined,
     hasInventoryTab ? {

@@ -15,6 +15,7 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
+import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransferTableItem from './TokenTransferTableItem';
 
 interface Props {
@@ -81,7 +82,7 @@ const TokenTransferTable = ({
           ) }
           { data.slice(0, renderedItemsNum).map((item, index) => (
             <TokenTransferTableItem
-              key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
+              key={ getTokenTransferKey(item) + (isLoading ? index : '') }
               data={ item }
               baseAddress={ baseAddress }
               showTxInfo={ showTxInfo }

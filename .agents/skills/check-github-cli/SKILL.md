@@ -14,4 +14,4 @@ Use this skill whenever a workflow or command requires the GitHub CLI (`gh`). Be
    - Do not attempt to authenticate on the user's behalf; only guide them with the commands and link to [GitHub CLI authentication docs](https://cli.github.com/manual/gh_auth_login).
 2. **If `gh auth status` succeeds**: Proceed with the steps that require `gh`.
 
-Other skills that depend on `gh` (e.g. get-checks-status) should instruct the agent to ensure GitHub CLI is ready first by following this skill.
+Other skills that depend on `gh` (e.g. create-pr) should instruct the agent to ensure GitHub CLI is ready first by following this skill.

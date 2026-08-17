@@ -34,11 +34,18 @@ export default function useDetectWalletEip6963() {
   const detectionTimeoutRef = React.useRef<number | null>(null);
 
   const handleAnnounceProviderEvent = React.useCallback((event: CustomEvent<EIP6963ProviderDetail>) => {
+    // A non-compliant wallet extension can dispatch the announce event with a null or partial
+    // `detail`; bail instead of dereferencing `info` on it (EIP-6963 requires it, but we can't trust it).
+    const info = event.detail?.info;
+    if (!info) {
+      return;
+    }
+
     const wallet = Object.entries(WALLET_RDNS_MAP)
-      .find(([ , rdns ]) => rdns === event.detail.info.rdns)?.[0] as WalletType | undefined;
+      .find(([ , rdns ]) => rdns === info.rdns)?.[0] as WalletType | undefined;
 
     if (wallet && !DETECTED_PROVIDERS[wallet]) {
-      DETECTED_PROVIDERS[wallet] = event.detail?.provider;
+      DETECTED_PROVIDERS[wallet] = event.detail.provider;
     }
   }, []);
 

@@ -7,6 +7,7 @@ const hashFromRoute = { routeParam: 'hash' };
 const getResources = (): Array<PrimedResource> => [
   { resource: 'core:token', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
   { resource: 'core:token_counters', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
+  { resource: 'core:address', pathParams: { hash: hashFromRoute }, tabs: [ 'index' ] },
 ];
 
 export const tokenPage: PagePrimerConfig = {

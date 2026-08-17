@@ -694,7 +694,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.send_count && (
+        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && typeof data.arbitrum.send_count === 'number' && (
           <>
             <DetailedInfo.ItemLabel
               hint={ `The cumulative number of ${ layerLabels.current } to ${ layerLabels.parent } transactions as of this block` }

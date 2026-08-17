@@ -6,6 +6,7 @@ export * from './FormFieldAddress';
 export * from './FormFieldCheckbox';
 export * from './FormFieldCheckboxGroup';
 export * from './FormFieldColor';
+export * from './FormFieldDate';
 export * from './FormFieldEmail';
 export * from './FormFieldNumber';
 export * from './FormFieldRadio';

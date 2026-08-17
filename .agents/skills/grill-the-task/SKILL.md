@@ -1,8 +1,9 @@
 ---
 name: grill-the-task
 description: >-
-  Grill a product task (GitHub issue) into an implementable spec — research first, then a
-  one-question-at-a-time interview; also elaborates sub-specs for deferred subtasks of large tasks.
+  Grill a product task (GitHub issue) into implementable work — research first, then a
+  one-question-at-a-time interview, then a breakdown quizzed with the developer; also scopes deferred
+  subtasks.
 disable-model-invocation: true
 ---
 
@@ -10,17 +11,19 @@ disable-model-invocation: true
 
 Product task issues arrive thin — a title and a couple of links. This skill closes the gap: research
 everything researchable, then grill the developer about everything that is a *decision*, tracking what they
-can't answer as open questions for the responsible people. The output is a spec, written by the `to-spec`
-skill.
+can't answer as open questions for the responsible people.
 
 **Two modes.**
 
-- **Task mode** (default): input is a GitHub issue URL; output is the task's main spec.
-- **Subtask mode**: input is an existing spec plus a subtask number (one that has only a `brief.md`, no
-  `spec.md` yet); the session scopes research and questions to that subtask, reads its folder's `brief.md`
-  (plus any `research.md` / prototype notes gathered since) as the starting point, and writes its sub-spec
-  (`subtasks/<NN>-<slug>/spec.md`). Run it just-in-time, right before the subtask starts, against the
-  by-then-current code.
+- **Task mode** (default): input is a GitHub issue URL.
+- **Subtask mode**: input is an existing spec plus a subtask that has only a `brief.md`. The session scopes
+  research and questions to that subtask, reads its folder's `brief.md` (plus any `research.md` /
+  prototype notes gathered since) as the starting point, and produces its `spec.md` — along with any
+  further subtasks the spike revealed, which are appended as siblings. Run it just-in-time, right before
+  the subtask starts, against the by-then-current code.
+
+The output is work the developer can act on: a **single-subtask** task is implemented in this same session
+and opened as a PR; anything larger is written up by the `to-spec` skill.
 
 ## Step 1 — Research
 
@@ -41,7 +44,7 @@ Gather, in roughly this order:
    is production-deployed or staging-only.
 4. **Figma mockups** — via the Figma MCP tools, **enumerate-only**: list screens/frames, their elements,
    columns, states, and record a node link per screen. Do **not** extract visual/styling details — appearance
-   stays with the mockups and the `[human]` style subtasks (see `.agents/rules/delegation.mdc`). If the Figma
+   stays with the mockups and the `[human]` style leaves (see `.agents/delegation.md`). If the Figma
    MCP is not connected, have the developer describe the mockups instead.
 
 Then run two mechanical cross-checks; every mismatch becomes an open question for the backend owner or PM:
@@ -56,42 +59,22 @@ Then run two mechanical cross-checks; every mismatch becomes an open question fo
 Research is complete when every linked source is read or flagged inaccessible, every named endpoint has a
 real sample response, and both cross-checks have run with each mismatch recorded as an open question.
 
-## Step 2 — Classify the size
-
-Propose a size to the developer and confirm it:
-
-- **small** — one step; a single `spec.md`, no `subtasks/` folder. Implementable by an agent or a user
-  right after this session.
-- **medium** — a breakdown of subtasks, each in its own folder `subtasks/<NN>-<slug>/`. The main spec is a
-  slim index; every subtask is scoped now (its `spec.md` written up front).
-- **large** — same folder-per-subtask layout, but some subtasks are too big to specify up front. For
-  those, this session writes only a `brief.md` (the context it gathered + what still needs research,
-  prototyping, or decisions) into the folder — no `spec.md` — and each gets its own just-in-time
-  subtask-mode session later that writes the sub-spec.
-
-As the breakdown takes shape, decide each subtask's readiness with the developer — scoped now (write its
-`spec.md`) or deferred (write a `brief.md`, no `spec.md`). **A task with any deferred subtask is `large`; if
-every subtask is scoped now, it's `medium`.** The presence of a `spec.md` is the signal that a subtask is
-scoped; the main spec's index carries only the done checkbox.
-
-## Step 3 — The interview
+## Step 2 — The interview
 
 **Invoke the `grilling` skill** and run the interview under its discipline: one question at a time with a
-recommended answer, decisions put to the developer while facts are looked up, and no enactment (Step 4)
-until shared understanding is confirmed. Skip anything the research already answered.
+recommended answer, decisions put to the developer while facts are looked up, and no enactment until shared
+understanding is confirmed. Skip anything the research already answered.
 
 **Start by picking the task's contacts**: for each relevant team in `.agents/TEAM.md`, ask which member
-owns this task, recommending the roster's `default` — and record that default whenever the developer has no
-task-specific pick. These go into the spec header, and `to-spec` routes each open question to the contact
-that owns it. Don't ask what can be
-inferred: when the issue's author maps to a roster member of the relevant team (match the GitHub handle in
-`.agents/TEAM.md`), record them as that team's contact without asking — the PM slot in particular is
-usually just the task's author. Ask about a **dedicated Slack channel** only for **large** tasks — big
-features often get one, and it changes where open questions are sent (see the `to-spec` skill); small and
-medium tasks always use the default routing (frontend channel or DMs), so record "—" without asking. When
-the developer doesn't know an answer, don't press — record the question with the owning contact and move on.
+owns this task, recommending the member marked ✓ in that team's Default column — and record that ✓ member
+whenever the developer has no task-specific pick. These go into the spec header, and Step 4 routes each open
+question to the contact that owns it. Don't ask what can be inferred: when the issue's author maps to a
+roster member of the relevant team (match the GitHub handle in `.agents/TEAM.md`), record them as that
+team's contact without asking — the PM slot in particular is usually just the task's author. When the
+developer doesn't know an answer, don't press — record the question with the owning contact and move on.
 
-Cover these domains:
+Cover these domains, each only where the task actually reaches it — a one-line bug fix touches almost none
+of them, and marching through all six regardless is how a five-minute task turns into a twenty-minute one:
 
 1. **Goal & users** — what problem, for whom.
 2. **Env gating** — does the feature sit behind a new `NEXT_PUBLIC_*` env var or not. (Just the decision —
@@ -107,22 +90,81 @@ Cover these domains:
 6. **Delivery** — one question: deploy a demo after completion or not (executed via the `deploy-demo` skill
    as a final subtask if yes).
 
-Testing is **not** an interview domain — the standing policy in `.agents/rules/delegation.mdc` applies.
+Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it.
+Neither is code review or human verification: review is `implement-task`'s call at run time (always under
+`--auto`, the developer's choice in a manual run), and which acceptance criteria are `(human)` follows the
+standing rule in "The subtask model" in `.agents/tasks/README.md`. Only ask when one sits genuinely on the
+line.
 
-**Front-load the executor skills' inputs.** Once the task breakdown has taken shape, go through every
-`[agent]` subtask that will run a project skill (`add-new-page`, `add-api-resource`, `add-env-var`, …):
-**open that skill and run its user-facing interview now** (e.g. `add-new-page` Step 0), from the skill's
-current text — don't work from memory of its questions. The answers are recorded with the subtask in its
-own `spec.md`, so `implement-task` can later execute without stopping to ask. Do this in whichever session
-scopes the subtask: here for a subtask specced now, in the just-in-time subtask session for a deferred one
-(the one that starts from a `brief.md`).
+The interview is complete when every domain the task reaches is covered or explicitly skipped as
+research-answered, the contacts are settled, and every unanswered question has an owner.
 
-The interview is complete when every domain is covered or explicitly skipped as research-answered, the
-contacts and channel are settled, every unanswered question has an owner, and every fully-specified
-`[agent]` subtask has its executor skill's inputs collected.
+## Step 3 — Quiz the breakdown
 
-## Step 4 — Hand off to `to-spec`
+Propose the work as a numbered list of **subtasks** — vertical slices, per "The subtask model" in
+`.agents/tasks/README.md`. For each, show the title, what end-to-end behaviour it delivers, and its
+`Blocked by:` edges. Then put the breakdown itself to the developer and iterate until they approve it:
 
-Invoke the **`to-spec`** skill. It writes the spec (or sub-spec, in subtask mode), tags subtasks
-`[agent]`/`[human]` per the delegation boundary, and runs the open-question outreach (grouping by owner,
-drafting Slack messages for the developer's approval, recording thread permalinks).
+- **Granularity** — too coarse or too fine? The bound is hard: a subtask that does not fit in one fresh
+  context window is two subtasks.
+- **Edges** — does each subtask depend only on the subtasks that genuinely gate it?
+- **Merge or split** — anything that should be one slice, or three?
+
+Two things to look for while drafting it:
+
+- **Prefactor first.** *Make the change easy, then make the easy change.* When the current code fights the
+  feature, the first subtask reshapes it with no behaviour change — which also makes it the ideal opener for
+  an unattended chain, since it earns no `(human)` acceptance criteria and never pauses.
+- **Defer what can't be scoped.** A subtask blocked on a prototype, a spike, or an answer nobody has yet
+  gets a `brief.md` and no `spec.md`; a just-in-time subtask-mode session scopes it later.
+
+**Then front-load the executor skills' inputs, whenever a later session will execute the work** — every
+subtask-mode run, and any task-mode breakdown with more than one subtask. That session starts blind, and
+these answers are what let it run without stopping. Go through every `[agent]` leaf that will run a project
+skill (`add-new-page`, `add-api-resource`, `add-env-var`, …): **open that skill and run its user-facing
+interview now** (e.g. `add-new-page` Step 0), from the skill's current text — don't work from memory of its
+questions. The answers are recorded with the subtask in its own `spec.md`. Only a task-mode single-subtask
+task skips this: this session runs the skill itself, so it can just ask as it goes.
+
+## Step 4 — Send open questions
+
+Route every question the session couldn't answer to the person who owns it.
+
+1. Group them by owner.
+2. Pick each group's destination. Ask whether the task has a **dedicated Slack channel** only when the
+   breakdown came out as several subtasks — big features often get one, and it changes the routing;
+   otherwise assume there is none.
+   - Task has a **dedicated feature channel** → **all** questions go there, API ones included.
+   - Otherwise, **product questions go to the frontend channel** (see `.agents/TEAM.md`) — never a DM — so
+     colleagues from other teams (QA in particular) build the same understanding of the feature.
+   - Other questions (API, design) default to a DM with the owner.
+   - When posting to a channel, **always mention the addressee** — `<@member ID>` from `.agents/TEAM.md`
+     (people missing from the roster: resolve by name via `slack_search_users` and suggest adding them).
+3. Draft one message per owner: brief task context (issue link), the questions, and why they block progress.
+   Write all Slack messages in **Russian** — the team's internal language (the spec itself stays in English).
+4. **Show every draft (with its destination) to the user and wait for explicit approval** — never send
+   unreviewed outreach.
+5. Send (`slack_send_message`), then keep each thread's permalink for the question's spec entry.
+
+If the Slack MCP tools are unavailable, record the questions with owners anyway and tell the user to route
+them manually.
+
+Outreach is complete when every question has a recorded permalink — or an explicit note that the developer
+routes it manually.
+
+## Step 5 — Hand off
+
+**Subtask mode** — always invoke **`to-spec`**, however small the scoped subtask turns out to be. The work
+is being written down for a later `implement-task` run, which is the whole reason the subtask was deferred;
+the in-session path below never applies here.
+
+**Task mode, one subtask** — this session finishes the job. Create the feature branch (`issue-<number>` off `main`)
+with the developer's approval, implement the work, and hand off to the `create-pr` skill, which writes the
+reasoning from this conversation into the PR description. No spec is written: nothing is being handed to a
+session that wasn't in the room. If a `pending` question blocks the work, wait for the reply and pick the
+implementation back up in this same session — and write a spec instead only if the developer asks for one,
+which is worth doing when the work will sit before it starts.
+
+**Task mode, several subtasks** — invoke the **`to-spec`** skill. It writes the `spec.md` index plus every subtask
+folder, records the Slack permalinks from Step 4, and walks the developer through branch, first commit, and
+the draft PR.

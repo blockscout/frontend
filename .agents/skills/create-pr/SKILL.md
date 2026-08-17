@@ -28,6 +28,10 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 
 If the signals conflict or are ambiguous, ask the user which mode they mean.
 
+**Unattended finalize.** When Mode B is reached from `implement-task --auto` clearing a task's last subtask, the
+`--auto` flag already granted the push and the flip — so proceed without the confirmation steps below, and
+report what was done instead of asking. Every other invocation keeps them.
+
 ## PR title (all modes)
 
 The title must stand on its own — a reader who has never heard of the parent task should understand what
@@ -50,13 +54,11 @@ description is a placeholder pointing at the plan:
    - `Resolves #<ISSUE_NUMBER>` when the branch matches `issue-\d+` (ad-hoc spec branches have no issue —
      omit).
    - One short paragraph: the task's goal, taken from the spec's **Context & goal**.
-   - A link to the spec file on this branch — the main `.agents/tasks/<dir>/spec.md`, or the subtask's
-     `.agents/tasks/<dir>/subtasks/<NN>-<slug>/spec.md` when this is a step sub-branch (`issue-N-step-M`).
+   - A link to the spec file on this branch: `.agents/tasks/<dir>/spec.md`.
    - A note that this is a **spec-first draft**: the branch will receive the task's work subtask by
      subtask, and the final description will be written when the PR is marked ready for review.
 3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.
-   Title per "PR title" above (not "spec for..."; the PR becomes the task's/subtask's PR) — a feature
-   branch's PR describes the whole task, a step sub-branch's PR describes just that subtask.
+   Title per "PR title" above (not "spec for..."; the PR becomes the task's PR, describing the whole task).
 4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
    labels — nothing is implemented yet; Mode B adds them from the real diff.
 5. Link the created PR in the output.
@@ -74,12 +76,15 @@ description is a placeholder pointing at the plan:
    changes confined to `scripts` or other fields; plus the issue's labels if not already copied.
 4. **Confirm with the user**, then flip: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
-5. Link the PR in the output.
+5. Link the PR in the output, and **nudge the whole-task review**: now that the PR is ready, `review-changes`
+   run by hand posts inline comments for the pass no per-subtask review could make (see Land in
+   `.agents/tasks/README.md`).
 
 ## Mode C — Regular PR (work already done)
 
 1. **Prepare the branch** — as Mode B step 1, plus commit any outstanding changes (with the user's
-   approval, clear message).
+   approval, clear message). When the work sits on `main`, create the branch first: `issue-<number>` when
+   it came from an issue, otherwise a kebab-case slug naming the change.
 2. **Write the description** — see "Writing the description" below.
 3. **Confirm with the user**, then create: `gh pr create --title "..." --body-file ...` (add `--draft`
    only if the user asked for it).
@@ -90,17 +95,29 @@ description is a placeholder pointing at the plan:
 
 - Use the template from `./docs/PULL_REQUEST_TEMPLATE.md` as the base. Read it and fill in each section.
 - **Issue number from branch name:** If the branch name matches `issue-\d+`, extract the number, fetch the
-  issue (`gh issue view <N>`), and start the **"Description and Related Issue(s)"** section with
-  `Resolves #<ISSUE_NUMBER>`.
+  issue (`gh issue view <N>`), and start the **Description** section with `Resolves #<ISSUE_NUMBER>`.
 - **Summary of changes:** clear and concise, at most two paragraphs; bullet points if needed. Be precise;
-  keep it short.
-- **Environment variable changes:** if any env vars were added, changed, or documented, compare or read
-  `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and add a separate section listing each
-  variable change and its **purpose**:
+  keep it short. This is the **Description** section.
+- **The why, whenever there is no spec to hold it.** A diff shows *what* changed; the Description is the
+  only place the reasoning survives, and most PRs through this skill have no spec behind them — work done
+  by hand, and tasks small enough to finish inside their own grilling session. Add the problem the change
+  solves and any decision a reader would otherwise have to reverse-engineer, sourced from wherever it
+  actually is:
+  - **This conversation**, when the work happened here — the decisions and the alternatives ruled out are
+    already in context; use them.
+  - **The issue**, when the branch names one — its body states the problem the diff only implies.
+  - **The diff and the surrounding code**, otherwise. Infer the intent and write it plainly, then let the
+    user correct it at the confirmation step — that is what the confirmation is for. Where the reasoning
+    genuinely cannot be recovered, ask the user for it rather than inventing a rationale.
+- **Environment variables:** if any env vars were added, changed, or removed, compare or read
+  `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and fill the **Environment variables** section
+  with each variable change and its **purpose** (write "None" if there are none):
   - **Bad:** "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` environment variable to the documentation."
   - **Good:** "Added `NEXT_PUBLIC_VIEWS_TX_GROUPED_FEES` to group transaction fees into one section on the transaction page."
   - **Good:** "Extended possible values for `NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS` with set_max_gas_limit to display the maximum gas price set by the transaction sender."
   - **Good:** "Introduced a new option, `"fee reception"`, for the `NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE` variable."
-- **Checklist:** keep the "Checklist for PR Author" section from the template and check the items that
-  apply (e.g. tested locally, tests added, ENVS/docs/validator updated if env vars changed).
-- Always **ask the user for confirmation or changes** before creating/updating the PR.
+- **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
+  version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
+  microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
+- Always **ask the user for confirmation or changes** before creating/updating the PR — the one exception
+  being the unattended Mode B finalize described under "Pick the mode".

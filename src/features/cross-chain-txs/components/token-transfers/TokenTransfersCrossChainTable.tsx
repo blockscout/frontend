@@ -31,8 +31,7 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, r
       <TableRoot tableLayout="auto">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader w="42px"/>
-            { currentAddress && <TableColumnHeader w="44px"/> }
+            <TableColumnHeader w={ currentAddress ? '86px' : '42px' }/>
             <TableColumnHeader>Source token</TableColumnHeader>
             <TableColumnHeader/>
             <TableColumnHeader>Target token</TableColumnHeader>

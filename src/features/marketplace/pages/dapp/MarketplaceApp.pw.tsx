@@ -39,7 +39,7 @@ const testFn = async({ render, mockAssetResponse, mockEnvs, mockRpcResponse, moc
   await expect(component).toHaveScreenshot();
 };
 
-test('base view +@dark-mode', testFn);
+test('base view', testFn);
 
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });

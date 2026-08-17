@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { DateValue } from '@chakra-ui/react';
 import { VStack } from '@chakra-ui/react';
+import { getLocalTimeZone, toCalendarDate, today } from '@internationalized/date';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -10,11 +12,10 @@ import type { operations } from '@blockscout/api-types';
 import useApiFetch from 'src/api/hooks/useApiFetch';
 import type { ResourceError } from 'src/api/resources';
 
-import dayjs from 'src/shared/date-and-time/dayjs';
-
 import { Button } from 'src/toolkit/chakra/button';
 import { toaster } from 'src/toolkit/chakra/toaster';
 import { FormFieldCheckbox } from 'src/toolkit/components/forms/fields/FormFieldCheckbox';
+import { FormFieldDate } from 'src/toolkit/components/forms/fields/FormFieldDate';
 import { FormFieldEmail } from 'src/toolkit/components/forms/fields/FormFieldEmail';
 import { FormFieldText } from 'src/toolkit/components/forms/fields/FormFieldText';
 import { FormFieldUrl } from 'src/toolkit/components/forms/fields/FormFieldUrl';
@@ -32,7 +33,7 @@ export type Inputs = {
   project_url: string;
   audit_company_name: string;
   audit_report_url: string;
-  audit_publish_date: string;
+  audit_publish_date: Array<DateValue>;
   comment?: string;
 };
 
@@ -47,11 +48,18 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
 
   const formApi = useForm<Inputs>({
     mode: 'onTouched',
-    defaultValues: { is_project_owner: false },
+    defaultValues: { is_project_owner: false, audit_publish_date: [] },
   });
   const { handleSubmit, formState, setError } = formApi;
 
+  const maxDate = React.useMemo(() => today(getLocalTimeZone()), []);
+
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {
+    const [ publishDate ] = data.audit_publish_date;
+    if (!publishDate) {
+      return;
+    }
+
     try {
       await apiFetch<
         'core:contract_security_audits',
@@ -61,7 +69,11 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
         pathParams: { hash: address },
         fetchParams: {
           method: 'POST',
-          body: data,
+          body: {
+            ...data,
+            // the API expects a date-only string, the picker may carry a time
+            audit_publish_date: toCalendarDate(publishDate).toString(),
+          },
         },
       });
 
@@ -103,9 +115,9 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
           <FormFieldUrl<Inputs> name="project_url" required placeholder="Project URL"/>
           <FormFieldText<Inputs> name="audit_company_name" required placeholder="Audit company name"/>
           <FormFieldUrl<Inputs> name="audit_report_url" required placeholder="Audit report URL"/>
-          <FormFieldText<Inputs>
+          <FormFieldDate<Inputs, 'audit_publish_date'>
             name="audit_publish_date"
-            inputProps={{ type: 'date', max: dayjs().format('YYYY-MM-DD') }}
+            max={ maxDate }
             required
             placeholder="Audit publish date"
           />

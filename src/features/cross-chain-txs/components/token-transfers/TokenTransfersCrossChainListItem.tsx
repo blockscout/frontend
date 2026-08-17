@@ -8,7 +8,6 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
-import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
 import ListItemMobile from 'src/shared/lists/ListItemMobile';
@@ -41,7 +40,9 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         { currentAddress && (
           <CrossChainFromToTag
-            type={ data.sender?.hash.toLowerCase() === currentAddress.toLowerCase() && config.chain.id === data.source_chain?.id ? 'out' : 'in' }
+            currentAddress={ currentAddress }
+            sender={ data.sender?.hash }
+            recipient={ data.recipient?.hash }
             isLoading={ isLoading }
           />
         ) }

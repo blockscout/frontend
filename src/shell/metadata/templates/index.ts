@@ -39,7 +39,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% blockchain explorer - View %chain_name% stats',
       },
       description: {
-        'default': 'Explore %chain_name% blockchain data. Search transactions, addresses, tokens, blocks, and more.',
+        'default': 'Explore %chain_name% blockchain data. Search and scan transactions, addresses, tokens, blocks, and more.',
       },
     },
     og: OG_ROOT_PAGE,

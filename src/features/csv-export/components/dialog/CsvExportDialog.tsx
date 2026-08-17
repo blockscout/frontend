@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
+import { getLocalTimeZone, now } from '@internationalized/date';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { FormFields } from './types';
-
-import dayjs from 'src/shared/date-and-time/dayjs';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
@@ -27,8 +26,9 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children,
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
-      from_period: dayjs().subtract(1, 'day').format('YYYY-MM-DDTHH:mm'),
-      to_period: dayjs().format('YYYY-MM-DDTHH:mm'),
+      // truncated to whole minutes, matching what the picker itself can express
+      from_period: [ now(getLocalTimeZone()).set({ second: 0, millisecond: 0 }).subtract({ days: 1 }) ],
+      to_period: [ now(getLocalTimeZone()).set({ second: 0, millisecond: 0 }) ],
     },
   });
 

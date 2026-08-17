@@ -41,7 +41,10 @@ export default function MarketplaceApp() {
 
   const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
-  const appUrl = useMemo(() => getAppUrl(data?.url, router), [ data?.url, router ]);
+  const appUrl = useMemo(
+    () => getAppUrl(isPlaceholderData ? undefined : data?.url, router),
+    [ data?.url, isPlaceholderData, router ],
+  );
 
   const message = useMemo(() => ({
     blockscoutColorMode: colorMode,

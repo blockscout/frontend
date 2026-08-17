@@ -5,7 +5,7 @@ description: Checklist for deprecating a NEXT_PUBLIC_* environment variable — 
 
 # Deprecate an env variable
 
-This is the reverse of the `add-env-var` skill. Read `.agents/rules/env-vars.mdc`
+This is the reverse of the `add-env-var` skill. Read `.agents/rules/env-vars.md`
 first for background: how runtime delivery works, how the config object is
 structured, the three value types, and where validation lives.
 

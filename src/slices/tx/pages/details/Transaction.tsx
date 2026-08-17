@@ -108,6 +108,10 @@ const TransactionPageContent = () => {
     }
   }
 
+  if (data?.transaction_types?.includes('sponsored_transaction')) {
+    txTags.push({ slug: 'sponsored', name: 'Sponsored', tagType: 'custom' as const, ordinal: 0 });
+  }
+
   const protocolTags = data?.to?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
   if (protocolTags && protocolTags.length > 0) {
     txTags.push(...protocolTags);

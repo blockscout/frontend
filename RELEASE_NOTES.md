@@ -33,7 +33,7 @@
 **Full list of the ENV variables**: [v1.2.3](https://github.com/blockscout/frontend/blob/v1.2.3/docs/ENVS.md)
 
 ## 💑 Compatibility
-From this version onward, the app is compatible only with the following API versions:
+This release raises the minimum required version of the following API services:
 
 | Service | Version |
 | --- | --- |

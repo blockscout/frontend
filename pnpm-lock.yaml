@@ -81,6 +81,9 @@ importers:
       '@helia/verified-fetch':
         specifier: 2.6.12
         version: 2.6.12(bufferutil@4.1.0)(react-native@0.85.3(@babel/core@7.29.7)(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(utf-8-validate@6.0.6))(utf-8-validate@6.0.6)
+      '@internationalized/date':
+        specifier: 3.12.2
+        version: 3.12.2
       '@metamask/post-message-stream':
         specifier: ^7.0.0
         version: 7.0.0
@@ -425,8 +428,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.107.2(esbuild@0.25.12)(postcss@8.5.15))
       dotenv-cli:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: 10.0.0
+        version: 10.0.0
       eslint:
         specifier: 9.39.2
         version: 9.39.2
@@ -633,6 +636,24 @@ importers:
       '@emotion/react':
         specifier: '>=11.14.0'
         version: 11.14.0(@types/react@18.3.12)(react@19.1.4)
+      '@internationalized/date':
+        specifier: '>=3.12.2'
+        version: 3.12.2
+      '@uidotdev/usehooks':
+        specifier: '>=2.4.1'
+        version: 2.4.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      d3:
+        specifier: '>=7.9.0'
+        version: 7.9.0
+      dayjs:
+        specifier: '>=1.11.21'
+        version: 1.11.21
+      dom-to-image:
+        specifier: '>=2.6.0'
+        version: 2.6.0
+      es-toolkit:
+        specifier: '>=1.39.10'
+        version: 1.39.10
       next:
         specifier: '>=16.2.6'
         version: 16.2.6(@babel/core@7.29.7)(@opentelemetry/api@1.9.1)(@playwright/test@1.57.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
@@ -2858,9 +2879,6 @@ packages:
     engines: {node: ^18.17.0 || ^20.3.0 || >=21.0.0}
     cpu: [x64]
     os: [win32]
-
-  '@internationalized/date@3.12.1':
-    resolution: {integrity: sha512-6IedsVWXyq4P9Tj+TxuU8WGWM70hYLl12nbYU8jkikVpa6WXapFazPUcHUMDMoWftIDE2ILDkFFte6W2nFCkRQ==}
 
   '@internationalized/date@3.12.2':
     resolution: {integrity: sha512-FY1Y+H64NDs+HAF6omlnWxm3mEpfgaCSWtL5l551ZZfImA+kGjPFgrnJrGjH6lfmLL0g8Z/mBu1R3kufeCp6Jw==}
@@ -8634,10 +8652,6 @@ packages:
     resolution: {integrity: sha512-lnOnttzfrzkRx2echxJHQRB6vOAMSCzzZg79IxpC00tU42wZPuZkQxNNrrwVAxaQZIIh001l4PxVlCrBxngBzA==}
     hasBin: true
 
-  dotenv-cli@6.0.0:
-    resolution: {integrity: sha512-qXlCOi3UMDhCWFKe0yq5sg3X+pJAz+RQDiFN38AMSbUrnY3uZshSfDJUAge951OS7J9gwLZGfsBlWRSOYz/TRg==}
-    hasBin: true
-
   dotenv-cli@7.4.4:
     resolution: {integrity: sha512-XkBYCG0tPIes+YZr4SpfFv76SQrV/LeCE8CI7JSEMi3VR9MvTihCGTOtbIexD6i2mXF+6px7trb1imVCXSNMDw==}
     hasBin: true
@@ -8648,10 +8662,6 @@ packages:
 
   dotenv-expand@11.0.7:
     resolution: {integrity: sha512-zIHwmZPRshsCdpMDyVsqGmgyP0yT8GAgXUnkdAoJisxvf33k7yO6OuoKmcTGuXPWSsm8Oh88nZicRLA9Y0rUeA==}
-    engines: {node: '>=12'}
-
-  dotenv-expand@8.0.3:
-    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
     engines: {node: '>=12'}
 
   dotenv@16.6.1:
@@ -17040,10 +17050,6 @@ snapshots:
 
   '@img/sharp-win32-x64@0.34.5':
     optional: true
-
-  '@internationalized/date@3.12.1':
-    dependencies:
-      '@swc/helpers': 0.5.23
 
   '@internationalized/date@3.12.2':
     dependencies:
@@ -26626,13 +26632,6 @@ snapshots:
       dotenv-expand: 11.0.7
       minimist: 1.2.8
 
-  dotenv-cli@6.0.0:
-    dependencies:
-      cross-spawn: 7.0.6
-      dotenv: 16.6.1
-      dotenv-expand: 8.0.3
-      minimist: 1.2.8
-
   dotenv-cli@7.4.4:
     dependencies:
       cross-spawn: 7.0.6
@@ -26645,8 +26644,6 @@ snapshots:
   dotenv-expand@11.0.7:
     dependencies:
       dotenv: 16.6.1
-
-  dotenv-expand@8.0.3: {}
 
   dotenv@16.6.1: {}
 
@@ -30364,7 +30361,7 @@ snapshots:
 
   react-aria@3.48.0(react-dom@19.1.4(react@19.1.4))(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)
@@ -30606,7 +30603,7 @@ snapshots:
 
   react-stately@3.46.0(react@19.1.4):
     dependencies:
-      '@internationalized/date': 3.12.1
+      '@internationalized/date': 3.12.2
       '@internationalized/number': 3.6.6
       '@internationalized/string': 3.2.8
       '@react-types/shared': 3.34.0(react@19.1.4)

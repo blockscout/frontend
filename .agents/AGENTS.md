@@ -6,28 +6,28 @@ Product and feature codenames used throughout the codebase (e.g. `tac`, `bens`, 
 
 ## Architecture
 
-See `./rules/architecture.mdc` for project overview, tech stack, and directory layout.
+See `./rules/architecture.md` for project overview, tech stack, and directory layout.
 
 ## Design System Rules
 
-See `./rules/design-system.mdc` for Chakra UI v3 design system configuration and styling rules.
+See `./rules/design-system.md` for Chakra UI v3 design system configuration and styling rules.
 
 ## Code Style & Quality
 
-See `./rules/code-quality.mdc` for code style, lint commands plus conventions linters don't catch.
+See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch.
 
 ## TypeScript Conventions
 
-See `./rules/typescript.mdc` for established rules how to write Typescript code.
+See `./rules/typescript.md` for established rules how to write Typescript code.
 
 ## Environment Variables
 
-See `./rules/env-vars.mdc` for where environment variables live, how they're delivered at runtime, validated, and how to add or deprecate them.
+See `./rules/env-vars.md` for where environment variables live, how they're delivered at runtime, validated, and how to add or deprecate them.
 
 ## Testing
 
-- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.mdc` for purpose, setup, utilities, and conventions.
-- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.mdc` for purpose, setup, fixtures, and conventions.
+- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for purpose, setup, fixtures, and conventions.
 
 ## Running locally
 
@@ -57,18 +57,36 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
-- `tools/profiling/` — React render profiling: production profiling build (`profile:preset`) and DevTools trace aggregation (`profile:analyze`).
+- `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
+## Architecture decision records
+
+Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
+`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
+evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+
+- `0001-webpack-for-production-builds.md` — why production bundles are built with webpack while dev stays on Turbopack.
+- `0002-layer-shaped-subtask-leaves.md` — why a product task's subtasks cut vertically while the leaves inside them run along layers.
+
+Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
+it constrains future work, was reached by measurement or an investigation worth not repeating, or
+looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
+`superseded by <n>` and leave its reasoning intact.
+
 ## Product task workflow
 
-Product tasks (GitHub issues) are worked through a spec-driven workflow: the `grill-the-task` skill
-interviews the developer to fill the issue's gaps, `to-spec` writes the spec into `.agents/tasks/` and
-routes open questions to their owners via Slack, and `implement-task` executes the spec one subtask at a
-time. See `.agents/tasks/README.md` for the lifecycle, `.agents/rules/delegation.mdc` for what agents may
-implement vs. what stays human, and `.agents/TEAM.md` for who answers open questions.
+Product tasks (GitHub issues) are worked through a spec-driven workflow — interview, spec, agent
+implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent record. See
+`./tasks/README.md` for the lifecycle, the skills that run it, and the spec conventions.
 
-## Cursor Cloud specific instructions
+## Editing this instruction set
 
-The Cursor Cloud VM refreshes deps on startup via its update script (`pnpm install`); there are no Cursor-only runtime steps. See "Running locally" above.
+Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
+rules contract, the per-file symlink Cursor needs, and how references here are checked.
+
+## Reaching people & channels on Slack
+
+To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
+before sending anything.

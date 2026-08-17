@@ -39,7 +39,8 @@ cannot alter behavior, only timing:
 
 Each registered page has a colocated `*.primed.spec.tsx` that runs the real inline script and
 mounts the real page (in its layout) and asserts **primed ⊆ the page's first-render requests**,
-byte-identically. The subset direction is deliberate: priming is opt-in per resource, so
+byte-identically. The mount uses a fake socket transport (`vitest/utils/mockSocket.ts`) whose
+channels join immediately, so queries a page defers until its socket channel is up. The subset direction is deliberate: priming is opt-in per resource, so
 *under*-priming is fine, but priming something the page does not actually request on first render
 is a bug and fails the test. `index.spec.ts` additionally fails if a registered page lacks its
 spec. This is what lets the registry be trusted without a running backend.
