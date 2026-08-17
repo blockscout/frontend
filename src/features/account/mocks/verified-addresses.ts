@@ -44,6 +44,7 @@ export const ADDRESS_CHECK_RESPONSE = {
       signingMessage: '[eth-goerli.blockscout.com] [2023-04-18 18:47:40] I, hereby verify that I am the owner/creator of the address [0xf822070d07067d1519490dbf49448a7e30ee9ea5]',
       contractCreator: '0xd0e3010d1ecdbd17aae178b2bf36eb413d8a7441',
       contractOwner: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254',
+      contractDeployer: '0xc9f2ba039a3827386604d9338b01e6ab131e5784',
     },
   },
   SOURCE_CODE_NOT_VERIFIED_ERROR: {
