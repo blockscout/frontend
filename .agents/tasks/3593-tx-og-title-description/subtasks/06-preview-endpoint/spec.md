@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [../../spec.md](../../spec.md) — step 6 of #3593 |
-| Status | `in progress` |
+| Status | `done` |
 | Size | `small` |
 | Sub-branch | — (commits land directly on `issue-3593`, as in subtasks 1–5) |
 | PM | Ulyana (task author) |
@@ -93,6 +93,12 @@ on, and the whole request still fits inside a third of the budget. The two botto
 in the day, when the control read 0.37 s — the instance's own load moves these numbers more than any
 parameter does, which is the point of keeping a control in every run.
 
+**The budget is per instance, not per endpoint.** A `k8s-dev` instance serves the same request in ~1.7 s as
+measured from inside the cluster, which loses to the 2 s timeout often enough that the description never
+resolves there — warming the response first makes no difference, so it is the instance's floor rather than a
+cold-start cost. Nothing to fix in the page: the same build enhances every request against a production
+instance. It does mean a demo pointed at a dev instance is not evidence about this feature either way.
+
 - **Resource:** `core:tx_preview` — new, added to `src/api/resources/services/core/tx.ts`. Not paginated, no
   filters. The three parameters are passed per-call through `fetchApi`'s `queryParams`, which already
   supports them, so nothing in the registry needs to carry them.
@@ -151,7 +157,9 @@ No visual output — `<meta>` tags only.
       `core:tx_interpretation` call, both timeouts, and the surrounding gates alone.
     - Adapt `getOgDescriptionParams`'s first parameter to the preview payload type. Its branches are
       unchanged, and its spec file covers them — update the fixtures, not the assertions.
-- [ ] 4 `[agent]` Redeploy the demo and check a real card — skill: `deploy-demo`
+- [x] 4 `[agent]` Redeploy the demo and check a real card — skill: `deploy-demo`
+  — both variants on this branch's image: the loaded instance enhances **6 of 6** crawler requests where the
+  old path managed 0 of 6, and a `k8s-dev` instance enhances none of 6 for the reason recorded above.
   - inputs:
     - Variant `review-2`, branch `issue-3593`, no image rebuild unless the branch moved.
     - Preset: the loaded instance from the parent spec's Q2 — the developer names the alias at deploy time.

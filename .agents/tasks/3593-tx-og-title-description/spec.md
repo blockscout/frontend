@@ -4,7 +4,7 @@
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3593 |
 | PR | https://github.com/blockscout/frontend/pull/3596 (draft) |
-| Status | `in progress` |
+| Status | `done` |
 | Size | `medium` |
 | Feature branch | `issue-3593` |
 | PM | Ulyana (task author) |
@@ -172,8 +172,9 @@ verifies that the preview genuinely works in a real social client.
   — the agent deploys and checks the tags over `curl`; the human confirms the real card in Telegram and
   rules on the timeouts. Card confirmed in Telegram and X on an eth-mainnet demo; the timeout ruling is
   "keep 2 s and move to the endpoint below".
-- [ ] 6 `[agent]` Fetch the preview data from the endpoint built for it → `subtasks/06-preview-endpoint/`
-  — scoped and ready; the backend merge it waited on has landed.
+- [x] 6 `[agent]` Fetch the preview data from the endpoint built for it → `subtasks/06-preview-endpoint/`
+  — the description's mandatory fields now come from `core:tx_preview`, which resolves inside the timeout on
+  the instance where `core:tx` never did.
 - [x] 7 `[agent]` Leave the preview alone on Noves-provider instances → `subtasks/07-noves-instances/`
   — Q1's decision; landed ahead of the endpoint, since it is independent of it.
 
