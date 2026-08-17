@@ -2,6 +2,7 @@
 
 import type { schemas } from '@blockscout/api-types';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
+import type { TxOgDescriptionParams } from 'src/slices/tx/types/api';
 
 import addressToPlainText from 'src/features/tx-interpretation/common/utils/address-to-plain-text';
 import summaryToPlainText from 'src/features/tx-interpretation/common/utils/summary-to-plain-text';
@@ -13,15 +14,9 @@ import dayjs from 'src/shared/date-and-time/dayjs';
 // Already `MMM D, YYYY H:mm` through the locale overrides in the dayjs module.
 const TIMESTAMP_FORMAT = 'lll';
 
-export interface TxOgDescriptionParams {
-  tx_status: string;
-  tx_action: string;
-  tx_timestamp: string;
-}
-
-// `undefined` — as opposed to `null`, which is a pending transaction — means the field never arrived, so
-// there is no status to show. `fetchApi` hands back non-200 bodies as data, and this is what keeps a 404
-// from reading as `Pending`.
+// `undefined` — as opposed to `null`, which is a pending transaction — means there is no transaction to
+// describe: `fetchApi` returns nothing when the request 404s, fails, or runs out of its budget. Collapsing
+// the two would make every such miss read as `Pending`.
 function getStatusText(status: schemas['TransactionPreview']['status'] | undefined) {
   if (status === undefined) {
     return;

@@ -128,10 +128,10 @@ the two calls are parallel the worst case adds ~2 s, well inside it. Overshootin
 whole card, whereas aborting only loses the enhanced description, so the budget stays deliberately short of
 what the envelope allows.
 
-**Trap to code against:** `fetchApi` returns the parsed body **regardless of HTTP status** — it logs
-non-200s but still `return await response.json()`. So a bad hash yields `{ message: "Not found" }` typed as
-a `TransactionResponse`. Requiring `tx_timestamp` handles that for free (an error body has no `timestamp`),
-but the status mapping must distinguish `undefined` from `null`, or a 404 reads as `Pending`.
+**Trap to code against:** a missed request yields no body at all — `fetchApi` logs the non-200 and returns
+`undefined` (it stopped parsing error bodies in #3623, which reached this branch through a `main` merge
+mid-task). The status mapping must therefore keep `undefined` distinct from `null`, or every 404, failure,
+and timeout reads as `Pending`.
 
 **Env var** — reuses `NEXT_PUBLIC_OG_ENHANCED_DATA_ENABLED` unchanged. It defaults to **on**
 (`!== 'false'`), so this ships enabled on every instance. No new env var, so `add-env-var` is not part of
@@ -149,11 +149,28 @@ verifies that the preview genuinely works in a real social client.
   `src/slices/tx/pages/details/TxSubHeading.tsx` and
   `src/features/tx-interpretation/common/components/TxInterpretation.tsx`.
 
+## Follow-ups from the manual verification
+
+Two changes the PM asked for once real cards were in front of her. Both are outside the original ACs and
+both apply site-wide rather than to `/tx/[hash]`, so they are recorded here rather than as subtasks.
+
+- **The crawler set grew** to WhatsApp, Discord, and LinkedIn (`detectBotRequest`). The ACs named Telegram
+  and X because those were what the demo was checked in; WhatsApp then showed no preview at all, which is
+  the bug that prompted this. Discord and LinkedIn match on the `…bot` suffix rather than the bare product
+  name, because both also ship an in-app browser whose user agent carries that name — those are real
+  visitors. Every OG-enhanced route now fetches for these three as well.
+- **X gets a card image** even where no `og:image` exists — see the `og:image` note below.
+
 ## Out of scope
 
-- **`og:image`** — text only. Its current absence is deliberate: `OG_ROOT_PAGE` is attached to list/root
-  pages, and every entity detail route (address, token, block, tx) has no `og` entry. On a
+- **`og:image`** — text only on every platform but X. Its absence is deliberate: `OG_ROOT_PAGE` is attached
+  to list/root pages, and every entity detail route (address, token, block, tx) has no `og` entry. On a
   `summary_large_image` card a generic banner would push the new description below itself.
+
+  X is the exception because it does not honour the omission: it reserves the image slot regardless and
+  fills it with a grey placeholder. So on routes with no image the card drops to `summary` — the small
+  square variant — and `twitter:image` points at the instance's generated icon. `og:image` stays unset, so
+  Telegram and WhatsApp keep the clean text-only card.
 - **Multichain** `/chain/[chain_slug_or_id]/tx/[hash]` — excluded by the same `!multichain.isEnabled` guard
   the token page already uses; multichain routes resolve their API base per-chain through
   `factoryMultichain`, and the server-side `fetchApi`/`buildUrl` path isn't wired for that.

@@ -51,11 +51,6 @@ describe('gives up when a part is missing', () => {
     expect(await getParamsWithInterpretation({ ...preview, status: null, timestamp: null }, TX_INTERPRETATION)).toBeNull();
   });
 
-  it('an error body, which `fetchApi` hands back as data', async() => {
-    const notFound = { message: 'Not found' } as unknown as schemas['TransactionPreview'];
-    expect(await getParamsWithInterpretation(notFound, TX_INTERPRETATION)).toBeNull();
-  });
-
   it('no usable summary and no method to fall back on', async() => {
     expect(await getParamsWithInterpretation({ ...preview, method: null })).toBeNull();
   });
