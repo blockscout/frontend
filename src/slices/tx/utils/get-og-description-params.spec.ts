@@ -11,7 +11,7 @@ import { it, expect, describe } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 // The interpretation feature is off in the test env, so every case that needs an action runs with it on.
-function getParamsWithInterpretation(tx: schemas['Preview'] | undefined, interpretation?: TxInterpretationResponse) {
+function getParamsWithInterpretation(tx: schemas['TransactionPreview'] | undefined, interpretation?: TxInterpretationResponse) {
   return withEnvs(ENVS_MAP.txInterpretation, async() => {
     const { 'default': getOgDescriptionParams } = await import('./get-og-description-params');
     return getOgDescriptionParams(tx, interpretation);
@@ -38,7 +38,7 @@ describe('status', () => {
 
   it('gives up when the field never arrived', async() => {
     const { status, ...txWithoutStatus } = preview;
-    expect(await getParamsWithInterpretation(txWithoutStatus as schemas['Preview'], TX_INTERPRETATION)).toBeNull();
+    expect(await getParamsWithInterpretation(txWithoutStatus as schemas['TransactionPreview'], TX_INTERPRETATION)).toBeNull();
   });
 });
 
@@ -52,7 +52,7 @@ describe('gives up when a part is missing', () => {
   });
 
   it('an error body, which `fetchApi` hands back as data', async() => {
-    const notFound = { message: 'Not found' } as unknown as schemas['Preview'];
+    const notFound = { message: 'Not found' } as unknown as schemas['TransactionPreview'];
     expect(await getParamsWithInterpretation(notFound, TX_INTERPRETATION)).toBeNull();
   });
 

@@ -22,7 +22,7 @@ export interface TxOgDescriptionParams {
 // `undefined` — as opposed to `null`, which is a pending transaction — means the field never arrived, so
 // there is no status to show. `fetchApi` hands back non-200 bodies as data, and this is what keeps a 404
 // from reading as `Pending`.
-function getStatusText(status: schemas['Preview']['status'] | undefined) {
+function getStatusText(status: schemas['TransactionPreview']['status'] | undefined) {
   if (status === undefined) {
     return;
   }
@@ -37,7 +37,7 @@ function getStatusText(status: schemas['Preview']['status'] | undefined) {
   }
 }
 
-function getActionText(tx: schemas['Preview'] | undefined, interpretation: TxInterpretationResponse | undefined) {
+function getActionText(tx: schemas['TransactionPreview'] | undefined, interpretation: TxInterpretationResponse | undefined) {
   if (getFeaturePayload(config.features.txInterpretation)?.provider !== 'blockscout') {
     return;
   }
@@ -61,7 +61,7 @@ function getActionText(tx: schemas['Preview'] | undefined, interpretation: TxInt
 // All or nothing: the OG description template needs every placeholder, and `undefined` members cannot be
 // serialized into the page props anyway.
 export default function getOgDescriptionParams(
-  tx: schemas['Preview'] | undefined,
+  tx: schemas['TransactionPreview'] | undefined,
   interpretation: TxInterpretationResponse | undefined,
 ): TxOgDescriptionParams | null {
   const status = getStatusText(tx?.status);

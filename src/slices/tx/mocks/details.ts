@@ -288,14 +288,14 @@ export const withRecipientContract = {
   to: addressParamMock.contract,
 };
 
-const toPreviewAddress = (address: schemas['Address']): schemas['PreviewAddress'] => ({
+const toPreviewAddress = (address: schemas['Address']): schemas['TransactionPreviewAddress'] => ({
   hash: address.hash,
   name: address.name,
   ens_domain_name: address.ens_domain_name,
   metadata: address.metadata,
 });
 
-export const preview: schemas['Preview'] = {
+export const preview: schemas['TransactionPreview'] = {
   status: base.status,
   timestamp: base.timestamp,
   method: base.method,
