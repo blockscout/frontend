@@ -29,9 +29,9 @@ Two configs, overlapping vocabulary; the request usually covers only one of them
 
 A `background` in the message text is not the theme's `bg.primary`.
 
-Read fills off a rendered frame (`get_screenshot`). Bound-variable lookup (`get_variable_defs`) returns design-system defaults for per-instance raw fills. To tell which tokens are actually part of the request, diff each swatch against `DEFAULT_THEME_COLORS` in `src/toolkit/theme/foundations/colors.ts`: a token sitting at the default is not part of the request; one that differs is.
+Read fills off a rendered frame (`get_screenshot`). Bound-variable lookup (`get_variable_defs`) returns design-system defaults for per-instance raw fills. Both need the Figma plugin in Claude Code or Cursor. To tell which tokens are actually part of the request, diff each swatch against `DEFAULT_THEME_COLORS` in `src/toolkit/theme/foundations/colors.ts`: a token sitting at the default is not part of the request; one that differs is.
 
-**If `get_screenshot` / `get_variable_defs` fail, or Figma is unreachable, stop.** A half-applied skin reaching DevOps is worse than a blocked request.
+**If those tools are absent or fail, or Figma is unreachable, stop.** A half-applied skin reaching DevOps is worse than a blocked request.
 
 Hero banner values are `Array<string | undefined>` with index `[0]` = light, `[1]` = dark (`[1] || [0]` fallback).
 

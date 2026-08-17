@@ -129,7 +129,12 @@ for id in "$@"; do
   name=$(jq -r '.file.name' <<<"$meta")
   url=$(jq -r '.file.url_private_download // .file.url_private' <<<"$meta")
   out="$dir/${id}-${name//[^A-Za-z0-9._-]/_}"
-  slack_curl -L -o "$out" "$url"
+  if ! slack_curl -fL -o "$out" "$url"; then
+    echo "slack-file: $id: download failed" >&2
+    rm -f "$out"
+    status=1
+    continue
+  fi
   echo "$out"
 done
 exit "$status"
