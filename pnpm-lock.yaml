@@ -31,8 +31,8 @@ importers:
         specifier: 1.7.1
         version: 1.7.1
       '@blockscout/contracts-info-types':
-        specifier: 1.5.2
-        version: 1.5.2
+        specifier: 1.5.3
+        version: 1.5.3
       '@blockscout/interchain-indexer-types':
         specifier: 1.6.0
         version: 1.6.0
@@ -1348,8 +1348,8 @@ packages:
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
 
-  '@blockscout/contracts-info-types@1.5.2':
-    resolution: {integrity: sha512-hlkCzYKAsSzsNdWmmluLXsWEnt4Hnp1HsPNuXwU2uyYe9MS1jHGl3w/mxocpm8dAFg8FZC0riTQTlsxXOEHQmg==}
+  '@blockscout/contracts-info-types@1.5.3':
+    resolution: {integrity: sha512-J+n4C+H9418r2xcIJLPEpK6WJnhJVRGZVaRzpUpXmcxBkIqzsKqfxBMddaDt5uQX8OnQJyZY3fSkfoGAAfBQaw==}
 
   '@blockscout/interchain-indexer-types@1.6.0':
     resolution: {integrity: sha512-zWrL3tWqXqvQre9SURlheD6jxp447Ujv7tP35a94K0Ovs3bYCT/ydsUmLoZY3CrqKyRr6cTu8V/1qUql5l9Cpw==}
@@ -8101,6 +8101,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   cspell-config-lib@9.8.0:
     resolution: {integrity: sha512-gMJBAgYPvvO+uDFLUcGWaTu6/e+r8mm4GD4rQfWa/yV4F9fj+yOYLIMZqLWRvT1moHZX1FxyVvUbJcmZ1gfebg==}
@@ -14860,7 +14861,7 @@ snapshots:
 
   '@blockscout/bens-types@1.7.1': {}
 
-  '@blockscout/contracts-info-types@1.5.2': {}
+  '@blockscout/contracts-info-types@1.5.3': {}
 
   '@blockscout/interchain-indexer-types@1.6.0': {}
 
