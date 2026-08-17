@@ -172,9 +172,8 @@ verifies that the preview genuinely works in a real social client.
   — the agent deploys and checks the tags over `curl`; the human confirms the real card in Telegram and
   rules on the timeouts. Card confirmed in Telegram and X on an eth-mainnet demo; the timeout ruling is
   "keep 2 s and move to the endpoint below".
-- [ ] 6 `[agent]` Fetch the preview data from the endpoint the backend is building for it → `subtasks/06-preview-endpoint/`
-  — not scoped yet (`brief.md` only): being built with switchable ens / metadata / summary preloads, going to
-  staging first. Blocked on the backend.
+- [ ] 6 `[agent]` Fetch the preview data from the endpoint built for it → `subtasks/06-preview-endpoint/`
+  — scoped and ready; the backend merge it waited on has landed.
 - [x] 7 `[agent]` Leave the preview alone on Noves-provider instances → `subtasks/07-noves-instances/`
   — Q1's decision; landed ahead of the endpoint, since it is independent of it.
 
