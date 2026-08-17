@@ -32,7 +32,9 @@ const PageMetadata = <Pathname extends Route['pathname']>(props: Props<Pathname>
       <meta property="og:type" content="website"/>
 
       { /* Twitter Meta Tags */ }
-      <meta name="twitter:card" content="summary_large_image"/>
+      { /* Claiming a large image without providing one makes X render the compact card with a grey
+           placeholder where the image would be, so the card type follows what we actually have. */ }
+      <meta name="twitter:card" content={ opengraph.imageUrl ? 'summary_large_image' : 'summary' }/>
       <meta property="twitter:domain" content={ config.app.host }/>
       <meta name="twitter:title" content={ opengraph.title }/>
       { opengraph.description && <meta name="twitter:description" content={ opengraph.description }/> }
