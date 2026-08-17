@@ -70,7 +70,9 @@ Collect every **actionable** finding.
   `disputed` finding the latest round ruled on.
 - **PR mode** — inline review comments, PR-level reviews, and issue comments (`gh-commands.md`). Keep only
   unresolved, actionable threads. Drop already-resolved threads, your own prior replies, and bot status
-  noise (CodeRabbit "review skipped", Copilot's PR overview).
+  noise (CodeRabbit "review skipped", Copilot's PR overview). A reply carrying the `— Reviewed by` footer is
+  the reviewer's **ruling** on your last round, and a thread it reopened is a fix that did not hold — read
+  the ruling as that finding's current state.
 
 Tag each with its **source** per the table above, then open the code it points at — `path` + `line`, or
 the `diff_hunk` — so the next step judges against reality rather than against the comment text.

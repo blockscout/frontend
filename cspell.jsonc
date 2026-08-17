@@ -282,6 +282,7 @@
         "unminified",
         "UNKN",
         "unparse",
+        "unresolve",
         "unrs",
         "unstaked",
         "unstub",

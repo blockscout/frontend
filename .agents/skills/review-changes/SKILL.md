@@ -169,7 +169,8 @@ the current diff. It does exactly three things:
 3. Flag regressions introduced **by the fixes only**. New findings elsewhere are out of scope for this
    round.
 
-**Done when**: every open finding is either closed or carries a ruling.
+**Done when**: every open finding is either closed or carries a ruling, and each ruling sits on the
+finding's own record — its thread in PR mode, its exchange line in markdown mode.
 
 ## 4. Normalize
 
@@ -186,11 +187,19 @@ findings to `blocker` because that axis is all it can see.
   actually there and the claim still holds — and, in PR mode, that the line is in the PR diff. Drop
   what fails. Hallucinated line numbers and stale claims are the two things that end a reviewer's
   credibility, and this single pass catches both.
+- **Settle it by running it.** A claim a command can decide is not normalized until you have run that
+  command, and the finding quotes what came back. A rule that reads dead but is load-bearing, a procedure
+  its own repo abandoned years ago, an incompatibility that only shows up on the second invocation — each
+  reads convincingly and runs the other way, and each costs more credibility than the finding was worth.
+  The environment outranks every document that describes it: prefer the check, the script, the query, the
+  `git log` over the doc, the README, or an axis that reasoned from reading alone. Drop what does not
+  reproduce.
 - **Backwards scope.** A finding outside the current unit's diff is actionable only if this change is
   what made it wrong. Otherwise it goes under `## Out of scope — for the final review` in the record and
   is left alone, so it resurfaces at the end-of-task review instead of unravelling the chain backwards.
 
-**Done when**: every finding has a normalized severity, a verified anchor, and exactly one axis label.
+**Done when**: every finding has a normalized severity, a verified anchor, exactly one axis label, and —
+where a command could settle it — the output that settled it.
 
 ## 5. Report
 
@@ -213,12 +222,19 @@ lines outside the diff — go into the review body under `## Not anchorable`, in
 and the all-or-nothing 422 hazard: [`gh-commands.md`](gh-commands.md). PR mode writes no `review.md`;
 the PR is the record.
 
+**PR mode, arbitration.** New findings still go in the one batched event. A **ruling** does not: it goes
+on its finding's own thread, as a reply, plus that thread's resolve state. Resolve the threads a ruling closes
+(`fix-verified`, `rejected-accepted`), leave open the ones it does not (`fix-incomplete`, disputed,
+`needs-human`, deferred nits), and unresolve a thread `resolve-review` closed on a fix that turned out not
+to hold.
+
 **Chat mode.** Same content, no file.
 
 Close by reporting counts per severity, counts per axis (an axis that came back empty is worth a second
 look), and the `Outcome`.
 
-**Done when**: the record exists — or the review is posted — and the counts have been reported.
+**Done when**: the record exists — or the review is posted, with every ruling on its own thread and each
+thread's resolve state set — and the counts have been reported.
 
 ## Out of bounds
 

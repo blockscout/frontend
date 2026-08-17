@@ -1,8 +1,8 @@
 # gh / GraphQL command reference
 
-The whole PR surface both review skills need: posting a review (`review-changes`), then gathering,
-replying and resolving (`resolve-review`). Substitute `{owner}`, `{repo}`, `{N}` (PR number),
-`{commentId}`. Derive `{owner}/{repo}` once and reuse.
+The whole PR surface both review skills need. `review-changes` posts the review, and from its second round
+also replies its rulings and sets thread state; `resolve-review` gathers, replies and resolves. Substitute
+`{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive `{owner}/{repo}` once and reuse.
 
 Confirm `gh auth status` succeeds before anything else — follow the `check-github-cli` skill if it does
 not. Never authenticate on the developer's behalf.
@@ -104,7 +104,7 @@ table in `../resolve-review/SKILL.md` for why.
 
 The captured id equals the REST `id` (databaseId), which maps to a GraphQL thread via the query below.
 
-## Reply, then resolve (resolve-review)
+## Reply, then resolve (resolve-review; review-changes arbitration)
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/{N}/comments/{commentId}/replies \
@@ -130,9 +130,16 @@ query {
         | "\(.id) \(.comments.nodes[0].databaseId)"'
 ```
 
+Drop the `select(...)` to list every thread with its state — which is what arbitration needs, since it
+rules on threads whichever side of resolved they sit on.
+
 ```bash
 gh api graphql -f query='mutation {
   resolveReviewThread(input:{threadId:"PRRT_…"}) { thread { id isResolved } }
+}'
+
+gh api graphql -f query='mutation {
+  unresolveReviewThread(input:{threadId:"PRRT_…"}) { thread { id isResolved } }
 }'
 ```
 
@@ -140,8 +147,11 @@ Notes:
 
 - Reply *before* resolving — a resolved thread still accepts replies, but replying first keeps the
   explanation visible.
-- Skip threads already `isResolved`.
 - Leave `disputed`, `needs-human` and `answered` threads **unresolved** — they are exactly the ones that
   must stay visible.
+- **`resolve-review`** skips threads already `isResolved`.
+- **Arbitration** does not: a thread `resolve-review` resolved on a claimed fix goes back to unresolved
+  when the ruling is `fix-incomplete` or `fix-wrong`. Resolved is the coder's claim; the ruling is what
+  settles it.
 - Bot status posts (CodeRabbit "review skipped", Copilot's PR overview) arrive as issue comments, have no
   thread to resolve, and are not actionable.
