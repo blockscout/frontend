@@ -1,6 +1,6 @@
 # Read a Slack thread
 
-Parse a Slack thread URL and read the full conversation, including replies.
+Parse a Slack thread URL and read the full conversation, including replies. If the tool is missing, unauthenticated, or errors, ask the user to paste the thread. Stop if they decline.
 
 ## Parse the URL
 
@@ -24,6 +24,9 @@ Arguments:
 
 If the thread has more than 200 messages, paginate with `cursor` until the full conversation is read.
 
-Attachments often carry the actual content. The Slack connector reports metadata only — download each file.
+Attachments often carry the actual content. The Slack connector reports metadata only (`url_private`).
+
+- **Files Reader** installed ([workspace app directory](https://blockscout.slack.com/marketplace/A0BMY22GBQR-files-reader)): GET each `url_private` with that app's token (`Authorization: Bearer`).
+- Otherwise, or if the GET fails: ask the user to paste or upload each file. Stop if they decline.
 
 **Done when:** every message and attachment in the thread is in hand.

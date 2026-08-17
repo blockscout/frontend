@@ -1,10 +1,10 @@
 # Skin requests
 
-The branch taken when a designer owns the change: this instance's logo, icon, favicon, OG image, colour theme, hero banner, homepage highlights, or navigation promo banner. Screenshots do that badly and a live **demo** does it well. The demo is unconditional — even a plain logo swap earns one (that is where dark-mode variants and viewBox cropping go wrong).
+A live **demo** is the review surface — screenshots miss dark-mode variants and viewBox cropping. The demo is unconditional — even a plain logo swap earns one.
 
 Variables: `NEXT_PUBLIC_NETWORK_LOGO` / `_DARK`, `NEXT_PUBLIC_NETWORK_ICON` / `_DARK`, `FAVICON_MASTER_URL`, `NEXT_PUBLIC_OG_IMAGE_URL`, `NEXT_PUBLIC_COLOR_THEME_OVERRIDES`, `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG`, `NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG`, `NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG`.
 
-Work in the workspace's `frontend-configs` checkout. Follow the `check-github-cli` skill before any `gh` step.
+Checkout and commit/PR rules: parent **Fetched configs**. Follow the `check-github-cli` skill before any `gh` step.
 
 Non-skin variables on the same request wait and ride in the phase-2 DevOps message. Non-skin `frontend-configs` files on the same request go in this PR.
 
@@ -29,9 +29,9 @@ Two configs, overlapping vocabulary; the request usually covers only one of them
 
 A `background` in the message text is not the theme's `bg.primary`.
 
-Read fills off a rendered frame (screenshot). Bound-variable lookup returns design-system defaults for per-instance raw fills. To tell which tokens are actually part of the request, diff each swatch against `DEFAULT_THEME_COLORS` in `src/toolkit/theme/foundations/colors.ts`: a token sitting at the default is not part of the request; one that differs is.
+Read fills off a rendered frame (`get_screenshot`). Bound-variable lookup (`get_variable_defs`) returns design-system defaults for per-instance raw fills. To tell which tokens are actually part of the request, diff each swatch against `DEFAULT_THEME_COLORS` in `src/toolkit/theme/foundations/colors.ts`: a token sitting at the default is not part of the request; one that differs is.
 
-**If Figma is unreachable, stop.** A half-applied skin reaching DevOps is worse than a blocked request.
+**If `get_screenshot` / `get_variable_defs` fail, or Figma is unreachable, stop.** A half-applied skin reaching DevOps is worse than a blocked request.
 
 Hero banner values are `Array<string | undefined>` with index `[0]` = light, `[1]` = dark (`[1] || [0]` fallback).
 
@@ -45,7 +45,7 @@ While the configs PR is open, asset URLs are the **PR branch's** raw GitHub URLs
 
 ## Demo mechanics
 
-`.env.extra` is committed and is the **only** channel that carries env overrides into a review deploy. An instance not in the registry also needs a temporary `tools/dev-server/registry.json` entry. Both are committed files in the **frontend** repo and must be reverted in phase 2. Env layering and the preset add/remove procedure: `tools/dev-server/CONTEXT.md`.
+`.env.extra` is committed and is the **only** channel that carries env overrides into a review deploy. An instance not in the registry: add it to `tools/dev-server/registry.json`, run `pnpm presets:sync` (writes `.github/workflows/deploy-review.yml` and `.vscode/tasks.json`), commit all four **on the demo branch**. They die with that branch. Procedure: `tools/dev-server/CONTEXT.md`.
 
 Hostname: `review-<branch-slug>.k8s-dev.blockscout.com`. Follow the `deploy-demo` skill.
 
@@ -53,10 +53,10 @@ Verify the theme by **computed values** — read the resolved CSS custom propert
 
 ## Phase 1 — demo
 
-No approval gate on the branch, the configs PR, the demo, or the message that carries the demo link: the PR is open but unmerged, so nothing can break a production instance. The requester (designer) is the gatekeeper for phase 2; the user relays that approval. There is no automated watch on the thread — the user monitors and continues this session.
+No **designer** gate on the branch, the configs PR, the demo, or the demo-link message — the PR is open but unmerged, so nothing can break a production instance. The user's commit confirmation still applies. The requester (designer) is the gatekeeper for phase 2; the user relays that approval. There is no automated watch on the thread — the user monitors and continues this session.
 
 1. Produce the assets and JSON configs from the thread and Figma.
-2. Open a PR on `frontend-configs` (target per that repo's README). Confirm with the user before the commit and the PR. The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
+2. Open a PR on `frontend-configs` (target `main` branch). Commit/PR confirmation and `create-pr` exceptions: parent **Fetched configs**.
 3. Point the demo at the PR-branch raw URLs (see **Demo mechanics**). Deploy it.
 4. Verify on the live demo, then post the demo link to the requester. **Stop.**
 
@@ -70,10 +70,8 @@ Starts only when the user relays the designer's approval.
 2. For inlined vars (hero banner, colour theme), regenerate the strings from the merged files (the converter above). URL vars (homepage highlights, asset URLs): the env value is the `main` raw URL. Navigation promo: the inlined string produced in phase 1.
 3. Run the parent skill from **Read current state** through **Send, then hand over**.
 4. **Teardown** — checkable, they fail silently when skipped:
+   - demo destroyed: `gh workflow run cleanup.yml --ref <branch>`; hostname returns 404
    - temporary frontend branch deleted, local and remote
-   - `tools/dev-server/registry.json` reverted
-   - `.env.extra` reverted
-   - demo destroyed (`.github/workflows/cleanup.yml`; hostname returns 404)
    - `git status` clean
 
 The review-image cleanup is broken ([frontend#3638](https://github.com/blockscout/frontend/issues/3638)); hostname 404 is the bar, not image deletion.

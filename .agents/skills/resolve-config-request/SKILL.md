@@ -24,7 +24,7 @@ No commit without the user's explicit confirmation in this conversation.
 
 ## Scope
 
-**In:** variables in `docs/ENVS.md`, plus start-time variables like `FAVICON_MASTER_URL`.
+**In:** variables in `docs/ENVS.md`, including start-time ones such as `FAVICON_MASTER_URL`.
 
 **Out, with the exit:**
 
@@ -82,12 +82,12 @@ Post the approved message to `blockscout-devops-requests` — resolve the channe
 Every deployed instance exposes `{ envs: { …all NEXT_PUBLIC_* } }` at `<url>/node-api/config`. The CLI:
 
 ```bash
-tools/dev-server/fetch.sh <alias> --out=/tmp/instance.env
+tools/dev-server/fetch.sh <alias> --omit-local-envs --out=/tmp/instance.env
 ```
 
 Aliases live in `tools/dev-server/registry.json`. How fetch and env layering work: `tools/dev-server/CONTEXT.md`.
 
-Limits: registry alias only (otherwise GET `/node-api/config` yourself); `/node-api/config` is `NEXT_PUBLIC_*` only, so start-time variables like `FAVICON_MASTER_URL` cannot be checked this way.
+Limits: registry alias only (otherwise GET `/node-api/config` yourself); `/node-api/config` is `NEXT_PUBLIC_*` only, so start-time variables like `FAVICON_MASTER_URL` cannot be checked this way; `fetch.sh` drops `ignoredEnvs` and `deprecatedEnvs` — for those, GET `/node-api/config`.
 
 ## Validation
 
@@ -95,16 +95,21 @@ Limits: registry alias only (otherwise GET `/node-api/config` yourself); `/node-
 
 Overlay our change on the fetched env. dotenv-cli: the **first** `-e` file wins (`tools/dev-server/CONTEXT.md`). For a key to drop, strip it from the fetched file before validating.
 
+From `deploy/tools/envs-validator/`, the preamble in `test.sh` (collect placeholders, copy `test/assets`, build), then:
+
 ```bash
-pnpm --filter envs-validator build
-dotenv -e /tmp/change.env -e /tmp/instance.env -- pnpm --filter envs-validator validate
+pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.env -- pnpm run validate
 ```
 
 Schema organisation: `deploy/tools/envs-validator/CONTEXT.md`. This is what catches missing companion variables (`.when(...)`), forbidden combinations, and malformed nested JSON — a documentation check cannot.
 
 ## Fetched configs
 
-JSON the instance **fetches** at startup — not instance chrome, no demo. Work in the `frontend-configs` checkout. Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR. The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
+JSON the instance **fetches** at startup — not instance chrome, no demo.
+
+Checkout: a workspace folder named `frontend-configs` or `blockscout_frontend_configs`. If none, stop and ask the user to add it.
+
+Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR. The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
 
 | Directory | Variable |
 | --- | --- |
