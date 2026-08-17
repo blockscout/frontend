@@ -85,7 +85,7 @@ Every deployed instance exposes `{ envs: { …all NEXT_PUBLIC_* } }` at `<url>/n
 tools/dev-server/fetch.sh <alias> --omit-local-envs --out=/tmp/instance.env
 ```
 
-Aliases live in `tools/dev-server/registry.json`. How fetch and env layering work: `tools/dev-server/CONTEXT.md`.
+Step 3 diffs this file. Aliases live in `tools/dev-server/registry.json`. How fetch and env layering work: `tools/dev-server/CONTEXT.md`.
 
 Limits: registry alias only (otherwise GET `/node-api/config` yourself); `/node-api/config` is `NEXT_PUBLIC_*` only, so start-time variables like `FAVICON_MASTER_URL` cannot be checked this way; `fetch.sh` drops `ignoredEnvs` and `deprecatedEnvs` — for those, GET `/node-api/config`.
 
@@ -93,12 +93,17 @@ Limits: registry alias only (otherwise GET `/node-api/config` yourself); `/node-
 
 **Default alias: `eth`.** One representative instance is enough, including when the target is a vague class.
 
-Overlay our change on the fetched env. dotenv-cli: the **first** `-e` file wins (`tools/dev-server/CONTEXT.md`). For a key to drop, strip it from the fetched file before validating.
+`--omit-local-envs` drops `localEnvs` (`tools/dev-server/envs-rules.json`); the schema requires `NEXT_PUBLIC_APP_HOST`. Copy the fetched file and add those keys, then overlay our change on the copy. dotenv-cli: the **first** `-e` file wins (`tools/dev-server/CONTEXT.md`). For a key to drop, strip it from the copy before validating.
+
+```bash
+cp /tmp/instance.env /tmp/instance.validate.env
+jq -r '.localEnvs | to_entries[] | "\(.key)=\(.value)"' tools/dev-server/envs-rules.json >> /tmp/instance.validate.env
+```
 
 From `deploy/tools/envs-validator/`, the preamble in `test.sh` (collect placeholders, copy `test/assets`, build), then:
 
 ```bash
-pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.env -- pnpm run validate
+pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- pnpm run validate
 ```
 
 Schema organisation: `deploy/tools/envs-validator/CONTEXT.md`. This is what catches missing companion variables (`.when(...)`), forbidden combinations, and malformed nested JSON — a documentation check cannot.

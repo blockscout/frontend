@@ -24,9 +24,8 @@ Arguments:
 
 If the thread has more than 200 messages, paginate with `cursor` until the full conversation is read.
 
-Attachments often carry the actual content. The Slack connector reports metadata only (`url_private`).
+Attachments often carry the actual content. The Slack connector reports metadata only — `Files: name.png (ID: F012SSD0KK8, image/png, 393.6 KB)`.
 
-- **Files Reader** installed ([workspace app directory](https://blockscout.slack.com/marketplace/A0BMY22GBQR-files-reader)): GET each `url_private` with that app's token (`Authorization: Bearer`).
-- Otherwise, or if the GET fails: ask the user to paste or upload each file. Stop if they decline.
+Follow the `slack-file` skill to download each file. If that skill stops (no token, user declined setup), ask the user to paste or upload each file. Stop if they decline.
 
 **Done when:** every message and attachment in the thread is in hand.
