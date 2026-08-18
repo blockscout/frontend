@@ -38,23 +38,17 @@ test.describe('no url', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('non-media url and fallback', async({ render, page, mockAssetResponse }) => {
+  test('non-media url and fallback', async({ render, mockAssetResponse }) => {
     const ANIMATION_URL = 'https://localhost:3000/my-animation.m3u8';
-    const ANIMATION_MEDIA_TYPE_API_URL = `/node-api/tokens/${ TOKEN_HASH }/instances/${ TOKEN_ID }/media-type?field=animation_url`;
     const IMAGE_URL = 'https://localhost:3000/my-image.jpg';
     const data = toTokenInstanceModel({
       id: TOKEN_ID,
       animation_url: ANIMATION_URL,
+      animation_media_type: null,
       image_url: IMAGE_URL,
       token: tokenInfoMock.tokenInfoERC721a,
     });
 
-    await page.route(ANIMATION_MEDIA_TYPE_API_URL, (route) => {
-      return route.fulfill({
-        status: 200,
-        json: { type: undefined },
-      });
-    });
     await mockAssetResponse(IMAGE_URL, './playwright/mocks/image_long.jpg');
 
     const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH }/>);
@@ -134,20 +128,16 @@ test.describe('page', () => {
   test.use({ viewport: { width: 250, height: 250 } });
 
   const MEDIA_URL = 'https://localhost:3000/page.html';
-  const MEDIA_TYPE_API_URL = `/node-api/tokens/${ TOKEN_HASH }/instances/${ TOKEN_ID }/media-type?field=animation_url`;
 
-  test.beforeEach(async({ page, mockAssetResponse }) => {
+  test.beforeEach(async({ mockAssetResponse }) => {
     await mockAssetResponse(MEDIA_URL, './playwright/mocks/page.html');
-    await page.route(MEDIA_TYPE_API_URL, (route) => route.fulfill({
-      status: 200,
-      json: { type: 'html' },
-    }));
   });
 
   test('preview +@dark-mode', async({ render }) => {
     const data = toTokenInstanceModel({
       id: TOKEN_ID,
       animation_url: MEDIA_URL,
+      animation_media_type: 'html',
       image_url: null,
       token: tokenInfoMock.tokenInfoERC721a,
     });
