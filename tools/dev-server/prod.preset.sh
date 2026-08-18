@@ -5,16 +5,15 @@
 # on-demand compile, StrictMode double-fetch) would skew the numbers.
 # The shared steps live in run_steps.sh.
 #
-# Builds with `--webpack`, like the shipped image does — see
-# .agents/adr/0001-webpack-for-production-builds.md. Measuring a Turbopack build here would not
-# represent what users get (and on some module graphs it miscompiles).
+# Builds with Turbopack (the Next.js default), like the shipped image does — see
+# .agents/adr/0003-turbopack-for-production-builds.md.
 #
 # Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build] [--profile]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
 #   --profile     Build a React-profileable production bundle (`next build --webpack --profile`).
-#                 What that build is good for, and why those two flags: tools/profiling/CONTEXT.md.
+#                 Why profiling stays on webpack, and what it's good for: tools/profiling/CONTEXT.md.
 
 source ./tools/dev-server/run_steps.sh
 
@@ -56,7 +55,7 @@ preset_name="${positional[0]}"
 
 # the command the user actually typed, for error hints
 cmd="pnpm prod:preset $preset_name"
-build_flags=" --webpack"
+build_flags=""
 if [ "$profile" = true ]; then
   cmd="$cmd --profile"
   build_flags=" --webpack --profile"
