@@ -18,7 +18,7 @@ Done when one body of material is in hand, or the run has stopped.
 - They named nothing → this conversation is the source.
 - Use only that pointer, or this conversation.
 
-**Fetch a pointer.** Content already in the chat (paste, attachment) is the source. For a URL or an id a connected tool can read, try those tools. To read a Slack thread, follow [`slack-thread.md`](slack-thread.md). If fetch fails (no tool, auth error, unknown host), ask the user to paste the relevant notes. If they decline or paste nothing useful, stop and tell them the issue cannot be created.
+**Fetch a pointer.** Content already in the chat (paste, attachment) is the source. For a URL or an id a connected tool can read, try those tools. To read a Slack thread, follow `.agents/slack-thread.md`. If fetch fails (no tool, auth error, unknown host), ask the user to paste the relevant notes. If they decline or paste nothing useful, stop and tell them the issue cannot be created.
 
 ## Step 2 — Pick the topic
 

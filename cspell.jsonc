@@ -34,7 +34,9 @@
         // Posthog project key
         "phc_\\w+",
         // GitHub account names
-        "@(\\w|-)+"
+        "@(\\w|-)+",
+        // Russian copy in agent skills (DevOps / Slack templates)
+        "[А-Яа-яЁё]+"
     ],
     // words - list of words to be always considered correct
     "words": [

@@ -1,0 +1,140 @@
+#!/usr/bin/env bash
+# Move files in and out of Slack, so agents can read attachments the MCP connector
+# only reports as metadata, and post images back into a thread.
+#
+# The token lives in the macOS Keychain rather than a dotfile so it never lands
+# in a repo, an env dump, or a session transcript.
+# cspell:ignore esac
+set -euo pipefail
+
+KEYCHAIN_SERVICE=slack-files-token
+
+usage() {
+  cat >&2 <<'EOF'
+usage: slack-file [-d DIR] FILE_ID [FILE_ID ...]
+       slack-file up -c CHANNEL_ID [-t THREAD_TS] [-m COMMENT] FILE [FILE ...]
+
+Download mode: fetches each Slack file into DIR (default: cwd) and prints the
+local paths. File IDs look like F012SSD0KK8 and appear in slack_read_thread
+output as "Files: name.png (ID: F012SSD0KK8, image/png, 393.6 KB)".
+
+Upload mode ("up"): uploads local files to a channel, optionally as a reply to
+THREAD_TS, and posts COMMENT as the message text alongside them. Needs the
+files:write scope. Prints the resulting file IDs.
+EOF
+  exit 64
+}
+
+if ! token=$(security find-generic-password -s "$KEYCHAIN_SERVICE" -w 2>/dev/null); then
+  echo "slack-file: no token in Keychain under service '$KEYCHAIN_SERVICE'" >&2
+  echo "slack-file: follow the slack-file skill (Setup)" >&2
+  exit 1
+fi
+
+# The auth header is piped in as a curl config file: passing it via -H would put
+# the token in argv, where `ps` can read it.
+slack_curl() {
+  printf 'header = "Authorization: Bearer %s"\n' "$token" | curl -sS -K - "$@"
+}
+
+api_ok() {
+  [ "$(jq -r '.ok' <<<"$1")" = true ]
+}
+
+api_err() {
+  jq -r '.error // "unknown error"' <<<"$1"
+}
+
+upload() {
+  local channel='' thread='' comment='' opt
+  while getopts ':c:t:m:' opt; do
+    case $opt in
+      c) channel=$OPTARG ;;
+      t) thread=$OPTARG ;;
+      m) comment=$OPTARG ;;
+      *) usage ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+  [ -n "$channel" ] && [ $# -gt 0 ] || usage
+
+  local uploaded='[]' path name size meta upload_url file_id
+  for path in "$@"; do
+    if [ ! -f "$path" ]; then
+      echo "slack-file: $path: no such file" >&2
+      exit 1
+    fi
+    name=$(basename "$path")
+    size=$(wc -c <"$path" | tr -d ' ')
+
+    meta=$(slack_curl --get 'https://slack.com/api/files.getUploadURLExternal' \
+      --data-urlencode "filename=$name" --data-urlencode "length=$size")
+    api_ok "$meta" || { echo "slack-file: $name: $(api_err "$meta")" >&2; exit 1; }
+
+    upload_url=$(jq -r '.upload_url' <<<"$meta")
+    file_id=$(jq -r '.file_id' <<<"$meta")
+
+    # The upload URL is pre-signed, so this leg carries no Authorization header.
+    curl -sS -f -F "file=@$path" "$upload_url" >/dev/null
+
+    uploaded=$(jq -c --arg id "$file_id" --arg title "$name" \
+      '. + [{id: $id, title: $title}]' <<<"$uploaded")
+  done
+
+  # completeUploadExternal posts the files as one message, so `comment` becomes
+  # that message's text — no separate chat.postMessage needed.
+  local payload
+  payload=$(jq -n -c \
+    --argjson files "$uploaded" \
+    --arg channel "$channel" \
+    --arg thread "$thread" \
+    --arg comment "$comment" \
+    '{files: $files, channel_id: $channel}
+     + (if $thread == "" then {} else {thread_ts: $thread} end)
+     + (if $comment == "" then {} else {initial_comment: $comment} end)')
+
+  local result
+  result=$(slack_curl -X POST 'https://slack.com/api/files.completeUploadExternal' \
+    -H 'Content-Type: application/json; charset=utf-8' --data-binary "$payload")
+  api_ok "$result" || { echo "slack-file: upload failed: $(api_err "$result")" >&2; exit 1; }
+
+  jq -r '.files[] | "\(.id) \(.title)"' <<<"$result"
+}
+
+if [ "${1:-}" = up ]; then
+  shift
+  upload "$@"
+  exit 0
+fi
+
+dir=$PWD
+while getopts ':d:h' opt; do
+  case $opt in
+    d) dir=$OPTARG ;;
+    *) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+[ $# -gt 0 ] || usage
+
+mkdir -p "$dir"
+status=0
+for id in "$@"; do
+  meta=$(slack_curl "https://slack.com/api/files.info?file=$id")
+  if ! api_ok "$meta"; then
+    echo "slack-file: $id: $(api_err "$meta")" >&2
+    status=1
+    continue
+  fi
+  name=$(jq -r '.file.name' <<<"$meta")
+  url=$(jq -r '.file.url_private_download // .file.url_private' <<<"$meta")
+  out="$dir/${id}-${name//[^A-Za-z0-9._-]/_}"
+  if ! slack_curl -fL -o "$out" "$url"; then
+    echo "slack-file: $id: download failed" >&2
+    rm -f "$out"
+    status=1
+    continue
+  fi
+  echo "$out"
+done
+exit "$status"
