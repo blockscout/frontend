@@ -22,8 +22,8 @@ importers:
   .:
     dependencies:
       '@blockscout/admin-rs-types':
-        specifier: 1.5.0
-        version: 1.5.0
+        specifier: 1.5.1
+        version: 1.5.1
       '@blockscout/api-types':
         specifier: 0.0.1-beta.8e1692a
         version: 0.0.1-beta.8e1692a
@@ -1339,8 +1339,8 @@ packages:
   '@base-org/account@2.4.0':
     resolution: {integrity: sha512-A4Umpi8B9/pqR78D1Yoze4xHyQaujioVRqqO3d6xuDFw9VRtjg6tK3bPlwE0aW+nVH/ntllCpPa2PbI8Rnjcug==}
 
-  '@blockscout/admin-rs-types@1.5.0':
-    resolution: {integrity: sha512-QE+dpUaQDvOAb/wUJ98J3CBqfohbiBW/+AEqEmSdOOZ0XxPRUrke08krBnflq3GMACRwB+nwzQrsfl7KCrC1Eg==}
+  '@blockscout/admin-rs-types@1.5.1':
+    resolution: {integrity: sha512-+wGwULmzzfwkASJKwPB1X09iqmNUeIPu7Pc5INQxL2XunllTs32bhyvji1XqyA+VmF5yOxxYhQuLhNqCeN4SfQ==}
 
   '@blockscout/api-types@0.0.1-beta.8e1692a':
     resolution: {integrity: sha512-itkaQdbtJSwsJL6LQBAPQlSWuejDhuuUXxZTcfwDAup/6L/OOw0l0XwIEVEtqTaLVIxG1DyGOrr7gKz2fPrukQ==}
@@ -8101,6 +8101,7 @@ packages:
 
   crypto-js@4.2.0:
     resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    deprecated: Active development of CryptoJS has been discontinued. This library is no longer maintained.
 
   cspell-config-lib@9.8.0:
     resolution: {integrity: sha512-gMJBAgYPvvO+uDFLUcGWaTu6/e+r8mm4GD4rQfWa/yV4F9fj+yOYLIMZqLWRvT1moHZX1FxyVvUbJcmZ1gfebg==}
@@ -14854,7 +14855,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@blockscout/admin-rs-types@1.5.0': {}
+  '@blockscout/admin-rs-types@1.5.1': {}
 
   '@blockscout/api-types@0.0.1-beta.8e1692a': {}
 

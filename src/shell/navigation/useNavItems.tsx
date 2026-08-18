@@ -413,7 +413,7 @@ export default function useNavItems(): ReturnType {
         icon: 'navigation/custom_abi',
         isActive: pathname === '/account/custom-abi',
       },
-      getFeaturePayload(config.features.account)?.addressVerificationEnabled && {
+      getFeaturePayload(config.features.account)?.verifiedAddresses?.isEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
         icon: 'navigation/verified_contracts',

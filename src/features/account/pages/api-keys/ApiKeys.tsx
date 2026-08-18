@@ -14,9 +14,10 @@ import useRedirectForInvalidAuthToken from 'src/features/account/hooks/useRedire
 import { API_KEY } from 'src/features/account/stubs';
 
 import config from 'src/config';
-import AlertWithExternalHtml from 'src/shared/alerts/AlertWithExternalHtml';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 
+import { Alert } from 'src/toolkit/chakra/alert';
+import { BoxHtml } from 'src/toolkit/chakra/box';
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -110,9 +111,11 @@ const ApiKeysPage: React.FC = () => {
 
     const canAdd = !isPlaceholderData ? (data?.length || 0) < DATA_LIMIT : true;
 
-    const alert = feature.isEnabled && feature.apiKeys.alertMessage ?
-      <AlertWithExternalHtml html={ feature.apiKeys.alertMessage } status="warning" mb={ 6 }/> :
-      null;
+    const alert = feature.isEnabled && feature.apiKeys.alertMessage ? (
+      <Alert status="warning" mb={ 6 }>
+        <BoxHtml html={ feature.apiKeys.alertMessage }/>
+      </Alert>
+    ) : null;
 
     const button = !config.chain.isProApiSupported ? (
       <Button

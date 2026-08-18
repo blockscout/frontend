@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as mocks from 'src/features/account/mocks/verified-addresses';
 
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
 import TokenInfoForm from './TokenInfoForm';
@@ -11,7 +12,10 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
   await mockAssetResponse(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, './playwright/mocks/image_md.jpg');
 });
 
-test('base view +@mobile +@dark-mode', async({ render }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockEnvs }) => {
+  await mockEnvs([
+    ...ENVS_MAP.verifiedAddresses,
+  ]);
   const props = {
     address: mocks.VERIFIED_ADDRESS.ITEM_1.contractAddress,
     tokenName: 'Test Token (TT)',

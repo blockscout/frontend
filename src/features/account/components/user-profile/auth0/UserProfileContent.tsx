@@ -49,7 +49,7 @@ const navLinks: Array<NavLink> = [
     href: route({ pathname: '/account/custom-abi' }),
     icon: 'ABI' as const,
   },
-  getFeaturePayload(config.features.account)?.addressVerificationEnabled && {
+  getFeaturePayload(config.features.account)?.verifiedAddresses?.isEnabled && {
     text: 'Verified addrs',
     href: route({ pathname: '/account/verified-addresses' }),
     icon: 'verified' as const,

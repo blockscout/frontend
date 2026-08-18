@@ -33,7 +33,10 @@ const config: Feature<{
   apiKeys: {
     alertMessage: string | undefined;
   };
-  addressVerificationEnabled: boolean;
+  verifiedAddresses?: {
+    isEnabled: boolean;
+    expeditedReviewHtml: string | undefined;
+  };
 }> = (() => {
 
   if (
@@ -43,6 +46,12 @@ const config: Feature<{
     const authProvider = getEnvValue('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER');
     const dynamicEnvironmentId = getEnvValue('NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID');
     const addressVerificationEnabled = !app.isPrivateMode && verifiedTokens.isEnabled && apis.admin !== undefined;
+
+    const expeditedReviewHtml = getEnvValue('NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML');
+    const verifiedAddresses = addressVerificationEnabled ? {
+      isEnabled: true,
+      expeditedReviewHtml,
+    } : undefined;
 
     if (authProvider === 'dynamic' && dynamicEnvironmentId) {
       return Object.freeze({
@@ -55,7 +64,7 @@ const config: Feature<{
         apiKeys: {
           alertMessage: apiKeysAlertMessage,
         },
-        addressVerificationEnabled,
+        verifiedAddresses,
       });
     }
 
@@ -67,7 +76,7 @@ const config: Feature<{
         apiKeys: {
           alertMessage: apiKeysAlertMessage,
         },
-        addressVerificationEnabled,
+        verifiedAddresses,
       });
     }
   }
