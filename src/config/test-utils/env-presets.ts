@@ -18,7 +18,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101"}' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101","id":11155111,"rpcUrls":["https://localhost:3101"],"currency":{"name":"Ether","symbol":"ETH","decimals":18},"isTestnet":true}' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
