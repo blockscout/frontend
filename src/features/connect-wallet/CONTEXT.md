@@ -56,13 +56,11 @@ disabled *fallback*.
   would wait forever for a readiness signal only the deferred path emits.
   Moving dynamic mode onto the deferred model is a known follow-up.
 
-**Before changing anything in the dynamic-mode graph, read
-`.agents/adr/0001-webpack-for-production-builds.md`.** Reshaping it once already tripped a Turbopack
-scope-hoisting bug that mis-binds a context inside the Dynamic-labs SDK and hard-crashes every page
-in a production build — invisible in dev. That is why production bundles are built with webpack. The
-trigger was never reducible to a single import, so treat any graph change here as able to re-trigger
-it: verify with a production build (`pnpm prod:preset <alias>`) against an instance whose
-`NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER=dynamic`, not just in dev.
+Before changing anything in the dynamic-mode graph, verify it in a production build (`pnpm prod:preset <alias>`) against an instance whose
+`NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER=dynamic`, not just in
+dev. Reshaping it once tripped a Turbopack scope-hoisting bug that mis-bound a context inside the
+Dynamic-labs SDK and hard-crashed every page in a production build — invisible in dev (see
+`.agents/adr/0003-turbopack-for-production-builds.md`).
 
 ## Persisted connection
 
