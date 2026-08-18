@@ -4,7 +4,7 @@ A live **demo** is the review surface — screenshots miss dark-mode variants an
 
 Variables: `NEXT_PUBLIC_NETWORK_LOGO` / `_DARK`, `NEXT_PUBLIC_NETWORK_ICON` / `_DARK`, `FAVICON_MASTER_URL`, `NEXT_PUBLIC_OG_IMAGE_URL`, `NEXT_PUBLIC_COLOR_THEME_OVERRIDES`, `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG`, `NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG`, `NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG`.
 
-Checkout and commit/PR rules: parent **Fetched configs**. Follow the `check-github-cli` skill before any `gh` step.
+Checkout and commit/PR rules: parent **Fetched configs**, except its confirmation — see **Phase 1**. Follow the `check-github-cli` skill before any `gh` step.
 
 Non-skin variables on the same request wait and ride in the phase-2 DevOps message. Non-skin `frontend-configs` files on the same request go in this PR.
 
@@ -53,12 +53,14 @@ Verify the theme by **computed values** — read the resolved CSS custom propert
 
 ## Phase 1 — demo
 
-No **designer** gate on the branch, the configs PR, the demo, or the demo-link message — the PR is open but unmerged, so nothing can break a production instance. The user's commit confirmation still applies. The requester (designer) is the gatekeeper for phase 2; the user relays that approval. There is no automated watch on the thread — the user monitors and continues this session.
+**Phase 1 runs to the demo link without stopping.** No gate — designer's or user's — on the branch, the commits, the configs PR, the demo deploy, or the demo-link post. The PR is open but unmerged and the demo dies with its branch, so nothing here can touch a production instance; the parent's commit confirmation does not apply. The demo *is* the review surface, and a confirmation asked before it exists is asked of someone who cannot yet see what they are confirming.
+
+The requester (designer) is the gatekeeper for phase 2; the user relays that approval. There is no automated watch on the thread — the user monitors and continues this session.
 
 1. Produce the assets and JSON configs from the thread and Figma.
-2. Open a PR on `frontend-configs` (target `main` branch). Commit/PR confirmation and `create-pr` exceptions: parent **Fetched configs**.
+2. Open a PR on `frontend-configs` (target `main` branch). No confirmation, per above; `create-pr` exceptions: parent **Fetched configs**.
 3. Point the demo at the PR-branch raw URLs (see **Demo mechanics**). Deploy it.
-4. Verify on the live demo, then post the demo link to the requester. **Stop.**
+4. Verify on the live demo, post the demo link to the requester, and **stop**. Post it without asking — the named exception to `AGENTS.md`'s approve-before-sending rule. This is the run's only stop; what it waits for is the designer's reply.
 
 **Done when:** the configs PR is open, the demo is live, the requester has the link, and this run has stopped.
 

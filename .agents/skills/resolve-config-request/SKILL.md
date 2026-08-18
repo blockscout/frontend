@@ -20,7 +20,7 @@ Only send a DevOps message we are **sure** of. Every other rule serves that.
 - **Mirror** the requester's targeting language. Unstated is not undeterminable — the DevOps bot resolves instances.
 - **Drift.** `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` and `NEXT_PUBLIC_COLOR_THEME_OVERRIDES` ship with a `frontend-configs` file change in the same run; take the skin branch.
 
-No commit without the user's explicit confirmation in this conversation.
+No commit without the user's explicit confirmation in this conversation — the one exception is the skin branch's phase 1, which runs unattended up to the demo link.
 
 ## Scope
 
@@ -114,7 +114,7 @@ JSON the instance **fetches** at startup — not instance chrome, no demo.
 
 Checkout: a workspace folder named `frontend-configs` or `blockscout_frontend_configs`. If none, stop and ask the user to add it.
 
-Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR. The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
+Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR — this PR is merged to `main`, where live instances fetch from. (Skin phase 1 is the exception: its PR stays unmerged for review, so it needs no confirmation.) The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
 
 | Directory | Variable |
 | --- | --- |

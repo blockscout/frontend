@@ -89,4 +89,4 @@ rules contract, the per-file symlink Cursor needs, and how references here are c
 ## Reaching people & channels on Slack
 
 To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
-before sending anything.
+before sending anything — unless the skill you are running names an explicit exception.
