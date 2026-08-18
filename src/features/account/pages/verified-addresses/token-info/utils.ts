@@ -66,6 +66,6 @@ export function prepareRequestBody(data: Fields): Omit<adminRs.TokenInfoSubmissi
     tokenAddress: data.address,
     twitter: data.twitter,
     comment: data.comment,
-    paymentTx: data.payment_tx,
+    paymentTx: data.payment_tx || undefined,
   };
 }

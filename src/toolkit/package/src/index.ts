@@ -5,6 +5,7 @@ export * from '../../chakra/accordion';
 export * from '../../chakra/alert';
 export * from '../../chakra/avatar';
 export * from '../../chakra/badge';
+export * from '../../chakra/box';
 export * from '../../chakra/button';
 export * from '../../chakra/checkbox';
 export * from '../../chakra/close-button';

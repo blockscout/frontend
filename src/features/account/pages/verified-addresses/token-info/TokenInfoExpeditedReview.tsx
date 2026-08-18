@@ -7,6 +7,7 @@ import type { Fields } from './types';
 
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { BoxHtml } from 'src/toolkit/chakra/box';
 import { Heading } from 'src/toolkit/chakra/heading';
 import { Link } from 'src/toolkit/chakra/link';
 import { FormFieldText } from 'src/toolkit/components/forms/fields/FormFieldText';
@@ -37,16 +38,14 @@ const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
       <Box textStyle="sm" wordBreak="break-word">
         <Flex alignItems="center" justifyContent="space-between">
           <Heading level="3">Need a faster review?</Heading>
-          { DOCS_URL && (
-            <Link href={ DOCS_URL } external noIcon gap={ 2 }>
-              <SpriteIcon name="docs" boxSize={ 5 }/>
-              How it works
-            </Link>
-          ) }
+          <Link href={ DOCS_URL } external noIcon gap={ 2 }>
+            <SpriteIcon name="docs" boxSize={ 5 }/>
+            How it works
+          </Link>
         </Flex>
         <List.Root as="ol" listStyleType="decimal" gap={ 6 } mt={ 6 } pl={ 5 }>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
-            <Box dangerouslySetInnerHTML={{ __html: html }}/>
+            <BoxHtml html={ html }/>
           </List.Item>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
             Once payment is completed, enter the <chakra.span fontWeight={ 600 }>transaction hash</chakra.span>
