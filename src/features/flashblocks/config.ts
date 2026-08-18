@@ -26,7 +26,7 @@ const config: Feature<{ socketUrl: string; type: 'optimism' | 'megaEth'; name: s
       isEnabled: true,
       socketUrl,
       type: 'optimism',
-      name: 'flashblock',
+      name: 'subblock',
     });
   }
 

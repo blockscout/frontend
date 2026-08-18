@@ -958,11 +958,11 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 ### Flashblocks
 
-This feature allows users to view [Flashblocks](https://docs.base.org/base-chain/flashblocks/apps)-related content in the explorer, including the Flashblocks real-time feed. It currently supports only Base chains.
+Real-time feed of sub-second pre-confirmation blocks. The same feature backs two stacks: on OP Stack chains these blocks are called **Subblocks** (OP Labs' current name; formerly "Flashblocks") and are streamed from the endpoint below; on **MegaETH** they are called **mini-blocks** and are streamed from the MegaETH RPC endpoint (see [MegaETH](#megaeth)). The `FLASHBLOCKS` variable name is retained across both.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Flashblocks data | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
+| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Subblocks data on OP Stack chains | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
 
 &nbsp;
 
