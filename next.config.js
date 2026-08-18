@@ -74,6 +74,12 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  // Turbopack's standalone tracer copies only @swc/helpers/cjs and drops the esm/ entry points that
+  // Next's require-hook loads at runtime, so `node server.js` crashes on boot. Force the whole
+  // package into the standalone bundle until the tracer is fixed upstream.
+  outputFileTracingIncludes: {
+    '/**': [ './node_modules/@swc/helpers/**' ],
+  },
   productionBrowserSourceMaps: false,
   serverExternalPackages: [
     '@opentelemetry/sdk-node',

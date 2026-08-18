@@ -79,6 +79,13 @@ bundles in less than half the wall-clock (the type-check phase is bundler-agnost
   only applies to the webpack section. Turbopack silently tolerates that optional import, so no
   Turbopack-side equivalent is needed.
 - **CI and image builds get faster** — the reason for the change.
+- **`outputFileTracingIncludes` now force-includes `@swc/helpers`.** Turbopack's standalone tracer
+  copies only `@swc/helpers/cjs` and drops the `esm/` entry points that Next's `require-hook` loads
+  at runtime, so the shipped image's `node server.js` crashed on boot (`Cannot find module
+  '@swc/helpers/esm/_interop_require_default.js'`). webpack traced the package fully, so this only
+  surfaced after the switch — and only on the standalone path, not under `next start`, so it was
+  invisible until a demo deploy. The `next.config.js` include is a workaround; drop it once the
+  Turbopack tracer is fixed upstream.
 
 ## Follow-ups
 
