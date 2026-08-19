@@ -39,7 +39,7 @@ export const accountAuth0: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const verifiedAddresses: Guard = (chainConfig: typeof config) => async() => {
-  if (!getFeaturePayload(chainConfig.features.account)?.addressVerificationEnabled) {
+  if (!getFeaturePayload(chainConfig.features.account)?.verifiedAddresses?.isEnabled) {
     return {
       notFound: true,
     };

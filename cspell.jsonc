@@ -8,6 +8,7 @@
         "**/*.svg",
         "**/*.sfd",
         ".git",
+        ".env.*",
         // agent worktrees are full checkouts of the repo — checking them duplicates every file
         ".claude/worktrees",
         "pnpm-lock.yaml",

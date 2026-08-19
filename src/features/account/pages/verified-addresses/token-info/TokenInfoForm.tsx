@@ -13,6 +13,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import type { ResourceError } from 'src/api/resources';
 
 import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
 import * as mixpanel from 'src/services/mixpanel';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 
@@ -30,6 +31,7 @@ import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
 import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
 import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
+import TokenInfoExpeditedReview from './TokenInfoExpeditedReview';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 import TokenInfoFormStatusText from './TokenInfoFormStatusText';
 import { getFormDefaultValues, prepareRequestBody } from './utils';
@@ -125,6 +127,8 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     readOnly: application?.status === 'IN_PROCESS',
   };
 
+  const expeditedReviewHtml = getFeaturePayload(config.features.account)?.verifiedAddresses?.expeditedReviewHtml;
+
   return (
     <FormProvider { ...formApi }>
       <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
@@ -191,6 +195,10 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
               { ...fieldProps }
             />
           </GridItem>
+
+          { expeditedReviewHtml && (
+            <TokenInfoExpeditedReview html={ expeditedReviewHtml } readOnly={ fieldProps.readOnly }/>
+          ) }
         </Grid>
         <Button
           type="submit"

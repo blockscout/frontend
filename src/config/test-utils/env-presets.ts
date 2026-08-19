@@ -136,4 +136,8 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   proApi: [
     [ 'NEXT_PUBLIC_PRO_API_SUPPORTED', 'true' ],
   ],
+  verifiedAddresses: [
+    [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],
+    [ 'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML', 'Send <b>99 USDC/USDT</b> to one of the addresses below:<br>Duck Chain: 0xFB74767C1ce1aadA0a0E114441173b57f8C1571b<br>Goose Chaing: 0x4675C7e5BaAFBFFbca748158bEcBA61ef3b0a263' ],
+  ],
 };
