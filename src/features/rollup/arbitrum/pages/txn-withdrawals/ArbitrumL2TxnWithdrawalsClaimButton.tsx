@@ -12,6 +12,7 @@ import type { ResourceError } from 'src/api/resources';
 
 import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
 import useWallet from 'src/features/connect-wallet/hooks/useWallet';
+import WithdrawalClaimButton from 'src/features/rollup/common/components/WithdrawalClaimButton';
 
 import config from 'src/config';
 import getErrorMessage from 'src/shared/errors/get-error-message';
@@ -20,7 +21,6 @@ import getErrorProp from 'src/shared/errors/get-error-prop';
 import capitalizeFirstLetter from 'src/shared/texts/capitalize-first-letter';
 
 import { Button } from 'src/toolkit/chakra/button';
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { toaster } from 'src/toolkit/chakra/toaster';
 
 import ArbitrumL2TxnWithdrawalsClaimTx from './ArbitrumL2TxnWithdrawalsClaimTx';
@@ -128,17 +128,13 @@ const ArbitrumL2TxnWithdrawalsClaimButtonContent = ({ messageId, txHash, complet
   const isLoading = isPending || web3Wallet.isOpen;
 
   return (
-    <Skeleton loading={ isDataLoading }>
-      <Button
-        size="sm"
-        variant="outline"
-        onClick={ handleClaimClick }
-        loading={ isLoading }
-        loadingText="Claim"
-      >
-        Claim
-      </Button>
-    </Skeleton>
+    <WithdrawalClaimButton
+      onClick={ handleClaimClick }
+      loading={ isLoading }
+      loadingSkeleton={ isDataLoading }
+    >
+      Claim
+    </WithdrawalClaimButton>
   );
 };
 

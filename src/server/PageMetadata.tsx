@@ -32,11 +32,20 @@ const PageMetadata = <Pathname extends Route['pathname']>(props: Props<Pathname>
       <meta property="og:type" content="website"/>
 
       { /* Twitter Meta Tags */ }
-      <meta name="twitter:card" content="summary_large_image"/>
-      <meta property="twitter:domain" content={ config.app.host }/>
       <meta name="twitter:title" content={ opengraph.title }/>
       { opengraph.description && <meta name="twitter:description" content={ opengraph.description }/> }
-      { opengraph.imageUrl && <meta property="twitter:image" content={ opengraph.imageUrl }/> }
+      <meta property="twitter:domain" content={ config.app.host }/>
+      { opengraph.imageUrl ? (
+        <>
+          <meta name="twitter:card" content="summary_large_image"/>
+          <meta property="twitter:image" content={ opengraph.imageUrl }/>
+        </>
+      ) : (
+        <>
+          <meta name="twitter:card" content="summary"/>
+          <meta property="twitter:image" content={ config.app.baseUrl + '/assets/favicon/android-chrome-192x192.png' }/>
+        </>
+      ) }
 
       { /* Prevent auto zoom in inputs on mobile */ }
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>

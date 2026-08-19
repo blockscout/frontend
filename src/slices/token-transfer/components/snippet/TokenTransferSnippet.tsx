@@ -97,6 +97,19 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
     }
   })();
 
+  const { tokenHash, tokenSymbol } = (() => {
+    if (data.token) {
+      return {
+        tokenHash: data.token.address_hash,
+        tokenSymbol: data.token.symbol ?? undefined,
+      };
+    }
+    return {
+      tokenHash: undefined,
+      tokenSymbol: undefined,
+    };
+  })();
+
   return (
     <Flex
       alignItems="center"
@@ -109,6 +122,8 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       <AddressFromTo
         from={ data.from }
         to={ data.to }
+        tokenHash={ tokenHash }
+        tokenSymbol={ tokenSymbol }
         truncation="constant"
         noIcon={ noAddressIcons }
         isLoading={ isLoading }

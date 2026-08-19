@@ -93,6 +93,8 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
           maxW={{ lg: '220px', xl: '320px' }}
           from={ item.from }
           to={ item.to }
+          tokenHash={ item.token?.address_hash }
+          tokenSymbol={ item.token?.symbol ?? undefined }
           isLoading={ isLoading }
           mode={{ lg: 'compact', xl: 'long' }}
         />

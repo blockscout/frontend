@@ -11,12 +11,13 @@ interface Props {
   hash: string;
   noTooltip?: boolean;
   tooltipInteractive?: boolean;
+  tooltipContent?: React.ReactNode;
   type?: 'long' | 'short';
   maxSymbols?: number;
   as?: React.ElementType;
 }
 
-const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive, maxSymbols }: Props) => {
+const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteractive, tooltipContent, maxSymbols }: Props) => {
   const charNumber = maxSymbols ?? (type === 'long' ? 16 : 8);
   if (hash.length <= charNumber) {
     return <chakra.span as={ as }>{ hash }</chakra.span>;
@@ -29,7 +30,11 @@ const HashStringShorten = ({ hash, noTooltip, as = 'span', type, tooltipInteract
   }
 
   return (
-    <Tooltip content={ hash } interactive={ tooltipInteractive }>
+    <Tooltip
+      contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
+      content={ tooltipContent ?? hash }
+      interactive={ tooltipInteractive }
+    >
       { content }
     </Tooltip>
   );

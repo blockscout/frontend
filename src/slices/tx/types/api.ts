@@ -19,3 +19,9 @@ export interface TxsFilters {
   filter?: TxsStatusFilter;
   type?: TxsTypeFilter;
 };
+
+export interface TxOgDescriptionParams {
+  tx_status: string;
+  tx_action: string;
+  tx_timestamp: string;
+}

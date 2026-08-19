@@ -95,6 +95,8 @@ const TokenTransferListItem = ({
         from={ data.from }
         to={ data.to }
         current={ baseAddress }
+        tokenHash={ data.token.address_hash }
+        tokenSymbol={ data.token.symbol ?? undefined }
         isLoading={ isLoading }
         w="100%"
       />

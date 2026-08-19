@@ -14,6 +14,8 @@ import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
+import WithdrawalClaimButton from '../../common/components/WithdrawalClaimButton';
+
 const rollupFeature = config.features.rollup;
 
 export const canClaimDirectlyGuard = (data: Omit<schemas['OptimismTransactionWithdrawal'], 'nonce'>) => {
@@ -57,7 +59,11 @@ const OptimisticL2ClaimButton = ({ data, from, onSuccess, source }: Props) => {
             />
           </Web3Boundary>
         ) }
-        <Button variant="outline" size="sm" onClick={ modal.onOpen }>Claim</Button>
+        <WithdrawalClaimButton
+          onClick={ modal.onOpen }
+        >
+          Claim
+        </WithdrawalClaimButton>
       </>
     );
   }

@@ -21,8 +21,9 @@ The frontend never hardcodes a full API URL. A request is assembled as:
   object per service from `NEXT_PUBLIC_*` env vars; the env-var → field mapping changes, so
   the file is the source of truth.
 - **Every deployed instance exposes its full public config** at
-  **`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`; served by
-  `src/pages/api/config.ts`) — the canonical source for those values on a live instance.
+  **`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`, plus the start-up variables
+  allowlisted in `src/pages/api/config.ts`, which serves it) — the canonical source for those values
+  on a live instance.
   It also carries the "secret-ish" public keys (WalletConnect, reCAPTCHA, GA) by design;
   treat it as a config source, not secrets.
 - **The `/node-api/proxy` rewrite is a browser-CORS workaround only.** In local dev /

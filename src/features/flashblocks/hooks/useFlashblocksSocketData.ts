@@ -14,7 +14,7 @@ import { SECOND } from 'src/toolkit/utils/consts';
 const flashblocksFeature = config.features.flashblocks;
 
 const MAX_FLASHBLOCKS_COUNT = 50;
-const QUEUE_TIME_THRESHOLD = 200;
+const QUEUE_TIME_THRESHOLD = 150;
 
 type Status = 'initial' | 'connected' | 'disconnected' | 'error';
 
