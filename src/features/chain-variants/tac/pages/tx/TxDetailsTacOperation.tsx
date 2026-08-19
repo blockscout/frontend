@@ -68,7 +68,7 @@ const TxDetailsTacOperation = ({ isLoading, txHash }: Props) => {
                 isLoading={ isPlaceholderData }
                 my={{ base: '5px', lg: 0 }}
               />
-              <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }} maxW="100%">
+              <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }} maxW="100%" gap={ 1 }>
                 <TacOperationStatus
                   status={ tacOperation.status }
                   type={ tacOperation.type }

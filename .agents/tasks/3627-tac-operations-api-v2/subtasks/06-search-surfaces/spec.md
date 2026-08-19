@@ -36,8 +36,8 @@ results page
 - [x] No `tac.Operation*` (v1) identifier remains anywhere in `src/`
 - [x] `error_reason` and `sender` are handled as **nullable** — the core schema declares them
       `nullable: true`, so they arrive as `null` rather than absent
-- [ ] `(human)` The suggestion row and the results row match the operations list's tag presentation
-- [ ] `(human)` Searching by operation id, sender and tx hash returns the same results as before
+- [x] `(human)` The suggestion row and the results row match the operations list's tag presentation
+- [x] `(human)` Searching by operation id, sender and tx hash returns the same results as before
 
 ## Details
 

@@ -9,8 +9,9 @@ import type { ItemsProps } from 'src/slices/search/components/search-bar/SearchB
 import Time from 'src/shared/date-and-time/Time';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
+import { Badge } from 'src/toolkit/chakra/badge';
+
 import * as TacOperationEntity from './TacOperationEntity';
-import TacOperationRollbackTag from './TacOperationRollbackTag';
 import TacOperationStatus from './TacOperationStatus';
 
 const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResultTacOperation>) => {
@@ -28,7 +29,7 @@ const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResul
         errorReason={ data.tac_operation.error_reason }
         isRollback={ data.tac_operation.rollback }
       />
-      { data.tac_operation.rollback && <TacOperationRollbackTag ml={ 1 }/> }
+      { data.tac_operation.rollback && <Badge ml={ 1 }>Rollback</Badge> }
     </>
   );
 

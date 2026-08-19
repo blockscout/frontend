@@ -20,7 +20,6 @@ import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import * as TacOperationEntity from 'src/features/chain-variants/tac/components/TacOperationEntity';
-import TacOperationRollbackTag from 'src/features/chain-variants/tac/components/TacOperationRollbackTag';
 import TacOperationStatus from 'src/features/chain-variants/tac/components/TacOperationStatus';
 import * as BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
 import * as EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
@@ -34,6 +33,7 @@ import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic'
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { Badge } from 'src/toolkit/chakra/badge';
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -267,7 +267,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               isRollback={ data.tac_operation.rollback }
               isLoading={ isLoading }
             />
-            { data.tac_operation.rollback && <TacOperationRollbackTag loading={ isLoading }/> }
+            { data.tac_operation.rollback && <Badge loading={ isLoading }>Rollback</Badge> }
           </TacOperationEntity.Container>
         );
       }
