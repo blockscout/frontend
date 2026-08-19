@@ -25,8 +25,8 @@ importers:
         specifier: 1.5.0
         version: 1.5.0
       '@blockscout/api-types':
-        specifier: 0.0.1-beta.8e1692a
-        version: 0.0.1-beta.8e1692a
+        specifier: 0.0.1-beta.eeda17a
+        version: 0.0.1-beta.eeda17a
       '@blockscout/bens-types':
         specifier: 1.7.1
         version: 1.7.1
@@ -1342,8 +1342,8 @@ packages:
   '@blockscout/admin-rs-types@1.5.0':
     resolution: {integrity: sha512-QE+dpUaQDvOAb/wUJ98J3CBqfohbiBW/+AEqEmSdOOZ0XxPRUrke08krBnflq3GMACRwB+nwzQrsfl7KCrC1Eg==}
 
-  '@blockscout/api-types@0.0.1-beta.8e1692a':
-    resolution: {integrity: sha512-itkaQdbtJSwsJL6LQBAPQlSWuejDhuuUXxZTcfwDAup/6L/OOw0l0XwIEVEtqTaLVIxG1DyGOrr7gKz2fPrukQ==}
+  '@blockscout/api-types@0.0.1-beta.eeda17a':
+    resolution: {integrity: sha512-gYmaUzArynJFqYL0fhoSvDz4SdTEdbZ6UNCvppj69ygjl25oUYSip/CRXd59jfNR690bAkzz2tKglBuv6cQSbw==}
 
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
@@ -9781,7 +9781,7 @@ packages:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
   gradient-avatar@https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045:
-    resolution: {gitHosted: true, integrity: sha512-0O9zIUvqAKbiefYuC8lgxRIsCzSD07ectXRligCwEHxLEIP7WKfvDJiyLnXAudI4LGn6MNAkl1BC9/sTGtTTDg==, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/blockscout/gradient-avatar/tar.gz/86810368c2581d2dc3aca089dc648336c8e17045}
     version: 1.0.3
     engines: {node: '>=8'}
 
@@ -15117,7 +15117,7 @@ snapshots:
 
   '@blockscout/admin-rs-types@1.5.0': {}
 
-  '@blockscout/api-types@0.0.1-beta.8e1692a': {}
+  '@blockscout/api-types@0.0.1-beta.eeda17a': {}
 
   '@blockscout/bens-types@1.7.1': {}
 
@@ -23194,7 +23194,7 @@ snapshots:
       debug: 4.4.3
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.8.4
+      semver: 7.8.1
       tsutils: 3.21.0(@typescript/typescript6@6.0.2)
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -23208,7 +23208,7 @@ snapshots:
       debug: 4.4.3
       globby: 11.1.0
       is-glob: 4.0.3
-      semver: 7.8.4
+      semver: 7.8.1
       tsutils: 3.21.0(typescript@5.9.3)
     optionalDependencies:
       typescript: 5.9.3
@@ -23223,7 +23223,7 @@ snapshots:
       globby: 11.1.0
       is-glob: 4.0.3
       minimatch: 9.0.9
-      semver: 7.8.4
+      semver: 7.8.1
       ts-api-utils: 1.4.3(@typescript/typescript6@6.0.2)
     optionalDependencies:
       typescript: '@typescript/typescript6@6.0.2'
@@ -23253,7 +23253,7 @@ snapshots:
       '@typescript-eslint/visitor-keys': 8.60.0
       debug: 4.4.3
       minimatch: 10.2.5
-      semver: 7.8.4
+      semver: 7.8.1
       tinyglobby: 0.2.16
       ts-api-utils: 2.5.0(@typescript/typescript6@6.0.2)
       typescript: '@typescript/typescript6@6.0.2'
@@ -31531,7 +31531,7 @@ snapshots:
     dependencies:
       '@img/colour': 1.1.0
       detect-libc: 2.1.2
-      semver: 7.8.4
+      semver: 7.8.1
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.5
       '@img/sharp-darwin-x64': 0.34.5
