@@ -10,7 +10,7 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import TacOperationsListItem from './TacOperationsListItem';
 
 type Props = {
-  items: Array<tac.OperationBriefDetails>;
+  items: Array<tac.V2OperationBriefDetails>;
   isLoading?: boolean;
   resetKey?: string;
 };

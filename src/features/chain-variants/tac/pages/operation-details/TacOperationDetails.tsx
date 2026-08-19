@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
+
+import { Badge } from 'src/toolkit/chakra/badge';
 
 import AddressEntityTacTon from '../../components/AddressEntityTacTon';
 import TacOperationStatus from '../../components/TacOperationStatus';
@@ -14,7 +17,7 @@ import TacOperationLifecycleAccordion from './TacOperationLifecycleAccordion';
 
 interface Props {
   isLoading?: boolean;
-  data: tac.OperationDetails;
+  data: tac.V2OperationDetails;
 }
 
 const TacOperationDetails = ({ isLoading, data }: Props) => {
@@ -50,7 +53,16 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
         Status
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <TacOperationStatus status={ data.type } isLoading={ isLoading }/>
+        <HStack gap={ 1 } flexWrap="wrap">
+          <TacOperationStatus
+            status={ data.status }
+            type={ data.type }
+            errorReason={ data.error_reason }
+            isLoading={ isLoading }
+            isRollback={ data.rollback }
+          />
+          { data.rollback && <Badge loading={ isLoading }>Rollback</Badge> }
+        </HStack>
       </DetailedInfo.ItemValue>
 
       { data.timestamp && (
@@ -76,7 +88,7 @@ const TacOperationDetails = ({ isLoading, data }: Props) => {
             Lifecycle
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue mt={ 1 }>
-            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } type={ data.type }/>
+            <TacOperationLifecycleAccordion data={ statusHistory } isLoading={ isLoading } status={ data.status }/>
           </DetailedInfo.ItemValue>
         </>
       ) }

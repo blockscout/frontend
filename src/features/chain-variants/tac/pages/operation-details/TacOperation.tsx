@@ -31,11 +31,11 @@ const TacOperation = () => {
   throwOnResourceLoadError(query);
 
   const titleContentAfter = query.data ? (
-    <TacOperationTag type={ query.data.type } loading={ query.isPlaceholderData }/>
+    <TacOperationTag type={ query.data.type } isRollback={ query.data.rollback } loading={ query.isPlaceholderData }/>
   ) : null;
 
   const titleSecondRow = (
-    <TacOperationEntity id={ id } noLink variant="subheading" type={ query.data?.type }/>
+    <TacOperationEntity id={ id } noLink variant="subheading" status={ query.data?.status }/>
   );
 
   return (

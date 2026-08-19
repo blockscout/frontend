@@ -24,11 +24,11 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'type'>;
+type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'status'>;
 
 const Icon = (props: IconProps) => {
-  switch (props.type) {
-    case tac.OperationType.PENDING: {
+  switch (props.status) {
+    case tac.V2OperationStatus.pending: {
       return <Spinner size="md" marginRight={ props.marginRight ?? '8px' }/>;
     }
     default: {
@@ -69,7 +69,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   id: string;
-  type: tac.OperationType | undefined;
+  status: tac.V2OperationStatus | undefined;
 }
 
 const TacOperationEntity = (props: EntityProps) => {
