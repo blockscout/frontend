@@ -28,11 +28,21 @@ interface Props extends BoxProps {
   fontWeight?: string | number;
   noTooltip?: boolean;
   tooltipInteractive?: boolean;
+  tooltipContent?: React.ReactNode;
   tailLength?: number;
   as?: React.ElementType;
 }
 
-const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLength = TAIL_LENGTH, as = 'span', tooltipInteractive, ...props }: Props) => {
+const HashStringShortenDynamic = ({
+  hash,
+  fontWeight = '400',
+  noTooltip,
+  tailLength = TAIL_LENGTH,
+  as = 'span',
+  tooltipInteractive,
+  tooltipContent,
+  ...props
+}: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
 
@@ -97,10 +107,10 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', noTooltip, tailLen
   const content = <chakra.span ref={ elementRef } as={ as } { ...props }>{ displayedString }</chakra.span>;
   const isTruncated = hash.length !== displayedString.length;
 
-  if (isTruncated && !noTooltip) {
+  if (!noTooltip && (isTruncated || tooltipContent)) {
     return (
       <Tooltip
-        content={ hash }
+        content={ tooltipContent ?? hash }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
         interactive={ tooltipInteractive }
       >

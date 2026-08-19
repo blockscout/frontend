@@ -10,7 +10,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import type { ContentProps } from './AddressEntity';
 import AddressEntity from './AddressEntity';
 
-const AddressEntityContentProxy = (props: ContentProps) => {
+const AddressEntityContentProxy = ({ tooltipContentAfter, tooltipInteractive, ...props }: ContentProps) => {
   const implementations = props.address.implementations;
 
   if (!implementations || implementations.length === 0) {
@@ -56,6 +56,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
           />
         )) }
       </Flex>
+      { tooltipContentAfter }
     </>
   );
 

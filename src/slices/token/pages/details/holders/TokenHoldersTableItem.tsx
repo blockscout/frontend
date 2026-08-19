@@ -6,7 +6,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
 
 import AssetValue from 'src/shared/values/entity/AssetValue';
 import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
@@ -25,8 +25,10 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <AddressEntity
+        <AddressEntityWithTokenFilter
           address={ holder.address }
+          tokenHash={ token.address_hash }
+          tokenSymbol={ token.symbol ?? undefined }
           isLoading={ isLoading }
           flexGrow={ 1 }
           fontWeight="700"

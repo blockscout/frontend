@@ -166,12 +166,15 @@ const Content = chakra((props: ContentProps) => {
     const styles = getContentProps(props.variant);
 
     const label = (
-      <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">
-          { displayedAddress }
-        </Box>
-      </VStack>
+      <>
+        <VStack gap={ 0 } py={ 1 } color="inherit">
+          <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
+          <Box whiteSpace="pre-wrap" wordBreak="break-word">
+            { displayedAddress }
+          </Box>
+        </VStack>
+        { props.tooltipContentAfter }
+      </>
     );
 
     return (
@@ -227,10 +230,16 @@ const AddressEntity = (props: EntityProps) => {
 
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
-  // inside highlight context all tooltips should be interactive
-  // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
-  // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
-  const content = <Content { ...partsProps.content } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>;
+  const content = (
+    <Content
+      { ...partsProps.content }
+      altHash={ altHash }
+      // inside highlight context all tooltips should be interactive
+      // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
+      // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
+      tooltipInteractive={ Boolean(highlightContext) || partsProps.content.tooltipInteractive }
+    />
+  );
 
   return (
     <Container
