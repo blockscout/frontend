@@ -3,12 +3,12 @@
 | | |
 | --- | --- |
 | Issue | https://github.com/blockscout/frontend/issues/3627 |
-| Status | `in progress` |
+| Status | `done` |
 | Feature branch | `issue-3627` |
 | PM | Ulyana |
 | Designer | Tatyana |
 | Backend | Evgenii |
-| Minimum API version | `tac-operation-lifecycle` **v1.2.0** — the service release that serves Read API v2 |
+| Minimum API version | `tac-operation-lifecycle` **v1.2.0** — the service release that serves Read API v2; core **v11.2.8** — the release whose `/api/v2/search` returns the v2 operation shape |
 | Slack channel | — (default routing per `grill-the-task`) |
 
 ## Context & goal
@@ -55,9 +55,9 @@ and the failure reason.
 10. A `failed` operation may later become `success`, and the UI shows `failed` with no hedging in the
     meantime — no spinner, no "may still resolve" wording. Deliberate: the user cannot act on it and does
     not know what they would be waiting for.
-11. Legacy values `PENDING`, `ROLLBACK`, `INSUFFICIENT_FEE` and `ERROR` are gone from every code path that
-    talks to the tac service. The search surfaces are the one exception until core migrates — see
-    subtask 06.
+11. Legacy values `PENDING`, `ROLLBACK`, `INSUFFICIENT_FEE` and `ERROR` are gone from every code path in
+    `src/`. The search surfaces are the last to migrate, because their payload comes from core rather than
+    from the tac service — see subtask 06.
 12. No regression in search (`q`), pagination, sender rendering or the stage timeline.
 
 ## Data & API
@@ -132,6 +132,11 @@ the staging one, which no frontend points at. The service must be rolled out to 
 frontends do use **before this task merges**; the backends can be updated early since they stay
 v1-compatible. That rollout is tracked on the PR, owned by Backend, and is not a code dependency.
 
+**The search surfaces are the one exception**, and they do need a coordinated release. Their payload comes
+from core, and core replaces `/api/v1/tac/operations` with the v2 call rather than serving both, so an
+instance whose core predates **v11.2.8** would hand this frontend a v1 operation object it no longer parses.
+Core cuts v11.2.8 when this task is ready, and the two ship together — see Q4.
+
 Development and the demo deploy both run against the staging service host published in the issue, by
 overriding `NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST`.
 
@@ -201,7 +206,7 @@ Mocks live in `mocks/operations.ts` and `mocks/search.ts`, and placeholder data 
 - [x] 03 Operation details page → [`subtasks/03-operation-details/`](subtasks/03-operation-details/spec.md) — blocked by: 02
 - [x] 04 By-transaction operations block → [`subtasks/04-by-tx-block/`](subtasks/04-by-tx-block/spec.md) — blocked by: 02
 - [x] 05 Remove the v1 client and refresh the generated API docs → [`subtasks/05-remove-v1/`](subtasks/05-remove-v1/spec.md) — blocked by: 02, 03, 04
-- [ ] 06 Point the search surfaces at the v2 shape → [`subtasks/06-search-surfaces/`](subtasks/06-search-surfaces/brief.md) — blocked by: 02
+- [x] 06 Point the search surfaces at the v2 shape → [`subtasks/06-search-surfaces/`](subtasks/06-search-surfaces/spec.md) — blocked by: 02
 
 ## Open questions
 
@@ -246,3 +251,20 @@ raising whether the route badge is deliberately dropped.
 - Answer: 2026-08-14 — nothing changes. The badge is mutually exclusive today because the v1 `type` was a
   single field: a rollback rendered `Rollback`, everything else rendered the route. The mockup draws the
   rollback case, so the route badge is absent there rather than removed. Captured as requirement 6.
+
+### Q4 — Has the v2 operation shape reached the core `/api/v2/search` response?
+
+The search surfaces render TAC operations from a payload embedded in the **core** search response rather than
+from `tac-operation-lifecycle`, and core returned the v1 shape when this task was written. A v1 `type` can be
+`PENDING`, `ROLLBACK` or `INSUFFICIENT_FEE`, so it cannot be reinterpreted as a pure route — which is why
+subtask 06 was deferred instead of riding along with subtask 02.
+
+- Owner: Backend (Evgenii → core backend team, Victor)
+- Status: `resolved`
+- Slack: https://blockscout.slack.com/archives/C04NCPZGRAR/p1786715688895299
+- Answer: 2026-08-19 — yes. Core's `dev` branch carries
+  [#14719](https://github.com/blockscout/blockscout/pull/14719), which switches the search result to Read
+  API v2 and describes the operation object in core's own OpenAPI spec, so the shape no longer has to be
+  owned by the feature. Two consequences: core **replaces** `/api/v1/tac/operations` rather than serving both
+  (a dual-endpoint period was considered and rejected as not worth the complexity for three instances), so a
+  minimum core version applies; and the change ships in core **v11.2.8**, cut when the frontend is ready.

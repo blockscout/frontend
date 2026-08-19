@@ -9,18 +9,28 @@ import type { ItemsProps } from 'src/slices/search/components/search-bar/SearchB
 import Time from 'src/shared/date-and-time/Time';
 import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
-import { getLegacyTacOperationStatus } from '../utils/tac-operation-legacy';
-import SearchResultTacOperationStatus from './SearchResultTacOperationStatus';
 import * as TacOperationEntity from './TacOperationEntity';
+import TacOperationRollbackTag from './TacOperationRollbackTag';
+import TacOperationStatus from './TacOperationStatus';
 
 const SearchBarSuggestTacOperation = ({ data, isMobile }: ItemsProps<SearchResultTacOperation>) => {
-  const icon = <TacOperationEntity.Icon status={ getLegacyTacOperationStatus(data.tac_operation.type) }/>;
+  const icon = <TacOperationEntity.Icon status={ data.tac_operation.status }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 } mr={ 2 }>
       <HashStringShortenDynamic hash={ data.tac_operation.operation_id } noTooltip/>
     </chakra.mark>
   );
-  const status = <SearchResultTacOperationStatus type={ data.tac_operation.type }/>;
+  const status = (
+    <>
+      <TacOperationStatus
+        status={ data.tac_operation.status }
+        type={ data.tac_operation.type }
+        errorReason={ data.tac_operation.error_reason }
+        isRollback={ data.tac_operation.rollback }
+      />
+      { data.tac_operation.rollback && <TacOperationRollbackTag ml={ 1 }/> }
+    </>
+  );
 
   if (isMobile) {
     return (

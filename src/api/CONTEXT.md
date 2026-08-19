@@ -88,7 +88,10 @@ per-service package/repo/workflow mapping table and the `gh` dispatch procedure.
   embed data the Core API merely proxies from a micro-service and doesn't fully describe in
   its own OpenAPI spec — it doesn't know those shapes (e.g. the `tac_operation` field in the
   search-result variant with `type: 'tac_operation'`). In the generated `@blockscout/api-types` schema such data
-  therefore shows up only as **optional properties** or **loose members of a type union**.
+  therefore shows up only as **optional properties** or **loose members of a type union**. The same applies
+  when Core *does* describe the shape but the generated types can't express it — e.g. a proxied object whose
+  own `type` field collides with the discriminator of the union it sits in, which `openapi-typescript`
+  resolves by overwriting the object's field.
   The precise shape is owned by the **feature** and must live under
   `src/features/**/types/api.ts` (the feature owns the rendering, so it owns the type). A
   slice may then **consolidate** these feature types with the generated schema — swapping a

@@ -45,7 +45,11 @@ export const ROLLBACK_TOOLTIP = 'The cross‑chain operation was reverted and th
  * Only a failure gets a tooltip; `error_reason` is a short label the API publishes when it has one, and is
  * legitimately absent in many failed states.
  */
-export function getTacOperationStatusTooltip(status: tac.V2OperationStatus, errorReason: string | undefined, isRollback: boolean | undefined): string | null {
+export function getTacOperationStatusTooltip(
+  status: tac.V2OperationStatus,
+  errorReason: string | null | undefined,
+  isRollback: boolean | undefined,
+): string | null {
   if (status !== tac.V2OperationStatus.failed) {
     return null;
   }

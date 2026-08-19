@@ -57,18 +57,3 @@ export const tacOperation: tac.V2OperationDetails = {
     },
   ],
 };
-
-/**
- * The search surfaces receive the v1 shape from the core search endpoint, so their fixtures cannot share
- * {@link tacOperation} — see `SearchResultTacOperationStatus`.
- */
-export const legacyTacOperation: tac.OperationDetails = {
-  operation_id: tacOperation.operation_id,
-  type: tac.OperationType.TON_TAC_TON,
-  timestamp: tacOperation.timestamp,
-  sender: {
-    address: 'EQBnVg4x6uTCa8jlrh8YXyWpnJJ3oxxrdBQ2+Zw8yaoxnXTt',
-    blockchain: tac.BlockchainType.TON,
-  },
-  status_history: [],
-};

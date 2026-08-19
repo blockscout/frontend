@@ -19,9 +19,9 @@ import { getItemCategory, getSearchCategories } from 'src/slices/search/utils/se
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import SearchResultTacOperationStatus from 'src/features/chain-variants/tac/components/SearchResultTacOperationStatus';
 import * as TacOperationEntity from 'src/features/chain-variants/tac/components/TacOperationEntity';
-import { getLegacyTacOperationStatus } from 'src/features/chain-variants/tac/utils/tac-operation-legacy';
+import TacOperationRollbackTag from 'src/features/chain-variants/tac/components/TacOperationRollbackTag';
+import TacOperationStatus from 'src/features/chain-variants/tac/components/TacOperationStatus';
 import * as BlobEntity from 'src/features/data-availability/components/entity/BlobEntity';
 import * as EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
@@ -246,7 +246,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'tac_operation': {
         return (
           <TacOperationEntity.Container>
-            <TacOperationEntity.Icon status={ getLegacyTacOperationStatus(data.tac_operation.type) }/>
+            <TacOperationEntity.Icon status={ data.tac_operation.status } isLoading={ isLoading }/>
             <TacOperationEntity.Link
               isLoading={ isLoading }
               id={ data.tac_operation.operation_id }
@@ -260,7 +260,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 mr={ 2 }
               />
             </TacOperationEntity.Link>
-            <SearchResultTacOperationStatus type={ data.tac_operation.type }/>
+            <TacOperationStatus
+              status={ data.tac_operation.status }
+              type={ data.tac_operation.type }
+              errorReason={ data.tac_operation.error_reason }
+              isRollback={ data.tac_operation.rollback }
+              isLoading={ isLoading }
+            />
+            { data.tac_operation.rollback && <TacOperationRollbackTag loading={ isLoading }/> }
           </TacOperationEntity.Container>
         );
       }

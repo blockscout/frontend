@@ -12,7 +12,7 @@ import { getTacOperationStatusText, getTacOperationStatusTooltip } from '../util
 interface Props {
   status: tac.V2OperationStatus;
   type: tac.V2OperationType;
-  errorReason?: string;
+  errorReason?: string | null;
   isLoading?: boolean;
   isRollback?: boolean;
 }

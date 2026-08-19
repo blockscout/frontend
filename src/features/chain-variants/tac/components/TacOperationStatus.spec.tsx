@@ -8,7 +8,6 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from 'vitest/lib';
 
 import { FAILURE_TOOLTIP, getTacOperationStatusText, getTacOperationStatusTooltip, ROLLBACK_TOOLTIP } from '../utils/tac-operation';
-import TacOperationRollbackTag from './TacOperationRollbackTag';
 import TacOperationStatus from './TacOperationStatus';
 
 const ERROR_REASON = 'Insufficient Fee';
@@ -48,8 +47,15 @@ describe('status tooltip', () => {
       .toBe(`${ FAILURE_TOOLTIP }. ${ ERROR_REASON }`);
   });
 
-  it('falls back to the plain failure text when the reason is absent', () => {
-    expect(getTacOperationStatusTooltip(tac.V2OperationStatus.failed, undefined, undefined)).toBe(FAILURE_TOOLTIP);
+  it.each([
+    [ 'undefined', undefined ],
+    [ 'null', null ],
+  ])('falls back to the plain failure text when the reason is %s', (_, errorReason) => {
+    expect(getTacOperationStatusTooltip(tac.V2OperationStatus.failed, errorReason, undefined)).toBe(FAILURE_TOOLTIP);
+  });
+
+  it('prefers the rollback text over an error reason', () => {
+    expect(getTacOperationStatusTooltip(tac.V2OperationStatus.failed, ERROR_REASON, true)).toBe(ROLLBACK_TOOLTIP);
   });
 
   it('includes the rollback text when the rollback flag is present', () => {
@@ -75,22 +81,31 @@ describe('rendering', () => {
     expect(screen.queryByText(/→/)).toBeNull();
   });
 
-  // `rollback` is a sibling tag, never a fourth status value, so it must not disturb the status tag's text.
-  it.each([
-    [ 'a rollback', true ],
-    [ 'a plain failure', false ],
-  ])('keeps the route in the status tag for %s', (_, rollback) => {
+  // `rollback` is carried by a sibling badge and by the tooltip, never by the tag's text.
+  it('keeps the route in the status tag for a rollback, and adds no wording of its own', () => {
     render(
-      <>
-        <TacOperationStatus
-          status={ tac.V2OperationStatus.failed }
-          type={ tac.V2OperationType.TAC_TON }
-          errorReason={ ERROR_REASON }
-        />
-        { rollback && <TacOperationRollbackTag/> }
-      </>,
+      <TacOperationStatus
+        status={ tac.V2OperationStatus.failed }
+        type={ tac.V2OperationType.TAC_TON }
+        errorReason={ ERROR_REASON }
+        isRollback
+      />,
     );
     expect(screen.getByText('TAC → TON')).toBeTruthy();
-    expect(screen.queryByText('Rollback') !== null).toBe(rollback);
+    expect(screen.queryByText('Rollback')).toBeNull();
+    expect(screen.queryByText(ERROR_REASON)).toBeNull();
+  });
+
+  // Core sends `null` where the service's proto omits the field, so the tag must not print it.
+  it('renders a null error reason without leaking it into the text', () => {
+    render(
+      <TacOperationStatus
+        status={ tac.V2OperationStatus.failed }
+        type={ tac.V2OperationType.TAC_TON }
+        errorReason={ null }
+      />,
+    );
+    expect(screen.getByText('TAC → TON')).toBeTruthy();
+    expect(screen.queryByText(/null/)).toBeNull();
   });
 });
