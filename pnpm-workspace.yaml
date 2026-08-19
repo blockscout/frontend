@@ -64,6 +64,14 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
-  # remove after 27.07.2026
-  - '@chakra-ui/cli@3.36.1'
-  - '@chakra-ui/react@3.36.1'
+  # remove after 20.08.2026
+  - 'next@16.3.1'
+  - '@next/env@16.3.1'
+  - '@next/swc-darwin-arm64@16.3.1'
+  - '@next/swc-darwin-x64@16.3.1'
+  - '@next/swc-linux-arm64-gnu@16.3.1'
+  - '@next/swc-linux-arm64-musl@16.3.1'
+  - '@next/swc-linux-x64-gnu@16.3.1'
+  - '@next/swc-linux-x64-musl@16.3.1'
+  - '@next/swc-win32-arm64-msvc@16.3.1'
+  - '@next/swc-win32-x64-msvc@16.3.1'

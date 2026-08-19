@@ -2,7 +2,7 @@
 
 | | |
 | --- | --- |
-| Status | accepted |
+| Status | superseded by 0003 |
 | Date | 2026-08-04 |
 | Deciders | @tom2drum |
 | Supersedes | — |

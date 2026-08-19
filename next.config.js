@@ -74,6 +74,12 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  // Turbopack's standalone tracer copies only @swc/helpers/cjs and drops the esm/ entry points that
+  // Next's require-hook loads at runtime, so `node server.js` crashes on boot. Force the whole
+  // package into the standalone bundle until the tracer is fixed upstream.
+  outputFileTracingIncludes: {
+    '/**': [ './node_modules/@swc/helpers/**' ],
+  },
   productionBrowserSourceMaps: false,
   serverExternalPackages: [
     '@opentelemetry/sdk-node',
@@ -87,7 +93,14 @@ const moduleExports = {
       dynamic: 30,
       'static': 180,
     },
+    // Next 16.3 defaults build-time type-checking to the `tsc` CLI, which requires a
+    // `typescript/bin/tsc` binary. This repo runs the native TypeScript compiler via the
+    // `@typescript/typescript6` alias, which ships `bin/tsc6` only — so the CLI path reports
+    // `typescript` as missing and aborts the build. The compiler-API path checks against
+    // `lib/typescript.js`, which the alias does provide, so type-checking runs normally.
+    useTypeScriptCli: false,
   },
+
 
   // workaround for passing outDir to nextjs-routes CLI, see ROUTES_OUT_DIR above.
   // Next.js warns about this unrecognized key on startup; the warning is harmless.
