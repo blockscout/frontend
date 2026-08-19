@@ -41,7 +41,6 @@ const Icon = (props: IconProps) => {
     return (
       <NftMedia
         data={ props.instance }
-        addressHash={ props.hash }
         isLoading={ props.isLoading }
         boxSize={ styles.boxSize }
         size="sm"

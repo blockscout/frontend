@@ -18,15 +18,14 @@ interface Props {
   open: boolean;
   onOpenChange: ({ open }: { open: boolean }) => void;
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
-  addressHash: string;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
 }
 
-const NftMediaFullscreenModal = ({ open, onOpenChange, data, addressHash, allowedTypes, field }: Props) => {
+const NftMediaFullscreenModal = ({ open, onOpenChange, data, allowedTypes, field }: Props) => {
   const [ mediaInfoIndex, setMediaInfoIndex ] = React.useState(0);
 
-  const mediaInfoQuery = useNftMediaInfo({ data, addressHash, size: 'original', allowedTypes, field, isEnabled: true });
+  const mediaInfoQuery = useNftMediaInfo({ data, size: 'original', allowedTypes, field, isEnabled: true });
 
   const handleMediaLoadError = React.useCallback(() => {
     if (mediaInfoQuery.data) {
@@ -53,7 +52,6 @@ const NftMediaFullscreenModal = ({ open, onOpenChange, data, addressHash, allowe
             objectFit="contain"
             autoPlay
             instance={ data }
-            addressHash={ addressHash }
           />
         );
       case 'html':

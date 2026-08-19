@@ -9,7 +9,6 @@ import { toTokenInstanceModel } from '../../utils/model';
 import NftMedia from './NftMedia';
 
 const TOKEN_ID = '123';
-const TOKEN_HASH = tokenInfoMock.tokenInfoERC721a.address_hash;
 
 test.describe('no url', () => {
   test.use({ viewport: { width: 250, height: 250 } });
@@ -20,7 +19,7 @@ test.describe('no url', () => {
       animation_url: null,
       token: tokenInfoMock.tokenInfoERC721a,
     });
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH }/>);
+    const component = await render(<NftMedia data={ data }/>);
     await expect(component).toHaveScreenshot();
   });
 
@@ -34,7 +33,7 @@ test.describe('no url', () => {
     });
 
     await mockAssetResponse(IMAGE_URL, './playwright/mocks/image_long.jpg');
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH }/>);
+    const component = await render(<NftMedia data={ data }/>);
     await expect(component).toHaveScreenshot();
   });
 
@@ -51,7 +50,7 @@ test.describe('no url', () => {
 
     await mockAssetResponse(IMAGE_URL, './playwright/mocks/image_long.jpg');
 
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH }/>);
+    const component = await render(<NftMedia data={ data }/>);
     await expect(component).toHaveScreenshot();
   });
 });
@@ -72,7 +71,7 @@ test.describe('image', () => {
     });
     await render(
       <Box boxSize="250px">
-        <NftMedia data={ data } addressHash={ TOKEN_HASH } size="md"/>
+        <NftMedia data={ data } size="md"/>
       </Box>,
     );
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
@@ -93,7 +92,7 @@ test.describe('image', () => {
     await mockAssetResponse(THUMBNAIL_URL, './playwright/mocks/image_md.jpg');
     await render(
       <Box boxSize="250px">
-        <NftMedia data={ data } addressHash={ TOKEN_HASH } size="md"/>
+        <NftMedia data={ data } size="md"/>
       </Box>,
     );
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
@@ -106,7 +105,7 @@ test.describe('image', () => {
       image_url: null,
       token: tokenInfoMock.tokenInfoERC721a,
     });
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH } w="250px" size="md"/>);
+    const component = await render(<NftMedia data={ data } w="250px" size="md"/>);
     await component.getByRole('img', { name: 'Token instance image' }).hover();
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 250 } });
   });
@@ -118,7 +117,7 @@ test.describe('image', () => {
       image_url: null,
       token: tokenInfoMock.tokenInfoERC721a,
     });
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH } withFullscreen w="250px"/>);
+    const component = await render(<NftMedia data={ data } withFullscreen w="250px"/>);
     await component.getByRole('img', { name: 'Token instance image' }).click();
     await expect(page).toHaveScreenshot();
   });
@@ -142,7 +141,7 @@ test.describe('page', () => {
       token: tokenInfoMock.tokenInfoERC721a,
     });
 
-    const component = await render(<NftMedia data={ data } addressHash={ TOKEN_HASH }/>);
+    const component = await render(<NftMedia data={ data }/>);
     await expect(component).toHaveScreenshot();
   });
 });

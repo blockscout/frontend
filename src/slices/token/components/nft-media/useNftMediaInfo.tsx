@@ -12,7 +12,6 @@ import { getPreliminaryMediaType } from './utils';
 
 interface Params {
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
-  addressHash: string;
   size: Size;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
@@ -26,10 +25,10 @@ interface MediaInfo {
   transport: TransportType;
 }
 
-export default function useNftMediaInfo({ data, addressHash, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
   const url = data[field];
   const query = useQuery({
-    queryKey: [ 'nft-media-info', addressHash, data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
+    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
       const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
       const mediaType = getMediaType(data, field);
