@@ -41,9 +41,9 @@ const AddressEntityWithTokenFilter = (props: Props) => {
 
   const tooltipContentAfter = (
     <>
-      <Separator mt={ 2 } mb={ 1 }/>
-      <Link href={ defaultHref } display="inline-flex" alignItems="center" gap={ 2 } fontWeight={ 500 }>
-        <SpriteIcon name="filter" boxSize={ 5 }/>
+      <Separator my={ 1 } className="dark"/>
+      <Link href={ defaultHref } display="flex" alignItems="center" justifyContent="center" gap={ 2 } fontWeight={ 500 } className="dark" textStyle="xs">
+        <SpriteIcon name="advanced-filter" boxSize={ 5 }/>
         <span>View all token transfers for this address and token</span>
       </Link>
     </>
