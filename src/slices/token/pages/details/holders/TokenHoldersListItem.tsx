@@ -6,7 +6,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
 
 import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import AssetValue from 'src/shared/values/entity/AssetValue';
@@ -26,8 +26,10 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <AddressEntity
+        <AddressEntityWithTokenFilter
           address={ holder.address }
+          tokenHash={ token.address_hash }
+          tokenSymbol={ token.symbol ?? undefined }
           isLoading={ isLoading }
           fontWeight="700"
           maxW="100%"
