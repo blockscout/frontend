@@ -21,7 +21,6 @@ import { mediaStyleProps } from './utils';
 
 interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
-  addressHash: string;
   size?: Size;
   allowedTypes?: Array<MediaType>;
   isLoading?: boolean;
@@ -30,7 +29,7 @@ interface Props extends Omit<HTMLChakraProps<'div'>, 'size'> {
   fallback?: React.ReactNode;
 }
 
-const NftMedia = ({ data, addressHash, size = 'original', allowedTypes, isLoading, withFullscreen, autoplayVideo, fallback, ...rest }: Props) => {
+const NftMedia = ({ data, size = 'original', allowedTypes, isLoading, withFullscreen, autoplayVideo, fallback, ...rest }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isMediaLoadingError, setIsMediaLoadingError ] = React.useState(false);
   const [ mediaInfoIndex, setMediaInfoIndex ] = React.useState(0);
@@ -38,7 +37,7 @@ const NftMedia = ({ data, addressHash, size = 'original', allowedTypes, isLoadin
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const mediaInfoQuery = useNftMediaInfo({ data, addressHash, size, allowedTypes, field: mediaInfoField, isEnabled: !isLoading && inView });
+  const mediaInfoQuery = useNftMediaInfo({ data, size, allowedTypes, field: mediaInfoField, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
     if (!mediaInfoQuery.isPending && !mediaInfoQuery.data) {
@@ -100,7 +99,6 @@ const NftMedia = ({ data, addressHash, size = 'original', allowedTypes, isLoadin
             transport={ mediaInfo.transport }
             autoPlay={ autoplayVideo }
             instance={ data }
-            addressHash={ addressHash }
           />
         );
       }
@@ -142,7 +140,6 @@ const NftMedia = ({ data, addressHash, size = 'original', allowedTypes, isLoadin
           open={ open }
           onOpenChange={ onOpenChange }
           data={ data }
-          addressHash={ addressHash }
           allowedTypes={ allowedTypes }
           field={ mediaInfoField }
         />

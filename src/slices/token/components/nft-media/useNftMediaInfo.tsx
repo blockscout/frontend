@@ -2,8 +2,6 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import type { DynamicRoute } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 
 import type { schemas } from '@blockscout/api-types';
 
@@ -14,7 +12,6 @@ import { getPreliminaryMediaType } from './utils';
 
 interface Params {
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
-  addressHash: string;
   size: Size;
   allowedTypes?: Array<MediaType>;
   field: 'animation_url' | 'image_url';
@@ -28,13 +25,13 @@ interface MediaInfo {
   transport: TransportType;
 }
 
-export default function useNftMediaInfo({ data, addressHash, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
+export default function useNftMediaInfo({ data, size, allowedTypes, field, isEnabled }: Params): UseQueryResult<Array<MediaInfo> | null> {
   const url = data[field];
   const query = useQuery({
-    queryKey: [ 'nft-media-info', addressHash, data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
+    queryKey: [ 'nft-media-info', data.id, url, size, ...(allowedTypes ? allowedTypes : []) ],
     queryFn: async() => {
       const metadataField = field === 'animation_url' ? 'animation_url' : 'image';
-      const mediaType = await getMediaType(data, addressHash, field);
+      const mediaType = getMediaType(data, field);
 
       if (!mediaType || (allowedTypes ? !allowedTypes.includes(mediaType) : false)) {
         return null;
@@ -55,11 +52,10 @@ export default function useNftMediaInfo({ data, addressHash, size, allowedTypes,
   return query;
 }
 
-async function getMediaType(
+function getMediaType(
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'],
-  addressHash: string,
   field: Params['field'],
-): Promise<MediaType | undefined> {
+): MediaType | undefined {
   const url = data[field];
 
   if (!url) {
@@ -74,35 +70,16 @@ async function getMediaType(
     }
   }
 
-  // Media can be an image, video, or HTML page.
-  // We pre-fetch the resources to determine their content type.
-  // We must do this via Node.js due to strict CSP for connect-src.
-  // To avoid overloading our server, we first check the file URL extension.
-  // If it is valid, we will trust it and display the corresponding media component.
-
+  // The URL extension is a cheap, reliable hint for the common media formats.
   const preliminaryType = getPreliminaryMediaType(url);
 
   if (preliminaryType) {
     return preliminaryType;
   }
 
-  try {
-    const mediaTypeResourceUrl = route({
-      // eslint-disable-next-line max-len
-      pathname: '/node-api/tokens/[hash]/instances/[id]/media-type' as DynamicRoute<'/api/tokens/[hash]/instances/[id]/media-type', { hash: string; id: string }>['pathname'],
-      query: {
-        hash: addressHash,
-        id: data.id,
-        field,
-      },
-    });
-    const response = await fetch(mediaTypeResourceUrl);
-    const payload = await response.json() as { type: MediaType | undefined };
-
-    return payload.type;
-  } catch (error) {
-    return;
-  }
+  // For anything the extension can't resolve, the backend classifies the media type for us.
+  // This replaces a server-side HEAD request the frontend used to make itself (see #3626).
+  return field === 'animation_url' ? data.animation_media_type ?? undefined : data.image_media_type ?? undefined;
 }
 
 function castMimeTypeToMediaType(mimeType: string | undefined): MediaType | undefined {
