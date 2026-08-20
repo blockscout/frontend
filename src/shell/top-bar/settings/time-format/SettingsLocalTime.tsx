@@ -2,11 +2,12 @@
 
 import React from 'react';
 
+import type { SwitchProps } from 'src/toolkit/chakra/switch';
 import { Switch } from 'src/toolkit/chakra/switch';
 
 import { useSettingsContext } from '../context';
 
-const SettingsLocalTime = () => {
+const SettingsLocalTime = (props: SwitchProps) => {
   const settingsContext = useSettingsContext();
 
   if (!settingsContext) {
@@ -24,6 +25,7 @@ const SettingsLocalTime = () => {
       justifyContent="space-between"
       w="100%"
       minH="34px"
+      { ...props }
     >
       Local time format
     </Switch>

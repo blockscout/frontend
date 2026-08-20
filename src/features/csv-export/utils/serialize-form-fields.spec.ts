@@ -40,6 +40,12 @@ describe('serializeFormFields', () => {
     expect(localFieldsOf(result)).toEqual([ 2026, 7, 30, 12, 0 ]);
   });
 
+  it('reads the wall clock as UTC when local time is off', () => {
+    const data = { from_period: [ new CalendarDateTime(2026, 7, 30, 12, 0) ] } as FormFields;
+
+    expect(serializeFormFields(data, false).from_period).toBe('2026-07-30T12:00:00.000Z');
+  });
+
   it('treats a date-only value as local midnight', () => {
     const data = { from_period: [ new CalendarDate(2026, 7, 30) ] } as FormFields;
 
