@@ -21,8 +21,8 @@ export interface DatePickerValueChangeDetails {
   view: 'day' | 'month' | 'year';
 }
 
-export const DATE_FORMAT = 'MMM D, YYYY';
-export const DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
+const DATE_FORMAT = 'MMM D, YYYY';
+export const DATE_PICKER_DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
 
 // a ZonedDateTime stringifies with an IANA suffix ("...+02:00[Europe/Madrid]") that dayjs cannot parse,
 // so every value is narrowed to a plain calendar date-time before formatting
@@ -33,7 +33,7 @@ const format = (date: DateValue) => {
 };
 
 const formatWithTime = (date: DateValue) => {
-  return toDayjs(date).format(DATE_TIME_FORMAT);
+  return toDayjs(date).format(DATE_PICKER_DATE_TIME_FORMAT);
 };
 
 const parse = (value: string): DateValue | undefined => {

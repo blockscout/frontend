@@ -19,8 +19,8 @@ const SettingsLocalTime = (props: SwitchProps) => {
   return (
     <Switch
       id="local-time"
-      defaultChecked={ isLocalTime }
-      onChange={ toggleIsLocalTime }
+      checked={ isLocalTime }
+      onCheckedChange={ toggleIsLocalTime }
       direction="rtl"
       justifyContent="space-between"
       w="100%"

@@ -16,7 +16,7 @@ import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
-import { DATE_TIME_FORMAT } from 'src/toolkit/chakra/date-picker';
+import { DATE_PICKER_DATE_TIME_FORMAT } from 'src/toolkit/chakra/date-picker';
 import { Link } from 'src/toolkit/chakra/link';
 import { Status } from 'src/toolkit/chakra/status';
 import { SECOND } from 'src/toolkit/utils/consts';
@@ -141,7 +141,7 @@ const CsvExportDownloadsItem = ({ index, data }: Props) => {
     // items predating the toggle carry no flag and fall back to local time
     const isLocalTime = data.params.is_local_time !== 'false';
     const formatPeriod = (value: string) => {
-      const formatted = isLocalTime ? dayjs(value).format(DATE_TIME_FORMAT) : dayjs(value).utc().format(DATE_TIME_FORMAT);
+      const formatted = isLocalTime ? dayjs(value).format(DATE_PICKER_DATE_TIME_FORMAT) : dayjs(value).utc().format(DATE_PICKER_DATE_TIME_FORMAT);
       return isLocalTime ? formatted : `${ formatted } UTC`;
     };
     const periodText = data.params.from_period && data.params.to_period ?

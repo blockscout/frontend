@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
-import { getLocalTimeZone, now, toCalendarDateTime } from '@internationalized/date';
+import { getLocalTimeZone, now, toCalendarDateTime, toTimeZone, toZoned } from '@internationalized/date';
 import React from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -42,7 +42,31 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children,
     })(),
   });
 
-  const { handleSubmit, formState } = formApi;
+  const { handleSubmit, formState, getValues, setValue } = formApi;
+
+  // when the zone toggle flips, re-express the held wall-clock values in the new zone instant-preserving
+  // (18:40 local → 16:40 UTC), so the toggle only changes how the picked moment is shown — never which
+  // moment it is. Matches how the global "Local time format" setting re-expresses timestamps everywhere.
+  const prevIsLocalTimeRef = React.useRef(isLocalTime);
+  React.useEffect(() => {
+    const prevIsLocalTime = prevIsLocalTimeRef.current;
+    if (prevIsLocalTime === isLocalTime) {
+      return;
+    }
+    prevIsLocalTimeRef.current = isLocalTime;
+
+    const fromZone = prevIsLocalTime ? getLocalTimeZone() : 'UTC';
+    const toZone = isLocalTime ? getLocalTimeZone() : 'UTC';
+
+    ([ 'from_period', 'to_period' ] as const).forEach((name) => {
+      const [ date ] = getValues(name) ?? [];
+      // a date-only or already-zoned value carries no ambiguous wall-clock to re-express
+      if (!date || !('hour' in date) || 'timeZone' in date) {
+        return;
+      }
+      setValue(name, [ toCalendarDateTime(toTimeZone(toZoned(date, fromZone), toZone)) ], { shouldValidate: true });
+    });
+  }, [ isLocalTime, getValues, setValue ]);
 
   const handleOpenChange: OnOpenChangeHandler = React.useCallback(({ open }) => {
     if (formState.isSubmitting && !open) {

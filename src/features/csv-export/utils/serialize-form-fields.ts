@@ -15,7 +15,7 @@ const toAbsoluteString = (date: DateValue, isLocalTime: boolean): string => {
   return toZoned(date, isLocalTime ? getLocalTimeZone() : 'UTC').toAbsoluteString();
 };
 
-export default function serializeFormFields(data?: FormFields, isLocalTime: boolean = true): Record<string, string> {
+export default function serializeFormFields(data: FormFields | undefined, isLocalTime: boolean): Record<string, string> {
   const result: Record<string, string> = {};
 
   Object.entries(data ?? {}).forEach(([ key, value ]) => {
