@@ -141,15 +141,21 @@ recording this round's verdict and its reasoning. A verdict is not a Status; the
 | `answered` | `needs-human` — the human still owns the call |
 | nit | `deferred` |
 
-**PR mode** — reply to each thread, then resolve the ones that are settled:
+**PR mode** — reply to every thread; **who resolves depends on the source.**
 
 - `fix` → what changed, plus the commit sha once it exists.
 - `reject` → the explanation.
 - `answered` → the reasoning, the alternatives, why this path won.
 
-Resolve the threads whose Status is `fixed` or `rejected-accepted`. Leave `rejected-pending`, `disputed`,
-`answered`, `needs-human` and `deferred` **unresolved** — those are the ones that must stay visible. A
-`deferred` nit stays open on purpose: nobody declined it, it is just not this change's work.
+**This workflow's own findings — reply, never resolve.** The reviewer raised them and owns their close: it
+verifies the fix (or agrees the reject) and resolves in its next arbitration round, which is what lets it
+confirm the work landed and post the final all-clear. Resolving here would close the loop before the
+reviewer ever checked it.
+
+**Bot findings** — resolve on `fix` or `reject`; a bot has no arbitration round, so its verdict stands on
+posting. **Human findings** — resolve on `fix`, and leave `answered` open for the human. Leave every
+`deferred` nit and `needs-human` open — those must stay visible; a `deferred` nit is not declined, just
+not this change's work.
 
 **Done when**: every adjudicated finding carries its final Status in the record, or has been replied to and
 (where settled) resolved on the PR. Then report: counts per verdict, every `reject`/`answered` with its

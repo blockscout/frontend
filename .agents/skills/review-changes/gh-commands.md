@@ -1,8 +1,9 @@
 # gh / GraphQL command reference
 
-The whole PR surface both review skills need: posting a review (`review-changes`), then gathering,
-replying and resolving (`resolve-review`). Substitute `{owner}`, `{repo}`, `{N}` (PR number),
-`{commentId}`. Derive `{owner}/{repo}` once and reuse.
+The whole PR surface both review skills need: `review-changes` posts findings and, in arbitration rounds,
+replies and resolves the threads it raised; `resolve-review` gathers, replies, and resolves bot and human
+threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive `{owner}/{repo}` once
+and reuse.
 
 Confirm `gh auth status` succeeds before anything else — follow the `check-github-cli` skill if it does
 not. Never authenticate on the developer's behalf.
@@ -38,7 +39,7 @@ gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
       "path": "src/slices/token/pages/Holders.tsx",
       "line": 41,
       "side": "RIGHT",
-      "body": "**blocker** — <claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
+      "body": "**F1 · blocker** — <claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
     }
   ]
 }
@@ -104,7 +105,7 @@ table in `../resolve-review/SKILL.md` for why.
 
 The captured id equals the REST `id` (databaseId), which maps to a GraphQL thread via the query below.
 
-## Reply, then resolve (resolve-review)
+## Reply, then resolve (both skills)
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/{N}/comments/{commentId}/replies \
