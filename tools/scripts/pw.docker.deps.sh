@@ -19,4 +19,4 @@ export npm_config_prefer_offline=true
 
 # Non-interactive install in Docker (pnpm 11 may prompt to purge node_modules otherwise).
 export CI=true
-pnpm install --modules-dir node_modules_linux --config.confirm-modules-purge=true
+pnpm install --modules-dir node_modules_linux --store-dir /pnpm-store --config.confirm-modules-purge=true
