@@ -51,6 +51,8 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
         noIcon
         { ...styleProps.itemProps }
         w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
+        minH="48px"
+        fontWeight="500"
         display="flex"
         position="relative"
         px={{ base: 2, lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
@@ -77,10 +79,9 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
           interactive
         >
           <HStack gap={ 0 } overflow="hidden">
-            <NavLinkIcon item={ item }/>
+            <NavLinkIcon item={ item } mr={ 3 }/>
             <chakra.span
               { ...styleProps.textProps }
-              ml={ 3 }
               display={{ base: 'inline-flex', lg: isExpanded ? 'inline-flex' : 'none', xl: isCollapsed ? 'none' : 'inline-flex' }}
               alignItems="center"
             >
