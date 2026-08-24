@@ -33,14 +33,14 @@ lets a skill infer the task from the branch with no arguments.
 | `spec.md` | **immutable** once created | Context & goal, Functional Requirements (the whole-task review contract), Data & API, UI inventory, Out of scope. Header is static identity. | `to-spec` creates it. Edited in place only for a rare genuine requirement change. |
 | `progress.md` | mutable | One checkbox per ticket: `- [ ] NN → tickets/NN-<slug>/`. No titles, edges, or content. | `to-tickets` creates it and appends a line per ticket; `implement-ticket` checks the box. |
 | `questions.md` | mutable | Every open question, each with a stable id (`Q01`): owner, Slack permalink, status, answer. | `to-spec` creates it; answers folded in later by a plain edit. |
-| `tickets/NN-<slug>/spec.md` | mutable until fully implemented, then **frozen** | What to build, Acceptance criteria (with `(human)` tags), Skill inputs (grouped by skill), Leaf worklist. Header: `Blocked by` (`T<NN>` ticket + `Q<NN>` question blockers), `Status`. | `to-tickets`. |
+| `tickets/NN-<slug>/spec.md` | mutable until fully implemented, then **frozen** | What to build, Acceptance criteria (with `(human)` tags), Skill inputs (grouped by skill), Leaf worklist. Header: `Blocked by` (`T<NN>` ticket + `Q<NN>` question blockers). | `to-tickets` creates it; `implement-ticket` checks its leaf boxes as it works them. |
 | `tickets/NN-<slug>/brief.md` | informal | Deferred-ticket marker. Goal, known context, the blocking unknowns and who owns each. | `to-tickets` when it can't scope the ticket; or dropped in by the developer. |
 | `tickets/NN-<slug>/{research,notes}.md` | optional | Research / prototype notes; implementation findings kept as PR evidence. | session / developer. |
 
 ## Status is derived, never stored
 
 There is no task-level status field. Task state is read off `progress.md`: **any box checked → in progress;
-all boxes checked → done**. A ticket's own header carries a `Status` for the ticket alone.
+all boxes checked → done**.
 
 `progress.md` is the machine-readable spine: a checked box means the ticket **landed** (its commit exists),
 which is what `Blocked by` edges read to release dependents, and the last box checked is what

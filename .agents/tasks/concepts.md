@@ -46,8 +46,9 @@ the tag as its state machine. UI work is **two linked leaves** by default: an `[
 `[human]` style leaf that takes it to the mockup — layout, spacing, styling, icons — with the exact Figma
 node linked on that leaf and the scaffold's `TODO (design):` markers as its worklist.
 
-A leaf's checkbox is **resumption state**: a ticket has no commit until it finishes, so the boxes are the
-only durable record of the frontier inside it. They say where to pick up, never what was done.
+A leaf's checkbox is **progress state**: a ticket has no commit until it finishes, so the boxes are the
+only durable record of how far it has got inside the ticket. They mark which leaves are done, never what
+each one did.
 
 ### Acceptance criteria
 
@@ -80,10 +81,10 @@ works the **frontier** — any ticket whose `Blocked by` entries have all cleare
 ### Deferred tickets
 
 A ticket that can't be scoped until something happens first gets a `brief.md` in its folder and **no**
-`spec.md`. That absence is the only marker; nothing labels the task as a whole. A just-in-time grilling
-session scopes it later, against the by-then-current code — then `to-tickets` writes its `spec.md`, and
-whatever else the spike revealed is **appended as new sibling tickets**, with `Blocked by` edges retargeted
-to match. The structure stays flat — a ticket never contains tickets.
+`spec.md`. That absence is the only marker; nothing labels the task as a whole. A just-in-time `to-tickets`
+run scopes it later, against the by-then-current code — writing its `spec.md` (or a fresh `brief.md` if it
+still can't be scoped), and whatever else the spike revealed is **appended as new sibling tickets**, with
+`Blocked by` edges retargeted to match. The structure stays flat — a ticket never contains tickets.
 
 ## Write-once, freeze-on-land, prune-on-land
 
@@ -92,8 +93,9 @@ Three rules keep the artifacts a *final statement of intent*, never a log of how
 ### The spec is write-once
 
 `to-spec` runs **once** per task; there is no update or merge mode. The spec body — Functional Requirements,
-Data & API, UI inventory — is **immutable**. The only mutable artifacts are `progress.md` checkboxes and
-`questions.md`. A rare genuine requirement change is a plain in-place edit: no superseding history, no
+Data & API, UI inventory — is **immutable**. The mutable artifacts are `progress.md` checkboxes,
+`questions.md`, and — each until it freezes — the ticket specs, their leaf checkboxes included. A rare
+genuine requirement change is a plain in-place edit: no superseding history, no
 changelog. The spec is always the *final* statement, never a record of iterations.
 
 A colleague's answer never mutates the spec into a history file. Fold the answer into `questions.md`, and

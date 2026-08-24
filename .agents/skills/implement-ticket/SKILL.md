@@ -22,8 +22,7 @@ checked out.
 
 Resolve the task folder from the branch (`issue-<number>`) and read the main `spec.md`, the target ticket's
 `tickets/NN-<slug>/spec.md`, `progress.md`, `questions.md`, and `.agents/delegation.md`. If ticket `NN` has
-only a `brief.md`, it isn't scoped — tell the developer to scope it with a grilling session plus
-`to-tickets`, and stop.
+only a `brief.md`, it isn't scoped — tell the developer to scope it with a `to-tickets` run, and stop.
 
 ## Step 2 — Check runnable
 

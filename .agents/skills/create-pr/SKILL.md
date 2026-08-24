@@ -19,8 +19,9 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 - **A. Draft placeholder** — no PR exists and the work is *not done yet*: the branch holds a freshly
   written spec from the task workflow (typically invoked from the `to-spec` skill, or the branch's only
   changes are under `.agents/tasks/`). The PR is a placeholder for work to come.
-- **B. Finalize draft** — a **draft** PR already exists for the branch and the work is done (`progress.md`'s
-  last box checked, or the user asks to make it ready for review).
+- **B. Finalize draft** — a **draft** PR already exists for the branch and the work is done: reached via the
+  `finalize-task` handoff (which has just pruned the task folder down to `spec.md`), or the user asks to
+  make it ready for review.
 - **C. Regular PR** — no PR exists and the work is already done (a task executed without the spec
   workflow). This is the classic flow.
 - A non-draft PR already exists → don't create or update anything; write the description content as a
@@ -115,4 +116,3 @@ description is a placeholder pointing at the plan:
 - **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
   version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
   microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
-- Always **ask the user for confirmation or changes** before creating/updating the PR.

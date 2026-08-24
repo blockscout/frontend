@@ -14,8 +14,11 @@ not. Never authenticate on the developer's behalf.
 # owner / repo for the current checkout
 gh repo view --json nameWithOwner,owner,name
 
-# PR for the current branch — its absence is what selects chat mode
-gh pr view --json number,title,url,headRefName,baseRefName,state,isDraft
+# PR for the current branch — its absence is what selects chat mode. Use `gh pr list`, never `gh pr view`,
+# which exits 1 both when no PR exists and when it can't reach GitHub: exit ≠ 0 is a tooling failure that
+# aborts, exit 0 with `[]` is genuinely no PR.
+gh pr list --head "$(git branch --show-current)" --state open \
+  --json number,title,url,headRefName,baseRefName,state,isDraft
 
 # head sha, needed as commit_id when posting a review
 git rev-parse HEAD

@@ -74,9 +74,8 @@ of them, and marching through all six regardless is how a five-minute task turns
    products.
 
 Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it.
-Neither is code review (it runs once, at land — see the Lifecycle in `.agents/tasks/README.md`) nor human
-verification: which acceptance criteria are `(human)` follows the standing rule in "The ticket model" in
-`.agents/tasks/concepts.md`. Only ask when one sits genuinely on the line.
+Neither is human verification: which acceptance criteria are `(human)` follows the standing rule in "The
+ticket model" in `.agents/tasks/concepts.md`. Only ask when one sits genuinely on the line.
 
 The interview is complete when every domain the task reaches is covered or explicitly skipped as
 research-answered, the contacts are settled, and every unanswered question has an owner.

@@ -40,7 +40,7 @@ Give each ticket its `Blocked by` edges — the blockers that must clear before 
 kind: `T<NN>` for a ticket that must complete first, `Q<NN>` for an open question that must be answered
 first. A ticket with no blockers can start immediately.
 
-**Defer what can't be scoped.** A ticket blocked on a prototype, a spike, or an answer nobody has yet gets a `brief.md` and no `spec.md`; a just-in-time grilling session plus a later `to-tickets` run scopes it.
+**Defer what can't be scoped.** A ticket blocked on a prototype, a spike, or an answer nobody has yet gets a `brief.md` and no `spec.md`; a later `to-tickets` run scopes it — writing its `spec.md`, or a fresh `brief.md` if it still can't be scoped.
 
 ## Step 4 — Quiz the user
 

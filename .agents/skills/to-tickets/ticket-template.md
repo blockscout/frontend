@@ -3,14 +3,13 @@
 | | |
 | --- | --- |
 | Parent spec | the task's `spec.md` → linked as `../../spec.md`, ticket <NN> of #<issue> |
-| Status | `draft` \| `in progress` \| `done` |
 | Blocked by | <blockers that must clear first, or "none": `T<NN>` for a ticket, `Q<NN>` for a question> |
 
 <!-- `Blocked by` is the ticket's whole runnable test — `implement-ticket` reads it and nothing else. A
 `T<NN>` clears when its box is checked in `progress.md`; a `Q<NN>` clears when it is `resolved`/`waived` in
 `questions.md`. People rows are inherited from the parent spec; add one here only to override it. A ticket
 that hasn't been scoped yet has NO `spec.md` — only a `brief.md` in its folder, which a just-in-time
-grilling session plus `to-tickets` turns into this file. Open questions themselves live in the task's
+`to-tickets` run turns into this file. Open questions themselves live in the task's
 `questions.md`; list here only the ids of the ones that gate this ticket. -->
 
 ## What to build
@@ -59,7 +58,7 @@ Tag every leaf `[agent]` or `[human]` — explicitly, never implied; `implement-
 state machine. A UI component is two linked leaves (scaffold → style). A leaf names the skill it runs; its
 answers live in Skill inputs above, not inline here.
 
-A leaf's checkbox is RESUMPTION STATE — where to pick up inside a ticket that has no commit yet. It is never
+A leaf's checkbox is PROGRESS STATE — how far the ticket has got, since it has no commit yet. It is never
 a changelog: one line at most, and durable decisions get folded into the sections above instead. -->
 
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource`
