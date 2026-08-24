@@ -29,6 +29,7 @@ const TokenInfoFieldIconUrl = ({ readOnly, size }: Props) => {
       <FormFieldUrl<Fields>
         name="icon_url"
         placeholder={ `Link to icon URL, link to download a SVG or 48${ times }48 PNG icon logo` }
+        required
         readOnly={ readOnly }
         size={ size }
         { ...imageField.input }
