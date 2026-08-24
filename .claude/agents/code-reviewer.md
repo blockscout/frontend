@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Reviews a change on three axes (spec, standards, correctness) by running the repo's review-changes skill, and returns the outcome. Invoked at land in the product-task workflow, or manually; not a general-purpose reviewer.
+description: Reviews a change on three axes (spec, standards, correctness) by running the repo's review-changes skill, and returns the outcome. Invoked manually (e.g. to review a task at land, or ad hoc); not a general-purpose reviewer.
 model: inherit
 effort: high
 color: cyan

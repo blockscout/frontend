@@ -33,7 +33,8 @@ and stop.
 
 ## Step 3 — Execute
 
-Work the ticket's leaves in order, checking each box as it completes. Stop at the first `[human]` leaf 
+Start at the **first unchecked** leaf and work in order, checking each box as it completes — resuming
+after a human touchpoint skips the leaves already checked. Stop at the first **unchecked** `[human]` leaf
 and hand off (Step 5).
 
 ## Step 4 — Verify
@@ -52,7 +53,9 @@ acceptance criterion:
   tick folded into the commit so the worktree is clean after. A plain descriptive subject, the repo's 
   `Co-Authored-By` trailer, and **no** `#issue` reference (the PR's `Resolves #N` already links it; a commit 
   that names the issue spams its timeline). Done.
-- **Any touchpoint** → stop and hand off. Stop at the **first** `[human]` leaf; or, when the leaves are all
-  `[agent]` but a `(human)` criterion remains, after implementing them and **before** committing. Say what
-  the developer must do, link the Figma node, and point at the scaffold's `TODO (design):` markers. The
-  developer finishes, then commits and checks the `progress.md` box at their commit.
+- **Any touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when the
+  leaves are all `[agent]` but a `(human)` criterion remains, after implementing them and **before**
+  committing. Say what the developer must do, link the Figma node, and point at the scaffold's
+  `TODO (design):` markers. The developer does the work; for a `[human]` leaf they check its box and ask
+  the session to continue — it resumes from the next unchecked leaf (Step 3), never by re-invoking the
+  skill. Once every leaf is done, the developer commits and checks the `progress.md` box at their commit.
