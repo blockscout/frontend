@@ -1,8 +1,8 @@
 # Delegation boundary
 
 This is a **living document**. It records what work agents are trusted to do in this repo *today*, and what
-stays with a human developer for now. The `grill-the-task` / `to-spec` skills consult it when tagging spec
-subtasks `[agent]` or `[human]`; the `implement-task` skill obeys it when executing. As the repo becomes more
+stays with a human developer for now. The `to-tickets` skill consults it when tagging a ticket's leaves
+`[agent]` or `[human]`; the `implement-ticket` skill obeys it when executing. As the repo becomes more
 agent-friendly, loosen the boundary here via a normal PR — don't renegotiate it per task.
 
 ## Agents may do today

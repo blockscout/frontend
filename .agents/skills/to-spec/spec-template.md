@@ -2,8 +2,7 @@
 
 | | |
 | --- | --- |
-| Issue | <GitHub issue URL, or "—" for ad-hoc specs> |
-| Status | `draft` \| `ready` \| `in progress` \| `done` |
+| Issue | <GitHub issue URL> |
 | Feature branch | `<branch name>` |
 | PM | <name> |
 | Designer | <name> |
@@ -11,21 +10,22 @@
 | Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise; "—" if none> |
 | Slack channel | <#feature-channel if the task has one; otherwise "—" (default routing per `grill-the-task`)> |
 
-<!-- People default from `.agents/TEAM.md`; override here per task. Subtask specs use
-`subtask-template.md` and inherit these rows. -->
+<!-- Header is static identity — no status row: task status is derived from `progress.md` (see
+`.agents/tasks/structure.md`). People default from `.agents/TEAM.md`; override here per task. The spec body
+below is immutable once written; only `progress.md` and `questions.md` change as work proceeds. -->
 
 ## Context & goal
 
-<!-- The "why" and the user-facing outcome. A couple of paragraphs, no more. -->
+<!-- The problem that the user is facing and solution to it, from the user's perspective. -->
 
 ## Functional requirements
 
-<!-- What the feature must do at task level, as testable statements. Per-subtask detail belongs to that
-subtask's acceptance criteria, not here. -->
+<!-- What the feature must do, as verifiable feature-level statements. THIS is the whole-task review
+contract. Write each one so its truth can be judged from the shipped behaviour. -->
 
 ## Data & API
 
-<!-- Endpoints with sample responses (curl-verified), which `service:name` resources exist vs. must be
+<!-- Endpoints, which `service:name` resources exist vs. must be
 added, pagination/sorting/filtering params, env vars / feature flags, API readiness (deployed vs.
 staging-only) and the backend release version that ships the changes (for release-notes reference). -->
 
@@ -35,39 +35,22 @@ staging-only) and the backend release version that ships the changes (for releas
 pages. One Figma node link per screen. State behavioral facts and placement; leave appearance to the
 mockups and the [human] style leaves. When you must lean on existing code, point to it by component or
 symbol name ("match `LogDecodedInputDataTable`") — never transcribe its values, class names, or line
-numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What a
-spec holds" in `.agents/tasks/README.md`. -->
+numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What
+the spec holds" in `.agents/tasks/concepts.md`. -->
+
+## Implementation decisions
+
+<!-- A list of implementation decisions that were made. This can include:
+- The modules that will be built/modified
+- The interfaces of those modules that will be modified
+- Technical clarifications from the developer
+- Architectural decisions
+- Specific interactions
+
+Do NOT include specific file paths or code snippets. They may end up being outdated very quickly.
+
+Exception: if a prototype produced a snippet that encodes a decision more precisely than prose can (state machine, reducer, schema, type shape), inline it within the relevant decision and note briefly that it came from a prototype. Trim to the decision-rich parts, not a working demo, just the important bits. -->
 
 ## Out of scope
 
 <!-- Explicit non-goals, so agents don't wander. -->
-
-## Task breakdown
-
-<!-- A slim INDEX of vertical slices — one line per subtask, nothing else. No inputs, no leaf steps, no
-changelog: that detail lives in the subtask's own `subtasks/<NN>-<slug>/spec.md`.
-
-Each line carries exactly three things: the done checkbox (the ONLY per-subtask state this file tracks —
-readiness is derived, never stored), the title, and the blocking edges. Numbers are identity, not order;
-a new subtask is appended and its edges placed, never renumbered. See "The subtask model" in
-`.agents/tasks/README.md`.
-
-A deferred subtask links its `brief.md` instead, and is scoped just-in-time by a `grill-the-task` subtask
-session. -->
-
-- [ ] 01 <title> → [`subtasks/01-<slug>/`](subtasks/01-<slug>/spec.md) — blocked by: none
-- [ ] 02 <title> → [`subtasks/02-<slug>/`](subtasks/02-<slug>/brief.md) — blocked by: 01
-
-## Open questions
-
-<!-- One entry per question. Status is the gate `implement-task` checks. The Slack permalink is recorded
-when the question is sent, so answers can be folded in later. When resolved, fold the decision into the
-section above that it affects AND record it here. A question scoped to one subtask lives in that subtask's
-spec instead. -->
-
-### Q1 — <question>
-
-- Owner: <role> (<name>)
-- Status: `pending` \| `resolved` \| `waived`
-- Slack: <permalink, once sent>
-- Answer: <the decision as a phrase, + date — the decision, not the deliberation; the Slack link holds the reasoning and any internal detail this public spec shouldn't carry>
