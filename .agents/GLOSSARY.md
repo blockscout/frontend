@@ -39,7 +39,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Eden** | chain | A rollup built on `ev-reth` / evstack. Introduces the **Sponsored Transaction** type. |
 | **Epoch** | entity | A consensus time period specific to **Celo**. Has its own index and detail pages. Always refers to a Celo epoch in this codebase — not a generic blockchain concept. |
 | **Fault Proof System** | feature | Optimism's mechanism for proving the correctness of L2 state transitions on L1 via **Dispute Games**. |
-| **Flashblocks** | feature | MegaETH's sub-second block streaming mechanism. |
+| **Flashblocks** | feature | Code name for the sub-second pre-confirmation block streaming feature. Surfaced to users as **Subblocks** on OP Stack chains (OP Labs renamed it from "Flashblocks") and as **mini-blocks** on MegaETH. The `flashblocks` code name and `FLASHBLOCKS` env vars are retained. |
 | **Hot Contracts** | feature | Ranked list of the most recently and frequently interacted-with smart contracts on the network. |
 | **Interchain Indexer** | service | Microservice that indexes cross-chain messages and token transfers across heterogeneous chains. General-purpose interop indexer, not ZetaChain-specific. Provides "Cross chain txs" feature. Distinct from **CCTX**. |
 | **Interop Messages** | entity | **Deprecated** Cross-rollup messages passed between OP Stack chains using the native interoperability protocol. Distinct from **Interchain Indexer** messages. |

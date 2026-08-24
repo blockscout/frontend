@@ -10,13 +10,13 @@ import { STATUS_LABELS } from '../../utils/tac-operation';
 import TacOperationLifecycleAccordionItemContent from './TacOperationLifecycleAccordionItemContent';
 
 interface Props {
-  data: tac.OperationDetails['status_history'];
+  data: tac.V2OperationDetails['status_history'];
   isLoading?: boolean;
-  type: tac.OperationType;
+  status: tac.V2OperationStatus;
 }
 
-const TacOperationLifecycleAccordion = ({ data, isLoading, type }: Props) => {
-  const isPending = type === tac.OperationType.PENDING && !isLoading;
+const TacOperationLifecycleAccordion = ({ data, isLoading, status }: Props) => {
+  const isPending = status === tac.V2OperationStatus.pending && !isLoading;
 
   return (
     <Root>

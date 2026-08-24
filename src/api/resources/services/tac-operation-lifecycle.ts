@@ -5,20 +5,17 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 export const TAC_OPERATION_LIFECYCLE_API_RESOURCES = {
   operations: {
-    path: '/api/v1/tac/operations',
+    path: '/api/v2/tac/operations',
     paginated: true,
     filterFields: [ 'q' ],
   },
   operation: {
-    path: '/api/v1/tac/operations/:id',
+    path: '/api/v2/tac/operations/:id',
     pathParams: [ 'id' ],
   },
   operation_by_tx_hash: {
-    path: '/api/v1/tac/operations\\:byTx/:tx_hash',
+    path: '/api/v2/tac/operations\\:byTx/:tx_hash',
     pathParams: [ 'tx_hash' ],
-  },
-  stat_operations: {
-    path: '/api/v1/stat/operations',
   },
 } satisfies Record<string, ApiResource>;
 
@@ -26,10 +23,9 @@ export type TacOperationLifecycleApiResourceName = `tac:${ keyof typeof TAC_OPER
 
 /* eslint-disable @stylistic/indent */
 export type TacOperationLifecycleApiResourcePayload<R extends TacOperationLifecycleApiResourceName> =
-R extends 'tac:operations' ? tac.OperationsResponse :
-R extends 'tac:operation' ? tac.OperationDetails :
-R extends 'tac:operation_by_tx_hash' ? tac.OperationsFullResponse :
-R extends 'tac:stat_operations' ? tac.GetOperationStatisticsResponse :
+R extends 'tac:operations' ? tac.V2OperationsResponse :
+R extends 'tac:operation' ? tac.V2OperationDetails :
+R extends 'tac:operation_by_tx_hash' ? tac.V2OperationsFullResponse :
 never;
 /* eslint-enable @stylistic/indent */
 

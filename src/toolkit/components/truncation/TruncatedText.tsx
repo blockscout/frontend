@@ -15,13 +15,14 @@ import { TruncatedTextTooltip } from './TruncatedTextTooltip';
 export interface TruncatedTextProps extends Omit<SkeletonTextProps, 'loading'> {
   text: string;
   loading?: boolean;
+  noTooltip?: boolean;
   // tooltipContent is used to display the tooltip value different from the truncated value
-  tooltipContent?: string;
+  tooltipContent?: React.ReactNode;
   tooltipPlacement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
   tooltipInteractive?: boolean;
 }
 
-export const TruncatedText = ({ text, tooltipPlacement, tooltipInteractive, tooltipContent, loading, ...rest }: TruncatedTextProps) => {
+export const TruncatedText = ({ text, tooltipPlacement, tooltipInteractive, tooltipContent, loading, noTooltip, ...rest }: TruncatedTextProps) => {
   const valueElement = (
     <Skeleton
       loading={ loading }
@@ -35,6 +36,10 @@ export const TruncatedText = ({ text, tooltipPlacement, tooltipInteractive, tool
       <span>{ text }</span>
     </Skeleton>
   );
+
+  if (noTooltip) {
+    return valueElement;
+  }
 
   // if tooltipContent is provided, we display the tooltip content no matter if the value is truncated or not
   if (tooltipContent) {

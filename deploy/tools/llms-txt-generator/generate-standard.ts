@@ -203,13 +203,13 @@ export function generateStandard(): string {
         ### TAC Operations:
 
         \`\`\`bash
-        curl --request GET --url '${config.apis.tac.endpoint}/api/v1/tac/operations'
+        curl --request GET --url '${config.apis.tac.endpoint}/api/v2/tac/operations'
         \`\`\`
 
         ### TAC Operation Info:
 
         \`\`\`bash
-        curl --request GET --url '${config.apis.tac.endpoint}/api/v1/tac/operations/{operation_id}'
+        curl --request GET --url '${config.apis.tac.endpoint}/api/v2/tac/operations/{operation_id}'
         \`\`\`
     ` : undefined;
 

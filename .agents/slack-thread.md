@@ -1,10 +1,8 @@
-# Slack thread pointer
+# Read a Slack thread
 
-Parse a Slack thread URL and read it with the Slack MCP. If the tool is missing, unauthenticated, or errors, return to the parent skill's paste fallback — Slack is not a hard gate.
+Parse a Slack thread URL and read the full conversation, including replies. If the tool is missing, unauthenticated, or errors, ask the user to paste the thread. Stop if they decline.
 
 ## Parse the URL
-
-Patterns:
 
 - `https://<workspace>.slack.com/archives/<channel_id>/p<timestamp_without_dot>`
 - `https://app.slack.com/client/<workspace_id>/<channel_id>/thread/<channel_id>-<timestamp_without_dot>`
@@ -25,3 +23,9 @@ Arguments:
 ```
 
 If the thread has more than 200 messages, paginate with `cursor` until the full conversation is read.
+
+Attachments often carry the actual content. The Slack connector reports metadata only — `Files: name.png (ID: F012SSD0KK8, image/png, 393.6 KB)`.
+
+Follow the `slack-file` skill to download each file. If that skill stops (no token, user declined setup), ask the user to paste or upload each file. Stop if they decline.
+
+**Done when:** every message and attachment in the thread is in hand.

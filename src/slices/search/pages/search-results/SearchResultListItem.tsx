@@ -33,6 +33,7 @@ import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic'
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { Badge } from 'src/toolkit/chakra/badge';
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -245,7 +246,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'tac_operation': {
         return (
           <TacOperationEntity.Container>
-            <TacOperationEntity.Icon type={ data.tac_operation.type }/>
+            <TacOperationEntity.Icon status={ data.tac_operation.status } isLoading={ isLoading }/>
             <TacOperationEntity.Link
               isLoading={ isLoading }
               id={ data.tac_operation.operation_id }
@@ -259,7 +260,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 mr={ 2 }
               />
             </TacOperationEntity.Link>
-            <TacOperationStatus status={ data.tac_operation.type }/>
+            <TacOperationStatus
+              status={ data.tac_operation.status }
+              type={ data.tac_operation.type }
+              errorReason={ data.tac_operation.error_reason }
+              isRollback={ data.tac_operation.rollback }
+              isLoading={ isLoading }
+            />
+            { data.tac_operation.rollback && <Badge loading={ isLoading }>Rollback</Badge> }
           </TacOperationEntity.Container>
         );
       }

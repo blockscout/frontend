@@ -8,6 +8,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 
+import { Badge } from 'src/toolkit/chakra/badge';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 import TacOperationEntity from '../../components/TacOperationEntity';
@@ -60,19 +61,24 @@ const TxDetailsTacOperation = ({ isLoading, txHash }: Props) => {
           ];
 
           return (
-            <HStack key={ tacOperation.operation_id } rowGap={ 0 } columnGap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+            <HStack key={ tacOperation.operation_id } rowGap={ 0 } columnGap={ 3 } flexWrap={{ base: 'wrap', lg: 'nowrap' }} maxW="100%">
               <TacOperationEntity
                 id={ tacOperation.operation_id }
-                type={ tacOperation.type }
+                status={ tacOperation.status }
                 isLoading={ isPlaceholderData }
                 my={{ base: '5px', lg: 0 }}
               />
-              { tags.length > 0 && (
-                <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }}>
-                  <TacOperationStatus status={ tacOperation.type } isLoading={ isPlaceholderData }/>
-                  { tags.map((tag) => <Tag key={ tag } loading={ isPlaceholderData } flexShrink={ 0 }>{ tag }</Tag>) }
-                </HStack>
-              ) }
+              <HStack flexShrink={ 0 } flexWrap="wrap" my={{ base: '3px', lg: 0 }} maxW="100%" gap={ 1 }>
+                <TacOperationStatus
+                  status={ tacOperation.status }
+                  type={ tacOperation.type }
+                  errorReason={ tacOperation.error_reason }
+                  isLoading={ isPlaceholderData }
+                  isRollback={ tacOperation.rollback }
+                />
+                { tacOperation.rollback && <Badge loading={ isPlaceholderData }>Rollback</Badge> }
+                { tags.map((tag) => <Tag key={ tag } loading={ isPlaceholderData } flexShrink={ 0 }>{ tag }</Tag>) }
+              </HStack>
             </HStack>
           );
         }) }

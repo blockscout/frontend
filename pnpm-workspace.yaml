@@ -64,6 +64,3 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
-  # remove after 27.07.2026
-  - '@chakra-ui/cli@3.36.1'
-  - '@chakra-ui/react@3.36.1'

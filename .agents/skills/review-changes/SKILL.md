@@ -169,6 +169,9 @@ the current diff. It does exactly three things:
 3. Flag regressions introduced **by the fixes only**. New findings elsewhere are out of scope for this
    round.
 
+In PR mode the reviewer posts these rulings and resolves the settled threads itself (step 5); in markdown
+mode it records them and `resolve-review` makes the Status transitions.
+
 **Done when**: every open finding is either closed or carries a ruling.
 
 ## 4. Normalize
@@ -203,15 +206,32 @@ own; it bumps the header's `Round` and appends exchange lines under the findings
 finding its starting **Status**: `open`, or `deferred` for a nit, which is never auto-fixed. Every later
 transition belongs to `resolve-review`. Format in [`review-template.md`](review-template.md).
 
-**PR mode.** One batched review event per round — never N separate comments — with the header table as
-the review body and `event: COMMENT`. Never `REQUEST_CHANGES` (it blocks the author's own PR) and never
-`APPROVE` (it claims accountability an agent does not have). Each comment carries its severity prefix
-and a footer naming the reviewer: `— Reviewed by <your agent or model name>`, falling back to
-`— Reviewed by agent` when you cannot name it. Any provider can run this skill, so never hardcode one.
-Findings that cannot be anchored — approach-level questions, or
-lines outside the diff — go into the review body under `## Not anchorable`, in the same event. Commands
-and the all-or-nothing 422 hazard: [`gh-commands.md`](gh-commands.md). PR mode writes no `review.md`;
-the PR is the record.
+**PR mode.** The PR is the record — PR mode writes no `review.md`. `event` is always `COMMENT`: never
+`REQUEST_CHANGES`, which blocks the author's own PR, and never `APPROVE`, which claims accountability an
+agent does not have. Name the reviewer from the running model — any provider can run this skill — in a
+footer `— Reviewed by <agent or model name>`, falling back to `— Reviewed by agent`. Commands and the
+all-or-nothing 422 hazard: [`gh-commands.md`](gh-commands.md).
+
+*A fresh review (round 1)* posts one batched review event — never N separate comments. Each inline
+comment opens with its finding id and severity — `**F1 · blocker** — <claim>` — then the suggested fix
+and the footer. The review body is the header table, listing each finding by id, plus a `## Not
+anchorable` section for findings with no diff line to sit on: approach-level questions, or lines outside
+the diff. With zero findings there is nothing to anchor — the body is `Review clear` and the zeroed
+counts. The id is the handle a human greps for and the coder cites back, so it is stable: an arbitration
+round recovers the highest `F<n>` from the existing comments and numbers any regression from there.
+
+*An arbitration round (round 2+)* acts on each ruling on its own thread, because the reviewer owns the
+threads it raised and is the one that closes them:
+
+| Ruling | Reply | Thread |
+| --- | --- | --- |
+| fix verified | `F<n> — verified` | resolve |
+| reject agreed | `F<n> — accepted, <reason>` | resolve |
+| reject disputed | the counter-argument | leave open |
+| regression from a fix | a new inline comment, next free id | leave open |
+
+When no `blocker` or `major` thread is left open — only `deferred` nits remain — post a final review whose
+body is `Review clear` and the counts. That terminal comment is the PR's `Outcome: clear`.
 
 **Chat mode.** Same content, no file.
 

@@ -22,7 +22,7 @@ export interface DatePickerValueChangeDetails {
 }
 
 const DATE_FORMAT = 'MMM D, YYYY';
-const DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
+export const DATE_PICKER_DATE_TIME_FORMAT = 'MMM D, YYYY H:mm';
 
 // a ZonedDateTime stringifies with an IANA suffix ("...+02:00[Europe/Madrid]") that dayjs cannot parse,
 // so every value is narrowed to a plain calendar date-time before formatting
@@ -33,7 +33,7 @@ const format = (date: DateValue) => {
 };
 
 const formatWithTime = (date: DateValue) => {
-  return toDayjs(date).format(DATE_TIME_FORMAT);
+  return toDayjs(date).format(DATE_PICKER_DATE_TIME_FORMAT);
 };
 
 const parse = (value: string): DateValue | undefined => {
@@ -95,12 +95,14 @@ const getDefaultDateValue = (withCurrentTime?: boolean): CalendarDateTime => {
 export interface DatePickerProps extends ChakraDatePicker.RootProps {
   withTime?: boolean;
   errorText?: string;
+  timeZoneSuffix?: string;
 }
 
 export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
   function DatePicker({
     placeholder,
     withTime,
+    timeZoneSuffix,
     value: valueProp,
     defaultValue,
     onValueChange: onValueChangeProp,
@@ -115,10 +117,22 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
     ...rest
   }, ref) {
 
+    const formatValue = React.useCallback((date: DateValue) => {
+      const base = withTime ? formatWithTime(date) : format(date);
+      return withTime && timeZoneSuffix ? `${ base } ${ timeZoneSuffix }` : base;
+    }, [ withTime, timeZoneSuffix ]);
+
+    const parseValue = React.useCallback((value: string) => {
+      // the suffix is display-only, so it is stripped before the date itself is parsed back
+      const cleaned = timeZoneSuffix && value.endsWith(timeZoneSuffix) ?
+        value.slice(0, -timeZoneSuffix.length).trimEnd() :
+        value;
+      return withTime ? parseWithTime(cleaned) : parse(cleaned);
+    }, [ withTime, timeZoneSuffix ]);
+
     const onValueChange = React.useCallback((value: Array<DateValue> | undefined) => {
-      const formatValue = withTime ? formatWithTime : format;
       onValueChangeProp?.({ value: value ?? [], valueAsString: value?.map(formatValue) ?? [], view: 'day' });
-    }, [ onValueChangeProp, withTime ]);
+    }, [ onValueChangeProp, formatValue ]);
 
     const [ value, setValue ] = useControllableState<Array<DateValue> | undefined>({
       value: valueProp,
@@ -179,8 +193,8 @@ export const DatePicker = React.forwardRef<HTMLInputElement, DatePickerProps>(
         closeOnSelect={ !withTime }
         lazyMount
         unmountOnExit
-        format={ withTime ? formatWithTime : format }
-        parse={ withTime ? parseWithTime : parse }
+        format={ formatValue }
+        parse={ parseValue }
         value={ value }
         onValueChange={ handleDateChange }
         min={ min }

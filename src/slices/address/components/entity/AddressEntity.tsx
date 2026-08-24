@@ -9,8 +9,7 @@ import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 
 import { useAddressHighlightContext } from 'src/slices/address/contexts/address-highlight';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
-
-import { getTagName } from 'src/features/address-metadata/components/tag/utils';
+import getAddressName from 'src/slices/address/utils/get-address-name';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps, getContentProps, getIconProps } from 'src/shared/entities/utils';
@@ -146,15 +145,7 @@ export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<Enti
 
 const Content = chakra((props: ContentProps) => {
   const displayedAddress = getDisplayedAddress(props.address, props.altHash);
-  const nameTag = (() => {
-    const tagData = props.address.metadata?.tags.find(tag => tag.tagType === 'name');
-    if (!tagData || !tagData.name) {
-      return;
-    }
-
-    return getTagName(tagData, props.address.hash);
-  })();
-  const nameText = nameTag || props.address.ens_domain_name || props.address.name;
+  const nameText = getAddressName(props.address);
 
   const isProxy = props.address.implementations && props.address.implementations.length > 0 && props.address.proxy_type !== 'eip7702';
 
@@ -166,12 +157,15 @@ const Content = chakra((props: ContentProps) => {
     const styles = getContentProps(props.variant);
 
     const label = (
-      <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">
-          { displayedAddress }
-        </Box>
-      </VStack>
+      <>
+        <VStack gap={ 0 } py={ 1 } color="inherit">
+          <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
+          <Box whiteSpace="pre-wrap" wordBreak="break-word">
+            { displayedAddress }
+          </Box>
+        </VStack>
+        { props.tooltipContentAfter }
+      </>
     );
 
     return (
@@ -227,10 +221,16 @@ const AddressEntity = (props: EntityProps) => {
 
   const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
-  // inside highlight context all tooltips should be interactive
-  // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
-  // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
-  const content = <Content { ...partsProps.content } altHash={ altHash } tooltipInteractive={ Boolean(highlightContext) }/>;
+  const content = (
+    <Content
+      { ...partsProps.content }
+      altHash={ altHash }
+      // inside highlight context all tooltips should be interactive
+      // because non-interactive ones will not pass 'onMouseLeave' event to the parent component
+      // see issue - https://github.com/chakra-ui/chakra-ui/issues/9939#issuecomment-2810567024
+      tooltipInteractive={ Boolean(highlightContext) || partsProps.content.tooltipInteractive }
+    />
+  );
 
   return (
     <Container
