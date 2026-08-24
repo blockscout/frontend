@@ -36,7 +36,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
   const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
 
   // The backend emits `token_transfer` events for the whole token, not per instance, so on the NFT
-  // instance page they produce false "N more transfers" notices. Only listen on the token-level page.
+  // instance page they produce false "N more transfers" notices.
   // See https://github.com/blockscout/frontend/issues/3653
   const isSocketEnabled = !tokenId;
 
