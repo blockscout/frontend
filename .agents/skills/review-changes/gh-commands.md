@@ -14,7 +14,7 @@ not. Never authenticate on the developer's behalf.
 # owner / repo for the current checkout
 gh repo view --json nameWithOwner,owner,name
 
-# PR for the current branch — its absence is what selects markdown mode
+# PR for the current branch — its absence is what selects chat mode
 gh pr view --json number,title,url,headRefName,baseRefName,state,isDraft
 
 # head sha, needed as commit_id when posting a review

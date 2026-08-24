@@ -67,7 +67,7 @@ Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
 `<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
 evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
 
-- `0002-layer-shaped-subtask-leaves.md` — why a product task's subtasks cut vertically while the leaves inside them run along layers.
+- `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
 
 Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:

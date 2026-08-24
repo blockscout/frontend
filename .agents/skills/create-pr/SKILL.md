@@ -19,8 +19,8 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 - **A. Draft placeholder** — no PR exists and the work is *not done yet*: the branch holds a freshly
   written spec from the task workflow (typically invoked from the `to-spec` skill, or the branch's only
   changes are under `.agents/tasks/`). The PR is a placeholder for work to come.
-- **B. Finalize draft** — a **draft** PR already exists for the branch and the work is done (spec's last
-  box checked, or the user asks to make it ready for review).
+- **B. Finalize draft** — a **draft** PR already exists for the branch and the work is done (`progress.md`'s
+  last box checked, or the user asks to make it ready for review).
 - **C. Regular PR** — no PR exists and the work is already done (a task executed without the spec
   workflow). This is the classic flow.
 - A non-draft PR already exists → don't create or update anything; write the description content as a
@@ -28,35 +28,33 @@ Check the current branch (`git branch --show-current`) and its open PR (`gh pr l
 
 If the signals conflict or are ambiguous, ask the user which mode they mean.
 
-**Unattended finalize.** When Mode B is reached from `implement-task --auto` clearing a task's last subtask, the
-`--auto` flag already granted the push and the flip — so proceed without the confirmation steps below, and
-report what was done instead of asking. Every other invocation keeps them.
-
 ## PR title (all modes)
 
 The title must stand on its own — a reader who has never heard of the parent task should understand what
 the PR does from the title alone:
 
-- Describe the change in plain language, scoped **accurately** — derive it from the spec's (or subtask
-  spec's) **Context & goal**, not from a breakdown shorthand (e.g. a primer that covers several pages is
-  not a "main page" change).
+- Describe the change in plain language, scoped **accurately** — derive it from the spec's **Context &
+  goal**, not from a breakdown shorthand.
 - **No** issue numbers, "step N", or internal codenames/jargon (`lever 3`) in the title — those are
   abstract to an outside reader. The parent-task relationship lives in the **description** (`Resolves #N` +
   the spec link).
 
 ## Mode A — Draft placeholder (spec time)
 
+**Reached from `to-spec`** after the developer approved the spec content: that approval already covers this
+whole mode, so run steps 1–5 without re-confirming. A direct invocation keeps the confirmation in step 3.
+
 At this stage nothing is implemented, so **do not** describe changes, env vars, or checklists — the
 description is a placeholder pointing at the plan:
 
-1. **Prepare the branch** — commit the spec if needed (with the user's approval), push with `-u`.
+1. **Prepare the branch** — commit `spec.md` and `questions.md` if needed (with the user's approval), push
+   with `-u`.
 2. **Compose the placeholder body** (skip the PR template — it describes finished work):
-   - `Resolves #<ISSUE_NUMBER>` when the branch matches `issue-\d+` (ad-hoc spec branches have no issue —
-     omit).
+   - `Resolves #<ISSUE_NUMBER>` — the branch is `issue-<number>`, so extract the number from it.
    - One short paragraph: the task's goal, taken from the spec's **Context & goal**.
    - A link to the spec file on this branch: `.agents/tasks/<dir>/spec.md`.
-   - A note that this is a **spec-first draft**: the branch will receive the task's work subtask by
-     subtask, and the final description will be written when the PR is marked ready for review.
+   - A note that this is a **spec-first draft**: the branch will receive the task's work ticket by ticket,
+     and the final description will be written when the PR is marked ready for review.
 3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.
    Title per "PR title" above (not "spec for..."; the PR becomes the task's PR, describing the whole task).
 4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
@@ -76,9 +74,7 @@ description is a placeholder pointing at the plan:
    changes confined to `scripts` or other fields; plus the issue's labels if not already copied.
 4. **Confirm with the user**, then flip: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
-5. Link the PR in the output, and **nudge the whole-task review**: now that the PR is ready, `review-changes`
-   run by hand posts inline comments for the pass no per-subtask review could make (see Land in
-   `.agents/tasks/README.md`).
+5. Link the PR in the output.
 
 ## Mode C — Regular PR (work already done)
 
@@ -119,5 +115,4 @@ description is a placeholder pointing at the plan:
 - **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
   version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
   microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
-- Always **ask the user for confirmation or changes** before creating/updating the PR — the one exception
-  being the unattended Mode B finalize described under "Pick the mode".
+- Always **ask the user for confirmation or changes** before creating/updating the PR.
