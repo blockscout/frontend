@@ -1,24 +1,24 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// Low-level primitive: wrap any single child and show a tooltip only when that child overflows
+// its container. `Truncate` is the value-oriented public API built on top of this; app code should
+// reach for `Truncate`, not this. Kept toolkit-internal for consumers that wrap arbitrary
+// ReactNode children (tag/badge) which Truncate's `value: string` contract can't express.
+
 import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
-
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 import { useDisclosure } from '../../hooks/useDisclosure';
 import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 
-export interface TruncatedTextTooltipProps {
-  children: React.ReactNode;
-  label: React.ReactNode;
-  placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
-  interactive?: boolean;
+export interface OverflowTooltipProps extends TooltipProps {
+  always?: boolean;
 }
 
-export const TruncatedTextTooltip = React.memo(({ children, label, placement, interactive }: TruncatedTextTooltipProps) => {
+export const OverflowTooltip = React.memo(({ children, always, ...rest }: OverflowTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
   const { open, onToggle, onOpen, onClose } = useDisclosure();
@@ -80,14 +80,12 @@ export const TruncatedTextTooltip = React.memo(({ children, label, placement, in
     } as React.HTMLAttributes<HTMLElement>,
   );
 
-  if (isTruncated) {
+  if (isTruncated || always) {
     return (
       <Tooltip
-        content={ label }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        positioning={{ placement }}
         open={ open }
-        interactive={ interactive }
+        { ...rest }
       >
         { modifiedChildren }
       </Tooltip>

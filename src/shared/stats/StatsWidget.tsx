@@ -12,7 +12,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface ContainerProps extends BoxProps {
   href?: Route;
@@ -112,7 +112,7 @@ const StatsWidget = React.forwardRef<HTMLDivElement, Props>(({
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (
-              <TruncatedText text={ value } loading={ isLoading }/>
+              <Truncate value={ value } type="end" loading={ isLoading }/>
             ) : (
               value
             ) }

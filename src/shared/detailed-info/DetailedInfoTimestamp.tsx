@@ -14,7 +14,7 @@ import { IconButton } from 'src/toolkit/chakra/icon-button';
 import type { SelectOption } from 'src/toolkit/chakra/select';
 import { SelectContent, SelectItem, SelectRoot, SelectControl } from 'src/toolkit/chakra/select';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const FORMAT_OPTIONS = [
   { label: 'Local', value: 'local' as const },
@@ -99,11 +99,8 @@ const DetailedInfoTimestamp = ({ timestamp, isLoading, noRelativeTime, ...rest }
             )) }
           </SelectContent>
         </SelectRoot>
-        <TruncatedText
-          text={ timeText }
-          loading={ isLoading }
-          minW="0"
-        />
+        <Truncate value={ timeText } type="end" loading={ isLoading }
+          minW="0"/>
       </HStack>
     </HStack>
   );

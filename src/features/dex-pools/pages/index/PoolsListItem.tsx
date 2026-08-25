@@ -11,11 +11,11 @@ import getPoolLinks from 'src/features/dex-pools/utils/get-pool-links';
 
 import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   item: contractsInfo.Pool;
@@ -45,7 +45,7 @@ const PoolsListItem = ({ item, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Pool ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <HashStringShorten hash={ item.pool_id } type="long"/>
+            <Truncate value={ item.pool_id } type="middle-static" maxSymbols={ 16 }/>
             <CopyToClipboard text={ item.pool_id }/>
           </ListItemMobileGrid.Value>
         </>

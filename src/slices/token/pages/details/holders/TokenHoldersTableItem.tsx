@@ -13,7 +13,7 @@ import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
 import Utilization from 'src/shared/values/utilization/Utilization';
 
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   holder: schemas['TokenHolderResponse'];
@@ -36,7 +36,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
       </TableCell>
       { (hasTokenIds(token.type)) && 'token_id' in holder && holder.token_id !== null && (
         <TableCell verticalAlign="middle">
-          <TruncatedText text={ holder.token_id } loading={ isLoading } w="100%"/>
+          <Truncate value={ holder.token_id } type="end" loading={ isLoading } w="100%"/>
         </TableCell>
       ) }
       <TableCell verticalAlign="middle" isNumeric>

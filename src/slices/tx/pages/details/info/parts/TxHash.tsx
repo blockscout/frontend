@@ -13,10 +13,10 @@ import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const externalTxFeature = config.features.externalTxs;
 
@@ -51,7 +51,7 @@ const TxHash = ({ hash, isLoading, status }: Props) => {
         <Flex flexWrap="nowrap" alignItems="center" overflow="hidden">
           { status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
           <Skeleton loading={ isLoading } overflow="hidden">
-            <HashStringShortenDynamic hash={ hash }/>
+            <Truncate value={ hash }/>
           </Skeleton>
           <CopyToClipboard text={ hash } isLoading={ isLoading }/>
           { config.features.metasuites.isEnabled && (

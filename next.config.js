@@ -105,6 +105,8 @@ const moduleExports = {
   // workaround for passing outDir to nextjs-routes CLI, see ROUTES_OUT_DIR above.
   // Next.js warns about this unrecognized key on startup; the warning is harmless.
   outDir: ROUTES_OUT_DIR,
+
+  agentRules: false
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

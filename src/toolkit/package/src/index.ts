@@ -112,8 +112,8 @@ export * from '../../components/forms/inputs';
 export * from '../../components/forms/utils';
 export * from '../../components/forms/validators';
 export * from '../../components/loaders/ContentLoader';
-export * from '../../components/truncation/TruncatedTextTooltip';
-export * from '../../components/truncation/TruncatedText';
+export { Truncate } from '../../components/truncation/Truncate';
+export type { TruncateProps, TruncateTooltipConfig } from '../../components/truncation/Truncate';
 
 // Export utils
 export { default as getComponentDisplayName } from '../../utils/getComponentDisplayName';
@@ -124,6 +124,7 @@ export * as guards from '../../utils/guards';
 export * as file from '../../utils/file';
 export * from '../../utils/url';
 export * from '../../utils/isBrowser';
+export * from '../../utils/texts';
 
 // Export hooks
 export { useClipboard } from '../../hooks/useClipboard';

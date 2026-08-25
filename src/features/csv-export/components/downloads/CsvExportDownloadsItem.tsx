@@ -12,7 +12,6 @@ import multichainConfig from 'src/features/multichain/chains-config';
 
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -20,6 +19,7 @@ import { DATE_PICKER_DATE_TIME_FORMAT } from 'src/toolkit/chakra/date-picker';
 import { Link } from 'src/toolkit/chakra/link';
 import { Status } from 'src/toolkit/chakra/status';
 import { SECOND } from 'src/toolkit/utils/consts';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 import type { StorageItem } from '../../utils/storage';

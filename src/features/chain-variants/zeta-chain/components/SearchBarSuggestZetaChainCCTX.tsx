@@ -9,9 +9,9 @@ import SearchBarSuggestItemLink from 'src/slices/search/components/search-bar/Se
 
 import Time from 'src/shared/date-and-time/Time';
 import { route } from 'src/shared/router/routes';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { SECOND } from 'src/toolkit/utils/consts';
 
 interface Props {
@@ -27,7 +27,7 @@ const SearchBarSuggestZetaChainCCTX = ({ data, isMobile, searchTerm, onClick }: 
   // search term can be either cctx hash or observed hash (hash from another chain)
   const hash = (
     <chakra.span as={ searchTerm === data.index ? 'mark' : 'span' } overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.index } noTooltip/>
+      <Truncate value={ data.index } tooltip={ false }/>
     </chakra.span>
   );
 

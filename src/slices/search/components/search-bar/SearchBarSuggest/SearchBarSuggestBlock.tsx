@@ -10,10 +10,10 @@ import type { SearchResultBlock } from 'src/slices/search/types/client';
 import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 
 import Time from 'src/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 
 import { Tag } from 'src/toolkit/chakra/tag';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsProps<SearchResultBlock | multichain.QuickSearchResultBlock>) => {
   const icon = <BlockEntity.Icon chain={ chainInfo }/>;
@@ -29,7 +29,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsP
         as="mark"
         display="block"
       >
-        <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
+        <Truncate value={ data.block_hash } tooltip={ false }/>
       </Box>
     );
     return (
@@ -58,7 +58,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm, chainInfo }: ItemsP
       as={ shouldHighlightHash ? 'mark' : 'span' }
       display="block"
     >
-      <HashStringShortenDynamic hash={ data.block_hash } noTooltip/>
+      <Truncate value={ data.block_hash } tooltip={ false }/>
     </Text>
   ) : null;
   const date = 'timestamp' in data && data.timestamp && !isFutureBlock ? <Time timestamp={ data.timestamp } color="text.secondary" format="lll_s"/> : undefined;

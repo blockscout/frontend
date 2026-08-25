@@ -10,13 +10,14 @@ import type * as multichain from 'src/features/multichain/types/client';
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import Time from 'src/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestTx = ({ data, isMobile, chainInfo }: ItemsProps<schemas['SearchResultTransaction'] | multichain.QuickSearchResultTransaction>) => {
   const icon = <TxEntity.Icon chain={ chainInfo }/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.transaction_hash } noTooltip/>
+      <Truncate value={ data.transaction_hash } tooltip={ false }/>
     </chakra.mark>
   );
   const date = 'timestamp' in data && data.timestamp ? <Time timestamp={ data.timestamp } format="lll_s"/> : undefined;

@@ -7,9 +7,9 @@ import React from 'react';
 import type { NovesNft, NovesToken } from 'src/features/tx-interpretation/noves/types/api';
 
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import shortenString from 'src/shared/texts/shorten-string';
 
 import { HEX_REGEXP } from 'src/toolkit/utils/regexp';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 interface Props {
   amount?: string;

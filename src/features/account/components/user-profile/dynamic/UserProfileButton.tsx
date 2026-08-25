@@ -7,10 +7,10 @@ import { getUserHandle } from 'src/features/account/utils/user-handle';
 import useAccountWithDomain from 'src/features/connect-wallet/hooks/useAccountWithDomain';
 import { useMarketplaceContext } from 'src/features/marketplace/context';
 
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button, type ButtonProps } from 'src/toolkit/chakra/button';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import UserIdenticon from '../UserIdenticon';
 

@@ -17,9 +17,9 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import TokenInstanceCreatorAddress from './TokenInstanceCreatorAddress';
 import TokenInstanceMetadataInfo from './TokenInstanceMetadataInfo';
@@ -74,7 +74,7 @@ const TokenInstanceDetails = ({ data, token, isLoading }: Props) => {
           <DetailedInfo.ItemValue>
             <Flex alignItems="center" overflow="hidden">
               <Skeleton loading={ isLoading } overflow="hidden" display="inline-block" w="100%">
-                <HashStringShortenDynamic hash={ data.id }/>
+                <Truncate value={ data.id }/>
               </Skeleton>
               <CopyToClipboard text={ data.id } isLoading={ isLoading }/>
             </Flex>

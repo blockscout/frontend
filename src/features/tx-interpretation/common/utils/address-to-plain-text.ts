@@ -3,7 +3,7 @@
 import type { AddressNameSource } from 'src/slices/address/utils/get-address-name';
 import getAddressName from 'src/slices/address/utils/get-address-name';
 
-import shortenString from 'src/shared/texts/shorten-string';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 // What `truncation="constant"` resolves to in `AddressEntity`.
 const HASH_CHAR_NUMBER = 8;

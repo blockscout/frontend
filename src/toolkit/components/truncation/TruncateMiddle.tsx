@@ -1,54 +1,48 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// this component trims hash string like 0x123...4567 (always 4 chars after dots)
-// or shows full hash string, if fits
+// Middle-ellipsis truncation driven by container width: measures a hidden shadow node and
+// binary-searches the longest head that fits, keeping a fixed-length tail (0x123...4567).
+// Can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail leaves an
+// unremovable gap between the dots and the tail, so it's computed in JS.
 
-// i can't do this with pure css. if you can, feel free to replace it
-
-// if i use <span text-overflow=ellipsis>some chars</span><span>last 4 chars</span>
-// i have an unremovable gap between dots and second span
-
-// so i did it with js
-
-import type { BoxProps } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
-import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import { Tooltip } from 'src/toolkit/chakra/tooltip';
-import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'src/toolkit/theme/foundations/typography';
+import type { TruncateBaseProps } from './types';
+
+import { Skeleton } from '../../chakra/skeleton';
+import { Tooltip } from '../../chakra/tooltip';
+import { BODY_TYPEFACE, HEADING_TYPEFACE } from '../../theme/foundations/typography';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
-interface Props extends BoxProps {
-  hash: string;
-  fontWeight?: string | number;
-  noTooltip?: boolean;
-  tooltipInteractive?: boolean;
-  tooltipContent?: React.ReactNode;
+export interface TruncateMiddleProps extends TruncateBaseProps {
   tailLength?: number;
-  as?: React.ElementType;
 }
 
-const HashStringShortenDynamic = ({
-  hash,
-  fontWeight = '400',
-  noTooltip,
+const DEFAULT_FONT_WEIGHT = '400';
+
+export const TruncateMiddle = React.memo(({
+  value,
   tailLength = TAIL_LENGTH,
   as = 'span',
-  tooltipInteractive,
-  tooltipContent,
-  ...props
-}: Props) => {
+  loading,
+  tooltip,
+  ...styleProps
+}: TruncateMiddleProps) => {
   const elementRef = useRef<HTMLSpanElement>(null);
-  const [ displayedString, setDisplayedString ] = React.useState(hash);
+  const [ displayedString, setDisplayedString ] = React.useState(value);
+
+  // The font-face observer needs a concrete weight, so it falls back to 400 when the caller sets
+  // none.
+  const fontWeightForObserver = String(styleProps.fontWeight ?? DEFAULT_FONT_WEIGHT);
 
   const isFontFaceLoaded = useFontFaceObserver([
-    { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
-    { family: HEADING_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
+    { family: BODY_TYPEFACE, weight: fontWeightForObserver },
+    { family: HEADING_TYPEFACE, weight: fontWeightForObserver },
   ]);
 
   const calculateString = useCallback(() => {
@@ -60,18 +54,18 @@ const HashStringShortenDynamic = ({
     const shadowEl = document.createElement('span');
     shadowEl.style.opacity = '0';
     parent.appendChild(shadowEl);
-    shadowEl.textContent = hash;
+    shadowEl.textContent = value;
 
     const parentWidth = getWidth(parent);
 
     if (getWidth(shadowEl) > parentWidth) {
-      const tail = hash.slice(-tailLength);
+      const tail = value.slice(-tailLength);
       let leftI = HEAD_MIN_LENGTH;
-      let rightI = hash.length - tailLength;
+      let rightI = value.length - tailLength;
 
       while (rightI - leftI > 1) {
         const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
-        const res = hash.slice(0, medI) + '...' + tail;
+        const res = value.slice(0, medI) + '...' + tail;
         shadowEl.textContent = res;
         if (getWidth(shadowEl) < parentWidth) {
           leftI = medI;
@@ -79,13 +73,13 @@ const HashStringShortenDynamic = ({
           rightI = medI;
         }
       }
-      setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
+      setDisplayedString(value.slice(0, rightI - 1) + '...' + tail);
     } else {
-      setDisplayedString(hash);
+      setDisplayedString(value);
     }
 
     parent.removeChild(shadowEl);
-  }, [ hash, tailLength ]);
+  }, [ value, tailLength ]);
 
   // we want to do recalculation when isFontFaceLoaded flag is changed
   // but we don't want to create more resize event listeners
@@ -104,15 +98,20 @@ const HashStringShortenDynamic = ({
     };
   }, [ calculateString ]);
 
-  const content = <chakra.span ref={ elementRef } as={ as } { ...props }>{ displayedString }</chakra.span>;
-  const isTruncated = hash.length !== displayedString.length;
+  const content = (
+    <Skeleton loading={ loading } asChild>
+      <chakra.span ref={ elementRef } as={ as } { ...styleProps }>{ displayedString }</chakra.span>
+    </Skeleton>
+  );
+  const isTruncated = value !== displayedString;
 
-  if (!noTooltip && (isTruncated || tooltipContent)) {
+  if (tooltip !== false && (isTruncated || tooltip?.always)) {
+    const { content: tooltipContent, always, ...rest } = tooltip ?? {};
     return (
       <Tooltip
-        content={ tooltipContent ?? hash }
+        content={ tooltipContent ?? value }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        interactive={ tooltipInteractive }
+        { ...rest }
       >
         { content }
       </Tooltip>
@@ -120,10 +119,8 @@ const HashStringShortenDynamic = ({
   }
 
   return content;
-};
+});
 
 function getWidth(el: HTMLElement) {
   return el.getBoundingClientRect().width;
 }
-
-export default React.memo(HashStringShortenDynamic);

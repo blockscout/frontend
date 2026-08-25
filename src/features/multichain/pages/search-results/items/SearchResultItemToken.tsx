@@ -12,9 +12,10 @@ import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import * as contract from 'src/features/multichain/utils/contract';
 
 import { route } from 'src/shared/router/routes';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import SearchResultListItem from '../SearchResultListItem';
 
@@ -59,7 +60,7 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
           _groupHover={{ color: 'inherit' }}
         >
           { isMobile ? shortenString(data.address_hash) : (
-            <HashStringShortenDynamic hash={ data.address_hash }/>
+            <Truncate value={ data.address_hash }/>
           ) }
         </Box>
         { isVerified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
