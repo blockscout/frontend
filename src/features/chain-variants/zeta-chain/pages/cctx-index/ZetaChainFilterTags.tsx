@@ -10,11 +10,11 @@ import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/use
 
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Tag } from 'src/toolkit/chakra/tag';
+import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { SECOND } from 'src/toolkit/utils/consts';
 
 type Props = {

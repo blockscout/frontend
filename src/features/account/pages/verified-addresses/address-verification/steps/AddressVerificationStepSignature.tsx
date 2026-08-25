@@ -21,7 +21,6 @@ import { getWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 
 import config from 'src/config';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import shortenString from 'src/shared/texts/shorten-string';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { Button } from 'src/toolkit/chakra/button';
@@ -29,6 +28,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Radio, RadioGroup } from 'src/toolkit/chakra/radio';
 import { FormFieldText } from 'src/toolkit/components/forms/fields/FormFieldText';
 import { SIGNATURE_REGEXP } from 'src/toolkit/components/forms/validators/signature';
+import shortenString from 'src/toolkit/components/truncation/shorten-string';
 
 import AdminSupportText from '../../AdminSupportText';
 

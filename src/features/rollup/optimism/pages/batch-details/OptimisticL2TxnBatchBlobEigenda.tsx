@@ -10,7 +10,8 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 
@@ -28,7 +29,7 @@ const OptimisticL2TxnBatchBlobEigenda = ({ blobs, isLoading }: Props) => {
             <GridItem fontWeight={ 600 }>Cert</GridItem>
             <GridItem overflow="hidden">
               <Flex minW="0" w="calc(100% - 20px)">
-                <HashStringShortenDynamic hash={ blob.cert }/>
+                <Truncate value={ blob.cert }/>
                 <CopyToClipboard text={ blob.cert }/>
               </Flex>
             </GridItem>

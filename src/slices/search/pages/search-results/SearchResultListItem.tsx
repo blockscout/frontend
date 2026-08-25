@@ -29,7 +29,6 @@ import * as mixpanel from 'src/services/mixpanel';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
 import ListItemMobile from 'src/shared/lists/ListItemMobile';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -39,6 +38,7 @@ import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { SECOND } from 'src/toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
@@ -356,7 +356,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton loading={ isLoading } overflow="hidden" display="flex" alignItems="center">
               <Text whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ hash } noTooltip/>
+                <Truncate value={ hash } tooltip={ false }/>
               </Text>
               { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
@@ -378,7 +378,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         return (
           <>
             <Skeleton loading={ isLoading } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
-              <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
+              <Truncate value={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
             </Skeleton>
             <Skeleton loading={ isLoading } color="text.secondary" mr={ 2 }>
               <Time timestamp={ data.timestamp } format="lll_s"/>
@@ -419,7 +419,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         return (
           <Flex alignItems="center">
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ hash }/>
+              <Truncate value={ hash }/>
             </Box>
             { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
@@ -473,7 +473,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
           <Flex alignItems="center" gap={ 3 }>
             { hash && (
               <Box overflow="hidden">
-                <HashStringShortenDynamic hash={ hash }/>
+                <Truncate value={ hash }/>
               </Box>
             ) }
             {

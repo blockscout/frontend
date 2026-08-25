@@ -18,7 +18,7 @@ import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: schemas['TokenTransfer'];
@@ -81,7 +81,7 @@ const TokenTransferListItem = ({
             overflow="hidden"
           >
             <span>Value </span>
-            { data.token.symbol && <TruncatedText text={ data.token.symbol } loading={ isLoading }/> }
+            { data.token.symbol && <Truncate value={ data.token.symbol } type="end" loading={ isLoading }/> }
           </Skeleton>
           <AssetValue
             amount={ data.total.value }
@@ -105,7 +105,7 @@ const TokenTransferListItem = ({
             overflow="hidden"
           >
             <span>Value </span>
-            { data.token.symbol && <TruncatedText text={ data.token.symbol } loading={ isLoading }/> }
+            { data.token.symbol && <Truncate value={ data.token.symbol } type="end" loading={ isLoading }/> }
           </Skeleton>
           <ConfidentialValue
             loading={ isLoading }

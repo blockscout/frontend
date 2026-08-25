@@ -11,7 +11,7 @@ import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: ValidatorBlackfort;
@@ -36,7 +36,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Name</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Flex><TruncatedText text={ data.name } loading={ isLoading }/></Flex>
+            <Flex><Truncate value={ data.name } type="end" loading={ isLoading }/></Flex>
           </ListItemMobileGrid.Value>
         </>
       ) }

@@ -16,7 +16,7 @@ import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: Array<schemas['TokenTransfer']>;
@@ -57,7 +57,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
                 width={ (isFungibleTokenType(tokenType, chainData?.app_config) || isConfidentialTokenType(tokenType)) ? '100%' : '50%' }
                 isNumeric
               >
-                <TruncatedText text={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
+                <Truncate value={ `Value ${ token?.symbol || '' }` } type="end" w="100%" verticalAlign="middle"/>
               </TableColumnHeader>
             ) }
           </TableRow>

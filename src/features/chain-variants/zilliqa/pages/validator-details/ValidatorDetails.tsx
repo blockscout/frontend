@@ -12,10 +12,10 @@ import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: schemas['ZilliqaStakerDetailed'];
@@ -62,7 +62,7 @@ const ValidatorDetails = ({ data, isLoading }: Props) => {
           <DetailedInfo.ItemValue>
             <Flex alignItems="center" w="100%" minWidth={ 0 }>
               <Skeleton loading={ isLoading } maxW="calc(100% - 28px)" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.peer_id }/>
+                <Truncate value={ data.peer_id }/>
               </Skeleton>
               <CopyToClipboard text={ data.peer_id } isLoading={ isLoading }/>
             </Flex>

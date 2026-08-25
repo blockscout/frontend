@@ -16,9 +16,9 @@ import SearchResultMetadataTag from 'src/slices/search/pages/search-results/Sear
 import * as contract from 'src/features/multichain/utils/contract';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
 type Props = ItemsProps<schemas['SearchResultAddressOrContract'] | schemas['SearchResultMetadataTag'] | multichain.QuickSearchResultAddress>;
@@ -81,7 +81,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: 
   const tagEl = data.type === 'metadata_tag' ? (
     <SearchResultMetadataTag metadata={ data.metadata } addressHash={ hash } searchTerm={ searchTerm } ml={{ base: 0, lg: 'auto' }}/>
   ) : null;
-  const addressEl = <HashStringShortenDynamic hash={ hash } noTooltip/>;
+  const addressEl = <Truncate value={ hash } tooltip={ false }/>;
 
   if (isMobile) {
     return (

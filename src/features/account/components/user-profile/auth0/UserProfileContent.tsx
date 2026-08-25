@@ -12,12 +12,12 @@ import { useMarketplaceContext } from 'src/features/marketplace/context';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
-import shortenString from 'src/shared/texts/shorten-string';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import shortenString from 'src/toolkit/components/truncation/shorten-string';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import UserProfileContentWallet from '../common/UserProfileContentWallet';
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
@@ -111,7 +111,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         <Flex p={ 2 } columnGap={ 4 }>
           <Box mr="auto">Email</Box>
           { data?.email ?
-            <TruncatedText text={ data.email }/> : <Link onClick={ onAddEmail }>Add email</Link> }
+            <Truncate value={ data.email } type="end"/> : <Link onClick={ onAddEmail }>Add email</Link> }
         </Flex>
       </Box>
 

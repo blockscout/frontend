@@ -10,7 +10,8 @@ import CeleniumLink from 'src/features/rollup/common/components/CeleniumLink';
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const feature = config.features.rollup;
 
@@ -39,7 +40,7 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue flexWrap="nowrap">
             <Flex overflow="hidden" minW="0">
-              <HashStringShortenDynamic hash={ data.transaction_commitment }/>
+              <Truncate value={ data.transaction_commitment }/>
             </Flex>
             <CopyToClipboard text={ data.transaction_commitment } mr={ 3 }/>
             { feature.isEnabled && feature.DA.celestia.namespace && data.height && (

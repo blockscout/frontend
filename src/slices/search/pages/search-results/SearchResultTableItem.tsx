@@ -28,7 +28,6 @@ import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEnt
 import * as mixpanel from 'src/services/mixpanel';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -39,6 +38,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { SECOND } from 'src/toolkit/utils/consts';
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
@@ -99,7 +99,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             <TableCell verticalAlign="middle">
               <Skeleton loading={ isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ hash }/>
+                  <Truncate value={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
@@ -206,7 +206,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             <TableCell verticalAlign="middle">
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ hash }/>
+                  <Truncate value={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
@@ -288,7 +288,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                   { data.block_type === 'reorg' && !isLoading && <Tag flexShrink={ 0 }>Reorg</Tag> }
                   { data.block_type === 'uncle' && !isLoading && <Tag flexShrink={ 0 }>Uncle</Tag> }
                   <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" display="block">
-                    <HashStringShortenDynamic hash={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
+                    <Truncate value={ data.block_hash } as={ shouldHighlightHash ? 'mark' : 'span' }/>
                   </Skeleton>
                 </Flex>
               ) }
@@ -483,7 +483,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
               <Flex alignItems="center" overflow="hidden">
                 { hash && (
                   <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                    <HashStringShortenDynamic hash={ hash }/>
+                    <Truncate value={ hash }/>
                   </Box>
                 ) }
                 { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }

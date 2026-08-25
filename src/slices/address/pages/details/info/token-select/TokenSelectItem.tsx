@@ -17,7 +17,7 @@ import { route } from 'src/shared/router/routes';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'src/toolkit/chakra/link';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: TokenEnhancedData;
@@ -48,7 +48,7 @@ const TokenSelectItem = ({ data }: Props) => {
 
       return (
         <>
-          <TruncatedText text={ text }/>
+          <Truncate value={ text } type="end"/>
           { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
         </>
       );
@@ -62,7 +62,7 @@ const TokenSelectItem = ({ data }: Props) => {
 
       return (
         <>
-          <TruncatedText text={ text }/>
+          <Truncate value={ text } type="end"/>
           { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
         </>
       );
@@ -71,7 +71,7 @@ const TokenSelectItem = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-721': {
         const text = `${ BigNumber(data.value ?? '0').toFormat() } ${ data.token.symbol || '' }`;
-        return <TruncatedText text={ text }/>;
+        return <Truncate value={ text } type="end"/>;
       }
       case 'ERC-1155': {
         return (
@@ -138,14 +138,11 @@ const TokenSelectItem = ({ data }: Props) => {
         />
         { isNativeToken && <NativeTokenTag mr={ 2 }/> }
         { data.usd && (
-          <TruncatedText
-            text={ `$${ data.usd.toFormat(2) }` }
-            fontWeight={ 700 }
+          <Truncate value={ `$${ data.usd.toFormat(2) }` } type="end" fontWeight={ 700 }
             minW="120px"
             ml="auto"
             textAlign="right"
-            color={ isNativeToken ? 'text.secondary' : undefined }
-          />
+            color={ isNativeToken ? 'text.secondary' : undefined }/>
         ) }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap" color={ isNativeToken ? 'text.secondary' : undefined }>

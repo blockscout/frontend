@@ -12,11 +12,11 @@ import useWeb3AccountWithDomain from 'src/features/connect-wallet/hooks/useAccou
 import { useMarketplaceContext } from 'src/features/marketplace/context';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import shortenString from 'src/toolkit/components/truncation/shorten-string';
 
 import UserIdenticon from '../UserIdenticon';
 

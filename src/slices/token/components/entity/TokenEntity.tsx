@@ -20,7 +20,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
-import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
 
@@ -113,17 +113,7 @@ const Symbol = (props: SymbolProps) => {
       color="text.secondary"
     >
       <div>(</div>
-      <TruncatedTextTooltip label={ symbol }>
-        <chakra.span
-          display="inline-block"
-          whiteSpace="nowrap"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          height="fit-content"
-        >
-          { symbol }
-        </chakra.span>
-      </TruncatedTextTooltip>
+      <Truncate value={ symbol } type="end"/>
       <div>)</div>
     </Skeleton>
   );
