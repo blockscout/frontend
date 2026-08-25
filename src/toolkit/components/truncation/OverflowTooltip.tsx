@@ -9,21 +9,16 @@ import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
 
-import type { ExcludeUndefined } from 'src/shared/types/utils';
-
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
 import { useDisclosure } from '../../hooks/useDisclosure';
 import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 
-export interface OverflowTooltipProps {
-  children: React.ReactNode;
-  label: React.ReactNode;
-  placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
-  interactive?: boolean;
+export interface OverflowTooltipProps extends TooltipProps {
+  always?: boolean;
 }
 
-export const OverflowTooltip = React.memo(({ children, label, placement, interactive }: OverflowTooltipProps) => {
+export const OverflowTooltip = React.memo(({ children, content, positioning, interactive, always }: OverflowTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
   const { open, onToggle, onOpen, onClose } = useDisclosure();
@@ -85,12 +80,12 @@ export const OverflowTooltip = React.memo(({ children, label, placement, interac
     } as React.HTMLAttributes<HTMLElement>,
   );
 
-  if (isTruncated) {
+  if (isTruncated || always) {
     return (
       <Tooltip
-        content={ label }
+        content={ content }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        positioning={{ placement }}
+        positioning={ positioning }
         open={ open }
         interactive={ interactive }
       >

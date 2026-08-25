@@ -10,7 +10,7 @@ import { useMarketplaceContext } from 'src/features/marketplace/context';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button, type ButtonProps } from 'src/toolkit/chakra/button';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import UserIdenticon from '../UserIdenticon';
 

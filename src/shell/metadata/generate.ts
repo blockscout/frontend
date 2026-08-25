@@ -10,8 +10,8 @@ import { currencyUnits } from 'src/slices/chain/units';
 
 import config from 'src/config';
 
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { castToString } from 'src/toolkit/utils/guards';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import compileValue from './compile-value';
 import getCanonicalUrl from './get-canonical-url';

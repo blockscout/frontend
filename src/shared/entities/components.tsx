@@ -237,7 +237,9 @@ const Content = chakra(({
         { tooltipContentAfter }
       </>
     ) : undefined;
-    return { content, interactive: tooltipInteractive };
+    // `tooltipContentAfter` carries actionable UI (e.g. the advanced-filter link), so the tooltip
+    // must stay reachable even when the value itself is not truncated.
+    return { content, interactive: tooltipInteractive, always: Boolean(tooltipContentAfter) };
   }, [ noTooltip, tooltipContentAfter, text, tooltipInteractive ]);
 
   if (truncation === 'tail') {

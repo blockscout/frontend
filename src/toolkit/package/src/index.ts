@@ -124,6 +124,7 @@ export * as guards from '../../utils/guards';
 export * as file from '../../utils/file';
 export * from '../../utils/url';
 export * from '../../utils/isBrowser';
+export * from '../../utils/texts';
 
 // Export hooks
 export { useClipboard } from '../../hooks/useClipboard';

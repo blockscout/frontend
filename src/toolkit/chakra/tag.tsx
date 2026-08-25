@@ -43,7 +43,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     ) : null;
 
     const contentElement = truncated ? (
-      <OverflowTooltip label={ children }>
+      <OverflowTooltip content={ children }>
         <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>
       </OverflowTooltip>
     ) : <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>;

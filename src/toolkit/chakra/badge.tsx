@@ -21,7 +21,7 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
     const child = children ? <chakra.span overflow="hidden" textOverflow="ellipsis">{ children }</chakra.span> : null;
 
     const childrenElement = truncated ? (
-      <OverflowTooltip label={ children }>
+      <OverflowTooltip content={ children }>
         { child }
       </OverflowTooltip>
     ) : child;

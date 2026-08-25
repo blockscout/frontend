@@ -28,7 +28,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import { Radio, RadioGroup } from 'src/toolkit/chakra/radio';
 import { FormFieldText } from 'src/toolkit/components/forms/fields/FormFieldText';
 import { SIGNATURE_REGEXP } from 'src/toolkit/components/forms/validators/signature';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import AdminSupportText from '../../AdminSupportText';
 

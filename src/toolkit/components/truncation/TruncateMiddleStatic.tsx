@@ -11,7 +11,7 @@ import type { TruncateBaseProps } from './types';
 
 import { Skeleton } from '../../chakra/skeleton';
 import { Tooltip } from '../../chakra/tooltip';
-import shortenString from './shorten-string';
+import { shortenString } from '../../utils/texts';
 
 const DEFAULT_MAX_SYMBOLS = 8;
 
@@ -19,7 +19,7 @@ export interface TruncateMiddleStaticProps extends TruncateBaseProps {
   maxSymbols?: number;
 }
 
-const TruncateMiddleStatic = ({
+export const TruncateMiddleStatic = React.memo(({
   value,
   maxSymbols = DEFAULT_MAX_SYMBOLS,
   as = 'span',
@@ -36,7 +36,7 @@ const TruncateMiddleStatic = ({
     </Skeleton>
   );
 
-  if (tooltip === false || !isTruncated) {
+  if (tooltip === false || (!isTruncated && !tooltip?.always)) {
     return content;
   }
 
@@ -44,12 +44,10 @@ const TruncateMiddleStatic = ({
     <Tooltip
       content={ tooltip?.content ?? value }
       contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-      positioning={{ placement: tooltip?.placement }}
+      positioning={ tooltip?.positioning }
       interactive={ tooltip?.interactive }
     >
       { content }
     </Tooltip>
   );
-};
-
-export default React.memo(TruncateMiddleStatic);
+});

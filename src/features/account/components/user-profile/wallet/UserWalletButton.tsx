@@ -8,7 +8,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import UserIdenticon from '../UserIdenticon';
 

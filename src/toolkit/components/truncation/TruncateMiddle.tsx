@@ -26,7 +26,7 @@ export interface TruncateMiddleProps extends TruncateBaseProps {
 
 const DEFAULT_FONT_WEIGHT = '400';
 
-const TruncateMiddle = ({
+export const TruncateMiddle = React.memo(({
   value,
   tailLength = TAIL_LENGTH,
   as = 'span',
@@ -37,8 +37,8 @@ const TruncateMiddle = ({
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(value);
 
-  // Only used to key the font-face observer — never applied to the span, so an unset weight
-  // is inherited from the parent (e.g. a heading entity's bold) instead of being forced to 400.
+  // The font-face observer needs a concrete weight, so it falls back to 400 when the caller sets
+  // none.
   const fontWeightForObserver = String(styleProps.fontWeight ?? DEFAULT_FONT_WEIGHT) as FontFace['weight'];
 
   const isFontFaceLoaded = useFontFaceObserver([
@@ -104,14 +104,14 @@ const TruncateMiddle = ({
       <chakra.span ref={ elementRef } as={ as } { ...styleProps }>{ displayedString }</chakra.span>
     </Skeleton>
   );
-  const isTruncated = value.length !== displayedString.length;
+  const isTruncated = value !== displayedString;
 
-  if (tooltip !== false && isTruncated) {
+  if (tooltip !== false && (isTruncated || tooltip?.always)) {
     return (
       <Tooltip
         content={ tooltip?.content ?? value }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        positioning={{ placement: tooltip?.placement }}
+        positioning={ tooltip?.positioning }
         interactive={ tooltip?.interactive }
       >
         { content }
@@ -120,10 +120,8 @@ const TruncateMiddle = ({
   }
 
   return content;
-};
+});
 
 function getWidth(el: HTMLElement) {
   return el.getBoundingClientRect().width;
 }
-
-export default React.memo(TruncateMiddle);

@@ -14,8 +14,8 @@ import * as contract from 'src/features/multichain/utils/contract';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import SearchResultListItem from '../SearchResultListItem';
 

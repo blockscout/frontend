@@ -9,8 +9,8 @@ import type { UserInfo } from 'src/features/account/types/api';
 import config from 'src/config';
 
 import { Button } from 'src/toolkit/chakra/button';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { apos } from 'src/toolkit/utils/htmlEntities';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 interface Props {
   address: string;

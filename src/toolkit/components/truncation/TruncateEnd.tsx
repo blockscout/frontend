@@ -13,7 +13,7 @@ import { OverflowTooltip } from './OverflowTooltip';
 
 export type TruncateEndProps = TruncateBaseProps;
 
-const TruncateEnd = ({ value, as = 'span', loading, tooltip, ...styleProps }: TruncateEndProps) => {
+export const TruncateEnd = ({ value, as = 'span', loading, tooltip, ...styleProps }: TruncateEndProps) => {
   const valueElement = (
     <Skeleton
       loading={ loading }
@@ -33,10 +33,13 @@ const TruncateEnd = ({ value, as = 'span', loading, tooltip, ...styleProps }: Tr
   }
 
   return (
-    <OverflowTooltip label={ tooltip?.content ?? value } placement={ tooltip?.placement } interactive={ tooltip?.interactive }>
+    <OverflowTooltip
+      content={ tooltip?.content ?? value }
+      positioning={ tooltip?.positioning }
+      interactive={ tooltip?.interactive }
+      always={ tooltip?.always }
+    >
       { valueElement }
     </OverflowTooltip>
   );
 };
-
-export default TruncateEnd;

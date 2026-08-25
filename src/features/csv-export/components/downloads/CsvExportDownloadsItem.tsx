@@ -18,8 +18,8 @@ import { Button } from 'src/toolkit/chakra/button';
 import { DATE_PICKER_DATE_TIME_FORMAT } from 'src/toolkit/chakra/date-picker';
 import { Link } from 'src/toolkit/chakra/link';
 import { Status } from 'src/toolkit/chakra/status';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { SECOND } from 'src/toolkit/utils/consts';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 import type { StorageItem } from '../../utils/storage';

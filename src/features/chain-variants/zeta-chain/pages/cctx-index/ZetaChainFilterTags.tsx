@@ -14,8 +14,8 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Tag } from 'src/toolkit/chakra/tag';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { SECOND } from 'src/toolkit/utils/consts';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 type Props = {
   filters: ZetaChainCCTXFilterParams;

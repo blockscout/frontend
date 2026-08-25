@@ -16,8 +16,8 @@ import { getFeaturePayload } from 'src/config/utils/features';
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
-import shortenString from 'src/toolkit/components/truncation/shorten-string';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import UserProfileContentWallet from '../common/UserProfileContentWallet';
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';

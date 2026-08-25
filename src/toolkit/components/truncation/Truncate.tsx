@@ -5,15 +5,14 @@
 //   - `middle` (default) — measured middle-ellipsis (container width, binary search)
 //   - `middle-static`     — fixed char count, pure string slice, SSR-safe, cheapest
 //   - `end`               — measured end-ellipsis (CSS text-overflow)
-// This is a thin dispatcher, not a god-component.
 
 import React from 'react';
 
-import TruncateEnd from './TruncateEnd';
+import { TruncateEnd } from './TruncateEnd';
 import type { TruncateEndProps } from './TruncateEnd';
-import TruncateMiddle from './TruncateMiddle';
+import { TruncateMiddle } from './TruncateMiddle';
 import type { TruncateMiddleProps } from './TruncateMiddle';
-import TruncateMiddleStatic from './TruncateMiddleStatic';
+import { TruncateMiddleStatic } from './TruncateMiddleStatic';
 import type { TruncateMiddleStaticProps } from './TruncateMiddleStatic';
 
 export type { TruncateTooltipConfig } from './types';
