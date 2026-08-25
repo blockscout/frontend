@@ -32,17 +32,14 @@ check_affected_flag() {
     echo "$affected_flag"
 }
 
-# Remove the "--affected" argument from the script args
 filter_arguments() {
-    local args=()
+    filtered_args=()
 
     for arg in "$@"; do
         if [[ "$arg" != "--affected"* ]]; then
-            args+=("$arg")
+            filtered_args+=("$arg")
         fi
     done
-
-    echo "${args[@]}"
 }
 
 get_files_to_run() {
@@ -65,7 +62,7 @@ get_files_to_run() {
   echo "$files_to_run"
 }
 
-args=$(filter_arguments "$@")
+filter_arguments "$@"
 affected_flag=$(check_affected_flag "$@")
 files_to_run=$(get_files_to_run "$affected_flag")
 if [ $? -eq 1 ]; then
@@ -73,12 +70,14 @@ if [ $? -eq 1 ]; then
     exit 0
 fi
 
-echo "Running Playwright tests with the following arguments: $args"
+echo "Running Playwright tests with the following arguments: ${filtered_args[*]}"
 echo "Affected flag: $affected_flag"
 echo "Files to run: $files_to_run"
 
+# files_to_run stays unquoted so multiple space-separated paths split into args;
+# filtered_args is quoted so multi-word values (e.g. -g "some title") stay intact.
 dotenv \
   -v NODE_OPTIONS=\"--max-old-space-size=8192\" \
   -e $config_file \
-  -- playwright test -c playwright-ct.config.ts $files_to_run $args
+  -- playwright test -c playwright-ct.config.ts $files_to_run "${filtered_args[@]}"
 
