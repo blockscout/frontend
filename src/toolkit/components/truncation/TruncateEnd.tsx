@@ -17,6 +17,7 @@ export const TruncateEnd = ({ value, as = 'span', loading, tooltip, ...styleProp
   const valueElement = (
     <Skeleton
       loading={ loading }
+      asChild
       display="inline-block"
       whiteSpace="nowrap"
       overflow="hidden"

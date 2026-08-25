@@ -63,7 +63,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
             overflow="hidden"
             minW={ 0 }
           >
-            <Truncate value={ item.id } type="end" w="100%"/>
+            <Truncate value={ item.id } type="end" display="block" w="100%"/>
           </Link>
         </Flex>
       ) }
