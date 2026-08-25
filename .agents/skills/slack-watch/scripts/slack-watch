@@ -5,18 +5,25 @@
 // a NEW line arrives. It never prints message content and never logs event
 // payloads — the user-token message.im feed is a DM firehose and must not leak.
 //
-// Two tokens, both from the macOS Keychain, never in argv, a dotfile, or output:
-//   app-level (xapp-)  opens the Socket Mode socket   — slack-orchestrator-app-token
-//   user      (xoxp-)  reads replies for catch-up      — slack-orchestrator-user-token
+// A single Socket Mode connection carries the app's bot events and its user
+// events together, so DM and channel threads are watched over one socket. The
+// two identities split by conversation type: DMs are the developer's own (user
+// token), channels belong to the Honk bot invited into them (bot token).
+//
+// Three tokens, all from the macOS Keychain, never in argv, a dotfile, or output:
+//   app-level (xapp-)  opens the Socket Mode socket          — slack-orchestrator-app-token
+//   user      (xoxp-)  reads DM replies, is the DM identity   — slack-orchestrator-user-token
+//   bot       (xoxb-)  reads channel replies, is the bot ident — slack-orchestrator-bot-token
 //
 // Node 22+ only: relies on the built-in global WebSocket and fetch — no npm deps.
-// cspell:ignore acks xapp xoxp
+// cspell:ignore acks xapp xoxp xoxb
 'use strict';
 
 const { execFileSync } = require('node:child_process');
 
 const APP_TOKEN_SERVICE = 'slack-orchestrator-app-token';
 const USER_TOKEN_SERVICE = 'slack-orchestrator-user-token';
+const BOT_TOKEN_SERVICE = 'slack-orchestrator-bot-token';
 const FATAL_AUTH_ERRORS = new Set(['invalid_auth', 'not_authed', 'account_inactive', 'token_revoked']);
 
 function die(msg) {
@@ -59,12 +66,18 @@ if (watched.size === 0) die('no threads to watch — pass CHANNEL:THREAD_TS args
 
 const appToken = keychain(APP_TOKEN_SERVICE);
 const userToken = keychain(USER_TOKEN_SERVICE);
+const botToken = keychain(BOT_TOKEN_SERVICE);
 
 const seenEventIds = new Set();
-let selfId = null; // the developer's own user id — their messages are not replies to notify on.
+const ownIds = new Set(); // our own user ids (developer + Honk bot) — never a reply to notify on.
 let ws = null;
 let established = false; // flips on the first `hello`; later `hello`s mean a reconnect.
 let reconnectTimer = null;
+
+// DM channels (D…) are read with the user token; channels (C…) and private
+// groups (G…) are read with the bot token, which has history only where the bot
+// was invited.
+const tokenFor = (channel) => (channel[0] === 'D' ? userToken : botToken);
 
 async function call(method, token, params = {}, httpMethod = 'GET') {
   const qs = new URLSearchParams(params).toString();
@@ -88,7 +101,7 @@ async function reconcile(emitMissed) {
   for (const w of watched.values()) {
     let res;
     try {
-      res = await call('conversations.replies', userToken, {
+      res = await call('conversations.replies', tokenFor(w.channel), {
         channel: w.channel,
         ts: w.thread_ts,
         oldest: w.lastTs,
@@ -104,7 +117,9 @@ async function reconcile(emitMissed) {
       continue;
     }
     for (const m of res.messages || []) {
-      if (m.subtype || m.user === selfId) continue; // edits/joins and our own posts are not replies
+      // Drop edits/joins/bot_message and our own posts. `thread_broadcast` is a
+      // genuine reply the author also sent to the channel — keep it.
+      if ((m.subtype && m.subtype !== 'thread_broadcast') || ownIds.has(m.user)) continue;
       if (num(m.ts) <= num(w.lastTs)) continue;
       if (emitMissed) emit(`NEW channel=${w.channel} thread_ts=${w.thread_ts} ts=${m.ts}`);
       w.lastTs = m.ts;
@@ -119,8 +134,9 @@ function handleEvent(payload) {
     seenEventIds.add(eventId);
   }
   const e = payload.event;
-  if (!e || e.type !== 'message' || e.subtype) return; // plain messages only
-  if (e.user === selfId) return; // our own follow-ups arrive here too — ignore them
+  // plain messages and thread_broadcast replies only — drop edits/joins/bot_message.
+  if (!e || e.type !== 'message' || (e.subtype && e.subtype !== 'thread_broadcast')) return;
+  if (ownIds.has(e.user)) return; // our own follow-ups (developer or bot) arrive here too — ignore them
   const thread_ts = e.thread_ts;
   if (!thread_ts) return; // a top-level message, not a threaded reply
   const w = watched.get(`${e.channel}:${thread_ts}`);
@@ -180,8 +196,11 @@ async function connect() {
 }
 
 (async () => {
-  const auth = await call('auth.test', userToken);
-  if (!auth.ok) die(`auth.test: ${auth.error} (check the user token)`);
-  selfId = auth.user_id;
+  const user = await call('auth.test', userToken);
+  if (!user.ok) die(`auth.test: ${user.error} (check the user token)`);
+  ownIds.add(user.user_id);
+  const bot = await call('auth.test', botToken);
+  if (!bot.ok) die(`auth.test: ${bot.error} (check the bot token)`);
+  ownIds.add(bot.user_id);
   await connect();
 })().catch(scheduleReconnect);
