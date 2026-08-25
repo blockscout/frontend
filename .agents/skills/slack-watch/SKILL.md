@@ -2,11 +2,11 @@
 name: slack-watch
 description: >-
   Watch Slack threads (DMs and channels) for new replies over a Socket Mode
-  WebSocket, printing one line per genuinely-new reply. Use to be notified —
-  inside a live session, under the Monitor tool.
+  WebSocket, printing one line per genuinely-new reply. Use to be notified
+  inside a live local Claude Code or Cursor session (not a cloud agent).
 ---
 
-<!-- cspell:ignore acks xapp xoxp xoxb WXYZ -->
+<!-- cspell:ignore acks xapp xoxp xoxb WXYZ AwaitShell -->
 
 # Slack watch
 
@@ -27,13 +27,19 @@ From **this skill's directory** (the folder that contains this `SKILL.md`):
 
 If 2 fails: give the user **Setup** below and stop. Do not store the tokens yourself.
 
-The sandbox cannot read the Keychain or reach `slack.com` — run under the Monitor tool with those allowed.
+**Local session only** — the Keychain and the socket both live on this Mac. If you are a cloud agent, stop and tell the developer to run this in local Claude Code or Cursor.
 
-**Done when:** every check passes, or the run has stopped for setup.
+**Done when:** every check passes, or the run has stopped for setup (or cloud).
 
 ## 2. Run
 
-Each watched thread is one `CHANNEL:THREAD_TS` argv item — the channel id (a DM is `D…`, a channel `C…`, a private group `G…`) and the parent `ts`, both from the `slack_send_message` / permalink you already hold. The script routes each by its id prefix; channel threads only report if the Honk bot is a member of that channel. Launch it under **`Monitor` with `persistent: true`** so each printed line becomes an in-session notification for the lifetime of the session:
+Each watched thread is one `CHANNEL:THREAD_TS` argv item — the channel id (a DM is `D…`, a channel `C…`, a private group `G…`) and the parent `ts`, both from the `slack_send_message` / permalink you already hold. The script routes each by its id prefix; channel threads only report if the Honk bot is a member of that channel.
+
+Launch so each stdout line wakes this session. Use the recipe whose tools you have.
+
+### Claude Code
+
+`Monitor` with `persistent: true`. The sandbox cannot read the Keychain or reach `slack.com` — allow both on that Monitor.
 
 ```
 Monitor(
@@ -43,20 +49,41 @@ Monitor(
 )
 ```
 
-Give the absolute path to `scripts/slack-watch` if the Monitor's working directory is not this skill's directory.
+Give the absolute path to `scripts/slack-watch` if Monitor's working directory is not this skill's directory.
+
+### Cursor (local IDE)
+
+Background `Shell` (`block_until_ms: 0`) with `notify_on_output` and `required_permissions: ["all"]` (Keychain + `slack.com`). Cursor floors notification debounce at 5s — two `NEW` lines in one burst may arrive as one wake; on wake, read the terminal output and handle every `NEW` line, not only the last.
+
+```
+Shell(
+  command: "<absolute>/scripts/slack-watch C0123ABCD:1700000000.000200 D0456WXYZ:1700000100.000700",
+  description: "Slack reply watcher",
+  block_until_ms: 0,
+  required_permissions: ["all"],
+  notify_on_output: { pattern: "^NEW |^RECONNECTED", reason: "Slack reply" },
+)
+```
+
+Use the absolute path. Smoke-check the terminal output file once so a failed start is not silent.
 
 ### Output lines
 
 - `NEW channel=<C…> thread_ts=<ts> ts=<ts>` — a new reply landed (or was missed during downtime and reconciled on reconnect). Read it with `slack_read_thread` on that `thread_ts`. Our own messages — the developer's **and** the Honk bot's, including agent follow-ups posted as either — and the thread's pre-existing history are **not** reported.
 - `RECONNECTED` — the socket re-opened after a drop; a catch-up for every watched thread has just run, so any `NEW` lines around it are the replies missed while it was down.
 
-Diagnostics (auth or reconnect failures) go to stderr — Monitor's output file, not notifications; Read it if the watcher seems quiet.
+Diagnostics (auth or reconnect failures) go to stderr — Claude's Monitor output file, or Cursor's terminal file; Read it if the watcher seems quiet.
 
 ### Changing the watched set
 
-All state lives in the process (thread list, per-thread last-seen `ts`, `event_id` dedupe). There is no state file. To add or remove a thread, **stop the Monitor (`TaskStop`) and relaunch** with the new argument list. Re-spawning re-baselines to "from now" — earlier replies are already in the session transcript, so nothing is double-reported.
+All state lives in the process (thread list, per-thread last-seen `ts`, `event_id` dedupe). There is no state file. To add or remove a thread, **stop and relaunch** with the new argument list.
 
-**Done when:** the Monitor is running and reporting, or the run has stopped for setup.
+- Claude Code: `TaskStop` on that Monitor, then launch again.
+- Cursor: kill the PID in that shell's header, `AwaitShell` so the completion ping is consumed, then launch again.
+
+Re-spawning re-baselines to "from now" — earlier replies are already in the session transcript, so nothing is double-reported.
+
+**Done when:** the watcher is running and reporting, or the run has stopped for setup.
 
 ## Setup
 

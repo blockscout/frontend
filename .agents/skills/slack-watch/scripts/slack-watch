@@ -179,7 +179,11 @@ function scheduleReconnect() {
   if (reconnectTimer) return;
   reconnectTimer = setTimeout(() => {
     reconnectTimer = null;
-    connect().catch(scheduleReconnect);
+    // Retry the whole init, not just connect(): if a startup auth.test threw
+    // (network/JSON), ownIds is still empty, and opening the socket then would
+    // report our own posts as NEW. init() re-runs auth.test until ownIds is
+    // populated; on a plain socket drop it skips straight to connect().
+    init().catch(scheduleReconnect);
   }, 1000);
 }
 
@@ -195,12 +199,20 @@ async function connect() {
   ws.addEventListener('error', () => {}); // a close event always follows; reconnect there
 }
 
-(async () => {
-  const user = await call('auth.test', userToken);
-  if (!user.ok) die(`auth.test: ${user.error} (check the user token)`);
-  ownIds.add(user.user_id);
-  const bot = await call('auth.test', botToken);
-  if (!bot.ok) die(`auth.test: ${bot.error} (check the bot token)`);
-  ownIds.add(bot.user_id);
+// Establish our own identities, then open the socket. ownIds is populated
+// atomically — both auth.test calls succeed before either id is added — so a
+// thrown call leaves it empty and a retry re-runs both. Once it is filled (the
+// common case on a socket-drop reconnect) init() skips auth.test and reconnects.
+async function init() {
+  if (ownIds.size === 0) {
+    const user = await call('auth.test', userToken);
+    if (!user.ok) die(`auth.test: ${user.error} (check the user token)`);
+    const bot = await call('auth.test', botToken);
+    if (!bot.ok) die(`auth.test: ${bot.error} (check the bot token)`);
+    ownIds.add(user.user_id);
+    ownIds.add(bot.user_id);
+  }
   await connect();
-})().catch(scheduleReconnect);
+}
+
+init().catch(scheduleReconnect);
