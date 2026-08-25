@@ -8,7 +8,6 @@
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
-import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
 import type { TruncateBaseProps } from './types';
@@ -39,7 +38,7 @@ export const TruncateMiddle = React.memo(({
 
   // The font-face observer needs a concrete weight, so it falls back to 400 when the caller sets
   // none.
-  const fontWeightForObserver = String(styleProps.fontWeight ?? DEFAULT_FONT_WEIGHT) as FontFace['weight'];
+  const fontWeightForObserver = String(styleProps.fontWeight ?? DEFAULT_FONT_WEIGHT);
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE, weight: fontWeightForObserver },
