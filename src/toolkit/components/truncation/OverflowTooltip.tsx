@@ -18,7 +18,7 @@ export interface OverflowTooltipProps extends TooltipProps {
   always?: boolean;
 }
 
-export const OverflowTooltip = React.memo(({ children, content, positioning, interactive, always }: OverflowTooltipProps) => {
+export const OverflowTooltip = React.memo(({ children, always, ...rest }: OverflowTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
   const { open, onToggle, onOpen, onClose } = useDisclosure();
@@ -83,11 +83,9 @@ export const OverflowTooltip = React.memo(({ children, content, positioning, int
   if (isTruncated || always) {
     return (
       <Tooltip
-        content={ content }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        positioning={ positioning }
         open={ open }
-        interactive={ interactive }
+        { ...rest }
       >
         { modifiedChildren }
       </Tooltip>

@@ -33,12 +33,13 @@ export const TruncateEnd = ({ value, as = 'span', loading, tooltip, ...styleProp
     return valueElement;
   }
 
+  const { content, always, ...rest } = tooltip ?? {};
+
   return (
     <OverflowTooltip
-      content={ tooltip?.content ?? value }
-      positioning={ tooltip?.positioning }
-      interactive={ tooltip?.interactive }
-      always={ tooltip?.always }
+      content={ content ?? value }
+      always={ always }
+      { ...rest }
     >
       { valueElement }
     </OverflowTooltip>

@@ -107,12 +107,12 @@ export const TruncateMiddle = React.memo(({
   const isTruncated = value !== displayedString;
 
   if (tooltip !== false && (isTruncated || tooltip?.always)) {
+    const { content, always, ...rest } = tooltip ?? {};
     return (
       <Tooltip
-        content={ tooltip?.content ?? value }
+        content={ content ?? value }
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        positioning={ tooltip?.positioning }
-        interactive={ tooltip?.interactive }
+        { ...rest }
       >
         { content }
       </Tooltip>

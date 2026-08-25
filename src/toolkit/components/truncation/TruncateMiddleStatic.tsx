@@ -40,12 +40,13 @@ export const TruncateMiddleStatic = React.memo(({
     return content;
   }
 
+  const { content: tooltipContent, always, ...rest } = tooltip ?? {};
+
   return (
     <Tooltip
-      content={ tooltip?.content ?? value }
+      content={ tooltipContent ?? value }
       contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-      positioning={ tooltip?.positioning }
-      interactive={ tooltip?.interactive }
+      { ...rest }
     >
       { content }
     </Tooltip>
