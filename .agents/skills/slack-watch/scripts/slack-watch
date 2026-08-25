@@ -1,0 +1,187 @@
+#!/usr/bin/env node
+// Slack Socket Mode reply watcher. Holds the WebSocket, acks every event, and
+// prints one line per genuinely-new reply in a watched thread. It does no
+// reasoning: the live session reads the thread itself (via the Slack MCP) when
+// a NEW line arrives. It never prints message content and never logs event
+// payloads — the user-token message.im feed is a DM firehose and must not leak.
+//
+// Two tokens, both from the macOS Keychain, never in argv, a dotfile, or output:
+//   app-level (xapp-)  opens the Socket Mode socket   — slack-orchestrator-app-token
+//   user      (xoxp-)  reads replies for catch-up      — slack-orchestrator-user-token
+//
+// Node 22+ only: relies on the built-in global WebSocket and fetch — no npm deps.
+// cspell:ignore acks xapp xoxp
+'use strict';
+
+const { execFileSync } = require('node:child_process');
+
+const APP_TOKEN_SERVICE = 'slack-orchestrator-app-token';
+const USER_TOKEN_SERVICE = 'slack-orchestrator-user-token';
+const FATAL_AUTH_ERRORS = new Set(['invalid_auth', 'not_authed', 'account_inactive', 'token_revoked']);
+
+function die(msg) {
+  process.stderr.write(`slack-watch: ${msg}\n`);
+  process.exit(1);
+}
+
+function warn(msg) {
+  // stderr only — Monitor routes it to the output file, not to notifications.
+  process.stderr.write(`slack-watch: ${msg}\n`);
+}
+
+function emit(line) {
+  process.stdout.write(line + '\n');
+}
+
+function keychain(service) {
+  try {
+    return execFileSync('security', ['find-generic-password', '-s', service, '-w'], {
+      encoding: 'utf8',
+    }).trim();
+  } catch {
+    die(`no token in Keychain under service '${service}' — see the slack-watch skill (Setup)`);
+  }
+}
+
+const num = (ts) => parseFloat(ts);
+
+// argv: one "CHANNEL:THREAD_TS" per watched thread. lastTs is the per-thread
+// watermark; it starts at thread_ts and only ever advances.
+const watched = new Map();
+for (const arg of process.argv.slice(2)) {
+  const i = arg.indexOf(':');
+  if (i < 0) die(`bad thread arg '${arg}', expected CHANNEL:THREAD_TS`);
+  const channel = arg.slice(0, i);
+  const thread_ts = arg.slice(i + 1);
+  watched.set(`${channel}:${thread_ts}`, { channel, thread_ts, lastTs: thread_ts });
+}
+if (watched.size === 0) die('no threads to watch — pass CHANNEL:THREAD_TS args');
+
+const appToken = keychain(APP_TOKEN_SERVICE);
+const userToken = keychain(USER_TOKEN_SERVICE);
+
+const seenEventIds = new Set();
+let selfId = null; // the developer's own user id — their messages are not replies to notify on.
+let ws = null;
+let established = false; // flips on the first `hello`; later `hello`s mean a reconnect.
+let reconnectTimer = null;
+
+async function call(method, token, params = {}, httpMethod = 'GET') {
+  const qs = new URLSearchParams(params).toString();
+  const url = `https://slack.com/api/${method}` + (httpMethod === 'GET' && qs ? `?${qs}` : '');
+  const res = await fetch(url, {
+    method: httpMethod,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(httpMethod === 'POST' ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}),
+    },
+    body: httpMethod === 'POST' ? qs : undefined,
+  });
+  return res.json();
+}
+
+// Advance each thread's watermark to Slack's current state. emitMissed=false is
+// the first-connect baseline (adopt "from now" silently — earlier replies are
+// already in the session transcript); emitMissed=true is the post-downtime
+// catch-up that prints what was missed while the socket was down.
+async function reconcile(emitMissed) {
+  for (const w of watched.values()) {
+    let res;
+    try {
+      res = await call('conversations.replies', userToken, {
+        channel: w.channel,
+        ts: w.thread_ts,
+        oldest: w.lastTs,
+        inclusive: 'false',
+        limit: '200',
+      });
+    } catch (e) {
+      warn(`replies ${w.channel}: ${e.message}`);
+      continue;
+    }
+    if (!res.ok) {
+      warn(`replies ${w.channel}: ${res.error}`);
+      continue;
+    }
+    for (const m of res.messages || []) {
+      if (m.subtype || m.user === selfId) continue; // edits/joins and our own posts are not replies
+      if (num(m.ts) <= num(w.lastTs)) continue;
+      if (emitMissed) emit(`NEW channel=${w.channel} thread_ts=${w.thread_ts} ts=${m.ts}`);
+      w.lastTs = m.ts;
+    }
+  }
+}
+
+function handleEvent(payload) {
+  const eventId = payload.event_id;
+  if (eventId) {
+    if (seenEventIds.has(eventId)) return;
+    seenEventIds.add(eventId);
+  }
+  const e = payload.event;
+  if (!e || e.type !== 'message' || e.subtype) return; // plain messages only
+  if (e.user === selfId) return; // our own follow-ups arrive here too — ignore them
+  const thread_ts = e.thread_ts;
+  if (!thread_ts) return; // a top-level message, not a threaded reply
+  const w = watched.get(`${e.channel}:${thread_ts}`);
+  if (!w || num(e.ts) <= num(w.lastTs)) return;
+  emit(`NEW channel=${e.channel} thread_ts=${thread_ts} ts=${e.ts}`);
+  w.lastTs = e.ts;
+}
+
+function handleFrame(data) {
+  let msg;
+  try {
+    msg = JSON.parse(data);
+  } catch {
+    return;
+  }
+  if (msg.type === 'hello') {
+    if (!established) {
+      established = true;
+      reconcile(false);
+    } else {
+      emit('RECONNECTED');
+      reconcile(true);
+    }
+    return;
+  }
+  if (msg.type === 'disconnect') {
+    // Slack asks us to reconnect (refresh/too-many-connections). Close and the
+    // close handler reopens on a fresh URL.
+    if (ws) ws.close();
+    return;
+  }
+  if (msg.envelope_id) {
+    // Ack within Slack's 3s window, before doing anything else with the event.
+    ws.send(JSON.stringify({ envelope_id: msg.envelope_id }));
+  }
+  if (msg.type === 'events_api') handleEvent(msg.payload);
+}
+
+function scheduleReconnect() {
+  if (reconnectTimer) return;
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    connect().catch(scheduleReconnect);
+  }, 1000);
+}
+
+async function connect() {
+  const open = await call('apps.connections.open', appToken, {}, 'POST');
+  if (!open.ok) {
+    if (FATAL_AUTH_ERRORS.has(open.error)) die(`apps.connections.open: ${open.error} (check the app-level token)`);
+    throw new Error(`apps.connections.open: ${open.error}`);
+  }
+  ws = new WebSocket(open.url);
+  ws.addEventListener('message', (ev) => handleFrame(typeof ev.data === 'string' ? ev.data : ''));
+  ws.addEventListener('close', scheduleReconnect);
+  ws.addEventListener('error', () => {}); // a close event always follows; reconnect there
+}
+
+(async () => {
+  const auth = await call('auth.test', userToken);
+  if (!auth.ok) die(`auth.test: ${auth.error} (check the user token)`);
+  selfId = auth.user_id;
+  await connect();
+})().catch(scheduleReconnect);
