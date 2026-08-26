@@ -91,14 +91,18 @@ const TxDetailsTo = ({ data, isLoading, recipients, onViewDetailClick }: Props) 
       </DetailedInfo.ItemLabel>
       { recipients.hasMultipleRecipients ? (
         <DetailedInfo.ItemValue flexDir="column" alignItems="flex-start" rowGap={ 1 }>
-          <Flex flexWrap={{ base: 'wrap', lg: 'nowrap' }} alignItems="center" columnGap={ 3 } maxW="100%" minH={ DetailedInfo.ITEM_VALUE_LINE_HEIGHT }>
-            { toFieldContent }
-          </Flex>
-          { recipients.visibleRecipients.slice(1).map((call, index) => (
-            <Flex key={ index } alignItems="center" maxW="100%" minH={ DetailedInfo.ITEM_VALUE_LINE_HEIGHT }>
-              { call.to ?
-                <AddressEntity address={{ hash: call.to }} isLoading={ isLoading }/> :
-                <span>[ Contract creation ]</span> }
+          { recipients.visibleRecipients.map((call, index) => (
+            <Flex
+              key={ index }
+              flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+              alignItems="center"
+              columnGap={ 3 }
+              maxW="100%"
+              minH={ DetailedInfo.ITEM_VALUE_LINE_HEIGHT }
+            >
+              { call.to === data.to?.hash ?
+                toFieldContent :
+                <AddressEntity address={{ hash: call.to }} isLoading={ isLoading }/> }
             </Flex>
           )) }
           { recipients.hasOverflow && (

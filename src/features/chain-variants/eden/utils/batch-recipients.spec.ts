@@ -38,6 +38,11 @@ describe('getBatchRecipients', () => {
     it('is 0 when calls is undefined', () => {
       expect(getBatchRecipients(undefined).count).toBe(0);
     });
+
+    it('excludes contract-creation calls (null recipient) from the count', () => {
+      const calls = [ makeCall(REPEATED_ADDRESS), makeCall(null), makeCall(null) ];
+      expect(getBatchRecipients(calls).count).toBe(1);
+    });
   });
 
   describe('hasMultipleRecipients', () => {
@@ -72,6 +77,11 @@ describe('getBatchRecipients', () => {
     it('caps the visible list at MAX_VISIBLE_RECIPIENTS', () => {
       const calls = makeCalls(MAX_VISIBLE_RECIPIENTS + 3);
       expect(getBatchRecipients(calls).visibleRecipients).toHaveLength(MAX_VISIBLE_RECIPIENTS);
+    });
+
+    it('omits contract-creation calls (null recipient)', () => {
+      const calls = [ makeCall(REPEATED_ADDRESS), makeCall(null) ];
+      expect(getBatchRecipients(calls).visibleRecipients.map((call) => call.to)).toEqual([ REPEATED_ADDRESS ]);
     });
   });
 
