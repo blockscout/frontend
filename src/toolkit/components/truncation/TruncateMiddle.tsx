@@ -112,24 +112,42 @@ export const TruncateMiddle = React.memo(({
     if (
       fullWidth > parentWidth &&
       // Only truncate when there is room for at least a HEAD_MIN_LENGTH head before the tail.
-      // Otherwise the search below never iterates and `slice(0, rightI - 1)` would emit a garbled
-      // string longer than the input (e.g. 'abcd' → 'abc...abcd'), so keep the full value instead.
+      // Otherwise the search below never iterates and the head would run into the tail, emitting a
+      // garbled string longer than the input (e.g. 'abcd' → 'abc...abcd'), so keep the full value.
       value.length - tailLength > HEAD_MIN_LENGTH
     ) {
       const tail = value.slice(-tailLength);
-      let leftI = HEAD_MIN_LENGTH;
-      let rightI = value.length - tailLength;
+      const maxHeadLength = value.length - tailLength;
+      const withHead = (headLength: number) => value.slice(0, headLength) + '...' + tail;
 
+      let leftI = HEAD_MIN_LENGTH;
+      let rightI = maxHeadLength;
       while (rightI - leftI > 1) {
         const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
-        const res = value.slice(0, medI) + '...' + tail;
-        if (fits(res)) {
+        if (fits(withHead(medI))) {
           leftI = medI;
         } else {
           rightI = medI;
         }
       }
-      result = value.slice(0, rightI - 1) + '...' + tail;
+
+      // The calibrated canvas search lands within a character of the true fit but can't reproduce
+      // the browser's per-glyph rounding exactly. Settle the final head length against real layout
+      // — a couple of reflows, versus one per iteration if the whole search measured the DOM — so
+      // the head is exactly as long as the container allows and matches what the DOM renders.
+      let headLength = leftI;
+      const headFits = (length: number) => {
+        element.textContent = withHead(length);
+        return getWidth(element) < parentWidth;
+      };
+      while (headLength < maxHeadLength && headFits(headLength + 1)) {
+        headLength++;
+      }
+      while (headLength > HEAD_MIN_LENGTH && !headFits(headLength)) {
+        headLength--;
+      }
+
+      result = withHead(headLength);
     }
 
     // Restore before React reconciles: setDisplayedString bails out when the value is unchanged,
