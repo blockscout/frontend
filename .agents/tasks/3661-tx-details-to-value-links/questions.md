@@ -12,9 +12,10 @@
 ### Q02 — "To" recipient list: switch threshold and per-row metadata
 
 - Owner: PM (Nikita S.)
-- Status: `pending`
+- Status: `resolved`
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1787675672358129
-- Answer: _Interim decision, pending Nikita's confirmation (2026-08-25):_ show the recipient list only when
-  there is more than one recipient — if all calls hit a single address equal to top-level `to`, keep the
-  regular single-address "To". First row keeps its full metadata; recipients 2+ render as bare hash only
-  (identicon + hash + copy), since `calls[].to` carries no metadata. Revisit if Nikita asks for richer rows.
+- Answer: Confirmed by Nikita (2026-08-26). Show the recipient list only when there is **more than one
+  _unique_ recipient** — recipients are de-duplicated by address, so a batch whose calls all hit the same
+  address keeps the regular single-address "To". First row keeps its full metadata; recipients 2+ render as
+  bare hash only (identicon + hash + copy), since `calls[].to` carries no metadata. The recipient count `N`
+  (used by "View all (N)" and the "Value" "N recipients" link) is the number of **distinct** addresses.

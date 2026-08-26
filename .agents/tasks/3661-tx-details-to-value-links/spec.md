@@ -21,19 +21,21 @@ detail rows.
 
 ## Functional requirements
 
-1. For a sponsored (batch) tx, the **"To"** field renders the list of recipients taken from `calls[]`,
-   **capped at 5 rows**; when there are more, a grey **"View all (N)"** link follows the list.
-2. Both the "To" **"View all (N)"** link and the "Value" **"N recipients"** link **scroll to the "Calls"
-   section** on the same Details tab (in-page anchor, no navigation).
-3. When every call targets a **single address equal to the top-level `to`**, the "To" field keeps its
-   existing single-address rendering — the recipient list appears only when there is more than one recipient.
+1. For a sponsored (batch) tx, the **"To"** field renders the list of **unique** recipients taken from
+   `calls[]` (de-duplicated by address), **capped at 5 rows**; when there are more, a grey
+   **"View all (N)"** link follows the list.
+2. Both the "To" **"View all (N)"** link and the "Value" **"N recipients"** link **expand the Details
+   section** on the same tab, revealing the "Calls" breakdown (no navigation).
+3. When the batch resolves to a **single unique recipient** (every call hits the same address), the "To"
+   field keeps its existing single-address rendering — the recipient list appears only when there is more
+   than one distinct recipient.
 4. In the recipient list, the **first row** (the top-level `to`, which carries metadata) keeps the existing
    rich "To" rendering; **rows 2+** render as bare hash only (identicon + hash + copy), with no
-   badges/tags/name/contract flags. (Interim decision — see Q02.)
+   badges/tags/name/contract flags. (See Q02 — resolved.)
 5. The **"Value"** field appends a grey `to` word followed by a blue **"N recipients"** link, e.g.
    `0.002395904453623692 TIA ($2.55) to 2 recipients`.
-6. In both places **N = number of calls** (`calls.length`) — per-call, no de-duplication of repeated
-   addresses.
+6. In both places **N = number of unique recipient addresses** — calls are de-duplicated by `to` (keeping
+   the first call for each), so repeated addresses count once.
 7. The token-transfer detail rows (**Tokens transferred / minted / burnt / created**) drop the leading icon
    before **"View all"** and adopt the updated link style. The link's **show-condition and target are
    unchanged** (shown on `token_transfers_overflow`, links to the Token transfers tab).
@@ -58,21 +60,22 @@ detail rows.
   - "To" recipient list + "View all" — Figma node `5940:8800` / `5940:8801`.
   - "Value" row — Figma node `5940:7643`.
 - **Components touched**:
-  - `TxDetails.tsx` (core `tx` slice) — the "To" and "Value" rows.
-  - `TxDetailsEden.tsx` (`features/chain-variants/eden`) — owns the "Calls" section; needs a stable anchor
-    id to be the scroll target.
+  - `TxDetails.tsx` (core `tx` slice) — the "Value" row; owns the Details `isExpanded` state.
+  - `TxDetailsTo.tsx` (core `tx` slice, `parts/`) — the extracted "To" field and recipient list.
+  - `TxDetailsEden.tsx` (`features/chain-variants/eden`) — owns the "Calls" section (unchanged).
   - `TxDetailsTokenTransfers.tsx` (core `tx` slice) — the "View all" restyle.
-- **Link mechanism**: in-page anchor to the Calls section, matching the existing `#<block-id>` pattern used
-  by the Tx Actions "View all" (`TX_ACTIONS_BLOCK_ID` in `DetailedInfoActionsWrapper`).
+- **Link mechanism**: the links expand the Details collapsible (`setIsExpanded(true)`), which reveals the
+  "Calls" section that always sits below — no in-page anchor or scroll target needed.
 - Recipient rows mirror the plain `AddressEntity` used inside the existing Calls grid.
 
 ## Implementation decisions
 
 - Changes #1–#2 (To / Value) live in the Eden feature and are composed into `TxDetails` at the slice page
-  level; they activate only when `calls` is present and holds more than one recipient (per FR-3).
-- Recipient count and both link labels derive from `calls.length`.
-- The "Calls" section gets an exported anchor id (module constant, same shape as `TX_ACTIONS_BLOCK_ID`); the
-  "To" and "Value" links target it via `<Link href={#<id>}>`.
+  level; they activate only when `calls` is present and holds more than one unique recipient (per FR-3).
+- Recipient count and both link labels derive from the distinct-recipient count (`calls` de-duplicated by
+  `to`), computed by a shared `getBatchRecipients` helper in the Eden feature.
+- The "To" and "Value" links call an `expandDetailsSection` handler lifted from `TxDetails`
+  (`setIsExpanded(true)`), which reveals the "Calls" section rather than navigating or scrolling to it.
 - First recipient row reuses the existing rich `to` rendering; subsequent rows are `AddressEntity` fed only
   `{ hash }` — because `calls[].to` is a bare hash string with no metadata in the response.
 - Token-transfer restyle: remove the `SpriteIcon name="navigation/tokens"` (the existing
@@ -85,6 +88,6 @@ detail rows.
 - Any **per-section max-5 cap** on token transfers — needs a backend change to the embedded list/overflow
   contract (Q01). This task only restyles the existing "View all".
 - Any **backend / API** change.
-- Fetching richer metadata (name, tags, contract/verified/scam flags) for recipient rows 2+ — interim is
-  bare hash (Q02); revisit only if requirements change.
+- Fetching richer metadata (name, tags, contract/verified/scam flags) for recipient rows 2+ — bare hash per
+  Q02 (resolved); revisit only if requirements change.
 - The transaction **list** page "To" rendering — this task is the details page only.
