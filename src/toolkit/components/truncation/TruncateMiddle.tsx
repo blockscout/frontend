@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Middle-ellipsis truncation driven by container width: measures a hidden shadow node and
-// binary-searches the longest head that fits, keeping a fixed-length tail (0x123...4567).
-// Can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail leaves an
-// unremovable gap between the dots and the tail, so it's computed in JS.
+// Middle-ellipsis truncation driven by container width: measures candidate strings with the
+// Canvas 2D API and binary-searches the longest head that fits, keeping a fixed-length tail
+// (0x123...4567). Can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail
+// leaves an unremovable gap between the dots and the tail, so it's computed in JS. measureText
+// returns text width without touching layout, so the binary search never forces a reflow; the
+// only DOM read left is the container's own box.
 
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
@@ -15,15 +17,41 @@ import type { TruncateBaseProps } from './types';
 import { Skeleton } from '../../chakra/skeleton';
 import { Tooltip } from '../../chakra/tooltip';
 import { BODY_TYPEFACE, HEADING_TYPEFACE } from '../../theme/foundations/typography';
+import { SECOND } from '../../utils/consts';
 
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
+const DEFAULT_FONT_WEIGHT = '400';
+const RESIZE_DEBOUNCE = SECOND / 10;
 
 export interface TruncateMiddleProps extends TruncateBaseProps {
   tailLength?: number;
 }
 
-const DEFAULT_FONT_WEIGHT = '400';
+// One offscreen canvas is reused across every TruncateMiddle instance: measureText is
+// synchronous and calculateString never yields, so instances can't interleave measurements.
+// `undefined` means "not created yet"; `null` means getContext failed (non-browser env).
+let sharedContext: CanvasRenderingContext2D | null | undefined;
+
+function getMeasureContext(): CanvasRenderingContext2D | null {
+  if (sharedContext === undefined) {
+    sharedContext = document.createElement('canvas').getContext('2d');
+  }
+  return sharedContext;
+}
+
+// Canvas needs at least weight + size + family; getComputedStyle(el).font returns '' in Chrome,
+// so the shorthand is assembled from the individual resolved properties instead.
+function getFontString(styles: CSSStyleDeclaration): string {
+  return `${ styles.fontStyle } ${ styles.fontWeight } ${ styles.fontSize } ${ styles.fontFamily }`;
+}
+
+// measureText returns advance width only, so any letter-spacing (added after every glyph) has to
+// be folded back in by hand. Resolves to 0 for the usual `normal`.
+function getLetterSpacing(styles: CSSStyleDeclaration): number {
+  const value = parseFloat(styles.letterSpacing);
+  return Number.isNaN(value) ? 0 : value;
+}
 
 export const TruncateMiddle = React.memo(({
   value,
@@ -46,19 +74,34 @@ export const TruncateMiddle = React.memo(({
   ]);
 
   const calculateString = useCallback(() => {
-    const parent = elementRef?.current?.parentNode as HTMLElement;
-    if (!parent) {
+    const element = elementRef.current;
+    const parent = element?.parentNode as HTMLElement | null;
+    if (!element || !parent) {
       return;
     }
 
-    const shadowEl = document.createElement('span');
-    shadowEl.style.opacity = '0';
-    parent.appendChild(shadowEl);
-    shadowEl.textContent = value;
+    const context = getMeasureContext();
+    if (!context) {
+      setDisplayedString(value);
+      return;
+    }
 
+    // Read the fully-resolved font off the rendered span (cascade + textStyle + overrides), once
+    // per recalculation — the font is invariant across the binary search below.
+    const styles = window.getComputedStyle(element);
+    context.font = getFontString(styles);
+    const letterSpacing = getLetterSpacing(styles);
+    const measure = (text: string) => context.measureText(text).width + letterSpacing * text.length;
+
+    // A shrink-to-fit container only exposes its available width while the span holds full-length
+    // content, so briefly fill the span before reading the container box. Written straight to the
+    // node (not through state) so the read lands in the same synchronous frame — no paint, no
+    // extra DOM node.
+    element.textContent = value;
     const parentWidth = getWidth(parent);
 
-    if (getWidth(shadowEl) > parentWidth) {
+    let result = value;
+    if (measure(value) > parentWidth) {
       const tail = value.slice(-tailLength);
       let leftI = HEAD_MIN_LENGTH;
       let rightI = value.length - tailLength;
@@ -66,19 +109,19 @@ export const TruncateMiddle = React.memo(({
       while (rightI - leftI > 1) {
         const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
         const res = value.slice(0, medI) + '...' + tail;
-        shadowEl.textContent = res;
-        if (getWidth(shadowEl) < parentWidth) {
+        if (measure(res) < parentWidth) {
           leftI = medI;
         } else {
           rightI = medI;
         }
       }
-      setDisplayedString(value.slice(0, rightI - 1) + '...' + tail);
-    } else {
-      setDisplayedString(value);
+      result = value.slice(0, rightI - 1) + '...' + tail;
     }
 
-    parent.removeChild(shadowEl);
+    // Restore before React reconciles: setDisplayedString bails out when the value is unchanged,
+    // which would otherwise leave the full-length text written above on screen.
+    element.textContent = result;
+    setDisplayedString(result);
   }, [ value, tailLength ]);
 
   // we want to do recalculation when isFontFaceLoaded flag is changed
@@ -88,13 +131,17 @@ export const TruncateMiddle = React.memo(({
     calculateString();
   }, [ calculateString, isFontFaceLoaded ]);
 
+  // Observes document.body, not the component's own parent: the truncated span usually sits inside
+  // a shrink-to-fit container that doesn't grow when the viewport widens (only an outer block
+  // ancestor does), so a parent-scoped observer never fires on widen and the text stays stuck at
+  // its narrowest width.
   useEffect(() => {
-    const resizeHandler = debounce(calculateString, 100);
+    const resizeHandler = debounce(calculateString, RESIZE_DEBOUNCE);
     const resizeObserver = new ResizeObserver(resizeHandler);
 
     resizeObserver.observe(document.body);
     return function cleanup() {
-      resizeObserver.unobserve(document.body);
+      resizeObserver.disconnect();
     };
   }, [ calculateString ]);
 
