@@ -48,8 +48,14 @@ PR actually changes so it never blocks on pre-existing debt.
 9. The gate runs inside the existing `vitest_tests` CI job: coverage is enabled on the
    affected-tests run, and the tool runs as a post-step consuming that `coverage-final.json`.
 10. A `pnpm test:code-complexity` script runs the tool locally against the `origin/main` diff.
-11. The counting conventions and the build-vs-buy decision are documented in
-    `tools/code-complexity/CONTEXT.md`.
+11. A **focused mode** takes one or more explicit file paths and reports the scores
+    (complexity, and CRAP when coverage is available) for **every** function in those files,
+    bypassing diff-scoping. It exists for debugging a specific example and for verifying a
+    newly written or edited function sits within threshold before pushing.
+12. Thresholds live in the tool as configurable defaults (constants/config under
+    `tools/code-complexity/`), overridable by CLI flags; CI carries no threshold numbers, so a
+    local run and a CI run gate identically.
+13. The counting conventions are documented in `tools/code-complexity/CONTEXT.md`.
 
 ## Data & API
 
@@ -61,10 +67,11 @@ None. This is CI/tooling only; no routes, pages, or components.
 
 ## Implementation decisions
 
-- **Bespoke tool, not SonarCloud.** Built on the `typescript` compiler API, already a
-  dependency (the `@typescript/typescript6@6.0.3` alias exposes `ts.createSourceFile` and
-  `ts.SyntaxKind`). SonarCloud was rejected — it adds an external service and CI secrets to
-  an otherwise self-contained pipeline. Record the rejection in one line in `CONTEXT.md`.
+- **Bespoke tool, no external service.** Built on the `typescript` compiler API, already a
+  dependency (the `@typescript/typescript6` alias exposes `ts.createSourceFile` and
+  `ts.SyntaxKind`), keeping the pipeline self-contained with no external service or CI
+  secrets. This rationale stays in the spec only — the shipped tool and its `CONTEXT.md` do
+  not name or compare against any specific third-party service.
 - **Coverage rides the per-PR affected-tests run.** CI's `vitest_tests` job already runs
   `vitest run --changed=origin/main`; add `--coverage` (`@vitest/coverage-v8`, already
   resolvable in the pnpm store). Because `vitest --changed` runs every spec that
