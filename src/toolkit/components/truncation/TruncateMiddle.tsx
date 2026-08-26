@@ -97,10 +97,20 @@ export const TruncateMiddle = React.memo(({
     // node (not through state) so the read lands in the same synchronous frame.
     element.textContent = value;
     const parentWidth = getWidth(parent);
+    const fullWidth = getWidth(element);
+
+    // measureText sums ideal glyph advances and runs a fraction of a percent wider than the
+    // browser's actual sub-pixel text layout — enough to truncate a value that really fits when
+    // its full width sits a pixel or two under the container. `fullWidth` is that same string laid
+    // out for real (read for free in the reflow above), so scale every canvas measurement by the
+    // observed ratio to bring the binary search back in line with what the DOM will render.
+    const canvasFullWidth = measure(value);
+    const calibration = canvasFullWidth > 0 ? fullWidth / canvasFullWidth : 1;
+    const fits = (text: string) => measure(text) * calibration < parentWidth;
 
     let result = value;
     if (
-      measure(value) > parentWidth &&
+      fullWidth > parentWidth &&
       // Only truncate when there is room for at least a HEAD_MIN_LENGTH head before the tail.
       // Otherwise the search below never iterates and `slice(0, rightI - 1)` would emit a garbled
       // string longer than the input (e.g. 'abcd' → 'abc...abcd'), so keep the full value instead.
@@ -113,7 +123,7 @@ export const TruncateMiddle = React.memo(({
       while (rightI - leftI > 1) {
         const medI = ((rightI - leftI) % 2) ? leftI + (rightI - leftI + 1) / 2 : leftI + (rightI - leftI) / 2;
         const res = value.slice(0, medI) + '...' + tail;
-        if (measure(res) < parentWidth) {
+        if (fits(res)) {
           leftI = medI;
         } else {
           rightI = medI;
