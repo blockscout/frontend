@@ -4,8 +4,7 @@
 // Canvas 2D API and binary-searches the longest head that fits, keeping a fixed-length tail
 // (0x123...4567). Can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail
 // leaves an unremovable gap between the dots and the tail, so it's computed in JS. measureText
-// returns text width without touching layout, so the binary search never forces a reflow; the
-// only DOM read left is the container's own box.
+// returns text width without touching layout, so the binary search never forces a reflow.
 
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
@@ -95,13 +94,18 @@ export const TruncateMiddle = React.memo(({
 
     // A shrink-to-fit container only exposes its available width while the span holds full-length
     // content, so briefly fill the span before reading the container box. Written straight to the
-    // node (not through state) so the read lands in the same synchronous frame — no paint, no
-    // extra DOM node.
+    // node (not through state) so the read lands in the same synchronous frame.
     element.textContent = value;
     const parentWidth = getWidth(parent);
 
     let result = value;
-    if (measure(value) > parentWidth) {
+    if (
+      measure(value) > parentWidth &&
+      // Only truncate when there is room for at least a HEAD_MIN_LENGTH head before the tail.
+      // Otherwise the search below never iterates and `slice(0, rightI - 1)` would emit a garbled
+      // string longer than the input (e.g. 'abcd' → 'abc...abcd'), so keep the full value instead.
+      value.length - tailLength > HEAD_MIN_LENGTH
+    ) {
       const tail = value.slice(-tailLength);
       let leftI = HEAD_MIN_LENGTH;
       let rightI = value.length - tailLength;
