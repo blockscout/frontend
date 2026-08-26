@@ -56,6 +56,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
+- `tools/code-complexity/` — the cyclomatic-complexity / CRAP CI gate: counting conventions, scope, and how it runs.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 

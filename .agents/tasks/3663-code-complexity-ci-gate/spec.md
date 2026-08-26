@@ -25,8 +25,10 @@ PR actually changes so it never blocks on pre-existing debt.
    type-checker.
 2. Complexity counting matches ESLint's `complexity` rule: base 1 per function; +1 each for
    `if` / `else if`, `for` / `for..of` / `for..in`, `while`, `do`, each `case`, `catch`,
-   ternary, `&&`, `||`, `??`. Not counted: `?.`, `else`, `default:`, `switch` itself, JSX.
-   Nested/arrow/method functions count as their own units.
+   ternary, `&&`, `||`, `??`, and each optional-chaining `?.` (property, `?.[]`, and `?.()`).
+   Not counted: `else`, `default:`, `switch` itself, JSX. Nested/arrow/method functions count as
+   their own units. (Counting `?.` — which ESLint does but a developer may write redundantly — is
+   revisited during ticket 04 calibration.)
 3. The tool computes CRAP `c²·(1 − cov)³ + c` per function by joining complexity with
    per-function line coverage read from a v8/istanbul `coverage-final.json`.
 4. The coverage half (CRAP) applies only to files containing **no JSX**, detected from the

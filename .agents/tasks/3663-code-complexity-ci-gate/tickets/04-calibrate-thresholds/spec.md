@@ -26,6 +26,10 @@ the tool config so the gate flags the genuine offenders rather than flooding on 
 
 - Calibration is repo-wide (a full-scope run), distinct from the diff-scoped gate CI runs.
 - Only the tool's threshold config changes here (FR12); no CI-YAML threshold edits.
+- Optional chaining `?.` is counted toward complexity (ticket 01). A developer can write `?.`
+  redundantly, so the repo-wide run may show `?.`-heavy files inflating the tail; check whether that
+  distorts calibration and, if it does, decide here whether to keep counting `?.` or drop it (a
+  one-line change in the tool) before setting the thresholds.
 
 ## Skill inputs
 

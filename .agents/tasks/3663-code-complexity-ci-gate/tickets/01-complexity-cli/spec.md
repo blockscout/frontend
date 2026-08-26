@@ -23,8 +23,9 @@ coverage, CRAP, or JSX handling yet — those are ticket 02.
 
 - [ ] Per-function cyclomatic complexity matches ESLint's `complexity` rule on the FR2 constructs
       (base 1; `+1` for `if`/`else if`, `for`/`for..of`/`for..in`, `while`, `do`, each `case`,
-      `catch`, ternary, `&&`, `||`, `??`; not counted: `?.`, `else`, `default:`, `switch`, JSX),
-      with nested/arrow/method functions counting as their own units — covered by unit tests.
+      `catch`, ternary, `&&`, `||`, `??`, each optional-chaining `?.`; not counted: `else`,
+      `default:`, `switch`, JSX), with nested/arrow/method functions counting as their own units
+      — covered by unit tests.
 - [ ] File scope resolves to `src/**` `.ts`/`.tsx` and excludes specs (`*.spec.*`, `*.pw.tsx`,
       `*.pwstory.tsx`), generated files (`*.d.ts`, `envs.js`, sprite output), `tools/`, `deploy/`,
       and toolkit build output.
