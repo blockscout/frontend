@@ -45,7 +45,6 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
             <TableColumnHeader>Dest tx</TableColumnHeader>
             <TableColumnHeader>Transf</TableColumnHeader>
             <TableColumnHeader>Sender</TableColumnHeader>
-            <TableColumnHeader/>
             <TableColumnHeader>Recipient</TableColumnHeader>
             <TableColumnHeader>Protocol</TableColumnHeader>
           </TableRow>
