@@ -40,10 +40,10 @@ None — no project skill applies to this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Enable `--coverage` (`@vitest/coverage-v8`, `coverage-final.json` reporter) on the
+- [x] 1 `[agent]` Enable `--coverage` (`@vitest/coverage-v8`, `coverage-final.json` reporter) on the
       `vitest_tests` affected-tests run in `checks.yml`
-- [ ] 2 `[agent]` Add the post-step invoking the tool on the produced coverage file + `origin/main`
-- [ ] 3 `[agent]` `$GITHUB_ACTIONS` output path — `::error` annotations for offenders +
+- [x] 2 `[agent]` Add the post-step invoking the tool on the produced coverage file + `origin/main`
+- [x] 3 `[agent]` `$GITHUB_ACTIONS` output path — `::error` annotations for offenders +
       `$GITHUB_STEP_SUMMARY` table
 - [ ] 4 `[human]` Open a PR and confirm the job runs coverage, the post-step gates, and annotations
       land on the diff

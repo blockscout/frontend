@@ -8,6 +8,7 @@ import type { CoverageData } from './coverage';
 import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './diff';
 import { generateCoverage } from './generate-coverage';
 import type { CoverageRequest } from './generate-coverage';
+import { githubAnnotations, stepSummary } from './github';
 import { fileContainsJsx } from './jsx';
 import type { ReportRow, Thresholds } from './report';
 import { formatTable, isOffender } from './report';
@@ -227,6 +228,16 @@ function selectRows(options: CliOptions): Array<ReportRow> {
   return runFullMode(options);
 }
 
+// Under $GITHUB_ACTIONS, add the two CI outputs (spec FR8): `::error` annotations that surface each
+// offender inline on the PR diff, and the full table written to the job summary. The plain-stdout
+// table has already been printed; outside CI this is a no-op.
+function emitGithubActionsOutput(rows: ReadonlyArray<ReportRow>, thresholds: Thresholds, table: string): void {
+  for (const annotation of githubAnnotations(rows, thresholds)) console.log(annotation);
+  // eslint-disable-next-line no-restricted-properties -- Node CLI reading a CI-provided path, not an app env var
+  const summaryPath = process.env.GITHUB_STEP_SUMMARY;
+  if (summaryPath) fs.appendFileSync(summaryPath, `${ stepSummary(table) }\n`);
+}
+
 function main(): void {
   const options = parseArgs(process.argv.slice(2));
   const rows = selectRows(options);
@@ -236,7 +247,11 @@ function main(): void {
     return;
   }
 
-  console.log(formatTable(rows, thresholdsOf(options)));
+  const table = formatTable(rows, thresholdsOf(options));
+  console.log(table);
+
+  // eslint-disable-next-line no-restricted-properties -- Node CLI detecting the CI runtime, not an app env var
+  if (process.env.GITHUB_ACTIONS) emitGithubActionsOutput(rows, thresholdsOf(options), table);
 
   if (rows.some(isOffender)) {
     process.exitCode = 1;
