@@ -90,7 +90,7 @@ that's what lets a `--skip-build` restart move to a different port.
 | File | Committed? | Purpose |
 |---|---|---|
 | `.env.local` | git-ignored | Personal, local-only overrides (Next convention). |
-| `.env.extra` | **committed** (empty on main) | Branch/feature ENVs that must also reach the **demo deploy**. No secrets. |
+| `.env.extra` | **committed** (empty on main) | Branch/feature ENVs that must also reach the **demo deploy**. No secrets. **Lives at the repo root** |
 | `.env.secrets` | git-ignored (repo root) | Local secret overrides; optional (fetched config already carries public keys). |
 | `.env.tmp` | git-ignored | The fetched instance config; overwritten each start, left on disk for inspection. |
 
