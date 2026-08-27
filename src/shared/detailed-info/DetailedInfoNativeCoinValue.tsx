@@ -7,17 +7,20 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { ItemValue } from './DetailedInfo';
 
-interface Props extends NativeCoinValueProps {}
+interface Props extends NativeCoinValueProps {
+  endContent?: React.ReactNode;
+}
 
-const DetailedInfoNativeCoinValue = ({ ...rest }: Props) => {
+const DetailedInfoNativeCoinValue = ({ endContent, ...rest }: Props) => {
   return (
-    <ItemValue multiRow>
+    <ItemValue multiRow columnGap={ 1 }>
       <NativeCoinValue
         accuracy={ 0 }
         flexWrap="wrap"
         rowGap={ 0 }
         { ...rest }
       />
+      { endContent }
     </ItemValue>
   );
 };
