@@ -22,6 +22,13 @@ export function getChangedFiles(baseCommit: string): Array<string> {
   return out.split('\n').map((line) => line.trim()).filter(Boolean);
 }
 
+// All tracked .ts/.tsx files under src/, for full-repo mode. Scope filtering (specs, generated
+// files, toolkit build output) is applied by the caller via isInScope.
+export function getAllSourceFiles(): Array<string> {
+  const out = git([ 'ls-files', 'src/*.ts', 'src/*.tsx', 'src/**/*.ts', 'src/**/*.tsx' ]);
+  return out.split('\n').map((line) => line.trim()).filter(Boolean);
+}
+
 export function getChangedLineRanges(baseCommit: string, file: string): Array<LineRange> {
   const out = git([ 'diff', '--unified=0', '--no-color', baseCommit, '--', file ]);
   return parseHunkNewRanges(out);

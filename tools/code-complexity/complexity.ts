@@ -92,7 +92,7 @@ function inferName(node: ts.Node): string {
   return '<anonymous>';
 }
 
-function scriptKind(fileName: string): ts.ScriptKind {
+export function scriptKind(fileName: string): ts.ScriptKind {
   return fileName.endsWith('.tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS;
 }
 

@@ -189,6 +189,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/coverage-v8": "4.1.7",
     "css-loader": "^6.11.0",
     "dotenv-cli": "10.0.0",
     "eslint": "9.39.2",

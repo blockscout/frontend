@@ -24,7 +24,10 @@ the tool config so the gate flags the genuine offenders rather than flooding on 
 
 ## Details
 
-- Calibration is repo-wide (a full-scope run), distinct from the diff-scoped gate CI runs.
+- Calibration is repo-wide (a full-scope run), distinct from the diff-scoped gate CI runs. Full-repo
+  is the tool's **default** selection (`pnpm test:code-complexity` with no paths and no `--changed`);
+  for the CRAP distribution generate whole-suite coverage once and iterate the full-repo report
+  against it with `--coverage-file <path>` (files no spec covers show 0% and populate the tail).
 - Only the tool's threshold config changes here (FR12); no CI-YAML threshold edits.
 - Optional chaining `?.` is counted toward complexity (ticket 01). A developer can write `?.`
   redundantly, so the repo-wide run may show `?.`-heavy files inflating the tail; check whether that
