@@ -75,14 +75,11 @@ describe('computeFunctionComplexities — ESLint `complexity` parity', () => {
     expect(complexityOf('function f(x: number) { try { return x ? 1 : 2; } catch (e) { return 0; } }')).toBe(3);
   });
 
-  it('counts each optional-chaining `?.` as a branch', () => {
-    // base 1 + three `?.` short-circuits = 4
-    expect(complexityOf('function f(x: any) { return x?.y?.z?.toString(); }')).toBe(4);
-  });
-
-  it('counts optional `?.()` calls and `?.[]` element access', () => {
-    // base 1 + `?.` call + `?.` element access = 3
-    expect(complexityOf('function f(x: any) { const a = x?.(1); const b = x?.[0]; return a; }')).toBe(3);
+  it('does NOT count optional-chaining `?.` (property, call, or element access)', () => {
+    // `?.` is null-safety verbosity, not a branch a test must cover: TypeScript proves the
+    // nullability at each site (ADR 0004). base 1 only, whatever the `?.` shape.
+    expect(complexityOf('function f(x: any) { return x?.y?.z?.toString(); }')).toBe(1);
+    expect(complexityOf('function f(x: any) { const a = x?.(1); const b = x?.[0]; return a; }')).toBe(1);
   });
 
   it('does NOT count JSX structure', () => {

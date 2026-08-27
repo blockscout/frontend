@@ -49,12 +49,9 @@ function countsAsBranch(node: ts.Node): boolean {
       return true;
     case ts.SyntaxKind.BinaryExpression:
       return LOGICAL_OPERATORS.has((node as ts.BinaryExpression).operatorToken.kind);
-    // Optional chaining `?.` short-circuits like a branch, so each occurrence counts. The `?.`
-    // sits on the property/element access or call node as its questionDotToken.
-    case ts.SyntaxKind.PropertyAccessExpression:
-    case ts.SyntaxKind.ElementAccessExpression:
-    case ts.SyntaxKind.CallExpression:
-      return (node as ts.PropertyAccessExpression | ts.ElementAccessExpression | ts.CallExpression).questionDotToken !== undefined;
+    // Optional chaining `?.` is deliberately NOT counted. It short-circuits, but TypeScript already
+    // proves the nullability at each `?.` site, so no unit test needs an extra case for it — counting
+    // it measures null-safety verbosity, not the branching risk CRAP is meant to flag (ADR 0004).
     default:
       return false;
   }

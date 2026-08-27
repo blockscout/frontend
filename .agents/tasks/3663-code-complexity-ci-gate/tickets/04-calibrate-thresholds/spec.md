@@ -15,12 +15,13 @@ the tool config so the gate flags the genuine offenders rather than flooding on 
 
 ## Acceptance criteria
 
-- [ ] `(human)` The complexity cap and CRAP threshold in the tool config are set from the observed
+- [x] `(human)` The complexity cap and CRAP threshold in the tool config are set from the observed
       repo-wide distribution, with the choice justified against the tail (not the provisional
-      30 / 20 placeholders).
-- [ ] A repo-wide run at the chosen thresholds flags a small, defensible set of offenders rather
-      than a flood.
-- [ ] The gate is enforced (fails CI on a real threshold breach) with the calibrated numbers.
+      30 / 20 placeholders). → complexity 20 / CRAP 50 (`config.ts`); `?.` dropped (ADR 0004).
+- [x] A repo-wide run at the chosen thresholds flags a small, defensible set of offenders rather
+      than a flood. → 102 repo-wide (the pre-existing-debt population; CI is diff-scoped).
+- [x] The gate is enforced (fails CI on a real threshold breach) with the calibrated numbers. →
+      non-zero exit on breach; CI step passes no `--max-*` flags, so it gates on the config defaults.
 
 ## Details
 
@@ -40,9 +41,9 @@ None — no project skill applies to this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Repo-wide run producing the CRAP + complexity distributions (histogram / sorted
+- [x] 1 `[agent]` Repo-wide run producing the CRAP + complexity distributions (histogram / sorted
       offender list)
-- [ ] 2 `[human]` Choose the complexity cap and CRAP threshold from the distribution and set them in
+- [x] 2 `[human]` Choose the complexity cap and CRAP threshold from the distribution and set them in
       the tool config
-- [ ] 3 `[agent]` Note the calibration evidence (distribution + chosen numbers) in the ticket's
+- [x] 3 `[agent]` Note the calibration evidence (distribution + chosen numbers) in the ticket's
       `notes.md`

@@ -17,14 +17,14 @@ tool per FR12).
 
 ## Acceptance criteria
 
-- [ ] `(human)` The `vitest_tests` job runs `vitest --changed` with `--coverage`, produces a
+- [x] `(human)` The `vitest_tests` job runs `vitest --changed` with `--coverage`, produces a
       `coverage-final.json`, and a post-step runs the tool against it — verified from a CI run on a
       PR that touches an in-scope file.
-- [ ] Under `$GITHUB_ACTIONS` the CLI emits `::error file=,line=::` annotations for offenders and
+- [x] Under `$GITHUB_ACTIONS` the CLI emits `::error file=,line=::` annotations for offenders and
       writes the table to `$GITHUB_STEP_SUMMARY`; outside CI it prints only the table.
-- [ ] The gate fails the job (non-zero exit) when a touched function breaks a threshold and passes
+- [x] The gate fails the job (non-zero exit) when a touched function breaks a threshold and passes
       when none do.
-- [ ] The CI step carries no threshold numbers — thresholds come from the tool config.
+- [x] The CI step carries no threshold numbers — thresholds come from the tool config.
 
 ## Details
 
@@ -45,5 +45,5 @@ None — no project skill applies to this ticket.
 - [x] 2 `[agent]` Add the post-step invoking the tool on the produced coverage file + `origin/main`
 - [x] 3 `[agent]` `$GITHUB_ACTIONS` output path — `::error` annotations for offenders +
       `$GITHUB_STEP_SUMMARY` table
-- [ ] 4 `[human]` Open a PR and confirm the job runs coverage, the post-step gates, and annotations
+- [x] 4 `[human]` Open a PR and confirm the job runs coverage, the post-step gates, and annotations
       land on the diff

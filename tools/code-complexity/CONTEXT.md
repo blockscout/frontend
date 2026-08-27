@@ -32,7 +32,7 @@ co-located spec — runs no vitest at all and returns instantly with the complex
 ### Selection (which functions)
 
 - **Full repo (default).** No paths and no `--changed`: every in-scope `src/**` function. Used for
-  the ticket-04 threshold calibration — it produces the repo-wide CRAP distribution.
+  threshold calibration — it produces the repo-wide CRAP distribution.
 - **Focused (`<path...>`).** Every function in the given files, ignoring the diff.
 - **Diff (`--changed[=<ref>]`, or `--base <ref>`).** Only functions a changed line falls within,
   vs the base ref (default `origin/main`). This is the CI gate — it never blocks on pre-existing
@@ -60,7 +60,7 @@ works — no pre-step:
   now finishes in ~1s at 0% instead of running a dozen page suites).
 - **Prebuilt (`--coverage-file <path>`).** Consume an existing report instead of running vitest.
   This is the **CI path**: the `vitest_tests` job already produces coverage, so the gate reads that
-  artifact (`--changed --coverage-file …`) rather than regenerating it. Also handy for ticket-04
+  artifact (`--changed --coverage-file …`) rather than regenerating it. Also handy for threshold
   calibration — generate whole-suite coverage once, then iterate the full-repo report against it.
 - **Off (`--no-coverage`).** Skip coverage entirely; only the complexity cap runs. The complexity
   cap is always enforced, with or without coverage data.
@@ -84,17 +84,15 @@ Per-function cyclomatic complexity starts at **1** and adds **1** for each of:
 - `catch`
 - a ternary (`? :`)
 - each `&&`, `||`, `??`, and their compound-assignment forms `&&=`, `||=`, `??=`
-- each optional-chaining `?.` (property access, element access `?.[]`, and call `?.()`), since it
-  short-circuits like a branch
 
-**Not counted:** a bare `else`, `default:`, the `switch` statement itself, and JSX
-(`JsxElement` / `JsxSelfClosingElement` / `JsxFragment`). A `&&`/`||`/`??` written *inside* a JSX
-expression container still counts — it is a logical operator, not JSX structure.
+**Not counted:** a bare `else`, `default:`, the `switch` statement itself, JSX
+(`JsxElement` / `JsxSelfClosingElement` / `JsxFragment`), and **optional chaining `?.`**. A
+`&&`/`||`/`??` written *inside* a JSX expression container still counts — it is a logical operator,
+not JSX structure.
 
-This matches the counting of the current ESLint `complexity` rule. Note that a developer can write
-`?.` where the value is never nullish (a redundant guard); the tool still counts it, because it
-counts syntax, not proven reachability. Whether that over-counts in practice is revisited during
-threshold calibration (issue #3663, ticket 04).
+Excluding `?.` is a deliberate divergence from the textbook cyclomatic definition and from ESLint's
+`complexity` rule, which both treat each `?.` as a branch; the two agree on every other construct.
+ADR 0004 has the reasoning.
 
 Every function is its own unit: nested functions, arrow functions, methods, accessors, and the
 constructor each start their own count of 1, and a branch counts toward the innermost enclosing
@@ -110,8 +108,8 @@ CRAP = c²·(1 − cov)³ + c
 
 where `c` is the function's cyclomatic complexity and `cov` is its line-coverage fraction (0..1).
 Well-covered code scores near its complexity (`cov = 1` gives exactly `c`); the cubic `(1 − cov)`
-term makes complex, untested code explode. At 0% coverage the score is `c² + c`, so a CRAP cap of
-30 is first crossed at complexity 6.
+term makes complex, untested code explode. At 0% coverage the score is `c² + c`, so an untested
+function stays under a given CRAP cap only until it grows past a modest complexity.
 
 Per-function coverage is joined from a v8/istanbul `coverage-final.json` (the v8 provider emits the
 istanbul shape). A function's coverage is the fraction of *coverable* lines in its line range that
