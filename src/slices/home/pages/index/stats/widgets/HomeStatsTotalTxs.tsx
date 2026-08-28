@@ -16,8 +16,14 @@ const HomeStatsTotalTxs = () => {
     if (statsQuery.isError) {
       return mdash;
     }
-    return Number(statsQuery.data?.total_transactions).toLocaleString();
+    if (statsQuery.data.total_transactions) {
+      return Number(statsQuery.data.total_transactions).toLocaleString();
+    }
   })();
+
+  if (!value) {
+    return null;
+  }
 
   return (
     <Tooltip

@@ -16,8 +16,14 @@ const HomeStatsTotalAddresses = () => {
     if (statsQuery.isError) {
       return mdash;
     }
-    return Number(statsQuery.data?.total_addresses).toLocaleString();
+    if (statsQuery.data.total_addresses) {
+      return Number(statsQuery.data.total_addresses).toLocaleString();
+    }
   })();
+
+  if (!value) {
+    return null;
+  }
 
   return (
     <Tooltip

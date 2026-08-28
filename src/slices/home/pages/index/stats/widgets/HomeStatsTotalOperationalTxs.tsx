@@ -24,11 +24,24 @@ const HomeStatsTotalOperationalTxs = () => {
     if (statsQuery.isError) {
       return mdash;
     }
+    if (rollupFeature.type === 'arbitrum' && statsQuery.data.total_operational_transactions) {
+      return Number(statsQuery.data.total_operational_transactions).toLocaleString();
+    }
+    if (rollupFeature.type === 'optimistic' && statsQuery.data.op_stack_total_operational_transactions) {
+      return Number(statsQuery.data.op_stack_total_operational_transactions).toLocaleString();
+    }
+  })();
+
+  if (!value) {
+    return null;
+  }
+
+  const label = (() => {
     if (rollupFeature.type === 'arbitrum') {
-      return Number(statsQuery.data?.total_operational_transactions).toLocaleString();
+      return statsQuery.labels?.total_operational_transactions;
     }
     if (rollupFeature.type === 'optimistic') {
-      return Number(statsQuery.data?.op_stack_total_operational_transactions).toLocaleString();
+      return statsQuery.labels?.op_stack_total_operational_transactions;
     }
   })();
 
@@ -38,7 +51,7 @@ const HomeStatsTotalOperationalTxs = () => {
       disabled={ !statsQuery.isError }
     >
       <HomeStatsWidget
-        label={ statsQuery.labels?.total_operational_transactions || 'Total operational transactions' }
+        label={ label || 'Total operational transactions' }
         icon="transactions"
         value={ value }
         href={{ pathname: '/txs' as const }}

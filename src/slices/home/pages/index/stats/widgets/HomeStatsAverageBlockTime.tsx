@@ -56,10 +56,12 @@ const HomeStatsAverageBlockTime = () => {
     if (isError) {
       return rpcData ? `${ rpcData.toFixed(1) }s` : mdash;
     }
-    return `${ Number(statsQuery.data?.average_block_time).toFixed(1) }s`;
+    if (statsQuery.data.average_block_time) {
+      return `${ Number(statsQuery.data.average_block_time).toFixed(1) }s`;
+    }
   })();
 
-  if (value === undefined) {
+  if (!value) {
     return null;
   }
 

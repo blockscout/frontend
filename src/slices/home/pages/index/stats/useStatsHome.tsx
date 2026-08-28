@@ -31,8 +31,8 @@ export default function useStatsHome() {
   const coreApiQuery = useStatsQuery();
 
   return React.useMemo(() => ({
-    isLoading: (isStatsFeatureEnabled && statsApiQuery.isPlaceholderData) || coreApiQuery.isLoading,
-    isError: coreApiQuery.isError && (isStatsFeatureEnabled && statsApiQuery.isError && !statsApiQuery.isRefetchError),
+    isLoading: (isStatsFeatureEnabled && statsApiQuery.isPlaceholderData) || coreApiQuery.isPlaceholderData,
+    isError: coreApiQuery.isError && (!isStatsFeatureEnabled || (statsApiQuery.isError && !statsApiQuery.isRefetchError)),
     data: {
       total_blocks: statsApiQuery.data?.total_blocks?.value ?? coreApiQuery.data?.total_blocks,
       average_block_time: statsApiQuery.data?.average_block_time?.value ??

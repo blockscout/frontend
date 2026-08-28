@@ -34,10 +34,13 @@ const HomeStatsLatestBlock = () => {
     if (isError) {
       return blocksRpc[0] ? blocksRpc[0].height.toLocaleString() : mdash;
     }
-    return Number(blocksQuery?.data?.[0]?.height ?? statsQuery.data?.total_blocks).toLocaleString();
+    const latestBlock = blocksQuery?.data?.[0]?.height ?? statsQuery.data?.total_blocks;
+    if (latestBlock) {
+      return Number(latestBlock).toLocaleString();
+    }
   })();
 
-  if (value === undefined) {
+  if (!value) {
     return null;
   }
 

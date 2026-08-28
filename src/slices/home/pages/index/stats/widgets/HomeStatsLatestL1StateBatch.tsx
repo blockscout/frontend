@@ -18,8 +18,14 @@ const HomeStatsLatestL1StateBatch = () => {
     if (statsQuery.isError) {
       return mdash;
     }
-    return Number(statsQuery.data?.last_output_root_size).toLocaleString();
+    if (statsQuery.data.last_output_root_size) {
+      return Number(statsQuery.data.last_output_root_size).toLocaleString();
+    }
   })();
+
+  if (!value) {
+    return null;
+  }
 
   return (
     <Tooltip
