@@ -9,6 +9,13 @@ function complexityOf(source: string, fileName = 'sample.tsx'): number {
   return results[0].complexity;
 }
 
+// Cognitive complexity of the single function in `source`.
+function cognitiveOf(source: string, fileName = 'sample.tsx'): number {
+  const results = computeFunctionComplexities(source, fileName);
+  expect(results).toHaveLength(1);
+  return results[0].cognitive;
+}
+
 function complexityByName(source: string, fileName = 'sample.tsx'): Record<string, number> {
   return Object.fromEntries(
     computeFunctionComplexities(source, fileName).map((fn) => [ fn.name, fn.complexity ]),
@@ -131,6 +138,180 @@ describe('computeFunctionComplexities — function units', () => {
   it('reports the 1-based start line of each function', () => {
     const [ fn ] = computeFunctionComplexities('\n\nfunction f() { return 1; }', 'sample.ts');
     expect(fn.startLine).toBe(3);
+  });
+});
+
+describe('computeFunctionComplexities — cognitive complexity (SonarSource model)', () => {
+  it('scores a branchless function 0', () => {
+    expect(cognitiveOf('function f(x: number) { return x + 1; }')).toBe(0);
+  });
+
+  it('adds 1 for a flat if, 1 for a bare else', () => {
+    // if +1, else +1 = 2 (neither is nested)
+    expect(cognitiveOf(`
+      function f(x: number) {
+        if (x > 0) { return 1; } else { return 2; }
+      }
+    `)).toBe(2);
+  });
+
+  it('treats else-if as a flat +1 continuation, not a nested if', () => {
+    // if +1, else if +1, else if +1, else +1 = 4; the chain never nests
+    expect(cognitiveOf(`
+      function f(x: number) {
+        if (x === 1) return 1;
+        else if (x === 2) return 2;
+        else if (x === 3) return 3;
+        else return 0;
+      }
+    `)).toBe(4);
+  });
+
+  it('penalises nesting progressively (the SonarSource canonical shape)', () => {
+    // if +1 (n0), for +2 (n1), while +3 (n2) = 6
+    expect(cognitiveOf(`
+      function f(a: boolean, xs: Array<number>, b: boolean) {
+        if (a) {
+          for (const x of xs) {
+            while (b) { break; }
+          }
+        }
+      }
+    `)).toBe(6);
+  });
+
+  it('nests inside a bare else body', () => {
+    // if +1 (n0), else +1 (n0), inner if +2 (n1) = 4
+    expect(cognitiveOf(`
+      function f(a: boolean, b: boolean) {
+        if (a) { return 1; }
+        else {
+          if (b) { return 2; }
+        }
+      }
+    `)).toBe(4);
+  });
+
+  it('scores a flat switch +1 regardless of case count', () => {
+    // switch +1 only; cases add nothing
+    expect(cognitiveOf(`
+      function f(x: number) {
+        switch (x) {
+          case 1: return 1;
+          case 2: return 2;
+          case 3: return 3;
+          default: return 0;
+        }
+      }
+    `)).toBe(1);
+  });
+
+  it('penalises a switch nested inside another structure (1 + nesting)', () => {
+    // if +1 (n0), inner switch +2 (n1) = 3 — a nested switch is not free
+    expect(cognitiveOf(`
+      function f(a: boolean, x: number) {
+        if (a) {
+          switch (x) { case 1: return 1; default: return 0; }
+        }
+        return -1;
+      }
+    `)).toBe(3);
+  });
+
+  it('penalises control flow nested inside a switch case', () => {
+    // switch +1 (n0), if inside a case +2 (n1) = 3
+    expect(cognitiveOf(`
+      function f(x: number, y: boolean) {
+        switch (x) {
+          case 1: if (y) { return 1; } return 2;
+          default: return 0;
+        }
+      }
+    `)).toBe(3);
+  });
+
+  it('collapses a run of like boolean operators to +1, and counts +1 per switch of operator', () => {
+    expect(cognitiveOf('function f(a: any, b: any, c: any) { return a && b && c; }')).toBe(1);
+    // `a && b || c` = (a && b) || c: the || run +1, the nested && run +1 = 2
+    expect(cognitiveOf('function f(a: any, b: any, c: any) { return a && b || c; }')).toBe(2);
+    // three distinct runs
+    expect(cognitiveOf('function f(a: any, b: any, c: any, d: any) { return a && b || (c ?? d); }')).toBe(3);
+  });
+
+  it('adds 1 + nesting for a ternary and nests its branches', () => {
+    // outer ternary +1 (n0); nested ternary in the whenFalse +2 (n1) = 3
+    expect(cognitiveOf('function f(a: any, b: any) { return a ? 1 : (b ? 2 : 3); }')).toBe(3);
+  });
+
+  it('adds 1 + nesting for catch', () => {
+    // if +1 (n0), catch nested inside it +2 (n1) = 3
+    expect(cognitiveOf(`
+      function f(a: boolean) {
+        if (a) {
+          try { doThing(); } catch (e) { handle(e); }
+        }
+      }
+    `)).toBe(3);
+  });
+
+  it('adds 1 for direct self-recursion detected by name', () => {
+    // if +1, two recursive calls +1 each = 3
+    expect(cognitiveOf(`
+      function fib(n: number): number {
+        if (n < 2) return n;
+        return fib(n - 1) + fib(n - 2);
+      }
+    `)).toBe(3);
+  });
+
+  it('detects recursion for a name-bound arrow function', () => {
+    expect(cognitiveOf('const walk = (n: number): number => n <= 0 ? 0 : walk(n - 1);')).toBe(2); // ternary +1, recursion +1
+  });
+
+  it('adds 1 for a labelled break/continue', () => {
+    // for n0 +1, for n1 +2, if n2 +3, labelled break +1 = 7
+    expect(cognitiveOf(`
+      function f(xs: Array<Array<number>>) {
+        outer: for (const row of xs) {
+          for (const v of row) {
+            if (v < 0) break outer;
+          }
+        }
+      }
+    `)).toBe(7);
+  });
+
+  it('resets nesting for a nested function — each function is its own unit', () => {
+    const results = computeFunctionComplexities(`
+      function outer(xs: Array<number>) {
+        if (xs.length) {
+          xs.forEach((x) => {
+            if (x > 0) { doThing(x); }
+          });
+        }
+      }
+    `, 'sample.ts');
+    const byName = Object.fromEntries(results.map((fn) => [ fn.name, fn.cognitive ]));
+    // outer: if +1 (n0) = 1; the callback is its own unit: if +1 (n0) = 1 (nesting does NOT carry in)
+    expect(byName).toEqual({ outer: 1, '<anonymous>': 1 });
+  });
+
+  it('records a contribution per increment with line, amount, reason and nesting', () => {
+    const [ fn ] = computeFunctionComplexities(`
+      function f(a: boolean, b: boolean) {
+        if (a) {
+          if (b) { return 1; }
+        }
+      }
+    `, 'sample.ts');
+    expect(fn.contributions).toEqual([
+      { line: 3, amount: 1, reason: 'if', nesting: 0 },
+      { line: 4, amount: 2, reason: 'if', nesting: 1 },
+    ]);
+  });
+
+  it('does not count optional chaining toward cognitive complexity', () => {
+    expect(cognitiveOf('function f(x: any) { return x?.y?.z; }')).toBe(0);
   });
 });
 

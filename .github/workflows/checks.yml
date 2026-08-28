@@ -175,10 +175,7 @@ jobs:
       - name: Run Vitest
         run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main --coverage --coverage.provider=v8 --coverage.reporter=json' || '' }} --passWithNoTests
 
-      # Diff-scoped complexity/CRAP gate — consumes the coverage the affected run just produced
-      # (never regenerates it) and checks only the functions the PR touched vs origin/main. Thresholds
-      # live in the tool config, so no numbers are passed here. PR-only: the gate needs a base diff.
-      - name: Complexity & CRAP gate
+      - name: Cognitive complexity & CRAP gate
         if: ${{ github.event_name == 'pull_request' }}
         run: pnpm test:code-complexity --changed=origin/main --coverage-file coverage/coverage-final.json
 

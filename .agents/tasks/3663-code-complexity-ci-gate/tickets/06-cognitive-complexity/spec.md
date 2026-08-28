@@ -29,31 +29,32 @@ often on real code than today's cyclomatic cap.
 
 How to verify: `pnpm test:code-complexity --no-coverage` (full-repo COG report); `pnpm test:code-complexity src/shell/navigation/useNavItems.tsx` (spot-check a known wide-shallow offender now passes).
 
-- [ ] `FunctionComplexity` carries a `cognitive` score and a `contributions` list; CC follows the
+- [x] `FunctionComplexity` carries a `cognitive` score and a `contributions` list; CC follows the
   SonarSource model — nesting structures (`if`, `for`, `for..of`, `for..in`, `while`, `do`, `catch`,
   ternary) add `1 + nestingDepth`; `switch` adds +1 flat regardless of case count; `else` / `else if`
   add +1 with no nesting penalty; boolean **sequences** add +1 per run of like operators
   (`a && b && c` = +1, `a && b || c` = +2); recursion (direct, name-match) +1; labelled
   `break`/`continue` +1. `?.` is not counted.
-- [ ] CC is computed on the **same** per-function AST walk as cyclomatic — no second parse.
-- [ ] The readability gate is CC, per-kind: `DEFAULT_MAX_COGNITIVE_JSX` (higher backstop) and
+- [x] CC is computed on the **same** per-function AST walk as cyclomatic — no second parse.
+- [x] The readability gate is CC, per-kind: `DEFAULT_MAX_COGNITIVE_JSX` (higher backstop) and
   `DEFAULT_MAX_COGNITIVE_BEHAVIOR`, overridable by `--max-cognitive`, `--max-cognitive-jsx`,
   `--max-cognitive-behavior`. Applies to both `jsx` and `behavior` functions.
-- [ ] `DEFAULT_MAX_COMPLEXITY_JSX`, `DEFAULT_MAX_COMPLEXITY_BEHAVIOR` and all `--max-complexity*`
+- [x] `DEFAULT_MAX_COMPLEXITY_JSX`, `DEFAULT_MAX_COMPLEXITY_BEHAVIOR` and all `--max-complexity*`
   flags are removed. `analyze.ts` reports `brokeCognitive` (per-kind) instead of a cyclomatic break.
-- [ ] Cyclomatic complexity still feeds CRAP unchanged (`c²·(1−cov)³ + c`); `--max-crap` and the CRAP
+- [x] Cyclomatic complexity still feeds CRAP unchanged (`c²·(1−cov)³ + c`); `--max-crap` and the CRAP
   cap are untouched. CC never feeds CRAP.
-- [ ] The default report shows `KIND`, `COG`, `CRAP`, `COV` — no CX column. CX appears only under
+- [x] The default report shows `KIND`, `COG`, `CRAP`, `COV` — no CX column. CX appears only under
   `--verbose`. The table still sorts by CRAP descending; `BROKE` names `COG`, `CRAP`, or `COG+CRAP`.
-- [ ] On a COG violation the CLI emits an actionable annotation (GitHub `::error file=,line=::` and in
+- [x] On a COG violation the CLI emits an actionable annotation (GitHub `::error file=,line=::` and in
   the table/summary) listing the top increment contributors (line, amount, reason), the deepest
   nesting pocket, and the estimated reduction from flattening it.
-- [ ] Our CC is validated against `sonarjs/cognitive-complexity` on a sample of files; deltas are
+- [x] Our CC is validated against `sonarjs/cognitive-complexity` on a sample of files; deltas are
   documented in `CONTEXT.md`. `eslint-plugin-sonarjs` is not left as a committed dependency and is not
   wired into the eslint config.
-- [ ] `(human)` The calibrated per-kind COG caps in `config.ts` are signed off — they isolate the
+- [x] `(human)` The calibrated per-kind COG caps in `config.ts` are signed off — they isolate the
   genuinely-nested tail and clear wide-but-shallow code (net-looser than the retired cyclomatic cap).
-- [ ] `CONTEXT.md` is rewritten to describe the tool as it now stands (CC conventions, per-kind COG
+  Signed off as a starting point; pushing the caps further is deferred to ticket 07.
+- [x] `CONTEXT.md` is rewritten to describe the tool as it now stands (CC conventions, per-kind COG
   caps, the recursion name-match approximation and every divergence, the updated flag and column
   surface) with no history/diff narration; the `pnpm test:code-complexity` help text matches the new
   flags.
@@ -80,20 +81,20 @@ How to verify: `pnpm test:code-complexity --no-coverage` (full-repo COG report);
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Compute CC on the existing AST walk — nesting counter, SonarSource increments,
+- [x] 1 `[agent]` Compute CC on the existing AST walk — nesting counter, SonarSource increments,
   boolean-sequence runs, direct-recursion name-match, labelled break/continue; record per-increment
   `contributions {line, amount, reason}`; add `cognitive` + `contributions` to `FunctionComplexity`;
   unit tests covering each increment kind and the sequence/nesting/recursion cases.
-- [ ] 2 `[agent]` Retire cyclomatic gating — delete `DEFAULT_MAX_COMPLEXITY_*` + `--max-complexity*`;
+- [x] 2 `[agent]` Retire cyclomatic gating — delete `DEFAULT_MAX_COMPLEXITY_*` + `--max-complexity*`;
   add `DEFAULT_MAX_COGNITIVE_JSX/_BEHAVIOR` + `--max-cognitive[-jsx|-behavior]`; `brokeCognitive`
   (per-kind) in `analyze.ts`; keep CX internal → CRAP only.
-- [ ] 3 `[agent]` Report surface — drop CX default column, add `COG`; keep `CRAP`/`COV`; CX behind
+- [x] 3 `[agent]` Report surface — drop CX default column, add `COG`; keep `CRAP`/`COV`; CX behind
   `--verbose`; `BROKE` = `COG`/`CRAP`/`COG+CRAP`; COG-failure annotations list top contributors +
   deepest-nesting pocket + estimated reduction (GitHub `::error::` + step summary + table).
-- [ ] 4 `[agent]` Oracle-validate — install `eslint-plugin-sonarjs` temporarily, diff our CC vs
+- [x] 4 `[agent]` Oracle-validate — install `eslint-plugin-sonarjs` temporarily, diff our CC vs
   `sonarjs/cognitive-complexity` on a sample, document deltas in `CONTEXT.md`, uninstall (not wired
   into eslint config).
-- [ ] 5 `[agent]` Calibrate — fresh full-repo CC run; set per-kind COG caps isolating the nested tail
+- [x] 5 `[agent]` Calibrate — fresh full-repo CC run; set per-kind COG caps isolating the nested tail
   (net-looser than the retired cyclomatic cap) in `config.ts`. Pause for `(human)` cap sign-off.
-- [ ] 6 `[agent]` Rewrite `CONTEXT.md` clean — CC conventions, per-kind caps, recursion name-match +
+- [x] 6 `[agent]` Rewrite `CONTEXT.md` clean — CC conventions, per-kind caps, recursion name-match +
   all divergences, updated flag/column surface; fix `pnpm test:code-complexity` help text.

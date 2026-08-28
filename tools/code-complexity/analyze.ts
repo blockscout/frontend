@@ -4,7 +4,7 @@ import type { CoverageData } from './coverage';
 import { functionLineCoverage } from './coverage';
 import { crapScore } from './crap';
 import type { FunctionKind, ReportRow, Thresholds } from './report';
-import { maxComplexityFor } from './report';
+import { maxCognitiveFor } from './report';
 
 export type Gate = (fn: Pick<FunctionComplexity, 'startLine' | 'endLine'>) => boolean;
 
@@ -20,7 +20,7 @@ export interface BuildOptions {
 
 // Joins the pieces into report rows for one file's source, applying both gates per function (spec
 // FR2, FR3–FR6). Classification is per function: a `jsx` function (JSX directly in its own body)
-// gets the `jsx` complexity cap and no CRAP; a `behavior` function gets the `behavior` cap and the
+// gets the `jsx` cognitive cap and no CRAP; a `behavior` function gets the `behavior` cap and the
 // coverage-aware CRAP cap. `gate` decides which functions the thresholds apply to — focused/full
 // gate all functions, diff gates only the ones a changed line falls within. This is a pure function
 // (no fs/git) so both gates are unit-testable without a working tree.
@@ -57,9 +57,11 @@ export function buildFileRows(
       name: fn.name,
       kind,
       complexity: fn.complexity,
+      cognitive: fn.cognitive,
+      contributions: fn.contributions,
       coverage: coverageFraction,
       crap,
-      brokeComplexity: gated && fn.complexity > maxComplexityFor(kind, thresholds),
+      brokeCognitive: gated && fn.cognitive > maxCognitiveFor(kind, thresholds),
       brokeCrap: gated && crap !== null && crap > thresholds.maxCrap,
     };
   });

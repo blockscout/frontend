@@ -5,4 +5,4 @@
 - [x] 03 → `tickets/03-ci-wiring/`
 - [x] 04 → `tickets/04-calibrate-thresholds/`
 - [x] 05 → `tickets/05-per-kind-complexity-thresholds/`
-- [ ] 06 → `tickets/06-cognitive-complexity/`
+- [x] 06 → `tickets/06-cognitive-complexity/`

@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import type { ReportRow } from './report';
 import { formatTable } from './report';
 
-const THRESHOLDS = { maxComplexityJsx: 25, maxComplexityBehavior: 20, maxCrap: 30 };
+const THRESHOLDS = { maxCognitiveJsx: 25, maxCognitiveBehavior: 20, maxCrap: 30 };
 
 function row(overrides: Partial<ReportRow>): ReportRow {
   return {
@@ -12,9 +12,11 @@ function row(overrides: Partial<ReportRow>): ReportRow {
     name: 'fn',
     kind: 'behavior',
     complexity: 1,
+    cognitive: 1,
+    contributions: [],
     coverage: null,
     crap: null,
-    brokeComplexity: false,
+    brokeCognitive: false,
     brokeCrap: false,
     ...overrides,
   };
@@ -38,12 +40,23 @@ describe('formatTable', () => {
     expect(table).toContain('—');
   });
 
+  it('shows COG (not CX) by default; CX appears only under --verbose', () => {
+    const rows = [ row({ name: 'fn', cognitive: 7, complexity: 12, crap: 5, coverage: 1 }) ];
+    const header = formatTable(rows, THRESHOLDS).split('\n')[0];
+    expect(header).toContain('COG');
+    expect(header).not.toMatch(/\bCX\b/);
+
+    const verboseHeader = formatTable(rows, THRESHOLDS, true).split('\n')[0];
+    expect(verboseHeader).toContain('COG');
+    expect(verboseHeader).toContain('CX');
+  });
+
   it('names which threshold each offender broke', () => {
     const table = formatTable([
-      row({ name: 'both', complexity: 25, crap: 90, coverage: 0, brokeComplexity: true, brokeCrap: true }),
-      row({ name: 'crapOnly', complexity: 8, crap: 72, coverage: 0, brokeCrap: true }),
+      row({ name: 'both', cognitive: 25, crap: 90, coverage: 0, brokeCognitive: true, brokeCrap: true }),
+      row({ name: 'crapOnly', cognitive: 8, crap: 72, coverage: 0, brokeCrap: true }),
     ], THRESHOLDS);
-    expect(table).toMatch(/both.*CX\+CRAP/);
+    expect(table).toMatch(/both.*COG\+CRAP/);
     expect(table).toMatch(/crapOnly.*CRAP/);
   });
 
