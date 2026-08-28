@@ -7,7 +7,6 @@ import React from 'react';
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
-import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
 import config from 'src/config';
@@ -198,9 +197,6 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
             </>
           ) }
         </VStack>
-      </TableCell>
-      <TableCell>
-        { hasTransfers && <AddressFromToIcon type="unspecified" isLoading={ isLoading } mt={ 0.5 }/> }
       </TableCell>
       <TableCell maxW="150px">
         { hasTransfers && (
