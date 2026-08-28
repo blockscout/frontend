@@ -5,7 +5,6 @@ import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import type { HomeStatsWidgetItem } from 'src/slices/home/utils/stats';
 import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'src/slices/home/utils/stats';
 
 import { HOMEPAGE_STATS } from 'src/features/multichain/stubs';
@@ -22,7 +21,7 @@ const Stats = () => {
     },
   });
 
-  const items: Array<HomeStatsWidgetItem> = React.useMemo(() => {
+  const items = React.useMemo(() => {
     return [
       statsQuery.data?.total_multichain_txns && {
         id: 'total_txs' as const,
