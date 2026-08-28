@@ -3,13 +3,14 @@ import { describe, it, expect } from 'vitest';
 import type { ReportRow } from './report';
 import { formatTable } from './report';
 
-const THRESHOLDS = { maxComplexity: 20, maxCrap: 30 };
+const THRESHOLDS = { maxComplexityJsx: 25, maxComplexityBehavior: 20, maxCrap: 30 };
 
 function row(overrides: Partial<ReportRow>): ReportRow {
   return {
     file: 'src/f.ts',
     line: 1,
     name: 'fn',
+    kind: 'behavior',
     complexity: 1,
     coverage: null,
     crap: null,
@@ -55,5 +56,15 @@ describe('formatTable', () => {
   it('reports all-clear when nothing broke', () => {
     const table = formatTable([ row({ crap: 3, coverage: 1 }) ], THRESHOLDS);
     expect(table).toContain('within thresholds');
+  });
+
+  it('renders a KIND column showing each function class', () => {
+    const table = formatTable([
+      row({ name: 'render', kind: 'jsx', crap: null, coverage: null }),
+      row({ name: 'handler', kind: 'behavior', crap: 5, coverage: 1 }),
+    ], THRESHOLDS);
+    expect(table).toContain('KIND');
+    expect(table).toMatch(/render.*jsx/);
+    expect(table).toMatch(/handler.*behavior/);
   });
 });

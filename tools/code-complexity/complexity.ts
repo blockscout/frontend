@@ -12,7 +12,20 @@ export interface FunctionComplexity {
   startLine: number;
   endLine: number;
   complexity: number;
+  // Whether JSX appears directly in this function's own body — outside any nested function. This
+  // classifies the function `jsx` vs `behavior` (see ./CONTEXT.md), which selects its complexity cap
+  // and whether the CRAP (coverage) gate applies to it. A `.map(x => <Row/>)` callback is `jsx`
+  // (the JSX is in the callback's own body); an `onClick` handler that renders nothing is `behavior`.
+  containsJsx: boolean;
 }
+
+// JSX node kinds that mark a function as directly containing JSX. Exported so ./jsx.ts (the
+// file-level detector) shares one definition rather than keeping a parallel copy.
+export const JSX_KINDS: ReadonlySet<ts.SyntaxKind> = new Set([
+  ts.SyntaxKind.JsxElement,
+  ts.SyntaxKind.JsxSelfClosingElement,
+  ts.SyntaxKind.JsxFragment,
+]);
 
 const FUNCTION_KINDS: ReadonlySet<ts.SyntaxKind> = new Set([
   ts.SyntaxKind.FunctionDeclaration,
@@ -96,18 +109,22 @@ export function scriptKind(fileName: string): ts.ScriptKind {
 export function computeFunctionComplexities(sourceText: string, fileName: string): Array<FunctionComplexity> {
   const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true, scriptKind(fileName));
   const results: Array<FunctionComplexity> = [];
-  const stack: Array<{ node: ts.Node; complexity: number }> = [];
+  const stack: Array<{ node: ts.Node; complexity: number; containsJsx: boolean }> = [];
 
   const lineOf = (pos: number): number => sourceFile.getLineAndCharacterOfPosition(pos).line + 1;
 
   const visit = (node: ts.Node): void => {
     const isFunction = FUNCTION_KINDS.has(node.kind);
     if (isFunction) {
-      stack.push({ node, complexity: 1 });
-    } else if (stack.length > 0 && countsAsBranch(node)) {
+      stack.push({ node, complexity: 1, containsJsx: false });
+    } else if (stack.length > 0) {
+      const innermost = stack[stack.length - 1];
       // A branch counts toward the innermost enclosing function; constructs at module scope
       // belong to no function and are ignored, matching ESLint's per-function reporting.
-      stack[stack.length - 1].complexity += 1;
+      if (countsAsBranch(node)) innermost.complexity += 1;
+      // JSX marks only the innermost frame, which is by construction the function whose own body
+      // holds it (a nested function would itself be innermost) — so this is "directly contains JSX".
+      if (JSX_KINDS.has(node.kind)) innermost.containsJsx = true;
     }
 
     ts.forEachChild(node, visit);
@@ -120,6 +137,7 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
           startLine: lineOf(node.getStart(sourceFile)),
           endLine: lineOf(node.getEnd()),
           complexity: frame.complexity,
+          containsJsx: frame.containsJsx,
         });
       }
     }

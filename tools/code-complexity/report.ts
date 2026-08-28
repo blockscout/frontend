@@ -1,12 +1,17 @@
 // Renders the results table (spec FR8): every checked function with its complexity, coverage%,
 // CRAP, and which threshold (if any) it broke, sorted by CRAP descending with offenders flagged.
 
+// A function's class, decided by whether JSX appears directly in its own body (see ./complexity.ts).
+// It selects the complexity cap and whether the CRAP half applies.
+export type FunctionKind = 'jsx' | 'behavior';
+
 export interface ReportRow {
   readonly file: string;
   readonly line: number;
   readonly name: string;
+  readonly kind: FunctionKind;
   readonly complexity: number;
-  // 0..1 line-coverage fraction; null when the coverage half does not apply (a JSX file, or no
+  // 0..1 line-coverage fraction; null when the coverage half does not apply (a `jsx` function, or no
   // coverage report supplied).
   readonly coverage: number | null;
   readonly crap: number | null; // null whenever coverage is null
@@ -15,8 +20,14 @@ export interface ReportRow {
 }
 
 export interface Thresholds {
-  readonly maxComplexity: number;
+  readonly maxComplexityJsx: number;
+  readonly maxComplexityBehavior: number;
   readonly maxCrap: number;
+}
+
+// The complexity cap that applies to a function, chosen by its class.
+export function maxComplexityFor(kind: FunctionKind, thresholds: Thresholds): number {
+  return kind === 'jsx' ? thresholds.maxComplexityJsx : thresholds.maxComplexityBehavior;
 }
 
 const OFFENDER_MARK = '✗';
@@ -60,21 +71,23 @@ export function formatTable(rows: ReadonlyArray<ReportRow>, thresholds: Threshol
   const sorted = [ ...rows ].sort(byCrapDescending);
   const location = (row: ReportRow): string => `${ row.file }:${ row.line }`;
 
-  const headers = { flag: '', loc: 'FUNCTION', name: 'NAME', cx: 'CX', cov: 'COV', crap: 'CRAP', broke: 'BROKE' };
+  const headers = { flag: '', loc: 'FUNCTION', name: 'NAME', kind: 'KIND', cx: 'CX', cov: 'COV', crap: 'CRAP', broke: 'BROKE' };
   const width = {
     loc: Math.max(headers.loc.length, ...sorted.map((row) => location(row).length)),
     name: Math.max(headers.name.length, ...sorted.map((row) => row.name.length)),
+    kind: Math.max(headers.kind.length, ...sorted.map((row) => row.kind.length)),
     cx: Math.max(headers.cx.length, ...sorted.map((row) => String(row.complexity).length)),
     cov: Math.max(headers.cov.length, ...sorted.map((row) => coverageText(row).length)),
     crap: Math.max(headers.crap.length, ...sorted.map((row) => crapText(row).length)),
     broke: Math.max(headers.broke.length, ...sorted.map((row) => brokeText(row).length)),
   };
 
-  const line = (flag: string, loc: string, name: string, cx: string, cov: string, crap: string, broke: string): string =>
+  const line = (flag: string, loc: string, name: string, kind: string, cx: string, cov: string, crap: string, broke: string): string =>
     [
       pad(flag, 1),
       pad(loc, width.loc),
       pad(name, width.name),
+      pad(kind, width.kind),
       padStart(cx, width.cx),
       padStart(cov, width.cov),
       padStart(crap, width.crap),
@@ -82,12 +95,13 @@ export function formatTable(rows: ReadonlyArray<ReportRow>, thresholds: Threshol
     ].join('  ');
 
   const lines: Array<string> = [];
-  lines.push(line(headers.flag, headers.loc, headers.name, headers.cx, headers.cov, headers.crap, headers.broke));
+  lines.push(line(headers.flag, headers.loc, headers.name, headers.kind, headers.cx, headers.cov, headers.crap, headers.broke));
   for (const row of sorted) {
     lines.push(line(
       isOffender(row) ? OFFENDER_MARK : OK_MARK,
       location(row),
       row.name,
+      row.kind,
       String(row.complexity),
       coverageText(row),
       crapText(row),
@@ -95,11 +109,12 @@ export function formatTable(rows: ReadonlyArray<ReportRow>, thresholds: Threshol
     ));
   }
 
+  const caps = `complexity jsx ${ thresholds.maxComplexityJsx } / behavior ${ thresholds.maxComplexityBehavior }, CRAP ${ thresholds.maxCrap }`;
   const offenderCount = sorted.filter(isOffender).length;
   lines.push('');
   lines.push(offenderCount > 0 ?
-    `${ offenderCount } function(s) broke a threshold (complexity > ${ thresholds.maxComplexity } or CRAP > ${ thresholds.maxCrap }).` :
-    `All ${ sorted.length } checked function(s) are within thresholds (complexity ${ thresholds.maxComplexity }, CRAP ${ thresholds.maxCrap }).`);
+    `${ offenderCount } function(s) broke a threshold (${ caps }).` :
+    `All ${ sorted.length } checked function(s) are within thresholds (${ caps }).`);
 
   return lines.join('\n');
 }

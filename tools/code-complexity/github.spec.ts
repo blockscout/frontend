@@ -3,13 +3,14 @@ import { describe, it, expect } from 'vitest';
 import { githubAnnotations, stepSummary } from './github';
 import type { ReportRow } from './report';
 
-const THRESHOLDS = { maxComplexity: 20, maxCrap: 30 };
+const THRESHOLDS = { maxComplexityJsx: 25, maxComplexityBehavior: 20, maxCrap: 30 };
 
 function row(overrides: Partial<ReportRow>): ReportRow {
   return {
     file: 'src/f.ts',
     line: 1,
     name: 'fn',
+    kind: 'behavior',
     complexity: 1,
     coverage: null,
     crap: null,
@@ -33,6 +34,13 @@ describe('githubAnnotations', () => {
       row({ name: 'both', complexity: 25, coverage: 0, crap: 90, brokeComplexity: true, brokeCrap: true }),
     ], THRESHOLDS);
     expect(annotation).toBe('::error file=src/f.ts,line=1::both: complexity 25 > 20; CRAP 90.0 > 30');
+  });
+
+  it('names the jsx cap for a jsx offender', () => {
+    const [ annotation ] = githubAnnotations([
+      row({ name: 'render', kind: 'jsx', complexity: 30, brokeComplexity: true }),
+    ], THRESHOLDS);
+    expect(annotation).toBe('::error file=src/f.ts,line=1::render: complexity 30 > 25');
   });
 
   it('returns nothing when no function broke a threshold', () => {

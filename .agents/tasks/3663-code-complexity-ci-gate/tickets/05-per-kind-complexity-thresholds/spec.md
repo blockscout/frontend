@@ -98,19 +98,19 @@ None — no project skill applies to this ticket (bespoke tooling under `tools/c
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Per-function JSX classifier: extend the `complexity.ts` walk to emit `containsJsx`
+- [x] 1 `[agent]` Per-function JSX classifier: extend the `complexity.ts` walk to emit `containsJsx`
       per function; unit-test direct-JSX vs nested-function boundary (render, inline `.map` render,
       handler, hook, JSX-less `.tsx` hook)
-- [ ] 2 `[agent]` Config + CLI: two complexity caps in `config.ts`, `Thresholds` shape, `index.ts`
+- [x] 2 `[agent]` Config + CLI: two complexity caps in `config.ts`, `Thresholds` shape, `index.ts`
       flag parsing (`--max-complexity-jsx` / `--max-complexity-behavior`, bare `--max-complexity`
       clamps both), usage block in `CONTEXT.md`
-- [ ] 3 `[agent]` Gate routing in `analyze.ts`: per-function cap selection and per-function CRAP
+- [x] 3 `[agent]` Gate routing in `analyze.ts`: per-function cap selection and per-function CRAP
       applicability (`behavior` only; 0% fallback for spec-less JSX files with no vitest run); `KIND`
       column in `report.ts`; update affected unit tests
-- [ ] 4 `[agent]` Full-repo distribution run producing the `jsx` and `behavior` complexity
+- [x] 4 `[agent]` Full-repo distribution run producing the `jsx` and `behavior` complexity
       distributions and the CRAP distribution under the new per-function applicability
-- [ ] 5 `[human]` Choose the `jsx` cap (conservative/high), `behavior` cap (aggressive/low) and CRAP
+- [x] 5 `[human]` Choose the `jsx` cap (conservative/high), `behavior` cap (aggressive/low) and CRAP
       cap from the distribution; set them in `config.ts`
-- [ ] 6 `[agent]` Docs: rewrite the CRAP-applicability section of `CONTEXT.md` to the per-function
+- [x] 6 `[agent]` Docs: rewrite the CRAP-applicability section of `CONTEXT.md` to the per-function
       rule for both gates; add the one-line pointer to ADR 0004's Consequences; record the
       calibration evidence (distributions + chosen numbers) in the ticket's `notes.md`

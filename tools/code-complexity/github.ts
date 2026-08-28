@@ -3,7 +3,7 @@
 // side effects (stdout + $GITHUB_STEP_SUMMARY) live in index.ts, guarded by $GITHUB_ACTIONS.
 
 import type { ReportRow, Thresholds } from './report';
-import { isOffender } from './report';
+import { isOffender, maxComplexityFor } from './report';
 
 // Annotation directives are single-line; a newline would truncate the message and break the rest.
 function sanitize(message: string): string {
@@ -12,7 +12,7 @@ function sanitize(message: string): string {
 
 function offenderMessage(row: ReportRow, thresholds: Thresholds): string {
   const parts: Array<string> = [];
-  if (row.brokeComplexity) parts.push(`complexity ${ row.complexity } > ${ thresholds.maxComplexity }`);
+  if (row.brokeComplexity) parts.push(`complexity ${ row.complexity } > ${ maxComplexityFor(row.kind, thresholds) }`);
   // crap is non-null whenever brokeCrap is true (the CRAP gate only trips on a scored function).
   if (row.brokeCrap) parts.push(`CRAP ${ (row.crap as number).toFixed(1) } > ${ thresholds.maxCrap }`);
   return `${ row.name }: ${ parts.join('; ') }`;

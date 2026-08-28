@@ -2,7 +2,7 @@
 import fs from 'fs';
 
 import { buildFileRows } from './analyze';
-import { DEFAULT_BASE_REF, DEFAULT_MAX_COMPLEXITY, DEFAULT_MAX_CRAP } from './config';
+import { DEFAULT_BASE_REF, DEFAULT_MAX_COMPLEXITY_BEHAVIOR, DEFAULT_MAX_COMPLEXITY_JSX, DEFAULT_MAX_CRAP } from './config';
 import { readCoverage } from './coverage';
 import type { CoverageData } from './coverage';
 import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './diff';
@@ -31,7 +31,8 @@ type CoverageMode = 'generate' | 'file' | 'off';
 interface CliOptions {
   baseRef: string;
   diffSelected: boolean;
-  maxComplexity: number;
+  maxComplexityJsx: number;
+  maxComplexityBehavior: number;
   maxCrap: number;
   coverageMode: CoverageMode;
   coverageFile: string | undefined; // set only when coverageMode === 'file'
@@ -40,9 +41,12 @@ interface CliOptions {
 }
 
 const USAGE = `Usage:
-  test:code-complexity [--max-complexity <n>] [--max-crap <n>]
+  test:code-complexity [--max-complexity <n>] [--max-complexity-jsx <n>]
+                       [--max-complexity-behavior <n>] [--max-crap <n>]
                        [--coverage-file <path> | --no-coverage]
       Full-repo mode (default): score every in-scope src/** function.
+      Complexity is capped per function class: --max-complexity-jsx for render bodies,
+      --max-complexity-behavior for handlers/hooks/utils; bare --max-complexity sets both.
 
   test:code-complexity <path...> [...]     Focused mode: score every function in the given files.
 
@@ -57,7 +61,8 @@ function parseArgs(argv: ReadonlyArray<string>): CliOptions {
   const options: CliOptions = {
     baseRef: DEFAULT_BASE_REF,
     diffSelected: false,
-    maxComplexity: DEFAULT_MAX_COMPLEXITY,
+    maxComplexityJsx: DEFAULT_MAX_COMPLEXITY_JSX,
+    maxComplexityBehavior: DEFAULT_MAX_COMPLEXITY_BEHAVIOR,
     maxCrap: DEFAULT_MAX_CRAP,
     coverageMode: 'generate',
     coverageFile: undefined,
@@ -99,8 +104,15 @@ function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     } else if (arg.startsWith('--base')) {
       options.diffSelected = true;
       options.baseRef = readValue(inlineValue('--base'));
+    } else if (arg.startsWith('--max-complexity-jsx')) {
+      options.maxComplexityJsx = readNumber(inlineValue('--max-complexity-jsx'));
+    } else if (arg.startsWith('--max-complexity-behavior')) {
+      options.maxComplexityBehavior = readNumber(inlineValue('--max-complexity-behavior'));
     } else if (arg.startsWith('--max-complexity')) {
-      options.maxComplexity = readNumber(inlineValue('--max-complexity'));
+      // Bare --max-complexity is a global that clamps both per-class caps.
+      const value = readNumber(inlineValue('--max-complexity'));
+      options.maxComplexityJsx = value;
+      options.maxComplexityBehavior = value;
     } else if (arg.startsWith('--max-crap')) {
       options.maxCrap = readNumber(inlineValue('--max-crap'));
     } else if (arg.startsWith('-')) {
@@ -122,13 +134,17 @@ function readFile(filePath: string): string {
 }
 
 function thresholdsOf(options: CliOptions): Thresholds {
-  return { maxComplexity: options.maxComplexity, maxCrap: options.maxCrap };
+  return {
+    maxComplexityJsx: options.maxComplexityJsx,
+    maxComplexityBehavior: options.maxComplexityBehavior,
+    maxCrap: options.maxCrap,
+  };
 }
 
 // Resolve coverage from the chosen mode. `request` steers generation; it is ignored for 'file' and
-// 'off'. `anyNeedsCoverage` short-circuits generation: when nothing in the selection gets the CRAP
-// half (see coverageApplies) there is nothing coverage could inform, so we skip vitest and return
-// null instead of running it for numbers that would be discarded.
+// 'off'. `anyNeedsCoverage` short-circuits generation: when no file in the selection needs coverage
+// generated (see fileNeedsCoverage) there is nothing coverage could inform, so we skip vitest and
+// return null instead of running it for numbers that would be discarded.
 function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeedsCoverage: boolean): CoverageData | null {
   switch (options.coverageMode) {
     case 'off':
@@ -149,10 +165,12 @@ function hasCoLocatedSpec(file: string): boolean {
   return fs.existsSync(`${ base }.spec.ts`) || fs.existsSync(`${ base }.spec.tsx`);
 }
 
-// The CRAP (coverage) half applies to a JSX-less logic file always, and to a JSX component only
-// when it has a co-located vitest spec — otherwise a component (covered, if at all, by Playwright
-// visual tests that emit no vitest coverage) would read 0% and flood the report.
-function coverageApplies(file: string, source: string): boolean {
+// Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
+// component only when it has a co-located vitest spec (behavior tests exist). A JSX component
+// without one is covered — if at all — by Playwright visual tests that emit no vitest coverage, so
+// generating coverage for it would read 0% and flood the report. This drives only the generation
+// scope; per-function CRAP applicability (`behavior` functions only) is decided in analyze.ts.
+function fileNeedsCoverage(file: string, source: string): boolean {
   return !fileContainsJsx(source, file) || hasCoLocatedSpec(file);
 }
 
@@ -161,17 +179,16 @@ function coverageApplies(file: string, source: string): boolean {
 function runFocusedMode(options: CliOptions): Array<ReportRow> {
   const displayPaths = options.focusPaths.map(normalizeDisplayPath);
   const sources = new Map(displayPaths.map((displayPath) => [ displayPath, readFile(displayPath) ] as const));
-  const appliesTo = (displayPath: string): boolean => coverageApplies(displayPath, sources.get(displayPath) as string);
+  const needsCoverage = (displayPath: string): boolean => fileNeedsCoverage(displayPath, sources.get(displayPath) as string);
 
-  // Generate coverage only for the files that get the CRAP half, and only run vitest if there are any.
-  const relatedPaths = displayPaths.filter(appliesTo);
+  // Generate coverage only for the files that need it, and only run vitest if there are any.
+  const relatedPaths = displayPaths.filter(needsCoverage);
   const coverage = resolveCoverage(options, { mode: 'related', paths: relatedPaths }, relatedPaths.length > 0);
 
   return displayPaths.flatMap((displayPath) => buildFileRows(displayPath, sources.get(displayPath) as string, coverage, {
     thresholds: thresholdsOf(options),
     gate: () => true,
-    coverageApplies: appliesTo(displayPath),
-    // A logic/spec'd file absent from generated coverage is genuinely untested -> 0%, except when
+    // A behavior function absent from generated coverage is genuinely untested -> 0%, except when
     // the user supplied the report themselves (then absence is "no data", `—`).
     missingCoverageIsZero: options.coverageMode !== 'file',
   }));
@@ -191,7 +208,6 @@ function runFullMode(options: CliOptions): Array<ReportRow> {
     return buildFileRows(file, source, coverage, {
       thresholds: thresholdsOf(options),
       gate: () => true,
-      coverageApplies: coverageApplies(file, source),
       missingCoverageIsZero: true,
     });
   });
@@ -205,18 +221,17 @@ function runDiffMode(options: CliOptions): Array<ReportRow> {
   if (changedFiles.length === 0) return []; // nothing in scope: skip vitest entirely
 
   const sources = new Map(changedFiles.map((file) => [ file, readFile(file) ] as const));
-  const appliesTo = (file: string): boolean => coverageApplies(file, sources.get(file) as string);
+  const needsCoverage = (file: string): boolean => fileNeedsCoverage(file, sources.get(file) as string);
   // A change that touches nothing needing coverage (e.g. only JSX components without specs) skips
   // the vitest run entirely.
-  const coverage = resolveCoverage(options, { mode: 'changed', since: baseCommit }, changedFiles.some(appliesTo));
+  const coverage = resolveCoverage(options, { mode: 'changed', since: baseCommit }, changedFiles.some(needsCoverage));
 
   return changedFiles.flatMap((file) => {
     const changedRanges = getChangedLineRanges(baseCommit, file);
     return buildFileRows(file, sources.get(file) as string, coverage, {
       thresholds: thresholdsOf(options),
       gate: (fn) => rangesOverlap(changedRanges, fn.startLine, fn.endLine),
-      coverageApplies: appliesTo(file),
-      // A changed in-scope file missing from coverage is untested changed code -> 0% (spec FR).
+      // A changed behavior function missing from coverage is untested changed code -> 0% (spec FR).
       missingCoverageIsZero: true,
     });
   });

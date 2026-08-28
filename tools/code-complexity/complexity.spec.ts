@@ -133,3 +133,50 @@ describe('computeFunctionComplexities — function units', () => {
     expect(fn.startLine).toBe(3);
   });
 });
+
+describe('computeFunctionComplexities — jsx/behavior classification (containsJsx)', () => {
+  // containsJsx keyed by function name, for asserting the direct-JSX boundary.
+  function jsxByName(source: string): Record<string, boolean> {
+    return Object.fromEntries(
+      computeFunctionComplexities(source, 'sample.tsx').map((fn) => [ fn.name, fn.containsJsx ]),
+    );
+  }
+
+  it('marks a render body that directly contains JSX', () => {
+    expect(jsxByName('const C = () => <div><span/></div>;')).toEqual({ C: true });
+  });
+
+  it('marks an inline `.map(x => <Row/>)` callback jsx, and the component too', () => {
+    // Both directly contain JSX in their own bodies: the component holds <ul>, the callback holds <li>.
+    expect(jsxByName(`
+      const List = (items: Array<number>) => <ul>{ items.map((n) => <li>{ n }</li>) }</ul>;
+    `)).toEqual({ List: true, '<anonymous>': true });
+  });
+
+  it('classifies an onClick/useCallback handler that renders nothing as behavior', () => {
+    // The handler's own body has no JSX (it only reaches JSX through no nested function) -> behavior;
+    // the component around it is jsx.
+    const byName = jsxByName(`
+      const Button = () => {
+        const handleClick = () => { doThing(); };
+        return <button onClick={ handleClick }>go</button>;
+      };
+    `);
+    expect(byName).toEqual({ Button: true, handleClick: false });
+  });
+
+  it('classifies a hook whose JSX only lives in a nested function as behavior', () => {
+    // The hook body reaches JSX solely through the returned render function, so the JSX marks the
+    // nested function, not the hook itself.
+    const byName = jsxByName(`
+      const useRenderRow = () => {
+        return (n: number) => <div>{ n }</div>;
+      };
+    `);
+    expect(byName).toEqual({ useRenderRow: false, '<anonymous>': true });
+  });
+
+  it('classifies a JSX-less `.tsx` hook as behavior', () => {
+    expect(jsxByName('const useValue = (x: number) => { return x > 0 ? 1 : 0; };')).toEqual({ useValue: false });
+  });
+});

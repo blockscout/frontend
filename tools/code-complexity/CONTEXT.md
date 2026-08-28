@@ -1,9 +1,11 @@
 # code-complexity — context
 
 A CI gate that flags code which is both complex and under-tested before it merges, scoped to
-what a PR actually changes so it never blocks on pre-existing debt. Two independent gates run: a
-cyclomatic-complexity cap on every checked function, and a coverage-aware CRAP cap on functions in
-JSX-less (logic) files.
+what a PR actually changes so it never blocks on pre-existing debt. Two independent gates run, both
+keyed off one per-function property — **does the function directly contain JSX?** A `jsx` function
+(a render body) gets a high complexity backstop and no CRAP; a `behavior` function (handler, hook,
+util) gets a tighter complexity cap and the coverage-aware CRAP cap. See
+"Function classes and which gates apply" below.
 
 ## Running it
 
@@ -15,7 +17,9 @@ pnpm test:code-complexity                          # full repo: every in-scope s
 pnpm test:code-complexity src/foo.ts               # focused: every function in these files
 pnpm test:code-complexity --changed                # diff: functions the diff touches vs origin/main
 pnpm test:code-complexity --changed=<ref>          # diff against a different base ref (or --base <ref>)
-pnpm test:code-complexity --max-complexity <n>     # override the complexity cap
+pnpm test:code-complexity --max-complexity <n>          # override both complexity caps
+pnpm test:code-complexity --max-complexity-jsx <n>      # override the jsx (render-body) cap only
+pnpm test:code-complexity --max-complexity-behavior <n> # override the behavior (logic) cap only
 pnpm test:code-complexity --max-crap <n>           # override the CRAP cap
 pnpm test:code-complexity --coverage-file <path>   # consume a prebuilt coverage-final.json, skip vitest
 pnpm test:code-complexity --no-coverage            # skip coverage, complexity gate only
@@ -25,9 +29,10 @@ pnpm test:code-complexity --verbose                # stream vitest output (hidde
 Vitest output is hidden by default so the score table is what you see; a failing run still prints a
 warning (re-run with `--verbose` to see why).
 
-**Vitest is skipped when no coverage is needed.** Only files that get the CRAP half (see below)
-cause a vitest run, so a selection with none — e.g. a focused run on a JSX component that has no
-co-located spec — runs no vitest at all and returns instantly with the complexity gate only.
+**Vitest is skipped when no coverage is needed.** Only files that need coverage generated (see
+"Which files trigger a vitest run" below) cause a vitest run, so a selection with none — e.g. a
+focused run on a JSX component that has no co-located spec — runs no vitest at all and returns
+instantly with the complexity gate only.
 
 ### Selection (which functions)
 
@@ -117,33 +122,57 @@ were executed — a line is coverable when it carries a statement, and its hit c
 among the statements starting on it, exactly as istanbul's `getLineCoverage()` computes it. A
 function with no coverable lines counts as fully covered, so CRAP reduces to its complexity.
 
-## JSX detection and which files get the CRAP gate
+## Function classes and which gates apply
 
-The CRAP (coverage) gate applies to a file when vitest coverage is a meaningful signal for it:
+Every function is classified — independently of its file's extension — by whether **JSX appears
+directly in its own body**, outside any nested function:
 
-- **JSX-less logic files** (utilities, hooks) — always. Whether a file contains JSX is read from
-  the AST (`JsxElement` / `JsxSelfClosingElement` / `JsxFragment`), **not** its extension: ~78
-  non-test `.tsx` files contain no JSX (mostly `useX.tsx` hooks), so the extension is an unreliable
-  component-vs-logic signal.
-- **JSX components with a co-located vitest spec** (`Component.spec.tsx` next to `Component.tsx`) —
-  they have behavior tests, so their vitest coverage is real. A component without one gets the
-  complexity gate alone: it is covered — if at all — by Playwright visual tests (`*.pw.tsx`) that
-  emit no vitest coverage, so scoring it would read 0% and flood the report with the whole
-  component tree. (Playwright specs do not count as a co-located spec.)
+- **`jsx`** — a render body (a component, or an inline `items.map(x => <Row/>)` callback: the JSX is
+  in the callback's own body). Because a branch accrues to the innermost enclosing function, a
+  component's render body is just its own JSX-level control flow; its handlers are separate units.
+- **`behavior`** — everything else: event handlers, `useCallback`/`useMemo` bodies, hooks, and utils,
+  *wherever they live* — including nested inside a component. A JSX-less `.tsx` hook is `behavior`;
+  a handler defined inside a component is `behavior` even though the component around it is `jsx`.
 
-So adding a behavior spec next to a component opts it into coverage tracking; until then it is
-complexity-only. This supersedes the original "JSX ⇒ complexity-only" rule now that some components
-have vitest behavior tests (e.g. `TokenTransfersTable.spec.tsx`).
+Classification is read from the AST (`JsxElement` / `JsxSelfClosingElement` / `JsxFragment`), not the
+extension — ~78 non-test `.tsx` files contain no JSX (mostly `useX.tsx` hooks), so the extension is
+an unreliable component-vs-logic signal. The two classes gate differently:
 
-**Missing coverage = 0% vs "no data".** A qualifying file absent from the coverage report is scored
-0% when absence means "no spec executed it" — i.e. for generated coverage (any mode) and the CI
-`--coverage-file` report — which correctly flags untested code. The one exception is a
+| class | complexity cap | CRAP |
+| --- | --- | --- |
+| `jsx` | `--max-complexity-jsx` (high backstop) | never scored |
+| `behavior` | `--max-complexity-behavior` (tighter) | scored |
+
+**Why `jsx` carries no CRAP.** A component's rendering is covered by Playwright visual tests
+(`*.pw.tsx`), which emit no vitest coverage — so a `jsx` function would read ~0% and flood the report.
+Its high complexity cap is a monster-backstop: hitting it means "decompose this render body," and it
+stays high on purpose so it never pushes people toward condition-swallowing refactors.
+
+**Why every `behavior` function is CRAP-scored.** This is where under-tested logic hides and where
+neither Playwright nor (often) vitest covers it, so it carries both the tighter complexity cap and
+CRAP — including a handler inside a spec-less component, which scores 0% (an accurate "no unit test
+exercises this"). This is a *per-function* rule: a spec'd component's render loses its (noise) CRAP
+score while its handlers gain a real one. It supersedes the earlier *file-level* rule ("JSX-less
+file, or JSX file with a co-located spec").
+
+### Which files trigger a vitest run (generation scope)
+
+Separately from per-function scoring, a *file* needs vitest coverage generated for it when it is a
+**JSX-less logic file** *or* a **JSX file with a co-located vitest spec** (`Component.spec.tsx` next
+to `Component.tsx`; Playwright `*.pw.tsx` does not count). This is unchanged by the per-function rule
+— it only decides whether `vitest related`/`--changed` pulls the file in. A `behavior` function in a
+JSX file outside that set is absent from the report and scores 0% without triggering a run.
+
+**Missing coverage = 0% vs "no data".** A `behavior` function absent from the coverage report is
+scored 0% when absence means "no spec executed it" — i.e. for generated coverage (any mode) and the
+CI `--coverage-file` report — which correctly flags untested code. The one exception is a
 **user-supplied `--coverage-file` in focused mode**: a hand-passed report may simply predate the
 file, so absence there reports `—` (no data), not a fabricated 0%.
 
-The two gates are independent: the complexity cap trips on any in-scope function over the cap; the
-CRAP cap trips only where the CRAP half applies. The report's `BROKE` column names which cap each
-offender crossed (`CX`, `CRAP`, or `CX+CRAP`), and the table sorts by CRAP descending.
+The two gates are independent: the complexity cap trips on any in-scope function over its class's cap;
+the CRAP cap trips only on `behavior` functions with coverage data. The report's `KIND` column shows
+each function's class, `BROKE` names which cap each offender crossed (`CX`, `CRAP`, or `CX+CRAP`), and
+the table sorts by CRAP descending.
 
 ## Scope
 
