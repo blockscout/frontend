@@ -933,16 +933,6 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
-  '/api/tokens/[hash]/instances/[id]/media-type': {
-    metadata: {
-      title: {
-        'default': '%chain_name% node API token instance media type',
-      },
-      description: {
-        'default': DESCRIPTION_DEFAULT,
-      },
-    },
-  },
   '/api/proxy': {
     metadata: {
       title: {
