@@ -108,6 +108,7 @@ export default tseslint.config(
     // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap
     '.claude/worktrees/',
     'next.config.js',
+    'tools/code-complexity/dist/',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
