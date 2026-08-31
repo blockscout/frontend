@@ -204,7 +204,7 @@ Run **`pnpm run routes:generate`** (runs `nextjs-routes`) to regenerate `src/sha
 
 ## Step 5 — Navigation
 
-In `src/shell/navigation/useNavItems.tsx` add a `NavItem` to the group agreed in Step 0:
+In `src/shell/navigation/useNavItems.ts` add a `NavItem` to the group agreed in Step 0:
 ```ts
 const __featureName__: NavItem | null = config.features.__featureName__.isEnabled ? {
   text: '__title__',
