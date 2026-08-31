@@ -10,16 +10,18 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
 
 const HomeStatsLatestBlock = () => {
 
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('total_blocks', coreApiQuery, statsApiQuery);
+
   const { blocksQuery } = useHomeDataContext();
   const { enable: enableRpcData, blocks: blocksRpc, isLoading: isLoadingRpc } = useHomeRpcDataContext();
 
-  const isError = blocksQuery?.isError && statsQuery.isError;
-  const isLoading = blocksQuery?.isPlaceholderData || statsQuery.isLoading || (isError && isLoadingRpc);
+  const isError = blocksQuery?.isError && itemQuery?.isError;
+  const isLoading = blocksQuery?.isPlaceholderData || itemQuery?.isLoading || (isError && isLoadingRpc);
 
   React.useEffect(() => {
     if (isError) {
@@ -34,8 +36,9 @@ const HomeStatsLatestBlock = () => {
     if (isError) {
       return blocksRpc[0] ? blocksRpc[0].height.toLocaleString() : mdash;
     }
-    const latestBlock = blocksQuery?.data?.[0]?.height ?? statsQuery.data?.total_blocks;
-    if (latestBlock) {
+    const latestBlock = blocksQuery?.data?.[0]?.height ??
+      (itemQuery?.id === 'total_blocks' && itemQuery?.data ? itemQuery.data : undefined);
+    if (latestBlock !== undefined) {
       return Number(latestBlock).toLocaleString();
     }
   })();
@@ -44,12 +47,22 @@ const HomeStatsLatestBlock = () => {
     return null;
   }
 
-  const label = blocksQuery?.data?.[0]?.height !== undefined || isError ? 'Latest block' : statsQuery.labels?.total_blocks || 'Total blocks';
+  const label = (() => {
+    if (blocksQuery?.data?.[0]?.height !== undefined || isError) {
+      return 'Latest block';
+    }
+    if (itemQuery?.id === 'total_blocks' && itemQuery?.title) {
+      return itemQuery.title;
+    }
+    return 'Total blocks';
+  })();
+
+  const isRpcData = isError && !isLoadingRpc;
 
   return (
     <Tooltip
       content={ value !== mdash ? RPC_TOOLTIP_CONTENT_VALUE : RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !(isError && !isLoadingRpc) }
+      disabled={ !isRpcData }
     >
       <HomeStatsWidget
         label={ label }
@@ -57,6 +70,7 @@ const HomeStatsLatestBlock = () => {
         value={ value }
         href={{ pathname: '/blocks' }}
         isLoading={ isLoading }
+        isFallback={ isRpcData && value === mdash }
       />
     </Tooltip>
   );

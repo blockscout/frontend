@@ -7,17 +7,22 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
 
 const HomeStatsTotalAddresses = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('total_addresses', coreApiQuery, statsApiQuery);
+
+  if (!itemQuery || itemQuery.id !== 'total_addresses') {
+    return null;
+  }
 
   const value = (() => {
-    if (statsQuery.isError) {
+    if (itemQuery.isError) {
       return mdash;
     }
-    if (statsQuery.data.total_addresses) {
-      return Number(statsQuery.data.total_addresses).toLocaleString();
+    if (itemQuery.data) {
+      return Number(itemQuery.data).toLocaleString();
     }
   })();
 
@@ -28,13 +33,14 @@ const HomeStatsTotalAddresses = () => {
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !statsQuery.isError }
+      disabled={ !itemQuery.isError }
     >
       <HomeStatsWidget
-        label={ statsQuery.labels?.total_addresses || 'Wallet addresses' }
+        label={ itemQuery.title || 'Wallet addresses' }
         icon="wallet"
         value={ value }
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
+        isFallback={ itemQuery.isError }
       />
     </Tooltip>
   );

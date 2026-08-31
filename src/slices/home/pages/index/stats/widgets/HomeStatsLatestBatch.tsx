@@ -21,13 +21,21 @@ const HomeStatsLatestBatch = () => {
     if (latestBatchQuery.isError) {
       return mdash;
     }
-    return Number(latestBatchQuery.data).toLocaleString();
+    if (latestBatchQuery.data) {
+      return Number(latestBatchQuery.data).toLocaleString();
+    }
   })();
+
+  if (!value) {
+    return null;
+  }
+
+  const isFallback = latestBatchQuery.isError;
 
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !latestBatchQuery.isError }
+      disabled={ !isFallback }
     >
       <HomeStatsWidget
         label="Latest batch"
@@ -35,6 +43,7 @@ const HomeStatsLatestBatch = () => {
         value={ value }
         href={{ pathname: '/batches' as const }}
         isLoading={ latestBatchQuery.isPlaceholderData }
+        isFallback={ isFallback }
       />
     </Tooltip>
   );

@@ -9,17 +9,22 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
 
 const HomeStatsLatestL1StateBatch = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('last_output_root_size', coreApiQuery, statsApiQuery);
+
+  if (!itemQuery || itemQuery.id !== 'last_output_root_size') {
+    return null;
+  }
 
   const value = (() => {
-    if (statsQuery.isError) {
+    if (itemQuery.isError) {
       return mdash;
     }
-    if (statsQuery.data.last_output_root_size) {
-      return Number(statsQuery.data.last_output_root_size).toLocaleString();
+    if (itemQuery.data) {
+      return Number(itemQuery.data).toLocaleString();
     }
   })();
 
@@ -30,14 +35,15 @@ const HomeStatsLatestL1StateBatch = () => {
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !statsQuery.isError }
+      disabled={ !itemQuery.isError }
     >
       <HomeStatsWidget
         label={ `Latest ${ layerLabels.parent } state batch` }
         icon="txn_batches"
         value={ value }
         href={{ pathname: '/batches' as const }}
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
+        isFallback={ itemQuery.isError }
       />
     </Tooltip>
   );

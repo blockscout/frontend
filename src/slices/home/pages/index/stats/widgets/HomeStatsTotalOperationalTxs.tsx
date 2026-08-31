@@ -9,26 +9,31 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
 
 const rollupFeature = config.features.rollup;
 
 const HomeStatsTotalOperationalTxs = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('total_operational_transactions', coreApiQuery, statsApiQuery);
 
   if (!rollupFeature.isEnabled || !(rollupFeature.type === 'arbitrum' || rollupFeature.type === 'optimistic')) {
     return null;
   }
 
+  if (!itemQuery) {
+    return null;
+  }
+
   const value = (() => {
-    if (statsQuery.isError) {
+    if (itemQuery.isError) {
       return mdash;
     }
-    if (rollupFeature.type === 'arbitrum' && statsQuery.data.total_operational_transactions) {
-      return Number(statsQuery.data.total_operational_transactions).toLocaleString();
+    if (rollupFeature.type === 'arbitrum' && itemQuery.id === 'total_operational_transactions' && itemQuery.data) {
+      return Number(itemQuery.data).toLocaleString();
     }
-    if (rollupFeature.type === 'optimistic' && statsQuery.data.op_stack_total_operational_transactions) {
-      return Number(statsQuery.data.op_stack_total_operational_transactions).toLocaleString();
+    if (rollupFeature.type === 'optimistic' && itemQuery.id === 'op_stack_total_operational_transactions' && itemQuery.data) {
+      return Number(itemQuery.data).toLocaleString();
     }
   })();
 
@@ -37,25 +42,26 @@ const HomeStatsTotalOperationalTxs = () => {
   }
 
   const label = (() => {
-    if (rollupFeature.type === 'arbitrum') {
-      return statsQuery.labels?.total_operational_transactions;
+    if (rollupFeature.type === 'arbitrum' && itemQuery.id === 'total_operational_transactions') {
+      return itemQuery.title;
     }
-    if (rollupFeature.type === 'optimistic') {
-      return statsQuery.labels?.op_stack_total_operational_transactions;
+    if (rollupFeature.type === 'optimistic' && itemQuery.id === 'op_stack_total_operational_transactions') {
+      return itemQuery.title;
     }
   })();
 
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !statsQuery.isError }
+      disabled={ !itemQuery.isError }
     >
       <HomeStatsWidget
         label={ label || 'Total operational transactions' }
         icon="transactions"
         value={ value }
         href={{ pathname: '/txs' as const }}
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
+        isFallback={ itemQuery.isError }
       />
     </Tooltip>
   );

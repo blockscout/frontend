@@ -7,17 +7,22 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
 
 const HomeStatsTotalTxs = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('total_transactions', coreApiQuery, statsApiQuery);
+
+  if (!itemQuery || itemQuery.id !== 'total_transactions') {
+    return null;
+  }
 
   const value = (() => {
-    if (statsQuery.isError) {
+    if (itemQuery.isError) {
       return mdash;
     }
-    if (statsQuery.data.total_transactions) {
-      return Number(statsQuery.data.total_transactions).toLocaleString();
+    if (itemQuery.data) {
+      return Number(itemQuery.data).toLocaleString();
     }
   })();
 
@@ -28,14 +33,15 @@ const HomeStatsTotalTxs = () => {
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !statsQuery.isError }
+      disabled={ !itemQuery.isError }
     >
       <HomeStatsWidget
-        label={ statsQuery.labels?.total_transactions || 'Total transactions' }
+        label={ itemQuery.title || 'Total transactions' }
         icon="transactions"
         value={ value }
         href={{ pathname: '/txs' as const }}
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
+        isFallback={ itemQuery.isError }
       />
     </Tooltip>
   );

@@ -10,20 +10,25 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE } from '../utils';
 
 const HomeStatsBtcLocked = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('rootstock_locked_btc', coreApiQuery, statsApiQuery);
+
+  if (!itemQuery || itemQuery.id !== 'rootstock_locked_btc') {
+    return null;
+  }
 
   const value = (() => {
-    if (statsQuery.isError) {
+    if (itemQuery.isError) {
       return mdash;
     }
 
-    if (typeof statsQuery?.data?.rootstock_locked_btc !== 'string') {
+    if (typeof itemQuery.data !== 'string') {
       return;
     }
-    return `${ BigNumber(statsQuery?.data?.rootstock_locked_btc ?? 0).div(WEI).dp(0).toFormat() } RBTC`;
+    return `${ BigNumber(itemQuery.data ?? 0).div(WEI).dp(0).toFormat() } RBTC`;
   })();
 
   if (!value) {
@@ -33,13 +38,14 @@ const HomeStatsBtcLocked = () => {
   return (
     <Tooltip
       content={ RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !statsQuery.isError }
+      disabled={ !itemQuery.isError }
     >
       <HomeStatsWidget
         label="BTC Locked in 2WP"
         icon="coins/bitcoin"
         value={ value }
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
+        isFallback={ itemQuery.isError }
       />
     </Tooltip>
   );

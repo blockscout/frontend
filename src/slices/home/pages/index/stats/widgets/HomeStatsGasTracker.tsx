@@ -18,12 +18,13 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
 
 const HomeStatsGasTracker = () => {
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('gas_prices', coreApiQuery, statsApiQuery);
 
-  const isRpcEnabled = isPublicClientAvailable && statsQuery.isError;
+  const isRpcEnabled = isPublicClientAvailable && itemQuery?.isError;
 
   const rpcQuery = useQuery({
     queryKey: [ 'RPC', 'gas-price' ],
@@ -52,22 +53,22 @@ const HomeStatsGasTracker = () => {
     enabled: isRpcEnabled,
   });
 
-  const isLoading = statsQuery.isLoading || (isRpcEnabled && rpcQuery.isLoading);
+  const isLoading = itemQuery?.isLoading || (isRpcEnabled && rpcQuery.isLoading);
 
   const gasPricesData = React.useMemo(() => {
-    if (statsQuery?.data.gas_prices && statsQuery.data.gas_prices.average) {
+    if (itemQuery?.id === 'gas_prices' && itemQuery?.data && itemQuery.data.gas_prices && itemQuery.data.gas_prices.average) {
       return {
-        gas_prices: statsQuery.data.gas_prices,
-        gas_price_updated_at: statsQuery.data.gas_price_updated_at ?? null,
-        gas_prices_update_in: statsQuery.data.gas_prices_update_in ?? null,
+        gas_prices: itemQuery.data.gas_prices,
+        gas_price_updated_at: itemQuery.data.gas_price_updated_at ?? null,
+        gas_prices_update_in: itemQuery.data.gas_prices_update_in ?? null,
       };
     }
-  }, [ statsQuery.data ]);
+  }, [ itemQuery?.data, itemQuery?.id ]);
 
-  const infoTooltip = !isRpcEnabled && gasPricesData ? (
-    <GasInfoTooltip data={ gasPricesData } dataUpdatedAt={ statsQuery.dataUpdatedAt }>
+  const infoTooltip = !isRpcEnabled && gasPricesData && itemQuery?.dataUpdatedAt ? (
+    <GasInfoTooltip data={ gasPricesData } dataUpdatedAt={ itemQuery.dataUpdatedAt }>
       <SpriteIcon
-        isLoading={ statsQuery.isLoading }
+        isLoading={ itemQuery.isLoading }
         name="info"
         boxSize={ 5 }
         flexShrink={ 0 }
@@ -82,21 +83,25 @@ const HomeStatsGasTracker = () => {
     if (isRpcEnabled) {
       return rpcQuery.data ? <GasPrice data={ rpcQuery.data }/> : mdash;
     }
-    const gasPrices = discriminateDetailedPrices(statsQuery.data?.gas_prices);
+    const gasPrices = itemQuery?.id === 'gas_prices' && itemQuery?.data && itemQuery.data.gas_prices ?
+      discriminateDetailedPrices(itemQuery.data.gas_prices) :
+      null;
     if (!gasPrices) {
       return;
     }
-    return gasPrices.average ? <GasPrice data={ gasPrices.average }/> : 'N/A';
+    return gasPrices.average ? <GasPrice data={ gasPrices.average }/> : mdash;
   })();
 
   if (!value) {
     return null;
   }
 
+  const isRpcData = isRpcEnabled && !rpcQuery.isLoading;
+
   return (
     <Tooltip
       content={ value !== mdash ? RPC_TOOLTIP_CONTENT_VALUE : RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !(isRpcEnabled && !rpcQuery.isLoading) }
+      disabled={ !isRpcData }
     >
       <HomeStatsWidget
         label="Gas tracker"
@@ -105,6 +110,7 @@ const HomeStatsGasTracker = () => {
         href={{ pathname: '/gas-tracker' }}
         hint={ infoTooltip }
         isLoading={ isLoading }
+        isFallback={ value === mdash }
       />
     </Tooltip>
   );

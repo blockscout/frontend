@@ -11,17 +11,17 @@ import { mdash } from 'src/toolkit/utils/htmlEntities';
 
 import HomeStatsWidget from '../HomeStatsWidget';
 import useStatsHome from '../useStatsHome';
-import { RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
+import { getStatsHomeDataItem, RPC_TOOLTIP_CONTENT_NO_VALUE, RPC_TOOLTIP_CONTENT_VALUE } from '../utils';
 
 const HomeStatsAverageBlockTime = () => {
 
   const [ rpcData, setRpcData ] = React.useState<number | undefined>(undefined);
 
-  const statsQuery = useStatsHome();
+  const { coreApiQuery, statsApiQuery } = useStatsHome();
+  const itemQuery = getStatsHomeDataItem('average_block_time', coreApiQuery, statsApiQuery);
   const { enable: enableRpcData, blocks: blocksRpc, isLoading: isLoadingRpc } = useHomeRpcDataContext();
 
-  const isError = statsQuery.isError;
-  const isLoading = statsQuery.isLoading || (isError && isLoadingRpc);
+  const isError = itemQuery?.isError;
 
   React.useEffect(() => {
     if (isError) {
@@ -52,12 +52,18 @@ const HomeStatsAverageBlockTime = () => {
     }
   }, [ blocksRpc ]);
 
+  if (!itemQuery || itemQuery.id !== 'average_block_time') {
+    return null;
+  }
+
+  const isLoading = itemQuery.isLoading || (isError && isLoadingRpc);
+
   const value = (() => {
     if (isError) {
       return rpcData ? `${ rpcData.toFixed(1) }s` : mdash;
     }
-    if (statsQuery.data.average_block_time) {
-      return `${ Number(statsQuery.data.average_block_time).toFixed(1) }s`;
+    if (itemQuery.data) {
+      return `${ Number(itemQuery.data).toFixed(1) }s`;
     }
   })();
 
@@ -65,18 +71,19 @@ const HomeStatsAverageBlockTime = () => {
     return null;
   }
 
-  const label = statsQuery.labels?.average_block_time || 'Average block time';
+  const isRpcData = isError && !isLoadingRpc;
 
   return (
     <Tooltip
       content={ value !== mdash ? RPC_TOOLTIP_CONTENT_VALUE : RPC_TOOLTIP_CONTENT_NO_VALUE }
-      disabled={ !(isError && !isLoadingRpc) }
+      disabled={ !isRpcData }
     >
       <HomeStatsWidget
-        label={ label }
+        label={ itemQuery.title || 'Average block time' }
         icon="clock-light"
         value={ value }
         isLoading={ isLoading }
+        isFallback={ isRpcData && value === mdash }
       />
     </Tooltip>
   );
