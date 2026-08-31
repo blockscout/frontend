@@ -85,7 +85,6 @@ describe('parseArgs', () => {
     });
   });
 
-  // The prefix-shadowing case the old startsWith chain only survived by arm order.
   it('does not let --max-cognitive shadow its longer siblings', () => {
     expect(parseArgs([ '--max-cognitive-jsx=' + String(CAP) ]).maxCognitiveJsx).toBe(CAP);
     expect(parseArgs([ '--max-cognitive-jsx=' + String(CAP) ]).maxCognitiveBehavior).toBe(DEFAULT_MAX_COGNITIVE_BEHAVIOR);

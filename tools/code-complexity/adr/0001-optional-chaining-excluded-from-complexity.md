@@ -44,7 +44,7 @@ settled at calibration.
 - The gate is a **conscious divergence** from ESLint's cyclomatic definition. A future reader — or a
   PR trying to align the tool with a standard complexity implementation — will see the gap and may
   try to "fix" it back; this record is what says not to. The counting convention and this caveat
-  live in `../CONTEXT.md`.
+  live in `../SCORING.md`.
 - The gate's calibrated thresholds (`../config.ts`) were set from the distribution *with `?.` already
   dropped*. Re-introducing `?.` counting would silently make the caps far more aggressive; the two
   decisions are coupled, and changing one demands recalibrating the other.

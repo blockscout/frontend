@@ -1,6 +1,10 @@
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+
 import { describe, it, expect } from 'vitest';
 
-import { parseCoverage, functionLineCoverage } from './coverage';
+import { parseCoverage, functionLineCoverage, readCoverageOrEmpty } from './coverage';
 
 // A minimal istanbul-shaped report: one statement per line, `s` giving each line's hit count.
 function reportFor(absolutePath: string, hitsByLine: Record<number, number>): string {
@@ -37,6 +41,26 @@ describe('parseCoverage + lineHitsFor', () => {
       },
     });
     expect(parseCoverage(raw).lineHitsFor('src/f.ts')?.get(5)).toBe(4);
+  });
+});
+
+describe('readCoverageOrEmpty', () => {
+  it('reads a report that is there', () => {
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'crap-cov-spec-'));
+    const file = path.join(directory, 'coverage-final.json');
+    try {
+      fs.writeFileSync(file, reportFor('/x/src/f.ts', { '1': 1 }));
+      expect(readCoverageOrEmpty(file).lineHitsFor('src/f.ts')?.get(1)).toBe(1);
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  // A run that selected no specs writes no report. Empty coverage scores its behavior functions 0%;
+  // throwing ENOENT would fail the CI job instead of gating the untested code.
+  it('reads an absent report as empty coverage rather than throwing', () => {
+    const data = readCoverageOrEmpty(path.join(os.tmpdir(), 'crap-cov-spec-nonexistent', 'coverage-final.json'));
+    expect(data.lineHitsFor('src/f.ts')).toBeUndefined();
   });
 });
 

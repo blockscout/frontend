@@ -5,7 +5,7 @@ import os from 'os';
 import path from 'path';
 
 import type { CoverageData } from './coverage';
-import { parseCoverage, readCoverage } from './coverage';
+import { readCoverageOrEmpty } from './coverage';
 
 // Auto-generates coverage by running vitest and reading the coverage-final.json it writes, so a user
 // never has to produce a report by hand. Each mode maps to a vitest selection — 'related' →
@@ -78,10 +78,8 @@ export function generateCoverage(request: CoverageRequest, options: GenerateOpti
   try {
     if (!options.verbose) console.error('› Running vitest to collect coverage…');
     runVitestCoverage(reportsDirectory, request, options);
-    const file = path.join(reportsDirectory, COVERAGE_FILE);
-    // readCoverage parses fully into memory, so the temp dir is safe to delete straight after.
-    // A run that covered nothing leaves no file — treat it as empty coverage.
-    return fs.existsSync(file) ? readCoverage(file) : parseCoverage('{}');
+    // The report is parsed fully into memory, so the temp dir is safe to delete straight after.
+    return readCoverageOrEmpty(path.join(reportsDirectory, COVERAGE_FILE));
   } finally {
     fs.rmSync(reportsDirectory, { recursive: true, force: true });
   }

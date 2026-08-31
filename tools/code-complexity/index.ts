@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import { buildFileRows } from './analyze';
 import { DEFAULT_BASE_REF, DEFAULT_MAX_COGNITIVE_BEHAVIOR, DEFAULT_MAX_COGNITIVE_JSX, DEFAULT_MAX_CRAP } from './config';
-import { readCoverage } from './coverage';
+import { parseCoverage, readCoverageOrEmpty } from './coverage';
 import type { CoverageData } from './coverage';
 import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './diff';
 import { generateCoverage } from './generate-coverage';
@@ -191,17 +191,20 @@ function thresholdsOf(options: CliOptions): Thresholds {
 
 // Resolve coverage from the chosen mode. `request` steers generation; it is ignored for 'file' and
 // 'off'. `anyNeedsCoverage` short-circuits generation: when no file in the selection needs coverage
-// generated (see fileNeedsCoverage) there is nothing coverage could inform, so we skip vitest and
-// return null instead of running it for numbers that would be discarded.
+// generated (see fileNeedsCoverage) vitest would produce nothing, so we skip the run.
+//
+// Only 'off' yields null. Skipping the run yields *empty* coverage instead, because null means "the
+// CRAP gate is disabled" to analyze.ts — which would let generation scope decide which functions are
+// scored, and make a function's score depend on what else happened to be in the same selection.
 function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeedsCoverage: boolean): CoverageData | null {
   switch (options.coverageMode) {
     case 'off':
       return null;
     case 'file':
       // coverageFile is always set when the mode is 'file' (parseArgs reads its value).
-      return readCoverage(options.coverageFile as string);
+      return readCoverageOrEmpty(options.coverageFile as string);
     case 'generate':
-      return anyNeedsCoverage ? generateCoverage(request, { verbose: options.verbose }) : null;
+      return anyNeedsCoverage ? generateCoverage(request, { verbose: options.verbose }) : parseCoverage('{}');
   }
 }
 

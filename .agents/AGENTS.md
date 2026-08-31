@@ -64,28 +64,12 @@ If you encounter a `CONTEXT.md` not listed here, read it too (and consider addin
 
 ## Architecture decision records (ADRs)
 
-ADRs live in:
-- `.agents/adr/`- if they contain decisions that affect the project as a whole
-- `<module-root>/adr/` - if they contain decisions relevant only to a particular project area or module
+See `./rules/adr.md` when proposing or adding a new record.
 
-Each ADR uses sequential numbering scoped to its folder and follows the <0000>-<slug>.md naming convention.
-
-See the global ADRs below. The module-local CONTEXT.md file points to that module’s local ADRs:
+The repo-wide records index:
 
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
-
-### When to offer an ADR
-
-All three of these must be true:
-
-1. Hard to reverse: the cost of changing your mind later is meaningful
-2. Surprising without context: a future reader will look at the code and wonder "why on earth did they do it this way?"
-3. The result of a real trade-off: there were genuine alternatives and you picked one for specific reasons
-
-If a decision is easy to reverse, skip it: you'll just reverse it. If it's not surprising, nobody will wonder why. If there was no real alternative, there's nothing to record beyond "we did the obvious thing."
-
-Supersede rather than rewrite. Change the old record’s `Status` to `superseded by <n>` and leave its reasoning intact.
 
 ## Product task workflow
 

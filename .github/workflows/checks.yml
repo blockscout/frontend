@@ -13,7 +13,6 @@ on:
       - 'deploy/**'
       - 'docs/**'
       - 'public/**'
-      - 'tools/**'
 
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}

@@ -63,6 +63,13 @@ export function readCoverage(filePath: string): CoverageData {
   return parseCoverage(fs.readFileSync(filePath, 'utf8'));
 }
 
+// A vitest run that covered nothing writes no report at all, so an absent file means "nothing was
+// covered", not a broken invocation. Both readers go through here: the tool's own generated run, and
+// the CI `--coverage-file` artifact, whose `--changed --passWithNoTests` run can select no specs.
+export function readCoverageOrEmpty(filePath: string): CoverageData {
+  return fs.existsSync(filePath) ? readCoverage(filePath) : parseCoverage('{}');
+}
+
 // Fraction (0..1) of coverable lines within a function's [startLine, endLine] range that were
 // executed. A line is coverable when it carries a statement; a function with no coverable lines
 // (e.g. a bare type-only body) counts as fully covered, so CRAP reduces to its complexity.

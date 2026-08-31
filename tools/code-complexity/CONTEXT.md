@@ -113,8 +113,11 @@ The interface has two independent axes, mirroring vitest — **selection** (whic
 Four things the flag list does not tell you:
 
 - **Vitest is skipped when nothing needs coverage.** Only files in the generation scope above cause a
-  run, so a focused run on a spec-less JSX component returns instantly with the cognitive gate only.
-  A diff with nothing in scope prints "No functions to check." and runs nothing.
+  run, so a focused run on a spec-less JSX component returns instantly — scoring its `behavior`
+  functions 0%, exactly as it would have had the run happened. Skipping the run is not
+  `--no-coverage`: generation scope never decides which functions are scored, so a function's score
+  never depends on what else shared its selection. A diff with nothing in scope prints "No functions
+  to check." and runs nothing.
 - **All three generated scopes select through the module graph** (`vitest related <paths>`,
   `vitest run --changed <merge-base>`, or the whole suite), so a file's coverage is the same however
   it was reached. A selection with no matching specs passes; a failing suite warns and still reports
