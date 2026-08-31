@@ -1,17 +1,12 @@
 import ts from 'typescript';
 
 // Per-function complexity from a single walk of the syntax tree produced by ts.createSourceFile
-// (no type-checker). Two scores accrue on the *same* walk:
+// (no type-checker). Two scores accrue on the *same* walk: `complexity` (cyclomatic, the CRAP input)
+// and `cognitive` (the readability gate), with every cognitive increment recorded in
+// `contributions` so a violation can name the sites that cost the most.
 //
-//  - `complexity` — cyclomatic complexity, counting independent paths ≈ tests needed. It mirrors
-//    ESLint's `complexity` rule (bar optional chaining, ADR 0004) and feeds CRAP. It is no longer a
-//    gate on its own — see ./CONTEXT.md.
-//  - `cognitive` — Cognitive Complexity, the readability gate. Follows the SonarSource model except
-//    that nesting is penalised quadratically rather than linearly (ADR 0005). Flat control flow
-//    scores cheap, boolean runs collapse. Every increment is recorded in `contributions` so a
-//    violation can name the exact sites that cost the most.
-//
-// The exact conventions and the divergences from SonarSource are documented in ./CONTEXT.md.
+// ./SCORING.md is the specification — which constructs increment, how nesting is charged, and the
+// divergences from SonarSource and ESLint. The ADRs cited below live in ./adr/.
 
 export interface Contribution {
   // Line of the construct that added the increment (1-based).
@@ -20,9 +15,8 @@ export interface Contribution {
   readonly amount: number;
   // Human-readable construct name, surfaced in violation annotations.
   readonly reason: string;
-  // Nesting depth this construct sits at (0 = function top level). Nesting structures pay
-  // `1 + nesting²`; flat ones pay a fixed amount at whatever depth they occur. Used to locate the
-  // deepest pocket for the "flatten this" annotation.
+  // Nesting depth this construct sits at (0 = function top level). Used to locate the deepest pocket
+  // for the "flatten this" annotation.
   readonly nesting: number;
 }
 
@@ -39,9 +33,9 @@ export interface FunctionComplexity {
   // Every cognitive increment, in walk order. Empty when `cognitive` is 0.
   contributions: Array<Contribution>;
   // Whether JSX appears directly in this function's own body — outside any nested function. This
-  // classifies the function `jsx` vs `behavior` (see ./CONTEXT.md), which selects its cognitive cap
-  // and whether the CRAP (coverage) gate applies to it. A `.map(x => <Row/>)` callback is `jsx`
-  // (the JSX is in the callback's own body); an `onClick` handler that renders nothing is `behavior`.
+  // classifies the function `jsx` vs `behavior`, which selects its cognitive cap and whether CRAP
+  // applies (./CONTEXT.md). A `.map(x => <Row/>)` callback is `jsx`; an `onClick` handler that
+  // renders nothing is `behavior`, even inside a component.
   containsJsx: boolean;
 }
 
@@ -76,11 +70,8 @@ const LOGICAL_OPERATORS: ReadonlySet<ts.SyntaxKind> = new Set([
 
 // The expression-level logical operators that form cognitive "boolean sequences": a run of the same
 // operator costs +1 for the whole run, and switching operator starts a new run. Compound-assignment
-// forms are not sequence operators (they are statements, not chains).
-//
-// Null-coalescing (`??`, `??=`) is deliberately absent: the SonarSource white paper ignores it as
-// readable shorthand, in the same class as `?.` (ADR 0004, extended by ADR 0005). Counting it
-// measured defaulting verbosity — a wall of flat `x ?? null` lines — not readability.
+// forms are not sequence operators (they are statements, not chains). Null-coalescing (`??`, `??=`)
+// is deliberately absent — ADR 0002.
 const SEQUENCE_OPERATORS: ReadonlyMap<ts.SyntaxKind, string> = new Map([
   [ ts.SyntaxKind.AmpersandAmpersandToken, '&&' ],
   [ ts.SyntaxKind.BarBarToken, '||' ],
@@ -97,9 +88,7 @@ export function isNestingStructureReason(reason: string): boolean {
 }
 
 // What one nesting structure costs at `nesting` levels deep. SonarSource charges `1 + nesting`; we
-// charge `1 + nesting²` — a deliberate divergence (ADR 0005). It is identical at depths 0 and 1 and
-// bites only from the third level in, so flat breadth stays cheap while genuinely-nested code
-// accelerates away. That is what lets one cap forgive wide-but-shallow code and still catch nesting.
+// charge `1 + nesting²` — a deliberate divergence, and the caps are calibrated against it (ADR 0002).
 export function nestingIncrement(nesting: number): number {
   return 1 + nesting * nesting;
 }
@@ -124,9 +113,7 @@ function countsAsBranch(node: ts.Node): boolean {
       return true;
     case ts.SyntaxKind.BinaryExpression:
       return LOGICAL_OPERATORS.has((node as ts.BinaryExpression).operatorToken.kind);
-    // Optional chaining `?.` is deliberately NOT counted. It short-circuits, but TypeScript already
-    // proves the nullability at each `?.` site, so no unit test needs an extra case for it — counting
-    // it measures null-safety verbosity, not the branching risk CRAP is meant to flag (ADR 0004).
+    // Optional chaining `?.` short-circuits but is deliberately not counted — ADR 0001.
     default:
       return false;
   }
@@ -336,10 +323,8 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
     }
 
     if (ts.isSwitchStatement(node)) {
-      // A switch is a nesting structure: one increment for the whole switch (never per-case, unlike
-      // cyclomatic), carrying the nesting penalty, and its body nests one level so control flow
-      // inside a case is penalised for the depth. This is what makes deeply-nested switch trees (the
-      // genuinely-hard-to-read tail this gate targets) score high.
+      // One increment for the whole switch, never per-case as cyclomatic does; its body nests a level
+      // so control flow inside a case pays for the depth.
       add(frame, node, nestingIncrement(nesting), 'switch', nesting);
       visit(node.expression, frame, nesting);
       visit(node.caseBlock, frame, nesting + 1);

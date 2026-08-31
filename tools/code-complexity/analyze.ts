@@ -11,19 +11,16 @@ export type Gate = (fn: Pick<FunctionComplexity, 'startLine' | 'endLine'>) => bo
 export interface BuildOptions {
   readonly thresholds: Thresholds;
   readonly gate: Gate;
-  // How to score a `behavior` function absent from the coverage report. Generated coverage and the
-  // CI report pass `true`: absence means no spec executed the file, i.e. genuinely untested, so it
-  // scores 0% (spec: missing coverage = 0%). A user-supplied --coverage-file in focused mode passes
-  // `false`: the report may simply predate the file, so absence reports `—`/no CRAP.
+  // How to score a `behavior` function absent from the coverage report: `true` reads absence as
+  // "no spec executed it" (0%), `false` as "no data" (`—`). Which mode passes which, and why:
+  // ./CONTEXT.md.
   readonly missingCoverageIsZero: boolean;
 }
 
-// Joins the pieces into report rows for one file's source, applying both gates per function (spec
-// FR2, FR3–FR6). Classification is per function: a `jsx` function (JSX directly in its own body)
-// gets the `jsx` cognitive cap and no CRAP; a `behavior` function gets the `behavior` cap and the
-// coverage-aware CRAP cap. `gate` decides which functions the thresholds apply to — focused/full
-// gate all functions, diff gates only the ones a changed line falls within. This is a pure function
-// (no fs/git) so both gates are unit-testable without a working tree.
+// Joins the pieces into report rows for one file's source, applying both gates per function.
+// `gate` decides which functions the thresholds apply to — focused/full gate all functions, diff
+// gates only the ones a changed line falls within. Kept pure (no fs/git) so both gates are
+// unit-testable without a working tree.
 export function buildFileRows(
   file: string,
   source: string,
@@ -35,8 +32,7 @@ export function buildFileRows(
 
   const lineHits = coverage !== null ? coverage.lineHitsFor(file) : undefined;
 
-  // CRAP applies only to `behavior` functions, and only when coverage data exists at all. A `jsx`
-  // function never scores CRAP (Playwright covers rendering; vitest coverage is not its signal).
+  // CRAP applies only to `behavior` functions, and only when coverage data exists at all.
   const coverageOf = (fn: FunctionComplexity): number | null => {
     if (fn.containsJsx || coverage === null) return null;
     if (lineHits) return functionLineCoverage(lineHits, fn.startLine, fn.endLine);

@@ -2,7 +2,7 @@ import { execFileSync } from 'child_process';
 
 import { isInScope } from './scope';
 
-// Diff-scoping (spec FR5): map git-diff hunks against a base ref to the new-side line ranges a
+// Diff-scoping: map git-diff hunks against a base ref to the new-side line ranges a
 // change added or modified, so the gate can select the functions those lines fall within. No
 // baseline artifact is kept.
 

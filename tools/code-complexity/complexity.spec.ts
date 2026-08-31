@@ -84,7 +84,7 @@ describe('computeFunctionComplexities — ESLint `complexity` parity', () => {
 
   it('does NOT count optional-chaining `?.` (property, call, or element access)', () => {
     // `?.` is null-safety verbosity, not a branch a test must cover: TypeScript proves the
-    // nullability at each site (ADR 0004). base 1 only, whatever the `?.` shape.
+    // nullability at each site (ADR 0001). base 1 only, whatever the `?.` shape.
     expect(complexityOf('function f(x: any) { return x?.y?.z?.toString(); }')).toBe(1);
     expect(complexityOf('function f(x: any) { const a = x?.(1); const b = x?.[0]; return a; }')).toBe(1);
   });
@@ -255,7 +255,7 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
   });
 
   it('does not count null-coalescing `??` or `??=`', () => {
-    // The SonarSource paper ignores null-coalescing as readable shorthand, like `?.` (ADR 0005): a
+    // The SonarSource paper ignores null-coalescing as readable shorthand, like `?.` (ADR 0002): a
     // wall of defaulting is verbose, not hard to follow.
     expect(cognitiveOf('function f(a: any, b: any, c: any) { return a ?? b ?? c; }')).toBe(0);
     expect(cognitiveOf('function f(x: any) { x ??= 1; return x; }')).toBe(0);

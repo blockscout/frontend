@@ -1,4 +1,4 @@
-// GitHub Actions output path (spec FR8): inline `::error` annotations on the PR diff for each
+// GitHub Actions output path: inline `::error` annotations on the PR diff for each
 // offender, plus the full report table written to the job summary. Pure formatters here; the
 // side effects (stdout + $GITHUB_STEP_SUMMARY) live in index.ts, guarded by $GITHUB_ACTIONS.
 
@@ -25,9 +25,8 @@ function topContributors(contributions: ReadonlyArray<Contribution>): string {
     .join(', ');
 }
 
-// The deepest nesting pocket and what flattening it by one level would save: every nesting structure
-// sitting at the deepest level pays `1 + depth²`, so removing that level drops each of them by
-// `2·depth − 1`. Flat increments (else, boolean runs) carry no nesting penalty and are not counted.
+// The deepest nesting pocket and what flattening it by one level would save. Only nesting structures
+// count toward the saving — flat increments (else, boolean runs) carry no nesting penalty.
 function deepestPocket(contributions: ReadonlyArray<Contribution>): string {
   const maxNesting = Math.max(0, ...contributions.map((contribution) => contribution.nesting));
   if (maxNesting === 0) return ''; // nothing nested to flatten

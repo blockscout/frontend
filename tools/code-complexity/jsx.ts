@@ -2,12 +2,11 @@ import ts from 'typescript';
 
 import { JSX_KINDS, scriptKind } from './complexity';
 
-// File-level JSX detection: whether a file contains JSX *anywhere*, read from the AST
-// (JsxElement / JsxSelfClosingElement / JsxFragment) rather than its extension. ~78 non-test
-// .tsx files contain no JSX (mostly `useX.tsx` hooks), so the extension is an unreliable
-// component-vs-logic signal. This drives only the "does this file need vitest coverage generated"
-// decision (a JSX-less file always does); per-function `jsx`/`behavior` classification — which
-// selects the complexity cap and CRAP applicability — is computed separately in ./complexity.ts.
+// File-level JSX detection: whether a file contains JSX *anywhere*, read from the AST rather than
+// from the extension, which is an unreliable component-vs-logic signal here (./CONTEXT.md).
+//
+// This drives only the "does this file need vitest coverage generated" decision. Per-function
+// `jsx`/`behavior` classification is a separate walk, in ./complexity.ts.
 
 export function fileContainsJsx(sourceText: string, fileName: string): boolean {
   const sourceFile = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true, scriptKind(fileName));

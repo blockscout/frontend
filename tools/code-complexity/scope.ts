@@ -1,4 +1,4 @@
-// File-scope resolution (spec FR7). The rule is an allowlist of two directories — the app (`src/`)
+// File-scope resolution. The rule is an allowlist of two directories — the app (`src/`)
 // and the repo's own tooling (`tools/`) — rather than a prefix test plus exclusions: nothing about
 // tooling code makes complexity or missing tests cheaper there, and `tools/code-complexity` in
 // particular is gated by the very thing it implements.

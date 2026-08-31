@@ -56,7 +56,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
-- `tools/code-complexity/` — the cyclomatic-complexity / CRAP CI gate: counting conventions, scope, and how it runs.
+- `tools/code-complexity/` — the cognitive-complexity / CRAP CI gate: what a failure means and how to fix it, counting conventions, scope.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
@@ -70,14 +70,17 @@ evidence and the trade-off, so it answers "why is it like this?" without a git a
 
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
-- `0004-optional-chaining-excluded-from-complexity.md` — why the code-complexity gate does not count `?.`.
-- `0005-quadratic-nesting-and-null-coalescing-in-cognitive-complexity.md` — why cognitive complexity
-  charges nesting `1 + n²` and ignores `??`, and why that is coupled to the calibrated caps.
 
-Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
-it constrains future work, was reached by measurement or an investigation worth not repeating, or
-looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
-`superseded by <n>` and leave its reasoning intact.
+A decision that constrains only one directory is recorded **locally** instead, in an `adr/` folder
+beside that directory's `CONTEXT.md`, same `<0000>-<slug>.md` naming but numbered from `0001` within
+its own folder. The `CONTEXT.md` points at them, and this list stays repo-wide.
+`tools/code-complexity/adr/` is the one that exists today. Numbers a relocated record vacated are not
+reused, so this list has gaps.
+
+Add a new record (next free number, and a line here if it is repo-wide) whenever a decision is
+expensive to rediscover: it constrains future work, was reached by measurement or an investigation
+worth not repeating, or looks wrong without its context. Supersede rather than rewrite — flip the old
+record's `Status` to `superseded by <n>` and leave its reasoning intact.
 
 ## Product task workflow
 

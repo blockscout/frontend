@@ -1,10 +1,8 @@
 import fs from 'fs';
 
-// Coverage join (spec FR3): read per-function line coverage from a v8/istanbul
-// `coverage-final.json`. The v8 provider remaps its data into istanbul's shape, so both are read
-// the same way: a `statementMap` (statement id -> source range) paired with `s` (statement id ->
-// hit count). Line coverage is derived from those exactly as istanbul's getLineCoverage() does —
-// a line's hit count is the highest count among the statements that start on it.
+// Coverage join: read per-function line coverage from a v8/istanbul `coverage-final.json`. The v8
+// provider remaps its data into istanbul's shape, so both are read the same way: a `statementMap`
+// (statement id -> source range) paired with `s` (statement id -> hit count).
 
 interface SourcePosition {
   readonly line: number;

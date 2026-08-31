@@ -7,25 +7,20 @@ import path from 'path';
 import type { CoverageData } from './coverage';
 import { parseCoverage, readCoverage } from './coverage';
 
-// Auto-generates coverage by running vitest and reading the coverage-final.json it writes, so a
-// user never has to produce a report by hand (a prebuilt one is supplied via --coverage-file
-// instead, e.g. from the CI coverage step). Coverage is scoped to the caller's mode, all via the
-// module graph so a file's coverage equals its whole-suite coverage (specs that don't import it
-// can't cover it) — focused, diff, and full therefore agree on a given file's number:
-//   - 'related' (focused): `vitest related <paths>` runs every spec that transitively imports the
-//     given files.
-//   - 'changed' (diff):    `vitest run --changed <since>` runs the specs the diff affects.
-//   - 'full' (whole repo): `vitest run` runs the entire suite (used for ticket-04 calibration).
+// Auto-generates coverage by running vitest and reading the coverage-final.json it writes, so a user
+// never has to produce a report by hand. Each mode maps to a vitest selection — 'related' →
+// `vitest related <paths>`, 'changed' → `vitest run --changed <since>`, 'full' → `vitest run`. All
+// three select through the module graph, which is what makes a file's coverage independent of how it
+// was reached (./CONTEXT.md).
+//
 // Output goes to a throwaway temp dir (never the user's ./coverage) and is removed once read.
 
 const VITEST_BIN = path.join('node_modules', '.bin', 'vitest');
 const COVERAGE_FILE = 'coverage-final.json';
 const EXEC_MAX_BUFFER = 64 * 1024 * 1024;
 
-// Primed-request drift tests (src/server/primedRequests/CONTEXT.md) mount whole page trees to check
-// the primer registry, not to exercise behavior. They import huge swaths of the app, so `related`
-// pulls them in for almost any file — tens of seconds of page-mount cost that adds no meaningful
-// coverage. Excluding them keeps coverage to what real behavior/logic specs actually execute.
+// Primed-request drift tests (src/server/primedRequests/CONTEXT.md) import huge swaths of the app, so
+// `related` pulls them in for almost any file at a large page-mount cost and no useful coverage.
 const COVERAGE_TEST_EXCLUDES: ReadonlyArray<string> = [ '**/*.primed.spec.tsx' ];
 
 export type CoverageRequest =

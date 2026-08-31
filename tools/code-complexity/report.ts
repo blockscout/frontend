@@ -1,13 +1,9 @@
-// Renders the results table (spec FR8): every checked function with its cognitive complexity,
-// coverage%, CRAP, and which threshold (if any) it broke, sorted by CRAP descending with offenders
-// flagged. Cyclomatic complexity (CX) is not a default column — with cognitive complexity governing
-// decomposition, the only fix for a CRAP failure is coverage, never lowering CX, so CX is never
-// actionable in the default view. It stays available under --verbose for calibration and debugging.
+// Renders the results table: every checked function with its cognitive complexity, coverage%, CRAP,
+// and which threshold (if any) it broke, sorted by CRAP descending with offenders flagged.
 
 import type { Contribution } from './complexity';
 
-// A function's class, decided by whether JSX appears directly in its own body (see ./complexity.ts).
-// It selects the cognitive cap and whether the CRAP half applies.
+// A function's class, decided by whether JSX appears directly in its own body (./complexity.ts).
 export type FunctionKind = 'jsx' | 'behavior';
 
 export interface ReportRow {
@@ -84,7 +80,8 @@ interface Column {
   readonly alignRight: boolean;
 }
 
-// `verbose` adds the CX (cyclomatic) column, off by default because it is never the fix for a failure.
+// `verbose` adds the CX (cyclomatic) column, off by default: coverage is the only fix for a CRAP
+// failure, so CX is never actionable in the default view.
 function columnsFor(verbose: boolean): Array<Column> {
   const columns: Array<Column> = [
     { header: 'FUNCTION', cell: (row) => `${ row.file }:${ row.line }`, alignRight: false },

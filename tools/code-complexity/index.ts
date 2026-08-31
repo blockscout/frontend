@@ -14,18 +14,9 @@ import type { ReportRow, Thresholds } from './report';
 import { formatTable, isOffender } from './report';
 import { isInScope } from './scope';
 
-// Two independent axes, mirroring vitest. Selection = which functions to score; coverage = how the
-// coverage half is obtained. Any selection combines with any coverage source.
-//
-// Selection:
-//   full (default)     — every in-scope function (src/** and tools/**; a repo-wide report)
-//   focused (<path...>)— every function in the given files
-//   diff (--changed)   — only functions a changed line falls within, vs the base ref
-//
-// Coverage:
-//   'generate' (default) — run vitest to produce coverage for the selection's scope
-//   'file'  (--coverage-file <path>) — consume a prebuilt coverage-final.json, skip vitest (CI)
-//   'off'   (--no-coverage)          — skip coverage, complexity gate only
+// The CLI has two independent axes, mirroring vitest: selection (which functions to score) and
+// coverage source (how the CRAP half is fed). Any selection combines with any source; ./CONTEXT.md
+// tabulates both. USAGE below is the flag reference.
 type CoverageMode = 'generate' | 'file' | 'off';
 
 interface CliOptions {
@@ -215,24 +206,22 @@ function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeeds
 }
 
 // Whether a source file has a co-located vitest spec, by naming convention
-// (foo.ts -> foo.spec.ts / foo.spec.tsx). Playwright tests (*.pw.tsx) deliberately do not count —
-// they produce no vitest coverage.
+// (foo.ts -> foo.spec.ts / foo.spec.tsx). Playwright tests (*.pw.tsx) do not count: no vitest
+// coverage comes out of them.
 function hasCoLocatedSpec(file: string): boolean {
   const base = file.slice(0, file.lastIndexOf('.'));
   return fs.existsSync(`${ base }.spec.ts`) || fs.existsSync(`${ base }.spec.tsx`);
 }
 
 // Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
-// component only when it has a co-located vitest spec (behavior tests exist). A JSX component
-// without one is covered — if at all — by Playwright visual tests that emit no vitest coverage, so
-// generating coverage for it would read 0% and flood the report. This drives only the generation
-// scope; per-function CRAP applicability (`behavior` functions only) is decided in analyze.ts.
+// component only when it has a co-located vitest spec. This drives only the generation scope
+// (./CONTEXT.md); per-function CRAP applicability is decided in analyze.ts.
 function fileNeedsCoverage(file: string, source: string): boolean {
   return !fileContainsJsx(source, file) || hasCoLocatedSpec(file);
 }
 
-// Focused mode: score every function in the given files, no diff-scoping (spec FR11). Coverage is
-// generated from the files' transitive importers (`related`), matching what diff/full would give.
+// Focused mode: score every function in the given files, no diff-scoping. Coverage comes from the
+// files' transitive importers (`related`), matching what diff/full would give.
 function runFocusedMode(options: CliOptions): Array<ReportRow> {
   const displayPaths = options.focusPaths.map(normalizeDisplayPath);
   const sources = new Map(displayPaths.map((displayPath) => [ displayPath, readFile(displayPath) ] as const));
@@ -245,16 +234,14 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
   return displayPaths.flatMap((displayPath) => buildFileRows(displayPath, sources.get(displayPath) as string, coverage, {
     thresholds: thresholdsOf(options),
     gate: () => true,
-    // A behavior function absent from generated coverage is genuinely untested -> 0%, except when
-    // the user supplied the report themselves (then absence is "no data", `—`).
+    // The one mode where a missing entry may just mean the hand-passed report predates the file.
     missingCoverageIsZero: options.coverageMode !== 'file',
   }));
 }
 
-// Full-repo mode (default): score every in-scope function, across both allowlisted roots. Untested
-// files are absent from the coverage report and scored 0%, so the report shows the whole CRAP
-// distribution — this is the mode the threshold calibration runs. The repo always has files that
-// need coverage and generation runs the whole suite regardless, so there is no per-file skip here.
+// Full-repo mode (default): score every in-scope function, across both allowlisted roots. This is
+// the mode threshold calibration runs (./CALIBRATION.md). The repo always has files that need
+// coverage and generation runs the whole suite regardless, so there is no per-file skip here.
 function runFullMode(options: CliOptions): Array<ReportRow> {
   const files = getAllSourceFiles();
   if (files.length === 0) return [];
@@ -270,8 +257,8 @@ function runFullMode(options: CliOptions): Array<ReportRow> {
   });
 }
 
-// Diff mode: gate only functions a changed line falls within, across in-scope changed files
-// (spec FR5). Untouched functions in a changed file are listed but never flagged.
+// Diff mode: gate only functions a changed line falls within, across in-scope changed files.
+// Untouched functions in a changed file are listed but never flagged.
 function runDiffMode(options: CliOptions): Array<ReportRow> {
   const baseCommit = resolveBaseCommit(options.baseRef);
   const changedFiles = getChangedFiles(baseCommit).filter(isInScope).filter((file) => fs.existsSync(file));
@@ -288,7 +275,7 @@ function runDiffMode(options: CliOptions): Array<ReportRow> {
     return buildFileRows(file, sources.get(file) as string, coverage, {
       thresholds: thresholdsOf(options),
       gate: (fn) => rangesOverlap(changedRanges, fn.startLine, fn.endLine),
-      // A changed behavior function missing from coverage is untested changed code -> 0% (spec FR).
+      // A changed behavior function missing from coverage is untested changed code -> 0%.
       missingCoverageIsZero: true,
     });
   });
@@ -300,9 +287,9 @@ function selectRows(options: CliOptions): Array<ReportRow> {
   return runFullMode(options);
 }
 
-// Under $GITHUB_ACTIONS, add the two CI outputs (spec FR8): `::error` annotations that surface each
-// offender inline on the PR diff, and the full table written to the job summary. The plain-stdout
-// table has already been printed; outside CI this is a no-op.
+// Under $GITHUB_ACTIONS, add the two CI outputs: `::error` annotations that surface each offender
+// inline on the PR diff, and the full table written to the job summary. The plain-stdout table has
+// already been printed.
 function emitGithubActionsOutput(rows: ReadonlyArray<ReportRow>, thresholds: Thresholds, table: string): void {
   for (const annotation of githubAnnotations(rows, thresholds)) console.log(annotation);
   // eslint-disable-next-line no-restricted-properties -- Node CLI reading a CI-provided path, not an app env var

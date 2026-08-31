@@ -1,4 +1,4 @@
-# 0005 — cognitive complexity penalises nesting quadratically and ignores `??`
+# 0002 — cognitive complexity penalises nesting quadratically and ignores `??`
 
 | | |
 | --- | --- |
@@ -9,7 +9,7 @@
 
 ## Decision
 
-The Cognitive Complexity (CC) score in `tools/code-complexity/` diverges from the SonarSource model
+This gate's Cognitive Complexity (CC) score diverges from the SonarSource model
 in two coupled ways:
 
 1. **Nesting is charged `1 + n²`, not `1 + n`** (n = 0-based depth). Every structural increment that
@@ -19,7 +19,7 @@ in two coupled ways:
 2. **Null-coalescing `??` and `??=` add nothing.** They are dropped from the boolean-sequence
    operator set. `&&` and `||` still cost `+1` per run.
 
-The two are one decision: the caps in `config.ts` are calibrated against this exact model.
+The two are one decision: the caps in `../config.ts` are calibrated against this exact model.
 
 ## Why
 
@@ -43,7 +43,7 @@ with margin), while leaving the flat-breadth band below the cap.
 null-coalescing as readable shorthand, in the same class as `?.`. Counting it measured defaulting
 verbosity: at calibration the worst case was an API-model mapper — a flat wall of `x ?? null` field
 assignments with no control flow — scoring 14, as much as genuinely branchy logic. Dropping it takes
-that to 0. This is ADR 0004's reasoning
+that to 0. This is ADR 0001's reasoning
 (`?.` is null-safety verbosity, not a path a reader or a test must follow) extended from cyclomatic
 to cognitive, and applied to the operator the paper already excluded.
 
@@ -57,7 +57,7 @@ priced as such.
 - **CC here is not the SonarSource number, and is not expected to be.** Comparing against
   `eslint-plugin-sonarjs` will show us reading higher on anything nested past depth 1. That is by
   design; oracle parity is not a regression test. The counting conventions and the full list of
-  divergences live in `tools/code-complexity/CONTEXT.md`.
+  divergences live in `../CONTEXT.md`.
 - **The model and the caps are one decision.** `DEFAULT_MAX_COGNITIVE_BEHAVIOR` / `_JSX` were set
   from the full-repo distribution *under this model*. Reverting either change — re-counting `??`, or
   going back to linear nesting — silently makes the caps wrong (far looser, since scores collapse),
@@ -65,6 +65,6 @@ priced as such.
 - The behavior cap sits at a natural gap in the resulting distribution rather than being pinned to
   one trip example: the flat-breadth band tops out at 20 and the nested band starts at 21. That gap
   exists *because* of the quadratic penalty; it does not survive a return to linear.
-- Reversing is small in code — `nestingIncrement` in `complexity.ts` and one entry in
+- Reversing is small in code — `nestingIncrement` in `../complexity.ts` and one entry in
   `SEQUENCE_OPERATORS` — which is exactly why it needs this record: it looks like a two-line
   simplification and is not.
