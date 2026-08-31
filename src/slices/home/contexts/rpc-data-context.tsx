@@ -147,11 +147,11 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
       setIsEnabled(true);
       setSubscriptions((prev) => [ ...prev, id ]);
     } else {
-      setIsLoading(false);
       setSubscriptions((prev) => {
         const next = prev.filter((subscription) => subscription !== id);
         if (next.length === 0) {
           setIsEnabled(false);
+          setIsLoading(false);
           unwatch?.();
         }
         return next;

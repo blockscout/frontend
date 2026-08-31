@@ -8,6 +8,7 @@ import type { MainPageStats } from '@blockscout/stats-types';
 import config from 'src/config';
 
 const isStatsFeatureEnabled = config.features.stats.isEnabled;
+const rollupFeature = config.features.rollup;
 
 export const RPC_TOOLTIP_CONTENT_VALUE = 'Our indexer is experiencing problems, you see the data directly from RPC';
 export const RPC_TOOLTIP_CONTENT_NO_VALUE = 'Our indexer is experiencing problems and we couldn\'t get this data directly from RPC';
@@ -57,7 +58,21 @@ export function getStatsHomeDataItem(
         isLoading,
         isError,
       };
-    case 'total_operational_transactions':
+    case 'total_operational_transactions': {
+      if (!rollupFeature.isEnabled) {
+        return null;
+      }
+
+      if (rollupFeature.type === 'optimistic') {
+        return {
+          id,
+          data: statsApiQuery.data?.op_stack_total_operational_transactions?.value,
+          title: statsApiQuery.data?.op_stack_total_operational_transactions?.title,
+          isLoading: statsApiQuery.isPlaceholderData,
+          isError: statsApiQuery.isError,
+        };
+      }
+
       return {
         id,
         data: statsApiQuery.data?.total_operational_transactions?.value,
@@ -65,14 +80,7 @@ export function getStatsHomeDataItem(
         isLoading: statsApiQuery.isPlaceholderData,
         isError: statsApiQuery.isError,
       };
-    case 'op_stack_total_operational_transactions':
-      return {
-        id,
-        data: statsApiQuery.data?.op_stack_total_operational_transactions?.value,
-        title: statsApiQuery.data?.op_stack_total_operational_transactions?.title,
-        isLoading: statsApiQuery.isPlaceholderData,
-        isError: statsApiQuery.isError,
-      };
+    }
     case 'last_output_root_size':
       return {
         id,

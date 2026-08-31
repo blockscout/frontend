@@ -29,10 +29,7 @@ const HomeStatsTotalOperationalTxs = () => {
     if (itemQuery.isError) {
       return mdash;
     }
-    if (rollupFeature.type === 'arbitrum' && itemQuery.id === 'total_operational_transactions' && itemQuery.data) {
-      return Number(itemQuery.data).toLocaleString();
-    }
-    if (rollupFeature.type === 'optimistic' && itemQuery.id === 'op_stack_total_operational_transactions' && itemQuery.data) {
+    if ((rollupFeature.type === 'arbitrum' || rollupFeature.type === 'optimistic') && itemQuery.id === 'total_operational_transactions' && itemQuery.data) {
       return Number(itemQuery.data).toLocaleString();
     }
   })();
@@ -42,10 +39,7 @@ const HomeStatsTotalOperationalTxs = () => {
   }
 
   const label = (() => {
-    if (rollupFeature.type === 'arbitrum' && itemQuery.id === 'total_operational_transactions') {
-      return itemQuery.title;
-    }
-    if (rollupFeature.type === 'optimistic' && itemQuery.id === 'op_stack_total_operational_transactions') {
+    if ((rollupFeature.type === 'arbitrum' || rollupFeature.type === 'optimistic') && itemQuery.id === 'total_operational_transactions') {
       return itemQuery.title;
     }
   })();
