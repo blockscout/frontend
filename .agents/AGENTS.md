@@ -14,7 +14,7 @@ See `./rules/design-system.md` for Chakra UI v3 design system configuration and 
 
 ## Code Style & Quality
 
-See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch.
+See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch, and the complexity/CRAP scores.
 
 ## TypeScript Conventions
 

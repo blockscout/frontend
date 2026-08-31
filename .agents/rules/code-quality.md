@@ -7,15 +7,37 @@ alwaysApply: false
 ---
 # Code Quality
 
-We use ESLint, cSpell and Typescript to maintain code quality and consistency across the project.
-In order to check code quality run the following commands:
+We use ESLint, cSpell, TypeScript to maintain code quality.
+
 ```bash
 pnpm lint:eslint:fix
 pnpm lint:tsc
 pnpm lint:cspell
 ```
 
-Moreover, please find below the general sense rules that linters do not cover.
+The rest of this file covers code complexity scores and conventions that the linters do not.
+
+## Complexity and CRAP
+
+Two independent per-function gates:
+
+- **COG** (cognitive complexity) — readability. A `BROKE` here means decompose the function (flatten nesting, extract, early-return).
+- **CRAP** — under-tested *behavior* (handlers, hooks, utils — not JSX render bodies). A `BROKE` here means add a Vitest spec; simplifying the function does not lower CRAP.
+
+How a score is counted, which functions are gated, and how to read a failure: `tools/code-complexity/CONTEXT.md`.
+
+How to run:
+
+```bash
+# The file you are on — every function in it
+pnpm test:code-complexity path/to/file.ts
+
+# This branch vs origin/main, including uncommitted edits
+pnpm test:code-complexity --changed
+
+# For the full command usage
+pnpm test:code-complexity --help
+```
 
 ## Code Style and Structure
 
