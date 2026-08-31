@@ -85,3 +85,74 @@ clears — the wide-but-shallow win:
   `eslint-plugin-sonarjs@4.2.0` exactly; the only residual deltas are boolean (that version scores pure
   `||`/`??` chains as 0 and collapses `&&`-containing expressions to +1, while we follow the written
   SonarSource per-run model). Keep this in mind if you validate any new distribution against the oracle.
+
+---
+
+## Session-2 decision (this ticket): quadratic nesting + `??` exclusion
+
+The investigation above is resolved. Two model changes were chosen and the caps re-set on the resulting
+distribution. These are the targets the recalibration leaf must reproduce.
+
+### Why the linear model couldn't be fixed by moving the cap
+
+The SonarSource white paper (v1.7) **counts breadth**: every `if`/ternary/loop/`catch` is `+1`, flat or
+not, with no breadth discount. Nesting is an *additional* per-level increment. So "forgive breadth,
+punish nesting" is not achievable under the linear model at any cap — the flat-breadth offenders
+(`useMarketplaceApps` 18, `getFormDefaultValues` 18, `toTokenModel` 14) and the nested anchor
+(`useEtherscanRedirects` 15) overlap in score. Two changes separate them.
+
+### Change 1 — exclude `??`
+
+The paper explicitly ignores null-coalescing operators as readable shorthand (same class as `?.`). The
+tool counted `??`/`??=` in its boolean-sequence set — a conformance bug. Removing it clears pure-`??`
+defaulting objects entirely (`toTokenModel` 14→0, `toTokenInstanceModel` 11→0) and drops 3 tail functions
+below 14, but leaves the flat ternary/`||` offenders (they are correctly counted by the paper). On its
+own it moves behavior-over-14 from 20 → 17. Not sufficient alone — hence change 2.
+
+### Change 2 — quadratic nesting `1 + n²`
+
+Structural increments change from `1 + n` to `1 + n²` (n = 0-based depth). Consecutive differences are the
+odd numbers (1,3,5,7…): each new depth level costs 2 more than the last. It is identical to linear at
+n = 0,1 and diverges only at n ≥ 2 (the third nesting level), so it is a **surgical surcharge on the deep
+tail** — the bulk distribution and all flat/shallow code are unchanged. Ternary chains are **not**
+flattened (an eslint rule already bans nested ternaries), so a nested ternary is penalised like any other
+nesting.
+
+Right-leaning ternary-chain flattening was considered and **rejected** for that reason.
+
+### Behavior distribution (n=4273, `??` excluded)
+
+Percentiles are unchanged linear→quad (p50 0 · p90 3 · p95 5 · p99 10 · max 43) — quadratic only touches
+the deep tail.
+
+| cap | 14 | 15 | 16 | 18 | 19 | 20 | 22 | 24 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| over, linear `1+n` | 17 | 13 | 11 | 6 | 6 | 4 | 4 | 3 |
+| over, **quad `1+n²`** | 21 | 17 | 15 | 9 | 9 | **8** | 7 | 4 |
+
+### Chosen cap: behavior = 20 (fires on 8), classified
+
+**bold** = climbed under quadratic (genuinely nested); the rest are flat.
+
+| quad | lin | function | |
+| --- | --- | --- | --- |
+| 43 | 43 | `useNavItems` useMemo | flat — 40 decisions, accepted as heavy |
+| **42** | 36 | `useValidateField` | deep |
+| **33** | 29 | `getFromTo` (noves) | deep |
+| **28** | 24 | `getDefaultValues` (contract) | deep |
+| **24** | 20 | `getFullPathOfImportedFile` | deep |
+| **23** | 15 | `useEtherscanRedirects` (anchor) | deep — trips with margin |
+| **23** | 17 | `SearchResults` handler | deep |
+| **21** | 15 | `calculateHasNextPage` | deep |
+
+Just under the cap (forgiven, flat/length-driven): `Address.tsx` 20, `getFormDefaultValues` 18,
+`useMarketplaceApps` 18, `base` 17, `useCallMethodWalletClient` 17, `matchFilters` 15. Cap 18 would
+re-catch the flat 18s (false positives); cap 22 would drop the nested `calculateHasNextPage` (21). 20 is
+the natural gap.
+
+### jsx distribution (n=2265, `??` excluded)
+
+Barely moves: linear p99=19 max=89 → quad p99=20 max=92. Firing counts over cap 25: linear 14, quad 16.
+Notable climbers: `SearchResultTableItem` 86→92, `SearchResultListItem` 56→68, `NavigationPromoBannerContent`
+47→55, `Skeleton` 19→31 (nested conditional rendering). The jsx cap is re-confirmed against this run at its
+natural backstop (~25); the model change does not reshape the jsx tail.
