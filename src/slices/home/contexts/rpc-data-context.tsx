@@ -12,7 +12,8 @@ import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-w
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
-export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets';
+export type SubscriptionId = 'latest-blocks' | 'latest-txs' | 'stats-widgets' |
+'stats-widgets-latest-block' | 'stats-widgets-average-block-time';
 
 interface HomeRpcDataContext {
   blocks: Array<schemas['Block']>;
@@ -141,15 +142,16 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
       return;
     }
 
-    setIsEnabled(isEnabled);
     if (isEnabled) {
       setIsLoading(true);
+      setIsEnabled(true);
       setSubscriptions((prev) => [ ...prev, id ]);
     } else {
-      setIsLoading(false);
       setSubscriptions((prev) => {
         const next = prev.filter((subscription) => subscription !== id);
         if (next.length === 0) {
+          setIsEnabled(false);
+          setIsLoading(false);
           unwatch?.();
         }
         return next;

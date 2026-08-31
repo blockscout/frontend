@@ -24,7 +24,7 @@ import GasInfoUpdateTimer from './GasInfoUpdateTimer';
 
 interface Props {
   children: React.ReactNode;
-  data: schemas['StatsResponse'];
+  data: Pick<schemas['StatsResponse'], 'gas_prices' | 'gas_price_updated_at' | 'gas_prices_update_in'>;
   dataUpdatedAt: number;
   placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
 }
