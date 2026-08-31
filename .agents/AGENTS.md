@@ -56,31 +56,36 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
-- `tools/code-complexity/` — the cognitive-complexity / CRAP CI gate: what a failure means and how to fix it, counting conventions, scope.
+- `tools/code-complexity/` — the cognitive-complexity / CRAP CI gate: what a failure means and how to fix it.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
-## Architecture decision records
+## Architecture decision records (ADRs)
 
-Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
-`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
-evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+ADRs live in:
+- `.agents/adr/`- if they contain decisions that affect the project as a whole
+- `<module-root>/adr/` - if they contain decisions relevant only to a particular project area or module
+
+Each ADR uses sequential numbering scoped to its folder and follows the <0000>-<slug>.md naming convention.
+
+See the global ADRs below. The module-local CONTEXT.md file points to that module’s local ADRs:
 
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
 
-A decision that constrains only one directory is recorded **locally** instead, in an `adr/` folder
-beside that directory's `CONTEXT.md`, same `<0000>-<slug>.md` naming but numbered from `0001` within
-its own folder. The `CONTEXT.md` points at them, and this list stays repo-wide.
-`tools/code-complexity/adr/` is the one that exists today. Numbers a relocated record vacated are not
-reused, so this list has gaps.
+### When to offer an ADR
 
-Add a new record (next free number, and a line here if it is repo-wide) whenever a decision is
-expensive to rediscover: it constrains future work, was reached by measurement or an investigation
-worth not repeating, or looks wrong without its context. Supersede rather than rewrite — flip the old
-record's `Status` to `superseded by <n>` and leave its reasoning intact.
+All three of these must be true:
+
+1. Hard to reverse: the cost of changing your mind later is meaningful
+2. Surprising without context: a future reader will look at the code and wonder "why on earth did they do it this way?"
+3. The result of a real trade-off: there were genuine alternatives and you picked one for specific reasons
+
+If a decision is easy to reverse, skip it: you'll just reverse it. If it's not surprising, nobody will wonder why. If there was no real alternative, there's nothing to record beyond "we did the obvious thing."
+
+Supersede rather than rewrite. Change the old record’s `Status` to `superseded by <n>` and leave its reasoning intact.
 
 ## Product task workflow
 
