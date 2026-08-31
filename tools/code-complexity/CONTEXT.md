@@ -25,7 +25,7 @@ The interface has two independent axes, mirroring vitest: **selection** (which f
 **coverage source** (how the coverage half is obtained). Any selection combines with any source.
 
 ```bash
-pnpm test:code-complexity                            # full repo: every in-scope src/** function
+pnpm test:code-complexity                            # full repo: every in-scope function
 pnpm test:code-complexity src/foo.ts                 # focused: every function in these files
 pnpm test:code-complexity --changed                  # diff: functions the diff touches vs origin/main
 pnpm test:code-complexity --changed=<ref>            # diff against a different base ref (or --base <ref>)
@@ -48,7 +48,7 @@ instantly with the cognitive gate only.
 
 ### Selection (which functions)
 
-- **Full repo (default).** No paths and no `--changed`: every in-scope `src/**` function. Used for
+- **Full repo (default).** No paths and no `--changed`: every in-scope function (see "Scope"). Used for
   threshold calibration — it produces the repo-wide CC and CRAP distributions.
 - **Focused (`<path...>`).** Every function in the given files, ignoring the diff.
 - **Diff (`--changed[=<ref>]`, or `--base <ref>`).** Only functions a changed line falls within,
@@ -255,9 +255,26 @@ caps and the calibration figures behind them are documented in `config.ts`.
 
 ## Scope
 
-- **Files:** `src/**` `.ts`/`.tsx`, excluding specs (`*.spec.*`, `*.pw.tsx`, `*.pwstory.tsx`),
-  declaration files (`*.d.ts`), the toolkit build output (`src/toolkit/package/**`), and anything
-  outside `src/` (so `tools/`, `deploy/` fall out for free).
+- **Files:** an **allowlist** of two roots — the app (`src/`) and the repo's own tooling (`tools/`) —
+  with the extension set `.ts` `.tsx` `.mjs` `.js` `.cjs`. Excluded within them: specs (`*.spec.*`,
+  `*.pw.tsx`, `*.pwstory.tsx`), declaration files (`*.d.ts`), configuration (`*.config.*`), and build
+  output (`src/toolkit/package/**`, `tools/**/dist/`). Nothing about tooling code makes complexity or
+  missing tests cheaper, which is why it is an allowlist of directories rather than a `src/` prefix
+  test that let everything else fall out by accident.
+
+  Two categories are deliberately **out**:
+
+  - **`deploy/**`** — ESLint ignores the directory outright and every `deploy/tools/*` package sits
+    outside the root TypeScript project. Making this gate its first and only automated check is
+    backwards; bringing `deploy/` under ESLint and `tsc` first is issue #3675.
+  - **`playwright/**`, `vitest/**`, `*.config.*`, and the repo-root runtime files** (`proxy.ts`,
+    `instrumentation*.ts`, `startup.node.ts`) — test support and configuration are out on the same
+    grounds specs are; the root files measured clean, and an allowlist of two directories is worth
+    more than covering them.
+
+  **The gate scores its own implementation.** `tools/code-complexity/**` is in scope, so a change to
+  the increment model re-scores `complexity.ts` under the new model and carries whatever refactor its
+  own numbers then demand — budget for that when touching the counting conventions.
 - **Functions (diff mode):** only functions a changed line falls within are gated. A changed line is
   any new-side line of the diff between the working tree and the merge-base of the branch and the base
   ref — this captures the branch's own commits plus uncommitted edits. Functions in a changed file

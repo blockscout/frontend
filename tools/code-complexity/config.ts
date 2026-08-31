@@ -29,6 +29,14 @@
 // the two caps fire on 24 — net-looser overall, though jsx is per-kind stricter (16 vs 10).
 // Wide-but-shallow logic the old count over-flagged now clears: the three biggest rescues dropped
 // from cyclomatic 18/14/15 to CC 6/2/0.
+//
+// Widening the file scope to `tools/**` was measured against these caps and does not move the tail,
+// so they stand unchanged: the extension adds 185 `behavior` functions and no `jsx` ones, and the 132
+// in TypeScript top out at exactly CC 20 with none over. Only the three `.mjs` scripts break — one on
+// CC (`check-doc-links.mjs`, 58) and one on CRAP (`aggregate-react-profile.mjs`, 182) — and they are
+// tracked in #3674, not exempted here. The `behavior` over-cap count across the repo therefore stays
+// at the calibrated 8 for `src/**` plus that one script. Re-tuning off tooling code would re-open a
+// calibration argued from the `src/**` distribution on the strength of ~4% more functions.
 export const DEFAULT_MAX_COGNITIVE_JSX = 25;
 export const DEFAULT_MAX_COGNITIVE_BEHAVIOR = 20;
 

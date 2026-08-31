@@ -18,7 +18,7 @@ import { isInScope } from './scope';
 // coverage half is obtained. Any selection combines with any coverage source.
 //
 // Selection:
-//   full (default)     — every in-scope src/** function (ticket-04 calibration; a repo-wide report)
+//   full (default)     — every in-scope function (src/** and tools/**; a repo-wide report)
 //   focused (<path...>)— every function in the given files
 //   diff (--changed)   — only functions a changed line falls within, vs the base ref
 //
@@ -44,7 +44,7 @@ const USAGE = `Usage:
   test:code-complexity [--max-cognitive <n>] [--max-cognitive-jsx <n>]
                        [--max-cognitive-behavior <n>] [--max-crap <n>]
                        [--coverage-file <path> | --no-coverage] [--verbose]
-      Full-repo mode (default): score every in-scope src/** function.
+      Full-repo mode (default): score every in-scope function (src/** and tools/**).
       The readability gate is cognitive complexity, capped per function class:
       --max-cognitive-jsx for render bodies, --max-cognitive-behavior for handlers/hooks/utils;
       bare --max-cognitive sets both. --max-crap caps the CRAP score (cyclomatic × coverage).
@@ -58,7 +58,110 @@ const USAGE = `Usage:
   a prebuilt report (the CI path, skips vitest) or --no-coverage skips it (cognitive gate only).
   Vitest output is hidden by default; --verbose streams it live and adds the cyclomatic (CX) column.`;
 
-function parseArgs(argv: ReadonlyArray<string>): CliOptions {
+// Cap values are positive integers; anything else is a typo worth failing on rather than silently
+// defaulting.
+function readCap(flag: string, raw: string): number {
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value < 1) throw new Error(`Invalid value for ${ flag }: ${ raw }`);
+  return value;
+}
+
+// One flag's behaviour, discriminated by how it takes its value:
+//   'switch'   — no value at all (--verbose)
+//   'value'    — required, from `--flag=value` or the following token (--max-crap)
+//   'optional' — inline-only and optional (--changed[=<ref>]); a bare --changed keeps the default
+//                ref, and the flag must never swallow the following token, which in CI is another flag
+type FlagSpec =
+  { readonly kind: 'switch'; readonly apply: (options: CliOptions) => void } |
+  { readonly kind: 'value'; readonly apply: (options: CliOptions, value: string) => void } |
+  { readonly kind: 'optional'; readonly apply: (options: CliOptions, value: string | undefined) => void };
+
+// The whole flag surface as data. Keeping it a lookup rather than an if/else chain is what leaves
+// readability budget for the next flag, and it removes the prefix-shadowing hazard a `startsWith`
+// chain has (`--max-cognitive` matching `--max-cognitive-jsx` unless the arms are ordered just so).
+const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
+  [ '--help', { kind: 'switch', apply: () => {
+    console.log(USAGE);
+    process.exit(0);
+  } } ],
+  [ '-h', { kind: 'switch', apply: () => {
+    console.log(USAGE);
+    process.exit(0);
+  } } ],
+  [ '--verbose', { kind: 'switch', apply: (options) => {
+    options.verbose = true;
+  } } ],
+  [ '--no-coverage', { kind: 'switch', apply: (options) => {
+    options.coverageMode = 'off';
+  } } ],
+  [ '--coverage-file', { kind: 'value', apply: (options, value) => {
+    options.coverageMode = 'file';
+    options.coverageFile = value;
+  } } ],
+  [ '--changed', { kind: 'optional', apply: (options, value) => {
+    options.diffSelected = true;
+    if (value !== undefined) options.baseRef = value;
+  } } ],
+  [ '--base', { kind: 'value', apply: (options, value) => {
+    options.diffSelected = true;
+    options.baseRef = value;
+  } } ],
+  [ '--max-cognitive-jsx', { kind: 'value', apply: (options, value) => {
+    options.maxCognitiveJsx = readCap('--max-cognitive-jsx', value);
+  } } ],
+  [ '--max-cognitive-behavior', { kind: 'value', apply: (options, value) => {
+    options.maxCognitiveBehavior = readCap('--max-cognitive-behavior', value);
+  } } ],
+  // Bare --max-cognitive is a global that clamps both per-class caps.
+  [ '--max-cognitive', { kind: 'value', apply: (options, value) => {
+    const cap = readCap('--max-cognitive', value);
+    options.maxCognitiveJsx = cap;
+    options.maxCognitiveBehavior = cap;
+  } } ],
+  [ '--max-crap', { kind: 'value', apply: (options, value) => {
+    options.maxCrap = readCap('--max-crap', value);
+  } } ],
+]);
+
+// Split a token into its flag name and inline value: `--flag=value` splits at the first `=`, a bare
+// `--flag` has no inline value.
+function splitFlag(arg: string): { readonly name: string; readonly inline: string | undefined } {
+  const equals = arg.indexOf('=');
+  if (equals === -1) return { name: arg, inline: undefined };
+  return { name: arg.slice(0, equals), inline: arg.slice(equals + 1) };
+}
+
+// Apply one argv token to `options`, returning how many tokens it consumed — 2 when a value flag
+// took the following token, 1 otherwise. This is the validation half: it resolves the value form,
+// rejects unknown flags, and rejects a missing or unwanted value. `parseArgs` below is the reading
+// half and does nothing but walk the cursor.
+function applyArg(arg: string, next: string | undefined, options: CliOptions): number {
+  if (!arg.startsWith('-')) {
+    options.focusPaths.push(arg);
+    return 1;
+  }
+
+  const { name, inline } = splitFlag(arg);
+  const spec = FLAGS.get(name);
+  if (spec === undefined) throw new Error(`Unknown flag: ${ name }\n${ USAGE }`);
+
+  if (spec.kind === 'optional') {
+    spec.apply(options, inline);
+    return 1;
+  }
+  if (spec.kind === 'switch') {
+    if (inline !== undefined) throw new Error(`${ name } takes no value`);
+    spec.apply(options);
+    return 1;
+  }
+
+  const value = inline ?? next;
+  if (value === undefined) throw new Error(`Missing value for ${ name }`);
+  spec.apply(options, value);
+  return inline === undefined ? 2 : 1;
+}
+
+export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
   const options: CliOptions = {
     baseRef: DEFAULT_BASE_REF,
     diffSelected: false,
@@ -71,56 +174,9 @@ function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     focusPaths: [],
   };
 
-  for (let index = 0; index < argv.length; index++) {
-    const arg = argv[index];
-    const readValue = (inline: string | undefined): string => {
-      if (inline !== undefined) return inline;
-      const next = argv[++index];
-      if (next === undefined) throw new Error(`Missing value for ${ arg }`);
-      return next;
-    };
-    const readNumber = (inline: string | undefined): number => {
-      const raw = readValue(inline);
-      const value = Number(raw);
-      if (!Number.isFinite(value) || value < 1) throw new Error(`Invalid value for ${ arg }: ${ raw }`);
-      return value;
-    };
-    const inlineValue = (prefix: string): string | undefined =>
-      arg.startsWith(`${ prefix }=`) ? arg.slice(prefix.length + 1) : undefined;
-
-    if (arg === '--help' || arg === '-h') {
-      console.log(USAGE);
-      process.exit(0);
-    } else if (arg === '--verbose') {
-      options.verbose = true;
-    } else if (arg === '--no-coverage') {
-      options.coverageMode = 'off';
-    } else if (arg.startsWith('--coverage-file')) {
-      options.coverageMode = 'file';
-      options.coverageFile = readValue(inlineValue('--coverage-file'));
-    } else if (arg.startsWith('--changed')) {
-      options.diffSelected = true;
-      const inline = inlineValue('--changed');
-      if (inline !== undefined) options.baseRef = inline;
-    } else if (arg.startsWith('--base')) {
-      options.diffSelected = true;
-      options.baseRef = readValue(inlineValue('--base'));
-    } else if (arg.startsWith('--max-cognitive-jsx')) {
-      options.maxCognitiveJsx = readNumber(inlineValue('--max-cognitive-jsx'));
-    } else if (arg.startsWith('--max-cognitive-behavior')) {
-      options.maxCognitiveBehavior = readNumber(inlineValue('--max-cognitive-behavior'));
-    } else if (arg.startsWith('--max-cognitive')) {
-      // Bare --max-cognitive is a global that clamps both per-class caps.
-      const value = readNumber(inlineValue('--max-cognitive'));
-      options.maxCognitiveJsx = value;
-      options.maxCognitiveBehavior = value;
-    } else if (arg.startsWith('--max-crap')) {
-      options.maxCrap = readNumber(inlineValue('--max-crap'));
-    } else if (arg.startsWith('-')) {
-      throw new Error(`Unknown flag: ${ arg }\n${ USAGE }`);
-    } else {
-      options.focusPaths.push(arg);
-    }
+  let index = 0;
+  while (index < argv.length) {
+    index += applyArg(argv[index], argv[index + 1], options);
   }
 
   return options;
@@ -195,12 +251,12 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
   }));
 }
 
-// Full-repo mode (default): score every in-scope src/** function. Untested files are absent from
-// the coverage report and scored 0%, so the report shows the whole CRAP distribution (ticket 04).
-// The repo always has files that need coverage and generation runs the whole suite regardless, so
-// there is no per-file skip to make here.
+// Full-repo mode (default): score every in-scope function, across both allowlisted roots. Untested
+// files are absent from the coverage report and scored 0%, so the report shows the whole CRAP
+// distribution — this is the mode the threshold calibration runs. The repo always has files that
+// need coverage and generation runs the whole suite regardless, so there is no per-file skip here.
 function runFullMode(options: CliOptions): Array<ReportRow> {
-  const files = getAllSourceFiles().filter(isInScope);
+  const files = getAllSourceFiles();
   if (files.length === 0) return [];
   const coverage = resolveCoverage(options, { mode: 'full' }, true);
 
@@ -274,9 +330,21 @@ function main(): void {
   }
 }
 
-try {
-  main();
-} catch (error) {
-  console.error(error instanceof Error ? error.message : String(error));
-  process.exitCode = 1;
+// run.sh always executes the compiled `tools/code-complexity/dist/index.js`, so that path is what
+// marks this module as the process entry point. The guard exists so `index.spec.ts` can import
+// parseArgs without kicking off a whole report run — under vitest the entry is vitest's own binary.
+const CLI_ENTRY_PATH = 'code-complexity/dist/index.js';
+
+function isProcessEntryPoint(): boolean {
+  const entry = process.argv[1]?.replace(/\\/g, '/');
+  return entry !== undefined && entry.endsWith(CLI_ENTRY_PATH);
+}
+
+if (isProcessEntryPoint()) {
+  try {
+    main();
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exitCode = 1;
+  }
 }

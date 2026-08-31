@@ -249,6 +249,30 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
     }
   };
 
+  // An `if` chain is the one construct whose traversal needs its own branch pocket — a leading `if`
+  // pays the nesting price, an `else if` continues flat, and a bare `else` nests its body. Kept out
+  // of `visit` so that pocket is scored against this function rather than deepening every other arm
+  // of the dispatch below.
+  const visitIfStatement = (node: ts.IfStatement, frame: Frame, nesting: number): void => {
+    // `else if` (an if that is its parent's else branch) is a flat continuation: +1, no nesting
+    // penalty, and the chain stays at the same base level. A leading `if` pays the nesting price.
+    if (isElseIf(node)) add(frame, node, 1, 'else if', nesting);
+    else add(frame, node, nestingIncrement(nesting), 'if', nesting);
+
+    visit(node.expression, frame, nesting);
+    visit(node.thenStatement, frame, nesting + 1);
+
+    const elseStatement = node.elseStatement;
+    if (elseStatement === undefined) return;
+    if (ts.isIfStatement(elseStatement)) {
+      visit(elseStatement, frame, nesting); // else-if handled as its own continuation
+      return;
+    }
+    // A bare `else` costs +1 with no nesting penalty; its body nests one level deeper.
+    add(frame, elseStatement, 1, 'else', nesting);
+    visit(elseStatement, frame, nesting + 1);
+  };
+
   const visit = (node: ts.Node, frame: Frame | null, nesting: number): void => {
     if (FUNCTION_KINDS.has(node.kind)) {
       // Every function is its own unit: nesting resets to 0 and branches accrue only to it. A nested
@@ -284,21 +308,7 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
     applyUniversal(node, frame, nesting);
 
     if (ts.isIfStatement(node)) {
-      // `else if` (an if that is its parent's else branch) is a flat continuation: +1, no nesting
-      // penalty, and the chain stays at the same base level. A leading `if` pays the nesting price.
-      if (isElseIf(node)) add(frame, node, 1, 'else if', nesting);
-      else add(frame, node, nestingIncrement(nesting), 'if', nesting);
-      visit(node.expression, frame, nesting);
-      visit(node.thenStatement, frame, nesting + 1);
-      if (node.elseStatement) {
-        if (ts.isIfStatement(node.elseStatement)) {
-          visit(node.elseStatement, frame, nesting); // else-if handled as its own continuation
-        } else {
-          // A bare `else` costs +1 with no nesting penalty; its body nests one level deeper.
-          add(frame, node.elseStatement, 1, 'else', nesting);
-          visit(node.elseStatement, frame, nesting + 1);
-        }
-      }
+      visitIfStatement(node, frame, nesting);
       return;
     }
 

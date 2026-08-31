@@ -7,4 +7,4 @@
 - [x] 05 → `tickets/05-per-kind-complexity-thresholds/`
 - [x] 06 → `tickets/06-cognitive-complexity/`
 - [x] 07 → `tickets/07-cc-cap-calibration/`
-- [ ] 08 → `tickets/08-gate-outside-src/`
+- [x] 08 → `tickets/08-gate-outside-src/`

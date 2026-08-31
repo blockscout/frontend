@@ -1,5 +1,7 @@
 import { execFileSync } from 'child_process';
 
+import { isInScope } from './scope';
+
 // Diff-scoping (spec FR5): map git-diff hunks against a base ref to the new-side line ranges a
 // change added or modified, so the gate can select the functions those lines fall within. No
 // baseline artifact is kept.
@@ -22,11 +24,12 @@ export function getChangedFiles(baseCommit: string): Array<string> {
   return out.split('\n').map((line) => line.trim()).filter(Boolean);
 }
 
-// All tracked .ts/.tsx files under src/, for full-repo mode. Scope filtering (specs, generated
-// files, toolkit build output) is applied by the caller via isInScope.
+// Every in-scope file in the repo, for full-repo mode. It enumerates all tracked files and narrows
+// them through isInScope rather than restating the scope rule as a git pathspec — ./scope.ts owns
+// that rule, and a pathspec here would be a second copy to keep in sync with it.
 export function getAllSourceFiles(): Array<string> {
-  const out = git([ 'ls-files', 'src/*.ts', 'src/*.tsx', 'src/**/*.ts', 'src/**/*.tsx' ]);
-  return out.split('\n').map((line) => line.trim()).filter(Boolean);
+  const out = git([ 'ls-files' ]);
+  return out.split('\n').map((line) => line.trim()).filter(isInScope);
 }
 
 export function getChangedLineRanges(baseCommit: string, file: string): Array<LineRange> {

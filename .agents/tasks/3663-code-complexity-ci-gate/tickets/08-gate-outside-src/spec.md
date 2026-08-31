@@ -92,12 +92,12 @@ exemption list would be the committed baseline the parent spec rejected.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Fix the gate's own offenders — extract `visit`'s `isIfStatement` arm in
+- [x] 1 `[agent]` Fix the gate's own offenders — extract `visit`'s `isIfStatement` arm in
   `complexity.ts`; split `parseArgs`'s flag-reading loop from its validation in `index.ts`; add
   `index.spec.ts` covering `parseArgs`. Verify each with focused mode.
-- [ ] 2 `[agent]` Rewrite the scope rule — `scope.ts` allowlist (`src/`, `tools/`; five extensions;
+- [x] 2 `[agent]` Rewrite the scope rule — `scope.ts` allowlist (`src/`, `tools/`; five extensions;
   `tools/**/dist/` and the existing exclusions; rationale comments naming #3675), `getAllSourceFiles()`
   in `diff.ts` to whole-repo `git ls-files` + `isInScope`, and the new `scope.spec.ts` cases.
-- [ ] 3 `[agent]` Update the records — `CONTEXT.md` `## Scope` (allowlist, both exclusion rationales,
+- [x] 3 `[agent]` Update the records — `CONTEXT.md` `## Scope` (allowlist, both exclusion rationales,
   self-gating note), the `config.ts` calibration note, the `index.ts` help text and mode comments, and
   the in-place FR7 rewrite in `../../spec.md`.

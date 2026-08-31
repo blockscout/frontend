@@ -1,23 +1,44 @@
-// File-scope resolution (spec FR7): the gate looks at src/** .ts/.tsx only, minus specs,
-// generated files, tooling, and the toolkit build output. tools/ and deploy/ fall out for
-// free because they are not under src/.
+// File-scope resolution (spec FR7). The rule is an allowlist of two directories — the app (`src/`)
+// and the repo's own tooling (`tools/`) — rather than a prefix test plus exclusions: nothing about
+// tooling code makes complexity or missing tests cheaper there, and `tools/code-complexity` in
+// particular is gated by the very thing it implements.
+//
+// Three categories are deliberately out:
+//
+//  - `deploy/**` — ESLint ignores the directory outright and every `deploy/tools/*` package sits
+//    outside the root TypeScript project. Making this gate its first and only automated check is
+//    backwards; bringing `deploy/` under ESLint and `tsc` first is issue #3675.
+//  - `playwright/**`, `vitest/**`, `*.config.*` — test support and configuration, out on the same
+//    grounds specs are.
+//  - repo-root runtime files (`proxy.ts`, `instrumentation*.ts`, `startup.node.ts`) — measured clean,
+//    and an allowlist of two directories is worth more than covering them.
+
+const ROOTS: ReadonlyArray<string> = [ 'src/', 'tools/' ];
+
+const EXTENSIONS: ReadonlyArray<string> = [ '.ts', '.tsx', '.mjs', '.js', '.cjs' ];
 
 const SPEC_PATTERNS: ReadonlyArray<RegExp> = [
   /\.spec\./, // *.spec.ts / *.spec.tsx
   /\.pw\.tsx$/, // Playwright component tests
   /\.pwstory\.tsx$/, // Playwright stories
+  /\.config\./, // vitest.config.ts, next.config.js and friends
 ];
+
+// Build output, generated or checked in. `tools/**/dist/` is where run.sh compiles the gate itself.
+const GENERATED_PREFIXES: ReadonlyArray<string> = [ 'src/toolkit/package/' ];
+const GENERATED_SEGMENTS: ReadonlyArray<string> = [ '/dist/' ];
 
 export function isInScope(filePath: string): boolean {
   const path = filePath.replace(/\\/g, '/');
 
-  if (!path.startsWith('src/')) return false;
-  if (!path.endsWith('.ts') && !path.endsWith('.tsx')) return false;
+  if (!ROOTS.some((root) => path.startsWith(root))) return false;
+  if (!EXTENSIONS.some((extension) => path.endsWith(extension))) return false;
   if (path.endsWith('.d.ts')) return false;
-  if (path.startsWith('src/toolkit/package/')) return false; // toolkit build output
+  if (GENERATED_PREFIXES.some((prefix) => path.startsWith(prefix))) return false;
+  if (GENERATED_SEGMENTS.some((segment) => path.includes(segment))) return false;
 
   const base = path.slice(path.lastIndexOf('/') + 1);
-  if (base === 'envs.js') return false; // generated (defensive; not a .ts anyway)
+  if (base === 'envs.js') return false; // generated at container startup
   if (SPEC_PATTERNS.some((pattern) => pattern.test(base))) return false;
 
   return true;
