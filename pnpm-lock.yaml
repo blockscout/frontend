@@ -424,6 +424,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+      '@vitest/coverage-v8':
+        specifier: 4.1.7
+        version: 4.1.7(vitest@4.1.7)
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.107.2(esbuild@0.25.12)(postcss@8.5.15))
@@ -465,7 +468,7 @@ importers:
         version: 2.6.0(eslint@9.39.2)
       eslint-plugin-vitest:
         specifier: 0.5.4
-        version: 0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)(vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)))
+        version: 0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)(vitest@4.1.7)
       globals:
         specifier: 15.12.0
         version: 15.12.0
@@ -516,10 +519,10 @@ importers:
         version: 5.1.4(@typescript/typescript6@6.0.2)(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
       vitest:
         specifier: 4.1.7
-        version: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+        version: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(@vitest/coverage-v8@4.1.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
       vitest-fetch-mock:
         specifier: 0.4.5
-        version: 0.4.5(vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)))
+        version: 0.4.5(vitest@4.1.7)
       ws:
         specifier: 8.21.0
         version: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
@@ -1338,6 +1341,10 @@ packages:
 
   '@base-org/account@2.4.0':
     resolution: {integrity: sha512-A4Umpi8B9/pqR78D1Yoze4xHyQaujioVRqqO3d6xuDFw9VRtjg6tK3bPlwE0aW+nVH/ntllCpPa2PbI8Rnjcug==}
+
+  '@bcoe/v8-coverage@1.0.2':
+    resolution: {integrity: sha512-6zABk/ECA/QYSCQ1NGiVwwbQerUCZ+TQbp64Q3AgmfNvurHH0j8TtXa1qbShXA6qqkpAj4V5W8pP6mLe1mcMqA==}
+    engines: {node: '>=18'}
 
   '@blockscout/admin-rs-types@1.5.1':
     resolution: {integrity: sha512-+wGwULmzzfwkASJKwPB1X09iqmNUeIPu7Pc5INQxL2XunllTs32bhyvji1XqyA+VmF5yOxxYhQuLhNqCeN4SfQ==}
@@ -6926,6 +6933,15 @@ packages:
     peerDependencies:
       vite: ^4.2.0 || ^5.0.0 || ^6.0.0
 
+  '@vitest/coverage-v8@4.1.7':
+    resolution: {integrity: sha512-qsYPeXc5Q9dFLd1i8Ap+Bx8sQgcp+rFVQo4R0dDsWNBzl26ldVF1qOO+RL24K7FDrR6pA+50XedRLSoSG24bVQ==}
+    peerDependencies:
+      '@vitest/browser': 4.1.7
+      vitest: 4.1.7
+    peerDependenciesMeta:
+      '@vitest/browser':
+        optional: true
+
   '@vitest/expect@4.1.7':
     resolution: {integrity: sha512-1R+tw0ortHEbZDGMymm+pN7/AFQ/RkFFdtd7EN+VBpynKmLbP8A3rpEXdshBJ7+8hQ9zBJh/i1s0yKNtxAnU7w==}
 
@@ -7776,6 +7792,9 @@ packages:
   ast-types@0.16.1:
     resolution: {integrity: sha512-6t10qk83GOG8p0vKmaCr8eiilZwO171AvbROMtvvNiwrTly62t+7XkA8RdIIVbpMhCASAsxgAzdRSwh6nw/5Dg==}
     engines: {node: '>=4'}
+
+  ast-v8-to-istanbul@1.0.5:
+    resolution: {integrity: sha512-UPAgKJFSEGMWSDr3LX4tqnAb4f7KGT8O40Tyx8wbYmmZ/yn58lNCm8h3svs3eXgiGd5AXxz8NDOvXWvicq+rJA==}
 
   async-function@1.0.0:
     resolution: {integrity: sha512-hsU18Ae8CDTR6Kgu9DYf0EbCr/a5iGL0rytQDobUcdpYOKokk8LEjVphnXkDkgpi0wYVsqrXuP0bZxJaTqdgoA==}
@@ -9233,6 +9252,7 @@ packages:
   eslint@9.39.2:
     resolution: {integrity: sha512-LEyamqS7W5HB3ujJyvi0HQK/dtVINZvd5mAAp9eT5S/ujByGjiZLCzPcHVzuXbpJDJF/cxwHlfceVUDZ2lnSTw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'
@@ -10381,6 +10401,18 @@ packages:
     peerDependencies:
       ws: 8.21.0
 
+  istanbul-lib-coverage@3.2.2:
+    resolution: {integrity: sha512-O8dpsF+r0WV/8MNRKfnmrtCWhuKjxrq2w+jpzBL5UZKTi2LeVWnWOmWRxFlesJONmc+wLAGvKQZEOanko0LFTg==}
+    engines: {node: '>=8'}
+
+  istanbul-lib-report@3.0.1:
+    resolution: {integrity: sha512-GCfE1mtsHGOELCU8e/Z7YWzpmybrx/+dSTfLrvY8qRmaY6zXTKWn6WQIjaAFw069icm6GVMNkgu0NzI4iPZUNw==}
+    engines: {node: '>=10'}
+
+  istanbul-reports@3.2.0:
+    resolution: {integrity: sha512-HGYWWS/ehqTV3xN10i23tkPkpH46MLCIMFNCaaKNavAXTF1RkqxawEPtnjnGZ6XKSInBKkiOA5BKS+aZiY3AvA==}
+    engines: {node: '>=8'}
+
   it-all@3.0.11:
     resolution: {integrity: sha512-Gvqj6MO4GMLnFdtE68HZRpGBskNC+9+GQ+JevTGNYLyhjUuPhjDLU3jN1LpBemXJDW1bRSkczqA/qGyKlPKrcQ==}
 
@@ -10537,6 +10569,9 @@ packages:
 
   js-sha3@0.8.0:
     resolution: {integrity: sha512-gF1cRrHhIzNfToc802P800N8PpXS+evLLXfsVpowqmAFR9uwbi89WvXg2QspOmXL8QL86J4T1EpFu+yUkwJY3Q==}
+
+  js-tokens@10.0.0:
+    resolution: {integrity: sha512-lM/UBzQmfJRo9ABXbPWemivdCW8V2G8FHaHdypQaIy523snUjog0W71ayWXTjiR+ixeMyVHN2XcpnTd/liPg/Q==}
 
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -10778,8 +10813,15 @@ packages:
   magic-string@0.30.21:
     resolution: {integrity: sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ==}
 
+  magicast@0.5.4:
+    resolution: {integrity: sha512-llBEhWm1SacoRwgHUoQJYtwp4PBLF4faQi5TCpIGyGs9n4y5+juI0tDgyKIfpqxckRHaHzouUEph3THklWh03w==}
+
   main-event@1.0.4:
     resolution: {integrity: sha512-sKazUjIy2Jalv5lkQ446iOcrx8Q7TkaCuk6xfnzg5uUqMusMLDMPmRDmSNE2kjSVpSTJo4j1bQZusS+Ib7Bvrg==}
+
+  make-dir@4.0.0:
+    resolution: {integrity: sha512-hXdUTZYIVOt1Ex//jAQi+wTZZpUpwBj/0QsOzqegb3rGMMeJiSEu5xLHnYfBrRV4RH2+OCSOO95Is/7x1WJ4bw==}
+    engines: {node: '>=10'}
 
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
@@ -15115,6 +15157,8 @@ snapshots:
       - utf-8-validate
       - zod
 
+  '@bcoe/v8-coverage@1.0.2': {}
+
   '@blockscout/admin-rs-types@1.5.1': {}
 
   '@blockscout/api-types@0.0.1-beta.089aef5': {}
@@ -18260,7 +18304,7 @@ snapshots:
       debug: 4.4.3
       lodash: 4.18.1
       pony-cause: 2.1.11
-      semver: 7.8.4
+      semver: 7.8.5
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -18284,7 +18328,7 @@ snapshots:
       '@types/debug': 4.1.13
       debug: 4.4.3
       pony-cause: 2.1.11
-      semver: 7.8.4
+      semver: 7.8.5
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -18298,7 +18342,7 @@ snapshots:
       '@types/debug': 4.1.13
       debug: 4.4.3
       pony-cause: 2.1.11
-      semver: 7.8.4
+      semver: 7.8.5
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
@@ -23507,6 +23551,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@vitest/coverage-v8@4.1.7(vitest@4.1.7)':
+    dependencies:
+      '@bcoe/v8-coverage': 1.0.2
+      '@vitest/utils': 4.1.7
+      ast-v8-to-istanbul: 1.0.5
+      istanbul-lib-coverage: 3.2.2
+      istanbul-lib-report: 3.0.1
+      istanbul-reports: 3.2.0
+      magicast: 0.5.4
+      obug: 2.1.1
+      std-env: 4.1.0
+      tinyrainbow: 3.1.0
+      vitest: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(@vitest/coverage-v8@4.1.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+
   '@vitest/expect@4.1.7':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -25840,6 +25898,12 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  ast-v8-to-istanbul@1.0.5:
+    dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
+      estree-walker: 3.0.3
+      js-tokens: 10.0.0
+
   async-function@1.0.0: {}
 
   async-mutex@0.2.6:
@@ -27583,13 +27647,13 @@ snapshots:
       regexp-ast-analysis: 0.7.1
       scslre: 0.3.0
 
-  eslint-plugin-vitest@0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)(vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))):
+  eslint-plugin-vitest@0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)(vitest@4.1.7):
     dependencies:
       '@typescript-eslint/utils': 7.18.0(@typescript/typescript6@6.0.2)(eslint@9.39.2)
       eslint: 9.39.2
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 5.62.0(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)
-      vitest: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+      vitest: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(@vitest/coverage-v8@4.1.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -28870,6 +28934,19 @@ snapshots:
     dependencies:
       ws: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
 
+  istanbul-lib-coverage@3.2.2: {}
+
+  istanbul-lib-report@3.0.1:
+    dependencies:
+      istanbul-lib-coverage: 3.2.2
+      make-dir: 4.0.0
+      supports-color: 7.2.0
+
+  istanbul-reports@3.2.0:
+    dependencies:
+      html-escaper: 2.0.2
+      istanbul-lib-report: 3.0.1
+
   it-all@3.0.11: {}
 
   it-batch@3.0.11: {}
@@ -29103,6 +29180,8 @@ snapshots:
   js-file-download@0.4.12: {}
 
   js-sha3@0.8.0: {}
+
+  js-tokens@10.0.0: {}
 
   js-tokens@4.0.0: {}
 
@@ -29401,7 +29480,17 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
+  magicast@0.5.4:
+    dependencies:
+      '@babel/parser': 7.29.7
+      '@babel/types': 7.29.7
+      source-map-js: 1.2.1
+
   main-event@1.0.4: {}
+
+  make-dir@4.0.0:
+    dependencies:
+      semver: 7.8.5
 
   make-error@1.3.6: {}
 
@@ -29871,7 +29960,7 @@ snapshots:
 
   node-abi@3.92.0:
     dependencies:
-      semver: 7.8.4
+      semver: 7.8.5
 
   node-abort-controller@3.1.1: {}
 
@@ -32839,11 +32928,11 @@ snapshots:
       terser: 5.48.0
       yaml: 2.9.0
 
-  vitest-fetch-mock@0.4.5(vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))):
+  vitest-fetch-mock@0.4.5(vitest@4.1.7):
     dependencies:
-      vitest: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
+      vitest: 4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(@vitest/coverage-v8@4.1.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
 
-  vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
+  vitest@4.1.7(@opentelemetry/api@1.9.1)(@types/node@20.16.7)(@vitest/coverage-v8@4.1.7)(jsdom@27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6))(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0)):
     dependencies:
       '@vitest/expect': 4.1.7
       '@vitest/mocker': 4.1.7(vite@6.4.3(@types/node@20.16.7)(terser@5.48.0)(yaml@2.9.0))
@@ -32868,6 +32957,7 @@ snapshots:
     optionalDependencies:
       '@opentelemetry/api': 1.9.1
       '@types/node': 20.16.7
+      '@vitest/coverage-v8': 4.1.7(vitest@4.1.7)
       jsdom: 27.3.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
     transitivePeerDependencies:
       - msw
