@@ -45,7 +45,7 @@ While the configs PR is open, asset URLs are the **PR branch's** raw GitHub URLs
 
 ## Demo mechanics
 
-`.env.extra` is committed and is the **only** channel that carries env overrides into a review deploy. An instance not in the registry: add it to `tools/dev-server/registry.json`, run `pnpm presets:sync` (writes `.github/workflows/deploy-review.yml` and `.vscode/tasks.json`), commit all four **on the demo branch**. They die with that branch. Procedure: `tools/dev-server/CONTEXT.md`.
+The **repo-root** `.env.extra` is committed and is the **only** channel that carries env overrides into a review deploy. An instance not in the registry: add it to `tools/dev-server/registry.json`, run `pnpm presets:sync` (writes `.github/workflows/deploy-review.yml` and `.vscode/tasks.json`), commit all four **on the demo branch**. They die with that branch. Procedure: `tools/dev-server/CONTEXT.md`.
 
 Hostname: `review-<branch-slug>.k8s-dev.blockscout.com`. Follow the `deploy-demo` skill.
 
@@ -55,18 +55,29 @@ Verify the theme by **computed values** — read the resolved CSS custom propert
 
 **Phase 1 runs to the demo link without stopping.** No gate — designer's or user's — on the branch, the commits, the configs PR, the demo deploy, or the demo-link post. The PR is open but unmerged and the demo dies with its branch, so nothing here can touch a production instance; the parent's commit confirmation does not apply. The demo *is* the review surface, and a confirmation asked before it exists is asked of someone who cannot yet see what they are confirming.
 
-The requester (designer) is the gatekeeper for phase 2; the user relays that approval. There is no automated watch on the thread — the user monitors and continues this session.
+The requester (designer) is the gatekeeper for phase 2. Do not hand the session back to the user to monitor: **subscribe to the designer's replies on the source thread with the `slack-watch` skill** as the last action of phase 1, then stop.
 
 1. Produce the assets and JSON configs from the thread and Figma.
 2. Open a PR on `frontend-configs` (target `main` branch). No confirmation, per above; `create-pr` exceptions: parent **Fetched configs**.
 3. Point the demo at the PR-branch raw URLs (see **Demo mechanics**). Deploy it.
-4. Verify on the live demo, post the demo link to the requester, and **stop**. Post it without asking — the named exception to `AGENTS.md`'s approve-before-sending rule. This is the run's only stop; what it waits for is the designer's reply.
+4. Verify on the live demo, then post the demo link to the requester. Post it without asking — the named exception to `AGENTS.md`'s approve-before-sending rule.
+5. Subscribe to the designer's replies on the source thread with `slack-watch`, then **stop**. This is the run's only stop; the watch is what resumes it — see **On the designer's reply**.
 
-**Done when:** the configs PR is open, the demo is live, the requester has the link, and this run has stopped.
+**Done when:** the configs PR is open, the demo is live, the requester has the link, the `slack-watch` subscription is running, and this run has stopped.
+
+## On the designer's reply
+
+When `slack-watch` wakes the session, read the new reply and act on it directly:
+
+- **Approval** (the designer signs off) → go to **Phase 2**.
+- **Change request** → stay in phase 1: apply the asked changes using the same technique as for the initial request; redeploy the demo and re-post the refreshed demo link; leave the watch running.
+- **A question, or anything turning on intent you cannot pin** → stop and ask the user (the *Sure* principle: intent questions go to the user, not the designer).
+
+Loop on replies until approval. The watch is torn down in phase 2.
 
 ## Phase 2 — ship
 
-Starts only when the user relays the designer's approval.
+Starts when the designer approves.
 
 1. Merge the configs PR. Swap every branch URL to `main` and confirm each returns 200 — that is when instances can fetch them.
 2. For inlined vars (hero banner, colour theme), regenerate the strings from the merged files (the converter above). URL vars (homepage highlights, asset URLs): the env value is the `main` raw URL. Navigation promo: the inlined string produced in phase 1.
@@ -75,6 +86,7 @@ Starts only when the user relays the designer's approval.
    - demo destroyed: `gh workflow run cleanup.yml --ref <branch>`; hostname returns 404
    - temporary frontend branch deleted, local and remote
    - `git status` clean
+   - the `slack-watch` thread subscription stopped
 
 The review-image cleanup is broken ([frontend#3638](https://github.com/blockscout/frontend/issues/3638)); hostname 404 is the bar, not image deletion.
 

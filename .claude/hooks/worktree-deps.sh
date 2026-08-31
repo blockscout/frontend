@@ -44,7 +44,7 @@ if [ "$mode" = "session-start" ]; then
   jq -n '{
     hookSpecificOutput: {
       hookEventName: "SessionStart",
-      additionalContext: "This worktree has no node_modules. A PreToolUse hook runs `pnpm install --frozen-lockfile` automatically before the first Bash command that needs the local toolchain (pnpm/npx/eslint/tsc/vitest/playwright/next), so do not install by hand. Expect that one command to take an extra minute."
+      additionalContext: "This worktree has no node_modules. A PreToolUse hook runs `pnpm install --frozen-lockfile` automatically before the first Bash command that needs the local toolchain (pnpm/npx/eslint/tsc/vitest/playwright/next, or a `git commit`/`git push` that runs husky hooks), so do not install by hand. Expect that one command to take an extra minute."
     }
   }'
   exit 0
@@ -55,7 +55,10 @@ fi
 cmd="$(field '.tool_input.command // empty')"
 [ -n "$cmd" ] || exit 0
 
-needs='(^|[;&|(]|&&|\|\|)[[:space:]]*(pnpm|npx|next|eslint|tsc|vitest|playwright)[[:space:]]|node_modules/\.bin/'
+# `git commit`/`git push` are here because the husky pre-commit and pre-push hooks shell
+# into node_modules (lint-staged, eslint, tsc); without deps they fail and tempt a
+# --no-verify bypass. `[^;&|]*` lets global flags like `git -C dir commit` still match.
+needs='(^|[;&|(]|&&|\|\|)[[:space:]]*(pnpm|npx|next|eslint|tsc|vitest|playwright)[[:space:]]|node_modules/\.bin/|(^|[;&|(]|&&|\|\|)[[:space:]]*git[[:space:]][^;&|]*(commit|push)([[:space:]]|$)'
 # Dependency-management subcommands run fine without node_modules, and skipping them
 # keeps the hook from recursing into the install it is about to perform.
 selfmanaged='pnpm[[:space:]]+(install|i|add|remove|rm|up|update|dlx|store|why|licenses|approve-builds|rebuild)([[:space:]]|$)'

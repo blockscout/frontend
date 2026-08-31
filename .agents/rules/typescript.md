@@ -204,26 +204,9 @@ interface C extends A, B {
 ```
 
 
-## JS-doc comments
+## JSDoc
 
-Use JSDoc comments to annotate functions and types.
-
-Be concise in JSDoc comments, and only provide JSDoc comments if the function's behavior is not self-evident.
-
-Use the JSDoc inline `@link` tag to link to other functions and types within the same file.
-
-```ts
-/**
- * Subtracts two numbers
- */
-const subtract = (a: number, b: number) => a - b;
-
-/**
- * Does the opposite to {@link subtract}
- */
-const add = (a: number, b: number) => a + b;
-```
-
+JSDoc is a comment. Same rule as [Comments](./code-quality.md#comments): omit it unless it explains *why*. Never restate the name or types. If a JSDoc block already earned its place, `@link` is fine for same-file references.
 
 ## Naming conventions
 

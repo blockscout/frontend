@@ -18,16 +18,16 @@ interface Props {
 const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   const styles = {
     'in': {
-      color: { _light: 'green.500', _dark: 'green.200' },
-      bgColor: { _light: 'green.50', _dark: 'green.800' },
+      color: 'badge.teal.fg',
+      bgColor: 'badge.teal.bg',
     },
     out: {
-      color: { _light: 'yellow.600', _dark: 'yellow.500' },
-      bgColor: { _light: 'orange.50', _dark: 'yellow.900' },
+      color: 'badge.yellow.fg',
+      bgColor: 'badge.yellow.bg',
     },
     self: {
-      color: { _light: 'blackAlpha.400', _dark: 'whiteAlpha.400' },
-      bgColor: { _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' },
+      color: 'badge.gray.fg',
+      bgColor: 'badge.gray.bg',
     },
     unspecified: {
       color: 'icon.primary',

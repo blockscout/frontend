@@ -52,6 +52,14 @@ function keychain(service) {
 
 const num = (ts) => parseFloat(ts);
 
+// A message counts as a real reply unless its subtype marks it as noise
+// (edits, joins/leaves, bot_message, channel chrome). Two subtypes are genuine
+// human replies and must be kept: `thread_broadcast` (a reply the author also
+// sent to the channel) and `file_share` (a reply that carries attachments —
+// e.g. screenshots). Plain replies have no subtype at all.
+const KEPT_SUBTYPES = new Set([ 'thread_broadcast', 'file_share' ]);
+const isReply = (m) => !m.subtype || KEPT_SUBTYPES.has(m.subtype);
+
 // argv: one "CHANNEL:THREAD_TS" per watched thread. lastTs is the per-thread
 // watermark; it starts at thread_ts and only ever advances.
 const watched = new Map();
@@ -117,9 +125,9 @@ async function reconcile(emitMissed) {
       continue;
     }
     for (const m of res.messages || []) {
-      // Drop edits/joins/bot_message and our own posts. `thread_broadcast` is a
-      // genuine reply the author also sent to the channel — keep it.
-      if ((m.subtype && m.subtype !== 'thread_broadcast') || ownIds.has(m.user)) continue;
+      // Drop edits/joins/bot_message and our own posts; keep genuine replies
+      // (plain, thread_broadcast, file_share — see isReply).
+      if (!isReply(m) || ownIds.has(m.user)) continue;
       if (num(m.ts) <= num(w.lastTs)) continue;
       if (emitMissed) emit(`NEW channel=${w.channel} thread_ts=${w.thread_ts} ts=${m.ts}`);
       w.lastTs = m.ts;
@@ -134,8 +142,8 @@ function handleEvent(payload) {
     seenEventIds.add(eventId);
   }
   const e = payload.event;
-  // plain messages and thread_broadcast replies only — drop edits/joins/bot_message.
-  if (!e || e.type !== 'message' || (e.subtype && e.subtype !== 'thread_broadcast')) return;
+  // genuine replies only (plain, thread_broadcast, file_share) — drop edits/joins/bot_message.
+  if (!e || e.type !== 'message' || !isReply(e)) return;
   if (ownIds.has(e.user)) return; // our own follow-ups (developer or bot) arrive here too — ignore them
   const thread_ts = e.thread_ts;
   if (!thread_ts) return; // a top-level message, not a threaded reply

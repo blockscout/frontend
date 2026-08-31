@@ -108,17 +108,16 @@ Don't mock:
 
 ## File naming and location
 
-Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. Run all tests:
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test.
 
 ```bash
-pnpm test:vitest
+pnpm test:vitest                         # entire suite
+pnpm test:vitest path/to/file.spec.ts    # one file
+pnpm test:vitest --changed               # tests related to uncommitted work (staged and unstaged)
+pnpm test:vitest --changed origin/main   # tests related to this branch vs origin/main
 ```
 
-Run a single file:
-
-```bash
-pnpm test:vitest path/to/file.spec.ts
-```
+`--changed` uses git, then the Vitest module graph, so editing a source file still runs the spec that imports it. Untracked files are invisible until `git add`. If nothing matches, the command fails unless you add `--passWithNoTests` (CI does this on PRs). Fetch `origin/main` first if that ref is missing locally.
 
 ## Setup
 
