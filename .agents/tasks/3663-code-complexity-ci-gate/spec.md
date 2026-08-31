@@ -1,4 +1,4 @@
-# Add a cyclomatic-complexity and CRAP-score CI gate
+# Add a cognitive-complexity and CRAP-score CI gate
 
 | | |
 | --- | --- |
@@ -13,68 +13,72 @@
 ## Context & goal
 
 Complex, under-tested code lands unnoticed today: nothing measures per-function
-cyclomatic complexity, and the coverage tooling reports only statement/branch/function/line
-coverage, never complexity or CRAP. The goal is a CI gate that flags code which is both
-complex and under-tested — CRAP = `c²·(1 − cov)³ + c` — before it merges, scoped to what a
-PR actually changes so it never blocks on pre-existing debt.
+complexity, and the coverage tooling reports only statement/branch/function/line
+coverage, never complexity or CRAP. The goal is a CI gate that flags code which is either hard to
+read *or* both complex and under-tested — CRAP = `c²·(1 − cov)³ + c` — before it merges, scoped to
+what a PR actually changes so it never blocks on pre-existing debt.
 
 ## Functional requirements
 
-1. A `tools/code-complexity/` CLI computes per-function cyclomatic complexity by walking the
-   TS/TSX syntax tree via the `typescript` compiler API (`ts.createSourceFile`), with no
-   type-checker.
-2. Complexity counting matches ESLint's `complexity` rule with one deliberate exception: base 1 per
-   function; +1 each for `if` / `else if`, `for` / `for..of` / `for..in`, `while`, `do`, each
-   `case`, `catch`, ternary, `&&`, `||`, `??`. Not counted: `else`, `default:`, `switch` itself,
-   JSX, and — diverging from ESLint — optional chaining `?.`. Nested/arrow/method functions count
-   as their own units.
-3. The tool computes CRAP `c²·(1 − cov)³ + c` per function by joining complexity with
-   per-function line coverage read from a v8/istanbul `coverage-final.json`.
-4. The coverage half (CRAP) applies where vitest coverage is meaningful: files containing **no
-   JSX** (detected from the AST — `JsxElement` / `JsxSelfClosingElement` / `JsxFragment` — not the
-   file extension), **and** JSX components that have a co-located vitest spec (`X.spec.tsx` beside
-   `X.tsx`, i.e. behavior-tested). A JSX component without such a spec gets the complexity gate
-   only — it is covered, if at all, by Playwright visual tests that emit no vitest coverage, so
-   scoring it would flood the report with 0%s. `*.primed.spec.tsx` drift tests never count, and are
-   excluded from the coverage runs the tool triggers (they mount pages without exercising behavior).
-5. The gate scopes to **functions touched by the diff** against a base ref (default
+1. A `tools/code-complexity/` CLI computes per-function scores by walking the TS/TSX syntax tree via
+   the `typescript` compiler API (`ts.createSourceFile`), with no type-checker.
+2. Each function gets two scores, both counted on that one walk: **cognitive complexity**, following
+   the SonarSource model (flat control flow is cheap, nesting is penalised progressively, boolean
+   runs collapse), and **cyclomatic complexity**, following ESLint's `complexity` rule.
+   Nested/arrow/method functions count as their own units under both. The exact increment rules and
+   the deliberate divergences from those two references are documented in the tool.
+3. The tool computes CRAP `c²·(1 − cov)³ + c` per function by joining **cyclomatic** complexity with
+   per-function line coverage read from a v8/istanbul `coverage-final.json`. Cognitive complexity
+   never feeds CRAP.
+4. Every function is classified from the AST — not its file extension — by whether JSX appears
+   directly in its own body (`JsxElement` / `JsxSelfClosingElement` / `JsxFragment`), outside any
+   nested function: **`jsx`** for a render body, **`behavior`** for everything else (handlers,
+   `useCallback`/`useMemo` bodies, hooks, utils) wherever it lives, including nested inside a
+   component. Only `behavior` functions are CRAP-scored. A `jsx` function is covered, if at all, by
+   Playwright visual tests that emit no vitest coverage, so scoring it would flood the report with
+   0%s; its cognitive cap is the backstop instead.
+5. A *file* needs coverage generated for it when it is JSX-less or has a co-located vitest spec
+   (`X.spec.tsx` beside `X.tsx`) — this decides only whether the tool's vitest run pulls the file
+   in, not which functions are scored. `*.primed.spec.tsx` drift tests never count as that spec and
+   are excluded from the coverage runs the tool triggers (they mount pages without exercising
+   behavior).
+6. The gate scopes to **functions touched by the diff** against a base ref (default
    `origin/main`) — a function is in scope when a changed line falls within its body. No
    baseline artifact is kept.
-6. Two independent thresholds gate: a raw cyclomatic-complexity cap and a CRAP threshold,
-   both configurable. The complexity cap is enforced even when no coverage data is present.
-7. File scope is an allowlist of two roots — the app (`src/`) and the repo's own tooling (`tools/`,
+7. Three independent thresholds gate, all configurable: a **cognitive-complexity cap per function
+   class** — a high backstop for `jsx`, a tighter one for `behavior` — and a **CRAP threshold** on
+   `behavior` functions. The cognitive caps are enforced even when no coverage data is present.
+8. File scope is an allowlist of two roots — the app (`src/`) and the repo's own tooling (`tools/`,
    so the gate also scores its own implementation) — with the extension set `.ts` `.tsx` `.mjs` `.js`
    `.cjs`. Excluded within them: specs (`*.spec.*`, `*.pw.tsx`, `*.pwstory.tsx`), generated files
-   (`*.d.ts`, `envs.js`, sprite output), configuration (`*.config.*`), and build output
+   (`*.d.ts`, `envs.js`), configuration (`*.config.*`), and build output
    (`src/toolkit/package/**`, `tools/**/dist/`). `deploy/**` stays out — it is outside ESLint and the
    root TypeScript project, so this gate should not be its first automated check (issue #3675) — and
    so do `playwright/**`, `vitest/**` and the repo-root runtime files.
-8. On any violation the CLI exits non-zero. It always prints a table of **all** checked
-   functions (file:line, name, complexity, coverage %, CRAP, which threshold if broken),
-   sorted by CRAP descending, offenders flagged. Under `$GITHUB_ACTIONS` it additionally
-   emits `::error file=,line=::` annotations for offenders and writes the table to
-   `$GITHUB_STEP_SUMMARY`.
-9. The gate runs inside the existing `vitest_tests` CI job: coverage is enabled on the
-   affected-tests run, and the tool runs as a post-step selecting diff scope with `--changed` and
-   consuming that `coverage-final.json` via `--coverage-file` (so CI never regenerates coverage).
-10. The interface has two independent axes, mirroring vitest. **Selection** — which functions to
-    score — is *full repo* by default (every in-scope function, FR7), *focused* when explicit
+9. On any violation the CLI exits non-zero. It always prints a table of **all** checked functions,
+   sorted by CRAP descending, offenders flagged with which threshold they broke. Under
+   `$GITHUB_ACTIONS` it additionally emits `::error file=,line=::` annotations for offenders and
+   writes the table to `$GITHUB_STEP_SUMMARY`.
+10. The gate runs inside the existing `vitest_tests` CI job: coverage is enabled on the
+    affected-tests run, and the tool runs as a post-step selecting diff scope with `--changed` and
+    consuming that `coverage-final.json` via `--coverage-file` (so CI never regenerates coverage).
+11. The interface has two independent axes, mirroring vitest. **Selection** — which functions to
+    score — is *full repo* by default (every in-scope function, FR8), *focused* when explicit
     file paths are given, or *diff-scoped* under `--changed[=<ref>]` / `--base <ref>` (functions a
     changed line falls within, vs the base ref, default `origin/main`). **Coverage source** —
     generated by running vitest scoped to the selection (default, no pre-step), consumed from a
     prebuilt report via `--coverage-file <path>` (skips vitest — the CI path), or skipped via
-    `--no-coverage` (complexity gate only). A `pnpm test:code-complexity` script exposes the tool.
-11. **Full-repo mode** (the default selection) scores every in-scope function and is what the
-    threshold calibration uses to produce the repo-wide CRAP distribution. **Focused mode**
+    `--no-coverage` (cognitive gate only). A `pnpm test:code-complexity` script exposes the tool.
+12. **Full-repo mode** (the default selection) scores every in-scope function and is what the
+    threshold calibration uses to produce the repo-wide distributions. **Focused mode**
     (explicit paths) scores every function in those files and generates their coverage via `vitest
     related` (the specs transitively importing them, minus the excluded `*.primed.spec.tsx`), so a
     single command verifies a newly written or edited function sits within threshold before pushing.
     Because all three selections collect coverage through the module graph, they agree on a given
-    file's number. Both report complexity and CRAP; diff mode gates, the other two report.
-12. Thresholds live in the tool as configurable defaults (constants/config under
+    file's number.
+13. Thresholds live in the tool as configurable defaults (constants/config under
     `tools/code-complexity/`), overridable by CLI flags; CI carries no threshold numbers, so a
     local run and a CI run gate identically.
-13. The counting conventions are documented in `tools/code-complexity/CONTEXT.md`.
 
 ## Data & API
 
@@ -89,8 +93,9 @@ None. This is CI/tooling only; no routes, pages, or components.
 - **Bespoke tool, no external service.** Built on the `typescript` compiler API, already a
   dependency (the `@typescript/typescript6` alias exposes `ts.createSourceFile` and
   `ts.SyntaxKind`), keeping the pipeline self-contained with no external service or CI
-  secrets. This rationale stays in the spec only — the shipped tool and its `CONTEXT.md` do
-  not name or compare against any specific third-party service.
+  secrets. This rationale stays in the spec only — the shipped tool names no third-party
+  quality-gate service, and cites SonarSource and ESLint solely as the published counting models it
+  is measured against.
 - **Coverage rides the per-PR affected-tests run.** CI's `vitest_tests` job already runs
   `vitest run --changed=origin/main`; add `--coverage` (`@vitest/coverage-v8`, already
   resolvable in the pnpm store). Because `vitest --changed` runs every spec that
@@ -109,7 +114,9 @@ None. This is CI/tooling only; no routes, pages, or components.
   CI's for the same files.
 - **Missing coverage = 0%.** A changed in-scope file absent from `coverage-final.json` is
   treated as 0% coverage (derived from the git-changed file list), rather than enabling a
-  global `coverage.all`. For a JSX-less logic file this correctly flags untested code.
+  global `coverage.all`. For a JSX-less logic file this correctly flags untested code. The one
+  exception is a hand-passed `--coverage-file` in focused mode, where absence may simply mean the
+  report predates the file, so it reports "no data" instead of 0%.
 - **Granularity: touched functions only.** Map git diff hunks to function line ranges; gate
   only functions the diff added or modified. No committed baseline, no keying scheme to
   maintain.
@@ -117,19 +124,28 @@ None. This is CI/tooling only; no routes, pages, or components.
   contain no JSX (mostly `useX.tsx` hooks), so the extension is an unreliable
   component-vs-logic signal. Classification is free — the tool already parses every file.
   (Aligning extensions with content is tracked separately in issue #3668, out of scope here.)
-- **Components opt into the CRAP gate by having a vitest spec.** JSX components are gated on
-  coverage only when a co-located `X.spec.tsx` exists (behavior tests, so vitest coverage is
-  real); otherwise complexity-only, because a component covered only by Playwright visual tests
-  reports 0% vitest coverage and would flood the gate. `*.primed.spec.tsx` drift tests are excluded
-  from the coverage runs entirely — they mount whole page trees (importing much of the app) without
+- **Cognitive complexity is the readability gate; cyclomatic only feeds CRAP.** Cyclomatic counts
+  independent paths ≈ tests needed, which makes it the right CRAP input and a poor decomposition
+  signal — it scores a flat `switch` the same as an equivalent nested `if` chain and is blind to
+  nesting. So the gate that says "a human should split this up" is cognitive complexity, and it
+  charges nesting **quadratically** (`1 + nesting²`) rather than SonarSource's linear `1 + nesting`:
+  the two agree at depths 0 and 1 and diverge from the third level in, which is what lets a single
+  cap forgive wide-but-shallow logic while still catching the nested tail. Recorded as an ADR in the
+  tool, alongside the exclusions from the count.
+- **CRAP applies per function class, not per file.** Every `behavior` function is CRAP-scored and no
+  `jsx` function ever is, decided from the AST per function rather than per file — so a component's
+  render body loses its noise 0% while the handlers inside it gain a real score. The co-located
+  `X.spec.tsx` rule survives only as *generation scope*: it decides whether a file causes a vitest
+  run at all, not which of its functions are scored. `*.primed.spec.tsx` drift tests are excluded
+  from those runs entirely — they mount whole page trees (importing much of the app) without
   exercising behavior, so `vitest related` would otherwise pull them in for almost any file, adding
-  tens of seconds and no meaningful coverage. This evolves the original "JSX ⇒ complexity-only"
-  decision now that some components carry vitest behavior tests.
+  tens of seconds and no meaningful coverage.
 - **Thresholds calibrated from real data as the final step.** The tool was run repo-wide against
-  whole-suite coverage (with `?.` dropped from the count — see ADR 0004) to produce the CRAP and
-  complexity distributions; the caps were set from the far tail so the gate flags genuine offenders
-  rather than ordinary code. The live values and their rationale live in the tool's `config.ts`; the
-  calibration figures are in the landing PR.
+  whole-suite coverage to produce the CRAP and cognitive-complexity distributions; each cap was set
+  from the far tail so the gate flags genuine offenders rather than ordinary code. The three caps are
+  coupled — to each other and to the counting model — so none can be re-tuned in isolation. The live
+  values and their rationale live in the tool's `config.ts`; the calibration figures are in the
+  landing PR.
 - **CI-only gate, no husky hook** — coverage-dependent and too slow for a commit hook.
 - **Residual risk:** a changed file exercised only through a dynamic import or other
   non-static path the module graph misses would be undercounted and could fail falsely; rare
@@ -139,8 +155,8 @@ None. This is CI/tooling only; no routes, pages, or components.
 
 - Adopting SonarCloud / any external quality-gate service.
 - A baseline of pre-existing violations (superseded by the touched-functions scope).
-- Remapping Playwright component-test (`*.pw.tsx`) coverage into the gate. (JSX components *are*
-  covered when they have a vitest `*.spec.tsx`; visual-only components stay complexity-only.)
+- Remapping Playwright component-test (`*.pw.tsx`) coverage into the gate. (`jsx` render bodies are
+  never CRAP-scored; their cognitive cap is the backstop instead.)
 - Enforcing the `.tsx`→`.ts` rename and the `react/jsx-filename-extension` rule (issue #3668).
 - Gating the whole repo or historical code in **CI**; the CI gate is strictly diff-scoped. (A
-  full-repo mode exists as a local/calibration *report*, not a CI gate.)
+  full-repo mode exists for local use and calibration; CI never invokes it.)
