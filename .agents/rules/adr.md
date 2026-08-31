@@ -1,5 +1,5 @@
 ---
-description: ARDs rules
+description: ADR rules
 paths:
   - "**/adr/*.md"
 globs: "**/adr/*.md"
