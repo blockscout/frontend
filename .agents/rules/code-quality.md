@@ -134,7 +134,8 @@ Before writing custom utility logic (clamping, deep cloning, grouping, etc.), ch
 
 ### Comments
 
-Do not add comments. Prefer a name or a structure change that makes the comment unnecessary.
+**Do not write comments. Never. Period.**
+Prefer a name or a structure change that makes the comment unnecessary.
 
 A comment in the diff is allowed only when it explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast, raw color) still explain *why*, in their own sections.
 
