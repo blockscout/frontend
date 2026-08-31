@@ -239,6 +239,7 @@ export default tseslint.config(
         },
       } ],
       'react/jsx-equals-spacing': [ 'error', 'never' ],
+      'react/jsx-filename-extension': [ 'error', { allow: 'as-needed', extensions: [ '.tsx' ] } ],
       'react/jsx-fragments': [ 'error', 'syntax' ],
       'react/jsx-no-duplicate-props': 'error',
       'react/jsx-no-target-blank': 'off',
