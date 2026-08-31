@@ -26,7 +26,7 @@ function row(overrides: Partial<ReportRow>): ReportRow {
 // A cognitive-complexity offender's increment sites: a shallow if and a deeply-nested one.
 const CONTRIBUTIONS: Array<Contribution> = [
   { line: 3, amount: 1, reason: 'if', nesting: 0 },
-  { line: 5, amount: 3, reason: 'if', nesting: 2 },
+  { line: 5, amount: 5, reason: 'if', nesting: 2 },
 ];
 
 describe('githubAnnotations', () => {
@@ -36,7 +36,7 @@ describe('githubAnnotations', () => {
       row({ file: 'src/b.ts', line: 3, name: 'ok' }),
     ], THRESHOLDS);
     expect(annotations).toEqual([
-      '::error file=src/a.ts,line=12::big: cognitive 25 > 20 [top: if +3 (L5), if +1 (L3); deepest nesting 2 at L5, flattening saves ~1]',
+      '::error file=src/a.ts,line=12::big: cognitive 25 > 20 [top: if +5 (L5), if +1 (L3); deepest nesting 2 at L5, flattening saves ~3]',
     ]);
   });
 
@@ -51,7 +51,7 @@ describe('githubAnnotations', () => {
     const [ annotation ] = githubAnnotations([
       row({ name: 'both', cognitive: 25, coverage: 0, crap: 90, brokeCognitive: true, brokeCrap: true, contributions: CONTRIBUTIONS }),
     ], THRESHOLDS);
-    const cognitivePart = 'cognitive 25 > 20 [top: if +3 (L5), if +1 (L3); deepest nesting 2 at L5, flattening saves ~1]';
+    const cognitivePart = 'cognitive 25 > 20 [top: if +5 (L5), if +1 (L3); deepest nesting 2 at L5, flattening saves ~3]';
     expect(annotation).toBe(`::error file=src/f.ts,line=1::both: ${ cognitivePart }; CRAP 90.0 > 30`);
   });
 

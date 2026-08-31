@@ -141,7 +141,7 @@ describe('computeFunctionComplexities — function units', () => {
   });
 });
 
-describe('computeFunctionComplexities — cognitive complexity (SonarSource model)', () => {
+describe('computeFunctionComplexities — cognitive complexity (SonarSource model, quadratic nesting)', () => {
   it('scores a branchless function 0', () => {
     expect(cognitiveOf('function f(x: number) { return x + 1; }')).toBe(0);
   });
@@ -167,8 +167,8 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
     `)).toBe(4);
   });
 
-  it('penalises nesting progressively (the SonarSource canonical shape)', () => {
-    // if +1 (n0), for +2 (n1), while +3 (n2) = 6
+  it('penalises nesting quadratically (1 + nesting²)', () => {
+    // if +1 (n0), for +2 (n1), while +5 (n2) = 8 — linear would have scored 6
     expect(cognitiveOf(`
       function f(a: boolean, xs: Array<number>, b: boolean) {
         if (a) {
@@ -177,7 +177,23 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
           }
         }
       }
-    `)).toBe(6);
+    `)).toBe(8);
+  });
+
+  it('charges 1 + nesting² at every depth, so each level costs more than the last', () => {
+    // if +1 (n0), if +2 (n1), if +5 (n2), if +10 (n3) = 18: the same nesting under the linear model
+    // would be 1+2+3+4 = 10. Identical to linear at depths 0-1; the surcharge starts at depth 2.
+    expect(cognitiveOf(`
+      function f(a: boolean, b: boolean, c: boolean, d: boolean) {
+        if (a) {
+          if (b) {
+            if (c) {
+              if (d) { return 1; }
+            }
+          }
+        }
+      }
+    `)).toBe(18);
   });
 
   it('nests inside a bare else body', () => {
@@ -206,7 +222,7 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
     `)).toBe(1);
   });
 
-  it('penalises a switch nested inside another structure (1 + nesting)', () => {
+  it('penalises a switch nested inside another structure (1 + nesting²)', () => {
     // if +1 (n0), inner switch +2 (n1) = 3 — a nested switch is not free
     expect(cognitiveOf(`
       function f(a: boolean, x: number) {
@@ -234,16 +250,23 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
     expect(cognitiveOf('function f(a: any, b: any, c: any) { return a && b && c; }')).toBe(1);
     // `a && b || c` = (a && b) || c: the || run +1, the nested && run +1 = 2
     expect(cognitiveOf('function f(a: any, b: any, c: any) { return a && b || c; }')).toBe(2);
-    // three distinct runs
-    expect(cognitiveOf('function f(a: any, b: any, c: any, d: any) { return a && b || (c ?? d); }')).toBe(3);
+    // two distinct runs; the parenthesised `??` is not a sequence operator and adds nothing
+    expect(cognitiveOf('function f(a: any, b: any, c: any, d: any) { return a && b || (c ?? d); }')).toBe(2);
   });
 
-  it('adds 1 + nesting for a ternary and nests its branches', () => {
+  it('does not count null-coalescing `??` or `??=`', () => {
+    // The SonarSource paper ignores null-coalescing as readable shorthand, like `?.` (ADR 0005): a
+    // wall of defaulting is verbose, not hard to follow.
+    expect(cognitiveOf('function f(a: any, b: any, c: any) { return a ?? b ?? c; }')).toBe(0);
+    expect(cognitiveOf('function f(x: any) { x ??= 1; return x; }')).toBe(0);
+  });
+
+  it('adds 1 + nesting² for a ternary and nests its branches', () => {
     // outer ternary +1 (n0); nested ternary in the whenFalse +2 (n1) = 3
     expect(cognitiveOf('function f(a: any, b: any) { return a ? 1 : (b ? 2 : 3); }')).toBe(3);
   });
 
-  it('adds 1 + nesting for catch', () => {
+  it('adds 1 + nesting² for catch', () => {
     // if +1 (n0), catch nested inside it +2 (n1) = 3
     expect(cognitiveOf(`
       function f(a: boolean) {
@@ -269,7 +292,7 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
   });
 
   it('adds 1 for a labelled break/continue', () => {
-    // for n0 +1, for n1 +2, if n2 +3, labelled break +1 = 7
+    // for n0 +1, for n1 +2, if n2 +5, labelled break +1 = 9
     expect(cognitiveOf(`
       function f(xs: Array<Array<number>>) {
         outer: for (const row of xs) {
@@ -278,7 +301,7 @@ describe('computeFunctionComplexities — cognitive complexity (SonarSource mode
           }
         }
       }
-    `)).toBe(7);
+    `)).toBe(9);
   });
 
   it('resets nesting for a nested function — each function is its own unit', () => {

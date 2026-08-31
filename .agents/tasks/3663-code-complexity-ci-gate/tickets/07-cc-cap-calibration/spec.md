@@ -42,29 +42,29 @@ decoupling: `pnpm test:code-complexity src/features/marketplace/hooks/useMarketp
 — **passes** at 20) and `pnpm test:code-complexity src/shared/router/useEtherscanRedirects.ts` (nested, CC
 23 — **trips**).
 
-- [ ] `??` and `??=` no longer produce a cognitive increment (removed from the boolean-sequence
+- [x] `??` and `??=` no longer produce a cognitive increment (removed from the boolean-sequence
   operator set in `complexity.ts`); `?.` remains excluded. `complexity.spec.ts` covers a `??` chain
   scoring 0 and no longer asserts the old `??` increment.
-- [ ] Nesting increments use `1 + nestingDepth²` at every structural site that carried `1 + nestingDepth`
+- [x] Nesting increments use `1 + nestingDepth²` at every structural site that carried `1 + nestingDepth`
   (`if`, ternary, `for`/`for..of`/`for..in`/`while`/`do`, `catch`, `switch`); `else`/`else if` stay flat
   `+1`, boolean sequences stay flat `+1`, `switch` is still one increment regardless of case count.
   `complexity.spec.ts` asserts the quadratic values (e.g. a depth-3 `if` scores `1 + 4 = 5`).
-- [ ] `config.ts`: `DEFAULT_MAX_COGNITIVE_BEHAVIOR = 20`; `DEFAULT_MAX_COGNITIVE_JSX` set from the fresh
+- [x] `config.ts`: `DEFAULT_MAX_COGNITIVE_BEHAVIOR = 20`; `DEFAULT_MAX_COGNITIVE_JSX` set from the fresh
   jsx distribution. The calibration comment block is rewritten to the new distribution and rationale
   (drop the stale `??`/linear figures; state the quadratic model and the natural-gap cap choice).
-- [ ] `(human)` The recalibrated per-kind COG caps are signed off — behavior 20 isolates the
+- [x] `(human)` The recalibrated per-kind COG caps are signed off — behavior 20 isolates the
   genuinely-nested tail (7 of 8 firing functions climbed under quadratic; `useNavItems` is the one flat
   outlier that stays) and forgives the flat-breadth band, and jsx sits at the new distribution's natural
   backstop. Both remain net-looser than the retired cyclomatic cap.
-- [ ] `CONTEXT.md` and the oracle-validation record are reframed: CC now **deliberately diverges** from
+- [x] `CONTEXT.md` and the oracle-validation record are reframed: CC now **deliberately diverges** from
   `eslint-plugin-sonarjs` on nesting (quadratic, not linear) and aligns with the SonarSource white paper
   on `??` (both ignored). The ticket-06 "nesting matches sonarjs exactly" parity claim is removed, and
   any oracle spec no longer asserts linear parity.
-- [ ] ADR 0005 records the divergence — quadratic nesting **and** `??` exclusion, the breadth-vs-nesting
+- [x] ADR 0005 records the divergence — quadratic nesting **and** `??` exclusion, the breadth-vs-nesting
   rationale, and the calibration coupling (changing the model invalidates the caps). It cross-references
   ADR 0004 (whose `?.` reasoning it extends to `??`). Its index line is added to the root `CLAUDE.md` ADR
   list.
-- [ ] `pnpm test:code-complexity` (full suite) passes; the CLI help text remains accurate (no flag
+- [x] `pnpm test:code-complexity` (full suite) passes; the CLI help text remains accurate (no flag
   surface changed).
 
 ## Details
@@ -89,15 +89,15 @@ decoupling: `pnpm test:code-complexity src/features/marketplace/hooks/useMarketp
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Model change in `complexity.ts` — remove `??`/`??=` from the boolean-sequence operator
+- [x] 1 `[agent]` Model change in `complexity.ts` — remove `??`/`??=` from the boolean-sequence operator
   set; change the five nesting-increment sites (`if`, ternary, loop, `catch`, `switch`) from
   `1 + nesting` to `1 + nesting * nesting`; update `complexity.spec.ts` (quadratic increment values; `??`
   chain scores 0).
-- [ ] 2 `[agent]` Recalibrate `config.ts` — fresh full-repo run under the new model; set
+- [x] 2 `[agent]` Recalibrate `config.ts` — fresh full-repo run under the new model; set
   `DEFAULT_MAX_COGNITIVE_BEHAVIOR = 20` and `DEFAULT_MAX_COGNITIVE_JSX` from the jsx natural gap; rewrite
   the calibration comment. Pause for `(human)` cap sign-off.
-- [ ] 3 `[agent]` Reframe oracle validation + `CONTEXT.md` — document the deliberate nesting divergence
+- [x] 3 `[agent]` Reframe oracle validation + `CONTEXT.md` — document the deliberate nesting divergence
   from `eslint-plugin-sonarjs` and the `??` alignment with the SonarSource paper; remove the "matches
   sonarjs exactly" claim; update any oracle spec so it no longer asserts linear parity.
-- [ ] 4 `[agent]` Write ADR 0005 (quadratic nesting + `??` exclusion) — rationale, calibration coupling,
+- [x] 4 `[agent]` Write ADR 0005 (quadratic nesting + `??` exclusion) — rationale, calibration coupling,
   cross-reference to ADR 0004; add its index line to the root `CLAUDE.md` ADR list.

@@ -94,22 +94,28 @@ progressively, and boolean runs collapse. A function starts at **0** and accrues
 
 | Construct | Increment |
 | --- | --- |
-| `if`, `for`, `for..of`, `for..in`, `while`, `do`, `catch`, ternary (`? :`), `switch` | `1 + nesting` |
+| `if`, `for`, `for..of`, `for..in`, `while`, `do`, `catch`, ternary (`? :`), `switch` | `1 + nesting²` |
 | `else`, `else if` | `+1` (no nesting penalty; the chain stays at its base level) |
-| a run of like boolean operators (`&&` / `||` / `??`) | `+1` per run |
+| a run of like boolean operators (`&&` / `\|\|`) | `+1` per run |
 | direct self-recursion (name match) | `+1` |
 | labelled `break` / `continue` | `+1` |
 
 **Nesting** is increased by `if` (its then-branch), `else`/`else if` (their body), ternary (its
 branches), the loops, `catch` (its body), and `switch` (its cases). Each of those nesting structures
-pays `1 + nesting` for itself and deepens the level for what it contains, so a construct three levels
-in costs `1 + 3`. `switch` gets exactly **one** increment (carrying the nesting penalty) regardless
-of how many `case`s it has — unlike cyclomatic, which counts every `case`.
+pays `1 + nesting²` for itself and deepens the level for what it contains, so a construct three
+levels in costs `1 + 9`. `switch` gets exactly **one** increment (carrying the nesting penalty)
+regardless of how many `case`s it has — unlike cyclomatic, which counts every `case`.
+
+The **quadratic** nesting penalty is a deliberate divergence from SonarSource's linear `1 + nesting`
+(ADR 0005). It is identical at depths 0 and 1 and bites only from the third level in, so flat and
+shallow code is untouched while genuinely-nested code accelerates away. That is what decouples
+breadth from nesting: flat breadth accrues at `+1` per decision and stays put, which lets one cap
+forgive wide-but-shallow logic and still catch the nested tail. No linear cap could separate the two.
 
 **Boolean sequences.** A maximal run of the *same* operator costs `+1`; switching operator starts a
 new run. `a && b && c` = `+1`; `a && b || c` = `+2` (an `&&` run and a `||` run). Parentheses break a
-run. Boolean increments carry no nesting penalty. Compound logical assignments (`&&=`, `||=`, `??=`)
-are not sequence operators and add nothing to CC.
+run. Boolean increments carry no nesting penalty. Compound logical assignments (`&&=`, `||=`) are not
+sequence operators and add nothing to CC.
 
 **Recursion is approximate.** With no type-checker, self-recursion is detected by name match — a call
 whose callee is the bare identifier the function is bound to. This catches direct self-recursion in a
@@ -117,8 +123,14 @@ function declaration, a named function expression, or a `const f = () => … f()
 catch `this.method()`, destructured/aliased calls, or indirect/mutual recursion. A documented
 approximation, not a bug. Labelled `break`/`continue` is exact (purely syntactic).
 
-**`?.` is not counted** — consistent with ADR 0004. CC's model does not treat optional chaining as a
-branch or a nesting structure, so the exclusion carries over for free.
+**`?.` and `??` are not counted.** Optional chaining is excluded per ADR 0004 — CC's model does not
+treat it as a branch or a nesting structure, so the exclusion carries over for free. Null-coalescing
+(`??`, `??=`) is excluded because the SonarSource white paper itself ignores it as readable shorthand,
+in the same class as `?.`; counting it measured defaulting verbosity, not readability (at calibration
+the worst case was an API-model mapper — a flat wall of `x ?? null` field assignments with no control
+flow — scoring 14, as much as genuinely branchy logic; it now scores 0). ADR 0005 records this as an
+extension of ADR 0004's reasoning. Cyclomatic complexity still counts `??`, matching
+ESLint's `complexity` rule — the two scores diverge here on purpose.
 
 Every cognitive increment is recorded as a `{ line, amount, reason, nesting }` contribution, so a
 violation annotation can name the sites that cost the most and point at the deepest nesting pocket.
@@ -137,15 +149,23 @@ structural divergence from the reference model.
 
 Our CC was diffed against `eslint-plugin-sonarjs`'s `cognitive-complexity` rule (installed
 temporarily; **not** a committed dependency and **not** wired into the eslint config) on a repo-wide
-sample. After aligning `switch` to `1 + nesting`, the nesting-heavy tail matches exactly (e.g.
-`useEtherscanRedirects` — nested `switch` trees — scores 15 under both). The remaining deltas are all
-in one direction (ours ≥ oracle) and all in boolean-heavy code, because the pinned oracle version
-(`eslint-plugin-sonarjs@4.2.0`) diverges from the written SonarSource model on boolean operators: it
-scores pure `||` / `??` chains as **0** and collapses any expression containing `&&` to a single
-`+1`. Our tool implements the written model (`+1` per run of like operators), which we treat as
-authoritative; the oracle version's boolean handling is the divergence. On the sample, ~70% of
-functions matched exactly and the mean absolute delta was ~0.5, entirely attributable to that boolean
-difference.
+sample. That exercise validated the *shape* of the model — which constructs increment, where nesting
+deepens, how `switch` and `else if` are treated — and the scores agreed on flat and shallow code. Our
+tool is **not** expected to match the oracle numerically, and three known divergences explain the
+deltas:
+
+- **Nesting is quadratic here, linear there** (ADR 0005) — a deliberate divergence, so any function
+  with a construct at depth ≥ 2 scores higher for us. This is the divergence with teeth; it is what
+  the caps in `config.ts` are calibrated against.
+- **Boolean operators.** The pinned oracle version (`eslint-plugin-sonarjs@4.2.0`) diverges from the
+  written SonarSource model: it scores pure `||` chains as **0** and collapses any expression
+  containing `&&` to a single `+1`. We implement the written model (`+1` per run of like operators)
+  and treat it as authoritative.
+- **`??` is ignored here** — matching the white paper, which the oracle version does not.
+
+Nesting-heavy code is therefore expected to read higher than the oracle by design — at calibration a
+hook built from nested `switch` trees scored 23 here against the linear model's 15. Do not treat
+oracle parity as a regression test.
 
 ## CRAP score
 
@@ -228,9 +248,10 @@ how much flattening that pocket by one level would save.
 ## Thresholds
 
 Defaults live in `config.ts`, overridable by flags — CI carries no numbers. They are calibrated from a
-full-repo CC run and are coupled to the `?.`-excluded counting (ADR 0004) and to each other; re-tune
-them together against a fresh full-repo run, never one in isolation. The current caps and the
-calibration figures behind them are documented in `config.ts`.
+full-repo CC run and are coupled to the increment model — `?.`/`??` excluded (ADR 0004, 0005) and
+quadratic nesting (ADR 0005) — and to each other. Changing any of those silently makes the caps
+wrong, so re-tune them together against a fresh full-repo run, never one in isolation. The current
+caps and the calibration figures behind them are documented in `config.ts`.
 
 ## Scope
 

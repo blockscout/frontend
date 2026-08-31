@@ -90,7 +90,7 @@ describe('buildFileRows — jsx functions carry the cognitive cap only', () => {
   it('never scores CRAP on a jsx function, even with coverage present', () => {
     const rows = buildFileRows('src/C.tsx', NESTED_JSX, coverageStub({ 'src/C.tsx': [ [ 1, 0 ] ] }), opts());
     expect(rows[0].kind).toBe('jsx');
-    expect(rows[0].cognitive).toBe(6);
+    expect(rows[0].cognitive).toBe(8);
     expect(rows[0].coverage).toBeNull();
     expect(rows[0].crap).toBeNull();
     expect(rows[0].brokeCrap).toBe(false);
@@ -99,7 +99,7 @@ describe('buildFileRows — jsx functions carry the cognitive cap only', () => {
   it('still breaks the cognitive gate when over the jsx cap', () => {
     const thresholds = { maxCognitiveJsx: 5, maxCognitiveBehavior: 20, maxCrap: 30 };
     const rows = buildFileRows('src/C.tsx', NESTED_JSX, coverageStub({}), opts({ thresholds }));
-    expect(rows[0].brokeCognitive).toBe(true); // cognitive 6 > jsx cap 5
+    expect(rows[0].brokeCognitive).toBe(true); // cognitive 8 > jsx cap 5
   });
 });
 
@@ -107,14 +107,14 @@ describe('buildFileRows — the two cognitive caps gate by class', () => {
   const thresholds = { maxCognitiveJsx: 20, maxCognitiveBehavior: 5, maxCrap: 30 };
 
   it('gates a jsx function against the jsx cap', () => {
-    // cognitive 6: under the jsx cap of 20, so not flagged despite exceeding the behavior cap.
+    // cognitive 8: under the jsx cap of 20, so not flagged despite exceeding the behavior cap.
     const rows = buildFileRows('src/C.tsx', NESTED_JSX, null, opts({ thresholds }));
     expect(rows[0].kind).toBe('jsx');
     expect(rows[0].brokeCognitive).toBe(false);
   });
 
   it('gates a behavior function against the behavior cap', () => {
-    // same cognitive 6: over the behavior cap of 5, so flagged.
+    // same cognitive 8: over the behavior cap of 5, so flagged.
     const rows = buildFileRows('src/f.ts', NESTED_LOGIC, null, opts({ thresholds }));
     expect(rows[0].kind).toBe('behavior');
     expect(rows[0].brokeCognitive).toBe(true);
@@ -135,7 +135,7 @@ describe('buildFileRows — gate scoping', () => {
   it('never flags a function the gate excludes, even over threshold', () => {
     const thresholds = { maxCognitiveJsx: 5, maxCognitiveBehavior: 5, maxCrap: 30 };
     const rows = buildFileRows('src/f.ts', NESTED_LOGIC, coverageStub({ 'src/f.ts': [ [ 1, 0 ] ] }), opts({ gate: () => false, thresholds }));
-    expect(rows[0].cognitive).toBe(6); // still reported...
+    expect(rows[0].cognitive).toBe(8); // still reported...
     expect(rows[0].brokeCognitive).toBe(false); // ...but not flagged
     expect(rows[0].brokeCrap).toBe(false);
   });

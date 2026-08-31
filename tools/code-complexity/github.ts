@@ -3,7 +3,7 @@
 // side effects (stdout + $GITHUB_STEP_SUMMARY) live in index.ts, guarded by $GITHUB_ACTIONS.
 
 import type { Contribution } from './complexity';
-import { isNestingStructureReason } from './complexity';
+import { flatteningSaving, isNestingStructureReason } from './complexity';
 import type { ReportRow, Thresholds } from './report';
 import { isOffender, maxCognitiveFor } from './report';
 
@@ -26,15 +26,16 @@ function topContributors(contributions: ReadonlyArray<Contribution>): string {
 }
 
 // The deepest nesting pocket and what flattening it by one level would save: every nesting structure
-// sitting at the deepest level pays `1 + depth`, so removing that level drops each of them by 1. Flat
-// increments (else, switch, boolean runs) carry no nesting penalty and are not counted in the saving.
+// sitting at the deepest level pays `1 + depth²`, so removing that level drops each of them by
+// `2·depth − 1`. Flat increments (else, boolean runs) carry no nesting penalty and are not counted.
 function deepestPocket(contributions: ReadonlyArray<Contribution>): string {
   const maxNesting = Math.max(0, ...contributions.map((contribution) => contribution.nesting));
   if (maxNesting === 0) return ''; // nothing nested to flatten
 
   const atDepth = contributions.filter((contribution) => contribution.nesting === maxNesting);
   const line = atDepth[0].line;
-  const saving = atDepth.filter((contribution) => isNestingStructureReason(contribution.reason)).length;
+  const saving = atDepth.filter((contribution) => isNestingStructureReason(contribution.reason)).length *
+    flatteningSaving(maxNesting);
   const savingText = saving > 0 ? `, flattening saves ~${ saving }` : '';
   return `deepest nesting ${ maxNesting } at L${ line }${ savingText }`;
 }

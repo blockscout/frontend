@@ -71,6 +71,8 @@ evidence and the trade-off, so it answers "why is it like this?" without a git a
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
 - `0004-optional-chaining-excluded-from-complexity.md` — why the code-complexity gate does not count `?.`.
+- `0005-quadratic-nesting-and-null-coalescing-in-cognitive-complexity.md` — why cognitive complexity
+  charges nesting `1 + n²` and ignores `??`, and why that is coupled to the calibrated caps.
 
 Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
 it constrains future work, was reached by measurement or an investigation worth not repeating, or

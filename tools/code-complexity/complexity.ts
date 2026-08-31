@@ -6,9 +6,10 @@ import ts from 'typescript';
 //  - `complexity` — cyclomatic complexity, counting independent paths ≈ tests needed. It mirrors
 //    ESLint's `complexity` rule (bar optional chaining, ADR 0004) and feeds CRAP. It is no longer a
 //    gate on its own — see ./CONTEXT.md.
-//  - `cognitive` — Cognitive Complexity (SonarSource model), the readability gate. Flat control flow
-//    scores cheap, nesting is penalised progressively, boolean runs collapse. Every increment is
-//    recorded in `contributions` so a violation can name the exact sites that cost the most.
+//  - `cognitive` — Cognitive Complexity, the readability gate. Follows the SonarSource model except
+//    that nesting is penalised quadratically rather than linearly (ADR 0005). Flat control flow
+//    scores cheap, boolean runs collapse. Every increment is recorded in `contributions` so a
+//    violation can name the exact sites that cost the most.
 //
 // The exact conventions and the divergences from SonarSource are documented in ./CONTEXT.md.
 
@@ -20,7 +21,7 @@ export interface Contribution {
   // Human-readable construct name, surfaced in violation annotations.
   readonly reason: string;
   // Nesting depth this construct sits at (0 = function top level). Nesting structures pay
-  // `1 + nesting`; flat ones pay a fixed amount at whatever depth they occur. Used to locate the
+  // `1 + nesting²`; flat ones pay a fixed amount at whatever depth they occur. Used to locate the
   // deepest pocket for the "flatten this" annotation.
   readonly nesting: number;
 }
@@ -76,20 +77,37 @@ const LOGICAL_OPERATORS: ReadonlySet<ts.SyntaxKind> = new Set([
 // The expression-level logical operators that form cognitive "boolean sequences": a run of the same
 // operator costs +1 for the whole run, and switching operator starts a new run. Compound-assignment
 // forms are not sequence operators (they are statements, not chains).
+//
+// Null-coalescing (`??`, `??=`) is deliberately absent: the SonarSource white paper ignores it as
+// readable shorthand, in the same class as `?.` (ADR 0004, extended by ADR 0005). Counting it
+// measured defaulting verbosity — a wall of flat `x ?? null` lines — not readability.
 const SEQUENCE_OPERATORS: ReadonlyMap<ts.SyntaxKind, string> = new Map([
   [ ts.SyntaxKind.AmpersandAmpersandToken, '&&' ],
   [ ts.SyntaxKind.BarBarToken, '||' ],
-  [ ts.SyntaxKind.QuestionQuestionToken, '??' ],
 ]);
 
-// Cognitive-complexity reasons whose increment carries the nesting penalty (`1 + nesting`). Used to
-// estimate how much flattening the deepest pocket would save (each such increment there drops by 1).
+// Cognitive-complexity reasons whose increment carries the nesting penalty (`1 + nesting²`). Used to
+// estimate how much flattening the deepest pocket would save.
 const NESTING_STRUCTURE_REASONS: ReadonlySet<string> = new Set([
   'if', 'ternary', 'catch', 'switch', 'for loop', 'for-in loop', 'for-of loop', 'while loop', 'do-while loop',
 ]);
 
 export function isNestingStructureReason(reason: string): boolean {
   return NESTING_STRUCTURE_REASONS.has(reason);
+}
+
+// What one nesting structure costs at `nesting` levels deep. SonarSource charges `1 + nesting`; we
+// charge `1 + nesting²` — a deliberate divergence (ADR 0005). It is identical at depths 0 and 1 and
+// bites only from the third level in, so flat breadth stays cheap while genuinely-nested code
+// accelerates away. That is what lets one cap forgive wide-but-shallow code and still catch nesting.
+export function nestingIncrement(nesting: number): number {
+  return 1 + nesting * nesting;
+}
+
+// What flattening the deepest pocket by one level saves per nesting structure sitting there:
+// `nesting² − (nesting − 1)²`, i.e. the odd numbers 1, 3, 5, … as depth grows.
+export function flatteningSaving(nesting: number): number {
+  return nestingIncrement(nesting) - nestingIncrement(nesting - 1);
 }
 
 function countsAsBranch(node: ts.Node): boolean {
@@ -267,9 +285,9 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
 
     if (ts.isIfStatement(node)) {
       // `else if` (an if that is its parent's else branch) is a flat continuation: +1, no nesting
-      // penalty, and the chain stays at the same base level. A leading `if` pays `1 + nesting`.
+      // penalty, and the chain stays at the same base level. A leading `if` pays the nesting price.
       if (isElseIf(node)) add(frame, node, 1, 'else if', nesting);
-      else add(frame, node, 1 + nesting, 'if', nesting);
+      else add(frame, node, nestingIncrement(nesting), 'if', nesting);
       visit(node.expression, frame, nesting);
       visit(node.thenStatement, frame, nesting + 1);
       if (node.elseStatement) {
@@ -285,7 +303,7 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
     }
 
     if (ts.isConditionalExpression(node)) {
-      add(frame, node, 1 + nesting, 'ternary', nesting);
+      add(frame, node, nestingIncrement(nesting), 'ternary', nesting);
       visit(node.condition, frame, nesting);
       visit(node.whenTrue, frame, nesting + 1);
       visit(node.whenFalse, frame, nesting + 1);
@@ -294,14 +312,14 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
 
     const loopReason = LOOP_REASONS.get(node.kind);
     if (loopReason !== undefined) {
-      add(frame, node, 1 + nesting, loopReason, nesting);
+      add(frame, node, nestingIncrement(nesting), loopReason, nesting);
       // Only the loop body nests; the header (init/condition/update) stays at the current level.
       ts.forEachChild(node, (child) => visit(child, frame, child === (node as ts.IterationStatement).statement ? nesting + 1 : nesting));
       return;
     }
 
     if (ts.isCatchClause(node)) {
-      add(frame, node, 1 + nesting, 'catch', nesting);
+      add(frame, node, nestingIncrement(nesting), 'catch', nesting);
       if (node.variableDeclaration) visit(node.variableDeclaration, frame, nesting);
       visit(node.block, frame, nesting + 1);
       return;
@@ -309,10 +327,10 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
 
     if (ts.isSwitchStatement(node)) {
       // A switch is a nesting structure: one increment for the whole switch (never per-case, unlike
-      // cyclomatic), carrying the `1 + nesting` penalty, and its body nests one level so control flow
+      // cyclomatic), carrying the nesting penalty, and its body nests one level so control flow
       // inside a case is penalised for the depth. This is what makes deeply-nested switch trees (the
       // genuinely-hard-to-read tail this gate targets) score high.
-      add(frame, node, 1 + nesting, 'switch', nesting);
+      add(frame, node, nestingIncrement(nesting), 'switch', nesting);
       visit(node.expression, frame, nesting);
       visit(node.caseBlock, frame, nesting + 1);
       return;
