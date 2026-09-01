@@ -8,8 +8,8 @@ import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
 type TransactionType = schemas['Transaction']['transaction_types'][number] |
-'op_stack_l1_attributes_tx' |
-'op_stack_post_exec_tx';
+'op_stack_l1_attributes_transaction' |
+'op_stack_post_exec_transaction';
 
 export interface Props extends BadgeProps {
   types: Array<TransactionType>;
@@ -17,8 +17,8 @@ export interface Props extends BadgeProps {
 }
 
 const TYPES_ORDER: Array<TransactionType> = [
-  'op_stack_l1_attributes_tx',
-  'op_stack_post_exec_tx',
+  'op_stack_l1_attributes_transaction',
+  'op_stack_post_exec_transaction',
   'blob_transaction',
   'rootstock_remasc',
   'rootstock_bridge',
@@ -64,11 +64,11 @@ const TxType = ({ types, isLoading, ...rest }: Props) => {
       label = 'Coin transfer';
       colorPalette = 'orange';
       break;
-    case 'op_stack_l1_attributes_tx':
+    case 'op_stack_l1_attributes_transaction':
       label = 'L1 attr tx';
       colorPalette = 'green';
       break;
-    case 'op_stack_post_exec_tx':
+    case 'op_stack_post_exec_transaction':
       label = 'Post exec tx';
       colorPalette = 'green';
       break;
