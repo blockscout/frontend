@@ -50,8 +50,9 @@ weakly-asserted logic from landing.
 11. The `*.primed.spec.tsx` drift tests are excluded from the vitest runs this tool triggers. They mount
     whole pages without exercising behaviour, so their kills are incidental to the question being asked, and
     they dominated runtime. This matches the complexity gate, which already excludes them from its coverage runs.
-12. A **mutant cap** bounds any single run. When a selection exceeds it, the CLI reports the count and skips
-    rather than grinding; the skip is always stated in the output and never silent.
+12. A **wall-clock budget** bounds any single run. Results are written to disk as each mutant is tested, so
+    when the budget expires the run is stopped and everything completed so far is reported. The output always
+    states that the run was truncated and how much of the selection it covered; truncation is never silent.
 13. Stryker's own configuration lives in a **committed config file**, so every setting is reviewable in a
     diff and schema-validated in an editor. The CLI contributes only what genuinely varies per run.
 14. A **CI job** runs the tool diff-scoped on pull requests. It is its own job — it cannot reuse the unit-test
@@ -95,8 +96,9 @@ None. This task ships no user-facing surface.
   `reports/stryker-incremental.json`; it is rejected.
 - **Runtime is governed by import-graph centrality, not mutant count.** Five leaf utilities with 140 mutants
   ran in 10 seconds; one 28-mutant file imported across the app took 70 seconds, because Stryker's dry run
-  executes everything related to it. This is why FR12 caps by mutant count and the CI job carries an
-  explicit timeout, rather than assuming diff size predicts cost.
+  executes everything related to it. This is why FR12 bounds by wall-clock time rather than mutant count:
+  diff size does not predict cost, and a mutant-count bound would have to track Stryker's own generator to
+  stay honest.
 - The gating mutator set in FR2 was chosen from evidence, not taste. Sampling 22 survivors across all
   mutators found roughly a third unkillable by any vitest test — React dependency arrays, theme-variable
   objects, colour-token string literals, all of them visual or idiomatic rather than behavioural. Sampling
