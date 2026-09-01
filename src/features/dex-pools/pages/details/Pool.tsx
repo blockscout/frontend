@@ -25,12 +25,12 @@ import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-e
 import VerifyWith from 'src/shared/links/VerifyWith';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const Pool = () => {
   const router = useRouter();
@@ -95,7 +95,7 @@ const Pool = () => {
       return (
         <Skeleton loading={ isPlaceholderData } display="flex" alignItems="center" overflow="hidden">
           <Flex overflow="hidden">
-            <HashStringShortenDynamic hash={ data?.pool_id }/>
+            <Truncate value={ data?.pool_id }/>
           </Flex>
           <CopyToClipboard text={ data?.pool_id }/>
         </Skeleton>

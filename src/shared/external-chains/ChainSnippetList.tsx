@@ -10,7 +10,7 @@ import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ChainIcon from './ChainIcon';
 
@@ -32,7 +32,7 @@ const ChainSnippetList = ({ data, isLoading, ...rest }: Props) => {
             loading={ isLoading }
             maxW="calc(100% - 28px)"
           >
-            <TruncatedText text={ data?.name ?? 'Unknown chain' } loading={ isLoading }/>
+            <Truncate value={ data?.name ?? 'Unknown chain' } type="end" loading={ isLoading }/>
           </Link>
         ) : (
           <Skeleton loading={ isLoading } fontWeight={ 700 } maxW="calc(100% - 28px)"><span>{ data?.name ?? 'Unknown chain' }</span></Skeleton>

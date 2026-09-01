@@ -11,9 +11,9 @@ import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const rollupFeature = config.features.rollup;
 
@@ -40,7 +40,7 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value color="text.primary">
         <Skeleton loading={ isLoading } display="flex" overflow="hidden" w="100%" alignItems="center">
-          <HashStringShorten hash={ item.contract_address_hash } type="long"/>
+          <Truncate value={ item.contract_address_hash } type="middle-static" maxSymbols={ 16 }/>
           <CopyToClipboard text={ item.contract_address_hash } ml={ 2 } isLoading={ isLoading }/>
         </Skeleton>
       </ListItemMobileGrid.Value>

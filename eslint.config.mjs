@@ -108,6 +108,7 @@ export default tseslint.config(
     // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap
     '.claude/worktrees/',
     'next.config.js',
+    'tools/code-complexity/dist/',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
@@ -239,6 +240,7 @@ export default tseslint.config(
         },
       } ],
       'react/jsx-equals-spacing': [ 'error', 'never' ],
+      'react/jsx-filename-extension': [ 'error', { allow: 'as-needed', extensions: [ '.tsx' ] } ],
       'react/jsx-fragments': [ 'error', 'syntax' ],
       'react/jsx-no-duplicate-props': 'error',
       'react/jsx-no-target-blank': 'off',

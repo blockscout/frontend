@@ -23,7 +23,7 @@ import { Heading } from 'src/toolkit/chakra/heading';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { downloadBlob } from 'src/toolkit/utils/file';
 
 import BlockCountdownTimer from './BlockCountdownTimer';
@@ -80,7 +80,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             <Heading
               level="1"
             >
-              <TruncatedText text={ `Block #${ height }` } w="100%"/>
+              <Truncate value={ `Block #${ height }` } type="end" w="100%"/>
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>

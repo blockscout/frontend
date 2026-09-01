@@ -7,6 +7,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 import appConfig from 'src/config';
 
+const isInsideWorktree = __dirname.includes('/.claude/worktrees/');
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -15,8 +17,7 @@ const config: PlaywrightTestConfig = defineConfig({
 
   testMatch: /.*\.pw\.tsx/,
 
-  // agent worktrees are full checkouts of the repo; their tests would run a second time
-  testIgnore: '.claude/worktrees/**',
+  testIgnore: isInsideWorktree ? undefined : '.claude/worktrees/**',
 
   snapshotPathTemplate: '{testDir}/{testFileDir}/__screenshots__/{testFileName}_{projectName}_{arg}{ext}',
 

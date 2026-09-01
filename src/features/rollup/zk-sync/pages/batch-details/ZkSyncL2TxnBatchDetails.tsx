@@ -29,7 +29,7 @@ import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
 
@@ -148,7 +148,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           flexWrap="nowrap"
           alignSelf="flex-start"
         >
-          <TruncatedText text={ data.root_hash }/>
+          <Truncate value={ data.root_hash } type="end"/>
           <CopyToClipboard text={ data.root_hash }/>
         </DetailedInfo.ItemValue>
 

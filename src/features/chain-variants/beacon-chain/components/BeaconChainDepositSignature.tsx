@@ -1,19 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, Text } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const BeaconChainDepositSignature = ({ signature, isLoading }: { signature: string; isLoading: boolean }) => {
   return (
     <Skeleton loading={ isLoading } display="grid" gridTemplateColumns="1fr 24px" overflow="hidden">
-      <TruncatedTextTooltip label={ signature }>
-        <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ signature }</Text>
-      </TruncatedTextTooltip>
+      <Truncate value={ signature } type="end" w="100%"/>
       <CopyToClipboard text={ signature }/>
     </Skeleton>
   );

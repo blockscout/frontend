@@ -12,9 +12,10 @@ import { toBech32Address } from 'src/slices/address/utils/bech32';
 import * as EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestDomain =
 ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain | multichain.QuickSearchResultDomain>) => {
@@ -51,7 +52,7 @@ const SearchBarSuggestDomain =
       whiteSpace="nowrap"
       color="text.secondary"
     >
-      <HashStringShortenDynamic hash={ hash } noTooltip/>
+      <Truncate value={ hash } tooltip={ false }/>
     </Text>
   ) : null;
 

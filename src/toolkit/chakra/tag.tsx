@@ -3,7 +3,7 @@
 import { chakra, Tag as ChakraTag } from '@chakra-ui/react';
 import * as React from 'react';
 
-import { TruncatedTextTooltip } from '../components/truncation/TruncatedTextTooltip';
+import { OverflowTooltip } from '../components/truncation/OverflowTooltip';
 import { nbsp } from '../utils/htmlEntities';
 import { CloseButton } from './close-button';
 import { Skeleton } from './skeleton';
@@ -43,9 +43,9 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     ) : null;
 
     const contentElement = truncated ? (
-      <TruncatedTextTooltip label={ children }>
+      <OverflowTooltip content={ children }>
         <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>
-      </TruncatedTextTooltip>
+      </OverflowTooltip>
     ) : <ChakraTag.Label>{ labelElement }{ children }</ChakraTag.Label>;
 
     return (

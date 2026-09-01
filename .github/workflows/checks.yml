@@ -13,7 +13,6 @@ on:
       - 'deploy/**'
       - 'docs/**'
       - 'public/**'
-      - 'tools/**'
 
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
@@ -173,7 +172,11 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Vitest
-        run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main' || '' }} --passWithNoTests
+        run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main --coverage --coverage.provider=v8 --coverage.reporter=json' || '' }} --passWithNoTests
+
+      - name: Cognitive complexity & CRAP gate
+        if: ${{ github.event_name == 'pull_request' }}
+        run: pnpm test:code-complexity --changed=origin/main --coverage-file coverage/coverage-final.json
 
   pw_affected_tests:
     name: Resolve affected Playwright tests

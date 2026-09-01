@@ -14,8 +14,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   item: schemas['TokenInstanceInTokenInstancesList'];
@@ -57,20 +56,15 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
       { item.id && (
         <Flex mb={ 2 } ml={ 1 }>
           <Text whiteSpace="pre" color="text.secondary">ID# </Text>
-          <TruncatedTextTooltip label={ item.id }>
-            <Skeleton loading={ isLoading } overflow="hidden">
-              <Link
-                overflow="hidden"
-                textOverflow="ellipsis"
-                whiteSpace="nowrap"
-                display="block"
-                loading={ isLoading }
-                href={ url }
-              >
-                { item.id }
-              </Link>
-            </Skeleton>
-          </TruncatedTextTooltip>
+          <Link
+            href={ url }
+            loading={ isLoading }
+            display="block"
+            overflow="hidden"
+            minW={ 0 }
+          >
+            <Truncate value={ item.id } type="end" display="block" w="100%"/>
+          </Link>
         </Flex>
       ) }
       { item.owner && (

@@ -7,15 +7,37 @@ alwaysApply: false
 ---
 # Code Quality
 
-We use ESLint, cSpell and Typescript to maintain code quality and consistency across the project.
-In order to check code quality run the following commands:
+We use ESLint, cSpell, TypeScript to maintain code quality.
+
 ```bash
 pnpm lint:eslint:fix
 pnpm lint:tsc
 pnpm lint:cspell
 ```
 
-Moreover, please find below the general sense rules that linters do not cover.
+The rest of this file covers code complexity scores and conventions that the linters do not.
+
+## Complexity and CRAP
+
+Two independent per-function gates:
+
+- **COG** (cognitive complexity) — readability. A `BROKE` here means decompose the function (flatten nesting, extract, early-return).
+- **CRAP** — under-tested *behavior* (handlers, hooks, utils — not JSX render bodies). A `BROKE` here means add a Vitest spec; simplifying the function does not lower CRAP.
+
+How a score is counted, which functions are gated, and how to read a failure: `tools/code-complexity/CONTEXT.md`.
+
+How to run:
+
+```bash
+# The file you are on — every function in it
+pnpm test:code-complexity path/to/file.ts
+
+# This branch vs origin/main, including uncommitted edits
+pnpm test:code-complexity --changed
+
+# For the full command usage
+pnpm test:code-complexity --help
+```
 
 ## Code Style and Structure
 
@@ -134,30 +156,24 @@ Before writing custom utility logic (clamping, deep cloning, grouping, etc.), ch
 
 ### Comments
 
-Comment the *why*, not the *what*. The code already shows what it does; a good comment explains what the
-code can't — the rationale, a non-obvious constraint, a gotcha, a link to the issue or spec that motivated
-it.
+**Do not write comments. Never. Period.**
+Prefer a name or a structure change that makes the comment unnecessary.
 
-Never write *diff-narration* comments — what the code replaces, what it used to do, what behavior it
-preserves. That belongs in the commit message and the PR, not in the source, where it goes stale the moment
-the next change lands.
+A comment in the diff is allowed only when it explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast, raw color) still explain *why*, in their own sections.
+
+Never write *diff-narration* (what this change replaces). That belongs in the commit and the PR. Test: if the comment would confuse someone who never saw the previous file, delete it.
+
+Do not add JSDoc that restates the name or types. Do not rewrite comments you did not have to touch. Delete commented-out code; git keeps it. TODOs only with an issue or a concrete follow-up.
 
 ```ts
-// BAD — narrates the change and restates the obvious
-// Replaces the old useEffect approach; now we memoize the filtered list
+// BAD — narrates the change and restates the next line
+// Replaces the old useEffect; memoize the filtered list
 const active = useMemo(() => items.filter(isActive), [ items ]);
 
-// GOOD — explains the non-obvious why
-// Memoized because <VirtualList> bails out of re-rendering on referential equality of `items`.
-const active = useMemo(() => items.filter(isActive), [ items ]);
+// GOOD — why the obvious approach fails
+// Firefox: drag outside the window swallows mouse events until re-entry; see onMouseLeave().
+const onMouseMove = useCallback(() => {}, [ ]);
 ```
-
-Quick test: if a comment would confuse a reader who never saw the previous version of the file, it is
-diff-narration — delete it. If it still helps that reader understand a decision, keep it.
-
-### Commented-out code
-
-Remove commented-out code blocks. The git history preserves anything that might be needed later. TODOs are acceptable only when paired with a clear follow-up plan or issue reference.
 
 ### Links
 

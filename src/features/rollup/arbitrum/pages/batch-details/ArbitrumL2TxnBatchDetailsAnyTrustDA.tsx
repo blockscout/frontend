@@ -9,9 +9,10 @@ import dayjs from 'src/shared/date-and-time/dayjs';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailsTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 type Props = {
   data: schemas['ArbitrumDataAvailabilityAnytrust'];
@@ -90,7 +91,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
               </Box>
               { signer.proof ? (
                 <Flex>
-                  <HashStringShorten hash={ signer.proof }/>
+                  <Truncate value={ signer.proof } type="middle-static"/>
                   <CopyToClipboard text={ signer.proof } ml={ 2 }/>
                 </Flex>
               ) : '-' }
@@ -115,7 +116,7 @@ const ArbitrumL2TxnBatchDetailsAnyTrustDA = ({ data }: Props) => {
                   <Text fontWeight={ 600 } mr={ 2 }>Proof</Text>
                   { signer.proof ? (
                     <Flex>
-                      <HashStringShorten hash={ signer.proof }/>
+                      <Truncate value={ signer.proof } type="middle-static"/>
                       <CopyToClipboard text={ signer.proof } ml={ 2 }/>
                     </Flex>
                   ) : '-' }

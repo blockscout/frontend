@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export default function shortenString(string: string | null, charNumber: number | undefined = 8) {
+export function shortenString(string: string | null, charNumber: number | undefined = 8) {
   if (!string) {
     return '';
   }

@@ -97,7 +97,8 @@ Route every question the session couldn't answer to the person who owns it.
 3. Draft one message per owner: brief task context (issue link), the questions, and why they block progress.
    Write all Slack messages in **Russian** — the team's internal language (the spec itself stays in English).
 4. **Show every draft (with its destination) to the user and wait for explicit approval** — never send
-   unreviewed outreach.
+   unreviewed *new* outreach. (In-thread follow-ups on a thread already approved here are exempt — see
+   "Watch for replies" below.)
 5. Send (`slack_send_message`), then keep each thread's permalink for the question's `questions.md` entry.
 
 If the Slack MCP tools are unavailable, record the questions with owners anyway and tell the user to route
@@ -105,6 +106,40 @@ them manually.
 
 Outreach is complete when every question has a recorded permalink — or an explicit note that the developer
 routes it manually.
+
+### Watch for replies and drive each question to settled
+
+Once the questions are sent, don't hand the reply round-trip back to the developer to poll. Launch the
+**`slack-watch`** skill with one `CHANNEL:THREAD_TS` argument per `pending` question thread (the channel
+id and parent `ts` from each `slack_send_message` you just sent). That skill owns how to start, stop, and
+relaunch on Claude Code vs Cursor — follow it. Adding or resolving a question later means stopping the
+watcher and relaunching with the new thread list; questions move at human pace, so the restart is free.
+If the tokens aren't set up, `slack-watch` guides the developer through it; until then, the developer
+polls manually as before.
+
+On each `NEW …` notification, read the reply with `slack_read_thread` on that `thread_ts`, then for the
+question that thread belongs to:
+
+- **Assess** the reply against the question's `Resolved when:` criterion — session-held here, since this
+  runs before `to-spec`; it only becomes a `questions.md` line once `to-spec` writes one (lifecycle step 2).
+- **Insufficient** → send a clarifying **follow-up to the colleague directly, in the same thread, without
+  developer approval** — this is continuing a conversation the developer already opened. Cap: **3**
+  consecutive follow-ups per question, then escalate. Opening a *new* thread or contacting a *new* person
+  stays approval-gated (Step 3 rules unchanged).
+- **Sufficient** → **propose in the session chat**: the answer arrived, the proposed resolution, and the
+  edits it implies. **Edit no file.** Apply only after the developer accepts in-session. Where the answer
+  lands depends on how far the task has come: once `to-spec` has run, fold it into `questions.md` (the
+  fold-in is `.agents/tasks/README.md` step 4) — so `implement-ticket`'s question gate never releases work
+  a human hasn't read; before that (still grilling, or a small task that never gets a spec), hold it in
+  session to inform the forthcoming spec or to unblock the in-session implementation.
+- **Escalate** (one line: which task/question and why it's stuck) when the answer needs *frontend*
+  knowledge only the developer has, the 3-follow-up cap is hit, or the colleague goes silent.
+  Claude Code: `PushNotification` with that line. Cursor: the same line in this session chat — Cursor has
+  no OS nudge.
+
+Every message posted to a colleague carries a disclosure — they must be able to tell they're in a
+technical back-and-forth with an agent. Prefer the Slack connector's own attribution if it appends one;
+otherwise append `— via @Honk 🪿`. All follow-ups stay in **Russian**, like the original outreach.
 
 ## Step 4 — Size and hand off
 

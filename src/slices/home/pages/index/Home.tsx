@@ -16,7 +16,7 @@ import LatestBlocks from './blocks/LatestBlocks';
 import ChainIndicators from './charts/ChainIndicators';
 import HeroBanner from './HeroBanner';
 import Highlights from './highlights/Highlights';
-import Stats from './stats/Stats';
+import HomeStats from './stats/HomeStats';
 import Transactions from './txs/Transactions';
 
 const rollupFeature = config.features.rollup;
@@ -41,7 +41,7 @@ const Home = () => {
         <Box as="main">
           <HeroBanner/>
           <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 } _empty={{ mt: 0 }}>
-            <Stats/>
+            <HomeStats/>
             <ChainIndicators/>
           </Flex>
           { !isMobile && config.slices.home.highlights && <Highlights mt={ 3 }/> }

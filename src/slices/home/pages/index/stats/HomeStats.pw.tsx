@@ -4,10 +4,11 @@ import React from 'react';
 import * as blockListMock from 'src/slices/block/mocks/list';
 import * as statsMock from 'src/slices/chain/stats/mocks';
 import { HomeDataContextProvider } from 'src/slices/home/contexts/home-data-context';
+import { HomeRpcDataContextProvider } from 'src/slices/home/contexts/rpc-data-context';
 
 import { test, expect } from 'playwright/lib';
 
-import Stats from './Stats';
+import HomeStats from './HomeStats';
 
 test.describe('all items', () => {
   let component: Locator;
@@ -21,7 +22,9 @@ test.describe('all items', () => {
     await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
     component = await render(
       <HomeDataContextProvider>
-        <Stats/>
+        <HomeRpcDataContextProvider>
+          <HomeStats/>
+        </HomeRpcDataContextProvider>
       </HomeDataContextProvider>,
     );
   });
@@ -39,7 +42,9 @@ test('no gas info', async({ render, mockApiResponse, mockEnvs }) => {
   await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
-      <Stats/>
+      <HomeRpcDataContextProvider>
+        <HomeStats/>
+      </HomeRpcDataContextProvider>
     </HomeDataContextProvider>,
   );
 
@@ -55,7 +60,9 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
   await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
-      <Stats/>
+      <HomeRpcDataContextProvider>
+        <HomeStats/>
+      </HomeRpcDataContextProvider>
     </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();
@@ -70,7 +77,9 @@ test('3 items default view +@mobile -@default', async({ render, mockApiResponse,
   await mockApiResponse('core:homepage_blocks', blockListMock.baseListResponse.items);
   const component = await render(
     <HomeDataContextProvider>
-      <Stats/>
+      <HomeRpcDataContextProvider>
+        <HomeStats/>
+      </HomeRpcDataContextProvider>
     </HomeDataContextProvider>,
   );
   await expect(component).toHaveScreenshot();

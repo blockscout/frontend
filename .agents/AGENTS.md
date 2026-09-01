@@ -14,7 +14,7 @@ See `./rules/design-system.md` for Chakra UI v3 design system configuration and 
 
 ## Code Style & Quality
 
-See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch.
+See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch, and the complexity/CRAP scores.
 
 ## TypeScript Conventions
 
@@ -56,24 +56,20 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
+- `tools/code-complexity/` — the cognitive-complexity / CRAP CI gate: what a failure means and how to fix it.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
 
-## Architecture decision records
+## Architecture decision records (ADRs)
 
-Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
-`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
-evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+See `./rules/adr.md` when proposing or adding a new record.
+
+The repo-wide records index:
 
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
-
-Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
-it constrains future work, was reached by measurement or an investigation worth not repeating, or
-looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
-`superseded by <n>` and leave its reasoning intact.
 
 ## Product task workflow
 

@@ -174,7 +174,7 @@ page.getByTestId('tx-hash')
 
 ## Environment and date
 
-`playwright/lib.tsx` runs before every component mount and:
+`playwright/lib.ts` runs before every component mount and:
 - Mocks `next/router.useRouter()` with a configurable router object.
 - Fixes the current date to `2022-11-11T12:00:00Z` via MockDate — all `new Date()` / `Date.now()` calls return this value.
 

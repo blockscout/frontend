@@ -14,9 +14,10 @@ import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import * as contract from 'src/features/multichain/utils/contract';
 
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestToken =
   ({ data, isMobile, searchTerm, addressFormat, chainInfo }: ItemsProps<schemas['SearchResultToken'] | multichain.QuickSearchResultToken>) => {
@@ -50,7 +51,7 @@ const SearchBarSuggestToken =
 
     const address = (
       <Text color="text.secondary" whiteSpace="nowrap" overflow="hidden">
-        <HashStringShortenDynamic hash={ hash } noTooltip/>
+        <Truncate value={ hash } tooltip={ false }/>
       </Text>
     );
 

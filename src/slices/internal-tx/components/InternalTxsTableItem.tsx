@@ -89,6 +89,7 @@ const InternalTxsTableItem = ({
           from={ data.from }
           to={ toData }
           current={ currentAddress }
+          mode={{ lg: 'compact', xl: 'long' }}
           isLoading={ isLoading }
           my="2px"
         />

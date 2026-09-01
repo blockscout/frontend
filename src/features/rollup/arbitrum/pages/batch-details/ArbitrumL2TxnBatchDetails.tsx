@@ -21,11 +21,11 @@ import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestam
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ArbitrumL2TxnBatchDA from '../../components/ArbitrumL2TxnBatchDA';
 import ArbitrumL2TxnBatchDetailsAnyTrustDA from './ArbitrumL2TxnBatchDetailsAnyTrustDA';
@@ -183,7 +183,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap" >
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.before_acc_hash }/>
+          <Truncate value={ data.before_acc_hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.before_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>
@@ -196,7 +196,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue flexWrap="nowrap">
         <Skeleton loading={ isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.after_acc_hash }/>
+          <Truncate value={ data.after_acc_hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.after_acc_hash } isLoading={ isPlaceholderData }/>
       </DetailedInfo.ItemValue>

@@ -55,6 +55,9 @@ npm-debug.log*
 # compiled dev-server fetch script
 /tools/dev-server/fetch.js
 
+# compiled code-complexity gate
+/tools/code-complexity/dist/
+
 # typescript
 *.tsbuildinfo
 

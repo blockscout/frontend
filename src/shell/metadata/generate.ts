@@ -9,9 +9,9 @@ import type { RouteParams } from 'src/server/types';
 import { currencyUnits } from 'src/slices/chain/units';
 
 import config from 'src/config';
-import shortenString from 'src/shared/texts/shorten-string';
 
 import { castToString } from 'src/toolkit/utils/guards';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import compileValue from './compile-value';
 import getCanonicalUrl from './get-canonical-url';
