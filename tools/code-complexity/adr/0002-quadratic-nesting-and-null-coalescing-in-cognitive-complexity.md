@@ -57,7 +57,7 @@ priced as such.
 - **CC here is not the SonarSource number, and is not expected to be.** Comparing against
   `eslint-plugin-sonarjs` will show us reading higher on anything nested past depth 1. That is by
   design; oracle parity is not a regression test. The counting conventions and the full list of
-  divergences live in `../SCORING.md`.
+  divergences live in `../docs/MODEL.md`.
 - **The model and the caps are one decision.** `DEFAULT_MAX_COGNITIVE_BEHAVIOR` / `_JSX` were set
   from the full-repo distribution *under this model*. Reverting either change — re-counting `??`, or
   going back to linear nesting — silently makes the caps wrong (far looser, since scores collapse),
@@ -65,6 +65,6 @@ priced as such.
 - The behavior cap sits at a natural gap in the resulting distribution rather than being pinned to
   one trip example: the flat-breadth band tops out at 20 and the nested band starts at 21. That gap
   exists *because* of the quadratic penalty; it does not survive a return to linear.
-- Reversing is small in code — `nestingIncrement` in `../complexity.ts` and one entry in
+- Reversing is small in code — `nestingIncrement` in `../measure/complexity.ts` and one entry in
   `SEQUENCE_OPERATORS` — which is exactly why it needs this record: it looks like a two-line
   simplification and is not.

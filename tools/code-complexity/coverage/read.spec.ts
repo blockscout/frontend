@@ -4,7 +4,7 @@ import path from 'path';
 
 import { describe, it, expect } from 'vitest';
 
-import { parseCoverage, functionLineCoverage, readCoverageOrEmpty } from './coverage';
+import { parseCoverage, functionLineCoverage, readCoverageOrEmpty } from './read';
 
 // A minimal istanbul-shaped report: one statement per line, `s` giving each line's hit count.
 function reportFor(absolutePath: string, hitsByLine: Record<number, number>): string {

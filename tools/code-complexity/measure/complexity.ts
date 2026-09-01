@@ -5,8 +5,8 @@ import ts from 'typescript';
 // and `cognitive` (the readability gate), with every cognitive increment recorded in
 // `contributions` so a violation can name the sites that cost the most.
 //
-// ./SCORING.md is the specification — which constructs increment, how nesting is charged, and the
-// divergences from SonarSource and ESLint. The ADRs cited below live in ./adr/.
+// ../docs/MODEL.md is the specification — which constructs increment, how nesting is charged, and the
+// divergences from SonarSource and ESLint. The ADRs cited below live in ../adr/.
 
 export interface Contribution {
   // Line of the construct that added the increment (1-based).
@@ -34,7 +34,7 @@ export interface FunctionComplexity {
   contributions: Array<Contribution>;
   // Whether JSX appears directly in this function's own body — outside any nested function. This
   // classifies the function `jsx` vs `behavior`, which selects its cognitive cap and whether CRAP
-  // applies (./CONTEXT.md). A `.map(x => <Row/>)` callback is `jsx`; an `onClick` handler that
+  // applies (../docs/MODEL.md). A `.map(x => <Row/>)` callback is `jsx`; an `onClick` handler that
   // renders nothing is `behavior`, even inside a component.
   containsJsx: boolean;
 }

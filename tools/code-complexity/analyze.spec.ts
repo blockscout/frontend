@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 
 import { buildFileRows } from './analyze';
 import type { BuildOptions } from './analyze';
-import type { CoverageData, LineHits } from './coverage';
+import type { CoverageData, LineHits } from './coverage/read';
 
 const THRESHOLDS = { maxCognitiveJsx: 20, maxCognitiveBehavior: 20, maxCrap: 30 };
 

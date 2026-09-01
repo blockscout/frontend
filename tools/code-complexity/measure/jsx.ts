@@ -3,7 +3,7 @@ import ts from 'typescript';
 import { JSX_KINDS, scriptKind } from './complexity';
 
 // File-level JSX detection: whether a file contains JSX *anywhere*, read from the AST rather than
-// from the extension, which is an unreliable component-vs-logic signal here (./CONTEXT.md).
+// from the extension, which is an unreliable component-vs-logic signal here (../docs/MODEL.md).
 //
 // This drives only the "does this file need vitest coverage generated" decision. Per-function
 // `jsx`/`behavior` classification is a separate walk, in ./complexity.ts.
