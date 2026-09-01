@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { vitestSelectionArgs } from './generate-coverage';
+import { vitestSelectionArgs } from './generate';
 
 describe('vitestSelectionArgs', () => {
   it('scopes to the given files in focused mode via `related --run`', () => {

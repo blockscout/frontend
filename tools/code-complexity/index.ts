@@ -3,19 +3,19 @@ import fs from 'fs';
 
 import { buildFileRows } from './analyze';
 import { DEFAULT_BASE_REF, DEFAULT_MAX_COGNITIVE_BEHAVIOR, DEFAULT_MAX_COGNITIVE_JSX, DEFAULT_MAX_CRAP } from './config';
-import { parseCoverage, readCoverageOrEmpty } from './coverage';
-import type { CoverageData } from './coverage';
-import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './diff';
-import { generateCoverage } from './generate-coverage';
-import type { CoverageRequest } from './generate-coverage';
-import { githubAnnotations, stepSummary } from './github';
-import { fileContainsJsx } from './jsx';
-import type { ReportRow, Thresholds } from './report';
-import { formatTable, isOffender } from './report';
-import { isInScope } from './scope';
+import { generateCoverage } from './coverage/generate';
+import type { CoverageRequest } from './coverage/generate';
+import type { CoverageData } from './coverage/read';
+import { parseCoverage, readCoverageOrEmpty } from './coverage/read';
+import { fileContainsJsx } from './measure/jsx';
+import { githubAnnotations, stepSummary } from './render/github';
+import type { ReportRow, Thresholds } from './render/report';
+import { formatTable, isOffender } from './render/report';
+import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './select/diff';
+import { isInScope } from './select/scope';
 
 // The CLI has two independent axes, mirroring vitest: selection (which functions to score) and
-// coverage source (how the CRAP half is fed). Any selection combines with any source; ./CONTEXT.md
+// coverage source (how the CRAP half is fed). Any selection combines with any source; ./docs/RUNNING.md
 // tabulates both. USAGE below is the flag reference.
 type CoverageMode = 'generate' | 'file' | 'off';
 
@@ -218,7 +218,7 @@ function hasCoLocatedSpec(file: string): boolean {
 
 // Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
 // component only when it has a co-located vitest spec. This drives only the generation scope
-// (./CONTEXT.md); per-function CRAP applicability is decided in analyze.ts.
+// (./docs/RUNNING.md); per-function CRAP applicability is decided in analyze.ts.
 function fileNeedsCoverage(file: string, source: string): boolean {
   return !fileContainsJsx(source, file) || hasCoLocatedSpec(file);
 }
@@ -243,7 +243,7 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
 }
 
 // Full-repo mode (default): score every in-scope function, across both allowlisted roots. This is
-// the mode threshold calibration runs (./CALIBRATION.md). The repo always has files that need
+// the mode threshold calibration runs (./docs/CALIBRATION.md). The repo always has files that need
 // coverage and generation runs the whole suite regardless, so there is no per-file skip here.
 function runFullMode(options: CliOptions): Array<ReportRow> {
   const files = getAllSourceFiles();

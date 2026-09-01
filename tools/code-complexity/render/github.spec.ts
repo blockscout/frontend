@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import type { Contribution } from './complexity';
+import type { Contribution } from '../measure/complexity';
 import { githubAnnotations, stepSummary } from './github';
 import type { ReportRow } from './report';
 
