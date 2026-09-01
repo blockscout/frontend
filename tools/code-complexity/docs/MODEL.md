@@ -1,14 +1,46 @@
-# code-complexity — the scoring model
+# Code complexity — the model
 
-How a function's two scores are computed, and where the model diverges from the references it is
-based on. Read this when a score surprises you, or before changing how anything is counted.
+What the gate measures: which files it looks at, which functions inside them, how each function is
+classified, and how the two scores are computed. Read this when a score surprises you, or before
+changing anything that counts.
 
-The caps in `./config.ts` are calibrated against this exact model, so a change here invalidates them
-— see `./CALIBRATION.md`. The decisions behind the divergences are recorded in `./adr/`.
-
-Both scores are produced on **one** walk of the syntax tree in `./complexity.ts`, using the
+Both scores are produced on **one** walk of the syntax tree in `../measure/complexity.ts`, using the
 `typescript` compiler API (`ts.createSourceFile` + `ts.SyntaxKind`). There is no type-checker and no
 external service, which is what makes some of the approximations below necessary.
+
+## Which files are in scope
+
+See `./select/scope.ts`.
+
+## Which functions are gated
+
+In diff mode, only functions a changed line falls within. Focused mode bypasses diff-scoping entirely and
+scores every function in the given files.
+
+## Function classes
+
+Every function is classified — independently of its file's extension — by whether **JSX appears
+directly in its own body**, outside any nested function:
+
+- **`jsx`** — a render body (a component, or an inline `items.map(x => <Row/>)` callback: the JSX is
+  in the callback's own body). A component's handlers are separate units.
+- **`behavior`** — everything else: event handlers, `useCallback`/`useMemo` bodies, hooks, and utils,
+  *wherever they live* — including nested inside a component. A JSX-less hook is `behavior`;
+  a handler defined inside a component is `behavior` even though the component around it is `jsx`.
+
+Classification is read from the AST, not the extension. The two classes gate differently:
+
+| class | cognitive cap | CRAP |
+| --- | --- | --- |
+| `jsx` | `--max-cognitive-jsx` (high backstop) | never scored |
+| `behavior` | `--max-cognitive-behavior` (tighter) | scored |
+
+**Why `jsx` carries no CRAP.** A component's rendering is covered by Playwright visual tests
+(`*.pw.tsx`), which emit no vitest coverage — so a `jsx` function would read ~0% and flood the report.
+Its cognitive cap is the backstop instead: hitting it means "decompose this render body."
+
+Which *files* trigger a vitest run is a separate question, answered in `./RUNNING.md`. It never
+decides which functions are scored.
 
 ## Cognitive Complexity — the readability gate
 
@@ -22,12 +54,6 @@ progressively, and boolean runs collapse. A function starts at **0** and accrues
 | a run of like boolean operators (`&&` / `\|\|`) | `+1` per run |
 | direct self-recursion (name match) | `+1` |
 | labelled `break` / `continue` | `+1` |
-
-**Nesting** is increased by `if` (its then-branch), `else`/`else if` (their body), ternary (its
-branches), the loops, `catch` (its body), and `switch` (its cases). Each of those nesting structures
-pays `1 + nesting²` for itself and deepens the level for what it contains, so a construct three
-levels in costs `1 + 9`. `switch` gets exactly **one** increment (carrying the nesting penalty)
-regardless of how many `case`s it has — unlike cyclomatic, which counts every `case`.
 
 ### A worked example
 
@@ -52,8 +78,8 @@ function classify(items, mode) {
 }
 ```
 
-**CC 21** — over the `behavior` cap. **Cyclomatic 8**, which is the whole point: eight independent
-paths is unremarkable, but the shape is hard to read.
+**CC 21** and **Cyclomatic 8**, which is the whole point: eight independent paths is unremarkable, 
+but the shape is hard to read.
 
 Read the accounting: the innermost `if` costs `+10` on its own, half the function's score, purely for
 sitting at depth 3. The two `if`s at depth 1 cost `+2` each. Flattening the deepest level by one
@@ -106,18 +132,13 @@ Not a gate on its own. It counts independent paths ≈ tests needed, which makes
 to CRAP and a poor readability signal: it scores a flat `switch` the same as an equivalent nested
 `if` chain, and is blind to nesting. That is why CC, not cyclomatic, is the decomposition gate.
 
-It starts at 1 and mirrors ESLint's `complexity` rule — `if`/`else if`, the loops, every `case`
-(`default` excluded), `catch`, ternary, and `&&`/`||`/`??` including their compound-assignment forms
-— with `?.` as the one deliberate divergence (ADR 0001).
-
 Because CC governs decomposition, the only fix for a CRAP failure is added coverage, never lowering
 `c`. So `CX` is not a default report column; it appears only under `--verbose`, for calibration and
 tool debugging.
 
 ## CRAP
 
-CRAP (Change Risk Anti-Patterns) combines **cyclomatic** complexity with test coverage — CC never
-feeds CRAP:
+CRAP (Change Risk Anti-Patterns) combines **cyclomatic** complexity with test coverage:
 
 ```
 CRAP = c²·(1 − cov)³ + c
@@ -135,30 +156,24 @@ were executed — a line is coverable when it carries a statement, and its hit c
 among the statements starting on it, exactly as istanbul's `getLineCoverage()` computes it. A
 function with no coverable lines counts as fully covered, so CRAP reduces to its complexity.
 
+**Missing coverage = 0% vs "no data".** A `behavior` function absent from the coverage report scores
+0% when absence means "no spec executed it". The one exception is a 
+**user-supplied `--coverage-file` in focused mode**: a hand-passed report may simply predate the file, 
+so absence there reports `—` (no data).
+
 ## Divergences from the reference models
 
 Three, and only these:
 
-1. **Nesting is quadratic, not linear** (ADR 0002). SonarSource charges `1 + nesting`. This is the
-   divergence with teeth — identical at depths 0 and 1, biting only from the third level in, so flat
-   and shallow code is untouched while genuinely-nested code accelerates away. That is what decouples
-   breadth from nesting and lets one cap forgive wide-but-shallow logic while still catching the
-   nested tail. No linear cap can separate the two.
-2. **Per-function units with a nesting reset** (above). SonarSource instead adds a nesting level when
-   descending into a nested function and rolls its complexity up into the parent. Ours matches how
-   cyclomatic is reported here. This is the main *structural* divergence.
-3. **`?.` and `??` are excluded** (ADR 0001, 0002) — from CC; cyclomatic still counts `??`.
+1. **Nesting is quadratic, not linear** - see ADR 0002.
+2. **Per-function units with a nesting reset** - see above.
+3. **`?.` and `??` are excluded** - see ADR 0001, 0002.
 
 ### On comparing against `eslint-plugin-sonarjs`
 
-CC was validated by diffing against that plugin's `cognitive-complexity` rule during calibration. The
-plugin was installed temporarily; it is **not** a committed dependency and **not** in the eslint
-config. The exercise confirmed the *shape* of the model — which constructs increment, where nesting
-deepens, how `switch` and `else if` are treated — and the scores agreed on flat and shallow code.
+CC was validated by diffing against that plugin's `cognitive-complexity` rule during calibration.
+The exercise confirmed the *shape* of the model and the scores agreed on flat and shallow code.
 
 Numeric parity is **not** expected and is not a regression test. Nesting-heavy code reads higher here
 by design: at calibration a hook built from nested `switch` trees scored 23 here against the linear
-model's 15. One gotcha if you re-run it: the pinned oracle version (`eslint-plugin-sonarjs@4.2.0`)
-itself diverges from the written SonarSource model on boolean operators — it scores pure `||` chains
-as 0 and collapses any expression containing `&&` to a single `+1`. We implement the written model and
-treat it as authoritative.
+model's 15.

@@ -1,27 +1,34 @@
-# code-complexity — context
+# Code complexity — context
 
-A CI gate that flags code which is either hard to read *or* both complex and under-tested, before it
-merges. It is scoped to what a PR actually changes, so it never blocks on pre-existing debt. Two
-independent gates run:
+A code-quality gate that flags code which is either hard to read *or* both complex and
+under-tested. Two independent gates run:
 
 - **Cognitive Complexity (CC)** — the readability gate. "Should a human decompose this?" Capped per
   function class.
-- **CRAP** — the under-testedness gate. "Complex and untested?" `behavior` functions only, fed by
+- **Change Risk Anti-Patterns (CRAP)** — the under-testedness gate. "Complex and untested?" functions, fed by
   *cyclomatic* complexity joined with coverage.
 
-Both key off one per-function property: **does the function directly contain JSX?**
+According to the `./docs/MODEL.md`, there are two classes of the function:
+- `jsx` - function that return JSX
+- `behavior` - everything else, regardless of whether it lives in the component file or outside it
 
-Run `pnpm test:code-complexity --help` for the flags. Three siblings hold the detail this document
-does not:
+The CRAP score applies only to behavior functions.
 
-- **`./SCORING.md`** — how each score is computed, with a worked example, and where the model diverges
-  from SonarSource and ESLint. Read it when a score surprises you, or before changing the counting.
-- **`./CALIBRATION.md`** — the caps, the distribution they sit on, and how to re-derive them.
-- **`./adr/`** — the decisions behind the counting model, local to this tool and numbered from `0001`.
+## Where to look
+
+| Question | Answer lives in |
+| --- | --- |
+| The gate failed. What do I change? | the next section |
+| Why is this function's score *that* number? | `./docs/MODEL.md` |
+| Which files and functions get gated at all? | `./docs/MODEL.md` |
+| How do I run it? What feeds the coverage half? | `pnpm test:code-complexity --help` or `./docs/RUNNING.md` for more details |
+| Can I move a cap? |  short answer: no; `./docs/CALIBRATION.md` |
+| Why is the counting model like this? | `./adr/` |
+| Which file implements what? | the file map at the bottom |
 
 ## The gate failed — what now
 
-Reproduce it on just your file. This needs no CI, no diff, and no coverage run:
+Reproduce it on just your file:
 
 ```bash
 pnpm test:code-complexity path/to/your/file.ts
@@ -38,124 +45,55 @@ classify: cognitive 21 > 20 [top: if +10 (L11), switch +5 (L6), if +2 (L4);
 cost the most, the deepest nesting pocket, and what flattening that pocket by one level would save.
 Above, a single `if` at depth 3 accounts for 10 of the 21 — extract it, invert it into an early
 return, or lift the `switch` out from around it. Nesting is charged quadratically, so the deepest
-level is where the points are and pulling it out is almost always the cheapest win. `./SCORING.md`
-walks that exact function increment by increment.
+level is where the points are and pulling it out is almost always the cheapest win.
 
 **`CRAP` — add a test.** CRAP joins cyclomatic complexity with coverage, and coverage is the only
 lever. Simplifying the function lowers its *cognitive* score, not its CRAP. A `behavior` function
 with no co-located spec reads 0%, accurately — no unit test exercises it.
 
-**Raising the cap is not the fix.** The three caps are calibrated against the counting model and
-against each other; moving one in isolation stops the gate measuring what it was set up to measure.
-`./CALIBRATION.md` has the procedure for the rare case where a cap genuinely needs re-deriving.
+**Raising the cap is not the fix.**.
 
-**Rows without a `BROKE` mark are context, not a demand.** Diff mode gates only functions a changed
-line falls within; untouched functions in a file you edited are listed for orientation and never
-flagged.
+## File map
 
-## Function classes and which gates apply
+Four directories, one per pipeline stage, and files at the root that tie them together. Specs
+sit next to what they test, and each file's header comment carries its own local detail.
 
-Every function is classified — independently of its file's extension — by whether **JSX appears
-directly in its own body**, outside any nested function:
+Measuring and judging are separate jobs. `select/`, `measure/` and `coverage/` compute the numbers
+and never see a cap; the caps enter once, at `./analyze.ts`, which stamps a verdict onto each row.
+The table, the exit code and the GitHub annotations all read that verdict rather than re-deriving
+it.
 
-- **`jsx`** — a render body (a component, or an inline `items.map(x => <Row/>)` callback: the JSX is
-  in the callback's own body). A component's handlers are separate units.
-- **`behavior`** — everything else: event handlers, `useCallback`/`useMemo` bodies, hooks, and utils,
-  *wherever they live* — including nested inside a component. A JSX-less `.tsx` hook is `behavior`;
-  a handler defined inside a component is `behavior` even though the component around it is `jsx`.
+**Root** — the CLI, the caps, and the join.
 
-Classification is read from the AST, not the extension — ~78 non-test `.tsx` files contain no JSX
-(mostly `useX.tsx` hooks), so the extension is an unreliable component-vs-logic signal. The two
-classes gate differently:
+- `./index.ts` — parse the flags, pick the selection, orchestrate, set the exit code
+  (`./docs/RUNNING.md`)
+- `./config.ts` — the three caps, so a local run and a CI run gate identically
+  (`./docs/CALIBRATION.md`)
+- `./analyze.ts` — complexity × coverage → one row per function, each stamped with its verdict
+- `./run.sh` — compile-on-run wrapper, the same pattern as `tools/dev-server/fetch.sh`
 
-| class | cognitive cap | CRAP |
-| --- | --- | --- |
-| `jsx` | `--max-cognitive-jsx` (high backstop) | never scored |
-| `behavior` | `--max-cognitive-behavior` (tighter) | scored |
+**`select/`** — which files, and which lines inside them.
 
-**Why `jsx` carries no CRAP.** A component's rendering is covered by Playwright visual tests
-(`*.pw.tsx`), which emit no vitest coverage — so a `jsx` function would read ~0% and flood the report.
-Its cognitive cap is the backstop instead: hitting it means "decompose this render body." Every
-`behavior` function *is* CRAP-scored, because that is where under-tested logic hides and where neither
-Playwright nor (often) vitest reaches. So a spec'd component's render loses its noise CRAP score while
-its handlers gain a real one.
+- `./select/scope.ts` — the in-scope rule, and why each excluded category is out (`./docs/MODEL.md`)
+- `./select/diff.ts` — git plumbing: changed files, changed line ranges, merge-base
+  (`./docs/RUNNING.md`)
 
-### Which files trigger a vitest run (generation scope)
+**`measure/`** — one AST walk, no caps in sight.
 
-Separately from per-function scoring, a *file* needs vitest coverage generated for it when it is a
-**JSX-less logic file** *or* a **JSX file with a co-located vitest spec** (`Component.spec.tsx` next
-to `Component.tsx`; Playwright `*.pw.tsx` does not count). This only decides whether
-`vitest related`/`--changed` pulls the file in. A `behavior` function in a JSX file outside that set
-is absent from the report and scores 0% without triggering a run.
+- `./measure/complexity.ts` — cognitive, cyclomatic, the function class and the contributions
+  (`./docs/MODEL.md`)
+- `./measure/jsx.ts` — file-level JSX detection, which decides who needs coverage generated
+  (`./docs/RUNNING.md`)
+- `./measure/crap.ts` — the CRAP formula, six lines of it (`./docs/MODEL.md`)
 
-**Missing coverage = 0% vs "no data".** A `behavior` function absent from the coverage report scores
-0% when absence means "no spec executed it" — generated coverage in any mode, and the CI
-`--coverage-file` report. The one exception is a **user-supplied `--coverage-file` in focused mode**:
-a hand-passed report may simply predate the file, so absence there reports `—` (no data).
+**`coverage/`** — the CRAP half's input.
 
-## Running it
+- `./coverage/generate.ts` — run vitest scoped to the selection, into a throwaway dir
+  (`./docs/RUNNING.md`)
+- `./coverage/read.ts` — parse `coverage-final.json`, derive per-function line coverage
+  (`./docs/MODEL.md`)
 
-The interface has two independent axes, mirroring vitest — **selection** (which functions) and
-**coverage source** (how the CRAP half is fed). Any selection combines with any source.
+**`render/`** — rows out.
 
-| Selection | Scores |
-| --- | --- |
-| *(no arguments)* | every in-scope function, repo-wide — this is what calibration runs |
-| `<path...>` | every function in the given files, ignoring the diff |
-| `--changed[=<ref>]` | only functions a changed line falls within — **the CI gate** |
-
-| Coverage source | How the CRAP half is fed |
-| --- | --- |
-| *(default)* | the tool runs vitest itself, scoped to the selection, into a throwaway temp dir |
-| `--coverage-file <path>` | consume a prebuilt report and skip vitest — **the CI path** |
-| `--no-coverage` | cognitive gate only, which is always enforced either way |
-
-Four things the flag list does not tell you:
-
-- **Vitest is skipped when nothing needs coverage.** Only files in the generation scope above cause a
-  run, so a focused run on a spec-less JSX component returns instantly — scoring its `behavior`
-  functions 0%, exactly as it would have had the run happened. Skipping the run is not
-  `--no-coverage`: generation scope never decides which functions are scored, so a function's score
-  never depends on what else shared its selection. A diff with nothing in scope prints "No functions
-  to check." and runs nothing.
-- **All three generated scopes select through the module graph** (`vitest related <paths>`,
-  `vitest run --changed <merge-base>`, or the whole suite), so a file's coverage is the same however
-  it was reached. A selection with no matching specs passes; a failing suite warns and still reports
-  whatever coverage landed.
-- **Primed-request drift tests (`*.primed.spec.tsx`) are excluded** from generated runs. They mount
-  whole page trees to check the primer registry rather than to exercise behavior, and import huge
-  swaths of the app — so `related` would pull them in for almost any file, costing tens of seconds of
-  page-mount time while contributing no meaningful coverage.
-- **CI reuses the `vitest_tests` job's coverage artifact** instead of regenerating it, and carries no
-  threshold numbers of its own, so a local run and a CI run gate identically.
-
-`--verbose` streams vitest's output live and adds the cyclomatic (`CX`) column; otherwise vitest is
-silent so the score table is what you see. `run.sh` compiles the tool with the repo-local TypeScript
-into `dist/` (git-ignored) — the same compile-on-run pattern as `tools/dev-server/fetch.sh`, so no
-global toolchain is needed.
-
-## The report
-
-The default table shows `KIND`, `COG`, `COV`, `CRAP` and `BROKE`, sorted by CRAP descending so the
-worst offenders lead; `jsx` and no-coverage rows sort to the bottom, tie-broken by `COG`. The two
-gates are independent: the cognitive cap trips on any in-scope function over its class's cap, the
-CRAP cap only on `behavior` functions with coverage data.
-
-Under `$GITHUB_ACTIONS` the tool also emits `::error file=,line=::` annotations for offenders and
-writes the table to `$GITHUB_STEP_SUMMARY`.
-
-## Scope
-
-**Files:** an allowlist of two roots — the app (`src/`) and the repo's own tooling (`tools/`) — over
-`.ts` `.tsx` `.mjs` `.js` `.cjs`, minus specs, declaration files, configuration and build output.
-`./scope.ts` is the exact rule and records why each excluded category is out (`deploy/**` among them,
-tracked in issue #3675).
-
-**The gate scores its own implementation.** `tools/code-complexity/**` is in scope, so a change to the
-increment model re-scores `complexity.ts` under the new model and carries whatever refactor its own
-numbers then demand. Budget for that when touching the counting conventions.
-
-**Functions (diff mode):** only functions a changed line falls within are gated. A changed line is any
-new-side line of the diff between the working tree and the merge-base of the branch and the base ref,
-which captures the branch's own commits plus uncommitted edits. Focused mode bypasses diff-scoping
-entirely and scores every function in the given files.
+- `./render/report.ts` — the score table, the sort order, the offender test (`./docs/RUNNING.md`)
+- `./render/github.ts` — `::error` annotations and the step summary (`./docs/RUNNING.md`)

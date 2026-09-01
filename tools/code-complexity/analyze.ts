@@ -1,10 +1,10 @@
-import { computeFunctionComplexities } from './complexity';
-import type { FunctionComplexity } from './complexity';
-import type { CoverageData } from './coverage';
-import { functionLineCoverage } from './coverage';
-import { crapScore } from './crap';
-import type { FunctionKind, ReportRow, Thresholds } from './report';
-import { maxCognitiveFor } from './report';
+import type { CoverageData } from './coverage/read';
+import { functionLineCoverage } from './coverage/read';
+import { computeFunctionComplexities } from './measure/complexity';
+import type { FunctionComplexity } from './measure/complexity';
+import { crapScore } from './measure/crap';
+import type { FunctionKind, ReportRow, Thresholds } from './render/report';
+import { maxCognitiveFor } from './render/report';
 
 export type Gate = (fn: Pick<FunctionComplexity, 'startLine' | 'endLine'>) => boolean;
 
@@ -13,7 +13,7 @@ export interface BuildOptions {
   readonly gate: Gate;
   // How to score a `behavior` function absent from the coverage report: `true` reads absence as
   // "no spec executed it" (0%), `false` as "no data" (`—`). Which mode passes which, and why:
-  // ./CONTEXT.md.
+  // ./docs/MODEL.md.
   readonly missingCoverageIsZero: boolean;
 }
 
