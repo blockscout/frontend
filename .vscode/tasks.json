@@ -221,6 +221,50 @@
             },
         },
 
+        // CODE COMPLEXITY
+        {
+            "type": "shell",
+            "command": "pnpm test:code-complexity ${relativeFileDirname}/${fileBasename}",
+            "problemMatcher": [],
+            "label": "code complexity: file",
+            "detail": "run code complexity for current file",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "file-binary"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+        {
+            "type": "shell",
+            "command": "pnpm test:code-complexity --changed",
+            "problemMatcher": [],
+            "label": "code complexity: changed",
+            "detail": "run code complexity for changed files in the current branch",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "file-binary"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+
         {
             "type": "npm",
             "script": "build:docker",
