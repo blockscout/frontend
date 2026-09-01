@@ -1,7 +1,6 @@
 # Code complexity — the caps and how to re-tune them
 
-The numbers in `../config.ts`, the distribution they were derived from, and the procedure for deriving
-them again. Read this before changing a cap.
+The numbers in `../config.ts` and the procedure for deriving them again. Read this before changing a cap.
 
 **Raising a cap is a recalibration, not a way to unblock a PR.** The three caps are coupled to each
 other and to the counting model in `./MODEL.md` — the model's job is to separate wide-but-shallow
@@ -20,7 +19,7 @@ measure. If a function trips a cap, the fix is in the function.
 4. **Classify what each candidate cap fires on.** For every function over the line, check whether it
    is nesting-driven (an increment at depth ≥ 2 — the annotation names the deepest pocket) or
    flat-breadth. The cap is right when it catches the former and clears the latter. Record the
-   one-step-tighter and one-step-looser outcomes, as above; a cap with no stated neighbours is a cap
+   one-step-tighter and one-step-looser outcomes; a cap with no stated neighbours is a cap
    nobody can review.
 5. **Confirm the anchors.** The functions the gate exists to catch must still trip, with margin.
 6. **For CRAP,** generate whole-suite coverage once and iterate against it rather than regenerating

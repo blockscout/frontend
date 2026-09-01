@@ -8,12 +8,6 @@ under-tested. Two independent gates run:
 - **Change Risk Anti-Patterns (CRAP)** — the under-testedness gate. "Complex and untested?" functions, fed by
   *cyclomatic* complexity joined with coverage.
 
-According to the `./docs/MODEL.md`, there are two classes of the function:
-- `jsx` - function that return JSX
-- `behavior` - everything else, regardless of whether it lives in the component file or outside it
-
-The CRAP score applies only to behavior functions.
-
 ## Where to look
 
 | Question | Answer lives in |
@@ -70,11 +64,12 @@ it.
 - `./config.ts` — the three caps, so a local run and a CI run gate identically
   (`./docs/CALIBRATION.md`)
 - `./analyze.ts` — complexity × coverage → one row per function, each stamped with its verdict
-- `./run.sh` — compile-on-run wrapper, the same pattern as `tools/dev-server/fetch.sh`
+- `./run.sh` — compile-on-run wrapper; callable from any directory, but git reads the one you call
+  it from (`./docs/RUNNING.md`)
 
 **`select/`** — which files, and which lines inside them.
 
-- `./select/scope.ts` — the in-scope rule, and why each excluded category is out (`./docs/MODEL.md`)
+- `./select/scope.ts` — the in-scope rule, and why each excluded category is out
 - `./select/diff.ts` — git plumbing: changed files, changed line ranges, merge-base
   (`./docs/RUNNING.md`)
 

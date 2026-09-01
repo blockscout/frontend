@@ -14,6 +14,10 @@ half is fed). Any selection combines with any source.
 | `<path...>` | every function in the given files, ignoring the diff |
 | `--changed[=<ref>]` | only functions a changed line falls within |
 
+`--changed` shells out to git without setting a working directory, so the diff it scores is the one at
+the directory you invoked the command from. `./run.sh` resolves its own location in order to compile,
+which lets it run from anywhere — that part is cwd-independent, the diff is not.
+
 | Coverage source | How the CRAP half is fed |
 | --- | --- |
 | *(default)* | the tool runs vitest itself, scoped to the selection, into a throwaway temp dir |

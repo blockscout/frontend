@@ -10,7 +10,7 @@ external service, which is what makes some of the approximations below necessary
 
 ## Which files are in scope
 
-See `./select/scope.ts`.
+See `../select/scope.ts`.
 
 ## Which functions are gated
 
