@@ -32,12 +32,17 @@
 - Status: `pending`
 - Resolved when: (a) the release/version that adds `bridge_ids` to `GET /api/v1/interchain/chains`;
   (b) whether it is deployed to the shared mainnet and testnet instances; (c) confirmation that
-  `has_unindexed_chain` becomes non-optional and that chain ids are serialized as strings consistently,
-  and in which version
+  `has_unindexed_chain` and `BridgeInfo.id` become non-optional and that chain ids are serialized as
+  strings consistently, and in which version
 - Slack: https://blockscout.slack.com/archives/C0A7SALNLPL/p1788346383623139
 - Answer: —
 
-<!-- Evgenii agreed to all three in
+<!-- `BridgeInfo.id` was added to (c) after the ticket breakdown: it is `id?: number` in 1.8.1 although the
+service always sends it, and the message-details route now needs it to build a link. Asked in
+https://blockscout.slack.com/archives/C0A7SALNLPL/p1788371318691139. Until it is required, a row without
+it renders unlinked.
+
+Evgenii agreed to all three in
 https://blockscout.slack.com/archives/C0A7SALNLPL/p1788335960248239 ("Принято, поставлю в работу") — this
 question only tracks the version and its deployment.
 
