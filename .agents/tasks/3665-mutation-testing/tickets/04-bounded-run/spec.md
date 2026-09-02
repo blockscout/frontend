@@ -19,17 +19,17 @@ reads Stryker's own JSON report untouched.
 
 ## Acceptance criteria
 
-- [ ] A run that exceeds the budget is stopped and still prints a report covering the mutants tested before
+- [x] A run that exceeds the budget is stopped and still prints a report covering the mutants tested before
       the cutoff.
-- [ ] The output states the run was truncated and how much of the selection was covered. A truncated run is
+- [x] The output states the run was truncated and how much of the selection was covered. A truncated run is
       never presented as a complete one.
-- [ ] A run that finishes inside the budget is byte-identical to what T02 produced — the streaming path
+- [x] A run that finishes inside the budget is byte-identical to what T02 produced — the streaming path
       changes nothing on the normal path.
-- [ ] The reporter plugin is named explicitly in `stryker.config.json`'s plugin list, alongside the vitest
+- [x] The reporter plugin is named explicitly in `stryker.config.json`'s plugin list, alongside the vitest
       runner (pnpm's layout defeats Stryker's plugin globbing).
-- [ ] Stopping the run leaves no orphaned vitest or Stryker child processes and no stale sandbox directory.
-- [ ] The budget is a named constant in the tool's config module, overridable per invocation.
-- [ ] Unit specs cover parsing the streamed results and the truncated-vs-complete decision.
+- [x] Stopping the run leaves no orphaned vitest or Stryker child processes and no stale sandbox directory.
+- [x] The budget is a named constant in the tool's config module, overridable per invocation.
+- [x] Unit specs cover parsing the streamed results and the truncated-vs-complete decision.
 
 ## Details
 
@@ -47,6 +47,6 @@ so a local run and a CI run gate identically.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the streaming reporter plugin and register it in `stryker.config.json`
-- [ ] 2 `[agent]` Enforce the budget: stop the run at expiry, clean up children and the sandbox
-- [ ] 3 `[agent]` Read the streamed results on a truncated run and mark the report truncated; specs
+- [x] 1 `[agent]` Write the streaming reporter plugin and register it in `stryker.config.json`
+- [x] 2 `[agent]` Enforce the budget: stop the run at expiry, clean up children and the sandbox
+- [x] 3 `[agent]` Read the streamed results on a truncated run and mark the report truncated; specs

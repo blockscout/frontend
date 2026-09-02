@@ -5,8 +5,11 @@
   "vitest": {
     "configFile": "tools/mutation-testing/vitest.config.ts"
   },
-  "plugins": [ "@stryker-mutator/vitest-runner" ],
-  "reporters": [ "json", "html" ],
+  "plugins": [
+    "@stryker-mutator/vitest-runner",
+    "./tools/mutation-testing/dist/mutation-testing/stryker/streaming-reporter.mjs"
+  ],
+  "reporters": [ "json", "html", "stream" ],
   "jsonReporter": {
     "fileName": "tools/mutation-testing/reports/mutation.json"
   },

@@ -356,6 +356,9 @@ importers:
       '@playwright/test':
         specifier: 1.57.0
         version: 1.57.0
+      '@stryker-mutator/api':
+        specifier: 10.0.0
+        version: 10.0.0
       '@stryker-mutator/core':
         specifier: 10.0.0
         version: 10.0.0(@types/node@20.16.7)

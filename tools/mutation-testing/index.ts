@@ -1,10 +1,12 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to print a report to stdout */
-import { DEFAULT_BASE_REF } from './config';
+import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, MINUTE_MS } from './config';
 import { formatTable } from './render/table';
+import { formatTruncationNotice } from './render/truncation';
 import type { Selection } from './select/files';
 import { selectFiles } from './select/files';
 import { runStryker } from './stryker/invoke';
-import { buildFileScores, readReport } from './stryker/report';
+import { buildFileScores } from './stryker/report';
+import { readResults } from './stryker/results';
 
 // Mutation testing: change the code, and see whether any test notices. Coverage answers "was this
 // line executed?"; a surviving mutant answers "would a bug here be caught?", which is the question
@@ -17,6 +19,7 @@ interface CliOptions {
   baseRef: string;
   diffSelected: boolean;
   focusPaths: Array<string>;
+  budgetMs: number;
 }
 
 const USAGE = `Usage:
@@ -30,6 +33,10 @@ const USAGE = `Usage:
       Diff mode: mutate only the lines this branch changed vs the base ref
       (default ${ DEFAULT_BASE_REF }, resolved through the merge-base, so uncommitted edits count and
       base-branch churn does not).
+
+  --budget <minutes>
+      Wall-clock bound on the run (default ${ DEFAULT_BUDGET_MS / MINUTE_MS }). At expiry the run is
+      stopped and everything tested so far is reported, marked as truncated.
 
   A file is mutated only when a vitest spec sits beside it (X.spec.ts / X.spec.tsx next to X.ts /
   X.tsx) — an untested file would otherwise produce a run of unkillable mutants. In every mode, the
@@ -45,6 +52,14 @@ type FlagSpec =
   { readonly kind: 'switch'; readonly apply: (options: CliOptions) => void } |
   { readonly kind: 'value'; readonly apply: (options: CliOptions, value: string) => void } |
   { readonly kind: 'optional'; readonly apply: (options: CliOptions, value: string | undefined) => void };
+
+// A budget of zero or less would stop the run before it started, and a misspelt value must not
+// silently fall back to the default — either way the flag would lie about what bounds the run.
+function parseBudgetMinutes(value: string): number {
+  const minutes = Number(value);
+  if (!Number.isFinite(minutes) || minutes <= 0) throw new Error(`--budget takes a positive number of minutes, got: ${ value }`);
+  return minutes;
+}
 
 // The whole flag surface as data, following the complexity gate's table: a lookup rather than an
 // if/else chain, which removes the prefix-shadowing hazard a `startsWith` chain has.
@@ -64,6 +79,9 @@ const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
   [ '--base', { kind: 'value', apply: (options, value) => {
     options.diffSelected = true;
     options.baseRef = value;
+  } } ],
+  [ '--budget', { kind: 'value', apply: (options, value) => {
+    options.budgetMs = parseBudgetMinutes(value) * MINUTE_MS;
   } } ],
 ]);
 
@@ -108,6 +126,7 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     baseRef: DEFAULT_BASE_REF,
     diffSelected: false,
     focusPaths: [],
+    budgetMs: DEFAULT_BUDGET_MS,
   };
 
   let index = 0;
@@ -125,7 +144,7 @@ function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>)
   console.error(`› Mutating ${ selection.targets.length } file(s)…`);
 }
 
-function main(): void {
+async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const selection = selectFiles(options);
 
@@ -135,8 +154,10 @@ function main(): void {
   }
 
   reportSelection(selection);
-  runStryker(selection.targets);
-  console.log(formatTable(buildFileScores(readReport())));
+  const results = readResults(await runStryker(selection.targets, options.budgetMs));
+
+  console.log(formatTable(buildFileScores(results.report)));
+  if (results.truncated) console.log(formatTruncationNotice(results, options.budgetMs));
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the
@@ -150,10 +171,8 @@ function isProcessEntryPoint(): boolean {
 }
 
 if (isProcessEntryPoint()) {
-  try {
-    main();
-  } catch (error) {
+  main().catch((error: unknown) => {
     console.error(error instanceof Error ? error.message : String(error));
     process.exitCode = 1;
-  }
+  });
 }

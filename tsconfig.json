@@ -32,6 +32,7 @@
   "include": [
     "next-types.d.ts",
     "**/*.ts",
+    "**/*.mts",
     "**/*.node.ts",
     "**/*.tsx",
     "**/*.pw.tsx",

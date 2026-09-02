@@ -1,14 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { DEFAULT_BASE_REF } from './config';
+import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, MINUTE_MS } from './config';
 import { parseArgs } from './index';
 
 describe('parseArgs', () => {
-  it('defaults to full mode against the configured base ref', () => {
+  it('defaults to full mode against the configured base ref, under the configured budget', () => {
     expect(parseArgs([])).toEqual({
       baseRef: DEFAULT_BASE_REF,
       diffSelected: false,
       focusPaths: [],
+      budgetMs: DEFAULT_BUDGET_MS,
     });
   });
 
@@ -41,6 +42,18 @@ describe('parseArgs', () => {
       baseRef: 'upstream/main',
       focusPaths: [ 'src/a.ts', 'src/b.ts' ],
     });
+  });
+
+  it('takes the budget in minutes, overriding the default', () => {
+    expect(parseArgs([ '--budget', '3' ]).budgetMs).toBe(3 * MINUTE_MS);
+    expect(parseArgs([ '--budget=0.5' ]).budgetMs).toBe(MINUTE_MS / 2);
+  });
+
+  // Falling back to the default on a bad value would make the flag lie about what bounds the run.
+  it('rejects a budget that is not a positive number of minutes', () => {
+    expect(() => parseArgs([ '--budget', 'soon' ])).toThrow('--budget takes a positive number of minutes, got: soon');
+    expect(() => parseArgs([ '--budget', '0' ])).toThrow('--budget takes a positive number of minutes, got: 0');
+    expect(() => parseArgs([ '--budget', '-5' ])).toThrow('--budget takes a positive number of minutes, got: -5');
   });
 
   it('rejects an unknown flag', () => {

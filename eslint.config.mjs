@@ -99,7 +99,7 @@ const ARCH_BOUNDARY_ELEMENTS = [
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
 
-  { files: [ '**/*.{js,mjs,cjs,ts,jsx,tsx}', '**/*.pw.tsx' ] },
+  { files: [ '**/*.{js,mjs,cjs,ts,mts,jsx,tsx}', '**/*.pw.tsx' ] },
 
   { ignores: [
     'deploy/tools/',

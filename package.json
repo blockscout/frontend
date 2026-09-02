@@ -167,6 +167,7 @@
     "@next/eslint-plugin-next": "16.2.6",
     "@playwright/experimental-ct-react": "1.57.0",
     "@playwright/test": "1.57.0",
+    "@stryker-mutator/api": "10.0.0",
     "@stryker-mutator/core": "10.0.0",
     "@stryker-mutator/vitest-runner": "10.0.0",
     "@stylistic/eslint-plugin": "5.2.3",
