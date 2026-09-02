@@ -885,6 +885,8 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.7.0+ |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS | `Array<number>` | Ids of the interchain indexer bridges whose messages and transfers this instance is allowed to show. The indexer is shared between deployments and indexes every bridge it knows about, so the ids define this instance's slice of it. | Required | - | `'[1,2]'` | upcoming |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS | `boolean` | Set to `true` to also show messages and transfers whose counterparty chain is not indexed by any of the configured bridges. Such rows have an incomplete counterparty side. | - | `false` | `true` | upcoming |
 
 **Dependencies**
 

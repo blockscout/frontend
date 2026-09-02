@@ -72,6 +72,6 @@ Sepolia↔Chiado AMB `1001`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add both variables — skill: `add-env-var`
-- [ ] 2 `[agent]` Add the bridge ids to `playwright/.env.pw` and to the `crossChainTxs` entry of
+- [x] 1 `[agent]` Add both variables — skill: `add-env-var`
+- [x] 2 `[agent]` Add the bridge ids to `playwright/.env.pw` and to the `crossChainTxs` entry of
       `src/config/test-utils/env-presets.ts`
