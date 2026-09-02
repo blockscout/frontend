@@ -25,7 +25,13 @@ export default defineConfig({
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],
     include: [ '**/*.spec.ts', '**/*.spec.tsx' ],
-    // agent worktrees are full checkouts of the repo; their specs would run a second time
-    exclude: [ '**/node_modules/**', '**/node_modules_linux/**', '.claude/worktrees/**' ],
+    // agent worktrees are full checkouts of the repo; their specs would run a second time.
+    // Stryker's sandbox is a copy of the repo too, and survives a run it did not finish.
+    exclude: [
+      '**/node_modules/**',
+      '**/node_modules_linux/**',
+      '.claude/worktrees/**',
+      'tools/mutation-testing/.stryker-tmp/**',
+    ],
   },
 });

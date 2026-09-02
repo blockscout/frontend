@@ -56,10 +56,10 @@ tickets read the JSON. `tempDirName` points the sandbox inside the tool folder r
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the Stryker dependencies and the scoped `brace-expansion` override; verify a bare run
+- [x] 1 `[agent]` Add the Stryker dependencies and the scoped `brace-expansion` override; verify a bare run
       boots
-- [ ] 2 `[agent]` Write `tools/mutation-testing/stryker.config.json` — explicit plugin list, logic-only
+- [x] 2 `[agent]` Write `tools/mutation-testing/stryker.config.json` — explicit plugin list, logic-only
       mutators, `ignoreStatic`, raised timeout, primed-spec exclusion, sandbox ignores, json + html reporters
       into `tools/mutation-testing/reports/`
-- [ ] 3 `[agent]` Gitignore the reports directory and the sandbox
-- [ ] 4 `[agent]` Verify determinism: two runs, identical counts
+- [x] 3 `[agent]` Gitignore the reports directory and the sandbox
+- [x] 4 `[agent]` Verify determinism: two runs, identical counts

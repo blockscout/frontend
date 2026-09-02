@@ -1,6 +1,6 @@
 # Progress — Add diff-scoped mutation testing
 
-- [ ] 01 → `tickets/01-stryker-boots/`
+- [x] 01 → `tickets/01-stryker-boots/`
 - [ ] 02 → `tickets/02-cli-selection-modes/`
 - [ ] 03 → `tickets/03-mutation-ranges/`
 - [ ] 04 → `tickets/04-bounded-run/`

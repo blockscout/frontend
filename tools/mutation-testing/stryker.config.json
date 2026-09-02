@@ -1,0 +1,52 @@
+{
+  "$schema": "../../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "vitest": {
+    "configFile": "tools/mutation-testing/vitest.config.ts"
+  },
+  "plugins": [ "@stryker-mutator/vitest-runner" ],
+  "reporters": [ "json", "html" ],
+  "jsonReporter": {
+    "fileName": "tools/mutation-testing/reports/mutation.json"
+  },
+  "htmlReporter": {
+    "fileName": "tools/mutation-testing/reports/mutation.html"
+  },
+  "tempDirName": "tools/mutation-testing/.stryker-tmp",
+  "ignoreStatic": true,
+  "timeoutMS": 60000,
+  "dryRunTimeoutMinutes": 15,
+  "mutator": {
+    "excludedMutations": [
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "AssignmentOperator",
+      "BlockStatement",
+      "CallExpression",
+      "MethodExpression",
+      "ObjectLiteral",
+      "OptionalChaining",
+      "Regex",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator"
+    ]
+  },
+  "ignorePatterns": [
+    "**",
+    "!/src/**",
+    "!/vitest/**",
+    "!/decs.d.ts",
+    "!/global.d.ts",
+    "!/next-types.d.ts",
+    "!/package.json",
+    "!/pnpm-workspace.yaml",
+    "!/reset.d.ts",
+    "!/tools/mutation-testing/vitest.config.ts",
+    "!/tsconfig.json",
+    "!/vitest.config.ts",
+    "**/node_modules",
+    "**/*.pw.tsx"
+  ]
+}

@@ -58,6 +58,10 @@ npm-debug.log*
 # compiled code-complexity gate
 /tools/code-complexity/dist/
 
+# mutation-testing reports and Stryker's per-run sandbox
+/tools/mutation-testing/reports/
+/tools/mutation-testing/.stryker-tmp/
+
 # typescript
 *.tsbuildinfo
 

@@ -43,6 +43,8 @@
     "node_modules_linux",
     // agent worktrees are full checkouts of the repo, with no dependencies installed of their own
     ".claude/worktrees",
+    // Stryker's sandbox is a copy of the repo, and survives a run it did not finish
+    "tools/mutation-testing/.stryker-tmp",
     "./deploy/tools/envs-validator",
     "./deploy/tools/favicon-generator",
     "./deploy/tools/multichain-config-generator",
