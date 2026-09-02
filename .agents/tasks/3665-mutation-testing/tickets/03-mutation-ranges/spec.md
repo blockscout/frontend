@@ -18,16 +18,16 @@ in a large file does not pay for the whole file. Focused and bare modes still mu
 
 ## Acceptance criteria
 
-- [ ] A `.tsx` file whose only logic lives in a render body yields zero mutants; a `behavior` function in the
+- [x] A `.tsx` file whose only logic lives in a render body yields zero mutants; a `behavior` function in the
       same file is still mutated.
-- [ ] A `behavior` function declared inside a component (an `onClick` handler, a `useCallback` body) is
+- [x] A `behavior` function declared inside a component (an `onClick` handler, a `useCallback` body) is
       mutated — the exclusion keys off the function's own classification, not its enclosing file.
-- [ ] Under `--changed`, mutants appear only on lines the diff added or modified. An untouched conditional
+- [x] Under `--changed`, mutants appear only on lines the diff added or modified. An untouched conditional
       elsewhere in a changed file produces no mutant.
-- [ ] Focused mode (`pnpm test:mutation-testing <path>`) mutates the whole file, minus `jsx` bodies.
-- [ ] When the ranges for a file come out empty, that file is dropped from the selection rather than passed
+- [x] Focused mode (`pnpm test:mutation-testing <path>`) mutates the whole file, minus `jsx` bodies.
+- [x] When the ranges for a file come out empty, that file is dropped from the selection rather than passed
       to Stryker with an empty range.
-- [ ] Range computation is unit-tested, including a `jsx` body overlapping a changed hunk.
+- [x] Range computation is unit-tested, including a `jsx` body overlapping a changed hunk.
 
 ## Details
 
@@ -47,7 +47,7 @@ resolved against the merge-base in T02.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Compute per-file `jsx`-body spans from the complexity gate's classifier and derive their
+- [x] 1 `[agent]` Compute per-file `jsx`-body spans from the complexity gate's classifier and derive their
       complement; specs
-- [ ] 2 `[agent]` Intersect with changed line ranges under `--changed`; specs
-- [ ] 3 `[agent]` Emit the ranges as Stryker `mutate` entries and drop files whose ranges are empty
+- [x] 2 `[agent]` Intersect with changed line ranges under `--changed`; specs
+- [x] 3 `[agent]` Emit the ranges as Stryker `mutate` entries and drop files whose ranges are empty

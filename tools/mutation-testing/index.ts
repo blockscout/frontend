@@ -27,13 +27,14 @@ const USAGE = `Usage:
       Focused mode: mutate the given files. A file with no spec beside it is skipped.
 
   test:mutation-testing --changed[=<ref>] [--base <ref>]
-      Diff mode: mutate only the files this branch changed vs the base ref
+      Diff mode: mutate only the lines this branch changed vs the base ref
       (default ${ DEFAULT_BASE_REF }, resolved through the merge-base, so uncommitted edits count and
       base-branch churn does not).
 
   A file is mutated only when a vitest spec sits beside it (X.spec.ts / X.spec.tsx next to X.ts /
-  X.tsx) — an untested file would otherwise produce a run of unkillable mutants. When the selection
-  comes out empty the run says why and exits 0 without starting Stryker.`;
+  X.tsx) — an untested file would otherwise produce a run of unkillable mutants. In every mode, the
+  lines inside a jsx render body are left alone. When the selection comes out empty the run says why
+  and exits 0 without starting Stryker.`;
 
 // One flag's behaviour, discriminated by how it takes its value:
 //   'switch'   — no value at all
@@ -121,7 +122,7 @@ function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>)
   for (const file of selection.ineligible) {
     console.error(`› skipped ${ file }: no co-located vitest spec`);
   }
-  console.error(`› Mutating ${ selection.files.length } file(s)…`);
+  console.error(`› Mutating ${ selection.targets.length } file(s)…`);
 }
 
 function main(): void {
@@ -134,7 +135,7 @@ function main(): void {
   }
 
   reportSelection(selection);
-  runStryker(selection.files);
+  runStryker(selection.targets);
   console.log(formatTable(buildFileScores(readReport())));
 }
 

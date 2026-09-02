@@ -15,21 +15,34 @@ const INELIGIBLE_FILE = 'tools/code-complexity/config.ts';
 
 const BASE_REF = 'main';
 
+// A component with no logic of its own outside the render body it returns.
+const CARD_COMPONENT = `const Card = ({ show }: { show: boolean }) => (
+  <div>{ show ? 'yes' : 'no' }</div>
+);
+
+export default Card;
+`;
+
 function request(overrides: Partial<SelectionRequest>): Selection {
   return selectFiles({ focusPaths: [], diffSelected: false, baseRef: BASE_REF, ...overrides });
 }
 
+// The files a selection resolved to, dropping the ranges each was narrowed to — ./ranges.spec.ts
+// covers those.
+function selectedFiles(selection: Selection): Array<string> {
+  if (selection.outcome === 'empty') throw new Error(`Expected a selection, got: ${ selection.reason }`);
+  return selection.targets.map((target) => target.file);
+}
+
 describe('focused mode', () => {
   it('selects the given files and separates the ones with no spec beside them', () => {
-    expect(request({ focusPaths: [ ELIGIBLE_FILE, INELIGIBLE_FILE ] })).toEqual({
-      outcome: 'selected',
-      files: [ ELIGIBLE_FILE ],
-      ineligible: [ INELIGIBLE_FILE ],
-    });
+    const selection = request({ focusPaths: [ ELIGIBLE_FILE, INELIGIBLE_FILE ] });
+    expect(selectedFiles(selection)).toEqual([ ELIGIBLE_FILE ]);
+    expect(selection).toMatchObject({ ineligible: [ INELIGIBLE_FILE ] });
   });
 
   it('strips a leading ./ so a shell-completed path matches the diff paths', () => {
-    expect(request({ focusPaths: [ `./${ ELIGIBLE_FILE }` ] })).toMatchObject({ files: [ ELIGIBLE_FILE ] });
+    expect(selectedFiles(request({ focusPaths: [ `./${ ELIGIBLE_FILE }` ] }))).toEqual([ ELIGIBLE_FILE ]);
   });
 
   it('is empty when no given file has a spec beside it', () => {
@@ -44,7 +57,7 @@ describe('focused mode', () => {
   });
 
   it('takes the given paths even when --changed is also set', () => {
-    expect(request({ focusPaths: [ ELIGIBLE_FILE ], diffSelected: true })).toMatchObject({ files: [ ELIGIBLE_FILE ] });
+    expect(selectedFiles(request({ focusPaths: [ ELIGIBLE_FILE ], diffSelected: true }))).toEqual([ ELIGIBLE_FILE ]);
   });
 });
 
@@ -103,7 +116,7 @@ describe('git-backed modes', () => {
     createForkedRepo();
     expect(request({ diffSelected: true })).toEqual({
       outcome: 'selected',
-      files: [ 'src/touched.ts' ],
+      targets: [ { file: 'src/touched.ts', ranges: [ [ 1, 1 ] ] } ],
       ineligible: [],
     });
   });
@@ -111,13 +124,25 @@ describe('git-backed modes', () => {
   it('honours an explicit base ref', () => {
     createForkedRepo();
     git('branch', 'other-base', BASE_REF);
-    expect(request({ diffSelected: true, baseRef: 'other-base' })).toMatchObject({ files: [ 'src/touched.ts' ] });
+    expect(selectedFiles(request({ diffSelected: true, baseRef: 'other-base' }))).toEqual([ 'src/touched.ts' ]);
   });
 
   it('picks up an uncommitted edit to an eligible file', () => {
     createForkedRepo();
     write('src/base.ts', 'export const base = 2;\n');
-    expect(request({ diffSelected: true })).toMatchObject({ files: [ 'src/base.ts', 'src/touched.ts' ] });
+    expect(selectedFiles(request({ diffSelected: true }))).toEqual([ 'src/base.ts', 'src/touched.ts' ]);
+  });
+
+  // src/base.ts predates the fork point, so only the two lines appended to it are in the diff.
+  it('narrows a changed file to the lines the diff touched', () => {
+    createForkedRepo();
+    write('src/base.ts', 'export const base = 1;\nexport const extra = 2;\nexport const more = 3;\n');
+    expect(request({ diffSelected: true })).toMatchObject({
+      targets: [
+        { file: 'src/base.ts', ranges: [ [ 2, 3 ] ] },
+        { file: 'src/touched.ts', ranges: [ [ 1, 1 ] ] },
+      ],
+    });
   });
 
   it('is empty on the base branch itself, naming the ref', () => {
@@ -145,15 +170,36 @@ describe('git-backed modes', () => {
     createForkedRepo();
     git('rm', 'src/base.ts', 'src/base.spec.ts');
     git('commit', '-m', 'delete base');
-    expect(request({ diffSelected: true })).toMatchObject({ files: [ 'src/touched.ts' ] });
+    expect(selectedFiles(request({ diffSelected: true }))).toEqual([ 'src/touched.ts' ]);
   });
 
   it('selects every eligible in-scope file when invoked bare', () => {
     createForkedRepo();
     expect(request({})).toEqual({
       outcome: 'selected',
-      files: [ 'src/base.ts', 'src/touched.ts' ],
+      targets: [
+        { file: 'src/base.ts', ranges: [ [ 1, 1 ] ] },
+        { file: 'src/touched.ts', ranges: [ [ 1, 1 ] ] },
+      ],
       ineligible: [],
+    });
+  });
+
+  // The change is real, but every line it touched is inside the render body, so the file is dropped
+  // and the run has nothing left to do.
+  it('is empty when the diff only touched a jsx render body', () => {
+    createForkedRepo();
+    git('checkout', BASE_REF);
+    write('src/Card.tsx', CARD_COMPONENT);
+    write('src/Card.spec.tsx', 'export const spec = 1;\n');
+    git('add', '.');
+    git('commit', '-m', 'card');
+    git('checkout', '-b', 'card-tweak');
+    write('src/Card.tsx', CARD_COMPONENT.replace('yes', 'nope'));
+
+    expect(request({ diffSelected: true })).toEqual({
+      outcome: 'empty',
+      reason: `No line changed vs ${ BASE_REF } falls outside a jsx render body — nothing to mutate.`,
     });
   });
 });
