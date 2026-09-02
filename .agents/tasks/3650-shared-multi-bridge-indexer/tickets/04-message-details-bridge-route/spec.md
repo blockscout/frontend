@@ -42,7 +42,10 @@ worse than no guess.
       it does today
 - [ ] A unit test covers the remap — `400` in, `422` out; any other status passes through unchanged
 - [ ] Nothing retries a message-details request on `400`
-- [ ] `pnpm test`, `pnpm lint`, `pnpm lint:tsc` and the cross-chain Playwright specs pass
+- [ ] `pnpm test:vitest`, `pnpm lint:eslint`, `pnpm lint:tsc` and `pnpm lint:cspell` pass,
+      `pnpm test:code-complexity --changed` is within thresholds, and the cross-chain Playwright specs
+      pass under `pnpm test:pw:docker` (local `test:pw:local` screenshot diffs are a known rendering
+      mismatch, not a result)
 - [ ] `(human)` From the cross-chain transactions list, clicking a row opens the details page with the
       bridge in the URL; a reload and a fresh paste of that URL both resolve; the transfers tab links
       keep the bridge; editing the URL to a wrong bridge id shows not-found, and mangling the message id

@@ -40,8 +40,11 @@ resource added next month is covered the day it lands.
 - [ ] `include_unindexed_chains` comes from env on every declaring resource; no code path hardcodes it
 - [ ] Cross-chain search (`q`), sorting, pagination and the Protocol column are untouched on every
       affected surface, and page 2+ carries the profile
-- [ ] The whole Playwright suite passes — in particular the interchain mocks still match (see *Details*)
-- [ ] `pnpm test`, `pnpm lint` and `pnpm lint:tsc` pass
+- [ ] The whole Playwright suite passes under `pnpm test:pw:docker` — in particular the interchain mocks
+      still match (see *Details*). Local `test:pw:local` screenshot diffs are a known rendering
+      mismatch, not a result
+- [ ] `pnpm test:vitest`, `pnpm lint:eslint`, `pnpm lint:tsc` and `pnpm lint:cspell` pass, and
+      `pnpm test:code-complexity --changed` is within thresholds
 - [ ] The PR description flags that DevOps must repoint `NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST` at the
       shared instances at release time, for the release notes
 - [ ] `(human)` On a cross-chain-enabled instance, the transactions list, its stats block, token
