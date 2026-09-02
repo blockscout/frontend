@@ -1,11 +1,15 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to print a report to stdout */
-import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, MINUTE_MS } from './config';
+import fs from 'fs';
+import { pathToFileURL } from 'url';
+
+import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, HTML_REPORT_FILE, MINUTE_MS } from './config';
+import { formatFindings } from './render/findings';
 import { formatTable } from './render/table';
 import { formatTruncationNotice } from './render/truncation';
 import type { Selection } from './select/files';
 import { selectFiles } from './select/files';
 import { runStryker } from './stryker/invoke';
-import { buildFileScores } from './stryker/report';
+import { buildFileScores, collectFindings } from './stryker/report';
 import { readResults } from './stryker/results';
 
 // Mutation testing: change the code, and see whether any test notices. Coverage answers "was this
@@ -144,9 +148,17 @@ function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>)
   console.error(`› Mutating ${ selection.targets.length } file(s)…`);
 }
 
+// Stryker writes the html report only when a whole run finishes, and ./stryker/invoke.ts deletes the
+// previous one before starting — so the file existing is what makes the path this run's rather than
+// a stale one being advertised as fresh.
+function reportHtmlLocation(): void {
+  if (!fs.existsSync(HTML_REPORT_FILE)) return;
+  console.log(`\nFull report: ${ pathToFileURL(HTML_REPORT_FILE).href }`);
+}
+
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
-  const selection = selectFiles(options);
+  const selection = selectFiles(options, process.cwd());
 
   if (selection.outcome === 'empty') {
     console.log(selection.reason);
@@ -158,6 +170,8 @@ async function main(): Promise<void> {
 
   console.log(formatTable(buildFileScores(results.report)));
   if (results.truncated) console.log(formatTruncationNotice(results, options.budgetMs));
+  console.log(`\n${ formatFindings(collectFindings(results.report)) }`);
+  reportHtmlLocation();
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the

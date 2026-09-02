@@ -20,15 +20,15 @@ anyone who wants to browse the whole thing.
 
 How to verify: `pnpm test:mutation-testing <a file with known weak assertions>`
 
-- [ ] Survivors are listed grouped by source line, each naming its mutator, under the file they belong to.
-- [ ] No-coverage mutants never appear in the survivor listing; they are summarised compactly and separately.
-- [ ] The split reads Stryker's per-mutant `status` field rather than inferring it.
-- [ ] A run with no survivors and no no-coverage mutants says so in one line instead of printing empty
+- [x] Survivors are listed grouped by source line, each naming its mutator, under the file they belong to.
+- [x] No-coverage mutants never appear in the survivor listing; they are summarised compactly and separately.
+- [x] The split reads Stryker's per-mutant `status` field rather than inferring it.
+- [x] A run with no survivors and no no-coverage mutants says so in one line instead of printing empty
       sections.
-- [ ] The HTML report path is printed, and the path resolves to a file that opens.
-- [ ] A truncated run (T04) renders its partial findings the same way, still marked truncated.
-- [ ] Formatting is unit-tested, including the multiple-mutators-on-one-line grouping.
-- [ ] `(human)` The report is legible on a real diff: the table, the grouped findings and the no-coverage
+- [x] The HTML report path is printed, and the path resolves to a file that opens.
+- [x] A truncated run (T04) renders its partial findings the same way, still marked truncated.
+- [x] Formatting is unit-tested, including the multiple-mutators-on-one-line grouping.
+- [x] `(human)` The report is legible on a real diff: the table, the grouped findings and the no-coverage
       summary read as one thing a reviewer can act on, not three dumps.
 
 ## Details
@@ -41,7 +41,7 @@ is unusable at this scale; consuming the JSON is what makes the compact form pos
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Split survivors from no-coverage mutants off the `status` field; specs
-- [ ] 2 `[agent]` Render the grouped-by-line survivor listing and the compact no-coverage summary; specs
-- [ ] 3 `[agent]` Print the HTML report location
-- [ ] 4 `[human]` Read the output on a real diff and confirm it is actionable
+- [x] 1 `[agent]` Split survivors from no-coverage mutants off the `status` field; specs
+- [x] 2 `[agent]` Render the grouped-by-line survivor listing and the compact no-coverage summary; specs
+- [x] 3 `[agent]` Print the HTML report location
+- [x] 4 `[human]` Read the output on a real diff and confirm it is actionable

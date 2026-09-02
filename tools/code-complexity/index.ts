@@ -239,7 +239,7 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
 // the mode threshold calibration runs (./docs/CALIBRATION.md). The repo always has files that need
 // coverage and generation runs the whole suite regardless, so there is no per-file skip here.
 function runFullMode(options: CliOptions): Array<ReportRow> {
-  const files = getAllSourceFiles();
+  const files = getAllSourceFiles(process.cwd());
   if (files.length === 0) return [];
   const coverage = resolveCoverage(options, { mode: 'full' }, true);
 
@@ -256,8 +256,8 @@ function runFullMode(options: CliOptions): Array<ReportRow> {
 // Diff mode: gate only functions a changed line falls within, across in-scope changed files.
 // Untouched functions in a changed file are listed but never flagged.
 function runDiffMode(options: CliOptions): Array<ReportRow> {
-  const baseCommit = resolveBaseCommit(options.baseRef);
-  const changedFiles = getChangedFiles(baseCommit).filter(isInScope).filter((file) => fs.existsSync(file));
+  const baseCommit = resolveBaseCommit(options.baseRef, process.cwd());
+  const changedFiles = getChangedFiles(baseCommit, process.cwd()).filter(isInScope).filter((file) => fs.existsSync(file));
   if (changedFiles.length === 0) return []; // nothing in scope: skip vitest entirely
 
   const sources = new Map(changedFiles.map((file) => [ file, readFile(file) ] as const));
@@ -267,7 +267,7 @@ function runDiffMode(options: CliOptions): Array<ReportRow> {
   const coverage = resolveCoverage(options, { mode: 'changed', since: baseCommit }, changedFiles.some(needsCoverage));
 
   return changedFiles.flatMap((file) => {
-    const changedRanges = getChangedLineRanges(baseCommit, file);
+    const changedRanges = getChangedLineRanges(baseCommit, file, process.cwd());
     return buildFileRows(file, sources.get(file) as string, coverage, {
       thresholds: thresholdsOf(options),
       gate: (fn) => rangesOverlap(changedRanges, fn.startLine, fn.endLine),

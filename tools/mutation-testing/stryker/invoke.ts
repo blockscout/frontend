@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import { JSON_REPORT_FILE, SANDBOX_DIR, STOP_GRACE_MS, STREAM_REPORT_FILE, STRYKER_BIN, STRYKER_CONFIG_FILE } from '../config';
+import { HTML_REPORT_FILE, JSON_REPORT_FILE, SANDBOX_DIR, STOP_GRACE_MS, STREAM_REPORT_FILE, STRYKER_BIN, STRYKER_CONFIG_FILE } from '../config';
 import type { MutateTarget } from '../select/files';
 
 // Runs Stryker over a selection, under a wall-clock budget. Everything that does not vary per run
@@ -35,6 +35,7 @@ export function formatMutateTargets(targets: ReadonlyArray<MutateTarget>): Array
 function clearPreviousRun(): void {
   fs.mkdirSync(path.dirname(JSON_REPORT_FILE), { recursive: true });
   fs.rmSync(JSON_REPORT_FILE, { force: true });
+  fs.rmSync(HTML_REPORT_FILE, { force: true });
   fs.rmSync(STREAM_REPORT_FILE, { force: true });
   fs.rmSync(SANDBOX_DIR, { recursive: true, force: true });
 }

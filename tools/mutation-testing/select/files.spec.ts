@@ -23,8 +23,8 @@ const CARD_COMPONENT = `const Card = ({ show }: { show: boolean }) => (
 export default Card;
 `;
 
-function request(overrides: Partial<SelectionRequest>): Selection {
-  return selectFiles({ focusPaths: [], diffSelected: false, baseRef: BASE_REF, ...overrides });
+function request(overrides: Partial<SelectionRequest>, cwd: string = process.cwd()): Selection {
+  return selectFiles({ focusPaths: [], diffSelected: false, baseRef: BASE_REF, ...overrides }, cwd);
 }
 
 // The files a selection resolved to, dropping the ranges each was narrowed to — ./ranges.spec.ts
@@ -64,22 +64,27 @@ describe('focused mode', () => {
 // The git-backed modes run against a throwaway repository, so the assertions do not depend on what
 // this branch happens to have changed.
 describe('git-backed modes', () => {
-  const originalCwd = process.cwd();
-  let repo: string | undefined;
+  let repo = '';
 
   afterEach(() => {
-    process.chdir(originalCwd);
     if (repo) fs.rmSync(repo, { recursive: true, force: true });
-    repo = undefined;
+    repo = '';
   });
 
+  // The repo is addressed by path rather than by making it the process's directory: process.chdir()
+  // throws in the worker threads Stryker runs vitest in, and these specs have to survive that.
   function git(...args: Array<string>): void {
-    execFileSync('git', [ '-c', 'user.email=t@t.t', '-c', 'user.name=t', ...args ], { stdio: 'ignore' });
+    execFileSync('git', [ '-c', 'user.email=t@t.t', '-c', 'user.name=t', ...args ], { cwd: repo, stdio: 'ignore' });
   }
 
   function write(filePath: string, body: string): void {
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-    fs.writeFileSync(filePath, body);
+    const target = path.join(repo, filePath);
+    fs.mkdirSync(path.dirname(target), { recursive: true });
+    fs.writeFileSync(target, body);
+  }
+
+  function selectIn(overrides: Partial<SelectionRequest>): Selection {
+    return request(overrides, repo);
   }
 
   // A repo forked from `main`, with one commit on each side of the fork point:
@@ -87,7 +92,6 @@ describe('git-backed modes', () => {
   //   feature: src/touched.ts (+spec), src/untested.ts (no spec), src/notes.md (out of scope)
   function createForkedRepo(): void {
     repo = fs.mkdtempSync(path.join(os.tmpdir(), 'mutation-select-'));
-    process.chdir(repo);
     git('init', '-b', BASE_REF);
 
     write('src/base.ts', 'export const base = 1;\n');
@@ -114,7 +118,7 @@ describe('git-backed modes', () => {
 
   it('selects only the eligible files the branch itself touched', () => {
     createForkedRepo();
-    expect(request({ diffSelected: true })).toEqual({
+    expect(selectIn({ diffSelected: true })).toEqual({
       outcome: 'selected',
       targets: [ { file: 'src/touched.ts', ranges: [ [ 1, 1 ] ] } ],
       ineligible: [],
@@ -124,20 +128,20 @@ describe('git-backed modes', () => {
   it('honours an explicit base ref', () => {
     createForkedRepo();
     git('branch', 'other-base', BASE_REF);
-    expect(selectedFiles(request({ diffSelected: true, baseRef: 'other-base' }))).toEqual([ 'src/touched.ts' ]);
+    expect(selectedFiles(selectIn({ diffSelected: true, baseRef: 'other-base' }))).toEqual([ 'src/touched.ts' ]);
   });
 
   it('picks up an uncommitted edit to an eligible file', () => {
     createForkedRepo();
     write('src/base.ts', 'export const base = 2;\n');
-    expect(selectedFiles(request({ diffSelected: true }))).toEqual([ 'src/base.ts', 'src/touched.ts' ]);
+    expect(selectedFiles(selectIn({ diffSelected: true }))).toEqual([ 'src/base.ts', 'src/touched.ts' ]);
   });
 
   // src/base.ts predates the fork point, so only the two lines appended to it are in the diff.
   it('narrows a changed file to the lines the diff touched', () => {
     createForkedRepo();
     write('src/base.ts', 'export const base = 1;\nexport const extra = 2;\nexport const more = 3;\n');
-    expect(request({ diffSelected: true })).toMatchObject({
+    expect(selectIn({ diffSelected: true })).toMatchObject({
       targets: [
         { file: 'src/base.ts', ranges: [ [ 2, 3 ] ] },
         { file: 'src/touched.ts', ranges: [ [ 1, 1 ] ] },
@@ -148,7 +152,7 @@ describe('git-backed modes', () => {
   it('is empty on the base branch itself, naming the ref', () => {
     createForkedRepo();
     git('checkout', BASE_REF);
-    expect(request({ diffSelected: true })).toEqual({
+    expect(selectIn({ diffSelected: true })).toEqual({
       outcome: 'empty',
       reason: `No source file in scope changed vs ${ BASE_REF } — nothing to mutate.`,
     });
@@ -160,7 +164,7 @@ describe('git-backed modes', () => {
     write('src/lonely.ts', 'export const lonely = 1;\n');
     git('add', '.');
     git('commit', '-m', 'untested');
-    expect(request({ diffSelected: true })).toEqual({
+    expect(selectIn({ diffSelected: true })).toEqual({
       outcome: 'empty',
       reason: `No file changed vs ${ BASE_REF } has a co-located vitest spec — nothing to mutate.`,
     });
@@ -170,12 +174,12 @@ describe('git-backed modes', () => {
     createForkedRepo();
     git('rm', 'src/base.ts', 'src/base.spec.ts');
     git('commit', '-m', 'delete base');
-    expect(selectedFiles(request({ diffSelected: true }))).toEqual([ 'src/touched.ts' ]);
+    expect(selectedFiles(selectIn({ diffSelected: true }))).toEqual([ 'src/touched.ts' ]);
   });
 
   it('selects every eligible in-scope file when invoked bare', () => {
     createForkedRepo();
-    expect(request({})).toEqual({
+    expect(selectIn({})).toEqual({
       outcome: 'selected',
       targets: [
         { file: 'src/base.ts', ranges: [ [ 1, 1 ] ] },
@@ -197,7 +201,7 @@ describe('git-backed modes', () => {
     git('checkout', '-b', 'card-tweak');
     write('src/Card.tsx', CARD_COMPONENT.replace('yes', 'nope'));
 
-    expect(request({ diffSelected: true })).toEqual({
+    expect(selectIn({ diffSelected: true })).toEqual({
       outcome: 'empty',
       reason: `No line changed vs ${ BASE_REF } falls outside a jsx render body — nothing to mutate.`,
     });

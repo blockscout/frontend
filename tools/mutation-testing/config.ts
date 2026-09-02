@@ -12,6 +12,7 @@ export const STRYKER_CONFIG_FILE = path.join(TOOL_DIR, 'stryker.config.json');
 // Read off the committed config rather than restated here: the reporter writes where that file says,
 // and a second copy of the path would silently start reading a report nobody writes.
 export const JSON_REPORT_FILE = strykerConfig.jsonReporter.fileName;
+export const HTML_REPORT_FILE = strykerConfig.htmlReporter.fileName;
 export const SANDBOX_DIR = strykerConfig.tempDirName;
 
 // Stryker's own json report is written only once a whole run finishes, so a run stopped at its

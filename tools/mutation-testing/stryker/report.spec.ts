@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Mutant, MutantStatus, MutationReport } from './report';
-import { buildFileScores, parseReport } from './report';
+import { buildFileScores, collectFindings, parseReport } from './report';
 
 const LINE = 10;
 
-function mutant(status: MutantStatus, mutatorName = 'EqualityOperator'): Mutant {
+function mutant(status: MutantStatus, mutatorName = 'EqualityOperator', line = LINE): Mutant {
   return {
-    id: `${ status }-${ mutatorName }`,
+    id: `${ status }-${ mutatorName }-${ line }`,
     mutatorName,
     status,
-    location: { start: { line: LINE, column: 1 }, end: { line: LINE, column: 20 } },
+    location: { start: { line, column: 1 }, end: { line, column: 20 } },
   };
 }
 
@@ -55,6 +55,86 @@ describe('buildFileScores', () => {
 
   it('produces no rows when Stryker mutated nothing', () => {
     expect(buildFileScores({ files: {} })).toEqual([]);
+  });
+});
+
+describe('collectFindings', () => {
+  const FIRST_LINE = 12;
+  const SECOND_LINE = 30;
+
+  it('groups the survivors on one line into a single finding naming every mutator', () => {
+    const report = {
+      files: {
+        'src/a.ts': {
+          mutants: [
+            mutant('Survived', 'ConditionalExpression', FIRST_LINE),
+            mutant('Survived', 'LogicalOperator', FIRST_LINE),
+            mutant('Survived', 'EqualityOperator', SECOND_LINE),
+          ],
+        },
+      },
+    };
+
+    expect(collectFindings(report).survivors).toEqual([ {
+      file: 'src/a.ts',
+      lines: [
+        { line: FIRST_LINE, mutators: [ { name: 'ConditionalExpression', count: 1 }, { name: 'LogicalOperator', count: 1 } ] },
+        { line: SECOND_LINE, mutators: [ { name: 'EqualityOperator', count: 1 } ] },
+      ],
+    } ]);
+  });
+
+  it('counts repeats of one mutator on a line rather than repeating its name', () => {
+    const report = {
+      files: {
+        'src/a.ts': {
+          mutants: [
+            mutant('Survived', 'EqualityOperator', FIRST_LINE),
+            mutant('Survived', 'EqualityOperator', FIRST_LINE),
+          ],
+        },
+      },
+    };
+
+    expect(collectFindings(report).survivors[0].lines).toEqual([
+      { line: FIRST_LINE, mutators: [ { name: 'EqualityOperator', count: 2 } ] },
+    ]);
+  });
+
+  it('keeps mutants nothing covered out of the survivor listing, counting them separately', () => {
+    const findings = collectFindings(reportOf([ 'Survived', 'NoCoverage', 'NoCoverage' ]));
+
+    expect(findings.survivors[0].lines).toEqual([ { line: LINE, mutators: [ { name: 'EqualityOperator', count: 1 } ] } ]);
+    expect(findings.noCoverage).toEqual([ { file: 'src/a.ts', mutants: 2 } ]);
+  });
+
+  it('splits off the status field, so nothing killed or excluded is reported as a finding', () => {
+    expect(collectFindings(reportOf([ 'Killed', 'Timeout', 'Ignored', 'CompileError', 'RuntimeError', 'Pending' ])))
+      .toEqual({ survivors: [], noCoverage: [] });
+  });
+
+  it('orders files alphabetically, whatever order Stryker emitted them in', () => {
+    const report = {
+      files: {
+        'src/z.ts': { mutants: [ mutant('Survived'), mutant('NoCoverage') ] },
+        'src/a.ts': { mutants: [ mutant('Survived'), mutant('NoCoverage') ] },
+      },
+    };
+
+    expect(collectFindings(report).survivors.map((entry) => entry.file)).toEqual([ 'src/a.ts', 'src/z.ts' ]);
+    expect(collectFindings(report).noCoverage.map((entry) => entry.file)).toEqual([ 'src/a.ts', 'src/z.ts' ]);
+  });
+
+  it('lists a file only under the finding it actually has', () => {
+    const report = {
+      files: {
+        'src/survivor.ts': { mutants: [ mutant('Survived') ] },
+        'src/uncovered.ts': { mutants: [ mutant('NoCoverage') ] },
+      },
+    };
+
+    expect(collectFindings(report).survivors.map((entry) => entry.file)).toEqual([ 'src/survivor.ts' ]);
+    expect(collectFindings(report).noCoverage.map((entry) => entry.file)).toEqual([ 'src/uncovered.ts' ]);
   });
 });
 
