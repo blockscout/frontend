@@ -45,6 +45,7 @@
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest",
     "test:code-complexity": "./tools/code-complexity/run.sh",
+    "test:mutation-testing": "./tools/mutation-testing/run.sh",
     "favicon:generate:dev": "./tools/scripts/favicon-generator.dev.sh",
     "og-image:generate:dev": "./tools/scripts/og-image-generator.dev.sh",
     "sitemap:generate:dev": "./tools/scripts/sitemap-generator.dev.sh",

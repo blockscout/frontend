@@ -36,6 +36,7 @@
   "ignorePatterns": [
     "**",
     "!/src/**",
+    "!/tools/**",
     "!/vitest/**",
     "!/decs.d.ts",
     "!/global.d.ts",
@@ -43,10 +44,12 @@
     "!/package.json",
     "!/pnpm-workspace.yaml",
     "!/reset.d.ts",
-    "!/tools/mutation-testing/vitest.config.ts",
     "!/tsconfig.json",
     "!/vitest.config.ts",
     "**/node_modules",
+    "**/dist",
+    "tools/mutation-testing/.stryker-tmp",
+    "tools/mutation-testing/reports",
     "**/*.pw.tsx"
   ]
 }

@@ -22,19 +22,19 @@ Whole files are mutated in this ticket. Narrowing to changed lines and excluding
 
 How to verify: `pnpm test:mutation-testing tools/code-complexity/measure/crap.ts`
 
-- [ ] Bare invocation selects every eligible file under the scope allowlist; explicit paths select exactly
+- [x] Bare invocation selects every eligible file under the scope allowlist; explicit paths select exactly
       those files; `--changed` selects the files the diff touches, and `--changed=<ref>` honours the ref.
-- [ ] A file with no co-located `*.spec.ts` / `*.spec.tsx` is never mutated in any mode, including when
+- [x] A file with no co-located `*.spec.ts` / `*.spec.tsx` is never mutated in any mode, including when
       named explicitly.
-- [ ] `--changed` on a branch with no in-scope changes prints one explanatory line, exits 0, and never
+- [x] `--changed` on a branch with no in-scope changes prints one explanatory line, exits 0, and never
       spawns Stryker (verifiable by the absence of a fresh sandbox and the run's wall time).
-- [ ] `--changed` resolves through the merge-base: commits landing on `origin/main` after the fork point
+- [x] `--changed` resolves through the merge-base: commits landing on `origin/main` after the fork point
       never appear in the selection.
-- [ ] Output is a per-file table with score, mutants, killed, survived and no-coverage columns, built from
+- [x] Output is a per-file table with score, mutants, killed, survived and no-coverage columns, built from
       the JSON report — Stryker's clear-text reporter is not used.
-- [ ] `--help` documents the three modes.
-- [ ] The tool's own files pass the complexity gate (`pnpm test:code-complexity --changed`).
-- [ ] Unit specs cover eligibility, mode resolution and the empty-selection exit.
+- [x] `--help` documents the three modes.
+- [x] The tool's own files pass the complexity gate (`pnpm test:code-complexity --changed`).
+- [x] Unit specs cover eligibility, mode resolution and the empty-selection exit.
 
 ## Details
 
@@ -56,8 +56,8 @@ beside what they test. Its flag-parsing table (`FLAGS`, `applyArg`) is the patte
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold `tools/mutation-testing/` — `run.sh`, `tsconfig.json`, gitignored `dist/`, package
+- [x] 1 `[agent]` Scaffold `tools/mutation-testing/` — `run.sh`, `tsconfig.json`, gitignored `dist/`, package
       script
-- [ ] 2 `[agent]` Selection: eligibility check, the three modes, the empty-selection early exit; specs
-- [ ] 3 `[agent]` Invoke Stryker over the selection and parse its JSON report
-- [ ] 4 `[agent]` Render the per-file table; specs
+- [x] 2 `[agent]` Selection: eligibility check, the three modes, the empty-selection early exit; specs
+- [x] 3 `[agent]` Invoke Stryker over the selection and parse its JSON report
+- [x] 4 `[agent]` Render the per-file table; specs

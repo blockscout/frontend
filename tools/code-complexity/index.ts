@@ -12,6 +12,7 @@ import { githubAnnotations, stepSummary } from './render/github';
 import type { ReportRow, Thresholds } from './render/report';
 import { formatTable, isOffender } from './render/report';
 import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './select/diff';
+import { hasCoLocatedSpec } from './select/eligibility';
 import { isInScope } from './select/scope';
 
 // The CLI has two independent axes, mirroring vitest: selection (which functions to score) and
@@ -206,14 +207,6 @@ function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeeds
     case 'generate':
       return anyNeedsCoverage ? generateCoverage(request, { verbose: options.verbose }) : parseCoverage('{}');
   }
-}
-
-// Whether a source file has a co-located vitest spec, by naming convention
-// (foo.ts -> foo.spec.ts / foo.spec.tsx). Playwright tests (*.pw.tsx) do not count: no vitest
-// coverage comes out of them.
-function hasCoLocatedSpec(file: string): boolean {
-  const base = file.slice(0, file.lastIndexOf('.'));
-  return fs.existsSync(`${ base }.spec.ts`) || fs.existsSync(`${ base }.spec.tsx`);
 }
 
 // Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
