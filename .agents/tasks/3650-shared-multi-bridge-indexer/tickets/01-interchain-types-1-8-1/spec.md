@@ -41,6 +41,6 @@ handles the missing-`bridge.id` case at the call site rather than asserting the 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Bump the types package to `1.8.1` and reconcile the type errors it surfaces
-- [ ] 2 `[agent]` Add `bridge.id` and `has_unindexed_chain` to the interchain stubs and mocks
-- [ ] 3 `[agent]` Add the partial-row rendering test
+- [x] 1 `[agent]` Bump the types package to `1.8.1` and reconcile the type errors it surfaces
+- [x] 2 `[agent]` Add `bridge.id` and `has_unindexed_chain` to the interchain stubs and mocks
+- [x] 3 `[agent]` Add the partial-row rendering test
