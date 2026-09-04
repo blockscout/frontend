@@ -7,17 +7,23 @@ import type { Feature } from 'src/config/utils/features';
 
 const title = 'Cross-chain transactions';
 
-export const crossChainTxsBridgeIds =
+const bridgeIds =
   parseEnvJson<Array<number>>(getEnvValue('NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS')) ?? [];
 
-export const crossChainTxsIncludeUnindexedChains =
+const includeUnindexedChains =
   getEnvValue('NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS') === 'true';
 
-const config: Feature<{}> = (() => {
-  if (getEnvValue('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED') === 'true' && apis.interchainIndexer) {
+const config: Feature<{ bridgeIds: Array<number>; includeUnindexedChains: boolean }> = (() => {
+  if (
+    getEnvValue('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED') === 'true' &&
+    apis.interchainIndexer &&
+    bridgeIds.length > 0
+  ) {
     return Object.freeze({
       title,
       isEnabled: true,
+      bridgeIds,
+      includeUnindexedChains,
     });
   }
 
