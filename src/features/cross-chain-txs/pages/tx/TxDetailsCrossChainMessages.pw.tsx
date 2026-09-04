@@ -1,3 +1,4 @@
+import { homeChain } from 'src/features/cross-chain-txs/mocks/chains';
 import * as crossChainConfigMock from 'src/features/cross-chain-txs/mocks/config';
 import * as crossChainTransfersMock from 'src/features/cross-chain-txs/mocks/transfers';
 import * as crossChainTxMock from 'src/features/cross-chain-txs/mocks/txs';
@@ -12,12 +13,13 @@ import TxDetailsCrossChainMessages from './TxDetailsCrossChainMessages';
 const txHash = crossChainTxMock.base.source_transaction_hash;
 
 test('base view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
-  await mockEnvs([
-    ...ENVS_MAP.crossChainTxs,
-    [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
-  ]);
+  await mockEnvs(ENVS_MAP.crossChainTxs);
   await mockApiResponse('interchainIndexer:tx_messages', crossChainTxMock.listResponse, {
     pathParams: { hash: txHash },
+    queryParams: {
+      home_chain_id: homeChain.id,
+      include_unindexed_chains: false,
+    },
   });
 
   await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
