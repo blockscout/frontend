@@ -2,6 +2,7 @@
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 import type { Route } from 'nextjs-routes';
+import { route } from 'nextjs-routes';
 
 import type { RollupType } from 'src/features/rollup/common/types/config';
 
@@ -354,4 +355,26 @@ export const megaEth: Guard = () => async() => {
       notFound: true,
     };
   }
+};
+
+// The flashblocks tab answers to both OP Stack ids (see NEXT_PUBLIC_FLASHBLOCKS_NAME); a link
+// using the alias is sent to the canonical id. Temporary, because the operator can flip the name.
+export const blocksTab: Guard = (chainConfig: typeof config) => async(context) => {
+  const feature = chainConfig.features.flashblocks;
+  const tab = context.query.tab;
+  if (!feature.isEnabled || typeof tab !== 'string') {
+    return;
+  }
+
+  const [ canonicalTabId, ...aliasTabIds ] = feature.tabIds;
+  if (!aliasTabIds.includes(tab)) {
+    return;
+  }
+
+  return {
+    redirect: {
+      destination: route({ pathname: '/blocks', query: { ...context.query, tab: canonicalTabId } }),
+      permanent: false,
+    },
+  };
 };

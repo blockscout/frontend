@@ -135,7 +135,6 @@ const schema = yup
 
         return isUndefined || valueSchema.isValidSync(data);
       }),
-    NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: yup.boolean(),
     NEXT_PUBLIC_USERCENTRICS_CONFIG: yup
       .mixed()
@@ -179,6 +178,7 @@ const schema = yup
   .concat(featuresSchemas.bridgedTokensSchema)
   .concat(featuresSchemas.crossChainTxsSchema)
   .concat(featuresSchemas.defiDropdownSchema)
+  .concat(featuresSchemas.flashblocksSchema)
   .concat(featuresSchemas.highlightsConfigSchema)
   .concat(featuresSchemas.marketplaceSchema)
   .concat(featuresSchemas.megaEthSchema)

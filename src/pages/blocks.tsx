@@ -26,4 +26,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { base as getServerSideProps } from 'src/server/getServerSideProps/main';
+export { blocks as getServerSideProps } from 'src/server/getServerSideProps/main';
