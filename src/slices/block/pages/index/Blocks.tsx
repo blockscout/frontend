@@ -70,8 +70,7 @@ const BlocksPageContent = () => {
     },
   });
 
-  const flashblocksTabId = flashblocksFeature.isEnabled ? flashblocksFeature.name + 's' : undefined;
-  const isFlashblocksTab = tab === flashblocksTabId && flashblocksTabId !== undefined;
+  const isFlashblocksTab = flashblocksFeature.isEnabled && flashblocksFeature.tabIds.includes(tab);
 
   const pagination = (() => {
     if (tab === 'reorgs') {
@@ -81,14 +80,14 @@ const BlocksPageContent = () => {
       return unclesQuery.pagination;
     }
     if (isFlashblocksTab) {
-      return null;;
+      return null;
     }
     return blocksQuery.pagination;
   })();
 
   const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
-    flashblocksFeature.isEnabled && flashblocksTabId && { id: flashblocksTabId, title: upperFirst(flashblocksFeature.name) + 's', component: <Flashblocks/> },
+    flashblocksFeature.isEnabled && { id: flashblocksFeature.tabIds, title: upperFirst(flashblocksFeature.name) + 's', component: <Flashblocks/> },
     { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
     { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
   ].filter(Boolean);

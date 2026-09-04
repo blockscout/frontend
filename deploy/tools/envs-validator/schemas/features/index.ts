@@ -6,6 +6,7 @@ export * from './beaconChain';
 export * from './bridgedToken';
 export * from './crossChainTxs';
 export * from './defiDropdown';
+export * from './flashblocks';
 export * from './highlights';
 export * from './marketplace';
 export * from './megaEth';

@@ -4,6 +4,7 @@ import * as guards from './guards';
 import { factory } from './utils';
 
 export const base = factory([ ]);
+export const blocks = factory([ guards.blocksTab ]);
 export const block = factory([ guards.notMultichain ]);
 export const tx = factory([ guards.notMultichain ]);
 export const internalTx = factory([ guards.internalTx ]);
