@@ -29,13 +29,17 @@
 ### Q03 — Which `interchain-indexer` release ships `bridge_ids` on `/interchain/chains`?
 
 - Owner: Microservices API (Evgenii)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (a) the release/version that adds `bridge_ids` to `GET /api/v1/interchain/chains`;
   (b) whether it is deployed to the shared mainnet and testnet instances; (c) confirmation that
   `has_unindexed_chain` and `BridgeInfo.id` become non-optional and that chain ids are serialized as
   strings consistently, and in which version
 - Slack: https://blockscout.slack.com/archives/C0A7SALNLPL/p1788346383623139
-- Answer: —
+- Answer: **`1.8.2`, deployed to both shared instances** (verified against the live services 2026-09-04).
+  `GET /api/v1/interchain/chains` takes `bridge_ids`: an unknown id returns an empty list, a malformed one
+  `400`. `BridgeInfo.id` and `has_unindexed_chain` are both non-optional in `1.8.2`, and chain ids are
+  decimal strings throughout (`Bridge.indexed_chain_ids` and `ChainIndexingProgress.chain_id` moved from
+  `number` to `string`). Adopting the version is ticket 05.
 
 <!-- `BridgeInfo.id` was added to (c) after the ticket breakdown: it is `id?: number` in 1.8.1 although the
 service always sends it, and the message-details route now needs it to build a link. Asked in

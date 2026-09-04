@@ -4,3 +4,4 @@
 - [x] 02 → `tickets/02-bridge-scope-envs/`
 - [x] 03 → `tickets/03-interchain-request-scope/`
 - [x] 04 → `tickets/04-message-details-bridge-route/`
+- [x] 05 → `tickets/05-interchain-types-1-8-2/`
