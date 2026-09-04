@@ -30,6 +30,7 @@ const CHAIN = {
 
 export const INTERCHAIN_TRANSFER = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
@@ -50,10 +51,12 @@ export const INTERCHAIN_TRANSFER = {
     hash: ADDRESS_HASH,
   },
   receive_timestamp: '2026-01-07T18:41:53.000Z',
+  has_unindexed_chain: false,
 } satisfies InterchainTransfer;
 
 export const INTERCHAIN_MESSAGE = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
@@ -75,6 +78,7 @@ export const INTERCHAIN_MESSAGE = {
   transfers: [
     INTERCHAIN_TRANSFER,
   ],
+  has_unindexed_chain: false,
 } satisfies InterchainMessage;
 
 export const INTERCHAIN_STATS_DAILY = {

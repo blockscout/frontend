@@ -11,7 +11,7 @@ const TxCrossChain = dynamic(() => import('src/features/cross-chain-txs/pages/tx
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/cross-chain-tx/[id]" query={ props.query }>
+    <PageNextJs pathname="/bridge/[bridgeId]/cross-chain-tx/[id]" query={ props.query }>
       <TxCrossChain/>
     </PageNextJs>
   );

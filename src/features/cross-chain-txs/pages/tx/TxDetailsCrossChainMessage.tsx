@@ -27,7 +27,7 @@ const TxDetailsCrossChainMessage = ({ data, isLoading }: Props) => {
 
   return (
     <HStack columnGap={ 3 } rowGap={ 0 } flexWrap="wrap">
-      <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading }/>
+      <CrossChainMessageEntity id={ data.message_id } bridgeId={ data.bridge?.id } isLoading={ isLoading }/>
       <DetailedInfoItemBreakdown.Container loading={ isLoading }>
         <DetailedInfoItemBreakdown.Row
           label="Timestamp"

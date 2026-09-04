@@ -5,6 +5,7 @@ import { config } from './config';
 
 export const transferA = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
     ui_url: 'https://app.avax.network/',
   },
@@ -38,6 +39,7 @@ export const transferA = {
     hash: '0xd7e63822d0e386fb65f28f41e8c1aa8d844ba018',
   },
   receive_timestamp: '2022-01-13T12:06:30.000Z',
+  has_unindexed_chain: false,
 } satisfies InterchainTransfer;
 
 export const transferB = {
@@ -58,8 +60,22 @@ export const transferB = {
   destination_transaction_hash: '0xdbdf690cfde8af2ee855bb90bfa9977a2d8ba36c9ae1a2010c67fe3774832214',
   status: MessageStatus.MESSAGE_STATUS_FAILED,
   bridge: {
+    id: 4,
     name: 'Optimism Superchain',
   },
+} satisfies InterchainTransfer;
+
+export const transferWithUnindexedDestination = {
+  ...transferA,
+  message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c05c',
+  status: MessageStatus.MESSAGE_STATUS_INITIATED,
+  destination_chain: undefined,
+  destination_token: undefined,
+  destination_amount: undefined,
+  destination_transaction_hash: undefined,
+  recipient: undefined,
+  receive_timestamp: undefined,
+  has_unindexed_chain: true,
 } satisfies InterchainTransfer;
 
 export const listResponse = {

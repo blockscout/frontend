@@ -11,10 +11,12 @@ import type {
 export const INTERCHAIN_INDEXER_API_RESOURCES = {
   chains: {
     path: '/api/v1/interchain/chains',
+    scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
   },
   messages: {
     path: '/api/v1/interchain/messages',
     filterFields: [ 'q' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   message: {
@@ -25,50 +27,61 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
     path: '/api/v1/interchain/messages\\:byTx/:hash',
     pathParams: [ 'hash' as const ],
     filterFields: [ 'q' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   address_messages: {
     path: '/api/v1/interchain/messages\\:byAddress/:hash',
     pathParams: [ 'hash' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   transfers: {
     path: '/api/v1/interchain/transfers',
     filterFields: [ 'q' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   tx_transfers: {
     path: '/api/v1/interchain/transfers\\:byTx/:hash',
     pathParams: [ 'hash' as const ],
     filterFields: [ 'q' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   address_transfers: {
     path: '/api/v1/interchain/transfers\\:byAddress/:hash',
     pathParams: [ 'hash' as const ],
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   stats_daily: {
     path: '/api/v1/stats/daily',
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
   },
   stats_common: {
     path: '/api/v1/stats/common',
+    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
   },
   stats_chains: {
     path: '/api/v1/stats/chains',
+    scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   stats_chain_messages_sent: {
     path: '/api/v1/stats/chain/:chainId/messages-paths/sent',
     pathParams: [ 'chainId' as const ],
+    scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
   },
   stats_chain_messages_received: {
     path: '/api/v1/stats/chain/:chainId/messages-paths/received',
     pathParams: [ 'chainId' as const ],
+    scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
   },
   bridged_tokens: {
     path: '/api/v1/stats/chain/:chainId/bridged-tokens',
     pathParams: [ 'chainId' as const ],
+    scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
 } satisfies Record<string, ApiResource>;
