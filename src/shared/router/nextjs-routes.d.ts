@@ -45,6 +45,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/block/countdown">
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
     | StaticRoute<"/blocks">
+    | DynamicRoute<"/bridge/[bridgeId]/cross-chain-tx/[id]", { "bridgeId": string; "id": string }>
     | DynamicRoute<"/cc/tx/[hash]", { "hash": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/accounts/label/[slug]", { "chain_slug_or_id": string; "slug": string }>
     | DynamicRoute<"/chain/[chain_slug_or_id]/advanced-filter", { "chain_slug_or_id": string }>
@@ -58,7 +59,6 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/chain/[chain_slug_or_id]/visualize/sol2uml", { "chain_slug_or_id": string }>
     | StaticRoute<"/chakra">
     | StaticRoute<"/contract-verification">
-    | DynamicRoute<"/cross-chain-tx/[id]", { "id": string }>
     | StaticRoute<"/deposits">
     | StaticRoute<"/dispute-games">
     | StaticRoute<"/ecosystems">

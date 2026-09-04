@@ -101,9 +101,9 @@ file), Step 4 (route types), Step 6 (metadata), Step 7 (page-type analytics). Sk
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move the route and its plumbing to `/bridge/[bridgeId]/cross-chain-tx/[id]` — skill:
+- [x] 1 `[agent]` Move the route and its plumbing to `/bridge/[bridgeId]/cross-chain-tx/[id]` — skill:
       `add-new-page` (route-plumbing steps only, per Skill inputs)
-- [ ] 2 `[agent]` Send `bridge_id` on the details request and carry `bridge.id` through every link site,
+- [x] 2 `[agent]` Send `bridge_id` on the details request and carry `bridge.id` through every link site,
       omitting the link when it is absent
-- [ ] 3 `[agent]` Re-throw a `400` from the message-details request as `422`, and unit-test the remap
-- [ ] 4 `[agent]` Update the cross-chain Playwright specs and mocks for the new route
+- [x] 3 `[agent]` Re-throw a `400` from the message-details request as `422`, and unit-test the remap
+- [x] 4 `[agent]` Update the cross-chain Playwright specs and mocks for the new route

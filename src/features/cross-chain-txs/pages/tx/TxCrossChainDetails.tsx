@@ -73,7 +73,14 @@ const TxCrossChainDetails = ({ data, isLoading }: Props) => {
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id }/>
       </DetailedInfo.ItemValue>
 
-      { data.transfers.length > 0 && <TxCrossChainDetailsTransfers data={ data.transfers } id={ data.message_id } isLoading={ isLoading }/> }
+      { data.transfers.length > 0 && (
+        <TxCrossChainDetailsTransfers
+          data={ data.transfers }
+          id={ data.message_id }
+          bridgeId={ data.bridge?.id }
+          isLoading={ isLoading }
+        />
+      ) }
 
       <DetailedInfo.ItemLabel
         hint="Current state of the cross-chain operation"

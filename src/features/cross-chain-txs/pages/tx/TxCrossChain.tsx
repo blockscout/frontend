@@ -18,16 +18,21 @@ import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
 import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
+import { remapBadRequestToInvalidInput } from '../../utils/message-details-error';
 import TxCrossChainDetails from './TxCrossChainDetails';
 import TxCrossChainTransfers from './TxCrossChainTransfers';
 
 const TxCrossChain = () => {
   const router = useRouter();
   const messageId = getQueryParamString(router.query.id);
+  const bridgeId = getQueryParamString(router.query.bridgeId);
 
   const query = useApiQuery('interchainIndexer:message', {
     pathParams: {
       id: messageId,
+    },
+    queryParams: {
+      bridge_id: bridgeId,
     },
     queryOptions: {
       placeholderData: INTERCHAIN_MESSAGE,
@@ -47,11 +52,12 @@ const TxCrossChain = () => {
     },
   ];
 
-  throwOnResourceLoadError(query);
+  throwOnResourceLoadError(remapBadRequestToInvalidInput(query));
 
   const titleSecondRow = (
     <CrossChainMessageEntity
       id={ messageId }
+      bridgeId={ query.data?.bridge?.id }
       isLoading={ query.isPlaceholderData }
       variant="subheading"
       truncation="dynamic"
