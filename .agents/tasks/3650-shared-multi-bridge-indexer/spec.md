@@ -40,8 +40,8 @@ backend needs at most an env change — never a frontend release.
    directory resources, but never on message details, which deliberately does not accept the param so
    that a link to a details page always resolves even for a row the lists hide. No code path hardcodes
    the value.
-4. A test fails when a profile param is dropped or misspelled for any `interchainIndexer:*` resource.
-   Asserting that the request returned `200` is explicitly not sufficient.
+4. A test fails when an `interchainIndexer:*` resource is added without declaring its scope, or declares
+   a filter name nothing resolves. Asserting that the request returned `200` is explicitly not sufficient.
 5. Pointed at the shared instance, the Numine frontend shows only Numine-related traffic and the Gnosis
    frontend only Gnosis↔Ethereum traffic.
 6. Adding a bridge on the backend surfaces on a deployment after an env change alone; adding a chain to
@@ -158,7 +158,12 @@ equivalents of the home, address and chain-stats surfaces.
   is effectively required in the new paradigm, so the route reflects that; a wrong value 404s, which
   makes guessing worse than not guessing.
 - **The param-drop test enumerates the resource registry** rather than listing resources by hand, so a
-  newly added interchain resource is covered on the day it is added.
+  newly added interchain resource is covered on the day it is added. It asserts two invariants — every
+  resource declares a scope (bar `message`), and every declared name has a resolver — not the specific
+  filters each resource takes. Pinning those would restate the registry: the expectation would have to be
+  edited in lockstep with every legitimate change, so it would only ever catch a deliberate edit, which
+  is code review's job. The leak risk FR4 guards is a *new* resource whose author never answered the
+  question, and a name that silently resolves to nothing; both are caught without duplication.
 
 ## Out of scope
 

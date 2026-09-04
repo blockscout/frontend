@@ -36,7 +36,7 @@ const resolveIncludeUnindexedChains: ScopeFilterResolver = () => {
   }
 };
 
-const SCOPE_FILTER_RESOLVERS: Partial<Record<ApiName, Record<string, ScopeFilterResolver>>> = {
+export const SCOPE_FILTER_RESOLVERS: Partial<Record<ApiName, Record<string, ScopeFilterResolver>>> = {
   interchainIndexer: {
     home_chain_id: resolveFocalChainId,
     bridge_ids: resolveBridgeIds,

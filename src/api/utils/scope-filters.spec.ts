@@ -1,6 +1,7 @@
 import type { ApiResource } from '../resources/types';
-import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
+
+import { chainA } from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
@@ -9,6 +10,7 @@ import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { ResourceName } from '../resources';
 import { RESOURCES } from '../resources';
+import { SCOPE_FILTER_RESOLVERS } from './scope-filters';
 
 const INTERCHAIN_HOST = 'http://localhost:3014';
 // NEXT_PUBLIC_NETWORK_ID in vitest/.env.vitest
@@ -21,7 +23,18 @@ const NO_SCOPE_FILTERS: Array<string> = [];
 const CROSS_CHAIN_ENVS = ENVS_MAP.crossChainTxs;
 const MULTICHAIN_ENVS = [ ...ENVS_MAP.crossChainTxs, ...ENVS_MAP.multichain ];
 
-const CLUSTER_CHAIN = { id: '10', slug: 'op-mainnet', name: 'OP Mainnet' } as unknown as ClusterChainConfig;
+// a cluster chain always carries `app_config.apis`, and `getResourceParams` prefers the host declared
+// there over the deployment's own — so the fixture has to name the indexer it points at
+const CHAIN_IN_SCOPE = {
+  ...chainA,
+  app_config: {
+    ...chainA.app_config,
+    apis: {
+      ...chainA.app_config.apis,
+      interchainIndexer: { endpoint: INTERCHAIN_HOST },
+    },
+  },
+};
 
 type BuildUrl = (
   resource: ResourceName,
@@ -58,9 +71,9 @@ describe('scope filter derivation', () => {
   });
 
   test('multichain with a chain in scope — that chain is the focal chain, and no bridge_ids narrows it', async() => {
-    const url = await buildUrlWithEnvs(MULTICHAIN_ENVS, 'interchainIndexer:messages', { chain: CLUSTER_CHAIN });
+    const url = await buildUrlWithEnvs(MULTICHAIN_ENVS, 'interchainIndexer:messages', { chain: CHAIN_IN_SCOPE });
 
-    expect(url).toBe(`${ INTERCHAIN_HOST }/api/v1/interchain/messages?home_chain_id=10&include_unindexed_chains=false`);
+    expect(url).toBe(`${ INTERCHAIN_HOST }/api/v1/interchain/messages?home_chain_id=${ CHAIN_IN_SCOPE.id }&include_unindexed_chains=false`);
   });
 
   test('multichain aggregated — the deployment bridges scope the request', async() => {
@@ -107,6 +120,11 @@ describe('scope filter derivation', () => {
 
 const INTERCHAIN_RESOURCES = Object.entries(RESOURCES.interchainIndexer) as Array<[ string, ApiResource ]>;
 
+// message details deliberately takes no profile, so a link to it resolves even for a row the lists hide
+const UNSCOPED_BY_DESIGN = [ 'message' ];
+
+const KNOWN_SCOPE_FILTERS = Object.keys(SCOPE_FILTER_RESOLVERS.interchainIndexer ?? {});
+
 function pathParamsStub(resource: ApiResource) {
   return Object.fromEntries((resource.pathParams ?? []).map((param) => [ param, PATH_PARAM_STUB ]));
 }
@@ -131,6 +149,18 @@ function expectedAggregatedProfile(scopeFilters: Array<string> = NO_SCOPE_FILTER
     ...(scopeFilters.includes('include_unindexed_chains') ? { include_unindexed_chains: 'false' } : {}),
   };
 }
+
+describe('every registered resource answers how it is scoped', () => {
+  test.each(INTERCHAIN_RESOURCES)('interchainIndexer:%s declares a scope', (name, resource) => {
+    const declared = resource.scopeFilters ?? NO_SCOPE_FILTERS;
+
+    expect(declared.length > 0).toBe(!UNSCOPED_BY_DESIGN.includes(name));
+  });
+
+  test.each(INTERCHAIN_RESOURCES)('interchainIndexer:%s declares only resolvable filters', (name, resource) => {
+    expect(KNOWN_SCOPE_FILTERS).toEqual(expect.arrayContaining(resource.scopeFilters ?? NO_SCOPE_FILTERS));
+  });
+});
 
 describe('every declared scope filter reaches the URL of every registered resource', () => {
   test.each(INTERCHAIN_RESOURCES)('interchainIndexer:%s on a focal-chain deployment', async(name, resource) => {

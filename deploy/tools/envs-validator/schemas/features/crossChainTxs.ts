@@ -19,7 +19,16 @@ export const crossChainTxsSchema = yup
           'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
         ),
       }),
-    NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS: yup.boolean(),
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS: yup
+      .boolean()
+      .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
+        is: (value: boolean) => value,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
+          value => value === undefined,
+        ),
+      }),
     NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: yup
       .string()
       .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
