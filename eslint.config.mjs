@@ -19,6 +19,8 @@ import { fileURLToPath } from 'node:url';
 
 import tseslint from 'typescript-eslint';
 
+import { strykerDisableRule } from './tools/mutation-testing/eslint/well-formed-disable.mjs';
+
 const SPDX_HEADER = '// SPDX-License-Identifier: LicenseRef-Blockscout';
 
 const spdxLicenseRule = {
@@ -596,6 +598,14 @@ export default tseslint.config(
     ],
     rules: {
       'spdx-license/header': 'error',
+    },
+  },
+
+  {
+    plugins: { stryker: { rules: { 'well-formed-disable': strykerDisableRule } } },
+    files: [ '**/*.{ts,tsx,mjs,js,cjs}' ],
+    rules: {
+      'stryker/well-formed-disable': 'error',
     },
   },
 );

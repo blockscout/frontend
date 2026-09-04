@@ -17,19 +17,20 @@ that rather than leaving it to review discipline.
 
 ## Acceptance criteria
 
-- [ ] The job runs only on pull requests, diff-scoped against `origin/main`, and carries an explicit timeout.
-- [ ] It is its own job, chained on the unit-test job. It does not attempt to reuse that job's coverage
+- [x] The job runs only on pull requests, diff-scoped against `origin/main`, and carries an explicit timeout.
+- [x] It is its own job, chained on the unit-test job. It does not attempt to reuse that job's coverage
       artifacts.
-- [ ] A surviving mutant on a changed line fails the job; no survivors passes it.
-- [ ] Each survivor produces a `::error file=…,line=…::` annotation naming the mutator, and the annotation
+- [x] A surviving mutant on a changed line fails the job; no survivors passes it.
+- [x] Each survivor produces a `::error file=…,line=…::` annotation naming the mutator, and the annotation
       appears inline on the diff.
-- [ ] A no-coverage mutant alone does not fail the job — that is the CRAP gate's finding, not this one.
-- [ ] `// Stryker disable all` and any file-scoped disable are an ESLint error.
-- [ ] A disable comment missing either the mutator name or the `: reason` is an ESLint error; one carrying
+- [x] A no-coverage mutant alone does not fail the job — that is the CRAP gate's finding, not this one.
+- [x] `// Stryker disable all` and any file-scoped disable are an ESLint error.
+- [x] A disable comment missing either the mutator name or the `: reason` is an ESLint error; one carrying
       both passes and does suppress the mutant.
-- [ ] The ESLint rule has unit coverage, or is verified against fixture files in both directions.
+- [x] The ESLint rule has unit coverage, or is verified against fixture files in both directions.
 - [ ] `(human)` The first real PR run behaves: the job is ordered correctly, its wall time is acceptable, and
-      the annotations land on the right lines.
+      the annotations land on the right lines. **Deferred to task land** — the job cannot run until the PR
+      leaves draft, which is after T07. See `notes.md` for what was verified locally in its place.
 
 ## Details
 
@@ -44,12 +45,15 @@ that reads like a tooling failure.
 strings, with the `process.env.GITHUB_ACTIONS` guard and the stdout writes in `index.ts`. Annotation messages
 are single-line; newlines truncate the directive.
 
-**The ESLint rule** is defined inline in `eslint.config.mjs`, following the `spdxLicenseRule` precedent
-already there, and reads comments via `context.sourceCode.getAllComments()`.
+**The ESLint rule** reads comments via `context.sourceCode.getAllComments()`. It was built inline in
+`eslint.config.mjs` on the `spdxLicenseRule` precedent, then extracted to
+`tools/mutation-testing/eslint/well-formed-disable.mjs` and imported from the config — it belongs to the
+tool it enforces, and out there a co-located spec both tests it and makes it mutation-eligible itself.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Emit `::error` annotations for survivors and set a failing exit code; specs
-- [ ] 2 `[agent]` Add the CI job to `checks.yml`, chained on `vitest_tests`, with a timeout
-- [ ] 3 `[agent]` Add the inline ESLint rule for well-formed Stryker disable comments; specs
+- [x] 1 `[agent]` Emit `::error` annotations for survivors and set a failing exit code; specs
+- [x] 2 `[agent]` Add the CI job to `checks.yml`, chained on `vitest_tests`, with a timeout
+- [x] 3 `[agent]` Add the inline ESLint rule for well-formed Stryker disable comments; specs
 - [ ] 4 `[human]` Confirm the first real PR run — ordering, wall time, annotation placement
+      (deferred to task land, see the acceptance criteria)

@@ -141,6 +141,13 @@ function byFile<TEntry extends { readonly file: string }>(a: TEntry, b: TEntry):
   return compare(a.file, b.file);
 }
 
+// What makes a run a failure, and the only thing that does: a mutant nothing caught. A no-coverage
+// mutant is an untested line, which the CRAP gate already fails a PR for — failing here too would
+// report one gap twice and make this gate's verdict unreadable.
+export function isFailingRun(findings: Findings): boolean {
+  return findings.survivors.length > 0;
+}
+
 export function collectFindings(report: MutationReport): Findings {
   const files = Object.entries(report.files);
 

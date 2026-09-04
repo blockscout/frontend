@@ -4,12 +4,15 @@ import { pathToFileURL } from 'url';
 
 import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, HTML_REPORT_FILE, MINUTE_MS } from './config';
 import { formatFindings } from './render/findings';
+import { githubAnnotations, truncationAnnotation } from './render/github';
 import { formatTable } from './render/table';
 import { formatTruncationNotice } from './render/truncation';
 import type { Selection } from './select/files';
 import { selectFiles } from './select/files';
 import { runStryker } from './stryker/invoke';
-import { buildFileScores, collectFindings } from './stryker/report';
+import type { Findings } from './stryker/report';
+import { buildFileScores, collectFindings, isFailingRun } from './stryker/report';
+import type { RunResults } from './stryker/results';
 import { readResults } from './stryker/results';
 
 // Mutation testing: change the code, and see whether any test notices. Coverage answers "was this
@@ -156,6 +159,13 @@ function reportHtmlLocation(): void {
   console.log(`\nFull report: ${ pathToFileURL(HTML_REPORT_FILE).href }`);
 }
 
+// Under $GITHUB_ACTIONS, repeat the findings as annotation directives so they land on the PR diff.
+// The plain-stdout report has already been printed, and is what a local run reads.
+function emitGithubActionsOutput(findings: Findings, results: RunResults, budgetMs: number): void {
+  for (const annotation of githubAnnotations(findings)) console.log(annotation);
+  if (results.truncated) console.log(truncationAnnotation(formatTruncationNotice(results, budgetMs)));
+}
+
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const selection = selectFiles(options, process.cwd());
@@ -167,11 +177,17 @@ async function main(): Promise<void> {
 
   reportSelection(selection);
   const results = readResults(await runStryker(selection.targets, options.budgetMs));
+  const findings = collectFindings(results.report);
 
   console.log(formatTable(buildFileScores(results.report)));
   if (results.truncated) console.log(formatTruncationNotice(results, options.budgetMs));
-  console.log(`\n${ formatFindings(collectFindings(results.report)) }`);
+  console.log(`\n${ formatFindings(findings) }`);
   reportHtmlLocation();
+
+  // eslint-disable-next-line no-restricted-properties -- Node CLI detecting the CI runtime, not an app env var
+  if (process.env.GITHUB_ACTIONS) emitGithubActionsOutput(findings, results, options.budgetMs);
+
+  if (isFailingRun(findings)) process.exitCode = 1;
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the

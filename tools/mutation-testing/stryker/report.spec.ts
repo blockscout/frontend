@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Mutant, MutantStatus, MutationReport } from './report';
-import { buildFileScores, collectFindings, parseReport } from './report';
+import { buildFileScores, collectFindings, isFailingRun, parseReport } from './report';
 
 const LINE = 10;
 
@@ -135,6 +135,24 @@ describe('collectFindings', () => {
 
     expect(collectFindings(report).survivors.map((entry) => entry.file)).toEqual([ 'src/survivor.ts' ]);
     expect(collectFindings(report).noCoverage.map((entry) => entry.file)).toEqual([ 'src/uncovered.ts' ]);
+  });
+});
+
+describe('isFailingRun', () => {
+  it('fails a run that left a survivor', () => {
+    expect(isFailingRun(collectFindings(reportOf([ 'Killed', 'Survived' ])))).toBe(true);
+  });
+
+  it('passes a run whose only finding is a mutant no test covered, which the CRAP gate owns', () => {
+    expect(isFailingRun(collectFindings(reportOf([ 'Killed', 'NoCoverage' ])))).toBe(false);
+  });
+
+  it('passes a run that killed everything', () => {
+    expect(isFailingRun(collectFindings(reportOf([ 'Killed', 'Timeout' ])))).toBe(false);
+  });
+
+  it('passes a run that mutated nothing', () => {
+    expect(isFailingRun(collectFindings({ files: {} }))).toBe(false);
   });
 });
 

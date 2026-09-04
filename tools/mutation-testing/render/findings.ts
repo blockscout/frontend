@@ -9,7 +9,9 @@ const NOTHING_FOUND = 'No survivors and no uncovered mutants — nothing to act 
 
 const SURVIVORS_HEADING = 'SURVIVED — these changes were made and no test failed:';
 
-function mutatorsText(finding: LineFinding): string {
+// Shared with ./github.ts, so a survivor reads the same on the terminal and in the annotation
+// GitHub puts on the diff line.
+export function formatMutators(finding: LineFinding): string {
   return finding.mutators.map(({ name, count }) => count === 1 ? name : `${ name } ×${ count }`).join(', ');
 }
 
@@ -20,7 +22,7 @@ function survivorLines(findings: Findings): Array<string> {
     lines.push('', file);
     // The line number is padded to the file's widest, so the mutator names line up in one column.
     const width = Math.max(...found.map((finding) => String(finding.line).length));
-    for (const finding of found) lines.push(`  L${ String(finding.line).padStart(width) }  ${ mutatorsText(finding) }`);
+    for (const finding of found) lines.push(`  L${ String(finding.line).padStart(width) }  ${ formatMutators(finding) }`);
   }
 
   return lines;
