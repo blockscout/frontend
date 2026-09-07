@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Findings } from '../stryker/report';
-import { githubAnnotations, truncationAnnotation } from './github';
+import { githubAnnotations, stepSummary, truncationAnnotation } from './github';
 
 const NO_FINDINGS: Findings = { survivors: [], noCoverage: [] };
 
@@ -77,5 +77,19 @@ describe('truncationAnnotation', () => {
 
   it('flattens a multi-line notice onto the single line a directive allows', () => {
     expect(truncationAnnotation('Run TRUNCATED\nRaise the budget')).toBe('::warning::Run TRUNCATED Raise the budget');
+  });
+});
+
+describe('stepSummary', () => {
+  it('fences the report so the score table keeps its column alignment once rendered as markdown', () => {
+    expect(stepSummary('FILE      SCORE\nsrc/a.ts    80%')).toBe(
+      '## Mutation testing\n\n```\nFILE      SCORE\nsrc/a.ts    80%\n```\n',
+    );
+  });
+
+  it('carries the report through verbatim, so the summary and the log say the same thing', () => {
+    const report = 'FILE\n\nSURVIVED — 1 mutant(s) on 1 file(s):\n  src/a.ts:12 ConditionalExpression';
+
+    expect(stepSummary(report)).toContain(report);
   });
 });

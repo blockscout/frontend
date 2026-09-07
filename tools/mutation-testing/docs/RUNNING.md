@@ -26,7 +26,7 @@ Runs over an unchanged tree must produce identical counts; otherwise survivors b
 
 ## Output on disk
 
-Reports and Stryker's per-run sandbox live in this gitignored folder. A complete run prints the HTML report location; use it to see a mutant's actual diff, which the terminal report omits.
+Reports and Stryker's per-run sandbox live in this gitignored folder. A complete local run prints the HTML report location; use it to see a mutant's actual diff, which the terminal report omits. A CI run does not print it: the runner's workspace is gone by the time anyone reads the log.
 
 The key failure mode is mistaking a stale report for a fresh one. That is why each run clears previous output before starting, not after finishing.
 
@@ -38,6 +38,14 @@ The key failure mode is mistaking a stale report for a fresh one. That is why ea
 - **Chained after the unit-test job.** If the suite is red, Stryker aborts during its dry run, making the error look like a tooling failure rather than the failing test. Job ordering ensures the honest message appears first.
 
 The job timeout is separate from the run's wall-clock budget, so an expired run can still print its truncation report instead of being killed mid-write.
+
+### Where a CI run's output lands
+
+A job log is a poor place to read a result from — it opens below checkout and install output, and Stryker narrates its own run on top of that. So the report reaches a reviewer three ways, none of which requires reading the log:
+
+- the **job summary** on the run page carries the whole report, score table included;
+- each survivor is an **`::error` annotation on the diff line** it was found on;
+- a truncated run adds a **`::warning`**, because a green run is easy to overlook.
 
 ## Why Stryker needed repo-level plumbing
 

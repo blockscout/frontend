@@ -4,11 +4,12 @@ import { pathToFileURL } from 'url';
 
 import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, HTML_REPORT_FILE, MINUTE_MS } from './config';
 import { formatFindings } from './render/findings';
-import { githubAnnotations, truncationAnnotation } from './render/github';
+import { githubAnnotations, stepSummary, truncationAnnotation } from './render/github';
 import { formatTable } from './render/table';
 import { formatTruncationNotice } from './render/truncation';
-import type { Selection } from './select/files';
+import type { MutateTarget, Selection } from './select/files';
 import { selectFiles } from './select/files';
+import type { RunOutcome } from './stryker/invoke';
 import { runStryker } from './stryker/invoke';
 import type { Findings } from './stryker/report';
 import { buildFileScores, collectFindings, isFailingRun } from './stryker/report';
@@ -49,6 +50,14 @@ const USAGE = `Usage:
   X.tsx) — an untested file would otherwise produce a run of unkillable mutants. In every mode, the
   lines inside a jsx render body are left alone. When the selection comes out empty the run says why
   and exits 0 without starting Stryker.`;
+
+// Two readers, two places. A local run is read in the terminal it was started from; a CI run is read
+// on the run page, where the log sits behind a click and shares the job with checkout and install
+// output. $GITHUB_STEP_SUMMARY is absent in Actions runtimes that provide no summary file.
+/* eslint-disable no-restricted-properties -- a Node CLI reading its own CI runtime, not app env vars */
+const IN_GITHUB_ACTIONS = Boolean(process.env.GITHUB_ACTIONS);
+const STEP_SUMMARY_FILE = process.env.GITHUB_STEP_SUMMARY;
+/* eslint-enable no-restricted-properties */
 
 // One flag's behaviour, discriminated by how it takes its value:
 //   'switch'   — no value at all
@@ -153,10 +162,32 @@ function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>)
 
 // Stryker writes the html report only when a whole run finishes, and ./stryker/invoke.ts deletes the
 // previous one before starting — so the file existing is what makes the path this run's rather than
-// a stale one being advertised as fresh.
+// a stale one being advertised as fresh. Only a local reader can open the path: on a runner it names
+// a workspace that is gone by the time anyone reads the log.
 function reportHtmlLocation(): void {
   if (!fs.existsSync(HTML_REPORT_FILE)) return;
   console.log(`\nFull report: ${ pathToFileURL(HTML_REPORT_FILE).href }`);
+}
+
+function formatReport(results: RunResults, findings: Findings, budgetMs: number): string {
+  const sections = [ formatTable(buildFileScores(results.report)) ];
+  if (results.truncated) sections.push(formatTruncationNotice(results, budgetMs));
+  sections.push(formatFindings(findings));
+  return sections.join('\n\n');
+}
+
+// Stryker narrates its own run — instrumentation counts, worker setup, report paths — through this
+// process's inherited stdio, so in CI that lands between the selection line and the report. A log
+// group folds it away instead of silencing it: when Stryker fails, its output is the diagnosis.
+async function runGrouped(targets: ReadonlyArray<MutateTarget>, budgetMs: number): Promise<RunOutcome> {
+  if (!IN_GITHUB_ACTIONS) return runStryker(targets, budgetMs);
+
+  console.log('::group::Stryker output');
+  try {
+    return await runStryker(targets, budgetMs);
+  } finally {
+    console.log('::endgroup::');
+  }
 }
 
 // Under $GITHUB_ACTIONS, repeat the findings as annotation directives so they land on the PR diff.
@@ -164,6 +195,11 @@ function reportHtmlLocation(): void {
 function emitGithubActionsOutput(findings: Findings, results: RunResults, budgetMs: number): void {
   for (const annotation of githubAnnotations(findings)) console.log(annotation);
   if (results.truncated) console.log(truncationAnnotation(formatTruncationNotice(results, budgetMs)));
+}
+
+function writeStepSummary(report: string): void {
+  if (STEP_SUMMARY_FILE === undefined) return;
+  fs.appendFileSync(STEP_SUMMARY_FILE, stepSummary(report));
 }
 
 async function main(): Promise<void> {
@@ -176,16 +212,18 @@ async function main(): Promise<void> {
   }
 
   reportSelection(selection);
-  const results = readResults(await runStryker(selection.targets, options.budgetMs));
+  const results = readResults(await runGrouped(selection.targets, options.budgetMs));
   const findings = collectFindings(results.report);
 
-  console.log(formatTable(buildFileScores(results.report)));
-  if (results.truncated) console.log(formatTruncationNotice(results, options.budgetMs));
-  console.log(`\n${ formatFindings(findings) }`);
-  reportHtmlLocation();
+  const report = formatReport(results, findings, options.budgetMs);
+  console.log(report);
 
-  // eslint-disable-next-line no-restricted-properties -- Node CLI detecting the CI runtime, not an app env var
-  if (process.env.GITHUB_ACTIONS) emitGithubActionsOutput(findings, results, options.budgetMs);
+  if (IN_GITHUB_ACTIONS) {
+    emitGithubActionsOutput(findings, results, options.budgetMs);
+    writeStepSummary(report);
+  } else {
+    reportHtmlLocation();
+  }
 
   if (isFailingRun(findings) || testedNothing(results)) process.exitCode = 1;
 }

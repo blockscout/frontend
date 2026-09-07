@@ -1,6 +1,7 @@
-// GitHub Actions output path: one inline `::error` annotation per surviving line, so a weak
-// assertion shows up on the diff during review instead of at the bottom of a job log. Pure
-// formatters here; the stdout writes live in index.ts, guarded by $GITHUB_ACTIONS.
+// GitHub Actions output path, which puts the report where a reviewer already is: an inline `::error`
+// annotation per surviving line, so a weak assertion shows up on the diff rather than at the bottom
+// of a job log, and the whole report as a step summary on the run page. Pure formatters here; the
+// writes live in index.ts, guarded by $GITHUB_ACTIONS.
 
 import type { Findings, LineFinding } from '../stryker/report';
 import { formatMutators } from './findings';
@@ -27,4 +28,14 @@ export function githubAnnotations(findings: Findings): Array<string> {
 // job's annotation list, where a green run gets looked at.
 export function truncationAnnotation(notice: string): string {
   return `::warning::${ sanitize(notice) }`;
+}
+
+// A fence because markdown renders its contents verbatim, which the score table's column alignment
+// needs; as prose the table would collapse into one run of words.
+const CODE_FENCE = '```';
+
+// The step summary renders on the run page itself, which is where a passing run gets read — its
+// table would otherwise only exist inside a job log, below checkout and install output.
+export function stepSummary(report: string): string {
+  return `## Mutation testing\n\n${ CODE_FENCE }\n${ report }\n${ CODE_FENCE }\n`;
 }
