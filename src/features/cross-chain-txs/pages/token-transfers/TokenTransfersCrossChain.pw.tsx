@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 
+import { homeChain } from 'src/features/cross-chain-txs/mocks/chains';
 import * as crossChainConfigMock from 'src/features/cross-chain-txs/mocks/config';
 import * as crossChainTransfersMock from 'src/features/cross-chain-txs/mocks/transfers';
 
@@ -11,13 +12,18 @@ import TokenTransfersCrossChain from './TokenTransfersCrossChain';
 
 test.describe('txs', () => {
   test.beforeEach(async({ mockEnvs, mockApiResponse, mockAssetResponse }) => {
-    await mockEnvs([
-      ...ENVS_MAP.crossChainTxs,
-      [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
-    ]);
-    await mockApiResponse('interchainIndexer:transfers', crossChainTransfersMock.listResponse);
-    await mockApiResponse('interchainIndexer:stats_common', { total_messages: 100, total_transfers: 101, timestamp: '2022-01-13T12:00:00.000Z' });
-    await mockApiResponse('interchainIndexer:stats_daily', { daily_messages: 42, daily_transfers: 55, date: '2022-01-13' });
+    const queryParams = {
+      home_chain_id: homeChain.id,
+      include_unindexed_chains: false,
+    };
+    await mockEnvs(ENVS_MAP.crossChainTxs);
+    await mockApiResponse('interchainIndexer:transfers', crossChainTransfersMock.listResponse, { queryParams });
+    await mockApiResponse(
+      'interchainIndexer:stats_common',
+      { total_messages: 100, total_transfers: 101, timestamp: '2022-01-13T12:00:00.000Z' },
+      { queryParams },
+    );
+    await mockApiResponse('interchainIndexer:stats_daily', { daily_messages: 42, daily_transfers: 55, date: '2022-01-13' }, { queryParams });
 
     await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
     await mockAssetResponse(crossChainConfigMock.config[1].logo as string, './playwright/mocks/goose.png');

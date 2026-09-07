@@ -2,8 +2,8 @@ import React from 'react';
 
 import { ChartResolution } from 'src/toolkit/components/charts/types';
 
+import * as chainsMock from 'src/features/cross-chain-txs/mocks/chains';
 import { CROSS_CHAIN_TXS_CHARTS } from 'src/features/cross-chain-txs/utils/chain-stats';
-import * as chainsMock from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -51,18 +51,27 @@ test('cross-chain txs paths view +@dark-mode +@mobile', async({ render, mockApiR
       query: { id: CHART.id, interval: 'all' },
     },
   };
+  const bridgeIds = [ 1, 2 ];
+  const queryParams = { bridge_ids: bridgeIds.join(','), include_unindexed_chains: false };
 
   await mockEnvs([
     ...ENVS_MAP.crossChainTxs,
-    [ 'NEXT_PUBLIC_NETWORK_NAME', chainsMock.chainA.name ],
-    [ 'NEXT_PUBLIC_NETWORK_ID', chainsMock.chainA.id ],
+    [ 'NEXT_PUBLIC_NETWORK_NAME', chainsMock.homeChain.name ],
+    [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', JSON.stringify(bridgeIds) ],
   ]);
-  await mockApiResponse('interchainIndexer:chains', { items: [ chainsMock.chainA, chainsMock.chainB, chainsMock.chainC, chainsMock.chainD ] });
+  await mockApiResponse(
+    'interchainIndexer:chains',
+    { items: [ chainsMock.homeChain, chainsMock.chainB, chainsMock.chainC, chainsMock.chainD ] },
+    {
+      queryParams,
+    },
+  );
   await mockApiResponse(
     CHART.resourceName!,
     crossChainTxsPathsMock.incomingMessagesPaths,
     {
-      pathParams: { chainId: chainsMock.chainA.id },
+      pathParams: { chainId: chainsMock.homeChain.id },
+      queryParams,
     },
   );
 

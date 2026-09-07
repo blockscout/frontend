@@ -662,7 +662,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
-  '/cross-chain-tx/[id]': {
+  '/bridge/[bridgeId]/cross-chain-tx/[id]': {
     metadata: {
       title: {
         'default': '%chain_name% cross-chain transaction %id% details',

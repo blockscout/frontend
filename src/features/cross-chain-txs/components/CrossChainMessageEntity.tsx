@@ -8,11 +8,11 @@ import { distributeEntityProps } from 'src/shared/entities/utils';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
 import { route } from 'src/shared/router/routes';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
+type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id' | 'bridgeId'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route(
-    { pathname: '/cross-chain-tx/[id]', query: { id: props.id } },
+  const defaultHref = props.bridgeId === undefined ? undefined : route(
+    { pathname: '/bridge/[bridgeId]/cross-chain-tx/[id]', query: { bridgeId: String(props.bridgeId), id: props.id } },
     { chain: props.chain, external: props.external },
   );
 
@@ -82,17 +82,20 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   id: string;
+  bridgeId: number | undefined;
 }
 
 const CrossChainMessageEntity = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
 
   const content = <Content { ...partsProps.content }/>;
+  // a message is only addressable within its bridge, so without one there is no route to link to
+  const noLink = props.noLink || props.bridgeId === undefined;
 
   return (
     <Container { ...partsProps.container }>
       <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+      { noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
       <Copy { ...partsProps.copy }/>
     </Container>
   );

@@ -9,6 +9,7 @@ import config from 'src/config';
 import type { ResourceName, ResourcePathParams } from '../resources';
 import getResourceParams from './get-resource-params';
 import isNeedProxy from './is-need-proxy';
+import { resolveScopeFilters } from './scope-filters';
 
 export default function buildUrl<R extends ResourceName>(
   resourceFullName: R,
@@ -17,13 +18,14 @@ export default function buildUrl<R extends ResourceName>(
   noProxy?: boolean,
   chain?: ExternalChainExtended,
 ): string {
-  const { api, resource } = getResourceParams(resourceFullName, chain);
+  const { api, apiName, resource } = getResourceParams(resourceFullName, chain);
   const baseUrl = !noProxy && isNeedProxy() ? config.app.baseUrl : api.endpoint;
   const basePath = api.basePath ?? '';
   const path = !noProxy && isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);
+  const params = { ...queryParams, ...resolveScopeFilters(apiName, resource.scopeFilters, chain) };
 
-  queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
+  Object.entries(params).forEach(([ key, value ]) => {
     // there are some pagination params that can be null or false for the next page
     value !== undefined && value !== '' && url.searchParams.append(key, String(value));
   });

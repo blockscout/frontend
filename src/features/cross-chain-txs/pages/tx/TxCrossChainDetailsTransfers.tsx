@@ -21,10 +21,11 @@ const MAX_NUM = 5;
 interface Props {
   data: Array<InterchainTransfer>;
   id: string;
+  bridgeId: number | undefined;
   isLoading?: boolean;
 }
 
-const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
+const TxCrossChainDetailsTransfers = ({ data, id, bridgeId, isLoading }: Props) => {
   return (
     <>
       <DetailedInfo.ItemLabel
@@ -94,14 +95,17 @@ const TxCrossChainDetailsTransfers = ({ data, id, isLoading }: Props) => {
           }) }
         </Flex>
       </DetailedInfo.ItemValue>
-      { data.length > MAX_NUM && (
+      { data.length > MAX_NUM && bridgeId !== undefined && (
         <>
           <GridItem hideBelow="lg"/>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
             { /* FIXME use non-navigation icon */ }
             <SpriteIcon name="navigation/tokens" boxSize={ 6 }/>
             <Link
-              href={ route({ pathname: '/cross-chain-tx/[id]', query: { id, tab: 'transfers' } }) }
+              href={ route({
+                pathname: '/bridge/[bridgeId]/cross-chain-tx/[id]',
+                query: { bridgeId: String(bridgeId), id, tab: 'transfers' },
+              }) }
             >
               View all
             </Link>

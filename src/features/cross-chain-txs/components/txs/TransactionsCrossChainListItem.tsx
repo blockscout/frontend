@@ -65,7 +65,15 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
           />
         ) }
       </HStack>
-      <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } fontWeight={ 600 } noIcon={ false } truncation="dynamic" w="100%"/>
+      <CrossChainMessageEntity
+        id={ data.message_id }
+        bridgeId={ data.bridge?.id }
+        isLoading={ isLoading }
+        fontWeight={ 600 }
+        noIcon={ false }
+        truncation="dynamic"
+        w="100%"
+      />
       { timestamp && (
         <Skeleton loading={ isLoading } display="flex" alignItems="center" color="text.secondary">
           <div>{ dayjs(timestamp).fromNow() }</div>

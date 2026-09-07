@@ -131,7 +131,7 @@ const TokenTransfersCrossChainListItem = ({ data, isLoading, rowGap = 3, current
           Message
         </Skeleton>
         { data.message_id ? (
-          <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading }/>
+          <CrossChainMessageEntity id={ data.message_id } bridgeId={ data.bridge?.id } isLoading={ isLoading }/>
         ) : dashElement }
       </Grid>
     </ListItemMobile>

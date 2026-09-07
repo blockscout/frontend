@@ -2,11 +2,12 @@ import type { GetMessagesResponse, InterchainMessage } from '@blockscout/interch
 import { MessageStatus } from '@blockscout/interchain-indexer-types';
 
 import { config } from './config';
-import { transferA, transferB } from './transfers';
+import { transferA, transferB, transferWithUnindexedDestination } from './transfers';
 
 /* eslint-disable max-len */
 export const base = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
     ui_url: 'https://app.avax.network/',
   },
@@ -31,6 +32,7 @@ export const base = {
     transferA,
     transferB,
   ],
+  has_unindexed_chain: false,
 } satisfies InterchainMessage;
 
 export const pending = {
@@ -59,8 +61,23 @@ export const failed = {
     transferB,
   ],
   bridge: {
+    id: 3,
     name: 'Goose bridge',
   },
+} satisfies InterchainMessage;
+
+export const withUnindexedDestination = {
+  ...base,
+  message_id: '0x057b42bbbfbb4900e155a554ae67632cb21e6f5a64d815fcad7f33abe552c05c',
+  status: MessageStatus.MESSAGE_STATUS_INITIATED,
+  destination_chain: undefined,
+  destination_transaction_hash: undefined,
+  recipient: undefined,
+  receive_timestamp: undefined,
+  has_unindexed_chain: true,
+  transfers: [
+    transferWithUnindexedDestination,
+  ],
 } satisfies InterchainMessage;
 
 export const listResponse = {

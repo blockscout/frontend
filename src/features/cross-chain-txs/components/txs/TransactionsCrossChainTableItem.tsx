@@ -34,6 +34,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
 
   const hasTransfers = data.transfers.length > 0;
   const firstTransfer = hasTransfers ? data.transfers[0] : null;
+  const bridgeId = data.bridge?.id;
   const txHashWithTransfers = (() => {
     if (!hasTransfers) {
       return;
@@ -65,7 +66,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
         </HStack>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+        <CrossChainMessageEntity id={ data.message_id } bridgeId={ bridgeId } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
       </TableCell>
       <TableCell>
         <TimeWithTooltip
@@ -182,13 +183,16 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
                   color="text.secondary"
                 />
               ) }
-              { data.transfers.length > 1 && (
+              { data.transfers.length > 1 && bridgeId !== undefined && (
                 <Link
                   variant="secondary"
                   textDecorationStyle="dashed"
                   textDecorationLine="underline"
                   mt={ 2 }
-                  href={ route({ pathname: '/cross-chain-tx/[id]', query: { id: data.message_id, tab: 'transfers' } }) }
+                  href={ route({
+                    pathname: '/bridge/[bridgeId]/cross-chain-tx/[id]',
+                    query: { bridgeId: String(bridgeId), id: data.message_id, tab: 'transfers' },
+                  }) }
                   textStyle="xs"
                 >
                   View all
