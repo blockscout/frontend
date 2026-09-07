@@ -357,9 +357,7 @@ export const megaEth: Guard = () => async() => {
   }
 };
 
-// The flashblocks tab answers to both OP Stack ids (see NEXT_PUBLIC_FLASHBLOCKS_NAME); a link
-// using the alias is sent to the canonical id. Temporary, because the operator can flip the name.
-export const blocksTab: Guard = (chainConfig: typeof config) => async(context) => {
+export const blocks: Guard = (chainConfig: typeof config) => async(context) => {
   const feature = chainConfig.features.flashblocks;
   const tab = context.query.tab;
   if (!feature.isEnabled || typeof tab !== 'string') {
@@ -367,7 +365,7 @@ export const blocksTab: Guard = (chainConfig: typeof config) => async(context) =
   }
 
   const [ canonicalTabId, ...aliasTabIds ] = feature.tabIds;
-  if (!aliasTabIds.includes(tab)) {
+  if (!aliasTabIds.some((id) => id === tab)) {
     return;
   }
 

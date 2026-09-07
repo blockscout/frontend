@@ -70,7 +70,7 @@ const BlocksPageContent = () => {
     },
   });
 
-  const isFlashblocksTab = flashblocksFeature.isEnabled && flashblocksFeature.tabIds.includes(tab);
+  const isFlashblocksTab = flashblocksFeature.isEnabled && flashblocksFeature.tabIds.some((id) => id === tab);
 
   const pagination = (() => {
     if (tab === 'reorgs') {
