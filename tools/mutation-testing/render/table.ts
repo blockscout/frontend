@@ -5,14 +5,6 @@ import type { FileScore } from '../stryker/report';
 
 const NA = '—';
 
-function pad(value: string, width: number): string {
-  return value.length >= width ? value : value + ' '.repeat(width - value.length);
-}
-
-function padStart(value: string, width: number): string {
-  return value.length >= width ? value : ' '.repeat(width - value.length) + value;
-}
-
 function scoreText(score: number | null): string {
   return score === null ? NA : `${ Math.round(score) }%`;
 }
@@ -58,7 +50,7 @@ export function formatTable(rows: ReadonlyArray<FileScore>): string {
   const sorted = [ ...rows ].sort(byScoreAscending);
   const widths = COLUMNS.map((column) => Math.max(column.header.length, ...sorted.map((row) => column.cell(row).length)));
   const renderRow = (cells: ReadonlyArray<string>): string =>
-    cells.map((cell, index) => COLUMNS[index].alignRight ? padStart(cell, widths[index]) : pad(cell, widths[index])).join('  ');
+    cells.map((cell, index) => COLUMNS[index].alignRight ? cell.padStart(widths[index]) : cell.padEnd(widths[index])).join('  ');
 
   const lines = [ renderRow(COLUMNS.map((column) => column.header)) ];
   for (const row of sorted) lines.push(renderRow(COLUMNS.map((column) => column.cell(row))));

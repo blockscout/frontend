@@ -26,12 +26,13 @@ export function formatStreamRecord(record: StreamRecord): string {
   return `${ JSON.stringify(record) }\n`;
 }
 
+// Every line that is not a whole record is dropped, blank ones included — the trailing newline of
+// the last complete record leaves one, and the last line of a stopped run can be half-written. Any
+// other line that does not parse is equally unusable, and dropping it beats failing the whole read.
 function parseLine(line: string): StreamRecord | undefined {
   try {
     return JSON.parse(line) as StreamRecord;
   } catch {
-    // The last line of a stopped run can be half-written. Any earlier line that does not parse is
-    // equally unusable, and dropping it beats failing the whole read.
     return undefined;
   }
 }
@@ -41,7 +42,7 @@ function isRecord(record: StreamRecord | undefined): record is StreamRecord {
 }
 
 export function parseStream(contents: string): StreamedRun {
-  const records = contents.split('\n').filter((line) => line.trim() !== '').map(parseLine).filter(isRecord);
+  const records = contents.split('\n').map(parseLine).filter(isRecord);
 
   const files: Record<string, { mutants: Array<Mutant> }> = {};
   let planned: number | null = null;

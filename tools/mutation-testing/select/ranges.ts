@@ -14,23 +14,24 @@ function countLines(source: string): number {
   return source.replace(/\n+$/, '').split('\n').length;
 }
 
-function lineSpan(fn: FunctionComplexity): number {
-  return fn.endLine - fn.startLine;
+function coversTheSameLines(fn: FunctionComplexity, other: FunctionComplexity): boolean {
+  return fn.startLine === other.startLine && fn.endLine === other.endLine;
 }
 
 // A line belongs to the innermost function containing it: a `useCallback` body inside a component is
 // `behavior` even though the component around it renders JSX, and a `.map(() => <Row/>)` callback is
-// `jsx` even though the `useMemo` around it is `behavior`. On a tie — two functions opening and
-// closing on the same line — `jsx` wins, because an unkillable survivor costs more than a mutant
-// that was never generated.
+// `jsx` even though the `useMemo` around it is `behavior`.
+//
+// computeFunctionComplexities reports a nested function before the one enclosing it, so the first
+// function containing the line is the innermost one and no nesting test is needed. The one case the
+// order does not settle is a tie — two functions covering exactly the same lines — where `jsx`
+// wins, because an unkillable survivor costs more than a mutant that was never generated.
 function innermostFunctionAt(functions: ReadonlyArray<FunctionComplexity>, line: number): FunctionComplexity | undefined {
   let innermost: FunctionComplexity | undefined;
 
   for (const fn of functions) {
     if (fn.startLine > line || fn.endLine < line) continue;
-    const closer = innermost === undefined || lineSpan(fn) < lineSpan(innermost);
-    const tieBrokenByJsx = innermost !== undefined && lineSpan(fn) === lineSpan(innermost) && fn.containsJsx;
-    if (closer || tieBrokenByJsx) innermost = fn;
+    if (innermost === undefined || (coversTheSameLines(fn, innermost) && fn.containsJsx)) innermost = fn;
   }
 
   return innermost;

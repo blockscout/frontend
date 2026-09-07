@@ -1,9 +1,13 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, MINUTE_MS } from './config';
 import { parseArgs } from './index';
 
 describe('parseArgs', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('defaults to full mode against the configured base ref, under the configured budget', () => {
     expect(parseArgs([])).toEqual({
       baseRef: DEFAULT_BASE_REF,
@@ -34,6 +38,20 @@ describe('parseArgs', () => {
   it('selects diff mode from --base and takes its ref', () => {
     expect(parseArgs([ '--base', 'upstream/main' ])).toMatchObject({ diffSelected: true, baseRef: 'upstream/main' });
     expect(parseArgs([ '--base=upstream/main' ])).toMatchObject({ diffSelected: true, baseRef: 'upstream/main' });
+  });
+
+  // A value flag takes the following token only when it carries no inline value: swallowing the
+  // token after --base=<ref> would drop a focus path, and not swallowing it after a bare --base
+  // would turn the ref itself into one.
+  it('consumes the token after a value flag only when the value is not inline', () => {
+    expect(parseArgs([ '--base', 'upstream/main', 'src/a.ts' ])).toMatchObject({
+      baseRef: 'upstream/main',
+      focusPaths: [ 'src/a.ts' ],
+    });
+    expect(parseArgs([ '--base=upstream/main', 'src/a.ts' ])).toMatchObject({
+      baseRef: 'upstream/main',
+      focusPaths: [ 'src/a.ts' ],
+    });
   });
 
   it('combines flags and focus paths in any order', () => {
@@ -68,5 +86,17 @@ describe('parseArgs', () => {
 
   it('rejects a value passed to a switch flag', () => {
     expect(() => parseArgs([ '--help=yes' ])).toThrow('--help takes no value');
+  });
+
+  // The same flag bare is the whole point of a switch: it has to be accepted rather than rejected
+  // for missing its value.
+  it('prints the usage text and exits on a bare switch flag', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.spyOn(process, 'exit').mockImplementation((code) => {
+      throw new Error(`exited with ${ code }`);
+    });
+
+    expect(() => parseArgs([ '--help' ])).toThrow('exited with 0');
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('Usage:'));
   });
 });

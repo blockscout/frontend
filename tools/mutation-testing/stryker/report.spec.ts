@@ -113,6 +113,39 @@ describe('collectFindings', () => {
       .toEqual({ survivors: [], noCoverage: [] });
   });
 
+  // Stryker reports the mutants of a file in whatever order it happened to test them, and two runs
+  // over an unchanged tree must read identically.
+  it('orders the lines of a file ascending, whatever order Stryker emitted them in', () => {
+    const report = {
+      files: {
+        'src/a.ts': {
+          mutants: [
+            mutant('Survived', 'EqualityOperator', SECOND_LINE),
+            mutant('Survived', 'EqualityOperator', FIRST_LINE),
+          ],
+        },
+      },
+    };
+
+    expect(collectFindings(report).survivors[0].lines.map(({ line }) => line)).toEqual([ FIRST_LINE, SECOND_LINE ]);
+  });
+
+  it('orders the mutators of a line by name, whatever order Stryker emitted them in', () => {
+    const report = {
+      files: {
+        'src/a.ts': {
+          mutants: [
+            mutant('Survived', 'LogicalOperator', FIRST_LINE),
+            mutant('Survived', 'ConditionalExpression', FIRST_LINE),
+          ],
+        },
+      },
+    };
+
+    expect(collectFindings(report).survivors[0].lines[0].mutators)
+      .toEqual([ { name: 'ConditionalExpression', count: 1 }, { name: 'LogicalOperator', count: 1 } ]);
+  });
+
   it('orders files alphabetically, whatever order Stryker emitted them in', () => {
     const report = {
       files: {

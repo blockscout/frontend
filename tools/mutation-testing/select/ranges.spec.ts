@@ -41,6 +41,31 @@ const RENDER_BODY_ONLY = `const Empty = ({ show }: { show: boolean }) => (
 );
 `;
 
+// Two functions opening and closing on line 3, so neither encloses the other by span. The outer one
+// is the render body; the callback nested in it is behavior.
+const JSX_TIED_WITH_NESTED_BEHAVIOR = `const CELLS = [ 1, 2 ];
+
+const Cells = () => <div>{ CELLS.map(function (value) { return value * 2; }) }</div>;
+`;
+
+// The same tie the other way round: the outer function renders nothing itself, and the callback
+// nested in it on line 3 is the render body.
+const BEHAVIOR_TIED_WITH_NESTED_JSX = `const CELLS = [ 1, 2 ];
+
+const renderCells = () => CELLS.map((value) => <b>{ value }</b>);
+`;
+
+// Two near misses, where a callback shares one of its bounding lines with the render body around it
+// but not the other. Sharing one is not a tie: the callback is nested, so its own line stays
+// behavior and `sum + item` keeps its mutants.
+const CALLBACK_CLOSING_WITH_A_RENDER_BODY = `const Total = ({ items }: { items: Array<number> }) => (
+  <output>{ items.reduce((sum, item) => sum + item, 0) }</output>);
+`;
+
+const CALLBACK_OPENING_WITH_A_RENDER_BODY = `const Total = ({ items }: { items: Array<number> }) => <output>{ items.reduce((sum, item) => sum + item, 0)
+  }</output>;
+`;
+
 describe('mutableLineRanges', () => {
   it('covers the whole file when nothing in it renders', () => {
     expect(mutableLineRanges(PLAIN_MODULE, 'src/util.ts')).toEqual([ [ 1, 2 ] ]);
@@ -56,6 +81,24 @@ describe('mutableLineRanges', () => {
 
   it('comes out empty when every line is part of a render body', () => {
     expect(mutableLineRanges(RENDER_BODY_ONLY, 'src/Empty.tsx')).toEqual([]);
+  });
+
+  // Both tie cases drop line 3: whichever function is the render body, a mutant inside it is
+  // unkillable, so the tie goes to jsx rather than to the nesting.
+  it('drops a line a render body shares with a behavior function nested in it', () => {
+    expect(mutableLineRanges(JSX_TIED_WITH_NESTED_BEHAVIOR, 'src/Cells.tsx')).toEqual([ [ 1, 2 ] ]);
+  });
+
+  it('drops a line a behavior function shares with a render callback nested in it', () => {
+    expect(mutableLineRanges(BEHAVIOR_TIED_WITH_NESTED_JSX, 'src/renderCells.tsx')).toEqual([ [ 1, 2 ] ]);
+  });
+
+  it('keeps a line a nested callback shares with the last line of the render body', () => {
+    expect(mutableLineRanges(CALLBACK_CLOSING_WITH_A_RENDER_BODY, 'src/Total.tsx')).toEqual([ [ 2, 2 ] ]);
+  });
+
+  it('keeps a line a nested callback shares with the first line of the render body', () => {
+    expect(mutableLineRanges(CALLBACK_OPENING_WITH_A_RENDER_BODY, 'src/Total.tsx')).toEqual([ [ 1, 1 ] ]);
   });
 });
 

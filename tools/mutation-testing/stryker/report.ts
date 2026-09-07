@@ -105,18 +105,15 @@ export interface Findings {
   readonly noCoverage: ReadonlyArray<FileNoCoverage>;
 }
 
-// Code-point order, not the shared collator: this tool sits outside the src/ tsconfig that owns it,
-// and a locale-independent order is what keeps two runs over an unchanged tree byte-identical.
-function compare(a: string, b: string): number {
-  if (a === b) return 0;
-  return a < b ? -1 : 1;
-}
-
+// Sorted by name, through the default sort rather than the shared collator: this tool sits outside
+// the src/ tsconfig that owns the collator, and the default sort's code-unit order is
+// locale-independent, which is what keeps two runs over an unchanged tree byte-identical. Tallying
+// the names in that order leaves the map's insertion order sorted too.
 function tally(names: ReadonlyArray<string>): Array<{ name: string; count: number }> {
   const counts = new Map<string, number>();
-  for (const name of names) counts.set(name, (counts.get(name) ?? 0) + 1);
+  for (const name of [ ...names ].sort()) counts.set(name, (counts.get(name) ?? 0) + 1);
 
-  return [ ...counts ].map(([ name, count ]) => ({ name, count })).sort((a, b) => compare(a.name, b.name));
+  return [ ...counts ].map(([ name, count ]) => ({ name, count }));
 }
 
 function groupByLine(mutants: ReadonlyArray<Mutant>): Array<LineFinding> {
@@ -135,12 +132,6 @@ function withStatus(mutants: ReadonlyArray<Mutant>, status: MutantStatus): Array
   return mutants.filter((mutant) => mutant.status === status);
 }
 
-// Alphabetical by file, ascending by line: two runs over an unchanged tree must read identically,
-// and the report's own file order is whatever Stryker happened to emit.
-function byFile<TEntry extends { readonly file: string }>(a: TEntry, b: TEntry): number {
-  return compare(a.file, b.file);
-}
-
 // What makes a run a failure, and the only thing that does: a mutant nothing caught. A no-coverage
 // mutant is an untested line, which the CRAP gate already fails a PR for — failing here too would
 // report one gap twice and make this gate's verdict unreadable.
@@ -149,16 +140,17 @@ export function isFailingRun(findings: Findings): boolean {
 }
 
 export function collectFindings(report: MutationReport): Findings {
-  const files = Object.entries(report.files);
+  // Alphabetical by file, ascending by line: two runs over an unchanged tree must read identically,
+  // and the report's own file order is whatever Stryker happened to emit. Sorting the file names up
+  // front carries that order into both listings; see tally() on why it is the default sort.
+  const files = Object.keys(report.files).sort().map((file) => ({ file, mutants: report.files[file].mutants }));
 
   return {
     survivors: files
-      .map(([ file, { mutants } ]) => ({ file, lines: groupByLine(withStatus(mutants, 'Survived')) }))
-      .filter((entry) => entry.lines.length > 0)
-      .sort(byFile),
+      .map(({ file, mutants }) => ({ file, lines: groupByLine(withStatus(mutants, 'Survived')) }))
+      .filter((entry) => entry.lines.length > 0),
     noCoverage: files
-      .map(([ file, { mutants } ]) => ({ file, mutants: withStatus(mutants, 'NoCoverage').length }))
-      .filter((entry) => entry.mutants > 0)
-      .sort(byFile),
+      .map(({ file, mutants }) => ({ file, mutants: withStatus(mutants, 'NoCoverage').length }))
+      .filter((entry) => entry.mutants > 0),
   };
 }

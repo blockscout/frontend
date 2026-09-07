@@ -15,12 +15,21 @@ const INELIGIBLE_FILE = 'tools/code-complexity/config.ts';
 
 const BASE_REF = 'main';
 
+const NOTHING_OUTSIDE_RENDER_BODIES = 'Every eligible file has all of its logic inside a jsx render body — nothing to mutate.';
+
 // A component with no logic of its own outside the render body it returns.
 const CARD_COMPONENT = `const Card = ({ show }: { show: boolean }) => (
   <div>{ show ? 'yes' : 'no' }</div>
 );
 
 export default Card;
+`;
+
+// The same component with nothing left at module scope, so every line of the file is render body
+// and the file has no mutable line at all.
+const RENDER_BODY_ONLY_COMPONENT = `export default ({ show }: { show: boolean }) => (
+  <div>{ show ? 'yes' : 'no' }</div>
+);
 `;
 
 function request(overrides: Partial<SelectionRequest>, cwd: string = process.cwd()): Selection {
@@ -177,6 +186,16 @@ describe('git-backed modes', () => {
     expect(selectedFiles(selectIn({ diffSelected: true }))).toEqual([ 'src/touched.ts' ]);
   });
 
+  // A repo holding nothing but the given files, committed on the base branch. Full mode's empty
+  // cases need one: the real repo always has both an eligible file and a mutable line in it.
+  function createRepo(files: Readonly<Record<string, string>>): void {
+    repo = fs.mkdtempSync(path.join(os.tmpdir(), 'mutation-select-'));
+    git('init', '-b', BASE_REF);
+    for (const [ filePath, body ] of Object.entries(files)) write(filePath, body);
+    git('add', '.');
+    git('commit', '-m', 'initial');
+  }
+
   it('selects every eligible in-scope file when invoked bare', () => {
     createForkedRepo();
     expect(selectIn({})).toEqual({
@@ -187,6 +206,26 @@ describe('git-backed modes', () => {
       ],
       ineligible: [],
     });
+  });
+
+  it('is empty when no file in the repo has a spec beside it', () => {
+    createRepo({ 'src/untested.ts': 'export const untested = 1;\n' });
+    expect(selectIn({})).toEqual({
+      outcome: 'empty',
+      reason: 'No source file in scope has a co-located vitest spec — nothing to mutate.',
+    });
+  });
+
+  // Eligible and still nothing to mutate — the two empty reasons are different findings, so the one
+  // that comes back has to be the one that applies.
+  it('is empty when every eligible file is nothing but a render body', () => {
+    createRepo({ 'src/Card.tsx': RENDER_BODY_ONLY_COMPONENT, 'src/Card.spec.tsx': 'export const spec = 1;\n' });
+    expect(selectIn({})).toEqual({ outcome: 'empty', reason: NOTHING_OUTSIDE_RENDER_BODIES });
+  });
+
+  it('is empty when every given file is nothing but a render body', () => {
+    createRepo({ 'src/Card.tsx': RENDER_BODY_ONLY_COMPONENT, 'src/Card.spec.tsx': 'export const spec = 1;\n' });
+    expect(selectIn({ focusPaths: [ 'src/Card.tsx' ] })).toEqual({ outcome: 'empty', reason: NOTHING_OUTSIDE_RENDER_BODIES });
   });
 
   // The change is real, but every line it touched is inside the render body, so the file is dropped
