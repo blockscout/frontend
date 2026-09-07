@@ -959,11 +959,12 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 
 ### Flashblocks
 
-Real-time feed of sub-second pre-confirmation blocks. The same feature backs two stacks: on OP Stack chains these blocks are called **Subblocks** (OP Labs' current name; formerly "Flashblocks") and are streamed from the endpoint below; on **MegaETH** they are called **mini-blocks** and are streamed from the MegaETH RPC endpoint (see [MegaETH](#megaeth)). The `FLASHBLOCKS` variable name is retained across both.
+Real-time feed of sub-second pre-confirmation blocks, shown as a tab on the blocks page. The same feature backs two stacks. On **OP Stack** chains the blocks are streamed from the endpoint below, and the chain's own name for them is set with `NEXT_PUBLIC_FLASHBLOCKS_NAME`: the newer **Subblocks** name (the default) or the legacy **Flashblocks** name. Chains are split between the two and both run the same wire protocol, so only the labels differ. On **MegaETH** they are called **mini-blocks** and are streamed from the MegaETH RPC endpoint (see [MegaETH](#megaeth)). The `FLASHBLOCKS` variable name is retained across both.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Subblocks data on OP Stack chains | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
+| NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Flashblocks or Subblocks data on OP Stack chains | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
+| NEXT_PUBLIC_FLASHBLOCKS_NAME | `'flashblock' \| 'subblock'` | What the chain calls its pre-confirmation blocks. Drives every user-facing label and the blocks page tab id (`flashblocks` or `subblocks`); the other tab id keeps working and redirects to the configured one. | - | `subblock` | `flashblock` | upcoming |
 
 &nbsp;
 
