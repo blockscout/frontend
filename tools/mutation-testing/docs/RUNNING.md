@@ -47,6 +47,8 @@ A job log is a poor place to read a result from — it opens below checkout and 
 - each survivor is an **`::error` annotation on the diff line** it was found on;
 - a truncated run adds a **`::warning`**, because a green run is easy to overlook.
 
+For the summary to be readable, `../vitest.config.ts` has to name a reporter: Vitest otherwise adds its own github-actions reporter under CI, which writes a job-summary block per test run — and Stryker ends one test run per mutant.
+
 ## Why Stryker needed repo-level plumbing
 
 Two integration issues are solved outside this folder and are easy to misdiagnose:
