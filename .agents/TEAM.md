@@ -54,6 +54,7 @@ Own: core API endpoints and response models, field propagation across services, 
 | --- | --- | --- | --- |
 | Victor | @vbaranov | U8L403FEG | ✓ |
 | Nikita P. | @nikitosing | U0218K3MTC5 | |
+| Alexey | @Qwerty5Uiop | U03EE7T5TJS | |
 
 ### Groups
 
