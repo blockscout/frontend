@@ -60,7 +60,8 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
-If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
+See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
+`docs/`, a module `README.md`.
 
 ## Architecture decision records (ADRs)
 
