@@ -41,6 +41,6 @@ logic-only ones), and that promoting or demoting a mutator class is a one-line c
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write `tools/mutation-testing/CONTEXT.md`
-- [ ] 2 `[agent]` Write the `docs/` detail pages
-- [ ] 3 `[agent]` Add the entries to `.claude/CLAUDE.md` and `.agents/rules/code-quality.md`
+- [x] 1 `[agent]` Write `tools/mutation-testing/CONTEXT.md`
+- [x] 2 `[agent]` Write the `docs/` detail pages
+- [x] 3 `[agent]` Add the entries to `.claude/CLAUDE.md` and `.agents/rules/code-quality.md`

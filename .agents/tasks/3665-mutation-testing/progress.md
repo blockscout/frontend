@@ -6,4 +6,4 @@
 - [x] 04 → `tickets/04-bounded-run/`
 - [x] 05 → `tickets/05-findings-report/`
 - [x] 06 → `tickets/06-ci-gate/` (its `(human)` criterion deferred to task land — see the ticket's `notes.md`)
-- [ ] 07 → `tickets/07-docs/`
+- [x] 07 → `tickets/07-docs/`
