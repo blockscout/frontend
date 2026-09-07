@@ -10,6 +10,22 @@ alwaysApply: false
 An ADR answers "why is it like this?" without a git archaeology session. It carries the evidence and the
 trade-off, so read the relevant one before changing what it decided.
 
+## Template
+
+```md
+# {Short title of the decision}
+
+| | |
+| --- | --- |
+| Status | Accepted \/ Superseded by <NNNN> |
+
+## Decision
+
+{1-3 sentences: what's the context, what did we decide, and why.}
+```
+
+That's it. An ADR can be a single paragraph. The value is in recording *that* a decision was made and *why*, not in filling out sections.
+
 ## Where a record goes
 
 | Scope | Folder | Listed in |
@@ -36,5 +52,5 @@ Offer the ADR; do not write one unasked.
 
 ## Superseding
 
-Supersede rather than rewrite. Change the old record's `Status` to `superseded by <n>` and leave its
+Supersede rather than rewrite. Change the old record's `Status` to `superseded by <NNNN>` and leave its
 reasoning intact.
