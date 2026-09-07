@@ -13,4 +13,10 @@ describe('formatMutateTargets', () => {
     expect(formatMutateTargets([ { file: 'src/pages/tx/[hash].tsx', ranges: [ [ 2, 3 ] ] } ]))
       .toEqual([ 'src/pages/tx/\\[hash\\].tsx:2-3' ]);
   });
+
+  // A backslash left as-is would be read as escaping the next character instead of as itself.
+  it('escapes a backslash in the path', () => {
+    expect(formatMutateTargets([ { file: 'src/a\\b.ts', ranges: [ [ 1, 1 ] ] } ]))
+      .toEqual([ 'src/a\\\\b.ts:1-1' ]);
+  });
 });

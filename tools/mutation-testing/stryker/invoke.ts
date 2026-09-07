@@ -10,8 +10,10 @@ import type { MutateTarget } from '../select/files';
 
 // Stryker rejects a mutation range on a pattern minimatch reads as a glob, and Next.js route files
 // (`src/pages/tx/[hash].tsx`) are exactly that. Escaping the metacharacters makes the pattern
-// literal — which is also the only form that matches such a path at all.
-const GLOB_METACHARACTERS = /([[\]{}()*?!+@])/g;
+// literal — which is also the only form that matches such a path at all. The backslash is itself
+// minimatch's escape character, so a path containing one has to be escaped first, not left to be
+// read as escaping whatever follows it.
+const GLOB_METACHARACTERS = /([\\[\]{}()*?!+@])/g;
 
 // A run stopped at its budget has no complete json report, only the stream the reporter plugin
 // appended to. `truncated` is what tells the report which of the two to read, and says so in print.
