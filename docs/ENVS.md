@@ -966,7 +966,7 @@ Real-time feed of sub-second pre-confirmation blocks, shown as a tab on the bloc
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL | `string` | Public WebSocket endpoint to stream Flashblocks or Subblocks data on OP Stack chains | Required | - | `wss://mainnet.flashblocks.base.org/ws` | v2.3.0+ |
-| NEXT_PUBLIC_FLASHBLOCKS_NAME | `'flashblock' \| 'subblock'` | What the chain calls its pre-confirmation blocks. Drives every user-facing label and the blocks page tab id (`flashblocks` or `subblocks`); the other tab id keeps working and redirects to the configured one. | - | `subblock` | `flashblock` | upcoming |
+| NEXT_PUBLIC_FLASHBLOCKS_NAME | `'flashblock' \| 'subblock'` | What the chain calls its pre-confirmation blocks. Drives every user-facing label and the blocks page tab id (`flashblocks` or `subblocks`); the other tab id keeps working and redirects to the configured one. | - | `subblock` | `flashblock` | v2.11.1+ |
 
 &nbsp;
 
