@@ -18,7 +18,7 @@ const opStackName = FLASHBLOCKS_NAMES.find((name) => name === nameFromEnv) ?? 's
 const opStackTabIds: [ FlashblocksTabId, ...Array<FlashblocksTabId> ] = opStackName === 'subblock' ?
   [ 'subblocks', 'flashblocks' ] :
   [ 'flashblocks', 'subblocks' ];
-const megaEthTabIds: [ TabId ] = [ 'mini-blocks' ];
+const megaEthTabIds: [ 'mini-blocks' ] = [ 'mini-blocks' ];
 
 const config: Feature<{
   socketUrl: string;

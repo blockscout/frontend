@@ -44,7 +44,7 @@ describe('blocks guard', () => {
   });
 
   it('follows the configured name in the other direction', async() => {
-    const envs = [ ...ENVS_MAP.flashblocks, [ 'NEXT_PUBLIC_FLASHBLOCKS_NAME', 'flashblock' ] as [ string, string ] ];
+    const envs: Array<[ string, string ]> = [ ...ENVS_MAP.flashblocks, [ 'NEXT_PUBLIC_FLASHBLOCKS_NAME', 'flashblock' ] ];
     expect(await runBlocksGuard(envs, makeContext({ tab: 'subblocks' }))).toEqual({
       redirect: { destination: '/blocks?tab=flashblocks', permanent: false },
     });
