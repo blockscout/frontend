@@ -29,3 +29,10 @@ export function chooseResults(outcome: RunOutcome, sources: ResultSources): RunR
 export function readResults(outcome: RunOutcome): RunResults {
   return chooseResults(outcome, { complete: readReport, streamed: readStream });
 }
+
+// A run stopped before a single mutant was tested is the one truncated outcome that has to fail
+// rather than warn: it has no survivor to fail on, so the exit code would otherwise report a pass
+// over a selection nothing was ever asked about. `formatTruncationNotice` already prints why.
+export function testedNothing(results: RunResults): boolean {
+  return results.truncated && results.tested === 0;
+}

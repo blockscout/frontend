@@ -132,9 +132,10 @@ function withStatus(mutants: ReadonlyArray<Mutant>, status: MutantStatus): Array
   return mutants.filter((mutant) => mutant.status === status);
 }
 
-// What makes a run a failure, and the only thing that does: a mutant nothing caught. A no-coverage
-// mutant is an untested line, which the CRAP gate already fails a PR for — failing here too would
-// report one gap twice and make this gate's verdict unreadable.
+// What makes a run's findings a failure, and the only finding that does: a mutant nothing caught. A
+// no-coverage mutant is an untested line, which the CRAP gate already fails a PR for — failing here
+// too would report one gap twice and make this gate's verdict unreadable. A run that tested nothing
+// has no findings at all and fails on `testedNothing` in ./results.ts instead.
 export function isFailingRun(findings: Findings): boolean {
   return findings.survivors.length > 0;
 }

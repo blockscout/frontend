@@ -13,7 +13,7 @@ import { runStryker } from './stryker/invoke';
 import type { Findings } from './stryker/report';
 import { buildFileScores, collectFindings, isFailingRun } from './stryker/report';
 import type { RunResults } from './stryker/results';
-import { readResults } from './stryker/results';
+import { readResults, testedNothing } from './stryker/results';
 
 // Mutation testing: change the code, and see whether any test notices. Coverage answers "was this
 // line executed?"; a surviving mutant answers "would a bug here be caught?", which is the question
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
   // eslint-disable-next-line no-restricted-properties -- Node CLI detecting the CI runtime, not an app env var
   if (process.env.GITHUB_ACTIONS) emitGithubActionsOutput(findings, results, options.budgetMs);
 
-  if (isFailingRun(findings)) process.exitCode = 1;
+  if (isFailingRun(findings) || testedNothing(results)) process.exitCode = 1;
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the

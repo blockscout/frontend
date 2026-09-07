@@ -38,7 +38,7 @@ A test that only executes the line does not kill the mutant. Mutation testing ch
 
 **`NO COVERAGE` — not this gate's finding.** No test reached the line. The CRAP gate (`../code-complexity/CONTEXT.md`) already reports this as insufficient coverage. It appears here as a count and never fails the run.
 
-**`Run TRUNCATED`** — the wall-clock budget expired, so the results cover only part of the selection. A green result is not a pass. See `./docs/RUNNING.md`.
+**`Run TRUNCATED`** — the wall-clock budget expired, so the results cover only part of the selection. A green result is not a pass, and a run that tested nothing at all fails. See `./docs/RUNNING.md`.
 
 ## File map
 
