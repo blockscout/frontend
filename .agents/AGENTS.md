@@ -58,6 +58,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
+- `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under

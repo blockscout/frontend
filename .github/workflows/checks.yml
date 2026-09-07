@@ -178,6 +178,40 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: pnpm test:code-complexity --changed=origin/main --coverage-file coverage/coverage-final.json
 
+  mutation_tests:
+    name: Mutation testing gate
+    needs: [ vitest_tests ]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    # Outside the run's own 15-min wall-clock budget (tools/mutation-testing/config.ts), leaving room
+    # for checkout and install so that expiring the budget still reaches the truncation report rather
+    # than being killed mid-write. A normal PR gets nowhere near either bound.
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # The diff is resolved through the merge-base with origin/main, which a shallow clone lacks.
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.5.1
+          cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Mutation testing gate
+        run: pnpm test:mutation-testing --changed=origin/main
+
   pw_affected_tests:
     name: Resolve affected Playwright tests
     runs-on: ubuntu-latest

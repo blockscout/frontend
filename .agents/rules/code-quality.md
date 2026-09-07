@@ -39,6 +39,27 @@ pnpm test:code-complexity --changed
 pnpm test:code-complexity --help
 ```
 
+## Mutation testing
+
+A gate based on assertion strength, not coverage: it edits a line and checks whether any Vitest spec detects the change. A survivor means a test executed the line without asserting its behavior. The fix is a stronger assertion, not just line execution.
+
+What a survivor means, which files and lines are mutated at all, and when suppressing one is legitimate: `tools/mutation-testing/CONTEXT.md`.
+
+How to run:
+
+```bash
+# The file you are on — every mutable line in it
+pnpm test:mutation-testing path/to/file.ts
+
+# This branch vs origin/main, including uncommitted edits
+pnpm test:mutation-testing --changed
+
+# For the full command usage
+pnpm test:mutation-testing --help
+```
+
+A Stryker suppression comment is linted; only `// Stryker disable next-line <MutatorName>: <reason>` passes.
+
 ## Code Style and Structure
 
 - Structure components logically: exports, subcomponents, helpers, types

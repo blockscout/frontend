@@ -12,6 +12,7 @@ import { githubAnnotations, stepSummary } from './render/github';
 import type { ReportRow, Thresholds } from './render/report';
 import { formatTable, isOffender } from './render/report';
 import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap, resolveBaseCommit } from './select/diff';
+import { hasCoLocatedSpec } from './select/eligibility';
 import { isInScope } from './select/scope';
 
 // The CLI has two independent axes, mirroring vitest: selection (which functions to score) and
@@ -208,14 +209,6 @@ function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeeds
   }
 }
 
-// Whether a source file has a co-located vitest spec, by naming convention
-// (foo.ts -> foo.spec.ts / foo.spec.tsx). Playwright tests (*.pw.tsx) do not count: no vitest
-// coverage comes out of them.
-function hasCoLocatedSpec(file: string): boolean {
-  const base = file.slice(0, file.lastIndexOf('.'));
-  return fs.existsSync(`${ base }.spec.ts`) || fs.existsSync(`${ base }.spec.tsx`);
-}
-
 // Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
 // component only when it has a co-located vitest spec. This drives only the generation scope
 // (./docs/RUNNING.md); per-function CRAP applicability is decided in analyze.ts.
@@ -246,7 +239,7 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
 // the mode threshold calibration runs (./docs/CALIBRATION.md). The repo always has files that need
 // coverage and generation runs the whole suite regardless, so there is no per-file skip here.
 function runFullMode(options: CliOptions): Array<ReportRow> {
-  const files = getAllSourceFiles();
+  const files = getAllSourceFiles(process.cwd());
   if (files.length === 0) return [];
   const coverage = resolveCoverage(options, { mode: 'full' }, true);
 
@@ -263,8 +256,8 @@ function runFullMode(options: CliOptions): Array<ReportRow> {
 // Diff mode: gate only functions a changed line falls within, across in-scope changed files.
 // Untouched functions in a changed file are listed but never flagged.
 function runDiffMode(options: CliOptions): Array<ReportRow> {
-  const baseCommit = resolveBaseCommit(options.baseRef);
-  const changedFiles = getChangedFiles(baseCommit).filter(isInScope).filter((file) => fs.existsSync(file));
+  const baseCommit = resolveBaseCommit(options.baseRef, process.cwd());
+  const changedFiles = getChangedFiles(baseCommit, process.cwd()).filter(isInScope).filter((file) => fs.existsSync(file));
   if (changedFiles.length === 0) return []; // nothing in scope: skip vitest entirely
 
   const sources = new Map(changedFiles.map((file) => [ file, readFile(file) ] as const));
@@ -274,7 +267,7 @@ function runDiffMode(options: CliOptions): Array<ReportRow> {
   const coverage = resolveCoverage(options, { mode: 'changed', since: baseCommit }, changedFiles.some(needsCoverage));
 
   return changedFiles.flatMap((file) => {
-    const changedRanges = getChangedLineRanges(baseCommit, file);
+    const changedRanges = getChangedLineRanges(baseCommit, file, process.cwd());
     return buildFileRows(file, sources.get(file) as string, coverage, {
       thresholds: thresholdsOf(options),
       gate: (fn) => rangesOverlap(changedRanges, fn.startLine, fn.endLine),

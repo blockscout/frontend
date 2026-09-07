@@ -8,32 +8,35 @@ import { isInScope } from './scope';
 
 export type LineRange = [ start: number, end: number ];
 
-function git(args: ReadonlyArray<string>): string {
-  return execFileSync('git', args as Array<string>, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+// Which repository the caller is asking about, passed explicitly rather than taken from the
+// process's own directory: the mutation-testing specs point these at a throwaway repo, and
+// process.chdir() is unavailable in the worker threads Stryker runs vitest in.
+function git(args: ReadonlyArray<string>, cwd: string): string {
+  return execFileSync('git', args as Array<string>, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
 }
 
 // Compare against the merge-base of the branch and the base ref rather than the base ref tip:
 // this captures the branch's own commits plus any uncommitted working-tree edits, and never
 // reports files that only changed on the base branch since the fork point.
-export function resolveBaseCommit(baseRef: string): string {
-  return git([ 'merge-base', baseRef, 'HEAD' ]).trim();
+export function resolveBaseCommit(baseRef: string, cwd: string): string {
+  return git([ 'merge-base', baseRef, 'HEAD' ], cwd).trim();
 }
 
-export function getChangedFiles(baseCommit: string): Array<string> {
-  const out = git([ 'diff', '--name-only', baseCommit, '--' ]);
+export function getChangedFiles(baseCommit: string, cwd: string): Array<string> {
+  const out = git([ 'diff', '--name-only', baseCommit, '--' ], cwd);
   return out.split('\n').map((line) => line.trim()).filter(Boolean);
 }
 
 // Every in-scope file in the repo, for full-repo mode. It enumerates all tracked files and narrows
 // them through isInScope rather than restating the scope rule as a git pathspec — ./scope.ts owns
 // that rule, and a pathspec here would be a second copy to keep in sync with it.
-export function getAllSourceFiles(): Array<string> {
-  const out = git([ 'ls-files' ]);
+export function getAllSourceFiles(cwd: string): Array<string> {
+  const out = git([ 'ls-files' ], cwd);
   return out.split('\n').map((line) => line.trim()).filter(isInScope);
 }
 
-export function getChangedLineRanges(baseCommit: string, file: string): Array<LineRange> {
-  const out = git([ 'diff', '--unified=0', '--no-color', baseCommit, '--', file ]);
+export function getChangedLineRanges(baseCommit: string, file: string, cwd: string): Array<LineRange> {
+  const out = git([ 'diff', '--unified=0', '--no-color', baseCommit, '--', file ], cwd);
   return parseHunkNewRanges(out);
 }
 
