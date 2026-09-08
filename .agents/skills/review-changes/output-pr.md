@@ -142,10 +142,13 @@ closes them. Threads under another tag are not yours to touch.
 | deferred nit | `F<n> — deferred` | leave open |
 | regression from a fix | a new inline comment, next free id | leave open |
 
-Non-anchorable findings have no thread, so one issue comment carries their rulings — `F<n> — verified`,
-one line each, for those ids only, closing with the same `— Reviewed by` footer: that footer is how
-`resolve-review` tells a ruling from its own reply comment on the same ids. Leave the original comment as
-posted. An id with no ruling stays in the open counters.
+Non-anchorable findings have no thread, so one issue comment carries their rulings — the reply column
+above, one line each, for those ids only, closing with the same `— Reviewed by` footer: that footer is how
+`resolve-review` tells a ruling from its own reply comment on the same ids. Write the id as
+`<tag->F<n>`, the tag prefix present exactly when the finding was raised under one, so the line names the
+id `resolve-review` is matching against — bare `F<n>` matches nothing, and with two reviewers on the PR it
+would be ambiguous even if it did. Leave the original comment as posted. An id with no ruling stays in the
+open counters.
 
 Then post the summary, in the shape above. Nothing marks a round as terminal beyond its status reading
 `✅ Cleared`, which is this PR's `cleared` outcome.

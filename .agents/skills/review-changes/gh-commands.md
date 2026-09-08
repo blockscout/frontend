@@ -106,9 +106,12 @@ Fields worth reading per inline comment:
 **Telling the sources apart matters**, because they are adjudicated differently: a comment whose body ends
 in a `— Reviewed by …` footer is this workflow's own review, whichever provider produced it, and may be
 rejected — and where several agents reviewed the same PR, the tag in that footer says which one, matching
-the prefix on its finding ids. Everything else is a human's, and a human's may never be rejected. The
-footer is the only test: `user.login` is the repo owner's account for every agent, so nothing else
-separates this workflow's review from a human's.
+the prefix on its finding ids.
+
+The footer is the only thing that separates this workflow's own review from a human's: `user.login` is the
+repo owner's account for every agent, so nothing else tells them apart. It does not settle bots, which
+`user.type` catches — the full source split, and which verdicts each source allows, is the table in
+[`../resolve-review/SKILL.md`](../resolve-review/SKILL.md).
 
 A footer-bearing **issue** comment titled `### 📎 Findings without a diff anchor` carries findings, not
 conversation: one per `**<emoji> <tag->F<n> · <severity>**` title, the tag prefix present exactly when the
@@ -160,5 +163,5 @@ Notes:
 - Reply *before* resolving — a resolved thread still accepts replies, but replying first keeps the
   explanation visible.
 - Skip threads already `isResolved`.
-- Leave `disputed`, `needs-human` and `answered` threads **unresolved** — they are exactly the ones that
-  must stay visible.
+- Leave `disputed`, `deferred`, `needs-human` and `answered` threads **unresolved** — they are exactly the
+  ones that must stay visible.
