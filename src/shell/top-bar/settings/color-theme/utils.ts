@@ -44,8 +44,13 @@ export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
   return defaultHex;
 };
 
-export function getDefaultColorTheme(colorMode: ColorMode) {
-  const colorTheme = COLOR_THEMES.filter((theme) => theme.colorMode === colorMode).slice(-1)[0];
+export function isColorThemeAvailable(colorThemeId: string): colorThemeId is ColorThemeId {
+  return config.shell.topBar.colorTheme.themes.some((theme) => theme.id === colorThemeId);
+}
 
-  return colorTheme.id;
+export function getDefaultColorTheme(colorMode: ColorMode): ColorThemeId {
+  const themes = config.shell.topBar.colorTheme.themes;
+  const colorTheme = themes.filter((theme) => theme.colorMode === colorMode).slice(-1)[0];
+
+  return (colorTheme ?? themes[0]).id;
 }

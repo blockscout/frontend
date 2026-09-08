@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
 
 import type { ColorMode } from 'src/toolkit/chakra/color-mode';
@@ -10,8 +11,11 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
 import SettingsSample from '../SettingsSample';
 import type { ColorThemeId } from './config';
-import { COLOR_THEMES } from './config';
-import { getDefaultColorTheme, getThemeHexWithOverrides } from './utils';
+import { getDefaultColorTheme, getThemeHexWithOverrides, isColorThemeAvailable } from './utils';
+
+const MIN_THEMES_FOR_SWITCHER = 2;
+
+const availableThemes = config.shell.topBar.colorTheme.themes;
 
 interface Props {
   onSelect?: () => void;
@@ -23,7 +27,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   const [ activeThemeId, setActiveThemeId ] = React.useState<ColorThemeId>();
 
   const setTheme = React.useCallback((themeId: ColorThemeId) => {
-    const nextTheme = COLOR_THEMES.find((theme) => theme.id === themeId);
+    const nextTheme = availableThemes.find((theme) => theme.id === themeId);
     const varValue = getThemeHexWithOverrides(themeId);
 
     if (!nextTheme || !varValue) {
@@ -54,7 +58,9 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
       return cookieColorMode;
     })();
 
-    const nextColorTheme = cookieColorTheme || getDefaultColorTheme(nextColorMode);
+    const nextColorTheme = cookieColorTheme && isColorThemeAvailable(cookieColorTheme) ?
+      cookieColorTheme :
+      getDefaultColorTheme(nextColorMode);
 
     setTheme(nextColorTheme);
     setActiveThemeId(nextColorTheme);
@@ -76,27 +82,34 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     onSelect?.();
   }, [ setTheme, onSelect ]);
 
-  const activeTheme = COLOR_THEMES.find((theme) => theme.id === activeThemeId);
+  const activeTheme = availableThemes.find((theme) => theme.id === activeThemeId);
+
+  if (availableThemes.length < MIN_THEMES_FOR_SWITCHER) {
+    return null;
+  }
 
   return (
-    <div>
-      <Box fontWeight={ 600 }>Color theme</Box>
-      <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
-      <Flex>
-        { COLOR_THEMES.map((theme) => {
-          return (
-            <SettingsSample
-              key={ theme.label }
-              label={ theme.label }
-              value={ theme.id }
-              bg={ theme.sampleBg }
-              isActive={ theme.id === activeThemeId }
-              onClick={ handleSelect }
-            />
-          );
-        }) }
-      </Flex>
-    </div>
+    <>
+      <div>
+        <Box fontWeight={ 600 }>Color theme</Box>
+        <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
+        <Flex>
+          { availableThemes.map((theme) => {
+            return (
+              <SettingsSample
+                key={ theme.label }
+                label={ theme.label }
+                value={ theme.id }
+                bg={ theme.sampleBg }
+                isActive={ theme.id === activeThemeId }
+                onClick={ handleSelect }
+              />
+            );
+          }) }
+        </Flex>
+      </div>
+      <Separator my={ 3 }/>
+    </>
   );
 };
 
