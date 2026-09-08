@@ -7,6 +7,7 @@ import type { FeaturedNetwork } from 'src/shell/top-bar/chain-menu/types';
 import { NETWORK_GROUPS } from 'src/shell/top-bar/chain-menu/types';
 import { AlternativeExplorer } from 'src/features/alternative-explorers/types/client';
 import { CustomLink, CustomLinksGroup } from 'src/shell/footer/types';
+import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
 import { COLOR_THEME_IDS } from 'src/shell/top-bar/settings/color-theme/config';
 import type { FontFamily } from 'src/config/misc';
 import type { ContractCodeIde } from 'src/slices/contract/types/config';
@@ -238,7 +239,27 @@ export const miscSchema = yup.object({
 
         return isStringSchema.isValidSync(data) || isArrayOfStringsSchema.isValidSync(data);
       }),
-    NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
+    NEXT_PUBLIC_COLOR_THEMES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<ColorThemeId>().oneOf(COLOR_THEME_IDS)),
+    NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup
+      .string()
+      .oneOf(COLOR_THEME_IDS)
+      .test(
+        'available-theme-required',
+        'NEXT_PUBLIC_COLOR_THEME_DEFAULT must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES',
+        function(value) {
+          const themes: Array<ColorThemeId> | undefined = this.parent.NEXT_PUBLIC_COLOR_THEMES;
+
+          if (!value || !themes?.length) {
+            return true;
+          }
+
+          return themes.includes(value as ColorThemeId);
+        }
+      ),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: yup.object().transform(replaceQuotes).json(),
     NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
       .mixed()
