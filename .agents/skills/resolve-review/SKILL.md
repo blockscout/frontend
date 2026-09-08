@@ -47,15 +47,11 @@ mode every finding came from `review-changes`, so the question does not arise �
 | Source | How you know it | Verdicts |
 | --- | --- | --- |
 | This workflow's review | a PR comment ending in a `— Reviewed by …` footer | `fix` · `reject` |
-| A bot | `user.type == "Bot"` | `fix` · `reject` |
-| A human | neither of the above | `fix` · `answered` |
+| A human | anything else | `fix` · `answered` |
 
-Test in that order. The footer comes first because an agent posts through a human's account — `user.login`
-is the repo owner's in every case, so nothing but the footer distinguishes this workflow's own review.
-Bots are then caught by GitHub's own `user.type`, **not** by a list of logins: this repo alone sees
-`Copilot` (no `[bot]` suffix, capitalised), `coderabbitai[bot]`, `cursor[bot]` (Cursor Bugbot, which
-`.cursor/BUGBOT.md` aims at our smell baseline) and `github-advanced-security[bot]`, and a name list gets
-three of those four wrong — silently promoting them to human, whose comments may never be rejected.
+The footer is the whole test, because an agent posts through a human's account — `user.login` is the repo
+owner's in every case, so nothing else distinguishes this workflow's own review. Miss the footer and an
+agent's finding is silently promoted to human, whose comments may never be rejected.
 
 - **fix** — the concern is real *and* the fix belongs in this change.
 - **reject** — invalid premise, contradicts design intent, already addressed, or out of scope. Closes with
@@ -87,8 +83,8 @@ finding.
 
 In `pr` mode, collect every **actionable** finding — inline review comments, PR-level reviews, and issue
 comments ([`../review-changes/gh-commands.md`](../review-changes/gh-commands.md)). Keep only unresolved,
-actionable threads. Drop already-resolved threads, your own prior replies, and bot status noise (CodeRabbit
-"review skipped", Copilot's PR overview). Tag each with its **source** per the table above.
+actionable threads. Drop already-resolved threads and your own prior replies. Tag each with its **source**
+per the table above.
 
 In `md` mode, collect every finding whose `**Status:**` is `open` or `disputed`. The file's reply
 blockquotes carry the exchange history — read them, so a finding you already rejected once is not rejected
@@ -107,8 +103,8 @@ The heart of the skill. Reason hard here; do not rush toward the gate.
 - **Investigate before judging.** Verify the claim against the actual code. Check whether it still applies —
   it may be stale or already fixed. Weigh it against the spec and the conventions in `.agents/rules/`.
 - **Decompose multi-point findings.** One comment can be part-`fix`, part-`reject`. Adjudicate each point.
-- **Give bots no deference.** A plausible-sounding suggestion is not automatically correct; a bot can
-  contradict the author's intent or argue from the wrong docs.
+- **Give the reviewer no deference.** A plausible-sounding finding is not automatically correct; a review
+  agent can contradict the author's intent or argue from the wrong docs.
 - **When a verdict turns on design intent you cannot settle from the code and the spec, mark it
   `needs-human`.** Do not guess.
 
@@ -154,9 +150,8 @@ verifies the fix (or agrees the reject) and closes them in its next follow-up ro
 confirm the work landed and post the final all-clear. Closing here would end the loop before the reviewer
 ever checked it.
 
-In `pr` mode that means replying on the thread and leaving it unresolved. **Bot findings** — resolve on
-`fix` or `reject`; a bot has no follow-up round, so its verdict stands on posting. **Human findings** —
-resolve on `fix`, and leave `answered` open for the human. Leave every `needs-human` thread open.
+In `pr` mode that means replying on the thread and leaving it unresolved. **Human findings** — resolve on
+`fix`, and leave `answered` open for the human. Leave every `needs-human` thread open.
 
 In `md` mode, append a reply line under the finding — `> **resolve-review, round <n>:** fix — <what
 changed>` — and leave its `**Status:**` alone.

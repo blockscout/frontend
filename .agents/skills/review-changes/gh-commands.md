@@ -2,7 +2,7 @@
 
 The whole PR surface both review skills need in `pr` mode: `review-changes` posts findings and, in
 follow-up rounds, replies and resolves the threads it raised; `resolve-review` gathers, replies, and
-resolves bot and human threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive
+resolves threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive
 `{owner}/{repo}` once and reuse.
 
 Confirm `gh auth status` succeeds before anything else — follow the `check-github-cli` skill if it does
@@ -78,7 +78,7 @@ gh api repos/{owner}/{repo}/pulls/{N}/comments --paginate
 # PR-level reviews (summary body + state per reviewer)
 gh api repos/{owner}/{repo}/pulls/{N}/reviews --paginate
 
-# issue-level comments (the conversation tab, incl. most bot posts)
+# issue-level comments (the conversation tab)
 gh api repos/{owner}/{repo}/issues/{N}/comments --paginate
 ```
 
@@ -90,17 +90,16 @@ Fields worth reading per inline comment:
 | `in_reply_to_id` | `null` = top-level; otherwise a reply within a thread |
 | `path`, `line` / `original_line` | where it sits — open this code |
 | `diff_hunk` | the snippet the reviewer saw |
-| `user.login` | author — this is how you tell a human from a bot from this workflow's own review |
+| `user.login` | author — who to address in a reply |
 | `body` | the comment text |
 | `html_url` | link back to the comment |
 
 **Telling the sources apart matters**, because they are adjudicated differently: a comment whose body ends
 in a `— Reviewed by …` footer is this workflow's own review, whichever provider produced it, and may be
 rejected — and where several agents reviewed the same PR, the tag in that footer says which one, matching
-the prefix on its finding ids; a bot's gets no deference at all; a human's may never be rejected. Test the footer **first** —
-`user.login` is the repo owner's account for every agent, so nothing else separates this workflow's review
-from a human's — then `user.type == "Bot"` for the bots. Never match bot logins by name; see the source
-table in `../resolve-review/SKILL.md` for why.
+the prefix on its finding ids. Everything else is a human's, and a human's may never be rejected. The
+footer is the only test: `user.login` is the repo owner's account for every agent, so nothing else
+separates this workflow's review from a human's.
 
 ### Parse a comment / PR link
 
@@ -149,5 +148,3 @@ Notes:
 - Skip threads already `isResolved`.
 - Leave `disputed`, `needs-human` and `answered` threads **unresolved** — they are exactly the ones that
   must stay visible.
-- Bot status posts (CodeRabbit "review skipped", Copilot's PR overview) arrive as issue comments, have no
-  thread to resolve, and are not actionable.

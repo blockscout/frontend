@@ -174,7 +174,9 @@ reader to skim past real problems.
 - **Missing Playwright screenshot baselines** — human-generated, per [`../../delegation.md`](../../delegation.md).
 - **Style preferences with no basis** in `.agents/rules/`, a `CONTEXT.md`, or the surrounding code. No
   citable rule or precedent, no finding.
-- **"Add a comment explaining what this does"** — `code-quality.md` forbids *what* comments.
+- **Any "add a comment here" suggestion.** `code-quality.md` bans comments outright; its one exception — a
+  *why* comment on code whose obvious reading is wrong — is the author's call, never a reviewer's request.
+  A comment the diff *adds* that is not such a why comment is the opposite: a citable rule breach.
 - **A primitive or shortcut with a why-comment on it.** The comment is an override signal: read it and back
   off rather than arguing with it.
 - **A `TODO (design):` marker that has been consumed.** An *unconsumed* marker, though, is a finding here:
