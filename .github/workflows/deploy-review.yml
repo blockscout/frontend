@@ -26,6 +26,7 @@ on:
             # presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
             - arbitrum
             - arbitrum_sepolia
+            - arc_testnet
             - base
             - blackfort_testnet
             - celo

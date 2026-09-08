@@ -36,6 +36,7 @@ export { default as sol2uml } from 'src/features/sol2uml/config';
 export { default as stats } from 'src/features/chain-stats/config';
 export { default as suave } from 'src/features/chain-variants/suave/config';
 export { default as tac } from 'src/features/chain-variants/tac/config';
+export { default as tokenActionButton } from 'src/features/token-action-button/config';
 export { default as txInterpretation } from 'src/features/tx-interpretation/common/config';
 export { default as userOps } from 'src/features/user-ops/config';
 export { default as addressProfileAPI } from 'src/features/address-profile-api/config';
