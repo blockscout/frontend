@@ -53,7 +53,7 @@ the shallow findings that make developers stop trusting review. Report:
 - logic errors; 
 - mishandled loading / empty / error / pagination paths; 
 - places where the types claim something the runtime does not; 
-- tests that assert the framework or the mock rather than real behaviour (per the "What to test (and what not)"
+- tests that assert the framework or the mock rather than real behaviour (per the "What a good test is"
 section of `.agents/rules/tests-unit.md`).
 
 ## Out of bounds

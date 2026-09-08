@@ -42,15 +42,16 @@ operator which, and review only after they answer.
 
 ### `--as` and concurrent reviewers
 
-Two agents may review the same change simultaneously; comparing their findings is the point. The tag keeps 
-them separate by prefixing every finding ID (`cursor-F1`) and, in `md` mode, the file name. Without a tag, 
-IDs are bare (`F1`), with no collision because only one reviewer is present. A `follow-up` round applies 
-only to findings carrying **its own** tag—untagged findings count as tagged—because the others belong to 
-another reviewer’s round. Do not derive the tag: guessing it from the running model makes it change when 
-the model does, causing round 2 to disown round 1’s findings.
+Two agents may review the same change simultaneously; comparing their findings is the point. The tag keeps
+them separate by prefixing every finding ID (`cursor-F1`) and, in `md` mode, the file name. Without a tag,
+IDs are bare (`F1`), with no collision because only one reviewer is present. A `follow-up` round applies
+only to findings carrying **its own** tag, where an untagged round owns the untagged findings — the rest
+belong to another reviewer's round. Do not derive the tag: guessing it from the running model makes it
+change when the model does, causing round 2 to disown round 1's findings.
 
-**Guard.** In a `first` round, if a review of this change already exists without your tag, another agent is 
-working: stop and ask for `--as` instead of overwriting it.
+**Guard.** In a `first` round, a review of this change already sitting under someone else's tag means
+another agent is working. With no `--as` of your own, stop and ask for one rather than overwriting it —
+with a tag, you are the second reviewer and carry on.
 
 ## 1. Pin the ground
 
@@ -70,6 +71,10 @@ gh pr list --head "$(git branch --show-current)" --state open \
   --json number,headRefOid,baseRefName                    # pr mode; see gh-commands.md
 git rev-parse HEAD
 ```
+
+**A `md` `follow-up` round has no clean-tree precondition.** `resolve-review` leaves its `md`-mode fixes
+uncommitted on purpose ([`../resolve-review/SKILL.md`](../resolve-review/SKILL.md) step 6), so the round
+whose whole job is verifying those fixes expects a dirty tree — under either scope.
 
 **An open PR plus an out-of-sync branch stops the run.** Say which way it diverged and what to run — `git
 push` when `HEAD` is ahead, `git pull` when behind. Otherwise lines that were never pushed are absent from
@@ -118,14 +123,15 @@ claim it made itself. Give it your own tag's open findings with their full reply
 code. It does exactly three things:
 
 1. Verify each claimed fix actually addresses its finding, rather than cosmetically silencing it.
-2. Rule on each `reject`: **agree** — the finding closes as `rejected-accepted` — or **disagree**, with a
-   counter-argument.
+2. Rule on each `reject`: **agree** — the finding closes, in the words its output file's ruling table
+   gives — or **disagree**, with a counter-argument.
 3. Flag regressions introduced **by the fixes only**. New findings elsewhere are out of scope for this round.
 
 Under `--scope uncommitted` the fixes are not separable from the original work in the diff, so verify each
 one against the code as it now stands rather than looking for what changed since round 1.
 
-**Done when**: every open finding of yours is either closed or carries a ruling.
+**Done when**: every open finding of yours is either closed or carries a ruling — and a deferred nit's
+ruling is that it stays open.
 
 ## 4. Normalize
 
@@ -135,7 +141,8 @@ to `blocker` because that axis is all it can see.
 - **Severity.** `blocker` — a requirement missing or wrong, a correctness bug, or a rule breach with a real
   consequence. `major` — real cost, not shipping-critical. `nit` — taste. Set `needs-human` on any finding
   that turns on design intent the code cannot settle; it is orthogonal to severity and it is the loop's
-  escape hatch.
+  escape hatch. Only `pr` mode records it — `md` mode is read by agents alone, so the escape hatch there is
+  `resolve-review`'s Gate 1, which puts the question to the developer in the terminal.
 - **One defect, one label.** The same defect seen through two axes is one finding: pick the sharper label
   and drop the other. Never report it twice.
 - **Another reviewer's finding stays theirs.** A defect already raised under a different tag gets a
@@ -159,10 +166,11 @@ only in where a finding lives and how its thread is closed.
 Zero findings still publishes, with the outcome `cleared` and zeroed counts — a missing report is
 indistinguishable from a review that never ran.
 
-The published outcome is `blocked` while any `blocker` or `major` is open, and `cleared` once only nits
-remain. Both modes use those two words.
+**The outcome is defined here; both output files render this definition rather than restating it.** It is
+`blocked` while any `blocker` or `major` is open, and `cleared` once only nits remain.
 
-Then close **in the terminal** with counts per severity, counts per axis (an axis that came back empty is
+Then close **in the terminal** with where the review was published — the review's `html_url` from the POST
+response, or the review file's path — counts per severity, counts per axis (an axis that came back empty is
 worth a second look), and the outcome.
 
 **Done when**: the review is published and the counts reported.

@@ -19,7 +19,7 @@ gh repo view --json nameWithOwner,owner,name
 # genuinely no PR — and a `pr`-mode run with no open PR stops there. `--state open` matters: a merged or
 # closed PR is not something to review onto. Never wrap the call in `||`.
 gh pr list --head "$(git branch --show-current)" --state open \
-  --json number,title,url,headRefName,baseRefName,state,isDraft
+  --json number,title,url,headRefName,headRefOid,baseRefName,state,isDraft
 
 # head sha, needed as commit_id when posting a review
 git rev-parse HEAD
@@ -111,8 +111,9 @@ footer is the only test: `user.login` is the repo owner's account for every agen
 separates this workflow's review from a human's.
 
 A footer-bearing **issue** comment titled `### 📎 Findings without a diff anchor` carries findings, not
-conversation: one per `**<emoji> F<n> · <severity>**` title. It has no thread, so a reply is a new issue
-comment naming those ids, and there is nothing to resolve.
+conversation: one per `**<emoji> <tag->F<n> · <severity>**` title, the tag prefix present exactly when the
+review ran under `--as`. It has no thread, so a reply is a new issue comment naming those ids, and there is
+nothing to resolve.
 
 ### Parse a comment / PR link
 

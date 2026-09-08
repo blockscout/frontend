@@ -34,8 +34,9 @@ Each step names the skill that runs it; the session model — what runs where, a
    answer changes the work, realise it through `to-tickets` — a new sibling ticket, or an edit to the
    affected ticket if it isn't implemented yet, retargeting `Blocked by` edges.
 5. **Implement** — run `implement-ticket <NN>` repeatedly, **one ticket per run**.
-6. **Land** — `finalize-task` prunes `tickets/`, `progress.md`, and `questions.md` (only `spec.md` survives),
-   then hands off to `create-pr` to push, write the real description, and flip the draft to ready for review.
+6. **Land** — `finalize-task` prunes `tickets/`, `progress.md`, `questions.md` and any `md`-mode review file
+   (only `spec.md` survives), then hands off to `create-pr` to push, write the real description, and flip
+   the draft to ready for review.
 
 ## Supporting files
 

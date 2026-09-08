@@ -3,7 +3,7 @@ name: resolve-review
 description: >-
   Close out review findings — adjudicate each one, fix what deserves fixing, then reply on the PR threads or
   in the task's review file.
-argument-hint: pr|md [<PR url | comment url | review file path>]
+argument-hint: pr|md [<PR url | comment url | review file path>] [--scope branch|uncommitted] [--ticket <NN>]
 disable-model-invocation: true
 ---
 
@@ -26,18 +26,24 @@ replied to.
 | --- | --- | --- | --- |
 | `output` *(positional)* | `pr` · `md` | **required** | where the findings live |
 | `target` *(positional)* | PR url, comment url, or review-file path | the current branch's PR / its review file | scopes the run |
+| `--scope` | `branch` · `uncommitted` | `branch` | which review file: the task's, or the in-flight ticket's. `md` only |
+| `--ticket <NN>` | ticket number | inferred | `--scope uncommitted` only |
 
 ```
 /resolve-review pr                      every open finding on the current branch's PR
 /resolve-review pr <comment url>        that single comment, scoping the whole run to it
-/resolve-review md                      the current branch's review file
+/resolve-review md                      the task-level review file
+/resolve-review md --scope uncommitted  the in-flight ticket's review file
 /resolve-review md <path>               that review file — one reviewer's, where several ran
 ```
 
-The default `md` path is resolved exactly as `review-changes` resolves it
-([`../review-changes/output-md.md`](../review-changes/output-md.md)). Several review files side by side
-means several reviewers ran: resolve them in one pass, and where two raise the same defect, fix once and
-reply on both.
+Contradictory inputs stop the run: `--scope` or `--ticket` with `pr`, or `--ticket` with `--scope branch`.
+
+`--scope` and `--ticket` are `review-changes`' own, and the file resolves off them exactly as it does there
+([`../review-changes/output-md.md`](../review-changes/output-md.md)) — `branch` is the task-level
+`review.md`, `uncommitted` the ticket's. An explicit `target` path settles the file outright and makes both
+redundant. Several review files side by side means several reviewers ran: resolve them in one pass, and
+where two raise the same defect, fix once and reply on both.
 
 ## Verdicts, by source
 
@@ -47,11 +53,15 @@ mode every finding came from `review-changes`, so the question does not arise �
 | Source | How you know it | Verdicts |
 | --- | --- | --- |
 | This workflow's review | a PR comment ending in a `— Reviewed by …` footer | `fix` · `reject` |
+| A bot | `user.type == "Bot"` | `fix` · `reject` |
 | A human | anything else | `fix` · `answered` |
 
-The footer is the whole test, because an agent posts through a human's account — `user.login` is the repo
-owner's in every case, so nothing else distinguishes this workflow's own review. Miss the footer and an
-agent's finding is silently promoted to human, whose comments may never be rejected.
+Test the rows in that order. The footer is what separates this workflow's own review from a colleague's —
+why, in [`../review-changes/gh-commands.md`](../review-changes/gh-commands.md). Bots are then caught by
+GitHub's own `user.type`, **not** by a list of logins: this repo still runs CodeQL and Copilot, so
+`github-advanced-security[bot]` and `Copilot` (no `[bot]` suffix, capitalised) both reach a PR, and a name
+list goes stale the moment the tooling around the repo changes. Miss either test and an agent's or a bot's
+finding is silently promoted to human, whose comments may never be rejected.
 
 - **fix** — the concern is real *and* the fix belongs in this change.
 - **reject** — invalid premise, contradicts design intent, already addressed, or out of scope. Closes with
@@ -87,8 +97,9 @@ actionable threads. Drop already-resolved threads and your own prior replies. Ta
 per the table above.
 
 A footer-bearing issue comment titled `### 📎 Findings without a diff anchor` holds several findings at
-once, one per `**<emoji> F<n> · <severity>**` title. Split them and adjudicate each on its own. They have
-no resolved flag, so read one as open unless a later footer-bearing comment already rules on that id.
+once, one per `**<emoji> <tag->F<n> · <severity>**` title, the tag prefix present exactly when that
+reviewer ran under `--as`. Split them and adjudicate each on its own. They have no resolved flag, so read
+one as open unless a later footer-bearing comment already rules on that id.
 
 In `md` mode, collect every finding whose `**Status:**` is `open` or `disputed`. The file's reply
 blockquotes carry the exchange history — read them, so a finding you already rejected once is not rejected
@@ -108,7 +119,7 @@ The heart of the skill. Reason hard here; do not rush toward the gate.
   it may be stale or already fixed. Weigh it against the spec and the conventions in `.agents/rules/`.
 - **Decompose multi-point findings.** One comment can be part-`fix`, part-`reject`. Adjudicate each point.
 - **Give the reviewer no deference.** A plausible-sounding finding is not automatically correct; a review
-  agent can contradict the author's intent or argue from the wrong docs.
+  agent or a bot can contradict the author's intent or argue from the wrong docs.
 - **When a verdict turns on design intent you cannot settle from the code and the spec, mark it
   `needs-human`.** Do not guess.
 
@@ -148,14 +159,18 @@ Reply to every finding; **who closes it depends on the source.**
 - `fix` → what changed, plus the commit sha once it exists.
 - `reject` → the explanation.
 - `answered` → the reasoning, the alternatives, why this path won.
+- `deferred` → that it is a nit left as it stands, so the reviewer's follow-up round can rule `deferred`
+  rather than wait on a fix that is not coming.
 
 **This workflow's own findings — reply, never close.** The reviewer raised them and owns their close: it
 verifies the fix (or agrees the reject) and closes them in its next follow-up round, which is what lets it
 confirm the work landed and post the final all-clear. Closing here would end the loop before the reviewer
 ever checked it.
 
-In `pr` mode that means replying on the thread and leaving it unresolved. **Human findings** — resolve on
-`fix`, and leave `answered` open for the human. Leave every `needs-human` thread open.
+In `pr` mode that means replying on the thread and leaving it unresolved. **Bot findings** — resolve on
+`fix` or `reject`; a bot has no arbitration round, so your verdict is the last word on its thread.
+**Human findings** — resolve on `fix`, and leave `answered` open for the human. Leave every `needs-human`
+thread open.
 
 Non-anchorable findings have no thread. Reply to all of them in **one** new issue comment, each line naming
 its id, so the reviewer's follow-up round can match the ids it raised.

@@ -43,9 +43,8 @@ nobody greps for a glyph.
 ## Ids and the footer
 
 The footer names the reviewer from the running model, falling back to `— Reviewed by agent`. Any provider
-can run this skill, and that footer is the only thing telling `resolve-review` this is an agent's finding
-rather than a colleague's: an agent posts through a human's account, so `user.login` is the repo owner's in
-every case.
+can run this skill, and that footer is the only thing telling `resolve-review` an agent raised this finding
+rather than a colleague — why, in [`gh-commands.md`](gh-commands.md).
 
 Under `--as <tag>` the id carries the tag (`cursor-F1`) and the footer names it too — `— Reviewed by cursor
 (<model name>)`.
@@ -120,7 +119,7 @@ Axes: spec · standards · correctness
 — Reviewed by <agent or model name>
 ```
 
-- **Status.** `🛑 Blocked` while any `blocker` or `major` is open. `✅ Cleared` once only nits remain, zero
+- **Status.** `🛑 Blocked` and `✅ Cleared` render the two outcomes [`SKILL.md`](SKILL.md) defines, zero
   findings included. Append `· 🙋 <n> needs human` when any `needs-human` finding is open whatever its
   severity.
 - **The counters are open counts, never raised counts.** On a `first` round the two are the same. Keeping
@@ -140,11 +139,13 @@ closes them. Threads under another tag are not yours to touch.
 | fix verified | `F<n> — verified` | resolve |
 | reject agreed | `F<n> — accepted, <reason>` | resolve |
 | reject disputed | the counter-argument | leave open |
+| deferred nit | `F<n> — deferred` | leave open |
 | regression from a fix | a new inline comment, next free id | leave open |
 
-Non-anchorable findings have no thread, so one issue comment carries their rulings — `F3 — verified`, one
-line each, for those ids only. Leave the original comment as posted. An id with no ruling stays in the open
-counters.
+Non-anchorable findings have no thread, so one issue comment carries their rulings — `F<n> — verified`,
+one line each, for those ids only, closing with the same `— Reviewed by` footer: that footer is how
+`resolve-review` tells a ruling from its own reply comment on the same ids. Leave the original comment as
+posted. An id with no ruling stays in the open counters.
 
 Then post the summary, in the shape above. Nothing marks a round as terminal beyond its status reading
 `✅ Cleared`, which is this PR's `cleared` outcome.

@@ -20,7 +20,9 @@ definition the ticket in flight, since `implement-ticket` checks the box only on
 absent or ambiguous `progress.md` stops the run.
 
 Under `--as <tag>` the file is `review-<tag>.md` beside it, so concurrent reviewers never write the same
-file.
+file. Before writing a `first` round, glob `review*.md` in the resolved folder and apply
+[`SKILL.md`](SKILL.md)'s guard to what comes back — a sibling under a tag that is not yours means another
+agent is already reviewing this change.
 
 Both are working files: `finalize-task` prunes them with the rest of the task's scaffolding, and only
 `spec.md` survives the land.
@@ -40,9 +42,9 @@ rather than restated in the index.
 
 ## Findings
 
-| id | severity | needs-human | axis | location |
-| --- | --- | --- | --- | --- |
-| F1 | blocker | no | correctness | `src/slices/token/pages/Holders.tsx:41` |
+| id | severity | axis | location |
+| --- | --- | --- | --- |
+| F1 | blocker | correctness | `src/slices/token/pages/Holders.tsx:41` |
 
 ### F1 · blocker · correctness · `src/slices/token/pages/Holders.tsx:41`
 
@@ -57,7 +59,9 @@ rather than restated in the index.
 ```
 
 A finding with no line to sit on keeps its section and writes `location: —`. The PR's split into a separate
-comment has nothing to do here, and neither do its severity emoji: only agents read this file.
+comment has nothing to do here, and neither do its severity emoji or its `needs-human` flag: only agents
+read this file, so that flag would have no reader — in `md` mode the escape hatch is `resolve-review`'s
+Gate 1, which puts the question to the developer in the terminal.
 
 Zero findings still writes the file: the `## Rounds` line reads `Outcome: cleared` and `## Findings` is
 empty.
@@ -71,7 +75,8 @@ Append a line to `## Rounds`, then work each of your open findings:
 | fix verified | `verified` | `resolved — verified` |
 | reject agreed | `accepted, <reason>` | `resolved — rejected` |
 | reject disputed | the counter-argument | `disputed` |
+| deferred nit | `deferred` | `deferred` |
 | regression from a fix | a new `###` section, next free id | `open` |
 
-The round's `## Rounds` line reads `Outcome: blocked` while any `blocker` or `major` is left open, and
-`Outcome: cleared` once only nits remain — the same two words `pr` mode puts on its status line.
+The round's `## Rounds` line carries the outcome [`SKILL.md`](SKILL.md) defines — `Outcome: blocked` or
+`Outcome: cleared`.
