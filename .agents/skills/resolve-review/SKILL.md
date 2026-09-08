@@ -86,6 +86,10 @@ comments ([`../review-changes/gh-commands.md`](../review-changes/gh-commands.md)
 actionable threads. Drop already-resolved threads and your own prior replies. Tag each with its **source**
 per the table above.
 
+A footer-bearing issue comment titled `### 📎 Findings without a diff anchor` holds several findings at
+once, one per `**<emoji> F<n> · <severity>**` title. Split them and adjudicate each on its own. They have
+no resolved flag, so read one as open unless a later footer-bearing comment already rules on that id.
+
 In `md` mode, collect every finding whose `**Status:**` is `open` or `disputed`. The file's reply
 blockquotes carry the exchange history — read them, so a finding you already rejected once is not rejected
 again on the same grounds.
@@ -152,6 +156,9 @@ ever checked it.
 
 In `pr` mode that means replying on the thread and leaving it unresolved. **Human findings** — resolve on
 `fix`, and leave `answered` open for the human. Leave every `needs-human` thread open.
+
+Non-anchorable findings have no thread. Reply to all of them in **one** new issue comment, each line naming
+its id, so the reviewer's follow-up round can match the ids it raised.
 
 In `md` mode, append a reply line under the finding — `> **resolve-review, round <n>:** fix — <what
 changed>` — and leave its `**Status:**` alone.

@@ -27,8 +27,8 @@ git rev-parse HEAD
 
 ## Posting a review (review-changes)
 
-One batched review event per round; what goes in the body and the footer is
-[`output-pr.md`](output-pr.md). Build the payload as a file, then:
+One batched review event per round, whose body is the summary; the finding format, the summary shape and
+the footer are [`output-pr.md`](output-pr.md). Build the payload as a file, then:
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
@@ -38,19 +38,28 @@ gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
 {
   "commit_id": "<head sha>",
   "event": "COMMENT",
-  "body": "<header table, plus a '## Not anchorable' section if any>",
+  "body": "<the summary: status line, counters line, axes line, footer>",
   "comments": [
     {
       "path": "src/slices/token/pages/Holders.tsx",
       "line": 41,
       "side": "RIGHT",
-      "body": "**F1 · blocker** — <claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
+      "body": "**🛑 F1 · blocker**\n\n<claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
     }
   ]
 }
 ```
 
 For a multi-line anchor add `start_line` (and `start_side`) alongside `line`.
+
+Findings with no anchor, and a `follow-up` round's rulings on them, are issue comments — posted after the
+review event, one comment per round:
+
+```bash
+gh api -X POST repos/{owner}/{repo}/issues/{N}/comments -F body=@not-anchorable.md
+```
+
+`-F body=@<file>` reads the body from a file; `-f body="…"` mangles a multi-line string.
 
 ### Validate every anchor first — the POST is all-or-nothing
 
@@ -65,9 +74,9 @@ gh api repos/{owner}/{repo}/pulls/{N}/files --paginate \
 For each file, walk its `patch`: every `@@ -a,b +c,d @@` header starts a hunk whose RIGHT-side line
 numbers run from `c`; added (`+`) and context (` `) lines each advance that counter and are anchorable,
 removed (`-`) lines do not advance it and are not. A finding whose line is outside that set moves into the
-review body under `## Not anchorable`.
+non-anchorable issue comment.
 
-If a POST still 422s, retry once with the offending comments demoted into the body. Never drop them.
+If a POST still 422s, retry once with the offending comments moved into that comment. Never drop them.
 
 ## Gather (resolve-review)
 
@@ -100,6 +109,10 @@ rejected — and where several agents reviewed the same PR, the tag in that foot
 the prefix on its finding ids. Everything else is a human's, and a human's may never be rejected. The
 footer is the only test: `user.login` is the repo owner's account for every agent, so nothing else
 separates this workflow's review from a human's.
+
+A footer-bearing **issue** comment titled `### 📎 Findings without a diff anchor` carries findings, not
+conversation: one per `**<emoji> F<n> · <severity>**` title. It has no thread, so a reply is a new issue
+comment naming those ids, and there is nothing to resolve.
 
 ### Parse a comment / PR link
 

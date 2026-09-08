@@ -36,7 +36,7 @@ rather than restated in the index.
 
 ## Rounds
 
-- **1** — 2026-09-07, <model name>. 1 blocker, 2 major, 1 nit. Outcome: 3 open.
+- **1** — 2026-09-07, <model name>. blocker 1 · major 2 · nit 1. Outcome: blocked.
 
 ## Findings
 
@@ -56,10 +56,11 @@ rather than restated in the index.
 > **review, round 2:** verified
 ```
 
-A finding with no line to sit on keeps its section and writes `location: —`; the PR's `## Not anchorable`
-split has nothing to do here.
+A finding with no line to sit on keeps its section and writes `location: —`. The PR's split into a separate
+comment has nothing to do here, and neither do its severity emoji: only agents read this file.
 
-Zero findings still writes the file: the `## Rounds` line reads `Outcome: clear` and `## Findings` is empty.
+Zero findings still writes the file: the `## Rounds` line reads `Outcome: cleared` and `## Findings` is
+empty.
 
 ## A `follow-up` round
 
@@ -72,4 +73,5 @@ Append a line to `## Rounds`, then work each of your open findings:
 | reject disputed | the counter-argument | `disputed` |
 | regression from a fix | a new `###` section, next free id | `open` |
 
-When no `blocker` or `major` finding is left open, the round's `## Rounds` line reads `Outcome: clear`.
+The round's `## Rounds` line reads `Outcome: blocked` while any `blocker` or `major` is left open, and
+`Outcome: cleared` once only nits remain — the same two words `pr` mode puts on its status line.

@@ -156,11 +156,14 @@ only in where a finding lives and how its thread is closed.
 | `pr` | [`output-pr.md`](output-pr.md) |
 | `md` | [`output-md.md`](output-md.md) |
 
-Zero findings still publishes, with `Outcome: clear` and zeroed counts — a missing report is
+Zero findings still publishes, with the outcome `cleared` and zeroed counts — a missing report is
 indistinguishable from a review that never ran.
 
-Close by reporting counts per severity, counts per axis (an axis that came back empty is worth a second
-look), and the `Outcome`.
+The published outcome is `blocked` while any `blocker` or `major` is open, and `cleared` once only nits
+remain. Both modes use those two words.
+
+Then close **in the terminal** with counts per severity, counts per axis (an axis that came back empty is
+worth a second look), and the outcome.
 
 **Done when**: the review is published and the counts reported.
 
