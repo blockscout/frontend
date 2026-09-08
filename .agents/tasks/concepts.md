@@ -117,11 +117,12 @@ as a whole.
 
 ### Disposability and pruning
 
-At land, `finalize-task` prunes `tickets/`, `progress.md`, and `questions.md` — **only `spec.md` survives**
-in the tree. The decomposition is preserved in git history (one commit per ticket), so nothing is lost:
-precedent to browse is the accumulated specs; decomposition precedent is git history. Pruning runs
-**before** the whole-task `review-changes` pass, which reads the spec and the diff via inline PR comments
-and so needs no ticket files.
+At land, `finalize-task` prunes `tickets/`, `progress.md`, `questions.md` and any review file — **only
+`spec.md` survives** in the tree. The decomposition is preserved in git history (one commit per ticket), so
+nothing is lost: precedent to browse is the accumulated specs; decomposition precedent is git history.
+Pruning runs **before** the whole-task `review-changes` pass, which reads the spec and the diff and posts to
+the PR, so it needs no ticket files. A mid-ticket review in `md` mode is disposable for the same reason:
+its findings were resolved before the ticket was committed, and the diff is the record.
 
 ## What the spec holds, and what it doesn't
 

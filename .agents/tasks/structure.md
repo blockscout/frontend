@@ -13,12 +13,14 @@ One folder per specced task, under `.agents/tasks/`:
   spec.md                       task spec — the durable statement of intent
   progress.md                   one checkbox per ticket
   questions.md                  open questions, each with a stable id (Q01)
+  review.md                     optional — an md-mode review of the whole branch
   tickets/
     NN-<slug>/
       spec.md                   the ticket (once scoped)
       brief.md                  OR this, for a deferred ticket (no spec.md)
       research.md               optional — research / prototype notes
       notes.md                  optional — implementation findings, PR evidence
+      review.md                 optional — an md-mode review of this ticket's uncommitted work
 ```
 
 **Naming is mechanical.** The task folder is `<issue>-<slug>/` — the bare GitHub issue number, then a
@@ -36,6 +38,7 @@ lets a skill infer the task from the branch with no arguments.
 | `tickets/NN-<slug>/spec.md` | mutable until fully implemented, then **frozen** | What to build, Acceptance criteria (with `(human)` tags), Skill inputs (grouped by skill), Leaf worklist. Header: `Blocked by` (`T<NN>` ticket + `Q<NN>` question blockers). | `to-tickets` creates it; `implement-ticket` checks its leaf boxes as it works them. |
 | `tickets/NN-<slug>/brief.md` | informal | Deferred-ticket marker. Goal, known context, the blocking unknowns and who owns each. | `to-tickets` when it can't scope the ticket; or dropped in by the developer. |
 | `tickets/NN-<slug>/{research,notes}.md` | optional | Research / prototype notes; implementation findings kept as PR evidence. | session / developer. |
+| `review.md` (task or ticket level) | mutable | An `md`-mode review: one thread per finding — claim, fix, status, replies. `review-<tag>.md` where several reviewers ran at once. | `review-changes` in `md` mode writes it; `resolve-review` appends the replies. Pruned at land like the rest. |
 
 ## Status is derived, never stored
 

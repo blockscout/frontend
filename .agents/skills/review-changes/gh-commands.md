@@ -1,9 +1,9 @@
 # gh / GraphQL command reference
 
-The whole PR surface both review skills need: `review-changes` posts findings and, in arbitration rounds,
-replies and resolves the threads it raised; `resolve-review` gathers, replies, and resolves bot and human
-threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive `{owner}/{repo}` once
-and reuse.
+The whole PR surface both review skills need in `pr` mode: `review-changes` posts findings and, in
+follow-up rounds, replies and resolves the threads it raised; `resolve-review` gathers, replies, and
+resolves bot and human threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive
+`{owner}/{repo}` once and reuse.
 
 Confirm `gh auth status` succeeds before anything else — follow the `check-github-cli` skill if it does
 not. Never authenticate on the developer's behalf.
@@ -14,9 +14,10 @@ not. Never authenticate on the developer's behalf.
 # owner / repo for the current checkout
 gh repo view --json nameWithOwner,owner,name
 
-# PR for the current branch — its absence is what selects chat mode. Use `gh pr list`, never `gh pr view`,
-# which exits 1 both when no PR exists and when it can't reach GitHub: exit ≠ 0 is a tooling failure that
-# aborts, exit 0 with `[]` is genuinely no PR.
+# PR for the current branch. Use `gh pr list`, never `gh pr view`, which exits 1 both when no PR exists and
+# when it can't reach GitHub: exit ≠ 0 is a tooling failure that aborts the run, exit 0 with `[]` is
+# genuinely no PR — and a `pr`-mode run with no open PR stops there. `--state open` matters: a merged or
+# closed PR is not something to review onto. Never wrap the call in `||`.
 gh pr list --head "$(git branch --show-current)" --state open \
   --json number,title,url,headRefName,baseRefName,state,isDraft
 
@@ -26,7 +27,8 @@ git rev-parse HEAD
 
 ## Posting a review (review-changes)
 
-One batched review event per round. Build the payload as a file, then:
+One batched review event per round; what goes in the body and the footer is
+[`output-pr.md`](output-pr.md). Build the payload as a file, then:
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
@@ -48,8 +50,7 @@ gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
 }
 ```
 
-`event` is always `COMMENT`. For a multi-line anchor add `start_line` (and `start_side`) alongside
-`line`.
+For a multi-line anchor add `start_line` (and `start_side`) alongside `line`.
 
 ### Validate every anchor first — the POST is all-or-nothing
 
@@ -95,7 +96,8 @@ Fields worth reading per inline comment:
 
 **Telling the sources apart matters**, because they are adjudicated differently: a comment whose body ends
 in a `— Reviewed by …` footer is this workflow's own review, whichever provider produced it, and may be
-rejected; a bot's gets no deference at all; a human's may never be rejected. Test the footer **first** —
+rejected — and where several agents reviewed the same PR, the tag in that footer says which one, matching
+the prefix on its finding ids; a bot's gets no deference at all; a human's may never be rejected. Test the footer **first** —
 `user.login` is the repo owner's account for every agent, so nothing else separates this workflow's review
 from a human's — then `user.type == "Bot"` for the bots. Never match bot logins by name; see the source
 table in `../resolve-review/SKILL.md` for why.

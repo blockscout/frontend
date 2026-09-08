@@ -1,24 +1,48 @@
 ---
 name: resolve-review
 description: >-
-  Close out review findings on a PR — adjudicate each one, fix what deserves fixing, then reply and resolve
-  the threads.
+  Close out review findings — adjudicate each one, fix what deserves fixing, then reply on the PR threads or
+  in the task's review file.
+argument-hint: pr|md [<PR url | comment url | review file path>]
 disable-model-invocation: true
 ---
 
 # Resolve review
 
-Work through a PR's review findings and close them out. The hard part is not fixing — it is deciding *which*
-findings deserve a fix. So the centre of this skill is **adjudication**: every finding gets a **verdict**,
-reached skeptically, by checking the claim against the real code and the project's intent rather than by
-trusting how confidently it was worded.
+Work through a change's review findings and close them out. The hard part is not fixing — it is deciding
+*which* findings deserve a fix. So the centre of this skill is **adjudication**: every finding gets a
+**verdict**, reached skeptically, by checking the claim against the real code and the project's intent
+rather than by trusting how confidently it was worded.
 
-In the product-task workflow this runs at **land**, against the whole-task PR — it adjudicates the inline
-comments `review-changes` posted, alongside any human or bot comments on the same PR.
+In the product-task workflow this runs at **land**, against the whole-task PR, and mid-ticket against the
+review file `review-changes` wrote for uncommitted work.
+
+## Inputs
+
+Mirrors `review-changes`: the same output, first and required, decides where the findings are read from and
+replied to.
+
+| Input | Values | Default | Meaning |
+| --- | --- | --- | --- |
+| `output` *(positional)* | `pr` · `md` | **required** | where the findings live |
+| `target` *(positional)* | PR url, comment url, or review-file path | the current branch's PR / its review file | scopes the run |
+
+```
+/resolve-review pr                      every open finding on the current branch's PR
+/resolve-review pr <comment url>        that single comment, scoping the whole run to it
+/resolve-review md                      the current branch's review file
+/resolve-review md <path>               that review file — one reviewer's, where several ran
+```
+
+The default `md` path is resolved exactly as `review-changes` resolves it
+([`../review-changes/output-md.md`](../review-changes/output-md.md)). Several review files side by side
+means several reviewers ran: resolve them in one pass, and where two raise the same defect, fix once and
+reply on both.
 
 ## Verdicts, by source
 
-Which verdicts are even available depends on who raised the finding, so establish the source first.
+Which verdicts are even available depends on who raised the finding, so establish the source first. In `md`
+mode every finding came from `review-changes`, so the question does not arise — `fix` or `reject`.
 
 | Source | How you know it | Verdicts |
 | --- | --- | --- |
@@ -48,27 +72,30 @@ Two further rules on verdicts:
   `needs-human`.
 - **Nits are `deferred`**, not fixed. The developer may promote one at Gate 1.
 
-## Invocation
-
-- `/resolve-review` — the usual case: resolve the open findings on the current branch's PR.
-- `/resolve-review <PR url | comment url>` — that PR, or that single comment, scoping the whole run to it.
-
 ## 1. Scope
 
-Establish what you are resolving. Derive `owner/repo` and the PR number, and confirm `gh auth status`
-succeeds (commands: [`../review-changes/gh-commands.md`](../review-changes/gh-commands.md)).
+Establish what you are resolving:
+- in `pr` mode derive `owner/repo` and the PR number, and confirm `gh auth
+status` succeeds (commands: [`../review-changes/gh-commands.md`](../review-changes/gh-commands.md))
+- in `md` mode resolve the review file and read it; a path that does not exist stops the run rather than
+becoming a fresh review.
 
-**Done when**: you know the unit of work and whether the scope is every open finding or one specific comment.
+**Done when**: you know the unit of work and whether the scope is every open finding or one specific
+finding.
 
 ## 2. Gather
 
-Collect every **actionable** finding — inline review comments, PR-level reviews, and issue comments
-([`../review-changes/gh-commands.md`](../review-changes/gh-commands.md)). Keep only unresolved, actionable
-threads. Drop already-resolved threads, your own prior replies, and bot status noise (CodeRabbit "review
-skipped", Copilot's PR overview).
+In `pr` mode, collect every **actionable** finding — inline review comments, PR-level reviews, and issue
+comments ([`../review-changes/gh-commands.md`](../review-changes/gh-commands.md)). Keep only unresolved,
+actionable threads. Drop already-resolved threads, your own prior replies, and bot status noise (CodeRabbit
+"review skipped", Copilot's PR overview). Tag each with its **source** per the table above.
 
-Tag each with its **source** per the table above, then open the code it points at — `path` + `line`, or the
-`diff_hunk` — so the next step judges against reality rather than against the comment text.
+In `md` mode, collect every finding whose `**Status:**` is `open` or `disputed`. The file's reply
+blockquotes carry the exchange history — read them, so a finding you already rejected once is not rejected
+again on the same grounds.
+
+Either way, open the code each finding points at — `path` + `line`, or the `diff_hunk` — so the next step
+judges against reality rather than against the comment text.
 
 **Done when**: every actionable finding is listed with its source, its location, and the current code it
 refers to. Exhaustive, not a sample.
@@ -92,9 +119,9 @@ text for a `reject` or an `answered`.
 
 ## 4. Gate 1 — confirm
 
-**A hard stop.** Present a table — finding (`file:line` + short quote), source, verdict, reasoning, proposed
-action — and list the `needs-human` items as questions. Then **stop and wait**. Edit no code until the
-developer confirms; they may re-categorise anything or answer the open questions. This is the cheapest
+**A hard stop.** Present a table — finding (id, `file:line` + short quote), source, verdict, reasoning,
+proposed action — and list the `needs-human` items as questions. Then **stop and wait**. Edit no code until
+the developer confirms; they may re-categorise anything or answer the open questions. This is the cheapest
 steering point in the whole process, which is why it comes before any edit.
 
 **Done when**: the developer has confirmed.
@@ -110,26 +137,29 @@ findings untouched.
 ## 6. Gate 2 — review the diff
 
 **A hard stop.** Show `git diff` plus a per-finding summary of what changed, and wait for approval before
-anything is pushed or replied to. The developer commits and pushes the fixes — the reviewer's next
-arbitration round reads them from the PR.
+anything is pushed or replied to. In `pr` mode the developer commits and pushes the fixes — the reviewer's
+next follow-up round reads them from the PR. In `md` mode the fixes stay uncommitted, which is what the
+reviewer's follow-up round reads.
 
 ## 7. Close out
 
-Reply to every thread; **who resolves depends on the source.**
+Reply to every finding; **who closes it depends on the source.**
 
 - `fix` → what changed, plus the commit sha once it exists.
 - `reject` → the explanation.
 - `answered` → the reasoning, the alternatives, why this path won.
 
-**This workflow's own findings — reply, never resolve.** The reviewer raised them and owns their close: it
-verifies the fix (or agrees the reject) and resolves in its next arbitration round, which is what lets it
-confirm the work landed and post the final all-clear. Resolving here would close the loop before the
-reviewer ever checked it.
+**This workflow's own findings — reply, never close.** The reviewer raised them and owns their close: it
+verifies the fix (or agrees the reject) and closes them in its next follow-up round, which is what lets it
+confirm the work landed and post the final all-clear. Closing here would end the loop before the reviewer
+ever checked it.
 
-**Bot findings** — resolve on `fix` or `reject`; a bot has no arbitration round, so its verdict stands on
-posting. **Human findings** — resolve on `fix`, and leave `answered` open for the human. Leave every
-`needs-human` thread open — those must stay visible.
+In `pr` mode that means replying on the thread and leaving it unresolved. **Bot findings** — resolve on
+`fix` or `reject`; a bot has no follow-up round, so its verdict stands on posting. **Human findings** —
+resolve on `fix`, and leave `answered` open for the human. Leave every `needs-human` thread open.
 
-**Done when**: every adjudicated finding has been replied to and (where settled) resolved on the PR. Then
-report: counts per verdict, every `reject`/`answered` with its one-line reason, and anything left for a
-human.
+In `md` mode, append a reply line under the finding — `> **resolve-review, round <n>:** fix — <what
+changed>` — and leave its `**Status:**` alone.
+
+**Done when**: every adjudicated finding has been replied to and (where settled) resolved. Then report:
+counts per verdict, every `reject`/`answered` with its one-line reason, and anything left for a human.
