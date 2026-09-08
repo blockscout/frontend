@@ -1,9 +1,9 @@
 # gh / GraphQL command reference
 
-The whole PR surface both review skills need: `review-changes` posts findings and, in arbitration rounds,
-replies and resolves the threads it raised; `resolve-review` gathers, replies, and resolves bot and human
-threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive `{owner}/{repo}` once
-and reuse.
+The whole PR surface both review skills need in `pr` mode: `review-changes` posts findings and, in
+follow-up rounds, replies and resolves the threads it raised; `resolve-review` gathers, replies, and
+resolves threads. Substitute `{owner}`, `{repo}`, `{N}` (PR number), `{commentId}`. Derive
+`{owner}/{repo}` once and reuse.
 
 Confirm `gh auth status` succeeds before anything else — follow the `check-github-cli` skill if it does
 not. Never authenticate on the developer's behalf.
@@ -14,11 +14,12 @@ not. Never authenticate on the developer's behalf.
 # owner / repo for the current checkout
 gh repo view --json nameWithOwner,owner,name
 
-# PR for the current branch — its absence is what selects chat mode. Use `gh pr list`, never `gh pr view`,
-# which exits 1 both when no PR exists and when it can't reach GitHub: exit ≠ 0 is a tooling failure that
-# aborts, exit 0 with `[]` is genuinely no PR.
+# PR for the current branch. Use `gh pr list`, never `gh pr view`, which exits 1 both when no PR exists and
+# when it can't reach GitHub: exit ≠ 0 is a tooling failure that aborts the run, exit 0 with `[]` is
+# genuinely no PR — and a `pr`-mode run with no open PR stops there. `--state open` matters: a merged or
+# closed PR is not something to review onto. Never wrap the call in `||`.
 gh pr list --head "$(git branch --show-current)" --state open \
-  --json number,title,url,headRefName,baseRefName,state,isDraft
+  --json number,title,url,headRefName,headRefOid,baseRefName,state,isDraft
 
 # head sha, needed as commit_id when posting a review
 git rev-parse HEAD
@@ -26,7 +27,8 @@ git rev-parse HEAD
 
 ## Posting a review (review-changes)
 
-One batched review event per round. Build the payload as a file, then:
+One batched review event per round, whose body is the summary; the finding format, the summary shape and
+the footer are [`output-pr.md`](output-pr.md). Build the payload as a file, then:
 
 ```bash
 gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
@@ -36,20 +38,28 @@ gh api -X POST repos/{owner}/{repo}/pulls/{N}/reviews --input review.json
 {
   "commit_id": "<head sha>",
   "event": "COMMENT",
-  "body": "<header table, plus a '## Not anchorable' section if any>",
+  "body": "<the summary: status line, counters line, axes line, footer>",
   "comments": [
     {
       "path": "src/slices/token/pages/Holders.tsx",
       "line": 41,
       "side": "RIGHT",
-      "body": "**F1 · blocker** — <claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
+      "body": "**🛑 F1 · blocker**\n\n<claim>\n\n<suggested fix>\n\n— Reviewed by <agent or model name>"
     }
   ]
 }
 ```
 
-`event` is always `COMMENT`. For a multi-line anchor add `start_line` (and `start_side`) alongside
-`line`.
+For a multi-line anchor add `start_line` (and `start_side`) alongside `line`.
+
+Findings with no anchor, and a `follow-up` round's rulings on them, are issue comments — posted after the
+review event, one comment per round:
+
+```bash
+gh api -X POST repos/{owner}/{repo}/issues/{N}/comments -F body=@not-anchorable.md
+```
+
+`-F body=@<file>` reads the body from a file; `-f body="…"` mangles a multi-line string.
 
 ### Validate every anchor first — the POST is all-or-nothing
 
@@ -64,9 +74,9 @@ gh api repos/{owner}/{repo}/pulls/{N}/files --paginate \
 For each file, walk its `patch`: every `@@ -a,b +c,d @@` header starts a hunk whose RIGHT-side line
 numbers run from `c`; added (`+`) and context (` `) lines each advance that counter and are anchorable,
 removed (`-`) lines do not advance it and are not. A finding whose line is outside that set moves into the
-review body under `## Not anchorable`.
+non-anchorable issue comment.
 
-If a POST still 422s, retry once with the offending comments demoted into the body. Never drop them.
+If a POST still 422s, retry once with the offending comments moved into that comment. Never drop them.
 
 ## Gather (resolve-review)
 
@@ -77,7 +87,7 @@ gh api repos/{owner}/{repo}/pulls/{N}/comments --paginate
 # PR-level reviews (summary body + state per reviewer)
 gh api repos/{owner}/{repo}/pulls/{N}/reviews --paginate
 
-# issue-level comments (the conversation tab, incl. most bot posts)
+# issue-level comments (the conversation tab)
 gh api repos/{owner}/{repo}/issues/{N}/comments --paginate
 ```
 
@@ -89,16 +99,24 @@ Fields worth reading per inline comment:
 | `in_reply_to_id` | `null` = top-level; otherwise a reply within a thread |
 | `path`, `line` / `original_line` | where it sits — open this code |
 | `diff_hunk` | the snippet the reviewer saw |
-| `user.login` | author — this is how you tell a human from a bot from this workflow's own review |
+| `user.login` | author — who to address in a reply |
 | `body` | the comment text |
 | `html_url` | link back to the comment |
 
 **Telling the sources apart matters**, because they are adjudicated differently: a comment whose body ends
 in a `— Reviewed by …` footer is this workflow's own review, whichever provider produced it, and may be
-rejected; a bot's gets no deference at all; a human's may never be rejected. Test the footer **first** —
-`user.login` is the repo owner's account for every agent, so nothing else separates this workflow's review
-from a human's — then `user.type == "Bot"` for the bots. Never match bot logins by name; see the source
-table in `../resolve-review/SKILL.md` for why.
+rejected — and where several agents reviewed the same PR, the tag in that footer says which one, matching
+the prefix on its finding ids.
+
+The footer is the only thing that separates this workflow's own review from a human's: `user.login` is the
+repo owner's account for every agent, so nothing else tells them apart. It does not settle bots, which
+`user.type` catches — the full source split, and which verdicts each source allows, is the table in
+[`../resolve-review/SKILL.md`](../resolve-review/SKILL.md).
+
+A footer-bearing **issue** comment titled `### 📎 Findings without a diff anchor` carries findings, not
+conversation: one per `**<emoji> <tag->F<n> · <severity>**` title, the tag prefix present exactly when the
+review ran under `--as`. It has no thread, so a reply is a new issue comment naming those ids, and there is
+nothing to resolve.
 
 ### Parse a comment / PR link
 
@@ -145,7 +163,5 @@ Notes:
 - Reply *before* resolving — a resolved thread still accepts replies, but replying first keeps the
   explanation visible.
 - Skip threads already `isResolved`.
-- Leave `disputed`, `needs-human` and `answered` threads **unresolved** — they are exactly the ones that
-  must stay visible.
-- Bot status posts (CodeRabbit "review skipped", Copilot's PR overview) arrive as issue comments, have no
-  thread to resolve, and are not actionable.
+- Leave `disputed`, `deferred`, `needs-human` and `answered` threads **unresolved** — they are exactly the
+  ones that must stay visible.

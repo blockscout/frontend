@@ -19,9 +19,10 @@ ticket is unfinished — there is nothing to land yet.
 
 Then delete the disposable files, keeping only `spec.md` in the task folder:
 
-- `tickets/` — the whole directory.
+- `tickets/` — the whole directory, review files included.
 - `progress.md`.
 - `questions.md`.
+- `review.md` / `review-<tag>.md`, if a task-level review ran in `md` mode.
 
 Commit the deletions on the feature branch as the task's final commit — a plain descriptive subject, the
 repo's `Co-Authored-By` trailer, no `#issue` reference. Pruning **before** the PR is finalized is what lets
