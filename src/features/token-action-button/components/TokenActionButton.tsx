@@ -23,6 +23,7 @@ interface Props {
 
 const TokenActionButton = ({ tokenType, isLoading }: Props) => {
   const handleClick = React.useCallback(() => {
+    // Stryker disable next-line ConditionalExpression: narrowing guard for feature.button; a disabled feature renders no button, so the handler cannot run
     if (feature.isEnabled) {
       mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: feature.button.text, Source: 'token' });
     }
