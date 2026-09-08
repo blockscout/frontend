@@ -16,7 +16,7 @@ const buttonSchema: yup.ObjectSchema<TokenActionButtonConfig> = yup
   .shape({
     text: yup.string().required(),
     url: yup.string().test(urlTest).required(),
-    logo: yup.array().max(2).of(yup.string()),
+    logo: yup.array().max(2).of(yup.string().test(urlTest)),
     colors: yup.object({
       _default: colorStateSchema,
     }),

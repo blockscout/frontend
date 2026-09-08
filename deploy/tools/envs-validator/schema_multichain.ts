@@ -72,6 +72,7 @@ const schema = yup
   .concat(featuresSchemas.crossChainTxsSchema)
   .concat(featuresSchemas.defiDropdownSchema)
   .concat(featuresSchemas.multichainButtonSchema)
+  .concat(featuresSchemas.tokenActionButtonSchema)
   .concat(featuresSchemas.userOpsSchema)
   .concat(servicesSchemas);
 
