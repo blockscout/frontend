@@ -2,16 +2,28 @@
 
 import type { NextRequest, NextResponse } from 'next/server';
 
+import { isColorThemeAvailable } from 'src/shell/top-bar/settings/color-theme/utils';
+
 import appConfig from 'src/config';
 import * as cookiesLib from 'src/shared/storage/cookies';
 
 export default function colorThemeMiddleware(req: NextRequest, res: NextResponse) {
+  const { themes, 'default': defaultTheme } = appConfig.shell.topBar.colorTheme;
   const colorModeCookie = req.cookies.get(cookiesLib.NAMES.COLOR_MODE);
+  const colorThemeCookie = req.cookies.get(cookiesLib.NAMES.COLOR_THEME);
 
-  if (!colorModeCookie) {
-    if (appConfig.shell.topBar.colorTheme.default) {
-      res.cookies.set(cookiesLib.NAMES.COLOR_MODE, appConfig.shell.topBar.colorTheme.default.colorMode, cookiesLib.getDefaultAttributes());
-      res.cookies.set(cookiesLib.NAMES.COLOR_THEME, appConfig.shell.topBar.colorTheme.default.id, cookiesLib.getDefaultAttributes());
+  const nextTheme = (() => {
+    if (colorThemeCookie && !isColorThemeAvailable(colorThemeCookie.value)) {
+      return defaultTheme ?? themes[0];
     }
+
+    return colorModeCookie ? undefined : defaultTheme;
+  })();
+
+  if (!nextTheme) {
+    return;
   }
+
+  res.cookies.set(cookiesLib.NAMES.COLOR_MODE, nextTheme.colorMode, cookiesLib.getDefaultAttributes());
+  res.cookies.set(cookiesLib.NAMES.COLOR_THEME, nextTheme.id, cookiesLib.getDefaultAttributes());
 }

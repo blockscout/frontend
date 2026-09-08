@@ -67,7 +67,6 @@ const Settings = () => {
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody>
           <SettingsColorTheme onSelect={ popover.onClose }/>
-          <Separator my={ 3 }/>
           <SettingsIdentIcon/>
           <SettingsAddressFormat/>
           <Separator my={ 3 }/>
