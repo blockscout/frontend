@@ -13,19 +13,23 @@ import { Link } from 'src/toolkit/chakra/link';
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationMethod from '../ContractVerificationMethod';
+import { getFoundryVerificationParams } from './utils';
 
 const ContractVerificationSolidityFoundry = () => {
   const { watch } = useFormContext<FormFields>();
   const address = watch('address');
-  const coreApiEndpoint = config.apis.core ?
-    `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }` : '';
 
-  const codeSnippet = `forge verify-contract \\
-  --rpc-url ${ config.chain.rpcUrls[0] || (coreApiEndpoint ? `${ coreApiEndpoint }/api/eth-rpc` : '') } \\
-  --verifier blockscout \\
-  --verifier-url '${ coreApiEndpoint ? `${ coreApiEndpoint }/api/` : '' }' \\
-  ${ address || '<address>' } \\
-  [contractFile]:[contractName]`;
+  const { rpcUrl, apiKey, verifierUrl } = getFoundryVerificationParams();
+
+  const codeSnippet = [
+    'forge verify-contract \\',
+    `  --rpc-url ${ rpcUrl } \\`,
+    '  --verifier blockscout \\',
+    `  --verifier-url '${ verifierUrl }' \\`,
+    ...(apiKey ? [ `  --etherscan-api-key ${ apiKey } \\` ] : []),
+    `  ${ address || '<address>' } \\`,
+    '  [contractFile]:[contractName]',
+  ].join('\n');
 
   return (
     <ContractVerificationMethod title="Contract verification via Foundry">
@@ -38,6 +42,14 @@ const ContractVerificationSolidityFoundry = () => {
           <Link href="https://docs.blockscout.com/devs/verification/foundry-verification" external>
             here
           </Link>
+          { config.chain.isProApiSupported && (
+            <Box mt={ 1 }>
+              <span>Get your Pro API key in the </span>
+              <Link href="https://dev.blockscout.com/?utm_source=blockscout&utm_medium=contract_verification" external>
+                Blockscout Dev Portal
+              </Link>
+            </Box>
+          ) }
         </Box>
       </ContractVerificationFormRow>
     </ContractVerificationMethod>
