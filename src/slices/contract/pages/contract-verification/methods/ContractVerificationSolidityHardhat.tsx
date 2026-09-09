@@ -15,6 +15,7 @@ import { Link } from 'src/toolkit/chakra/link';
 import ContractVerificationFormCodeSnippet from '../ContractVerificationFormCodeSnippet';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 import ContractVerificationMethod from '../ContractVerificationMethod';
+import { getHardhatVerificationParams } from './utils';
 
 const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: SmartContractVerificationConfig }) => {
   const chainNameSlug = config.chain.name?.toLowerCase().split(' ').join('-');
@@ -23,23 +24,25 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
 
   const latestSolidityVersion = formConfig.solidity_compiler_versions.find((version) => !version.includes('nightly'))?.split('+')[0];
 
+  const { rpcUrl, apiKey, apiUrl } = getHardhatVerificationParams();
+
   const firstCodeSnippet = `const config: HardhatUserConfig = {
   solidity: "${ latestSolidityVersion || '0.8.24' }", // replace if necessary
   networks: {
     '${ chainNameSlug }': {
-      url: '${ config.chain.rpcUrls[0] || (config.apis.core ? `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }/api/eth-rpc` : '') }'
+      url: '${ rpcUrl }'
     },
   },
   etherscan: {
     apiKey: {
-      '${ chainNameSlug }': 'empty'
+      '${ chainNameSlug }': '${ apiKey }'
     },
     customChains: [
       {
         network: "${ chainNameSlug }",
         chainId: ${ config.chain.id },
         urls: {
-          apiURL: "${ config.apis.core ? `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }/api` : '' }",
+          apiURL: "${ apiUrl }",
           browserURL: "${ config.app.baseUrl }"
         }
       }
@@ -64,6 +67,14 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
           <Link href="https://docs.blockscout.com/devs/verification/hardhat-verification-plugin" external>
             here
           </Link>
+          { config.chain.isProApiSupported && (
+            <Box mt={ 1 }>
+              <span>Get your Pro API key in the </span>
+              <Link href="https://dev.blockscout.com/?utm_source=blockscout&utm_medium=contract_verification" external>
+                Blockscout Dev Portal
+              </Link>
+            </Box>
+          ) }
         </Box>
       </ContractVerificationFormRow>
     </ContractVerificationMethod>
