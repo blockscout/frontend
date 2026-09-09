@@ -43,6 +43,13 @@ describe('collectMarkdown', () => {
     expect(await collectMarkdown(root, '.agents')).toEqual([ '.agents/AGENTS.md' ]);
   });
 
+  it('keeps a directory whose name merely starts with an excluded one', async() => {
+    write('.agents/tasks/1234-thing/spec.md');
+    write('.agents/tasks-archive/notes.md');
+
+    expect(await collectMarkdown(root, '.agents')).toEqual([ '.agents/tasks-archive/notes.md' ]);
+  });
+
   it('skips node_modules and other generated directories', async() => {
     write('.agents/node_modules/pkg/README.md');
     write('.agents/.next/build.md');

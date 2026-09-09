@@ -98,6 +98,13 @@ describe('spliceBlock', () => {
       .toThrow(`Missing or malformed presets:start/presets:end markers in ${ WORKFLOW_TARGET.file }`);
   });
 
+  it('throws when one line carries both markers, bracketing no block', () => {
+    const content = [ 'options:', '            # presets:start — ... # presets:end', '            - eth' ].join('\n');
+
+    expect(() => spliceBlock(WORKFLOW_TARGET, content, ALIASES))
+      .toThrow(`Missing or malformed presets:start/presets:end markers in ${ WORKFLOW_TARGET.file }`);
+  });
+
   it('throws when the markers are inverted', () => {
     const content = [
       'options:',

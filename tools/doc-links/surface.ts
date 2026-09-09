@@ -15,7 +15,9 @@ const SKIPPED_DIRS = new Set([ 'node_modules', '.git', '.next' ]);
 
 const MARKDOWN = /\.mdc?$/;
 
-const isExcluded = (rel: string): boolean => EXCLUDED.some((ex) => rel === ex || rel.startsWith(`${ ex }/`));
+// The trailing slashes match an excluded path and everything below it, but not a sibling whose name
+// merely starts the same way — `.agents/tasks-archive`.
+const isExcluded = (rel: string): boolean => EXCLUDED.some((ex) => `${ rel }/`.startsWith(`${ ex }/`));
 
 export async function collectMarkdown(root: string, dir: string, acc: Array<string> = []): Promise<Array<string>> {
   let entries: Array<Dirent>;

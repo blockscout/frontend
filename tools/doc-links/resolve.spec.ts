@@ -112,7 +112,9 @@ describe('nearby', () => {
     expect(nearby(path.join(root, '.agents'), 'rules/gone.md')).toBe(true);
   });
 
-  it('is false for a bare filename, which names no directory to look beside', () => {
+  it('is false for a bare filename, even though the referring directory itself exists', () => {
+    write('.agents/AGENTS.md');
+
     expect(nearby(path.join(root, '.agents'), 'gone.md')).toBe(false);
   });
 

@@ -67,6 +67,18 @@ describe('the four reported classes', () => {
     expect(await messagesFor('See [docs](./rules/docs.md#What-Earns-A-Line).')).toEqual([]);
   });
 
+  it('reports a sibling link written without a slash', async() => {
+    expect(await messagesFor('See [docs](gone.md).')).toEqual([ 'link target does not exist: gone.md' ]);
+  });
+
+  it('accepts a link to a markdown file with no anchor', async() => {
+    expect(await messagesFor('See [docs](./rules/docs.md).')).toEqual([]);
+  });
+
+  it('leaves an anchor on a target that is not markdown unchecked', async() => {
+    expect(await messagesFor('See [the type](../src/api/types.ts#L20).')).toEqual([]);
+  });
+
   it('reports a shorthand path in full', async() => {
     expect(await messagesFor('See `toolkit/theme/theme.ts`.'))
       .toEqual([ 'toolkit/theme/theme.ts is shorthand; write it in full: src/toolkit/theme/theme.ts' ]);
@@ -82,6 +94,7 @@ describe('what is not a reference', () => {
     [ 'bracket text without a slash or an extension', [ 'See [just prose](notafile).' ] ],
     [ 'a protocol or in-page link', [ '[web](https://example.com), [mail](mailto:a@b.c), [top](#heading)' ] ],
     [ 'a backtick span containing whitespace', [ 'Run `node src/api/gone.ts --flag`.' ] ],
+    [ 'a slash-bearing span with no file extension', [ 'The request runs through `src/api/resources`.' ] ],
     [ 'a path naming a shape rather than a location', [ 'Every slice has a `types/api.ts`.' ] ],
     [ 'a bare directory naming a convention', [ 'Each slice keeps a `hooks/` folder.' ] ],
   ])('exempts %s', async(_name, lines) => {

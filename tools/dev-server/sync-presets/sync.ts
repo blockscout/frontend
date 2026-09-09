@@ -38,7 +38,9 @@ export function spliceBlock(target: PresetTarget, content: string, aliases: Read
   const startIndex = lines.findIndex((line) => line.includes(START));
   const endIndex = lines.findIndex((line) => line.includes(END));
 
-  if (startIndex === -1 || endIndex === -1 || endIndex < startIndex) {
+  // A missing end marker leaves endIndex at -1, so `<=` rejects that too; equal indexes mean one line
+  // carries both markers and brackets no block.
+  if (startIndex === -1 || endIndex <= startIndex) {
     throw new Error(`Missing or malformed ${ START }/${ END } markers in ${ target.file }`);
   }
 

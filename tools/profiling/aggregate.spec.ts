@@ -125,9 +125,10 @@ describe('replayOperations', () => {
     expect(names.get(4)?.name).toBe('Anonymous');
   });
 
-  it('throws on a string id past the end of the table', () => {
-    expect(() => replayOperations(operations([ 'Row' ], addElement(4, ELEMENT_TYPE_FUNCTION, 9)), new Map()))
-      .toThrow('string id out of range: 9');
+  // Id 2 is the first past the end of a one-string table (index 0 is the null placeholder).
+  it('throws on the first string id past the end of the table', () => {
+    expect(() => replayOperations(operations([ 'Row' ], addElement(4, ELEMENT_TYPE_FUNCTION, 2)), new Map()))
+      .toThrow('string id out of range: 2');
   });
 
   it('throws on an unknown op code, naming the index it stalled at', () => {
@@ -136,12 +137,13 @@ describe('replayOperations', () => {
   });
 
   // Each of these records is skipped by width alone; getting the arithmetic wrong desynchronises the
-  // walk, so the check is that the ADD that follows still lands.
+  // walk, so the check is that the ADD that follows still lands. Operand values are kept above the op-code
+  // range, so a walk that lands mid-record cannot read one of them as a valid op and resynchronise.
   const SKIPPED: ReadonlyArray<readonly [ string, Array<number> ]> = [
     [ 'REMOVE', removeRecord(7, 8, 9) ],
-    [ 'REORDER_CHILDREN', reorderChildren(2, 3, 4, 5) ],
+    [ 'REORDER_CHILDREN', reorderChildren(2, 30, 31, 32) ],
     [ 'UPDATE_TREE_BASE_DURATION', updateTreeBaseDuration(2, 12) ],
-    [ 'UPDATE_ERRORS_OR_WARNINGS', updateErrorsOrWarnings(2, 1, 2) ],
+    [ 'UPDATE_ERRORS_OR_WARNINGS', updateErrorsOrWarnings(2, 30, 31) ],
     [ 'REMOVE_ROOT', removeRootRecord() ],
     [ 'SET_SUBTREE_MODE', setSubtreeMode(1) ],
   ];
@@ -368,6 +370,13 @@ describe('printDelta', () => {
       40,
     );
     expect(cells(capturedLines(log)[2])).toEqual([ 'Row (Memo)', '0.0 (0)', '9.0 (4)', '+9.0' ]);
+  });
+
+  it('signs an unchanged component with a plus', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const unchanged = [ { name: 'Row (Memo)', total: 2, count: 4, avg: 0.5 } ];
+    printDelta({ ...PRINT_RESULT, rows: unchanged }, { ...resultB, rows: unchanged }, 40);
+    expect(cells(capturedLines(log)[2])).toEqual([ 'Row (Memo)', '2.0 (4)', '2.0 (4)', '+0.0' ]);
   });
 
   it('prints at most `top` rows', () => {
