@@ -34,8 +34,8 @@ its name.
 | `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
 | `run_steps.sh` | Sourced by all three run scripts: env layering (`build_port_args`, `build_env_args`), asset regeneration (`prepare_assets`), and the launch wrapper (`run_with_envs`). What stays in a run script is its argument parsing and the command it finally runs. |
 | `.env.localhost` | Committed base config for local-backend dev. |
-| `sync-preset-lists.mjs` | Regenerates / checks the alias dropdowns from `registry.json`. |
-| `fetch.js`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
+| `sync-presets/` | Regenerates / checks the alias dropdowns from `registry.json`; `run.sh` is its compile-on-run wrapper. |
+| `fetch.js`, `sync-presets/dist/`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
 
 ## Dropped envs: `ignoredEnvs` vs `deprecatedEnvs`
 
@@ -73,6 +73,9 @@ lives here):
 - **`--omit-local-envs` is the dev/container switch.** Dev mode applies `localEnvs` (so APP_HOST
   etc. point at `localhost`); the container passes `--omit-local-envs` so those keys are absent
   and the deployment's own APP_* values survive (this replaced the old entrypoint blacklist).
+- **`tools/dev-server/tsconfig.json` must never get an `outDir`.** `fetch.js` has to emit beside
+  `fetch.ts` — the Dockerfile `COPY`s it from there and `fetch.sh` runs it from there. That is why the
+  sync tool has its own `sync-presets/tsconfig.json` emitting to `sync-presets/dist/`.
 
 ## Env layering (highest → lowest priority)
 

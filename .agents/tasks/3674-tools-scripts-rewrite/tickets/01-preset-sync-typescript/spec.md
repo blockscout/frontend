@@ -18,20 +18,20 @@ contract in the Dockerfile, the container entrypoint, several skills and the con
 
 ## Acceptance criteria
 
-- [ ] `pnpm presets:lint` on a clean tree prints the same per-target `✓` lines and exits 0; with a
+- [x] `pnpm presets:lint` on a clean tree prints the same per-target `✓` lines and exits 0; with a
       hand-edited alias block it prints the same `✗ out of sync:` line plus the trailing "Run
       `pnpm presets:sync`" message and exits 1.
-- [ ] `pnpm presets:sync` on a clean tree prints `✓ ok` per target and changes nothing; after a registry
+- [x] `pnpm presets:sync` on a clean tree prints `✓ ok` per target and changes nothing; after a registry
       edit it rewrites both targets, prints `✏️  updated`, and a following `presets:lint` passes.
-- [ ] `.github/workflows/deploy-review.yml` and `.vscode/tasks.json` are byte-identical after a
+- [x] `.github/workflows/deploy-review.yml` and `.vscode/tasks.json` are byte-identical after a
       `presets:sync` on an unmodified registry.
-- [ ] A missing or inverted `presets:start` / `presets:end` marker pair still throws naming the target file.
-- [ ] `pnpm lint:tsc` type-checks the new sources; `tools/dev-server/sync-preset-lists.mjs` no longer exists.
-- [ ] `pnpm test:vitest` runs the new co-located specs, and
+- [x] A missing or inverted `presets:start` / `presets:end` marker pair still throws naming the target file.
+- [x] `pnpm lint:tsc` type-checks the new sources; `tools/dev-server/sync-preset-lists.mjs` no longer exists.
+- [x] `pnpm test:vitest` runs the new co-located specs, and
       `./tools/code-complexity/run.sh tools/dev-server/sync-presets` reports every function inside both caps
       with non-zero coverage.
-- [ ] The compiled output is git-ignored and nothing under it is committed.
-- [ ] `pnpm dev:preset`, `pnpm dev:local` and `pnpm prod:preset` still fetch envs — `tools/dev-server/fetch.js`
+- [x] The compiled output is git-ignored and nothing under it is committed.
+- [x] `pnpm dev:preset`, `pnpm dev:local` and `pnpm prod:preset` still fetch envs — `tools/dev-server/fetch.js`
       is emitted where the Dockerfile's `COPY` expects it.
 
 ## Details
@@ -58,13 +58,13 @@ row — both need updating for the new location. The registry row stays as it is
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Create `tools/dev-server/sync-presets/` — the module (registry read, target table, block
+- [x] 1 `[agent]` Create `tools/dev-server/sync-presets/` — the module (registry read, target table, block
       build, marker splice) and a separate CLI entry file
-- [ ] 2 `[agent]` Add its `tsconfig.json` with its own `outDir`, and the compile-on-run `run.sh`
-- [ ] 3 `[agent]` Write co-located specs: block building per target style, splice against fixture content,
+- [x] 2 `[agent]` Add its `tsconfig.json` with its own `outDir`, and the compile-on-run `run.sh`
+- [x] 3 `[agent]` Write co-located specs: block building per target style, splice against fixture content,
       drift detection, the malformed-marker throw
-- [ ] 4 `[agent]` Repoint the `presets:sync` / `presets:lint` scripts in `package.json`, gitignore the
+- [x] 4 `[agent]` Repoint the `presets:sync` / `presets:lint` scripts in `package.json`, gitignore the
       compiled output, delete `tools/dev-server/sync-preset-lists.mjs`
-- [ ] 5 `[agent]` Update the `tools/dev-server/CONTEXT.md` file table
-- [ ] 6 `[agent]` Verify: both commands round-trip, `pnpm lint:tsc`, `pnpm test:vitest`, the complexity gate
+- [x] 5 `[agent]` Update the `tools/dev-server/CONTEXT.md` file table
+- [x] 6 `[agent]` Verify: both commands round-trip, `pnpm lint:tsc`, `pnpm test:vitest`, the complexity gate
       on the new folder, and that `pnpm dev:preset <alias>` still fetches envs
