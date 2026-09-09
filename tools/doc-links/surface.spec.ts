@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
-import { collectMarkdown, collectSurface, contextFiles, dedupeByRealPath } from './surface';
+import { collectMarkdown, collectSurface, contextDirs, contextSurface, dedupeByRealPath } from './surface';
 
 let root: string;
 
@@ -64,15 +64,66 @@ describe('collectMarkdown', () => {
   });
 });
 
-describe('contextFiles', () => {
-  it('takes the files named exactly CONTEXT.md, wherever they live', () => {
+describe('contextDirs', () => {
+  it('takes the directory of every file named exactly CONTEXT.md, wherever it lives', () => {
     const tracked = [ 'src/api/CONTEXT.md', 'tools/profiling/CONTEXT.md', 'docs/README.md', 'src/api/index.ts' ];
 
-    expect(contextFiles(tracked)).toEqual([ 'src/api/CONTEXT.md', 'tools/profiling/CONTEXT.md' ]);
+    expect([ ...contextDirs(tracked) ]).toEqual([ 'src/api', 'tools/profiling' ]);
   });
 
-  it('does not take a file whose name merely contains CONTEXT.md', () => {
-    expect(contextFiles([ 'docs/OLD-CONTEXT.md' ])).toEqual([]);
+  it('does not take a directory off a file whose name merely contains CONTEXT.md', () => {
+    expect([ ...contextDirs([ 'docs/OLD-CONTEXT.md' ]) ]).toEqual([]);
+  });
+});
+
+describe('contextSurface', () => {
+  it('takes every markdown file beside a CONTEXT.md, not only the CONTEXT.md itself', () => {
+    const tracked = [ 'tools/thing/CONTEXT.md', 'tools/thing/NOTES.md', 'tools/thing/index.ts' ];
+
+    expect(contextSurface(tracked)).toEqual([ 'tools/thing/CONTEXT.md', 'tools/thing/NOTES.md' ]);
+  });
+
+  it('recurses: a markdown file in a nested subdirectory of a CONTEXT.md directory is in the surface', () => {
+    const tracked = [
+      'tools/thing/CONTEXT.md',
+      'tools/thing/docs/RUNNING.md',
+      'tools/thing/adr/0001-why.md',
+      'tools/thing/adr/deeper/0002-why.md',
+    ];
+
+    expect(contextSurface(tracked)).toEqual(tracked);
+  });
+
+  it('takes nothing from a directory with no CONTEXT.md, however much markdown it holds', () => {
+    expect(contextSurface([ 'tools/other/CONTEXT.md', 'docs/guide.md' ])).toEqual([ 'tools/other/CONTEXT.md' ]);
+  });
+
+  it('leaves a CONTEXT.md directory holding no other markdown with exactly its one file', () => {
+    expect(contextSurface([ 'src/api/CONTEXT.md', 'src/api/index.ts' ])).toEqual([ 'src/api/CONTEXT.md' ]);
+  });
+
+  it('exempts src/toolkit/package/ — the published wrapper readme addresses npm consumers, not agents', () => {
+    const tracked = [ 'src/toolkit/CONTEXT.md', 'src/toolkit/package/README.md' ];
+
+    expect(contextSurface(tracked)).toEqual([ 'src/toolkit/CONTEXT.md' ]);
+  });
+
+  it('keeps the exemption a path, so a module README.md elsewhere stays checked', () => {
+    const tracked = [ 'tools/thing/CONTEXT.md', 'tools/thing/README.md' ];
+
+    expect(contextSurface(tracked)).toEqual([ 'tools/thing/CONTEXT.md', 'tools/thing/README.md' ]);
+  });
+
+  it('still excludes the task specs, which describe files that do not exist yet by design', () => {
+    const tracked = [ '.agents/CONTEXT.md', '.agents/tasks/1234-thing/spec.md' ];
+
+    expect(contextSurface(tracked)).toEqual([ '.agents/CONTEXT.md' ]);
+  });
+
+  it('skips a generated directory below a CONTEXT.md directory', () => {
+    const tracked = [ 'tools/thing/CONTEXT.md', 'tools/thing/node_modules/pkg/README.md' ];
+
+    expect(contextSurface(tracked)).toEqual([ 'tools/thing/CONTEXT.md' ]);
   });
 });
 
@@ -93,15 +144,17 @@ describe('dedupeByRealPath', () => {
 });
 
 describe('collectSurface', () => {
-  it('walks the config roots in order, then appends the tracked CONTEXT.md files', async() => {
+  it('walks the config roots in order, then appends the markdown around the tracked CONTEXT.md files', async() => {
     write('.agents/AGENTS.md');
     write('.claude/CLAUDE.md');
     write('src/api/CONTEXT.md');
+    write('src/api/docs/RESOURCES.md');
 
-    expect(await collectSurface(root, [ 'src/api/CONTEXT.md' ])).toEqual([
+    expect(await collectSurface(root, [ 'src/api/CONTEXT.md', 'src/api/docs/RESOURCES.md' ])).toEqual([
       '.agents/AGENTS.md',
       '.claude/CLAUDE.md',
       'src/api/CONTEXT.md',
+      'src/api/docs/RESOURCES.md',
     ]);
   });
 
@@ -109,5 +162,15 @@ describe('collectSurface', () => {
     write('.agents/skills/CONTEXT.md');
 
     expect(await collectSurface(root, [ '.agents/skills/CONTEXT.md' ])).toEqual([ '.agents/skills/CONTEXT.md' ]);
+  });
+
+  it('reports a file the config walk already reached once, even when a CONTEXT.md sits beside it', async() => {
+    write('.agents/skills/CONTEXT.md');
+    write('.agents/skills/SKILL.md');
+
+    expect(await collectSurface(root, [ '.agents/skills/CONTEXT.md', '.agents/skills/SKILL.md' ])).toEqual([
+      '.agents/skills/CONTEXT.md',
+      '.agents/skills/SKILL.md',
+    ]);
   });
 });

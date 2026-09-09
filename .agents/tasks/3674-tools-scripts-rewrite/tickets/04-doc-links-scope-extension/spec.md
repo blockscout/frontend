@@ -21,21 +21,21 @@ them.
 
 ## Acceptance criteria
 
-- [ ] `pnpm lint:doc-links` exits 0 and its summary line reports a file count eight higher than before this
+- [x] `pnpm lint:doc-links` exits 0 and its summary line reports a file count eight higher than before this
       ticket.
-- [ ] The newly-checked set is exactly the markdown in and below a `CONTEXT.md` directory:
+- [x] The newly-checked set is exactly the markdown in and below a `CONTEXT.md` directory:
       `tools/code-complexity/adr/*.md`, `tools/code-complexity/docs/*.md` and
       `tools/mutation-testing/docs/*.md`.
-- [ ] `src/toolkit/package/README.md` is not checked, and the exemption is a path in the existing exclusion
+- [x] `src/toolkit/package/README.md` is not checked, and the exemption is a path in the existing exclusion
       list — not a `README.md` filename rule.
-- [ ] The `./run.sh` references in `tools/code-complexity/docs/RUNNING.md` and
+- [x] The `./run.sh` references in `tools/code-complexity/docs/RUNNING.md` and
       `tools/mutation-testing/docs/RUNNING.md` resolve, fixed in the docs; the resolver still resolves `./`
       against the file's own directory and nothing else.
-- [ ] Breaking a relative reference inside one of the newly-covered files now fails the check with the
+- [x] Breaking a relative reference inside one of the newly-covered files now fails the check with the
       ordinary unresolved-path message.
-- [ ] A directory with a `CONTEXT.md` and no other markdown is unaffected, and a file already reached through
+- [x] A directory with a `CONTEXT.md` and no other markdown is unaffected, and a file already reached through
       the `.agents` / `.claude` / `.cursor` walk is still checked once.
-- [ ] `pnpm lint:tsc`, `pnpm test:vitest` and `./tools/code-complexity/run.sh tools/doc-links` all pass, with
+- [x] `pnpm lint:tsc`, `pnpm test:vitest` and `./tools/code-complexity/run.sh tools/doc-links` all pass, with
       the collection module's spec covering the widened surface and the exemption.
 
 ## Details
@@ -58,11 +58,11 @@ to recurse rather than read one level. `SKIPPED_DIRS` still applies.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Widen the collection step to every markdown file in and below a `CONTEXT.md` directory,
+- [x] 1 `[agent]` Widen the collection step to every markdown file in and below a `CONTEXT.md` directory,
       recursing into nested subdirectories, and add `src/toolkit/package/` to the exclusion list as a path
-- [ ] 2 `[agent]` Fix the two `./run.sh` references in `tools/code-complexity/docs/RUNNING.md` and
+- [x] 2 `[agent]` Fix the two `./run.sh` references in `tools/code-complexity/docs/RUNNING.md` and
       `tools/mutation-testing/docs/RUNNING.md`
-- [ ] 3 `[agent]` Extend the collection module's spec: the widened surface, the nested subdirectory, the
+- [x] 3 `[agent]` Extend the collection module's spec: the widened surface, the nested subdirectory, the
       `src/toolkit/package/` exemption, and the once-only guarantee for a file the config walk already reached
-- [ ] 4 `[agent]` Verify: `pnpm lint:doc-links` passes with the higher file count, an injected breakage inside
+- [x] 4 `[agent]` Verify: `pnpm lint:doc-links` passes with the higher file count, an injected breakage inside
       a newly-covered file is caught, and `pnpm lint:tsc` / `pnpm test:vitest` / the complexity gate all pass

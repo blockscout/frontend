@@ -8,7 +8,7 @@ heading anchors, and the file and directory paths written in backticks. A CI che
 
 | File | Role |
 |---|---|
-| `surface.ts` | Which files are checked: the walked config roots, the exclusions, and the per-directory `CONTEXT.md` files picked out of `git ls-files`. Widening the check surface happens here. |
+| `surface.ts` | Which files are checked: the walked config roots, the exclusions, and every markdown file in and below a directory that carries a `CONTEXT.md`, taken from the tracked-file list. Widening the check surface happens here. |
 | `strip.ts` | Blanks the regions of a line that are not references — fenced blocks, and the illustration marks. Owns `ILLUSTRATION_FORMS`. |
 | `resolve.ts` | Turns a written reference into the file it names, and judges when a path that resolves nowhere is a break (shorthand, neighbour, top-level segment) rather than prose that looks like one. |
 | `check.ts` | One file in, its findings out. The two reference forms — backtick path, markdown link — are checked here. |
