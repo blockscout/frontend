@@ -17,6 +17,14 @@ const TYPE_NAMES: Record<number, string | undefined> = {
 };
 const ELEMENT_TYPE_ROOT = 11;
 
+const OP_ADD = 1;
+const OP_REMOVE = 2;
+const OP_REORDER_CHILDREN = 3;
+const OP_UPDATE_TREE_BASE_DURATION = 4;
+const OP_UPDATE_ERRORS_OR_WARNINGS = 5;
+const OP_REMOVE_ROOT = 6;
+const OP_SET_SUBTREE_MODE = 7;
+
 export interface SnapshotNode {
   readonly displayName: string | null;
   readonly type: number;
@@ -121,25 +129,25 @@ export function replayOperations(operations: ReadonlyArray<number>, names: Fiber
   while (i < operations.length) {
     const op = operations[i];
     switch (op) {
-      case 1: // ADD
+      case OP_ADD:
         i = replayAdd(operations, i, stringTable, names);
         break;
-      case 2: // REMOVE: count, ...ids
+      case OP_REMOVE: // operands: count, ...ids
         i += 2 + operations[i + 1];
         break;
-      case 3: // REORDER_CHILDREN: id, numChildren, ...children
+      case OP_REORDER_CHILDREN: // operands: id, numChildren, ...children
         i += 3 + operations[i + 2];
         break;
-      case 4: // UPDATE_TREE_BASE_DURATION: id, duration
+      case OP_UPDATE_TREE_BASE_DURATION: // operands: id, duration
         i += 3;
         break;
-      case 5: // UPDATE_ERRORS_OR_WARNINGS: id, errors, warnings
+      case OP_UPDATE_ERRORS_OR_WARNINGS: // operands: id, errors, warnings
         i += 4;
         break;
-      case 6: // REMOVE_ROOT
+      case OP_REMOVE_ROOT:
         i += 1;
         break;
-      case 7: // SET_SUBTREE_MODE: rootID, mode
+      case OP_SET_SUBTREE_MODE: // operands: rootID, mode
         i += 3;
         break;
       default:

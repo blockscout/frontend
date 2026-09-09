@@ -1,6 +1,3 @@
-// Turns a written reference into the file it names, and decides when a path that resolves nowhere is a
-// break rather than prose that merely looks like one.
-
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';

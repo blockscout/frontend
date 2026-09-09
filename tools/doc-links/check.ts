@@ -1,6 +1,3 @@
-// Reads one file's references and reports the ones that do not resolve. Two forms carry references: a path
-// in backticks, and a markdown link with an optional heading anchor.
-
 import { readFile, realpath } from 'node:fs/promises';
 import path from 'node:path';
 

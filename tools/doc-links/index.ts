@@ -6,11 +6,10 @@ import { renderReport } from './report';
 import { buildRepoIndex } from './resolve';
 import { collectSurface } from './surface';
 
-// Resolves the cross-references in the agent instruction surface: markdown links, heading anchors, and the
-// file and directory paths in backticks. These files instruct agents rather than humans, so a reference that
-// no longer resolves does not merely read badly — it sends an agent to a file that is not there, and nothing
-// else in the toolchain notices. Kept mechanical on purpose: a review agent should spend its judgement on
-// what a rule says, not on whether the rule's target still exists.
+// These files instruct agents rather than humans, so a reference that no longer resolves does not merely read
+// badly — it sends an agent to a file that is not there, and nothing else in the toolchain notices. Kept
+// mechanical on purpose: a review agent should spend its judgement on what a rule says, not on whether the
+// rule's target still exists.
 //
 // CLI entry only; everything worth a test lives in the modules beside it. See ./CONTEXT.md for the file map.
 
