@@ -1,36 +1,78 @@
-#!/usr/bin/env node
-// SPDX-License-Identifier: LicenseRef-Blockscout
-
 /* eslint-disable no-console -- CLI tool, console output is the interface */
+import fs from 'fs';
 
-// Aggregates a React DevTools Profiler export ("Save profile..." JSON) into a per-component
-// cost table: total self-render time, instance count, and average per instance.
+// Aggregates a React DevTools Profiler export ("Save profile..." JSON) into a per-component cost
+// table: total self-render time, instance count, and average per instance. With two profiles the
+// caller also gets a delta table matched by component name.
 //
-// Usage:
-//   node tools/profiling/aggregate-react-profile.mjs <profile.json> [options]
-//   node tools/profiling/aggregate-react-profile.mjs <a.json> <b.json> [options]   # compare mode
+// Argument parsing and the print calls live in ./index.ts, so everything here can be imported by the
+// specs without executing a run.
 //
-// Options:
-//   --commit=N     commit index to analyze in the first file (default: the longest commit)
-//   --commit-b=N   commit index in the second file (default: the longest commit)
-//   --top=N        number of rows to print (default: 40)
-//   --min-ms=N     only list commits >= N ms in the overview (default: 15)
-//
-// Compare mode prints each file's table plus a delta table (matched by component name).
-// Only compare traces from the same build flavor: minified names differ across builds.
-//
-// See tools/profiling/CONTEXT.md for the full workflow.
+// See tools/profiling/CONTEXT.md for the full workflow and the wire-format gotchas.
 
-import fs from 'node:fs';
-
-const TYPE_NAMES = {
+const TYPE_NAMES: Record<number, string | undefined> = {
   '1': 'Class', '2': 'Context', '3': 'Function', '4': 'ForwardRef', '5': 'Function',
   '6': 'ForwardRef', '7': 'HostComponent', '8': 'Memo', '9': 'OtherOrUnknown',
   '10': 'Profiler', '11': 'Root', '12': 'Suspense', '13': 'SuspenseList', '14': 'TracingMarker',
 };
 const ELEMENT_TYPE_ROOT = 11;
 
-function utfDecode(arr, start, length) {
+export interface SnapshotNode {
+  readonly displayName: string | null;
+  readonly type: number;
+  readonly hocDisplayNames?: ReadonlyArray<string> | null;
+}
+
+export interface CommitData {
+  readonly duration: number;
+  readonly timestamp: number;
+  readonly effectDuration?: number | null;
+  readonly passiveEffectDuration?: number | null;
+  // [ fiberID, self render duration in ms ]
+  readonly fiberSelfDurations: ReadonlyArray<readonly [ number, number ]>;
+}
+
+export interface RootData {
+  // one flat op-code array per commit — see replayOperations
+  readonly operations: ReadonlyArray<ReadonlyArray<number>>;
+  // the final tree, serialized from a Map
+  readonly snapshots: ReadonlyArray<readonly [ number, SnapshotNode ]>;
+  readonly commitData: ReadonlyArray<CommitData>;
+}
+
+export interface ProfileExport {
+  readonly dataForRoots: ReadonlyArray<RootData>;
+}
+
+export interface FiberInfo {
+  readonly name: string;
+  readonly type: number;
+}
+
+export type FiberNames = Map<number, FiberInfo>;
+
+export interface Profile {
+  readonly root: RootData;
+  readonly names: FiberNames;
+}
+
+export interface ComponentRow {
+  readonly name: string;
+  readonly total: number;
+  readonly count: number;
+  readonly avg: number;
+}
+
+export interface AggregateResult {
+  readonly commit: CommitData;
+  readonly commitIndex: number;
+  readonly rows: ReadonlyArray<ComponentRow>;
+  readonly totalSelf: number;
+  readonly unknownCount: number;
+  readonly unknownTime: number;
+}
+
+function utfDecode(arr: ReadonlyArray<number>, start: number, length: number): string {
   let s = '';
   for (let k = 0; k < length; k++) {
     s += String.fromCodePoint(arr[start + k]);
@@ -38,12 +80,36 @@ function utfDecode(arr, start, length) {
   return s;
 }
 
+// ADD: id, type, then either the four root-only fields (isStrictModeCompliant, profilingFlags,
+// supportsStrictMode, hasOwnerMetadata) or parentID, ownerID, displayNameStringID, keyStringID and
+// the trailing compiledWithForget flag recent DevTools versions carry. Returns the next index.
+function replayAdd(
+  operations: ReadonlyArray<number>,
+  i: number,
+  stringTable: ReadonlyArray<string | null>,
+  names: FiberNames,
+): number {
+  const id = operations[i + 1];
+  const type = operations[i + 2];
+
+  if (type === ELEMENT_TYPE_ROOT) {
+    names.set(id, { name: '(root)', type });
+    return i + 7;
+  }
+
+  const displayNameStringID = operations[i + 5];
+  if (displayNameStringID >= stringTable.length) {
+    throw new Error(`string id out of range: ${ displayNameStringID }`);
+  }
+  names.set(id, { name: stringTable[displayNameStringID] ?? 'Anonymous', type });
+  return i + 8;
+}
+
 // Replays one entry of the DevTools "operations" wire format
-// (react-devtools-shared store operations; ADD records carry a trailing
-// compiledWithForget flag in recent DevTools versions).
-function replayOperations(operations, names) {
+// (react-devtools-shared store operations).
+export function replayOperations(operations: ReadonlyArray<number>, names: FiberNames): void {
   let i = 2; // [0]=rendererID, [1]=rootID
-  const stringTable = [ null ];
+  const stringTable: Array<string | null> = [ null ];
   const stringTableSize = operations[i++];
   const stringTableEnd = i + stringTableSize;
   while (i < stringTableEnd) {
@@ -55,24 +121,9 @@ function replayOperations(operations, names) {
   while (i < operations.length) {
     const op = operations[i];
     switch (op) {
-      case 1: { // ADD
-        const id = operations[i + 1];
-        const type = operations[i + 2];
-        i += 3;
-        if (type === ELEMENT_TYPE_ROOT) {
-          i += 4; // isStrictModeCompliant, profilingFlags, supportsStrictMode, hasOwnerMetadata
-          names.set(id, { name: '(root)', type });
-        } else {
-          // parentID, ownerID, displayNameStringID, keyStringID, compiledWithForget
-          const displayNameStringID = operations[i + 2];
-          i += 5;
-          if (displayNameStringID >= stringTable.length) {
-            throw new Error(`string id out of range: ${ displayNameStringID }`);
-          }
-          names.set(id, { name: stringTable[displayNameStringID] ?? 'Anonymous', type });
-        }
+      case 1: // ADD
+        i = replayAdd(operations, i, stringTable, names);
         break;
-      }
       case 2: // REMOVE: count, ...ids
         i += 2 + operations[i + 1];
         break;
@@ -97,38 +148,45 @@ function replayOperations(operations, names) {
   }
 }
 
-function loadProfile(file) {
-  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+function messageOf(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
+
+function snapshotName(node: SnapshotNode): string {
+  const hocPrefix = node.hocDisplayNames?.length ? `${ node.hocDisplayNames.join('(') }(` : '';
+  return hocPrefix ? `${ hocPrefix }${ node.displayName })` : (node.displayName ?? 'Anonymous');
+}
+
+export function loadProfile(file: string): Profile {
+  const data = JSON.parse(fs.readFileSync(file, 'utf8')) as ProfileExport;
   const root = data.dataForRoots[0];
 
   // fiberID -> { name, type }; operations cover everything mounted while profiling,
   // snapshots fill in fibers that existed before profiling started (and still exist at the end)
-  const names = new Map();
+  const names: FiberNames = new Map();
   for (const [ index, ops ] of root.operations.entries()) {
     try {
       replayOperations(ops, names);
     } catch (error) {
-      console.warn(`(warning: failed to parse operations[${ index }] of ${ file }: ${ error.message } — attribution may be partial)`);
+      console.warn(`(warning: failed to parse operations[${ index }] of ${ file }: ${ messageOf(error) } — attribution may be partial)`);
     }
   }
   for (const [ id, node ] of root.snapshots) {
     if (!names.has(id)) {
-      const hocPrefix = node.hocDisplayNames?.length ? `${ node.hocDisplayNames.join('(') }(` : '';
-      const name = hocPrefix ? `${ hocPrefix }${ node.displayName })` : (node.displayName ?? 'Anonymous');
-      names.set(id, { name, type: node.type });
+      names.set(id, { name: snapshotName(node), type: node.type });
     }
   }
 
   return { root, names };
 }
 
-function biggestCommitIndex(root) {
+export function biggestCommitIndex(root: RootData): number {
   return root.commitData.reduce((best, c, i) => (c.duration > root.commitData[best].duration ? i : best), 0);
 }
 
-function aggregate({ root, names }, commitIndex) {
+export function aggregate({ root, names }: Profile, commitIndex: number): AggregateResult {
   const commit = root.commitData[commitIndex];
-  const byName = new Map();
+  const byName = new Map<string, { total: number; count: number }>();
   let unknownCount = 0;
   let unknownTime = 0;
   let totalSelf = 0;
@@ -155,7 +213,7 @@ function aggregate({ root, names }, commitIndex) {
   return { commit, commitIndex, rows, totalSelf, unknownCount, unknownTime };
 }
 
-function printCommitList(root, minMs) {
+export function printCommitList(root: RootData, minMs: number): void {
   root.commitData.forEach((c, i) => {
     if (c.duration >= minMs) {
       console.log(`  commit ${ i }: ${ c.duration.toFixed(1) }ms, ${ c.fiberSelfDurations.length } fibers, at ${ (c.timestamp / 1000).toFixed(1) }s`);
@@ -163,7 +221,7 @@ function printCommitList(root, minMs) {
   });
 }
 
-function printTable(file, result, top) {
+export function printTable(file: string, result: AggregateResult, top: number): void {
   const { commit, commitIndex, rows, totalSelf, unknownCount, unknownTime } = result;
   console.log(`\n=== ${ file } — commit #${ commitIndex }: duration=${ commit.duration.toFixed(1) }ms, ` +
     `fibers=${ commit.fiberSelfDurations.length }, sum(self)=${ totalSelf.toFixed(1) }ms, ` +
@@ -186,7 +244,7 @@ function printTable(file, result, top) {
   console.log(`top-${ top } account for ${ shown.toFixed(1) }ms of ${ totalSelf.toFixed(1) }ms self time; ${ rows.length } component types`);
 }
 
-function printDelta(resultA, resultB, top) {
+export function printDelta(resultA: AggregateResult, resultB: AggregateResult, top: number): void {
   const allNames = new Set([ ...resultA.rows.map((r) => r.name), ...resultB.rows.map((r) => r.name) ]);
   const mapA = new Map(resultA.rows.map((r) => [ r.name, r ]));
   const mapB = new Map(resultB.rows.map((r) => [ r.name, r ]));
@@ -209,36 +267,4 @@ function printDelta(resultA, resultB, top) {
       (d.delta >= 0 ? '+' : '') + d.delta.toFixed(1),
     );
   });
-}
-
-// --- CLI ---
-
-const args = process.argv.slice(2);
-const files = args.filter((a) => !a.startsWith('--'));
-const getOption = (name, fallback) => {
-  const raw = args.find((a) => a.startsWith(`--${ name }=`));
-  return raw ? Number(raw.split('=')[1]) : fallback;
-};
-
-if (files.length < 1 || files.length > 2) {
-  console.error('Usage: node tools/profiling/aggregate-react-profile.mjs <profile.json> [profileB.json] [--commit=N] [--commit-b=N] [--top=N] [--min-ms=N]');
-  process.exit(1);
-}
-
-const top = getOption('top', 40);
-const minMs = getOption('min-ms', 15);
-
-const profileA = loadProfile(files[0]);
-console.log(`Commits >= ${ minMs }ms in ${ files[0] }:`);
-printCommitList(profileA.root, minMs);
-const resultA = aggregate(profileA, getOption('commit', biggestCommitIndex(profileA.root)));
-printTable(files[0], resultA, top);
-
-if (files[1]) {
-  const profileB = loadProfile(files[1]);
-  console.log(`\nCommits >= ${ minMs }ms in ${ files[1] }:`);
-  printCommitList(profileB.root, minMs);
-  const resultB = aggregate(profileB, getOption('commit-b', biggestCommitIndex(profileB.root)));
-  printTable(files[1], resultB, top);
-  printDelta(resultA, resultB, top);
 }

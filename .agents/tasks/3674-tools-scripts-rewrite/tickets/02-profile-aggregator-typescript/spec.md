@@ -17,19 +17,19 @@ CRAP 182 today purely because nothing tests it.
 
 ## Acceptance criteria
 
-- [ ] `pnpm profile:analyze <export.json>` on a real React DevTools export prints the same commit list,
+- [x] `pnpm profile:analyze <export.json>` on a real React DevTools export prints the same commit list,
       header line, ranked table and top-N summary as the `.mjs` did, and the two-file form still prints both
       tables plus the delta.
-- [ ] `--commit`, `--commit-b`, `--top` and `--min-ms` keep their meanings and defaults (40 and 15); zero or
+- [x] `--commit`, `--commit-b`, `--top` and `--min-ms` keep their meanings and defaults (40 and 15); zero or
       three-plus file arguments still print the usage line and exit 1.
-- [ ] A malformed `operations` entry still warns naming the entry index and the file and degrades to partial
+- [x] A malformed `operations` entry still warns naming the entry index and the file and degrades to partial
       attribution — it does not fail the run.
-- [ ] The DevTools export shape is typed; no implicit `any` survives, and `pnpm lint:tsc` passes.
-- [ ] `pnpm test:vitest` runs the new specs, and `./tools/code-complexity/run.sh tools/profiling` reports
+- [x] The DevTools export shape is typed; no implicit `any` survives, and `pnpm lint:tsc` passes.
+- [x] `pnpm test:vitest` runs the new specs, and `./tools/code-complexity/run.sh tools/profiling` reports
       every function inside the cognitive cap and under CRAP 80 — `replayOperations` included.
-- [ ] No real-world DevTools profile export is committed; every fixture is hand-built and minimal.
-- [ ] The compiled output is git-ignored and nothing under it is committed.
-- [ ] `tools/code-complexity/select/scope.spec.ts` passes: the assertion naming the deleted
+- [x] No real-world DevTools profile export is committed; every fixture is hand-built and minimal.
+- [x] The compiled output is git-ignored and nothing under it is committed.
+- [x] `tools/code-complexity/select/scope.spec.ts` passes: the assertion naming the deleted
       `tools/profiling/aggregate-react-profile.mjs` now names a path that exists.
 
 ## Details
@@ -65,14 +65,14 @@ below it stay true and should not be restated.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Port the aggregator to TypeScript in `tools/profiling/`, typing the DevTools export shape,
+- [x] 1 `[agent]` Port the aggregator to TypeScript in `tools/profiling/`, typing the DevTools export shape,
       with the CLI moved into a separate entry file
-- [ ] 2 `[agent]` Add `tools/profiling/tsconfig.json` and the compile-on-run `run.sh`; repoint
+- [x] 2 `[agent]` Add `tools/profiling/tsconfig.json` and the compile-on-run `run.sh`; repoint
       `profile:analyze` and gitignore the compiled output
-- [ ] 3 `[agent]` Build the hand-written wire-format fixtures and write the co-located specs — operations
+- [x] 3 `[agent]` Build the hand-written wire-format fixtures and write the co-located specs — operations
       replay per op code, string table, snapshot fallback, aggregation, commit selection
-- [ ] 4 `[agent]` Swap the stale `.mjs` path in `tools/code-complexity/select/scope.spec.ts`
-- [ ] 5 `[agent]` Update the `tools/profiling/CONTEXT.md` file table
-- [ ] 6 `[agent]` Verify: same output on a real export (kept out of the repo, per
+- [x] 4 `[agent]` Swap the stale `.mjs` path in `tools/code-complexity/select/scope.spec.ts`
+- [x] 5 `[agent]` Update the `tools/profiling/CONTEXT.md` file table
+- [x] 6 `[agent]` Verify: same output on a real export (kept out of the repo, per
       `tools/profiling/CONTEXT.md` use `.ai/tmp/`), `pnpm lint:tsc`, `pnpm test:vitest`, and the complexity
       gate on `tools/profiling`

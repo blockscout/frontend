@@ -11,7 +11,7 @@ describe('isInScope', () => {
   it('includes the repo tooling under tools/', () => {
     expect(isInScope('tools/code-complexity/index.ts')).toBe(true);
     expect(isInScope('tools/dev-server/fetch.ts')).toBe(true);
-    expect(isInScope('tools/profiling/aggregate-react-profile.mjs')).toBe(true);
+    expect(isInScope('tools/profiling/aggregate.ts')).toBe(true);
   });
 
   it('includes the plain-JS extensions', () => {

@@ -13,7 +13,7 @@
     "dev:preset": "./tools/dev-server/dev.preset.sh",
     "dev:local": "./tools/dev-server/dev.local.sh",
     "prod:preset": "./tools/dev-server/prod.preset.sh",
-    "profile:analyze": "node ./tools/profiling/aggregate-react-profile.mjs",
+    "profile:analyze": "./tools/profiling/run.sh",
     "presets:sync": "./tools/dev-server/sync-presets/run.sh --write",
     "presets:lint": "./tools/dev-server/sync-presets/run.sh",
     "build": "next build",
