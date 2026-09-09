@@ -32,7 +32,9 @@ Add a row in the section that mirrors where the variable's config lives:
 App configuration / APIs configuration / App shell / Slices / Features /
 External services / Misc. The doc sections mirror `src/config/index.ts`.
 
-Fill in: name, type, description, required/optional, default, example.
+Fill in the name, type, description, required/optional status, default, and example. 
+Description: one sentence maximum; avoid validation logic and implementation details; 
+be extremely concise.
 
 Set the **Version** column to `upcoming`. The release process replaces this
 with the actual version number when the change ships.
@@ -167,4 +169,3 @@ the feature/option being enabled.
 Append the variable name to the `ASSETS_ENVS` array in
 `deploy/scripts/download_assets.sh`. The container entrypoint downloads the
 asset into the image at startup so the browser serves it same-origin.
-
