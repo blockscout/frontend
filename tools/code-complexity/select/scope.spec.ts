@@ -16,7 +16,7 @@ describe('isInScope', () => {
 
   it('includes the plain-JS extensions', () => {
     expect(isInScope('src/server/redirects.js')).toBe(true);
-    expect(isInScope('tools/scripts/check-doc-links.mjs')).toBe(true);
+    expect(isInScope('tools/mutation-testing/eslint/well-formed-disable.mjs')).toBe(true);
     expect(isInScope('tools/scripts/legacy.cjs')).toBe(true);
   });
 

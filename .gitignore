@@ -61,6 +61,9 @@ npm-debug.log*
 # compiled code-complexity gate
 /tools/code-complexity/dist/
 
+# compiled doc-link checker
+/tools/doc-links/dist/
+
 # compiled React profile aggregator
 /tools/profiling/dist/
 

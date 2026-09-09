@@ -21,23 +21,23 @@ The check surface is **unchanged here** — still the three agent config roots p
 
 ## Acceptance criteria
 
-- [ ] `pnpm lint:doc-links` on the current tree prints the same summary line with the same file count and
+- [x] `pnpm lint:doc-links` on the current tree prints the same summary line with the same file count and
       exits 0, as the `.mjs` does.
-- [ ] Against a deliberately broken reference of each class, the message is character-identical to the
+- [x] Against a deliberately broken reference of each class, the message is character-identical to the
       `.mjs`'s: unresolved path, unresolved link target, missing heading anchor, and shorthand-write-in-full.
       The failure footer still restates the illustration convention.
-- [ ] Every exemption still holds: fenced blocks, `<placeholder>` segments, the table-row arrow form, backtick
+- [x] Every exemption still holds: fenced blocks, `<placeholder>` segments, the table-row arrow form, backtick
       spans that are not paths, non-slash bracket text, `https:` / `mailto:` / `#` links, and the
       `.agents/tasks` and `.claude/worktrees` exclusions.
-- [ ] A symlinked entry point still resolves its relative links from the file's realpath, and a file reached
+- [x] A symlinked entry point still resolves its relative links from the file's realpath, and a file reached
       twice through a symlink is still reported once.
-- [ ] `./tools/code-complexity/run.sh tools/doc-links` reports every function inside the cognitive cap and
+- [x] `./tools/code-complexity/run.sh tools/doc-links` reports every function inside the cognitive cap and
       under CRAP 80.
-- [ ] `pnpm lint:tsc` passes; `pnpm test:vitest` runs a spec per module.
-- [ ] `tools/scripts/check-doc-links.mjs` is deleted, and the compiled output is git-ignored and uncommitted.
-- [ ] `tools/doc-links/CONTEXT.md` exists as a file map and has a line in the per-directory list in
+- [x] `pnpm lint:tsc` passes; `pnpm test:vitest` runs a spec per module.
+- [x] `tools/scripts/check-doc-links.mjs` is deleted, and the compiled output is git-ignored and uncommitted.
+- [x] `tools/doc-links/CONTEXT.md` exists as a file map and has a line in the per-directory list in
       `.agents/AGENTS.md` — and `pnpm lint:doc-links` checks both, closing the loop on itself.
-- [ ] `tools/code-complexity/select/scope.spec.ts` passes: the assertion naming the deleted
+- [x] `tools/code-complexity/select/scope.spec.ts` passes: the assertion naming the deleted
       `tools/scripts/check-doc-links.mjs` now names `tools/mutation-testing/eslint/well-formed-disable.mjs`.
 
 ## Details
@@ -78,16 +78,16 @@ task. Ticket 02 handles the separate assertion under "includes the repo tooling 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Create `tools/doc-links/` and move the checker across as flat modules — collection,
+- [x] 1 `[agent]` Create `tools/doc-links/` and move the checker across as flat modules — collection,
       stripping, resolution, checking, reporting — with a separate CLI entry file
-- [ ] 2 `[agent]` Decompose the per-file check so every function is inside the cognitive cap, preserving
+- [x] 2 `[agent]` Decompose the per-file check so every function is inside the cognitive cap, preserving
       finding order and messages
-- [ ] 3 `[agent]` Add `tools/doc-links/tsconfig.json` and the compile-on-run `run.sh`; repoint
+- [x] 3 `[agent]` Add `tools/doc-links/tsconfig.json` and the compile-on-run `run.sh`; repoint
       `lint:doc-links` and gitignore the compiled output
-- [ ] 4 `[agent]` Write a spec per module, including one broken reference of each reported class and each
+- [x] 4 `[agent]` Write a spec per module, including one broken reference of each reported class and each
       exemption form
-- [ ] 5 `[agent]` Delete `tools/scripts/check-doc-links.mjs` and swap the stale path in
+- [x] 5 `[agent]` Delete `tools/scripts/check-doc-links.mjs` and swap the stale path in
       `tools/code-complexity/select/scope.spec.ts`
-- [ ] 6 `[agent]` Write `tools/doc-links/CONTEXT.md` and register it in `.agents/AGENTS.md`
-- [ ] 7 `[agent]` Verify: output identical to the `.mjs` on the current tree and on injected breakages,
+- [x] 6 `[agent]` Write `tools/doc-links/CONTEXT.md` and register it in `.agents/AGENTS.md`
+- [x] 7 `[agent]` Verify: output identical to the `.mjs` on the current tree and on injected breakages,
       `pnpm lint:tsc`, `pnpm test:vitest`, and the complexity gate on `tools/doc-links`
