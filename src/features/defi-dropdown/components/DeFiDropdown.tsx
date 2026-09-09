@@ -12,7 +12,6 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
-import { space } from 'src/toolkit/utils/htmlEntities';
 
 import DeFiDropdownItem from './DeFiDropdownItem';
 
@@ -39,10 +38,12 @@ const DeFiDropdown = () => {
     <PopoverRoot>
       <PopoverTrigger>
         <Button size="2xs" gap={ 0 }>
-          <chakra.span display={{ base: 'none', lg: 'inline' }} whiteSpace="pre-wrap">
-            Blockscout{ space }
+          <chakra.span display={{ base: 'none', lg: 'inline' }}>
+            { feature.buttonText.desktop }
           </chakra.span>
-          DeFi
+          <chakra.span display={{ base: 'inline', lg: 'none' }}>
+            { feature.buttonText.mobile }
+          </chakra.span>
           <SpriteIcon name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>
         </Button>
       </PopoverTrigger>
