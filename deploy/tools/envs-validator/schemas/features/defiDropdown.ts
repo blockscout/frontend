@@ -35,22 +35,17 @@ export const defiDropdownSchema = yup.object({
     .of(deFiDropdownItemSchema),
   NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: yup
     .mixed()
-    .test(
-      'shape',
-      'Invalid schema were provided for NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT, it should have a required desktop and an optional mobile field',
-      (data) => data === undefined || deFiDropdownButtonTextSchema.isValidSync(data),
-    )
-    .test(
-      'requires-dropdown',
-      `NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT can only be used when NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS contains at least ${ MIN_ITEMS_FOR_DROPDOWN } items`,
-      function(data) {
-        if (data === undefined) {
-          return true;
-        }
-
-        const items = this.parent.NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS;
-
-        return Array.isArray(items) && items.length >= MIN_ITEMS_FOR_DROPDOWN;
-      },
-    ),
+    .when('NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS', {
+      is: (items: unknown) => Array.isArray(items) && items.length >= MIN_ITEMS_FOR_DROPDOWN,
+      then: (schema) => schema.test(
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT, it should have a required desktop and an optional mobile field',
+        (data) => data === undefined || deFiDropdownButtonTextSchema.isValidSync(data),
+      ),
+      otherwise: (schema) => schema.test(
+        'not-exist',
+        `NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT can only be used when NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS contains at least ${ MIN_ITEMS_FOR_DROPDOWN } items`,
+        value => value === undefined,
+      ),
+    }),
 });

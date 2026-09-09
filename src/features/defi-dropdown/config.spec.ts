@@ -12,6 +12,9 @@ const ITEMS_ENV: [ string, string ] = [
 
 async function loadConfig(envs: Array<[ string, string ]>): Promise<typeof deFiDropdownConfig> {
   return withEnvs(envs, async() => {
+    // `src/config` has to be imported first: reaching it through `./config` instead enters the
+    // graph mid-cycle, and `src/shell/metadata/config` then reads `app.baseUrl` off an
+    // uninitialised module
     await import('src/config');
     return (await import('./config')).default;
   });

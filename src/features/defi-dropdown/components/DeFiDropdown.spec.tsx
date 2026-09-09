@@ -12,7 +12,7 @@ const ITEMS_ENV: [ string, string ] = [
   '[{"text":"Swap","dappId":"uniswap"},{"text":"Payment link","url":"https://example.com"}]',
 ];
 
-async function renderDropdown(envs: Array<[ string, string ]>) {
+async function renderDropdown(envs: Array<[ string, string ]>): Promise<void> {
   return withEnvs(envs, async() => {
     const { 'default': DeFiDropdown } = await import('./DeFiDropdown');
     render(<DeFiDropdown/>);
