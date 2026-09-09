@@ -7,7 +7,8 @@ long lists).
 
 | File | Role |
 |---|---|
-| `aggregate-react-profile.mjs` | `pnpm profile:analyze <profile.json> [profileB.json]` — turns a React DevTools Profiler export into a per-component cost table (total self ms / instances / avg). With two files, also prints a delta table. |
+| `aggregate.ts` | Turns a React DevTools Profiler export into a per-component cost table (total self ms / instances / avg), plus the delta between two of them. Importable — the CLI is not in here. |
+| `index.ts` | CLI entry for `pnpm profile:analyze <profile.json> [profileB.json]`: argument parsing and the print calls. |
 
 ## Running a profileable build
 

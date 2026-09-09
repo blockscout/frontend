@@ -22,7 +22,7 @@ Runs over an unchanged tree must produce identical counts; otherwise survivors b
 - the per-mutant timeout exceeds Vitest's to prevent slow machines scoring timeouts as kills and fast machines as survivals; 
 - drift specs are excluded (`./SCOPE.md`).
 
-`--changed` invokes git without setting a working directory, so it scores the diff from the directory where you run it. `./run.sh` locates itself to compile, so it runs from anywhere. Compilation is cwd-independent; the diff is not.
+`--changed` invokes git without setting a working directory, so it scores the diff from the directory where you run it. `../run.sh` locates itself to compile, so it runs from anywhere. Compilation is cwd-independent; the diff is not.
 
 ## Output on disk
 
