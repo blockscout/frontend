@@ -3,6 +3,7 @@
 import { pickBy } from 'es-toolkit';
 
 import type { Apis } from 'src/api/types';
+// eslint-disable-next-line boundaries/element-types -- the list of stats resources with a refetch interval is owned by the chain-stats feature
 import { STATS_API_RESOURCES_REFETCH_INTERVAL } from 'src/features/chain-stats/types/config';
 import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
 

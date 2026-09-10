@@ -118,9 +118,8 @@ const APP_CONFIG_ELEMENTS = [
 ];
 
 const APP_CONFIG_IMPORT_MESSAGE =
-  'Read app config through the root aggregator: `import config from \'src/config\'`, then `config.features.<name>`, `config.slices.<name>`, ' +
-  '`config.shell.<name>`, `config.services.<name>`, `config.apis`, `config.chain` or `config.metadata`. ' +
-  'Only another config.ts, src/config/** or the module\'s own config.spec.ts may import a config module directly.';
+  'Read app config through the root aggregator: `import config from \'src/config\'`. ' +
+  'Only another config.ts, src/config/** or a config.spec.ts may import a config module directly.';
 
 const APP_CONFIG_ENVS_MESSAGE =
   'Env values are read only in config modules. Move the getEnvValue / parseEnvJson / getExternalAssetFilePath call into the owning config.ts ' +
@@ -128,7 +127,7 @@ const APP_CONFIG_ENVS_MESSAGE =
 
 const APP_CONFIG_NAMED_EXPORT_MESSAGE =
   'A config module exposes only its default export. Put the value inside the config object (widen the Feature payload) ' +
-  'so it is unreachable while the feature is disabled; types and constants go to a sibling types/config.ts.';
+  'so it is unreachable while the feature is disabled; types and constants go to a sibling role file (types/config.ts, types.ts, consts.ts).';
 
 const RESTRICTED_SYNTAX = [
   {
@@ -423,9 +422,10 @@ export default tseslint.config(
         'default': 'allow',
         rules: [
           {
-            from: 'src-api',
-            disallow: [ 'src-slices', 'src-features' ],
-            importKind: 'value',
+            // by path, not by element type: `src/api/config.ts` is an `app-config-module` element (a file
+            // is one element only), and the layer policy still applies to it
+            from: { path: 'src/api/**' },
+            disallow: { to: { type: [ 'src-slices', 'src-features' ] }, dependency: { kind: 'value' } },
           },
         ],
       } ],
@@ -623,12 +623,20 @@ export default tseslint.config(
       // restricted imports, properties and syntax
       'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX ],
       'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
-      'no-restricted-properties': [ 2, {
-        object: 'process',
-        property: 'env',
-        // FIXME: restrict the rule only NEXT_PUBLIC variables
-        message: 'Please use src/config/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
-      } ],
+      'no-restricted-properties': [ 2,
+        {
+          object: 'process',
+          property: 'env',
+          // FIXME: restrict the rule only NEXT_PUBLIC variables
+          message: 'Please use src/config/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
+        },
+        {
+          // app config convention (src/config/CONTEXT.md): the raw runtime env map is read by getEnvValue only
+          object: 'window',
+          property: '__envs',
+          message: APP_CONFIG_ENVS_MESSAGE,
+        },
+      ],
     },
   },
   {
