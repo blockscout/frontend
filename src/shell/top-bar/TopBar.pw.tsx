@@ -59,7 +59,7 @@ test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiRes
 
   const component = await render(<TopBar/>);
 
-  await component.getByText(/DeFi/i).click();
+  await component.getByRole('button', { name: /defi/i }).click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 });
 
