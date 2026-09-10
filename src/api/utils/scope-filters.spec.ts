@@ -1,6 +1,7 @@
 import type { ApiResource } from '../resources/types';
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
+// eslint-disable-next-line boundaries/element-types -- test fixture
 import { chainA } from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';

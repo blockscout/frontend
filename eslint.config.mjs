@@ -97,6 +97,50 @@ const ARCH_BOUNDARY_ELEMENTS = [
   { type: 'src-features', pattern: 'src/features/**', mode: 'full' },
 ];
 
+/*
+ * App config convention (src/config/CONTEXT.md) — the modules the root aggregator assembles.
+ * `types/config.ts` and `mocks/config.ts` are companions, not config modules, and stay out.
+ */
+const APP_CONFIG_MODULE_GLOBS = [
+  'src/api/config.ts',
+  'src/features/**/config.ts',
+  'src/services/*/config.ts',
+  'src/shell/*/config.ts',
+  'src/slices/*/config.ts',
+];
+const APP_CONFIG_COMPANION_GLOBS = [ '**/types/config.ts', '**/mocks/config.ts' ];
+
+const APP_CONFIG_ELEMENTS = [
+  { type: 'app-config-envs', pattern: 'src/config/utils/envs.ts', mode: 'full' },
+  { type: 'app-config-root', pattern: 'src/config/**', mode: 'full' },
+  { type: 'app-config-module', pattern: APP_CONFIG_MODULE_GLOBS.map((glob) => glob.replace('**/config.ts', '**/!(types|mocks)/config.ts')), mode: 'full' },
+  { type: 'app-config-spec', pattern: 'src/**/config.spec.ts', mode: 'full' },
+];
+
+const APP_CONFIG_IMPORT_MESSAGE =
+  'Read app config through the root aggregator: `import config from \'src/config\'`, then `config.features.<name>`, `config.slices.<name>`, ' +
+  '`config.shell.<name>`, `config.services.<name>`, `config.apis`, `config.chain` or `config.metadata`. ' +
+  'Only another config.ts, src/config/** or the module\'s own config.spec.ts may import a config module directly.';
+
+const APP_CONFIG_ENVS_MESSAGE =
+  'Env values are read only in config modules. Move the getEnvValue / parseEnvJson / getExternalAssetFilePath call into the owning config.ts ' +
+  'and read the structured result via src/config.';
+
+const APP_CONFIG_NAMED_EXPORT_MESSAGE =
+  'A config module exposes only its default export. Put the value inside the config object (widen the Feature payload) ' +
+  'so it is unreachable while the feature is disabled; types and constants go to a sibling types/config.ts.';
+
+const RESTRICTED_SYNTAX = [
+  {
+    selector: 'CallExpression[callee.property.name=\'localeCompare\']',
+    message: 'Use the shared collator from src/shared/texts/collator.ts (collator.compare) instead of String.prototype.localeCompare.',
+  },
+  {
+    selector: 'NewExpression[callee.object.name=\'Intl\'][callee.property.name=\'Collator\']',
+    message: 'Use the shared collator from src/shared/texts/collator.ts instead of constructing Intl.Collator inline.',
+  },
+];
+
 /** @type {import('eslint').Linter.Config[]} */
 export default tseslint.config(
   includeIgnoreFile(gitignorePath),
@@ -118,7 +162,18 @@ export default tseslint.config(
   {
     settings: {
       react: { version: 'detect' },
-      'boundaries/elements': ARCH_BOUNDARY_ELEMENTS,
+      // first matching descriptor wins, so the file-level config elements go before the layer-level ones;
+      // the trailing catch-all makes every src file a known element — policies never run from unknown files
+      'boundaries/elements': [ ...APP_CONFIG_ELEMENTS, ...ARCH_BOUNDARY_ELEMENTS, { type: 'src-other', pattern: 'src/**', mode: 'full' } ],
+      'boundaries/dependency-nodes': [ 'import', 'dynamic-import', 'export' ],
+      // without a resolver every import target is "unknown" and no boundaries policy ever matches;
+      // `paths` makes the tsconfig-style root-relative specifiers (src/…, playwright/…) resolvable
+      'import/resolver': {
+        node: {
+          extensions: [ '.ts', '.tsx', '.js', '.mjs' ],
+          paths: [ __dirname ],
+        },
+      },
     },
   },
 
@@ -377,6 +432,42 @@ export default tseslint.config(
     },
   },
 
+  /*
+   * App config convention (src/config/CONTEXT.md): the root aggregator is the only import surface for
+   * config modules, and env values are read only inside them. Later policies override earlier ones.
+   */
+  {
+    files: [
+      'src/**/*.{ts,tsx}',
+    ],
+    plugins: {
+      boundaries: boundariesPlugin,
+    },
+    rules: {
+      'boundaries/dependencies': [ 'error', {
+        'default': 'allow',
+        rules: [
+          {
+            disallow: { to: { type: 'app-config-module' }, dependency: { kind: 'value' } },
+            message: APP_CONFIG_IMPORT_MESSAGE,
+          },
+          {
+            from: { type: [ 'app-config-module', 'app-config-root', 'app-config-spec' ] },
+            allow: { to: { type: 'app-config-module' } },
+          },
+          {
+            disallow: { to: { type: 'app-config-envs' } },
+            message: APP_CONFIG_ENVS_MESSAGE,
+          },
+          {
+            from: { type: [ 'app-config-module', 'app-config-root' ] },
+            allow: { to: { type: 'app-config-envs' } },
+          },
+        ],
+      } ],
+    },
+  },
+
   {
     plugins: {
       'import-helpers': importHelpersPlugin,
@@ -530,16 +621,7 @@ export default tseslint.config(
       'prefer-const': 'error',
 
       // restricted imports, properties and syntax
-      'no-restricted-syntax': [ 'error',
-        {
-          selector: 'CallExpression[callee.property.name=\'localeCompare\']',
-          message: 'Use the shared collator from src/shared/texts/collator.ts (collator.compare) instead of String.prototype.localeCompare.',
-        },
-        {
-          selector: 'NewExpression[callee.object.name=\'Intl\'][callee.property.name=\'Collator\']',
-          message: 'Use the shared collator from src/shared/texts/collator.ts instead of constructing Intl.Collator inline.',
-        },
-      ],
+      'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX ],
       'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
       'no-restricted-properties': [ 2, {
         object: 'process',
@@ -564,6 +646,18 @@ export default tseslint.config(
     rules: {
       // for configs allow to consume env variables from process.env directly
       'no-restricted-properties': 'off',
+    },
+  },
+  {
+    // app config convention (src/config/CONTEXT.md): a config module has no export besides the default
+    files: APP_CONFIG_MODULE_GLOBS,
+    ignores: APP_CONFIG_COMPANION_GLOBS,
+    rules: {
+      'no-restricted-syntax': [ 'error',
+        ...RESTRICTED_SYNTAX,
+        { selector: 'ExportNamedDeclaration', message: APP_CONFIG_NAMED_EXPORT_MESSAGE },
+        { selector: 'ExportAllDeclaration', message: APP_CONFIG_NAMED_EXPORT_MESSAGE },
+      ],
     },
   },
   {

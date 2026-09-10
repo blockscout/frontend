@@ -7,9 +7,8 @@ import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
 import { isBrowser } from 'src/toolkit/utils/isBrowser';
 
+import { STORAGE_KEY } from './consts';
 import { CONSENT_RESULT_ALL_ACCEPTED } from './services';
-
-export const STORAGE_KEY = 'usercentrics-consent';
 
 interface UsercentricsConfig {
   readonly settingsId?: string;

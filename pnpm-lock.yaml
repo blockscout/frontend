@@ -449,6 +449,9 @@ importers:
       eslint-config-next:
         specifier: 16.2.6
         version: 16.2.6(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2)
+      eslint-import-resolver-node:
+        specifier: 0.3.10
+        version: 0.3.10
       eslint-plugin-boundaries:
         specifier: 6.0.2
         version: 6.0.2(@typescript-eslint/parser@8.59.2(@typescript/typescript6@6.0.2)(eslint@9.39.2))(eslint@9.39.2)
@@ -12318,6 +12321,7 @@ packages:
   prom-client@15.1.1:
     resolution: {integrity: sha512-GVA2H96QCg2q71rjc3VYvSrVG7OpnJxyryC7dMzvfJfpJJHzQVwF3TJLfHzKORcwJpElWs1TwXLthlJAFJxq2A==}
     engines: {node: ^16 || ^18 || >=20}
+    deprecated: prom-client has been replaced by @prometheus-io/client
 
   promise@8.3.0:
     resolution: {integrity: sha512-rZPNPKTOYVNEEKFaq1HqTgOwZD+4/YHS5ukLzQCypkj+OkYx7iv0mA91lJlpPPZ8vMau3IIGj5Qlwrx+8iiSmg==}
@@ -29015,7 +29019,7 @@ snapshots:
       call-bound: 1.0.4
       define-properties: 1.2.1
       functions-have-names: 1.2.3
-      hasown: 2.0.3
+      hasown: 2.0.4
       is-callable: 1.2.7
 
   functions-have-names@1.2.3: {}
@@ -29718,7 +29722,7 @@ snapshots:
 
   is-core-module@2.16.2:
     dependencies:
-      hasown: 2.0.3
+      hasown: 2.0.4
 
   is-data-view@1.0.2:
     dependencies:
@@ -29808,7 +29812,7 @@ snapshots:
       call-bound: 1.0.4
       gopd: 1.2.0
       has-tostringtag: 1.0.2
-      hasown: 2.0.3
+      hasown: 2.0.4
 
   is-regexp@1.0.0: {}
 
