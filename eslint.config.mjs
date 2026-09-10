@@ -129,6 +129,13 @@ const APP_CONFIG_NAMED_EXPORT_MESSAGE =
   'A config module exposes only its default export. Put the value inside the config object (widen the Feature payload) ' +
   'so it is unreachable while the feature is disabled; types and constants go to a sibling role file (types/config.ts, types.ts, consts.ts).';
 
+// app config convention (src/config/CONTEXT.md): the raw runtime env map is read by getEnvValue only
+const WINDOW_ENVS_RESTRICTION = {
+  object: 'window',
+  property: '__envs',
+  message: APP_CONFIG_ENVS_MESSAGE,
+};
+
 const RESTRICTED_SYNTAX = [
   {
     selector: 'CallExpression[callee.property.name=\'localeCompare\']',
@@ -630,12 +637,7 @@ export default tseslint.config(
           // FIXME: restrict the rule only NEXT_PUBLIC variables
           message: 'Please use src/config/index.ts to import any NEXT_PUBLIC environment variables. For other properties please disable this rule for a while.',
         },
-        {
-          // app config convention (src/config/CONTEXT.md): the raw runtime env map is read by getEnvValue only
-          object: 'window',
-          property: '__envs',
-          message: APP_CONFIG_ENVS_MESSAGE,
-        },
+        WINDOW_ENVS_RESTRICTION,
       ],
     },
   },
@@ -652,8 +654,8 @@ export default tseslint.config(
       '*.config.js',
     ],
     rules: {
-      // for configs allow to consume env variables from process.env directly
-      'no-restricted-properties': 'off',
+      // for configs allow to consume env variables from process.env directly; the raw browser env map stays off-limits
+      'no-restricted-properties': [ 2, WINDOW_ENVS_RESTRICTION ],
     },
   },
   {
