@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
+// eslint-disable-next-line boundaries/element-types -- there is no better way to get chain value from multichain context in this global hook
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import type { ResourceError, ResourceName, ResourcePathParams, ResourcePayload } from '../resources';
