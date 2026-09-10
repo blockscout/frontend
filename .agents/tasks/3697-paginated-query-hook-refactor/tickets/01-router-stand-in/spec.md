@@ -44,6 +44,6 @@ as the current spec does.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the router stand-in under `vitest/utils/` with its own small spec
-- [ ] 2 `[agent]` Rewrite `useQueryWithPages.spec.ts` on the stand-in, keeping every existing scenario
-- [ ] 3 `[agent]` Add the per-action request/render count scenarios with today's numbers
+- [x] 1 `[agent]` Write the router stand-in under `vitest/utils/` with its own small spec
+- [x] 2 `[agent]` Rewrite `useQueryWithPages.spec.ts` on the stand-in, keeping every existing scenario
+- [x] 3 `[agent]` Add the per-action request/render count scenarios with today's numbers
