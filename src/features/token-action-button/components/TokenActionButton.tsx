@@ -17,11 +17,12 @@ const feature = config.features.tokenActionButton;
 const button = getFeaturePayload(feature)?.button;
 
 interface Props {
+  tokenHash: string;
   tokenType: string | undefined | null;
   isLoading?: boolean;
 }
 
-const TokenActionButton = ({ tokenType, isLoading }: Props) => {
+const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
   const handleClick = React.useCallback(() => {
     // Stryker disable next-line ConditionalExpression: narrowing guard for feature.button; a disabled feature renders no button, so the handler cannot run
     if (feature.isEnabled) {
@@ -42,7 +43,7 @@ const TokenActionButton = ({ tokenType, isLoading }: Props) => {
     return null;
   }
 
-  const href = buildUrl(button.url);
+  const href = buildUrl(button.url, tokenHash);
 
   if (!href) {
     return null;

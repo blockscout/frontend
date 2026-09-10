@@ -143,7 +143,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   tokenActionButton: [
     [
       'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',
-      '{"text":"Buy on Duck Portal","url":"https://portal.duck.io/swap","colors":{"_default":{"bg":["rgb(179, 167, 0)","rgb(134, 86, 239)"],"text":["white"]}}}',
+      '{"text":"Buy on Duck Portal","url":"https://portal.duck.io/swap?chainId=1&token={hash}","colors":{"_default":{"bg":["rgb(179, 167, 0)","rgb(134, 86, 239)"],"text":["white"]}}}',
     ],
   ],
   verifiedAddresses: [

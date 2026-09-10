@@ -120,6 +120,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
         flexGrow={ 1 }
       />
       <TokenActionButton
+        tokenHash={ hash }
         tokenType={ tokenQuery.data?.type }
         isLoading={ tokenQuery.isPlaceholderData }
       />

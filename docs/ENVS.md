@@ -1201,7 +1201,7 @@ An action button on the ERC-20 token page, leading to an external site. On deskt
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Arc Portal','url':'https://portal.arc.io/swap','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
+| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
 
 #### Token action button configuration properties
 
@@ -1209,8 +1209,8 @@ _Note_ Here, some values are arrays of up to two strings. The first string repre
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| text | `string` | Text on the button | Required | - | `Buy on Arc Portal` |
-| url | `string` | Link the button leads to. It opens in a new tab, so the button gets a "leave site" icon, and `utm_source` / `utm_medium` params are appended automatically. | Required | - | `https://portal.arc.io/swap` |
+| text | `string` | Text on the button | Required | - | `Buy on Example Portal` |
+| url | `string` | Link the button leads to. May contain the `{hash}` placeholder, which is replaced with the lowercased address hash of the token being viewed. It opens in a new tab, so the button gets a "leave site" icon, and `utm_source` / `utm_medium` params are appended automatically. | Required | - | `https://portal.example.com/swap?chainId=1&token={hash}` |
 | logo | `[string, string]` | Urls of the logo displayed before the button text. The recommended image size is 20x20 pixels (1:1 aspect ratio). | - | - | `['https://example.com/logo-light.svg','https://example.com/logo-dark.svg']` |
 | colors | `{'_default': {'bg'?: [string, string], 'text'?: [string, string]}}` | Button colors per state. Only the `_default` state is configurable; on hover the button dims. | - | `{'_default':{'bg':['button.solid.bg'],'text':['button.solid.text']}}` | `{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}` |
 
