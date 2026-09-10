@@ -9,3 +9,8 @@ export type DeFiDropdownItem = {
   { dappId: string; isEssentialDapp?: boolean; url?: never } |
   { url: string; dappId?: never; isEssentialDapp?: never }
 );
+
+export type DeFiDropdownButtonText = {
+  readonly desktop: string;
+  readonly mobile?: string;
+};
