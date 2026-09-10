@@ -7,7 +7,7 @@ what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
 - [x] 01 → `tickets/01-router-stand-in/`
-- [ ] 02 → `tickets/02-hook-url-source-of-truth/`
+- [x] 02 → `tickets/02-hook-url-source-of-truth/`
 - [ ] 03 → `tickets/03-reference-address-txs/`
 - [ ] 04 → `tickets/04-chain-value-hook/`
 - [ ] 05 → `tickets/05-txs-lists-family/`

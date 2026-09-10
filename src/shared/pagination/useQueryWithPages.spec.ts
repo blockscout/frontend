@@ -1,12 +1,12 @@
 // @vitest-environment jsdom
 
-import type React from 'react';
+import React from 'react';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, wrapper, act, cleanup } from 'vitest/lib';
+import { renderHook, render, wrapper, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
 
@@ -67,6 +67,9 @@ const responseInit = {
 };
 
 const encodePageParams = (pageParams: object) => encodeURIComponent(JSON.stringify(pageParams));
+
+// one render for the URL push, one when the response lands
+const RENDERS_PER_NAVIGATION = 2;
 
 const params: Params<'core:address_txs'> = {
   resourceName: 'core:address_txs',
@@ -268,7 +271,6 @@ describe('if there are multiple pages', () => {
   it('correctly resets the page', async() => {
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
-    fetchMock.once(JSON.stringify(responses.page_3), responseInit);
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
 
@@ -555,6 +557,102 @@ describe('router query changes', () => {
   });
 });
 
+describe('values derived from the URL', () => {
+  it('reads filters and sorting from the URL when the caller passes none', async() => {
+    routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', sort: 'value', order: 'desc', foo: 'bar' } });
+    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
+
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
+    await waitForApiResponse();
+
+    expect(result.current.filters).toEqual({ filter: 'to' });
+    expect(result.current.sorting).toEqual({ sort: 'value', order: 'desc' });
+    expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=to&sort=value&order=desc');
+  });
+
+  it('lets the caller-passed filters and sorting override the URL', async() => {
+    routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', sort: 'value', order: 'desc' } });
+    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
+    const paramsWithOverrides: Params<'core:address_txs'> = {
+      ...params,
+      filters: { filter: 'from' },
+      sorting: { sort: 'fee', order: 'asc' },
+    };
+
+    const { result } = renderHook(() => useQueryWithPages(paramsWithOverrides), { wrapper });
+    await waitForApiResponse();
+
+    expect(result.current.filters).toEqual({ filter: 'from' });
+    expect(result.current.sorting).toEqual({ sort: 'fee', order: 'asc' });
+    expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=from&sort=fee&order=asc');
+  });
+
+  it('exposes the loading flags for the list body', async() => {
+    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
+    const paramsWithStub: Params<'core:address_txs'> = {
+      ...params,
+      options: { placeholderData: generateListStub<'core:address_txs'>(TX_ITEM, 1, { next_page_params: null }) },
+    };
+
+    const { result } = renderHook(() => useQueryWithPages(paramsWithStub), { wrapper });
+    expect(result.current.isInitialLoading).toBe(true);
+    expect(result.current.isTransitioning).toBe(false);
+    expect(result.current.pagination.isLoading).toBe(true);
+
+    await waitForApiResponse();
+
+    expect(result.current.isInitialLoading).toBe(false);
+    expect(result.current.isTransitioning).toBe(false);
+    expect(result.current.pagination.isLoading).toBe(false);
+  });
+});
+
+describe('referential stability', () => {
+  it('keeps the result, pagination and callbacks across a re-render with the same inputs', async() => {
+    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
+
+    const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useQueryWithPages(hookParams), {
+      wrapper,
+      initialProps: params,
+    });
+    await waitForApiResponse();
+    const before = result.current;
+
+    rerender(params);
+
+    expect(result.current).toBe(before);
+    expect(result.current.pagination).toBe(before.pagination);
+    expect(result.current.pagination.onNextPageClick).toBe(before.pagination.onNextPageClick);
+    expect(result.current.pagination.onPrevPageClick).toBe(before.pagination.onPrevPageClick);
+    expect(result.current.pagination.resetPage).toBe(before.pagination.resetPage);
+    expect(result.current.onFilterChange).toBe(before.onFilterChange);
+    expect(result.current.onSortingChange).toBe(before.onSortingChange);
+    expect(result.current.onChainValueChange).toBe(before.onChainValueChange);
+  });
+
+  it('keeps the same query hash across a re-render and changes it on a page change', async() => {
+    fetchMock.once(JSON.stringify(responses.page_1), responseInit);
+    fetchMock.once(JSON.stringify(responses.page_2), responseInit);
+
+    const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useQueryWithPages(hookParams), {
+      wrapper,
+      initialProps: params,
+    });
+    await waitForApiResponse();
+    const hashBefore = result.current.queryHash;
+
+    rerender(params);
+    expect(result.current.queryHash).toBe(hashBefore);
+
+    await act(async() => {
+      result.current.pagination.onNextPageClick();
+    });
+    await waitForApiResponse();
+
+    expect(result.current.queryHash).not.toBe(hashBefore);
+  });
+});
+
 describe('cost of one user action', () => {
   const paramsWithStub: Params<'core:address_txs'> = {
     ...params,
@@ -585,14 +683,25 @@ describe('cost of one user action', () => {
   async function renderOnPage(pageNumber: number) {
     fetchMock.mockResponse(respondByCursor);
     const renderLog: Array<RenderSnapshot> = [];
+    let consumerRenders = 0;
     let rendersAtMark = 0;
+    let consumerRendersAtMark = 0;
     let requestsAtMark = 0;
 
-    const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => {
+    const Consumer = React.memo(function Consumer(props: { query: QueryWithPagesResult<'core:address_txs'> }) {
+      consumerRenders++;
+      return React.createElement('span', null, props.query.pagination.page);
+    });
+
+    const result: { current: QueryWithPagesResult<'core:address_txs'> } = { current: undefined as never };
+    const Host = (hookParams: Params<'core:address_txs'>) => {
       const hookResult = useQueryWithPages(hookParams);
       renderLog.push({ page: hookResult.pagination.page, isLoading: hookResult.pagination.isLoading });
-      return hookResult;
-    }, { wrapper, initialProps: paramsWithStub });
+      result.current = hookResult;
+      return React.createElement(Consumer, { query: hookResult });
+    };
+
+    const { rerender } = render(React.createElement(Host, paramsWithStub));
     await waitForApiResponse();
 
     for (let page = 1; page < pageNumber; page++) {
@@ -605,12 +714,14 @@ describe('cost of one user action', () => {
 
     return {
       result,
-      rerender,
+      rerender: (hookParams: Params<'core:address_txs'>) => rerender(React.createElement(Host, hookParams)),
       mark: () => {
         rendersAtMark = renderLog.length;
+        consumerRendersAtMark = consumerRenders;
         requestsAtMark = fetchMock.mock.calls.length;
       },
       rendersSinceMark: () => renderLog.slice(rendersAtMark),
+      consumerRendersSinceMark: () => consumerRenders - consumerRendersAtMark,
       requestsSinceMark: () => fetchMock.mock.calls.slice(requestsAtMark).map(([ url ]) => requestSearch(String(url))),
     };
   }
@@ -627,12 +738,12 @@ describe('cost of one user action', () => {
     expect(result.current.data).toEqual(responses.page_1);
     expect(result.current.pagination).toMatchObject({ page: 1, isLoading: false });
     expect(routerStandIn.push).toHaveBeenCalledTimes(3);
-    // parent spec row "First" from page 3 — page-3 skeleton flashes first
-    expect(rendersSinceMark()[0]).toEqual({ page: 3, isLoading: true });
-    // parent spec row "First" from page 3 — API requests (page 3 refetched, then page 1)
-    expect(requestsSinceMark()).toEqual([ '?block_number=21&index=22&items_count=23', '' ]);
+    // parent spec row "First" from page 3 — cached page 1 is shown at once, no page-3 skeleton
+    expect(rendersSinceMark()[0]).toEqual({ page: 1, isLoading: false });
+    // parent spec row "First" from page 3 — API requests (page 1 refreshed in the background only)
+    expect(requestsSinceMark()).toEqual([ '' ]);
     // parent spec row "First" from page 3 — renders
-    expect(rendersSinceMark()).toHaveLength(3);
+    expect(rendersSinceMark()).toHaveLength(RENDERS_PER_NAVIGATION);
   });
 
   it('filter change while on page 3', async() => {
@@ -648,10 +759,10 @@ describe('cost of one user action', () => {
     expect(result.current.data).toEqual(responses.page_filtered);
     expect(result.current.pagination).toMatchObject({ page: 1, isLoading: false });
     expect(routerStandIn.query).toEqual({ filter: 'from' });
-    // parent spec row "Filter change while on page 3" — API requests (old cursor + new filter first)
-    expect(requestsSinceMark()).toEqual([ '?block_number=21&index=22&items_count=23&filter=from', '?filter=from' ]);
+    // parent spec row "Filter change while on page 3" — API requests (the new filter on page 1 only)
+    expect(requestsSinceMark()).toEqual([ '?filter=from' ]);
     // parent spec row "Filter change while on page 3" — renders
-    expect(rendersSinceMark()).toHaveLength(3);
+    expect(rendersSinceMark()).toHaveLength(RENDERS_PER_NAVIGATION);
   });
 
   it('"Prev" from page 2 to page 1', async() => {
@@ -661,21 +772,25 @@ describe('cost of one user action', () => {
     await act(async() => {
       result.current.pagination.onPrevPageClick();
     });
+
+    // parent spec row "Prev" from page 2 to page 1 — cached rows shown at once, no skeleton
+    expect(result.current.data).toEqual(responses.page_1);
+    expect(result.current.isPlaceholderData).toBe(false);
+    expect(rendersSinceMark()[0]).toEqual({ page: 1, isLoading: false });
+
     await waitForApiResponse();
 
-    expect(result.current.data).toEqual(responses.page_1);
     expect(result.current.pagination).toMatchObject({ page: 1, isLoading: false });
-    // parent spec row "Prev" from page 2 to page 1 — skeleton shown although page 1 is cached
-    expect(rendersSinceMark()[0]).toEqual({ page: 1, isLoading: true });
-    // parent spec row "Prev" from page 2 to page 1 — blocking API requests
+    // parent spec row "Prev" from page 2 to page 1 — API requests (background refresh of page 1 only)
     expect(requestsSinceMark()).toEqual([ '' ]);
     // parent spec row "Prev" from page 2 to page 1 — renders
-    expect(rendersSinceMark()).toHaveLength(3);
+    expect(rendersSinceMark()).toHaveLength(RENDERS_PER_NAVIGATION);
   });
 
   it('unrelated router.query change', async() => {
-    const { result, mark, rendersSinceMark, requestsSinceMark } = await renderOnPage(2);
+    const { result, mark, consumerRendersSinceMark, requestsSinceMark } = await renderOnPage(2);
     const dataBefore = result.current.data;
+    const resultBefore = result.current;
 
     mark();
     act(() => {
@@ -684,9 +799,10 @@ describe('cost of one user action', () => {
     await waitForApiResponse();
 
     expect(result.current.data).toBe(dataBefore);
+    expect(result.current).toBe(resultBefore);
     expect(requestsSinceMark()).toEqual([]);
-    // parent spec row "Unrelated router.query change" — renders
-    expect(rendersSinceMark()).toHaveLength(2);
+    // parent spec row "Unrelated router.query change" — re-renders of a memoized consumer
+    expect(consumerRendersSinceMark()).toBe(0);
   });
 });
 

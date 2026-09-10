@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+export type NextPageParams = Record<string, unknown>;
+
 export interface PaginationParams {
   page: number;
   onNextPageClick: () => void;

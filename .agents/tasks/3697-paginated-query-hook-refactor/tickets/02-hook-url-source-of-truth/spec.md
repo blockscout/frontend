@@ -76,10 +76,10 @@ extracts it into `useChainValue`. Derive it with `getChainValueFromQuery` on eac
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `usePaginationParams`: URL → page, cursor, filters, sorting; unit spec
-- [ ] 2 `[agent]` `usePaginationActions`: stable handlers, one push each, cursor ref; unit spec
-- [ ] 3 `[agent]` Rebuild `useQueryWithPages` as the composition, keeping name, params and return shape,
+- [x] 1 `[agent]` `usePaginationParams`: URL → page, cursor, filters, sorting; unit spec
+- [x] 2 `[agent]` `usePaginationActions`: stable handlers, one push each, cursor ref; unit spec
+- [x] 3 `[agent]` Rebuild `useQueryWithPages` as the composition, keeping name, params and return shape,
       adding `filters`, `sorting`, `isInitialLoading`, `isTransitioning`; adapt `useBlockTxsQuery`'s
       hand-built result
-- [ ] 4 `[agent]` Flip the T01 count scenarios to the target numbers; add stability assertions
-- [ ] 5 `[human]` Verify the address transactions tab per the `(human)` criterion
+- [x] 4 `[agent]` Flip the T01 count scenarios to the target numbers; add stability assertions
+- [x] 5 `[human]` Verify the address transactions tab per the `(human)` criterion
