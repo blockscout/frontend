@@ -34,7 +34,7 @@ const EpochsPageContent = () => {
     </ActionBar>
   ) : null;
 
-  const isLoading = epochsQuery.isPlaceholderData;
+  const isLoading = epochsQuery.isInitialLoading;
 
   const content = (() => {
     if (epochsQuery.isError) {
@@ -70,6 +70,7 @@ const EpochsPageContent = () => {
         itemsNum={ epochsQuery.data?.items?.length }
         emptyText="There are no epochs."
         actionBar={ actionBar }
+        isTransitioning={ epochsQuery.isTransitioning }
       >
         { content }
       </DataList>

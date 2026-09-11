@@ -20,7 +20,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
       <Box hideFrom="lg">
         <BeaconChainWithdrawalsList
           items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          isLoading={ blockWithdrawalsQuery.isInitialLoading }
           view="block"
           resetKey={ blockWithdrawalsQuery.queryHash }
         />
@@ -28,7 +28,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
       <Box hideBelow="lg">
         <BeaconChainWithdrawalsTable
           items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          isLoading={ blockWithdrawalsQuery.isInitialLoading }
           top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
           resetKey={ blockWithdrawalsQuery.queryHash }
@@ -42,6 +42,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
       isError={ blockWithdrawalsQuery.isError }
       itemsNum={ blockWithdrawalsQuery.data?.items?.length }
       emptyText="There are no withdrawals for this block."
+      isTransitioning={ blockWithdrawalsQuery.isTransitioning }
     >
       { content }
     </DataList>

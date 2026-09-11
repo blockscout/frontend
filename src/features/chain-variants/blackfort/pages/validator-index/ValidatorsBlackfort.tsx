@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type {
@@ -34,15 +33,8 @@ const sortCollection = createListCollection({
 });
 
 const ValidatorsBlackfort = () => {
-  const router = useRouter();
-  const [ sort, setSort ] =
-    React.useState<ValidatorsBlackfortSortingValue>(
-      getSortValueFromQuery<ValidatorsBlackfortSortingValue>(router.query, VALIDATORS_BLACKFORT_SORT_OPTIONS) ?? 'default',
-    );
-
-  const { isError, isPlaceholderData, data, pagination, onSortingChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, sorting, onSortingChange, queryHash } = useQueryWithPages({
     resourceName: 'core:validators_blackfort',
-    sorting: getSortParamsFromValue<ValidatorsBlackfortSortingValue, ValidatorsBlackfortSortingField, ValidatorsBlackfortSorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
       placeholderData: generateListStub<'core:validators_blackfort'>(
@@ -53,10 +45,14 @@ const ValidatorsBlackfort = () => {
     },
   });
 
+  const sort = getSortValueFromQuery<ValidatorsBlackfortSortingValue>({ ...sorting }, VALIDATORS_BLACKFORT_SORT_OPTIONS) ?? 'default';
+
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    const sortValue = value[0] as ValidatorsBlackfortSortingValue;
-    setSort(sortValue);
-    onSortingChange(sortValue === 'default' ? undefined : getSortParamsFromValue(sortValue));
+    onSortingChange(
+      getSortParamsFromValue<ValidatorsBlackfortSortingValue, ValidatorsBlackfortSortingField, ValidatorsBlackfortSorting['order']>(
+        value[0] as ValidatorsBlackfortSortingValue,
+      ),
+    );
   }, [ onSortingChange ]);
 
   const sortButton = (
@@ -84,14 +80,14 @@ const ValidatorsBlackfort = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ValidatorsList data={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ValidatorsTable
           data={ data.items }
           sort={ sort }
           setSorting={ handleSortChange }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           resetKey={ queryHash }
         />
@@ -108,6 +104,7 @@ const ValidatorsBlackfort = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

@@ -10,19 +10,20 @@
 The chain-variant list pages (beacon-chain deposits and withdrawals on chain, block and address;
 Zeta-chain CCTX tab; Celo epochs and epoch rewards; TAC operations; Zilliqa, Stability and Blackfort
 validators) follow the T03 pattern. `useBlockWithdrawalsQuery`, `ValidatorsStability`,
-`ValidatorsBlackfort`, `ZetaChainCCTXsTab` and `TacOperations` drop their filter / sort state.
+`ValidatorsBlackfort`, `ZetaChainCCTXsTab` and `TacOperations` drop their filter / sort state. (`useBlockWithdrawalsQuery`
+turned out to hold only its RPC-fallback refetch flag, no URL-mirrored value; it was left as is.)
 
 ## Acceptance criteria
 
 How to verify: `pnpm dev:preset <a beacon-chain alias and a zeta-chain alias from
 tools/dev-server/registry.json>`, open the withdrawals page and the cross-chain transactions tab.
 
-- [ ] None of the files in Details holds `useState` for a filter or sort value the URL carries, nor
+- [x] None of the files in Details holds `useState` for a filter or sort value the URL carries, nor
       passes `filters` / `sorting` to `useQueryWithPages`.
-- [ ] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
+- [x] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
       to rows; row keys use the index only while `isLoading`.
-- [ ] Existing unit and Playwright specs pass; lint, tsc green.
-- [ ] `(human)` Zeta-chain CCTX tab: status filter resets to page 1 and survives reload; validators
+- [x] Existing unit and Playwright specs pass; lint, tsc green.
+- [x] `(human)` Zeta-chain CCTX tab: status filter resets to page 1 and survives reload; validators
       page sort is one request per toggle.
 
 ## Details
@@ -36,5 +37,5 @@ Files: `src/features/chain-variants/beacon-chain/pages/{address/*,block/*,deposi
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Migrate the files in Details
-- [ ] 2 `[human]` Verify per the `(human)` criterion
+- [x] 1 `[agent]` Migrate the files in Details
+- [x] 2 `[human]` Verify per the `(human)` criterion

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -16,22 +15,19 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
+import { SECOND } from 'src/toolkit/utils/consts';
 
 import { TAC_OPERATION } from '../../stubs';
 import TacOperationsList from './TacOperationsList';
 import TacOperationsTable from './TacOperationsTable';
 
+const SEARCH_DEBOUNCE = 0.3 * SECOND;
+
 const TacOperations = () => {
-  const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
-
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, onFilterChange, queryHash } = useQueryWithPages({
     resourceName: 'tac:operations',
-    filters: { q: debouncedSearchTerm },
     options: {
       placeholderData: generateListStub<'tac:operations'>(
         TAC_OPERATION,
@@ -41,10 +37,13 @@ const TacOperations = () => {
     },
   });
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    onFilterChange({ q: value });
-    setSearchTerm(value);
-  }, [ onFilterChange ]);
+  const searchTerm = getQueryParamString(filters.q) || undefined;
+
+  const handleSearchTermChange = React.useMemo(
+    () => debounce((value: string) => onFilterChange({ q: value }), SEARCH_DEBOUNCE),
+    [ onFilterChange ],
+  );
+  React.useEffect(() => () => handleSearchTermChange.cancel(), [ handleSearchTermChange ]);
 
   const filterInput = (
     <FilterInput
@@ -75,10 +74,10 @@ const TacOperations = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <TacOperationsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <TacOperationsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <TacOperationsTable items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <TacOperationsTable items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
     </>
   ) : null;
@@ -90,11 +89,12 @@ const TacOperations = () => {
         isError={ isError }
         itemsNum={ data?.items?.length }
         emptyText="There are no operations."
-        hasActiveFilters={ Boolean(debouncedSearchTerm) }
+        hasActiveFilters={ Boolean(searchTerm) }
         emptyStateProps={{
           term: 'operation',
         }}
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

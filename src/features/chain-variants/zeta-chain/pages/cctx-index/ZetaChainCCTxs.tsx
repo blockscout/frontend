@@ -29,7 +29,8 @@ type Props = {
   pagination: PaginationParams;
   top?: number;
   items?: Array<CctxListItem>;
-  isPlaceholderData: boolean;
+  isInitialLoading: boolean;
+  isTransitioning: boolean;
   isError: boolean;
   filters?: ZetaChainCCTXFilterParams;
   onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
@@ -42,7 +43,8 @@ const ZetaChainCCTxs = ({
   pagination,
   top,
   items,
-  isPlaceholderData,
+  isInitialLoading,
+  isTransitioning,
   isError,
   filters = {},
   onFilterChange,
@@ -141,13 +143,13 @@ const ZetaChainCCTxs = ({
           <SocketNewItemsNotice.Mobile
             showErrorAlert={ showSocketErrorAlert }
             type="cross_chain_transaction"
-            isLoading={ isPlaceholderData }
+            isLoading={ isInitialLoading }
             num={ showOverloadNotice ? 1 : 0 }
           />
         ) }
         <ZetaChainCCTxsList
           txs={ items ?? [] }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ resetKey }
         />
       </Box>
@@ -155,10 +157,9 @@ const ZetaChainCCTxs = ({
         <ZetaChainCCTxsTable
           txs={ items ?? [] }
           top={ top || 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           filters={ filters }
           onFilterChange={ onFilterChange }
-          isPlaceholderData={ isPlaceholderData }
           showStatusFilter={ showStatusFilter }
           showSocketInfo={ pagination.page === 1 && !hasFilters }
           showSocketErrorAlert={ showSocketErrorAlert }
@@ -185,6 +186,7 @@ const ZetaChainCCTxs = ({
         term: 'cross chain transaction',
       }}
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

@@ -20,7 +20,7 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
       <Box hideFrom="lg">
         <BeaconChainDepositsList
           items={ blockDepositsQuery.data.items }
-          isLoading={ blockDepositsQuery.isPlaceholderData }
+          isLoading={ blockDepositsQuery.isInitialLoading }
           view="block"
           resetKey={ blockDepositsQuery.queryHash }
         />
@@ -28,7 +28,7 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
       <Box hideBelow="lg">
         <BeaconChainDepositsTable
           items={ blockDepositsQuery.data.items }
-          isLoading={ blockDepositsQuery.isPlaceholderData }
+          isLoading={ blockDepositsQuery.isInitialLoading }
           top={ blockDepositsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           view="block"
           resetKey={ blockDepositsQuery.queryHash }
@@ -42,6 +42,7 @@ const BlockDeposits = ({ blockDepositsQuery }: Props) => {
       isError={ blockDepositsQuery.isError }
       itemsNum={ blockDepositsQuery.data?.items?.length }
       emptyText="There are no deposits for this block."
+      isTransitioning={ blockDepositsQuery.isTransitioning }
     >
       { content }
     </DataList>

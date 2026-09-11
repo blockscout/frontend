@@ -56,7 +56,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       <AddressEpochRewardsTable
         items={ rewardsQuery.data.items }
         top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ rewardsQuery.isPlaceholderData }
+        isLoading={ rewardsQuery.isInitialLoading }
         resetKey={ rewardsQuery.queryHash }
       />
     </TableContainerScrollable>
@@ -85,6 +85,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       itemsNum={ rewardsQuery.data?.items?.length }
       emptyText="There are no epoch rewards for this address."
       actionBar={ actionBar }
+      isTransitioning={ rewardsQuery.isTransitioning }
     >
       { content }
     </DataList>

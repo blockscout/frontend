@@ -27,7 +27,7 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:address_deposits',
     pathParams: { hash },
     options: {
@@ -49,7 +49,7 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
         items={ data.items }
         view="address"
         top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         resetKey={ queryHash }
       />
     </TableContainerScrollable>
@@ -67,6 +67,7 @@ const AddressDeposits = ({ shouldRender = true, isQueryEnabled = true }: Props) 
       itemsNum={ data?.items?.length }
       emptyText="There are no deposits for this address."
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

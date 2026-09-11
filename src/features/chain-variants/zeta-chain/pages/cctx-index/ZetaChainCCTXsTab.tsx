@@ -18,6 +18,7 @@ import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chai
 import dayjs from 'src/shared/date-and-time/dayjs';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
+import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -37,35 +38,40 @@ const TAB_LIST_PROPS = {
 };
 const TABS_HEIGHT = 64;
 
+const RESOURCE_NAME = 'zetachain:transactions';
+
 const hasNextPageFn = (nextPageParams: Record<string, unknown>) => {
   return nextPageParams.limit !== '0';
 };
+
+// The URL carries an age preset without its range; the range is recomputed from "now" whenever the filters change.
+function getFiltersFromQuery(query: ZetaChainCCTXFilterParams): ZetaChainCCTXFilterParams {
+  const age = getFilterValueFromQuery<AdvancedFilterAge>(ADVANCED_FILTER_AGES, query.age);
+
+  return {
+    end_timestamp: age ? dayjs().unix().toString() : getQueryParamString(query.end_timestamp) || undefined,
+    start_timestamp: age ? dayjs(dayjs().valueOf() - getDurationFromAge(age)).unix().toString() : getQueryParamString(query.start_timestamp) || undefined,
+    age,
+    status_reduced: getFilterValueFromQuery<StatusReducedFilters>(ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, query.status_reduced),
+    sender_address: getValuesArrayFromQuery(query.sender_address),
+    receiver_address: getValuesArrayFromQuery(query.receiver_address),
+    source_chain_id: getValuesArrayFromQuery(query.source_chain_id),
+    target_chain_id: getValuesArrayFromQuery(query.target_chain_id),
+    token_symbol: getValuesArrayFromQuery(query.token_symbol),
+    coin_type: getFilterValueFromQuery<CoinTypeFilter>([ ZETA_CHAIN_CCTX_COIN_TYPE_FILTER ], query.coin_type),
+  };
+}
 
 const ZetaChainCCTXsTab = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const [ filters, setFilters ] = React.useState<ZetaChainCCTXFilterParams>(() => {
-    const age = getFilterValueFromQuery<AdvancedFilterAge>(ADVANCED_FILTER_AGES, router.query.age);
-    const startTimestampFromQuery = getQueryParamString(router.query.start_timestamp) ? getQueryParamString(router.query.start_timestamp) : undefined;
-    const endTimestampFromQuery = getQueryParamString(router.query.end_timestamp) ? getQueryParamString(router.query.end_timestamp) : undefined;
-    return {
-      end_timestamp: age ? dayjs().unix().toString() : endTimestampFromQuery,
-      start_timestamp: age ? dayjs((dayjs().valueOf() - getDurationFromAge(age))).unix().toString() : startTimestampFromQuery,
-      age,
-      status_reduced: getFilterValueFromQuery<StatusReducedFilters>(ZETA_CHAIN_CCTX_STATUS_REDUCED_FILTERS, router.query.status_reduced),
-      sender_address: getValuesArrayFromQuery(router.query.sender_address),
-      receiver_address: getValuesArrayFromQuery(router.query.receiver_address),
-      source_chain_id: getValuesArrayFromQuery(router.query.source_chain_id),
-      target_chain_id: getValuesArrayFromQuery(router.query.target_chain_id),
-      token_symbol: getValuesArrayFromQuery(router.query.token_symbol),
-      coin_type: getFilterValueFromQuery<CoinTypeFilter>([ ZETA_CHAIN_CCTX_COIN_TYPE_FILTER ], router.query.coin_type),
-    };
-  });
+  const { filters: filtersFromUrl } = usePaginationParams(RESOURCE_NAME);
+  const filters = React.useMemo(() => getFiltersFromQuery(filtersFromUrl), [ filtersFromUrl ]);
 
   const cctxsValidatedQuery = useQueryWithPages({
-    resourceName: 'zetachain:transactions',
+    resourceName: RESOURCE_NAME,
     queryParams: {
       ...filters,
       limit: 50,
@@ -81,7 +87,7 @@ const ZetaChainCCTXsTab = () => {
   });
 
   const cctxsPendingQuery = useQueryWithPages({
-    resourceName: 'zetachain:transactions',
+    resourceName: RESOURCE_NAME,
     queryParams: {
       ...filters,
       limit: 50,
@@ -97,16 +103,26 @@ const ZetaChainCCTXsTab = () => {
   });
 
   const query = tab === 'cctx_mined' ? cctxsValidatedQuery : cctxsPendingQuery;
+  const { onFilterChange } = query;
 
+  const latestFilters = React.useRef(filters);
+  latestFilters.current = filters;
+  const pendingFilters = React.useRef<ZetaChainCCTXFilterParams | null>(null);
+
+  // The column filters report one field per call and several per user action (an age preset sets its range
+  // and the preset, the asset filter sets the coin type and the symbol). The calls of one tick are collected
+  // and pushed to the URL together, so one action is one navigation and one request.
   const handleFilterChange = React.useCallback(<T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => {
-    setFilters(prevState => {
-      const newState = { ...prevState };
-      newState[field] = val;
-      query.onFilterChange(newState.age ? omit(newState, [ 'start_timestamp', 'end_timestamp' ]) : newState);
-
-      return newState;
-    });
-  }, [ query ]);
+    if (pendingFilters.current === null) {
+      pendingFilters.current = { ...latestFilters.current };
+      queueMicrotask(() => {
+        const nextFilters = pendingFilters.current ?? {};
+        pendingFilters.current = null;
+        onFilterChange(nextFilters.age ? omit(nextFilters, [ 'start_timestamp', 'end_timestamp' ]) : nextFilters);
+      });
+    }
+    pendingFilters.current[field] = val;
+  }, [ onFilterChange ]);
 
   const onClearFilter = React.useCallback((key: keyof ZetaChainCCTXFilterParams) => () => {
     if (key === 'age') {
@@ -122,9 +138,8 @@ const ZetaChainCCTXsTab = () => {
   );
 
   const clearAllFilters = React.useCallback(() => {
-    setFilters({});
-    query.onFilterChange({});
-  }, [ query ]);
+    onFilterChange({});
+  }, [ onFilterChange ]);
 
   const verifiedTitle = capitalize(getChainValidationActionText());
 
@@ -136,7 +151,8 @@ const ZetaChainCCTXsTab = () => {
         <ZetaChainCCTxs
           pagination={ cctxsValidatedQuery.pagination }
           items={ cctxsValidatedQuery.data?.items }
-          isPlaceholderData={ cctxsValidatedQuery.isPlaceholderData }
+          isInitialLoading={ cctxsValidatedQuery.isInitialLoading }
+          isTransitioning={ cctxsValidatedQuery.isTransitioning }
           isError={ cctxsValidatedQuery.isError }
           top={ cctxsValidatedQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           filters={ filters }
@@ -152,7 +168,8 @@ const ZetaChainCCTXsTab = () => {
         <ZetaChainCCTxs
           pagination={ cctxsPendingQuery.pagination }
           items={ cctxsPendingQuery.data?.items }
-          isPlaceholderData={ cctxsPendingQuery.isPlaceholderData }
+          isInitialLoading={ cctxsPendingQuery.isInitialLoading }
+          isTransitioning={ cctxsPendingQuery.isTransitioning }
           isError={ cctxsPendingQuery.isError }
           top={ cctxsPendingQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
           filters={ filters }
