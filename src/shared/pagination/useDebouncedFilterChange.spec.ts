@@ -3,7 +3,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
 
-import { SEARCH_DEBOUNCE, useDebouncedFilterChange } from './useDebouncedFilterChange';
+import { DELAY, useDebouncedFilterChange } from './useDebouncedFilterChange';
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -28,7 +28,7 @@ describe('useDebouncedFilterChange', () => {
     expect(onFilterChange).not.toHaveBeenCalled();
 
     act(() => {
-      vi.advanceTimersByTime(SEARCH_DEBOUNCE);
+      vi.advanceTimersByTime(DELAY);
     });
 
     expect(onFilterChange).toHaveBeenCalledTimes(1);
@@ -45,7 +45,7 @@ describe('useDebouncedFilterChange', () => {
     unmount();
 
     act(() => {
-      vi.advanceTimersByTime(SEARCH_DEBOUNCE);
+      vi.advanceTimersByTime(DELAY);
     });
 
     expect(onFilterChange).not.toHaveBeenCalled();
@@ -65,7 +65,7 @@ describe('useDebouncedFilterChange', () => {
     expect(result.current).toBe(initial);
 
     act(() => {
-      vi.advanceTimersByTime(SEARCH_DEBOUNCE);
+      vi.advanceTimersByTime(DELAY);
     });
 
     expect(first).not.toHaveBeenCalled();

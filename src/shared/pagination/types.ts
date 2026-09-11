@@ -3,13 +3,13 @@
 export type NextPageParams = Record<string, unknown>;
 
 export interface PaginationParams {
-  page: number;
-  onNextPageClick: () => void;
-  onPrevPageClick: () => void;
-  resetPage: () => void;
-  hasPages: boolean;
-  hasNextPage: boolean;
-  canGoBackwards: boolean;
-  isLoading: boolean;
-  isVisible: boolean;
+  readonly page: number;
+  readonly onNextPageClick: () => void;
+  readonly onPrevPageClick: () => void;
+  readonly resetPage: () => void;
+  readonly hasPages: boolean;
+  readonly hasNextPage: boolean;
+  readonly canGoBackwards: boolean;
+  readonly isLoading: boolean;
+  readonly isVisible: boolean;
 }

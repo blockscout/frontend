@@ -390,16 +390,11 @@ describe('if there is page query param in URL', () => {
 describe('queries with filters', () => {
   it('reset page, keep sorting when filter is changed', async() => {
     routerStandIn.reset({ pathname: '/blocks', query: { foo: 'bar', sort: 'val-desc' } });
-    const paramsWithSorting: Params<'core:address_txs'> = {
-      ...params,
-      // @ts-ignore:
-      sorting: { sort: 'val-desc' },
-    };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_filtered), responseInit);
 
-    const { result } = renderHook(() => useQueryWithPages(paramsWithSorting), { wrapper });
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -455,15 +450,11 @@ describe('queries with filters', () => {
 describe('queries with sorting', () => {
   it('reset page, save filter when sorting is changed', async() => {
     routerStandIn.reset({ pathname: '/blocks', query: { foo: 'bar', filter: 'from' } });
-    const paramsWithFilters: Params<'core:address_txs'> = {
-      ...params,
-      filters: { filter: 'from' },
-    };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_sorted), responseInit);
 
-    const { result } = renderHook(() => useQueryWithPages(paramsWithFilters), { wrapper });
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -496,15 +487,10 @@ describe('queries with sorting', () => {
 
   it('saves sorting params in query when navigating between pages', async() => {
     routerStandIn.reset({ pathname: '/blocks', query: { foo: 'bar', sort: 'val-desc' } });
-    const paramsWithSorting: Params<'core:address_txs'> = {
-      ...params,
-      // @ts-ignore:
-      sorting: { sort: 'val-desc' },
-    };
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
-    const { result } = renderHook(() => useQueryWithPages(paramsWithSorting), { wrapper });
+    const { result } = renderHook(() => useQueryWithPages(params), { wrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -560,7 +546,7 @@ describe('router query changes', () => {
 });
 
 describe('values derived from the URL', () => {
-  it('reads filters and sorting from the URL when the caller passes none', async() => {
+  it('reads filters and sorting from the URL', async() => {
     routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', sort: 'value', order: 'desc', foo: 'bar' } });
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
@@ -570,23 +556,6 @@ describe('values derived from the URL', () => {
     expect(result.current.filters).toEqual({ filter: 'to' });
     expect(result.current.sorting).toEqual({ sort: 'value', order: 'desc' });
     expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=to&sort=value&order=desc');
-  });
-
-  it('lets the caller-passed filters and sorting override the URL', async() => {
-    routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', sort: 'value', order: 'desc' } });
-    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
-    const paramsWithOverrides: Params<'core:address_txs'> = {
-      ...params,
-      filters: { filter: 'from' },
-      sorting: { sort: 'fee', order: 'asc' },
-    };
-
-    const { result } = renderHook(() => useQueryWithPages(paramsWithOverrides), { wrapper });
-    await waitForApiResponse();
-
-    expect(result.current.filters).toEqual({ filter: 'from' });
-    expect(result.current.sorting).toEqual({ sort: 'fee', order: 'asc' });
-    expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=from&sort=fee&order=asc');
   });
 
   it('lets fixed queryParams win over a URL filter field of the same name', async() => {
@@ -735,7 +704,7 @@ describe('cost of one user action', () => {
       return React.createElement(Consumer, { query: hookResult });
     };
 
-    const { rerender } = render(React.createElement(Host, paramsWithStub));
+    render(React.createElement(Host, paramsWithStub));
     await waitForApiResponse();
 
     for (let page = 1; page < pageNumber; page++) {
@@ -748,7 +717,6 @@ describe('cost of one user action', () => {
 
     return {
       result,
-      rerender: (hookParams: Params<'core:address_txs'>) => rerender(React.createElement(Host, hookParams)),
       mark: () => {
         rendersAtMark = renderLog.length;
         consumerRendersAtMark = consumerRenders;
@@ -781,11 +749,10 @@ describe('cost of one user action', () => {
   });
 
   it('filter change while on page 3', async() => {
-    const { result, rerender, mark, rendersSinceMark, requestsSinceMark } = await renderOnPage(3);
+    const { result, mark, rendersSinceMark, requestsSinceMark } = await renderOnPage(3);
 
     mark();
     await act(async() => {
-      rerender({ ...paramsWithStub, filters: { filter: 'from' } });
       result.current.onFilterChange({ filter: 'from' });
     });
     await waitForApiResponse();

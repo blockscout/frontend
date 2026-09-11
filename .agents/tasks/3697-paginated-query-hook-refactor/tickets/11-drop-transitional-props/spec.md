@@ -25,6 +25,6 @@ only list state, the cursor ref, why cache is never removed by prefix, what `isI
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Remove the params; fix anything tsc surfaces
-- [ ] 2 `[agent]` Finalize `PaginationParams` and the result type
-- [ ] 3 `[agent]` Write `CONTEXT.md` and link it from `.agents/CLAUDE.md`
+- [x] 1 `[agent]` Remove the params; fix anything tsc surfaces
+- [x] 2 `[agent]` Finalize `PaginationParams` and the result type
+- [x] 3 `[agent]` Write `CONTEXT.md` and link it from `.agents/CLAUDE.md`

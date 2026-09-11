@@ -9,38 +9,36 @@ import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import type { Params as UseApiQueryParams } from 'src/api/hooks/useApiQuery';
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
-import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'src/api/resources';
+import type { PaginatedResourceName, ResourceError, ResourcePayload } from 'src/api/resources';
 
 import { useShallowStable } from 'src/shared/hooks/useShallowStable';
 
+import type { PaginationActions } from './usePaginationActions';
 import { usePaginationActions } from './usePaginationActions';
+import type { PaginationUrlParams } from './usePaginationParams';
 import { usePaginationParams } from './usePaginationParams';
 
 export interface Params<Resource extends PaginatedResourceName> {
-  resourceName: Resource;
-  options?: UseApiQueryParams<Resource>['queryOptions'];
-  queryParams?: UseApiQueryParams<Resource>['queryParams'];
-  pathParams?: UseApiQueryParams<Resource>['pathParams'];
-  filters?: PaginationFilters<Resource>;
-  sorting?: PaginationSorting<Resource>;
-  scrollRef?: React.RefObject<HTMLDivElement | null>;
-  hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
-  chain?: ExternalChainExtended;
-  noScroll?: boolean;
+  readonly resourceName: Resource;
+  readonly options?: UseApiQueryParams<Resource>['queryOptions'];
+  readonly queryParams?: UseApiQueryParams<Resource>['queryParams'];
+  readonly pathParams?: UseApiQueryParams<Resource>['pathParams'];
+  readonly scrollRef?: React.RefObject<HTMLDivElement | null>;
+  readonly hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
+  readonly chain?: ExternalChainExtended;
+  readonly noScroll?: boolean;
 }
 
 export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
-UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
-{
-  onFilterChange: <R extends PaginatedResourceName = Resource>(filters: PaginationFilters<R>) => void;
-  onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
-  pagination: PaginationParams;
-  filters: PaginationFilters<Resource>;
-  sorting: PaginationSorting<Resource>;
-  queryHash: string;
-  isInitialLoading: boolean;
-  isTransitioning: boolean;
-};
+  UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
+  Pick<PaginationUrlParams<Resource>, 'filters' | 'sorting'> &
+  Pick<PaginationActions<Resource>, 'onFilterChange' | 'onSortingChange'> &
+  {
+    readonly pagination: PaginationParams;
+    readonly queryHash: string;
+    readonly isInitialLoading: boolean;
+    readonly isTransitioning: boolean;
+  };
 
 type ResourceQueryParams = NonNullable<UseApiQueryParams<PaginatedResourceName>['queryParams']>;
 
@@ -62,8 +60,6 @@ function hasMoreItems(nextPageParams: NextPageParams | undefined, hasNextPageFn:
 
 export default function useQueryWithPages<Resource extends PaginatedResourceName>({
   resourceName,
-  filters: filtersProp,
-  sorting: sortingProp,
   options,
   pathParams,
   queryParams: queryParamsFromProps,
@@ -72,16 +68,11 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   hasNextPageFn,
   chain,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
-  const { page, cursor, filters: filtersFromUrl, sorting: sortingFromUrl } = usePaginationParams(resourceName);
-  const filters = filtersProp ?? filtersFromUrl;
-  const sorting = sortingProp ?? sortingFromUrl;
+  const { page, cursor, filters, sorting } = usePaginationParams(resourceName);
 
   const queryParams = { ...cursor, ...filters, ...sorting, ...queryParamsFromProps } as ResourceQueryParams;
   const resolvedQueryParams = Object.keys(queryParams).length ? queryParams : undefined;
 
-  // Exposed as `queryHash` so list components can use it as the `resetKey` for useLazyRenderedList:
-  // it changes on filter/pagination/chain changes but is stable across in-place cache updates
-  // (socket prepends via setQueryData), which is exactly when the render window should / shouldn't reset.
   const queryHash = hashKey(getResourceKey(resourceName, {
     pathParams,
     queryParams: resolvedQueryParams,
