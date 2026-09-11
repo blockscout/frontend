@@ -35,8 +35,10 @@ The only ERC-8056 token available has one applied change, which covers scaled am
 `new_ui_multiplier`. Acceptance of requirement 5 needs it.
 
 - Owner: PM (Nikita S.)
-- Status: `pending`
+- Status: `waived`
 - Resolved when: a token exists on a reachable instance with a multiplier other than 1 and a change
   scheduled for a future timestamp, and its address is known.
-- Slack: — (not sent; deferred until the implementation reaches acceptance)
-- Answer: —
+- Slack: — (not sent)
+- Answer: waived at ticketing — the API already resolves a scheduled change into `ui_multiplier`, the
+  mockups carry no pending-change UI, and no ticket reads `new_ui_multiplier` or
+  `ui_multiplier_effective_at`. Reopen if a pending-change indicator is ever added.
