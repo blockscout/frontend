@@ -8,7 +8,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-router-stand-in/`
 - [x] 02 → `tickets/02-hook-url-source-of-truth/`
-- [ ] 03 → `tickets/03-reference-address-txs/`
+- [x] 03 → `tickets/03-reference-address-txs/`
 - [ ] 04 → `tickets/04-chain-value-hook/`
 - [ ] 05 → `tickets/05-txs-lists-family/`
 - [ ] 06 → `tickets/06-token-transfers-internal-txs-logs/`

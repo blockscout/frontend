@@ -34,7 +34,7 @@ const TxsWithFrontendSorting = ({
   enableTimeIncrement,
   top,
 }: Props) => {
-  const { data, isPlaceholderData, isError, setSortByValue, sorting } = useTxsSort(query);
+  const { data, isError, setSortByValue, sorting } = useTxsSort(query);
 
   return (
     <TxsContent
@@ -46,7 +46,8 @@ const TxsWithFrontendSorting = ({
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }
       items={ data?.items }
-      isPlaceholderData={ isPlaceholderData }
+      isInitialLoading={ query.isInitialLoading }
+      isTransitioning={ query.isTransitioning }
       isError={ isError }
       setSorting={ setSortByValue }
       sort={ sorting }

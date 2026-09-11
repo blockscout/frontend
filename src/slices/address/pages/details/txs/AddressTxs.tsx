@@ -61,15 +61,9 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
     },
   });
 
-  const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
-    if (value === 'txs_local') {
-      localQuery.setFilterValue(undefined);
-    }
-  }, [ localQuery ]);
-
   const txsLocalFilter = isLocalTab ? (
     <AddressTxsFilter
-      initialValue={ localQuery.initialFilterValue }
+      initialValue={ localQuery.filterValue }
       onFilterChange={ localQuery.onFilterChange }
       hasActiveFilter={ Boolean(localQuery.filterValue) }
       isLoading={ localQuery.query.pagination.isLoading }
@@ -94,7 +88,6 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           socketType="address_txs"
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           sorting={ localQuery.sort }
-          setSort={ localQuery.setSort }
           showBlockInfo
           showTableView
         />
@@ -172,7 +165,6 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
       variant="secondary"
       size="sm"
       tabs={ tabs }
-      onValueChange={ handleTabValueChange }
       defaultTabId="txs_local"
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }

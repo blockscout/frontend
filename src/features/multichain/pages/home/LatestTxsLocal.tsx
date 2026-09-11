@@ -45,7 +45,7 @@ const LatestTxsLocal = () => {
     <SocketProvider url={ getSocketUrl(chain?.app_config) }>
       <TxsContent
         items={ query.data }
-        isPlaceholderData={ query.isPlaceholderData }
+        isInitialLoading={ query.isPlaceholderData }
         isError={ query.isError }
         pagination={ PAGINATION_PARAMS }
         sort="default"

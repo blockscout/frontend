@@ -29,7 +29,8 @@ How to verify: `pnpm dev:preset eth`, open an address with many transactions, Tr
 - [ ] `AddressTxs` no longer has an `onValueChange` handler on `RoutedTabs` for resetting the filter.
 - [ ] `DataList` accepts `isTransitioning?: boolean` and, when true, renders its body with the app's
       existing disabled-content look, `pointer-events: none` and `aria-busy`, leaving `actionBar`
-      outside; marked `TODO (design):` for T13. A Playwright scaffold shows the state.
+      outside; marked `TODO (design):` for T13. (Playwright scaffold waived by the developer: the
+      styling is trivial.)
 - [ ] `TxsContent` takes `isInitialLoading` and `isTransitioning` instead of `isPlaceholderData`;
       rows get `isLoading={ isInitialLoading }`, `DataList` gets `isTransitioning`.
 - [ ] Row keys in `TxsTable` and `TxsList` append the index only when `isLoading` is true.
@@ -42,8 +43,8 @@ How to verify: `pnpm dev:preset eth`, open an address with many transactions, Tr
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `DataList` `isTransitioning` prop with interim look, `TODO (design):`, Playwright scaffold
-- [ ] 2 `[agent]` `useAddressTxsQuery` and `AddressTxs` read filter/sort from the hook; drop local state
-- [ ] 3 `[agent]` `TxsWithApiSorting`, `TxsWithFrontendSorting`, `TxsContent`, `TxsTable`, `TxsList`: new
+- [x] 1 `[agent]` `DataList` `isTransitioning` prop with interim look, `TODO (design):`, Playwright scaffold
+- [x] 2 `[agent]` `useAddressTxsQuery` and `AddressTxs` read filter/sort from the hook; drop local state
+- [x] 3 `[agent]` `TxsWithApiSorting`, `TxsWithFrontendSorting`, `TxsContent`, `TxsTable`, `TxsList`: new
       flags, row keys; pass-through edits in their callers
-- [ ] 4 `[human]` Verify per the `(human)` criterion
+- [x] 4 `[human]` Verify per the `(human)` criterion
