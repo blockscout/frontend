@@ -9,7 +9,7 @@ import config from 'src/config';
 
 const tokenStandardName = config.slices.token.standard;
 
-type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
+export type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 
 type TokenCategory = 'all' | 'nft' | 'fungible';
 

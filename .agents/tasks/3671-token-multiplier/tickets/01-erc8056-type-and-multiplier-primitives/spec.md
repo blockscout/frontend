@@ -78,8 +78,8 @@ deploy; the raw `KEY=value` format is documented in `tools/dev-server/CONTEXT.md
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Publish and pin the beta `@blockscout/api-types` carrying the multiplier fields; fix what
+- [x] 1 `[agent]` Publish and pin the beta `@blockscout/api-types` carrying the multiplier fields; fix what
       `lint:tsc` surfaces — skill: `publish-beta-types`
-- [ ] 2 `[agent]` Multiplier predicate + factor formatter in the token slice, with unit specs
-- [ ] 3 `[agent]` `toTokenModel` defaults; `tokenInfoERC8056` and `erc8056` transfer mocks; stubs
-- [ ] 4 `[agent]` Search results: replace the three `'ERC-20'` branches with `isFungibleTokenType`
+- [x] 2 `[agent]` Multiplier predicate + factor formatter in the token slice, with unit specs
+- [x] 3 `[agent]` `toTokenModel` defaults; `tokenInfoERC8056` and `erc8056` transfer mocks; stubs
+- [x] 4 `[agent]` Search results: replace the three `'ERC-20'` branches with `isFungibleTokenType`

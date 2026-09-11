@@ -24,6 +24,9 @@ export const TOKEN_INFO_ERC_20: schemas['Token'] = {
   circulating_supply: null,
   volume_24h: null,
   is_bridged: false,
+  ui_multiplier: null,
+  new_ui_multiplier: null,
+  ui_multiplier_effective_at: null,
 };
 
 export const TOKEN_INFO_ERC_721: schemas['Token'] = {

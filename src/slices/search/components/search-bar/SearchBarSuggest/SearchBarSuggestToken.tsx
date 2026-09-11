@@ -7,6 +7,7 @@ import React from 'react';
 import type { ItemsProps } from './types';
 import type { schemas } from '@blockscout/api-types';
 import type * as multichain from 'src/features/multichain/types/client';
+import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import { toBech32Address } from 'src/slices/address/utils/bech32';
 import ContractCertifiedLabel from 'src/slices/contract/components/ContractCertifiedLabel';
@@ -56,17 +57,18 @@ const SearchBarSuggestToken =
     );
 
     const contractVerifiedIcon = isVerified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/>;
+    const isFungible = isFungibleTokenType(data.token_type);
     const additionalInfo = (
       <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-        { data.token_type === 'ERC-20' && 'exchange_rate' in data && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-        { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+        { isFungible && 'exchange_rate' in data && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+        { !isFungible && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
       </Text>
     );
 
     if (isMobile) {
       const templateCols = `1fr
-    ${ (data.token_type === 'ERC-20' && 'exchange_rate' in data && data.exchange_rate) ||
-      (data.token_type !== 'ERC-20' && 'total_supply' in data && data.total_supply) ? ' auto' : '' }`;
+    ${ (isFungible && 'exchange_rate' in data && data.exchange_rate) ||
+      (!isFungible && 'total_supply' in data && data.total_supply) ? ' auto' : '' }`;
 
       return (
         <>

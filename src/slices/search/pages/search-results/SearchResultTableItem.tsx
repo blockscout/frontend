@@ -7,6 +7,7 @@ import xss from 'xss';
 
 import type { AddressFormat } from 'src/slices/address/types/config';
 import type { SearchResultItem } from 'src/slices/search/types/client';
+import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
@@ -107,8 +108,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
             <TableCell verticalAlign="middle" isNumeric>
               <Skeleton loading={ isLoading } whiteSpace="nowrap" overflow="hidden">
                 <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-                  { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-                  { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+                  { isFungibleTokenType(data.token_type) && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+                  { !isFungibleTokenType(data.token_type) && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
                 </Text>
               </Skeleton>
             </TableCell>

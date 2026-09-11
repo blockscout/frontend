@@ -42,3 +42,18 @@ The only ERC-8056 token available has one applied change, which covers scaled am
 - Answer: waived at ticketing — the API already resolves a scheduled change into `ui_multiplier`, the
   mockups carry no pending-change UI, and no ticket reads `new_ui_multiplier` or
   `ui_multiplier_effective_at`. Reopen if a pending-change indicator is ever added.
+
+### Q04 — What heading does an ERC-8056 token sit under in search results?
+
+Search groups results by category, and the fungible group's heading is the fixed string
+`Tokens (ERC-20)`. T01 moved ERC-8056 out of the NFT group into it, so the token now shows under a heading
+that names another type. Mockups cover no search surface.
+
+- Owner: PM (Nikita S.)
+- Status: `resolved`
+- Resolved when: the PM picks one of: keep `Tokens (ERC-20)`; list the instance's enabled fungible types
+  (`Tokens (ERC-20, ERC-8056)`), which we recommend; or a separate `Tokens (ERC-8056)` group like the
+  ERC-7984 one. Not a blocker for any ticket — only the heading string changes.
+- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1789124062421439
+- Answer: list the enabled fungible types. The heading is built from `ERC-20` plus every additional token
+  type that is not confidential, e.g. `Tokens (ERC-20, ERC-8056)`. Done in T01.
