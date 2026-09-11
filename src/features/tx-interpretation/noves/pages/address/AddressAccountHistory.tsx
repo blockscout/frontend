@@ -15,7 +15,7 @@ import { getFromToValue } from 'src/features/tx-interpretation/noves/utils/from-
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -41,7 +41,7 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   const currentAddress = getQueryParamString(router.query.hash).toLowerCase();
   const filterValue = getFilterValue(router.query.filter);
 
-  const { data, isError, pagination, isInitialLoading, isTransitioning, queryHash } = useQueryWithPages({
+  const { data, isError, pagination, isInitialLoading, isTransitioning, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:noves_address_history',
     pathParams: { address: currentAddress },
     options: {

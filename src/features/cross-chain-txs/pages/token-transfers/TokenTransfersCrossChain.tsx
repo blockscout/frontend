@@ -5,7 +5,7 @@ import React from 'react';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -14,7 +14,7 @@ import TokenTransfersCrossChainContent from '../../components/token-transfers/To
 import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:transfers',
     options: {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),

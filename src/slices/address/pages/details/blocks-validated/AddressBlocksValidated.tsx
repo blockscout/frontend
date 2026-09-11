@@ -23,7 +23,7 @@ import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -46,7 +46,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   const isMounted = useIsMounted();
 
   const addressHash = String(router.query.hash);
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_blocks_validated',
     pathParams: { hash: addressHash },
     options: {

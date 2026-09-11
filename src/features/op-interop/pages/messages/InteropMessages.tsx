@@ -12,7 +12,7 @@ import { INTEROP_MESSAGE } from 'src/features/op-interop/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import InteropMessagesListItem from './InteropMessagesListItem';
 import InteropMessagesTable from './InteropMessagesTable';
 
 const InteropMessages = () => {
-  const interopMessagesQuery = useQueryWithPages({
+  const interopMessagesQuery = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_interop_messages',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {

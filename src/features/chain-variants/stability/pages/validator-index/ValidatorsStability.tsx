@@ -19,7 +19,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -39,7 +39,7 @@ const sortCollection = createListCollection({
 const ValidatorsStability = () => {
   const isMobile = useIsMobile();
 
-  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, sorting, onFilterChange, onSortingChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, sorting, onFilterChange, onSortingChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:validators_stability',
     options: {
       enabled: config.features.validators.isEnabled,

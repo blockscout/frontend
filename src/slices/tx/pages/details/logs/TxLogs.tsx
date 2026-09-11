@@ -16,7 +16,7 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 // log rows are tall, so the initial window is smaller than the default
@@ -28,7 +28,7 @@ interface Props {
 }
 
 const TxLogs = ({ txQuery, logsFilter }: Props) => {
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:tx_logs',
     pathParams: { hash: txQuery.data?.hash },
     options: {

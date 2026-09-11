@@ -14,7 +14,7 @@ driven by the URL (most lists) and infinite scroll (`useLazyLoadedList.ts`).
 | `utils.ts` | `generateListStub` (a placeholder page from one stub row, for `placeholderData`) and `emptyPagination` (a `PaginationParams` for lists that page locally or not at all). |
 | `usePaginationParams.ts` | URL → page, cursor, filters, sorting. Pure derivation; filters come from the resource's `filterFields`. |
 | `usePaginationActions.ts` | The next / prev / first / filter / sorting handlers. Each is one shallow `router.push`. |
-| `useQueryWithPages.ts` | Composes the two above with `useApiQuery` into the object list components consume. |
+| `useApiPaginatedQuery.ts` | Composes the two above with `useApiQuery` into the object list components consume. |
 | `useDebouncedFilterChange.ts` | Search-box-to-URL debounce, shared by the lists with a free-text filter. |
 
 ### What an editor of the cursor hooks must keep true
@@ -39,7 +39,7 @@ driven by the URL (most lists) and infinite scroll (`useLazyLoadedList.ts`).
 
 ## Composing the pieces yourself
 
-Most callers use `useQueryWithPages` unchanged. When a list needs a URL value *before* it can call the
+Most callers use `useApiPaginatedQuery` unchanged. When a list needs a URL value *before* it can call the
 hook — the resource depends on a filter, or another query keys on a filter — call `usePaginationParams`
 with the same resource name to read that value on the same render, then pass the result on. The value is
 derived from the same `router.query`, so both reads agree.

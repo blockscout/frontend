@@ -18,8 +18,8 @@ import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-w
 
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
 import dayjs from 'src/shared/date-and-time/dayjs';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub, emptyPagination } from 'src/shared/pagination/utils';
 
 import { SECOND } from 'src/toolkit/utils/consts';
@@ -28,7 +28,7 @@ import type { BlockQuery } from './useBlockQuery';
 
 type RpcResponseType = GetBlockReturnType<Chain, boolean, 'latest'> | null;
 
-export type BlockTxsQuery = QueryWithPagesResult<'core:block_txs'> & {
+export type BlockTxsQuery = ApiPaginatedQueryResult<'core:block_txs'> & {
   isDegradedData: boolean;
 };
 
@@ -41,7 +41,7 @@ interface Params {
 export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Params): BlockTxsQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useQueryWithPages({
+  const apiQuery = useApiPaginatedQuery({
     resourceName: 'core:block_txs',
     pathParams: { height_or_hash: heightOrHash },
     options: {
@@ -167,7 +167,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && isPublicClientAvailable);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'core:block_txs'> = {
+  const rpcPaginatedQuery: ApiPaginatedQueryResult<'core:block_txs'> = {
     ...rpcQuery as UseQueryResult<operations['BlockController.transactions']['json'], ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},
@@ -179,7 +179,7 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     isTransitioning: false,
   };
 
-  const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
+  const query = isRpcQuery ? rpcPaginatedQuery : apiQuery;
 
   return {
     ...query,

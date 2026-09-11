@@ -12,7 +12,7 @@ import { TX_STATE_CHANGES } from 'src/slices/tx/stubs/state-changes';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TxStateList from './TxStateList';
 import TxStateTable from './TxStateTable';
@@ -22,7 +22,7 @@ interface Props {
 }
 
 const TxState = ({ txQuery }: Props) => {
-  const { data, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = useApiPaginatedQuery({
     resourceName: 'core:tx_state_changes',
     pathParams: { hash: txQuery.data?.hash },
     options: {

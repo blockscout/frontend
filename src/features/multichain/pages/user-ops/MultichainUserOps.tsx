@@ -16,7 +16,7 @@ import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainUserOps = () => {
@@ -25,7 +25,7 @@ const MultichainUserOps = () => {
   const chainIds = React.useMemo(() => chains.map(chain => chain.id).filter(Boolean), [ chains ]);
   const { chainValue, chain, onChainValueChange } = useChainValue({ chainIds });
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:user_ops',
     options: {
       placeholderData: generateListStub<'core:user_ops'>(USER_OPS_ITEM, 50, { next_page_params: {

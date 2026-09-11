@@ -16,7 +16,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -52,7 +52,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
     enabled: isQueryEnabled && isLocalTab,
   });
 
-  const crossChainQuery = useQueryWithPages({
+  const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_messages',
     pathParams: { hash },
     options: {

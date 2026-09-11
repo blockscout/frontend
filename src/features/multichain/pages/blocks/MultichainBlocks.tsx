@@ -15,7 +15,7 @@ import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
@@ -43,7 +43,7 @@ const MultichainBlocks = () => {
   const isMobile = useIsMobile();
   const { chainValue, chain, onChainValueChange } = useChainValue();
 
-  const blocksQuery = useQueryWithPages({
+  const blocksQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'block' },
     options: {
@@ -56,7 +56,7 @@ const MultichainBlocks = () => {
     chain,
   });
 
-  const reorgsQuery = useQueryWithPages({
+  const reorgsQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'reorg' },
     options: {
@@ -69,7 +69,7 @@ const MultichainBlocks = () => {
     chain,
   });
 
-  const unclesQuery = useQueryWithPages({
+  const unclesQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'uncle' },
     options: {

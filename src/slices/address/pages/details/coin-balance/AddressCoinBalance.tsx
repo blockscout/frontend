@@ -15,7 +15,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import { ADDRESS_COIN_BALANCE } from 'src/slices/address/stubs/address';
 
 import useIsMounted from 'src/shared/hooks/useIsMounted';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -36,7 +36,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const addressHash = getQueryParamString(router.query.hash);
-  const coinBalanceQuery = useQueryWithPages({
+  const coinBalanceQuery = useApiPaginatedQuery({
     resourceName: 'core:address_coin_balance',
     pathParams: { hash: addressHash },
     scrollRef,

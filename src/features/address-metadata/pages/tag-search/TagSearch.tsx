@@ -13,7 +13,7 @@ import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -30,7 +30,7 @@ const TagSearch = () => {
   const tagType = getQueryParamString(router.query.tagType);
   const tagName = getQueryParamString(router.query.tagName);
 
-  const { isError, isInitialLoading, isTransitioning, data, pagination } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = useApiPaginatedQuery({
     resourceName: 'core:addresses_metadata_search',
     queryParams: {
       slug,

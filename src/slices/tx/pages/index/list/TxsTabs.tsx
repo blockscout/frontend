@@ -19,7 +19,7 @@ import config from 'src/config';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -49,7 +49,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
   const isBlobTxsTab = chainConfig?.features.dataAvailability.isEnabled && tab === getTabId('blob_txs', parentTab);
   const isWatchlistTab = isAuth && tab === getTabId('watchlist', parentTab);
 
-  const txsValidatedQuery = useQueryWithPages({
+  const txsValidatedQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
     queryParams: { filter: 'validated' },
     options: {
@@ -66,7 +66,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     },
   });
 
-  const txsPendingQuery = useQueryWithPages({
+  const txsPendingQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
     queryParams: { filter: 'pending' },
     options: {
@@ -79,7 +79,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     },
   });
 
-  const txsWithBlobsQuery = useQueryWithPages({
+  const txsWithBlobsQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
     queryParams: { type: 'blob_transaction' },
     options: {
@@ -92,7 +92,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
     },
   });
 
-  const txsWatchlistQuery = useQueryWithPages({
+  const txsWatchlistQuery = useApiPaginatedQuery({
     resourceName: 'core:txs_watchlist',
     options: {
       enabled: isWatchlistTab,

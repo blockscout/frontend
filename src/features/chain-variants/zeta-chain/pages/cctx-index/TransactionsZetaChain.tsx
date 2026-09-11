@@ -21,7 +21,7 @@ import AdvancedFilterLink from 'src/features/advanced-filter/components/Advanced
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -38,7 +38,7 @@ const TransactionsZetaChain = () => {
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
-  const txsWithBlobsQuery = useQueryWithPages({
+  const txsWithBlobsQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
     queryParams: { type: 'blob_transaction' },
     options: {
@@ -51,7 +51,7 @@ const TransactionsZetaChain = () => {
     },
   });
 
-  const txsWatchlistQuery = useQueryWithPages({
+  const txsWatchlistQuery = useApiPaginatedQuery({
     resourceName: 'core:txs_watchlist',
     options: {
       enabled: tab === 'watchlist',

@@ -16,7 +16,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -31,7 +31,7 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 const INITIAL_RENDERED_COLLECTIONS_NUM = 10;
 
 type Props = {
-  collectionsQuery: QueryWithPagesResult<'core:address_collections'>;
+  collectionsQuery: ApiPaginatedQueryResult<'core:address_collections'>;
   address: string;
   tokenTypes: Array<NftTokenType> | undefined;
   onTokenTypesChange: (value: Array<NftTokenType>) => void;

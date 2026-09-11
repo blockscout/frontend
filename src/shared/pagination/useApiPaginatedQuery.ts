@@ -29,7 +29,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   readonly noScroll?: boolean;
 }
 
-export type QueryWithPagesResult<Resource extends PaginatedResourceName> =
+export type ApiPaginatedQueryResult<Resource extends PaginatedResourceName> =
   UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   Pick<PaginationUrlParams<Resource>, 'filters' | 'sorting'> &
   Pick<PaginationActions<Resource>, 'onFilterChange' | 'onSortingChange'> &
@@ -58,7 +58,7 @@ function hasMoreItems(nextPageParams: NextPageParams | undefined, hasNextPageFn:
   return hasNextPageFn ? hasNextPageFn(nextPageParams) : Object.keys(nextPageParams).length > 0;
 }
 
-export default function useQueryWithPages<Resource extends PaginatedResourceName>({
+export default function useApiPaginatedQuery<Resource extends PaginatedResourceName>({
   resourceName,
   options,
   pathParams,
@@ -67,7 +67,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   noScroll,
   hasNextPageFn,
   chain,
-}: Params<Resource>): QueryWithPagesResult<Resource> {
+}: Params<Resource>): ApiPaginatedQueryResult<Resource> {
   const { page, cursor, filters, sorting } = usePaginationParams(resourceName);
 
   const queryParams = { ...cursor, ...filters, ...sorting, ...queryParamsFromProps } as ResourceQueryParams;

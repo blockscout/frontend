@@ -6,14 +6,14 @@ import React from 'react';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TokenTransfersCrossChainList from '../../components/token-transfers/TokenTransfersCrossChainList';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
 
 interface Props {
   txQuery: TxQuery;
-  crossChainQuery: QueryWithPagesResult<'interchainIndexer:tx_transfers'>;
+  crossChainQuery: ApiPaginatedQueryResult<'interchainIndexer:tx_transfers'>;
   isLoading?: boolean;
   tableTop?: number;
 }

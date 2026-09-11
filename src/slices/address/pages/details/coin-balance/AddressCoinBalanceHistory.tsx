@@ -13,14 +13,14 @@ import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
-  query: QueryWithPagesResult<'core:address_coin_balance'>;
+  query: ApiPaginatedQueryResult<'core:address_coin_balance'>;
   resetKey?: string;
 }
 

@@ -19,7 +19,7 @@ import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'src/features/account/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -33,7 +33,7 @@ import WatchlistTable from './WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
 
-  const { data, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = useApiPaginatedQuery({
     resourceName: 'core:watchlist',
     options: {
       placeholderData: { items: Array(5).fill(WATCH_LIST_ITEM_WITH_TOKEN_INFO), next_page_params: null },

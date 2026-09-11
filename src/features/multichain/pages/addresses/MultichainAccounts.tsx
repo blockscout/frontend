@@ -18,12 +18,12 @@ import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 import DataList from 'src/shared/lists/DataList';
 import getItemIndex from 'src/shared/lists/get-item-index';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainAccounts = () => {
   const { chainValue, chain, onChainValueChange } = useChainValue();
-  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(TOP_ADDRESS, 50, {

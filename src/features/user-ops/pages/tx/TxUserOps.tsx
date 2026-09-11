@@ -10,7 +10,7 @@ import UserOpsContent from 'src/features/user-ops/pages/index/UserOpsContent';
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const TxUserOps = ({ txQuery }: Props) => {
-  const userOpsQuery = useQueryWithPages({
+  const userOpsQuery = useApiPaginatedQuery({
     resourceName: 'core:user_ops',
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash),

@@ -12,7 +12,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -24,7 +24,7 @@ import BeaconChainDepositsTable from './BeaconChainDepositsTable';
 const feature = config.features.beaconChain;
 
 const BeaconChainDeposits = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:deposits',
     options: {
       placeholderData: generateListStub<'core:deposits'>(DEPOSIT, 50, { next_page_params: {

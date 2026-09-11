@@ -9,8 +9,8 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -23,7 +23,7 @@ import TacOperationsTable from './TacOperationsTable';
 const TacOperations = () => {
   const isMobile = useIsMobile();
 
-  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, onFilterChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, onFilterChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'tac:operations',
     options: {
       placeholderData: generateListStub<'tac:operations'>(

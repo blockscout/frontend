@@ -12,7 +12,7 @@ import type { PaginationFilters } from 'src/api/resources';
 
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
 
@@ -40,7 +40,7 @@ interface Props {
 }
 
 export default function useAddressTokenTransfersQuery({ currentAddress, enabled, chain }: Props) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_token_transfers',
     pathParams: { hash: currentAddress },
     options: {

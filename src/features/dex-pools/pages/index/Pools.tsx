@@ -13,14 +13,14 @@ import { POOL } from 'src/features/dex-pools/stubs';
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const Pools = () => {
-  const poolsQuery = useQueryWithPages({
+  const poolsQuery = useApiPaginatedQuery({
     resourceName: 'contractInfo:pools',
     pathParams: { instanceId: config.apis.contractInfo?.instanceId },
     options: {

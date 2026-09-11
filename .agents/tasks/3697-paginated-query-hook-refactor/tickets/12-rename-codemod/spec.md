@@ -23,4 +23,4 @@ behaviour change; the diff should be reviewable as a rename only.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `git mv` the files; `ast-grep` rewrite of identifiers and import paths; verify green
+- [x] 1 `[agent]` `git mv` the files; `ast-grep` rewrite of identifiers and import paths; verify green

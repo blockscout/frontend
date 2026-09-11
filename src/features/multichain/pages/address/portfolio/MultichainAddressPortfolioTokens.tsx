@@ -19,8 +19,8 @@ import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import * as cookies from 'src/shared/storage/cookies';
@@ -81,7 +81,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
     return [ 'ERC-20', 'NATIVE', ...additionalTypes.map(({ id }) => id) ].filter(Boolean).join(',');
   }, [ config?.chains, portfolioData ]);
 
-  const tokensQuery = useQueryWithPages({
+  const tokensQuery = useApiPaginatedQuery({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
     queryParams: {

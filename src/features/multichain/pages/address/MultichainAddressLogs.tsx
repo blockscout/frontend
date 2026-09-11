@@ -19,7 +19,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -40,7 +40,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {

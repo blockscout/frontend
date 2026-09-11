@@ -7,14 +7,14 @@ import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import useTxsSort from 'src/slices/tx/hooks/useTxsSort';
 
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TxsContent from './TxsContent';
 
 type Props = {
-  query: QueryWithPagesResult<'core:txs'> |
-    QueryWithPagesResult<'core:txs_watchlist'> |
-    QueryWithPagesResult<'core:block_txs'>;
+  query: ApiPaginatedQueryResult<'core:txs'> |
+    ApiPaginatedQueryResult<'core:txs_watchlist'> |
+    ApiPaginatedQueryResult<'core:block_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

@@ -18,8 +18,8 @@ import { getIntervalValueFromQuery, SORT_OPTIONS } from 'src/features/hot-contra
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
@@ -34,7 +34,7 @@ const HotContracts = () => {
   const { filters } = usePaginationParams('core:stats_hot_contracts');
   const interval = getIntervalValueFromQuery(filters.scale);
 
-  const { data, isError, isInitialLoading, isTransitioning, pagination, sorting, onSortingChange, onFilterChange, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, sorting, onSortingChange, onFilterChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:stats_hot_contracts',
     queryParams: { scale: interval },
     options: {

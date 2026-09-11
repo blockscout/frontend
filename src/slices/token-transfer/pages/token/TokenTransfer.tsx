@@ -20,7 +20,7 @@ import TokenAdvancedFilterLink from 'src/features/advanced-filter/pages/token/To
 import DataList from 'src/shared/lists/DataList';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { getTokenTransfersStub } from '../../stubs';
 
@@ -40,7 +40,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
   // See https://github.com/blockscout/frontend/issues/3653
   const isSocketEnabled = !tokenId;
 
-  const transfersQuery = useQueryWithPages({
+  const transfersQuery = useApiPaginatedQuery({
     resourceName: tokenId ? 'core:token_instance_transfers' : 'core:token_transfers',
     pathParams: { hash: token?.address_hash, id: tokenId },
     options: {

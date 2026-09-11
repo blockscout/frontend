@@ -7,8 +7,8 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'src/features/cross-chain-txs/stubs/messages';
 
 import config from 'src/config';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -23,7 +23,7 @@ interface Props {
 }
 
 export default function useBridgedTokensQuery({ enabled }: Props) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:bridged_tokens',
     pathParams: {
       chainId: config.chain.id,

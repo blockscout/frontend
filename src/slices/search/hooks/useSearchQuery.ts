@@ -11,9 +11,9 @@ import { SEARCH_RESULT_ITEM } from 'src/slices/search/stubs';
 import { getExternalSearchItem } from 'src/features/chain-variants/zeta-chain/utils/external-search';
 
 import config from 'src/config';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -25,7 +25,7 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
   const appliedSearchTerm = getQueryParamString(usePaginationParams('core:search').filters.q);
   const [ searchTerm, setSearchTerm ] = React.useState(appliedSearchTerm);
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:search',
     queryParams: isBech32Address(appliedSearchTerm) ? { q: fromBech32Address(appliedSearchTerm) } : undefined,
     options: {

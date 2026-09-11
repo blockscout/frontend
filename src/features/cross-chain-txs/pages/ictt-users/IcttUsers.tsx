@@ -11,7 +11,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
@@ -29,7 +29,7 @@ const sortCollection = createListCollection({
 const IcttUsers = () => {
   const isMobile = useIsMobile();
 
-  const { data, isInitialLoading, isTransitioning, isError, sorting, onSortingChange, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, sorting, onSortingChange, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:stats_chains',
     options: {
       placeholderData: generateListStub<'interchainIndexer:stats_chains'>(INTERCHAIN_STATS_CHAINS_ITEM, 50, { next_page_params: { page_token: 'token' } }),

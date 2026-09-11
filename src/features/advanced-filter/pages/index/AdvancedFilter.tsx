@@ -25,8 +25,8 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
@@ -87,7 +87,7 @@ const AdvancedFilter = () => {
   );
 
   const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
-  const { data, isError, isLoading, pagination, onFilterChange, isInitialLoading, isTransitioning, queryHash } = useQueryWithPages({
+  const { data, isError, isLoading, pagination, onFilterChange, isInitialLoading, isTransitioning, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:advanced_filter',
     queryParams: filters,
     options: {

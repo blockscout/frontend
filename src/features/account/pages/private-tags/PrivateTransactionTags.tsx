@@ -12,7 +12,7 @@ import { PRIVATE_TAG_TX } from 'src/features/account/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -24,7 +24,7 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
+  const { data: transactionTagsData, isInitialLoading, isTransitioning, isError, pagination } = useApiPaginatedQuery({
     resourceName: 'core:private_tags_tx',
     options: {
       refetchOnMount: false,

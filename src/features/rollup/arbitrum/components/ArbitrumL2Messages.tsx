@@ -12,7 +12,7 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -30,7 +30,7 @@ interface Props {
 
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:arbitrum_l2_messages',
     pathParams: { direction },
     options: {

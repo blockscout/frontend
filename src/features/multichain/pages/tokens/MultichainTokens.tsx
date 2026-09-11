@@ -20,8 +20,8 @@ import { TOKEN } from 'src/features/multichain/stubs';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -41,7 +41,7 @@ const MultichainTokens = () => {
   const { chainValue: chainIds } = useChainValue({ withAllOption: true });
   const chainIdFilter = React.useMemo(() => getChainIdFilterValue(chainIds), [ chainIds ]);
 
-  const tokensQuery = useQueryWithPages({
+  const tokensQuery = useApiPaginatedQuery({
     resourceName: 'multichainAggregator:tokens',
     queryParams: { chain_id: chainIdFilter },
     options: {

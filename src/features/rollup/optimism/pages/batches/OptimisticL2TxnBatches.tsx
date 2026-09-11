@@ -14,13 +14,13 @@ import { L2_TXN_BATCHES_ITEM } from 'src/features/rollup/optimism/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const OptimisticL2TxnBatches = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_txn_batches'>(

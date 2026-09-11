@@ -13,7 +13,7 @@ import { PRIVATE_TAG_ADDRESS } from 'src/features/account/stubs';
 import * as mixpanel from 'src/services/mixpanel';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -25,7 +25,7 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isError, isInitialLoading, isTransitioning, refetch, pagination } = useQueryWithPages({
+  const { data: addressTagsData, isError, isInitialLoading, isTransitioning, refetch, pagination } = useApiPaginatedQuery({
     resourceName: 'core:private_tags_address',
     options: {
       refetchOnMount: false,

@@ -8,7 +8,7 @@ import { AddressFromToFilterValues, type AddressFromToFilter } from 'src/slices/
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -24,7 +24,7 @@ export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_internal_txs',
     pathParams: { hash },
     options: {

@@ -18,8 +18,8 @@ import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chai
 import dayjs from 'src/shared/date-and-time/dayjs';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'src/shared/router/get-values-array-from-query';
@@ -70,7 +70,7 @@ const ZetaChainCCTXsTab = () => {
   const { filters: filtersFromUrl } = usePaginationParams(RESOURCE_NAME);
   const filters = React.useMemo(() => getFiltersFromQuery(filtersFromUrl), [ filtersFromUrl ]);
 
-  const cctxsValidatedQuery = useQueryWithPages({
+  const cctxsValidatedQuery = useApiPaginatedQuery({
     resourceName: RESOURCE_NAME,
     queryParams: {
       ...filters,
@@ -86,7 +86,7 @@ const ZetaChainCCTXsTab = () => {
     hasNextPageFn,
   });
 
-  const cctxsPendingQuery = useQueryWithPages({
+  const cctxsPendingQuery = useApiPaginatedQuery({
     resourceName: RESOURCE_NAME,
     queryParams: {
       ...filters,

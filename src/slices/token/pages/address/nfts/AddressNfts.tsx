@@ -13,7 +13,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import AddressNftItem from './AddressNftItem';
 import AddressNftTypeFilter from './AddressNftTypeFilter';
@@ -22,7 +22,7 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 const INITIAL_RENDERED_ITEMS_NUM = 30;
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'core:address_nfts'>;
+  tokensQuery: ApiPaginatedQueryResult<'core:address_nfts'>;
   tokenTypes: Array<NftTokenType> | undefined;
   onTokenTypesChange: (value: Array<NftTokenType>) => void;
 };

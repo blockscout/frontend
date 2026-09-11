@@ -15,7 +15,7 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import DataList from 'src/shared/lists/DataList';
 import compareBns from 'src/shared/numbers/compareBns';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import { default as getNextSortValueShared } from 'src/shared/sort/get-next-sort-value';
 
@@ -70,7 +70,7 @@ const TxInternals = ({ txQuery }: Props) => {
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>('default');
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {

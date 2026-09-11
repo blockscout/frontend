@@ -12,7 +12,7 @@ import { L2_DISPUTE_GAMES_ITEM } from 'src/features/rollup/optimism/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import OptimisticL2DisputeGamesList from './OptimisticL2DisputeGamesList';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';
 
 const OptimisticL2DisputeGames = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_dispute_games',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_dispute_games'>(

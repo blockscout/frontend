@@ -13,7 +13,7 @@ import { L2_OUTPUT_ROOTS_ITEM } from 'src/features/rollup/optimism/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -22,7 +22,7 @@ import OptimisticL2OutputRootsList from './OptimisticL2OutputRootsList';
 import OptimisticL2OutputRootsTable from './OptimisticL2OutputRootsTable';
 
 const OptimisticL2OutputRoots = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_output_roots',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_output_roots'>(

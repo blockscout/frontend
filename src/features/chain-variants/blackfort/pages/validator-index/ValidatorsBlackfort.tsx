@@ -17,7 +17,7 @@ import { VALIDATOR_BLACKFORT } from 'src/features/chain-variants/blackfort/stubs
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
@@ -33,7 +33,7 @@ const sortCollection = createListCollection({
 });
 
 const ValidatorsBlackfort = () => {
-  const { isError, isInitialLoading, isTransitioning, data, pagination, sorting, onSortingChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, sorting, onSortingChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:validators_blackfort',
     options: {
       enabled: config.features.validators.isEnabled,

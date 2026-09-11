@@ -13,7 +13,7 @@ import { SCROLL_L2_MESSAGE_ITEM } from 'src/features/rollup/scroll/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -23,7 +23,7 @@ import ScrollL2WithdrawalsList from './ScrollL2WithdrawalsList';
 import ScrollL2WithdrawalsTable from './ScrollL2WithdrawalsTable';
 
 const ScrollL2Withdrawals = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:scroll_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_withdrawals'>(

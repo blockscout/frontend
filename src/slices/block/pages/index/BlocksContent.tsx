@@ -22,7 +22,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -33,7 +33,7 @@ const TABS_HEIGHT = 88;
 
 export interface Props {
   type?: schemas['BlockResponse']['type'];
-  query: QueryWithPagesResult<'core:blocks'> | QueryWithPagesResult<'core:optimistic_l2_txn_batch_blocks'>;
+  query: ApiPaginatedQueryResult<'core:blocks'> | ApiPaginatedQueryResult<'core:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
   top?: number;
 }

@@ -17,7 +17,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
@@ -25,7 +25,7 @@ import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 
 interface Props {
-  query: QueryWithPagesResult<'core:address_token_transfers'>;
+  query: ApiPaginatedQueryResult<'core:address_token_transfers'>;
   filters: Filters;
   addressHash: string;
   onTypeFilterChange: (type: Array<TokenType>) => void;

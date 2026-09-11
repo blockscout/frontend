@@ -6,14 +6,14 @@ import type { AddressFromToFilter } from 'src/slices/address/types/api';
 import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 
 import TxsContent from './TxsContent';
 
 interface Props {
 
-  query: QueryWithPagesResult<'core:address_txs'>;
+  query: ApiPaginatedQueryResult<'core:address_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;

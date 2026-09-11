@@ -8,7 +8,7 @@ import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
 
@@ -16,7 +16,7 @@ import BridgedTokensList from './BridgedTokensList';
 import BridgedTokensTable from './BridgedTokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'interchainIndexer:bridged_tokens'>;
+  query: ApiPaginatedQueryResult<'interchainIndexer:bridged_tokens'>;
   onSortChange: OnValueChangeHandler;
   sort: CrossChainBridgedTokensSortingValue;
   actionBar?: React.ReactNode;

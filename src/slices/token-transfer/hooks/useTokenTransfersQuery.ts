@@ -8,7 +8,7 @@ import type { TokenType } from 'src/slices/token/types/api';
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 const NO_TYPES: Array<TokenType> = [];
 
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function useTokenTransfersQuery({ chain, enabled }: Props) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:token_transfers_all',
     options: {
       placeholderData: getTokenTransfersStub(),

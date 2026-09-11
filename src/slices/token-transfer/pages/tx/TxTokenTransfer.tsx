@@ -23,7 +23,7 @@ import config from 'src/config';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
@@ -47,7 +47,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
   const areQueriesEnabled = !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash);
   const chainConfig = multichainContext?.chain?.app_config ?? config;
 
-  const localQuery = useQueryWithPages({
+  const localQuery = useApiPaginatedQuery({
     resourceName: 'core:tx_token_transfers',
     pathParams: { hash: txQuery.data?.hash.toString() },
     options: {

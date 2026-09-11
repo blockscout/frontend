@@ -12,11 +12,11 @@ import TokenTransferTable from 'src/slices/token-transfer/components/list/TokenT
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 interface Props {
   txQuery: TxQuery;
-  tokenTransferQuery: QueryWithPagesResult<'core:tx_token_transfers'>;
+  tokenTransferQuery: ApiPaginatedQueryResult<'core:tx_token_transfers'>;
   tokenTransferFilter?: (data: schemas['TokenTransfer']) => boolean;
   numActiveFilters: number;
   tableTop?: number;

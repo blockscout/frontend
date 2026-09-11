@@ -19,12 +19,12 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 const ACTION_BAR_HEIGHT = 24 * 2 + 40;
 
 interface Props {
-  query: QueryWithPagesResult<'core:token_transfers_all'>;
+  query: ApiPaginatedQueryResult<'core:token_transfers_all'>;
   typeFilter: Array<TokenType>;
   onTokenTypesChange: (value: Array<TokenType>) => void;
 }

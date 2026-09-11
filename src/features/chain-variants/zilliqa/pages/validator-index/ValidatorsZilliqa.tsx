@@ -11,14 +11,14 @@ import { VALIDATORS_ZILLIQA_ITEM } from 'src/features/chain-variants/zilliqa/stu
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import ValidatorsList from './ValidatorsList';
 import ValidatorsTable from './ValidatorsTable';
 
 const ValidatorsZilliqa = () => {
-  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:validators_zilliqa',
     options: {
       enabled: config.features.validators.isEnabled,

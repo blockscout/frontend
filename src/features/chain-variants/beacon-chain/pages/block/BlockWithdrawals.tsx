@@ -4,13 +4,13 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsList';
 import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
 
 type Props = {
-  blockWithdrawalsQuery: QueryWithPagesResult<'core:block_withdrawals'>;
+  blockWithdrawalsQuery: ApiPaginatedQueryResult<'core:block_withdrawals'>;
 };
 const TABS_HEIGHT = 88;
 

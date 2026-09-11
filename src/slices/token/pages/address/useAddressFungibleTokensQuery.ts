@@ -6,8 +6,8 @@ import type { TokenType } from '../../types/api';
 
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'src/slices/address/stubs/address';
 
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
 
@@ -26,7 +26,7 @@ export default function useAddressFungibleTokensQuery({ scrollRef, enabled, addr
   const typeParam = usePaginationParams('core:address_tokens').filters.type;
   const tokenTypes = React.useMemo(() => getTokenFilterValue(typeParam) || FUNGIBLE_TOKEN_TYPES, [ typeParam ]);
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_tokens',
     pathParams: { hash: addressHash },
     queryParams: { type: tokenTypes },

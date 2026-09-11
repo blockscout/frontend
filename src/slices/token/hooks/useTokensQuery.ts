@@ -7,8 +7,8 @@ import type { TokenType, TokensSortingValue, TokensSortingField, TokensSorting }
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 import { getTokenFilterValue, SORT_OPTIONS } from 'src/slices/token/utils/list-utils';
 
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function useTokensQuery({ enabled }: Props) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:tokens',
     options: {
       enabled,

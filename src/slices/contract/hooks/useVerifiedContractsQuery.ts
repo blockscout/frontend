@@ -13,8 +13,8 @@ import type {
 import { SORT_OPTIONS } from 'src/slices/contract/pages/index/sort';
 import { VERIFIED_CONTRACT_INFO } from 'src/slices/contract/stubs';
 
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function useVerifiedContractsQuery({ chain }: Props = {}) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:verified_contracts',
     options: {
       placeholderData: generateListStub<'core:verified_contracts'>(

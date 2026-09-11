@@ -16,7 +16,7 @@ import Flashblocks from 'src/features/flashblocks/pages/index/Flashblocks';
 
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -36,7 +36,7 @@ const BlocksPageContent = () => {
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
-  const blocksQuery = useQueryWithPages({
+  const blocksQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'block' },
     options: {
@@ -47,7 +47,7 @@ const BlocksPageContent = () => {
       } }),
     },
   });
-  const reorgsQuery = useQueryWithPages({
+  const reorgsQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'reorg' },
     options: {
@@ -58,7 +58,7 @@ const BlocksPageContent = () => {
       } }),
     },
   });
-  const unclesQuery = useQueryWithPages({
+  const unclesQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'uncle' },
     options: {

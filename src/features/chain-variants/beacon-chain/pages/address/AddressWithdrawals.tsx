@@ -11,7 +11,7 @@ import { WITHDRAWAL } from 'src/features/chain-variants/beacon-chain/stubs/withd
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -27,7 +27,7 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:address_withdrawals',
     pathParams: { hash },
     options: {

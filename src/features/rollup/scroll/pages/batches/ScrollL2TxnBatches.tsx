@@ -12,7 +12,7 @@ import { SCROLL_L2_TXN_BATCH } from 'src/features/rollup/scroll/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import ScrollL2TxnBatchesList from './ScrollL2TxnBatchesList';
 import ScrollL2TxnBatchesTable from './ScrollL2TxnBatchesTable';
 
 const ScrollL2TxnBatches = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:scroll_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_txn_batches'>(

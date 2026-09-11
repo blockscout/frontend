@@ -6,8 +6,8 @@ import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function useInternalTxsQuery({ chain }: Props = {}) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:internal_txs',
     options: {
       placeholderData: generateListStub<'core:internal_txs'>(

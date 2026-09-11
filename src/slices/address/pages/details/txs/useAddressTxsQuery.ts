@@ -10,7 +10,7 @@ import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 import { SORT_OPTIONS } from 'src/slices/tx/hooks/useTxsSort';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
@@ -24,7 +24,7 @@ interface Props {
 }
 
 export default function useAddressTxsQuery({ addressHash, enabled, chain }: Props) {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_txs',
     pathParams: { hash: addressHash },
     options: {

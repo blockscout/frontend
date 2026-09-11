@@ -10,7 +10,7 @@ import { useAppContext } from 'src/shell/app/context';
 
 import { ADDRESS_COLLECTION, ADDRESS_NFT_1155 } from 'src/slices/address/stubs/address';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
 import * as cookies from 'src/shared/storage/cookies';
@@ -33,7 +33,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
   const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
   const [ displayType, setDisplayType ] = React.useState<TNftDisplayType>(displayTypeCookie === 'list' ? 'list' : 'collection');
 
-  const collectionsQuery = useQueryWithPages({
+  const collectionsQuery = useApiPaginatedQuery({
     resourceName: 'core:address_collections',
     pathParams: { hash: addressHash },
     scrollRef,
@@ -44,7 +44,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
     chain,
   });
 
-  const nftsQuery = useQueryWithPages({
+  const nftsQuery = useApiPaginatedQuery({
     resourceName: 'core:address_nfts',
     pathParams: { hash: addressHash },
     scrollRef,

@@ -7,10 +7,10 @@ import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 interface Props {
-  query: QueryWithPagesResult<'core:block_internal_txs'>;
+  query: ApiPaginatedQueryResult<'core:block_internal_txs'>;
   top?: number;
 }
 

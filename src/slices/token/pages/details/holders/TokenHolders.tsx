@@ -14,7 +14,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
@@ -27,7 +27,7 @@ interface Props {
 
 const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
 
-  const holdersQuery = useQueryWithPages({
+  const holdersQuery = useApiPaginatedQuery({
     resourceName: tokenId ? 'core:token_instance_holders' : 'core:token_holders',
     pathParams: { hash: token?.address_hash, id: tokenId },
     options: {

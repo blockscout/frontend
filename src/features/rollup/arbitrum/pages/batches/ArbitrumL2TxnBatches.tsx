@@ -10,7 +10,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -20,7 +20,7 @@ import ArbitrumL2TxnBatchesList from './ArbitrumL2TxnBatchesList';
 import ArbitrumL2TxnBatchesTable from './ArbitrumL2TxnBatchesTable';
 
 const ArbitrumL2TxnBatches = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:arbitrum_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:arbitrum_l2_txn_batches'>(

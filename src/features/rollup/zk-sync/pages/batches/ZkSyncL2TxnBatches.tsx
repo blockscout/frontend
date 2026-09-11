@@ -12,7 +12,7 @@ import { ZKSYNC_L2_TXN_BATCHES_ITEM } from 'src/features/rollup/zk-sync/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import ZkSyncTxnBatchesList from './ZkSyncTxnBatchesList';
 import ZkSyncTxnBatchesTable from './ZkSyncTxnBatchesTable';
 
 const ZkSyncL2TxnBatches = () => {
-  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:zksync_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:zksync_l2_txn_batches'>(

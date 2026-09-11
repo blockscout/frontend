@@ -12,9 +12,9 @@ import { ENS_DOMAIN } from 'src/features/name-services/domains/stubs';
 
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -78,7 +78,7 @@ const NameDomains = () => {
   const onlyActive = !filterValue.includes('with_inactive');
   const requestedProtocols = protocolsFilter.length > 0 ? protocolsFilter : availableProtocols;
 
-  const addressesLookupQuery = useQueryWithPages({
+  const addressesLookupQuery = useApiPaginatedQuery({
     resourceName: 'bens:addresses_lookup',
     queryParams: {
       address: searchTerm,
@@ -93,7 +93,7 @@ const NameDomains = () => {
     },
   });
 
-  const domainsLookupQuery = useQueryWithPages({
+  const domainsLookupQuery = useApiPaginatedQuery({
     resourceName: 'bens:domains_lookup',
     queryParams: {
       name: searchTerm,
