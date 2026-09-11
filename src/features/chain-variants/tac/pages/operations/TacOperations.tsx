@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
@@ -10,18 +9,16 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
-import { SECOND } from 'src/toolkit/utils/consts';
 
 import { TAC_OPERATION } from '../../stubs';
 import TacOperationsList from './TacOperationsList';
 import TacOperationsTable from './TacOperationsTable';
-
-const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 const TacOperations = () => {
   const isMobile = useIsMobile();
@@ -39,11 +36,7 @@ const TacOperations = () => {
 
   const searchTerm = getQueryParamString(filters.q) || undefined;
 
-  const handleSearchTermChange = React.useMemo(
-    () => debounce((value: string) => onFilterChange({ q: value }), SEARCH_DEBOUNCE),
-    [ onFilterChange ],
-  );
-  React.useEffect(() => () => handleSearchTermChange.cancel(), [ handleSearchTermChange ]);
+  const handleSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value }));
 
   const filterInput = (
     <FilterInput

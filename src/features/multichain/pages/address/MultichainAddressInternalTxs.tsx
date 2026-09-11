@@ -35,7 +35,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
     enabled: !isLoading && chainIds.length > 0,
     chain: chainData,
   });
-  const { data, isPlaceholderData, isError, pagination } = query;
+  const { data, isInitialLoading, isError, pagination } = query;
 
   if (chainIds.length === 0) {
     return <p>There are no internal transactions.</p>;
@@ -44,10 +44,10 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   const content = data?.items ? (
     <MultichainProvider chainId={ chainData?.id }>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
     </MultichainProvider>
   ) : null ;
@@ -95,6 +95,7 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
       showActionBarIfEmpty
       showActionBarIfError
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

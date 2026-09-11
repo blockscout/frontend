@@ -64,7 +64,12 @@ const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate, r
       </TableHeaderSticky>
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
-          <HotContractsTableItem key={ index } isLoading={ isLoading } data={ item } exchangeRate={ exchangeRate }/>
+          <HotContractsTableItem
+            key={ item.contract_address.hash + (isLoading ? index : '') }
+            isLoading={ isLoading }
+            data={ item }
+            exchangeRate={ exchangeRate }
+          />
         )) }
         <TableRow ref={ cutRef }/>
       </TableBody>

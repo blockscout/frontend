@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
@@ -14,15 +13,12 @@ import type {
 import { SORT_OPTIONS } from 'src/slices/contract/pages/index/sort';
 import { VERIFIED_CONTRACT_INFO } from 'src/slices/contract/stubs';
 
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
-
-import { SECOND } from 'src/toolkit/utils/consts';
-
-const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 interface Props {
   chain?: ExternalChainExtended;
@@ -52,11 +48,7 @@ export default function useVerifiedContractsQuery({ chain }: Props = {}) {
 
   const { onFilterChange, onSortingChange } = query;
 
-  const onSearchTermChange = React.useMemo(
-    () => debounce((value: string) => onFilterChange({ q: value, filter: type }), SEARCH_DEBOUNCE),
-    [ onFilterChange, type ],
-  );
-  React.useEffect(() => () => onSearchTermChange.cancel(), [ onSearchTermChange ]);
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value, filter: type }));
 
   const onTypeChange = React.useCallback((value: string | Array<string>) => {
     if (Array.isArray(value)) {

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
@@ -28,24 +27,23 @@ const sortCollection = createListCollection({
 });
 
 const IcttUsers = () => {
-  const router = useRouter();
   const isMobile = useIsMobile();
 
-  const [ sort, setSort ] = React.useState<CrossChainChainsStatsSortingValue>(
-    getSortValueFromQuery<CrossChainChainsStatsSortingValue>(router.query, ICTT_USERS_SORT_OPTIONS) ?? 'default',
-  );
-
-  const { data, isPlaceholderData, isError, onSortingChange, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, sorting, onSortingChange, pagination, queryHash } = useQueryWithPages({
     resourceName: 'interchainIndexer:stats_chains',
-    sorting: getSortParamsFromValue<CrossChainChainsStatsSortingValue, CrossChainChainsStatsSortingField, CrossChainChainsStatsSorting['order']>(sort),
     options: {
       placeholderData: generateListStub<'interchainIndexer:stats_chains'>(INTERCHAIN_STATS_CHAINS_ITEM, 50, { next_page_params: { page_token: 'token' } }),
     },
   });
 
+  const sort = getSortValueFromQuery<CrossChainChainsStatsSortingValue>({ ...sorting }, ICTT_USERS_SORT_OPTIONS) ?? 'default';
+
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setSort(value[0] as CrossChainChainsStatsSortingValue);
-    onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as CrossChainChainsStatsSortingValue));
+    onSortingChange(
+      getSortParamsFromValue<CrossChainChainsStatsSortingValue, CrossChainChainsStatsSortingField, CrossChainChainsStatsSorting['order']>(
+        value[0] as CrossChainChainsStatsSortingValue,
+      ),
+    );
   }, [ onSortingChange ]);
 
   const actionBar = isMobile || pagination.isVisible ? (
@@ -55,7 +53,7 @@ const IcttUsers = () => {
         defaultValue={ [ sort ] }
         collection={ sortCollection }
         onValueChange={ handleSortChange }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         hideFrom="lg"
       />
       <Pagination { ...pagination } ml="auto"/>
@@ -78,18 +76,19 @@ const IcttUsers = () => {
           term: 'ICTT user',
         }}
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { data?.items ? (
           <>
             <Box hideFrom="lg">
-              <IcttUsersList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+              <IcttUsersList data={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
             </Box>
             <Box hideBelow="lg">
               <IcttUsersTable
                 data={ data.items }
                 sort={ sort }
                 setSorting={ handleSortChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isInitialLoading }
                 resetKey={ queryHash }
               />
             </Box>

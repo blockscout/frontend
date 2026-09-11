@@ -44,10 +44,10 @@ const SearchResults = () => {
     persistedParams: [ 'q', 'tab' ],
   });
   const chainId = chainSelect.value?.[0];
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, handleSubmit, queries, checkRedirectQuery } = useSearchQuery({
+  const { searchTerm, appliedSearchTerm, handleSearchTermChange, handleSubmit, queries, checkRedirectQuery } = useSearchQuery({
     chainId: chainId === 'all' ? undefined : chainId,
   });
-  const showContent = useSearchRedirect({ checkRedirectQuery, hasSearchTerm: debouncedSearchTerm.trim().length > 0 });
+  const showContent = useSearchRedirect({ checkRedirectQuery, hasSearchTerm: appliedSearchTerm.trim().length > 0 });
 
   const isLoading = Object.values(queries).some((query) => query.isPending);
 
@@ -102,7 +102,7 @@ const SearchResults = () => {
           queries={ queries }
           queryType={ queryType }
           isLoading={ isLoading }
-          searchTerm={ debouncedSearchTerm }
+          searchTerm={ appliedSearchTerm }
           beforeContent={ isMobile ? chainSelectElement : undefined }
         />
       ),
@@ -118,7 +118,7 @@ const SearchResults = () => {
           queries={ queries }
           queryType={ undefined }
           isLoading={ isLoading }
-          searchTerm={ debouncedSearchTerm }
+          searchTerm={ appliedSearchTerm }
           beforeContent={ isMobile ? chainSelectElement : undefined }
         />
       ),

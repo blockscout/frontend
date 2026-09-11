@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import type { TokenType, TokensSortingValue, TokensSortingField, TokensSorting } from 'src/slices/token/types/api';
@@ -8,6 +7,7 @@ import type { TokenType, TokensSortingValue, TokensSortingField, TokensSorting }
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 import { getTokenFilterValue, SORT_OPTIONS } from 'src/slices/token/utils/list-utils';
 
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -15,9 +15,6 @@ import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
-import { SECOND } from 'src/toolkit/utils/consts';
-
-const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 interface Props {
   enabled?: boolean;
@@ -43,11 +40,7 @@ export default function useTokensQuery({ enabled }: Props) {
 
   const { onFilterChange, onSortingChange } = query;
 
-  const onSearchTermChange = React.useMemo(
-    () => debounce((value: string) => onFilterChange({ q: value, type: tokenTypes }), SEARCH_DEBOUNCE),
-    [ onFilterChange, tokenTypes ],
-  );
-  React.useEffect(() => () => onSearchTermChange.cancel(), [ onSearchTermChange ]);
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value, type: tokenTypes }));
 
   const onTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
     onFilterChange({ q: searchTerm, type: value });

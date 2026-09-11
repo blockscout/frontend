@@ -25,7 +25,7 @@ const MultichainInternalTxs = () => {
 
   const { chainValue, chain, onChainValueChange } = useChainValue();
   const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ chain });
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { isError, isInitialLoading, data, pagination } = query;
 
   const filterInput = (
     <FilterInput
@@ -63,10 +63,10 @@ const MultichainInternalTxs = () => {
   const content = data?.items ? (
     <MultichainProvider chainId={ chain?.id }>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <InternalTxsTable data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <InternalTxsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
     </MultichainProvider>
   ) : null;
@@ -88,6 +88,7 @@ const MultichainInternalTxs = () => {
         actionBar={ actionBar }
         showActionBarIfError
         showActionBarIfEmpty
+        isTransitioning={ query.isTransitioning }
       >
         { content }
       </DataList>

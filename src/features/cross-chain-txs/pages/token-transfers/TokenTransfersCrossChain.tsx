@@ -14,7 +14,7 @@ import TokenTransfersCrossChainContent from '../../components/token-transfers/To
 import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'interchainIndexer:transfers',
     options: {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),
@@ -27,7 +27,7 @@ const TokenTransfersCrossChain = () => {
   });
 
   const actionBarText = (
-    <Skeleton loading={ statsQuery.isPlaceholderData || isPlaceholderData }>
+    <Skeleton loading={ statsQuery.isPlaceholderData || isInitialLoading }>
       A total of { Number(statsQuery.data?.total_transfers).toLocaleString() } cross-chain token transfers found
     </Skeleton>
   );
@@ -37,7 +37,8 @@ const TokenTransfersCrossChain = () => {
   return (
     <TokenTransfersCrossChainContent
       items={ data?.items }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
+      isTransitioning={ isTransitioning }
       pagination={ pagination }
       isError={ isError }
       itemsNum={ data?.items.length }

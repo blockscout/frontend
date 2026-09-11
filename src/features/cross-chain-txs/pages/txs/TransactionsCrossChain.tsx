@@ -15,7 +15,7 @@ import { INTERCHAIN_MESSAGE, INTERCHAIN_STATS_COMMON } from '../../stubs/message
 import TransactionsCrossChainStats from './TransactionsCrossChainStats';
 
 const TransactionsCrossChain = () => {
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'interchainIndexer:messages',
     options: {
       placeholderData: generateListStub<'interchainIndexer:messages'>(INTERCHAIN_MESSAGE, 50, { next_page_params: { page_token: 'token' } }),
@@ -28,7 +28,7 @@ const TransactionsCrossChain = () => {
   });
 
   const actionBarText = (
-    <Skeleton loading={ statsQuery.isPlaceholderData || isPlaceholderData }>
+    <Skeleton loading={ statsQuery.isPlaceholderData || isInitialLoading }>
       A total of { Number(statsQuery.data?.total_messages).toLocaleString() } cross-chain transactions found
     </Skeleton>
   );
@@ -40,7 +40,8 @@ const TransactionsCrossChain = () => {
       <TransactionsCrossChainStats/>
       <TransactionsCrossChainContent
         items={ data?.items }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
+        isTransitioning={ isTransitioning }
         pagination={ pagination }
         isError={ isError }
         actionBar={ actionBar }

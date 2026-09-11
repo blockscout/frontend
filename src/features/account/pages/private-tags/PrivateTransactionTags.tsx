@@ -24,7 +24,7 @@ import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
-  const { data: transactionTagsData, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data: transactionTagsData, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
     resourceName: 'core:private_tags_tx',
     options: {
       refetchOnMount: false,
@@ -79,13 +79,14 @@ const PrivateTransactionTags = () => {
         itemsNum={ transactionTagsData?.items.length }
         emptyText=""
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         <Box display={{ base: 'block', lg: 'none' }}>
           { transactionTagsData?.items.map((item, index) => (
             <TransactionTagListItem
-              key={ item.id + (isPlaceholderData ? String(index) : '') }
+              key={ item.id + (isInitialLoading ? String(index) : '') }
               item={ item }
-              isLoading={ isPlaceholderData }
+              isLoading={ isInitialLoading }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
             />
@@ -94,14 +95,14 @@ const PrivateTransactionTags = () => {
         <Box display={{ base: 'none', lg: 'block' }}>
           <TransactionTagTable
             data={ transactionTagsData?.items }
-            isLoading={ isPlaceholderData }
+            isLoading={ isInitialLoading }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
         </Box>
       </DataList>
-      <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
+      <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
         <Button
           onClick={ transactionModalProps.onOpen }
         >

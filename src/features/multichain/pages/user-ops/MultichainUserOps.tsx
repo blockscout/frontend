@@ -42,7 +42,7 @@ const MultichainUserOps = () => {
         <UserOpsTable
           items={ query.data.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           showTx
           showSender
           resetKey={ query.queryHash }
@@ -51,7 +51,7 @@ const MultichainUserOps = () => {
       <Box hideFrom="lg">
         <UserOpsList
           items={ query.data.items }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           showTx
           showSender
           chainData={ chain }
@@ -85,6 +85,7 @@ const MultichainUserOps = () => {
         actionBar={ actionBar }
         showActionBarIfError
         showActionBarIfEmpty
+        isTransitioning={ query.isTransitioning }
       >
         { content }
       </DataList>

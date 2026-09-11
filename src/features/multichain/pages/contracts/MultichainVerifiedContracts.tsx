@@ -33,7 +33,7 @@ const MultichainVerifiedContracts = () => {
 
   const { chainValue, chain, onChainValueChange } = useChainValue();
   const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ chain });
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { isError, isInitialLoading, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
@@ -59,7 +59,7 @@ const MultichainVerifiedContracts = () => {
       defaultValue={ [ sort ] }
       collection={ sortCollection }
       onValueChange={ onSortChange }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
     />
   );
 
@@ -85,10 +85,10 @@ const MultichainVerifiedContracts = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;
@@ -116,6 +116,7 @@ const MultichainVerifiedContracts = () => {
             term: 'contract',
           }}
           actionBar={ actionBar }
+          isTransitioning={ query.isTransitioning }
         >
           { content }
         </DataList>

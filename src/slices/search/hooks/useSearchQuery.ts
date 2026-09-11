@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { debounce } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -12,14 +11,11 @@ import { SEARCH_RESULT_ITEM } from 'src/slices/search/stubs';
 import { getExternalSearchItem } from 'src/features/chain-variants/zeta-chain/utils/external-search';
 
 import config from 'src/config';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
-
-import { SECOND } from 'src/toolkit/utils/consts';
-
-const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();
@@ -55,11 +51,7 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
   });
 
   const { onFilterChange } = query;
-  const applySearchTerm = React.useMemo(
-    () => debounce((value: string) => onFilterChange({ q: value }), SEARCH_DEBOUNCE),
-    [ onFilterChange ],
-  );
-  React.useEffect(() => () => applySearchTerm.cancel(), [ applySearchTerm ]);
+  const applySearchTerm = useDebouncedFilterChange((value) => onFilterChange({ q: value }));
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);

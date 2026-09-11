@@ -30,7 +30,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
       <UserOpsTable
         items={ query.data.items }
         top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ query.isPlaceholderData }
+        isLoading={ query.isInitialLoading }
         showTx={ showTx }
         showSender={ showSender }
         resetKey={ query.queryHash }
@@ -50,6 +50,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
       itemsNum={ query.data?.items?.length }
       emptyText="There are no user operations."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

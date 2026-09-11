@@ -64,10 +64,6 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     chain,
   });
 
-  const handleChainChange = React.useCallback((chainId: string | null) => {
-    onChainValueChange({ value: chainId ? [ chainId ] : [ chainIds[0] ] });
-  }, [ onChainValueChange, chainIds ]);
-
   const hasActiveFilters = (() => {
     if (tab === 'portfolio_nfts') {
       return Boolean(nftTokenTypes?.length);
@@ -112,7 +108,7 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     {
       id: 'portfolio_tokens',
       title: 'Tokens',
-      component: <MultichainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading } onChainChange={ handleChainChange }/>,
+      component: <MultichainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading }/>,
     },
     {
       id: 'portfolio_nfts',

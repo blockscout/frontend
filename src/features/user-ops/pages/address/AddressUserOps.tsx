@@ -33,7 +33,7 @@ const AddressUserOps = ({ scrollRef, shouldRender = true, isQueryEnabled = true 
         page_size: 50,
       } }),
     },
-    filters: { sender: hash },
+    queryParams: { sender: hash },
   });
 
   if (!isMounted || !shouldRender) {

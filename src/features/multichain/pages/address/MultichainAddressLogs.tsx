@@ -40,7 +40,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
@@ -57,7 +57,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
     resetKey: queryHash,
   });
@@ -90,7 +90,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       key={ index }
       data={ item }
       type="address"
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
       chainData={ chainData }
     />
   ));
@@ -110,6 +110,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       showActionBarIfEmpty
       showActionBarIfError
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       <MultichainProvider chainId={ chainData?.id }>
         { content }

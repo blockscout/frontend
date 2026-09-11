@@ -89,7 +89,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
-    isLoading: transfersQueryLocal.query.isPlaceholderData,
+    isLoading: transfersQueryLocal.query.isInitialLoading,
     isEnabled: isLocalTab && !isLoading && chainIds.length > 0,
     chain: chainData,
   });
@@ -112,7 +112,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
         <ListCounterText
           key={ chainId }
           value={ countersQueryLocal.data?.token_transfers_count }
-          isLoading={ countersQueryLocal.isPlaceholderData || transfersQueryLocal.query.isPlaceholderData }
+          isLoading={ countersQueryLocal.isPlaceholderData || transfersQueryLocal.query.isInitialLoading }
           type="transfer"
         />
       );
@@ -150,7 +150,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               withAddressFilter
               onAddressFilterChange={ transfersQueryLocal.onAddressFilterChange }
               defaultAddressFilter={ transfersQueryLocal.filters.filter }
-              isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
               chainConfig={ chainData?.app_config }
             />
             { chainSelect }
@@ -166,7 +166,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               loadingInitial={ transfersQueryLocal.query.pagination.isLoading }
             />
             <AddressAdvancedFilterLink
-              isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
               address={ hash }
               typeFilter={ transfersQueryLocal.filters.type }
               directionFilter={ transfersQueryLocal.filters.filter }
@@ -199,7 +199,8 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
           ) }
           <TokenTransfersCrossChainContent
             items={ transfersQueryCrossChain.data?.items }
-            isLoading={ transfersQueryCrossChain.isPlaceholderData }
+            isLoading={ transfersQueryCrossChain.isInitialLoading }
+            isTransitioning={ transfersQueryCrossChain.isTransitioning }
             isError={ transfersQueryCrossChain.isError }
             pagination={ transfersQueryCrossChain.pagination }
             tableTop={ ACTION_BAR_HEIGHT_DESKTOP }

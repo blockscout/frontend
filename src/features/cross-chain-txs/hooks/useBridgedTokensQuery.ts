@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue } from '../types/api';
@@ -8,7 +7,7 @@ import type { CrossChainBridgedTokensSorting, CrossChainBridgedTokensSortingFiel
 import { INTERCHAIN_BRIDGED_TOKEN_ITEM } from 'src/features/cross-chain-txs/stubs/messages';
 
 import config from 'src/config';
-import useDebounce from 'src/shared/hooks/useDebounce';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -24,39 +23,31 @@ interface Props {
 }
 
 export default function useBridgedTokensQuery({ enabled }: Props) {
-  const router = useRouter();
-
-  const q = getQueryParamString(router.query.q);
-
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ sort, setSort ] = React.useState<CrossChainBridgedTokensSortingValue>(
-    getSortValueFromQuery<CrossChainBridgedTokensSortingValue>(router.query, BRIDGED_TOKENS_SORT_OPTIONS) ?? 'default',
-  );
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
   const query = useQueryWithPages({
     resourceName: 'interchainIndexer:bridged_tokens',
     pathParams: {
       chainId: config.chain.id,
     },
-    filters: { q: debouncedSearchTerm },
-    sorting: getSortParamsFromValue<CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSorting['order']>(sort),
     options: {
       enabled,
       placeholderData: generateListStub<'interchainIndexer:bridged_tokens'>(INTERCHAIN_BRIDGED_TOKEN_ITEM, 10, { next_page_params: { page_token: 'token' } }),
     },
   });
 
-  const onSearchTermChange = React.useCallback((value: string) => {
-    query.onFilterChange({ q: value });
-    setSearchTerm(value);
-  }, [ query ]);
+  const searchTerm = getQueryParamString(query.filters.q);
+  const sort = getSortValueFromQuery<CrossChainBridgedTokensSortingValue>({ ...query.sorting }, BRIDGED_TOKENS_SORT_OPTIONS) ?? 'default';
+
+  const { onFilterChange, onSortingChange } = query;
+
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value }));
 
   const onSortChange: OnValueChangeHandler = React.useCallback(({ value }) => {
-    setSort(value[0] as CrossChainBridgedTokensSortingValue);
-    query.onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as CrossChainBridgedTokensSortingValue));
-  }, [ query ]);
+    onSortingChange(
+      getSortParamsFromValue<CrossChainBridgedTokensSortingValue, CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSorting['order']>(
+        value[0] as CrossChainBridgedTokensSortingValue,
+      ),
+    );
+  }, [ onSortingChange ]);
 
   return React.useMemo(() => ({
     query,

@@ -86,7 +86,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
-    isLoading: txsQueryLocal.query.isPlaceholderData || isLoading,
+    isLoading: txsQueryLocal.query.isInitialLoading || isLoading,
     isEnabled: !isLoading && isLocalTab && chainIds.length > 0,
     chain: chainData,
   });
@@ -106,7 +106,7 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
         <ListCounterText
           key={ chainId }
           value={ countersQueryLocal.data?.transactions_count }
-          isLoading={ countersQueryLocal.isPlaceholderData || txsQueryLocal.query.isPlaceholderData }
+          isLoading={ countersQueryLocal.isPlaceholderData || txsQueryLocal.query.isInitialLoading }
           type="transaction"
         />
       );
@@ -180,7 +180,8 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
           <TransactionsCrossChainContent
             items={ txsQueryCrossChain.data?.items }
             pagination={ txsQueryCrossChain.pagination }
-            isLoading={ txsQueryCrossChain.isPlaceholderData }
+            isLoading={ txsQueryCrossChain.isInitialLoading }
+            isTransitioning={ txsQueryCrossChain.isTransitioning }
             isError={ txsQueryCrossChain.isError }
             stickyHeader
             currentAddress={ hash }

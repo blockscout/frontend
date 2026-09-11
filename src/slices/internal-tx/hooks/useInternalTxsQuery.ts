@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
-
-import { SECOND } from 'src/toolkit/utils/consts';
-
-const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 interface Props {
   chain?: ExternalChainExtended;
@@ -47,11 +43,7 @@ export default function useInternalTxsQuery({ chain }: Props = {}) {
   const searchTerm = getQueryParamString(query.filters.transaction_hash) || undefined;
 
   const { onFilterChange } = query;
-  const onSearchTermChange = React.useMemo(
-    () => debounce((value: string) => onFilterChange({ transaction_hash: value }), SEARCH_DEBOUNCE),
-    [ onFilterChange ],
-  );
-  React.useEffect(() => () => onSearchTermChange.cancel(), [ onSearchTermChange ]);
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ transaction_hash: value }));
 
   return React.useMemo(() => ({
     query,

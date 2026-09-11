@@ -24,14 +24,14 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
       <Box hideFrom="lg">
         <TokenTransfersCrossChainList
           items={ crossChainQuery.data.items }
-          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
+          isLoading={ isLoading || crossChainQuery.isInitialLoading }
           resetKey={ crossChainQuery.queryHash }
         />
       </Box>
       <Box hideBelow="lg">
         <TokenTransfersCrossChainTable
           data={ crossChainQuery.data.items }
-          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
+          isLoading={ isLoading || crossChainQuery.isInitialLoading }
           top={ tableTop }
           resetKey={ crossChainQuery.queryHash }
         />
@@ -47,6 +47,7 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
       emptyStateProps={{
         term: 'token transfer',
       }}
+      isTransitioning={ crossChainQuery.isTransitioning }
     >
       { content }
     </DataList>

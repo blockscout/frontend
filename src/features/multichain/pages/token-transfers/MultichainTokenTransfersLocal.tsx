@@ -36,7 +36,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
   const chainData = multichainContext?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: query.data?.items,
-    isEnabled: !query.isPlaceholderData,
+    isEnabled: !query.isInitialLoading,
     resetKey: query.queryHash,
   });
 
@@ -60,12 +60,13 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       itemsNum={ query.data?.items.length }
       emptyText="There are no token transfers."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       <Box hideFrom="lg">
         { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
-            key={ getTokenTransferKey(item) + (query.isPlaceholderData ? index : '') + (chainData ? chainData.id : '') }
-            isLoading={ query.isPlaceholderData }
+            key={ getTokenTransferKey(item) + (query.isInitialLoading ? index : '') + (chainData ? chainData.id : '') }
+            isLoading={ query.isInitialLoading }
             item={ item }
             chainData={ chainData }
           />
@@ -76,7 +77,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
         <TokenTransfersTable
           items={ query.data?.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT : 0 }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           chainData={ chainData }
           resetKey={ query.queryHash }
         />

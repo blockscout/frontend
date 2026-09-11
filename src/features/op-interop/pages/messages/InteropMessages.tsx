@@ -44,7 +44,7 @@ const InteropMessages = () => {
     }
 
     return (
-      <Skeleton loading={ countQuery.isPlaceholderData }>
+      <Skeleton loading={ countQuery.isInitialLoading }>
         A total of { countQuery.data?.toLocaleString() } messages found
       </Skeleton>
     );
@@ -57,9 +57,9 @@ const InteropMessages = () => {
       <Box hideFrom="lg">
         { interopMessagesQuery.data?.items.map((item, index) => (
           <InteropMessagesListItem
-            key={ item.init_transaction_hash + (interopMessagesQuery.isPlaceholderData ? index : '') }
+            key={ item.init_transaction_hash + '_' + item.nonce + (interopMessagesQuery.isInitialLoading ? index : '') }
             item={ item }
-            isLoading={ interopMessagesQuery.isPlaceholderData }
+            isLoading={ interopMessagesQuery.isInitialLoading }
           />
         )) }
       </Box>
@@ -67,7 +67,7 @@ const InteropMessages = () => {
         <InteropMessagesTable
           items={ interopMessagesQuery.data?.items }
           top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ interopMessagesQuery.isPlaceholderData }
+          isLoading={ interopMessagesQuery.isInitialLoading }
         />
       </Box>
     </>
@@ -84,6 +84,7 @@ const InteropMessages = () => {
         itemsNum={ interopMessagesQuery.data?.items.length }
         emptyText="There are no interop messages."
         actionBar={ actionBar }
+        isTransitioning={ interopMessagesQuery.isTransitioning }
       >
         { content }
       </DataList>

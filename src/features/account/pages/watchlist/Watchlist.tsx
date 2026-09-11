@@ -33,7 +33,7 @@ import WatchlistTable from './WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
 
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
     resourceName: 'core:watchlist',
     options: {
       placeholderData: { items: Array(5).fill(WATCH_LIST_ITEM_WITH_TOKEN_INFO), next_page_params: null },
@@ -103,13 +103,14 @@ const WatchList: React.FC = () => {
           itemsNum={ data?.items.length }
           emptyText=""
           actionBar={ actionBar }
+          isTransitioning={ isTransitioning }
         >
           <Box display={{ base: 'block', lg: 'none' }}>
             { data?.items.map((item, index) => (
               <WatchListItem
-                key={ item.address_hash + (isPlaceholderData ? index : '') }
+                key={ item.address_hash + (isInitialLoading ? index : '') }
                 item={ item }
-                isLoading={ isPlaceholderData }
+                isLoading={ isInitialLoading }
                 onDeleteClick={ onDeleteClick }
                 onEditClick={ onEditClick }
                 hasEmail={ hasEmail }
@@ -119,7 +120,7 @@ const WatchList: React.FC = () => {
           <Box display={{ base: 'none', lg: 'block' }}>
             <WatchlistTable
               data={ data?.items }
-              isLoading={ isPlaceholderData }
+              isLoading={ isInitialLoading }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
               top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
@@ -127,7 +128,7 @@ const WatchList: React.FC = () => {
             />
           </Box>
         </DataList>
-        <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
+        <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
           <Button
             onClick={ addressModalProps.onOpen }
           >

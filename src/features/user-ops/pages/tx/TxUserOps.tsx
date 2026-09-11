@@ -25,7 +25,7 @@ const TxUserOps = ({ txQuery }: Props) => {
       // most often there is only one user op in one tx
       placeholderData: generateListStub<'core:user_ops'>(USER_OPS_ITEM, 1, { next_page_params: null }),
     },
-    filters: { transaction_hash: txQuery.data?.hash },
+    queryParams: { transaction_hash: txQuery.data?.hash },
   });
 
   if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {

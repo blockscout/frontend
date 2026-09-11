@@ -23,7 +23,7 @@ import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainAccounts = () => {
   const { chainValue, chain, onChainValueChange } = useChainValue();
-  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(TOP_ADDRESS, 50, {
@@ -52,7 +52,7 @@ const MultichainAccounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -61,7 +61,7 @@ const MultichainAccounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -91,6 +91,7 @@ const MultichainAccounts = () => {
         actionBar={ actionBar }
         showActionBarIfError
         showActionBarIfEmpty
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

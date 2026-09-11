@@ -37,6 +37,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
       }}
       actionBar={ actionBar }
       hasActiveFilters={ hasActiveFilters }
+      isTransitioning={ query.isTransitioning }
     >
       { query.data?.items ? (
         <>
@@ -45,7 +46,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               data={ query.data.items }
               page={ query.pagination.page }
               chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
+              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
               resetKey={ query.queryHash }
             />
           </Box>
@@ -55,7 +56,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               sort={ sort }
               setSorting={ onSortChange }
               chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
+              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
               resetKey={ query.queryHash }
               page={ query.pagination.page }
               top={ tableTop }

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { omit } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,6 +27,8 @@ import AddressAccountHistoryTable from './AddressAccountHistoryTable';
 
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
 
+const FILTER_FIELDS = [ 'filter' ];
+
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
@@ -36,10 +39,9 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   const isMounted = useIsMounted();
 
   const currentAddress = getQueryParamString(router.query.hash).toLowerCase();
+  const filterValue = getFilterValue(router.query.filter);
 
-  const [ filterValue, setFilterValue ] = React.useState<NovesHistoryFilterValue>(getFilterValue(router.query.filter));
-
-  const { data, isError, pagination, isPlaceholderData, queryHash } = useQueryWithPages({
+  const { data, isError, pagination, isInitialLoading, isTransitioning, queryHash } = useQueryWithPages({
     resourceName: 'core:noves_address_history',
     pathParams: { address: currentAddress },
     options: {
@@ -49,10 +51,12 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
-
-    const newVal = getFilterValue(val);
-    setFilterValue(newVal);
-  }, [ ]);
+    const nextValue = getFilterValue(val);
+    router.push({
+      pathname: router.pathname,
+      query: nextValue ? { ...router.query, filter: nextValue } : omit(router.query, FILTER_FIELDS),
+    }, undefined, { shallow: true });
+  }, [ router ]);
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -71,14 +75,14 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
     </ActionBar>
   );
 
-  const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
+  const filteredData = isInitialLoading ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
 
   const content = filteredData ? (
     <TableContainerScrollable>
       <AddressAccountHistoryTable
         items={ filteredData }
         currentAddress={ currentAddress }
-        isPlaceholderData={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         resetKey={ `${ queryHash }:${ filterValue ?? '' }` }
       />
     </TableContainerScrollable>
@@ -94,6 +98,7 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
       emptyStateProps={{
         description: 'No match found for current filter',
       }}
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>
