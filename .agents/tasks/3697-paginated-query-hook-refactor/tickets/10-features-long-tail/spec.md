@@ -14,6 +14,17 @@ interop messages, Noves account history, and the multichain pages whose list wir
 `useBridgedTokensQuery` (both copies), `NameDomains`, `HotContracts`, `IcttUsers`, `Pools`,
 `AdvancedFilter` and `AddressAccountHistory` drop their filter / sort state.
 
+The debounced search push (`useMemo(debounce(onFilterChange…))` plus a cancel-on-unmount effect) is
+already copied in five hooks (`useTokensQuery`, `useVerifiedContractsQuery`, `useInternalTxsQuery`,
+`useSearchQuery`, `TacOperations`) and this ticket adds at least five more (`Pools`, `NameDomains`, both
+`useBridgedTokensQuery` copies, the multichain search and tokens pages). Before migrating those, lift it
+into `src/shared/pagination/` as a `useDebouncedFilterChange(onFilterChange)` helper: one
+`SEARCH_DEBOUNCE` constant, the cancel effect inside, a stable identity like the other callbacks (FR6).
+The caller keeps the merge of the other filters (`{ q: value, filter: type }`) since that varies per
+resource; the input stays uncontrolled with `initialValue`, the URL remains the truth. The local UI
+debounces with no URL push (`CodeEditorSearch`, advanced-filter `AssetFilter` / `MethodFilter`,
+`useQuickSearchQuery`) are out of scope.
+
 ## Acceptance criteria
 
 How to verify: `pnpm dev:preset eth`, open `/ops`, `/advanced-filter`, `/name-domains`, and a
@@ -25,6 +36,8 @@ multichain alias for the multichain list pages.
       to rows; row keys use the index only while `isLoading`.
 - [ ] `grep -rn "filters:\|sorting:" src` over hook call sites finds none outside
       `src/shared/pagination/` (the check T11 turns into a type error).
+- [ ] `useDebouncedFilterChange` lives in `src/shared/pagination/` with a unit spec (debounce, cancel on
+      unmount, stable identity); `grep -rn "debounce(" src` finds no search-to-URL debounce outside it.
 - [ ] Existing unit and Playwright specs pass; lint, tsc green.
 - [ ] `(human)` Advanced filter: changing any filter resets to page 1 with one request; name domains:
       sort and search survive reload; a multichain list page paginates with one request per action.
@@ -39,5 +52,7 @@ sibling ticket appended to `progress.md`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Migrate the files in Details
-- [ ] 2 `[human]` Verify per the `(human)` criterion
+- [ ] 1 `[agent]` `useDebouncedFilterChange` in `src/shared/pagination/` with spec; move the five existing
+      debounced search sites onto it
+- [ ] 2 `[agent]` Migrate the files in Details
+- [ ] 3 `[human]` Verify per the `(human)` criterion
