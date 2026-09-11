@@ -38,7 +38,7 @@ const ZetaChainEvmTransactions = () => {
 
   const txsValidatedQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { filter: 'validated' },
+    queryParams: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'zetachain' || tab === 'zetachain_validated',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
@@ -52,7 +52,7 @@ const ZetaChainEvmTransactions = () => {
 
   const txsPendingQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { filter: 'pending' },
+    queryParams: { filter: 'pending' },
     options: {
       enabled: tab === 'zetachain_pending',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {

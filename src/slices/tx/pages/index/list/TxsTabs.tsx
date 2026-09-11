@@ -51,7 +51,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
 
   const txsValidatedQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { filter: 'validated' },
+    queryParams: { filter: 'validated' },
     options: {
       enabled: tab === getTabId('validated', parentTab) ||
         (parentTab ? tab === parentTab : false) ||
@@ -68,7 +68,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
 
   const txsPendingQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { filter: 'pending' },
+    queryParams: { filter: 'pending' },
     options: {
       enabled: isPendingTab,
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
@@ -81,7 +81,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
 
   const txsWithBlobsQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { type: 'blob_transaction' },
+    queryParams: { type: 'blob_transaction' },
     options: {
       enabled: isBlobTxsTab,
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {

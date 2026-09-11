@@ -589,6 +589,22 @@ describe('values derived from the URL', () => {
     expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=from&sort=fee&order=asc');
   });
 
+  it('lets fixed queryParams win over a URL filter field of the same name', async() => {
+    routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', page: '2', next_page_params: encodePageParams(responses.page_1.next_page_params) } });
+    fetchMock.mockResponse(JSON.stringify(responses.page_2), responseInit);
+    const paramsWithFixedFilter: Params<'core:address_txs'> = {
+      ...params,
+      queryParams: { filter: 'validated' },
+    };
+
+    const { result } = renderHook(() => useQueryWithPages(paramsWithFixedFilter), { wrapper });
+    await waitForApiResponse();
+
+    expect(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get('filter')).toBe('validated');
+    expect(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get('block_number')).toBe('11');
+    expect(result.current.pagination.page).toBe(2);
+  });
+
   it('targets the given chain and folds it into the query hash', async() => {
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 

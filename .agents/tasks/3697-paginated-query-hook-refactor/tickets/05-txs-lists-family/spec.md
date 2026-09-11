@@ -17,14 +17,14 @@ passed to the hook.
 How to verify: `pnpm dev:preset eth`, open `/txs` (all tabs), a block's transactions tab, and the
 watchlist transactions page when signed in.
 
-- [ ] None of the files in Details holds `useState` for a filter or sort value that the URL already
+- [x] None of the files in Details holds `useState` for a filter or sort value that the URL already
       carries, nor passes `filters` / `sorting` to `useQueryWithPages`.
-- [ ] `TxsWithFrontendSorting` keeps its client-side sort state (that is not a URL value) and takes the
+- [x] `TxsWithFrontendSorting` keeps its client-side sort state (that is not a URL value) and takes the
       new flags.
-- [ ] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
+- [x] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
       to rows; row keys use the index only while `isLoading`.
-- [ ] Existing unit and Playwright specs pass; lint, tsc green.
-- [ ] `(human)` `/txs`: switching between Validated / Pending / Blob tabs clears page and filters;
+- [x] Existing unit and Playwright specs pass; lint, tsc green.
+- [x] `(human)` `/txs`: switching between Validated / Pending / Blob tabs clears page and filters;
       pagination on each tab is one request per action; block transactions tab paginates and its RPC
       fallback still renders.
 
@@ -40,5 +40,5 @@ Files: `src/slices/tx/pages/index/list/{TxsTabs,TxsWithFrontendSorting}.tsx`,
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Migrate the files in Details
-- [ ] 2 `[human]` Verify per the `(human)` criterion
+- [x] 1 `[agent]` Migrate the files in Details
+- [x] 2 `[human]` Verify per the `(human)` criterion

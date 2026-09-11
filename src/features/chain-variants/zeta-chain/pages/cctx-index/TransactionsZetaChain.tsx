@@ -40,7 +40,7 @@ const TransactionsZetaChain = () => {
 
   const txsWithBlobsQuery = useQueryWithPages({
     resourceName: 'core:txs',
-    filters: { type: 'blob_transaction' },
+    queryParams: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
