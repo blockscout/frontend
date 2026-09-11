@@ -64,12 +64,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     },
   });
 
-  const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
-    if (value === 'token_transfers_local') {
-      localQuery.setFilters({ type: [], filter: undefined });
-    }
-  }, [ localQuery ]);
-
   if (!isMounted || !shouldRender) {
     return null;
   }
@@ -135,7 +129,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               withAddressFilter
               onAddressFilterChange={ localQuery.onAddressFilterChange }
               defaultAddressFilter={ localQuery.filters.filter }
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
             />
             <CsvExport
               type="address_token_transfers"
@@ -145,10 +139,10 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
                 filter_type: 'address',
                 filter_value: localQuery.filters.filter,
               } : undefined }
-              loadingInitial={ localQuery.query.isPlaceholderData }
+              loadingInitial={ localQuery.query.isInitialLoading }
             />
             <AddressAdvancedFilterLink
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
               address={ hash }
               typeFilter={ localQuery.filters.type }
               directionFilter={ localQuery.filters.filter }
@@ -183,7 +177,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       variant="secondary"
       size="sm"
       tabs={ tabs }
-      onValueChange={ handleTabValueChange }
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }
       listProps={ isMobile ? undefined : TAB_LIST_PROPS }

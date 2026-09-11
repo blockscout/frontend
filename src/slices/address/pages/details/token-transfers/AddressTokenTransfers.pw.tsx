@@ -31,7 +31,6 @@ const tokenTransfersWoPagination = {
 test('with pagination', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:address_token_transfers', tokenTransfersWithPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { type: [] },
   });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -45,7 +44,6 @@ test('with pagination', async({ render, mockApiResponse }) => {
 test('without pagination', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:address_token_transfers', tokenTransfersWoPagination, {
     pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { type: [] },
   });
   const component = await render(
     <Box pt={{ base: '134px', lg: 6 }}>
@@ -62,7 +60,6 @@ test.describe('mobile', () => {
   test('with pagination', async({ render, mockApiResponse }) => {
     await mockApiResponse('core:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { type: [] },
     });
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -76,7 +73,6 @@ test.describe('mobile', () => {
   test('without pagination', async({ render, mockApiResponse }) => {
     await mockApiResponse('core:address_token_transfers', tokenTransfersWoPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { type: [] },
     });
     const component = await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -97,7 +93,6 @@ test.describe('socket', () => {
     };
     await mockApiResponse('core:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { type: [] },
     });
     await render(
       <Box pt={{ base: '134px', lg: 6 }}>
@@ -130,7 +125,6 @@ test.describe('socket', () => {
     };
     await mockApiResponse('core:address_token_transfers', tokenTransfersWithPagination, {
       pathParams: { hash: CURRENT_ADDRESS },
-      queryParams: { type: [] },
     });
     await render(
       <Box pt={{ base: '134px', lg: 6 }}>

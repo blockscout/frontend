@@ -25,7 +25,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const isMounted = useIsMounted();
 
   const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: isQueryEnabled });
-  const { data, isPlaceholderData, isError, pagination } = query;
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = query;
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -33,7 +33,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const content = data?.items ? (
     <TableContainerScrollable>
-      <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+      <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
     </TableContainerScrollable>
   ) : null ;
 
@@ -65,6 +65,7 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
       isError={ isError }
       itemsNum={ data?.items.length }
       hasActiveFilters={ Boolean(filterValue) }
+      isTransitioning={ isTransitioning }
       emptyStateProps={{
         term: 'transaction',
       }}

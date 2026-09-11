@@ -23,12 +23,10 @@ interface Props {
 export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
-  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
   const query = useQueryWithPages({
     resourceName: 'core:address_internal_txs',
     pathParams: { hash },
-    filters: { filter: filterValue },
     options: {
       enabled,
       placeholderData: generateListStub<'core:address_internal_txs'>(
@@ -51,11 +49,12 @@ export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
     chain,
   });
 
+  const filterValue = getFilterValue(query.filters.filter);
+
+  const { onFilterChange: onQueryFilterChange } = query;
   const onFilterChange = React.useCallback((val: string | Array<string>) => {
-    const newVal = getFilterValue(val);
-    setFilterValue(newVal);
-    query.onFilterChange({ filter: newVal });
-  }, [ query ]);
+    onQueryFilterChange({ filter: getFilterValue(val) });
+  }, [ onQueryFilterChange ]);
 
   return React.useMemo(() => ({
     hash,

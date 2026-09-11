@@ -35,12 +35,13 @@ interface Props {
 }
 
 const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, overloadCount }: Props) => {
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
   const { showSocketAlert, newItemsCount } = useAddressTokenTransfersSocket({
     filters,
+    queryFilters: query.filters,
     addressHash,
     data,
     overloadCount,
@@ -60,7 +61,7 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
         showSocketInfo={ pagination.page === 1 }
         showSocketErrorAlert={ showSocketAlert }
         socketInfoNum={ newItemsCount }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         resetKey={ query.queryHash }
       />
     </TableContainerScrollable>
@@ -76,7 +77,7 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
           withAddressFilter
           onAddressFilterChange={ onAddressFilterChange }
           defaultAddressFilter={ filters.filter }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ isInitialLoading }
           chainConfig={ multichainContext?.chain?.app_config }
         />
         <CsvExport
@@ -87,10 +88,10 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
             filter_type: 'address',
             filter_value: filters.filter,
           } : undefined }
-          loadingInitial={ isPlaceholderData }
+          loadingInitial={ isInitialLoading }
         />
         <AddressAdvancedFilterLink
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           address={ addressHash }
           typeFilter={ filters.type }
           directionFilter={ filters.filter }
@@ -106,6 +107,7 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
       itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
       hasActiveFilters={ Boolean(numActiveFilters) }
+      isTransitioning={ isTransitioning }
       emptyStateProps={{
         term: 'token transfer',
       }}

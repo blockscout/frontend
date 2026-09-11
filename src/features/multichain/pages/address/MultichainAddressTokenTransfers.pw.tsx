@@ -32,7 +32,7 @@ test.describe('local transfers', () => {
     await mockApiResponse(
       'core:address_token_transfers',
       { items: [ tokenTransferMock.erc20 ], next_page_params: DEFAULT_PAGINATION },
-      { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
+      { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
     await mockApiResponse(
       'core:address_counters',

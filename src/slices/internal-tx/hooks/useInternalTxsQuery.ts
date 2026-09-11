@@ -1,29 +1,27 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
+import { debounce } from 'es-toolkit';
 import React from 'react';
 
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { SECOND } from 'src/toolkit/utils/consts';
+
+const SEARCH_DEBOUNCE = 0.3 * SECOND;
 
 interface Props {
   chain?: ExternalChainExtended;
 }
 
 export default function useInternalTxsQuery({ chain }: Props = {}) {
-  const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.transaction_hash) || undefined);
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
   const query = useQueryWithPages({
     resourceName: 'core:internal_txs',
-    filters: { transaction_hash: debouncedSearchTerm },
     options: {
       placeholderData: generateListStub<'core:internal_txs'>(
         INTERNAL_TX,
@@ -46,15 +44,18 @@ export default function useInternalTxsQuery({ chain }: Props = {}) {
     chain,
   });
 
-  const onSearchTermChange = React.useCallback((value: string) => {
-    query.onFilterChange({ transaction_hash: value });
-    setSearchTerm(value);
-  }, [ query ]);
+  const searchTerm = getQueryParamString(query.filters.transaction_hash) || undefined;
+
+  const { onFilterChange } = query;
+  const onSearchTermChange = React.useMemo(
+    () => debounce((value: string) => onFilterChange({ transaction_hash: value }), SEARCH_DEBOUNCE),
+    [ onFilterChange ],
+  );
+  React.useEffect(() => () => onSearchTermChange.cancel(), [ onSearchTermChange ]);
 
   return React.useMemo(() => ({
     query,
     searchTerm,
-    debouncedSearchTerm,
     onSearchTermChange,
-  }), [ query, searchTerm, debouncedSearchTerm, onSearchTermChange ]);
+  }), [ query, searchTerm, onSearchTermChange ]);
 }

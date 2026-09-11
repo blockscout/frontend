@@ -23,11 +23,12 @@ interface Props {
 }
 
 const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter, numActiveFilters, tableTop }: Props) => {
+  const { isInitialLoading, isTransitioning } = tokenTransferQuery;
 
   let items: Array<schemas['TokenTransfer']> = [];
 
   if (tokenTransferQuery.data?.items) {
-    if (tokenTransferQuery.isPlaceholderData) {
+    if (isInitialLoading) {
       items = tokenTransferQuery.data?.items;
     } else {
       items = tokenTransferFilter ? tokenTransferQuery.data.items.filter(tokenTransferFilter) : tokenTransferQuery.data.items;
@@ -40,12 +41,12 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
         <TokenTransferTable
           data={ items }
           top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ tokenTransferQuery.isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ tokenTransferQuery.queryHash }
         />
       </Box>
       <Box hideFrom="lg">
-        <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData } resetKey={ tokenTransferQuery.queryHash }/>
+        <TokenTransferList data={ items } isLoading={ isInitialLoading } resetKey={ tokenTransferQuery.queryHash }/>
       </Box>
     </>
   ) : null;
@@ -56,6 +57,7 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
       itemsNum={ items.length }
       emptyText="There are no token transfers."
       hasActiveFilters={ Boolean(numActiveFilters) }
+      isTransitioning={ isTransitioning }
       emptyStateProps={{
         term: 'token transfer',
       }}

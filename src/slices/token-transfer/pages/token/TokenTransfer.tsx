@@ -73,7 +73,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
     handler: handleNewTransfersMessage,
   });
 
-  const isLoading = transfersQuery.isPlaceholderData || isLoadingProp;
+  const isLoading = transfersQuery.isInitialLoading || isLoadingProp;
 
   const content = transfersQuery.data?.items && token ? (
     <>
@@ -124,6 +124,7 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
       itemsNum={ transfersQuery.data?.items.length }
       emptyText="There are no token transfers."
       actionBar={ actionBar }
+      isTransitioning={ transfersQuery.isTransitioning }
     >
       { content }
     </DataList>

@@ -22,7 +22,7 @@ interface Props {
 }
 
 const TxState = ({ txQuery }: Props) => {
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = useQueryWithPages({
     resourceName: 'core:tx_state_changes',
     pathParams: { hash: txQuery.data?.hash },
     options: {
@@ -44,10 +44,10 @@ const TxState = ({ txQuery }: Props) => {
   const content = data ? (
     <>
       <Box hideBelow="lg">
-        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
+        <TxStateTable data={ data.items } isLoading={ isInitialLoading } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
       </Box>
       <Box hideFrom="lg">
-        <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
+        <TxStateList data={ data.items } isLoading={ isInitialLoading }/>
       </Box>
     </>
   ) : null;
@@ -71,6 +71,7 @@ const TxState = ({ txQuery }: Props) => {
         itemsNum={ data?.items.length }
         emptyText="There are no state changes for this transaction."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

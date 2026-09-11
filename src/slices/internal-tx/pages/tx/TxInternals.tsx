@@ -70,7 +70,7 @@ const TxInternals = ({ txQuery }: Props) => {
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ sort, setSort ] = React.useState<Sort>('default');
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
     options: {
@@ -84,12 +84,12 @@ const TxInternals = ({ txQuery }: Props) => {
   // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
-    if (isPlaceholderData) {
+    if (isInitialLoading) {
       return;
     }
 
     setSort(getNextSortValue(field));
-  }, [ isPlaceholderData ]);
+  }, [ isInitialLoading ]);
 
   if (!txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data?.status) {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
@@ -103,14 +103,14 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const content = filteredData ? (
     <>
-      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isPlaceholderData } resetKey={ queryHash }/></Box>
+      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isInitialLoading } resetKey={ queryHash }/></Box>
       <Box hideBelow="lg">
         <TxInternalsTable
           data={ filteredData }
           sort={ sort }
           onSortToggle={ handleSortToggle }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -134,6 +134,7 @@ const TxInternals = ({ txQuery }: Props) => {
       // hasActiveFilters: Boolean(filters.length || searchTerm),
       // }}
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

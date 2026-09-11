@@ -32,7 +32,7 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const isMounted = useIsMounted();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
@@ -48,7 +48,7 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
     resetKey: queryHash,
   });
@@ -73,10 +73,10 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
 
   const renderedLogs = data?.items?.slice(0, renderedItemsNum).map((item, index) => (
     <LogItem
-      key={ index }
+      key={ item.transaction_hash + '_' + item.index + (isInitialLoading ? index : '') }
       data={ item }
       type="address"
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
       defaultDataType={ addressQuery.data?.zilliqa?.is_scilla_contract ? 'UTF-8' : undefined }
     />
   ));
@@ -94,6 +94,7 @@ const AddressLogs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
       itemsNum={ data?.items?.length }
       emptyText="There are no logs for this address."
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>
