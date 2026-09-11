@@ -23,7 +23,7 @@ import WithdrawalsList from './WithdrawalsList';
 import WithdrawalsTable from './WithdrawalsTable';
 
 const ShibariumWithdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:shibarium_withdrawals',
     options: {
       placeholderData: generateListStub<'core:shibarium_withdrawals'>(
@@ -48,13 +48,13 @@ const ShibariumWithdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <WithdrawalsTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -83,6 +83,7 @@ const ShibariumWithdrawals = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

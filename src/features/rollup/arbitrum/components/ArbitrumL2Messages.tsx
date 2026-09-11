@@ -30,7 +30,7 @@ interface Props {
 
 const ArbitrumL2Messages = ({ direction }: Props) => {
   const type = direction === 'from-rollup' ? 'withdrawals' : 'deposits';
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:arbitrum_l2_messages',
     pathParams: { direction },
     options: {
@@ -55,7 +55,7 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
         <ArbitrumL2MessagesList
           items={ data.items }
           direction={ direction }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -64,7 +64,7 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
           items={ data.items }
           direction={ direction }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -101,6 +101,7 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
         itemsNum={ data?.items.length }
         emptyText={ `There are no ${ type }.` }
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

@@ -16,10 +16,10 @@ sorting, so the work is wiring `isInitialLoading` / `isTransitioning` and the ro
 How to verify: `pnpm dev:preset <an optimism-based and an arbitrum-based alias from
 tools/dev-server/registry.json>`, open the batches and deposits pages.
 
-- [ ] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
+- [x] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
       to rows; row keys use the index only while `isLoading`.
-- [ ] Existing Playwright specs pass; lint, tsc green.
-- [ ] `(human)` Batches page on one rollup: next / prev / first are one request each; prev onto a
+- [x] Existing Playwright specs pass; lint, tsc green.
+- [x] `(human)` Batches page on one rollup: next / prev / first are one request each; prev onto a
       cached page shows no skeleton.
 
 ## Details
@@ -32,5 +32,5 @@ batch-details pages (T05): `arbitrum/{components/ArbitrumL2Messages,pages/batche
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Migrate the files in Details
-- [ ] 2 `[human]` Verify per the `(human)` criterion
+- [x] 1 `[agent]` Migrate the files in Details
+- [x] 2 `[human]` Verify per the `(human)` criterion

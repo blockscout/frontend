@@ -22,7 +22,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:optimistic_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_withdrawals'>(
@@ -47,13 +47,13 @@ const OptimisticL2Withdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <OptimisticL2WithdrawalsTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -85,6 +85,7 @@ const OptimisticL2Withdrawals = () => {
         itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

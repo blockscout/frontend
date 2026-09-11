@@ -42,7 +42,7 @@ const WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props) => {
         </TableHeaderSticky>
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
-            <WithdrawalsTableItem key={ `${ item.l2_transaction_hash }-${ index }` } item={ item } isLoading={ isLoading }/>
+            <WithdrawalsTableItem key={ item.l2_transaction_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
           )) }
           <TableRow ref={ cutRef }/>
         </TableBody>

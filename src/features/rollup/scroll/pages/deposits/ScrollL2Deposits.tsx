@@ -23,7 +23,7 @@ import ScrollL2DepositsList from './ScrollL2DepositsList';
 import ScrollL2DepositsTable from './ScrollL2DepositsTable';
 
 const ScrollL2Deposits = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:scroll_l2_deposits',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_deposits'>(
@@ -43,13 +43,13 @@ const ScrollL2Deposits = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ScrollL2DepositsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ScrollL2DepositsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ScrollL2DepositsTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -81,6 +81,7 @@ const ScrollL2Deposits = () => {
         itemsNum={ data?.items?.length }
         emptyText="There are no deposits."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

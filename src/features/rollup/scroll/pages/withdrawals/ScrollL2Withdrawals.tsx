@@ -23,7 +23,7 @@ import ScrollL2WithdrawalsList from './ScrollL2WithdrawalsList';
 import ScrollL2WithdrawalsTable from './ScrollL2WithdrawalsTable';
 
 const ScrollL2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:scroll_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_withdrawals'>(
@@ -43,13 +43,13 @@ const ScrollL2Withdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ScrollL2WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ScrollL2WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ScrollL2WithdrawalsTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -81,6 +81,7 @@ const ScrollL2Withdrawals = () => {
         itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>
