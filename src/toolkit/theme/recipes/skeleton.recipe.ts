@@ -26,6 +26,9 @@ export const recipe = defineRecipe({
         '& > *': {
           visibility: 'hidden',
         },
+        _firstLine: {
+          color: 'transparent',
+        },
       },
     },
     variant: {
