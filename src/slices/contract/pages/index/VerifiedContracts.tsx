@@ -28,8 +28,8 @@ const sortCollection = createListCollection({
 const VerifiedContracts = () => {
   const isMobile = useIsMobile();
 
-  const { query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
@@ -55,7 +55,7 @@ const VerifiedContracts = () => {
       defaultValue={ [ sort ] }
       collection={ sortCollection }
       onValueChange={ onSortChange }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
     />
   );
 
@@ -81,10 +81,10 @@ const VerifiedContracts = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;
@@ -97,11 +97,12 @@ const VerifiedContracts = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no verified contracts."
-        hasActiveFilters={ Boolean(debouncedSearchTerm || type) }
+        hasActiveFilters={ Boolean(searchTerm || type) }
         emptyStateProps={{
           term: 'contract',
         }}
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

@@ -17,12 +17,12 @@ choosing its resource from the path param (the composed hook supports that alrea
 How to verify: `pnpm dev:preset eth`, open `/blocks`, `/tokens`, a token's Holders and Inventory
 tabs, an address's Tokens (NFTs) tab, `/verified-contracts`, `/search-results?q=…`, `/accounts`.
 
-- [ ] None of the files in Details holds `useState` for a filter or sort value the URL carries, nor
+- [x] None of the files in Details holds `useState` for a filter or sort value the URL carries, nor
       passes `filters` / `sorting` to `useQueryWithPages`.
-- [ ] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
+- [x] Every list component in the family passes `isTransitioning` to `DataList` and `isInitialLoading`
       to rows; row keys use the index only while `isLoading`.
-- [ ] Existing unit and Playwright specs pass; lint, tsc green.
-- [ ] `(human)` `/tokens`: type filter, search and sort each reset to page 1 and survive reload; one
+- [x] Existing unit and Playwright specs pass; lint, tsc green.
+- [x] `(human)` `/tokens`: type filter, search and sort each reset to page 1 and survive reload; one
       request per action; `/blocks` tab switch clears the page.
 
 ## Details
@@ -36,5 +36,5 @@ Files: `src/slices/block/pages/index/{Blocks,BlocksContent}.tsx`,
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Migrate the files in Details
-- [ ] 2 `[human]` Verify per the `(human)` criterion
+- [x] 1 `[agent]` Migrate the files in Details
+- [x] 2 `[human]` Verify per the `(human)` criterion

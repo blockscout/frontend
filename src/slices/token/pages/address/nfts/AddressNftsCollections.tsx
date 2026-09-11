@@ -41,12 +41,12 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
-  const { isError, isPlaceholderData, data, pagination } = collectionsQuery;
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = collectionsQuery;
 
   const items = data?.items?.filter((item) => item.token_instances.length > 0);
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     minItemsNum: INITIAL_RENDERED_COLLECTIONS_NUM,
     resetKey: collectionsQuery.queryHash,
   });
@@ -71,21 +71,21 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
     }, { chain: multichainContext?.chain });
     const hasOverload = Number(item.amount) > item.token_instances.length;
     return (
-      <Box key={ item.token.address_hash + index } mb={ 6 }>
+      <Box key={ item.token.address_hash + (isInitialLoading ? index : '') } mb={ 6 }>
         <Flex mb={ 3 } flexWrap="wrap" lineHeight="30px">
           <TokenEntity
             width="auto"
             noSymbol
             token={ item.token }
-            isLoading={ isPlaceholderData }
+            isLoading={ isInitialLoading }
             noCopy
             fontWeight="600"
             chain={ multichainContext?.chain }
           />
-          <Skeleton loading={ isPlaceholderData } mr={ 3 }>
+          <Skeleton loading={ isInitialLoading } mr={ 3 }>
             <Text color="text.secondary" whiteSpace="pre">{ ` - ${ Number(item.amount).toLocaleString() } item${ Number(item.amount) > 1 ? 's' : '' }` }</Text>
           </Skeleton>
-          <Link href={ collectionUrl } loading={ isPlaceholderData }>
+          <Link href={ collectionUrl } loading={ isInitialLoading }>
             View in collection
           </Link>
         </Flex>
@@ -97,14 +97,14 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
           gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
         >
           { item.token_instances.map((instance, index) => {
-            const key = item.token.address_hash + '_' + (instance.id && !isPlaceholderData ? `id_${ instance.id }` : `index_${ index }`);
+            const key = item.token.address_hash + '_' + (instance.id && !isInitialLoading ? `id_${ instance.id }` : `index_${ index }`);
 
             return (
               <AddressNftItem
                 key={ key }
                 instance={ instance }
                 token={ item.token }
-                isLoading={ isPlaceholderData }
+                isLoading={ isInitialLoading }
                 chain={ multichainContext?.chain }
               />
             );
@@ -143,6 +143,7 @@ const AddressNftsCollections = ({ collectionsQuery, address, tokenTypes, onToken
       emptyStateProps={{
         term: 'token',
       }}
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

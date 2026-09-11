@@ -65,7 +65,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
           data={ items }
           token={ token }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ holdersQuery.isPlaceholderData }
+          isLoading={ holdersQuery.isInitialLoading }
           resetKey={ holdersQuery.queryHash }
         />
       </Box>
@@ -73,7 +73,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
         <TokenHoldersList
           data={ items }
           token={ token }
-          isLoading={ holdersQuery.isPlaceholderData }
+          isLoading={ holdersQuery.isInitialLoading }
           resetKey={ holdersQuery.queryHash }
         />
       </Box>
@@ -86,6 +86,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
       itemsNum={ holdersQuery.data?.items.length }
       emptyText="There are no holders for this token."
       actionBar={ actionBar }
+      isTransitioning={ holdersQuery.isTransitioning }
     >
       { content }
     </DataList>

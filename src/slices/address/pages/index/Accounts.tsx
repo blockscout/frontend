@@ -19,7 +19,7 @@ import AddressesList from './AddressesList';
 import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
-  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(
@@ -57,7 +57,7 @@ const Accounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -66,7 +66,7 @@ const Accounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -81,6 +81,7 @@ const Accounts = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no accounts."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

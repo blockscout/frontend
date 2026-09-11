@@ -1,13 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
-
-import type { paths } from '@blockscout/api-types';
-import type { PaginationParams } from 'src/shared/pagination/types';
-
-import type { ResourceError } from 'src/api/resources';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
@@ -19,18 +13,14 @@ import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
+import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
-  query: UseQueryResult<
-    paths['/api/v2/addresses/{address_hash_param}/coin-balance-history']['get'],
-    ResourceError<unknown>
-  > & {
-    pagination: PaginationParams;
-  };
+  query: QueryWithPagesResult<'core:address_coin_balance'>;
   resetKey?: string;
 }
 
@@ -40,7 +30,7 @@ const AddressCoinBalanceHistory = ({ query, resetKey }: Props) => {
   const items = query.data?.items ?? [];
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: items,
-    isEnabled: !query.isPlaceholderData,
+    isEnabled: !query.isInitialLoading,
     resetKey,
   });
 
@@ -64,10 +54,10 @@ const AddressCoinBalanceHistory = ({ query, resetKey }: Props) => {
           <TableBody>
             { items.slice(0, renderedItemsNum).map((item, index) => (
               <AddressCoinBalanceTableItem
-                key={ item.block_number + (query.isPlaceholderData ? String(index) : '') }
+                key={ item.block_number + (query.isInitialLoading ? String(index) : '') }
                 data={ item }
                 page={ query.pagination.page }
-                isLoading={ query.isPlaceholderData }
+                isLoading={ query.isInitialLoading }
                 chainData={ chainData }
               />
             )) }
@@ -91,6 +81,7 @@ const AddressCoinBalanceHistory = ({ query, resetKey }: Props) => {
       itemsNum={ query.data?.items.length }
       emptyText="There is no coin balance history for this address."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

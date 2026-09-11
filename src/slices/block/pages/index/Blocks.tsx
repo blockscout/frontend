@@ -38,7 +38,7 @@ const BlocksPageContent = () => {
 
   const blocksQuery = useQueryWithPages({
     resourceName: 'core:blocks',
-    filters: { type: 'block' },
+    queryParams: { type: 'block' },
     options: {
       enabled: tab === 'blocks' || !tab,
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
@@ -49,7 +49,7 @@ const BlocksPageContent = () => {
   });
   const reorgsQuery = useQueryWithPages({
     resourceName: 'core:blocks',
-    filters: { type: 'reorg' },
+    queryParams: { type: 'reorg' },
     options: {
       enabled: tab === 'reorgs',
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
@@ -60,7 +60,7 @@ const BlocksPageContent = () => {
   });
   const unclesQuery = useQueryWithPages({
     resourceName: 'core:blocks',
-    filters: { type: 'uncle' },
+    queryParams: { type: 'uncle' },
     options: {
       enabled: tab === 'uncles',
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {

@@ -84,7 +84,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
     topic: `addresses:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !addressHash || coinBalanceQuery.isPlaceholderData || coinBalanceQuery.pagination.page !== 1,
+    isDisabled: !addressHash || coinBalanceQuery.isInitialLoading || coinBalanceQuery.pagination.page !== 1,
   });
   useSocketMessage({
     channel,

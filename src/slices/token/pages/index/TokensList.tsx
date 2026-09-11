@@ -27,11 +27,11 @@ interface Props {
 
 const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters, tableTop }: Props) => {
 
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     resetKey: query.queryHash,
   });
 
@@ -49,11 +49,11 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
             return (
               <TokensListItem
-                key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
+                key={ item.address_hash + (isInitialLoading ? index : '') + (chainIds ? chainIds : '') }
                 token={ item }
                 index={ index }
                 page={ pagination.page }
-                isLoading={ isPlaceholderData }
+                isLoading={ isInitialLoading }
               />
             );
           }) }
@@ -65,7 +65,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         <TokensTable
           items={ data.items }
           page={ pagination.page }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           setSorting={ onSortChange }
           sorting={ sort }
           top={ tableTop }
@@ -85,6 +85,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         term: 'token',
       }}
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

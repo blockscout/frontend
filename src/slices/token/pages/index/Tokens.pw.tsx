@@ -50,7 +50,12 @@ test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }
     next_page_params: null,
   };
 
-  await mockApiResponse('core:tokens', allTokens);
+  const hooksConfig = {
+    router: {
+      query: { q: 'foo' },
+    },
+  };
+
   const filteredTokensApiUrl = await mockApiResponse('core:tokens', filteredTokens, { queryParams: { q: 'foo' } });
 
   const component = await render(
@@ -58,14 +63,10 @@ test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }
       <Box h={{ base: '134px', lg: 6 }}/>
       <Tokens/>
     </div>,
+    { hooksConfig },
   );
 
-  const requestPromise = page.waitForRequest(filteredTokensApiUrl);
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).focus();
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).fill('foo');
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).blur();
-
-  await requestPromise;
+  await page.waitForResponse(filteredTokensApiUrl);
   await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
 });
 

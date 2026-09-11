@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from '../../types/api';
 
 import { ADDRESS_TOKEN_BALANCE_ERC_20 } from 'src/slices/address/stubs/address';
 
+import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
@@ -23,14 +23,13 @@ interface Props {
 }
 
 export default function useAddressFungibleTokensQuery({ scrollRef, enabled, addressHash }: Props) {
-  const router = useRouter();
-
-  const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || FUNGIBLE_TOKEN_TYPES);
+  const typeParam = usePaginationParams('core:address_tokens').filters.type;
+  const tokenTypes = React.useMemo(() => getTokenFilterValue(typeParam) || FUNGIBLE_TOKEN_TYPES, [ typeParam ]);
 
   const query = useQueryWithPages({
     resourceName: 'core:address_tokens',
     pathParams: { hash: addressHash },
-    filters: { type: tokenTypes },
+    queryParams: { type: tokenTypes },
     scrollRef,
     options: {
       enabled,
@@ -39,16 +38,14 @@ export default function useAddressFungibleTokensQuery({ scrollRef, enabled, addr
     },
   });
 
+  const { onFilterChange } = query;
   const onTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
-    query.onFilterChange({ type: value });
-    setTokenTypes(value);
-  }, [ query ]);
+    onFilterChange({ type: value });
+  }, [ onFilterChange ]);
 
-  return React.useMemo(() => {
-    return {
-      query,
-      tokenTypes,
-      onTokenTypesChange,
-    };
-  }, [ query, tokenTypes, onTokenTypesChange ]);
+  return React.useMemo(() => ({
+    query,
+    tokenTypes,
+    onTokenTypesChange,
+  }), [ query, tokenTypes, onTokenTypesChange ]);
 }
