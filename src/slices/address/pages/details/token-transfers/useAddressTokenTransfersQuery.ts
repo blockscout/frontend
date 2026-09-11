@@ -3,14 +3,13 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { AddressFromToFilter } from 'src/slices/address/types/api';
 import { AddressFromToFilterValues } from 'src/slices/address/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 import { getTokenTypes } from 'src/slices/token/utils/token-types';
 
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
-
-import multichainConfig from 'src/features/multichain/chains-config';
 
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
@@ -24,18 +23,14 @@ export type Filters = {
 
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const getFilters = (query: Record<string, string | Array<string> | undefined>, chainIds?: Array<string>) => {
-  const chainIdParam = getQueryParamString(query.chain_id);
+const getFilters = (query: Record<string, string | Array<string> | undefined>, chain: ClusterChainConfig | undefined) => {
   const filterParam = getQueryParamString(query.filter);
   const typeParam = getQueryParamString(query.type);
-
-  const currentChainId = chainIdParam && chainIds?.includes(chainIdParam) ? chainIdParam : chainIds?.[0];
-  const chainConfig = multichainConfig()?.chains.find(chain => chain.id === currentChainId);
 
   return {
     filter: getAddressFilterValue(filterParam),
     type: getFilterValuesFromQuery(
-      Object.keys(getTokenTypes('all', chainConfig?.app_config)),
+      Object.keys(getTokenTypes('all', chain?.app_config)),
       typeParam,
     ) || [],
   };
@@ -44,18 +39,17 @@ const getFilters = (query: Record<string, string | Array<string> | undefined>, c
 interface Props {
   currentAddress: string;
   enabled?: boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ClusterChainConfig;
 }
 
-export default function useAddressTokenTransfersQuery({ currentAddress, enabled, isMultichain, chainIds }: Props) {
+export default function useAddressTokenTransfersQuery({ currentAddress, enabled, chain }: Props) {
   const router = useRouter();
 
-  const [ filters, setFilters ] = React.useState<Filters>(getFilters(router.query, chainIds));
+  const [ filters, setFilters ] = React.useState<Filters>(getFilters(router.query, chain));
 
   React.useEffect(() => {
     if (enabled) {
-      setFilters(getFilters(router.query, chainIds));
+      setFilters(getFilters(router.query, chain));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ enabled ]);
@@ -72,8 +66,7 @@ export default function useAddressTokenTransfersQuery({ currentAddress, enabled,
         items_count: 50,
       }),
     },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
   const onTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {

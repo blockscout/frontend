@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import { AddressFromToFilterValues, type AddressFromToFilter } from 'src/slices/address/types/api';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
@@ -16,11 +17,10 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 
 interface Props {
   enabled: boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ExternalChainExtended;
 }
 
-export default function useAddressInternalTxsQuery({ enabled, isMultichain, chainIds }: Props) {
+export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
@@ -48,8 +48,7 @@ export default function useAddressInternalTxsQuery({ enabled, isMultichain, chai
         },
       ),
     },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
   const onFilterChange = React.useCallback((val: string | Array<string>) => {

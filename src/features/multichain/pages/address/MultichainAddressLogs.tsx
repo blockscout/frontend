@@ -11,9 +11,9 @@ import LogItem from 'src/slices/log/components/LogItem';
 import { LOG } from 'src/slices/log/stubs/log';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
-import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
@@ -36,10 +36,11 @@ interface Props {
 const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain: chainData, onChainValueChange } = useChainValue({ chainIds });
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange, queryHash } = useQueryWithPages({
+  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
@@ -51,8 +52,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       } }),
       enabled: !isLoading,
     },
-    isMultichain: true,
-    chainIds,
+    chain: chainData,
   });
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
@@ -61,11 +61,6 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
     minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
     resetKey: queryHash,
   });
-
-  const chainData = React.useMemo(() => {
-    const config = multichainConfig();
-    return config?.chains.find(({ id }) => id === chainValue?.[0]);
-  }, [ chainValue ]);
 
   const actionBar = (
     <ActionBar mt={ -6 }>
@@ -116,7 +111,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       showActionBarIfError
       actionBar={ actionBar }
     >
-      <MultichainProvider chainId={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chainData?.id }>
         { content }
       </MultichainProvider>
     </DataList>

@@ -5,6 +5,8 @@ import React from 'react';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
+import { chainA } from 'src/features/multichain/mocks/chains';
+
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, render, wrapper, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
@@ -587,6 +589,23 @@ describe('values derived from the URL', () => {
     expect(new URL(String(fetchMock.mock.calls[0][0])).search).toBe('?filter=from&sort=fee&order=asc');
   });
 
+  it('targets the given chain and folds it into the query hash', async() => {
+    fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
+
+    const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useQueryWithPages(hookParams), {
+      wrapper,
+      initialProps: params,
+    });
+    await waitForApiResponse();
+    const hashWithoutChain = result.current.queryHash;
+
+    rerender({ ...params, chain: chainA });
+    await waitForApiResponse();
+
+    expect(new URL(String(fetchMock.mock.calls[1][0])).origin).toBe(chainA.app_config.apis.core?.endpoint);
+    expect(result.current.queryHash).not.toBe(hashWithoutChain);
+  });
+
   it('exposes the loading flags for the list body', async() => {
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
     const paramsWithStub: Params<'core:address_txs'> = {
@@ -627,7 +646,6 @@ describe('referential stability', () => {
     expect(result.current.pagination.resetPage).toBe(before.pagination.resetPage);
     expect(result.current.onFilterChange).toBe(before.onFilterChange);
     expect(result.current.onSortingChange).toBe(before.onSortingChange);
-    expect(result.current.onChainValueChange).toBe(before.onChainValueChange);
   });
 
   it('keeps the same query hash across a re-render and changes it on a page change', async() => {

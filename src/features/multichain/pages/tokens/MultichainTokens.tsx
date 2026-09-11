@@ -15,6 +15,7 @@ import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 import { TOKEN } from 'src/features/multichain/stubs';
 
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
@@ -40,9 +41,8 @@ const MultichainTokens = () => {
   }, []);
 
   const q = getQueryParamString(router.query.query);
-  const chainIdParam = getQueryParamString(router.query.chain_id);
 
-  const [ chainIds, setChainIds ] = React.useState<Array<string>>(chainIdParam ? [ chainIdParam ] : [ 'all' ]);
+  const { chainValue: chainIds } = useChainValue({ withAllOption: true });
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(
     getTokenFilterValue(router.query.type, chainConfigs),
@@ -92,7 +92,6 @@ const MultichainTokens = () => {
       type: tokenTypes?.join(','),
       query: debouncedSearchTerm,
     });
-    setChainIds(value);
   }, [ tokensQuery, tokenTypes, debouncedSearchTerm ]);
 
   const filter = (

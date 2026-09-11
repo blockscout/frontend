@@ -174,8 +174,6 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     onSortingChange: () => {},
     filters: apiQuery.filters,
     sorting: apiQuery.sorting,
-    chainValue: undefined,
-    onChainValueChange: () => {},
     queryHash: hashKey(rpcQueryKey),
     isInitialLoading: rpcQuery.isPlaceholderData,
     isTransitioning: false,

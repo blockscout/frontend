@@ -13,9 +13,9 @@ import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
-import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -29,25 +29,20 @@ interface Props {
 
 const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain: chainData, onChainValueChange } = useChainValue({ chainIds });
 
   const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({
     enabled: !isLoading && chainIds.length > 0,
-    isMultichain: true,
-    chainIds,
+    chain: chainData,
   });
-  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange } = query;
-
-  const chainData = React.useMemo(() => {
-    const config = multichainConfig();
-    return config?.chains.find(({ id }) => id === chainValue?.[0]);
-  }, [ chainValue ]);
+  const { data, isPlaceholderData, isError, pagination } = query;
 
   if (chainIds.length === 0) {
     return <p>There are no internal transactions.</p>;
   }
 
   const content = data?.items ? (
-    <MultichainProvider chainId={ chainValue?.[0] }>
+    <MultichainProvider chainId={ chainData?.id }>
       <Box hideFrom="lg">
         <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>

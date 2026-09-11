@@ -3,6 +3,8 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
+
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
 import useDebounce from 'src/shared/hooks/useDebounce';
@@ -11,10 +13,10 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 interface Props {
-  isMultichain?: boolean;
+  chain?: ExternalChainExtended;
 }
 
-export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
+export default function useInternalTxsQuery({ chain }: Props = {}) {
   const router = useRouter();
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.transaction_hash) || undefined);
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
@@ -41,7 +43,7 @@ export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
         },
       ),
     },
-    isMultichain,
+    chain,
   });
 
   const onSearchTermChange = React.useCallback((value: string) => {

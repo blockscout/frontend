@@ -16,6 +16,7 @@ import TokenTransfersCrossChain from 'src/features/cross-chain-txs/pages/token-t
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
@@ -48,12 +49,12 @@ const MultichainTokenTransfers = () => {
 
   const isLocalTab = tab === 'local' || !tab;
 
-  const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, isMultichain: true });
-  const chainId = queryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, chain });
+  const chainId = chain?.id;
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    queryLocal.query.onChainValueChange({ value });
+    onChainValueChange({ value });
     const chainConfig = multichainConfig()?.chains.find(chain => chain.id === value[0]);
     const tokenTypes = getTokenFilterValue(router.query.type, chainConfig?.app_config);
     if (tokenTypes) {
@@ -62,7 +63,7 @@ const MultichainTokenTransfers = () => {
         queryLocal.onTokenTypesChange(chainTokenTypes);
       }
     }
-  }, [ queryLocal, router.query.type ]);
+  }, [ onChainValueChange, queryLocal, router.query.type ]);
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
@@ -93,7 +94,7 @@ const MultichainTokenTransfers = () => {
         onChange={ queryLocal.onTokenTypesChange }
         defaultValue={ queryLocal.typeFilter }
         category="all"
-        chainConfig={ chainData?.app_config }
+        chainConfig={ chain?.app_config }
       />
     </PopoverFilter>
   );
@@ -102,7 +103,7 @@ const MultichainTokenTransfers = () => {
     <>
       { !isMobile && filter }
       <ChainSelect
-        value={ queryLocal.query.chainValue }
+        value={ chainValue }
         onValueChange={ handleChainValueChange }
         ml={ isMobile ? 'auto' : undefined }
       />

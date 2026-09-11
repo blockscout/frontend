@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import type {
   VerifiedContractsFilters,
   VerifiedContractsSorting,
@@ -21,10 +22,10 @@ import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 
 interface Props {
-  isMultichain?: boolean;
+  chain?: ExternalChainExtended;
 }
 
-export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) {
+export default function useVerifiedContractsQuery({ chain }: Props = {}) {
   const router = useRouter();
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
@@ -49,7 +50,7 @@ export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) 
         },
       ),
     },
-    isMultichain,
+    chain,
   });
   const { onFilterChange, onSortingChange } = query;
 

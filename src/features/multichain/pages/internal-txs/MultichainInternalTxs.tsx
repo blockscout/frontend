@@ -12,6 +12,7 @@ import useInternalTxsQuery from 'src/slices/internal-tx/hooks/useInternalTxsQuer
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
@@ -22,7 +23,8 @@ import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 const MultichainInternalTxs = () => {
   const isMobile = useIsMobile();
 
-  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ isMultichain: true });
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ chain });
   const { isError, isPlaceholderData, data, pagination } = query;
 
   const filterInput = (
@@ -38,8 +40,8 @@ const MultichainInternalTxs = () => {
 
   const chainSelect = (
     <ChainSelect
-      value={ query.chainValue }
-      onValueChange={ query.onChainValueChange }
+      value={ chainValue }
+      onValueChange={ onChainValueChange }
     />
   );
 
@@ -59,7 +61,7 @@ const MultichainInternalTxs = () => {
   );
 
   const content = data?.items ? (
-    <MultichainProvider chainId={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ chain?.id }>
       <Box hideBelow="lg">
         <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
       </Box>

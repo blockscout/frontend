@@ -9,6 +9,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 import UserOpsList from 'src/features/user-ops/pages/index/UserOpsList';
 import UserOpsTable from 'src/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
@@ -22,6 +23,7 @@ const MultichainUserOps = () => {
 
   const chains = React.useMemo(() => (multichainConfig()?.chains || []).filter(chain => chain.app_config.features.userOps.isEnabled), []);
   const chainIds = React.useMemo(() => chains.map(chain => chain.id).filter(Boolean), [ chains ]);
+  const { chainValue, chain, onChainValueChange } = useChainValue({ chainIds });
 
   const query = useQueryWithPages({
     resourceName: 'core:user_ops',
@@ -31,14 +33,11 @@ const MultichainUserOps = () => {
         page_size: 50,
       } }),
     },
-    isMultichain: true,
-    chainIds,
+    chain,
   });
 
-  const chainConfig = chains.find(chain => chain.id === query.chainValue?.[0]);
-
   const content = query.data?.items ? (
-    <MultichainProvider chainId={ query.chainValue?.[0] }>
+    <MultichainProvider chainId={ chain?.id }>
       <Box hideBelow="lg">
         <UserOpsTable
           items={ query.data.items }
@@ -55,7 +54,7 @@ const MultichainUserOps = () => {
           isLoading={ query.isPlaceholderData }
           showTx
           showSender
-          chainData={ chainConfig }
+          chainData={ chain }
           resetKey={ query.queryHash }
         />
       </Box>
@@ -65,8 +64,8 @@ const MultichainUserOps = () => {
   const actionBar = (
     <ActionBar mt={ -6 }>
       <ChainSelect
-        value={ query.chainValue }
-        onValueChange={ query.onChainValueChange }
+        value={ chainValue }
+        onValueChange={ onChainValueChange }
         chainIds={ chainIds }
       />
       <Pagination ml="auto" { ...query.pagination }/>

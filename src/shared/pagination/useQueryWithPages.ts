@@ -2,26 +2,19 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { hashKey } from '@tanstack/react-query';
-import { omit } from 'es-toolkit';
-import type { NextRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NextPageParams, PaginationParams } from './types';
-import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import type { Params as UseApiQueryParams } from 'src/api/hooks/useApiQuery';
 import useApiQuery, { getResourceKey } from 'src/api/hooks/useApiQuery';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting, ResourceError, ResourcePayload } from 'src/api/resources';
 
-import multichainConfig from 'src/features/multichain/chains-config';
-import { useMultichainContext } from 'src/features/multichain/context';
-import getChainValueFromQuery from 'src/features/multichain/utils/get-chain-value-from-query';
-
 import { useShallowStable } from 'src/shared/hooks/useShallowStable';
 
-import { scrollListToTop, usePaginationActions } from './usePaginationActions';
-import { PAGE_FIELDS, usePaginationParams } from './usePaginationParams';
+import { usePaginationActions } from './usePaginationActions';
+import { usePaginationParams } from './usePaginationParams';
 
 export interface Params<Resource extends PaginatedResourceName> {
   resourceName: Resource;
@@ -32,8 +25,7 @@ export interface Params<Resource extends PaginatedResourceName> {
   sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement | null>;
   hasNextPageFn?: (nextPageParams: NextPageParams) => boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ExternalChainExtended;
   noScroll?: boolean;
 }
 
@@ -45,8 +37,6 @@ UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
   pagination: PaginationParams;
   filters: PaginationFilters<Resource>;
   sorting: PaginationSorting<Resource>;
-  chainValue: Array<string> | undefined;
-  onChainValueChange: ({ value }: { value: Array<string> }) => void;
   queryHash: string;
   isInitialLoading: boolean;
   isTransitioning: boolean;
@@ -60,14 +50,6 @@ function getNextPageParams<R extends PaginatedResourceName>(data: ResourcePayloa
   }
 
   return (data.next_page_params ?? undefined) as NextPageParams | undefined;
-}
-
-function getSelectedChain(chainId: string | undefined, contextChain: ClusterChainConfig | undefined): ClusterChainConfig | undefined {
-  if (contextChain) {
-    return contextChain.id === chainId ? contextChain : undefined;
-  }
-
-  return multichainConfig()?.chains.find((chain) => chain.id === chainId);
 }
 
 function hasMoreItems(nextPageParams: NextPageParams | undefined, hasNextPageFn: Params<PaginatedResourceName>['hasNextPageFn']): boolean {
@@ -88,24 +70,8 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   scrollRef,
   noScroll,
   hasNextPageFn,
-  isMultichain,
-  chainIds,
+  chain,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
-  const router = useRouter();
-  const multichainContext = useMultichainContext();
-  const contextChain = multichainContext?.chain;
-
-  const hasChainValue = Boolean(isMultichain ?? contextChain);
-  const chainId = hasChainValue ? getChainValueFromQuery(router.query, chainIds) : undefined;
-  const chainValue = React.useMemo(
-    () => (hasChainValue ? [ chainId ].filter(Boolean) : undefined),
-    [ hasChainValue, chainId ],
-  );
-  const selectedChain = React.useMemo(
-    () => (hasChainValue ? getSelectedChain(chainId, contextChain) : undefined),
-    [ hasChainValue, chainId, contextChain ],
-  );
-
   const { page, cursor, filters: filtersFromUrl, sorting: sortingFromUrl } = usePaginationParams(resourceName);
   const filters = filtersProp ?? filtersFromUrl;
   const sorting = sortingProp ?? sortingFromUrl;
@@ -119,7 +85,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
   const queryHash = hashKey(getResourceKey(resourceName, {
     pathParams,
     queryParams: resolvedQueryParams,
-    chainId: (selectedChain || contextChain)?.id,
+    chainId: chain?.id,
   }));
 
   const queryResult = useApiQuery(resourceName, {
@@ -129,7 +95,7 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
     },
-    chain: selectedChain,
+    chain,
   });
   const nextPageParams = getNextPageParams(queryResult.data);
 
@@ -141,20 +107,6 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     scrollRef,
     noScroll,
   });
-
-  const latestRouter = React.useRef<NextRouter>(router);
-  latestRouter.current = router;
-
-  const latestScroll = React.useRef({ scrollRef, noScroll, page });
-  latestScroll.current = { scrollRef, noScroll, page };
-
-  const onChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    const { pathname, query, push } = latestRouter.current;
-    if (latestScroll.current.page !== 1) {
-      scrollListToTop(latestScroll.current.scrollRef, latestScroll.current.noScroll);
-    }
-    push({ pathname, query: { ...omit(query, PAGE_FIELDS), chain_id: value[0] } }, undefined, { shallow: true });
-  }, []);
 
   const hasNextPage = hasMoreItems(nextPageParams, hasNextPageFn);
   const hasPages = page > 1;
@@ -179,8 +131,6 @@ export default function useQueryWithPages<Resource extends PaginatedResourceName
     onSortingChange,
     filters,
     sorting,
-    chainValue,
-    onChainValueChange,
     queryHash,
     isInitialLoading: isLoading,
     isTransitioning: false,

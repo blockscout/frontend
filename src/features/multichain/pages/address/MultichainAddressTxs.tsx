@@ -20,10 +20,10 @@ import TxsWithApiSorting from 'src/slices/tx/pages/index/list/TxsWithApiSorting'
 import TransactionsCrossChainContent from 'src/features/cross-chain-txs/components/txs/TransactionsCrossChainContent';
 import { INTERCHAIN_MESSAGE } from 'src/features/cross-chain-txs/stubs/messages';
 import CsvExport from 'src/features/csv-export/components/CsvExport';
-import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import ListCounterText from 'src/features/multichain/components/ListCounterText';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
@@ -66,6 +66,8 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
   const isLocalTab = tab === 'txs_local' || tab === 'txs';
 
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain: chainData, onChainValueChange } = useChainValue({ chainIds });
+  const chainId = chainData?.id;
 
   const txsQueryCrossChain = useQueryWithPages({
     resourceName: 'interchainIndexer:address_messages',
@@ -79,12 +81,8 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
   const txsQueryLocal = useAddressTxsQuery({
     addressHash: hash,
     enabled: !isLoading && isLocalTab && chainIds.length > 0,
-    isMultichain: true,
-    chainIds,
+    chain: chainData,
   });
-
-  const chainId = txsQueryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
@@ -120,8 +118,8 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
   const chainSelect = (
     <ChainSelect
       loading={ txsQueryLocal.query.pagination.isLoading }
-      value={ txsQueryLocal.query.chainValue }
-      onValueChange={ txsQueryLocal.query.onChainValueChange }
+      value={ chainValue }
+      onValueChange={ onChainValueChange }
       chainIds={ chainIds }
     />
   );

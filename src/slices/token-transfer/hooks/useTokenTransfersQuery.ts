@@ -3,37 +3,32 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { TokenType } from 'src/slices/token/types/api';
 
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
-import multichainConfig from 'src/features/multichain/chains-config';
-
 import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
-const getFilters = (query: Record<string, string | Array<string> | undefined>) => {
-  const chainIdParam = getQueryParamString(query.chain_id);
+const getFilters = (query: Record<string, string | Array<string> | undefined>, chain: ClusterChainConfig | undefined) => {
   const typeParam = getQueryParamString(query.type);
-  const config = multichainConfig();
-
-  const chainConfig = chainIdParam ? config?.chains.find(chain => chain.id === chainIdParam) : config?.chains[0];
-  return getTokenFilterValue(typeParam, chainConfig?.app_config) || [];
+  return getTokenFilterValue(typeParam, chain?.app_config) || [];
 };
 
 interface Props {
-  isMultichain?: boolean;
+  chain?: ClusterChainConfig;
   enabled?: boolean;
 }
 
-export default function useTokenTransfersQuery({ isMultichain, enabled }: Props) {
+export default function useTokenTransfersQuery({ chain, enabled }: Props) {
   const router = useRouter();
-  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getFilters(router.query));
+  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getFilters(router.query, chain));
 
   React.useEffect(() => {
     if (enabled) {
-      setTypeFilter(getFilters(router.query));
+      setTypeFilter(getFilters(router.query, chain));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ enabled ]);
@@ -45,7 +40,7 @@ export default function useTokenTransfersQuery({ isMultichain, enabled }: Props)
       placeholderData: getTokenTransfersStub(),
       enabled,
     },
-    isMultichain,
+    chain,
   });
 
   const onTokenTypesChange = React.useCallback((value: Array<TokenType>) => {

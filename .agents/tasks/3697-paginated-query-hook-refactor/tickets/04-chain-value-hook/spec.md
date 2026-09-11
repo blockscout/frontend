@@ -52,7 +52,7 @@ such callers.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `useChainValue` hook with spec
-- [ ] 2 `[agent]` Remove chain handling from `useQueryWithPages`; add the `chain` param
-- [ ] 3 `[agent]` Migrate the files in Details
-- [ ] 4 `[human]` Verify per the `(human)` criterion
+- [x] 1 `[agent]` `useChainValue` hook with spec
+- [x] 2 `[agent]` Remove chain handling from `useQueryWithPages`; add the `chain` param
+- [x] 3 `[agent]` Migrate the files in Details
+- [x] 4 `[human]` Verify per the `(human)` criterion

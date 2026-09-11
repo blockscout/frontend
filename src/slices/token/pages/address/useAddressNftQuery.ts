@@ -3,6 +3,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import type { NftTokenType } from 'src/slices/token/types/api';
 import { NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
@@ -24,11 +25,10 @@ interface Props {
   scrollRef: React.RefObject<HTMLDivElement | null>;
   enabled?: boolean;
   addressHash: string;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ExternalChainExtended;
 }
 
-export default function useAddressNftQuery({ scrollRef, enabled = true, addressHash, isMultichain, chainIds }: Props) {
+export default function useAddressNftQuery({ scrollRef, enabled = true, addressHash, chain }: Props) {
   const router = useRouter();
 
   const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
@@ -44,8 +44,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
       placeholderData: generateListStub<'core:address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
   const nftsQuery = useQueryWithPages({
@@ -57,8 +56,7 @@ export default function useAddressNftQuery({ scrollRef, enabled = true, addressH
       placeholderData: generateListStub<'core:address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
   const onDisplayTypeChange = React.useCallback((val: string) => {

@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import type { AddressFromToFilter } from 'src/slices/address/types/api';
 import { AddressFromToFilterValues } from 'src/slices/address/types/api';
 import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
@@ -19,11 +20,10 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 interface Props {
   addressHash: string;
   enabled: boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ExternalChainExtended;
 }
 
-export default function useAddressTxsQuery({ addressHash, enabled, isMultichain, chainIds }: Props) {
+export default function useAddressTxsQuery({ addressHash, enabled, chain }: Props) {
   const query = useQueryWithPages({
     resourceName: 'core:address_txs',
     pathParams: { hash: addressHash },
@@ -35,8 +35,7 @@ export default function useAddressTxsQuery({ addressHash, enabled, isMultichain,
         items_count: 50,
       } }),
     },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
   const filterValue = getFilterValue(query.filters.filter);

@@ -138,8 +138,6 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     onSortingChange: () => {},
     filters: apiQuery.filters,
     sorting: apiQuery.sorting,
-    chainValue: undefined,
-    onChainValueChange: () => {},
     queryHash: hashKey(rpcQueryKey),
     isInitialLoading: rpcQuery.isPlaceholderData,
     isTransitioning: false,

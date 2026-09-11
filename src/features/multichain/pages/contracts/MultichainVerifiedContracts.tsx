@@ -15,6 +15,7 @@ import VerifiedContractsTable from 'src/slices/contract/pages/index/VerifiedCont
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
@@ -30,8 +31,9 @@ const sortCollection = createListCollection({
 const MultichainVerifiedContracts = () => {
   const isMobile = useIsMobile();
 
-  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ isMultichain: true });
-  const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = query;
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ chain });
+  const { isError, isPlaceholderData, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
@@ -103,7 +105,7 @@ const MultichainVerifiedContracts = () => {
         mode="default"
         mb={ 3 }
       />
-      <MultichainProvider chainId={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chain?.id }>
         <VerifiedContractsCounters/>
         <DataList
           isError={ isError }
