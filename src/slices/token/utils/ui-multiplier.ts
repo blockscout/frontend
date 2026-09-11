@@ -33,6 +33,6 @@ export function getUiMultiplier(token: UiMultiplierSource | null | undefined, ch
   return multiplier.isNaN() ? undefined : multiplier;
 }
 
-export function formatUiMultiplier(value: BigNumber): string {
-  return formatBnValue({ value, accuracy: UI_MULTIPLIER_ACCURACY, postfix: 'x' });
+export function formatUiMultiplier(value: BigNumber, postfix = 'x'): string {
+  return formatBnValue({ value, accuracy: UI_MULTIPLIER_ACCURACY, postfix });
 }

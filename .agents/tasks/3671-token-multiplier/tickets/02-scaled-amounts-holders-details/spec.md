@@ -70,11 +70,11 @@ units; `circulating_market_cap` is fiat.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `multiplier` through `calculateUsdValue` → `AssetValue` → `SimpleValue` tooltip; unit spec
-- [ ] 2 `[agent]` `TokenMultiplierTag` scaffold in the token slice (placeholder presentation,
+- [x] 1 `[agent]` `multiplier` through `calculateUsdValue` → `AssetValue` → `SimpleValue` tooltip; unit spec
+- [x] 2 `[agent]` `TokenMultiplierTag` scaffold in the token slice (placeholder presentation,
       `TODO (design):` markers)
-- [ ] 3 `[agent]` Wire holders Quantity (table + list) and token details (supplies, Multiplier row);
+- [x] 3 `[agent]` Wire holders Quantity (table + list) and token details (supplies, Multiplier row);
       Playwright scaffolds
-- [ ] 4 `[human]` Style the tag, the amount tooltip and the Multiplier row to mockup; generate baselines —
+- [x] 4 `[human]` Style the tag, the amount tooltip and the Multiplier row to mockup; generate baselines —
       [Figma tag/tooltip](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-28720),
       [Figma details](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-20900)

@@ -5,6 +5,8 @@ import { Box, chakra } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
 import React from 'react';
 
+import { formatUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
+
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -26,6 +28,8 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'postfix'> {
   loading?: boolean;
   overflowed?: boolean;
   tooltipContentBefore?: React.ReactNode;
+  multiplier?: BigNumber | null;
+  rawValue?: BigNumber;
 }
 
 const SimpleValue = ({
@@ -40,6 +44,8 @@ const SimpleValue = ({
   noTooltip,
   loading,
   overflowed,
+  multiplier,
+  rawValue,
   ...rest
 }: Props) => {
 
@@ -51,9 +57,14 @@ const SimpleValue = ({
           { prefix ?? '' }{ value.toFormat() }{ postfix ?? '' }
           <CopyToClipboard text={ value.toFixed() } verticalAlign="bottom" noTooltip/>
         </Box>
+        { multiplier && rawValue && (
+          <Box whiteSpace="wrap" wordBreak="break-all">
+            (Raw: { prefix ?? '' }{ rawValue.toFormat() }{ postfix ?? '' } * Multiplier: { formatUiMultiplier(multiplier, '') })
+          </Box>
+        ) }
       </>
     );
-  }, [ postfix, prefix, value, tooltipContentBefore ]);
+  }, [ postfix, prefix, value, tooltipContentBefore, multiplier, rawValue ]);
 
   return (
     <Skeleton loading={ loading } display="inline-flex" alignItems="center" whiteSpace="pre" maxW="100%" overflow="hidden" { ...rest }>

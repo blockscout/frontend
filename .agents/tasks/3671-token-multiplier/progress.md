@@ -1,7 +1,7 @@
 # Progress — ERC-8056 token multiplier support
 
 - [x] 01 → `tickets/01-erc8056-type-and-multiplier-primitives/`
-- [ ] 02 → `tickets/02-scaled-amounts-holders-details/`
+- [x] 02 → `tickets/02-scaled-amounts-holders-details/`
 - [ ] 03 → `tickets/03-token-transfer-surfaces/`
 - [ ] 04 → `tickets/04-advanced-filter-multiplier/`
 - [ ] 05 → `tickets/05-address-surfaces/`
