@@ -14,8 +14,8 @@ import { Link } from 'src/toolkit/chakra/link';
 import * as AddressEntity from './AddressEntity';
 
 interface Props extends AddressEntity.EntityProps {
-  tokenHash: string;
-  tokenSymbol: string | undefined;
+  tokenHash?: string;
+  tokenSymbol?: string;
 }
 
 const AddressEntityWithTokenFilter = (props: Props) => {
@@ -34,7 +34,7 @@ const AddressEntityWithTokenFilter = (props: Props) => {
       ...props.query,
       to_address_hashes_to_include: [ props.address.hash ],
       from_address_hashes_to_include: [ props.address.hash ],
-      token_contract_address_hashes_to_include: [ props.tokenHash ],
+      ...(props.tokenHash ? { token_contract_address_hashes_to_include: [ props.tokenHash ] } : {}),
       ...(props.tokenSymbol ? { token_contract_symbols_to_include: [ props.tokenSymbol ] } : {}),
     },
   }, { chain: multiChainContext?.chain });
@@ -44,7 +44,7 @@ const AddressEntityWithTokenFilter = (props: Props) => {
       <Separator my={ 1 } className="dark"/>
       <Link href={ defaultHref } display="flex" alignItems="center" justifyContent="center" gap={ 2 } fontWeight={ 500 } className="dark" textStyle="xs">
         <SpriteIcon name="advanced-filter" boxSize={ 5 }/>
-        <span>View all token transfers for this address and token</span>
+        <span>{ props.tokenHash ? 'View all token transfers for this address and token' : 'View all token transfers for this address' }</span>
       </Link>
     </>
   );
