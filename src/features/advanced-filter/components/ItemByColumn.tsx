@@ -8,7 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -49,7 +49,13 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
     case 'from':
       return item.from ? (
         <Flex w="100%">
-          <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
+          <AddressEntityWithTokenFilter
+            address={ item.from }
+            truncation="constant"
+            isLoading={ isLoading }
+            tokenHash={ item.token?.address_hash ?? undefined }
+            tokenSymbol={ item.token?.symbol ?? undefined }
+          />
         </Flex>
       ) : null;
     case 'to': {
@@ -59,7 +65,13 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
       }
       return (
         <Flex w="100%">
-          <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>
+          <AddressEntityWithTokenFilter
+            address={ address }
+            truncation="constant"
+            isLoading={ isLoading }
+            tokenHash={ item.token?.address_hash ?? undefined }
+            tokenSymbol={ item.token?.symbol ?? undefined }
+          />
         </Flex>
       );
     }
