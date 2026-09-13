@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { ColorModeValue } from 'src/config/types';
+
 export const CHAIN_INDICATOR_IDS = [ 'daily_txs', 'daily_operational_txs', 'coin_price', 'secondary_coin_price', 'market_cap', 'tvl' ] as const;
 export type ChainIndicatorId = typeof CHAIN_INDICATOR_IDS[number];
 
@@ -17,32 +19,30 @@ export const HOME_STATS_WIDGET_IDS = [
 ] as const;
 export type HomeStatsWidgetId = typeof HOME_STATS_WIDGET_IDS[number];
 
-type ResponsiveValue = Array<string | undefined>;
-
 export interface HeroBannerButtonState {
-  background?: ResponsiveValue;
-  text_color?: ResponsiveValue;
+  background?: ColorModeValue;
+  text_color?: ColorModeValue;
 }
 
 export interface HeroBannerSearchBorderColorState {
-  _empty?: ResponsiveValue;
-  _hover?: ResponsiveValue;
-  _focus?: ResponsiveValue;
-  _filled?: ResponsiveValue;
+  _empty?: ColorModeValue;
+  _hover?: ColorModeValue;
+  _focus?: ColorModeValue;
+  _filled?: ColorModeValue;
 }
 
 export interface HeroBannerConfig {
-  background?: ResponsiveValue;
-  text_color?: ResponsiveValue;
-  border?: ResponsiveValue;
+  background?: ColorModeValue;
+  text_color?: ColorModeValue;
+  border?: ColorModeValue;
   button?: {
     _default?: HeroBannerButtonState;
     _hover?: HeroBannerButtonState;
     _selected?: HeroBannerButtonState;
   };
   search?: {
-    background?: ResponsiveValue;
-    border_width?: ResponsiveValue;
+    background?: ColorModeValue;
+    border_width?: ColorModeValue;
     border_color?: HeroBannerSearchBorderColorState;
   };
   text?: string;
