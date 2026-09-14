@@ -100,7 +100,8 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
         <AddressTxsCrossChain
           pagination={ crossChainQuery.pagination }
           items={ crossChainQuery.data?.items }
-          isLoading={ crossChainQuery.isPlaceholderData }
+          isLoading={ crossChainQuery.isInitialLoading }
+          isTransitioning={ crossChainQuery.isTransitioning }
           isError={ crossChainQuery.isError }
           currentAddress={ hash }
           resetKey={ crossChainQuery.queryHash }

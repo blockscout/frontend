@@ -95,7 +95,8 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
           ) }
           <TokenTransfersCrossChainContent
             items={ crossChainQuery.data?.items }
-            isLoading={ crossChainQuery.isPlaceholderData }
+            isLoading={ crossChainQuery.isInitialLoading }
+            isTransitioning={ crossChainQuery.isTransitioning }
             isError={ crossChainQuery.isError }
             pagination={ crossChainQuery.pagination }
             tableTop={ ACTION_BAR_HEIGHT_DESKTOP }

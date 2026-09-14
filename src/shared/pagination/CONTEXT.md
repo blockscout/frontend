@@ -25,8 +25,9 @@ driven by the URL (most lists) and infinite scroll (`useLazyLoadedList.ts`).
   the next render.
 - **The previous-page cursors are the one in-memory exception.** The API only hands out the *next* cursor,
   so "Prev" needs the cursors of the pages already visited. They live in a ref keyed by page number inside
-  `usePaginationActions.ts`, filled on "Next" and seeded from the URL on mount. After a reload on page 3
-  the ref knows page 3 only, so "Prev" goes to page 1; that is expected, not a bug.
+  `usePaginationActions.ts`, filled on "Next" and seeded from the URL on mount. After a deep link into
+  page 3 the ref knows page 3 only, so "Prev" is disabled until a page has been reached via "Next"; that
+  is expected, not a bug.
 - **The returned object is referentially stable.** `pagination`, every handler and the result itself keep
   their identity while their inputs are unchanged, and the spec asserts it.
 - **`isInitialLoading` and `isTransitioning` are the two placeholder cases.** The first means the caller's
