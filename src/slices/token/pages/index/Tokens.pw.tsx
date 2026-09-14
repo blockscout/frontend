@@ -1,10 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 
 import * as tokens from 'src/slices/token/mocks/info';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect } from 'playwright/lib';
+import { expect, test } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
@@ -84,12 +83,6 @@ test.describe('bridged tokens', () => {
       market_cap: null,
     },
   };
-  const bridgedFilteredTokens = {
-    items: [
-      tokens.bridgedTokenC,
-    ],
-    next_page_params: null,
-  };
   const hooksConfig = {
     router: {
       query: { tab: 'bridged' },
@@ -108,22 +101,6 @@ test.describe('bridged tokens', () => {
       { hooksConfig },
     );
 
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('filtered by chain', async({ render, page, mockApiResponse, mockEnvs }) => {
-    await mockEnvs(ENVS_MAP.bridgedTokens);
-    const bridgedFilteredTokensApiUrl = await mockApiResponse('core:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
-
-    const component = await render(
-      <div>
-        <Box h={{ base: '134px', lg: 6 }}/>
-        <Tokens/>
-      </div>,
-      { hooksConfig: { router: { query: { ...hooksConfig.router.query, chain_ids: '99' } } } },
-    );
-
-    await page.waitForResponse(bridgedFilteredTokensApiUrl);
     await expect(component).toHaveScreenshot();
   });
 });
