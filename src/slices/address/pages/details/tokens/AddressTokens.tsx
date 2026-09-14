@@ -66,7 +66,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const tabs = [
     {
       id: 'tokens_erc20',
-      title: 'Fungible tokens',
+      title: 'Tokens',
       component: (
         <AddressFungibleTokens
           items={ fungibleTokensQuery.data?.items }

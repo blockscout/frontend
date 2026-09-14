@@ -117,7 +117,7 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     },
     {
       id: 'portfolio_nfts',
-      title: 'NFT',
+      title: 'NFTs',
       component: nftDisplayType === 'list' ? (
         <MultichainProvider chainId={ nftsQuery.chainValue?.[0] }>
           <AddressNfts tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
