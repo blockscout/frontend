@@ -96,10 +96,9 @@ test.describe('bridged tokens', () => {
     },
   };
 
-  test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
+  test('base view', async({ render, mockApiResponse, mockEnvs }) => {
     await mockEnvs(ENVS_MAP.bridgedTokens);
     await mockApiResponse('core:tokens_bridged', bridgedTokens);
-    const bridgedFilteredTokensApiUrl = await mockApiResponse('core:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
     const component = await render(
       <div>
@@ -110,14 +109,21 @@ test.describe('bridged tokens', () => {
     );
 
     await expect(component).toHaveScreenshot();
+  });
 
-    await component.getByRole('button', { name: /filter/i }).click();
-    const requestPromise = page.waitForRequest(bridgedFilteredTokensApiUrl);
-    await page.locator('label').filter({ hasText: /poa/i }).click();
-    await page.click('body');
+  test('filtered by chain', async({ render, page, mockApiResponse, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.bridgedTokens);
+    const bridgedFilteredTokensApiUrl = await mockApiResponse('core:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
-    await requestPromise;
+    const component = await render(
+      <div>
+        <Box h={{ base: '134px', lg: 6 }}/>
+        <Tokens/>
+      </div>,
+      { hooksConfig: { router: { query: { ...hooksConfig.router.query, chain_ids: '99' } } } },
+    );
 
+    await page.waitForResponse(bridgedFilteredTokensApiUrl);
     await expect(component).toHaveScreenshot();
   });
 });
