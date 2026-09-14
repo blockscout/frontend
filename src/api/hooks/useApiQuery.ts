@@ -18,6 +18,8 @@ export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload
   queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
   logError?: boolean;
   chain?: ExternalChainExtended;
+  // PROTOTYPE (#3697 T13): fake request latency
+  delayMs?: number;
 }
 
 export interface GetResourceKeyParams<R extends ResourceName, E = unknown, D = ResourcePayload<R>>
@@ -36,7 +38,7 @@ export function getResourceKey<R extends ResourceName>(resource: R, { pathParams
 
 export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, fetchParams, logError, chain: chainProp }: Params<R, E, D> = {},
+  { queryOptions, pathParams, queryParams, fetchParams, logError, chain: chainProp, delayMs }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
   const multichainContext = useMultichainContext();
@@ -45,6 +47,9 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
     queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams, chainId: chain?.id }),
     queryFn: async({ signal }) => {
+      if (delayMs) {
+        await new Promise((resolve) => window.setTimeout(resolve, delayMs));
+      }
       // all errors and error typing is handled by react-query
       // so error response will never go to the data
       // that's why we are safe here to do type conversion "as Promise<ResourcePayload<R>>"

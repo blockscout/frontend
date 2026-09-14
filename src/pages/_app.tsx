@@ -33,6 +33,8 @@ import { Provider as RollbarProvider } from 'src/services/rollbar';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import PageTransitionPrototypeSwitcher from 'src/shared/lists/page-transition-prototype/PageTransitionPrototypeSwitcher';
+import { isPrototypeEnabled } from 'src/shared/lists/page-transition-prototype/store';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
 import SpriteInjector from 'src/sprite/SpriteInjector';
 
@@ -98,6 +100,8 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
       <>
         { getLayout(<Component { ...pageProps }/>) }
         <Toaster/>
+        { /* PROTOTYPE (#3697 T13) */ }
+        { isPrototypeEnabled && <PageTransitionPrototypeSwitcher/> }
         { config.features.rewards.isEnabled && (
           <>
             <RewardsLoginModal/>

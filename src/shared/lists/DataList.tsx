@@ -4,6 +4,7 @@ import { Box, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import PageTransitionBody from 'src/shared/lists/page-transition-prototype/PageTransitionBody';
 
 import type { EmptyStateProps } from 'src/toolkit/chakra/empty-state';
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
@@ -57,14 +58,10 @@ const DataList = (props: Props) => {
   return (
     <Box className={ props.className }>
       { props.actionBar }
-      { /* TODO (design): page-transition look (opacity/fade) pending Q01; interim disabled-control look until T13 */ }
-      <Box
-        opacity={ props.isTransitioning ? 'control.disabled' : undefined }
-        pointerEvents={ props.isTransitioning ? 'none' : undefined }
-        aria-busy={ props.isTransitioning || undefined }
-      >
+      { /* PROTOTYPE (#3697 T13): variants of the page-transition look */ }
+      <PageTransitionBody isTransitioning={ props.isTransitioning }>
         { props.children }
-      </Box>
+      </PageTransitionBody>
     </Box>
   );
 };
