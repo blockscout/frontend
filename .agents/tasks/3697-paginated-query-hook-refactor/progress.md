@@ -18,4 +18,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 10 → `tickets/10-features-long-tail/`
 - [x] 11 → `tickets/11-drop-transitional-props/`
 - [x] 12 → `tickets/12-rename-codemod/`
-- [ ] 13 → `tickets/13-page-transition/`
+- [x] 13 → `tickets/13-page-transition/`

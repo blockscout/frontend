@@ -32,8 +32,8 @@ and then re-syncs its state from the URL through effects. Measured on the addres
 The goal is to make the URL the single source of truth for list state, so that one user action is
 exactly one URL push, one query key, one request and one render; to stop discarding cached pages;
 to make the hook's return value stable so the memoization already present in list components and
-tab containers actually holds; and to replace the skeleton pass on page changes with keeping the
-current rows visible (dimmed) until the next page arrives.
+tab containers actually holds. Replacing the skeleton pass on page changes with keeping the current
+rows visible (dimmed) is deferred to #3704 pending design; this task ships its plumbing inert.
 
 ## Functional requirements
 
@@ -58,9 +58,9 @@ current rows visible (dimmed) until the next page arrives.
    stable between renders when their inputs have not changed, so a memoized consumer does not
    re-render on an unrelated route change or on a socket-driven cache update.
 7. When the user moves to another page of the same list (same filters and sorting, different
-   cursor), the current rows stay rendered in a dimmed, non-interactive state until the new page's
-   data arrives, then are replaced in one commit. Pagination controls are disabled during the
-   transition; the sticky table header and sorting controls remain usable.
+   cursor), skeleton rows are shown until the new page's data arrives, as today. The hook and the
+   shared list wrapper carry an `isTransitioning` flag / prop wired to every migrated list but never
+   set; the dimmed, non-interactive page-transition state is deferred to #3704 pending design.
 8. Skeleton rows are still shown on first load of a list and after a filter or sorting change. The
    lazy-render window of long lists resets on every dataset change as it does today.
 9. All existing pagination behaviour that is not named above is preserved: the "next page" button
@@ -87,11 +87,10 @@ so that existing links keep working.
 - Every paginated list page and tab in the app (the ~106 call sites of the current hook), with the
   address details page transactions tab (single chain) as the reference integration: `RoutedTabs`
   → tab content → sorting wrapper → list content → table/list rows → `Pagination`.
-- No new screens. One new visual state: a **page-transition** state for the list body — current
-  rows dimmed and non-interactive, pagination buttons disabled, action bar and table header
-  unchanged. Exact opacity and transition to be agreed with the designer (see `questions.md`,
-  Q01); until then use the app's existing disabled-content look.
-- Skeleton state stays as is for first load and filter/sort changes.
+- No new screens and no new visual state. The **page-transition** state for the list body (current
+  rows dimmed and non-interactive) is deferred to #3704 (see `questions.md`, Q01); `DataList`
+  carries the `isTransitioning` prop for it, never set.
+- Skeleton state stays as is for first load, page changes and filter/sort changes.
 
 ## Implementation decisions
 
@@ -110,17 +109,17 @@ so that existing links keep working.
 - **No prefix-scoped cache removal.** The `removeQueries([resourceName])` calls go away. Page 1 keeps
   `staleTime: 0` so it refreshes in the background on return; deeper pages keep `staleTime:
   Infinity`. If a forced refresh is ever needed it targets the exact query key.
-- **Placeholder strategy decided inside the hook.** `placeholderData` is a function that keeps the
-  previous data when the previous query key differs from the new one only by cursor (page change),
-  and falls back to the caller's stub otherwise (first load, filter/sort change). The hook exposes
-  two flags derived from that decision: `isInitialLoading` (placeholder is the stub → rows render
-  skeletons) and `isTransitioning` (placeholder is previous data → body is dimmed).
-  `pagination.isLoading` stays true in both cases for button disabling.
+- **Placeholder strategy decided inside the hook.** `placeholderData` stays the caller's stub for
+  every query-key change (first load, page change, filter/sort change). The hook exposes two flags:
+  `isInitialLoading` (placeholder is the stub → rows render skeletons) and `isTransitioning`, always
+  `false` until #3704 flips the placeholder to the previous data on page changes.
+  `pagination.isLoading` stays true whenever a placeholder is shown, for button disabling.
 - **Dimming is one global wrapper, not per-row.** The shared list wrapper (`DataList`) gains an
   `isTransitioning` prop and applies opacity, `pointer-events: none` and `aria-busy` to the body
   it already wraps, leaving the action bar outside. Row and cell components keep their `isLoading`
   prop with its current meaning (skeleton). List content components wire two props:
-  `isLoading={ isInitialLoading }` to rows and `isTransitioning` to the wrapper.
+  `isLoading={ isInitialLoading }` to rows and `isTransitioning` to the wrapper. The prop is never
+  true in this task; #3704 styles and activates it.
 - **Row keys no longer depend on loading state** for real data: the index suffix on keys applies
   only while rendering the stub, so during a page transition the previous rows keep their keys and
   the new rows replace them in a single commit.

@@ -6,10 +6,11 @@ Page changes will keep the current rows on screen, dimmed and non-interactive, u
 page arrives, instead of a skeleton pass. What should that state look like?
 
 - Owner: Designer (Tatyana), with PM (Ulyana) confirming the behaviour change
-- Status: `pending`
+- Status: `waived`
 - Resolved when: (1) the dimmed treatment is specified — opacity value or token, whether a
   fade transition is used and its duration; (2) confirmation that skeletons stay for first load and
   filter/sort changes only; (3) confirmation that the sticky header and sort buttons remain active
   during the transition.
 - Slack: —
-- Answer: —
+- Answer: Deferred. Page changes keep the skeleton pass in this task; the dimmed transition state
+  and its design move to https://github.com/blockscout/frontend/issues/3704.

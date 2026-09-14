@@ -609,6 +609,39 @@ describe('values derived from the URL', () => {
     expect(result.current.isTransitioning).toBe(false);
     expect(result.current.pagination.isLoading).toBe(false);
   });
+
+  it('renders the stub, not the previous rows, while the next page loads', async() => {
+    fetchMock.once(JSON.stringify(responses.page_1), responseInit);
+    fetchMock.once(JSON.stringify(responses.page_2), responseInit);
+    fetchMock.once(JSON.stringify(responses.page_3), responseInit);
+    const stub = generateListStub<'core:address_txs'>(TX_ITEM, 1, { next_page_params: null });
+    const paramsWithStub: Params<'core:address_txs'> = {
+      ...params,
+      options: { placeholderData: stub },
+    };
+
+    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithStub), { wrapper });
+    await waitForApiResponse();
+
+    for (const expectedPage of [ 2, 3 ]) {
+      await act(async() => {
+        result.current.pagination.onNextPageClick();
+      });
+
+      expect(result.current.pagination.page).toBe(expectedPage);
+      expect(result.current.data).toEqual(stub);
+      expect(result.current.isInitialLoading).toBe(true);
+      expect(result.current.isTransitioning).toBe(false);
+      expect(result.current.pagination.isLoading).toBe(true);
+
+      await waitForApiResponse();
+
+      expect(result.current.isInitialLoading).toBe(false);
+      expect(result.current.pagination.isLoading).toBe(false);
+    }
+
+    expect(result.current.data).toEqual(responses.page_3);
+  });
 });
 
 describe('referential stability', () => {

@@ -57,7 +57,7 @@ const DataList = (props: Props) => {
   return (
     <Box className={ props.className }>
       { props.actionBar }
-      { /* TODO (design): page-transition look (opacity/fade) pending Q01; interim disabled-control look until T13 */ }
+      { /* TODO: page-transition look, currently never active — https://github.com/blockscout/frontend/issues/3704 */ }
       <Box
         opacity={ props.isTransitioning ? 'control.disabled' : undefined }
         pointerEvents={ props.isTransitioning ? 'none' : undefined }
