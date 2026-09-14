@@ -8,7 +8,9 @@ import { isConfidentialTokenType, isFungibleTokenType } from 'src/slices/token/u
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
+import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
 import type { TokenEnhancedData } from 'src/slices/token/pages/address/utils';
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import multichainConfig from 'src/features/multichain/chains-config';
 
@@ -18,6 +20,9 @@ import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+
+const DEFAULT_FUNGIBLE_DECIMALS = 18;
+const FULL_PRECISION = 0;
 
 interface Props {
   data: TokenEnhancedData;
@@ -57,13 +62,23 @@ const TokenSelectItem = ({ data }: Props) => {
     const isFungibleToken = isFungibleTokenType(data.token.type, chain?.app_config);
 
     if (isFungibleToken) {
-      const tokenDecimals = Number(data.token.decimals ?? 18);
-      const text = `${ BigNumber(data.value ?? '0').dividedBy(10 ** tokenDecimals).toFormat() } ${ data.token.symbol || '' }`;
+      const multiplier = getUiMultiplier(data.token, chain?.app_config);
+      const { valueStr } = calculateUsdValue({
+        amount: data.value,
+        decimals: data.token.decimals ?? DEFAULT_FUNGIBLE_DECIMALS,
+        multiplier,
+        accuracy: FULL_PRECISION,
+      });
+      const text = `${ valueStr } ${ data.token.symbol || '' }`;
+      const exchangeRate = data.token.exchange_rate ? `@${ Number(data.token.exchange_rate).toLocaleString() }` : undefined;
 
       return (
         <>
-          <Truncate value={ text } type="end"/>
-          { data.token.exchange_rate && <chakra.span ml={ 2 }>@{ Number(data.token.exchange_rate).toLocaleString() }</chakra.span> }
+          <Flex alignItems="center" gap={ 1 } maxW={ exchangeRate ? '60%' : '100%' }>
+            { multiplier && <TokenMultiplierTag multiplier={ multiplier }/> }
+            <Truncate value={ text } type="end"/>
+          </Flex>
+          { exchangeRate && <Truncate value={ exchangeRate } type="end" maxW="40%" ml={ 2 }/> }
         </>
       );
     }

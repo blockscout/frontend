@@ -5,9 +5,12 @@ import BigNumber from 'bignumber.js';
 import type { schemas } from '@blockscout/api-types';
 import { getTokenTypes, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
+
 import config from 'src/config';
 import sumBnReducer from 'src/shared/numbers/sumBnReducer';
 import { collator } from 'src/shared/texts/collator';
+import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { ZERO } from 'src/toolkit/utils/consts';
 
@@ -109,7 +112,9 @@ export const filterTokens = (searchTerm: string) => ({ token }: schemas['TokenBa
   return token.name?.toLowerCase().includes(searchTerm);
 };
 
-export const calculateUsdValue = (data: schemas['TokenBalance']): TokenEnhancedData => {
+const DEFAULT_FUNGIBLE_DECIMALS = '18';
+
+export const addUsdValue = (data: schemas['TokenBalance']): TokenEnhancedData => {
   const isFungibleToken = isFungibleTokenType(data.token?.type);
 
   if (!isFungibleToken) {
@@ -121,11 +126,14 @@ export const calculateUsdValue = (data: schemas['TokenBalance']): TokenEnhancedD
     return data;
   }
 
-  const decimals = Number(data.token?.decimals || '18');
-  return {
-    ...data,
-    usd: BigNumber(data.value ?? '0').div(BigNumber(10 ** decimals)).multipliedBy(BigNumber(exchangeRate)),
-  };
+  const { usdBn } = calculateUsdValue({
+    amount: data.value,
+    decimals: data.token?.decimals || DEFAULT_FUNGIBLE_DECIMALS,
+    exchangeRate,
+    multiplier: getUiMultiplier(data.token),
+  });
+
+  return { ...data, usd: usdBn };
 };
 
 export interface TokensTotalInfo {

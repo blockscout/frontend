@@ -10,6 +10,8 @@ import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/util
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
+import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -36,10 +38,13 @@ const AddressFungibleTokensListItem = ({
     return null;
   }
 
+  const multiplier = getUiMultiplier(token);
+
   const {
     valueBn: tokenQuantity,
+    rawValueBn: tokenRawQuantity,
     usdBn: tokenValue,
-  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
+  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals, multiplier });
 
   const isNativeToken = config.slices.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
@@ -86,6 +91,9 @@ const AddressFungibleTokensListItem = ({
         ) : (
           <SimpleValue
             value={ tokenQuantity }
+            rawValue={ tokenRawQuantity }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             loading={ isLoading }
             fontSize="sm"
             color="text.secondary"

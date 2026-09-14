@@ -17,7 +17,6 @@ import useAddressFungibleTokensQuery from 'src/slices/token/pages/address/useAdd
 import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuery';
 import { FUNGIBLE_TOKEN_TYPES } from 'src/slices/token/pages/address/utils';
 
-import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -67,10 +66,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const tabs = [
     {
       id: 'tokens_erc20',
-      title: [
-        `${ config.slices.token.standard }-20`,
-        ...config.slices.token.additionalTypes.map((item) => item.name),
-      ].join(' & '),
+      title: 'Fungible tokens',
       component: (
         <AddressFungibleTokens
           items={ fungibleTokensQuery.data?.items }

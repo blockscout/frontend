@@ -1,5 +1,4 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 
 import type { paths, schemas } from '@blockscout/api-types';
 
@@ -10,7 +9,7 @@ import * as tokenInstance from 'src/slices/token/mocks/instance';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
-import { test, expect, devices } from 'playwright/lib';
+import { devices, expect, test } from 'playwright/lib';
 
 import AddressTokens from './AddressTokens';
 
@@ -41,17 +40,37 @@ test.beforeEach(async({ mockApiResponse }) => {
     items: [ tokensMock.erc404a, tokensMock.erc404b ],
     next_page_params: nextPageParams,
   };
+  const responseFungible: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
+    items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d, tokensMock.erc8056 ],
+    next_page_params: null,
+  };
 
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+
+  // data for stats widgets
   await mockApiResponse('core:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
   await mockApiResponse('core:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
   await mockApiResponse('core:address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
   await mockApiResponse('core:address_tokens', response404, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
+  await mockApiResponse(
+    'core:address_tokens',
+    { items: [ tokensMock.erc8056 ], next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-8056' } },
+  );
+
+  // data for list
+  await mockApiResponse('core:address_tokens', responseFungible, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [ 'ERC-20', 'ERC-8056' ] } });
+
   await mockApiResponse('core:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
   await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
 });
 
-test('erc20 +@dark-mode', async({ render }) => {
+test('fungible tokens +@dark-mode', async({ render, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-8056","name":"ERC-8056"}]' ],
+  ]);
+
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
@@ -112,7 +131,12 @@ test('nfts +@dark-mode', async({ render, mockAssetResponse }) => {
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('erc20', async({ render }) => {
+  test('fungible tokens', async({ render, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
+      [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-8056","name":"ERC-8056"}]' ],
+    ]);
+
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
@@ -341,25 +365,4 @@ test.describe('update balances via socket', () => {
 
     await expect(component).toHaveScreenshot();
   });
-});
-
-test('native token', async({ render, mockEnvs }) => {
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
-  ]);
-  const hooksConfig = {
-    router: {
-      query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
-      isReady: true,
-    },
-  };
-
-  const component = await render(
-    <Box pt={{ base: '134px', lg: 6 }}>
-      <AddressTokens/>
-    </Box>,
-    { hooksConfig },
-  );
-
-  await expect(component).toHaveScreenshot();
 });
