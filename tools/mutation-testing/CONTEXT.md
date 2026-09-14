@@ -31,10 +31,19 @@ This mutates the entire file, while CI mutates only changed lines. A focused run
 Valid outcomes:
 
 - the test checks the wrong thing — **add the missing assertion**;
-- the change has no observable effect — **delete the redundant branch, guard, or operand**;
-- the versions are equivalent by construction — **suppress the mutant** according to `./docs/SUPPRESSING.md`.
+- the branch is dead and deleting it costs nothing — **delete the redundant branch, guard, or operand**;
+- the branch has a job besides the one the mutant changed — **suppress the mutant** according to `./docs/SUPPRESSING.md`.
+
+The last two both mean "no observable difference", so ask what else the code is doing. Narrowing a type,
+satisfying a lint rule, and holding an invariant the runtime already guarantees all count as a job. Code
+with one stays and gets a suppression. Only code with none gets deleted.
 
 A test that only executes the line does not kill the mutant. Mutation testing checks assertions, not just coverage.
+
+**A survivor is not a reason to restructure working code.** If satisfying the gate means moving a hook,
+splitting a component, or reshaping a signature, the wrong outcome was chosen. Go back and pick again.
+Watch for the fix that drops the file to zero mutants: `behavior` code moved into a `jsx` render body
+stops being mutated at all (`./docs/SCOPE.md`), so the survivor disappears without anything being tested.
 
 **`NO COVERAGE` — not this gate's finding.** No test reached the line. The CRAP gate (`../code-complexity/CONTEXT.md`) already reports this as insufficient coverage. It appears here as a count and never fails the run.
 

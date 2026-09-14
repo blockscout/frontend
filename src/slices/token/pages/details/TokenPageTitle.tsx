@@ -25,6 +25,7 @@ import sortMetadataTags from 'src/features/address-metadata/components/tag/sort'
 import useAddressMetadataInfoQuery from 'src/features/address-metadata/hooks/useAddressMetadataInfoQuery';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'src/features/multichain/context';
+import TokenActionButton from 'src/features/token-action-button/components/TokenActionButton';
 import TokenVerifiedInfo from 'src/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -117,6 +118,11 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
         tags={ tags }
         addressHash={ addressQuery.data?.hash }
         flexGrow={ 1 }
+      />
+      <TokenActionButton
+        tokenHash={ hash }
+        tokenType={ tokenQuery.data?.type }
+        isLoading={ tokenQuery.isPlaceholderData }
       />
     </>
   );
