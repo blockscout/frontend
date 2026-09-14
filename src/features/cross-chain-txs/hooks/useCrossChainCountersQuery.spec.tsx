@@ -77,6 +77,25 @@ describe('useCrossChainCountersQuery', () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
+  it('leaves every counter undefined when the stats service reports no interchain counters', async() => {
+    fetchMock.mockResponse(JSON.stringify({
+      counters: [
+        { id: 'totalBlocks', value: '1000', title: 'Total blocks', description: '' },
+        { id: 'averageBlockTime', value: '12', title: 'Average block time', description: '' },
+      ],
+    }), responseInit);
+    const { useCrossChainCountersQuery } = await import('./useCrossChainCountersQuery');
+
+    const { result } = renderHook(() => useCrossChainCountersQuery(), { wrapper });
+
+    await waitFor(() => expect(result.current.isPlaceholderData).toBe(false));
+
+    expect(result.current.data?.totalInterchainMessages).toBeUndefined();
+    expect(result.current.data?.newMessagesInterchain24h).toBeUndefined();
+    expect(result.current.data?.totalInterchainTransfers).toBeUndefined();
+    expect(result.current.data?.newTransfersInterchain24h).toBeUndefined();
+  });
+
   it('returns no data and no placeholder when no stats service is configured', async() => {
     await withEnvs([ [ 'NEXT_PUBLIC_STATS_API_HOST', '' ] ], async() => {
       const { useCrossChainCountersQuery } = await import('./useCrossChainCountersQuery');
