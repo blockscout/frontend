@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import useApiQuery from 'src/api/hooks/useApiQuery';
-
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
@@ -11,7 +9,8 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import TokenTransfersCrossChainContent from '../../components/token-transfers/TokenTransfersCrossChainContent';
-import { INTERCHAIN_STATS_COMMON, INTERCHAIN_TRANSFER } from '../../stubs/messages';
+import { useCrossChainCountersQuery } from '../../hooks/useCrossChainCountersQuery';
+import { INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
   const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
@@ -20,17 +19,14 @@ const TokenTransfersCrossChain = () => {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),
     },
   });
-  const statsQuery = useApiQuery('interchainIndexer:stats_common', {
-    queryOptions: {
-      placeholderData: INTERCHAIN_STATS_COMMON,
-    },
-  });
+  const countersQuery = useCrossChainCountersQuery();
+  const total = countersQuery.data?.totalInterchainTransfers;
 
-  const actionBarText = (
-    <Skeleton loading={ statsQuery.isPlaceholderData || isInitialLoading }>
-      A total of { Number(statsQuery.data?.total_transfers).toLocaleString() } cross-chain token transfers found
+  const actionBarText = total !== undefined ? (
+    <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading }>
+      A total of { Number(total).toLocaleString() } cross-chain token transfers found
     </Skeleton>
-  );
+  ) : null;
 
   const actionBar = <StickyPaginationWithText text={ actionBarText } pagination={ pagination }/>;
 

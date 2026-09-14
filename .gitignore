@@ -85,6 +85,7 @@ npm-debug.log*
 /playwright/.browser/
 /playwright/envs.js
 /playwright/affected-tests.txt
+/.playwright-mcp/
 
 **.dec**
 

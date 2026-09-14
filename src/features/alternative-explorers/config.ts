@@ -4,7 +4,7 @@ import type { AlternativeExplorer } from './types/client';
 
 import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
-export const config = Object.freeze({
+const config = Object.freeze({
   items: parseEnvJson<Array<AlternativeExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
 });
 

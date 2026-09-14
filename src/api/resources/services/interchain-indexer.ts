@@ -55,14 +55,6 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
-  stats_daily: {
-    path: '/api/v1/stats/daily',
-    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
-  },
-  stats_common: {
-    path: '/api/v1/stats/common',
-    scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
-  },
   stats_chains: {
     path: '/api/v1/stats/chains',
     scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
@@ -98,8 +90,6 @@ R extends 'interchainIndexer:address_messages' ? interchainIndexer.GetMessagesRe
 R extends 'interchainIndexer:transfers' ? interchainIndexer.GetTransfersResponse :
 R extends 'interchainIndexer:tx_transfers' ? interchainIndexer.GetTransfersResponse :
 R extends 'interchainIndexer:address_transfers' ? interchainIndexer.GetTransfersResponse :
-R extends 'interchainIndexer:stats_daily' ? interchainIndexer.GetDailyStatisticsResponse :
-R extends 'interchainIndexer:stats_common' ? interchainIndexer.GetCommonStatisticsResponse :
 R extends 'interchainIndexer:stats_chains' ? interchainIndexer.GetChainsStatsResponse :
 R extends 'interchainIndexer:bridged_tokens' ? interchainIndexer.GetBridgedTokensResponse :
 R extends 'interchainIndexer:stats_chain_messages_sent' ? interchainIndexer.GetMessagePathsResponse :

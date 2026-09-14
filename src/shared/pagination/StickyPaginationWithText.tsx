@@ -16,7 +16,7 @@ type Props = {
 
 const StickyPaginationWithText = ({ pagination, text }: Props) => {
   if (!pagination.isVisible) {
-    return <Box mb={ 6 }>{ text }</Box>;
+    return text ? <Box mb={ 6 }>{ text }</Box> : null;
   }
 
   return (

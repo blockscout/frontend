@@ -27,6 +27,7 @@ For the full pipeline (registry generation, container startup order, validation,
 
 - **Read env values via `getEnvValue('NEXT_PUBLIC_...')`** from `src/config/utils/envs.ts` — `process.env` is empty in the browser, and the helper handles SSR/client transparently. (Server-only code may use `process.env` directly.)
 - **Co-locate sub-configs with the code that owns them.** The aggregator at `src/config/index.ts` (sections: `app`, `apis`, `chain`, `shell`, `slices`, `features`, `services`, `metadata`, `misc`) re-exports them; add new values in the owning sub-config (e.g. `src/features/marketplace/config.ts`, `src/slices/tx/config.ts`), not in a central file.
+- **Only a `config.ts` reads envs, and only `src/config` exposes the result.** The convention, its ESLint enforcement and its exemptions: `src/config/CONTEXT.md`.
 
 ## Value types
 
