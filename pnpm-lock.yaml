@@ -44,8 +44,8 @@ importers:
         specifier: 1.4.1
         version: 1.4.1
       '@blockscout/stats-types':
-        specifier: 2.11.1
-        version: 2.11.1
+        specifier: 2.19.1
+        version: 2.19.1
       '@blockscout/tac-operation-lifecycle-types':
         specifier: 0.0.1-beta.71a05d5
         version: 0.0.1-beta.71a05d5
@@ -1565,8 +1565,8 @@ packages:
   '@blockscout/points-types@1.4.1':
     resolution: {integrity: sha512-8aIE1od1zzXeVfQCIO8LU1aWT/CRx82t+1ZK4RbgFFrxWH8RX0Yo+I6haeraVj3qKjxiMkBda1xMbGohiKgXSg==}
 
-  '@blockscout/stats-types@2.11.1':
-    resolution: {integrity: sha512-Ti9RbekRfLR7dUnOp2dWU0VBu7uRkutnkFqKphvfxvbrY9fiXUJ/tT6Qg+OTNewK3RbuQ0O1ZPxbqMX5eRr0OQ==}
+  '@blockscout/stats-types@2.19.1':
+    resolution: {integrity: sha512-94PhDtR+WbylCuV01JhxW3f1jm4LfAIsY+yMgLEGam/iYcleZ4oMdCW9TtJj0X4HokyWWYTkUS2JGENn0WLE9Q==}
 
   '@blockscout/tac-operation-lifecycle-types@0.0.1-beta.71a05d5':
     resolution: {integrity: sha512-SFHCKG+Q1c+zn91HGcPdfVoLlxmk2uD55IiILJ6VIgfg5IhHLKLeu4+eoTwByq6fMirmyy1F/ywIdRhhQBFjUw==}
@@ -15894,7 +15894,7 @@ snapshots:
 
   '@blockscout/points-types@1.4.1': {}
 
-  '@blockscout/stats-types@2.11.1': {}
+  '@blockscout/stats-types@2.19.1': {}
 
   '@blockscout/tac-operation-lifecycle-types@0.0.1-beta.71a05d5': {}
 

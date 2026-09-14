@@ -1,7 +1,5 @@
 import type {
   ChainInfo,
-  GetCommonStatisticsResponse,
-  GetDailyStatisticsResponse,
   InterchainMessage,
   InterchainTransfer,
   StatsBridgedTokenRow,
@@ -80,18 +78,6 @@ export const INTERCHAIN_MESSAGE = {
   ],
   has_unindexed_chain: false,
 } satisfies InterchainMessage;
-
-export const INTERCHAIN_STATS_DAILY = {
-  date: '2026-01-12',
-  daily_messages: 75,
-  daily_transfers: 75,
-} satisfies GetDailyStatisticsResponse;
-
-export const INTERCHAIN_STATS_COMMON = {
-  timestamp: '2026-01-12T11:49:59.380Z',
-  total_messages: 10823,
-  total_transfers: 10822,
-} satisfies GetCommonStatisticsResponse;
 
 export const INTERCHAIN_STATS_CHAINS_ITEM = {
   id: '8021',
