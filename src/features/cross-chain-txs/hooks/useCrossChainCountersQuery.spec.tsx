@@ -1,9 +1,12 @@
 // @vitest-environment jsdom
 
+import React from 'react';
+
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { describe, it, expect, beforeEach } from 'vitest';
-import { renderHook, waitFor, wrapper } from 'vitest/lib';
+import { render, renderHook, screen, waitFor, wrapper } from 'vitest/lib';
+import flushPromises from 'vitest/utils/flushPromises';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import { counters } from '../mocks/counters';
@@ -53,6 +56,25 @@ describe('useCrossChainCountersQuery', () => {
       expect(fetchMock.mock.calls[0][0]).toBe(`${ MULTICHAIN_STATS_API_HOST }/api/v1/counters`);
       expect(result.current.data?.totalInterchainMessages).toBe('100');
     });
+  });
+
+  it('serves a consumer mounted later on the same page from the already fetched counters without a new request', async() => {
+    const { useCrossChainCountersQuery } = await import('./useCrossChainCountersQuery');
+
+    const Consumer = () => {
+      const { data, fetchStatus } = useCrossChainCountersQuery();
+      return <span data-testid="consumer">{ fetchStatus }:{ data?.totalInterchainMessages }</span>;
+    };
+
+    const { rerender } = render(<Consumer key="list"/>);
+    await waitFor(() => expect(screen.getByTestId('consumer').textContent).toBe('idle:100'));
+
+    // a different key unmounts the first consumer and mounts a fresh one under the same QueryClient
+    rerender(<Consumer key="stats-widget"/>);
+    await flushPromises();
+
+    expect(screen.getByTestId('consumer').textContent).toBe('idle:100');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it('returns no data and no placeholder when no stats service is configured', async() => {
