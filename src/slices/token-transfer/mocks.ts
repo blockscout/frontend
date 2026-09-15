@@ -220,13 +220,11 @@ export const mixTokens: paths['/api/v2/token-transfers']['get'] = {
   items: [
     erc20,
     erc721,
-    erc1155A,
-    erc1155B,
     erc1155C,
-    erc1155D,
     erc404A,
     erc404B,
     erc7984,
+    erc8056,
   ],
   next_page_params: null,
 };

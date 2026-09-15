@@ -64,3 +64,35 @@ that names another type. Mockups cover no search surface.
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1789124062421439
 - Answer: list the enabled fungible types. The heading is built from `ERC-20` plus every additional token
   type that is not confidential, e.g. `Tokens (ERC-20, ERC-8056)`. Done in T01.
+
+### Q05 — Why is `total.ui_multiplier` `null` on the transaction endpoints only?
+
+`/addresses/{hash}/token-transfers` and `/tokens/{hash}/transfers` populate the historical factor as Q01
+promised, but `/transactions/{hash}` (its `token_transfers` array) and `/transactions/{hash}/token-transfers`
+return `null` for the same transfer. The frontend degrades those rows to plain ERC-20 rendering (Q01), so
+the tx page shows an unscaled amount with no tag while every list of the same transfer shows the tag.
+
+- Owner: Core API (Alexey)
+- Status: `pending`
+- Resolved when: the two transaction endpoints return the same `total.ui_multiplier` as the address and
+  token transfer lists, verified on eth-sepolia for
+  `0xd872e60be3db1ef32aabd863af2037330decb3dd73a3786df7a9540b38597fbd`.
+- Slack: https://blockscout.slack.com/archives/D07RA1R99T4/p1789469766618439
+- Answer: —
+
+### Q06 — Does a transfer show the factor that applied to it, or the token's current factor?
+
+The spec's implementation decision scales a transfer by `total.ui_multiplier`, the factor in force when it
+happened, while balances use the token's current factor. On eth-sepolia the address
+`0x242ba6d68FfEb4a098B591B32d370F973FF882B7` received 100 IOU at 1x, and the factor became 1.69x 48 seconds
+later: the Tokens tab shows 169 IOU while the Token transfers tab shows the same transfer as 100 IOU with a
+`1x` tag. The decision came from the API contract, not from a stated product intent.
+
+- Owner: PM (Nikita S.)
+- Status: `resolved`
+- Resolved when: the PM confirms one of: keep the historical factor (current behaviour, the `1x` tag being
+  the disclosure); or scale transfers by the token's current factor (169 IOU, `1.69x` tag), which makes
+  `total.ui_multiplier` unused and amends the spec, T03, T04 and T06.
+- Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1789469867600519
+- Answer: keep the historical factor. A transfer shows the multiplier that applied when it happened, with
+  the tag as the disclosure; balances use the current factor. No change to the spec or to T03/T04/T06.

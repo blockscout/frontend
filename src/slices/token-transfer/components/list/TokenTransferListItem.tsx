@@ -8,8 +8,10 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
+import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import TxAdditionalInfo from 'src/slices/tx/components/TxAdditionalInfo';
 
@@ -40,6 +42,8 @@ const TokenTransferListItem = ({
   isLoading,
   chainData,
 }: Props) => {
+  const multiplier = getTokenTransferUiMultiplier(data, chainData?.app_config);
+
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex w="100%" justifyContent="space-between">
@@ -107,6 +111,8 @@ const TokenTransferListItem = ({
             amount={ data.total && 'value' in data.total && data.total.value !== null ? data.total.value : null }
             decimals={ data.total && 'decimals' in data.total ? data.total.decimals || '0' : '0' }
             exchangeRate={ data.token?.exchange_rate }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             loading={ isLoading }
             color="text.secondary"
           />

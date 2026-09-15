@@ -2,9 +2,10 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
-import { tokenInfoERC20a, tokenInfoERC721a, tokenInfoERC1155a } from 'src/slices/token/mocks/info';
+import { tokenInfoERC20a, tokenInfoERC721a, tokenInfoERC1155a, tokenInfoERC8056 } from 'src/slices/token/mocks/info';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
 
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
 import TokenTransfer from './TokenTransfer';
@@ -52,6 +53,23 @@ test('erc1155 +@mobile', async({ render, mockApiResponse }) => {
   const component = await render(
     <Box pt={{ base: '134px', lg: '100px' }}>
       <TokenTransfer token={ tokenInfoERC1155a }/>
+    </Box>,
+  );
+
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
+});
+
+test('erc8056 +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
+  test.slow();
+  await mockEnvs(ENVS_MAP.additionalTokenTypes);
+  await mockApiResponse('core:token_transfers', {
+    items: [ tokenTransferMock.erc8056 ],
+    next_page_params: { page_token: 1 },
+  }, { pathParams: { hash: tokenInfoERC8056.address_hash } });
+
+  const component = await render(
+    <Box pt={{ base: '134px', lg: '100px' }}>
+      <TokenTransfer token={ tokenInfoERC8056 }/>
     </Box>,
   );
 

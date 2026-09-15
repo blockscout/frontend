@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex, Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -8,7 +8,9 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
+import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
+import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -35,6 +37,7 @@ const TokenTransferTableItem = ({
   instance,
   chainData,
 }: Props) => {
+  const multiplier = getTokenTransferUiMultiplier(data, chainData?.app_config);
 
   return (
     <TableRow alignItems="top">
@@ -105,9 +108,11 @@ const TokenTransferTableItem = ({
               amount={ data.total && 'value' in data.total ? data.total.value : null }
               decimals={ data.total && 'decimals' in data.total ? data.total.decimals || '0' : '0' }
               exchangeRate={ data.token?.exchange_rate }
+              multiplier={ multiplier }
+              startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
               loading={ isLoading }
               layout="vertical"
-              mt="7px"
+              mt={ multiplier ? '3px' : '7px' }
               rowGap="10px"
             />
           ) }

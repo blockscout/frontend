@@ -6,6 +6,8 @@ import MockAddressPage from 'src/slices/address/pages/details/AddressPageMock';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 import { tokenInfoERC20a, tokenInfoERC20c } from 'src/slices/token/mocks/info';
 
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
 import { devices, expect, test } from 'playwright/lib';
 
 import TokenSelect from './TokenSelect';
@@ -30,9 +32,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
 });
 
 test('base view +@dark-mode', async({ render, page, mockEnvs }) => {
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-8056","name":"ERC-8056"}]' ],
-  ]);
+  await mockEnvs(ENVS_MAP.additionalTokenTypes);
 
   await render(
     <MockAddressPage>

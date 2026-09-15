@@ -8,6 +8,8 @@ import * as tokenInfo from 'src/slices/token/mocks/info';
 import * as tokenInstance from 'src/slices/token/mocks/instance';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { devices, expect, test } from 'playwright/lib';
 
@@ -68,7 +70,7 @@ test.beforeEach(async({ mockApiResponse }) => {
 test('fungible tokens +@dark-mode', async({ render, mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
-    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-8056","name":"ERC-8056"}]' ],
+    ...ENVS_MAP.additionalTokenTypes,
   ]);
 
   const hooksConfig = {
@@ -134,7 +136,7 @@ test.describe('mobile', () => {
   test('fungible tokens', async({ render, mockEnvs }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
-      [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-8056","name":"ERC-8056"}]' ],
+      ...ENVS_MAP.additionalTokenTypes,
     ]);
 
     const hooksConfig = {

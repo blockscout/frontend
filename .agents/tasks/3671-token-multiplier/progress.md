@@ -2,7 +2,7 @@
 
 - [x] 01 → `tickets/01-erc8056-type-and-multiplier-primitives/`
 - [x] 02 → `tickets/02-scaled-amounts-holders-details/`
-- [ ] 03 → `tickets/03-token-transfer-surfaces/`
+- [x] 03 → `tickets/03-token-transfer-surfaces/`
 - [ ] 04 → `tickets/04-advanced-filter-multiplier/`
 - [x] 05 → `tickets/05-address-surfaces/`
 - [ ] 06 → `tickets/06-tx-state-changes/`
