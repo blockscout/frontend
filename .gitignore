@@ -72,13 +72,16 @@ npm-debug.log*
 /tools/mutation-testing/reports/
 /tools/mutation-testing/.stryker-tmp/
 
+# compiled Playwright runner
+/tools/playwright/dist/
+
 # typescript
 *.tsbuildinfo
 
 .eslintcache
 
 **.decrypted~**
-/test-results/
+/playwright-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/

@@ -19,33 +19,33 @@ and 03; `--help` already lists them so the usage text is written once.
 
 ## Acceptance criteria
 
-- [ ] `tools/playwright/{run.sh,index.ts,config.ts,tsconfig.json,CONTEXT.md}` exist; `run.sh` mirrors the
+- [x] `tools/playwright/{run.sh,index.ts,config.ts,tsconfig.json,CONTEXT.md}` exist; `run.sh` mirrors the
       siblings (compile with `tsc -p`, run `dist/playwright/index.js`; `rootDir: ".."` so ticket 02 can
       import `tools/code-complexity/select/diff.ts` and the shared parser from ticket 00).
-- [ ] `pnpm test:pw --help` prints a usage block in the siblings' style listing `--changed[=<ref>]`,
+- [x] `pnpm test:pw --help` prints a usage block in the siblings' style listing `--changed[=<ref>]`,
       `--base <ref>`, `--docker`, `--docker-deps`, `--help`, and stating that everything else is passed to
       `playwright test`. Flags not yet implemented (02, 03) are parsed but fail with a clear "not implemented
       yet" error rather than being silently passed through.
-- [ ] `pnpm test:pw <file.pw.tsx> --project=default -g "<title>"` runs that test and passes; the multi-word
+- [x] `pnpm test:pw <file.pw.tsx> --project=default -g "<title>"` runs that test and passes; the multi-word
       `-g` value reaches Playwright intact (the old script's quoting gotcha).
-- [ ] Before `playwright test` starts, the tool has (a) loaded `playwright/.env.pw` into the process env,
+- [x] Before `playwright test` starts, the tool has (a) loaded `playwright/.env.pw` into the process env,
       (b) run `./deploy/scripts/make_envs_script.sh ./playwright/envs.js`, (c) run `pnpm svg:build-sprite`
       with `NEXT_PUBLIC_APP_ENV=pw`. `playwright test` gets `NODE_OPTIONS=--max-old-space-size=8192` as
       today.
-- [ ] The `rm -rf ./playwright/.cache` step is present in the source but commented out, with a comment
+- [x] The `rm -rf ./playwright/.cache` step is present in the source but commented out, with a comment
       stating why (Playwright's own cache invalidation has been reliable; kept so it can be re-enabled if a
       stale CT build is ever observed).
-- [ ] `playwright-ct.config.ts`: `outputDir` is `playwright-results`; `reporter` is `[['blob'], ['json',
+- [x] `playwright-ct.config.ts`: `outputDir` is `playwright-results`; `reporter` is `[['blob'], ['json',
       { outputFile: 'playwright-results/report.json' }]]` under `CI` and `[['html'], ['json', …]]` otherwise.
       The ignore file swaps `/test-results/` for `/playwright-results/`. After a local run
       `playwright-results/report.json` exists and lists the run's tests with their status.
-- [ ] `package.json`: `test:pw` → `./tools/playwright/run.sh`; `test:pw:local` and `test:pw:ci` removed;
+- [x] `package.json`: `test:pw` → `./tools/playwright/run.sh`; `test:pw:local` and `test:pw:ci` removed;
       `test:pw:docker*` untouched (ticket 03). `tools/scripts/pw.sh` deleted. `.vscode/tasks.json` tasks that
       used `test:pw:local` now call `test:pw`.
-- [ ] Exit code is Playwright's exit code.
-- [ ] `index.spec.ts` covers: pass-through of unknown flags and positionals in order, `--help`, and the
+- [x] Exit code is Playwright's exit code.
+- [x] `index.spec.ts` covers: pass-through of unknown flags and positionals in order, `--help`, and the
       env/pre-run command sequence (spawn calls stubbed).
-- [ ] `CONTEXT.md` (per `.agents/rules/docs.md`): a "where to look" table, the pre-run steps as a constraint,
+- [x] `CONTEXT.md` (per `.agents/rules/docs.md`): a "where to look" table, the pre-run steps as a constraint,
       and a file map; a line for it in `.agents/AGENTS.md`'s per-directory list. `pnpm lint:doc-links`
       clean.
 
@@ -64,9 +64,9 @@ and 03; `--help` already lists them so the usage text is written once.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold `tools/playwright/` (run.sh, tsconfig, config.ts, index.ts with usage + parser on
+- [x] 1 `[agent]` Scaffold `tools/playwright/` (run.sh, tsconfig, config.ts, index.ts with usage + parser on
       the shared module + pre-run steps + spawn of `playwright test`), `index.spec.ts`
-- [ ] 2 `[agent]` Config: `outputDir` + JSON reporter in `playwright-ct.config.ts`, ignore file
-- [ ] 3 `[agent]` `package.json` scripts, delete `tools/scripts/pw.sh`, `.vscode/tasks.json` `test:pw:local` refs
-- [ ] 4 `[agent]` `CONTEXT.md` + `.agents/AGENTS.md` line; lint, tsc, doc-links; one real local run of a
+- [x] 2 `[agent]` Config: `outputDir` + JSON reporter in `playwright-ct.config.ts`, ignore file
+- [x] 3 `[agent]` `package.json` scripts, delete `tools/scripts/pw.sh`, `.vscode/tasks.json` `test:pw:local` refs
+- [x] 4 `[agent]` `CONTEXT.md` + `.agents/AGENTS.md` line; lint, tsc, doc-links; one real local run of a
       single `.pw.tsx` to confirm the report is written

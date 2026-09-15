@@ -62,6 +62,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/doc-links/` — the doc-link checker.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
+- `tools/playwright/` — the `pnpm test:pw` runner for Playwright component tests: pre-run steps, flags, where the JSON report lands.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under

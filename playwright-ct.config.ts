@@ -38,8 +38,15 @@ const config: PlaywrightTestConfig = defineConfig({
   // so we opt out of parallel tests in any environment
   workers: 1,
 
+  outputDir: 'playwright-results',
+
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: process.env.CI ? 'blob' : 'html',
+  // The json report sits under outputDir rather than next to the html one: the html reporter wipes
+  // playwright-report/ when the run ends, whereas outputDir is cleared at run start.
+  reporter: [
+    process.env.CI ? [ 'blob' ] : [ 'html' ],
+    [ 'json', { outputFile: 'playwright-results/report.json' } ],
+  ],
 
   expect: {
     toHaveScreenshot: {

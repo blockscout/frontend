@@ -73,7 +73,7 @@
         // PW TESTS
         {
             "type": "shell",
-            "command": "${input:pwDebugFlag} pnpm test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "${input:pwDebugFlag} pnpm test:pw ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: local",
             "detail": "run visual components tests for current file",
