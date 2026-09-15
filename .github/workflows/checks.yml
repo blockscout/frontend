@@ -298,6 +298,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Trust the checkout inside the container
+        # actions/checkout registers the workspace as a safe.directory in the global git config of the
+        # HOME it ran under (/github/home); the run step below sets HOME=/root, where git finds no such
+        # entry and refuses the repo ("dubious ownership") when --changed resolves the merge-base.
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+        env:
+          HOME: /root
+
       - name: Run PlayWright
         run: pnpm test:pw ${{ github.event_name == 'pull_request' && '--changed' || '' }} --project=${{ matrix.project }} ${{ matrix.shard && format('--shard={0}', matrix.shard) || '' }} --pass-with-no-tests
         env:

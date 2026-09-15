@@ -83,7 +83,9 @@ export function buildDockerDepsCommand(options: DockerOptions, cwd: string = pro
 
 function fieldOf(json: string, field: string, file: string): string {
   const parsed: unknown = JSON.parse(json);
-  const value = typeof parsed === 'object' && parsed !== null ? (parsed as Record<string, unknown>)[field] : undefined;
+  // JSON.parse never yields undefined, and indexing a primitive yields undefined, so null is the only
+  // value that needs guarding before the property access.
+  const value = parsed === null ? undefined : (parsed as Record<string, unknown>)[field];
   if (typeof value !== 'string') throw new Error(`No "${ field }" string in ${ file }`);
   return value;
 }

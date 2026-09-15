@@ -108,4 +108,10 @@ describe('resolveDockerOptions', () => {
 
     expect(() => resolveDockerOptions(readBroken, false)).toThrow(`No "version" string in ${ PLAYWRIGHT_PACKAGE_FILE }`);
   });
+
+  it('rejects a package file whose JSON is not an object', () => {
+    const readNull = (file: string): string => file === PLAYWRIGHT_PACKAGE_FILE ? JSON.stringify(null) : files[file];
+
+    expect(() => resolveDockerOptions(readNull, false)).toThrow(`No "version" string in ${ PLAYWRIGHT_PACKAGE_FILE }`);
+  });
 });
