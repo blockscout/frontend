@@ -19,13 +19,16 @@ export interface UiMultiplierSource {
   ui_multiplier: string | null | undefined;
 }
 
+export function isTokenMultiplierEnabled(chainConfig?: ChainConfig) {
+  return getAdditionalTokenTypes(chainConfig).some((item) => item.id === UI_MULTIPLIER_TOKEN_TYPE);
+}
+
 export function getUiMultiplier(token: UiMultiplierSource | null | undefined, chainConfig?: ChainConfig): BigNumber | undefined {
   if (!token || token.type !== UI_MULTIPLIER_TOKEN_TYPE || !token.ui_multiplier) {
     return undefined;
   }
 
-  const isTypeEnabled = getAdditionalTokenTypes(chainConfig).some((item) => item.id === UI_MULTIPLIER_TOKEN_TYPE);
-  if (!isTypeEnabled) {
+  if (!isTokenMultiplierEnabled(chainConfig)) {
     return undefined;
   }
 

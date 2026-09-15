@@ -17,15 +17,16 @@ When enabled it is checked by default. Rows that are not ERC-8056 transfers leav
 How to verify: `pnpm dev:preset eth_sepolia`, open `/advanced-filter` with a token filter on
 `0x6D50E6CBca0e390BbCF82bEA80B31F4c2694395e`
 
-- [ ] `TABLE_COLUMNS` gains a `multiplier` column between `to` and `amount`, present only when `ERC-8056`
-      is in `config.slices.token.additionalTypes`; `COLUMNS_CHECKED` defaults it to on; the columns button
+- [x] `TABLE_COLUMNS` gains a `multiplier` column between `to` and `amount`, present only when `ERC-8056`
+      is among the additional token types of the focused chain's config in multichain mode, or of
+      `config.slices.token.additionalTypes` otherwise; `COLUMNS_CHECKED` defaults it to on; the columns button
       lists it under the same condition.
-- [ ] `ItemByColumn`'s `amount` case passes the row's `total.ui_multiplier` (via T01's predicate; a `null`
+- [x] `ItemByColumn`'s `amount` case passes the row's `total.ui_multiplier` (via T01's predicate; a `null`
       renders unscaled, no fallback — Q01) to `AssetValue`; the new `multiplier` case renders T01's formatted factor, or
       nothing.
-- [ ] `TxTableColumn`/`ColumnsIds` types include the new id without loosening them.
-- [ ] Playwright scaffold: the advanced-filter table test gains an ERC-8056 row with the env override.
-- [ ] `(human)` With ERC-8056 enabled the column shows `1.69x`-style values on those rows and is empty on
+- [x] `TxTableColumn`/`ColumnsIds` types include the new id without loosening them.
+- [x] Playwright scaffold: the advanced-filter table test gains an ERC-8056 row with the env override.
+- [x] `(human)` With ERC-8056 enabled the column shows `1.69x`-style values on those rows and is empty on
       others; the Amount tooltip discloses scaled/raw/factor. With it disabled the column is absent from the
       picker and the table.
 
@@ -37,7 +38,7 @@ T02's primitive; the transfer-scoped factor and the null case follow T03.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Column definition, gating and default; `multiplier` + `amount` cases in `ItemByColumn`;
+- [x] 1 `[agent]` Column definition, gating and default; `multiplier` + `amount` cases in `ItemByColumn`;
       Playwright scaffold
-- [ ] 2 `[human]` Style the column to mockup and generate baselines —
+- [x] 2 `[human]` Style the column to mockup and generate baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6004-40199)

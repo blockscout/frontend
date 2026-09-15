@@ -2,8 +2,10 @@
 
 import type { AdvancedFilterParams } from '../types/api';
 import type { TxTableColumn } from '../types/client';
+import type { ChainConfig } from 'src/slices/token/utils/token-types';
 
 import { toTokenModel } from 'src/slices/token/utils/model';
+import { isTokenMultiplierEnabled } from 'src/slices/token/utils/ui-multiplier';
 
 import config from 'src/config';
 
@@ -44,6 +46,13 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
     width: '160px',
   },
   {
+    id: 'multiplier',
+    name: 'Multiplier',
+    width: '80px',
+    isNumeric: true,
+    noFilter: true,
+  },
+  {
     id: 'amount',
     name: 'Amount',
     isNumeric: true,
@@ -61,6 +70,11 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
     width: '120px',
   },
 ] as const;
+
+export function getTableColumns(chainConfig?: ChainConfig): Array<TxTableColumn> {
+  const isUiMultiplierEnabled = isTokenMultiplierEnabled(chainConfig);
+  return TABLE_COLUMNS.filter((column) => column.id !== 'multiplier' || isUiMultiplierEnabled);
+}
 
 export const NATIVE_TOKEN = toTokenModel({
   name: config.chain.currency.name || '',

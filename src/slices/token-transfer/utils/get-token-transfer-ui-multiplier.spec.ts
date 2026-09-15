@@ -2,6 +2,8 @@
 
 import type { schemas } from '@blockscout/api-types';
 
+import * as advancedFilterMock from 'src/features/advanced-filter/mocks';
+
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { describe, expect, it } from 'vitest';
@@ -26,6 +28,15 @@ function resolveWithTypeEnabled(data: schemas['TokenTransfer']) {
 describe('getTokenTransferUiMultiplier', () => {
   it('resolves the factor that applied to the transfer', async() => {
     const result = await resolveWithTypeEnabled(erc8056);
+    expect(result?.toFixed()).toBe('1.69');
+  });
+
+  it('resolves the factor of an advanced filter item', async() => {
+    const item = advancedFilterMock.baseResponse.items.find(({ type }) => type === 'ERC-8056');
+    const result = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
+      const { getTokenTransferUiMultiplier } = await import('./get-token-transfer-ui-multiplier');
+      return getTokenTransferUiMultiplier(item!);
+    });
     expect(result?.toFixed()).toBe('1.69');
   });
 
