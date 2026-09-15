@@ -14,16 +14,25 @@ import type { Runtime, Step } from './index';
 import { parseArgs, run } from './index';
 
 const ENV_FILE_CONTENT = 'NEXT_PUBLIC_FROM_FILE=file\nNEXT_PUBLIC_APP_ENV=testing\n';
+const MERGE_BASE = 'a1b2c3d4';
+
+interface RecordingRuntime extends Runtime {
+  readonly steps: Array<Step>;
+  readonly reads: Array<string>;
+  readonly baseRefs: Array<string>;
+}
 
 // A runtime that records every step and answers each with the next status from the list, 0 once
-// the list runs out.
-function recordingRuntime(statuses: ReadonlyArray<number> = []): Runtime & { readonly steps: Array<Step>; readonly reads: Array<string> } {
+// the list runs out; the diff lookup answers with a fixed merge-base and the given changed files.
+function recordingRuntime(statuses: ReadonlyArray<number> = [], changedFiles: ReadonlyArray<string> = []): RecordingRuntime {
   const steps: Array<Step> = [];
   const reads: Array<string> = [];
+  const baseRefs: Array<string> = [];
   const pending = [ ...statuses ];
   return {
     steps,
     reads,
+    baseRefs,
     spawn: (step) => {
       steps.push(step);
       return pending.shift() ?? 0;
@@ -32,7 +41,15 @@ function recordingRuntime(statuses: ReadonlyArray<number> = []): Runtime & { rea
       reads.push(file);
       return ENV_FILE_CONTENT;
     },
+    changes: (baseRef) => {
+      baseRefs.push(baseRef);
+      return { baseCommit: MERGE_BASE, changedFiles };
+    },
   };
+}
+
+function playwrightArgsOf(runtime: RecordingRuntime): ReadonlyArray<string> {
+  return runtime.steps[runtime.steps.length - 1].args;
 }
 
 describe('parseArgs', () => {
@@ -159,10 +176,66 @@ describe('run', () => {
   it('rejects the flags that are not implemented yet before running anything', () => {
     const runtime = recordingRuntime();
 
-    expect(() => run([ '--changed' ], runtime)).toThrow('--changed / --base are not implemented yet');
-    expect(() => run([ '--base=main' ], runtime)).toThrow('--changed / --base are not implemented yet');
     expect(() => run([ '--docker' ], runtime)).toThrow('--docker / --docker-deps are not implemented yet');
     expect(() => run([ '--docker-deps' ], runtime)).toThrow('--docker / --docker-deps are not implemented yet');
     expect(runtime.steps).toHaveLength(0);
+  });
+});
+
+describe('run --changed', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('does not look at the diff in a plain run', () => {
+    const runtime = recordingRuntime();
+
+    run([ 'src/a.pw.tsx' ], runtime);
+
+    expect(runtime.baseRefs).toEqual([]);
+    expect(playwrightArgsOf(runtime)).not.toContainEqual(expect.stringContaining('--only-changed'));
+  });
+
+  it('hands the merge-base to playwright after the pass-through args', () => {
+    const runtime = recordingRuntime([], [ 'src/ui/Foo.tsx' ]);
+
+    run([ '--changed', '--project=default', '--pass-with-no-tests' ], runtime);
+
+    expect(runtime.baseRefs).toEqual([ DEFAULT_BASE_REF ]);
+    expect(playwrightArgsOf(runtime)).toEqual([
+      'test', '-c', PLAYWRIGHT_CONFIG_FILE, '--project=default', '--pass-with-no-tests', `--only-changed=${ MERGE_BASE }`,
+    ]);
+  });
+
+  it('resolves the merge-base against the ref from --changed=<ref> or --base', () => {
+    const inline = recordingRuntime();
+    run([ '--changed=upstream/main' ], inline);
+    expect(inline.baseRefs).toEqual([ 'upstream/main' ]);
+
+    const separate = recordingRuntime();
+    run([ '--base', 'release/1.0' ], separate);
+    expect(separate.baseRefs).toEqual([ 'release/1.0' ]);
+    expect(playwrightArgsOf(separate)).toContain(`--only-changed=${ MERGE_BASE }`);
+  });
+
+  it('runs the whole suite and names the file that forced it', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const runtime = recordingRuntime([], [ 'src/ui/Foo.tsx', 'src/sprite/icons/arrows/east.svg' ]);
+
+    run([ '--changed', '--project=mobile' ], runtime);
+
+    expect(playwrightArgsOf(runtime)).toEqual([ 'test', '-c', PLAYWRIGHT_CONFIG_FILE, '--project=mobile' ]);
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('src/sprite/icons/arrows/east.svg'));
+  });
+
+  // The tool must not short-circuit on an empty diff: Playwright selects nothing and the caller's
+  // --pass-with-no-tests decides the exit code, locally and in CI alike.
+  it('still invokes playwright with --only-changed on an empty diff', () => {
+    const runtime = recordingRuntime([], []);
+
+    run([ '--changed' ], runtime);
+
+    expect(runtime.steps).toHaveLength(3);
+    expect(playwrightArgsOf(runtime)).toContain(`--only-changed=${ MERGE_BASE }`);
   });
 });

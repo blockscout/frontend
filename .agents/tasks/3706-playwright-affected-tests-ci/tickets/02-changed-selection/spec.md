@@ -18,30 +18,30 @@ dependents run; touch an icon and everything runs.
 
 ## Acceptance criteria
 
-- [ ] `--changed` (optional inline ref) and `--base <ref>` behave exactly as in `tools/code-complexity`:
+- [x] `--changed` (optional inline ref) and `--base <ref>` behave exactly as in `tools/code-complexity`:
       either enables diff mode, both set the base ref, `--changed` never swallows the next token.
-- [ ] Merge-base and changed-file listing come from `tools/code-complexity/select/diff.ts`
+- [x] Merge-base and changed-file listing come from `tools/code-complexity/select/diff.ts`
       (`resolveBaseCommit`, `getChangedFiles`) — imported, not copied.
-- [ ] The force-full list lives in `tools/playwright/config.ts` with a comment that pairs it with the
+- [x] The force-full list lives in `tools/playwright/config.ts` with a comment that pairs it with the
       `pw_changes` gate step in `.github/workflows/checks.yml` (ticket 04 adds the mirror comment there).
       Matching is by path prefix / exact path over repo-relative paths; a pure function `selectMode(changedFiles)
       → 'full' | 'only-changed'` owns the rule and is unit-tested (each of the four entries, a non-matching
       `src/` file, an empty list).
-- [ ] Under `--changed` with no forced-full hit, the tool appends `--only-changed=<sha>` to the Playwright
+- [x] Under `--changed` with no forced-full hit, the tool appends `--only-changed=<sha>` to the Playwright
       argv (after the user's pass-through args). With a forced-full hit it appends nothing and prints one
       line naming the file that forced the full run.
-- [ ] Under `--changed` with an empty diff, the tool still invokes Playwright with `--only-changed=<sha>`
+- [x] Under `--changed` with an empty diff, the tool still invokes Playwright with `--only-changed=<sha>`
       (Playwright selects nothing; `--pass-with-no-tests` passed through by the caller decides the exit
       code) — the tool itself does not short-circuit, so local and CI behave the same.
-- [ ] Manual checks recorded in `notes.md`: (1) a whitespace edit to a leaf component's `.pw.tsx` sibling
+- [x] Manual checks recorded in `notes.md`: (1) a whitespace edit to a leaf component's `.pw.tsx` sibling
       selects a handful of files; (2) an edit under `src/icons/` forces the full list; (3) a type-only
       file edit selects zero tests.
-- [ ] `tools/playwright/adr/0001-<slug>.md` per `.agents/rules/adr.md`, listed in the tool's `CONTEXT.md`:
+- [x] `tools/playwright/adr/0001-<slug>.md` per `.agents/rules/adr.md`, listed in the tool's `CONTEXT.md`:
       the decision (delegate to `--only-changed`), the evidence from the spec's implementation decisions
       (type-only import erased by the bundler; `TestApp` registered as a component so theme/toolkit edits
       select the full project; icons are the blind spot), and the rejected alternative (patching the
       `dependency-tree` walker).
-- [ ] `CONTEXT.md` gains the recurring-question rows: "why did my change run the full suite?" → force-full
+- [x] `CONTEXT.md` gains the recurring-question rows: "why did my change run the full suite?" → force-full
       list; "why did it run zero tests?" → the bundler graph didn't reach a registered component.
 
 ## Details
@@ -53,7 +53,7 @@ dependents run; touch an icon and everything runs.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `--changed` / `--base` flags, `selectMode` + force-full config, `--only-changed` argv
+- [x] 1 `[agent]` `--changed` / `--base` flags, `selectMode` + force-full config, `--only-changed` argv
       append; specs
-- [ ] 2 `[agent]` Manual selection checks → `notes.md`
-- [ ] 3 `[agent]` ADR `tools/playwright/adr/0001-…`, `CONTEXT.md` rows; lint, doc-links
+- [x] 2 `[agent]` Manual selection checks → `notes.md`
+- [x] 3 `[agent]` ADR `tools/playwright/adr/0001-…`, `CONTEXT.md` rows; lint, doc-links

@@ -8,7 +8,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 00 → `tickets/00-cli-flag-parser/`
 - [x] 01 → `tickets/01-playwright-tool-entrypoint/`
-- [ ] 02 → `tickets/02-changed-selection/`
+- [x] 02 → `tickets/02-changed-selection/`
 - [ ] 03 → `tickets/03-docker-flags/`
 - [ ] 04 → `tickets/04-ci-rework/`
 - [ ] 05 → `tickets/05-upstream-playwright-issue/`

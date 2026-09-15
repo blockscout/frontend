@@ -20,3 +20,16 @@ export const PLAYWRIGHT_NODE_OPTIONS = '--max-old-space-size=8192';
 
 // Playwright's build cache for the component bundle; see the commented-out step in ./index.ts.
 export const PLAYWRIGHT_CACHE_DIR = path.join('playwright', '.cache');
+
+// Changes that reach the browser outside the bundler's module graph, so `--only-changed` cannot see
+// them: the sprite (built at run time from src/sprite/icons), the harness template files, the config, the
+// lockfile. Any hit under --changed runs the whole suite. A trailing slash means "everything under";
+// the other entries match one exact path. Paired with the `pw_changes` gate step in
+// .github/workflows/checks.yml, which lists the same paths so an empty diff there skips the matrix —
+// keep the two in sync.
+export const FORCE_FULL_PATHS: ReadonlyArray<string> = [
+  'src/sprite/icons/',
+  'playwright/',
+  PLAYWRIGHT_CONFIG_FILE,
+  'pnpm-lock.yaml',
+];
