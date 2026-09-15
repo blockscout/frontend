@@ -28,12 +28,19 @@ The endpoint is agreed and will include the transaction hash, but it is not depl
 unknown, so neither the API resource nor the history table can be built against it.
 
 - Owner: Core API (Alexey)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: the per-item fields and their types are known (at minimum: transaction hash, block number,
   timestamp, old factor, new factor, activation date), the pagination parameters are known, and the
   endpoint is reachable on an instance we can fetch a sample from.
 - Slack: https://blockscout.slack.com/archives/D07RA1R99T4/p1789051937073589
-- Answer: —
+- Answer: typed in `@blockscout/api-types` `0.0.1-beta.082a03750a`, the version already pinned. Items are
+  `schemas['TokenUIMultiplierChange']` (`transaction_hash` nullable, `block_number`, `block_hash`,
+  `log_index`, `timestamp`, `old_multiplier`, `new_multiplier`, `effective_at`). It is paginated by
+  `block_number`, `log_index` and `items_count`. The counter is `ui_multiplier_changes_count` on
+  `schemas['TokenCountersResponse']`. Items carry no active flag, so the frontend derives it: the latest
+  change whose `effective_at` is not in the future. A change whose `effective_at` is still in the future is
+  pending. Live on eth-sepolia for `0x6D50E6CBca0e390BbCF82bEA80B31F4c2694395e` (one change, the sample
+  matches the schema). T07 and T08 do not need a follow-up migration ticket.
 
 ### Q03 — A test token exercising a pending multiplier change
 
@@ -96,3 +103,16 @@ later: the Tokens tab shows 169 IOU while the Token transfers tab shows the same
 - Slack: https://blockscout.slack.com/archives/C03MMUTQDNU/p1789469867600519
 - Answer: keep the historical factor. A transfer shows the multiplier that applied when it happened, with
   the tag as the disclosure; balances use the current factor. No change to the spec or to T03/T04/T06.
+
+### Q07 — How does the multiplier history show a scheduled change?
+
+A change whose `effective_at` is still in the future has been announced but has not taken effect. The
+history mockups have only Active and Inactive, so such a row reads Inactive, the same as a change that
+already happened and has been superseded.
+
+- Owner: Designer (Tatyana)
+- Status: `pending`
+- Resolved when: the designer picks one: keep Inactive for scheduled changes; or add a third status (label
+  and tag style), shown on the Multiplier history tab and in the inline history on Details.
+- Slack: https://blockscout.slack.com/archives/D03PDKKMLQH/p1789495676014809
+- Answer: —
