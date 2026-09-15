@@ -261,8 +261,6 @@ jobs:
 
     strategy:
       fail-fast: false
-      # One job per project, with `default` (by far the largest project) split into three shards so the
-      # five jobs are roughly the same size. Paired with `projects` in playwright-ct.config.ts.
       matrix:
         include:
           - name: default-1

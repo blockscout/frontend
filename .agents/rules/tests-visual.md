@@ -27,7 +27,7 @@ Flags, the Docker setup, and where the reports land are in `tools/playwright/CON
 
 ## Test projects
 
-Three projects run against every test file (in CI, `default` is split into three shards, so it is one project across three jobs):
+Three projects run against every test file:
 
 | Project | Tag | Browser | Viewport |
 |---|---|---|---|
