@@ -20,10 +20,6 @@ import {
 import { buildDockerCommand, buildDockerDepsCommand, resolveDockerOptions } from './docker';
 import { selectMode } from './select';
 
-// The single entrypoint for Playwright component tests. The tool owns a handful of flags — selection
-// and where to run — and hands everything else to `playwright test` as-is. USAGE below is the flag
-// reference.
-
 export interface CliOptions {
   baseRef: string;
   diffSelected: boolean;
@@ -204,9 +200,8 @@ export function run(argv: ReadonlyArray<string>, runtime: Runtime = DEFAULT_RUNT
   /* eslint-disable-next-line no-restricted-properties -- a Node CLI forwarding its own shell env to the children it spawns */
   const env = loadEnvFile(runtime, process.env);
 
-  // The old runner deleted Playwright's CT build cache before every run, paying a cold bundle each
-  // time. Playwright's own cache invalidation has been reliable, so the step is off; re-enable it if
-  // a stale CT build is ever observed.
+  // Playwright's own CT build cache invalidation has been reliable, so the unconditional delete is
+  // off; re-enable it if a stale CT build is ever observed.
   // fs.rmSync(PLAYWRIGHT_CACHE_DIR, { recursive: true, force: true });
 
   for (const step of buildSteps(options, env, extraPlaywrightArgs)) {

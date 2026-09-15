@@ -17,7 +17,7 @@ The `pnpm test:pw` entry point runs Playwright component tests (`*.pw.tsx`) loca
 
 - **The force-full list in `./config.ts` and the `pw_changes` gate step in `.github/workflows/checks.yml` move together.** The gate's paths are the force-full paths plus `src/`. A path added to only one either wastes a matrix run or skips a needed one.
 - **`--only-changed` cannot see icons.** The sprite is built at run time from `src/sprite/icons/`, outside the bundler's module graph, so an icon edit selects zero tests. The force-full list exists for this; anything else that reaches the browser outside the module graph belongs on it too.
-- **`--only-changed --list` reports zero tests in CT mode** (list mode never sets up the CT plugin), so there is no dry-run of what `--changed` would select. Run it and read `playwright-results/report.json`. Not reported upstream: the CT packages are frozen as of Playwright 1.63.
+- **`--only-changed --list` reports zero tests in CT mode** (list mode never sets up the CT plugin), so there is no dry-run of what `--changed` would select. Run it and read `playwright-results/report.json`.
 - **Running `playwright test` directly skips the pre-run steps**, so the harness loads whatever `playwright/envs.js` and sprite the last `pnpm test:pw` run left behind.
 - **The json report lives under `outputDir`, not next to the html report.** The html reporter deletes `playwright-report/` when the run ends, so a second reporter writing there loses its file.
 - **The Docker image name and OS suffix in `./config.ts` are paired with `container.image` in `.github/workflows/checks.yml`**, so a Mac `--docker` run renders with the same browsers as CI. The tag follows the installed `@playwright/test` version on its own.

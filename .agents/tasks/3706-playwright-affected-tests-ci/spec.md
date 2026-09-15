@@ -37,7 +37,7 @@ fraction of today's wall time and a human or agent has one command to reach for.
 3. `--changed` selects affected tests against the **merge-base** of the base ref (default `origin/main`)
    and `HEAD`, including uncommitted working-tree edits — the same semantics as the sibling gates'
    `--changed`. Playwright's bare "uncommitted vs HEAD" mode is not exposed.
-4. Under `--changed`, if any changed file falls under a **force-full list** — `src/icons/**`,
+4. Under `--changed`, if any changed file falls under a **force-full list** — `src/sprite/icons/**`,
    `playwright/**`, `playwright-ct.config.ts`, `pnpm-lock.yaml` — the tool runs the whole suite. Otherwise
    it runs Playwright with `--only-changed=<merge-base sha>`, so the bundler's real module graph decides
    which test files are affected; type-only imports never count because the bundler erases them.
