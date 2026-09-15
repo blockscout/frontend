@@ -94,7 +94,7 @@
         },
         {
             "type": "shell",
-            "command": "pnpm test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "pnpm test:pw --docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker",
             "detail": "run visual components tests for current file",
@@ -115,10 +115,31 @@
         },
         {
             "type": "shell",
-            "command": "pnpm test:pw:docker ${input:pwArgs}",
+            "command": "pnpm test:pw --docker ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker all",
             "detail": "run visual components tests",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "shell",
+            "command": "pnpm test:pw --changed ${input:pwArgs}",
+            "problemMatcher": [],
+            "label": "pw: changed",
+            "detail": "run visual components tests affected by the changed files in the current branch",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",

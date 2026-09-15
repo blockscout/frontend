@@ -12,4 +12,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 03 → `tickets/03-docker-flags/`
 - [x] 04 → `tickets/04-ci-rework/`
 - [x] 05 → `tickets/05-upstream-playwright-issue/`
-- [ ] 06 → `tickets/06-docs-sweep/`
+- [x] 06 → `tickets/06-docs-sweep/`
