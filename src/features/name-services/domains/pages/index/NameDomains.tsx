@@ -1,19 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'src/features/name-services/domains/types/api';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
+import type { PaginationFilters } from 'src/api/resources';
 
 import { ENS_DOMAIN } from 'src/features/name-services/domains/stubs';
 
 import config from 'src/config';
-import useDebounce from 'src/shared/hooks/useDebounce';
 import DataList from 'src/shared/lists/DataList';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
+import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -30,69 +31,75 @@ import { SORT_OPTIONS, getNextSortValue } from './utils';
 const feature = config.features.nameServices;
 const availableProtocols = feature.isEnabled && feature.ens.isEnabled ? feature.ens.protocols : [];
 
-const NameDomains = () => {
-  const router = useRouter();
+const NO_PROTOCOLS: Array<string> = [];
+const ADDRESS_SEARCH_DEFAULT_FILTERS: EnsDomainLookupFiltersOptions = [ 'owned_by', 'resolved_to' ];
 
-  const q = getQueryParamString(router.query.name) || getQueryParamString(router.query.address);
-  const ownedBy = getQueryParamString(router.query.owned_by);
-  const resolvedTo = getQueryParamString(router.query.resolved_to);
-  const onlyActive = getQueryParamString(router.query.only_active);
+type AddressesLookupFilters = PaginationFilters<'bens:addresses_lookup'>;
 
-  const protocols = (() => {
-    if (router.query.protocols) {
-      const valueFromQuery = getQueryParamString(router.query.protocols)
-        .split(',')
-        .filter(Boolean)
-        .filter((protocol) => availableProtocols.includes(protocol));
+interface LookupState {
+  readonly searchTerm: string;
+  readonly filterValue: EnsDomainLookupFiltersOptions;
+  readonly protocols: Array<string>;
+}
 
-      if (valueFromQuery.length > 0) {
-        return valueFromQuery;
-      }
-    }
+// The resource types these as booleans; read from the URL they are the strings 'true' / 'false'.
+function isFalseParam(value: boolean | string | Array<string> | undefined): boolean {
+  return String(value) === 'false';
+}
 
-    return [];
-  })();
-
-  const initialFilters: EnsDomainLookupFiltersOptions = [
-    ownedBy === 'true' ? 'owned_by' as const : undefined,
-    resolvedTo === 'true' ? 'resolved_to' as const : undefined,
-    onlyActive === 'false' ? 'with_inactive' as const : undefined,
+function getFilterValueFromQuery(filters: AddressesLookupFilters, isAddressSearch: boolean): EnsDomainLookupFiltersOptions {
+  return [
+    isAddressSearch && !isFalseParam(filters.owned_by) ? 'owned_by' as const : undefined,
+    isAddressSearch && !isFalseParam(filters.resolved_to) ? 'resolved_to' as const : undefined,
+    isFalseParam(filters.only_active) ? 'with_inactive' as const : undefined,
   ].filter(Boolean);
-  const initialSort = getSortValueFromQuery<Sort>(router.query, SORT_OPTIONS);
+}
 
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
-  const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
-  const [ sort, setSort ] = React.useState<Sort>(initialSort ?? 'default');
-  const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>(protocols);
+function getProtocolsFromQuery(value: string | Array<string> | undefined): Array<string> {
+  const protocols = getQueryParamString(value)
+    .split(',')
+    .filter(Boolean)
+    .filter((protocol) => availableProtocols.includes(protocol));
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
-  const sortParams = getSortParamsFromValue<Sort, EnsLookupSorting['sort'], EnsLookupSorting['order']>(sort);
+  return protocols.length > 0 ? protocols : NO_PROTOCOLS;
+}
 
-  const addressesLookupQuery = useQueryWithPages({
+const NameDomains = () => {
+  const { filters: addressesFilters, sorting } = usePaginationParams('bens:addresses_lookup');
+  const { filters: domainsFilters } = usePaginationParams('bens:domains_lookup');
+
+  const searchTerm = getQueryParamString(domainsFilters.name) || getQueryParamString(addressesFilters.address);
+  const isAddressSearch = ADDRESS_REGEXP.test(searchTerm);
+  const filterValue = React.useMemo(() => getFilterValueFromQuery(addressesFilters, isAddressSearch), [ addressesFilters, isAddressSearch ]);
+  const protocolsParam = addressesFilters.protocols;
+  const protocolsFilter = React.useMemo(() => getProtocolsFromQuery(protocolsParam), [ protocolsParam ]);
+  const sort = getSortValueFromQuery<Sort>({ ...sorting }, SORT_OPTIONS) ?? 'default';
+
+  const onlyActive = !filterValue.includes('with_inactive');
+  const requestedProtocols = protocolsFilter.length > 0 ? protocolsFilter : availableProtocols;
+
+  const addressesLookupQuery = useApiPaginatedQuery({
     resourceName: 'bens:addresses_lookup',
-    filters: {
-      address: debouncedSearchTerm,
+    queryParams: {
+      address: searchTerm,
       resolved_to: filterValue.includes('resolved_to'),
       owned_by: filterValue.includes('owned_by'),
-      only_active: !filterValue.includes('with_inactive'),
-      protocols: protocolsFilter.length > 0 ? protocolsFilter : availableProtocols,
+      only_active: onlyActive,
+      protocols: requestedProtocols,
     },
-    sorting: sortParams,
     options: {
       enabled: isAddressSearch,
       placeholderData: generateListStub<'bens:addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
-  const domainsLookupQuery = useQueryWithPages({
+  const domainsLookupQuery = useApiPaginatedQuery({
     resourceName: 'bens:domains_lookup',
-    filters: {
-      name: debouncedSearchTerm,
-      only_active: !filterValue.includes('with_inactive'),
-      protocols: protocolsFilter.length > 0 ? protocolsFilter : availableProtocols,
+    queryParams: {
+      name: searchTerm,
+      only_active: onlyActive,
+      protocols: requestedProtocols,
     },
-    sorting: sortParams,
     options: {
       enabled: !isAddressSearch,
       placeholderData: generateListStub<'bens:domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
@@ -102,108 +109,56 @@ const NameDomains = () => {
   const protocolsQuery = useApiQuery('bens:protocols');
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
-  const { data, isError, isPlaceholderData: isLoading, onFilterChange, onSortingChange, queryHash } = query;
+  const { data, isError, isInitialLoading, isTransitioning, onFilterChange, onSortingChange, queryHash } = query;
 
-  React.useEffect(() => {
-    const hasInactiveFilter = filterValue.some((value) => value === 'with_inactive');
-    if (isAddressSearch) {
-      setFilterValue([ 'owned_by' as const, 'resolved_to' as const, hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
+  const pushLookupState = React.useCallback((next: LookupState) => {
+    if (ADDRESS_REGEXP.test(next.searchTerm)) {
       onFilterChange<'bens:addresses_lookup'>({
-        address: debouncedSearchTerm,
-        resolved_to: true,
-        owned_by: true,
-        only_active: !hasInactiveFilter,
-        protocols: protocolsFilter,
+        address: next.searchTerm,
+        resolved_to: next.filterValue.includes('resolved_to'),
+        owned_by: next.filterValue.includes('owned_by'),
+        only_active: !next.filterValue.includes('with_inactive'),
+        protocols: next.protocols,
       });
-    } else {
-      setFilterValue([ hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
-      onFilterChange<'bens:domains_lookup'>({
-        name: debouncedSearchTerm,
-        only_active: !hasInactiveFilter,
-        protocols: protocolsFilter,
-      });
-    }
-  // should run only the type of search changes
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isAddressSearch ]);
-
-  const handleSortToggle = React.useCallback((field: SortField) => {
-    if (isLoading) {
       return;
     }
 
-    if (field) {
-      setSort((prevValue) => {
-        const nextSortValue = getNextSortValue(field)(prevValue);
-        onSortingChange(getSortParamsFromValue(nextSortValue));
-        return nextSortValue;
-      });
-    }
-  }, [ isLoading, onSortingChange ]);
+    onFilterChange<'bens:domains_lookup'>({
+      name: next.searchTerm,
+      only_active: !next.filterValue.includes('with_inactive'),
+      protocols: next.protocols,
+    });
+  }, [ onFilterChange ]);
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    setSearchTerm(value);
-    const isAddressSearch = ADDRESS_REGEXP.test(value);
-    if (isAddressSearch) {
-      onFilterChange<'bens:addresses_lookup'>({
-        address: value,
-        resolved_to: filterValue.includes('resolved_to'),
-        owned_by: filterValue.includes('owned_by'),
-        only_active: !filterValue.includes('with_inactive'),
-        protocols: protocolsFilter,
-      });
-    } else {
-      onFilterChange<'bens:domains_lookup'>({
-        name: value,
-        only_active: !filterValue.includes('with_inactive'),
-        protocols: protocolsFilter,
-      });
-    }
-  }, [ onFilterChange, filterValue, protocolsFilter ]);
+  const handleSearchTermChange = useDebouncedFilterChange((value) => {
+    const switchesToAddressSearch = !isAddressSearch && ADDRESS_REGEXP.test(value);
+    const nextFilterValue = switchesToAddressSearch ?
+      [ ...ADDRESS_SEARCH_DEFAULT_FILTERS, ...filterValue.filter((item) => item === 'with_inactive') ] :
+      filterValue;
+    pushLookupState({ searchTerm: value, filterValue: nextFilterValue, protocols: protocolsFilter });
+  });
 
   const handleFilterValueChange = React.useCallback((value: EnsDomainLookupFiltersOptions) => {
-    setFilterValue(value);
-
-    const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
-    if (isAddressSearch) {
-      onFilterChange<'bens:addresses_lookup'>({
-        address: debouncedSearchTerm,
-        resolved_to: value.includes('resolved_to'),
-        owned_by: value.includes('owned_by'),
-        only_active: !value.includes('with_inactive'),
-        protocols: protocolsFilter,
-      });
-    } else {
-      onFilterChange<'bens:domains_lookup'>({
-        name: debouncedSearchTerm,
-        only_active: !value.includes('with_inactive'),
-        protocols: protocolsFilter,
-      });
-    }
-  }, [ debouncedSearchTerm, onFilterChange, protocolsFilter ]);
+    pushLookupState({ searchTerm, filterValue: value, protocols: protocolsFilter });
+  }, [ pushLookupState, searchTerm, protocolsFilter ]);
 
   const handleProtocolsFilterChange = React.useCallback((nextValue: Array<string>) => {
-    setProtocolsFilter(nextValue);
+    pushLookupState({ searchTerm, filterValue, protocols: nextValue });
+  }, [ pushLookupState, searchTerm, filterValue ]);
 
-    const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
-    if (isAddressSearch) {
-      onFilterChange<'bens:addresses_lookup'>({
-        address: debouncedSearchTerm,
-        resolved_to: filterValue.includes('resolved_to'),
-        owned_by: filterValue.includes('owned_by'),
-        only_active: !filterValue.includes('with_inactive'),
-        protocols: nextValue,
-      });
-    } else {
-      onFilterChange<'bens:domains_lookup'>({
-        name: debouncedSearchTerm,
-        only_active: !filterValue.includes('with_inactive'),
-        protocols: nextValue,
-      });
+  const handleSortChange = React.useCallback((nextValue: Sort) => {
+    onSortingChange(getSortParamsFromValue<Sort, EnsLookupSorting['sort'], EnsLookupSorting['order']>(nextValue));
+  }, [ onSortingChange ]);
+
+  const handleSortToggle = React.useCallback((field: SortField) => {
+    if (isInitialLoading || !field) {
+      return;
     }
-  }, [ debouncedSearchTerm, filterValue, onFilterChange ]);
 
-  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 ||
+    handleSortChange(getNextSortValue(field)(sort));
+  }, [ isInitialLoading, handleSortChange, sort ]);
+
+  const hasActiveFilters = Boolean(searchTerm) || filterValue.length > 0 ||
     (protocolsQuery.data && availableProtocols.length > 1 ? protocolsFilter.length > 0 : false);
 
   const content = data?.items ? (
@@ -211,14 +166,14 @@ const NameDomains = () => {
       <Box hideFrom="lg">
         <NameDomainsList
           items={ data.items }
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
       <Box hideBelow="lg">
         <NameDomainsTable
           items={ data.items }
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading }
           sort={ sort }
           onSortToggle={ handleSortToggle }
           resetKey={ queryHash }
@@ -233,7 +188,7 @@ const NameDomains = () => {
 
   const actionBar = (
     <NameDomainsActionBar
-      isLoading={ isLoading }
+      isLoading={ isInitialLoading }
       searchTerm={ searchTerm }
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
@@ -242,7 +197,7 @@ const NameDomains = () => {
       protocolsFilterValue={ protocolsFilter }
       onProtocolsFilterChange={ handleProtocolsFilterChange }
       sort={ sort }
-      onSortChange={ setSort }
+      onSortChange={ handleSortChange }
       isAddressSearch={ isAddressSearch }
       pagination={ query.pagination }
     />
@@ -258,6 +213,7 @@ const NameDomains = () => {
         term: 'name domain',
       }}
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

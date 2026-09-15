@@ -22,7 +22,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -33,7 +33,7 @@ const TABS_HEIGHT = 88;
 
 export interface Props {
   type?: schemas['BlockResponse']['type'];
-  query: QueryWithPagesResult<'core:blocks'> | QueryWithPagesResult<'core:optimistic_l2_txn_batch_blocks'>;
+  query: ApiPaginatedQueryResult<'core:blocks'> | ApiPaginatedQueryResult<'core:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
   top?: number;
 }
@@ -97,7 +97,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1 || !enableSocket,
+    isDisabled: query.isInitialLoading || query.isError || query.pagination.page !== 1 || !enableSocket,
   });
   useSocketMessage({
     channel,
@@ -120,12 +120,12 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
             num={ newItemsCount }
             showErrorAlert={ showSocketAlert }
             type="block"
-            isLoading={ query.isPlaceholderData }
+            isLoading={ query.isInitialLoading }
           />
         ) }
         <BlocksList
           data={ query.data.items }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           page={ query.pagination.page }
           chainData={ chainData }
           resetKey={ query.queryHash }
@@ -136,7 +136,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
           data={ query.data.items }
           top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
           page={ query.pagination.page }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           showSocketInfo={ query.pagination.page === 1 && enableSocket }
           socketInfoNum={ newItemsCount }
           showSocketErrorAlert={ showSocketAlert }
@@ -163,6 +163,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       itemsNum={ query.data?.items?.length }
       emptyText="There are no blocks."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

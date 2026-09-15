@@ -34,13 +34,6 @@ test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }
     items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },
   }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false } });
-  await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ ],
-    next_page_params: undefined,
-  }, {
-    pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { type: 'ERC-20,NATIVE,ERC-7984', chain_id: chainDataMock.chainE.id, include_poor_reputation_tokens: false },
-  });
 
   const component = await render(
     <MultichainAddressPortfolioTokens addressData={ addressMock.addressA } isLoading={ false }/>,
@@ -50,9 +43,31 @@ test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,
   });
+});
 
-  await component.getByText('show more').click();
-  await component.getByLabel('White goose portfolio selector').click();
+test('many chains, selected chain +@mobile +@dark-mode', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('multichainAggregator:address_portfolio',
+    portfolioMock.base,
+    { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
+    });
+  await mockApiResponse('multichainAggregator:address_tokens', {
+    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenCA, tokensMock.tokenDA ],
+    next_page_params: { page_token: '1', page_size: 10 },
+  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false } });
+  const selectedChainTokensUrl = await mockApiResponse('multichainAggregator:address_tokens', {
+    items: [ ],
+    next_page_params: undefined,
+  }, {
+    pathParams: { hash: CURRENT_ADDRESS },
+    queryParams: { chain_id: chainDataMock.chainE.id, type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false },
+  });
+
+  const component = await render(
+    <MultichainAddressPortfolioTokens addressData={ addressMock.addressA } isLoading={ false }/>,
+    { hooksConfig: { router: { query: { ...hooksConfig.router.query, chain_id: chainDataMock.chainE.id } } } },
+  );
+  await page.waitForResponse(selectedChainTokensUrl);
+  await expect(component.getByText('show less')).toBeVisible();
   await expect(component).toHaveScreenshot({
     mask: [ page.locator(pwConfig.adsBannerSelector) ],
     maskColor: pwConfig.maskColor,

@@ -3,7 +3,7 @@
 import React from 'react';
 
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -14,7 +14,7 @@ import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
 import TransactionsCrossChainStats from './TransactionsCrossChainStats';
 
 const TransactionsCrossChain = () => {
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:messages',
     options: {
       placeholderData: generateListStub<'interchainIndexer:messages'>(INTERCHAIN_MESSAGE, 50, { next_page_params: { page_token: 'token' } }),
@@ -24,7 +24,7 @@ const TransactionsCrossChain = () => {
   const total = countersQuery.data?.totalInterchainMessages;
 
   const actionBarText = total !== undefined ? (
-    <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData }>
+    <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading }>
       A total of { Number(total).toLocaleString() } cross-chain transactions found
     </Skeleton>
   ) : null;
@@ -36,7 +36,8 @@ const TransactionsCrossChain = () => {
       <TransactionsCrossChainStats/>
       <TransactionsCrossChainContent
         items={ data?.items }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
+        isTransitioning={ isTransitioning }
         pagination={ pagination }
         isError={ isError }
         actionBar={ actionBar }

@@ -9,7 +9,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -18,7 +18,7 @@ const KettleTxs = () => {
 
   const hash = getQueryParamString(router.query.hash);
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:txs_execution_node',
     pathParams: { hash },
     options: {

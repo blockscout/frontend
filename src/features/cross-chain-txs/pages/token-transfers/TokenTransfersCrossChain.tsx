@@ -3,7 +3,7 @@
 import React from 'react';
 
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -13,7 +13,7 @@ import { useCrossChainCountersQuery } from '../../hooks/useCrossChainCountersQue
 import { INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:transfers',
     options: {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),
@@ -23,7 +23,7 @@ const TokenTransfersCrossChain = () => {
   const total = countersQuery.data?.totalInterchainTransfers;
 
   const actionBarText = total !== undefined ? (
-    <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData }>
+    <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading }>
       A total of { Number(total).toLocaleString() } cross-chain token transfers found
     </Skeleton>
   ) : null;
@@ -33,7 +33,8 @@ const TokenTransfersCrossChain = () => {
   return (
     <TokenTransfersCrossChainContent
       items={ data?.items }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
+      isTransitioning={ isTransitioning }
       pagination={ pagination }
       isError={ isError }
       itemsNum={ data?.items.length }

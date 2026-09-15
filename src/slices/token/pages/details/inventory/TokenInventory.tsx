@@ -16,8 +16,9 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import TokenInventoryItem from './TokenInventoryItem';
 
@@ -28,22 +29,21 @@ interface Props {
   hash: string;
   token: schemas['Token'] | undefined;
   isLoading?: boolean;
-  ownerFilter?: string;
 };
 
-const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: Props) => {
+const TokenInventory = ({ hash, token, isLoading: isLoadingProp }: Props) => {
   const isMobile = useIsMobile();
 
-  const inventoryQuery = useQueryWithPages({
+  const inventoryQuery = useApiPaginatedQuery({
     resourceName: 'core:token_inventory',
     pathParams: { hash },
-    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
     options: {
       placeholderData: generateListStub<'core:token_inventory'>(TOKEN_INSTANCE_ITEM, 50, { next_page_params: { unique_token: 1 } }),
     },
   });
 
-  const isLoading = isLoadingProp || Boolean(inventoryQuery.isPlaceholderData);
+  const ownerFilter = getQueryParamString(inventoryQuery.filters.holder_address_hash) || undefined;
+  const isLoading = isLoadingProp || inventoryQuery.isInitialLoading;
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: inventoryQuery.data?.items,
@@ -52,9 +52,10 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
     resetKey: inventoryQuery.queryHash,
   });
 
+  const { onFilterChange } = inventoryQuery;
   const resetOwnerFilter = React.useCallback(() => {
-    inventoryQuery.onFilterChange({});
-  }, [ inventoryQuery ]);
+    onFilterChange({});
+  }, [ onFilterChange ]);
 
   const ownerFilterComponent = ownerFilter && (
     <Flex
@@ -91,7 +92,7 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
       >
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenInventoryItem
-            key={ item.id + '_' + index + (inventoryQuery.isPlaceholderData ? '_' + 'placeholder' : '') }
+            key={ item.id + (isLoading ? '_' + index : '') }
             item={ item }
             isLoading={ isLoading }
             token={ token }
@@ -112,6 +113,7 @@ const TokenInventory = ({ hash, token, isLoading: isLoadingProp, ownerFilter }: 
         description: 'No tokens found for the selected owner.',
       }}
       actionBar={ actionBar }
+      isTransitioning={ inventoryQuery.isTransitioning }
     >
       { isMobile && ownerFilterComponent }
       { content }

@@ -23,12 +23,14 @@ import config from 'src/config';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
+
+const NO_TYPES: Array<TokenType> = [];
 
 interface Props {
   txQuery: TxQuery;
@@ -45,19 +47,20 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
   const areQueriesEnabled = !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash);
   const chainConfig = multichainContext?.chain?.app_config ?? config;
 
-  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(
-    getTokenFilterValue(router.query.type, multichainContext?.chain?.app_config) || [],
-  );
-
-  const localQuery = useQueryWithPages({
+  const localQuery = useApiPaginatedQuery({
     resourceName: 'core:tx_token_transfers',
     pathParams: { hash: txQuery.data?.hash.toString() },
     options: {
       enabled: areQueriesEnabled,
       placeholderData: getTokenTransfersStub(),
     },
-    filters: { type: typeFilter },
   });
+
+  const typeParam = localQuery.filters.type;
+  const typeFilter = React.useMemo(
+    () => getTokenFilterValue(typeParam, multichainContext?.chain?.app_config) || NO_TYPES,
+    [ typeParam, multichainContext?.chain?.app_config ],
+  );
 
   const crossChainQuery = useTxCrossChainTransfersQuery({
     hash: String(txQuery.data?.hash),
@@ -70,7 +73,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
     !noCrossChain;
   const isLocalTab = tab === 'token_transfers' || (tab !== 'token_transfers_cross_chain' && !hasCrossChainTab);
   const isTabsLoading = useIsInitialLoading(
-    localQuery.isPlaceholderData ||
+    localQuery.isInitialLoading ||
     (chainConfig.features.crossChainTxs.isEnabled && crossChainQuery.isPlaceholderData && !noCrossChain),
   );
 
@@ -101,10 +104,10 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
     },
   ].filter(Boolean);
 
+  const { onFilterChange } = localQuery;
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    localQuery.onFilterChange({ type: nextValue });
-    setTypeFilter(nextValue);
-  }, [ localQuery ]);
+    onFilterChange({ type: nextValue });
+  }, [ onFilterChange ]);
 
   const rightSlotProps = React.useMemo(() => {
     if (tabs.length === 1) {
@@ -141,7 +144,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
             defaultTypeFilters={ typeFilter }
             onTypeFilterChange={ handleTypeFilterChange }
             appliedFiltersNum={ typeFilter.length }
-            isLoading={ txQuery.isPlaceholderData || localQuery.isPlaceholderData }
+            isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
             chainConfig={ multichainContext?.chain?.app_config }
           />
           <Pagination ml="auto" { ...localQuery.pagination }/>

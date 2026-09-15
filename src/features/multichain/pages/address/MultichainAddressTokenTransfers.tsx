@@ -26,11 +26,12 @@ import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import ListCounterText from 'src/features/multichain/components/ListCounterText';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -68,8 +69,10 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
   const isLocalTab = tab === 'token_transfers_local' || tab === 'token_transfers';
 
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain: chainData, onChainValueChange } = useChainValue({ chainIds });
+  const chainId = chainData?.id;
 
-  const transfersQueryCrossChain = useQueryWithPages({
+  const transfersQueryCrossChain = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_transfers',
     pathParams: { hash },
     options: {
@@ -81,22 +84,18 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
   const transfersQueryLocal = useAddressTokenTransfersQuery({
     currentAddress: hash,
     enabled: isLocalTab && !isLoading && chainIds.length > 0,
-    isMultichain: true,
-    chainIds,
+    chain: chainData,
   });
-
-  const chainId = transfersQueryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
-    isLoading: transfersQueryLocal.query.isPlaceholderData,
+    isLoading: transfersQueryLocal.query.isInitialLoading,
     isEnabled: isLocalTab && !isLoading && chainIds.length > 0,
     chain: chainData,
   });
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    transfersQueryLocal.query.onChainValueChange({ value });
+    onChainValueChange({ value });
     const chainConfig = multichainConfig()?.chains.find(chain => chain.id === value[0]);
     const tokenTypes = getTokenFilterValue(router.query.type, chainConfig?.app_config);
     if (tokenTypes) {
@@ -105,7 +104,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
         transfersQueryLocal.onTypeFilterChange(chainsTokenTypes);
       }
     }
-  }, [ transfersQueryLocal, router.query.type ]);
+  }, [ onChainValueChange, transfersQueryLocal, router.query.type ]);
 
   const countersText = (() => {
     if (isLocalTab) {
@@ -113,7 +112,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
         <ListCounterText
           key={ chainId }
           value={ countersQueryLocal.data?.token_transfers_count }
-          isLoading={ countersQueryLocal.isPlaceholderData || transfersQueryLocal.query.isPlaceholderData }
+          isLoading={ countersQueryLocal.isPlaceholderData || transfersQueryLocal.query.isInitialLoading }
           type="transfer"
         />
       );
@@ -131,7 +130,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
       const chainSelect = (
         <ChainSelect
           loading={ transfersQueryLocal.query.pagination.isLoading }
-          value={ transfersQueryLocal.query.chainValue }
+          value={ chainValue }
           onValueChange={ handleChainValueChange }
           chainIds={ chainIds }
         />
@@ -151,7 +150,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               withAddressFilter
               onAddressFilterChange={ transfersQueryLocal.onAddressFilterChange }
               defaultAddressFilter={ transfersQueryLocal.filters.filter }
-              isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
               chainConfig={ chainData?.app_config }
             />
             { chainSelect }
@@ -167,7 +166,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               loadingInitial={ transfersQueryLocal.query.pagination.isLoading }
             />
             <AddressAdvancedFilterLink
-              isLoading={ transfersQueryLocal.query.isPlaceholderData }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
               address={ hash }
               typeFilter={ transfersQueryLocal.filters.type }
               directionFilter={ transfersQueryLocal.filters.filter }
@@ -200,7 +199,8 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
           ) }
           <TokenTransfersCrossChainContent
             items={ transfersQueryCrossChain.data?.items }
-            isLoading={ transfersQueryCrossChain.isPlaceholderData }
+            isLoading={ transfersQueryCrossChain.isInitialLoading }
+            isTransitioning={ transfersQueryCrossChain.isTransitioning }
             isError={ transfersQueryCrossChain.isError }
             pagination={ transfersQueryCrossChain.pagination }
             tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
@@ -213,7 +213,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
       id: [ 'token_transfers_local', 'token_transfers' ],
       title: 'Local',
       component: chainIds.length > 0 ? (
-        <MultichainProvider chainId={ transfersQueryLocal.query.chainValue?.[0] }>
+        <MultichainProvider chainId={ chainId }>
           <SocketProvider url={ getSocketUrl(chainData?.app_config) }>
             { isMobile && countersText }
             <AddressTokenTransfersLocal

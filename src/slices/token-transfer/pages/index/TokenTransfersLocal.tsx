@@ -23,7 +23,7 @@ const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: query.data?.items,
-    isEnabled: !query.isPlaceholderData,
+    isEnabled: !query.isInitialLoading,
     resetKey: query.queryHash,
   });
 
@@ -32,8 +32,8 @@ const TokenTransfersLocal = () => {
       <Box hideFrom="lg">
         { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransfersListItem
-            key={ getTokenTransferKey(item) + (query.isPlaceholderData ? index : '') }
-            isLoading={ query.isPlaceholderData }
+            key={ getTokenTransferKey(item) + (query.isInitialLoading ? index : '') }
+            isLoading={ query.isInitialLoading }
             item={ item }
           />
         )) }
@@ -43,7 +43,7 @@ const TokenTransfersLocal = () => {
         <TokenTransfersTable
           items={ query.data?.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ query.isInitialLoading }
           resetKey={ query.queryHash }
         />
       </Box>
@@ -70,6 +70,7 @@ const TokenTransfersLocal = () => {
       emptyText="There are no token transfers."
       actionBar={ actionBar }
       hasActiveFilters={ Boolean(typeFilter.length) }
+      isTransitioning={ query.isTransitioning }
       emptyStateProps={{
         term: 'token transfer',
       }}

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType, TokensSortingValue, TokensSortingField, TokensSorting } from 'src/slices/token/types/api';
@@ -8,8 +7,8 @@ import type { TokenType, TokensSortingValue, TokensSortingField, TokensSorting }
 import { TOKEN_INFO_ERC_20 } from 'src/slices/token/stubs';
 import { getTokenFilterValue, SORT_OPTIONS } from 'src/slices/token/utils/list-utils';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -22,20 +21,8 @@ interface Props {
 }
 
 export default function useTokensQuery({ enabled }: Props) {
-  const router = useRouter();
-
-  const q = getQueryParamString(router.query.q);
-
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
-  const [ sort, setSort ] = React.useState<TokensSortingValue>(getSortValueFromQuery<TokensSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:tokens',
-    filters: { q: debouncedSearchTerm, type: tokenTypes },
-    sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
       enabled,
       placeholderData: generateListStub<'core:tokens'>(
@@ -46,21 +33,22 @@ export default function useTokensQuery({ enabled }: Props) {
     },
   });
 
-  const onSearchTermChange = React.useCallback((value: string) => {
-    query.onFilterChange({ q: value, type: tokenTypes });
-    setSearchTerm(value);
-  }, [ tokenTypes, query ]);
+  const searchTerm = getQueryParamString(query.filters.q);
+  const typeParam = query.filters.type;
+  const tokenTypes = React.useMemo(() => getTokenFilterValue(typeParam), [ typeParam ]);
+  const sort = getSortValueFromQuery<TokensSortingValue>({ ...query.sorting }, SORT_OPTIONS) ?? 'default';
+
+  const { onFilterChange, onSortingChange } = query;
+
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value, type: tokenTypes }));
 
   const onTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
-    query.onFilterChange({ q: debouncedSearchTerm, type: value });
-    setTokenTypes(value);
-  }, [ debouncedSearchTerm, query ]);
+    onFilterChange({ q: searchTerm, type: value });
+  }, [ searchTerm, onFilterChange ]);
 
   const onSortChange: OnValueChangeHandler = React.useCallback(({ value }) => {
-    const sortValue = value[0] as TokensSortingValue;
-    setSort(sortValue);
-    query.onSortingChange(getSortParamsFromValue(sortValue));
-  }, [ query ]);
+    onSortingChange(getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(value[0] as TokensSortingValue));
+  }, [ onSortingChange ]);
 
   return React.useMemo(() => ({
     query,

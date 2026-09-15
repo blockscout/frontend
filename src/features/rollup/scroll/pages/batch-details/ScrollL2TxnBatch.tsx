@@ -21,7 +21,7 @@ import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-err
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -51,7 +51,7 @@ const ScrollL2TxnBatch = () => {
     },
   });
 
-  const batchTxsQuery = useQueryWithPages({
+  const batchTxsQuery = useApiPaginatedQuery({
     resourceName: 'core:scroll_l2_txn_batch_txs',
     pathParams: { number },
     options: {
@@ -65,7 +65,7 @@ const ScrollL2TxnBatch = () => {
     },
   });
 
-  const batchBlocksQuery = useQueryWithPages({
+  const batchBlocksQuery = useApiPaginatedQuery({
     resourceName: 'core:scroll_l2_txn_batch_blocks',
     pathParams: { number },
     options: {

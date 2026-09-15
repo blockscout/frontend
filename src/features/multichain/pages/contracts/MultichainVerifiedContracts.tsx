@@ -15,6 +15,7 @@ import VerifiedContractsTable from 'src/slices/contract/pages/index/VerifiedCont
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
@@ -30,8 +31,9 @@ const sortCollection = createListCollection({
 const MultichainVerifiedContracts = () => {
   const isMobile = useIsMobile();
 
-  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ isMultichain: true });
-  const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange } = query;
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery({ chain });
+  const { isError, isInitialLoading, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
@@ -57,7 +59,7 @@ const MultichainVerifiedContracts = () => {
       defaultValue={ [ sort ] }
       collection={ sortCollection }
       onValueChange={ onSortChange }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
     />
   );
 
@@ -83,10 +85,10 @@ const MultichainVerifiedContracts = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;
@@ -103,7 +105,7 @@ const MultichainVerifiedContracts = () => {
         mode="default"
         mb={ 3 }
       />
-      <MultichainProvider chainId={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chain?.id }>
         <VerifiedContractsCounters/>
         <DataList
           isError={ isError }
@@ -114,6 +116,7 @@ const MultichainVerifiedContracts = () => {
             term: 'contract',
           }}
           actionBar={ actionBar }
+          isTransitioning={ query.isTransitioning }
         >
           { content }
         </DataList>

@@ -23,7 +23,7 @@ const DepositsList = ({ items, isLoading, resetKey }: Props) => {
       <Box>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <DepositsListItem
-            key={ `${ item.l2_transaction_hash }-${ index }` }
+            key={ item.l2_transaction_hash + (isLoading ? index : '') }
             isLoading={ isLoading }
             item={ item }
           />

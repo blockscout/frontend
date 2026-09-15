@@ -17,10 +17,10 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 import multichainConfig from 'src/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import * as cookies from 'src/shared/storage/cookies';
@@ -37,19 +37,14 @@ import { calculateUsdValue } from './utils';
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
   isLoading: boolean;
-  onChainChange?: (chainId: string | null) => void;
 }
 
-const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChange }: Props) => {
+const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => {
   const config = multichainConfig();
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
   const chainIdParam = getQueryParamString(router.query.chain_id);
-  const q = getQueryParamString(router.query.query);
-
-  const [ searchTerm, setSearchTerm ] = React.useState(q || undefined);
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const tokenReputationFilter = React.useMemo(() => {
     return cookies.get(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS) === 'true' ? true : false;
@@ -72,15 +67,10 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
     };
   }, [ addressData?.chain_infos, portfolioQuery.data?.portfolio?.chain_values ]);
 
-  const [ selectedChainId, setSelectedChainId ] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    if (!portfolioQuery.isPlaceholderData && !isLoading) {
-      const [ chainId ] = chainIdParam ? chainIdParam.split(',').filter((chainId) => Object.keys(portfolioData).includes(chainId)) : [];
-      setSelectedChainId(chainId ?? null);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ portfolioQuery.isPlaceholderData, isLoading ]);
+  const selectedChainId = React.useMemo(() => {
+    const [ chainId ] = chainIdParam ? chainIdParam.split(',').filter((chainId) => Object.keys(portfolioData).includes(chainId)) : [];
+    return chainId ?? null;
+  }, [ chainIdParam, portfolioData ]);
 
   const typeFilter = React.useMemo(() => {
     const additionalTypes = getAdditionalTokenTypes(
@@ -91,13 +81,12 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
     return [ 'ERC-20', 'NATIVE', ...additionalTypes.map(({ id }) => id) ].filter(Boolean).join(',');
   }, [ config?.chains, portfolioData ]);
 
-  const tokensQuery = useQueryWithPages({
+  const tokensQuery = useApiPaginatedQuery({
     resourceName: 'multichainAggregator:address_tokens',
     pathParams: { hash },
-    filters: {
+    queryParams: {
       type: typeFilter,
       chain_id: selectedChainId ?? undefined,
-      query: debouncedSearchTerm,
       include_poor_reputation_tokens: tokenReputationFilter,
     },
     options: {
@@ -107,22 +96,17 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
     noScroll: true,
   });
 
-  const handleSelectedChainChange = React.useCallback((chainId: string) => {
-    setSelectedChainId((prev) => {
-      const nextValue = chainId === prev ? null : chainId;
-      tokensQuery.onFilterChange({
-        chain_id: nextValue ?? undefined,
-        query: debouncedSearchTerm,
-      });
-      onChainChange?.(nextValue);
-      return nextValue;
-    });
-  }, [ tokensQuery, debouncedSearchTerm, onChainChange ]);
+  const searchTerm = getQueryParamString(tokensQuery.filters.query);
+  const { onFilterChange } = tokensQuery;
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    setSearchTerm(value);
-    tokensQuery.onFilterChange({ query: value });
-  }, [ tokensQuery ]);
+  const handleSelectedChainChange = React.useCallback((chainId: string) => {
+    const nextValue = chainId === selectedChainId ? undefined : chainId;
+    onFilterChange({ chain_id: nextValue, query: searchTerm });
+  }, [ onFilterChange, selectedChainId, searchTerm ]);
+
+  const handleSearchTermChange = useDebouncedFilterChange((value) => {
+    onFilterChange({ chain_id: selectedChainId ?? undefined, query: value });
+  });
 
   const allTokensQuery = useApiQuery('multichainAggregator:address_tokens', {
     pathParams: { hash },
@@ -200,7 +184,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
       <MultichainAddressTokensTable
         data={ tokensQuery.data.items }
         top={ ACTION_BAR_HEIGHT_DESKTOP }
-        isLoading={ tokensQuery.isPlaceholderData }
+        isLoading={ tokensQuery.isInitialLoading }
         resetKey={ tokensQuery.queryHash }
       />
     </TableContainerScrollable>
@@ -241,10 +225,11 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading, onChainChang
         isError={ tokensQuery.isError }
         itemsNum={ tokensQuery.data?.items?.length }
         actionBar={ actionBar }
-        hasActiveFilters={ Boolean(debouncedSearchTerm) || Boolean(selectedChainId) }
+        hasActiveFilters={ Boolean(searchTerm) || Boolean(selectedChainId) }
         emptyStateProps={{
           term: 'token',
         }}
+        isTransitioning={ tokensQuery.isTransitioning }
       >
         { tokensContent }
       </DataList>

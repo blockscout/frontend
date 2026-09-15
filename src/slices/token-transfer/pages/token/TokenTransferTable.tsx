@@ -9,6 +9,7 @@ import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import TokenTransferTableItem from 'src/slices/token-transfer/pages/token/TokenTransferTableItem';
+import { getTokenTransferKey } from 'src/slices/token-transfer/utils/get-token-transfer-key';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -73,7 +74,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
           ) }
           { data.slice(0, renderedItemsNum).map((item, index) => (
             <TokenTransferTableItem
-              key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
+              key={ getTokenTransferKey(item) + (isLoading ? index : '') }
               data={ item }
               tokenId={ tokenId }
               instance={ instance }

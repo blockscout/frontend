@@ -13,15 +13,17 @@ import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import DataList from 'src/shared/lists/DataList';
 import getItemIndex from 'src/shared/lists/get-item-index';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 const MultichainAccounts = () => {
-  const { isError, isPlaceholderData, data, pagination, chainValue, onChainValueChange, queryHash } = useQueryWithPages({
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(TOP_ADDRESS, 50, {
@@ -34,7 +36,7 @@ const MultichainAccounts = () => {
         exchange_rate: '1',
       }),
     },
-    isMultichain: true,
+    chain,
   });
 
   const pageStartIndex = getItemIndex(0, pagination.page);
@@ -43,14 +45,14 @@ const MultichainAccounts = () => {
   }, [ data?.total_supply ]);
 
   const content = data?.items ? (
-    <MultichainProvider chainId={ chainValue?.[0] }>
+    <MultichainProvider chainId={ chain?.id }>
       <Box hideBelow="lg">
         <AddressesTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -59,7 +61,7 @@ const MultichainAccounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -89,6 +91,7 @@ const MultichainAccounts = () => {
         actionBar={ actionBar }
         showActionBarIfError
         showActionBarIfEmpty
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

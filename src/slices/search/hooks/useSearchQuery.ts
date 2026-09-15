@@ -11,27 +11,25 @@ import { SEARCH_RESULT_ITEM } from 'src/slices/search/stubs';
 import { getExternalSearchItem } from 'src/features/chain-variants/zeta-chain/utils/external-search';
 
 import config from 'src/config';
-import useDebounce from 'src/shared/hooks/useDebounce';
-import useUpdateValueEffect from 'src/shared/hooks/useUpdateValueEffect';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
+import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();
   const q = React.useRef(getQueryParamString(router.query.q));
-  const initialValue = q.current;
-
-  const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const pathname = router.pathname;
 
-  const query = useQueryWithPages({
+  const appliedSearchTerm = getQueryParamString(usePaginationParams('core:search').filters.q);
+  const [ searchTerm, setSearchTerm ] = React.useState(appliedSearchTerm);
+
+  const query = useApiPaginatedQuery({
     resourceName: 'core:search',
-    filters: { q: isBech32Address(debouncedSearchTerm) ? fromBech32Address(debouncedSearchTerm) : debouncedSearchTerm },
+    queryParams: isBech32Address(appliedSearchTerm) ? { q: fromBech32Address(appliedSearchTerm) } : undefined,
     options: {
-      enabled: debouncedSearchTerm.trim().length > 0,
+      enabled: appliedSearchTerm.trim().length > 0,
       placeholderData: generateListStub<'core:search'>(SEARCH_RESULT_ITEM, 50, { next_page_params: {} }),
     },
   });
@@ -44,26 +42,30 @@ export default function useSearchQuery(withRedirectCheck?: boolean) {
 
   const zetaChainCCTXQuery = useApiQuery('zetachain:transactions', {
     queryParams: {
-      hash: debouncedSearchTerm,
+      hash: appliedSearchTerm,
       limit: 50,
       offset: 0,
       direction: 'DESC',
     },
-    queryOptions: { enabled: config.features.zetachain.isEnabled && debouncedSearchTerm.trim().length > 0 },
+    queryOptions: { enabled: config.features.zetachain.isEnabled && appliedSearchTerm.trim().length > 0 },
   });
 
-  useUpdateValueEffect(() => {
-    query.onFilterChange({ q: debouncedSearchTerm });
-  }, debouncedSearchTerm);
+  const { onFilterChange } = query;
+  const applySearchTerm = useDebouncedFilterChange((value) => onFilterChange({ q: value }));
+
+  const handleSearchTermChange = React.useCallback((value: string) => {
+    setSearchTerm(value);
+    applySearchTerm(value);
+  }, [ applySearchTerm ]);
 
   return React.useMemo(() => ({
     searchTerm,
-    debouncedSearchTerm,
-    handleSearchTermChange: setSearchTerm,
+    appliedSearchTerm,
+    handleSearchTermChange,
     query,
     redirectCheckQuery,
     pathname,
     zetaChainCCTXQuery,
-    externalSearchItem: getExternalSearchItem(debouncedSearchTerm),
-  }), [ debouncedSearchTerm, pathname, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery ]);
+    externalSearchItem: getExternalSearchItem(appliedSearchTerm),
+  }), [ appliedSearchTerm, pathname, query, redirectCheckQuery, searchTerm, zetaChainCCTXQuery, handleSearchTermChange ]);
 }

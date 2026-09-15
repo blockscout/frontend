@@ -8,7 +8,7 @@ import type { TokensSortingValue } from 'src/slices/token/types/api';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
 
@@ -16,7 +16,7 @@ import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'core:tokens'> | QueryWithPagesResult<'core:tokens_bridged'> | QueryWithPagesResult<'multichainAggregator:tokens'>;
+  query: ApiPaginatedQueryResult<'core:tokens'> | ApiPaginatedQueryResult<'core:tokens_bridged'> | ApiPaginatedQueryResult<'multichainAggregator:tokens'>;
   onSortChange?: OnValueChangeHandler;
   sort?: TokensSortingValue;
   actionBar?: React.ReactNode;
@@ -27,11 +27,11 @@ interface Props {
 
 const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters, tableTop }: Props) => {
 
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     resetKey: query.queryHash,
   });
 
@@ -49,11 +49,11 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
             return (
               <TokensListItem
-                key={ item.address_hash + (isPlaceholderData ? index : '') + (chainIds ? chainIds : '') }
+                key={ item.address_hash + (isInitialLoading ? index : '') + (chainIds ? chainIds : '') }
                 token={ item }
                 index={ index }
                 page={ pagination.page }
-                isLoading={ isPlaceholderData }
+                isLoading={ isInitialLoading }
               />
             );
           }) }
@@ -65,7 +65,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         <TokensTable
           items={ data.items }
           page={ pagination.page }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           setSorting={ onSortChange }
           sorting={ sort }
           top={ tableTop }
@@ -85,6 +85,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
         term: 'token',
       }}
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

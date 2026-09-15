@@ -39,7 +39,8 @@ type Props = {
   enableTimeIncrement?: boolean;
   top?: number;
   items?: Array<schemas['Transaction']>;
-  isPlaceholderData: boolean;
+  isInitialLoading: boolean;
+  isTransitioning?: boolean;
   isError: boolean;
   setSorting?: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
@@ -58,7 +59,8 @@ const TxsContent = ({
   enableTimeIncrement,
   top,
   items,
-  isPlaceholderData,
+  isInitialLoading,
+  isTransitioning,
   isError,
   setSorting,
   sort,
@@ -69,14 +71,13 @@ const TxsContent = ({
   const isMobile = useIsMobile();
 
   const isTableView = isMobile ? showTableView : true;
-  const isLoading = isPlaceholderData;
 
   const onSortToggle = React.useCallback((field: TransactionsSortingField) => {
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
     setSorting?.(value);
   }, [ sort, setSorting ]);
 
-  const translationQuery = useDescribeTxs(items, currentAddress, isPlaceholderData);
+  const translationQuery = useDescribeTxs(items, currentAddress, isInitialLoading);
 
   const content = (() => {
     if (items && items.length > 0) {
@@ -92,7 +93,7 @@ const TxsContent = ({
               top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
-              isLoading={ isLoading }
+              isLoading={ isInitialLoading }
               stickyHeader={ !isMobile && stickyHeader }
               translationQuery={ translationQuery }
               resetKey={ resetKey }
@@ -104,7 +105,7 @@ const TxsContent = ({
         <TxsList
           showBlockInfo={ showBlockInfo }
           socketType={ socketType }
-          isLoading={ isLoading }
+          isLoading={ isInitialLoading }
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
           items={ items }
@@ -146,6 +147,7 @@ const TxsContent = ({
       emptyText="There are no transactions."
       actionBar={ actionBar }
       hasActiveFilters={ Boolean(filterValue) }
+      isTransitioning={ isTransitioning }
       emptyStateProps={{
         term: 'transaction',
       }}

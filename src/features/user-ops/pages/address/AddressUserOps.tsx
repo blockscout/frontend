@@ -7,7 +7,7 @@ import UserOpsContent from 'src/features/user-ops/pages/index/UserOpsContent';
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
 import useIsMounted from 'src/shared/hooks/useIsMounted';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -23,7 +23,7 @@ const AddressUserOps = ({ scrollRef, shouldRender = true, isQueryEnabled = true 
 
   const hash = getQueryParamString(router.query.hash);
 
-  const userOpsQuery = useQueryWithPages({
+  const userOpsQuery = useApiPaginatedQuery({
     resourceName: 'core:user_ops',
     scrollRef,
     options: {
@@ -33,7 +33,7 @@ const AddressUserOps = ({ scrollRef, shouldRender = true, isQueryEnabled = true 
         page_size: 50,
       } }),
     },
-    filters: { sender: hash },
+    queryParams: { sender: hash },
   });
 
   if (!isMounted || !shouldRender) {

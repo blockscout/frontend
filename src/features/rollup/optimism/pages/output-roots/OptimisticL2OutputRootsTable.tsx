@@ -40,7 +40,7 @@ const OptimisticL2OutputRootsTable = ({ items, top, isLoading, resetKey }: Props
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <OptimisticL2OutputRootsTableItem
-            key={ item.l2_output_index + (Number(isLoading ? index : '') ? String(index) : '') }
+            key={ item.l2_output_index + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
           />
