@@ -1,0 +1,320 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import {
+  DEFAULT_BASE_REF,
+  DOCKER_IMAGE_NAME,
+  DOCKER_IMAGE_OS_SUFFIX,
+  ENV_FILE,
+  ENVS_SCRIPT_FILE,
+  LINUX_MODULES_MARKER,
+  MAKE_ENVS_SCRIPT,
+  PACKAGE_FILE,
+  PLAYWRIGHT_BIN,
+  PLAYWRIGHT_CONFIG_FILE,
+  PLAYWRIGHT_NODE_OPTIONS,
+  PLAYWRIGHT_PACKAGE_FILE,
+  SPRITE_APP_ENV,
+} from './config';
+import type { Runtime, Step } from './index';
+import { parseArgs, run } from './index';
+
+const ENV_FILE_CONTENT = 'NEXT_PUBLIC_FROM_FILE=file\nNEXT_PUBLIC_APP_ENV=testing\n';
+const MERGE_BASE = 'a1b2c3d4';
+const PLAYWRIGHT_VERSION = '1.99.0';
+const PNPM_VERSION = '12.3.4';
+const FILES: Record<string, string> = {
+  [ENV_FILE]: ENV_FILE_CONTENT,
+  [PLAYWRIGHT_PACKAGE_FILE]: JSON.stringify({ version: PLAYWRIGHT_VERSION }),
+  [PACKAGE_FILE]: JSON.stringify({ packageManager: `pnpm@${ PNPM_VERSION }` }),
+};
+
+interface RecordingRuntime extends Runtime {
+  readonly steps: Array<Step>;
+  readonly reads: Array<string>;
+  readonly baseRefs: Array<string>;
+}
+
+interface RecordingOptions {
+  readonly statuses?: ReadonlyArray<number>;
+  readonly changedFiles?: ReadonlyArray<string>;
+  readonly existingFiles?: ReadonlyArray<string>;
+  readonly isTTY?: boolean;
+}
+
+// A runtime that records every step and answers each with the next status from the list, 0 once
+// the list runs out; the diff lookup answers with a fixed merge-base and the given changed files.
+function recordingRuntime({ statuses = [], changedFiles = [], existingFiles = [], isTTY = false }: RecordingOptions = {}): RecordingRuntime {
+  const steps: Array<Step> = [];
+  const reads: Array<string> = [];
+  const baseRefs: Array<string> = [];
+  const pending = [ ...statuses ];
+  return {
+    steps,
+    reads,
+    baseRefs,
+    isTTY,
+    spawn: (step) => {
+      steps.push(step);
+      return pending.shift() ?? 0;
+    },
+    readFile: (file) => {
+      reads.push(file);
+      return FILES[file];
+    },
+    fileExists: (file) => existingFiles.includes(file),
+    changes: (baseRef) => {
+      baseRefs.push(baseRef);
+      return { baseCommit: MERGE_BASE, changedFiles };
+    },
+  };
+}
+
+function playwrightArgsOf(runtime: RecordingRuntime): ReadonlyArray<string> {
+  return runtime.steps[runtime.steps.length - 1].args;
+}
+
+describe('parseArgs', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('defaults to a plain run with nothing to pass through', () => {
+    expect(parseArgs([])).toEqual({
+      baseRef: DEFAULT_BASE_REF,
+      diffSelected: false,
+      docker: false,
+      dockerDeps: false,
+      playwrightArgs: [],
+    });
+  });
+
+  // The whole point of the tool: whatever it does not own reaches playwright in the order given,
+  // with a multi-word value staying one token.
+  it('passes unknown flags and positionals through in argv order', () => {
+    const argv = [ 'src/a.pw.tsx', '--project=default', '-g', 'renders the empty state', '--update-snapshots', 'src/b.pw.tsx' ];
+    expect(parseArgs(argv).playwrightArgs).toEqual(argv);
+  });
+
+  it('splits its own flags off from the pass-through list', () => {
+    expect(parseArgs([ '--changed', '--project=default', '--base', 'upstream/main', 'src/a.pw.tsx' ])).toEqual({
+      baseRef: 'upstream/main',
+      diffSelected: true,
+      docker: false,
+      dockerDeps: false,
+      playwrightArgs: [ '--project=default', 'src/a.pw.tsx' ],
+    });
+  });
+
+  it('selects diff mode from --changed, with an optional inline ref', () => {
+    expect(parseArgs([ '--changed' ])).toMatchObject({ diffSelected: true, baseRef: DEFAULT_BASE_REF });
+    expect(parseArgs([ '--changed=upstream/main' ])).toMatchObject({ diffSelected: true, baseRef: 'upstream/main' });
+  });
+
+  // The CI invocation: --changed must not consume the following token as its ref.
+  it('leaves the token after a bare --changed alone', () => {
+    expect(parseArgs([ '--changed', '--project=mobile' ])).toMatchObject({
+      baseRef: DEFAULT_BASE_REF,
+      playwrightArgs: [ '--project=mobile' ],
+    });
+  });
+
+  it('takes the docker switches', () => {
+    expect(parseArgs([ '--docker' ])).toMatchObject({ docker: true, dockerDeps: false });
+    expect(parseArgs([ '--docker-deps' ])).toMatchObject({ docker: false, dockerDeps: true });
+  });
+
+  it('prints the usage text and exits on --help', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    vi.spyOn(process, 'exit').mockImplementation((code) => {
+      throw new Error(`exited with ${ code }`);
+    });
+
+    expect(() => parseArgs([ '--help' ])).toThrow('exited with 0');
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('Usage:'));
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('--changed[=<ref>]'));
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('--docker-deps'));
+  });
+});
+
+describe('run', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it('runs the envs script, the sprite build, then playwright with the pass-through args', () => {
+    const runtime = recordingRuntime();
+
+    run([ 'src/a.pw.tsx', '-g', 'renders the empty state' ], runtime);
+
+    expect(runtime.reads).toEqual([ ENV_FILE ]);
+    expect(runtime.steps.map((step) => [ step.command, ...step.args ])).toEqual([
+      [ MAKE_ENVS_SCRIPT, ENVS_SCRIPT_FILE ],
+      [ 'pnpm', 'svg:build-sprite' ],
+      [ PLAYWRIGHT_BIN, 'test', '-c', PLAYWRIGHT_CONFIG_FILE, 'src/a.pw.tsx', '-g', 'renders the empty state' ],
+    ]);
+  });
+
+  // The sprite and playwright need the pw app env; the envs script must not see it, or envs.js
+  // would carry a different app env than the file declares.
+  it('gives every child the env file, and only the sprite and playwright the pw app env', () => {
+    const runtime = recordingRuntime();
+
+    run([], runtime);
+
+    const [ envsStep, spriteStep, playwrightStep ] = runtime.steps;
+    expect(envsStep.env).toMatchObject({ NEXT_PUBLIC_FROM_FILE: 'file', NEXT_PUBLIC_APP_ENV: 'testing' });
+    expect(spriteStep.env).toMatchObject({ NEXT_PUBLIC_FROM_FILE: 'file', NEXT_PUBLIC_APP_ENV: SPRITE_APP_ENV });
+    expect(playwrightStep.env).toMatchObject({
+      NEXT_PUBLIC_FROM_FILE: 'file',
+      NEXT_PUBLIC_APP_ENV: SPRITE_APP_ENV,
+      NODE_OPTIONS: PLAYWRIGHT_NODE_OPTIONS,
+    });
+    expect(envsStep.env.NODE_OPTIONS).toBeUndefined();
+    expect(spriteStep.env.NODE_OPTIONS).toBeUndefined();
+  });
+
+  it('lets a variable already in the shell win over the env file', () => {
+    vi.stubEnv('NEXT_PUBLIC_FROM_FILE', 'shell');
+    const runtime = recordingRuntime();
+
+    run([], runtime);
+
+    expect(runtime.steps[0].env.NEXT_PUBLIC_FROM_FILE).toBe('shell');
+  });
+
+  it('returns playwright\'s exit code', () => {
+    expect(run([], recordingRuntime({ statuses: [ 0, 0, 0 ] }))).toBe(0);
+    expect(run([], recordingRuntime({ statuses: [ 0, 0, 1 ] }))).toBe(1);
+  });
+
+  it('stops at the first failing pre-run step and returns its status', () => {
+    const runtime = recordingRuntime({ statuses: [ 0, 2 ] });
+
+    expect(run([], runtime)).toBe(2);
+    expect(runtime.steps).toHaveLength(2);
+  });
+});
+
+describe('run --docker', () => {
+  const IMAGE = `${ DOCKER_IMAGE_NAME }:v${ PLAYWRIGHT_VERSION }${ DOCKER_IMAGE_OS_SUFFIX }`;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  // The whole command line minus --docker goes to the container, so the inner run sees --changed
+  // and the pass-through args exactly as the caller wrote them.
+  it('runs one docker step with the image derived from the installed playwright and the rest of the argv inside', () => {
+    const runtime = recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ] });
+
+    const status = run([ '--changed', '--docker', 'src/a.pw.tsx', '--update-snapshots' ], runtime);
+
+    expect(status).toBe(0);
+    expect(runtime.steps).toHaveLength(1);
+    const [ step ] = runtime.steps;
+    expect(step.command).toBe('docker');
+    expect(step.args).toContain(IMAGE);
+    expect(step.args.slice(-4)).toEqual([ 'bash', '--changed', 'src/a.pw.tsx', '--update-snapshots' ]);
+    expect(step.args.join(' ')).toContain(`corepack prepare pnpm@${ PNPM_VERSION }`);
+    expect(runtime.baseRefs).toEqual([]);
+  });
+
+  it('gives docker a terminal only when stdin is one', () => {
+    const withTTY = recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ], isTTY: true });
+    run([ '--docker' ], withTTY);
+    expect(withTTY.steps[0].args).toContain('-it');
+
+    const withoutTTY = recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ], isTTY: false });
+    run([ '--docker' ], withoutTTY);
+    expect(withoutTTY.steps[0].args).not.toContain('-it');
+  });
+
+  it('returns docker\'s exit code', () => {
+    expect(run([ '--docker' ], recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ], statuses: [ 3 ] }))).toBe(3);
+  });
+
+  it('refuses to start without the Linux dependencies and names the command that installs them', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    const runtime = recordingRuntime();
+
+    expect(run([ '--docker' ], runtime)).toBe(1);
+    expect(runtime.steps).toHaveLength(0);
+    expect(error).toHaveBeenCalledWith(expect.stringContaining('pnpm test:pw --docker-deps'));
+  });
+
+  it('installs the Linux dependencies with --docker-deps, without needing them first', () => {
+    const runtime = recordingRuntime();
+
+    expect(run([ '--docker-deps' ], runtime)).toBe(0);
+    expect(runtime.steps).toHaveLength(1);
+    expect(runtime.steps[0].command).toBe('docker');
+    expect(runtime.steps[0].args).toContain(IMAGE);
+    expect(runtime.steps[0].args.join(' ')).toContain('pnpm install --store-dir');
+  });
+
+  it('rejects --docker-deps combined with any other flag or argument', () => {
+    for (const argv of [ [ '--docker-deps', '--docker' ], [ '--docker-deps', '--changed' ], [ '--docker-deps', 'src/a.pw.tsx' ] ]) {
+      const runtime = recordingRuntime();
+      expect(() => run(argv, runtime)).toThrow('--docker-deps takes no other flag or argument');
+      expect(runtime.steps).toHaveLength(0);
+    }
+  });
+});
+
+describe('run --changed', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('does not look at the diff in a plain run', () => {
+    const runtime = recordingRuntime();
+
+    run([ 'src/a.pw.tsx' ], runtime);
+
+    expect(runtime.baseRefs).toEqual([]);
+    expect(playwrightArgsOf(runtime)).not.toContainEqual(expect.stringContaining('--only-changed'));
+  });
+
+  it('hands the merge-base to playwright after the pass-through args', () => {
+    const runtime = recordingRuntime({ changedFiles: [ 'src/ui/Foo.tsx' ] });
+
+    run([ '--changed', '--project=default', '--pass-with-no-tests' ], runtime);
+
+    expect(runtime.baseRefs).toEqual([ DEFAULT_BASE_REF ]);
+    expect(playwrightArgsOf(runtime)).toEqual([
+      'test', '-c', PLAYWRIGHT_CONFIG_FILE, '--project=default', '--pass-with-no-tests', `--only-changed=${ MERGE_BASE }`,
+    ]);
+  });
+
+  it('resolves the merge-base against the ref from --changed=<ref> or --base', () => {
+    const inline = recordingRuntime();
+    run([ '--changed=upstream/main' ], inline);
+    expect(inline.baseRefs).toEqual([ 'upstream/main' ]);
+
+    const separate = recordingRuntime();
+    run([ '--base', 'release/1.0' ], separate);
+    expect(separate.baseRefs).toEqual([ 'release/1.0' ]);
+    expect(playwrightArgsOf(separate)).toContain(`--only-changed=${ MERGE_BASE }`);
+  });
+
+  it('runs the whole suite and names the file that forced it', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
+    const runtime = recordingRuntime({ changedFiles: [ 'src/ui/Foo.tsx', 'src/sprite/icons/arrows/east.svg' ] });
+
+    run([ '--changed', '--project=mobile' ], runtime);
+
+    expect(playwrightArgsOf(runtime)).toEqual([ 'test', '-c', PLAYWRIGHT_CONFIG_FILE, '--project=mobile' ]);
+    expect(log).toHaveBeenCalledWith(expect.stringContaining('src/sprite/icons/arrows/east.svg'));
+  });
+
+  // The tool must not short-circuit on an empty diff: Playwright selects nothing and the caller's
+  // --pass-with-no-tests decides the exit code, locally and in CI alike.
+  it('still invokes playwright with --only-changed on an empty diff', () => {
+    const runtime = recordingRuntime({ changedFiles: [] });
+
+    run([ '--changed' ], runtime);
+
+    expect(runtime.steps).toHaveLength(3);
+    expect(playwrightArgsOf(runtime)).toContain(`--only-changed=${ MERGE_BASE }`);
+  });
+});
