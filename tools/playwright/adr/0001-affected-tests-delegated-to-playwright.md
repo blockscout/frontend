@@ -44,7 +44,11 @@ edits do not affect the tests.
 
 - Selection quality is Playwright's: an upgrade can change which tests a diff selects, and the fix for a
   mis-selection is an upstream report, not a local patch. `--only-changed --list` reporting zero tests
-  in CT mode is one such report; `../CONTEXT.md` links it.
+  in CT mode was reproduced but not reported: Playwright 1.63 froze the `@playwright/experimental-ct-*`
+  packages, and in the replacement stories model no import edge links a test to its component, so
+  `--only-changed` cannot select by component there at all (maintainers' position:
+  microsoft/playwright#40691). This decision is revisited when the suite migrates off the experimental
+  packages.
 - The force-full list must stay a mirror of the `pw_changes` gate step in
   `.github/workflows/checks.yml`; a path added to one without the other either wastes a matrix run or
   skips a needed one.

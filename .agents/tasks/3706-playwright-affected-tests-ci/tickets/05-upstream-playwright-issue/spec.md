@@ -4,6 +4,7 @@
 | --- | --- |
 | Parent spec | [`../../spec.md`](../../spec.md), ticket 05 of #3706 |
 | Blocked by | T01 |
+| Outcome | **Closed without filing.** The reproduction and draft were done (`notes.md`); the developer decided not to post because Playwright 1.63 froze the `@playwright/experimental-ct-*` packages and the maintainers' stated position (microsoft/playwright#40691) rules out source-to-test mapping in the replacement stories model. Revisit at migration time. |
 
 ## What to build
 
@@ -16,14 +17,14 @@ ticket.
 
 ## Acceptance criteria
 
-- [ ] `notes.md` holds the draft: title, body per the `create-issue` template (Description, Steps to
+- [x] `notes.md` holds the draft: title, body per the `create-issue` template (Description, Steps to
       Reproduce with a minimal standalone CT project — not this repo — Expected Behavior, Additional
       Context with the Playwright version), and the reproduction was actually run in a scratch directory
       with the pinned Playwright version before drafting.
-- [ ] The draft names no people and links nothing private (public-safe per `create-issue`).
-- [ ] The issue exists on `microsoft/playwright`, posted from the developer's `gh` account after their
+- [x] The draft names no people and links nothing private (public-safe per `create-issue`).
+- [ ] ~~Dropped~~ The issue exists on `microsoft/playwright`, posted from the developer's `gh` account after their
       approval.
-- [ ] `tools/playwright/CONTEXT.md` has a row "Why is there no `--list` / dry-run?" pointing at the issue
+- [ ] ~~Dropped~~ `tools/playwright/CONTEXT.md` has a row "Why is there no `--list` / dry-run?" pointing at the issue
       URL. `pnpm lint:doc-links` clean.
 
 ## Skill inputs
@@ -39,6 +40,6 @@ ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Reproduce in a scratch CT project; write the draft to `notes.md`
-- [ ] 2 `[human]` Approve (or edit) the draft
-- [ ] 3 `[agent]` Post it — skill: `create-issue`; link from `CONTEXT.md`; doc-links
+- [x] 1 `[agent]` Reproduce in a scratch CT project; write the draft to `notes.md`
+- [x] 2 `[human]` Approve (or edit) the draft — decided: do not post
+- [ ] ~~Dropped~~ 3 `[agent]` Post it — skill: `create-issue`; link from `CONTEXT.md`; doc-links

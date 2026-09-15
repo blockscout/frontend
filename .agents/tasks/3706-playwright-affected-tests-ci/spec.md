@@ -65,9 +65,12 @@ fraction of today's wall time and a human or agent has one command to reach for.
 12. `.agents/rules/tests-visual.md` and the tool's `CONTEXT.md` document the new commands; a
     module-scoped ADR under `tools/playwright/adr/` records why selection is delegated to Playwright rather
     than a custom dependency walk.
-13. An upstream Playwright issue is filed for `--only-changed --list` reporting zero tests in
+13. ~~An upstream Playwright issue is filed for `--only-changed --list` reporting zero tests in
     component-testing mode (list mode never sets up the CT plugin, so no component dependencies are
-    populated), and linked from the tool's `CONTEXT.md`.
+    populated), and linked from the tool's `CONTEXT.md`.~~ **Dropped at ticket 05**: Playwright 1.63
+    froze the experimental CT packages and the maintainers rule out source-to-test mapping in the
+    replacement stories model (microsoft/playwright#40691). Reproduction and draft kept in
+    `tickets/05-upstream-playwright-issue/notes.md`; the migration question is deferred, deliberately.
 
 ## Data & API
 
@@ -104,8 +107,8 @@ None. This is CI/tooling only.
   `workers` above 1 is left for a later, measured change because the flake rate is already non-trivial.
 - **Agent surface is the JSON report, not a dry-run.** Playwright's `--list` is the natural "which tests
   would run" answer but is broken with `--only-changed` in CT mode. A bespoke dry-run would have to
-  drive Playwright internals and would break on upgrade; the JSON report plus the upstream bug report
-  is the chosen shape for now.
+  drive Playwright internals and would break on upgrade; the JSON report is the chosen shape for now
+  (the upstream bug report was dropped, see requirement 13).
 - **Full runs stay on pre-release and manual dispatch.** Two years of this cadence have surfaced few broken
   tests on `main`; adding a push-to-main full run is deferred.
 

@@ -14,6 +14,7 @@ The `pnpm test:pw` entrypoint for Playwright component tests (`*.pw.tsx`). It pr
 | `--changed` ran the full suite. Why? | a changed file is on the force-full list in `./config.ts`; the tool prints which one |
 | `--changed` ran zero tests. Why? | the bundler's module graph reaches no registered component from the diff — a type-only file, a server-only module, a doc. If the edit does reach the browser some other way, it belongs on the force-full list |
 | Why is selection Playwright's job and not a dependency walk? | `./adr/0001-affected-tests-delegated-to-playwright.md` |
+| Why is there no `--list` / dry-run of what `--changed` would select? | `--only-changed --list` lists zero tests in CT mode (list mode never sets up the CT plugin); not reported upstream because the CT packages are frozen as of Playwright 1.63, see the ADR's consequences |
 | Which file implements each part? | the file map below |
 
 ## Constraints
