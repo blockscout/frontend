@@ -111,7 +111,8 @@ None. This is CI/tooling only.
 
 ## Out of scope
 
-- Fixing the vitest gate's own two-dot `--changed=origin/main` diff (same bug, separate PR).
+- The vitest gate's `--changed=origin/main` selection: vitest already diffs `<ref>...HEAD` (merge-base
+  semantics), so it has no equivalent bug and needs no change.
 - Raising Playwright `workers` in CI or tuning `retries`.
 - A scheduled or push-to-main full Playwright run.
 - Sharding `mobile` or `dark-color-mode`.
