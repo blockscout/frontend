@@ -33,3 +33,21 @@ export const FORCE_FULL_PATHS: ReadonlyArray<string> = [
   PLAYWRIGHT_CONFIG_FILE,
   'pnpm-lock.yaml',
 ];
+
+// Where --docker runs. The tag is derived at run time from the installed @playwright/test version,
+// because the browsers baked into the image must match the runner. The name and the OS suffix are
+// paired with `container.image` in .github/workflows/checks.yml — keep the two in sync, so a Mac
+// --docker run renders with the same browsers as CI.
+export const DOCKER_IMAGE_NAME = 'mcr.microsoft.com/playwright';
+export const DOCKER_IMAGE_OS_SUFFIX = '-noble';
+export const PLAYWRIGHT_PACKAGE_FILE = path.join('node_modules', '@playwright', 'test', 'package.json');
+export const PACKAGE_FILE = 'package.json';
+
+// The Linux dependency tree --docker mounts over node_modules, so Node inside the container resolves
+// the Linux-native optional packages instead of the Mac ones. --docker-deps installs it, keeping the
+// pnpm store in a named volume across installs.
+export const LINUX_MODULES_DIR = 'node_modules_linux';
+export const LINUX_MODULES_MARKER = path.join(LINUX_MODULES_DIR, '.modules.yaml');
+export const PNPM_STORE_VOLUME = 'blockscout-pnpm-linux';
+export const CONTAINER_WORKDIR = '/work/';
+export const CONTAINER_PNPM_STORE = '/pnpm-store';

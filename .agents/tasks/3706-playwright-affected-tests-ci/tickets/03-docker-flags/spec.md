@@ -17,24 +17,24 @@ the image behind.
 
 ## Acceptance criteria
 
-- [ ] `--docker` strips itself from the argv, checks `node_modules_linux/.modules.yaml` exists (else exits 1
+- [x] `--docker` strips itself from the argv, checks `node_modules_linux/.modules.yaml` exists (else exits 1
       with the "install them with `pnpm test:pw --docker-deps`" message), and runs `docker run --rm
       --ipc=host -v <cwd>:/work/ -v <cwd>/node_modules_linux:/work/node_modules -w /work/ <image> bash -c
       '<corepack enable + prepare pnpm@<packageManager version>> && PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false
       pnpm test:pw <remaining args>'`. `-it` is added only when `process.stdin.isTTY`, so an agent or CI
       caller without a terminal does not hit "the input device is not a TTY".
-- [ ] `--docker-deps` runs the equivalent of `tools/scripts/pw.docker.deps.sh` inside the same image with
+- [x] `--docker-deps` runs the equivalent of `tools/scripts/pw.docker.deps.sh` inside the same image with
       the `blockscout-pnpm-linux` store volume; it is exclusive with every other flag and arg (error
       otherwise).
-- [ ] The image is `mcr.microsoft.com/playwright:v<version>-noble` with `<version>` read from
+- [x] The image is `mcr.microsoft.com/playwright:v<version>-noble` with `<version>` read from
       `node_modules/@playwright/test/package.json`; the pnpm version comes from `package.json`'s
       `packageManager` field. Neither is hardcoded in the tool. `config.ts` carries the image *name* and the
       `-noble` suffix with a comment pairing it with `container.image` in `.github/workflows/checks.yml`.
-- [ ] `package.json`: `test:pw:docker` → `pnpm test:pw --docker`, `test:pw:docker:deps` → `pnpm test:pw
+- [x] `package.json`: `test:pw:docker` → `pnpm test:pw --docker`, `test:pw:docker:deps` → `pnpm test:pw
       --docker-deps`; `tools/scripts/pw.docker.sh` and `tools/scripts/pw.docker.deps.sh` deleted.
-- [ ] `pnpm test:pw --docker <one .pw.tsx> --update-snapshots` completes on a Mac and rewrites that file's
+- [x] `pnpm test:pw --docker <one .pw.tsx> --update-snapshots` completes on a Mac and rewrites that file's
       `__screenshots__` (then `git checkout` them — no baseline changes are committed by this ticket).
-- [ ] Specs: the docker argv is built by a pure function (`buildDockerCommand(args, { tty, image, pnpm })`)
+- [x] Specs: the docker argv is built by a pure function (`buildDockerCommand(args, { tty, image, pnpm })`)
       and tested for the arg passthrough, TTY toggle, and the deps variant.
 
 ## Details
@@ -46,8 +46,8 @@ the image behind.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `--docker` / `--docker-deps` flags, `buildDockerCommand`, image/pnpm version derivation;
+- [x] 1 `[agent]` `--docker` / `--docker-deps` flags, `buildDockerCommand`, image/pnpm version derivation;
       specs
-- [ ] 2 `[agent]` `package.json` aliases, delete the two shell scripts
-- [ ] 3 `[agent]` One real `--docker` run of a single file with `--update-snapshots`, revert the screenshots;
+- [x] 2 `[agent]` `package.json` aliases, delete the two shell scripts
+- [x] 3 `[agent]` One real `--docker` run of a single file with `--update-snapshots`, revert the screenshots;
       `CONTEXT.md` "how do I update screenshots?" row; lint

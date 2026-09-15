@@ -10,12 +10,14 @@ import {
   DEFAULT_BASE_REF,
   ENV_FILE,
   ENVS_SCRIPT_FILE,
+  LINUX_MODULES_MARKER,
   MAKE_ENVS_SCRIPT,
   PLAYWRIGHT_BIN,
   PLAYWRIGHT_CONFIG_FILE,
   PLAYWRIGHT_NODE_OPTIONS,
   SPRITE_APP_ENV,
 } from './config';
+import { buildDockerCommand, buildDockerDepsCommand, resolveDockerOptions } from './docker';
 import { selectMode } from './select';
 
 // The single entrypoint for Playwright component tests. The tool owns a handful of flags — selection
@@ -43,8 +45,13 @@ const USAGE = `Usage:
       playwright/**, ${ PLAYWRIGHT_CONFIG_FILE } or pnpm-lock.yaml runs the whole suite instead.
 
   test:pw --docker [...]
-      Run the same command inside the pinned Playwright image, with the Linux node_modules mounted.
-      --docker-deps installs those Linux dependencies (once, before the first --docker run).
+      Run the same command inside the Playwright image matching the installed @playwright/test, with
+      the Linux node_modules_linux mounted over node_modules — how CI-matching screenshots are made
+      on a Mac. Docker gets a terminal only when stdin is one.
+
+  test:pw --docker-deps
+      Install the Linux dependencies into node_modules_linux (once, before the first --docker run).
+      Takes no other flag or argument.
 
   Before every run the tool regenerates ${ ENVS_SCRIPT_FILE } from ${ ENV_FILE } and builds the SVG
   sprite for the ${ SPRITE_APP_ENV } app env. Every run writes playwright-results/report.json next
@@ -88,12 +95,6 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
   return options;
 }
 
-// A flag the parser knows but the tool cannot honour yet must fail loudly: passing it through would
-// let `playwright test` reject it with an error about the wrong program.
-function rejectUnimplemented(options: CliOptions): void {
-  if (options.docker || options.dockerDeps) throw new Error('--docker / --docker-deps are not implemented yet');
-}
-
 type ProcessEnv = typeof process.env;
 
 export interface Step {
@@ -111,7 +112,9 @@ export interface BranchChanges {
 export interface Runtime {
   readonly spawn: (step: Step) => number;
   readonly readFile: (file: string) => string;
+  readonly fileExists: (file: string) => boolean;
   readonly changes: (baseRef: string) => BranchChanges;
+  readonly isTTY: boolean;
 }
 
 const DEFAULT_RUNTIME: Runtime = {
@@ -121,11 +124,40 @@ const DEFAULT_RUNTIME: Runtime = {
     return result.status ?? 1;
   },
   readFile: (file) => fs.readFileSync(file, 'utf8'),
+  fileExists: (file) => fs.existsSync(file),
   changes: (baseRef) => {
     const baseCommit = resolveBaseCommit(baseRef, process.cwd());
     return { baseCommit, changedFiles: getChangedFiles(baseCommit, process.cwd()) };
   },
+  isTTY: process.stdin.isTTY === true,
 };
+
+const DOCKER_FLAG = '--docker';
+
+// --docker-deps is an install, not a run: anything else on the command line has nowhere to go.
+function rejectDepsCompanions(options: CliOptions): void {
+  const hasCompanion = options.docker || options.diffSelected || options.playwrightArgs.length > 0;
+  if (hasCompanion) throw new Error('--docker-deps takes no other flag or argument');
+}
+
+// The container runs the same command line minus --docker, so --changed and every pass-through arg
+// reach the inner `pnpm test:pw` untouched.
+function runInDocker(argv: ReadonlyArray<string>, options: CliOptions, runtime: Runtime): number {
+  /* eslint-disable-next-line no-restricted-properties -- the docker child inherits the shell env like every other child */
+  const env = process.env;
+  const dockerOptions = resolveDockerOptions(runtime.readFile, runtime.isTTY);
+
+  if (options.dockerDeps) {
+    rejectDepsCompanions(options);
+    return runtime.spawn({ ...buildDockerDepsCommand(dockerOptions), env });
+  }
+
+  if (!runtime.fileExists(LINUX_MODULES_MARKER)) {
+    console.error('Linux dependencies are missing. Install them with: pnpm test:pw --docker-deps');
+    return 1;
+  }
+  return runtime.spawn({ ...buildDockerCommand(argv.filter((arg) => arg !== DOCKER_FLAG), dockerOptions), env });
+}
 
 // A variable already in the shell wins over the file's value, as it did under dotenv-cli.
 function loadEnvFile(runtime: Runtime, shellEnv: ProcessEnv): ProcessEnv {
@@ -165,7 +197,8 @@ export function buildSteps(options: CliOptions, env: ProcessEnv, extraPlaywright
 
 export function run(argv: ReadonlyArray<string>, runtime: Runtime = DEFAULT_RUNTIME): number {
   const options = parseArgs(argv);
-  rejectUnimplemented(options);
+  if (options.docker || options.dockerDeps) return runInDocker(argv, options, runtime);
+
   const extraPlaywrightArgs = selectionArgs(options, runtime);
 
   /* eslint-disable-next-line no-restricted-properties -- a Node CLI forwarding its own shell env to the children it spawns */
