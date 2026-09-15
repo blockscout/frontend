@@ -155,8 +155,9 @@ const config: PlaywrightTestConfig = defineConfig({
   },
 
   // configured projects
-  // these projects are also used for sharding tests in CI
-  // when adding or deleting a project, make sure to update github workflow accordingly
+  // these projects are also used for sharding tests in CI: the `pw_tests` matrix in
+  // .github/workflows/checks.yml runs one job per project, with `default` split into three shards
+  // when adding or deleting a project, or changing the shard count, make sure to update github workflow accordingly
   projects: [
     {
       name: 'default',

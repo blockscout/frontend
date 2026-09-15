@@ -39,7 +39,6 @@
     "test:pw": "./tools/playwright/run.sh",
     "test:pw:docker": "pnpm test:pw --docker",
     "test:pw:docker:deps": "pnpm test:pw --docker-deps",
-    "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest",
     "test:code-complexity": "./tools/code-complexity/run.sh",

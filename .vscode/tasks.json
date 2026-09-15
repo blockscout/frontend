@@ -155,27 +155,6 @@
                 "instanceLimit": 1
             }
         },
-        {
-            "type": "shell",
-            "command": "pnpm test:pw:detect-affected",
-            "problemMatcher": [],
-            "label": "pw: detect affected",
-            "detail": "detect PW tests affected by changes in current branch",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiBlue",
-                "id": "diff"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            },
-        },
 
         // VITEST TESTS
         {
@@ -349,7 +328,6 @@
             "options": [
               "",
               "--update-snapshots",
-              "--update-snapshots --affected",
               "--ui",
             ],
             "default": ""
