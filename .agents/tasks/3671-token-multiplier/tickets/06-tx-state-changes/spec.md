@@ -19,8 +19,8 @@ How to verify: `pnpm dev:preset eth_sepolia`, open the tx of a live transfer wit
 - [ ] `getStateElements` renders before / after / change through `AssetValue` (no exchange rate — state
       changes never showed USD) with the state change's `ui_multiplier` passed via T01's predicate; the sign
       and colour of the change are preserved.
-- [ ] A state change with `ui_multiplier: null` follows Q01's answer, through the same single branch T03
-      introduced.
+- [ ] A state change with `ui_multiplier: null` renders unscaled with no tag through the predicate's
+      existing `undefined` path (Q01); no fallback to the token's current factor.
 - [ ] Non-ERC-8056 token state changes render the same numbers as before (existing `TxState.pw.tsx`
       baselines unchanged apart from the tooltip now existing).
 - [ ] Playwright scaffold: `TxState.pw.tsx` gains an ERC-8056 row from a new state-change mock.

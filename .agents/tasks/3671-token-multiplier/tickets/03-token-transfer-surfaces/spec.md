@@ -14,8 +14,9 @@ transfers tab (all share the same table/list items), and the transfer rows insid
 snippet). The `ERC-8056` filter option in the type filter needs no work — it comes from the env list — but
 this ticket verifies it against the live API's `?type=ERC-8056`.
 
-Q01 decides what a transfer with `total.ui_multiplier: null` does (the two live transfers are both null);
-fold its answer into the predicate call for transfers before starting.
+Q01 is resolved: the API always populates `total.ui_multiplier`, so a `null` is a data gap and
+`getUiMultiplier` already degrades it to unscaled ERC-20 rendering. No fallback to the token's current
+factor — pass the transfer's own value straight into the predicate.
 
 ## Acceptance criteria
 
@@ -27,8 +28,8 @@ How to verify: `pnpm dev:preset eth_sepolia`, open `/token-transfers` filtered t
       `AssetValue`/`TokenValue` in: `components/list/TokenTransferTableItem` + `ListItem`,
       `pages/token/TokenTransferTableItem` + `ListItem`, `pages/index/TokenTransfersTableItem` + `ListItem`,
       and `TokenTransferSnippetFiat`.
-- [ ] A transfer with `total.ui_multiplier: null` behaves as Q01's answer says; the behaviour is a single
-      branch in one place, not repeated per row.
+- [ ] A transfer with `total.ui_multiplier: null` renders unscaled with no tag (Q01: the predicate's
+      existing `undefined` path); no per-row fallback to `token.ui_multiplier` anywhere.
 - [ ] The tag is rendered beside the amount on every one of those rows, including the tx-details snippet.
 - [ ] `TokenTransferSnippet` routes an ERC-8056 transfer to the fiat snippet (fungible), never the NFT one.
 - [ ] Playwright scaffolds: `TokenTransferTable.pw.tsx` / `TokenTransferList.pw.tsx` and
@@ -52,7 +53,7 @@ Mockups: [token transfers table](https://www.figma.com/design/CEgxqWOzVulwfTUHhs
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Wire the six transfer table/list items and the fiat snippet; Q01 null-handling in one place
+- [ ] 1 `[agent]` Wire the six transfer table/list items and the fiat snippet through the predicate; no null fallback
 - [ ] 2 `[agent]` Playwright scaffolds for the ERC-8056 cases
 - [ ] 3 `[human]` Style rows to mockup and generate baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-28720),

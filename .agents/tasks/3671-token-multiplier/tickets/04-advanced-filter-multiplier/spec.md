@@ -20,8 +20,8 @@ How to verify: `pnpm dev:preset eth_sepolia`, open `/advanced-filter` with a tok
 - [ ] `TABLE_COLUMNS` gains a `multiplier` column between `to` and `amount`, present only when `ERC-8056`
       is in `config.slices.token.additionalTypes`; `COLUMNS_CHECKED` defaults it to on; the columns button
       lists it under the same condition.
-- [ ] `ItemByColumn`'s `amount` case passes the row's `total.ui_multiplier` (via T01's predicate, with Q01's
-      null handling as in T03) to `AssetValue`; the new `multiplier` case renders T01's formatted factor, or
+- [ ] `ItemByColumn`'s `amount` case passes the row's `total.ui_multiplier` (via T01's predicate; a `null`
+      renders unscaled, no fallback — Q01) to `AssetValue`; the new `multiplier` case renders T01's formatted factor, or
       nothing.
 - [ ] `TxTableColumn`/`ColumnsIds` types include the new id without loosening them.
 - [ ] Playwright scaffold: the advanced-filter table test gains an ERC-8056 row with the env override.

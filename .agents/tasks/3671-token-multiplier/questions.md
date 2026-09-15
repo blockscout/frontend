@@ -8,12 +8,19 @@ factor would render those rows at today's multiplier when a different one applie
 no safe frontend-side default.
 
 - Owner: Core API (Alexey)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: either the API commits to always populating the historical factor (including the initial
   one, before any change event), or it names the value the frontend should substitute when the field is
   `null` — and says whether that value is derivable from the response.
 - Slack: https://blockscout.slack.com/archives/D07RA1R99T4/p1789059568688819
-- Answer: —
+- Answer: the API always populates the historical factor, including the initial `1.0` before the first
+  `UIMultiplierUpdated`. Fixed by Alexey and verified on eth-sepolia: both transfers of
+  `0x6D50E6CBca0e390BbCF82bEA80B31F4c2694395e` and all four of their token state changes now return
+  `1000000000000000000`. The field stays nullable in the schema (`@blockscout/api-types`
+  `0.0.1-beta.77c8e15baf` still declares `IntegerStringNullable`), so a `null` is a data gap, not a
+  value to substitute: `getUiMultiplier` already returns `undefined` for it and the row degrades to plain
+  ERC-20 rendering (no scaling, no tag), the same path as the env gate being off. No frontend fallback
+  and no new ticket.
 
 ### Q02 — What is the response shape of `/tokens/{hash}/ui-multiplier-changes`?
 
