@@ -5,6 +5,6 @@
 - [x] 03 → `tickets/03-token-transfer-surfaces/`
 - [x] 04 → `tickets/04-advanced-filter-multiplier/`
 - [x] 05 → `tickets/05-address-surfaces/`
-- [ ] 06 → `tickets/06-tx-state-changes/`
+- [x] 06 → `tickets/06-tx-state-changes/`
 - [ ] 07 → `tickets/07-multiplier-history-tab/`
 - [ ] 08 → `tickets/08-inline-multiplier-history/`

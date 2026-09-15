@@ -50,6 +50,7 @@ export const TOKEN_INFO_ERC_404: schemas['Token'] = {
 export const TOKEN_COUNTERS: schemas['TokenCountersResponse'] = {
   token_holders_count: '123456',
   transfers_count: '123456',
+  ui_multiplier_changes_count: '0',
 };
 
 export const TOKEN_HOLDER_ERC_20: schemas['TokenHolderResponse'] = {

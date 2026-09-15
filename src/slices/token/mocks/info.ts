@@ -20,6 +20,7 @@ export const tokenInfo = toTokenModel({
 export const tokenCounters: schemas['TokenCountersResponse'] = {
   token_holders_count: '8838883',
   transfers_count: '88282281',
+  ui_multiplier_changes_count: '0',
 };
 
 export const tokenInfoERC20a = toTokenModel({
