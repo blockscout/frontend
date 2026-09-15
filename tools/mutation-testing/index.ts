@@ -2,6 +2,8 @@
 import fs from 'fs';
 import { pathToFileURL } from 'url';
 
+import type { FlagSpec } from '../cli/flags';
+import { parseArgs as parseFlags } from '../cli/flags';
 import { DEFAULT_BASE_REF, DEFAULT_BUDGET_MS, HTML_REPORT_FILE, MINUTE_MS } from './config';
 import { formatFindings } from './render/findings';
 import { githubAnnotations, stepSummary, truncationAnnotation } from './render/github';
@@ -59,16 +61,6 @@ const IN_GITHUB_ACTIONS = Boolean(process.env.GITHUB_ACTIONS);
 const STEP_SUMMARY_FILE = process.env.GITHUB_STEP_SUMMARY;
 /* eslint-enable no-restricted-properties */
 
-// One flag's behaviour, discriminated by how it takes its value:
-//   'switch'   — no value at all
-//   'value'    — required, from `--flag=value` or the following token (--base)
-//   'optional' — inline-only and optional (--changed[=<ref>]); a bare --changed keeps the default
-//                ref, and the flag must never swallow the following token, which in CI is another flag
-type FlagSpec =
-  { readonly kind: 'switch'; readonly apply: (options: CliOptions) => void } |
-  { readonly kind: 'value'; readonly apply: (options: CliOptions, value: string) => void } |
-  { readonly kind: 'optional'; readonly apply: (options: CliOptions, value: string | undefined) => void };
-
 // A budget of zero or less would stop the run before it started, and a misspelt value must not
 // silently fall back to the default — either way the flag would lie about what bounds the run.
 function parseBudgetMinutes(value: string): number {
@@ -77,9 +69,7 @@ function parseBudgetMinutes(value: string): number {
   return minutes;
 }
 
-// The whole flag surface as data, following the complexity gate's table: a lookup rather than an
-// if/else chain, which removes the prefix-shadowing hazard a `startsWith` chain has.
-const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
+const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpec<CliOptions>>([
   [ '--help', { kind: 'switch', apply: () => {
     console.log(USAGE);
     process.exit(0);
@@ -101,55 +91,15 @@ const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
   } } ],
 ]);
 
-// Split a token into its flag name and inline value: `--flag=value` splits at the first `=`, a bare
-// `--flag` has no inline value.
-function splitFlag(arg: string): { readonly name: string; readonly inline: string | undefined } {
-  const equals = arg.indexOf('=');
-  if (equals === -1) return { name: arg, inline: undefined };
-  return { name: arg.slice(0, equals), inline: arg.slice(equals + 1) };
-}
-
-// Apply one argv token to `options`, returning how many tokens it consumed — 2 when a value flag
-// took the following token, 1 otherwise.
-function applyArg(arg: string, next: string | undefined, options: CliOptions): number {
-  if (!arg.startsWith('-')) {
-    options.focusPaths.push(arg);
-    return 1;
-  }
-
-  const { name, inline } = splitFlag(arg);
-  const spec = FLAGS.get(name);
-  if (spec === undefined) throw new Error(`Unknown flag: ${ name }\n${ USAGE }`);
-
-  if (spec.kind === 'optional') {
-    spec.apply(options, inline);
-    return 1;
-  }
-  if (spec.kind === 'switch') {
-    if (inline !== undefined) throw new Error(`${ name } takes no value`);
-    spec.apply(options);
-    return 1;
-  }
-
-  const value = inline ?? next;
-  if (value === undefined) throw new Error(`Missing value for ${ name }`);
-  spec.apply(options, value);
-  return inline === undefined ? 2 : 1;
-}
-
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
-  const options: CliOptions = {
+  const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, {
     baseRef: DEFAULT_BASE_REF,
     diffSelected: false,
     focusPaths: [],
     budgetMs: DEFAULT_BUDGET_MS,
-  };
+  }, { kind: 'reject', usage: USAGE });
 
-  let index = 0;
-  while (index < argv.length) {
-    index += applyArg(argv[index], argv[index + 1], options);
-  }
-
+  options.focusPaths = rest;
   return options;
 }
 

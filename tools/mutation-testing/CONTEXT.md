@@ -55,12 +55,12 @@ The process has four stages: **select** files and lines → **run** Stryker → 
 
 ### Root
 
-- `./index.ts` — CLI flags, stage order, and exit code
+- `./index.ts` — CLI flags, stage order, and exit code; the flag mechanics live in `../cli/flags.ts`
 - `./config.ts` — default budget, base ref, and shared paths
 - `./stryker.config.json` — fixed Stryker settings, mutator classes, and determinism requirements
 - `./vitest.config.ts` — the Vitest configuration Stryker uses
 - `./run.sh` — compile-and-run wrapper
-- `./tsconfig.json` — covers this folder and `../code-complexity`
+- `./tsconfig.json` — covers this folder, `../code-complexity`, and `../cli`
 
 ### `select/`
 
