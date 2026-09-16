@@ -11,6 +11,7 @@ export const STATE_CHANGE_MINER: schemas['StateChange'] = {
   is_miner: true,
   token: null,
   type: 'coin',
+  ui_multiplier: null,
 };
 
 export const STATE_CHANGE_COIN: schemas['StateChange'] = {
@@ -21,6 +22,7 @@ export const STATE_CHANGE_COIN: schemas['StateChange'] = {
   is_miner: false,
   token: null,
   type: 'coin',
+  ui_multiplier: null,
 };
 
 export const STATE_CHANGE_TOKEN: schemas['StateChange'] = {
@@ -32,6 +34,7 @@ export const STATE_CHANGE_TOKEN: schemas['StateChange'] = {
   token: TOKEN_INFO_ERC_721,
   token_id: '1621395',
   type: 'token',
+  ui_multiplier: null,
 };
 
 export const TX_STATE_CHANGES: Array<schemas['StateChange']> = [

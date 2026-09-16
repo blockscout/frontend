@@ -8,7 +8,9 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
+import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -35,6 +37,8 @@ const TokenTransferListItem = ({
   instance,
   chainData,
 }: Props) => {
+  const multiplier = getTokenTransferUiMultiplier(data, chainData?.app_config);
+
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
@@ -87,6 +91,8 @@ const TokenTransferListItem = ({
             amount={ data.total.value }
             decimals={ data.total.decimals || '0' }
             exchangeRate={ data.token?.exchange_rate }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             loading={ isLoading }
             color="text.secondary"
           />

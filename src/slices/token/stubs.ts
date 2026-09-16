@@ -7,6 +7,8 @@ import { ADDRESS_PARAMS, ADDRESS_HASH } from 'src/slices/address/stubs/address-p
 
 import { generateListStub } from 'src/shared/pagination/utils';
 
+import { TX_HASH } from '../tx/stubs/tx';
+
 export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
 export const TOKEN_INFO_ERC_20: schemas['Token'] = {
@@ -24,6 +26,9 @@ export const TOKEN_INFO_ERC_20: schemas['Token'] = {
   circulating_supply: null,
   volume_24h: null,
   is_bridged: false,
+  ui_multiplier: null,
+  new_ui_multiplier: null,
+  ui_multiplier_effective_at: null,
 };
 
 export const TOKEN_INFO_ERC_721: schemas['Token'] = {
@@ -47,6 +52,18 @@ export const TOKEN_INFO_ERC_404: schemas['Token'] = {
 export const TOKEN_COUNTERS: schemas['TokenCountersResponse'] = {
   token_holders_count: '123456',
   transfers_count: '123456',
+  ui_multiplier_changes_count: '0',
+};
+
+export const TOKEN_UI_MULTIPLIER_CHANGE: schemas['TokenUIMultiplierChange'] = {
+  block_hash: BLOCK_HASH,
+  block_number: 11387767,
+  effective_at: '2026-07-31T08:47:48.000000Z',
+  log_index: 738,
+  new_multiplier: '1040000000000000000',
+  old_multiplier: '1050000000000000000',
+  timestamp: '2026-07-31T06:48:36.000000Z',
+  transaction_hash: TX_HASH,
 };
 
 export const TOKEN_HOLDER_ERC_20: schemas['TokenHolderResponse'] = {

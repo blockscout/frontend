@@ -4,7 +4,7 @@ import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
 import type { QuickSearchResultItem } from 'src/slices/search/types/client';
 import type { TokenType } from 'src/slices/token/types/api';
-import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
+import { getAdditionalTokenTypes, isConfidentialTokenType, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
@@ -36,6 +36,16 @@ export type SearchResultAppItem = {
 
 const hasConfidentialTokenType = (chainsConfig: Array<typeof config> = [ config ]) =>
   chainsConfig.some((chainConfig) => chainConfig.slices.token.additionalTypes.some((item) => isConfidentialTokenType(item.id as TokenType)));
+
+const getFungibleTokensCategoryTitle = (chainsConfig: Array<typeof config>): string => {
+  const typeNames = [
+    `${ config.slices.token.standard }-20`,
+    ...getAdditionalTokenTypes(chainsConfig)
+      .filter((item) => !isConfidentialTokenType(item.id as TokenType))
+      .map((item) => item.name),
+  ];
+  return `Tokens (${ typeNames.join(', ') })`;
+};
 
 export const getSearchCategories =
  (chainsConfig: Array<typeof config> = [ config ]): Array<{ id: Category; title: string; tabTitle: string; itemTitle: string; itemTitleShort: string }> => {
@@ -75,7 +85,7 @@ export const getSearchCategories =
      ] : []),
      {
        id: 'token',
-       title: `Tokens (${ config.slices.token.standard }-20)`,
+       title: getFungibleTokensCategoryTitle(chainsConfig),
        tabTitle: 'Tokens',
        itemTitle: 'Token',
        itemTitleShort: 'Token',
@@ -167,11 +177,11 @@ export function getItemCategory(item: QuickSearchResultItem | SearchResultAppIte
       return 'address';
     }
     case 'token': {
-      if (item.token_type === 'ERC-20') {
-        return 'token';
-      }
       if (hasConfidentialTokenType([ chainConfig ]) && isConfidentialTokenType(item.token_type as TokenType)) {
         return 'confidential_token';
+      }
+      if (isFungibleTokenType(item.token_type, chainConfig)) {
+        return 'token';
       }
       return 'nft';
     }

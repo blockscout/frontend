@@ -12,10 +12,19 @@ export interface Params {
   exchangeRate?: string | null;
   accuracy?: number;
   accuracyUsd?: number;
+  multiplier?: BigNumber | null;
 }
 
-export default function calculateUsdValue({ amount, accuracy = DEFAULT_ACCURACY, accuracyUsd = DEFAULT_ACCURACY_USD, decimals, exchangeRate }: Params) {
-  const valueBn = BigNumber(amount ?? '0').div(BigNumber(10 ** Number(decimals || '0')));
+export default function calculateUsdValue({
+  amount,
+  accuracy = DEFAULT_ACCURACY,
+  accuracyUsd = DEFAULT_ACCURACY_USD,
+  decimals,
+  exchangeRate,
+  multiplier,
+}: Params) {
+  const rawValueBn = BigNumber(amount ?? '0').div(BigNumber(10 ** Number(decimals || '0')));
+  const valueBn = multiplier ? rawValueBn.times(multiplier) : rawValueBn;
 
   const valueStr = (() => {
     if (!accuracy) {
@@ -47,6 +56,7 @@ export default function calculateUsdValue({ amount, accuracy = DEFAULT_ACCURACY,
 
   return {
     valueBn,
+    rawValueBn,
     valueStr,
     usdBn,
     usdStr,

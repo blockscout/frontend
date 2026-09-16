@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
 
 import type { ColumnsIds } from '../types/client';
 import type { schemas } from '@blockscout/api-types';
@@ -10,7 +9,9 @@ import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
+import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import { formatUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import config from 'src/config';
@@ -70,6 +71,10 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
           type="unspecified"
         />
       );
+    case 'multiplier': {
+      const multiplier = getTokenTransferUiMultiplier(item, chainConfig);
+      return multiplier ? <Skeleton loading={ isLoading } color="text.secondary">{ formatUiMultiplier(multiplier) }</Skeleton> : null;
+    }
     case 'amount': {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton loading={ isLoading }>1</Skeleton>;
@@ -82,6 +87,7 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
           <AssetValue
             amount={ item.total?.value }
             decimals={ item.total.decimals }
+            multiplier={ getTokenTransferUiMultiplier(item, chainConfig) }
             loading={ isLoading }
           />
         );

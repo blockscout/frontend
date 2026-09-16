@@ -23,12 +23,15 @@ import useTokenQuery from 'src/slices/token/hooks/useTokenQuery';
 import TokenHolders from 'src/slices/token/pages/details/holders/TokenHolders';
 import TokenDetails from 'src/slices/token/pages/details/info/TokenDetails';
 import TokenInventory from 'src/slices/token/pages/details/inventory/TokenInventory';
+import TokenMultiplierHistory from 'src/slices/token/pages/details/multiplier-history/TokenMultiplierHistory';
 import TokenPageTitle from 'src/slices/token/pages/details/TokenPageTitle';
 import { TOKEN_COUNTERS } from 'src/slices/token/stubs';
+import { isTokenMultiplierEnabled, UI_MULTIPLIER_TOKEN_TYPE } from 'src/slices/token/utils/ui-multiplier';
 
 import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
 import TextAd from 'src/features/ads/text/components/TextAd';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
@@ -38,7 +41,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
-export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
+export type TokenTabs = 'token_transfers' | 'holders' | 'inventory' | 'multiplier_history';
 
 const TokenPageContent = () => {
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
@@ -62,6 +65,8 @@ const TokenPageContent = () => {
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
+
+  const multichainContext = useMultichainContext();
 
   React.useEffect(() => {
     if (tokenQuery.data && totalSupplySocket) {
@@ -115,6 +120,7 @@ const TokenPageContent = () => {
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData, verifiedInfoQuery.isPlaceholderData, verifiedInfoQuery.data ]);
 
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
+  const hasMultiplierHistoryTab = tokenQuery.data?.type === UI_MULTIPLIER_TOKEN_TYPE && isTokenMultiplierEnabled(multichainContext?.chain?.app_config);
 
   const tokenCountersQuery = useApiQuery('core:token_counters', {
     pathParams: { hash: hashString },
@@ -133,6 +139,9 @@ const TokenPageContent = () => {
     undefined;
   const holdersCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.token_holders_count ?
     Number(tokenCountersQuery.data.token_holders_count) :
+    undefined;
+  const multiplierChangesCount = !tokenCountersQuery.isPlaceholderData && tokenCountersQuery.data?.ui_multiplier_changes_count ?
+    Number(tokenCountersQuery.data.ui_multiplier_changes_count) :
     undefined;
 
   const tabs: Array<TabItemRegular> = [
@@ -180,6 +189,12 @@ const TokenPageContent = () => {
       count: holdersCount,
       component: <TokenHolders token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
     },
+    hasMultiplierHistoryTab ? {
+      id: 'multiplier_history',
+      title: 'Multiplier history',
+      count: multiplierChangesCount,
+      component: <TokenMultiplierHistory token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
+    } : undefined,
     (address3rdPartyWidgets.isEnabled && address3rdPartyWidgets.items.length > 0) ? {
       id: 'widgets',
       title: 'Widgets',

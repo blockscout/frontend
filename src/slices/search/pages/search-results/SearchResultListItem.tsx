@@ -7,6 +7,7 @@ import xss from 'xss';
 
 import type { AddressFormat } from 'src/slices/address/types/config';
 import type { SearchResultItem } from 'src/slices/search/types/client';
+import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { toBech32Address } from 'src/slices/address/utils/bech32';
@@ -348,8 +349,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
   const secondRow = (() => {
     switch (data.type) {
       case 'token': {
+        const isFungible = isFungibleTokenType(data.token_type);
         const templateCols = `1fr
-        ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+        ${ (isFungible && data.exchange_rate) || (!isFungible && data.total_supply) ? ' auto' : '' }`;
         const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address_hash) : data.address_hash);
 
         return (
@@ -361,8 +363,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
               { data.is_smart_contract_verified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
             <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
-              { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-              { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+              { isFungible && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+              { !isFungible && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
             </Skeleton>
           </Grid>
         );

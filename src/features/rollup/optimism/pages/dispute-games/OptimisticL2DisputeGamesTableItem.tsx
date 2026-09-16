@@ -40,11 +40,15 @@ const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <BlockEntityL2
-          isLoading={ isLoading }
-          number={ item.l2_block_number }
-          noIcon
-        />
+        { item.l2_block_number === null ? (
+          <Skeleton loading={ isLoading } display="inline-block">N/A</Skeleton>
+        ) : (
+          <BlockEntityL2
+            isLoading={ isLoading }
+            number={ item.l2_block_number }
+            noIcon
+          />
+        ) }
       </TableCell>
       <TableCell verticalAlign="middle">
         <TimeWithTooltip

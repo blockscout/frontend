@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import {
-  Text,
   Flex,
   HStack,
+  Text,
 } from '@chakra-ui/react';
 import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
-import { ADVANCED_FILTER_AGES, ADVANCED_FILTER_ADDRESS_RELATION } from '../../types/api';
+import { ADVANCED_FILTER_ADDRESS_RELATION, ADVANCED_FILTER_AGES } from '../../types/api';
 import type { ColumnsIds } from '../../types/client';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
@@ -39,7 +39,7 @@ import { Tag } from 'src/toolkit/chakra/tag';
 
 import ColumnsButton from '../../components/ColumnsButton';
 import { ADVANCED_FILTER_ITEM } from '../../stubs';
-import { TABLE_COLUMNS } from '../../utils/consts';
+import { getTableColumns, TABLE_COLUMNS } from '../../utils/consts';
 import { getAdvancedFilterTypes, getDurationFromAge, getFilterTags } from '../../utils/lib';
 import AdvancedFilterTable from './AdvancedFilterTable';
 
@@ -155,7 +155,8 @@ const AdvancedFilter = () => {
     onFilterChange({});
   }, [ onFilterChange ]);
 
-  const columnsToShow = TABLE_COLUMNS.filter(c => columns[c.id]);
+  const tableColumns = React.useMemo(() => getTableColumns(chainConfig), [ chainConfig ]);
+  const columnsToShow = React.useMemo(() => tableColumns.filter(c => columns[c.id]), [ columns, tableColumns ]);
 
   if (isLoading) {
     return null;
@@ -177,7 +178,7 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ColumnsButton columns={ columns } onChange={ setColumns }/>
+      <ColumnsButton tableColumns={ tableColumns } columns={ columns } onChange={ setColumns }/>
       <CsvExport
         type="advanced_filters"
         resourceName="core:advanced_filter_csv"

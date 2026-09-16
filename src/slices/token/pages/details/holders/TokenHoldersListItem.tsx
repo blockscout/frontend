@@ -4,9 +4,12 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';
 import AssetValue from 'src/shared/values/entity/AssetValue';
@@ -18,10 +21,13 @@ import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 interface Props {
   holder: schemas['TokenHolderResponse'];
   token: schemas['Token'];
+  chainData?: ClusterChainConfig;
   isLoading?: boolean;
 }
 
-const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
+const TokenHoldersListItem = ({ holder, token, chainData, isLoading }: Props) => {
+  const multiplier = getUiMultiplier(token, chainData?.app_config);
+
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
@@ -53,6 +59,8 @@ const TokenHoldersListItem = ({ holder, token, isLoading }: Props) => {
           <AssetValue
             amount={ holder.value }
             decimals={ token.decimals ?? '0' }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             loading={ isLoading }
           />
         ) }
