@@ -1,4 +1,25 @@
-import type { RpcTransactionReceipt } from 'viem';
+import type { RpcTransaction, RpcTransactionReceipt } from 'viem';
+
+import { TX_HASH } from 'src/slices/tx/stubs/tx';
+
+export const rpcTx: RpcTransaction = {
+  blockHash: '0xa737203aac9f38b5355c716f46b84ff1031335d1a99b2366900378c9e4c837a5',
+  blockNumber: '0x171f82b',
+  from: '0x21dc71ddd3558cd7536bb5fa422303fb5559ea63',
+  gas: '0xc3500',
+  gasPrice: '0x793b22f4',
+  hash: TX_HASH,
+  input: '0x',
+  nonce: '0x1',
+  to: '0xbd216513d74c8cf14cf4747e6aaa6420ff64ee9e',
+  transactionIndex: '0x2',
+  value: '0x2a',
+  type: '0x0',
+  chainId: '0x1',
+  v: '0x25',
+  r: '0x2c5022ff7f78a22f1a99afbd568f75cb52812189ed8c264c8310e0b8dba2c8a8',
+  s: '0x50938f87c92b9eeb9777507ca8f7397840232d00d1dbac3edac6c115b4656763',
+};
 
 export const rpcTxReceipt: RpcTransactionReceipt = {
   blockHash: '0xa737203aac9f38b5355c716f46b84ff1031335d1a99b2366900378c9e4c837a5',

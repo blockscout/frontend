@@ -16,7 +16,6 @@ import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
 import TextAd from 'src/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'src/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
-import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 import TxBlobs from 'src/features/data-availability/pages/tx/TxBlobs';
 import TxFheOperations from 'src/features/fhe-operations/pages/tx/TxFheOperations';
 import TxAuthorizations from 'src/features/tx-authorization/pages/tx/TxAuthorizations';
@@ -24,6 +23,7 @@ import TxAssetFlows from 'src/features/tx-interpretation/noves/pages/tx-asset-fl
 import TxUserOps from 'src/features/user-ops/pages/tx/TxUserOps';
 
 import config from 'src/config';
+import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -50,16 +50,14 @@ const TransactionPageContent = () => {
 
   const txQuery = useTxQuery();
 
-  const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
-
-  const showDegradedView = isPublicClientAvailable && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
+  const { data, isError, error, isDegradedData } = txQuery;
 
   const tabs: Array<TabItemRegular> = (() => {
-    const detailsComponent = showDegradedView ?
-      <TxDetailsRpc hash={ hash } txQuery={ txQuery }/> :
+    const detailsComponent = isDegradedData ?
+      <TxDetailsRpc txQuery={ txQuery }/> :
       <TxDetailsApi txQuery={ txQuery }/>;
 
-    return [
+    const allTabs: Array<TabItemRegular | undefined> = [
       {
         id: 'index',
         title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
@@ -93,7 +91,15 @@ const TransactionPageContent = () => {
       txQuery.data?.authorization_list?.length ?
         { id: 'authorizations', title: 'Authorizations', component: <TxAuthorizations txQuery={ txQuery }/> } :
         undefined,
-    ].filter(Boolean);
+    ];
+
+    // the RPC node knows nothing beyond the details, so every other tab waits for the API to catch up
+    return allTabs
+      .filter(Boolean)
+      .map((tab) => tab.id === 'index' || !isDegradedData ?
+        tab :
+        { ...tab, component: <ApiDegradationAlert isLoading={ txQuery.isPlaceholderData }/> },
+      );
   })();
 
   const txTags: Array<TMetadataTag> = data?.transaction_tag ?
@@ -128,10 +134,8 @@ const TransactionPageContent = () => {
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
 
-  if (isError && !showDegradedView) {
-    if (isCustomAppError(error)) {
-      throwOnResourceLoadError({ resource: 'core:tx', error, isError: true });
-    }
+  if (isError && isCustomAppError(error)) {
+    throwOnResourceLoadError({ resource: 'core:tx', error, isError: true });
   }
 
   return (
