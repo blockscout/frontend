@@ -1,5 +1,3 @@
-import BigNumber from 'bignumber.js';
-
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { thinsp } from 'src/toolkit/utils/htmlEntities';
@@ -66,8 +64,8 @@ describe('formatUiMultiplier', () => {
     [ ONE_POINT_ZERO_ZERO_TWO_FIVE, '1.0025x' ],
     [ BELOW_SMALLEST_REPRESENTABLE, `<${ thinsp }0.000001x` ],
   ])('%s → %s', async(rawValue, expected) => {
-    const { formatUiMultiplier } = await import('./ui-multiplier');
-    expect(formatUiMultiplier(new BigNumber(rawValue).shiftedBy(-18))).toBe(expected);
+    const { formatUiMultiplier, parseUiMultiplier } = await import('./ui-multiplier');
+    expect(formatUiMultiplier(parseUiMultiplier(rawValue))).toBe(expected);
   });
 });
 

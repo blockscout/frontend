@@ -4,6 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
@@ -23,7 +24,7 @@ import { nbsp, space } from 'src/toolkit/utils/htmlEntities';
 
 const FULL_PRECISION = 0;
 
-export function getStateElements(data: schemas['StateChange'], isLoading?: boolean) {
+export function getStateElements(data: schemas['StateChange'], isLoading?: boolean, chainConfig?: ChainConfig) {
   const tag = (() => {
     if (data.is_miner) {
       return (
@@ -90,7 +91,7 @@ export function getStateElements(data: schemas['StateChange'], isLoading?: boole
         />
       );
       const decimals = data.token?.decimals;
-      const multiplier = getStateChangeUiMultiplier(data);
+      const multiplier = getStateChangeUiMultiplier(data, chainConfig);
       const multiplierTag = multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 } my="-2px"/>;
 
       const change = (() => {

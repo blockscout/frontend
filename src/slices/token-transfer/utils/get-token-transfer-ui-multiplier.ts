@@ -3,7 +3,7 @@
 import type BigNumber from 'bignumber.js';
 
 import type { schemas } from '@blockscout/api-types';
-import type { ChainConfig } from 'src/slices/token/utils/token-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 

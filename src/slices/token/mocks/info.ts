@@ -245,8 +245,3 @@ export const bridgedTokenC = toTokenModel({
   bridge_type: 'amb',
   foreign_address: '0x47646F1d7dc4Dd2Db5a41D092e2Cf966e27A4994',
 });
-
-export const tokenCountersERC8056: schemas['TokenCountersResponse'] = {
-  ...tokenCounters,
-  ui_multiplier_changes_count: '7',
-};

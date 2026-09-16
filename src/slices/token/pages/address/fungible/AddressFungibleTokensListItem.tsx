@@ -5,6 +5,7 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { AddressFungibleTokensItem } from '../types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -25,20 +26,20 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-type Props = AddressFungibleTokensItem & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
+type Props = AddressFungibleTokensItem & { chainData?: ClusterChainConfig; isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 
 const AddressFungibleTokensListItem = ({
   token,
   value,
+  chainData,
   isLoading,
   hasAdditionalTokenTypes,
 }: Props) => {
-
   if (!token) {
     return null;
   }
 
-  const multiplier = getUiMultiplier(token);
+  const multiplier = getUiMultiplier(token, chainData?.app_config);
 
   const {
     valueBn: tokenQuantity,

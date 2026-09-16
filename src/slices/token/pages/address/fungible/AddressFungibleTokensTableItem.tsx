@@ -5,6 +5,7 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -24,20 +25,20 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-type Props = Pick<schemas['TokenBalance'], 'token' | 'value'> & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
+type Props = Pick<schemas['TokenBalance'], 'token' | 'value'> & { chainData?: ClusterChainConfig; isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 
 const AddressFungibleTokensTableItem = ({
   token,
   value,
+  chainData,
   isLoading,
   hasAdditionalTokenTypes,
 }: Props) => {
-
   if (!token) {
     return null;
   }
 
-  const multiplier = getUiMultiplier(token);
+  const multiplier = getUiMultiplier(token, chainData?.app_config);
 
   const {
     valueBn: tokenQuantity,

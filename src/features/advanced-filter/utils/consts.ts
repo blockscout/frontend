@@ -2,7 +2,7 @@
 
 import type { AdvancedFilterParams } from '../types/api';
 import type { TxTableColumn } from '../types/client';
-import type { ChainConfig } from 'src/slices/token/utils/token-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import { toTokenModel } from 'src/slices/token/utils/model';
 import { isTokenMultiplierEnabled } from 'src/slices/token/utils/ui-multiplier';

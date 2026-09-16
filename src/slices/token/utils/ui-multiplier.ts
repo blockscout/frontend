@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 
 import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
-import type { ChainConfig } from 'src/slices/token/utils/token-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 import { getAdditionalTokenTypes } from 'src/slices/token/utils/token-types';
 
 import { formatBnValue } from 'src/shared/values/entity/utils';
@@ -20,7 +20,7 @@ export interface UiMultiplierSource {
   ui_multiplier: string | null | undefined;
 }
 
-export function isTokenMultiplierEnabled(chainConfig?: ChainConfig) {
+export function isTokenMultiplierEnabled(chainConfig?: ChainConfig): boolean {
   return getAdditionalTokenTypes(chainConfig).some((item) => item.id === UI_MULTIPLIER_TOKEN_TYPE);
 }
 

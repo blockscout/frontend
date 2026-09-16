@@ -91,7 +91,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
     zilliqa,
   } = data || {};
 
-  const multiplier = getUiMultiplier(data);
+  const multiplier = getUiMultiplier(data, multichainContext?.chain?.app_config);
   const multiplierChangesCount = isLoadingCounters ? 0 : Number(counters?.ui_multiplier_changes_count ?? 0);
 
   return (

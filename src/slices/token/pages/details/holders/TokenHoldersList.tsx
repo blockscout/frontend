@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import TokenHoldersListItem from './TokenHoldersListItem';
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const TokenHoldersList = ({ data, token, isLoading, resetKey }: Props) => {
+  const chainData = useMultichainContext()?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
@@ -28,6 +31,7 @@ const TokenHoldersList = ({ data, token, isLoading, resetKey }: Props) => {
             <TokenHoldersListItem
               key={ item.address.hash + tokenId + (isLoading ? index : '') }
               token={ token }
+              chainData={ chainData }
               holder={ item }
               isLoading={ isLoading }
             />

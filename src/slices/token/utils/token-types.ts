@@ -2,14 +2,12 @@
 
 import { uniqBy } from 'es-toolkit';
 
-import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { NftTokenType, TokenType } from 'src/slices/token/types/api';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import config from 'src/config';
 
 const tokenStandardName = config.slices.token.standard;
-
-export type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
 
 type TokenCategory = 'all' | 'nft' | 'fungible';
 

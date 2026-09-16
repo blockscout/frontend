@@ -3,6 +3,7 @@
 import BigNumber from 'bignumber.js';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 import { getTokenTypes, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
@@ -114,7 +115,7 @@ export const filterTokens = (searchTerm: string) => ({ token }: schemas['TokenBa
 
 const DEFAULT_FUNGIBLE_DECIMALS = '18';
 
-export const addUsdValue = (data: schemas['TokenBalance']): TokenEnhancedData => {
+export const addUsdValue = (data: schemas['TokenBalance'], chainConfig?: ChainConfig): TokenEnhancedData => {
   const isFungibleToken = isFungibleTokenType(data.token?.type);
 
   if (!isFungibleToken) {
@@ -130,7 +131,7 @@ export const addUsdValue = (data: schemas['TokenBalance']): TokenEnhancedData =>
     amount: data.value,
     decimals: data.token?.decimals || DEFAULT_FUNGIBLE_DECIMALS,
     exchangeRate,
-    multiplier: getUiMultiplier(data.token),
+    multiplier: getUiMultiplier(data.token, chainConfig),
   });
 
   return { ...data, usd: usdBn };

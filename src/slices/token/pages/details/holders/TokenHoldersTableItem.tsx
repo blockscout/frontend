@@ -4,6 +4,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
@@ -20,11 +21,12 @@ import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 interface Props {
   holder: schemas['TokenHolderResponse'];
   token: schemas['Token'];
+  chainData?: ClusterChainConfig;
   isLoading?: boolean;
 };
 
-const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
-  const multiplier = getUiMultiplier(token);
+const TokenTransferTableItem = ({ holder, token, chainData, isLoading }: Props) => {
+  const multiplier = getUiMultiplier(token, chainData?.app_config);
 
   return (
     <TableRow>

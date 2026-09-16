@@ -216,7 +216,7 @@ export default function useFetchTokens({ hash, enabled }: Props) {
     const additionalGroups = additionalTypes.reduce((result, item, index) => {
       const query = additionalTokenQueries[index];
       result[item.id] = {
-        items: query?.data?.items.map(addUsdValue) || [],
+        items: query?.data?.items.map((item) => addUsdValue(item, chain?.app_config)) || [],
         isOverflow: Boolean(query?.data?.next_page_params),
       };
       return result;
@@ -224,24 +224,24 @@ export default function useFetchTokens({ hash, enabled }: Props) {
 
     return {
       'ERC-20': {
-        items: erc20query.data?.items.map(addUsdValue) || [],
+        items: erc20query.data?.items.map((item) => addUsdValue(item, chain?.app_config)) || [],
         isOverflow: Boolean(erc20query.data?.next_page_params),
       },
       'ERC-721': {
-        items: erc721query.data?.items.map(addUsdValue) || [],
+        items: erc721query.data?.items.map((item) => addUsdValue(item, chain?.app_config)) || [],
         isOverflow: Boolean(erc721query.data?.next_page_params),
       },
       'ERC-1155': {
-        items: erc1155query.data?.items.map(addUsdValue) || [],
+        items: erc1155query.data?.items.map((item) => addUsdValue(item, chain?.app_config)) || [],
         isOverflow: Boolean(erc1155query.data?.next_page_params),
       },
       'ERC-404': {
-        items: erc404query.data?.items.map(addUsdValue) || [],
+        items: erc404query.data?.items.map((item) => addUsdValue(item, chain?.app_config)) || [],
         isOverflow: Boolean(erc404query.data?.next_page_params),
       },
       ...additionalGroups,
     };
-  }, [ additionalTokenQueries, erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
+  }, [ additionalTokenQueries, erc1155query.data, erc20query.data, erc721query.data, erc404query.data, chain?.app_config ]);
 
   const isPending =
     erc20query.isPending ||
