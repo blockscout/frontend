@@ -15,11 +15,13 @@ interface Props {
 const STATUS_LABELS: Record<UiMultiplierChangeStatus, string> = {
   active: 'Active',
   inactive: 'Inactive',
+  scheduled: 'Scheduled',
 };
 
 const STATUS_COLORS: Record<UiMultiplierChangeStatus, BadgeProps['colorPalette']> = {
   active: 'green',
   inactive: 'gray',
+  scheduled: 'gray',
 };
 
 const TokenMultiplierChangeStatusTag = ({ status, isLoading }: Props) => {

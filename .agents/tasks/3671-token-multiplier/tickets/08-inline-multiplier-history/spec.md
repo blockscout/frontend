@@ -9,10 +9,11 @@
 
 The Multiplier row on the token Details tab gets a **View history / Hide history** toggle beside the factor.
 Expanding it fetches the first page of the multiplier history and shows a compact table of the most recent
-changes beneath the row: txn hash, block, old → new factor, activation date, status. The table is capped at
-five rows. When the token has more than five changes, a **View all** link to the Multiplier history tab
-follows the table. The toggle exists only when the counters report at least one change. Otherwise the row
-renders alone, as T02 left it. Collapsed, the Details tab makes no request beyond what it makes today.
+changes beneath the row: txn hash, block, old → new factor, activation date, status (Active / Inactive /
+Scheduled, from T07's helper). The table is capped at five rows. When the token has more than five changes,
+a **View all** link to the Multiplier history tab follows the table. The toggle exists only when the
+counters report at least one change. Otherwise the row renders alone, as T02 left it. Collapsed, the
+Details tab makes no request beyond what it makes today.
 
 ## Acceptance criteria
 

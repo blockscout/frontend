@@ -9,10 +9,10 @@
 
 An ERC-8056 token gets a **Multiplier history** tab (`/token/{hash}?tab=multiplier_history`). The tab lists
 every recorded multiplier change, newest first: transaction, timestamp, block, old → new factor, activation
-date and an Active / Inactive status. Its title carries the count from `ui_multiplier_changes_count` in
-`/tokens/{hash}/counters`. The tab is paginated like the Holders tab and shows an empty state for a token
-with no recorded changes. It is one horizontally scrollable table at every width, with no mobile list,
-matching the address page tabs.
+date and an Active / Inactive / Scheduled status. Its title carries the count from
+`ui_multiplier_changes_count` in `/tokens/{hash}/counters`. The tab is paginated like the Holders tab and
+shows an empty state for a token with no recorded changes. It is one horizontally scrollable table at every
+width, with no mobile list, matching the address page tabs.
 
 The ticket also lays down what T08 reuses: the API resource, the status rule, and the two cells that carry
 the design elements (the old → new factor and the status tag).
@@ -32,8 +32,9 @@ How to verify: `pnpm dev:preset eth_sepolia`, open
 - [ ] The tab count comes from `ui_multiplier_changes_count`, handled the same way as `holdersCount`
       (undefined while the counters are placeholder data).
 - [ ] A pure helper in `src/slices/token/utils/` decides each row's status. It has a unit spec covering: the
-      first row in API order whose `effective_at` is not after now is Active; rows above it (future
-      `effective_at`) and below it are Inactive; nothing is Active on pages after the first; an empty list.
+      first row in API order whose `effective_at` is not after now is Active; rows with a future
+      `effective_at` are Scheduled; the rest are Inactive; nothing is Active on pages after the first; an
+      empty list.
 - [ ] Reusable cells live in `src/slices/token/components/`. One renders `old → new`, both formatted by
       `formatUiMultiplier`. The other is the status tag.
 - [ ] Table columns: Txn hash (tx entity, truncated, copy; a `null` `transaction_hash` renders a
@@ -47,8 +48,8 @@ How to verify: `pnpm dev:preset eth_sepolia`, open
 - [ ] Playwright scaffold `TokenMultiplierHistoryTable.pw.tsx` covers desktop and mobile with
       `ENVS_MAP.additionalTokenTypes`. No screenshot baselines are generated before the style leaf.
 - [ ] `(human)` GTB8056: the tab reads `Multiplier history 2`. Row 1 is `1.05x → 1.04x`, Active; row 2 is
-      `1x → 1.05x`, Inactive. Links go to the tx and block pages, and the time toggle switches both date
-      columns.
+      `1x → 1.05x`, Inactive. A change with a future activation date reads Scheduled, in the Inactive
+      style. Links go to the tx and block pages, and the time toggle switches both date columns.
 - [ ] `(human)` NVDA: the tab is present with count 0 and shows the empty state. An ERC-20 token has no tab.
       With `ERC-8056` removed from the additional-types env, GTB8056 has no tab.
 - [ ] `(human)` At mobile width the table scrolls horizontally inside its container, as the address Coin
@@ -63,14 +64,13 @@ field, so the frontend derives it (see Q02 in `questions.md`).
 
 **Status rule.** The API orders items newest first. The active change is the most recent one already in
 effect, i.e. the first row whose `effective_at` is not in the future. Apply the rule only to the first page
-and mark every row on later pages Inactive: page 2 can't contain the active change unless all of page 1 is
-scheduled for the future. Cross-check against the token: the Active row's `new_multiplier` should equal the
-token's `ui_multiplier`. Only use this cross-check to sanity-test the helper, never as the rule.
+and mark every past row on later pages Inactive: page 2 can't contain the active change unless all of
+page 1 is scheduled for the future. Cross-check against the token: the Active row's `new_multiplier` should
+equal the token's `ui_multiplier`. Only use this cross-check to sanity-test the helper, never as the rule.
 
-**Scheduled changes.** A row whose `effective_at` is still in the future renders **Inactive** for now. Q07
-asks the designer whether that state gets its own label. If Q07 is answered before this ticket lands, edit
-this ticket. If it is answered after, it becomes a new ticket. Keep the status as a small union returned by
-the helper, so a third state is an additive change.
+**Scheduled changes.** A row whose `effective_at` is still in the future renders **Scheduled**, a tag
+styled exactly like Inactive (Q07). Its activation date needs no special formatting: the shared time
+components already render a future timestamp as "in 3 hours".
 
 **Tab gate.** The user asked for the tab on every ERC-8056 token, so the gate is the type plus the env and
 does not use `getUiMultiplier`. `getUiMultiplier` also requires `ui_multiplier` to be present, and the

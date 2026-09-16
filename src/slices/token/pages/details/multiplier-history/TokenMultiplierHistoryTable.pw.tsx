@@ -5,7 +5,7 @@ import { expect, test } from 'playwright/lib';
 
 import TokenMultiplierHistoryTable from './TokenMultiplierHistoryTable';
 
-test('base view +@mobile', async({ render, mockEnvs }) => {
+test('base view', async({ render, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.additionalTokenTypes);
 
   const component = await render(

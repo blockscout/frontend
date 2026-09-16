@@ -77,9 +77,9 @@ describe('getUiMultiplierChangeStatuses', () => {
     expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'active', 'inactive' ]);
   });
 
-  it('keeps changes scheduled for the future inactive and activates the first one in effect below them', () => {
+  it('marks a change scheduled for the future as scheduled and activates the first one in effect below it', () => {
     const items = [ { effective_at: FUTURE }, { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
-    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'inactive', 'active', 'inactive' ]);
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'scheduled', 'active', 'inactive' ]);
   });
 
   it('treats a change taking effect exactly now as active', () => {
@@ -89,12 +89,12 @@ describe('getUiMultiplierChangeStatuses', () => {
 
   it('marks nothing active when every change on the first page is scheduled for the future', () => {
     const items = [ { effective_at: FUTURE }, { effective_at: FUTURE } ];
-    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'inactive', 'inactive' ]);
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'scheduled', 'scheduled' ]);
   });
 
-  it('marks nothing active on pages after the first', () => {
-    const items = [ { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
-    expect(getUiMultiplierChangeStatuses(items, 2, NOW)).toEqual([ 'inactive', 'inactive' ]);
+  it('marks nothing active on pages after the first, but still marks future changes scheduled', () => {
+    const items = [ { effective_at: FUTURE }, { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
+    expect(getUiMultiplierChangeStatuses(items, 2, NOW)).toEqual([ 'scheduled', 'inactive', 'inactive' ]);
   });
 
   it('returns no statuses for an empty list', () => {

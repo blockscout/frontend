@@ -45,15 +45,24 @@ export function formatUiMultiplier(value: BigNumber, postfix = 'x'): string {
   return formatBnValue({ value, accuracy: UI_MULTIPLIER_ACCURACY, postfix });
 }
 
-export type UiMultiplierChangeStatus = 'active' | 'inactive';
+export type UiMultiplierChangeStatus = 'active' | 'inactive' | 'scheduled';
 
 type UiMultiplierChange = Pick<schemas['TokenUIMultiplierChange'], 'effective_at'>;
+
+function isScheduled(item: UiMultiplierChange, now: number): boolean {
+  return new Date(item.effective_at).getTime() > now;
+}
 
 export function getUiMultiplierChangeStatuses(
   items: Array<UiMultiplierChange>,
   page: number,
   now: number = Date.now(),
 ): Array<UiMultiplierChangeStatus> {
-  const activeIndex = page === 1 ? items.findIndex((item) => new Date(item.effective_at).getTime() <= now) : -1;
-  return items.map((_, index) => index === activeIndex ? 'active' : 'inactive');
+  const activeIndex = page === 1 ? items.findIndex((item) => !isScheduled(item, now)) : -1;
+  return items.map((item, index) => {
+    if (isScheduled(item, now)) {
+      return 'scheduled';
+    }
+    return index === activeIndex ? 'active' : 'inactive';
+  });
 }

@@ -111,8 +111,11 @@ history mockups have only Active and Inactive, so such a row reads Inactive, the
 already happened and has been superseded.
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: the designer picks one: keep Inactive for scheduled changes; or add a third status (label
   and tag style), shown on the Multiplier history tab and in the inline history on Details.
 - Slack: https://blockscout.slack.com/archives/D03PDKKMLQH/p1789495676014809
-- Answer: —
+- Answer: a scheduled change gets its own **Scheduled** status, styled exactly like Inactive — it is
+  announced but not active yet, so it earns no colour of its own. Its activation date renders relative, the
+  same as any other date ("in 3 hours"), as on the name-services page. T07 covers it; T08 inherits it
+  through the shared status helper and tag.
