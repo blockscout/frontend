@@ -7,6 +7,8 @@ import { TX_HASH } from 'src/slices/tx/stubs/tx';
 
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 
+import { SECOND } from 'src/toolkit/utils/consts';
+
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, waitFor } from 'vitest/lib';
 import { mockApiAndRpc, rpcRequests, apiRequests } from 'vitest/utils/mockJsonRpc';
@@ -22,7 +24,7 @@ const TX_NOT_FOUND_TITLE = 'Sorry, we are unable to locate this transaction hash
 const DATA_SYNC_ALERT = /Data sync in progress/;
 const GENERIC_ERROR_ALERT = /Something went wrong/;
 
-const RPC_RETRY_DELAY = 5_000;
+const RPC_RETRY_DELAY = 5 * SECOND;
 
 beforeEach(() => {
   fetchMock.resetMocks();

@@ -60,14 +60,12 @@ export function mockApiAndRpc({ api, rpc = {} }: Params) {
   });
 }
 
-// RPC methods requested so far, in call order.
 export function rpcRequests(): Array<string> {
   return fetchMock.mock.calls
     .map(([ , init ]) => parseRpcMethod(init?.body))
     .filter((method): method is string => Boolean(method));
 }
 
-// REST API URLs requested so far, in call order.
 export function apiRequests(): Array<string> {
   return fetchMock.mock.calls
     .filter(([ , init ]) => !parseRpcMethod(init?.body))

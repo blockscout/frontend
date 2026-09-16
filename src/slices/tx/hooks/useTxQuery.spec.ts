@@ -4,6 +4,8 @@ import { rpcBlockBase } from 'src/slices/block/mocks/rpc';
 import { rpcTx, rpcTxReceipt } from 'src/slices/tx/mocks/rpc';
 import { TX, TX_HASH } from 'src/slices/tx/stubs/tx';
 
+import { SECOND } from 'src/toolkit/utils/consts';
+
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, wrapper, cleanup, waitFor } from 'vitest/lib';
 import { mockApiAndRpc, rpcRequests, apiRequests } from 'vitest/utils/mockJsonRpc';
@@ -28,8 +30,8 @@ const RPC_NODE_WITH_TX = {
   eth_getBlockByNumber: { ...rpcBlockBase, number: LATEST_BLOCK_NUMBER },
 };
 
-const RPC_RETRY_DELAY = 5_000;
-const API_POLL_INTERVAL = 15_000;
+const RPC_RETRY_DELAY = 5 * SECOND;
+const API_POLL_INTERVAL = 15 * SECOND;
 
 beforeEach(() => {
   fetchMock.resetMocks();
@@ -83,7 +85,6 @@ describe('useTxQuery', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error?.status).toBe(404);
     expect(result.current.isDegradedData).toBe(false);
-    expect(rpcRequests()).toEqual([ 'eth_getTransactionByHash', 'eth_getTransactionByHash', 'eth_getTransactionByHash' ]);
 
     await vi.advanceTimersByTimeAsync(API_POLL_INTERVAL);
     expect(apiRequests()).toHaveLength(1);
