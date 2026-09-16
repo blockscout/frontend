@@ -35,3 +35,12 @@ export const tokenUiMultiplierChanges: paths['/api/v2/tokens/{address_hash_param
   ],
   next_page_params: null,
 };
+
+export const tokenUiMultiplierChangesOverflow: paths['/api/v2/tokens/{address_hash_param}/ui-multiplier-changes']['get'] = {
+  items: Array.from({ length: 7 }, (_, index) => ({
+    ...tokenUiMultiplierChanges.items[1],
+    block_number: tokenUiMultiplierChanges.items[1].block_number - index,
+    log_index: index,
+  })),
+  next_page_params: null,
+};

@@ -26,6 +26,7 @@ import AssetValue from 'src/shared/values/entity/AssetValue';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
+import TokenMultiplierHistoryInline from './TokenMultiplierHistoryInline';
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
@@ -91,6 +92,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
   } = data || {};
 
   const multiplier = getUiMultiplier(data);
+  const multiplierChangesCount = isLoadingCounters ? 0 : Number(counters?.ui_multiplier_changes_count ?? 0);
 
   return (
     <DetailedInfo.Container>
@@ -134,10 +136,13 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
           >
             Multiplier
           </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
+          <DetailedInfo.ItemValue multiRow>
             <Skeleton loading={ isLoading } display="inline-block">
               <span>{ formatUiMultiplier(multiplier) }</span>
             </Skeleton>
+            { hash && !isLoading && multiplierChangesCount > 0 && (
+              <TokenMultiplierHistoryInline hash={ hash } changesCount={ multiplierChangesCount }/>
+            ) }
           </DetailedInfo.ItemValue>
         </>
       ) }

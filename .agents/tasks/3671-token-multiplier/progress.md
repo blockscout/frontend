@@ -7,4 +7,4 @@
 - [x] 05 → `tickets/05-address-surfaces/`
 - [x] 06 → `tickets/06-tx-state-changes/`
 - [x] 07 → `tickets/07-multiplier-history-tab/`
-- [ ] 08 → `tickets/08-inline-multiplier-history/`
+- [x] 08 → `tickets/08-inline-multiplier-history/`

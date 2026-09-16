@@ -57,8 +57,8 @@ The compact table sits on a tinted panel under the value column. The toggle is a
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Inline history block scaffold: toggle, lazy query, capped table reusing T07 cells, View all
+- [x] 1 `[agent]` Inline history block scaffold: toggle, lazy query, capped table reusing T07 cells, View all
       link, states; wire into the Multiplier row; Playwright scaffold (placeholder presentation,
       `TODO (design):` markers)
-- [ ] 2 `[human]` Style the toggle, compact table panel and View all link to mockup; generate baselines —
+- [x] 2 `[human]` Style the toggle, compact table panel and View all link to mockup; generate baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-20900)
