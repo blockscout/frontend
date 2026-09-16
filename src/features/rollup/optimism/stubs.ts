@@ -69,6 +69,7 @@ export const L2_DISPUTE_GAMES_ITEM: schemas['OptimismGame'] = {
   game_type: 0,
   index: 6594,
   l2_block_number: 50655,
+  l2_timestamp: null,
   resolved_at: null,
   status: 'In progress',
 };
