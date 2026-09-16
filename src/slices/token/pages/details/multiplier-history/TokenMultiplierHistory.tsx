@@ -8,7 +8,7 @@ import { TOKEN_UI_MULTIPLIER_CHANGE } from 'src/slices/token/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import TokenMultiplierHistoryTable from './TokenMultiplierHistoryTable';
@@ -19,7 +19,7 @@ interface Props {
 }
 
 const TokenMultiplierHistory = ({ token, isLoading }: Props) => {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:token_ui_multiplier_changes',
     pathParams: { hash: token?.address_hash },
     options: {
@@ -39,7 +39,7 @@ const TokenMultiplierHistory = ({ token, isLoading }: Props) => {
       data={ query.data.items }
       page={ query.pagination.page }
       top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-      isLoading={ query.isPlaceholderData }
+      isLoading={ query.isInitialLoading }
       resetKey={ query.queryHash }
     />
   ) : null;
@@ -50,6 +50,7 @@ const TokenMultiplierHistory = ({ token, isLoading }: Props) => {
       itemsNum={ query.data?.items.length }
       emptyText="There are no multiplier changes for this token."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

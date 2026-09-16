@@ -1,6 +1,8 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to print a report to stdout */
 import fs from 'fs';
 
+import type { FlagSpec } from '../cli/flags';
+import { parseArgs as parseFlags } from '../cli/flags';
 import { buildFileRows } from './analyze';
 import { DEFAULT_BASE_REF, DEFAULT_MAX_COGNITIVE_BEHAVIOR, DEFAULT_MAX_COGNITIVE_JSX, DEFAULT_MAX_CRAP } from './config';
 import { generateCoverage } from './coverage/generate';
@@ -58,20 +60,9 @@ function readCap(flag: string, raw: string): number {
   return value;
 }
 
-// One flag's behaviour, discriminated by how it takes its value:
-//   'switch'   — no value at all (--verbose)
-//   'value'    — required, from `--flag=value` or the following token (--max-crap)
-//   'optional' — inline-only and optional (--changed[=<ref>]); a bare --changed keeps the default
-//                ref, and the flag must never swallow the following token, which in CI is another flag
-type FlagSpec =
-  { readonly kind: 'switch'; readonly apply: (options: CliOptions) => void } |
-  { readonly kind: 'value'; readonly apply: (options: CliOptions, value: string) => void } |
-  { readonly kind: 'optional'; readonly apply: (options: CliOptions, value: string | undefined) => void };
-
 // The whole flag surface as data. Keeping it a lookup rather than an if/else chain is what leaves
-// readability budget for the next flag, and it removes the prefix-shadowing hazard a `startsWith`
-// chain has (`--max-cognitive` matching `--max-cognitive-jsx` unless the arms are ordered just so).
-const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
+// readability budget for the next flag.
+const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpec<CliOptions>>([
   [ '--help', { kind: 'switch', apply: () => {
     console.log(USAGE);
     process.exit(0);
@@ -115,46 +106,8 @@ const FLAGS: ReadonlyMap<string, FlagSpec> = new Map<string, FlagSpec>([
   } } ],
 ]);
 
-// Split a token into its flag name and inline value: `--flag=value` splits at the first `=`, a bare
-// `--flag` has no inline value.
-function splitFlag(arg: string): { readonly name: string; readonly inline: string | undefined } {
-  const equals = arg.indexOf('=');
-  if (equals === -1) return { name: arg, inline: undefined };
-  return { name: arg.slice(0, equals), inline: arg.slice(equals + 1) };
-}
-
-// Apply one argv token to `options`, returning how many tokens it consumed — 2 when a value flag
-// took the following token, 1 otherwise. This is the validation half: it resolves the value form,
-// rejects unknown flags, and rejects a missing or unwanted value. `parseArgs` below is the reading
-// half and does nothing but walk the cursor.
-function applyArg(arg: string, next: string | undefined, options: CliOptions): number {
-  if (!arg.startsWith('-')) {
-    options.focusPaths.push(arg);
-    return 1;
-  }
-
-  const { name, inline } = splitFlag(arg);
-  const spec = FLAGS.get(name);
-  if (spec === undefined) throw new Error(`Unknown flag: ${ name }\n${ USAGE }`);
-
-  if (spec.kind === 'optional') {
-    spec.apply(options, inline);
-    return 1;
-  }
-  if (spec.kind === 'switch') {
-    if (inline !== undefined) throw new Error(`${ name } takes no value`);
-    spec.apply(options);
-    return 1;
-  }
-
-  const value = inline ?? next;
-  if (value === undefined) throw new Error(`Missing value for ${ name }`);
-  spec.apply(options, value);
-  return inline === undefined ? 2 : 1;
-}
-
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
-  const options: CliOptions = {
+  const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, {
     baseRef: DEFAULT_BASE_REF,
     diffSelected: false,
     maxCognitiveJsx: DEFAULT_MAX_COGNITIVE_JSX,
@@ -164,13 +117,9 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     coverageFile: undefined,
     verbose: false,
     focusPaths: [],
-  };
+  }, { kind: 'reject', usage: USAGE });
 
-  let index = 0;
-  while (index < argv.length) {
-    index += applyArg(argv[index], argv[index + 1], options);
-  }
-
+  options.focusPaths = rest;
   return options;
 }
 
@@ -313,10 +262,10 @@ function main(): void {
   }
 }
 
-// run.sh always executes the compiled `tools/code-complexity/dist/index.js`, so that path is what
-// marks this module as the process entry point. The guard exists so `index.spec.ts` can import
-// parseArgs without kicking off a whole report run — under vitest the entry is vitest's own binary.
-const CLI_ENTRY_PATH = 'code-complexity/dist/index.js';
+// run.sh always executes the compiled `tools/code-complexity/dist/code-complexity/index.js`, so that
+// path is what marks this module as the process entry point. The guard exists so `index.spec.ts` can
+// import parseArgs without kicking off a whole report run — under vitest the entry is vitest's own binary.
+const CLI_ENTRY_PATH = 'code-complexity/dist/code-complexity/index.js';
 
 function isProcessEntryPoint(): boolean {
   const entry = process.argv[1]?.replace(/\\/g, '/');

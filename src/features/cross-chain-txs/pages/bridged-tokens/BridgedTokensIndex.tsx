@@ -8,7 +8,7 @@ import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
 
@@ -16,7 +16,7 @@ import BridgedTokensList from './BridgedTokensList';
 import BridgedTokensTable from './BridgedTokensTable';
 
 interface Props {
-  query: QueryWithPagesResult<'interchainIndexer:bridged_tokens'>;
+  query: ApiPaginatedQueryResult<'interchainIndexer:bridged_tokens'>;
   onSortChange: OnValueChangeHandler;
   sort: CrossChainBridgedTokensSortingValue;
   actionBar?: React.ReactNode;
@@ -37,6 +37,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
       }}
       actionBar={ actionBar }
       hasActiveFilters={ hasActiveFilters }
+      isTransitioning={ query.isTransitioning }
     >
       { query.data?.items ? (
         <>
@@ -45,7 +46,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               data={ query.data.items }
               page={ query.pagination.page }
               chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
+              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
               resetKey={ query.queryHash }
             />
           </Box>
@@ -55,7 +56,7 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
               sort={ sort }
               setSorting={ onSortChange }
               chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isPlaceholderData || chainsQuery.isPlaceholderData }
+              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
               resetKey={ query.queryHash }
               page={ query.pagination.page }
               top={ tableTop }

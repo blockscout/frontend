@@ -19,6 +19,7 @@ export type Props = {
   className?: string;
   hasActiveFilters?: boolean;
   emptyStateProps?: EmptyStateProps;
+  isTransitioning?: boolean;
 };
 
 const DataList = (props: Props) => {
@@ -56,7 +57,14 @@ const DataList = (props: Props) => {
   return (
     <Box className={ props.className }>
       { props.actionBar }
-      { props.children }
+      { /* TODO: page-transition look, currently never active — https://github.com/blockscout/frontend/issues/3704 */ }
+      <Box
+        opacity={ props.isTransitioning ? 'control.disabled' : undefined }
+        pointerEvents={ props.isTransitioning ? 'none' : undefined }
+        aria-busy={ props.isTransitioning || undefined }
+      >
+        { props.children }
+      </Box>
     </Box>
   );
 };

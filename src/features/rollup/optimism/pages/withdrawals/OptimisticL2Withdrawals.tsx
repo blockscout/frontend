@@ -15,14 +15,14 @@ import { L2_WITHDRAWAL_ITEM } from 'src/features/rollup/optimism/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Withdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_withdrawals',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_withdrawals'>(
@@ -47,13 +47,13 @@ const OptimisticL2Withdrawals = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <OptimisticL2WithdrawalsTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -85,6 +85,7 @@ const OptimisticL2Withdrawals = () => {
         itemsNum={ data?.items?.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

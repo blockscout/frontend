@@ -12,14 +12,14 @@ import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 import DataList from 'src/shared/lists/DataList';
 import getItemIndex from 'src/shared/lists/get-item-index';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import AddressesList from './AddressesList';
 import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
-  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(
@@ -57,7 +57,7 @@ const Accounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -66,7 +66,7 @@ const Accounts = () => {
           items={ data.items }
           totalSupply={ totalSupply }
           pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -81,6 +81,7 @@ const Accounts = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no accounts."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

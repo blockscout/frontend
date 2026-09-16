@@ -16,7 +16,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -52,7 +52,7 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
     enabled: isQueryEnabled && isLocalTab,
   });
 
-  const crossChainQuery = useQueryWithPages({
+  const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_messages',
     pathParams: { hash },
     options: {
@@ -61,15 +61,9 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
     },
   });
 
-  const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
-    if (value === 'txs_local') {
-      localQuery.setFilterValue(undefined);
-    }
-  }, [ localQuery ]);
-
   const txsLocalFilter = isLocalTab ? (
     <AddressTxsFilter
-      initialValue={ localQuery.initialFilterValue }
+      initialValue={ localQuery.filterValue }
       onFilterChange={ localQuery.onFilterChange }
       hasActiveFilter={ Boolean(localQuery.filterValue) }
       isLoading={ localQuery.query.pagination.isLoading }
@@ -94,7 +88,6 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
           socketType="address_txs"
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           sorting={ localQuery.sort }
-          setSort={ localQuery.setSort }
           showBlockInfo
           showTableView
         />
@@ -107,7 +100,8 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
         <AddressTxsCrossChain
           pagination={ crossChainQuery.pagination }
           items={ crossChainQuery.data?.items }
-          isLoading={ crossChainQuery.isPlaceholderData }
+          isLoading={ crossChainQuery.isInitialLoading }
+          isTransitioning={ crossChainQuery.isTransitioning }
           isError={ crossChainQuery.isError }
           currentAddress={ hash }
           resetKey={ crossChainQuery.queryHash }
@@ -172,7 +166,6 @@ const AddressTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
       variant="secondary"
       size="sm"
       tabs={ tabs }
-      onValueChange={ handleTabValueChange }
       defaultTabId="txs_local"
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }

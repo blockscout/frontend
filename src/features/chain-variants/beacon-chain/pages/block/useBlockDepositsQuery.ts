@@ -3,13 +3,13 @@
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 
 import config from 'src/config';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { DEPOSIT } from '../../stubs/deposits';
 
-export type BlockDepositsQuery = QueryWithPagesResult<'core:block_deposits'> & {
+export type BlockDepositsQuery = ApiPaginatedQueryResult<'core:block_deposits'> & {
   isDegradedData: boolean;
 };
 
@@ -23,7 +23,7 @@ const beaconChainFeature = config.features.beaconChain;
 
 // No deposits data in RPC, so we use API only
 export default function useBlockDepositsQuery({ heightOrHash, blockQuery, tab }: Params): BlockDepositsQuery {
-  const apiQuery = useQueryWithPages({
+  const apiQuery = useApiPaginatedQuery({
     resourceName: 'core:block_deposits',
     pathParams: { height_or_hash: heightOrHash },
     options: {

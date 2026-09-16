@@ -22,12 +22,18 @@ test('base view +@mobile', async({ render, mockAssetResponse, mockApiResponse })
   });
   await mockAssetResponse(tokenInstance.image_url as string, './playwright/mocks/image_s.jpg');
 
+  const hooksConfig = {
+    router: {
+      query: { hash: tokenInfoERC721a.address_hash, holder_address_hash: tokenInfoERC721a.address_hash },
+    },
+  };
+
   const component = await render(
     <TokenInventory
       hash={ tokenInfoERC721a.address_hash }
       token={ tokenInfoERC721a }
-      ownerFilter={ tokenInfoERC721a.address_hash }
     />,
+    { hooksConfig },
   );
 
   await expect(component).toHaveScreenshot();

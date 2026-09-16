@@ -6,7 +6,7 @@ import React from 'react';
 import useApiInfiniteQuery from 'src/api/hooks/useApiInfiniteQuery';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 interface Props {
@@ -19,9 +19,8 @@ export default function useSearchQuery({ chainId }: Props) {
   const initialValue = q.current;
   const checkRedirect = getQueryParamString(router.query.redirect) === 'true';
 
-  const [ searchTerm, setSearchTerm ] = React.useState(initialValue);
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const appliedSearchTerm = getQueryParamString(router.query.q);
+  const [ searchTerm, setSearchTerm ] = React.useState(appliedSearchTerm);
 
   const checkRedirectQuery = useApiQuery('multichainAggregator:search_check_redirect', {
     // on search result page we check redirect only once on mount
@@ -31,46 +30,50 @@ export default function useSearchQuery({ chainId }: Props) {
 
   const addressesQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_addresses',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const tokensQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_tokens',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const blockNumbersQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_block_numbers',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const blocksQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_blocks',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const nftsQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_nfts',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const transactionsQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_transactions',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
   });
 
   const domainsQuery = useApiInfiniteQuery({
     resourceName: 'multichainAggregator:search_domains',
-    queryParams: { q: debouncedSearchTerm, chain_id: chainId },
+    queryParams: { q: appliedSearchTerm, chain_id: chainId },
+  });
+
+  const applySearchTerm = useDebouncedFilterChange((value) => {
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, q: value },
+    }, undefined, { shallow: true });
   });
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, q: value },
-    });
-  }, [ router ]);
+    applySearchTerm(value);
+  }, [ applySearchTerm ]);
 
   const handleSubmit = React.useCallback((event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -88,14 +91,14 @@ export default function useSearchQuery({ chainId }: Props) {
 
   return React.useMemo(() => ({
     searchTerm,
-    debouncedSearchTerm,
+    appliedSearchTerm,
     handleSearchTermChange,
     handleSubmit,
     queries,
     checkRedirectQuery,
   }), [
     queries,
-    debouncedSearchTerm,
+    appliedSearchTerm,
     handleSearchTermChange,
     handleSubmit,
     searchTerm,

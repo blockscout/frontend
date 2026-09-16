@@ -14,7 +14,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TokenHoldersList from './TokenHoldersList';
 import TokenHoldersTable from './TokenHoldersTable';
@@ -27,7 +27,7 @@ interface Props {
 
 const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
 
-  const holdersQuery = useQueryWithPages({
+  const holdersQuery = useApiPaginatedQuery({
     resourceName: tokenId ? 'core:token_instance_holders' : 'core:token_holders',
     pathParams: { hash: token?.address_hash, id: tokenId },
     options: {
@@ -65,7 +65,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
           data={ items }
           token={ token }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ holdersQuery.isPlaceholderData }
+          isLoading={ holdersQuery.isInitialLoading }
           resetKey={ holdersQuery.queryHash }
         />
       </Box>
@@ -73,7 +73,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
         <TokenHoldersList
           data={ items }
           token={ token }
-          isLoading={ holdersQuery.isPlaceholderData }
+          isLoading={ holdersQuery.isInitialLoading }
           resetKey={ holdersQuery.queryHash }
         />
       </Box>
@@ -86,6 +86,7 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
       itemsNum={ holdersQuery.data?.items.length }
       emptyText="There are no holders for this token."
       actionBar={ actionBar }
+      isTransitioning={ holdersQuery.isTransitioning }
     >
       { content }
     </DataList>

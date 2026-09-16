@@ -48,7 +48,6 @@ const TokenPageContent = () => {
   const router = useRouter();
 
   const hashString = getQueryParamString(router.query.hash);
-  const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
   useEtherscanRedirects();
   const queryClient = useQueryClient();
@@ -176,7 +175,7 @@ const TokenPageContent = () => {
     hasInventoryTab ? {
       id: 'inventory',
       title: 'Inventory',
-      component: <TokenInventory hash={ hashString } token={ tokenQuery.data } isLoading={ isMainDataLoading } ownerFilter={ ownerFilter }/>,
+      component: <TokenInventory hash={ hashString } token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
     } : undefined,
     {
       id: 'token_transfers',

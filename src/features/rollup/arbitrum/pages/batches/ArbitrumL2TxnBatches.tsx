@@ -10,7 +10,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -20,7 +20,7 @@ import ArbitrumL2TxnBatchesList from './ArbitrumL2TxnBatchesList';
 import ArbitrumL2TxnBatchesTable from './ArbitrumL2TxnBatchesTable';
 
 const ArbitrumL2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:arbitrum_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:arbitrum_l2_txn_batches'>(
@@ -45,13 +45,13 @@ const ArbitrumL2TxnBatches = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ArbitrumL2TxnBatchesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ArbitrumL2TxnBatchesList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ArbitrumL2TxnBatchesTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -64,7 +64,7 @@ const ArbitrumL2TxnBatches = () => {
     }
 
     return (
-      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading } display="flex" flexWrap="wrap">
         Txn batch
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
@@ -83,6 +83,7 @@ const ArbitrumL2TxnBatches = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no txn batches."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

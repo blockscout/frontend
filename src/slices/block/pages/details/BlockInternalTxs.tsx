@@ -7,23 +7,23 @@ import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 interface Props {
-  query: QueryWithPagesResult<'core:block_internal_txs'>;
+  query: ApiPaginatedQueryResult<'core:block_internal_txs'>;
   top?: number;
 }
 
 const BlockInternalTxs = ({ query, top }: Props) => {
-  const { data, isPlaceholderData, isError } = query;
+  const { data, isInitialLoading, isTransitioning, isError } = query;
 
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } showBlockInfo={ false } resetKey={ query.queryHash }/>
+        <InternalTxsList data={ data.items } isLoading={ isInitialLoading } showBlockInfo={ false } resetKey={ query.queryHash }/>
       </Box>
       <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } top={ top } showBlockInfo={ false } resetKey={ query.queryHash }/>
+        <InternalTxsTable data={ data.items } isLoading={ isInitialLoading } top={ top } showBlockInfo={ false } resetKey={ query.queryHash }/>
       </Box>
     </>
   ) : null;
@@ -33,6 +33,7 @@ const BlockInternalTxs = ({ query, top }: Props) => {
       isError={ isError }
       itemsNum={ data?.items.length }
       emptyText="There are no internal transactions."
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

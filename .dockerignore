@@ -9,6 +9,6 @@ README.md
 .git
 *.tsbuildinfo
 .eslintcache
-/test-results/
+/playwright-results/
 /playwright-report/
 /blob-report/

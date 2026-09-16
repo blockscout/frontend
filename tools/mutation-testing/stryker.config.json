@@ -50,6 +50,7 @@
     "!/tsconfig.json",
     "!/vitest.config.ts",
     "**/node_modules",
+    "**/node_modules_linux",
     "**/dist",
     "tools/mutation-testing/.stryker-tmp",
     "tools/mutation-testing/reports",

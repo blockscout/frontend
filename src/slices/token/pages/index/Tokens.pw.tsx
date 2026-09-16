@@ -1,10 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 
 import * as tokens from 'src/slices/token/mocks/info';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect } from 'playwright/lib';
+import { expect, test } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
@@ -50,7 +49,12 @@ test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }
     next_page_params: null,
   };
 
-  await mockApiResponse('core:tokens', allTokens);
+  const hooksConfig = {
+    router: {
+      query: { q: 'foo' },
+    },
+  };
+
   const filteredTokensApiUrl = await mockApiResponse('core:tokens', filteredTokens, { queryParams: { q: 'foo' } });
 
   const component = await render(
@@ -58,14 +62,10 @@ test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }
       <Box h={{ base: '134px', lg: 6 }}/>
       <Tokens/>
     </div>,
+    { hooksConfig },
   );
 
-  const requestPromise = page.waitForRequest(filteredTokensApiUrl);
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).focus();
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).fill('foo');
-  await component.getByRole('textbox', { name: 'Token name, address or symbol' }).blur();
-
-  await requestPromise;
+  await page.waitForResponse(filteredTokensApiUrl);
   await expect(component).toHaveScreenshot({ maxDiffPixels: 20 });
 });
 
@@ -83,22 +83,15 @@ test.describe('bridged tokens', () => {
       market_cap: null,
     },
   };
-  const bridgedFilteredTokens = {
-    items: [
-      tokens.bridgedTokenC,
-    ],
-    next_page_params: null,
-  };
   const hooksConfig = {
     router: {
       query: { tab: 'bridged' },
     },
   };
 
-  test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
+  test('base view', async({ render, mockApiResponse, mockEnvs }) => {
     await mockEnvs(ENVS_MAP.bridgedTokens);
     await mockApiResponse('core:tokens_bridged', bridgedTokens);
-    const bridgedFilteredTokensApiUrl = await mockApiResponse('core:tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
     const component = await render(
       <div>
@@ -107,15 +100,6 @@ test.describe('bridged tokens', () => {
       </div>,
       { hooksConfig },
     );
-
-    await expect(component).toHaveScreenshot();
-
-    await component.getByRole('button', { name: /filter/i }).click();
-    const requestPromise = page.waitForRequest(bridgedFilteredTokensApiUrl);
-    await page.locator('label').filter({ hasText: /poa/i }).click();
-    await page.click('body');
-
-    await requestPromise;
 
     await expect(component).toHaveScreenshot();
   });

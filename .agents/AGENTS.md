@@ -51,8 +51,10 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/scripts/` — how the frontend container is built and starts up (Dockerfile stages, entrypoint).
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against yup schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
+- `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
 - `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
+- `src/shared/pagination/` — the paginated-list components and utils.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
@@ -60,6 +62,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/doc-links/` — the doc-link checker.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
+- `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under

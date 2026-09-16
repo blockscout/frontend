@@ -3,11 +3,12 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import { AddressFromToFilterValues, type AddressFromToFilter } from 'src/slices/address/types/api';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -16,19 +17,16 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 
 interface Props {
   enabled: boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ExternalChainExtended;
 }
 
-export default function useAddressInternalTxsQuery({ enabled, isMultichain, chainIds }: Props) {
+export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
-  const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_internal_txs',
     pathParams: { hash },
-    filters: { filter: filterValue },
     options: {
       enabled,
       placeholderData: generateListStub<'core:address_internal_txs'>(
@@ -48,15 +46,15 @@ export default function useAddressInternalTxsQuery({ enabled, isMultichain, chai
         },
       ),
     },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
+  const filterValue = getFilterValue(query.filters.filter);
+
+  const { onFilterChange: onQueryFilterChange } = query;
   const onFilterChange = React.useCallback((val: string | Array<string>) => {
-    const newVal = getFilterValue(val);
-    setFilterValue(newVal);
-    query.onFilterChange({ filter: newVal });
-  }, [ query ]);
+    onQueryFilterChange({ filter: getFilterValue(val) });
+  }, [ onQueryFilterChange ]);
 
   return React.useMemo(() => ({
     hash,

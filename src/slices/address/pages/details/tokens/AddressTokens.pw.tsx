@@ -63,8 +63,8 @@ test.beforeEach(async({ mockApiResponse }) => {
   // data for list
   await mockApiResponse('core:address_tokens', responseFungible, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [ 'ERC-20', 'ERC-8056' ] } });
 
-  await mockApiResponse('core:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
-  await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: [] } });
+  await mockApiResponse('core:address_nfts', tokensMock.nfts, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH } });
 });
 
 test('fungible tokens +@dark-mode', async({ render, mockEnvs }) => {
