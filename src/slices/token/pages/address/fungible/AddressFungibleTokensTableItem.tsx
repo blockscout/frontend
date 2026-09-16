@@ -10,7 +10,7 @@ import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/util
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';

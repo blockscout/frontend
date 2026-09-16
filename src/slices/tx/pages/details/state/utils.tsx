@@ -9,7 +9,7 @@ import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import { getStateChangeUiMultiplier } from 'src/slices/tx/utils/get-state-change-ui-multiplier';
 
 import config from 'src/config';

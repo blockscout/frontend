@@ -2,6 +2,7 @@
 
 import BigNumber from 'bignumber.js';
 
+import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 import type { ChainConfig } from 'src/slices/token/utils/token-types';
 import { getAdditionalTokenTypes } from 'src/slices/token/utils/token-types';
@@ -32,10 +33,27 @@ export function getUiMultiplier(token: UiMultiplierSource | null | undefined, ch
     return undefined;
   }
 
-  const multiplier = new BigNumber(token.ui_multiplier).shiftedBy(-UI_MULTIPLIER_DECIMALS);
+  const multiplier = parseUiMultiplier(token.ui_multiplier);
   return multiplier.isNaN() ? undefined : multiplier;
+}
+
+export function parseUiMultiplier(rawValue: string): BigNumber {
+  return new BigNumber(rawValue).shiftedBy(-UI_MULTIPLIER_DECIMALS);
 }
 
 export function formatUiMultiplier(value: BigNumber, postfix = 'x'): string {
   return formatBnValue({ value, accuracy: UI_MULTIPLIER_ACCURACY, postfix });
+}
+
+export type UiMultiplierChangeStatus = 'active' | 'inactive';
+
+type UiMultiplierChange = Pick<schemas['TokenUIMultiplierChange'], 'effective_at'>;
+
+export function getUiMultiplierChangeStatuses(
+  items: Array<UiMultiplierChange>,
+  page: number,
+  now: number = Date.now(),
+): Array<UiMultiplierChangeStatus> {
+  const activeIndex = page === 1 ? items.findIndex((item) => new Date(item.effective_at).getTime() <= now) : -1;
+  return items.map((_, index) => index === activeIndex ? 'active' : 'inactive');
 }

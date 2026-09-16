@@ -7,7 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import ListItemMobileGrid from 'src/shared/lists/ListItemMobileGrid';

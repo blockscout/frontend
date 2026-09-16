@@ -6,7 +6,7 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 
 import TokenValue from 'src/shared/values/entity/TokenValue';
 

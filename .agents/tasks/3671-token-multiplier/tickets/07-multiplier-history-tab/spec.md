@@ -100,10 +100,10 @@ existing `Token.primed.spec.tsx` case for a non-default tab keeps passing.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Declare `core:token_ui_multiplier_changes` — skill: `add-api-resource`
-- [ ] 2 `[agent]` Status helper with unit spec; old → new factor cell and status tag scaffolds in
+- [x] 1 `[agent]` Declare `core:token_ui_multiplier_changes` — skill: `add-api-resource`
+- [x] 2 `[agent]` Status helper with unit spec; old → new factor cell and status tag scaffolds in
       `src/slices/token/components/` (placeholder presentation, `TODO (design):` markers)
-- [ ] 3 `[agent]` Tab wiring in `Token.tsx` (gate, count), `multiplier-history/` scaffold (query, table,
+- [x] 3 `[agent]` Tab wiring in `Token.tsx` (gate, count), `multiplier-history/` scaffold (query, table,
       states, pagination), stub, mocks, Playwright scaffold
-- [ ] 4 `[human]` Style the table, factor cell and status tag to mockup; generate baselines —
+- [x] 4 `[human]` Style the table, factor cell and status tag to mockup; generate baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-28735)

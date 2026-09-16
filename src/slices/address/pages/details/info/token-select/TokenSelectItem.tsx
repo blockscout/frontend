@@ -8,7 +8,7 @@ import { isConfidentialTokenType, isFungibleTokenType } from 'src/slices/token/u
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import type { TokenEnhancedData } from 'src/slices/token/pages/address/utils';
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 

@@ -10,7 +10,7 @@ import { hasTokenTransferValue, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } fr
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
-import TokenMultiplierTag from 'src/slices/token/components/TokenMultiplierTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';

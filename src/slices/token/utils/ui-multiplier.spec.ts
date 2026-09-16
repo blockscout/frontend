@@ -8,11 +8,18 @@ import { describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { UiMultiplierSource } from './ui-multiplier';
+import { getUiMultiplierChangeStatuses } from './ui-multiplier';
 
 const ONE = '1000000000000000000';
 const ONE_POINT_SIX_NINE = '1690000000000000000';
 const ONE_POINT_ZERO_ZERO_TWO_FIVE = '1002500000000000000';
 const BELOW_SMALLEST_REPRESENTABLE = '100000000000';
+
+const NOW = new Date('2026-08-01T12:00:00Z').getTime();
+const FUTURE = '2026-08-02T00:00:00.000000Z';
+const EXACTLY_NOW = '2026-08-01T12:00:00.000000Z';
+const PAST = '2026-07-31T08:47:48.000000Z';
+const EARLIER_PAST = '2026-07-31T06:48:36.000000Z';
 
 const erc8056Token: UiMultiplierSource = { type: 'ERC-8056', ui_multiplier: ONE_POINT_SIX_NINE };
 
@@ -61,5 +68,36 @@ describe('formatUiMultiplier', () => {
   ])('%s → %s', async(rawValue, expected) => {
     const { formatUiMultiplier } = await import('./ui-multiplier');
     expect(formatUiMultiplier(new BigNumber(rawValue).shiftedBy(-18))).toBe(expected);
+  });
+});
+
+describe('getUiMultiplierChangeStatuses', () => {
+  it('marks the newest change already in effect as active and the older ones as inactive', () => {
+    const items = [ { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'active', 'inactive' ]);
+  });
+
+  it('keeps changes scheduled for the future inactive and activates the first one in effect below them', () => {
+    const items = [ { effective_at: FUTURE }, { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'inactive', 'active', 'inactive' ]);
+  });
+
+  it('treats a change taking effect exactly now as active', () => {
+    const items = [ { effective_at: EXACTLY_NOW }, { effective_at: PAST } ];
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'active', 'inactive' ]);
+  });
+
+  it('marks nothing active when every change on the first page is scheduled for the future', () => {
+    const items = [ { effective_at: FUTURE }, { effective_at: FUTURE } ];
+    expect(getUiMultiplierChangeStatuses(items, 1, NOW)).toEqual([ 'inactive', 'inactive' ]);
+  });
+
+  it('marks nothing active on pages after the first', () => {
+    const items = [ { effective_at: PAST }, { effective_at: EARLIER_PAST } ];
+    expect(getUiMultiplierChangeStatuses(items, 2, NOW)).toEqual([ 'inactive', 'inactive' ]);
+  });
+
+  it('returns no statuses for an empty list', () => {
+    expect(getUiMultiplierChangeStatuses([], 1, NOW)).toEqual([]);
   });
 });
