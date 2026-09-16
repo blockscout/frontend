@@ -5,10 +5,9 @@ import { useCallback } from 'react';
 import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchChain, useSignMessage, useSignTypedData } from 'wagmi';
 
-import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
-
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+
+import { useMarketplaceWalletActivity } from './useMarketplaceWalletActivity';
 
 type SendTransactionArgs = {
   chainId?: number;
@@ -25,23 +24,13 @@ export type SignTypedDataArgs<
   TPrimaryType extends string = string,
 > = SignTypedDataParameters<TTypedData, TPrimaryType, Account>;
 
-export default function useMarketplaceWallet(appId: string, isEssentialDapp = false) {
+export default function useMarketplaceWallet(appId: string) {
   const { address, chainId } = useAccount();
   const { sendTransactionAsync } = useSendTransaction();
   const { signMessageAsync } = useSignMessage();
   const { signTypedDataAsync } = useSignTypedData();
   const { switchChainAsync } = useSwitchChain();
-  const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
-
-  const logEvent = useCallback((event: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_ACTION>['Action']) => {
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
-      Action: event,
-      Address: address,
-      AppId: appId,
-      Source: isEssentialDapp ? 'Essential dapps' : 'Dappscout',
-      ChainId: isEssentialDapp ? String(chainId) : undefined,
-    });
-  }, [ address, appId, chainId, isEssentialDapp ]);
+  const { trackTransaction, logEvent } = useMarketplaceWalletActivity(appId);
 
   const switchChain = useCallback(
     (chainId: number) => switchChainAsync({ chainId }),
@@ -49,28 +38,15 @@ export default function useMarketplaceWallet(appId: string, isEssentialDapp = fa
   );
 
   const checkAndSwitchChain = useCallback(async() => {
-    if (!isEssentialDapp && Number(config.chain.id) !== chainId) {
+    if (Number(config.chain.id) !== chainId) {
       await switchChain(Number(config.chain.id));
     }
-  }, [ chainId, switchChain, isEssentialDapp ]);
+  }, [ chainId, switchChain ]);
 
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await checkAndSwitchChain();
-    const activityResponse = await trackTransaction(
-      address ?? '',
-      transaction.to ?? '',
-      isEssentialDapp ? String(chainId) : undefined,
-    );
-    const tx = await sendTransactionAsync(transaction);
-    if (activityResponse?.token) {
-      await trackTransactionConfirm(tx, activityResponse.token);
-    }
-    logEvent('Send Transaction');
-    return tx;
-  }, [
-    sendTransactionAsync, logEvent, trackTransaction, trackTransactionConfirm,
-    address, checkAndSwitchChain, chainId, isEssentialDapp,
-  ]);
+    return trackTransaction(transaction.to ?? '', () => sendTransactionAsync(transaction));
+  }, [ sendTransactionAsync, trackTransaction, checkAndSwitchChain ]);
 
   const signMessage = useCallback(async(message: string) => {
     await checkAndSwitchChain();

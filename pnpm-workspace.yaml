@@ -15,6 +15,14 @@ packages:
 
 verifyDepsBeforeRun: warn
 
+# The widget-light EVM handler is patched for these wagmi v2 / viem versions.
+# Resolve wallet clients per request; explicit chainId supports syncConnectedChain: false.
+peerDependencyRules:
+  allowedVersions:
+    '@lifi/widget-light@4.3.2>wagmi': '2.19.5'
+    '@lifi/widget-light@4.3.2>@wagmi/core': '2.22.1'
+    '@lifi/widget-light@4.3.2>viem': '2.41.2'
+
 overrides:
   '@wagmi/connectors': "6.2.0"
   ws: "8.21.0"
@@ -65,3 +73,6 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
+
+patchedDependencies:
+  '@lifi/widget-light@4.3.2': patches/@lifi__widget-light@4.3.2.patch
