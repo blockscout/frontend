@@ -10,7 +10,7 @@
 //    backwards; bringing `deploy/` under ESLint and `tsc` first is issue #3675.
 //  - `playwright/**`, `vitest/**`, `*.config.*` — test support and configuration, out on the same
 //    grounds specs are.
-//  - repo-root runtime files (`proxy.ts`, `instrumentation*.ts`, `startup.node.ts`) — measured clean,
+//  - repo-root runtime files (`instrumentation*.ts`, `startup.node.ts`) — measured clean,
 //    and an allowlist of two directories is worth more than covering them.
 
 const ROOTS: ReadonlyArray<string> = [ 'src/', 'tools/' ];
