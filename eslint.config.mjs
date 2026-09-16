@@ -552,7 +552,7 @@ export default tseslint.config(
       'playwright/**',
       'deploy/scripts/**',
       'deploy/tools/**',
-      'proxy.ts',
+      'src/proxy.ts',
       'instrumentation*.ts',
       '*.config.ts',
       '*.config.js',
