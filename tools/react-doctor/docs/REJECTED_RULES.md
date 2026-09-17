@@ -11,6 +11,7 @@ Hits are from the full scan at the version named.
 | `effect-needs-cleanup` | 0.9.14 | 8 | False positives: fires on a state setter named `setInterval`, and on the socket `.on` subscription whose cleanup it does not recognise. |
 | `public-env-secret-name` | 0.9.14 | 12 | False positives: reads "TOKEN" in `NEXT_PUBLIC_*` names as a credential; here it means a crypto token. |
 | `no-unguarded-browser-global-in-render-or-hook-init` | 0.9.13 | 9 | Cannot see which components sit behind `ssr: false` or render only after an interaction; all hits were safe. A real one fails loudly with `window is not defined` on first load. |
+| `no-hydration-branch-on-browser-global` | 0.9.14 | 5 | False positives: all hits are `multichainConfig()`, which reads the same startup-generated config on server and client, so the branch cannot differ at hydration. The rule cannot tell such an isomorphic accessor from a real branch. |
 | `no-ref-current-in-render` | 0.9.14 | 11 | Clashes with an established pattern: the latest-ref hooks assign `ref.current` during render on purpose. |
 | `no-inline-hoc-on-component` | 0.9.13 | 4 | Clashes with an established pattern: `chakra(() => …)`. |
 | `no-derived-useState` | 0.9.13 | 3 | `useState(prop)` as a deliberate initial value is common here; the rule cannot tell intent. |
@@ -23,9 +24,3 @@ Hits are from the full scan at the version named.
 | `query-destructure-result` | 0.9.13 | 3 | Spreading a query result is how the paginated-query wrappers are built. |
 | `no-high-complexity-react-function`, `no-giant-component` | 0.9.14 | 74 | Duplicate the gate in `tools/code-complexity/`. |
 | `require-pnpm-hardening` | 0.9.14 | 1 | Not a React concern; dependency policy lives in `pnpm-workspace.yaml`. |
-
-## Not yet decided
-
-| Rule | Version | Hits | Open question |
-|---|---|---|---|
-| `no-hydration-branch-on-browser-global` | 0.9.14 | 5 | Flags `multichainConfig()` branches in server-rendered components; nobody has checked whether they cause a hydration mismatch. |
