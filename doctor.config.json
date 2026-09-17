@@ -1,0 +1,44 @@
+{
+  "$schema": "https://react.doctor/schema/config.json",
+  "categories": {
+    "Security": "off",
+    "Bugs": "off",
+    "Performance": "off",
+    "Accessibility": "off",
+    "Maintainability": "off"
+  },
+  "rules": {
+    "react-doctor/jsx-key": "error",
+    "react-doctor/rendering-conditional-render": "error",
+    "react-doctor/no-impure-state-updater": "error",
+    "react-doctor/no-side-effect-in-state-updater-function": "error",
+    "react-doctor/no-direct-state-mutation": "error",
+    "react-doctor/no-mutating-array-method-on-prop-or-hook-result": "error",
+    "react-doctor/no-adjust-state-on-prop-change": "error",
+    "react-doctor/no-derived-state": "error",
+    "react-doctor/no-derived-state-effect": "error",
+    "react-doctor/no-initialize-state": "error",
+    "react-doctor/no-effect-chain": "error",
+    "react-doctor/no-set-state-after-await-in-effect": "error",
+    "react-doctor/no-create-object-url-without-revoke": "error",
+    "react-doctor/query-no-query-in-effect": "error"
+  },
+  "ignore": {
+    "files": [
+      "public/**",
+      "playwright/**",
+      "vitest/**",
+      "deploy/**",
+      "tools/**",
+      "**/*.pw.tsx",
+      "**/*.spec.ts",
+      "**/*.spec.tsx"
+    ]
+  },
+  "warnings": false,
+  "blocking": "error",
+  "adoptExistingLintConfig": false,
+  "noScore": true,
+  "share": false,
+  "supplyChain": { "enabled": false }
+}

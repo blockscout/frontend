@@ -15,6 +15,10 @@ pnpm lint:tsc
 pnpm lint:cspell
 ```
 
+Pull requests also pass a React Doctor gate for React bugs ESLint misses, on changed code only:
+`pnpm lint:react-doctor --scope changed --base origin/main`. Reading a failure and suppressing a
+finding: `tools/react-doctor/CONTEXT.md`.
+
 The rest of this file covers code complexity scores and conventions that the linters do not.
 
 ## Complexity and CRAP

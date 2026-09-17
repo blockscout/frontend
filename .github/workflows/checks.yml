@@ -178,6 +178,10 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: pnpm test:code-complexity --changed=origin/main --coverage-file coverage/coverage-final.json
 
+      - name: React Doctor gate
+        if: ${{ github.event_name == 'pull_request' }}
+        run: pnpm lint:react-doctor --scope changed --base origin/main --no-color
+
   mutation_tests:
     name: Mutation testing gate
     needs: [ vitest_tests ]
