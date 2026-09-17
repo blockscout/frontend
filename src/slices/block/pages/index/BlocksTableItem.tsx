@@ -51,7 +51,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement, animation, chai
       ) }
       <TableCell >
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          { data.celo?.l1_era_finalized_epoch_number && (
+          { typeof data.celo?.l1_era_finalized_epoch_number === 'number' && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` }>
               <SpriteIcon name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>

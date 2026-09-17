@@ -102,8 +102,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   }
 
   const hasNftData =
-    (!nftsQuery.isInitialLoading && nftsQuery.data?.items.length) ||
-    (!collectionsQuery.isInitialLoading && collectionsQuery.data?.items.length);
+    Boolean(!nftsQuery.isInitialLoading && nftsQuery.data?.items.length) ||
+    Boolean(!collectionsQuery.isInitialLoading && collectionsQuery.data?.items.length);
 
   const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
   const hasFungibleTokenFilter = !isNftTab && (!isMobile || !pagination.isVisible) && FUNGIBLE_TOKEN_TYPES.length > 1;

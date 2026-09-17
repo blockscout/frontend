@@ -160,6 +160,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "3.36.1",
+    "@eslint-react/eslint-plugin": "5.19.0",
     "@eslint/compat": "1.2.2",
     "@eslint/js": "9.14.0",
     "@next/eslint-plugin-next": "16.2.6",

@@ -79,7 +79,7 @@ export const EmptyState = React.forwardRef<HTMLDivElement, EmptyStateProps>(
     return (
       <ChakraEmptyState.Root ref={ ref } { ...rest }>
         <ChakraEmptyState.Content>
-          { iconContent && (
+          { Boolean(iconContent) && (
             <ChakraEmptyState.Indicator>{ iconContent }</ChakraEmptyState.Indicator>
           ) }
           { descriptionContent ? (

@@ -88,7 +88,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
         hasEmail={ Boolean(profileQuery.data?.email) }
         showEmailAlert
       />
-      { formData.id && (
+      { formData.id !== undefined && (
         <DeleteAddressModal
           { ...deleteModalProps }
           data={ formData }

@@ -1,3 +1,4 @@
+import eslintReactPlugin from '@eslint-react/eslint-plugin';
 import { includeIgnoreFile } from '@eslint/compat';
 import jsPlugin from '@eslint/js';
 import nextJsPlugin from '@next/eslint-plugin-next';
@@ -333,6 +334,17 @@ export default tseslint.config(
       'react/no-unused-state': 'error',
       'react/require-optimization': [ 'error' ],
       'react/void-dom-elements-no-children': 'error',
+    },
+  },
+
+  {
+    // type-aware, so TS files only
+    files: [ '**/*.{ts,tsx}' ],
+    plugins: {
+      '@eslint-react': eslintReactPlugin,
+    },
+    rules: {
+      '@eslint-react/no-leaked-conditional-rendering': 'error',
     },
   },
 

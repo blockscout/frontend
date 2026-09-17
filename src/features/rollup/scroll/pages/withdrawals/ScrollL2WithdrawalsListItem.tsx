@@ -30,7 +30,7 @@ const ScrollL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      { item.origination_transaction_block_number && (
+      { item.origination_transaction_block_number !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

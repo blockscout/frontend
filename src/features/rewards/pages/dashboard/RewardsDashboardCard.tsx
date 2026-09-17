@@ -52,7 +52,7 @@ const RewardsDashboardCard = ({
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Heading level="3">{ title }</Heading>
-            { hint && <Hint label={ hint } tooltipProps={{ interactive: true }}/> }
+            { Boolean(hint) && <Hint label={ hint } tooltipProps={{ interactive: true }}/> }
             { availableSoon && <Badge colorPalette="blue">Available soon</Badge> }
           </Flex>
         ) }
