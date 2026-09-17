@@ -20,8 +20,10 @@ backlog is not gated; a full scan (`pnpm lint:react-doctor`) lists it.
 - **The config is an allowlist.** Every category is off and each rule is enabled by name at `error`,
   with warnings hidden. The tool is pre-1.0 and adds or retunes rules in most releases; with an
   allowlist a version bump cannot fail a PR through a rule nobody reviewed. Do not turn a category on.
-- **A rule joins the allowlist only after reading its hits from a full scan.** A trial that ends in a
-  rejection gets a row in `docs/REJECTED_RULES.md`, so the same rule is not re-tried blind.
+- **A rule joins the allowlist only after reading its hits from a full scan.** With every category
+  off, a candidate shows nothing until it is named: add it at `error` in `doctor.config.json`, run
+  `pnpm lint:react-doctor`, read the hits, then keep it or remove it and add a row to
+  `docs/REJECTED_RULES.md`, so the same rule is not re-tried blind.
 - **This directory is its own pnpm project, outside the root workspace.** Inside the workspace,
   react-doctor's `jiti` and `lightningcss` become optional peers of eslint, vite and webpack and
   re-key about 1,500 lines of the root lockfile. `run.sh` installs from the local lockfile on

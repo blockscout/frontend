@@ -35,6 +35,7 @@
       "**/*.spec.tsx"
     ]
   },
+  "projects": [ "." ],
   "warnings": false,
   "blocking": "error",
   "adoptExistingLintConfig": false,
