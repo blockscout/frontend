@@ -64,6 +64,9 @@ npm-debug.log*
 # compiled doc-link checker
 /tools/doc-links/dist/
 
+# react-doctor standalone install (not part of the root workspace)
+/tools/react-doctor/node_modules/
+
 # compiled React profile aggregator
 /tools/profiling/dist/
 
