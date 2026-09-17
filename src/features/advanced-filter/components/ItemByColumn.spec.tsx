@@ -4,61 +4,66 @@ import React from 'react';
 
 import { tokenInfoERC20a } from 'src/slices/token/mocks/info';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from 'vitest/lib';
+import { afterEach, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 
 import { baseResponse } from '../mocks';
 import ItemByColumn from './ItemByColumn';
 
-vi.mock('src/slices/address/components/entity/AddressEntity', () => ({
-  'default': ({ address }: { address: { hash: string } }) => <span data-testid="address-entity">{ address.hash }</span>,
-}));
-
-vi.mock('src/slices/address/components/entity/AddressEntityWithTokenFilter', () => ({
-  'default': ({ address, tokenHash }: { address: { hash: string }; tokenHash: string }) => (
-    <span data-testid="address-entity-with-token-filter" data-token-hash={ tokenHash }>{ address.hash }</span>
-  ),
-}));
-
 const coinTransfer = baseResponse.items[0];
 const tokenTransfer = { ...coinTransfer, token: tokenInfoERC20a };
 const contractCreation = { ...coinTransfer, to: null, created_contract: coinTransfer.from };
+const tokenTransferTooltip = 'View all token transfers for this address and token';
+
+const openAddressTooltip = async() => {
+  const getAddressLink = () => screen.getAllByRole('link').find(link => link.getAttribute('href')?.startsWith('/address/')) as HTMLElement;
+  const getTextElement = () => getAddressLink().querySelector('span') as HTMLElement;
+  const initialTextElement = getTextElement();
+
+  fireEvent.pointerEnter(initialTextElement, { pointerType: 'mouse' });
+  // jsdom does not preserve :hover when the lazy tooltip remounts its trigger.
+  await waitFor(() => expect(initialTextElement.isConnected).toBe(false));
+  fireEvent.pointerEnter(getTextElement(), { pointerType: 'mouse' });
+};
 
 describe('address entity tooltips', () => {
   afterEach(() => cleanup());
 
-  it('renders the regular address entity for a coin transfer "from" column', () => {
+  it('does not render the token-transfer tooltip for a coin transfer "from" column', async() => {
     render(<ItemByColumn item={ coinTransfer } column="from"/>);
+    await openAddressTooltip();
+    await screen.findByText(coinTransfer.from?.hash ?? '');
 
-    expect(screen.getByTestId('address-entity').textContent).toBe(coinTransfer.from?.hash ?? '');
-    expect(screen.queryByTestId('address-entity-with-token-filter')).toBeNull();
+    expect(screen.queryByText(tokenTransferTooltip)).toBeNull();
   });
 
-  it('renders the token-filter address entity for a token transfer "from" column', () => {
+  it('renders the token-transfer tooltip for a token transfer "from" column', async() => {
     render(<ItemByColumn item={ tokenTransfer } column="from"/>);
+    await openAddressTooltip();
 
-    expect(screen.getByTestId('address-entity-with-token-filter').getAttribute('data-token-hash')).toBe(tokenInfoERC20a.address_hash);
-    expect(screen.queryByTestId('address-entity')).toBeNull();
+    expect(await screen.findByText(tokenTransferTooltip)).toBeDefined();
   });
 
-  it('renders the regular address entity for a coin transfer "to" column', () => {
+  it('does not render the token-transfer tooltip for a coin transfer "to" column', async() => {
     render(<ItemByColumn item={ coinTransfer } column="to"/>);
+    await openAddressTooltip();
+    await screen.findByText(coinTransfer.to?.hash ?? '');
 
-    expect(screen.getByTestId('address-entity').textContent).toBe(coinTransfer.to?.hash ?? '');
-    expect(screen.queryByTestId('address-entity-with-token-filter')).toBeNull();
+    expect(screen.queryByText(tokenTransferTooltip)).toBeNull();
   });
 
-  it('renders the token-filter address entity for a token transfer "to" column', () => {
+  it('renders the token-transfer tooltip for a token transfer "to" column', async() => {
     render(<ItemByColumn item={ tokenTransfer } column="to"/>);
+    await openAddressTooltip();
 
-    expect(screen.getByTestId('address-entity-with-token-filter').getAttribute('data-token-hash')).toBe(tokenInfoERC20a.address_hash);
-    expect(screen.queryByTestId('address-entity')).toBeNull();
+    expect(await screen.findByText(tokenTransferTooltip)).toBeDefined();
   });
 
-  it('uses the regular address entity when falling back to a created contract', () => {
+  it('does not render the token-transfer tooltip when falling back to a created contract', async() => {
     render(<ItemByColumn item={ contractCreation } column="to"/>);
+    await openAddressTooltip();
+    await screen.findByText(coinTransfer.from?.hash ?? '');
 
-    expect(screen.getByTestId('address-entity').textContent).toBe(coinTransfer.from?.hash ?? '');
-    expect(screen.queryByTestId('address-entity-with-token-filter')).toBeNull();
+    expect(screen.queryByText(tokenTransferTooltip)).toBeNull();
   });
 });
