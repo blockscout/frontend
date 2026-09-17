@@ -18,10 +18,18 @@ export function AddressHighlightProvider({ children }: AddressHighlightProviderP
   const hashRef = React.useRef<string | null>(null);
 
   const onMouseEnter = React.useCallback((event: React.MouseEvent) => {
-    const hash = event.currentTarget.getAttribute('data-hash');
+    const target = event.currentTarget;
+    const hash = target.getAttribute('data-hash');
     if (hash) {
       hashRef.current = hash;
+      typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
       timeoutId.current = window.setTimeout(() => {
+        // A lazily mounted tooltip swaps the DOM node under the cursor right after the first hover,
+        // and the browser may never dispatch 'mouseleave' if the pointer exits before it re-targets.
+        if (!target.matches(':hover')) {
+          hashRef.current = null;
+          return;
+        }
         // for better performance we update DOM-nodes directly bypassing React reconciliation
         const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
         for (const node of nodes) {
@@ -32,13 +40,11 @@ export function AddressHighlightProvider({ children }: AddressHighlightProviderP
   }, []);
 
   const onMouseLeave = React.useCallback(() => {
-    if (hashRef.current) {
-      const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
-      for (const node of nodes) {
-        node.classList.remove('address-entity_highlighted');
-      }
-      hashRef.current = null;
+    const nodes = window.document.querySelectorAll('.address-entity_highlighted');
+    for (const node of nodes) {
+      node.classList.remove('address-entity_highlighted');
     }
+    hashRef.current = null;
     typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
   }, []);
 
