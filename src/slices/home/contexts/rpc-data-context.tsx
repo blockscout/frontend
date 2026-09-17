@@ -42,34 +42,23 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   const isEnabled = isPublicClientAvailable && subscriptions.length > 0;
 
   const handleBlock = React.useCallback((block: OnBlockParameter<Chain | undefined, true, 'latest'>) => {
-    setTxs((prevTxs) => {
-      try {
-        const newTxs = block.transactions.map((tx) => formatTxListRpcData({ tx, receipt: null, confirmations: null, block })).filter(Boolean);
-        const nextTxs = prevTxs.length < ITEMS_LIMIT ? [ ...prevTxs, ...newTxs ].slice(0, ITEMS_LIMIT) : prevTxs;
+    let newTxs: Array<schemas['Transaction']>;
+    let newBlock: ReturnType<typeof formatBlockListData>;
 
-        const totalTxs = prevTxs.length + newTxs.length;
-        setTotalTxs(totalTxs);
+    try {
+      newTxs = block.transactions.map((tx) => formatTxListRpcData({ tx, receipt: null, confirmations: null, block })).filter(Boolean);
+      newBlock = formatBlockListData({
+        ...block,
+        transactions: block.transactions.map((tx) => tx.hash),
+      });
+    } catch (_) {
+      setIsError(true);
+      return;
+    }
 
-        return nextTxs;
-      } catch (_) {
-        setIsError(true);
-        return prevTxs;
-      }
-    });
-    setBlocks((prev) => {
-      try {
-        return [
-          formatBlockListData({
-            ...block,
-            transactions: block.transactions.map((tx) => tx.hash),
-          }),
-          ...prev,
-        ].filter(Boolean).slice(0, ITEMS_LIMIT);
-      } catch (_) {
-        setIsError(true);
-        return prev;
-      }
-    });
+    setTxs((prev) => prev.length < ITEMS_LIMIT ? [ ...prev, ...newTxs ].slice(0, ITEMS_LIMIT) : prev);
+    setTotalTxs((prev) => prev + newTxs.length);
+    setBlocks((prev) => [ newBlock, ...prev ].filter(Boolean).slice(0, ITEMS_LIMIT));
   }, []);
 
   React.useEffect(() => {

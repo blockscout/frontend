@@ -7,18 +7,20 @@ import { HomeRpcDataContextProvider } from 'src/slices/home/contexts/rpc-data-co
 import { rpcTxReceipt } from 'src/slices/tx/mocks/rpc';
 
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { render, screen, cleanup } from 'vitest/lib';
-import { mockApiAndRpc } from 'vitest/utils/mockJsonRpc';
+import { render, screen, cleanup, waitFor } from 'vitest/lib';
+import flushPromises from 'vitest/utils/flushPromises';
+import { mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
 
 import LatestBlocksDegraded from '../blocks/LatestBlocksDegraded';
 import LatestTxsDegraded from './LatestTxsDegraded';
 
+const RPC_TX_HASH = '0xae5624c77f06d0164301380afa7780ebe49debe77eb3d5167004d69bd188a09f';
+
 const RPC_NODE = {
   eth_getBlockByNumber: rpcBlockWithTxsInfo,
-  eth_getTransactionReceipt: { ...rpcTxReceipt, status: '0x1' },
+  eth_getTransactionReceipt: { ...rpcTxReceipt, transactionHash: RPC_TX_HASH },
 };
 
-const RPC_TX_HASH = '0xae5624c77f06d0164301380afa7780ebe49debe77eb3d5167004d69bd188a09f';
 const EMPTY_MESSAGE = 'No latest transactions found.';
 
 beforeEach(() => {
@@ -42,7 +44,7 @@ describe('LatestTxsDegraded', () => {
     expect(screen.queryByText(EMPTY_MESSAGE)).toBeNull();
   });
 
-  it('shows transactions from the RPC node under React strict mode', async() => {
+  it('shows transactions from the RPC node when the widget remounts', async() => {
     render(
       <React.StrictMode>
         <HomeRpcDataContextProvider>
@@ -53,6 +55,35 @@ describe('LatestTxsDegraded', () => {
 
     expect(await screen.findAllByText(RPC_TX_HASH)).not.toHaveLength(0);
     expect(screen.queryByText(EMPTY_MESSAGE)).toBeNull();
+  });
+
+  it('marks a reverted transaction as failed', async() => {
+    mockApiAndRpc({
+      api: () => undefined,
+      rpc: { ...RPC_NODE, eth_getTransactionReceipt: { ...RPC_NODE.eth_getTransactionReceipt, status: '0x0' } },
+    });
+
+    render(
+      <HomeRpcDataContextProvider>
+        <LatestTxsDegraded maxNum={ 5 }/>
+      </HomeRpcDataContextProvider>,
+    );
+
+    expect(await screen.findAllByText('Failed')).not.toHaveLength(0);
+  });
+
+  it('shows no failed status for a successful transaction', async() => {
+    render(
+      <HomeRpcDataContextProvider>
+        <LatestTxsDegraded maxNum={ 5 }/>
+      </HomeRpcDataContextProvider>,
+    );
+
+    await screen.findAllByText(RPC_TX_HASH);
+    await waitFor(() => expect(rpcRequests()).toContain('eth_getTransactionReceipt'));
+    await flushPromises();
+
+    expect(screen.queryByText('Failed')).toBeNull();
   });
 
   it('never shows the empty message while waiting for the first block', async() => {
