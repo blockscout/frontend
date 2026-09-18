@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// @vitest-environment jsdom
+
 import { createHash } from 'node:crypto';
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -12,9 +14,9 @@ import generateCspPolicy from './generateCspPolicy';
 
 function getColorModeScriptHash(defaultTheme: string | undefined): string | undefined {
   const html = renderToStaticMarkup(<ColorModeProvider defaultTheme={ defaultTheme }/>);
-  const script = /<script[^>]*>([\s\S]*?)<\/script>/.exec(html)?.[1];
+  const script = new DOMParser().parseFromString(html, 'text/html').querySelector('script')?.textContent;
 
-  return script && `'sha256-${ createHash('sha256').update(script).digest('base64') }'`;
+  return script ? `'sha256-${ createHash('sha256').update(script).digest('base64') }'` : undefined;
 }
 
 describe('color mode inline script', () => {
