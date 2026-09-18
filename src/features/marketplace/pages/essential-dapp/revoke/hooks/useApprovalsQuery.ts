@@ -3,7 +3,7 @@
 import ERC20Artifact from '@openzeppelin/contracts/build/contracts/ERC20.json';
 import NftArtifact from '@openzeppelin/contracts/build/contracts/ERC721.json';
 import { useQuery } from '@tanstack/react-query';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { formatUnits, getAbiItem, getAddress, isAddress } from 'viem';
 import type { GetLogsParameters, PublicClient } from 'viem';
 import { usePublicClient } from 'wagmi';
@@ -169,12 +169,16 @@ function buildAllowance(record: BaseAllowanceType, tokenData: schemas['Token'] |
   };
 }
 
+const EMPTY_KEYS: Array<string> = [];
+
 export default function useApprovalsQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string, page: number) {
   const apiFetch = useApiFetch();
   const getBlockTimestamp = useGetBlockTimestamp();
   const searchErc20Allowances = useSearchErc20Allowances();
   const searchNftAllowances = useSearchNftAllowances();
-  const [ hiddenApprovalKeys, setHiddenApprovalKeys ] = useState<Array<string>>([]);
+  const scopeKey = `${ chain?.id }:${ userAddress }`;
+  const [ hiddenApprovalKeysScope, setHiddenApprovalKeysScope ] = useState<{ scopeKey: string; keys: Array<string> }>({ scopeKey, keys: EMPTY_KEYS });
+  const hiddenApprovalKeys = hiddenApprovalKeysScope.scopeKey === scopeKey ? hiddenApprovalKeysScope.keys : EMPTY_KEYS;
   const chainId = chain?.id ? Number(chain.id) : undefined;
   const publicClient = usePublicClient({ chainId }) as PublicClient | undefined;
 
@@ -186,15 +190,14 @@ export default function useApprovalsQuery(chain: EssentialDappsChainConfig | und
   const isQueryEnabled = Boolean(userAddress) && isAddress(userAddress) && Boolean(publicClient && blockscoutClient);
   const hiddenApprovalKeysKey = hiddenApprovalKeys.join(':');
 
-  useEffect(() => {
-    setHiddenApprovalKeys([]);
-  }, [ chain?.id, userAddress ]);
-
   const hideApproval = useCallback((approval: AllowanceType) => {
     const key = getApprovalHiddenKey(approval);
 
-    setHiddenApprovalKeys((prev) => prev.includes(key) ? prev : [ ...prev, key ]);
-  }, []);
+    setHiddenApprovalKeysScope((prev) => {
+      const keys = prev.scopeKey === scopeKey ? prev.keys : EMPTY_KEYS;
+      return keys.includes(key) ? prev : { scopeKey, keys: [ ...keys, key ] };
+    });
+  }, [ scopeKey ]);
 
   const searchBaseAllowances = useCallback(async(signal?: AbortSignal): Promise<Array<BaseAllowanceType>> => {
     throwIfAborted(signal);

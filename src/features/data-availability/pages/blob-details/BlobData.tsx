@@ -31,6 +31,9 @@ const FORMATS = [
 
 type Format = typeof FORMATS[number]['value'];
 
+const DEFAULT_IMAGE_FORMAT: Array<Format> = [ 'Image' ];
+const DEFAULT_RAW_FORMAT: Array<Format> = [ 'Raw' ];
+
 interface Props {
   data: string;
   hash: string;
@@ -38,7 +41,7 @@ interface Props {
 }
 
 const BlobData = ({ data, isLoading, hash }: Props) => {
-  const [ format, setFormat ] = React.useState<Array<Format>>([ 'Raw' ]);
+  const [ selectedFormat, setSelectedFormat ] = React.useState<Array<Format> | null>(null);
 
   const guessedType = React.useMemo(() => {
     if (isLoading) {
@@ -55,14 +58,10 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     });
   }, [ isImage ]);
 
-  React.useEffect(() => {
-    if (isImage) {
-      setFormat([ 'Image' ]);
-    }
-  }, [ isImage ]);
+  const format = selectedFormat ?? (isImage ? DEFAULT_IMAGE_FORMAT : DEFAULT_RAW_FORMAT);
 
   const handleFormatChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setFormat(value as Array<Format>);
+    setSelectedFormat(value as Array<Format>);
   }, []);
 
   const handleDownloadButtonClick = React.useCallback(() => {
