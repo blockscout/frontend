@@ -45,9 +45,6 @@ export function app(isPrivateMode = false, primerScriptHashes: Array<string> = [
       KEY_WORDS.SELF,
       ...MAIN_DOMAINS,
 
-      // webpack hmr in safari doesn't recognize localhost as 'self' for some reason
-      config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
-
       // APIs
       ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
       ...Object.values(config.apis).filter(Boolean).map((api) => api.socketEndpoint),
@@ -98,6 +95,9 @@ export function app(isPrivateMode = false, primerScriptHashes: Array<string> = [
 
       // google fonts
       'fonts.googleapis.com',
+
+      // custom fonts are loaded as external stylesheets
+      ...(externalFontsDomains || []),
     ],
 
     'img-src': [

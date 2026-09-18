@@ -2,10 +2,21 @@
 
 import type CspDev from 'csp-dev';
 
+import multichainConfig from 'src/features/multichain/chains-config';
+
 import config from 'src/config';
 
+function hasSiteKey(): boolean {
+  if (config.services.reCaptcha.siteKey) {
+    return true;
+  }
+
+  // in multichain mode the widget is rendered with the key of the chain the page belongs to
+  return Boolean(multichainConfig()?.chains.some((chain) => chain.app_config?.services?.reCaptcha?.siteKey));
+}
+
 export function reCaptcha(isPrivateMode: boolean): CspDev.DirectiveDescriptor {
-  if (!config.services.reCaptcha.siteKey || isPrivateMode) {
+  if (!hasSiteKey() || isPrivateMode) {
     return {};
   }
 
