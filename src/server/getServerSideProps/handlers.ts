@@ -18,7 +18,7 @@ import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrows
 
 const adBannerFeature = config.features.adsBanner;
 
-const PAGEVIEW_PING_TIMEOUT = 5 * SECOND;
+const PAGEVIEW_PING_TIMEOUT = 2 * SECOND;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
