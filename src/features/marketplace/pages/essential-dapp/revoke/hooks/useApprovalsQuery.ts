@@ -171,13 +171,18 @@ function buildAllowance(record: BaseAllowanceType, tokenData: schemas['Token'] |
 
 const EMPTY_KEYS: Array<string> = [];
 
+interface HiddenApprovalKeysScope {
+  readonly scopeKey: string;
+  readonly keys: Array<string>;
+}
+
 export default function useApprovalsQuery(chain: EssentialDappsChainConfig | undefined, userAddress: string, page: number) {
   const apiFetch = useApiFetch();
   const getBlockTimestamp = useGetBlockTimestamp();
   const searchErc20Allowances = useSearchErc20Allowances();
   const searchNftAllowances = useSearchNftAllowances();
   const scopeKey = `${ chain?.id }:${ userAddress }`;
-  const [ hiddenApprovalKeysScope, setHiddenApprovalKeysScope ] = useState<{ scopeKey: string; keys: Array<string> }>({ scopeKey, keys: EMPTY_KEYS });
+  const [ hiddenApprovalKeysScope, setHiddenApprovalKeysScope ] = useState<HiddenApprovalKeysScope>({ scopeKey, keys: EMPTY_KEYS });
   const hiddenApprovalKeys = hiddenApprovalKeysScope.scopeKey === scopeKey ? hiddenApprovalKeysScope.keys : EMPTY_KEYS;
   const chainId = chain?.id ? Number(chain.id) : undefined;
   const publicClient = usePublicClient({ chainId }) as PublicClient | undefined;

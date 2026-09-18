@@ -27,6 +27,9 @@ const collection = createListCollection<SelectOption>({
 
 export type DataType = (typeof OPTIONS)[number]['value'];
 
+const DEFAULT_HEX: Array<DataType> = [ 'Hex' ];
+const DEFAULT_UTF8: Array<DataType> = [ 'UTF-8' ];
+
 interface Props {
   bytecode: string;
   isLoading: boolean;
@@ -51,7 +54,7 @@ const ContractDetailsDeployedByteCode = ({ bytecode, isLoading, addressData, sho
     return decodedBytecode.includes('scilla_version 0');
   }, [ isLoading, bytecode, addressData.is_verified ]);
 
-  const dataType: Array<DataType> = selectedDataType ?? (isScillaSourceCode ? [ 'UTF-8' ] : [ 'Hex' ]);
+  const dataType = selectedDataType ?? (isScillaSourceCode ? DEFAULT_UTF8 : DEFAULT_HEX);
 
   const handleSelectValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSelectedDataType(value as Array<DataType>);

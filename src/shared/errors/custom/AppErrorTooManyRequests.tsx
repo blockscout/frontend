@@ -85,23 +85,22 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
   }, [ recaptcha ]);
 
   React.useEffect(() => {
-    if (reset === undefined) {
+    if (timeLeft === undefined) {
       return;
     }
 
-    const interval = window.setInterval(() => {
-      setTimeLeft((prev) => Math.max((prev ?? 0) - 1, 0));
+    const timeout = window.setTimeout(() => {
+      if (timeLeft <= 1) {
+        window.location.reload();
+        return;
+      }
+
+      setTimeLeft(timeLeft - 1);
     }, SECOND);
 
     return () => {
-      window.clearInterval(interval);
+      window.clearTimeout(timeout);
     };
-  }, [ reset ]);
-
-  React.useEffect(() => {
-    if (timeLeft === 0) {
-      window.location.reload();
-    }
   }, [ timeLeft ]);
 
   if (!config.services.reCaptcha.siteKey) {
