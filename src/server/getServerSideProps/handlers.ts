@@ -12,9 +12,13 @@ import type * as metadata from 'src/shell/metadata';
 import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
 
+import { SECOND } from 'src/toolkit/utils/consts';
+
 import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 
 const adBannerFeature = config.features.adsBanner;
+
+const PAGEVIEW_PING_TIMEOUT = 2 * SECOND;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
@@ -81,7 +85,8 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
           publicRPC,
           uuid,
         }),
-      });
+        signal: AbortSignal.timeout(PAGEVIEW_PING_TIMEOUT),
+      }).catch(() => {});
     }
   }
 
