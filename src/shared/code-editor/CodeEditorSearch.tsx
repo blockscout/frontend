@@ -86,11 +86,8 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
       .filter(({ matches }) => matches.length > 0);
 
     setSearchResults(result.length > 0 ? result : EMPTY_RESULTS);
+    setExpandedSections(result.map((item) => item.file_path));
   }, [ debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
-
-  React.useEffect(() => {
-    setExpandedSections(searchResults.map((item) => item.file_path));
-  }, [ searchResults ]);
 
   const handleSearchTermChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     changeSearchTerm(event.target.value);

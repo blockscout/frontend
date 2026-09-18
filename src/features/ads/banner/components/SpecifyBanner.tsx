@@ -33,31 +33,45 @@ const SpecifyBanner = ({ className, format = 'responsive', address, onEmpty, isL
   const [ isFetching, setIsFetching ] = React.useState(true);
 
   React.useEffect(() => {
-    if (!isLoading) {
-      const specify = new Specify({
-        publisherKey: PUBLISHER_KEY,
-        cacheMostRecentAddress: true,
-      });
-      const fetchContent = async() => {
-        try {
-          const content = await specify.serve(
-            address ? [ address as `0x${ string }` ] : null,
-            { imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER },
-          );
-          if (content?.imageUrl) {
-            setAd(content);
-          } else {
-            onEmpty();
-          }
-        } catch (error) {
+    if (isLoading) {
+      return;
+    }
+
+    let isStale = false;
+    const specify = new Specify({
+      publisherKey: PUBLISHER_KEY,
+      cacheMostRecentAddress: true,
+    });
+    const fetchContent = async() => {
+      try {
+        const content = await specify.serve(
+          address ? [ address as `0x${ string }` ] : null,
+          { imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER },
+        );
+        if (isStale) {
+          return;
+        }
+        if (content?.imageUrl) {
+          setAd(content);
+        } else {
           onEmpty();
-        } finally {
+        }
+      } catch (error) {
+        if (!isStale) {
+          onEmpty();
+        }
+      } finally {
+        if (!isStale) {
           setIsFetching(false);
         }
-      };
+      }
+    };
 
-      fetchContent();
-    }
+    fetchContent();
+
+    return () => {
+      isStale = true;
+    };
   }, [ address, isMobile, onEmpty, isLoading ]);
 
   const handleClick = React.useCallback(() => {
