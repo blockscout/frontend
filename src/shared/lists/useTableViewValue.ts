@@ -13,17 +13,15 @@ export default function useTableViewValue() {
   const { value: featureFlag, isLoading: isFeatureLoading } = useFeatureValue('txns_view_exp', 'list_view');
 
   const onToggle = React.useCallback(() => {
-    setValue((prev) => {
-      const nextValue = !prev;
-      cookies.set(cookies.NAMES.TABLE_VIEW_ON_MOBILE, nextValue ? 'true' : 'false');
-      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
-        Type: 'Txn view switch',
-        Info: nextValue ? 'Table view' : 'List view',
-        Source: 'Address page',
-      });
-      return nextValue;
+    const nextValue = !(value ?? featureFlag === 'table_view');
+    cookies.set(cookies.NAMES.TABLE_VIEW_ON_MOBILE, nextValue ? 'true' : 'false');
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+      Type: 'Txn view switch',
+      Info: nextValue ? 'Table view' : 'List view',
+      Source: 'Address page',
     });
-  }, []);
+    setValue(nextValue);
+  }, [ value, featureFlag ]);
 
   React.useEffect(() => {
     if (!isFeatureLoading) {

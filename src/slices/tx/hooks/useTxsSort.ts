@@ -37,15 +37,10 @@ export default function useTxsSort(
   const [ sorting, setSorting ] = React.useState<SortingValue>((cookies.get(cookies.NAMES.TXS_SORT) as SortingValue | undefined) ?? 'default');
 
   const setSortByValue = React.useCallback((value: SortingValue) => {
-    setSorting((prevVal: SortingValue) => {
-      let newVal: SortingValue = 'default';
-      if (value !== prevVal) {
-        newVal = value as SortingValue;
-      }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal ? newVal : '');
-      return newVal;
-    });
-  }, []);
+    const newVal: SortingValue = value !== sorting ? value : 'default';
+    cookies.set(cookies.NAMES.TXS_SORT, newVal);
+    setSorting(newVal);
+  }, [ sorting ]);
 
   return React.useMemo(() => {
     if (queryResult.isError || queryResult.isPending) {

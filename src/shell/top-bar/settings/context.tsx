@@ -42,28 +42,22 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
   );
 
   const toggleAddressFormat = React.useCallback(() => {
-    setAddressFormat(prev => {
-      const nextValue = prev === 'base16' ? 'bech32' : 'base16';
-      cookies.set(cookies.NAMES.ADDRESS_FORMAT, nextValue);
-      return nextValue;
-    });
-  }, []);
+    const nextValue = addressFormat === 'base16' ? 'bech32' : 'base16';
+    cookies.set(cookies.NAMES.ADDRESS_FORMAT, nextValue);
+    setAddressFormat(nextValue);
+  }, [ addressFormat ]);
 
   const toggleTimeFormat = React.useCallback(() => {
-    setTimeFormat(prev => {
-      const nextValue = prev === 'relative' ? 'absolute' : 'relative';
-      cookies.set(cookies.NAMES.TIME_FORMAT, nextValue);
-      return nextValue;
-    });
-  }, []);
+    const nextValue = timeFormat === 'relative' ? 'absolute' : 'relative';
+    cookies.set(cookies.NAMES.TIME_FORMAT, nextValue);
+    setTimeFormat(nextValue);
+  }, [ timeFormat ]);
 
   const toggleIsLocalTime = React.useCallback(() => {
-    setIsLocalTime(prev => {
-      const nextValue = !prev;
-      cookies.set(cookies.NAMES.LOCAL_TIME, nextValue ? 'true' : 'false');
-      return nextValue;
-    });
-  }, []);
+    const nextValue = !isLocalTime;
+    cookies.set(cookies.NAMES.LOCAL_TIME, nextValue ? 'true' : 'false');
+    setIsLocalTime(nextValue);
+  }, [ isLocalTime ]);
 
   const value = React.useMemo(() => {
     return {
