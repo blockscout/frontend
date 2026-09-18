@@ -40,7 +40,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         <Skeleton loading={ isLoading } display="inline-block">{ item.validator_index }</Skeleton>
       </ListItemMobileGrid.Value>
 
-      { view !== 'block' && item.block_number && (
+      { view !== 'block' && item.block_number !== undefined && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

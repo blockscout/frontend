@@ -105,8 +105,9 @@ const AddressFilter = ({ type, value = [], handleFilterChange }: Props) => {
 
   const handleModeSelectChange = React.useCallback((index: number) => ({ value }: { value: Array<string> }) => {
     setCurrentValue(prev => {
-      prev[index] = { ...prev[index], mode: value[0] as AddressFilterMode };
-      return [ ...prev ];
+      const newVal = [ ...prev ];
+      newVal[index] = { ...newVal[index], mode: value[0] as AddressFilterMode };
+      return newVal;
     });
   }, []);
 

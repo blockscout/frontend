@@ -49,7 +49,7 @@ const DataList = (props: Props) => {
     return (
       <>
         { props.showActionBarIfEmpty && props.actionBar }
-        { props.emptyText && <Text className={ props.className }>{ props.emptyText }</Text> }
+        { Boolean(props.emptyText) && <Text className={ props.className }>{ props.emptyText }</Text> }
       </>
     );
   }

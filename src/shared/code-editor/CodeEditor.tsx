@@ -66,6 +66,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   const [ index, setIndex ] = React.useState(0);
   const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
   const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
+  const handleTabCloseRef = React.useRef<(path: string, isActive?: boolean) => void>(() => {});
 
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
@@ -156,7 +157,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         const model = editor.getModel();
         const path = model?.uri.path;
         if (path) {
-          handleTabClose(path, true);
+          handleTabCloseRef.current(path, true);
         }
       },
     });
@@ -183,22 +184,24 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   }, [ data ]);
 
   const handleTabClose = React.useCallback((path: string, _isActive?: boolean) => {
-    setTabs((prev) => {
-      if (prev.length > 1) {
-        const tabIndex = prev.findIndex((item) => item === path);
-        const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
+    if (tabs.length <= 1) {
+      return;
+    }
 
-        if (isActive) {
-          const nextActiveIndex = data.findIndex((item) => item.file_path === prev[(tabIndex === 0 ? 1 : tabIndex - 1)]);
-          setIndex(nextActiveIndex);
-        }
+    const tabIndex = tabs.findIndex((item) => item === path);
+    const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
 
-        return prev.filter((item) => item !== path);
-      }
+    if (isActive) {
+      const nextActiveIndex = data.findIndex((item) => item.file_path === tabs[(tabIndex === 0 ? 1 : tabIndex - 1)]);
+      setIndex(nextActiveIndex);
+    }
 
-      return prev;
-    });
-  }, [ data, index ]);
+    setTabs(tabs.filter((item) => item !== path));
+  }, [ data, index, tabs ]);
+
+  React.useEffect(() => {
+    handleTabCloseRef.current = handleTabClose;
+  }, [ handleTabClose ]);
 
   const handleClick = React.useCallback((event: React.MouseEvent) => {
     if (!isMetaPressed && !isMobile) {

@@ -161,8 +161,8 @@ const ZetaChainAddressFilter = ({
 
   const isTouched = !isEqual(
     currentValue.map(item => item.address.trim()).filter(Boolean).sort(),
-    value.sort(),
-  ) || !isEqual(currentChainValue.sort(), chainValue.sort());
+    value.slice().sort(),
+  ) || !isEqual(currentChainValue.slice().sort(), chainValue.slice().sort());
 
   return (
     <TableColumnFilter

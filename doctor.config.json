@@ -9,7 +9,6 @@
   },
   "rules": {
     "react-doctor/jsx-key": "error",
-    "react-doctor/rendering-conditional-render": "error",
     "react-doctor/no-impure-state-updater": "error",
     "react-doctor/no-side-effect-in-state-updater-function": "error",
     "react-doctor/no-direct-state-mutation": "error",

@@ -117,7 +117,7 @@ const StatsWidget = React.forwardRef<HTMLDivElement, Props>(({
               value
             ) }
             { valuePostfix && <chakra.span whiteSpace="pre">{ valuePostfix }</chakra.span> }
-            { diff && Number(diff) > 0 && (
+            { Number(diff) > 0 && (
               <>
                 <Text ml={ 2 } mr={ 1 } color="green.500">
                   +{ diffFormatted || Number(diff).toLocaleString() }

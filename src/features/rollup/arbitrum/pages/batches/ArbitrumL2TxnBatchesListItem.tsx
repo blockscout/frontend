@@ -46,7 +46,7 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         <ArbitrumL2TxnBatchStatus status={ item.commitment_transaction.status } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      { item.commitment_transaction.block_number && (
+      { item.commitment_transaction.block_number !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.parent } block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
@@ -58,7 +58,7 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         </>
       ) }
 
-      { item.blocks_count && (
+      { item.blocks_count > 0 && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Block count</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>

@@ -55,7 +55,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
             chain={ chainData }
             isPendingUpdate={ data.is_pending_update ?? false }
           />
-          { data.celo?.l1_era_finalized_epoch_number && (
+          { typeof data.celo?.l1_era_finalized_epoch_number === 'number' && (
             <Tooltip content={ `Finalized epoch #${ data.celo.l1_era_finalized_epoch_number }` } disabled={ isLoading }>
               <SpriteIcon name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
             </Tooltip>
@@ -70,7 +70,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement, animation, chain
           display="inline-block"
         />
       </Flex>
-      { data.size && (
+      { Boolean(data.size) && (
         <Flex columnGap={ 2 }>
           <Text fontWeight={ 500 }>Size</Text>
           <Skeleton loading={ isLoading } display="inline-block" color="text.secondary">

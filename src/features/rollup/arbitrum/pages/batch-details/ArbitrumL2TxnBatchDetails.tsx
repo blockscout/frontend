@@ -145,7 +145,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { data.commitment_transaction.block_number && (
+      { data.commitment_transaction.block_number !== null && (
         <>
           <DetailedInfo.ItemLabel
             isLoading={ isPlaceholderData }

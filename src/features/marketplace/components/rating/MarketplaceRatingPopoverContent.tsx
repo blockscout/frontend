@@ -74,7 +74,7 @@ const MarketplaceRatingPopoverContent = ({ appId, userRating, source }: Props) =
   return (
     <>
       <Flex alignItems="center" h="30px">
-        { ratingValue && (
+        { Boolean(ratingValue) && (
           // FIXME use non-navigation icon
           <SpriteIcon name="navigation/verified_contracts" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
         ) }

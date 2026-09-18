@@ -19,20 +19,19 @@ const BlockCountdownTimer = ({ value: initialValue, onFinish }: Props) => {
 
   React.useEffect(() => {
     const intervalId = window.setInterval(() => {
-      setValue((prev) => {
-        if (prev > 1) {
-          return prev - 1;
-        }
-
-        onFinish();
-        return 0;
-      });
+      setValue((prev) => Math.max(prev - 1, 0));
     }, SECOND);
 
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [ initialValue, onFinish ]);
+  }, [ initialValue ]);
+
+  React.useEffect(() => {
+    if (value === 0) {
+      onFinish();
+    }
+  }, [ value, onFinish ]);
 
   const periods = splitSecondsInPeriods(value);
 

@@ -113,7 +113,7 @@ const TxsTableItem = ({
       { showBlockInfo && (
         <TableCell>
           <Flex alignItems="center" gap={ 2 }>
-            { tx.block_number && (
+            { tx.block_number !== null && (
               <BlockEntity
                 isLoading={ isLoading }
                 number={ tx.block_number }
