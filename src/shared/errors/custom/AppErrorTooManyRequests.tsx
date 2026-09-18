@@ -90,22 +90,19 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
     }
 
     const interval = window.setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev && prev > 1) {
-          return prev - 1;
-        }
-
-        window.clearInterval(interval);
-        window.location.reload();
-
-        return 0;
-      });
+      setTimeLeft((prev) => Math.max((prev ?? 0) - 1, 0));
     }, SECOND);
 
     return () => {
       window.clearInterval(interval);
     };
   }, [ reset ]);
+
+  React.useEffect(() => {
+    if (timeLeft === 0) {
+      window.location.reload();
+    }
+  }, [ timeLeft ]);
 
   if (!config.services.reCaptcha.siteKey) {
     throw new Error('reCAPTCHA V2 site key is not set');
