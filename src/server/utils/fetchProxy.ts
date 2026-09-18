@@ -27,6 +27,8 @@ export default function fetchFactory(
         'x-csrf-token',
         'recaptcha-v2-response',
         'user-agent',
+        // some instances have a WAF rule that challenges API requests without a referer
+        'referer',
         'Authorization', // the old value, just in case
         'authorization', // Node.js automatically lowercases headers
         'show-scam-tokens',
