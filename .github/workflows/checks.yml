@@ -47,7 +47,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -89,7 +89,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install project dependencies
@@ -137,7 +137,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -165,7 +165,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -207,7 +207,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -296,7 +296,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -363,7 +363,7 @@ jobs:
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies

@@ -23,7 +23,7 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 | Schema validation | Valibot |
 | Unit tests | Vitest |
 | Visual tests | Playwright |
-| Package manager | pnpm (Node >=22.14.0) |
+| Package manager | pnpm (Node >=24.21.0) |
 
 ## Directory layout
 
