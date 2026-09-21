@@ -6,7 +6,8 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
-import { PopoverBody, PopoverContent, PopoverRoot, PopoverRootProps, PopoverTrigger } from 'src/toolkit/chakra/popover';
+import type { PopoverRootProps } from 'src/toolkit/chakra/popover';
+import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 

@@ -121,7 +121,7 @@ const Pool = () => {
             // some of the links come from partners
             // we want them to be in the DOM
             // so search engines can index them
-            popoverProps={ { lazyMount: false } }
+            popoverProps={{ lazyMount: false }}
           />
         ) }
       </Flex>
