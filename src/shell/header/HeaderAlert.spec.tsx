@@ -29,9 +29,10 @@ interface Click {
   readonly target: Target;
   readonly type: 'click' | 'auxclick';
   readonly button: number;
+  readonly isInsideOuterLink: boolean;
 }
 
-const clickInBanner = async({ target, type, button }: Click): Promise<MouseEvent> => {
+const clickInBanner = async({ target, type, button, isInsideOuterLink }: Click): Promise<MouseEvent> => {
   const event = new MouseEvent(type, { bubbles: true, cancelable: true, button });
 
   await withEnvs([
@@ -48,7 +49,7 @@ const clickInBanner = async({ target, type, button }: Click): Promise<MouseEvent
       return (
         <>
           <span>{ isInitialized ? 'mixpanel ready' : 'mixpanel pending' }</span>
-          <HeaderAlert/>
+          { isInsideOuterLink ? <a href="https://example.com/outer"><HeaderAlert/></a> : <HeaderAlert/> }
         </>
       );
     };
@@ -81,7 +82,7 @@ describe('header banner link tracking', () => {
     { target: 'span', type: 'auxclick', button: 1, loggedLink: LINK },
     { target: 'relativeLink', type: 'click', button: 0, loggedLink: 'http://localhost:3000/apps' },
   ] as const)('tracks $type with button $button on $target as $loggedLink', async({ loggedLink, ...click }) => {
-    const event = await clickInBanner(click);
+    const event = await clickInBanner({ ...click, isInsideOuterLink: false });
 
     expect(event.defaultPrevented).toBe(false);
     expect(sdk.track).toHaveBeenCalledTimes(1);
@@ -93,7 +94,14 @@ describe('header banner link tracking', () => {
     { target: 'text', type: 'click', button: 0 },
     { target: 'anchor', type: 'click', button: 0 },
   ] as const)('ignores $type with button $button on $target', async(click) => {
-    const event = await clickInBanner(click);
+    const event = await clickInBanner({ ...click, isInsideOuterLink: false });
+
+    expect(event.defaultPrevented).toBe(false);
+    expect(sdk.track).not.toHaveBeenCalled();
+  });
+
+  it('ignores a click on banner text when the link is outside the banner', async() => {
+    const event = await clickInBanner({ target: 'text', type: 'click', button: 0, isInsideOuterLink: true });
 
     expect(event.defaultPrevented).toBe(false);
     expect(sdk.track).not.toHaveBeenCalled();
