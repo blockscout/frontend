@@ -47,8 +47,9 @@ and every list container, list item and mobile-list primitive is deleted.
    declaration and its test mock, the `Txn view switch` Mixpanel event, and the `list_view` sprite
    icon.
 6. Existing Playwright coverage keeps its meaning: tests and cases that exercised a list-only
-   component are removed, and the mobile screenshots of every migrated view are regenerated in the
-   same commit as the code that changes them.
+   component are removed, and so is the mobile coverage of every migrated view — a `+@mobile` tag or
+   a mobile-only case whose job was the list layout is dropped together with its screenshots. A table
+   on a mobile viewport gets no screenshot of its own; the desktop one already covers it.
 
 ## Data & API
 
@@ -105,12 +106,13 @@ No new screens, no new states, no mockups: the treatment is the one #3502 establ
   container inlined so that the shared primitives are deleted regardless.
 - **Verification is per ticket.** Each ticket carries a human acceptance criterion: open its routes at
   375px against the matching dev-server preset (`eth` for the core slices, `optimism` / `arbitrum` /
-  `scroll` for rollups, `celo` / `zeta_chain` / `tac` for chain variants, `multichain` for the
+  `scroll_sepolia` for rollups, `celo` / `zetachain` / `tac` for chain variants, `multichain` for the
   multichain pages) and confirm the table scrolls, the action bar and pagination survive, and nothing
   clips.
-- **Screenshots travel with their code.** Each ticket regenerates its own Playwright screenshots
-  through the Docker runner so they match CI, and commits them alongside the change; the branch is
-  never intentionally red between commits.
+- **Screenshots travel with their code.** Each ticket deletes the mobile screenshots it orphans and
+  runs its remaining Playwright files through the Docker runner so they match CI; a desktop baseline
+  that does change is regenerated there and committed alongside the change. The branch is never
+  intentionally red between commits.
 - **One PR, one commit per ticket**, so any single area can be reverted on its own.
 
 ## Out of scope
