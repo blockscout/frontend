@@ -44,7 +44,9 @@ describe('buildDockerCommand', () => {
     const script = scriptOf(buildDockerCommand([], OPTIONS, CWD).args);
 
     expect(script).toBe(
-      `corepack enable && corepack prepare pnpm@${ PNPM_VERSION } --activate && PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm test:pw "$@"`,
+      'npm i -g corepack@latest && ' +
+      `corepack enable && corepack prepare pnpm@${ PNPM_VERSION } --activate && ` +
+      'PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN=false pnpm test:pw "$@"',
     );
   });
 
