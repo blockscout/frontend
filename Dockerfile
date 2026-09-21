@@ -8,7 +8,7 @@ FROM node:24.21.0-alpine AS base
 RUN set -eu; \
     corepack enable; \
     n=0; \
-    until corepack prepare pnpm@11.5.1 --activate; do \
+    until corepack prepare pnpm@12.4.1 --activate; do \
       n=$((n + 1)); \
       if [ "$n" -ge 5 ]; then echo "corepack prepare failed after $n attempts" >&2; exit 1; fi; \
       echo "corepack prepare attempt $n failed, retrying in $((n * 10))s..." >&2; \
