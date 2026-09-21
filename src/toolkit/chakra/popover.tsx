@@ -72,7 +72,9 @@ export const PopoverCloseTriggerWrapper = React.forwardRef<
   );
 });
 
-export const PopoverRoot = (props: ChakraPopover.RootProps) => {
+export interface PopoverRootProps extends ChakraPopover.RootProps {}
+
+export const PopoverRoot = (props: PopoverRootProps) => {
   const positioning = {
     placement: 'bottom-start' as const,
     overflowPadding: 4,
