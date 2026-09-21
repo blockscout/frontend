@@ -27,21 +27,21 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
 
       # Also it will setup .npmrc file to publish to npm
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: '22.14.0'
+          node-version: '24.21.0'
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
-      # Ensure npm 11.5.1 is installed
+      # Ensure npm 12.4.1 is installed
       - name: Update npm
-        run: npm install -g npm@11.5.1
+        run: npm install -g npm@12.4.1
 
       - name: Update package version
         run: |
