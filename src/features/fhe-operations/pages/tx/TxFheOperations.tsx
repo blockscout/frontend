@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -13,7 +12,6 @@ import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 
 import { FHE_OPERATIONS_RESPONSE } from '../../stubs';
-import TxFHEOperationsList from './TxFheOperationsList';
 import TxFHEOperationsStats from './TxFheOperationsStats';
 import TxFHEOperationsTable from './TxFheOperationsTable';
 
@@ -50,10 +48,7 @@ const TxFHEOperations = ({ txQuery }: Props) => {
         operationCount={ data.operation_count }
         isLoading={ isPlaceholderData }
       />
-      <Box>
-        <TxFHEOperationsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ hash }/>
-        <TxFHEOperationsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ hash }/>
-      </Box>
+      <TxFHEOperationsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ hash }/>
     </>
   ) : null;
 

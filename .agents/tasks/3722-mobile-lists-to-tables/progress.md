@@ -9,6 +9,6 @@
 - [x] 07 → `tickets/07-chain-variants/`
 - [x] 08 → `tickets/08-multichain-cross-chain-user-ops/`
 - [x] 09 → `tickets/09-name-services-account/`
-- [ ] 10 → `tickets/10-remaining-features/`
+- [x] 10 → `tickets/10-remaining-features/`
 - [ ] 11 → `tickets/11-home-cross-chain-widget/`
 - [ ] 12 → `tickets/12-primitives-teardown/`

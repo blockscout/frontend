@@ -18,7 +18,7 @@ interface Props {
 
 const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <TableRoot tableLayout="auto">
+    <TableRoot tableLayout="auto" minW="1200px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader/>
