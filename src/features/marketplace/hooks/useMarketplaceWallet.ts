@@ -67,7 +67,6 @@ export default function useMarketplaceWallet(appId: string) {
 
   return {
     address,
-    chainId,
     sendTransaction,
     signMessage,
     signTypedData,

@@ -16,6 +16,7 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import { BODY_TYPEFACE } from 'src/toolkit/theme/foundations/typography';
 
+import { SWAP_WIDGET_MIN_HEIGHT } from './consts';
 import SwapWidgetIframe from './SwapWidgetIframe';
 import { useSwapWallet } from './useSwapWallet';
 import { getSwapWidgetConfig } from './widget-config';
@@ -70,7 +71,7 @@ export default function Swap() {
 
   return (
     <Flex flex="1" flexDir="column" justifyContent="space-between" gap={ 6 }>
-      <Web3Boundary fallback={ <Center h="500px"><ContentLoader/></Center> }>
+      <Web3Boundary fallback={ <Center h={ SWAP_WIDGET_MIN_HEIGHT }><ContentLoader/></Center> }>
         <SwapWidget/>
       </Web3Boundary>
       { (feature?.essentialDappsAdEnabled && !isMobile) && (

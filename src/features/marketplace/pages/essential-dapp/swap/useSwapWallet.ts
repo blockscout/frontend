@@ -11,7 +11,9 @@ import { useMarketplaceWalletActivity } from '../../../hooks/useMarketplaceWalle
 const BATCH_SUCCESS_STATUS = 200;
 const BATCH_FAILURE_STATUS = 300;
 type ConfirmTransaction = (hash: string) => Promise<void>;
+const transactionRequestSchema = v.tuple([ v.object({ to: v.optional(v.string()) }) ]);
 const batchRequestSchema = v.tuple([ v.object({ calls: v.array(v.object({ to: v.optional(v.string()) })) }) ]);
+const batchStatusRequestSchema = v.tuple([ v.string() ]);
 const batchIdSchema = v.union([ v.string(), v.object({ id: v.string() }) ]);
 const batchStatusSchema = v.object({
   status: v.union([ v.number(), v.literal('CONFIRMED'), v.literal('PENDING') ]),
@@ -41,10 +43,11 @@ export function useSwapWallet(): IframeEcosystemHandler {
   }, [ handler, prepareTransaction, logEvent ]);
 
   const confirmCalls = useCallback(async(params: unknown, result: unknown) => {
-    const batchId: unknown = Array.isArray(params) ? params[0] : undefined;
-    if (typeof batchId !== 'string') {
+    const request = v.safeParse(batchStatusRequestSchema, params);
+    if (!request.success) {
       return;
     }
+    const [ batchId ] = request.output;
     const confirm = pendingBatches.current.get(batchId);
     const response = v.safeParse(batchStatusSchema, result);
     if (!confirm || !response.success) {
@@ -69,9 +72,8 @@ export function useSwapWallet(): IframeEcosystemHandler {
       return sendCalls(id, method, params);
     }
     if (method === 'eth_sendTransaction') {
-      const transaction: unknown = Array.isArray(params) ? params[0] : undefined;
-      const to = transaction && typeof transaction === 'object' && 'to' in transaction && typeof transaction.to === 'string' ?
-        transaction.to : '';
+      const request = v.safeParse(transactionRequestSchema, params);
+      const to = request.success ? request.output[0].to ?? '' : '';
       return trackTransaction(to, () => handler.handleRequest(id, method, params));
     }
 

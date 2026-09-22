@@ -14,8 +14,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, render, renderHook, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-import { useSwapWallet } from './useSwapWallet';
-
 vi.mock('mixpanel-browser', () => ({ 'default': { init: vi.fn(), track: vi.fn() } }));
 
 const ACCOUNT = '0x1111111111111111111111111111111111111111';
@@ -82,7 +80,7 @@ async function renderTrackedSwap(): Promise<{
 
   const activityRequests: Array<{ path: string; body: unknown }> = [];
   fetchMock.mockResponse(async(request) => {
-    if (!request.url.startsWith(REWARDS_ORIGIN)) {
+    if (new URL(request.url).origin !== REWARDS_ORIGIN) {
       const { id } = JSON.parse(await request.text()) as { readonly id: number };
       return JSON.stringify({ jsonrpc: '2.0', id, result: [ ACCOUNT ] });
     }
@@ -127,12 +125,6 @@ const WalletProvider = ({ children }: React.PropsWithChildren) => (
   </QueryClientProvider>
 );
 
-const Widget = () => {
-  const handler = useSwapWallet();
-  const handlers = useMemo(() => [ handler ], [ handler ]);
-  return <LiFiWidgetLight config={ WIDGET_CONFIG } handlers={ handlers }/>;
-};
-
 beforeEach(async() => {
   walletConfig = createWalletConfig();
   queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
@@ -149,7 +141,7 @@ beforeEach(async() => {
     let result: unknown;
     switch (method) {
       case 'eth_accounts': result = [ ACCOUNT ]; break;
-      case 'eth_getBalance': result = request.url.startsWith(OPTIMISM_RPC) ? '0x20' : '0x10'; break;
+      case 'eth_getBalance': result = new URL(request.url).origin === OPTIMISM_RPC ? '0x20' : '0x10'; break;
       case 'eth_sendTransaction':
         walletRpcUrls.push(request.url);
         if (rejectTransaction) {
@@ -180,6 +172,7 @@ afterEach(() => {
 
 describe('Swap wallet with wagmi v2', () => {
   it('exposes the existing connection and publishes account changes and disconnects', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
     const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
     expect(result.current.getInitState()).toMatchObject({ chainType: 'EVM', state: { accounts: [ ACCOUNT ], chainId: mainnet.id } });
     const emit = vi.fn();
@@ -196,6 +189,7 @@ describe('Swap wallet with wagmi v2', () => {
   });
 
   it('switches chains and reads from the connected chain even when the explorer stays on Ethereum', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
     const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
     await act(async() => {
       await result.current.handleRequest('switch', 'wallet_switchEthereumChain', [ { chainId: '0xa' } ]);
@@ -207,21 +201,27 @@ describe('Swap wallet with wagmi v2', () => {
     expect(await result.current.handleRequest('send', 'eth_sendTransaction', [ { to: OTHER_ACCOUNT, value: '0x0' } ])).toBe(TX_HASH);
   });
 
+  it('can read the account and switch away from a wallet chain outside the configuration', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
+    const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
+    act(() => walletConfig.connectors[0].onChainChanged('0x89'));
+
+    expect(await result.current.handleRequest('chain', 'eth_chainId')).toBe('0x89');
+    expect(await result.current.handleRequest('accounts', 'eth_accounts')).toEqual([ ACCOUNT ]);
+    await act(async() => {
+      expect(await result.current.handleRequest('switch', 'wallet_switchEthereumChain', [ { chainId: '0xa' } ])).toBeNull();
+    });
+    expect(await result.current.handleRequest('chain', 'eth_chainId')).toBe('0xa');
+    expect(await result.current.handleRequest('balance', 'eth_getBalance', [ ACCOUNT, 'latest' ])).toBe('0x20');
+  });
+
   it.each([
     { method: 'eth_sendTransaction', params: [ { to: OTHER_ACCOUNT, value: '0x0' } ], expected: TX_HASH },
     { method: 'personal_sign', params: [ '0x1234', ACCOUNT ], expected: SIGNATURE },
-  ])('waits for the new chain client before $method', async({ method, params, expected }) => {
+  ])('uses the new chain immediately after switching for $method', async({ method, params, expected }) => {
+    const { useSwapWallet } = await import('./useSwapWallet');
     const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
     await waitFor(() => expect(queryClient.isFetching()).toBe(0));
-    const connector = walletConfig.connectors[0];
-    const getAccounts = connector.getAccounts.bind(connector);
-    const clientReady = Promise.withResolvers<void>();
-    vi.spyOn(connector, 'getAccounts').mockImplementation(async() => {
-      if (await connector.getChainId() === optimism.id) {
-        await clientReady.promise;
-      }
-      return getAccounts();
-    });
     const emit = vi.fn();
     result.current.subscribe(emit);
     await act(async() => {
@@ -229,16 +229,12 @@ describe('Swap wallet with wagmi v2', () => {
     });
     await waitFor(() => expect(emit).toHaveBeenCalledWith('chainChanged', '0xa'));
 
-    const response = result.current.handleRequest('after-switch', method, params)
-      .then((value) => ({ value }), (error: unknown) => ({ error }));
-    await act(async() => {});
-    expect(walletRpcUrls).toEqual([]);
-    await act(async() => clientReady.resolve());
-    expect(await response).toEqual({ value: expected });
+    expect(await result.current.handleRequest('after-switch', method, params)).toEqual(expected);
     expect(walletRpcUrls).toEqual([ `${ OPTIMISM_RPC }/` ]);
   });
 
   it('preserves transaction fields and returns wallet signatures', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
     const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
     await waitFor(() => expect(queryClient.isFetching()).toBe(0));
     expect(await result.current.handleRequest('send', 'eth_sendTransaction', [ {
@@ -254,6 +250,7 @@ describe('Swap wallet with wagmi v2', () => {
   });
 
   it('propagates a rejected transaction without reporting a successful send', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
     const { result } = renderHook(useSwapWallet, { wrapper: WalletProvider });
     await waitFor(() => expect(queryClient.isFetching()).toBe(0));
     rejectTransaction = true;
@@ -263,6 +260,12 @@ describe('Swap wallet with wagmi v2', () => {
   });
 
   it('bridges iframe requests and ignores messages from a different origin', async() => {
+    const { useSwapWallet } = await import('./useSwapWallet');
+    const Widget = () => {
+      const handler = useSwapWallet();
+      const handlers = useMemo(() => [ handler ], [ handler ]);
+      return <LiFiWidgetLight config={ WIDGET_CONFIG } handlers={ handlers }/>;
+    };
     const { container } = render(<WalletProvider><Widget/></WalletProvider>);
     const iframe = container.querySelector('iframe');
     expect(iframe?.src).toBe(`${ WIDGET_ORIGIN }/`);

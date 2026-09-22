@@ -3,8 +3,10 @@
 
 import React from 'react';
 
-import { afterEach, describe, expect, it } from 'vitest';
-import { act, cleanup, fireEvent, render } from 'vitest/lib';
+import { SECOND } from 'src/toolkit/utils/consts';
+
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { act, cleanup, fireEvent, render, screen } from 'vitest/lib';
 
 import SwapWidgetIframe from './SwapWidgetIframe';
 
@@ -17,7 +19,10 @@ function sendMessage(iframe: HTMLIFrameElement, data: Record<string, unknown>, o
   });
 }
 
-afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+  vi.useRealTimers();
+});
 
 describe('Swap iframe loading', () => {
   it('keeps the unstyled iframe hidden until its configured page renders', () => {
@@ -57,5 +62,31 @@ describe('Swap iframe loading', () => {
     sendMessage(nextIframe, { type: 'READY' });
     sendMessage(nextIframe, { type: 'WIDGET_EVENT', event: 'pageEntered', data: '/' });
     expect(window.getComputedStyle(nextIframe).visibility).toBe('visible');
+  });
+
+  it('offers a fresh attempt when the widget never becomes ready', () => {
+    vi.useFakeTimers();
+    const { container } = render(<SwapWidgetIframe config={ CONFIG }/>);
+    const iframe = container.querySelector('iframe')!;
+    const widget = iframe.parentElement!;
+    sendMessage(iframe, { type: 'READY' });
+    act(() => vi.advanceTimersByTime(30 * SECOND));
+
+    expect(screen.getByRole('alert').textContent).toContain('Unable to load the swap widget');
+    expect(container.querySelector('iframe')).toBeNull();
+    expect(widget.getAttribute('aria-busy')).toBe('false');
+    fireEvent.click(screen.getByRole('button', { name: 'Try again' }));
+
+    const nextIframe = container.querySelector('iframe')!;
+    expect(nextIframe).not.toBe(iframe);
+    expect(window.getComputedStyle(nextIframe).visibility).toBe('hidden');
+    expect(screen.queryByRole('alert')).toBeNull();
+    sendMessage(iframe, { type: 'WIDGET_EVENT', event: 'pageEntered', data: '/' });
+    expect(window.getComputedStyle(nextIframe).visibility).toBe('hidden');
+    sendMessage(nextIframe, { type: 'READY' });
+    sendMessage(nextIframe, { type: 'WIDGET_EVENT', event: 'pageEntered', data: '/' });
+    act(() => vi.advanceTimersByTime(30 * SECOND));
+    expect(window.getComputedStyle(nextIframe).visibility).toBe('visible');
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 });
