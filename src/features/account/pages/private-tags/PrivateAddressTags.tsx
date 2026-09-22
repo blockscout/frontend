@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'src/features/account/types/api';
@@ -17,10 +16,10 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import AddressModal from './AddressModal/AddressModal';
-import AddressTagListItem from './AddressTagTable/AddressTagListItem';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
@@ -82,18 +81,7 @@ const PrivateAddressTags = () => {
         actionBar={ actionBar }
         isTransitioning={ isTransitioning }
       >
-        <Box display={{ base: 'block', lg: 'none' }}>
-          { addressTagsData?.items.map((item: AddressTag, index: number) => (
-            <AddressTagListItem
-              item={ item }
-              key={ item.id + (isInitialLoading ? String(index) : '') }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-              isLoading={ isInitialLoading }
-            />
-          )) }
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }}>
+        <TableContainerScrollable>
           <AddressTagTable
             isLoading={ isInitialLoading }
             data={ addressTagsData?.items }
@@ -101,7 +89,7 @@ const PrivateAddressTags = () => {
             onEditClick={ onEditClick }
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
-        </Box>
+        </TableContainerScrollable>
       </DataList>
       <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
         <Button
