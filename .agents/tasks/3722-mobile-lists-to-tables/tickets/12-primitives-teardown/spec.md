@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | the task's `spec.md` → linked as `../../spec.md`, ticket 12 of #3722 |
-| Blocked by | `T01`, `T02`, `T03`, `T04`, `T05`, `T06`, `T07`, `T08`, `T09`, `T10`, `T11` |
+| Blocked by | `T01`, `T02`, `T03`, `T04`, `T05`, `T06`, `T07`, `T08`, `T09`, `T10`, `T11`, `T13` |
 
 ## What to build
 
@@ -20,8 +20,9 @@ notice are deleted, and the codebase is swept to prove requirement 4 of the spec
 
 ## Details
 
-The sweep must not catch the out-of-scope card surfaces: the home page's latest blocks and transactions
-widgets and the marketplace dapp cards.
+The sweep must not catch the out-of-scope card surfaces: the home page's latest blocks widget,
+`LatestArbitrumL2Batches`, and the marketplace dapp cards. The home page's transaction widgets are no
+longer among them — ticket 13 converts them, which is why it is on the `Blocked by` list.
 
 Read `.agents/README.md` before editing the skill.
 
