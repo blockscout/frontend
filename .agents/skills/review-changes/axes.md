@@ -16,8 +16,9 @@ claim: <what is wrong — quote the code>
 fix: <one or two lines>
 ```
 
-Cap the report at **400 words**, which forces ranking instead of dumping. Severity here is your own read;
-the orchestrator recalibrates across axes.
+Report every finding you have, ranked most severe first; there is no limit on how many. Each finding is
+capped at **120 words** of prose — quoted code does not count. Severity here is your own read; the
+orchestrator recalibrates across axes.
 
 ## Spec axis
 
