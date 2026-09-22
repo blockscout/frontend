@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,10 +15,10 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 import { ARBITRUM_MESSAGES_ITEM } from '../stubs';
-import ArbitrumL2MessagesList from './ArbitrumL2MessagesList';
 import ArbitrumL2MessagesTable from './ArbitrumL2MessagesTable';
 
 export type MessagesDirection = 'from-rollup' | 'to-rollup';
@@ -50,25 +49,15 @@ const ArbitrumL2Messages = ({ direction }: Props) => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <ArbitrumL2MessagesList
-          items={ data.items }
-          direction={ direction }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <ArbitrumL2MessagesTable
-          items={ data.items }
-          direction={ direction }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ArbitrumL2MessagesTable
+        items={ data.items }
+        direction={ direction }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

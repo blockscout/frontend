@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Text } from '@chakra-ui/react';
+import { chakra, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,12 +13,12 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'src/toolkit/components/forms/components/FormFieldError';
 import { TRANSACTION_HASH_REGEXP } from 'src/toolkit/components/forms/validators/transaction';
 
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from '../../stubs';
-import ArbitrumL2TxnWithdrawalsList from './ArbitrumL2TxnWithdrawalsList';
 import ArbitrumL2TxnWithdrawalsTable from './ArbitrumL2TxnWithdrawalsTable';
 
 const ArbitrumL2TxnWithdrawals = () => {
@@ -70,14 +70,9 @@ const ArbitrumL2TxnWithdrawals = () => {
   }, [ handleSearchInputBlur ]);
 
   const content = data?.items ? (
-    <>
-      <Box display={{ base: 'block', lg: 'none' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsList data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
-      </Box>
-      <Box display={{ base: 'none', lg: 'block' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsTable data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ArbitrumL2TxnWithdrawalsTable data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (
