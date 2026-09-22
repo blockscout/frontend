@@ -53,5 +53,8 @@
     "./deploy/tools/llms-txt-generator",
     "./deploy/tools/feature-reporter",
     "./src/toolkit/package",
+    ".ds-sync",
+    ".design-sync",
+    "ds-bundle"
   ]
 }
