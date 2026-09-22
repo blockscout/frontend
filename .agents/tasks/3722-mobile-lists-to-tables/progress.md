@@ -1,6 +1,6 @@
 # Progress — Replace the remaining mobile list views with table views and remove the list components
 
-- [ ] 01 → `tickets/01-experiment-teardown-tx-lists/`
+- [x] 01 → `tickets/01-experiment-teardown-tx-lists/`
 - [ ] 02 → `tickets/02-blocks-addresses-contracts-search/`
 - [ ] 03 → `tickets/03-tokens-token-transfers/`
 - [ ] 04 → `tickets/04-internal-txs-tx-tabs/`

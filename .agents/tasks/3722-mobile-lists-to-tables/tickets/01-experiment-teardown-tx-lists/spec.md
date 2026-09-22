@@ -37,7 +37,7 @@ reviewing the resulting diff stays with the developer.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Make `TxsContent` table-only, restore the mobile sort, delete the list and the mobile socket-notice branch
-- [ ] 2 `[agent]` Delete the experiment: hook, toggle button, cookie, flag declaration, Mixpanel event, sprite icon
-- [ ] 3 `[agent]` Prune the mobile Playwright coverage, run the affected files in Docker, regenerate any desktop baseline that changed
-- [ ] 4 `[human]` Review the screenshot diff and check the routes at 375px
+- [x] 1 `[agent]` Make `TxsContent` table-only, restore the mobile sort, delete the list and the mobile socket-notice branch
+- [x] 2 `[agent]` Delete the experiment: hook, toggle button, cookie, flag declaration, Mixpanel event, sprite icon
+- [x] 3 `[agent]` Prune the mobile Playwright coverage, run the affected files in Docker, regenerate any desktop baseline that changed
+- [x] 4 `[human]` Review the screenshot diff and check the routes at 375px

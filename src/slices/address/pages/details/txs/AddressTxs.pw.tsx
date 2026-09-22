@@ -59,45 +59,6 @@ test.describe('base view', () => {
   });
 });
 
-test.describe('mobile', () => {
-  test.use({ viewport: pwConfig.viewport.mobile });
-
-  test.beforeEach(async({ mockApiResponse }) => {
-    await mockApiResponse(
-      'core:address_txs',
-      {
-        items: [
-          txMock.base,
-          { ...txMock.base, hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194' },
-        ],
-        next_page_params: DEFAULT_PAGINATION,
-      },
-      { pathParams: { hash: CURRENT_ADDRESS } },
-    );
-  });
-
-  test('base view', async({ render }) => {
-    const component = await render(
-      <Box pt={{ base: '134px', lg: 6 }}>
-        <AddressTxs/>
-      </Box>,
-      { hooksConfig },
-    );
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('table view', async({ render, mockFeatures }) => {
-    await mockFeatures([ [ 'txns_view_exp', 'table_view' ] ]);
-    const component = await render(
-      <Box pt={{ base: '134px', lg: 6 }}>
-        <AddressTxs/>
-      </Box>,
-      { hooksConfig },
-    );
-    await expect(component).toHaveScreenshot();
-  });
-});
-
 test.describe('socket', () => {
   // FIXME
   // test cases which use socket cannot run in parallel since the socket server always run on the same port

@@ -138,7 +138,7 @@ const TxsTable = ({
           </TableRow>
         </TableHeaderComponent>
         <TableBody>
-          { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
+          { socketType && <TxsSocketNotice type={ socketType } isLoading={ isLoading }/> }
           { txs.slice(0, renderedItemsNum).map((item, index) => {
             return (
               <TxsTableItem
