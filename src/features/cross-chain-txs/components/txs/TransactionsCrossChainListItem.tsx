@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { JsxStyleProps } from '@chakra-ui/react';
-import { chakra, Grid, HStack } from '@chakra-ui/react';
+import { Box, chakra, Grid, HStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -13,7 +13,6 @@ import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityIntercha
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
-import ListItemMobile from 'src/shared/lists/ListItemMobile';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
@@ -53,7 +52,19 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
   const dashElement = <chakra.span color="text.secondary">{ mdash }</chakra.span>;
 
   return (
-    <ListItemMobile rowGap={ rowGap } { ...rest }>
+    <Box
+      display="flex"
+      alignItems="flex-start"
+      flexDirection="column"
+      paddingY={ 6 }
+      borderColor="border.divider"
+      borderTopWidth="1px"
+      _last={{ borderBottomWidth: '1px' }}
+      fontSize="16px"
+      lineHeight="20px"
+      { ...rest }
+      rowGap={ rowGap }
+    >
       <HStack>
         <CrossChainTxsStatusTag status={ data.status } loading={ isLoading } mode="full"/>
         { currentAddress && (
@@ -184,7 +195,7 @@ const TransactionsCrossChainListItem = ({ data, isLoading, rowGap = 3, currentAd
           <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id }/>
         ) : dashElement }
       </Grid>
-    </ListItemMobile>
+    </Box>
   );
 };
 

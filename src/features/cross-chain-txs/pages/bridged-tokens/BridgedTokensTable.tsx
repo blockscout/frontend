@@ -36,16 +36,17 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot minW="1100px">
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader>Token</TableColumnHeader>
+          <TableColumnHeader w="55%">Token</TableColumnHeader>
           <TableColumnHeaderSortable
             isNumeric
             sortField={ BridgedTokensSort.INPUT_TRANSFERS_COUNT }
             sortValue={ sort }
             onSortToggle={ onSortToggle }
             disabled={ isLoading }
+            w="15%"
           >
             In transfers
           </TableColumnHeaderSortable>
@@ -55,6 +56,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
             sortValue={ sort }
             onSortToggle={ onSortToggle }
             disabled={ isLoading }
+            w="15%"
           >
             Out transfers
           </TableColumnHeaderSortable>
@@ -64,6 +66,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
             sortValue={ sort }
             onSortToggle={ onSortToggle }
             disabled={ isLoading }
+            w="15%"
           >
             Total transfers
           </TableColumnHeaderSortable>

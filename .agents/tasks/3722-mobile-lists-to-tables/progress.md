@@ -7,7 +7,7 @@
 - [x] 05 → `tickets/05-rollup-optimism/`
 - [x] 06 → `tickets/06-rollup-arbitrum-scroll-zksync-shibarium/`
 - [x] 07 → `tickets/07-chain-variants/`
-- [ ] 08 → `tickets/08-multichain-cross-chain-user-ops/`
+- [x] 08 → `tickets/08-multichain-cross-chain-user-ops/`
 - [ ] 09 → `tickets/09-name-services-account/`
 - [ ] 10 → `tickets/10-remaining-features/`
 - [ ] 11 → `tickets/11-home-cross-chain-widget/`

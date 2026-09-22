@@ -29,7 +29,7 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
 
   return (
     <AddressHighlightProvider>
-      <TableRoot tableLayout="auto">
+      <TableRoot tableLayout="auto" minW="1200px">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
             <TableColumnHeader w={ currentAddress ? '86px' : '42px' }/>
