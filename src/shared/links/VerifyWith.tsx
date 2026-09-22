@@ -6,6 +6,7 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
+import type { PopoverRootProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
@@ -16,13 +17,14 @@ interface Props {
   label: string;
   longText: string;
   shortText?: string;
+  popoverProps?: Partial<PopoverRootProps>;
 }
 
-const VerifyWith = ({ className, links, label, longText, shortText }: Props) => {
+const VerifyWith = ({ className, links, label, longText, shortText, popoverProps }: Props) => {
   const popover = useDisclosure();
 
   return (
-    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange } { ...popoverProps }>
       <Tooltip content={ label } disabled={ popover.open } disableOnMobile closeOnClick>
         <Box className={ className }>
           <PopoverTrigger>

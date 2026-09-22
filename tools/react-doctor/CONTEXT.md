@@ -1,8 +1,6 @@
 # React Doctor gate
 
-[React Doctor](https://www.react.doctor/docs) catches React bugs ESLint does not: a number before
-`&&` rendering a stray `0`, side effects inside state updaters, state synced from props in an
-effect. The rule set is `doctor.config.json` at the repo root.
+[React Doctor](https://www.react.doctor/docs) catches React bugs ESLint does not. The rule set is `doctor.config.json` at the repo root.
 
 The gate runs on pull requests only and reports only what the branch introduces. The existing
 backlog is not gated; a full scan (`pnpm lint:react-doctor`) lists it.

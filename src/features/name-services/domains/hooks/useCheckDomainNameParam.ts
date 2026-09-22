@@ -15,7 +15,6 @@ export default function useCheckDomainNameParam(hashOrDomainName: string) {
   const router = useRouter();
   const maybeDomainName = DOMAIN_NAME_REGEXP.test(hashOrDomainName);
   const isQueryEnabled = feature.isEnabled && feature.ens.isEnabled && maybeDomainName;
-  const [ isLoading, setIsLoading ] = React.useState(isQueryEnabled);
 
   const domainLookupQuery = useApiQuery('bens:domains_lookup', {
     queryParams: {
@@ -28,24 +27,13 @@ export default function useCheckDomainNameParam(hashOrDomainName: string) {
     },
   });
 
-  React.useEffect(() => {
-    if (domainLookupQuery.isPending) {
-      return;
-    }
+  const firstDomainAddress = domainLookupQuery.data?.items[0]?.resolved_address?.hash;
 
-    const firstDomainAddress = domainLookupQuery.data?.items[0]?.resolved_address?.hash;
+  React.useEffect(() => {
     if (firstDomainAddress) {
       router.replace({ pathname: '/address/[hash]', query: { hash: firstDomainAddress } });
-    } else {
-      setIsLoading(false);
     }
-  }, [ domainLookupQuery.isPending, domainLookupQuery.data, router ]);
+  }, [ firstDomainAddress, router ]);
 
-  React.useEffect(() => {
-    if (!maybeDomainName) {
-      setIsLoading(false);
-    }
-  }, [ maybeDomainName ]);
-
-  return isLoading;
+  return isQueryEnabled && (domainLookupQuery.isPending || Boolean(firstDomainAddress));
 }

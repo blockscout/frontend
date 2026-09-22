@@ -80,7 +80,7 @@ export default function useMarketplaceApps(
   const {
     isPlaceholderData, isError, error, data, refetch,
   } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceDapp>>({
-    queryKey: [ 'marketplace-dapps' ],
+    queryKey: [ 'marketplace-dapps', { isAuth } ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -95,10 +95,6 @@ export default function useMarketplaceApps(
     staleTime: Infinity,
     enabled: feature.isEnabled,
   });
-
-  React.useEffect(() => {
-    refetch();
-  }, [ isAuth, refetch ]);
 
   const displayedApps = React.useMemo(() => {
     if (isPlaceholderData) {

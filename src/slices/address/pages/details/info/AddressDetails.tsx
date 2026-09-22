@@ -296,7 +296,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
           </>
         ) }
 
-        { data.block_number_balance_updated_at && (
+        { data.block_number_balance_updated_at !== null && (
           <>
             <DetailedInfo.ItemLabel
               hint="Block number in which the address was updated"

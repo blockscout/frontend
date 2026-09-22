@@ -55,6 +55,7 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
   useAccountEffect({ onConnect: handleAccountConnected });
 
   React.useEffect(() => {
+    // react-doctor-disable-next-line react-doctor/no-initialize-state -- hydration guard: SSR must never report a connected wallet
     setIsClientLoaded(true);
   }, []);
 

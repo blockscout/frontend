@@ -85,8 +85,8 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
       );
 
       const hasData =
-        (!nftsQuery.isPlaceholderData && nftsQuery.data?.items.length) ||
-        (!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
+        Boolean(!nftsQuery.isPlaceholderData && nftsQuery.data?.items.length) ||
+        Boolean(!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
 
       return (
         <>

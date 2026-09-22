@@ -17,13 +17,11 @@ const SettingsScamTokens = () => {
   const [ isChecked, setIsChecked ] = React.useState(initialValue !== 'true');
 
   const handleChange = React.useCallback(() => {
-    setIsChecked(prev => {
-      const nextValue = !prev;
-      cookies.set(cookies.NAMES.SHOW_SCAM_TOKENS, nextValue ? 'false' : 'true');
-      return nextValue;
-    });
+    const nextValue = !isChecked;
+    cookies.set(cookies.NAMES.SHOW_SCAM_TOKENS, nextValue ? 'false' : 'true');
+    setIsChecked(nextValue);
     window.location.reload();
-  }, []);
+  }, [ isChecked ]);
 
   if (!config.slices.token.hideScamTokensEnabled) {
     return null;

@@ -75,3 +75,4 @@ minimumReleaseAgeExclude:
 
 patchedDependencies:
   '@lifi/widget-light@4.3.2': patches/@lifi__widget-light@4.3.2.patch
+  '@stryker-mutator/vitest-runner@10.0.0': patches/@stryker-mutator__vitest-runner@10.0.0.patch

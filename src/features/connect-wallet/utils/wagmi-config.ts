@@ -5,6 +5,7 @@ import type { AppKitNetwork } from '@reown/appkit/networks';
 import type { Chain, Transport } from 'viem';
 import { fallback, http } from 'viem';
 import { createConfig } from 'wagmi';
+import { coinbaseWallet } from 'wagmi/connectors';
 
 import { chains, parentChain } from 'src/features/connect-wallet/utils/chains';
 import { installEip6963AnnounceGuard } from 'src/features/connect-wallet/utils/install-eip6963-announce-guard';
@@ -82,6 +83,9 @@ const wagmi = (() => {
       ...reduceExternalChainsToTransportConfig(false),
     },
     projectId: feature.reown.projectId,
+    // the adapter adds its own Coinbase connector unless one exists; ours turns off the SDK telemetry,
+    // which is injected as an inline script and gets blocked by the CSP
+    connectors: [ coinbaseWallet({ preference: { options: 'all', telemetry: false } }) ],
     // ssr:false — see the note on the fallback config above; the adapter's config is client-only + lazy.
     ssr: false,
     batch: { multicall: { wait: 100, batchSize: 1024 } },

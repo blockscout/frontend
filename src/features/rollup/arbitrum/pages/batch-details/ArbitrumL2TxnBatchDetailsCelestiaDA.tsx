@@ -43,7 +43,7 @@ const ArbitrumL2TxnBatchDetailsCelestiaDA = ({ data }: Props) => {
               <Truncate value={ data.transaction_commitment }/>
             </Flex>
             <CopyToClipboard text={ data.transaction_commitment } mr={ 3 }/>
-            { feature.isEnabled && feature.DA.celestia.namespace && data.height && (
+            { feature.isEnabled && feature.DA.celestia.namespace && data.height !== null && (
               <CeleniumLink
                 commitment={ data.transaction_commitment }
                 namespace={ feature.DA.celestia.namespace }

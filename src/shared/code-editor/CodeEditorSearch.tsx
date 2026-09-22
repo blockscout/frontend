@@ -27,9 +27,11 @@ interface Props {
   defaultValue: string;
 }
 
+const EMPTY_RESULTS: Array<SearchResult> = [];
+
 const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, setActionBarRenderer, defaultValue }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
-  const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>([]);
+  const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>(EMPTY_RESULTS);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<string>>([]);
   const [ isMatchCase, setMatchCase ] = React.useState(false);
   const [ isMatchWholeWord, setMatchWholeWord ] = React.useState(false);
@@ -61,10 +63,6 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
       return;
     }
 
-    if (!debouncedSearchTerm) {
-      setSearchResults([]);
-    }
-
     const models = monaco.editor.getModels();
     const matches = models.map((model) => model.findMatches(debouncedSearchTerm, false, isMatchRegex, isMatchCase, isMatchWholeWord ? 'true' : null, false));
 
@@ -87,12 +85,9 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
       })
       .filter(({ matches }) => matches.length > 0);
 
-    setSearchResults(result.length > 0 ? result : []);
+    setSearchResults(result.length > 0 ? result : EMPTY_RESULTS);
+    setExpandedSections(result.map((item) => item.file_path));
   }, [ debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
-
-  React.useEffect(() => {
-    setExpandedSections(searchResults.map((item) => item.file_path));
-  }, [ searchResults ]);
 
   const handleSearchTermChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     changeSearchTerm(event.target.value);

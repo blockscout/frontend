@@ -41,13 +41,13 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
             { label }
           </chakra.span>
           <ChakraField.RequiredIndicator fallback={ optionalText }/>
-          { errorText && (
+          { Boolean(errorText) && (
             <ChakraField.ErrorText ml="2px">-{ space }{ errorText }</ChakraField.ErrorText>
           ) }
         </ChakraField.Label>
       );
 
-      const helperTextElement = helperText && (
+      const helperTextElement = Boolean(helperText) && (
         <ChakraField.HelperText>{ helperText }</ChakraField.HelperText>
       );
 
@@ -94,17 +94,17 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 
     return (
       <ChakraField.Root ref={ ref } { ...rest }>
-        { label && (
+        { Boolean(label) && (
           <ChakraField.Label>
             { label }
             <ChakraField.RequiredIndicator fallback={ optionalText }/>
           </ChakraField.Label>
         ) }
         { clonedChild }
-        { helperText && (
+        { Boolean(helperText) && (
           <ChakraField.HelperText>{ helperText }</ChakraField.HelperText>
         ) }
-        { errorText && (
+        { Boolean(errorText) && (
           <ChakraField.ErrorText>{ errorText }</ChakraField.ErrorText>
         ) }
       </ChakraField.Root>

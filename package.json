@@ -4,7 +4,7 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": ">=22.14.0",
+    "node": ">=24.21.0",
     "pnpm": ">=9.0.0"
   },
   "license": "SEE LICENSE IN ./LICENSE",
@@ -161,6 +161,7 @@
   },
   "devDependencies": {
     "@chakra-ui/cli": "3.36.1",
+    "@eslint-react/eslint-plugin": "5.19.0",
     "@eslint/compat": "1.2.2",
     "@eslint/js": "9.14.0",
     "@next/eslint-plugin-next": "16.2.6",
@@ -181,7 +182,7 @@
     "@types/dom-to-image": "^2.6.7",
     "@types/js-cookie": "^3.0.6",
     "@types/mixpanel-browser": "^2.66.0",
-    "@types/node": "20.16.7",
+    "@types/node": "24.13.4",
     "@types/phoenix": "^1.6.7",
     "@types/qrcode": "^1.5.6",
     "@types/react": "19.1.7",
@@ -192,7 +193,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript/native": "npm:typescript@7.0.2",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "4.1.7",
+    "@vitest/coverage-v8": "5.0.0",
     "css-loader": "^6.11.0",
     "dotenv-cli": "10.0.0",
     "eslint": "9.39.2",
@@ -222,14 +223,15 @@
     "ts-node": "^10.9.2",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "typescript-eslint": "8.59.2",
+    "vite": "6.4.3",
     "vite-plugin-svgr": "5.2.0",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "4.1.7",
+    "vitest": "5.0.0",
     "vitest-fetch-mock": "0.4.5",
     "ws": "8.21.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   },
-  "packageManager": "pnpm@11.5.1"
+  "packageManager": "pnpm@12.4.1"
 }

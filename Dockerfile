@@ -1,14 +1,14 @@
 # *****************************
 # *** STAGE 0: Shared base ****
 # *****************************
-FROM node:22.14.0-alpine AS base
+FROM node:24.21.0-alpine AS base
 # corepack prepare makes a single network request to the npm registry and has no
 # built-in retry. Transient registry failures (HTTP 429, timeout, DNS) are not
 # uncommon, so retry with a linear backoff.
 RUN set -eu; \
     corepack enable; \
     n=0; \
-    until corepack prepare pnpm@11.5.1 --activate; do \
+    until corepack prepare pnpm@12.4.1 --activate; do \
       n=$((n + 1)); \
       if [ "$n" -ge 5 ]; then echo "corepack prepare failed after $n attempts" >&2; exit 1; fi; \
       echo "corepack prepare attempt $n failed, retrying in $((n * 10))s..." >&2; \
@@ -101,7 +101,7 @@ RUN pnpm exec tsc -p ./tools/dev-server/tsconfig.json
 # ******* STAGE 3: Run ********
 # *****************************
 # Production image, copy all the files and run next
-FROM node:22.14.0-alpine AS runner
+FROM node:24.21.0-alpine AS runner
 RUN apk add --no-cache --upgrade bash curl jq unzip
 
 ### APP

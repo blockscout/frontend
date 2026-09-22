@@ -39,15 +39,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -81,15 +81,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install project dependencies
@@ -129,15 +129,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -157,15 +157,15 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -199,15 +199,15 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -289,14 +289,14 @@ jobs:
           fetch-depth: 0
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -354,16 +354,16 @@ jobs:
 
       - name: Install pnpm
         if: steps.check-reports.outputs.has_reports == 'true'
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
-          version: 11.5.1
+          version: 12.4.1
           cache: true
 
       - name: Setup node
         if: steps.check-reports.outputs.has_reports == 'true'
         uses: actions/setup-node@v4
         with:
-          node-version: 22.14.0
+          node-version: 24.21.0
           cache: 'pnpm'
 
       - name: Install dependencies

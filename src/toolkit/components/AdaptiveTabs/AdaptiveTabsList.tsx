@@ -130,7 +130,7 @@ const AdaptiveTabsList = (props: Props) => {
         ...(typeof listProps === 'function' ? listProps({ isSticky, activeTab }) : listProps)
       }
     >
-      { leftSlot && (
+      { Boolean(leftSlot) && (
         <Box
           ref={ leftSlotRef }
           { ...leftSlotProps }
