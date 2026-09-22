@@ -365,6 +365,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                   }
                   return message.relay_chain !== undefined ? (
                     <AddressEntityInterop
+                      key={ message.nonce }
                       chain={ message.relay_chain }
                       address={{ hash: message.target_address_hash }}
                       isLoading={ isLoading }
@@ -372,7 +373,13 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                       w="100%"
                     />
                   ) : (
-                    <AddressEntity address={{ hash: message.target_address_hash }} isLoading={ isLoading } truncation="dynamic" w="100%"/>
+                    <AddressEntity
+                      key={ message.nonce }
+                      address={{ hash: message.target_address_hash }}
+                      isLoading={ isLoading }
+                      truncation="dynamic"
+                      w="100%"
+                    />
                   );
                 }) }
             </VStack>

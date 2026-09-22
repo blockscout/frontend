@@ -58,7 +58,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
     <TableColumnFilter
       title="Transaction type"
       isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }
-      isTouched={ !isEqual(currentValue.sort(), value.sort()) }
+      isTouched={ !isEqual(currentValue.slice().sort(), value.slice().sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
       hasReset

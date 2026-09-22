@@ -18,7 +18,7 @@ interface Props {
 const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: React.Ref<ReCaptcha>) => {
   const [ attempt, setAttempt ] = React.useState(0);
   const [ isError, setIsError ] = React.useState(false);
-  const [ , setIsVisible ] = React.useState(false);
+  const isVisibleRef = React.useRef(false);
 
   const multichainContext = useMultichainContext();
   const chainConfig = multichainContext?.chain.app_config || config;
@@ -35,12 +35,10 @@ const ReCaptchaInvisible = ({ onInitError, hideWarning = false }: Props, ref: Re
   const handleClick = React.useCallback(() => {
     const badge = window.document.querySelector('.grecaptcha-badge');
     if (badge) {
-      setIsVisible((prev) => {
-        const nextValue = !prev;
-        (badge as HTMLElement).style.visibility = nextValue ? 'visible' : 'hidden';
-        (badge as HTMLElement).style.right = nextValue ? '14px' : '-1000px';
-        return nextValue;
-      });
+      const nextValue = !isVisibleRef.current;
+      isVisibleRef.current = nextValue;
+      (badge as HTMLElement).style.visibility = nextValue ? 'visible' : 'hidden';
+      (badge as HTMLElement).style.right = nextValue ? '14px' : '-1000px';
     }
   }, [ ]);
 

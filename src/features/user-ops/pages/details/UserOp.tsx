@@ -18,6 +18,7 @@ import TxLogs from 'src/slices/tx/pages/details/logs/TxLogs';
 import TextAd from 'src/features/ads/text/components/TextAd';
 import { USER_OP } from 'src/features/user-ops/stubs';
 
+import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
 import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
@@ -74,16 +75,23 @@ const UserOp = () => {
     }
   }, [ userOpQuery.data ]);
 
-  const tabs: Array<TabItemRegular> = React.useMemo(() => ([
-    { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
-    {
-      id: 'token_transfers',
-      title: 'Token transfers',
-      component: <TxTokenTransfer txQuery={ txQuery } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
-    },
-    { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery } logsFilter={ filterLogsByLogIndex }/> },
-    { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
-  ]), [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
+  const tabs: Array<TabItemRegular> = React.useMemo(() => {
+    // the transaction is served by the RPC node while the API catches up — nothing to list until then
+    const txDependentTab = (component: React.ReactNode) => txQuery.isDegradedData ?
+      <ApiDegradationAlert isLoading={ txQuery.isPlaceholderData }/> :
+      component;
+
+    return [
+      { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
+      {
+        id: 'token_transfers',
+        title: 'Token transfers',
+        component: txDependentTab(<TxTokenTransfer txQuery={ txQuery } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>),
+      },
+      { id: 'logs', title: 'Logs', component: txDependentTab(<TxLogs txQuery={ txQuery } logsFilter={ filterLogsByLogIndex }/>) },
+      { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
+    ];
+  }, [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
   throwOnAbsentParamError(hash);
   throwOnResourceLoadError(userOpQuery);

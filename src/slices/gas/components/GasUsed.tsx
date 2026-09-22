@@ -41,7 +41,7 @@ const GasUsed = ({ className, gasUsed, gasLimit, gasTarget, isLoading }: Props) 
           className={ className }
         />
       </Tooltip>
-      { gasTarget && (
+      { gasTarget !== undefined && (
         <>
           <TextSeparator/>
           <GasUsedToTargetRatio value={ gasTarget } isLoading={ isLoading }/>

@@ -1,3 +1,4 @@
+import eslintReactPlugin from '@eslint-react/eslint-plugin';
 import { includeIgnoreFile } from '@eslint/compat';
 import jsPlugin from '@eslint/js';
 import nextJsPlugin from '@next/eslint-plugin-next';
@@ -337,6 +338,17 @@ export default tseslint.config(
   },
 
   {
+    // type-aware, so TS files only
+    files: [ '**/*.{ts,tsx}' ],
+    plugins: {
+      '@eslint-react': eslintReactPlugin,
+    },
+    rules: {
+      '@eslint-react/no-leaked-conditional-rendering': 'error',
+    },
+  },
+
+  {
     plugins: {
       '@next/next': nextJsPlugin,
     },
@@ -648,7 +660,7 @@ export default tseslint.config(
       'playwright/**',
       'deploy/scripts/**',
       'deploy/tools/**',
-      'proxy.ts',
+      'src/proxy.ts',
       'instrumentation*.ts',
       '*.config.ts',
       '*.config.js',

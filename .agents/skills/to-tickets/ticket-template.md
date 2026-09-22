@@ -55,7 +55,8 @@ the developer and records the answer here. -->
 then styling) while the ticket cuts across them.
 
 Tag every leaf `[agent]` or `[human]` — explicitly, never implied; `implement-ticket` reads the tags as its
-state machine. A UI component is two linked leaves (scaffold → style). A leaf names the skill it runs; its
+state machine. A UI component is two linked leaves (scaffold → style). Visual tests are not a third leaf by
+default; extend or pack per `.agents/rules/tests-visual.md`. A leaf names the skill it runs; its
 answers live in Skill inputs above, not inline here.
 
 A leaf's checkbox is PROGRESS STATE — how far the ticket has got, since it has no commit yet. It is never

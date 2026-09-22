@@ -27,7 +27,7 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 ## Testing
 
 - Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
-- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for purpose, setup, fixtures, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
 ## Running locally
 
@@ -64,6 +64,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
+- `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.

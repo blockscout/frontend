@@ -44,7 +44,7 @@ const BeaconChainDepositsListItem = ({ item, isLoading, view }: Props) => {
 
       { view !== 'block' && (
         <>
-          { item.block_number && (
+          { Boolean(item.block_number) && (
             <>
               <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
               <ListItemMobileGrid.Value>

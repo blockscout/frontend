@@ -178,7 +178,7 @@ const BlockDetails = ({ query }: Props) => {
         />
       </DetailedInfo.ItemValue>
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.arbitrum.l1_block_number && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && typeof data.arbitrum?.l1_block_number === 'number' && (
         <>
           <DetailedInfo.ItemLabel
             hint={ `The most recent ${ layerLabels.parent } block height as of this ${ layerLabels.current } block` }
@@ -714,7 +714,7 @@ const BlockDetails = ({ query }: Props) => {
               { data.arbitrum.send_root }
             </DetailedInfo.ItemValue>
 
-            { data.arbitrum.delayed_messages && (
+            { data.arbitrum.delayed_messages !== undefined && (
               <>
                 <DetailedInfo.ItemLabel
                   hint={ `The number of delayed ${ layerLabels.parent } to ${ layerLabels.current } messages read as of this block` }

@@ -15,6 +15,10 @@ pnpm lint:tsc
 pnpm lint:cspell
 ```
 
+Pull requests also pass a React Doctor gate for React bugs ESLint misses, on changed code only:
+`pnpm lint:react-doctor --scope changed --base origin/main`. Reading a failure and suppressing a
+finding: `tools/react-doctor/CONTEXT.md`.
+
 The rest of this file covers code complexity scores and conventions that the linters do not.
 
 ## Complexity and CRAP
@@ -65,10 +69,10 @@ This applies to hooks, components, functions, and variables alike..
 
 ### Magic numbers
 
-Extract magic numbers into named `UPPER_SNAKE_CASE` constants, placed above the component or function that uses them. This makes intent clear and avoids silent duplication.
+Name a literal only when a reader would still ask why this value. The name is `UPPER_SNAKE_CASE`, sits above the component or function, and carries a domain rule the surrounding identifiers do not: a limit, threshold, interval, or similar choice.
 
 ```ts
-// BAD
+// BAD: 4 is a product limit with no name
 const visibleItems = items.slice(0, 4);
 
 // GOOD
@@ -76,7 +80,25 @@ const MAX_VISIBLE_ITEMS = 4;
 const visibleItems = items.slice(0, MAX_VISIBLE_ITEMS);
 ```
 
-The same applies to magic strings used as discriminators, keys, or thresholds. In tests, unexplained magic values should also be extracted into named constants so their meaning is clear.
+Leave the literal when it is the meaning. A constant that restates the value, a nearby identifier, or a universal convention is noise. `1` is the first page, `0` is the first index, a URL is a URL.
+
+```ts
+// BAD: the name restates href and page
+const URL = 'https://example.com';
+const link = <a href={ URL }/>;
+
+const FIRST_PAGE = 1;
+if (page !== FIRST_PAGE) return null;
+
+// GOOD
+const link = <a href="https://example.com"/>;
+
+if (page !== 1) return null;
+```
+
+Apply the same test to strings used as discriminators, keys, or thresholds, and to values in tests. CSS-style props (margin, padding, font weight, color) are already named by the prop.
+
+If the same unexplained value must stay in sync at more than one call site, one constant is the share point.
 
 #### Shared unit constants
 

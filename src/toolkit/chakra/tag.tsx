@@ -56,11 +56,11 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
           { ...(disabled && { 'data-disabled': true }) }
           { ...rest }
         >
-          { startElement && (
+          { Boolean(startElement) && (
             <ChakraTag.StartElement _empty={{ display: 'none' }}>{ startElement }</ChakraTag.StartElement>
           ) }
           { contentElement }
-          { endElement && (
+          { Boolean(endElement) && (
             <ChakraTag.EndElement { ...endElementProps }>{ endElement }</ChakraTag.EndElement>
           ) }
           { closable && (

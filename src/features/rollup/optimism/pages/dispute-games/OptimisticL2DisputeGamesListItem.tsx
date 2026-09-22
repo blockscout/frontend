@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
@@ -14,6 +13,8 @@ import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+
+import OptimisticL2DisputeGameL2Position from './OptimisticL2DisputeGameL2Position';
 
 const rollupFeature = config.features.rollup;
 
@@ -25,7 +26,7 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
   }
 
   return (
-    <ListItemMobileGrid.Container>
+    <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Index</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value fontWeight={ 600 } color="text.primary">
@@ -45,20 +46,14 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>{ layerLabels.current } block #</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>
+        { layerLabels.current } { item.l2_block_number !== null ? 'block #' : 'timestamp' }
+      </ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.l2_block_number === null ? (
-          <Skeleton loading={ isLoading } display="inline-block">N/A</Skeleton>
-        ) : (
-          <BlockEntityL2
-            isLoading={ isLoading }
-            number={ item.l2_block_number }
-            noIcon
-          />
-        ) }
+        <OptimisticL2DisputeGameL2Position item={ item } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Created</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <TimeWithTooltip
           timestamp={ item.created_at }
@@ -74,7 +69,8 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
 
       { item.resolved_at && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Resolution age</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Resolved</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
             <TimeWithTooltip
               timestamp={ item.resolved_at }
               isLoading={ isLoading }

@@ -23,8 +23,10 @@ export interface DockerCommand {
 }
 
 // The Playwright image ships Node but not pnpm; corepack activates the version package.json pins.
+// The corepack bundled with the image's Node predates pnpm 12's native-binary layout and resolves the
+// bin/pnpm.cjs that no longer ships, so it is upgraded before the prepare.
 function pnpmSetup(pnpm: string): string {
-  return `corepack enable && corepack prepare pnpm@${ pnpm } --activate`;
+  return `npm i -g corepack@latest && corepack enable && corepack prepare pnpm@${ pnpm } --activate`;
 }
 
 // The Linux tree was installed from a bind mount, so its recorded paths differ from what pnpm's

@@ -8,6 +8,7 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import AddressEntityWithTokenFilter from 'src/slices/address/components/entity/AddressEntityWithTokenFilter';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -32,6 +33,24 @@ type Props = {
   chainConfig?: ClusterChainConfig['app_config'];
 };
 
+type Address = NonNullable<Props['item']['from']>;
+
+const renderAddressEntity = (address: Address, item: Props['item'], isLoading?: boolean) => {
+  if (!item.token?.address_hash) {
+    return <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>;
+  }
+
+  return (
+    <AddressEntityWithTokenFilter
+      address={ address }
+      truncation="constant"
+      isLoading={ isLoading }
+      tokenHash={ item.token.address_hash }
+      tokenSymbol={ item.token.symbol ?? undefined }
+    />
+  );
+};
+
 const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
   switch (column) {
     case 'tx_hash':
@@ -50,7 +69,7 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
     case 'from':
       return item.from ? (
         <Flex w="100%">
-          <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
+          { renderAddressEntity(item.from, item, isLoading) }
         </Flex>
       ) : null;
     case 'to': {
@@ -60,7 +79,7 @@ const ItemByColumn = ({ item, column, isLoading, chainConfig }: Props) => {
       }
       return (
         <Flex w="100%">
-          <AddressEntity address={ address } truncation="constant" isLoading={ isLoading }/>
+          { renderAddressEntity(address, item, isLoading) }
         </Flex>
       );
     }

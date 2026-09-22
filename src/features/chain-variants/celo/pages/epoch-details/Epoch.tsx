@@ -75,7 +75,7 @@ const EpochPageContent = () => {
           variant="subheading"
           { ...truncationProps }
         />
-        { epochQuery.data.end_block_number && (
+        { epochQuery.data.end_block_number !== null && (
           <>
             <Box color="text.secondary">to</Box>
             <BlockEntity number={ epochQuery.data.end_block_number } variant="subheading" { ...truncationProps }/>
