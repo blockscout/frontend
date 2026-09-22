@@ -90,13 +90,13 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
       </TableCell>
       <TableCell>
         <AddressFromTo
-          maxW={{ lg: '220px', xl: '320px' }}
+          maxW={{ base: '220px', xl: '320px' }}
           from={ item.from }
           to={ item.to }
           tokenHash={ item.token?.address_hash }
           tokenSymbol={ item.token?.symbol ?? undefined }
           isLoading={ isLoading }
-          mode={{ lg: 'compact', xl: 'long' }}
+          mode={{ base: 'compact', lg: 'compact', xl: 'long' }}
         />
       </TableCell>
       <TableCell>
