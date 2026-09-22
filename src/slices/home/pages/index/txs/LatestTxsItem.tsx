@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import {
-  Box,
   Flex,
   HStack,
   Text,
-  Grid,
+  VStack,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -26,6 +25,11 @@ import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableCell, TableRow } from 'src/toolkit/chakra/table';
+
+const hasValueColumn = !(config.slices.tx.hiddenFields?.value && config.slices.tx.hiddenFields?.tx_fee);
+
+export const LATEST_TXS_TABLE_MIN_WIDTH = hasValueColumn ? '750px' : '700px';
 
 interface Props {
   tx: schemas['Transaction'];
@@ -34,7 +38,6 @@ interface Props {
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const columnNum = config.slices.tx.hiddenFields?.value && config.slices.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
 
@@ -47,33 +50,19 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
   ].filter(Boolean).length;
 
   return (
-    <Grid
-      gridTemplateColumns={{
-        lg: columnNum === 2 ? '3fr minmax(auto, 200px)' : '3fr minmax(auto, 200px) 170px',
-        xl: columnNum === 2 ? '3fr minmax(auto, 270px)' : '3fr minmax(auto, 300px) 170px',
-      }}
-      gridGap={ 3 }
-      width="100%"
-      minW={ columnNum === 2 ? '700px' : '750px' }
-      borderBottom="1px solid"
-      borderColor="border.divider"
-      p={ 4 }
-      display={{ base: 'none', lg: 'grid' }}
-    >
-      <Flex overflow="hidden" w="100%">
-        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
-        <Box ml={ 3 } w="calc(100% - 40px)">
-          <HStack flexWrap={ tagsCount <= 3 ? 'nowrap' : 'wrap' } my="3px">
+    <TableRow>
+      <TableCell w="42px">
+        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="2px"/>
+      </TableCell>
+      <TableCell>
+        <VStack w="100%" overflow="hidden" alignItems="flex-start" gap="10px">
+          <HStack flexWrap={ tagsCount <= 3 ? 'nowrap' : 'wrap' } w="100%">
             <TxType types={ tx.transaction_types } isLoading={ isLoading }/>
             { tx.status !== 'ok' && <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/> }
             <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
             { protocolTag && <MetadataTag data={ protocolTag } isLoading={ isLoading } minW="0" noColors/> }
           </HStack>
-          <Flex
-            alignItems="center"
-            mt="7px"
-            mb="3px"
-          >
+          <HStack w="100%">
             <TxEntity
               isLoading={ isLoading }
               hash={ tx.hash }
@@ -88,37 +77,42 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               flexShrink={ 0 }
               ml={ 2 }
             />
+          </HStack>
+        </VStack>
+      </TableCell>
+      <TableCell w={{ base: '224px', xl: hasValueColumn ? '324px' : '294px' }}>
+        <AddressFromTo
+          from={ tx.from }
+          to={ dataTo }
+          isLoading={ isLoading }
+          mode="compact"
+          mt="2px"
+        />
+      </TableCell>
+      { hasValueColumn && (
+        <TableCell w="182px">
+          <Flex flexDir="column" rowGap={ 3 } mt="2px">
+            { !config.slices.tx.hiddenFields?.value && (
+              <Skeleton loading={ isLoading }>
+                <Text as="span" whiteSpace="pre">Value </Text>
+                <NativeCoinValue
+                  amount={ tx.value }
+                  accuracy={ 5 }
+                  loading={ isLoading }
+                  color="text.secondary"
+                />
+              </Skeleton>
+            ) }
+            { !config.slices.tx.hiddenFields?.tx_fee && (
+              <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
+                <Text as="span">Fee </Text>
+                <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>
+              </Skeleton>
+            ) }
           </Flex>
-        </Box>
-      </Flex>
-      <AddressFromTo
-        from={ tx.from }
-        to={ dataTo }
-        isLoading={ isLoading }
-        mode="compact"
-      />
-      { !(config.slices.tx.hiddenFields?.value && config.slices.tx.hiddenFields?.tx_fee) ? (
-        <Flex flexDir="column" rowGap={ 3 }>
-          { !config.slices.tx.hiddenFields?.value && (
-            <Skeleton loading={ isLoading }>
-              <Text as="span" whiteSpace="pre">Value </Text>
-              <NativeCoinValue
-                amount={ tx.value }
-                accuracy={ 5 }
-                loading={ isLoading }
-                color="text.secondary"
-              />
-            </Skeleton>
-          ) }
-          { !config.slices.tx.hiddenFields?.tx_fee && (
-            <Skeleton loading={ isLoading } display="flex" whiteSpace="pre">
-              <Text as="span">Fee </Text>
-              <TxFee tx={ tx } accuracy={ 5 } color="text.secondary" noUsd/>
-            </Skeleton>
-          ) }
-        </Flex>
-      ) : null }
-    </Grid>
+        </TableCell>
+      ) }
+    </TableRow>
   );
 };
 

@@ -17,7 +17,6 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import LatestTxsFallback from 'src/slices/home/pages/index/txs/LatestTxsFallback';
 
-import ZetaChainCCTXListItem from 'src/features/chain-variants/zeta-chain/pages/cctx-index/ZetaChainCCTXListItem';
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chain/stubs';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
@@ -25,8 +24,9 @@ import useInitialList from 'src/shared/lists/useInitialList';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';
 
-import LatestZetaChainCCTXItem from './LatestZetaChainCCTXItem';
+import LatestZetaChainCCTXItem, { LATEST_ZETA_CHAIN_CCTXS_TABLE_MIN_WIDTH } from './LatestZetaChainCCTXItem';
 
 const LatestZetaChainCCTXs = () => {
   const isMobile = useIsMobile();
@@ -123,32 +123,29 @@ const LatestZetaChainCCTXs = () => {
     const cctxsUrl = route({ pathname: '/txs', query: { tab: 'cctx' } });
     return (
       <>
-        <SocketNewItemsNotice
-          type="cross_chain_transaction"
-          isLoading={ isPlaceholderData }
-          showErrorAlert={ showSocketErrorAlert }
-          borderBottomRadius={ 0 }
-        />
-        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }}>
-          { data.items.slice(0, txsCount).map(((tx, index) => (
-            <ZetaChainCCTXListItem
-              key={ tx.index + (isPlaceholderData ? index : '') }
-              tx={ tx }
-              isLoading={ isPlaceholderData }
-              animation={ initialList.getAnimationProp(tx) }
-            />
-          ))) }
-        </Box>
         <AddressHighlightProvider>
-          <Box mb={ 3 } display={{ base: 'none', lg: 'block' }}>
-            { data.items.slice(0, txsCount).map(((tx, index) => (
-              <LatestZetaChainCCTXItem
-                key={ tx.index + (isPlaceholderData ? index : '') }
-                tx={ tx }
+          <Box mb={ 3 } textStyle="sm">
+            <TableContainerScrollable>
+              <SocketNewItemsNotice
+                type="cross_chain_transaction"
                 isLoading={ isPlaceholderData }
-                animation={ initialList.getAnimationProp(tx) }
+                showErrorAlert={ showSocketErrorAlert }
+                borderBottomRadius={ 0 }
+                minW={ LATEST_ZETA_CHAIN_CCTXS_TABLE_MIN_WIDTH }
               />
-            ))) }
+              <TableRoot minW={ LATEST_ZETA_CHAIN_CCTXS_TABLE_MIN_WIDTH }>
+                <TableBody>
+                  { data.items.slice(0, txsCount).map(((tx, index) => (
+                    <LatestZetaChainCCTXItem
+                      key={ tx.index + (isPlaceholderData ? index : '') }
+                      tx={ tx }
+                      isLoading={ isPlaceholderData }
+                      animation={ initialList.getAnimationProp(tx) }
+                    />
+                  ))) }
+                </TableBody>
+              </TableRoot>
+            </TableContainerScrollable>
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">

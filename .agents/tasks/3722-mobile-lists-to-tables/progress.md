@@ -12,4 +12,4 @@
 - [x] 10 → `tickets/10-remaining-features/`
 - [x] 11 → `tickets/11-home-cross-chain-widget/`
 - [ ] 12 → `tickets/12-primitives-teardown/`
-- [ ] 13 → `tickets/13-home-widget-rows/`
+- [x] 13 → `tickets/13-home-widget-rows/`

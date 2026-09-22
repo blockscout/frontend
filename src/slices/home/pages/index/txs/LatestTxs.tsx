@@ -15,10 +15,10 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';
 
 import LatestTxsDegraded from './LatestTxsDegraded';
-import LatestTxsItem from './LatestTxsItem';
-import LatestTxsItemMobile from './LatestTxsItemMobile';
+import LatestTxsItem, { LATEST_TXS_TABLE_MIN_WIDTH } from './LatestTxsItem';
 
 const zetachainFeature = config.features.zetachain;
 
@@ -41,25 +41,29 @@ const LatestTxs = () => {
     const txsUrl = route({ pathname: `/txs`, query: zetachainFeature.isEnabled ? { tab: 'evm' } : undefined });
     return (
       <>
-        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ txsUrl } num={ num } showErrorAlert={ showErrorAlert } isLoading={ isPlaceholderData }/>
-        <Box mb={ 3 } display={{ base: 'block', lg: 'none' }} textStyle="sm">
-          { data.slice(0, txsCount).map(((tx, index) => (
-            <LatestTxsItemMobile
-              key={ tx.hash + (isPlaceholderData ? index : '') }
-              tx={ tx }
-              isLoading={ isPlaceholderData }
-            />
-          ))) }
-        </Box>
         <AddressHighlightProvider>
-          <Box mb={ 3 } display={{ base: 'none', lg: 'block' }} textStyle="sm">
-            { data.slice(0, txsCount).map(((tx, index) => (
-              <LatestTxsItem
-                key={ tx.hash + (isPlaceholderData ? index : '') }
-                tx={ tx }
+          <Box mb={ 3 } textStyle="sm">
+            <TableContainerScrollable>
+              <SocketNewItemsNotice
+                borderBottomRadius={ 0 }
+                minW={ LATEST_TXS_TABLE_MIN_WIDTH }
+                url={ txsUrl }
+                num={ num }
+                showErrorAlert={ showErrorAlert }
                 isLoading={ isPlaceholderData }
               />
-            ))) }
+              <TableRoot minW={ LATEST_TXS_TABLE_MIN_WIDTH }>
+                <TableBody>
+                  { data.slice(0, txsCount).map(((tx, index) => (
+                    <LatestTxsItem
+                      key={ tx.hash + (isPlaceholderData ? index : '') }
+                      tx={ tx }
+                      isLoading={ isPlaceholderData }
+                    />
+                  ))) }
+                </TableBody>
+              </TableRoot>
+            </TableContainerScrollable>
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">

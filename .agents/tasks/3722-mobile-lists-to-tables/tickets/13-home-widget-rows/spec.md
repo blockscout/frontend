@@ -55,8 +55,36 @@ covering the multichain and single-chain home pages together. An answer of "reve
 The developer cleared the agent to run the Docker runner with `--update-snapshots` for this task;
 reviewing the resulting diff stays with the developer.
 
+Deviation, decided during implementation: the rows are not kept as CSS grids inside
+`TableContainerScrollable` — they are rebuilt from `TableRoot` / `TableBody` / `TableRow` / `TableCell`,
+the components every other migrated view uses. `TableContainerScrollable` is built to wrap a `TableRoot`
+with a `minW`, so wrapping loose grid `div`s around it was off-pattern, and the widgets are the last home
+surfaces that were not real tables. `LatestTxsItem`, `LatestZetaChainCCTXItem` and `LatestDeposits`' item
+are now table rows; each widget's `minW` moved onto its `TableRoot` as an exported constant, which retires
+the `base` `gridTemplateColumns` the criteria above ask for. The column widths carry over from the grid
+templates with the cells' own padding folded in.
+
+Two constraints the port ran into, both worth keeping in mind for any similar conversion:
+
+- `SocketNewItemsNotice.Desktop` — the `colSpan={ 100 }` table row `BlocksTable` uses — cannot be the
+  first row here. These widgets have no `TableHeader`, so under the table recipe's `tableLayout: fixed`
+  that row defines the column model and the layout collapses. The notice stays a sibling above
+  `TableRoot`, inside the scrollable container, carrying the same `minW` so it spans the scroll width
+  rather than the viewport.
+- `tableLayout="auto"` avoids that collapse but breaks the narrow-container cases: column one stops
+  shrinking, so `LatestTxs.pw.tsx`'s `small desktop` cases clip the value column at `maxW="800px"`. The
+  recipe's `fixed` is correct once the notice is out of the table.
+
+The conversion also fixes a defect the grid had: `LatestDeposits`' `max-content` columns were sized per
+row, so an item with no L1 block (`TBD`) put its labels ~38px left of the row above it. Fixed table
+columns align them.
+
+Desktop rendering does shift, which the parent spec otherwise rules out: the table recipe's cell padding
+(`px` 6px, `pl`/`pr` 3 at the edges, `py` `{ base: 2, lg: 4 }`) replaces the rows' uniform `p={ 4 }`, and
+cells are `fontWeight: medium`. Eleven baselines were regenerated in Docker and reviewed by the developer.
+
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Convert the five widgets and delete `LatestTxsItemMobile`, `ZetaChainCCTXListItem` and the dead `LatestDepositsItem`
-- [ ] 2 `[agent]` Prune the widgets' mobile Playwright coverage, regenerate the home mobile baseline in Docker, run the affected files
-- [ ] 3 `[human]` Review the screenshot diff and check `/` at 375px on the four presets
+- [x] 1 `[agent]` Convert the five widgets and delete `LatestTxsItemMobile`, `ZetaChainCCTXListItem` and the dead `LatestDepositsItem`
+- [x] 2 `[agent]` Prune the widgets' mobile Playwright coverage, regenerate the home mobile baseline in Docker, run the affected files
+- [x] 3 `[human]` Review the screenshot diff and check `/` at 375px on the four presets
