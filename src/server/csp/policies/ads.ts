@@ -16,6 +16,17 @@ import { mergeDescriptors } from '../utils';
 
 type AdsProviders = AdBannerProviders | AdTextProviders | AdBannerAdditionalProviders | 'specify';
 
+// Sevio backfills some zones through Google Ad Manager; this is the list they asked us to allow for it.
+// Their other demand partners stay blocked on purpose, since allowing them all would amount to no script-src at all.
+const SEVIO_GOOGLE_ADS_HOSTS = [
+  'https://www.google.com',
+  'https://*.googlesyndication.com',
+  'https://securepubads.g.doubleclick.net',
+  'https://googleads.g.doubleclick.net',
+  'https://ep1.adtrafficquality.google',
+  'https://ep2.adtrafficquality.google',
+];
+
 const getProviderDescriptor = (provider: AdsProviders, nonce?: string): CspDev.DirectiveDescriptor => {
   switch (provider) {
     case 'sevio':
@@ -25,13 +36,19 @@ const getProviderDescriptor = (provider: AdsProviders, nonce?: string): CspDev.D
           'https://request.adx.ws',
           'https://id5-sync.com',
           'https://lb.eu-1-id5-sync.com/lb/v1',
+          ...SEVIO_GOOGLE_ADS_HOSTS,
         ],
         'script-src': [
           'cdn.adx.ws',
           ...(nonce ? [ `'nonce-${ nonce }'` ] : []),
+          ...SEVIO_GOOGLE_ADS_HOSTS,
         ],
         'img-src': [
           '*.adx.ws',
+          ...SEVIO_GOOGLE_ADS_HOSTS,
+        ],
+        'frame-src': [
+          ...SEVIO_GOOGLE_ADS_HOSTS,
         ],
       };
     case 'adbutler':
