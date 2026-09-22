@@ -178,6 +178,10 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         run: pnpm test:code-complexity --changed=origin/main --coverage-file coverage/coverage-final.json
 
+      - name: React Doctor gate
+        if: ${{ github.event_name == 'pull_request' }}
+        run: pnpm lint:react-doctor --scope changed --base origin/main --no-color
+
   mutation_tests:
     name: Mutation testing gate
     needs: [ vitest_tests ]
@@ -212,50 +216,49 @@ jobs:
       - name: Mutation testing gate
         run: pnpm test:mutation-testing --changed=origin/main
 
-  pw_affected_tests:
-    name: Resolve affected Playwright tests
+  pw_changes:
+    name: Check for Playwright-relevant changes
     runs-on: ubuntu-latest
     needs: [ code_quality, envs_validation ]
     if: github.event_name == 'pull_request'
+    outputs:
+      has_changes: ${{ steps.diff.outputs.has_changes }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
+          # The diff is resolved through the merge-base with origin/main, which a shallow clone lacks.
           fetch-depth: 0
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 11.5.1
-          cache: true
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.14.0
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run script
-        run: pnpm test:pw:detect-affected
-
-      - name: Upload result file
-        uses: actions/upload-artifact@v5
-        with:
-          name: playwright-affected-tests
-          path: ./playwright/affected-tests.txt
-          retention-days: 3
+      - name: Diff watched paths against the merge-base
+        id: diff
+        # No dependency install here on purpose: the gate is one git command, so a PR that touches
+        # nothing Playwright cares about skips the whole matrix in seconds.
+        # The path list is paired with FORCE_FULL_PATHS in tools/playwright/config.ts (the tool's
+        # "run the whole suite" triggers); it is a superset of that list plus src/, where the tests
+        # and everything they import live. Keep the two in sync.
+        run: |
+          base=$(git merge-base origin/main HEAD)
+          changed=$(git diff --name-only "$base" -- src playwright playwright-ct.config.ts pnpm-lock.yaml)
+          if [ -n "$changed" ]; then
+            echo "Changed files under the watched paths:"
+            echo "$changed"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes under the watched paths; the Playwright matrix will be skipped."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
 
   pw_tests:
-    name: 'Playwright tests / Project: ${{ matrix.project }}'
-    needs: [ code_quality, envs_validation, pw_affected_tests ]
+    name: 'Playwright tests / ${{ matrix.name }}'
+    needs: [ code_quality, envs_validation, pw_changes ]
+    # The gate only runs on pull requests; a skipped gate (workflow_call from pre-release, manual
+    # dispatch) means a full run.
     if: |
       always() &&
       needs.code_quality.result == 'success' &&
       needs.envs_validation.result == 'success' &&
-      (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped')
+      (needs.pw_changes.result == 'skipped' || (needs.pw_changes.result == 'success' && needs.pw_changes.outputs.has_changes == 'true'))
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.57.0-noble
@@ -263,22 +266,32 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [ default, mobile, dark-color-mode ]
+        include:
+          - name: default-1
+            project: default
+            shard: 1/3
+          - name: default-2
+            project: default
+            shard: 2/3
+          - name: default-3
+            project: default
+            shard: 3/3
+          - name: mobile
+            project: mobile
+          - name: dark-color-mode
+            project: dark-color-mode
 
     steps:
-      - name: Install git-lfs
-        run: apt-get update && apt-get install git-lfs
-
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          lfs: 'true'
+          # --changed resolves the merge-base with origin/main, which a shallow clone lacks.
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 11.5.1
-          cache: true
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -289,25 +302,24 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Download affected tests list
-        if: ${{ needs.pw_affected_tests.result == 'success' }}
-        uses: actions/download-artifact@v5
-        continue-on-error: true
-        with:
-          name: playwright-affected-tests
-          path: ./playwright
-
-      - name: Run PlayWright
-        run: pnpm test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests
+      - name: Trust the checkout inside the container
+        # actions/checkout registers the workspace as a safe.directory in the global git config of the
+        # HOME it ran under (/github/home); the run step below sets HOME=/root, where git finds no such
+        # entry and refuses the repo ("dubious ownership") when --changed resolves the merge-base.
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
         env:
           HOME: /root
-          PW_PROJECT: ${{ matrix.project }}
+
+      - name: Run PlayWright
+        run: pnpm test:pw ${{ github.event_name == 'pull_request' && '--changed' || '' }} --project=${{ matrix.project }} ${{ matrix.shard && format('--shard={0}', matrix.shard) || '' }} --pass-with-no-tests
+        env:
+          HOME: /root
 
       - name: Upload blob report to GitHub Actions Artifacts
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v5
         with:
-          name: blob-report-${{ matrix.project }}
+          name: blob-report-${{ matrix.name }}
           path: blob-report
           retention-days: 1
 

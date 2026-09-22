@@ -31,7 +31,7 @@ Look for opportunities to prefactor the code to make the implementation easier. 
 ## Step 3 — Draft slices
 
 Break the work into tracer bullet tickets.
-- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests) — a vertical slice.
+- Each slice cuts a narrow but COMPLETE path through every layer (schema, API, UI, tests) — a vertical slice. Visual tests (`*.pw.tsx`) are not a required layer of that path; read `.agents/rules/tests-visual.md` Purpose before adding a suite.
 - A completed slice is demoable or verifiable on its own
 - Each slice is sized to fit in a single fresh context window
 - Any prefactoring should be done first

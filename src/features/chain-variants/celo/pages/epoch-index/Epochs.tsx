@@ -11,14 +11,14 @@ import { CELO_EPOCH_ITEM } from 'src/features/chain-variants/celo/stubs/epoch';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import EpochsList from './EpochsList';
 import EpochsTable from './EpochsTable';
 
 const EpochsPageContent = () => {
-  const epochsQuery = useQueryWithPages({
+  const epochsQuery = useApiPaginatedQuery({
     resourceName: 'core:epochs_celo',
     options: {
       placeholderData: generateListStub<'core:epochs_celo'>(CELO_EPOCH_ITEM, 50, { next_page_params: {
@@ -34,7 +34,7 @@ const EpochsPageContent = () => {
     </ActionBar>
   ) : null;
 
-  const isLoading = epochsQuery.isPlaceholderData;
+  const isLoading = epochsQuery.isInitialLoading;
 
   const content = (() => {
     if (epochsQuery.isError) {
@@ -70,6 +70,7 @@ const EpochsPageContent = () => {
         itemsNum={ epochsQuery.data?.items?.length }
         emptyText="There are no epochs."
         actionBar={ actionBar }
+        isTransitioning={ epochsQuery.isTransitioning }
       >
         { content }
       </DataList>

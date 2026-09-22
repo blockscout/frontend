@@ -23,7 +23,7 @@ import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -46,7 +46,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
   const isMounted = useIsMounted();
 
   const addressHash = String(router.query.hash);
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_blocks_validated',
     pathParams: { hash: addressHash },
     options: {
@@ -95,7 +95,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
     topic: `blocks:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !addressHash || query.isPlaceholderData || query.pagination.page !== 1,
+    isDisabled: !addressHash || query.isInitialLoading || query.pagination.page !== 1,
   });
   useSocketMessage({
     channel,
@@ -105,7 +105,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: query.data?.items,
-    isEnabled: !query.isPlaceholderData,
+    isEnabled: !query.isInitialLoading,
     resetKey: query.queryHash,
   });
 
@@ -134,14 +134,14 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
             num={ newItemsCount }
             showErrorAlert={ showSocketAlert }
             type="block"
-            isLoading={ query.isPlaceholderData }
+            isLoading={ query.isInitialLoading }
           />
           { query.data.items.slice(0, renderedItemsNum).map((item, index) => (
             <AddressBlocksValidatedTableItem
-              key={ item.height + (query.isPlaceholderData ? String(index) : '') }
+              key={ item.height + (query.isInitialLoading ? String(index) : '') }
               data={ item }
               page={ query.pagination.page }
-              isLoading={ query.isPlaceholderData }
+              isLoading={ query.isInitialLoading }
             />
           )) }
         </TableBody>
@@ -162,6 +162,7 @@ const AddressBlocksValidated = ({ shouldRender = true, isQueryEnabled = true }: 
       itemsNum={ query.data?.items.length }
       emptyText="There are no validated blocks for this address."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

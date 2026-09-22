@@ -26,7 +26,6 @@ type Props = {
   isLoading?: boolean;
   filters?: ZetaChainCCTXFilterParams;
   onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
-  isPlaceholderData?: boolean;
   showStatusFilter?: boolean;
   showSocketInfo?: boolean;
   showSocketErrorAlert?: boolean;
@@ -41,7 +40,6 @@ const ZetaChainCCTxsTable = ({
   isLoading,
   filters = {},
   onFilterChange,
-  isPlaceholderData,
   showStatusFilter = true,
   showSocketInfo = false,
   showSocketErrorAlert = false,
@@ -70,7 +68,7 @@ const ZetaChainCCTxsTable = ({
                   columnName="Age"
                   filters={ filters }
                   handleFilterChange={ onFilterChange }
-                  isLoading={ isPlaceholderData }
+                  isLoading={ isLoading }
                 />
                 <TimeFormatToggle ml={ 0 }/>
               </Flex>
@@ -85,7 +83,7 @@ const ZetaChainCCTxsTable = ({
                   columnName="Status"
                   filters={ filters }
                   handleFilterChange={ onFilterChange }
-                  isLoading={ isPlaceholderData }
+                  isLoading={ isLoading }
                 />
               ) }
             </TableColumnHeader>
@@ -98,7 +96,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Sender"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
             <TableColumnHeader width="165px">
@@ -110,7 +108,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Receiver"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
             <TableColumnHeader width="100%" isNumeric>
@@ -122,7 +120,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Asset"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
           </TableRow>

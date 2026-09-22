@@ -13,7 +13,7 @@ import { PRIVATE_TAG_ADDRESS } from 'src/features/account/stubs';
 import * as mixpanel from 'src/services/mixpanel';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -25,7 +25,7 @@ import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isError, isPlaceholderData, refetch, pagination } = useQueryWithPages({
+  const { data: addressTagsData, isError, isInitialLoading, isTransitioning, refetch, pagination } = useApiPaginatedQuery({
     resourceName: 'core:private_tags_address',
     options: {
       refetchOnMount: false,
@@ -80,21 +80,22 @@ const PrivateAddressTags = () => {
         itemsNum={ addressTagsData?.items.length }
         emptyText=""
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         <Box display={{ base: 'block', lg: 'none' }}>
           { addressTagsData?.items.map((item: AddressTag, index: number) => (
             <AddressTagListItem
               item={ item }
-              key={ item.id + (isPlaceholderData ? String(index) : '') }
+              key={ item.id + (isInitialLoading ? String(index) : '') }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
-              isLoading={ isPlaceholderData }
+              isLoading={ isInitialLoading }
             />
           )) }
         </Box>
         <Box display={{ base: 'none', lg: 'block' }}>
           <AddressTagTable
-            isLoading={ isPlaceholderData }
+            isLoading={ isInitialLoading }
             data={ addressTagsData?.items }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
@@ -102,7 +103,7 @@ const PrivateAddressTags = () => {
           />
         </Box>
       </DataList>
-      <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
+      <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
         <Button
           onClick={ addressModalProps.onOpen }
         >

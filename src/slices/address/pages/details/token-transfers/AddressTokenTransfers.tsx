@@ -17,7 +17,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -55,7 +55,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     enabled: isQueryEnabled && isLocalTab,
   });
 
-  const crossChainQuery = useQueryWithPages({
+  const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_transfers',
     pathParams: { hash },
     options: {
@@ -63,12 +63,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       enabled: isQueryEnabled && !isLocalTab,
     },
   });
-
-  const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
-    if (value === 'token_transfers_local') {
-      localQuery.setFilters({ type: [], filter: undefined });
-    }
-  }, [ localQuery ]);
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -101,7 +95,8 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
           ) }
           <TokenTransfersCrossChainContent
             items={ crossChainQuery.data?.items }
-            isLoading={ crossChainQuery.isPlaceholderData }
+            isLoading={ crossChainQuery.isInitialLoading }
+            isTransitioning={ crossChainQuery.isTransitioning }
             isError={ crossChainQuery.isError }
             pagination={ crossChainQuery.pagination }
             tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
@@ -135,7 +130,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               withAddressFilter
               onAddressFilterChange={ localQuery.onAddressFilterChange }
               defaultAddressFilter={ localQuery.filters.filter }
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
             />
             <CsvExport
               type="address_token_transfers"
@@ -145,10 +140,10 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
                 filter_type: 'address',
                 filter_value: localQuery.filters.filter,
               } : undefined }
-              loadingInitial={ localQuery.query.isPlaceholderData }
+              loadingInitial={ localQuery.query.isInitialLoading }
             />
             <AddressAdvancedFilterLink
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
               address={ hash }
               typeFilter={ localQuery.filters.type }
               directionFilter={ localQuery.filters.filter }
@@ -183,7 +178,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       variant="secondary"
       size="sm"
       tabs={ tabs }
-      onValueChange={ handleTabValueChange }
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }
       listProps={ isMobile ? undefined : TAB_LIST_PROPS }

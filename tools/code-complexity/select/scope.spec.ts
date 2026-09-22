@@ -33,7 +33,7 @@ describe('isInScope', () => {
   });
 
   it('excludes everything outside the two allowlisted roots', () => {
-    expect(isInScope('proxy.ts')).toBe(false);
+    expect(isInScope('startup.node.ts')).toBe(false);
     expect(isInScope('instrumentation.ts')).toBe(false);
     expect(isInScope('docs/example.ts')).toBe(false);
   });

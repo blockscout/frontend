@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 //
 // Default: vitest/setup.ts registers a home-page mock via `vi.mock` so TestApp mounts
 // without each suite wiring the router. Suites that need a specific route/query should
-// override with their own top-level `vi.mock('next/router', …)` (see useQueryWithPages.spec).
+// override with their own top-level `vi.mock('next/router', …)` (see useApiPaginatedQuery.spec).
 //
 // Primed drift tests: `mockNextRouter` uses `vi.doMock`, which applies only to modules
 // imported AFTER the call — pair it with `resetModules` + dynamic imports

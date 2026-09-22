@@ -12,7 +12,7 @@ import { SCROLL_L2_TXN_BATCH } from 'src/features/rollup/scroll/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import ScrollL2TxnBatchesList from './ScrollL2TxnBatchesList';
 import ScrollL2TxnBatchesTable from './ScrollL2TxnBatchesTable';
 
 const ScrollL2TxnBatches = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:scroll_l2_txn_batches',
     options: {
       placeholderData: generateListStub<'core:scroll_l2_txn_batches'>(
@@ -46,13 +46,13 @@ const ScrollL2TxnBatches = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ScrollL2TxnBatchesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ScrollL2TxnBatchesList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ScrollL2TxnBatchesTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -65,7 +65,7 @@ const ScrollL2TxnBatches = () => {
     }
 
     return (
-      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading } display="flex" flexWrap="wrap">
         Txn batch
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
@@ -84,6 +84,7 @@ const ScrollL2TxnBatches = () => {
         itemsNum={ data?.items?.length }
         emptyText="There are no txn batches."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

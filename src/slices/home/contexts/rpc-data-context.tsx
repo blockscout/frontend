@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useQueries, useQuery } from '@tanstack/react-query';
+import { useQueries } from '@tanstack/react-query';
 import React from 'react';
+import type { OnBlockParameter, Chain } from 'viem';
 
 import type { schemas } from '@blockscout/api-types';
 
@@ -34,60 +35,68 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
   const [ blocks, setBlocks ] = React.useState<Array<schemas['Block']>>([]);
   const [ txs, setTxs ] = React.useState<Array<schemas['Transaction']>>([]);
   const [ totalTxs, setTotalTxs ] = React.useState(0);
-  const [ isLoading, setIsLoading ] = React.useState(true);
+  const [ isLoaded, setIsLoaded ] = React.useState(false);
   const [ isError, setIsError ] = React.useState(false);
-  const [ isEnabled, setIsEnabled ] = React.useState(false);
   const [ subscriptions, setSubscriptions ] = React.useState<Array<SubscriptionId>>([]);
 
-  const query = useQuery({
-    queryKey: [ 'RPC', 'watch-blocks' ],
-    queryFn: async() => {
-      const publicClient = await getPublicClient();
-      if (!publicClient) {
-        return null;
-      }
+  const isEnabled = isPublicClientAvailable && subscriptions.length > 0;
 
-      return publicClient.watchBlocks({
-        onBlock: (block) => {
-          setTxs((prevTxs) => {
-            try {
-              const newTxs = block.transactions.map((tx) => formatTxListRpcData({ tx, receipt: null, confirmations: null, block })).filter(Boolean);
-              const nextTxs = prevTxs.length < ITEMS_LIMIT ? [ ...prevTxs, ...newTxs ].slice(0, ITEMS_LIMIT) : prevTxs;
+  const handleBlock = React.useCallback((block: OnBlockParameter<Chain | undefined, true, 'latest'>) => {
+    let newTxs: Array<schemas['Transaction']>;
+    let newBlock: ReturnType<typeof formatBlockListData>;
 
-              const totalTxs = prevTxs.length + newTxs.length;
-              setTotalTxs(totalTxs);
-
-              return nextTxs;
-            } catch (_) {
-              setIsError(true);
-              return prevTxs;
-            }
-          });
-          setBlocks((prev) => {
-            try {
-              return [
-                formatBlockListData({
-                  ...block,
-                  transactions: block.transactions.map((tx) => tx.hash),
-                }),
-                ...prev,
-              ].filter(Boolean).slice(0, ITEMS_LIMIT);
-            } catch (_) {
-              setIsError(true);
-              return prev;
-            }
-          });
-        },
-        onError: () => {
-          setIsError(true);
-          setIsLoading(false);
-        },
-        pollingInterval: 5 * SECOND,
-        includeTransactions: true,
+    try {
+      newTxs = block.transactions.map((tx) => formatTxListRpcData({ tx, receipt: null, confirmations: null, block })).filter(Boolean);
+      newBlock = formatBlockListData({
+        ...block,
+        transactions: block.transactions.map((tx) => tx.hash),
       });
-    },
-    enabled: isPublicClientAvailable && isEnabled,
-  });
+    } catch (_) {
+      setIsError(true);
+      return;
+    }
+
+    setTxs((prev) => prev.length < ITEMS_LIMIT ? [ ...prev, ...newTxs ].slice(0, ITEMS_LIMIT) : prev);
+    setTotalTxs((prev) => prev + newTxs.length);
+    setBlocks((prev) => [ newBlock, ...prev ].filter(Boolean).slice(0, ITEMS_LIMIT));
+  }, []);
+
+  React.useEffect(() => {
+    if (!isEnabled) {
+      return;
+    }
+
+    let isCancelled = false;
+    let unwatch: (() => void) | undefined;
+
+    const handleError = () => setIsError(true);
+
+    getPublicClient()
+      .then((publicClient) => {
+        if (isCancelled) {
+          return;
+        }
+
+        if (!publicClient) {
+          handleError();
+          return;
+        }
+
+        unwatch = publicClient.watchBlocks({
+          onBlock: handleBlock,
+          onError: handleError,
+          pollingInterval: 5 * SECOND,
+          includeTransactions: true,
+          emitOnBegin: true,
+        });
+      })
+      .catch(handleError);
+
+    return () => {
+      isCancelled = true;
+      unwatch?.();
+    };
+  }, [ isEnabled, handleBlock ]);
 
   const receiptQueries = useQueries({
     queries: txs.map((tx) => ({
@@ -104,10 +113,11 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
     })),
   });
 
-  const areReceiptsLoading = txs.length === 0 || receiptQueries.some((query) => query.isPending);
+  const hasBlocks = blocks.length > 0;
+  const areReceiptsLoading = receiptQueries.some((query) => query.isPending);
 
   React.useEffect(() => {
-    if (!areReceiptsLoading) {
+    if (hasBlocks && !areReceiptsLoading) {
       setTxs((prev) => {
         return prev.map((tx) => {
           const receipt = receiptQueries.find((query) => query.data?.transactionHash === tx.hash);
@@ -116,59 +126,39 @@ export function HomeRpcDataContextProvider({ children }: { children: React.React
           }
           return {
             ...tx,
-            status: receipt?.status === 'success' ? 'ok' : 'error',
+            status: receipt.data?.status === 'success' ? 'ok' : 'error',
           };
         });
       });
-      setIsLoading(false);
+      setIsLoaded(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ areReceiptsLoading ]);
-
-  const unwatch = query.data;
-  const isQueryError = query.isError;
-
-  React.useEffect(() => {
-    return () => {
-      unwatch?.();
-    };
-  }, [ unwatch ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- receiptQueries is a new array on every render; areReceiptsLoading tracks its settled state
+  }, [ areReceiptsLoading, hasBlocks ]);
 
   const enable = React.useCallback((isEnabled: boolean, id: SubscriptionId) => {
     if (!isPublicClientAvailable) {
       setIsError(true);
-      setIsLoading(false);
-      setIsEnabled(false);
       return;
     }
 
-    if (isEnabled) {
-      setIsLoading(true);
-      setIsEnabled(true);
-      setSubscriptions((prev) => [ ...prev, id ]);
-    } else {
-      setSubscriptions((prev) => {
-        const next = prev.filter((subscription) => subscription !== id);
-        if (next.length === 0) {
-          setIsEnabled(false);
-          setIsLoading(false);
-          unwatch?.();
-        }
-        return next;
-      });
-    }
-  }, [ unwatch ]);
+    setSubscriptions((prev) => {
+      const next = prev.filter((subscription) => subscription !== id);
+      return isEnabled ? [ ...next, id ] : next;
+    });
+  }, []);
+
+  const isLoading = !isError && !isLoaded;
 
   const value = React.useMemo(() => ({
     blocks,
     txs,
     totalTxs,
-    isError: isQueryError || isError,
+    isError,
     isLoading,
     isEnabled,
     enable,
     subscriptions,
-  }), [ blocks, txs, totalTxs, isQueryError, isError, isLoading, isEnabled, enable, subscriptions ]);
+  }), [ blocks, txs, totalTxs, isError, isLoading, isEnabled, enable, subscriptions ]);
 
   return (
     <HomeRpcDataContext.Provider value={ value }>

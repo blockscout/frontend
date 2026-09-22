@@ -23,7 +23,7 @@ const WithdrawalsList = ({ items, isLoading, resetKey }: Props) => {
       <Box>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <WithdrawalsListItem
-            key={ `${ item.l2_transaction_hash }-${ index }` }
+            key={ item.l2_transaction_hash + (isLoading ? index : '') }
             item={ item }
             isLoading={ isLoading }
           />

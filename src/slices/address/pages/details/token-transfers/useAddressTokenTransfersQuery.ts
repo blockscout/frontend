@@ -1,21 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { AddressFromToFilter } from 'src/slices/address/types/api';
 import { AddressFromToFilterValues } from 'src/slices/address/types/api';
 import type { TokenType } from 'src/slices/token/types/api';
 import { getTokenTypes } from 'src/slices/token/utils/token-types';
 
+import type { PaginationFilters } from 'src/api/resources';
+
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 
-import multichainConfig from 'src/features/multichain/chains-config';
-
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
-import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 export type Filters = {
   type: Array<TokenType>;
@@ -24,46 +23,26 @@ export type Filters = {
 
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const getFilters = (query: Record<string, string | Array<string> | undefined>, chainIds?: Array<string>) => {
-  const chainIdParam = getQueryParamString(query.chain_id);
-  const filterParam = getQueryParamString(query.filter);
-  const typeParam = getQueryParamString(query.type);
+const NO_TYPES: Array<TokenType> = [];
 
-  const currentChainId = chainIdParam && chainIds?.includes(chainIdParam) ? chainIdParam : chainIds?.[0];
-  const chainConfig = multichainConfig()?.chains.find(chain => chain.id === currentChainId);
-
-  return {
-    filter: getAddressFilterValue(filterParam),
-    type: getFilterValuesFromQuery(
-      Object.keys(getTokenTypes('all', chainConfig?.app_config)),
-      typeParam,
-    ) || [],
-  };
-};
+const getFilters = (queryFilters: PaginationFilters<'core:address_token_transfers'>, chain: ClusterChainConfig | undefined): Filters => ({
+  filter: getAddressFilterValue(queryFilters.filter),
+  type: getFilterValuesFromQuery(
+    Object.keys(getTokenTypes('all', chain?.app_config)),
+    queryFilters.type,
+  ) || NO_TYPES,
+});
 
 interface Props {
   currentAddress: string;
   enabled?: boolean;
-  isMultichain?: boolean;
-  chainIds?: Array<string>;
+  chain?: ClusterChainConfig;
 }
 
-export default function useAddressTokenTransfersQuery({ currentAddress, enabled, isMultichain, chainIds }: Props) {
-  const router = useRouter();
-
-  const [ filters, setFilters ] = React.useState<Filters>(getFilters(router.query, chainIds));
-
-  React.useEffect(() => {
-    if (enabled) {
-      setFilters(getFilters(router.query, chainIds));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ enabled ]);
-
-  const query = useQueryWithPages({
+export default function useAddressTokenTransfersQuery({ currentAddress, enabled, chain }: Props) {
+  const query = useApiPaginatedQuery({
     resourceName: 'core:address_token_transfers',
     pathParams: { hash: currentAddress },
-    filters,
     options: {
       enabled,
       placeholderData: getTokenTransfersStub(undefined, {
@@ -72,26 +51,24 @@ export default function useAddressTokenTransfersQuery({ currentAddress, enabled,
         items_count: 50,
       }),
     },
-    isMultichain,
-    chainIds,
+    chain,
   });
 
+  const filters = React.useMemo(() => getFilters(query.filters, chain), [ query.filters, chain ]);
+
+  const { onFilterChange } = query;
   const onTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    query.onFilterChange({ ...filters, type: nextValue });
-    setFilters((prevState) => ({ ...prevState, type: nextValue }));
-  }, [ filters, query ]);
+    onFilterChange({ ...filters, type: nextValue });
+  }, [ filters, onFilterChange ]);
 
   const onAddressFilterChange = React.useCallback((nextValue: string) => {
-    const filterVal = getAddressFilterValue(nextValue);
-    query.onFilterChange({ ...filters, filter: filterVal });
-    setFilters((prevState) => ({ ...prevState, filter: filterVal }));
-  }, [ filters, query ]);
+    onFilterChange({ ...filters, filter: getAddressFilterValue(nextValue) });
+  }, [ filters, onFilterChange ]);
 
   return React.useMemo(() => ({
     query,
     filters,
-    setFilters,
     onTypeFilterChange,
     onAddressFilterChange,
-  }), [ query, filters, setFilters, onTypeFilterChange, onAddressFilterChange ]);
+  }), [ query, filters, onTypeFilterChange, onAddressFilterChange ]);
 }

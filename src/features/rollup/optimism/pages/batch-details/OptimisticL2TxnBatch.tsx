@@ -18,7 +18,7 @@ import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-err
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -45,7 +45,7 @@ const OptimisticL2TxnBatch = () => {
 
   const batchQuery = useBatchQuery();
 
-  const batchTxsQuery = useQueryWithPages({
+  const batchTxsQuery = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_txn_batch_txs',
     pathParams: { number: String(batchQuery.data?.number) },
     options: {
@@ -58,7 +58,7 @@ const OptimisticL2TxnBatch = () => {
     },
   });
 
-  const batchBlocksQuery = useQueryWithPages({
+  const batchBlocksQuery = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_txn_batch_blocks',
     pathParams: { number: String(batchQuery.data?.number) },
     options: {

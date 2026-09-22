@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, createListCollection, HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type {
@@ -11,7 +10,6 @@ import type {
   ValidatorsStabilitySortingValue,
 } from 'src/features/chain-variants/stability/types/api';
 
-// import useDebounce from 'src/shared/hooks/useDebounce';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
@@ -21,7 +19,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
@@ -39,25 +37,10 @@ const sortCollection = createListCollection({
 });
 
 const ValidatorsStability = () => {
-  const router = useRouter();
-  // const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.address_hash) || undefined);
-  const [ statusFilter, setStatusFilter ] =
-    React.useState(getQueryParamString(router.query.state_filter) as ValidatorsStabilityFilters['state_filter'] || undefined);
-  const [ sort, setSort ] = React.useState<ValidatorsStabilitySortingValue>(
-    getSortValueFromQuery<ValidatorsStabilitySortingValue>(router.query, VALIDATORS_STABILITY_SORT_OPTIONS) ?? 'default',
-  );
-
-  // const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, filters, sorting, onFilterChange, onSortingChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:validators_stability',
-    filters: {
-      // address_hash: debouncedSearchTerm,
-      state_filter: statusFilter,
-    },
-    sorting: getSortParamsFromValue<ValidatorsStabilitySortingValue, ValidatorsStabilitySortingField, ValidatorsStabilitySorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
       placeholderData: generateListStub<'core:validators_stability'>(
@@ -68,13 +51,8 @@ const ValidatorsStability = () => {
     },
   });
 
-  // const handleSearchTermChange = React.useCallback((value: string) => {
-  //   onFilterChange({
-  //     address_hash: value,
-  //     state_filter: statusFilter
-  //   });
-  //   setSearchTerm(value);
-  // }, [ statusFilter, onFilterChange ]);
+  const statusFilter = getQueryParamString(filters.state_filter) as ValidatorsStabilityFilters['state_filter'] || undefined;
+  const sort = getSortValueFromQuery<ValidatorsStabilitySortingValue>({ ...sorting }, VALIDATORS_STABILITY_SORT_OPTIONS) ?? 'default';
 
   const handleStateFilterChange = React.useCallback((value: string | Array<string>) => {
     if (Array.isArray(value)) {
@@ -83,31 +61,19 @@ const ValidatorsStability = () => {
 
     const state = value === 'all' ? undefined : value as ValidatorsStabilityFilters['state_filter'];
 
-    onFilterChange({
-      // address_hash: debouncedSearchTerm,
-      state_filter: state,
-    });
-    setStatusFilter(state);
+    onFilterChange({ state_filter: state });
   }, [ onFilterChange ]);
 
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    const sortValue = value[0] as ValidatorsStabilitySortingValue;
-    setSort(sortValue);
-    onSortingChange(sortValue === 'default' ? undefined : getSortParamsFromValue(sortValue));
+    onSortingChange(
+      getSortParamsFromValue<ValidatorsStabilitySortingValue, ValidatorsStabilitySortingField, ValidatorsStabilitySorting['order']>(
+        value[0] as ValidatorsStabilitySortingValue,
+      ),
+    );
   }, [ onSortingChange ]);
 
   const filterMenu =
     <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } hasActiveFilter={ Boolean(statusFilter) }/>;
-
-  // const filterInput = (
-  //   <FilterInput
-  //     w={{ base: '100%', lg: '350px' }}
-  //     size="xs"
-  //     onChange={ handleSearchTermChange }
-  //     placeholder="Search by validator's address hash"
-  //     initialValue={ searchTerm }
-  //   />
-  // );
 
   const sortButton = (
     <Sort
@@ -123,13 +89,11 @@ const ValidatorsStability = () => {
       <HStack gap={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filterMenu }
         { sortButton }
-        { /* { filterInput } */ }
       </HStack>
       { (!isMobile || pagination.isVisible) && (
         <ActionBar mt={ -6 }>
           <HStack gap={ 3 } display={{ base: 'none', lg: 'flex' }}>
             { filterMenu }
-            { /* { filterInput } */ }
           </HStack>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
@@ -140,14 +104,14 @@ const ValidatorsStability = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <ValidatorsList data={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <ValidatorsTable
           data={ data.items }
           sort={ sort }
           setSorting={ handleSortChange }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -162,14 +126,12 @@ const ValidatorsStability = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
-        hasActiveFilters={ Boolean(
-          // searchTerm ||
-          statusFilter,
-        ) }
+        hasActiveFilters={ Boolean(statusFilter) }
         emptyStateProps={{
           term: 'validator',
         }}
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

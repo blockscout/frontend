@@ -11,7 +11,6 @@ packages:
   - 'deploy/tools/multichain-config-generator'
   - 'deploy/tools/essential-dapps-chains-config-generator'
   - 'deploy/tools/llms-txt-generator'
-  - 'deploy/tools/affected-tests'
 
 verifyDepsBeforeRun: warn
 

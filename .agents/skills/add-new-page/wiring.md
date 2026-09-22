@@ -12,7 +12,7 @@ markers are the next stage's worklist — leave them in place, and add new ones 
 representation decision you defer (Step W4).
 
 **In scope:** resource declaration (via the `add-api-resource` skill), minimal loading stubs,
-`useApiQuery` / `useQueryWithPages` wiring, pagination controls, plain rendering of every
+`useApiQuery` / `useApiPaginatedQuery` wiring, pagination controls, plain rendering of every
 payload field.
 **Out of scope:** filters, sorting, search, socket live-updates, mocks, tests, and design
 polish — unless the task explicitly names them.
@@ -48,7 +48,7 @@ replace the `unknown` item/data types with the payload (item) type **everywhere 
 the page shell *and* the `Table`/`TableItem`/`List`/`ListItem` (or `Details`) components each
 carry their own `unknown` marker.
 
-- **index, paginated resource** — in the page shell, `useQueryWithPages({ resourceName,
+- **index, paginated resource** — in the page shell, `useApiPaginatedQuery({ resourceName,
   options: { placeholderData: generateListStub<'service:name'>(ITEM_STUB, 50,
   { next_page_params: { … } }) } })`; take the `next_page_params` keys from the sample body.
   Thread the query down to the content body; pass `isPlaceholderData` as `isLoading` and

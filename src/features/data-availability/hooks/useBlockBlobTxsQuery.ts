@@ -3,7 +3,7 @@
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 interface Params {
@@ -13,10 +13,10 @@ interface Params {
 }
 
 export default function useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab }: Params) {
-  const apiQuery = useQueryWithPages({
+  const apiQuery = useApiPaginatedQuery({
     resourceName: 'core:block_txs',
     pathParams: { height_or_hash: heightOrHash },
-    filters: { type: 'blob_transaction' },
+    queryParams: { type: 'blob_transaction' },
     options: {
       enabled: Boolean(tab === 'blob_txs' && !blockQuery.isPlaceholderData && blockQuery.data?.blob_transactions_count),
       placeholderData: generateListStub<'core:block_txs'>(TX_ITEM, 3, { next_page_params: null }),

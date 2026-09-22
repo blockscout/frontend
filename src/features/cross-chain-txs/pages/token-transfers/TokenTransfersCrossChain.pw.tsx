@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 
 import { homeChain } from 'src/features/cross-chain-txs/mocks/chains';
 import * as crossChainConfigMock from 'src/features/cross-chain-txs/mocks/config';
+import * as crossChainCountersMock from 'src/features/cross-chain-txs/mocks/counters';
 import * as crossChainTransfersMock from 'src/features/cross-chain-txs/mocks/transfers';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -18,12 +19,7 @@ test.describe('txs', () => {
     };
     await mockEnvs(ENVS_MAP.crossChainTxs);
     await mockApiResponse('interchainIndexer:transfers', crossChainTransfersMock.listResponse, { queryParams });
-    await mockApiResponse(
-      'interchainIndexer:stats_common',
-      { total_messages: 100, total_transfers: 101, timestamp: '2022-01-13T12:00:00.000Z' },
-      { queryParams },
-    );
-    await mockApiResponse('interchainIndexer:stats_daily', { daily_messages: 42, daily_transfers: 55, date: '2022-01-13' }, { queryParams });
+    await mockApiResponse('stats:counters', crossChainCountersMock.counters);
 
     await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
     await mockAssetResponse(crossChainConfigMock.config[1].logo as string, './playwright/mocks/goose.png');

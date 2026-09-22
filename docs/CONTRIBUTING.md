@@ -142,7 +142,9 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 - `mobile` - project for testing on mobile devices, uses Safari mobile browser; add tag `+@mobile` to run test with this project
 - `dark-color-mode` - project for testing app in the dark color mode, uses desktop Chrome desktop device with forced dark color mode; add tag `+@dark-mode` to run test with this project.
 
-*Note* that, since we are developing not on the same operating system as our CI system, we have to use Docker to generate or update the screenshots. In order to do that use `pnpm test:pw:docker <path-to-file> --update-snapshots` command. Please **do not commit** any screenshots generated via `pnpm test:pw:local` command, their associated tests will fail in the CI run.
+Run the tests with `pnpm test:pw` (the whole suite) or `pnpm test:pw --changed` (only the tests affected by your branch's diff against `origin/main`, which is what CI runs on a pull request).
+
+*Note* that, since we are developing not on the same operating system as our CI system, we have to use Docker to generate or update the screenshots. In order to do that use `pnpm test:pw --docker <path-to-file> --update-snapshots` command (after a one-off `pnpm test:pw --docker-deps`). Please **do not commit** any screenshots generated via a plain local `pnpm test:pw` run, their associated tests will fail in the CI run.
 
 &nbsp;
 
@@ -205,9 +207,9 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | `pnpm svg:build-sprite` | build SVG icons sprite |
 | **Testing** |
 | `pnpm test:vitest` | run all Vitest unit tests |
-| `pnpm test:pw:local` | run Playwright component tests locally |
-| `pnpm test:pw:docker` | run Playwright component tests in docker container |
-| `pnpm test:pw:ci` | run Playwright component tests in CI |
+| `pnpm test:pw` | run Playwright component tests locally; `--changed` runs only the tests affected by the branch's diff, `--help` lists the tool's flags |
+| `pnpm test:pw:docker` | alias of `pnpm test:pw --docker`: run Playwright component tests in a docker container (required to generate screenshots) |
+| `pnpm test:pw:docker:deps` | alias of `pnpm test:pw --docker-deps`: install the Linux dependencies the docker run mounts (once) |
 
 &nbsp;
 

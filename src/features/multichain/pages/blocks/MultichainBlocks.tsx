@@ -10,12 +10,12 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 
-import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
@@ -41,10 +41,11 @@ const MultichainBlocks = () => {
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
+  const { chainValue, chain, onChainValueChange } = useChainValue();
 
-  const blocksQuery = useQueryWithPages({
+  const blocksQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
-    filters: { type: 'block' },
+    queryParams: { type: 'block' },
     options: {
       enabled: tab === 'blocks' || !tab,
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
@@ -52,12 +53,12 @@ const MultichainBlocks = () => {
         items_count: 50,
       } }),
     },
-    isMultichain: true,
+    chain,
   });
 
-  const reorgsQuery = useQueryWithPages({
+  const reorgsQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
-    filters: { type: 'reorg' },
+    queryParams: { type: 'reorg' },
     options: {
       enabled: tab === 'reorgs',
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
@@ -65,12 +66,12 @@ const MultichainBlocks = () => {
         items_count: 50,
       } }),
     },
-    isMultichain: true,
+    chain,
   });
 
-  const unclesQuery = useQueryWithPages({
+  const unclesQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
-    filters: { type: 'uncle' },
+    queryParams: { type: 'uncle' },
     options: {
       enabled: tab === 'uncles',
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
@@ -78,13 +79,13 @@ const MultichainBlocks = () => {
         items_count: 50,
       } }),
     },
-    isMultichain: true,
+    chain,
   });
 
   const tabs: Array<TabItemRegular> = [
-    { id: 'blocks', title: 'All', component: <MultichainBlocksContent type="block" query={ blocksQuery } chainId={ blocksQuery.chainValue?.[0] }/> },
-    { id: 'reorgs', title: 'Forked', component: <MultichainBlocksContent type="reorg" query={ reorgsQuery } chainId={ reorgsQuery.chainValue?.[0] }/> },
-    { id: 'uncles', title: 'Uncles', component: <MultichainBlocksContent type="uncle" query={ unclesQuery } chainId={ unclesQuery.chainValue?.[0] }/> },
+    { id: 'blocks', title: 'All', component: <MultichainBlocksContent type="block" query={ blocksQuery } chainId={ chain?.id }/> },
+    { id: 'reorgs', title: 'Forked', component: <MultichainBlocksContent type="reorg" query={ reorgsQuery } chainId={ chain?.id }/> },
+    { id: 'uncles', title: 'Uncles', component: <MultichainBlocksContent type="uncle" query={ unclesQuery } chainId={ chain?.id }/> },
   ];
 
   const currentQuery = (() => {
@@ -95,18 +96,16 @@ const MultichainBlocks = () => {
     }
   })();
 
-  const currentChainInfo = multichainConfig()?.chains.find(chain => chain.id === currentQuery.chainValue?.[0]);
-
   const leftSlot = (
     <ChainSelect
-      value={ currentQuery.chainValue }
-      onValueChange={ currentQuery.onChainValueChange }
+      value={ chainValue }
+      onValueChange={ onChainValueChange }
     />
   );
 
   const rightSlot = (
     <HStack gap={ 8 } hideBelow="lg">
-      <Link href={ route({ pathname: '/block/countdown' }, { chain: currentChainInfo }) }>
+      <Link href={ route({ pathname: '/block/countdown' }, { chain }) }>
         <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>
       </Link>

@@ -11,15 +11,15 @@ import LogItem from 'src/slices/log/components/LogItem';
 import { LOG } from 'src/slices/log/stubs/log';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
-import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -36,10 +36,11 @@ interface Props {
 const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
   const router = useRouter();
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain: chainData, onChainValueChange } = useChainValue({ chainIds });
   const isMobile = useIsMobile();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, pagination, chainValue, onChainValueChange, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:address_logs',
     pathParams: { hash },
     options: {
@@ -51,21 +52,15 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       } }),
       enabled: !isLoading,
     },
-    isMultichain: true,
-    chainIds,
+    chain: chainData,
   });
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
     resetKey: queryHash,
   });
-
-  const chainData = React.useMemo(() => {
-    const config = multichainConfig();
-    return config?.chains.find(({ id }) => id === chainValue?.[0]);
-  }, [ chainValue ]);
 
   const actionBar = (
     <ActionBar mt={ -6 }>
@@ -95,7 +90,7 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       key={ index }
       data={ item }
       type="address"
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
       chainData={ chainData }
     />
   ));
@@ -115,8 +110,9 @@ const MultichainAddressLogs = ({ addressData, isLoading }: Props) => {
       showActionBarIfEmpty
       showActionBarIfError
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
-      <MultichainProvider chainId={ chainValue?.[0] }>
+      <MultichainProvider chainId={ chainData?.id }>
         { content }
       </MultichainProvider>
     </DataList>

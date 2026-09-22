@@ -12,7 +12,7 @@ import { L2_DISPUTE_GAMES_ITEM } from 'src/features/rollup/optimism/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -21,7 +21,7 @@ import OptimisticL2DisputeGamesList from './OptimisticL2DisputeGamesList';
 import OptimisticL2DisputeGamesTable from './OptimisticL2DisputeGamesTable';
 
 const OptimisticL2DisputeGames = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_dispute_games',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_dispute_games'>(
@@ -46,13 +46,13 @@ const OptimisticL2DisputeGames = () => {
   const content = data?.items ? (
     <>
       <Box hideFrom="lg">
-        <OptimisticL2DisputeGamesList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
+        <OptimisticL2DisputeGamesList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
       </Box>
       <Box hideBelow="lg">
         <OptimisticL2DisputeGamesTable
           items={ data.items }
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -65,7 +65,7 @@ const OptimisticL2DisputeGames = () => {
     }
 
     return (
-      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading } display="flex" flexWrap="wrap">
         Dispute game index
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].index } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].index } </Text>
@@ -84,6 +84,7 @@ const OptimisticL2DisputeGames = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no dispute games."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

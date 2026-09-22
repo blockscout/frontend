@@ -14,7 +14,7 @@ import { currencyUnits } from 'src/slices/chain/units';
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
@@ -27,7 +27,7 @@ import BeaconChainWithdrawalsTable from './BeaconChainWithdrawalsTable';
 const feature = config.features.beaconChain;
 
 const BeaconChainWithdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:withdrawals',
     options: {
       placeholderData: generateListStub<'core:withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
@@ -52,7 +52,7 @@ const BeaconChainWithdrawals = () => {
         <BeaconChainWithdrawalsList
           items={ data.items }
           view="list"
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -61,7 +61,7 @@ const BeaconChainWithdrawals = () => {
           items={ data.items }
           view="list"
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
       </Box>
@@ -74,7 +74,7 @@ const BeaconChainWithdrawals = () => {
     }
 
     return (
-      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading } display="flex" flexWrap="wrap">
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
             { BigNumber(countersQuery.data.withdrawals_count).toFormat() } withdrawals processed
@@ -95,6 +95,7 @@ const BeaconChainWithdrawals = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

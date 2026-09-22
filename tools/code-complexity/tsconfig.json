@@ -8,7 +8,7 @@
     "isolatedModules": false,
     "noEmit": false,
     "incremental": false,
-    "rootDir": ".",
+    "rootDir": "..",
     "outDir": "./dist"
   },
   "include": [

@@ -51,7 +51,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
         <TableBody>
           { data.slice(0, renderedItemsNum).map((item, index) => (
             <InternalTxsTableItem
-              key={ item.transaction_hash + '_' + index }
+              key={ item.transaction_hash + '_' + item.index + (isLoading ? index : '') }
               data={ item }
               currentAddress={ currentAddress }
               isLoading={ isLoading }

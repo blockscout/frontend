@@ -64,6 +64,9 @@ npm-debug.log*
 # compiled doc-link checker
 /tools/doc-links/dist/
 
+# react-doctor standalone install (not part of the root workspace)
+/tools/react-doctor/node_modules/
+
 # compiled React profile aggregator
 /tools/profiling/dist/
 
@@ -72,19 +75,22 @@ npm-debug.log*
 /tools/mutation-testing/reports/
 /tools/mutation-testing/.stryker-tmp/
 
+# compiled Playwright runner
+/tools/playwright/dist/
+
 # typescript
 *.tsbuildinfo
 
 .eslintcache
 
 **.decrypted~**
-/test-results/
+/playwright-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
-/playwright/affected-tests.txt
+/.playwright-mcp/
 
 **.dec**
 

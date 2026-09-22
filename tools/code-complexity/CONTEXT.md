@@ -60,7 +60,7 @@ it.
 **Root** — the CLI, the caps, and the join.
 
 - `./index.ts` — parse the flags, pick the selection, orchestrate, set the exit code
-  (`./docs/RUNNING.md`)
+  (`./docs/RUNNING.md`); the flag mechanics are shared with the sibling tools in `../cli/flags.ts`
 - `./config.ts` — the three caps, so a local run and a CI run gate identically
   (`./docs/CALIBRATION.md`)
 - `./analyze.ts` — complexity × coverage → one row per function, each stamped with its verdict

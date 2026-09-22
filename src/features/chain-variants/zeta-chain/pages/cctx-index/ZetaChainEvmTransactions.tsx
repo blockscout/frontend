@@ -17,7 +17,7 @@ import AdvancedFilterLink from 'src/features/advanced-filter/components/Advanced
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -36,9 +36,9 @@ const ZetaChainEvmTransactions = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const txsValidatedQuery = useQueryWithPages({
+  const txsValidatedQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
-    filters: { filter: 'validated' },
+    queryParams: { filter: 'validated' },
     options: {
       enabled: !tab || tab === 'zetachain' || tab === 'zetachain_validated',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
@@ -50,9 +50,9 @@ const ZetaChainEvmTransactions = () => {
     },
   });
 
-  const txsPendingQuery = useQueryWithPages({
+  const txsPendingQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
-    filters: { filter: 'pending' },
+    queryParams: { filter: 'pending' },
     options: {
       enabled: tab === 'zetachain_pending',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {

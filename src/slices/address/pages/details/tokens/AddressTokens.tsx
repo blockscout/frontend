@@ -74,7 +74,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       component: (
         <AddressFungibleTokens
           items={ fungibleTokensQuery.data?.items }
-          isLoading={ fungibleTokensQuery.isPlaceholderData }
+          isLoading={ fungibleTokensQuery.isInitialLoading }
+          isTransitioning={ fungibleTokensQuery.isTransitioning }
           pagination={ fungibleTokensQuery.pagination }
           isError={ fungibleTokensQuery.isError }
           tokenTypes={ fungibleTokenTypes }
@@ -101,8 +102,8 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   }
 
   const hasNftData =
-    (!nftsQuery.isPlaceholderData && nftsQuery.data?.items.length) ||
-    (!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
+    (!nftsQuery.isInitialLoading && nftsQuery.data?.items.length) ||
+    (!collectionsQuery.isInitialLoading && collectionsQuery.data?.items.length);
 
   const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
   const hasFungibleTokenFilter = !isNftTab && (!isMobile || !pagination.isVisible) && FUNGIBLE_TOKEN_TYPES.length > 1;

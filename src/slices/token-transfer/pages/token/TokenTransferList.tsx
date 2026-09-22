@@ -6,6 +6,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import TokenTransferListItem from 'src/slices/token-transfer/pages/token/TokenTransferListItem';
+import { getTokenTransferKey } from 'src/slices/token-transfer/utils/get-token-transfer-key';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -29,7 +30,7 @@ const TokenTransferList = ({ data, tokenId, instance, isLoading, resetKey }: Pro
       <Box>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <TokenTransferListItem
-            key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
+            key={ getTokenTransferKey(item) + (isLoading ? index : '') }
             data={ item }
             tokenId={ tokenId }
             instance={ instance }

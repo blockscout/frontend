@@ -11,7 +11,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -30,7 +30,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
 
   const hash = getQueryParamString(router.query.hash);
 
-  const rewardsQuery = useQueryWithPages({
+  const rewardsQuery = useApiPaginatedQuery({
     resourceName: 'core:address_epoch_rewards',
     pathParams: {
       hash,
@@ -56,7 +56,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       <AddressEpochRewardsTable
         items={ rewardsQuery.data.items }
         top={ rewardsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ rewardsQuery.isPlaceholderData }
+        isLoading={ rewardsQuery.isInitialLoading }
         resetKey={ rewardsQuery.queryHash }
       />
     </TableContainerScrollable>
@@ -85,6 +85,7 @@ const AddressEpochRewards = ({ shouldRender = true, isQueryEnabled = true }: Pro
       itemsNum={ rewardsQuery.data?.items?.length }
       emptyText="There are no epoch rewards for this address."
       actionBar={ actionBar }
+      isTransitioning={ rewardsQuery.isTransitioning }
     >
       { content }
     </DataList>

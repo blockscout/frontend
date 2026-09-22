@@ -15,6 +15,7 @@ import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuer
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -54,20 +55,14 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
   const tab = getQueryParamString(router.query.tab) as typeof ADDRESS_OP_PORTFOLIO_TAB_IDS[number] | 'portfolio' | undefined;
   const hash = getQueryParamString(router.query.hash);
   const chainIds = React.useMemo(() => getAvailableChainIds(addressData), [ addressData ]);
+  const { chainValue, chain, onChainValueChange } = useChainValue({ chainIds, scrollRef });
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
     scrollRef,
     enabled: !isLoading && tab === 'portfolio_nfts' && chainIds.length > 0,
     addressHash: hash,
-    isMultichain: true,
-    chainIds,
+    chain,
   });
-
-  const handleChainChange = React.useCallback((chainId: string | null) => {
-    const chainValue = chainId ? [ chainId ] : [ chainIds[0] ];
-    nftsQuery.onChainValueChange({ value: chainValue });
-    collectionsQuery.onChainValueChange({ value: chainValue });
-  }, [ nftsQuery, collectionsQuery, chainIds ]);
 
   const hasActiveFilters = (() => {
     if (tab === 'portfolio_nfts') {
@@ -83,8 +78,8 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
       const chainSelect = (
         <ChainSelect
           loading={ query.pagination.isLoading }
-          value={ query.chainValue }
-          onValueChange={ query.onChainValueChange }
+          value={ chainValue }
+          onValueChange={ onChainValueChange }
           chainIds={ chainIds }
         />
       );
@@ -113,17 +108,17 @@ const MultichainAddressPortfolio = ({ addressData, isLoading }: Props) => {
     {
       id: 'portfolio_tokens',
       title: 'Tokens',
-      component: <MultichainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading } onChainChange={ handleChainChange }/>,
+      component: <MultichainAddressPortfolioTokens addressData={ addressData } isLoading={ isLoading }/>,
     },
     {
       id: 'portfolio_nfts',
       title: 'NFT',
       component: nftDisplayType === 'list' ? (
-        <MultichainProvider chainId={ nftsQuery.chainValue?.[0] }>
+        <MultichainProvider chainId={ chain?.id }>
           <AddressNfts tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/>
         </MultichainProvider>
       ) : (
-        <MultichainProvider chainId={ collectionsQuery.chainValue?.[0] }>
+        <MultichainProvider chainId={ chain?.id }>
           <AddressNftsCollections
             collectionsQuery={ collectionsQuery }
             address={ hash }

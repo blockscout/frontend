@@ -186,6 +186,7 @@ const schema = yup
   .concat(featuresSchemas.nameServicesSchema)
   .concat(featuresSchemas.rollupSchema)
   .concat(featuresSchemas.tacSchema)
+  .concat(featuresSchemas.tokenActionButtonSchema)
   .concat(featuresSchemas.userOpsSchema)
   .concat(featuresSchemas.zetaChainSchema)
   .concat(servicesSchema)

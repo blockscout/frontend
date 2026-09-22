@@ -27,7 +27,7 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 ## Testing
 
 - Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
-- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for purpose, setup, fixtures, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
 ## Running locally
 
@@ -54,6 +54,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
 - `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
+- `src/shared/pagination/` — the paginated-list components and utils.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
@@ -61,7 +62,9 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/doc-links/` — the doc-link checker.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
+- `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
+- `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.
