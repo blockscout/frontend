@@ -15,13 +15,13 @@ through its table header so far, gains the action-bar sort dropdown.
 
 How to verify: `pnpm dev:preset eth`, open `/internal-txs`, `/block/<height>?tab=internal_txs`, `/tx/<hash>?tab=internal`, `/tx/<hash>?tab=state`; `pnpm dev:preset multichain`, open `/internal-txs` and an address internal-txs tab
 
-- [ ] Each view below renders one table on every viewport, inside `TableContainerScrollable`, with a `minW` on the table root; its container holds no `hideFrom` / `hideBelow` table-vs-list split.
-- [ ] Every list container and list item named below is deleted, and nothing imports it.
-- [ ] `TxInternals` renders the shared `Sort` control (`src/shared/sort/Sort`) in its mobile action bar, with the options its sortable table header offers, driving the same sort state.
-- [ ] Playwright: a `*.pw.tsx` that tests a deleted component is deleted; on the remaining files of these views the `+@mobile` tag or mobile-only case that covered the list is dropped, and its `*_mobile_*` screenshots are deleted. No mobile screenshot of a table is added.
-- [ ] The remaining Playwright files of these views pass under `pnpm test:pw --docker`.
-- [ ] `pnpm lint:tsc` and `pnpm lint:eslint:fix` pass.
-- [ ] `(human)` At 375px each route shows the desktop table scrolling horizontally, the action bar, pagination, filters and socket notices behave as before, and nothing clips.
+- [x] Each view below renders one table on every viewport, inside `TableContainerScrollable`, with a `minW` on the table root; its container holds no `hideFrom` / `hideBelow` table-vs-list split.
+- [x] Every list container and list item named below is deleted, and nothing imports it.
+- [x] `TxInternals` renders the shared `Sort` control (`src/shared/sort/Sort`) in its mobile action bar, with the options its sortable table header offers, driving the same sort state.
+- [x] Playwright: a `*.pw.tsx` that tests a deleted component is deleted; on the remaining files of these views the `+@mobile` tag or mobile-only case that covered the list is dropped, and its `*_mobile_*` screenshots are deleted. No mobile screenshot of a table is added.
+- [x] The remaining Playwright files of these views pass under `pnpm test:pw --docker`.
+- [x] `pnpm lint:tsc` and `pnpm lint:eslint:fix` pass.
+- [x] `(human)` At 375px each route shows the desktop table scrolling horizontally, the action bar, pagination, filters and socket notices behave as before, and nothing clips.
 
 ## Details
 
@@ -48,7 +48,7 @@ Already-migrated parents, list item left behind — delete only:
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Apply the transform to every view and delete the orphaned list containers and items
-- [ ] 2 `[agent]` Add the mobile `Sort` dropdown to `TxInternals` — match how `VerifiedContracts` wires one
-- [ ] 3 `[agent]` Prune the mobile Playwright coverage, run the affected files in Docker, regenerate any desktop baseline that changed
-- [ ] 4 `[human]` Review the screenshot diff and check the routes at 375px
+- [x] 1 `[agent]` Apply the transform to every view and delete the orphaned list containers and items
+- [x] 2 `[agent]` Add the mobile `Sort` dropdown to `TxInternals` — match how `VerifiedContracts` wires one
+- [x] 3 `[agent]` Prune the mobile Playwright coverage, run the affected files in Docker, regenerate any desktop baseline that changed
+- [x] 4 `[human]` Review the screenshot diff and check the routes at 375px

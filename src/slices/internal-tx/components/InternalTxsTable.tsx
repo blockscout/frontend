@@ -32,7 +32,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
 
   return (
     <AddressHighlightProvider>
-      <TableRoot minW="900px">
+      <TableRoot minW="1000px">
         <TableHeaderSticky top={ top ?? 68 }>
           <TableRow>
             { chainData && <TableColumnHeader width="38px"></TableColumnHeader> }
