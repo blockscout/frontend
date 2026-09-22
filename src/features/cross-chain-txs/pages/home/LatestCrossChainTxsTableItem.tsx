@@ -22,7 +22,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const LatestCrossChainTxsItemDesktop = ({ data, isLoading }: Props) => {
+const LatestCrossChainTxsTableItem = ({ data, isLoading }: Props) => {
 
   return (
     <TableRow>
@@ -88,4 +88,4 @@ const LatestCrossChainTxsItemDesktop = ({ data, isLoading }: Props) => {
   );
 };
 
-export default React.memo(LatestCrossChainTxsItemDesktop);
+export default React.memo(LatestCrossChainTxsTableItem);

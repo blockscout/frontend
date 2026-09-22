@@ -10,5 +10,5 @@
 - [x] 08 → `tickets/08-multichain-cross-chain-user-ops/`
 - [x] 09 → `tickets/09-name-services-account/`
 - [x] 10 → `tickets/10-remaining-features/`
-- [ ] 11 → `tickets/11-home-cross-chain-widget/`
+- [x] 11 → `tickets/11-home-cross-chain-widget/`
 - [ ] 12 → `tickets/12-primitives-teardown/`

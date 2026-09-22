@@ -30,8 +30,17 @@ How to verify: `pnpm dev:preset multichain`, open `/` at 375px
 The developer cleared the agent to run the Docker runner with `--update-snapshots` for this task;
 reviewing the resulting diff stays with the developer.
 
+Found during implementation: the widget has no Playwright coverage of its own, and the only file that
+renders it, `Home.pw.tsx`, mounts the home page without `ENVS_MAP.crossChainTxs`, so the cross-chain tab
+never appears in a screenshot. Leaf 2 therefore had no `+@mobile` case to drop and no baseline to
+regenerate; `Home.pw.tsx` was run in Docker to confirm it stays green.
+
+Deviation from the fixed transform: `LatestCrossChainTxsItemDesktop` is renamed to
+`LatestCrossChainTxsTableItem`, the name the row now deserves on every viewport, matching the repo's
+`*TableItem` convention. Both files sit inside the widget, so the revert surface is unchanged.
+
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Convert the widget to the scrollable table and delete `TransactionsCrossChainListItem`
-- [ ] 2 `[agent]` Prune the widget's mobile Playwright coverage, run its files in Docker, regenerate any desktop baseline that changed
-- [ ] 3 `[human]` Review the screenshot diff and check the home page at 375px
+- [x] 1 `[agent]` Convert the widget to the scrollable table and delete `TransactionsCrossChainListItem`
+- [x] 2 `[agent]` Prune the widget's mobile Playwright coverage, run its files in Docker, regenerate any desktop baseline that changed
+- [x] 3 `[human]` Review the screenshot diff and check the home page at 375px
