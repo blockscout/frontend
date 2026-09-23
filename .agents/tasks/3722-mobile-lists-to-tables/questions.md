@@ -3,12 +3,14 @@
 ### Q01 — Do the home page's latest-transaction widgets keep their desktop rows on mobile?
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: the designer has seen the converted widgets on a preview deployment at mobile width
   and states either (a) keep them, or (b) revert to the stacked layout — and, if (b), whether that
   covers every widget or only some.
-- Slack: <to be sent once the migration has landed and a preview deployment exists>
-- Answer:
+- Slack: none — answer relayed by Tom
+- Answer: (a) keep them, on both the multichain and the single-chain home page — with more rows: every
+  table widget shows its desktop row count on mobile (`5`, and `8` for ZetaChain CCTXs). Done in the
+  follow-up commit to ticket 13; the multichain home tables already showed `3` on every viewport.
 
 <!-- One decision for both the multichain and the single-chain home page. It covers the cross-chain
 transactions widget converted in ticket 11 and the five viewport-branching widgets converted in ticket

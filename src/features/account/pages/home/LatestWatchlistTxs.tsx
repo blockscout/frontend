@@ -12,15 +12,12 @@ import { TX } from 'src/slices/tx/stubs/tx';
 
 import useRedirectForInvalidAuthToken from 'src/features/account/hooks/useRedirectForInvalidAuthToken';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
-
 import { Link } from 'src/toolkit/chakra/link';
 import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';
 
 const LatestWatchlistTxs = () => {
   useRedirectForInvalidAuthToken();
-  const isMobile = useIsMobile();
-  const txsCount = isMobile ? 2 : 5;
+  const txsCount = 5;
   const { data, isPlaceholderData, isError } = useApiQuery('core:homepage_txs_watchlist', {
     queryOptions: {
       placeholderData: Array(txsCount).fill(TX),

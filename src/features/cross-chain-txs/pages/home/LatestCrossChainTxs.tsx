@@ -8,7 +8,6 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import { INTERCHAIN_MESSAGE } from 'src/features/cross-chain-txs/stubs/messages';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -17,8 +16,7 @@ import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chak
 import LatestCrossChainTxsTableItem from './LatestCrossChainTxsTableItem';
 
 const LatestCrossChainTxs = () => {
-  const isMobile = useIsMobile();
-  const txsCount = isMobile ? 2 : 5;
+  const txsCount = 5;
   const { data, isPlaceholderData, isError } = useApiQuery('interchainIndexer:messages', {
     queryOptions: {
       placeholderData: generateListStub<'interchainIndexer:messages'>(

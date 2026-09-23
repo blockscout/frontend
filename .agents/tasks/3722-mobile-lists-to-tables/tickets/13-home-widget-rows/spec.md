@@ -26,6 +26,7 @@ How to verify: `pnpm dev:preset eth` / `optimism` / `arbitrum` / `zetachain`, op
 - [ ] `LatestTxsItem`'s `gridTemplateColumns` applies its `lg` value at `base`, so the row keeps its columns inside the scrollable container instead of collapsing to one.
 - [ ] `LatestDeposits`' desktop grid carries a `minW` chosen from its columns; the two `truncation={ isMobile ? … }` ternaries in its item are gone.
 - [ ] The per-widget row counts are unchanged: `2`/`5` for the transaction and deposit widgets, `3`/`8` for ZetaChain CCTXs.
+  Superseded after design review (Q01): every table widget, `LatestCrossChainTxs` included, shows its desktop count on mobile — `5`, and `8` for ZetaChain CCTXs.
 - [ ] Playwright: the mobile-only `describe` in `LatestTxs.pw.tsx` and `LatestZetaChainCCTXs.pw.tsx` and the `+@mobile` tag on `LatestOptimisticDeposits.pw.tsx` and `LatestArbitrumDeposits.pw.tsx` are dropped with their `*mobile*` screenshots. `LatestArbitrumL2Batches.pw.tsx` keeps its tag.
 - [ ] `Home.pw.tsx`'s `mobile` / `base view` baseline is regenerated through the Docker runner, not deleted — it covers the page's mobile layout, not the widget's row style.
 - [ ] The remaining Playwright files of these widgets pass under `pnpm test:pw --docker`.

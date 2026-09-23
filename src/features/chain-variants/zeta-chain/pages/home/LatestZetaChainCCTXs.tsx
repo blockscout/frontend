@@ -19,7 +19,6 @@ import LatestTxsFallback from 'src/slices/home/pages/index/txs/LatestTxsFallback
 
 import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chain/stubs';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useInitialList from 'src/shared/lists/useInitialList';
 import { generateListStub } from 'src/shared/pagination/utils';
 
@@ -29,8 +28,7 @@ import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chak
 import LatestZetaChainCCTXItem, { LATEST_ZETA_CHAIN_CCTXS_TABLE_MIN_WIDTH } from './LatestZetaChainCCTXItem';
 
 const LatestZetaChainCCTXs = () => {
-  const isMobile = useIsMobile();
-  const txsCount = isMobile ? 3 : 8;
+  const txsCount = 8;
   const { data, isPlaceholderData, isError } = useApiQuery('zetachain:transactions', {
     queryOptions: {
       placeholderData: generateListStub<'zetachain:transactions'>(

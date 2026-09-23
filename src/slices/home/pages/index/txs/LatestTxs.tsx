@@ -12,7 +12,6 @@ import useNewTxsSocket from 'src/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'src/slices/tx/stubs/tx';
 
 import config from 'src/config';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';
@@ -23,8 +22,7 @@ import LatestTxsItem, { LATEST_TXS_TABLE_MIN_WIDTH } from './LatestTxsItem';
 const zetachainFeature = config.features.zetachain;
 
 const LatestTxs = () => {
-  const isMobile = useIsMobile();
-  const txsCount = isMobile ? 2 : 5;
+  const txsCount = 5;
   const { data, isPlaceholderData, isError } = useApiQuery('core:homepage_txs', {
     queryOptions: {
       placeholderData: Array(txsCount).fill(TX),
