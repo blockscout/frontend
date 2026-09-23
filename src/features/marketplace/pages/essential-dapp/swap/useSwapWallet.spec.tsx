@@ -81,8 +81,11 @@ async function renderTrackedSwap(): Promise<{
   const activityRequests: Array<{ path: string; body: unknown }> = [];
   fetchMock.mockResponse(async(request) => {
     if (new URL(request.url).origin !== REWARDS_ORIGIN) {
-      const { id } = JSON.parse(await request.text()) as { readonly id: number };
-      return JSON.stringify({ jsonrpc: '2.0', id, result: [ ACCOUNT ] });
+      const { id, method } = JSON.parse(await request.text()) as { readonly id: number; readonly method: string };
+      let result: unknown = [ ACCOUNT ];
+      if (method === 'eth_sendTransaction') result = TX_HASH;
+      if (method === 'eth_sign' || method === 'eth_signTypedData_v4') result = SIGNATURE;
+      return JSON.stringify({ jsonrpc: '2.0', id, result });
     }
     const path = new URL(request.url).pathname;
     if (path.includes('/track/transaction')) {
@@ -353,6 +356,7 @@ describe('Swap batch activity', () => {
   });
 
   it.each([
+    { status: 300, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] },
     { status: 400, receipts: [] },
     { status: 500, receipts: [ { status: '0x0', transactionHash: TX_HASH } ] },
     { status: 200, receipts: [ { status: '0x0', transactionHash: TX_HASH } ] },
@@ -366,6 +370,103 @@ describe('Swap batch activity', () => {
       await result.current.wallet.handleRequest('poll', 'wallet_getCallsStatus', [ BATCH_ID ]);
       expect(activityRequests).toHaveLength(1);
       expect(mixpanel.track).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it.each([ [ {} ], [ { calls: [] } ] ])('forwards a batch without swap calls without tracking it: %j', async(params) => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, activityRequests } = await renderTrackedSwap();
+      expect(await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', params)).toEqual({ id: BATCH_ID });
+      expect(activityRequests).toEqual([]);
+      expect(mixpanel.track).not.toHaveBeenCalled();
+    });
+  });
+
+  it('does not retain or log an invalid batch ID', async() => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, state, activityRequests } = await renderTrackedSwap();
+      state.batchResult = 42;
+      expect(await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', BATCH_PARAMS)).toBe(42);
+      expect(activityRequests).toHaveLength(1);
+      expect(mixpanel.track).not.toHaveBeenCalled();
+      state.status = { status: 200, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      await result.current.wallet.handleRequest('poll', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      expect(activityRequests).toHaveLength(1);
+    });
+  });
+
+  it('ignores a status response without a valid batch ID', async() => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, state, activityRequests } = await renderTrackedSwap();
+      await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', BATCH_PARAMS);
+      state.status = { status: 200, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      expect(await result.current.wallet.handleRequest('poll', 'wallet_getCallsStatus', { '0': BATCH_ID })).toEqual(state.status);
+      expect(activityRequests).toHaveLength(1);
+    });
+  });
+
+  it.each([ 100, 199, 'PENDING' ])('does not confirm an unfinished batch with status %s', async(status) => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, state, activityRequests } = await renderTrackedSwap();
+      await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', BATCH_PARAMS);
+      state.status = { status, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      await result.current.wallet.handleRequest('poll', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      expect(activityRequests).toHaveLength(1);
+      state.status = { status: 200, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      await result.current.wallet.handleRequest('confirmed', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      expect(activityRequests).toHaveLength(2);
+    });
+  });
+
+  it('forgets a failed batch even if a later poll reports success', async() => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, state, activityRequests } = await renderTrackedSwap();
+      await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', BATCH_PARAMS);
+      state.status = { status: 300, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      await result.current.wallet.handleRequest('failed', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      state.status = { status: 200, receipts: [ { status: '0x1', transactionHash: TX_HASH } ] };
+      await result.current.wallet.handleRequest('later', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      expect(activityRequests).toHaveLength(1);
+    });
+  });
+
+  it('requires every receipt to succeed before confirming the last swap hash', async() => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, state, activityRequests } = await renderTrackedSwap();
+      await result.current.wallet.handleRequest('send-batch', 'wallet_sendCalls', BATCH_PARAMS);
+      state.status = { status: 200, receipts: [
+        { status: '0x0', transactionHash: APPROVAL_HASH },
+        { status: '0x1', transactionHash: TX_HASH },
+      ] };
+      await result.current.wallet.handleRequest('poll', 'wallet_getCallsStatus', [ BATCH_ID ]);
+      expect(activityRequests).toHaveLength(1);
+    });
+  });
+
+  it('tracks a single transaction with its recipient and confirms its returned hash', async() => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result, activityRequests } = await renderTrackedSwap();
+      expect(await result.current.wallet.handleRequest('send', 'eth_sendTransaction', [ { to: OTHER_ACCOUNT, value: '0x1' } ])).toBe(TX_HASH);
+      expect(activityRequests).toEqual([
+        { path: '/api/v1/user/activity/track/transaction', body: { from_address: ACCOUNT, to_address: OTHER_ACCOUNT, chain_id: '1' } },
+        { path: '/api/v1/activity/track/transaction/confirm', body: { tx_hash: TX_HASH, token: ACTIVITY_TOKEN } },
+      ]);
+      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: 'Send Transaction' }), undefined, undefined);
+    });
+  });
+
+  it.each([
+    { method: 'personal_sign', params: [ '0x1234', ACCOUNT ], action: 'Sign Message' },
+    { method: 'eth_sign', params: [ ACCOUNT, '0x1234' ], action: 'Sign Message' },
+    { method: 'eth_signTypedData_v4', params: [ ACCOUNT, JSON.stringify({
+      domain: { chainId: mainnet.id }, types: { Message: [ { name: 'value', type: 'string' } ] },
+      primaryType: 'Message', message: { value: 'test' },
+    }) ], action: 'Sign Typed Data' },
+  ])('logs $action for $method', async({ method, params, action }) => {
+    await withEnvs(ENV_OVERRIDES, async() => {
+      const { result } = await renderTrackedSwap();
+      await result.current.wallet.handleRequest('sign', method, params);
+      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: action }), undefined, undefined);
     });
   });
 });

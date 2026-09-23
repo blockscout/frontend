@@ -35,7 +35,7 @@ afterEach(() => {
 });
 
 describe('marketplace transaction activity', () => {
-  it.each([ 'success', 'rejection', 'rewards unavailable' ])('preserves wallet behavior and rewards for %s', async(outcome) => {
+  it.each([ 'success', 'rejection', 'rewards unavailable', 'non-string result' ])('preserves wallet behavior and rewards for %s', async(outcome) => {
     await withEnvs(ENV_OVERRIDES, async() => {
       const { useMarketplaceWalletActivity } = await import('./useMarketplaceWalletActivity');
       const { RewardsContextProvider, useRewardsContext } = await import('src/features/rewards/context');
@@ -85,11 +85,13 @@ describe('marketplace transaction activity', () => {
         async() => {
           throw new Error('Wallet rejected transaction');
         } :
-        async() => TX_HASH;
+        async() => outcome === 'non-string result' ? { hash: TX_HASH } : TX_HASH;
       if (outcome === 'rejection') {
         await expect(result.current.activity.trackTransaction(RECIPIENT, send)).rejects.toThrow('Wallet rejected transaction');
       } else {
-        expect(await result.current.activity.trackTransaction(RECIPIENT, send)).toBe(TX_HASH);
+        expect(await result.current.activity.trackTransaction(RECIPIENT, send)).toEqual(
+          outcome === 'non-string result' ? { hash: TX_HASH } : TX_HASH,
+        );
       }
 
       expect(activityRequests[0]).toEqual({

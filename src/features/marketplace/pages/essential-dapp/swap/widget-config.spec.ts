@@ -14,6 +14,7 @@ describe('getSwapWidgetConfig', () => {
       chains: { allow: [ 1, 10 ] },
       fromChain: 10,
       fromToken: '0x0000000000000000000000000000000000000000',
+      hiddenUI: { appearance: true, language: true, gasRefuelMessage: true },
     });
   });
 

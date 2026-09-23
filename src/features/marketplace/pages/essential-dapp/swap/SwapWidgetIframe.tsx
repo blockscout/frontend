@@ -17,10 +17,10 @@ type Props = Pick<WidgetLightIframeProps, 'config' | 'handlers' | 'onConnect'>;
 export default function SwapWidgetIframe(props: Props) {
   const { colorMode } = useColorMode();
   const [ status, setStatus ] = useState<'loading' | 'ready' | 'error'>('loading');
-  const [ attempt, setAttempt ] = useState(0);
   const events = useWidgetLightEvents();
 
   useEffect(() => {
+    if (status !== 'loading') return;
     const timeout = window.setTimeout(() => setStatus('error'), SWAP_WIDGET_LOAD_TIMEOUT);
     // READY only starts configuration; PageEntered means the configured widget has rendered.
     const handleReady = () => {
@@ -32,19 +32,15 @@ export default function SwapWidgetIframe(props: Props) {
       window.clearTimeout(timeout);
       events.off(WidgetLightEvent.PageEntered, handleReady);
     };
-  }, [ events, attempt ]);
+  }, [ events, status ]);
 
-  const handleRetry = useCallback(() => {
-    setStatus('loading');
-    setAttempt((value) => value + 1);
-  }, []);
+  const handleRetry = useCallback(() => setStatus('loading'), []);
 
   return (
     <Box position="relative" minH={ SWAP_WIDGET_MIN_HEIGHT } bg="bg.primary" aria-busy={ status === 'loading' }>
       { status !== 'error' && (
         <StyledLiFiWidget
           { ...props }
-          key={ attempt }
           autoResize
           w="full"
           minH={ SWAP_WIDGET_MIN_HEIGHT }

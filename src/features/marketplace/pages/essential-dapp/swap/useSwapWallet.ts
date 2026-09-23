@@ -54,11 +54,13 @@ export function useSwapWallet(): IframeEcosystemHandler {
       return;
     }
     const { status, receipts } = response.output;
-    if (typeof status === 'number' && status >= BATCH_FAILURE_STATUS) {
+    // The parsed status is numeric or one of two words; Number maps the words to NaN.
+    const numericStatus = Number(status);
+    if (numericStatus >= BATCH_FAILURE_STATUS) {
       pendingBatches.current.delete(batchId);
       return;
     }
-    const isConfirmed = status === 'CONFIRMED' || (typeof status === 'number' && status >= BATCH_SUCCESS_STATUS);
+    const isConfirmed = status === 'CONFIRMED' || numericStatus >= BATCH_SUCCESS_STATUS;
     const hash = receipts?.at(-1)?.transactionHash;
     if (!isConfirmed || !hash || !isHash(hash) || !receipts?.every((receipt) => receipt.status === '0x1')) {
       return;
