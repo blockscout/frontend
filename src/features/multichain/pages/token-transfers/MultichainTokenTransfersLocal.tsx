@@ -1,15 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import TokenTransfersListItem from 'src/slices/token-transfer/pages/index/TokenTransfersListItem';
 import TokenTransfersTable from 'src/slices/token-transfer/pages/index/TokenTransfersTable';
-import { getTokenTransferKey } from 'src/slices/token-transfer/utils/get-token-transfer-key';
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -17,9 +14,10 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
-import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const ACTION_BAR_HEIGHT = 24 * 2 + 40;
 
@@ -34,11 +32,6 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({
-    list: query.data?.items,
-    isEnabled: !query.isInitialLoading,
-    resetKey: query.queryHash,
-  });
 
   const actionBar = isMobile && (
     <ActionBar mt={ -6 }>
@@ -62,18 +55,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       actionBar={ actionBar }
       isTransitioning={ query.isTransitioning }
     >
-      <Box hideFrom="lg">
-        { query.data?.items.slice(0, renderedItemsNum).map((item, index) => (
-          <TokenTransfersListItem
-            key={ getTokenTransferKey(item) + (query.isInitialLoading ? index : '') + (chainData ? chainData.id : '') }
-            isLoading={ query.isInitialLoading }
-            item={ item }
-            chainData={ chainData }
-          />
-        )) }
-        <Box ref={ cutRef } h={ 0 }/>
-      </Box>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <TokenTransfersTable
           items={ query.data?.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT : 0 }
@@ -81,7 +63,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
           chainData={ chainData }
           resetKey={ query.queryHash }
         />
-      </Box>
+      </TableContainerScrollable>
     </DataList>
   );
 };

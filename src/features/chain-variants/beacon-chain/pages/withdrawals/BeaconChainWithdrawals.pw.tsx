@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 import { data as withdrawalsData } from '../../mocks/withdrawals';
 import BeaconChainWithdrawals from './BeaconChainWithdrawals';
 
-test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.beaconChain);
   await mockTextAd();
   await mockApiResponse('core:withdrawals', withdrawalsData);

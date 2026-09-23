@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'src/features/name-services/domains/types/api';
@@ -20,10 +19,10 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { ADDRESS_REGEXP } from 'src/toolkit/utils/regexp';
 
 import NameDomainsActionBar from './NameDomainsActionBar';
-import NameDomainsList from './NameDomainsList';
 import NameDomainsTable from './NameDomainsTable';
 import type { Sort, SortField } from './utils';
 import { SORT_OPTIONS, getNextSortValue } from './utils';
@@ -162,24 +161,15 @@ const NameDomains = () => {
     (protocolsQuery.data && availableProtocols.length > 1 ? protocolsFilter.length > 0 : false);
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <NameDomainsList
-          items={ data.items }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <NameDomainsTable
-          items={ data.items }
-          isLoading={ isInitialLoading }
-          sort={ sort }
-          onSortToggle={ handleSortToggle }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <NameDomainsTable
+        items={ data.items }
+        isLoading={ isInitialLoading }
+        sort={ sort }
+        onSortToggle={ handleSortToggle }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const protocolsData = React.useMemo(() => {

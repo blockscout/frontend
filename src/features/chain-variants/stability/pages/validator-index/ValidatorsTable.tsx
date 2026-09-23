@@ -35,7 +35,7 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading, resetKey }: Props)
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot>
+    <TableRoot minW="500px">
       <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader width="50%">Validator's address</TableColumnHeader>

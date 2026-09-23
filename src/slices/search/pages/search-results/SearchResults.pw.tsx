@@ -42,7 +42,7 @@ async function resetScroll(page: Page) {
 }
 
 test.describe('search by name', () => {
-  test('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs, page }) => {
+  test('+@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs, page }) => {
     const hooksConfig = {
       router: {
         query: { q: 'o' },
@@ -71,7 +71,7 @@ test.describe('search by name', () => {
   });
 });
 
-test('search by address hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by address hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.address1.address_hash },
@@ -89,7 +89,7 @@ test('search by address hash +@mobile', async({ render, mockApiResponse, page })
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by meta tag', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: 'utko' },
@@ -107,7 +107,7 @@ test('search by meta tag +@mobile', async({ render, mockApiResponse, page }) => 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by block number +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by block number', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: String(searchMock.block1.block_number) },
@@ -124,7 +124,7 @@ test('search by block number +@mobile', async({ render, mockApiResponse, page })
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by block hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by block hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.block1.block_hash },
@@ -141,7 +141,7 @@ test('search by block hash +@mobile', async({ render, mockApiResponse, page }) =
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by tx hash +@mobile', async({ render, mockApiResponse, page }) => {
+test('search by tx hash', async({ render, mockApiResponse, page }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.tx1.transaction_hash },
@@ -158,7 +158,7 @@ test('search by tx hash +@mobile', async({ render, mockApiResponse, page }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by tac operation hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by tac operation hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   await mockEnvs(ENVS_MAP.tac);
   const hooksConfig = {
     router: {
@@ -176,7 +176,7 @@ test('search by tac operation hash +@mobile', async({ render, mockApiResponse, m
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by blob hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: blob1.blob_hash },
@@ -194,7 +194,7 @@ test('search by blob hash +@mobile', async({ render, mockApiResponse, mockEnvs, 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by domain name', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: domain1.ens_info.name },
@@ -212,7 +212,7 @@ test('search by domain name +@mobile', async({ render, mockApiResponse, mockEnvs
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnvs, page }) => {
+test('search by user op hash', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       query: { q: userOp1.user_operation_hash },
@@ -231,7 +231,7 @@ test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnv
 });
 
 test.describe('with apps', () => {
-  test('default view +@mobile', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs, page }) => {
+  test('default view', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs, page }) => {
     const MARKETPLACE_CONFIG_URL = 'https://localhost:4000/marketplace-config.json';
     const hooksConfig = {
       router: {
@@ -283,7 +283,7 @@ test.describe('block countdown', () => {
     await expect(component.locator('main')).toHaveScreenshot();
   });
 
-  test('with results +@mobile', async({ render, mockApiResponse, page }) => {
+  test('with results', async({ render, mockApiResponse, page }) => {
     await mockApiResponse(
       'core:search',
       { items: [ { ...searchMock.token1, name: '1234567890123456789' } ], next_page_params: null },

@@ -9,7 +9,7 @@ import { test, expect } from 'playwright/lib';
 
 import HotContracts from './HotContracts';
 
-test('base view +@mobile', async({ render, mockTextAd, mockApiResponse, mockEnvs }) => {
+test('base view', async({ render, mockTextAd, mockApiResponse, mockEnvs }) => {
   test.slow();
   await mockEnvs([ [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ] ]);
   await mockTextAd();

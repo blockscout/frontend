@@ -1,13 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import AddressesList from 'src/slices/address/pages/index/AddressesList';
 import AddressesTable from 'src/slices/address/pages/index/AddressesTable';
 import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 
@@ -20,6 +18,8 @@ import getItemIndex from 'src/shared/lists/get-item-index';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const MultichainAccounts = () => {
   const { chainValue, chain, onChainValueChange } = useChainValue();
@@ -46,7 +46,7 @@ const MultichainAccounts = () => {
 
   const content = data?.items ? (
     <MultichainProvider chainId={ chain?.id }>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <AddressesTable
           top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           items={ data.items }
@@ -55,16 +55,7 @@ const MultichainAccounts = () => {
           isLoading={ isInitialLoading }
           resetKey={ queryHash }
         />
-      </Box>
-      <Box hideFrom="lg">
-        <AddressesList
-          items={ data.items }
-          totalSupply={ totalSupply }
-          pageStartIndex={ pageStartIndex }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
+      </TableContainerScrollable>
     </MultichainProvider>
   ) : null;
 

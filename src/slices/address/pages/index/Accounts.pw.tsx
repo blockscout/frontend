@@ -37,7 +37,7 @@ const addresses: paths['/api/v2/addresses']['get'] = {
   next_page_params: null,
 };
 
-test('base view +@mobile +@dark-mode', async({ render, mockTextAd, mockApiResponse }) => {
+test('base view +@dark-mode', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
   await mockApiResponse('core:addresses', addresses);
   const component = await render(<Accounts/>);

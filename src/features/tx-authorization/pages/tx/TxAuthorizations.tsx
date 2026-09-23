@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
@@ -9,7 +8,8 @@ import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
 
-import TxAuthorizationsList from './TxAuthorizationsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import TxAuthorizationsTable from './TxAuthorizationsTable';
 
 interface Props {
@@ -23,22 +23,13 @@ const TxAuthorizations = ({ txQuery }: Props) => {
   }
 
   const content = txQuery.data?.authorization_list ? (
-    <>
-      <Box hideFrom="lg">
-        <TxAuthorizationsList
-          data={ txQuery.data.authorization_list }
-          isLoading={ txQuery.isPlaceholderData }
-          resetKey={ txQuery.data.hash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <TxAuthorizationsTable
-          data={ txQuery.data.authorization_list }
-          isLoading={ txQuery.isPlaceholderData }
-          resetKey={ txQuery.data.hash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxAuthorizationsTable
+        data={ txQuery.data.authorization_list }
+        isLoading={ txQuery.isPlaceholderData }
+        resetKey={ txQuery.data.hash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

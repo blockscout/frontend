@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,7 +9,6 @@ import type { ZetaChainCCTXFilterParams } from 'src/features/chain-variants/zeta
 import type { PaginationParams } from 'src/shared/pagination/types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
-import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
@@ -20,7 +18,8 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import ZetaChainCCTxsList from './ZetaChainCCTxsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import ZetaChainCCTxsTable from './ZetaChainCCTxsTable';
 
 const OVERLOAD_COUNT = 75;
@@ -137,37 +136,20 @@ const ZetaChainCCTxs = ({
   });
 
   const content = (
-    <>
-      <Box hideFrom="lg">
-        { pagination.page === 1 && !hasFilters && (
-          <SocketNewItemsNotice.Mobile
-            showErrorAlert={ showSocketErrorAlert }
-            type="cross_chain_transaction"
-            isLoading={ isInitialLoading }
-            num={ showOverloadNotice ? 1 : 0 }
-          />
-        ) }
-        <ZetaChainCCTxsList
-          txs={ items ?? [] }
-          isLoading={ isInitialLoading }
-          resetKey={ resetKey }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <ZetaChainCCTxsTable
-          txs={ items ?? [] }
-          top={ top || 0 }
-          isLoading={ isInitialLoading }
-          filters={ filters }
-          onFilterChange={ onFilterChange }
-          showStatusFilter={ showStatusFilter }
-          showSocketInfo={ pagination.page === 1 && !hasFilters }
-          showSocketErrorAlert={ showSocketErrorAlert }
-          socketInfoNum={ showOverloadNotice ? 1 : 0 }
-          resetKey={ resetKey }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ZetaChainCCTxsTable
+        txs={ items ?? [] }
+        top={ top || 0 }
+        isLoading={ isInitialLoading }
+        filters={ filters }
+        onFilterChange={ onFilterChange }
+        showStatusFilter={ showStatusFilter }
+        showSocketInfo={ pagination.page === 1 && !hasFilters }
+        showSocketErrorAlert={ showSocketErrorAlert }
+        socketInfoNum={ showOverloadNotice ? 1 : 0 }
+        resetKey={ resetKey }
+      />
+    </TableContainerScrollable>
   );
 
   const actionBar = (isMobile && pagination.isVisible) ? (

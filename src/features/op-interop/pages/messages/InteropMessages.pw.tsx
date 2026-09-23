@@ -3,7 +3,6 @@ import React from 'react';
 import * as interopMessageMock from 'src/features/op-interop/mocks/interop';
 
 import { test, expect } from 'playwright/lib';
-import * as pwConfig from 'playwright/utils/config';
 
 import InteropMessages from './InteropMessages';
 
@@ -28,16 +27,4 @@ test('default view', async({ render, mockTextAd, mockAssetResponse, mockApiRespo
   await mockApiResponse('core:optimistic_l2_interop_messages_count', 4000000);
   const component = await render(<InteropMessages/>);
   await expect(component).toHaveScreenshot({ maxDiffPixels: 30 });
-});
-
-test.describe('mobile', () => {
-  test.use({ viewport: pwConfig.viewport.mobile });
-  test('default view', async({ render, mockTextAd, mockAssetResponse, mockApiResponse }) => {
-    await mockTextAd();
-    await mockAssetResponse(interopMessageMock.chain.chain_logo as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('core:optimistic_l2_interop_messages', MESSAGES_RESPONSE);
-    await mockApiResponse('core:optimistic_l2_interop_messages_count', 4000000);
-    const component = await render(<InteropMessages/>);
-    await expect(component).toHaveScreenshot({ maxDiffPixels: 30 });
-  });
 });

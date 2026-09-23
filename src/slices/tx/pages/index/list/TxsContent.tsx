@@ -20,7 +20,6 @@ import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import TxsHeaderMobile from './TxsHeaderMobile';
-import TxsList from './TxsList';
 import TxsTable from './TxsTable';
 
 const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue>> = {
@@ -45,7 +44,6 @@ type Props = {
   setSorting?: (value: TransactionsSortingValue) => void;
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
-  showTableView?: boolean;
   resetKey?: string;
 };
 
@@ -65,12 +63,9 @@ const TxsContent = ({
   setSorting,
   sort,
   stickyHeader = true,
-  showTableView,
   resetKey,
 }: Props) => {
   const isMobile = useIsMobile();
-
-  const isTableView = isMobile ? showTableView : true;
 
   const onSortToggle = React.useCallback((field: TransactionsSortingField) => {
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
@@ -79,49 +74,30 @@ const TxsContent = ({
 
   const translationQuery = useDescribeTxs(items, currentAddress, isInitialLoading);
 
-  const content = (() => {
-    if (items && items.length > 0) {
-      if (isTableView) {
-        return (
-          <TableContainerScrollable>
-            <TxsTable
-              txs={ items }
-              sort={ sort }
-              onSortToggle={ setSorting ? onSortToggle : undefined }
-              showBlockInfo={ showBlockInfo }
-              socketType={ socketType }
-              top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
-              currentAddress={ currentAddress }
-              enableTimeIncrement={ enableTimeIncrement }
-              isLoading={ isInitialLoading }
-              stickyHeader={ !isMobile && stickyHeader }
-              translationQuery={ translationQuery }
-              resetKey={ resetKey }
-            />
-          </TableContainerScrollable>
-        );
-      }
-      return (
-        <TxsList
-          showBlockInfo={ showBlockInfo }
-          socketType={ socketType }
-          isLoading={ isInitialLoading }
-          enableTimeIncrement={ enableTimeIncrement }
-          currentAddress={ currentAddress }
-          items={ items }
-          translationQuery={ translationQuery }
-          resetKey={ resetKey }
-        />
-      );
-    }
-    return null;
-  })();
+  const content = items && items.length > 0 ? (
+    <TableContainerScrollable>
+      <TxsTable
+        txs={ items }
+        sort={ sort }
+        onSortToggle={ setSorting ? onSortToggle : undefined }
+        showBlockInfo={ showBlockInfo }
+        socketType={ socketType }
+        top={ top || (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
+        currentAddress={ currentAddress }
+        enableTimeIncrement={ enableTimeIncrement }
+        isLoading={ isInitialLoading }
+        stickyHeader={ !isMobile && stickyHeader }
+        translationQuery={ translationQuery }
+        resetKey={ resetKey }
+      />
+    </TableContainerScrollable>
+  ) : null;
 
   const actionBar = isMobile ? (
     <TxsHeaderMobile
       mt={ -6 }
       sorting={ sort }
-      setSorting={ !isTableView ? setSorting : undefined }
+      setSorting={ setSorting }
       paginationProps={ pagination }
       showPagination={ pagination.isVisible }
       filterComponent={ filter }

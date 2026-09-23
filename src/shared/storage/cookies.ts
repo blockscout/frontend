@@ -29,7 +29,6 @@ export enum NAMES {
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
   SHOW_POOR_REPUTATION_TOKENS = 'show_poor_reputation_tokens',
   APP_PROFILE = 'app_profile',
-  TABLE_VIEW_ON_MOBILE = 'table_view_on_mobile',
 }
 
 /**

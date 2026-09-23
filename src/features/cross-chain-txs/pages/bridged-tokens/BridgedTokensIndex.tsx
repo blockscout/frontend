@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CrossChainBridgedTokensSortingValue } from '../../types/api';
@@ -11,8 +10,8 @@ import DataList from 'src/shared/lists/DataList';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import BridgedTokensList from './BridgedTokensList';
 import BridgedTokensTable from './BridgedTokensTable';
 
 interface Props {
@@ -40,29 +39,18 @@ const BridgedTokensIndex = ({ query, onSortChange, sort, actionBar, hasActiveFil
       isTransitioning={ query.isTransitioning }
     >
       { query.data?.items ? (
-        <>
-          <Box hideFrom="lg">
-            <BridgedTokensList
-              data={ query.data.items }
-              page={ query.pagination.page }
-              chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
-              resetKey={ query.queryHash }
-            />
-          </Box>
-          <Box hideBelow="lg">
-            <BridgedTokensTable
-              data={ query.data.items }
-              sort={ sort }
-              setSorting={ onSortChange }
-              chainsData={ chainsQuery.data?.items }
-              isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
-              resetKey={ query.queryHash }
-              page={ query.pagination.page }
-              top={ tableTop }
-            />
-          </Box>
-        </>
+        <TableContainerScrollable>
+          <BridgedTokensTable
+            data={ query.data.items }
+            sort={ sort }
+            setSorting={ onSortChange }
+            chainsData={ chainsQuery.data?.items }
+            isLoading={ query.isInitialLoading || chainsQuery.isPlaceholderData }
+            resetKey={ query.queryHash }
+            page={ query.pagination.page }
+            top={ tableTop }
+          />
+        </TableContainerScrollable>
       ) : null }
     </DataList>
   );

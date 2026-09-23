@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { CustomAbi } from 'src/features/account/types/api';
@@ -17,10 +16,10 @@ import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import CustomAbiModal from './CustomAbiModal/CustomAbiModal';
-import CustomAbiListItem from './CustomAbiTable/CustomAbiListItem';
 import CustomAbiTable from './CustomAbiTable/CustomAbiTable';
 import DeleteCustomAbiModal from './DeleteCustomAbiModal';
 
@@ -70,27 +69,14 @@ const CustomAbiPage: React.FC = () => {
     }
 
     const list = (
-      <>
-        <Box display={{ base: 'block', lg: 'none' }}>
-          { data?.map((item, index) => (
-            <CustomAbiListItem
-              key={ item.id + (isPlaceholderData ? String(index) : '') }
-              item={ item }
-              isLoading={ isPlaceholderData }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-            />
-          )) }
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }}>
-          <CustomAbiTable
-            data={ data }
-            isLoading={ isPlaceholderData }
-            onDeleteClick={ onDeleteClick }
-            onEditClick={ onEditClick }
-          />
-        </Box>
-      </>
+      <TableContainerScrollable>
+        <CustomAbiTable
+          data={ data }
+          isLoading={ isPlaceholderData }
+          onDeleteClick={ onDeleteClick }
+          onEditClick={ onEditClick }
+        />
+      </TableContainerScrollable>
     );
 
     return (

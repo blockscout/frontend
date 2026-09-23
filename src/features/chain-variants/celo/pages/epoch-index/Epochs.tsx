@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -14,7 +13,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import EpochsList from './EpochsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import EpochsTable from './EpochsTable';
 
 const EpochsPageContent = () => {
@@ -42,23 +42,14 @@ const EpochsPageContent = () => {
     }
 
     return epochsQuery.data?.items ? (
-      <>
-        <Box hideBelow="lg">
-          <EpochsTable
-            items={ epochsQuery.data.items }
-            top={ epochsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-            isLoading={ isLoading }
-            resetKey={ epochsQuery.queryHash }
-          />
-        </Box>
-        <Box hideFrom="lg">
-          <EpochsList
-            items={ epochsQuery.data.items }
-            isLoading={ isLoading }
-            resetKey={ epochsQuery.queryHash }
-          />
-        </Box>
-      </>
+      <TableContainerScrollable>
+        <EpochsTable
+          items={ epochsQuery.data.items }
+          top={ epochsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isLoading }
+          resetKey={ epochsQuery.queryHash }
+        />
+      </TableContainerScrollable>
     ) : null;
   })();
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, createListCollection } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CrossChainChainsStatsSorting, CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue } from '../../types/api';
@@ -17,9 +17,10 @@ import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import { INTERCHAIN_STATS_CHAINS_ITEM } from '../../stubs/messages';
 import { ICTT_USERS_SORT_OPTIONS } from '../../utils/ictt-sort';
-import IcttUsersList from './IcttUsersList';
 import IcttUsersTable from './IcttUsersTable';
 
 const sortCollection = createListCollection({
@@ -79,20 +80,15 @@ const IcttUsers = () => {
         isTransitioning={ isTransitioning }
       >
         { data?.items ? (
-          <>
-            <Box hideFrom="lg">
-              <IcttUsersList data={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-            </Box>
-            <Box hideBelow="lg">
-              <IcttUsersTable
-                data={ data.items }
-                sort={ sort }
-                setSorting={ handleSortChange }
-                isLoading={ isInitialLoading }
-                resetKey={ queryHash }
-              />
-            </Box>
-          </>
+          <TableContainerScrollable>
+            <IcttUsersTable
+              data={ data.items }
+              sort={ sort }
+              setSorting={ handleSortChange }
+              isLoading={ isInitialLoading }
+              resetKey={ queryHash }
+            />
+          </TableContainerScrollable>
         ) : null }
       </DataList>
     </>

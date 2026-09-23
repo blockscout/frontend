@@ -1,18 +1,16 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokensSortingValue } from 'src/slices/token/types/api';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
-import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
@@ -29,39 +27,14 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
 
   const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({
-    list: data?.items,
-    isEnabled: !isInitialLoading,
-    resetKey: query.queryHash,
-  });
-
   if (isError) {
     return <ApiFetchAlert/>;
   }
 
   const content = data?.items ? (
     <>
-      <Box hideFrom="lg">
-        { description }
-        <Box>
-          { data.items.slice(0, renderedItemsNum).map((item, index) => {
-            const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
-
-            return (
-              <TokensListItem
-                key={ item.address_hash + (isInitialLoading ? index : '') + (chainIds ? chainIds : '') }
-                token={ item }
-                index={ index }
-                page={ pagination.page }
-                isLoading={ isInitialLoading }
-              />
-            );
-          }) }
-        </Box>
-        <Box ref={ cutRef } h={ 0 }/>
-      </Box>
-      <Box hideBelow="lg">
-        { description }
+      { description }
+      <TableContainerScrollable>
         <TokensTable
           items={ data.items }
           page={ pagination.page }
@@ -71,7 +44,7 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
           top={ tableTop }
           resetKey={ query.queryHash }
         />
-      </Box>
+      </TableContainerScrollable>
     </>
   ) : null;
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, createListCollection } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,12 +13,14 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { CHAIN_METRICS } from 'src/features/multichain/stubs';
 
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
-import MultichainEcosystemsList from './MultichainEcosystemsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import MultichainEcosystemsTable from './MultichainEcosystemsTable';
 import { SORT_OPTIONS } from './utils';
 
@@ -28,6 +30,7 @@ const sortCollection = createListCollection({
 
 const MultichainEcosystems = () => {
   const router = useRouter();
+  const isMobile = useIsMobile();
 
   const [ sort, setSort ] =
   React.useState<ChainMetricsSortingValue>(getSortValueFromQuery<ChainMetricsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
@@ -44,33 +47,28 @@ const MultichainEcosystems = () => {
   }, [ setSort ]);
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <MultichainEcosystemsTable
-          data={ data.items }
-          sort={ sort }
-          setSorting={ handleSortChange }
-          isLoading={ isPlaceholderData }
-          resetKey={ sort }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        <ActionBar>
-          <Sort
-            name="chain_metrics_sorting"
-            defaultValue={ [ sort ] }
-            collection={ sortCollection }
-            onValueChange={ handleSortChange }
-            isLoading={ isPlaceholderData }
-          />
-        </ActionBar>
-        <MultichainEcosystemsList
-          data={ data.items }
-          isLoading={ isPlaceholderData }
-          resetKey={ sort }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <MultichainEcosystemsTable
+        data={ data.items }
+        sort={ sort }
+        setSorting={ handleSortChange }
+        isLoading={ isPlaceholderData }
+        resetKey={ sort }
+      />
+    </TableContainerScrollable>
+  ) : null;
+
+  const actionBar = isMobile ? (
+    <ActionBar>
+      <Sort
+        name="chain_metrics_sorting"
+        defaultValue={ [ sort ] }
+        collection={ sortCollection }
+        onValueChange={ handleSortChange }
+        isLoading={ isPlaceholderData }
+        hideFrom="lg"
+      />
+    </ActionBar>
   ) : null;
 
   return (
@@ -83,6 +81,7 @@ const MultichainEcosystems = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no chains in the cluster."
+        actionBar={ actionBar }
       >
         { content }
       </DataList>
