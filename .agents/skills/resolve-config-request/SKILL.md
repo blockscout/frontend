@@ -73,7 +73,7 @@ Compose it per **The DevOps message** below. Show it to the user and wait.
 
 ### 6. Send, then hand over
 
-Post the approved message to `blockscout-devops-requests` — resolve the channel ID from `.agents/TEAM.md`. Then reply in the original thread — same language as the thread — with a link to that message, saying the request has been handed over and is waiting on DevOps.
+Post the approved message to `blockscout-devops-requests` — resolve the channel ID from `.agents/TEAM.md`. Then reply in the original thread with a link to that message, saying the request has been handed over and is waiting on DevOps.
 
 **Done when:** both posts exist and the original-thread reply carries the DevOps link.
 
@@ -130,7 +130,7 @@ After merge to `main`, confirm each raw URL returns 200. If the instance already
 
 ## The DevOps message
 
-Russian, informal. Target in the requester's own words — not registry aliases. Sets in one fenced `KEY=value` block; keys to drop as names only. Mention the requester with `<@U…>` from the thread author's `user_id` (`.agents/TEAM.md` → How to address).
+Informal. Target in the requester's own words — not registry aliases. Sets in one fenced `KEY=value` block; keys to drop as names only. Mention the requester with `<@U…>` from the thread author's `user_id` (`.agents/slack-message.md` → Addressing).
 
 ````
 Привет! 🐈
