@@ -169,7 +169,7 @@ Type extends EventTypes.BUTTON_CLICK ? {
   Source: string;
 } :
 Type extends EventTypes.PROMO_BANNER ? {
-  Source: 'Marketplace';
+  Source: 'Marketplace' | 'Header';
   Link: string;
 } :
 Type extends EventTypes.APP_FEEDBACK ? {

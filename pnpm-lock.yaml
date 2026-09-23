@@ -176,6 +176,9 @@ overrides:
   minimatch@10>brace-expansion: 5.0.9
   protobufjs: 7.5.5
 
+patchedDependencies:
+  '@stryker-mutator/vitest-runner@10.0.0': 6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159
+
 importers:
 
   .:
@@ -525,7 +528,7 @@ importers:
         version: 10.0.0(@types/node@24.13.4)
       '@stryker-mutator/vitest-runner':
         specifier: 10.0.0
-        version: 10.0.0(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)
+        version: 10.0.0(patch_hash=6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159)(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)
       '@stylistic/eslint-plugin':
         specifier: 5.2.3
         version: 5.2.3(eslint@9.39.2(supports-color@10.2.2))
@@ -22662,7 +22665,7 @@ snapshots:
 
   '@stryker-mutator/util@10.0.0': {}
 
-  '@stryker-mutator/vitest-runner@10.0.0(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)':
+  '@stryker-mutator/vitest-runner@10.0.0(patch_hash=6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159)(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)':
     dependencies:
       '@stryker-mutator/api': 10.0.0
       '@stryker-mutator/core': 10.0.0(@types/node@24.13.4)
