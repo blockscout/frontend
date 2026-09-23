@@ -137,8 +137,7 @@ question that thread belongs to:
   no OS nudge.
 
 Every message posted to a colleague carries a disclosure — they must be able to tell they're in a
-technical back-and-forth with an agent. Prefer the Slack connector's own attribution if it appends one;
-otherwise append `— via @Honk 🪿`.
+technical back-and-forth with an agent — `.agents/slack-message.md` → Attribution.
 
 ## Step 4 — Size and hand off
 
