@@ -11,5 +11,5 @@
 - [x] 09 → `tickets/09-name-services-account/`
 - [x] 10 → `tickets/10-remaining-features/`
 - [x] 11 → `tickets/11-home-cross-chain-widget/`
-- [ ] 12 → `tickets/12-primitives-teardown/`
+- [x] 12 → `tickets/12-primitives-teardown/`
 - [x] 13 → `tickets/13-home-widget-rows/`

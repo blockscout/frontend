@@ -12,11 +12,11 @@ notice are deleted, and the codebase is swept to prove requirement 4 of the spec
 
 ## Acceptance criteria
 
-- [ ] `ListItemMobile` and `ListItemMobileGrid` are deleted, with any Playwright file and screenshots of their own.
-- [ ] `SocketNewItemsNotice` has no `Mobile` variant; its mobile case in `SocketNewItemsNotice.pw.tsx` and that case's screenshots are deleted.
-- [ ] A sweep of `src/` finds no `*ListItem.tsx` that was a mobile-list row, no `*List.tsx` mobile container, and no `hideFrom` / `hideBelow` pair that splits a table from a list. Anything the sweep does find is migrated here with the fixed transform and named in the commit message.
-- [ ] The `add-new-page` skill scaffolds a table-only index page: its `List` and `ListItem` templates are deleted, the index `Content` template follows the fixed transform, and `SKILL.md` / `wiring.md` no longer mention a mobile list.
-- [ ] `pnpm lint:tsc`, `pnpm lint:eslint:fix` and `pnpm test:pw --docker --changed` pass.
+- [x] `ListItemMobile` and `ListItemMobileGrid` are deleted, with any Playwright file and screenshots of their own.
+- [x] `SocketNewItemsNotice` has no `Mobile` variant; its mobile case in `SocketNewItemsNotice.pw.tsx` and that case's screenshots are deleted.
+- [x] A sweep of `src/` finds no `*ListItem.tsx` that was a mobile-list row, no `*List.tsx` mobile container, and no `hideFrom` / `hideBelow` pair that splits a table from a list. Anything the sweep does find is migrated here with the fixed transform and named in the commit message.
+- [x] The `add-new-page` skill scaffolds a table-only index page: its `List` and `ListItem` templates are deleted, the index `Content` template follows the fixed transform, and `SKILL.md` / `wiring.md` no longer mention a mobile list.
+- [x] `pnpm lint:tsc`, `pnpm lint:eslint:fix` and `pnpm test:pw --docker --changed` pass.
 
 ## Details
 
@@ -28,5 +28,5 @@ Read `.agents/README.md` before editing the skill.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Delete the primitives and the notice's mobile variant
-- [ ] 2 `[agent]` Sweep for leftovers and make the `add-new-page` index templates table-only
+- [x] 1 `[agent]` Delete the primitives and the notice's mobile variant
+- [x] 2 `[agent]` Sweep for leftovers and make the `add-new-page` index templates table-only
