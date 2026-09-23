@@ -26,4 +26,4 @@ https://review-foo.k8s-dev.blockscout.com
 
 ## Attribution
 
-The connector appends `*Sent using* AI 🤖` to every message, so a message sent through it already discloses that an agent wrote it.
+The connector appends a *Sent using* footer naming the agent to every message, so a message sent through it already discloses that an agent wrote it.
