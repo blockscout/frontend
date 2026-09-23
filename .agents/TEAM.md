@@ -13,15 +13,7 @@ Slack IDs are stored so addressing is deterministic (no runtime name lookup). Th
 identifiers, **not credentials** — knowing one grants no access. To find your own member ID in Slack:
 your profile → **⋯ More** → **Copy member ID**. Do not add emails to this file.
 
-## How to address
-
-- **Person** — the *Slack member ID* (`U…`) from the People table. Mention as `<@U…>`; to DM, pass the ID as
-  the channel to the send tool.
-- **Team / group** — the *Slack group ID* (`S…`) from the Groups table. Mention as `<!subteam^S…>`.
-- **Channel** — the *Channel ID* (`C…`). Pass it as the channel target when sending; refer to it in prose by
-  its `#name`.
-- **Permalink** — `https://blockscout.slack.com/archives/<channel-id>/p<message-ts>` (the message timestamp
-  with the dot removed).
+How to turn an ID into a mention, a DM target, or a permalink: `./slack-message.md` → Addressing.
 
 ## Product managers
 

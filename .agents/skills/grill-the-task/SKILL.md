@@ -95,7 +95,6 @@ Route every question the session couldn't answer to the person who owns it.
    - When posting to a channel, **always mention the addressee** — `<@member ID>` from `.agents/TEAM.md`
      (people missing from the roster: resolve by name via `slack_search_users` and suggest adding them).
 3. Draft one message per owner: brief task context (issue link), the questions, and why they block progress.
-   Write all Slack messages in **Russian** — the team's internal language (the spec itself stays in English).
 4. **Show every draft (with its destination) to the user and wait for explicit approval** — never send
    unreviewed *new* outreach. (In-thread follow-ups on a thread already approved here are exempt — see
    "Watch for replies" below.)
@@ -138,8 +137,7 @@ question that thread belongs to:
   no OS nudge.
 
 Every message posted to a colleague carries a disclosure — they must be able to tell they're in a
-technical back-and-forth with an agent. Prefer the Slack connector's own attribution if it appends one;
-otherwise append `— via @Honk 🪿`. All follow-ups stay in **Russian**, like the original outreach.
+technical back-and-forth with an agent — `.agents/slack-message.md` → Attribution.
 
 ## Step 4 — Size and hand off
 

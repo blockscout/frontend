@@ -142,5 +142,5 @@ The pushed `-alpha` tag triggers `pre-release.yml`, which builds and publishes a
 
 Once the pre-release workflow has finished **successfully**, ask the DevOps team to roll up the new pre-release on staging.
 
-- Build the message from `./slack-message-template.md` (in this skill directory) — it holds the format, the breaking-ENV-change rule, the target channel, and the QA cc. Fill it with the `-alpha` tag, the breaking-ENV list derived per that rule (or `None.`), and the pre-release URL from step 6. The breaking-ENV input comes from the "Changes in ENV variables" section / `release-prs-data.json`.
+- Build the message from `./slack-message-template.md` (in this skill directory) — it holds the format, the breaking-ENV-change rule, the target channel, and the QA cc. Fill it with the `-alpha` tag, the breaking-ENV list derived per that rule, and the pre-release URL from step 6. The breaking-ENV input comes from the "Changes in ENV variables" section / `release-prs-data.json`.
 - **Draft first:** show the user the fully rendered message and **wait for their approval** before sending it to the channel.
