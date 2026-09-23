@@ -48,7 +48,7 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top, resetKe
   }, [ sorting, setSorting, hasSorting ]);
 
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader w="50%">Token</TableColumnHeader>

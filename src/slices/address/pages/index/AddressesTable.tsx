@@ -27,7 +27,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, re
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="64px">Rank</TableColumnHeader>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,8 +16,8 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import ScrollL2TxnBatchesList from './ScrollL2TxnBatchesList';
 import ScrollL2TxnBatchesTable from './ScrollL2TxnBatchesTable';
 
 const ScrollL2TxnBatches = () => {
@@ -44,19 +44,14 @@ const ScrollL2TxnBatches = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <ScrollL2TxnBatchesList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <ScrollL2TxnBatchesTable
-          items={ data.items }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ScrollL2TxnBatchesTable
+        items={ data.items }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

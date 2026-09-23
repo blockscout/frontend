@@ -26,7 +26,7 @@ const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot>
+    <TableRoot minW="800px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader w="70%">Holder</TableColumnHeader>

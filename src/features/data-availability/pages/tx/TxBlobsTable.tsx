@@ -16,7 +16,7 @@ interface Props {
 const TxBlobsTable = ({ data, isLoading }: Props) => {
 
   return (
-    <TableRoot>
+    <TableRoot minW="600px">
       <TableHeaderSticky>
         <TableRow>
           <TableColumnHeader width="60%">Blob hash</TableColumnHeader>

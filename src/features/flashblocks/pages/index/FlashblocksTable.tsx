@@ -18,8 +18,11 @@ interface Props {
 }
 
 const FlashblocksTable = ({ items, newItemsNum, showAlertError, onAlertLinkClick }: Props) => {
+
+  const hasTimestamp = items.some(item => item.timestamp !== undefined);
+
   return (
-    <TableRoot>
+    <TableRoot minW={ hasTimestamp ? '600px' : '300px' }>
       <TableHeaderSticky top={ 0 }>
         <TableRow>
           <TableColumnHeader width="50%">

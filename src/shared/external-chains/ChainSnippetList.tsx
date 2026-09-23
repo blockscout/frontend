@@ -21,8 +21,8 @@ interface Props extends StackProps {
 
 const ChainSnippetList = ({ data, isLoading, ...rest }: Props) => {
   return (
-    <HStack gap={ 3 } justifyContent={{ base: 'space-between', lg: 'flex-start' }} { ...rest }>
-      <HStack maxW={{ base: '50%', lg: '100%' }}>
+    <HStack gap={ 3 } justifyContent="flex-start" { ...rest }>
+      <HStack maxW={{ base: '70%', lg: '100%' }}>
         <ChainIcon data={ data } isLoading={ isLoading }/>
         { data.explorer_url ? (
           <Link

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,8 +15,8 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import InteropMessagesListItem from './InteropMessagesListItem';
 import InteropMessagesTable from './InteropMessagesTable';
 
 const InteropMessages = () => {
@@ -53,24 +52,13 @@ const InteropMessages = () => {
   const actionBar = <StickyPaginationWithText text={ text } pagination={ interopMessagesQuery.pagination }/>;
 
   const content = (
-    <>
-      <Box hideFrom="lg">
-        { interopMessagesQuery.data?.items.map((item, index) => (
-          <InteropMessagesListItem
-            key={ item.init_transaction_hash + '_' + item.nonce + (interopMessagesQuery.isInitialLoading ? index : '') }
-            item={ item }
-            isLoading={ interopMessagesQuery.isInitialLoading }
-          />
-        )) }
-      </Box>
-      <Box hideBelow="lg">
-        <InteropMessagesTable
-          items={ interopMessagesQuery.data?.items }
-          top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ interopMessagesQuery.isInitialLoading }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <InteropMessagesTable
+        items={ interopMessagesQuery.data?.items }
+        top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ interopMessagesQuery.isInitialLoading }
+      />
+    </TableContainerScrollable>
   );
 
   return (

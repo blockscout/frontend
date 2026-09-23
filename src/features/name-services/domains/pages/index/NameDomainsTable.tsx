@@ -29,7 +29,7 @@ const NameDomainsTable = ({ items, isLoading, sort, onSortToggle, resetKey }: Pr
 
   return (
     <AddressHighlightProvider>
-      <TableRoot>
+      <TableRoot minW="900px">
         <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
           <TableRow>
             <TableColumnHeader width="25%">Domain</TableColumnHeader>

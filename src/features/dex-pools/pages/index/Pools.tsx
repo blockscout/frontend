@@ -6,7 +6,6 @@ import React from 'react';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import PoolsList from 'src/features/dex-pools/pages/index/PoolsList';
 import PoolsTable from 'src/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'src/features/dex-pools/stubs';
 
@@ -17,6 +16,7 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const Pools = () => {
@@ -33,24 +33,15 @@ const Pools = () => {
   const handleSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ query: value }));
 
   const content = poolsQuery.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <PoolsList
-          items={ poolsQuery.data.items }
-          isLoading={ poolsQuery.isInitialLoading }
-          resetKey={ poolsQuery.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <PoolsTable
-          items={ poolsQuery.data.items }
-          top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ poolsQuery.isInitialLoading }
-          page={ poolsQuery.pagination.page }
-          resetKey={ poolsQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <PoolsTable
+        items={ poolsQuery.data.items }
+        top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ poolsQuery.isInitialLoading }
+        page={ poolsQuery.pagination.page }
+        resetKey={ poolsQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const filter = (

@@ -28,7 +28,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading, resetKey }
 
   return (
     <AddressHighlightProvider>
-      <TableRoot>
+      <TableRoot minW="900px">
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader width="28%">Type</TableColumnHeader>

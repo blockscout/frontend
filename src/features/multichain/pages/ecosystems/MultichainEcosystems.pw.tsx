@@ -8,7 +8,7 @@ import { test, expect } from 'playwright/lib';
 
 import MultichainEcosystems from './MultichainEcosystems';
 
-test('base view +@mobile', async({ render, mockTextAd, mockApiResponse, mockEnvs, mockMultichainConfig, mockAssetResponse }) => {
+test('base view', async({ render, mockTextAd, mockApiResponse, mockEnvs, mockMultichainConfig, mockAssetResponse }) => {
   test.slow();
   await mockMultichainConfig();
   await mockEnvs(ENVS_MAP.multichain);

@@ -6,6 +6,8 @@ import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 
+import { LATEST_TXS_TABLE_MIN_WIDTH } from './LatestTxsItem';
+
 interface Props {
   overflow: number;
   url: string;
@@ -21,7 +23,16 @@ const LatestTxsDegradedNewItems = ({ overflow, url, isLoading }: Props) => {
     }
   }, [ isLoading, overflow, setNum ]);
 
-  return <SocketNewItemsNotice borderBottomRadius={ 0 } num={ num } url={ url } showErrorAlert={ false } isLoading={ isLoading }/>;
+  return (
+    <SocketNewItemsNotice
+      borderBottomRadius={ 0 }
+      minW={ LATEST_TXS_TABLE_MIN_WIDTH }
+      num={ num }
+      url={ url }
+      showErrorAlert={ false }
+      isLoading={ isLoading }
+    />
+  );
 };
 
 export default React.memo(LatestTxsDegradedNewItems);

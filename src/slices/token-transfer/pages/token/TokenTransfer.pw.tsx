@@ -10,7 +10,7 @@ import { test, expect } from 'playwright/lib';
 
 import TokenTransfer from './TokenTransfer';
 
-test('erc20 +@mobile', async({ render, mockApiResponse }) => {
+test('erc20', async({ render, mockApiResponse }) => {
   test.slow();
   await mockApiResponse('core:token_transfers', {
     items: [ tokenTransferMock.erc20 ],
@@ -26,7 +26,7 @@ test('erc20 +@mobile', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
-test('erc721 +@mobile', async({ render, mockAssetResponse, mockApiResponse }) => {
+test('erc721', async({ render, mockAssetResponse, mockApiResponse }) => {
   test.slow();
   await mockApiResponse('core:token_transfers', {
     items: [ tokenTransferMock.erc721 ],
@@ -43,7 +43,7 @@ test('erc721 +@mobile', async({ render, mockAssetResponse, mockApiResponse }) =>
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
-test('erc1155 +@mobile', async({ render, mockApiResponse }) => {
+test('erc1155', async({ render, mockApiResponse }) => {
   test.slow();
   await mockApiResponse('core:token_transfers', {
     items: [ tokenTransferMock.erc1155A, tokenTransferMock.erc1155B, tokenTransferMock.erc1155C, tokenTransferMock.erc1155D ],

@@ -10,7 +10,6 @@ import useVerifiedContractsQuery from 'src/slices/contract/hooks/useVerifiedCont
 import { SORT_OPTIONS } from 'src/slices/contract/pages/index/sort';
 import VerifiedContractsCounters from 'src/slices/contract/pages/index/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'src/slices/contract/pages/index/VerifiedContractsFilter';
-import VerifiedContractsList from 'src/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'src/slices/contract/pages/index/VerifiedContractsTable';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
@@ -22,6 +21,7 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import Sort from 'src/shared/sort/Sort';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const sortCollection = createListCollection({
@@ -83,14 +83,9 @@ const MultichainVerifiedContracts = () => {
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (

@@ -6,7 +6,6 @@ import React from 'react';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 import useInternalTxsQuery from 'src/slices/internal-tx/hooks/useInternalTxsQuery';
 
@@ -18,6 +17,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const MultichainInternalTxs = () => {
@@ -62,12 +62,9 @@ const MultichainInternalTxs = () => {
 
   const content = data?.items ? (
     <MultichainProvider chainId={ chain?.id }>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <InternalTxsTable data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
+      </TableContainerScrollable>
     </MultichainProvider>
   ) : null;
 

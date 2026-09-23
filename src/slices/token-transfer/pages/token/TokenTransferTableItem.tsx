@@ -80,7 +80,7 @@ const TokenTransferTableItem = ({
           to={ data.to }
           isLoading={ isLoading }
           mt="5px"
-          mode={{ lg: 'compact', xl: 'long' }}
+          mode={{ base: 'compact', lg: 'compact', xl: 'long' }}
           tokenHash={ data.token?.address_hash }
           tokenSymbol={ data.token?.symbol ?? undefined }
         />

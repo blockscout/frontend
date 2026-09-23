@@ -12,8 +12,9 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import { APPROVALS_STICKY_SUMMARY_BOTTOM_PADDING, APPROVALS_STICKY_SUMMARY_HEIGHT } from '../constants';
-import ApprovalsList from './ApprovalsList';
 import ApprovalsTable from './ApprovalsTable';
 
 type Props = {
@@ -55,29 +56,17 @@ export default function Approvals({
   ) : null;
 
   const content = (
-    <>
-      <Box hideFrom="lg">
-        <ApprovalsList
-          selectedChain={ selectedChain }
-          approvals={ approvals }
-          isLoading={ isLoading }
-          isAddressMatch={ isAddressMatch }
-          hideApproval={ hideApproval }
-          resetKey={ resetKey }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <ApprovalsTable
-          selectedChain={ selectedChain }
-          approvals={ approvals }
-          isLoading={ isLoading }
-          isAddressMatch={ isAddressMatch }
-          hideApproval={ hideApproval }
-          tableHeaderTop={ tableHeaderTop }
-          resetKey={ resetKey }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ApprovalsTable
+        selectedChain={ selectedChain }
+        approvals={ approvals }
+        isLoading={ isLoading }
+        isAddressMatch={ isAddressMatch }
+        hideApproval={ hideApproval }
+        tableHeaderTop={ tableHeaderTop }
+        resetKey={ resetKey }
+      />
+    </TableContainerScrollable>
   );
 
   return (

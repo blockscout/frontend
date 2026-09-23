@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TxsSocketNoticePlace, TxsSocketType } from 'src/slices/tx/types/socket';
+import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
@@ -14,11 +14,10 @@ import { route } from 'src/shared/router/routes';
 
 interface Props {
   type: TxsSocketType;
-  place: TxsSocketNoticePlace;
   isLoading?: boolean;
 }
 
-const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
+const TxsSocketNoticeTypeAll = ({ type, isLoading }: Props) => {
   const multichainContext = useMultichainContext();
   const { num, showErrorAlert } = useNewTxsSocketTypeAll({ type, isLoading });
 
@@ -32,27 +31,14 @@ const TxsSocketNoticeTypeAll = ({ type, place, isLoading }: Props) => {
     }
   })();
 
-  if (place === 'table') {
-    return (
-      <SocketNewItemsNotice.Desktop
-        showErrorAlert={ showErrorAlert }
-        num={ num }
-        isLoading={ isLoading }
-        url={ url }
-      />
-    );
-  }
-
-  if (place === 'list') {
-    return (
-      <SocketNewItemsNotice.Mobile
-        num={ num }
-        showErrorAlert={ showErrorAlert }
-        isLoading={ isLoading }
-        url={ url }
-      />
-    );
-  }
+  return (
+    <SocketNewItemsNotice.Desktop
+      showErrorAlert={ showErrorAlert }
+      num={ num }
+      isLoading={ isLoading }
+      url={ url }
+    />
+  );
 };
 
 export default React.memo(TxsSocketNoticeTypeAll);
