@@ -7,16 +7,12 @@ import type { schemas } from '@blockscout/api-types';
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
-type TransactionType = schemas['Transaction']['transaction_types'][number] |
-'op_stack_l1_attributes_transaction' |
-'op_stack_post_exec_transaction';
-
 export interface Props extends BadgeProps {
-  types: Array<TransactionType>;
+  types: schemas['Transaction']['transaction_types'];
   isLoading?: boolean;
 }
 
-const TYPES_ORDER: Array<TransactionType> = [
+const TYPES_ORDER: schemas['Transaction']['transaction_types'] = [
   'op_stack_l1_attributes_transaction',
   'op_stack_post_exec_transaction',
   'blob_transaction',
