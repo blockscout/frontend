@@ -8,7 +8,9 @@ import { isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/ut
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import { getTokenTransferUiMultiplier } from 'src/slices/token-transfer/utils/get-token-transfer-ui-multiplier';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -28,6 +30,7 @@ type Props = {
 
 const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
   const isConfidential = item.token ? isConfidentialTokenType(item.token.type) : false;
+  const multiplier = getTokenTransferUiMultiplier(item, chainData?.app_config);
 
   const renderValue = () => {
     if (item.token && item.total && 'value' in item.total && item.total.value !== null) {
@@ -36,6 +39,8 @@ const TokenTransferTableItem = ({ item, isLoading, chainData }: Props) => {
           amount={ item.total.value }
           token={ item.token }
           decimals={ item.total.decimals || '0' }
+          multiplier={ multiplier }
+          startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
           layout="vertical"
           loading={ isLoading }
         />

@@ -1,5 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+
+export type ChainConfig = Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'];
+
 export interface Metadata {
   name?: string;
   description?: string;

@@ -2,16 +2,19 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
+import { getStateChangeUiMultiplier } from 'src/slices/tx/utils/get-state-change-ui-multiplier';
 
 import config from 'src/config';
+import AssetValue from 'src/shared/values/entity/AssetValue';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -19,7 +22,9 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { ZERO_ADDRESS } from 'src/toolkit/utils/consts';
 import { nbsp, space } from 'src/toolkit/utils/htmlEntities';
 
-export function getStateElements(data: schemas['StateChange'], isLoading?: boolean) {
+const FULL_PRECISION = 0;
+
+export function getStateElements(data: schemas['StateChange'], isLoading?: boolean, chainConfig?: ChainConfig) {
   const tag = (() => {
     if (data.is_miner) {
       return (
@@ -85,27 +90,31 @@ export function getStateElements(data: schemas['StateChange'], isLoading?: boole
           w="auto"
         />
       );
-      const beforeBn = BigNumber(data.balance_before || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
-      const afterBn = BigNumber(data.balance_after || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
-      const change = (() => {
-        let differenceBn;
-        if (typeof data.change === 'string') {
-          differenceBn = BigNumber(data.change || '0').div(BigNumber(10 ** (Number(data.token?.decimals ?? 0))));
-        } else {
-          differenceBn = afterBn.minus(beforeBn);
-        }
+      const decimals = data.token?.decimals;
+      const multiplier = getStateChangeUiMultiplier(data, chainConfig);
+      const multiplierTag = multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 } my="-2px"/>;
 
-        if (!differenceBn || differenceBn.isEqualTo(0)) {
+      const change = (() => {
+        const differenceBn = typeof data.change === 'string' ?
+          BigNumber(data.change || '0') :
+          BigNumber(data.balance_after || '0').minus(BigNumber(data.balance_before || '0'));
+
+        if (differenceBn.isEqualTo(0)) {
           return null;
         }
 
-        const changeColor = differenceBn.isGreaterThanOrEqualTo(0) ? 'green.500' : 'red.500';
-        const changeSign = differenceBn.isGreaterThanOrEqualTo(0) ? '+' : '-';
+        const isIncrease = differenceBn.isGreaterThanOrEqualTo(0);
 
         return (
-          <Skeleton loading={ isLoading } display="inline-block" color={ changeColor } wordBreak="break-all">
-            <span>{ changeSign }{ nbsp }{ differenceBn.abs().toFormat() }</span>
-          </Skeleton>
+          <AssetValue
+            amount={ differenceBn.abs().toFixed() }
+            decimals={ decimals }
+            multiplier={ multiplier }
+            accuracy={ FULL_PRECISION }
+            startElement={ <>{ multiplierTag }<span>{ isIncrease ? '+' : '-' }{ nbsp }</span></> }
+            loading={ isLoading }
+            color={ isIncrease ? 'green.500' : 'red.500' }
+          />
         );
       })();
 
@@ -126,14 +135,28 @@ export function getStateElements(data: schemas['StateChange'], isLoading?: boole
       return {
         before: data.balance_before ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton loading={ isLoading } wordBreak="break-all">{ beforeBn.toFormat() }</Skeleton>
+            <AssetValue
+              amount={ data.balance_before }
+              decimals={ decimals }
+              multiplier={ multiplier }
+              accuracy={ FULL_PRECISION }
+              startElement={ multiplierTag }
+              loading={ isLoading }
+            />
             <span>{ space }</span>
             { tokenLink }
           </Flex>
         ) : null,
         after: data.balance_after ? (
           <Flex whiteSpace="pre-wrap" justifyContent={{ base: 'flex-start', lg: 'flex-end' }} flexWrap="wrap">
-            <Skeleton loading={ isLoading } wordBreak="break-all">{ afterBn.toFormat() }</Skeleton>
+            <AssetValue
+              amount={ data.balance_after }
+              decimals={ decimals }
+              multiplier={ multiplier }
+              accuracy={ FULL_PRECISION }
+              startElement={ multiplierTag }
+              loading={ isLoading }
+            />
             <span>{ space }</span>
             { tokenLink }
           </Flex>

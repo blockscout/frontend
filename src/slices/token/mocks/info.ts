@@ -20,6 +20,7 @@ export const tokenInfo = toTokenModel({
 export const tokenCounters: schemas['TokenCountersResponse'] = {
   token_holders_count: '8838883',
   transfers_count: '88282281',
+  ui_multiplier_changes_count: '0',
 };
 
 export const tokenInfoERC20a = toTokenModel({
@@ -90,6 +91,23 @@ export const tokenInfoERC20LongSymbol = toTokenModel({
   type: 'ERC-20',
   icon_url: null,
   reputation: 'ok',
+});
+
+export const tokenInfoERC8056 = toTokenModel({
+  address_hash: '0x6D50E6CBca0e390BbCF82bEA80B31F4c2694395e',
+  circulating_market_cap: null,
+  decimals: '18',
+  exchange_rate: null,
+  holders_count: '2',
+  name: 'EMPTY PROMISES',
+  symbol: 'IOU',
+  total_supply: '1000000000000000000000000',
+  type: 'ERC-8056',
+  icon_url: null,
+  reputation: 'ok',
+  ui_multiplier: '1690000000000000000',
+  new_ui_multiplier: '1690000000000000000',
+  ui_multiplier_effective_at: '2026-09-07T14:27:48.000000Z',
 });
 
 export const tokenInfoERC721a = toTokenModel({

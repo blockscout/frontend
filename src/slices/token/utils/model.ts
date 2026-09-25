@@ -19,6 +19,9 @@ export function toTokenModel(fields: Partial<schemas['Token']>): schemas['Token'
     reputation: fields.reputation ?? null,
     volume_24h: fields.volume_24h ?? null,
     is_bridged: fields.is_bridged ?? false,
+    ui_multiplier: fields.ui_multiplier ?? null,
+    new_ui_multiplier: fields.new_ui_multiplier ?? null,
+    ui_multiplier_effective_at: fields.ui_multiplier_effective_at ?? null,
   };
 }
 

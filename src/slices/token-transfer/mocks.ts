@@ -1,6 +1,7 @@
 import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import * as tokenInfoMock from 'src/slices/token/mocks/info';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
@@ -202,17 +203,28 @@ export const erc404B: schemas['TokenTransfer'] = {
   total: { token_id: '4625304364899952', token_instance: null },
 };
 
+export const erc8056: schemas['TokenTransfer'] = {
+  ...erc20,
+  token: tokenInfoMock.tokenInfoERC8056,
+  total: {
+    decimals: '18',
+    value: '31567373703130350',
+    ui_multiplier: '1690000000000000000',
+  },
+  transaction_hash: '0x8b7a2e1d4c6f9a3b5e7d1c2f4a6b8d0e2f4a6c8e0b2d4f6a8c0e2b4d6f8a0c2e',
+  token_type: 'ERC-8056',
+  method: 'transfer',
+};
+
 export const mixTokens: paths['/api/v2/token-transfers']['get'] = {
   items: [
     erc20,
     erc721,
-    erc1155A,
-    erc1155B,
     erc1155C,
-    erc1155D,
     erc404A,
     erc404B,
     erc7984,
+    erc8056,
   ],
   next_page_params: null,
 };

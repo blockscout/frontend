@@ -7,6 +7,8 @@ import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/tok
 
 import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenHoldersTableItem';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -20,6 +22,7 @@ interface Props {
 }
 
 const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => {
+  const chainData = useMultichainContext()?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
@@ -38,7 +41,13 @@ const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => 
         { data.slice(0, renderedItemsNum).map((item, index) => {
           const tokenId = 'token_id' in item ? item.token_id : null;
           return (
-            <TokenHoldersTableItem key={ item.address.hash + tokenId + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
+            <TokenHoldersTableItem
+              key={ item.address.hash + tokenId + (isLoading ? index : '') }
+              holder={ item }
+              token={ token }
+              chainData={ chainData }
+              isLoading={ isLoading }
+            />
           );
         }) }
         <TableRow ref={ cutRef }/>
