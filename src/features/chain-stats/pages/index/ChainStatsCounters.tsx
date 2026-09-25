@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
@@ -32,10 +32,7 @@ const ChainStatsCounters = () => {
   }
 
   return (
-    <Grid
-      gridTemplateColumns={{ base: 'repeat(2, calc((100% - 4px) / 2))', lg: 'repeat(4, calc((100% - 3 * 8px) / 4))' }}
-      gridGap={{ base: 1, lg: 2 }}
-    >
+    <StatsContainer desktopColumns={ 4 }>
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {
 
@@ -61,7 +58,7 @@ const ChainStatsCounters = () => {
           );
         })
       }
-    </Grid>
+    </StatsContainer>
   );
 };
 

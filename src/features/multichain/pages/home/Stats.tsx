@@ -9,9 +9,15 @@ import { sortHomeStatsItems, isHomeStatsItemEnabled } from 'src/slices/home/util
 
 import { HOMEPAGE_STATS } from 'src/features/multichain/stubs';
 
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 import ChainIndicators from './ChainIndicators';
+
+const COLUMNS_NUM = {
+  desktop: 1,
+  mobile: 2,
+};
 
 const Stats = () => {
   const statsQuery = useApiQuery('multichainStats:pages_main', {
@@ -44,9 +50,9 @@ const Stats = () => {
   }, [ statsQuery.data ]);
 
   return (
-    <Flex mt={ 6 } gap={ 2 } flexDirection={{ base: 'column', lg: 'row' }}>
+    <Flex mt={ 6 } gap={{ base: 1, lg: 2 }} flexDirection={{ base: 'column', lg: 'row' }}>
       { items.length > 0 && (
-        <Flex gap={ 2 } flexDirection={{ base: 'row', lg: 'column' }} w={{ base: '100%', lg: '270px' }}>
+        <StatsContainer columnsNum={ COLUMNS_NUM } w={{ base: '100%', lg: '270px' }}>
           { items.map((item) => (
             <StatsWidget
               key={ item.id }
@@ -58,7 +64,7 @@ const Stats = () => {
               w={{ base: 'calc((100% - 8px) / 2)', lg: '100%' }}
             />
           )) }
-        </Flex>
+        </StatsContainer>
       ) }
       <ChainIndicators/>
     </Flex>

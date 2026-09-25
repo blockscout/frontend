@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import { isHomeStatsItemEnabled, sortHomeStatsItems } from 'src/slices/home/utils/stats';
+
+import StatsContainer from 'src/shared/stats/StatsContainer';
 
 import HomeStatsAverageBlockTime from './widgets/HomeStatsAverageBlockTime';
 import HomeStatsBtcLocked from './widgets/HomeStatsBtcLocked';
@@ -15,6 +16,11 @@ import HomeStatsLatestL1StateBatch from './widgets/HomeStatsLatestL1StateBatch';
 import HomeStatsTotalAddresses from './widgets/HomeStatsTotalAddresses';
 import HomeStatsTotalOperationalTxs from './widgets/HomeStatsTotalOperationalTxs';
 import HomeStatsTotalTxs from './widgets/HomeStatsTotalTxs';
+
+const COLUMNS_NUM = {
+  desktop: 2,
+  mobile: 2,
+};
 
 const HomeStats = () => {
   const items = React.useMemo(() => {
@@ -70,9 +76,8 @@ const HomeStats = () => {
   }
 
   return (
-    <Grid
-      gridTemplateColumns="1fr 1fr"
-      gridGap={{ base: 1, lg: 2 }}
+    <StatsContainer
+      columnsNum={ COLUMNS_NUM }
       flexBasis="50%"
       flexGrow={ 1 }
     >
@@ -83,7 +88,7 @@ const HomeStats = () => {
           </React.Fragment>
         );
       }) }
-    </Grid>
+    </StatsContainer>
   );
 };
 
