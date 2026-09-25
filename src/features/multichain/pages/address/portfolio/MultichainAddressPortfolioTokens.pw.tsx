@@ -31,9 +31,9 @@ test('many chains +@mobile +@dark-mode', async({ render, mockApiResponse, page }
     { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
     });
   await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenCA, tokensMock.tokenDA ],
+    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenBC, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false } });
+  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984,ERC-8056', include_poor_reputation_tokens: false } });
 
   const component = await render(
     <MultichainAddressPortfolioTokens addressData={ addressMock.addressA } isLoading={ false }/>,
@@ -51,15 +51,15 @@ test('many chains, selected chain +@mobile +@dark-mode', async({ render, mockApi
     { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { include_poor_reputation_tokens: false },
     });
   await mockApiResponse('multichainAggregator:address_tokens', {
-    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenCA, tokensMock.tokenDA ],
+    items: [ tokensMock.tokenAA, tokensMock.tokenAB, tokensMock.tokenBA, tokensMock.tokenBB, tokensMock.tokenBC, tokensMock.tokenCA, tokensMock.tokenDA ],
     next_page_params: { page_token: '1', page_size: 10 },
-  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false } });
+  }, { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: 'ERC-20,NATIVE,ERC-7984,ERC-8056', include_poor_reputation_tokens: false } });
   const selectedChainTokensUrl = await mockApiResponse('multichainAggregator:address_tokens', {
     items: [ ],
     next_page_params: undefined,
   }, {
     pathParams: { hash: CURRENT_ADDRESS },
-    queryParams: { chain_id: chainDataMock.chainE.id, type: 'ERC-20,NATIVE,ERC-7984', include_poor_reputation_tokens: false },
+    queryParams: { chain_id: chainDataMock.chainE.id, type: 'ERC-20,NATIVE,ERC-7984,ERC-8056', include_poor_reputation_tokens: false },
   });
 
   const component = await render(
