@@ -59,7 +59,7 @@ test('erc1155', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 
-test('erc8056 +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
+test('erc8056', async({ render, mockApiResponse, mockEnvs }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.additionalTokenTypes);
   await mockApiResponse('core:token_transfers', {
