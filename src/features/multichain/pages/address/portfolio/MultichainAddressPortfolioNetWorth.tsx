@@ -96,13 +96,14 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
         alignSelf="stretch"
         rowGap="1px"
       >
-        <Box
+        <Flex
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
           flexBasis="50%"
           w="full"
           p={ 3 }
           whiteSpace="pre"
           textStyle="sm"
+          alignItems="center"
         >
           <HStack alignItems="center" flexWrap="wrap" gap={ 3 }>
             <HStack w={{ base: 'full', lg: 'auto' }}>
@@ -136,7 +137,7 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
               </>
             ) }
           </HStack>
-        </Box>
+        </Flex>
         <Flex
           alignItems={{ base: 'flex-start', lg: 'center' }}
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
