@@ -88,31 +88,31 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
   })();
 
   return (
-    <HStack alignItems="center" w="full" h={{ base: 'auto', lg: '100px' }}>
+    <HStack alignItems="flex-start" w="full">
       <VStack
         flexGrow={ 1 }
         borderRadius="base"
         overflow="hidden"
-        h="100%"
+        alignSelf="stretch"
         rowGap="1px"
       >
         <Flex
-          alignItems={{ base: 'flex-start', lg: 'center' }}
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
           flexBasis="50%"
           w="full"
           p={ 3 }
-          gap={ 3 }
           whiteSpace="pre"
-          flexDirection={{ base: 'column', lg: 'row' }}
           textStyle="sm"
+          alignItems="center"
         >
-          <Flex alignItems="center">
-            <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
-            <Text ml={ 2 } fontWeight={ 500 }>Total net worth</Text>
-            <Text color="text.secondary"> (without NFT)</Text>
-          </Flex>
-          <Flex >
+          <HStack alignItems="center" flexWrap="wrap" gap={ 3 }>
+            <HStack w={{ base: 'full', lg: 'auto' }}>
+              <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
+              <Text fontWeight={ 500 }>
+                Total net worth
+                <chakra.span color="text.secondary"> (without NFT)</chakra.span>
+              </Text>
+            </HStack>
             <SimpleValue
               value={ BigNumber(netWorth ?? 0) }
               prefix="$"
@@ -123,8 +123,8 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
             />
             { multichainBalanceFeature.isEnabled && (
               <>
-                <Separator mx={ 3 } height="16px" orientation="vertical"/>
-                <HStack gap={ 3 }>
+                <Separator height="16px" orientation="vertical"/>
+                <HStack gap={ 1 } flexWrap="wrap">
                   { multichainBalanceFeature.providers.map((item) => (
                     <AddressMultichainButton
                       key={ item.name }
@@ -136,7 +136,7 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
                 </HStack>
               </>
             ) }
-          </Flex>
+          </HStack>
         </Flex>
         <Flex
           alignItems={{ base: 'flex-start', lg: 'center' }}
