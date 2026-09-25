@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { BoxProps } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -13,6 +12,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import getStatsLabelFromTitle from 'src/shared/stats/get-stats-label-from-title';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
@@ -71,24 +71,8 @@ const TxsStats = (props: Props) => {
     decimals: isStatsFeatureEnabled ? '0' : String(chainConfig.chain.currency.decimals),
   }) : null;
 
-  const itemsCount = [
-    txCount24h,
-    operationalTxns24hArbitrum,
-    operationalTxns24hOptimistic,
-    pendingTxns,
-    txFeeSum24h,
-    txFeeAvg,
-  ].filter(item => item !== null && item !== undefined).length;
-
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: `repeat(${ itemsCount }, calc(${ 100 / itemsCount }% - 9px))` }}
-      rowGap={ 3 }
-      columnGap={ 3 }
-      mb={ 6 }
-      { ...props }
-    >
+    <StatsContainer mb={ 6 } { ...props } >
       { txCount24h && (
         <StatsWidget
           label={ txsStatsQuery.data?.transactions_24h?.title ?
@@ -167,7 +151,7 @@ const TxsStats = (props: Props) => {
           }
         />
       ) }
-    </Box>
+    </StatsContainer>
   );
 };
 
