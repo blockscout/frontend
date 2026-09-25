@@ -45,6 +45,9 @@ export function app(isPrivateMode = false, primerScriptHashes: Array<string> = [
       KEY_WORDS.SELF,
       ...MAIN_DOMAINS,
 
+      // Next.js WebSocket HMR
+      config.app.isDev ? 'ws://localhost:3000/_next/webpack-hmr' : '',
+
       // APIs
       ...Object.values(config.apis).filter(Boolean).map((api) => api.endpoint),
       ...Object.values(config.apis).filter(Boolean).map((api) => api.socketEndpoint),
