@@ -1,5 +1,5 @@
 import { replaceQuotes } from 'src/config/utils/envs';
-import { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
+import { MultichainProviderConfig, MultichainProviderView } from 'src/features/multichain-button/types/client';
 import * as yup from 'yup';
 
 const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig> = yup.object({
@@ -7,7 +7,7 @@ const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig>
     url_template: yup.string().required(),
     logo: yup.string().required(),
     dapp_id: yup.string(),
-    promo: yup.boolean(),
+    view: yup.string<MultichainProviderView>().oneOf([ 'full', 'icon' ]),
 });
 
 export const multichainButtonSchema = yup

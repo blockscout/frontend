@@ -54,20 +54,17 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
     multichainItems = (
       <>
         <TextSeparator/>
-        <HStack columnGap={ 2 }>
-          <Text>Multichain</Text>
-          <HStack gap={{ base: 2, lg: 3 }}>
-            { providers.map((item, index) => (
+        <HStack columnGap={ 2 } alignItems="flex-start">
+          <Text lineHeight="32px">Multichain</Text>
+          <HStack gap={ 1 } flexWrap="wrap">
+            { providers.map((item) => (
               <AddressMultichainButton
                 key={ item.name }
                 item={ item }
                 addressHash={ addressHash }
                 onClick={ onMultichainClick }
-                isFirst={ index === 0 }
-                isLast={ index === providers.length - 1 }
               />
-            ))
-            }
+            )) }
           </HStack>
         </HStack>
       </>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { MultichainProviderConfig, MultichainProviderConfigParsed } from 'src/features/multichain-button/types/client';
+import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
 
 import marketplace from 'src/features/marketplace/config';
 
@@ -11,20 +11,18 @@ const value = parseEnvJson<Array<MultichainProviderConfig>>(getEnvValue('NEXT_PU
 
 const title = 'Multichain balance';
 
-const config: Feature<{ providers: Array<MultichainProviderConfigParsed> }> = (() => {
+const config: Feature<{ providers: Array<MultichainProviderConfig> }> = (() => {
   if (value) {
     return Object.freeze({
       title,
       isEnabled: true,
-      providers: value
-        .map((provider) => ({
-          name: provider.name,
-          logoUrl: provider.logo,
-          urlTemplate: provider.url_template,
-          dappId: marketplace.isEnabled ? provider.dapp_id : undefined,
-          promo: provider.promo,
-        }))
-        .sort((_, b) => (b.promo ? 1 : -1)),
+      providers: value.map((provider) => ({
+        name: provider.name,
+        logo: provider.logo,
+        url_template: provider.url_template,
+        dapp_id: marketplace.isEnabled ? provider.dapp_id : undefined,
+        view: provider.view,
+      })),
     });
   }
 
