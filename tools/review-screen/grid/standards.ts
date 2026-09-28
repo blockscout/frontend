@@ -1,18 +1,17 @@
 import { matchesGlob } from 'path';
 
-import type { Questions, SystemOneResult, TypeSafeClient, Usage } from '@typesafe-ai/sdk';
-import { choice, noul, TypeSafeError } from '@typesafe-ai/sdk';
+import { choice, noul } from '@typesafe-ai/sdk';
 
 import type { Rule } from '../rubric';
 import type { FileWindows, Window } from '../select/hunks';
 import { parseLineId } from '../select/hunks';
+import type { CallRecord, ScreenClient } from './shared';
+import { describeFailure, Recorder, runPool, stateOf } from './shared';
 
 // The standards grid: every rubric rule × every touched file its glob matches. One request per
 // window carries all of the file's rules as named `noul` questions; a cell over its threshold gets a
 // second, `choice` request over the window's changed line ids to name the line. The model returns
 // probabilities only — this module sets no severity and writes no claim.
-
-export type ScreenClient = Pick<TypeSafeClient, 'systemOne'>;
 
 export interface StandardsConfig {
   readonly model: string;
@@ -34,14 +33,6 @@ export interface Suspect {
   readonly file: string;
   readonly line: number;
   readonly score: number;
-}
-
-export interface CallRecord {
-  readonly kind: 'noul' | 'choice';
-  readonly file: string;
-  readonly window: number;
-  readonly ms: number;
-  readonly usage: Usage;
 }
 
 export interface StandardsResult {
@@ -76,54 +67,10 @@ export function selectSuspects<T extends Suspect>(candidates: ReadonlyArray<T>, 
   return { suspects: ranked.slice(0, maxSuspects), cut: Math.max(0, ranked.length - maxSuspects) };
 }
 
-// A bounded worker pool. Once one task fails nothing new starts, but the tasks already in flight
-// finish and record their cells; the first failure is what the caller reports.
-async function runPool(tasks: ReadonlyArray<() => Promise<void>>, concurrency: number): Promise<TypeSafeError | undefined> {
-  let next = 0;
-  let failure: TypeSafeError | undefined;
-  async function worker(): Promise<void> {
-    while (next < tasks.length && failure === undefined) {
-      const task = tasks[next];
-      next += 1;
-      try {
-        await task();
-      } catch (error) {
-        if (!(error instanceof TypeSafeError)) throw error;
-        failure ??= error;
-      }
-    }
-  }
-  await Promise.all(Array.from({ length: Math.max(1, concurrency) }, worker));
-  return failure;
-}
-
-function stateOf(file: string, window: Window): { readonly file: string; readonly changes: string } {
-  return { file, changes: window.state };
-}
-
-class Recorder {
-  readonly cells: Array<Cell> = [];
-  readonly calls: Array<CallRecord> = [];
-  model: string | undefined = undefined;
-
-  async timed<TQuestions extends Questions>(
-    kind: CallRecord['kind'],
-    file: string,
-    window: number,
-    call: () => Promise<SystemOneResult<TQuestions>>,
-  ): Promise<SystemOneResult<TQuestions>> {
-    const started = performance.now();
-    const result = await call();
-    this.calls.push({ kind, file, window, ms: Math.round(performance.now() - started), usage: result.usage });
-    this.model ??= result.model;
-    return result;
-  }
-}
-
 interface ScreenContext {
   readonly client: ScreenClient;
   readonly config: StandardsConfig;
-  readonly recorder: Recorder;
+  readonly recorder: Recorder<Cell>;
 }
 
 function scoreWindowTask(target: FileWindows, window: Window, rules: ReadonlyArray<Rule>, context: ScreenContext): () => Promise<void> {
@@ -182,7 +129,7 @@ export async function screenStandards(
   client: ScreenClient,
   config: StandardsConfig,
 ): Promise<StandardsResult> {
-  const recorder = new Recorder();
+  const recorder = new Recorder<Cell>();
   const context: ScreenContext = { client, config, recorder };
   const rulesByFile = new Map(files.map((target) => [ target.file, rulesFor(target.file, rules) ] as const));
 
@@ -202,13 +149,12 @@ export async function screenStandards(
   const locateFailure = await runPool(locateTasks, config.concurrency);
 
   const { suspects, cut } = selectSuspects(located, config.maxSuspects);
-  const failure = scoreFailure ?? locateFailure;
   return {
     cells: recorder.cells,
     suspects: suspects.map(({ window: _window, ...suspect }) => suspect),
     cut,
     calls: recorder.calls,
     model: recorder.model,
-    failure: failure === undefined ? undefined : `${ failure.name }: ${ failure.message }`,
+    failure: describeFailure(scoreFailure ?? locateFailure),
   };
 }

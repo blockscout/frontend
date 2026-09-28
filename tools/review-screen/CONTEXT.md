@@ -2,8 +2,11 @@
 
 A pilot, not a gate. Before the agent code review's axes read a change, this tool scores every rubric rule
 against every touched file with Jev (TypeSafe's typed-judgment model) and prints the cells over threshold
-as *suspects* — a rule id, a file, a line and a probability. It sets no severity and writes no claim: a
-subagent in `review-changes` opens each suspect and decides. The task spec behind the pilot:
+as *suspects* — a rule id, a file, a line and a probability. When the change has a task spec it also
+scores every Functional Requirement against every touched file, and a requirement no file seems to
+address becomes a suspect too — a requirement id, the best-scoring file, `—` for the line, and the
+probability. It sets no severity and writes no claim: a subagent in `review-changes` opens each suspect
+and decides. The task spec behind the pilot:
 `.agents/tasks/3720-jev-review-screen/spec.md`.
 
 ## Where to look
@@ -16,7 +19,9 @@ subagent in `review-changes` opens each suspect and decides. The task spec behin
 | Where does a run's record go? | `<main checkout>/.ai/jev/`, one JSON per run; `./sidecar.ts` names it |
 | How is a change turned into model state? | `./select/hunks.ts` |
 | How are the base, the files and the spec resolved? | `./select/change.ts` |
-| Where does a cell become a suspect? | `./grid/standards.ts` |
+| Where does a standards cell become a suspect? | `./grid/standards.ts` |
+| Where does a requirement become a suspect? Where is the cap shared? | `./grid/spec.ts` |
+| How are the Functional Requirements read out of a spec? | `./select/spec.ts` |
 | How is it wired into the review? | `.agents/skills/review-changes/axes.md`, the `jev` axis brief |
 
 ## What an editor here must keep true
@@ -32,6 +37,15 @@ subagent in `review-changes` opens each suspect and decides. The task spec behin
   vanish with the worktree, and task folders are pruned at land.
 - **The API key is the tool's concern only.** The SDK reads it from the environment; no agent instruction
   names the variable. Keep it that way — an agent told the variable's name will try to set it.
+- **The spec grid's comparison is inverted, and that lives in `./grid/spec.ts` only.** Its question is
+  phrased so a high value means "this file addresses the requirement", so a suspect is a requirement whose
+  best score is *below* `SPEC_THRESHOLD`, ranked lowest first. Everything downstream — the JSON, the
+  sidecar, the `jev` brief — sees suspects and scores and never needs to know which way the threshold
+  points. Keep it that way when tuning: change the threshold, not the direction.
+- **The `spec` block in the output has its own status.** `no-spec` when there is nothing to score;
+  `skipped` when there is a spec but no client; `failed` when an explicit `--spec` points nowhere, the spec
+  has no `## Functional requirements` list, or the API failed while scoring it. Only the API failure also
+  fails the run: a bad spec path still gets the review its standards grid.
 - **Line ids are new-side line numbers.** Under `--scope uncommitted` they match the working tree; under
   `--scope branch` too, because both diff against the working tree, never a commit.
 
@@ -39,6 +53,12 @@ subagent in `review-changes` opens each suspect and decides. The task spec behin
 
 - **Rerunning on the same day, branch and scope overwrites the sidecar.** The name carries no time of day.
   A calibration or dry run that should survive the next run needs a different `--ticket` or a copied file.
+- **The task folder is excluded from the spec grid** (`SPEC_GRID_EXCLUDE`). A branch that adds its own
+  `spec.md` and ticket specs would otherwise score every requirement high — the spec *states* each one —
+  and hide the requirements no code addresses yet. The standards grid still sees those files.
+- **A requirement about things outside the diff scores low everywhere.** A requirement that names docs,
+  a PR description or a later ticket will be a suspect on every run by construction; that is expected,
+  and it is what the calibration of `SPEC_THRESHOLD` (ticket 05 of the task) tunes against.
 - **A `choice` question takes at most 255 options**, so a window never carries more changed lines than
   that even when it fits the character budget. A huge single hunk therefore becomes several windows, and
   the file's cell is the max across them.
@@ -49,10 +69,14 @@ subagent in `review-changes` opens each suspect and decides. The task spec behin
 
 - `./index.ts` — flags, orchestration, the `skipped | failed | ok` status, the JSON on stdout; flag
   mechanics shared with the sibling tools in `../cli/flags.ts`
-- `./config.ts` — model pin, thresholds, suspect cap, window budget, sidecar folder
+- `./config.ts` — model pin, thresholds for both grids, the shared suspect cap, window budget, sidecar folder
 - `./rubric.ts` — the standards rules
 - `./select/change.ts` — scope, base, touched and untracked files, spec path, ticket
 - `./select/hunks.ts` — `git diff -U<n>` → hunks → line-id state → windows
+- `./select/spec.ts` — the spec's `## Functional requirements` list → `FR<n>` ids and text
+- `./grid/shared.ts` — the client surface, the bounded pool, the per-call record both grids write
 - `./grid/standards.ts` — `noul` batch per window, `choice` locate per suspect, threshold and cap
+- `./grid/spec.ts` — `noul` batch per window over the requirements, max over files, the inverted threshold,
+  the cap shared with the standards grid
 - `./sidecar.ts` — main-checkout resolution, file naming, the record shape
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

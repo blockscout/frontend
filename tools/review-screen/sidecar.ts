@@ -2,8 +2,11 @@ import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import type { CallRecord, Cell, Suspect } from './grid/standards';
+import type { CallRecord } from './grid/shared';
+import type { SpecCell, SpecSuspect } from './grid/spec';
+import type { Cell, Suspect } from './grid/standards';
 import type { Scope, TouchedFile } from './select/change';
+import type { Requirement } from './select/spec';
 
 // One JSON record per run, in the main checkout's `.ai/jev/` so every worktree adds to the same
 // dataset and the file outlives the worktree and the task folder. Every cell score is kept, not
@@ -12,6 +15,20 @@ import type { Scope, TouchedFile } from './select/change';
 export const SIDECAR_VERSION = 1;
 
 export type RunStatus = 'ok' | 'skipped' | 'failed';
+
+// `no-spec`: nothing to score. `skipped`: a spec, but no client. `failed`: the spec could not be
+// read, or the API failed while scoring it (the cells scored before that stay).
+export type SpecRecord =
+  { readonly status: 'no-spec' } |
+  { readonly status: 'skipped'; readonly reason: string } |
+  { readonly status: 'failed'; readonly reason: string; readonly requirements: ReadonlyArray<Requirement>; readonly cells: ReadonlyArray<SpecCell> } |
+  {
+    readonly status: 'ok';
+    readonly requirements: ReadonlyArray<Requirement>;
+    readonly cells: ReadonlyArray<SpecCell>;
+    readonly suspects: ReadonlyArray<SpecSuspect>;
+    readonly cut: number;
+  };
 
 export interface SidecarInputs {
   readonly scope: Scope;
@@ -34,7 +51,7 @@ export interface SidecarRecord {
     readonly suspects: ReadonlyArray<Suspect>;
     readonly cut: number;
   };
-  readonly spec: { readonly status: 'not-implemented' };
+  readonly spec: SpecRecord;
   readonly calls: ReadonlyArray<CallRecord>;
 }
 

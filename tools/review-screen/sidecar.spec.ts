@@ -60,7 +60,7 @@ describe('writeSidecar', () => {
       model: undefined,
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', ticket: undefined, spec: undefined, files: [] },
       standards: { cells: [], suspects: [], cut: 0 },
-      spec: { status: 'not-implemented' },
+      spec: { status: 'no-spec' },
       calls: [],
     };
     const target = path.join(tmp, '.ai', 'jev', 'x.json');
@@ -72,7 +72,7 @@ describe('writeSidecar', () => {
       reason: 'no key',
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', files: [] },
       standards: { cells: [], suspects: [], cut: 0 },
-      spec: { status: 'not-implemented' },
+      spec: { status: 'no-spec' },
       calls: [],
     });
   });

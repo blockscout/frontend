@@ -7,16 +7,21 @@ import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
 import {
   CONCURRENT_REQUESTS, CONTEXT_LINES, DEFAULT_STANDARDS_THRESHOLD, MAX_CHANGED_LINES_PER_WINDOW, MAX_STATE_CHARS, MAX_SUSPECTS, MODEL,
-  SIDECAR_DIR, STANDARDS_THRESHOLD_OVERRIDES,
+  SIDECAR_DIR, SPEC_GRID_EXCLUDE, SPEC_THRESHOLD, STANDARDS_THRESHOLD_OVERRIDES,
 } from './config';
-import type { ScreenClient, StandardsResult } from './grid/standards';
+import type { CallRecord, ScreenClient } from './grid/shared';
+import type { SpecResult } from './grid/spec';
+import { screenSpec, shareCap, specGridFiles } from './grid/spec';
+import type { StandardsResult } from './grid/standards';
 import { screenStandards } from './grid/standards';
 import { RULES } from './rubric';
 import type { Change, Scope } from './select/change';
 import { resolveChange } from './select/change';
 import type { FileWindows } from './select/hunks';
 import { buildWindows, readHunks } from './select/hunks';
-import type { RunStatus, SidecarRecord } from './sidecar';
+import type { SpecSource } from './select/spec';
+import { readSpec } from './select/spec';
+import type { RunStatus, SidecarRecord, SpecRecord } from './sidecar';
 import { resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
 
 // The screen never fails a review: a missing key or an API error still exits 0, with the status and
@@ -32,8 +37,9 @@ export interface CliOptions {
 const USAGE = `Usage:
   review:screen [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>]
 
-  Screens a change against the standards rubric with Jev and prints the suspects as JSON on stdout.
-  Every run writes a sidecar with every cell score to <main checkout>/.ai/jev/.
+  Screens a change with Jev — every rubric rule against every touched file, and, when the change has
+  a task spec, every Functional Requirement against every touched file — and prints the suspects as
+  JSON on stdout. Every run writes a sidecar with every cell score to <main checkout>/.ai/jev/.
 
   --scope branch       (default) diff from the merge-base with main; untracked files included
   --scope uncommitted  diff HEAD against the working tree; untracked files included
@@ -107,43 +113,86 @@ function windowsOf(change: Change, cwd: string): Array<FileWindows> {
 }
 
 const EMPTY_STANDARDS: StandardsResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
+const EMPTY_SPEC: SpecResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
 
-function statusOf(client: ClientOutcome, standards: StandardsResult): { readonly status: RunStatus; readonly reason: string | undefined } {
-  if (!client.ok) return { status: 'skipped', reason: client.reason };
-  if (standards.failure !== undefined) return { status: 'failed', reason: standards.failure };
+interface Screened {
+  readonly client: ClientOutcome;
+  readonly source: SpecSource;
+  readonly standards: StandardsResult;
+  readonly spec: SpecResult;
+}
+
+function statusOf(screened: Screened): { readonly status: RunStatus; readonly reason: string | undefined } {
+  if (!screened.client.ok) return { status: 'skipped', reason: screened.client.reason };
+  const failure = screened.standards.failure ?? screened.spec.failure;
+  if (failure !== undefined) return { status: 'failed', reason: failure };
   return { status: 'ok', reason: undefined };
 }
 
-function buildRecord(change: Change, client: ClientOutcome, standards: StandardsResult): SidecarRecord {
+function specRecordOf(screened: Screened): SpecRecord {
+  const { client, source, spec } = screened;
+  if (source.status !== 'ok') return source.status === 'no-spec' ? source : { status: 'failed', reason: source.reason, requirements: [], cells: [] };
+  if (!client.ok) return { status: 'skipped', reason: client.reason };
+  if (spec.failure !== undefined) return { status: 'failed', reason: spec.failure, requirements: source.requirements, cells: spec.cells };
+  return { status: 'ok', requirements: source.requirements, cells: spec.cells, suspects: spec.suspects, cut: spec.cut };
+}
+
+function buildRecord(change: Change, screened: Screened): SidecarRecord {
+  const calls: Array<CallRecord> = [ ...screened.standards.calls, ...screened.spec.calls ];
   return {
     version: 1,
     createdAt: new Date().toISOString(),
-    ...statusOf(client, standards),
-    model: standards.model,
+    ...statusOf(screened),
+    model: screened.standards.model ?? screened.spec.model,
     inputs: { scope: change.scope, base: change.base, branch: change.branch, ticket: change.ticket, spec: change.spec, files: change.files },
-    standards: { cells: standards.cells, suspects: standards.suspects, cut: standards.cut },
-    spec: { status: 'not-implemented' },
-    calls: standards.calls,
+    standards: { cells: screened.standards.cells, suspects: screened.standards.suspects, cut: screened.standards.cut },
+    spec: specRecordOf(screened),
+    calls,
   };
+}
+
+// The two grids run one after the other so a single pool bounds the request rate, and the cap is
+// shared once both have ranked their own suspects.
+async function screen(change: Change, client: ClientOutcome, source: SpecSource, cwd: string): Promise<Screened> {
+  if (!client.ok) return { client, source, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC };
+  const windows = windowsOf(change, cwd);
+  const standards = await screenStandards(windows, RULES, client.client, {
+    model: MODEL,
+    defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
+    thresholdOverrides: STANDARDS_THRESHOLD_OVERRIDES,
+    maxSuspects: MAX_SUSPECTS,
+    concurrency: CONCURRENT_REQUESTS,
+  });
+  const spec = source.status === 'ok' ?
+    await screenSpec(specGridFiles(windows, SPEC_GRID_EXCLUDE), source.requirements, client.client, {
+      model: MODEL,
+      threshold: SPEC_THRESHOLD,
+      maxSuspects: MAX_SUSPECTS,
+      concurrency: CONCURRENT_REQUESTS,
+    }) :
+    EMPTY_SPEC;
+  const capped = shareCap(standards, spec, MAX_SUSPECTS);
+  return { client, source, standards: { ...standards, ...capped.standards }, spec: { ...spec, ...capped.spec } };
+}
+
+function printSpec(record: SpecRecord): unknown {
+  switch (record.status) {
+    case 'ok':
+      return { status: record.status, requirements: record.requirements.length, cells: record.cells.length, suspects: record.suspects, cut: record.cut };
+    case 'failed':
+      return { status: record.status, reason: record.reason, requirements: record.requirements.length, cells: record.cells.length };
+    default:
+      return record;
+  }
 }
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const cwd = process.cwd();
   const change = resolveChange(options, cwd);
-  const client = createClient();
+  const screened = await screen(change, createClient(), readSpec(change.spec, cwd), cwd);
 
-  const standards = client.ok ?
-    await screenStandards(windowsOf(change, cwd), RULES, client.client, {
-      model: MODEL,
-      defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
-      thresholdOverrides: STANDARDS_THRESHOLD_OVERRIDES,
-      maxSuspects: MAX_SUSPECTS,
-      concurrency: CONCURRENT_REQUESTS,
-    }) :
-    EMPTY_STANDARDS;
-
-  const record = buildRecord(change, client, standards);
+  const record = buildRecord(change, screened);
   const sidecar = path.join(resolveMainCheckout(cwd), SIDECAR_DIR, sidecarFileName({
     date: new Date(record.createdAt),
     branch: change.branch,
@@ -158,7 +207,7 @@ async function main(): Promise<void> {
     model: record.model,
     sidecar,
     standards: { cells: record.standards.cells.length, suspects: record.standards.suspects, cut: record.standards.cut },
-    spec: record.spec,
+    spec: printSpec(record.spec),
   }, null, 2));
 }
 

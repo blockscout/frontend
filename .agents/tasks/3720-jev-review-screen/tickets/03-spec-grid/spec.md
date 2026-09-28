@@ -17,18 +17,18 @@ with `line: '—'` and the requirement id (`FR<n>`). With no spec, the output's 
 
 How to verify: `pnpm review:screen --scope branch` on this branch (its spec has 16 FRs).
 
-- [ ] The FR list is parsed from the spec's `## Functional requirements` numbered list; bold lead-ins
+- [x] The FR list is parsed from the spec's `## Functional requirements` numbered list; bold lead-ins
       (`**Standards grid.**`) are part of the requirement text, not its id.
-- [ ] Every touched file is scored against every FR in one request per file/window, reusing ticket 02's
+- [x] Every touched file is scored against every FR in one request per file/window, reusing ticket 02's
       state and windowing; the per-requirement score is the max over files and windows.
-- [ ] `SPEC_THRESHOLD` in `config.ts`; suspects are `{ requirement: 'FR3', file: <best file>, line: '—',
+- [x] `SPEC_THRESHOLD` in `config.ts`; suspects are `{ requirement: 'FR3', file: <best file>, line: '—',
       score }`, ranked lowest score first (the least-covered requirement is the most suspect).
-- [ ] The spec suspects count against the same `MAX_SUSPECTS` cap, split evenly with the standards grid
+- [x] The spec suspects count against the same `MAX_SUSPECTS` cap, split evenly with the standards grid
       when both overflow.
-- [ ] Sidecar cells carry `{ requirement, file, window, score }` in a `spec` section next to `standards`.
-- [ ] No spec → `spec: { status: 'no-spec' }`; explicit `--spec` pointing at a missing file → `failed`
+- [x] Sidecar cells carry `{ requirement, file, window, score }` in a `spec` section next to `standards`.
+- [x] No spec → `spec: { status: 'no-spec' }`; explicit `--spec` pointing at a missing file → `failed`
       with a reason, not a crash.
-- [ ] vitest specs: FR parsing against a fixture spec (including a bold lead-in and a multi-line
+- [x] vitest specs: FR parsing against a fixture spec (including a bold lead-in and a multi-line
       requirement), max-over-files ranking, threshold selection, the no-spec path.
 
 ## Details
@@ -41,6 +41,6 @@ How to verify: `pnpm review:screen --scope branch` on this branch (its spec has 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `select/spec.ts`: FR parser (+ spec with a fixture)
-- [ ] 2 `[agent]` `grid/spec.ts`: per-file scoring, max ranking, threshold → suspects; cap split (+ specs)
-- [ ] 3 `[agent]` Wire into `index.ts` output and the sidecar; extend `CONTEXT.md`
+- [x] 1 `[agent]` `select/spec.ts`: FR parser (+ spec with a fixture)
+- [x] 2 `[agent]` `grid/spec.ts`: per-file scoring, max ranking, threshold → suspects; cap split (+ specs)
+- [x] 3 `[agent]` Wire into `index.ts` output and the sidecar; extend `CONTEXT.md`

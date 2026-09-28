@@ -5,6 +5,13 @@ export const MODEL = 'jev-1.13.0';
 // Starting points only — ticket 05 calibrates all three against past diffs with known findings.
 export const DEFAULT_STANDARDS_THRESHOLD = 0.7;
 export const STANDARDS_THRESHOLD_OVERRIDES: Readonly<Record<string, number>> = {};
+// The spec grid asks "does this file address the requirement", so a requirement is a suspect when
+// its best score stays *below* this.
+export const SPEC_THRESHOLD = 0.3;
+// The task folder describes the requirements rather than implementing them, so its files would score
+// every requirement high and hide the real gaps; the spec grid never sees them.
+export const SPEC_GRID_EXCLUDE = '.agents/tasks/**';
+// One cap for both grids, split evenly when both overflow.
 export const MAX_SUSPECTS = 12;
 
 export const DEFAULT_BASE_BRANCH = 'main';
