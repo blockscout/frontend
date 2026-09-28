@@ -140,6 +140,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   flashblocks: [
     [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
   ],
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
+  ],
   tokenActionButton: [
     [
       'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',

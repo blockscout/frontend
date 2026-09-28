@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { BoxProps } from '@chakra-ui/react';
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -10,6 +9,7 @@ import { TXS_STATS_MICROSERVICE } from 'src/slices/tx/stubs/tx';
 
 import config from 'src/config';
 import getStatsLabelFromTitle from 'src/shared/stats/get-stats-label-from-title';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 interface Props extends BoxProps {}
@@ -34,18 +34,8 @@ const ZetaChainCCTXsStats = (props: Props) => {
   const cctxPendingCountTotal = txsStatsQuery.data?.pending_zetachain_cross_chain_txns;
   const cctxCount24h = txsStatsQuery.data?.new_zetachain_cross_chain_txns_24h;
 
-  const itemsCount = [
-    cctxCountTotal,
-    cctxPendingCountTotal,
-    cctxCount24h,
-  ].filter(item => item !== null && item !== undefined).length;
-
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: `repeat(${ itemsCount }, calc(${ 100 / itemsCount }% - 9px))` }}
-      rowGap={ 3 }
-      columnGap={ 3 }
+    <StatsContainer
       mb={ 6 }
       { ...props }
     >
@@ -71,7 +61,7 @@ const ZetaChainCCTXsStats = (props: Props) => {
           isLoading={ isLoading }
         />
       ) }
-    </Box>
+    </StatsContainer>
   );
 };
 

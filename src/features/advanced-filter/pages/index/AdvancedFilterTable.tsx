@@ -4,7 +4,6 @@ import {
   Box,
   chakra,
 } from '@chakra-ui/react';
-import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 import type { TxTableColumn } from '../../types/client';
@@ -63,7 +62,7 @@ const AdvancedFilterTable = ({
                     whiteSpace="normal"
                   >
                     { Boolean(column.name) && (
-                      <chakra.span mr={ 2 } lineHeight="24px" verticalAlign="middle">
+                      <chakra.span mr={ column.noFilter ? 0 : 2 } lineHeight="24px" verticalAlign="middle">
                         { column.id === 'age' ? 'Timestamp' : column.name }
                       </chakra.span>
                     ) }

@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -19,6 +21,7 @@ interface Props {
 }
 
 const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes, resetKey }: Props) => {
+  const chainData = useMultichainContext()?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
@@ -37,6 +40,7 @@ const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTy
           <AddressFungibleTokensTableItem
             key={ (item.token?.address_hash ?? '') + (isLoading ? index : '') }
             { ...item }
+            chainData={ chainData }
             isLoading={ isLoading }
             hasAdditionalTokenTypes={ hasAdditionalTokenTypes }
           />

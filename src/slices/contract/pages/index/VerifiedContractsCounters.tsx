@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -10,7 +9,13 @@ import { VERIFIED_CONTRACTS_COUNTERS, VERIFIED_CONTRACTS_COUNTERS_MICROSERVICE }
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
+
+const COLUMNS_NUM = {
+  desktop: 2,
+  mobile: 1,
+};
 
 const VerifiedContractsCounters = () => {
   const multichainContext = useMultichainContext();
@@ -49,7 +54,7 @@ const VerifiedContractsCounters = () => {
     countersApiQuery.data?.new_verified_smart_contracts_24h;
 
   return (
-    <Box columnGap={ 3 } rowGap={ 3 } mb={ 6 } display="grid" gridTemplateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}>
+    <StatsContainer columnsNum={ COLUMNS_NUM } mb={ 6 }>
       <StatsWidget
         label="Total contracts"
         value={ Number(contractsCount).toLocaleString() }
@@ -74,7 +79,7 @@ const VerifiedContractsCounters = () => {
             undefined
         }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 

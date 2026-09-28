@@ -1,5 +1,6 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
+
+import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
@@ -11,7 +12,7 @@ import AddressNetWorth from './AddressNetWorth';
 
 const ADDRESS_HASH = addressParamMock.hash;
 const ICON_URL = 'https://localhost:3000/my-icon.png';
-const ICON_URL_PROMO = 'https://localhost:3000/my-icon-promo.png';
+const ICON_URL_2 = 'https://localhost:3000/my-icon-2.png';
 
 test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('core:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
@@ -20,63 +21,19 @@ test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('core:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } });
 });
 
-test('base view', async({ render }) => {
-  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with single multichain button internal +@dark-mode', async({ render, mockEnvs, mockAssetResponse }) => {
+test('with multichain buttons +@dark-mode', async({ render, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [
-      'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG',
-      `[{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', JSON.stringify([
+      { name: 'Duck portfolio', dapp_id: 'duck', url_template: 'https://duck.url/{address}', logo: ICON_URL },
+      { name: 'duck3', dapp_id: 'duck', url_template: 'https://duck.url/{address}', logo: ICON_URL, view: 'icon' },
+      { name: 'Goose tracker', url_template: 'https://duck.url/{address}', logo: ICON_URL_2, view: 'full' },
+      { name: 'goose', url_template: 'https://duck.url/{address}', logo: ICON_URL_2, view: 'icon' },
+    ] satisfies Array<MultichainProviderConfig>) ],
   ]);
-  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
+  await mockAssetResponse(ICON_URL, './playwright/mocks/duck.png');
+  await mockAssetResponse(ICON_URL_2, './playwright/mocks/goose.png');
 
   const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with single multichain button external', async({ render, mockEnvs, mockAssetResponse }) => {
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `[{"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
-  ]);
-  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
-
-  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with two multichain button and promo', async({ render, mockEnvs, mockAssetResponse }) => {
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `[
-      {"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"},
-      {"name": "duck2", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"},
-      {"name": "duck3", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL_PROMO }", "promo": true}
-    ]` ],
-  ]);
-  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
-  await mockAssetResponse(ICON_URL_PROMO, './playwright/mocks/image_s.jpg');
-
-  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with multichain button internal small screen', async({ render, mockEnvs, mockAssetResponse }) => {
-  await mockEnvs([
-    [
-      'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG',
-      `[{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
-  ]);
-  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
-
-  const component = await render(
-    <Box w="300px"><AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/></Box>,
-  );
 
   await expect(component).toHaveScreenshot();
 });

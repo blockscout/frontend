@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UptimeRealTimeData } from 'src/features/chain-variants/mega-eth/types/api';
 
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 interface Props {
@@ -14,13 +14,7 @@ interface Props {
 const UptimeStats = ({ realtimeData }: Props) => {
 
   return (
-    <Box
-      columnGap={ 2 }
-      rowGap={ 2 }
-      mb={ 8 }
-      display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: 'repeat(4, 1fr)' }}
-    >
+    <StatsContainer mb={ 8 }>
       <StatsWidget
         label="Current TPS"
         hint="Number of transactions processed per second on the network"
@@ -42,7 +36,7 @@ const UptimeStats = ({ realtimeData }: Props) => {
         valuePostfix=" ms"
         value={ realtimeData ? Number(realtimeData.instant_mini_block_interval).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '-' }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 

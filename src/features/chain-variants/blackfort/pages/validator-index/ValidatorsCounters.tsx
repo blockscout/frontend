@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -8,6 +7,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import { VALIDATORS_BLACKFORT_COUNTERS } from 'src/features/chain-variants/blackfort/stubs/validators';
 
 import config from 'src/config';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 const ValidatorsCounters = () => {
@@ -23,14 +23,14 @@ const ValidatorsCounters = () => {
   }
 
   return (
-    <Box columnGap={ 3 } rowGap={ 3 } mb={ 6 } display="grid" gridTemplateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}>
+    <StatsContainer mb={ 6 }>
       <StatsWidget
         label="Total validators"
         value={ Number(countersQuery.data.validators_count).toLocaleString() }
         diff={ Number(countersQuery.data.new_validators_count_24h).toLocaleString() }
         isLoading={ countersQuery.isPlaceholderData }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 
