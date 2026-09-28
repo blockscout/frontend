@@ -7,6 +7,7 @@ import React from 'react';
 import type { AppActionSource } from 'src/features/address-metadata/utils/build-app-action-url';
 import { buildAppActionUrl } from 'src/features/address-metadata/utils/build-app-action-url';
 import type { AppActionData } from 'src/features/address-metadata/utils/get-app-action-data';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import * as mixpanel from 'src/services/mixpanel';
@@ -25,8 +26,11 @@ type Props = {
 const AppActionButton = ({ data, className, addressHash, txHash, source }: Props) => {
   const { appID, textColor, bgColor, appActionButtonText, appLogoURL, appMarketplaceURL } = data;
 
+  const multichainContext = useMultichainContext();
+  const chainId = multichainContext?.chain?.app_config.chain.id || config.chain.id;
+
   const actionURL = appMarketplaceURL ?
-    buildAppActionUrl(appMarketplaceURL, { address: addressHash, chainId: config.chain.id, txHash }, source) :
+    buildAppActionUrl(appMarketplaceURL, { address: addressHash, chainId, txHash }, source) :
     undefined;
 
   const handleClick = React.useCallback(() => {

@@ -10,6 +10,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { Reputation } from 'src/slices/token/components/entity/TokenEntity';
 
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
+import { getVisibleProtocolTags } from 'src/features/address-metadata/utils/get-visible-protocol-tags';
 
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
@@ -27,7 +28,7 @@ const HotContractsTableItem = ({
   data,
   exchangeRate,
 }: Props) => {
-  const protocolTags = data?.contract_address?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
+  const protocolTags = getVisibleProtocolTags(data?.contract_address?.metadata?.tags);
 
   return (
     <TableRow>
@@ -39,7 +40,7 @@ const HotContractsTableItem = ({
           />
           <Reputation value={ data.contract_address.reputation ?? null } ml={ 0 }/>
         </HStack>
-        { protocolTags && protocolTags.length > 0 && (
+        { protocolTags.length > 0 && (
           <MetadataTags
             isLoading={ isLoading }
             tags={ protocolTags }

@@ -1,11 +1,9 @@
 import React from 'react';
 
-import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
-
 import { tokenInfoERC721a } from 'src/slices/token/mocks/info';
 import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
 
-import { hiddenProtocolTagWithMeta } from 'src/features/address-metadata/mocks/tags';
+import { generateAddressMetadataInfo, hiddenProtocolTagWithMeta } from 'src/features/address-metadata/mocks/tags';
 
 import config from 'src/config';
 
@@ -21,21 +19,8 @@ const addressMetadataQueryParams = {
   tagsLimit: '20',
 };
 
-function generateAddressMetadataResponse(tag: AddressMetadataTagApi) {
-  return {
-    addresses: {
-      [ hash.toLowerCase() ]: {
-        tags: [ {
-          ...tag,
-          meta: JSON.stringify(tag.meta),
-        } ],
-      },
-    },
-  } as AddressMetadataInfo;
-}
-
 test('with action button +@dark-mode +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
-  await mockApiResponse('metadata:info', generateAddressMetadataResponse(hiddenProtocolTagWithMeta), { queryParams: addressMetadataQueryParams });
+  await mockApiResponse('metadata:info', generateAddressMetadataInfo(hash, hiddenProtocolTagWithMeta), { queryParams: addressMetadataQueryParams });
   await mockAssetResponse(hiddenProtocolTagWithMeta.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import type { AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
 
 export const nameTag: AddressMetadataTagApi = {
   slug: 'quack-quack',
@@ -143,3 +143,14 @@ export const hiddenProtocolTagWithMeta: AddressMetadataTagApi = {
     hidden: 'true',
   },
 };
+
+export function generateAddressMetadataInfo(addressHash: string, tag: AddressMetadataTagApi): AddressMetadataInfo {
+  return {
+    addresses: {
+      [ addressHash.toLowerCase() ]: {
+        tags: [ { ...tag, meta: JSON.stringify(tag.meta) } ],
+        reputation: null,
+      },
+    },
+  };
+}

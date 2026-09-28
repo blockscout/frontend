@@ -14,6 +14,7 @@ import TxTokenTransfer from 'src/slices/token-transfer/pages/tx/TxTokenTransfer'
 import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
+import { getVisibleProtocolTags } from 'src/features/address-metadata/utils/get-visible-protocol-tags';
 import TextAd from 'src/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'src/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
 import TxBlobs from 'src/features/data-availability/pages/tx/TxBlobs';
@@ -118,10 +119,7 @@ const TransactionPageContent = () => {
     txTags.push({ slug: 'sponsored', name: 'Sponsored', tagType: 'custom' as const, ordinal: 0 });
   }
 
-  const protocolTags = data?.to?.metadata?.tags?.filter(tag => tag.tagType === 'protocol');
-  if (protocolTags && protocolTags.length > 0) {
-    txTags.push(...protocolTags);
-  }
+  txTags.push(...getVisibleProtocolTags(data?.to?.metadata?.tags));
 
   const isTabsLoading = txQuery.isPlaceholderData && !txQuery.errorUpdateCount;
 
