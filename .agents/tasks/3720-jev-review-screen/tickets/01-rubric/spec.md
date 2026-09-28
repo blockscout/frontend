@@ -54,5 +54,5 @@ How to verify: read `tools/review-screen/rubric.ts`
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Draft `rubric.ts` with the `Rule` type and the rule array, plus `rubric.spec.ts`
-- [ ] 2 `[agent]` Add the new words (`noul`, `typesafe`, `jev`) to `cspell.jsonc` where the spec or rubric trips it
+- [x] 1 `[agent]` Draft `rubric.ts` with the `Rule` type and the rule array, plus `rubric.spec.ts`
+- [x] 2 `[agent]` Add the new words (`noul`, `typesafe`, `jev`) to `cspell.jsonc` where the spec or rubric trips it
