@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Center, Flex, Grid } from '@chakra-ui/react';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,6 +15,7 @@ import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-e
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -139,10 +140,10 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
           value={ Math.ceil(Number(data.estimated_time_in_seconds)) }
           onFinish={ handleTimerFinish }
         />
-        <Grid gridTemplateColumns="repeat(2, calc(50% - 4px))" columnGap={ 2 } mt={ 2 }>
+        <StatsContainer mt={{ base: 1, lg: 2 }}>
           <StatsWidget label="Remaining blocks" value={ data.remaining_blocks_count } icon="apps"/>
           <StatsWidget label="Current block" value={ data.current_block_number } icon="block"/>
-        </Grid>
+        </StatsContainer>
         { !hideCapybaraRunner && <CapybaraRunner/> }
       </Flex>
     </Center>
