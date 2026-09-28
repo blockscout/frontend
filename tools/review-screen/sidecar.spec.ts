@@ -93,6 +93,8 @@ describe('readSidecar', () => {
     expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar (version 1)');
     fs.writeFileSync(target, JSON.stringify([]));
     expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar');
+    fs.writeFileSync(target, JSON.stringify(null));
+    expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar');
   });
 
   it('fills in an empty window list and a pilot marker for a sidecar written before either was recorded', () => {

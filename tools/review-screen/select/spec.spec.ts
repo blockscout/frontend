@@ -67,8 +67,25 @@ describe('parseRequirements', () => {
     ]);
   });
 
+  it('keeps the last item when the section ends the file without a trailing newline', () => {
+    expect(parseRequirements('## Functional requirements\n\n1. One.\n2. Two.')).toEqual([
+      { id: 'FR1', text: 'One.' },
+      { id: 'FR2', text: 'Two.' },
+    ]);
+  });
+
+  it('joins an indented line after a blank line, but ends the item at unindented prose', () => {
+    expect(parseRequirements('## Functional requirements\n\n1. One.\n\n   more.\n')).toEqual([ { id: 'FR1', text: 'One. more.' } ]);
+    expect(parseRequirements('## Functional requirements\n\n1. One.\nProse.\n   tail.\n')).toEqual([ { id: 'FR1', text: 'One.' } ]);
+  });
+
+  it('ignores an indented line before the first item', () => {
+    expect(parseRequirements('## Functional requirements\n\n   stray.\n1. One.\n')).toEqual([ { id: 'FR1', text: 'One.' } ]);
+  });
+
   it('returns nothing without the section or without a list in it', () => {
     expect(parseRequirements('# Title\n\n1. Loose item.\n')).toEqual([]);
+    expect(parseRequirements('1. Loose item.\n')).toEqual([]);
     expect(parseRequirements('## Functional requirements\n\nProse only.\n')).toEqual([]);
   });
 });

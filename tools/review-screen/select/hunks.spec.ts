@@ -51,6 +51,18 @@ describe('parseUnifiedDiff', () => {
     ]);
   });
 
+  it('takes hunk lines only after a hunk header, so a preamble starting with --- or +++ is not a line', () => {
+    expect(parseUnifiedDiff('--- a/f\n+++ b/f\n@@ -1 +1 @@\n+a\n')).toEqual([ { lines: [ added(1, 'a') ] } ]);
+  });
+
+  it('stops a hunk at the next file header instead of reading it as context', () => {
+    const twoFiles = `${ DIFF }\ndiff --git a/src/g.ts b/src/g.ts\nindex 3333333..4444444 100644\n--- a/src/g.ts\n+++ b/src/g.ts\n@@ -1 +1 @@\n-x\n+y`;
+    const hunks = parseUnifiedDiff(twoFiles);
+    expect(hunks).toHaveLength(3);
+    expect(hunks[1].lines).toHaveLength(3);
+    expect(hunks[2]).toEqual({ lines: [ { kind: 'removed', text: 'x' }, added(1, 'y') ] });
+  });
+
   it('yields no hunk for a diff without one', () => {
     expect(parseUnifiedDiff('Binary files a/x.png and b/x.png differ\n')).toEqual([]);
     expect(parseUnifiedDiff('')).toEqual([]);
@@ -85,7 +97,7 @@ describe('buildWindows', () => {
   it('puts every hunk in one window when they fit, with the changed ids and the first line', () => {
     const windows = buildWindows(parseUnifiedDiff(DIFF), roomy);
     expect(windows).toHaveLength(1);
-    expect(windows[0]).toMatchObject({ index: 0, changedIds: [ 'L4', 'L5', 'L42' ], firstLine: 3 });
+    expect(windows[0]).toMatchObject({ index: 0, changedIds: [ 'L4', 'L5', 'L42' ], firstLine: 3, lastLine: 42 });
     expect(windows[0].state).toContain('L4 +   fresh();');
     expect(windows[0].state).toContain('\n@@\n');
   });
@@ -106,9 +118,26 @@ describe('buildWindows', () => {
     expect(windows.map((window) => window.changedIds)).toEqual([ [ 'L1', 'L2' ], [ 'L3', 'L4' ], [ 'L5' ] ]);
   });
 
+  it('counts the newline between rendered lines against the character budget', () => {
+    const windows = buildWindows([ hunkOfAddedLines(2) ], { maxChars: 2 * RENDERED_LINE_CHARS - 1, maxChangedLines: 1_000 });
+    expect(windows.map((window) => window.changedIds)).toEqual([ [ 'L1' ], [ 'L2' ] ]);
+  });
+
   it('caps the changed lines per window so the locate step never exceeds the option limit', () => {
     const windows = buildWindows([ hunkOfAddedLines(7) ], { maxChars: 10_000, maxChangedLines: 3 });
     expect(windows.map((window) => window.changedIds.length)).toEqual([ 3, 3, 1 ]);
+  });
+
+  it('counts added lines only against the changed-lines cap, not context or removed ones', () => {
+    const mixed: Hunk = { lines: [
+      { kind: 'context', line: 1, text: 'a' },
+      added(2, 'b'),
+      { kind: 'removed', text: 'c' },
+      { kind: 'context', line: 3, text: 'd' },
+      added(4, 'e'),
+    ] };
+    const windows = buildWindows([ mixed ], { maxChars: 10_000, maxChangedLines: 2 });
+    expect(windows.map((window) => window.changedIds)).toEqual([ [ 'L2', 'L4' ] ]);
   });
 
   it('keeps a single line longer than the budget as its own window', () => {
@@ -119,7 +148,7 @@ describe('buildWindows', () => {
 
   it('falls back to line 1 for a window with no numbered line', () => {
     const removedOnly: Hunk = { lines: [ { kind: 'removed', text: 'x' } ] };
-    expect(buildWindows([ removedOnly ], roomy)[0]).toMatchObject({ changedIds: [], firstLine: 1 });
+    expect(buildWindows([ removedOnly ], roomy)[0]).toMatchObject({ changedIds: [], firstLine: 1, lastLine: 1 });
   });
 
   it('yields no window for no hunks', () => {

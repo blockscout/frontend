@@ -145,7 +145,8 @@ function fits(lines: ReadonlyArray<StateLine>, limits: WindowLimits): boolean {
 }
 
 // Cut one oversized hunk on lines. A single line longer than the whole budget still becomes its own
-// chunk — the model gets a long line rather than the tool dropping code silently.
+// chunk — the model gets a long line rather than the tool dropping code silently. The hunk is never
+// empty: an empty one fits any window and is not split.
 function splitHunk(hunk: Hunk, limits: WindowLimits): Array<Hunk> {
   const chunks: Array<Hunk> = [];
   let current: Array<StateLine> = [];
@@ -156,7 +157,7 @@ function splitHunk(hunk: Hunk, limits: WindowLimits): Array<Hunk> {
     }
     current.push(line);
   }
-  if (current.length > 0) chunks.push({ lines: current });
+  chunks.push({ lines: current });
   return chunks;
 }
 

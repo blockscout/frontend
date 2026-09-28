@@ -87,10 +87,13 @@ export function selectSpecSuspects(
 // a grid that stays within its half yields the rest to the other, and two overflowing grids split
 // the cap evenly (the standards grid takes the odd slot).
 export function splitCap(standardsTotal: number, specTotal: number, maxSuspects: number): { readonly standards: number; readonly spec: number } {
+  // Stryker disable next-line EqualityOperator: when the two totals add up to the cap exactly, the branches below return the same split
   if (standardsTotal + specTotal <= maxSuspects) return { standards: standardsTotal, spec: specTotal };
   const standardsHalf = Math.ceil(maxSuspects / 2);
   const specHalf = maxSuspects - standardsHalf;
+  // Stryker disable next-line EqualityOperator: a grid sitting exactly on its half gets that half either way
   if (standardsTotal <= standardsHalf) return { standards: standardsTotal, spec: maxSuspects - standardsTotal };
+  // Stryker disable next-line EqualityOperator: a grid sitting exactly on its half gets that half either way
   if (specTotal <= specHalf) return { standards: maxSuspects - specTotal, spec: specTotal };
   return { standards: standardsHalf, spec: specHalf };
 }

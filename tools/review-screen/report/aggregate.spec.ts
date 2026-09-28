@@ -104,6 +104,18 @@ describe('aggregateReport', () => {
     ]);
   });
 
+  it('picks the most frequent drop reason even when it is seen after a rarer one', () => {
+    const report = aggregateReport([
+      sidecar('one.json', { origins: origins([
+        standardsSuspect('magic-number', 'dropped', 'rare'),
+        standardsSuspect('magic-number', 'dropped', 'common'),
+        standardsSuspect('magic-number', 'dropped', 'common'),
+      ]) }),
+    ], RULE_IDS);
+
+    expect(report.rules[1].topDropReason).toBe('common');
+  });
+
   it('keeps the first-seen reason when drop reasons tie', () => {
     const report = aggregateReport([
       sidecar('one.json', { origins: origins([
@@ -125,6 +137,18 @@ describe('aggregateReport', () => {
 
     expect(report.totals.reviews).toBe(2);
     expect(report.totals.findings).toEqual({ jev: 1, axis: 3, both: 1 });
+  });
+
+  it('reports zero seconds and tokens when no review is counted', () => {
+    const report = aggregateReport([ sidecar('pending.json', { calls: [ call(9000, 100) ] }) ], RULE_IDS);
+
+    expect(report.totals).toEqual({
+      reviews: 0,
+      pending: 1,
+      findings: { jev: 0, axis: 0, both: 0 },
+      addedSeconds: { mean: 0, max: 0 },
+      meanInputTokens: 0,
+    });
   });
 
   it('reports the wall-clock seconds per review as mean and max, and the mean input tokens', () => {

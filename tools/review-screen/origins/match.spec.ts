@@ -101,8 +101,15 @@ describe('assignOrigins', () => {
       },
       spec: { status: 'no-spec' },
     });
+    // For the first suspect (line 12): F1 is 15 away, F2 and F3 both 2 away, F4 is 4 away. The nearest
+    // wins regardless of its position in the list, and an earlier row wins a tie.
     const input: OriginsInput = {
-      findings: [ finding('F1', 'src/a.ts:27', [ 'standards', 'jev' ]), finding('F2', 'src/a.ts:14', [ 'jev' ]) ],
+      findings: [
+        finding('F1', 'src/a.ts:27', [ 'standards', 'jev' ]),
+        finding('F2', 'src/a.ts:14', [ 'jev' ]),
+        finding('F3', 'src/a.ts:10', [ 'jev' ]),
+        finding('F4', 'src/a.ts:16', [ 'jev' ]),
+      ],
       drops: [],
     };
     const fates = assignOrigins(shared, input, RECORDED_AT).suspects;
@@ -116,12 +123,38 @@ describe('assignOrigins', () => {
   });
 
   it('matches by the window span, not the located line, and never across files', () => {
+    // F2 sits inside src/a.ts window 0 by line number only: it is in another file, so it belongs to no
+    // src/a.ts suspect, and it is outside src/b.ts window 0, so it belongs to no src/b.ts suspect either.
     const input: OriginsInput = {
-      findings: [ finding('F1', 'src/a.ts:30', [ 'jev' ]), finding('F2', 'src/b.ts:31', [ 'jev' ]) ],
+      findings: [ finding('F1', 'src/a.ts:30', [ 'jev' ]), finding('F2', 'src/b.ts:20', [ 'jev' ]), finding('F3', 'src/b.ts:5', [ 'jev' ]) ],
       drops: [],
     };
-    const fates = assignOrigins(record(), input, RECORDED_AT).suspects.map((entry) => entry.fate);
-    expect(fates).toEqual([ 'confirmed', 'dropped', 'dropped', 'dropped', 'dropped' ]);
+    const fates = assignOrigins(record(), input, RECORDED_AT).suspects;
+    expect(fates).toMatchObject([
+      { fate: 'confirmed', finding: 'F1' },
+      { fate: 'dropped', reason: 'not reported' },
+      { fate: 'confirmed', finding: 'F3' },
+      { fate: 'dropped', reason: 'not reported' },
+      { fate: 'dropped', reason: 'not reported' },
+    ]);
+
+    // Alone, F2 is still past the end of src/b.ts window 0, and one on its last line is in.
+    const past: OriginsInput = { findings: [ finding('F2', 'src/b.ts:20', [ 'jev' ]) ], drops: [] };
+    expect(assignOrigins(record(), past, RECORDED_AT).suspects[2]).toMatchObject({ fate: 'dropped', reason: 'not reported' });
+    const last: OriginsInput = { findings: [ finding('F2', 'src/b.ts:12', [ 'jev' ]) ], drops: [] };
+    expect(assignOrigins(record(), last, RECORDED_AT).suspects[2]).toMatchObject({ fate: 'confirmed', finding: 'F2' });
+  });
+
+  it('matches a spec suspect on its requirement id only, never on a line finding', () => {
+    const input: OriginsInput = {
+      findings: [ finding('F1', 'FR2', [ 'jev' ], 'spec'), finding('F2', 'FR1', [ 'jev' ], 'spec'), finding('F3', 'src/b.ts:3', [ 'jev' ]) ],
+      drops: [],
+    };
+    const fates = assignOrigins(record(), input, RECORDED_AT).suspects;
+    expect(fates.slice(3)).toMatchObject([
+      { suspect: { kind: 'spec', requirement: 'FR1' }, fate: 'confirmed', finding: 'F2' },
+      { suspect: { kind: 'spec', requirement: 'FR2' }, fate: 'confirmed', finding: 'F1' },
+    ]);
   });
 
   it('matches on the exact line when the sidecar has no window spans', () => {

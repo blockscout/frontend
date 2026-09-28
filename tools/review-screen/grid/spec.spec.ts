@@ -80,6 +80,15 @@ describe('bestByRequirement', () => {
     ];
     expect(bestByRequirement(cells)).toEqual([ cells[2], cells[0] ]);
   });
+
+  it('breaks a tie within one file on the lowest window', () => {
+    const cells = [
+      { requirement: 'FR1', file: 'a', window: 2, score: 0.5 },
+      { requirement: 'FR1', file: 'a', window: 0, score: 0.5 },
+      { requirement: 'FR1', file: 'a', window: 1, score: 0.5 },
+    ];
+    expect(bestByRequirement(cells)).toEqual([ cells[1] ]);
+  });
 });
 
 describe('selectSpecSuspects', () => {
@@ -104,6 +113,7 @@ describe('selectSpecSuspects', () => {
 describe('splitCap', () => {
   it('keeps both whole while they fit together', () => {
     expect(splitCap(5, 7, 12)).toEqual({ standards: 5, spec: 7 });
+    expect(splitCap(2, 3, 12)).toEqual({ standards: 2, spec: 3 });
   });
 
   it('gives a grid within its half the room the other does not need', () => {
@@ -124,6 +134,15 @@ describe('shareCap', () => {
     expect(shareCap(standards, spec, 4)).toEqual({
       standards: { suspects: [ 's1', 's2' ], cut: 6 },
       spec: { suspects: [ 'r1', 'r2' ], cut: 2 },
+    });
+  });
+
+  it('counts a cut the grid already made into that grid\'s total', () => {
+    const standards = { suspects: [ 's1' ], cut: 0 };
+    const spec = { suspects: [ 'r1', 'r2', 'r3', 'r4' ], cut: 2 };
+    expect(shareCap(standards, spec, 4)).toEqual({
+      standards: { suspects: [ 's1' ], cut: 0 },
+      spec: { suspects: [ 'r1', 'r2', 'r3' ], cut: 3 },
     });
   });
 
@@ -180,8 +199,9 @@ describe('screenSpec', () => {
 
   it('sends nothing without requirements or without files', async() => {
     const { client, requests } = fakeClient();
-    expect(await screenSpec([ target('src/a.ts', window(0)) ], [], client, CONFIG)).toMatchObject({ cells: [], suspects: [], cut: 0 });
-    expect(await screenSpec([], REQUIREMENTS, client, CONFIG)).toMatchObject({ cells: [], suspects: [], cut: 0 });
+    const expected = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
+    expect(await screenSpec([ target('src/a.ts', window(0)) ], [], client, CONFIG)).toEqual(expected);
+    expect(await screenSpec([], REQUIREMENTS, client, CONFIG)).toEqual(expected);
     expect(requests).toEqual([]);
   });
 

@@ -55,8 +55,12 @@ function topReason(reasons: ReadonlyArray<string>): string | undefined {
   const counts = new Map<string, number>();
   for (const reason of reasons) counts.set(reason, (counts.get(reason) ?? 0) + 1);
   let top: string | undefined;
+  let topCount = 0;
   for (const [ reason, count ] of counts) {
-    if (top === undefined || count > (counts.get(top) ?? 0)) top = reason;
+    if (count > topCount) {
+      top = reason;
+      topCount = count;
+    }
   }
   return top;
 }

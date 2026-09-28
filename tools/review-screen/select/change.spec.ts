@@ -104,11 +104,25 @@ describe('resolveChange', () => {
     expect(resolve({}).spec).toBeUndefined();
   });
 
+  it('records no spec, without throwing, when the checkout has no tasks directory at all', () => {
+    createForkedRepo();
+    fs.rmSync(path.join(repo, '.agents'), { recursive: true, force: true });
+    expect(resolve({}).spec).toBeUndefined();
+  });
+
   it('infers the ticket in flight from progress.md only under --scope uncommitted', () => {
     createForkedRepo();
     expect(resolve({ scope: 'uncommitted' }).ticket).toBe('02');
     expect(resolve({ scope: 'branch' }).ticket).toBeUndefined();
     expect(resolve({ scope: 'branch', ticket: '05' }).ticket).toBe('05');
+  });
+
+  it('records no ticket, without throwing, when there is no task folder or no progress.md to read', () => {
+    createForkedRepo();
+    fs.rmSync(path.join(repo, '.agents/tasks/12-thing/progress.md'));
+    expect(resolve({ scope: 'uncommitted' }).ticket).toBeUndefined();
+    git('checkout', '-b', 'not-a-task');
+    expect(resolve({ scope: 'uncommitted' }).ticket).toBeUndefined();
   });
 
   it('names a detached HEAD so the sidecar file name stays well-formed', () => {

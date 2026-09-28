@@ -67,6 +67,7 @@ function spanOf(suspect: Suspect, spans: ReadonlyArray<WindowSpan>): { readonly 
 export type Distance = (finding: FindingRow) => number | undefined;
 
 export function standardsDistance(finding: FindingRow, suspect: Suspect, spans: ReadonlyArray<WindowSpan>): number | undefined {
+  // Stryker disable next-line ConditionalExpression: the kind check only narrows; a non-line location has no `file`, so the file check alone returns undefined
   if (finding.location.kind !== 'line' || finding.location.file !== suspect.file) return undefined;
   const { firstLine, lastLine } = spanOf(suspect, spans);
   const inside = finding.location.line >= firstLine && finding.location.line <= lastLine;
@@ -74,6 +75,7 @@ export function standardsDistance(finding: FindingRow, suspect: Suspect, spans: 
 }
 
 export function specDistance(finding: FindingRow, suspect: SpecSuspect): number | undefined {
+  // Stryker disable next-line ConditionalExpression: the kind check only narrows; a non-requirement location has no `requirement`, so the id check alone fails
   return finding.location.kind === 'requirement' && finding.location.requirement === suspect.requirement ? 0 : undefined;
 }
 

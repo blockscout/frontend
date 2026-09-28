@@ -59,9 +59,10 @@ function listUntracked(cwd: string): Array<string> {
 export function listTouchedFiles(base: string, cwd: string): Array<TouchedFile> {
   const untracked = new Set(listUntracked(cwd));
   const tracked = getChangedFiles(base, cwd).filter((file) => !untracked.has(file));
-  return [ ...tracked.map((file) => ({ path: file, untracked: false })), ...[ ...untracked ].map((file) => ({ path: file, untracked: true })) ]
-    .filter((file) => fs.existsSync(path.resolve(cwd, file.path)))
-    .sort((a, b) => (a.path < b.path ? -1 : 1));
+  const files = [ ...tracked.map((file) => ({ path: file, untracked: false })), ...[ ...untracked ].map((file) => ({ path: file, untracked: true })) ]
+    .filter((file) => fs.existsSync(path.resolve(cwd, file.path)));
+  // Stryker disable next-line EqualityOperator: git lists each path once and the untracked ones are removed from the tracked list, so no two paths are equal
+  return files.sort((a, b) => (a.path < b.path ? -1 : 1));
 }
 
 export function resolveTaskFolder(branch: string, cwd: string): string | undefined {

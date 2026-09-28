@@ -67,7 +67,9 @@ describe('parseArgs', () => {
     expect(() => parseArgs([ '--json' ])).toThrow(/--json goes with --report\nUsage:/);
   });
 
-  it('rejects a scope other than branch or uncommitted', () => {
+  it('accepts both scopes by name and rejects any other', () => {
+    expect(parseArgs([ '--scope', 'branch' ])).toMatchObject({ scope: 'branch' });
+    expect(parseArgs([ '--scope', 'uncommitted' ])).toMatchObject({ scope: 'uncommitted' });
     expect(() => parseArgs([ '--scope', 'pr' ])).toThrow('Invalid value for --scope: pr');
   });
 
@@ -91,6 +93,26 @@ describe('specRecordOf', () => {
   it('reports every requirement covered only when at least one file was scored', () => {
     const screened: Screened = { client, source, windows: [], specFiles: 1, standards: empty, spec: empty, elapsedMs: 0 };
     expect(specRecordOf(screened)).toEqual({ status: 'ok', requirements: source.requirements, cells: [], suspects: [], cut: 0 });
+  });
+
+  it('passes a missing spec through and turns an unreadable one into a failed record with nothing scored', () => {
+    const noSpec: Screened = { client, source: { status: 'no-spec' }, windows: [], specFiles: 1, standards: empty, spec: empty, elapsedMs: 0 };
+    expect(specRecordOf(noSpec)).toEqual({ status: 'no-spec' });
+    const unreadable: Screened['source'] = { status: 'failed', reason: 'no such file' };
+    const failed: Screened = { client, source: unreadable, windows: [], specFiles: 1, standards: empty, spec: empty, elapsedMs: 0 };
+    expect(specRecordOf(failed)).toEqual({ status: 'failed', reason: 'no such file', requirements: [], cells: [] });
+  });
+
+  it('skips the grid with the client reason when there is no client', () => {
+    const screened: Screened = { client: { ok: false, reason: 'no key' }, source, windows: [], specFiles: 1, standards: empty, spec: empty, elapsedMs: 0 };
+    expect(specRecordOf(screened)).toEqual({ status: 'skipped', reason: 'no key' });
+  });
+
+  it('reports an API failure with the requirements and the cells scored before it', () => {
+    const cells = [ { requirement: 'FR1', file: 'src/a.ts', window: 0, score: 0.4 } ];
+    const spec = { ...empty, cells, failure: 'InternalServerError: boom' };
+    const screened: Screened = { client, source, windows: [], specFiles: 1, standards: empty, spec, elapsedMs: 0 };
+    expect(specRecordOf(screened)).toEqual({ status: 'failed', reason: 'InternalServerError: boom', requirements: source.requirements, cells });
   });
 });
 
@@ -134,6 +156,7 @@ describe('--origins', () => {
 
     const second = runOrigins(sidecar, JSON.stringify([ { id: 'F9', axis: 'spec', location: '—', sources: [ 'spec' ] } ]));
     expect(second.findings).toEqual([ { id: 'F9', origin: 'axis' } ]);
+    expect(second.suspects).toEqual([ { suspect: 'no-comments src/a.ts:4', fate: 'dropped', reason: 'not reported' } ]);
     const afterSecond = readSidecar(sidecar);
     expect(afterSecond.origins?.findings).toEqual([ { id: 'F9', axis: 'spec', sources: [ 'spec' ], origin: 'axis' } ]);
     expect(afterSecond.origins?.suspects).toEqual([

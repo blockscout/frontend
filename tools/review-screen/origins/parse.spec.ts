@@ -57,11 +57,35 @@ describe('parseOriginsInput', () => {
     expect(parseOriginsInput('[]')).toEqual({ findings: [], drops: [] });
   });
 
+  it('reads a numeric id as text, missing sources as none, and drops empty or dash sources from a list or a cell', () => {
+    const json = JSON.stringify([
+      { id: 7, axis: 'spec', location: 'FR1', sources: [ 'jev', '', ' ' ] },
+      { id: 'F2', axis: 'spec', location: 'FR2' },
+      { suspect: 'FR5', fate: 'dropped' },
+    ]);
+    expect(parseOriginsInput(json)).toEqual({
+      findings: [
+        { id: '7', axis: 'spec', location: { kind: 'requirement', requirement: 'FR1' }, sources: [ 'jev' ] },
+        { id: 'F2', axis: 'spec', location: { kind: 'requirement', requirement: 'FR2' }, sources: [] },
+      ],
+      drops: [ { suspect: { kind: 'spec', requirement: 'FR5' }, reason: '' } ],
+    });
+
+    const markdown = '| id | axis | location | sources |\n| --- | --- | --- | --- |\n| F1 | spec | FR1 | — |\n| F2 | spec | FR2 | `, jev` |\n';
+    expect(parseOriginsInput(markdown).findings.map((row) => row.sources)).toEqual([ [], [ 'jev' ] ]);
+  });
+
   it('rejects Markdown without a findings table, a JSON value that is not an array, and a row missing a column', () => {
     expect(() => parseOriginsInput('| suspect | fate | reason |\n| --- | --- | --- |\n')).toThrow('No findings table');
     expect(() => parseOriginsInput('{ "id": "F1" }')).toThrow('No findings table');
     expect(() => parseOriginsInput('[ { "id": "F1", "axis": "spec" } ]')).toThrow('Missing "location"');
     expect(() => parseOriginsInput('[ 1 ]')).toThrow('Expected an object');
+    expect(() => parseOriginsInput('[ null ]')).toThrow('Expected an object');
+    expect(() => parseOriginsInput('[ [] ]')).toThrow('Expected an object');
+  });
+
+  it('does not take a pipe block for a table without a separator row under the header', () => {
+    expect(() => parseOriginsInput('| id | axis | location | sources |\n| F1 | spec | FR1 | jev |\n')).toThrow('No findings table');
   });
 });
 

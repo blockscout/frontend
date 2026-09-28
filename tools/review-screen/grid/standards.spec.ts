@@ -138,7 +138,7 @@ describe('screenStandards', () => {
     const { client, requests } = fakeClient({});
     const result = await screenStandards([ target('docs/x.md', window(0, [ 'L1' ])) ], RULES, client, CONFIG);
     expect(requests).toEqual([]);
-    expect(result.cells).toEqual([]);
+    expect(result).toEqual({ cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined });
   });
 
   it('takes the max across windows and locates the line in the winning window with one choice call', async() => {
@@ -161,11 +161,37 @@ describe('screenStandards', () => {
     ]));
   });
 
+  it('keeps the first window in grid order when a later one ties or scores lower', async() => {
+    const { client, requests } = fakeClient({
+      score: (ruleId, changes) => {
+        if (ruleId === 'alpha') return changes === 'window 2' ? 0.8 : 0.9;
+        return changes === 'window 0' ? 0.85 : 0.95;
+      },
+    });
+    const files = [ target('src/a.ts', window(0, [ 'L1' ]), window(1, [ 'L11' ]), window(2, [ 'L21' ])) ];
+
+    const result = await screenStandards(files, RULES, client, { ...CONFIG, concurrency: 1 });
+
+    expect(result.suspects).toEqual([
+      { rule: 'beta', file: 'src/a.ts', line: 11, score: 0.95, window: 1 },
+      { rule: 'alpha', file: 'src/a.ts', line: 1, score: 0.9, window: 0 },
+    ]);
+    const locate = requests.filter((request) => request.questions.line?.type === 'choice');
+    expect(locate.map((request) => request.state.changes)).toEqual([ 'window 0', 'window 1' ]);
+  });
+
   it('applies a per-rule threshold override', async() => {
     const { client } = fakeClient({ score: () => 0.75 });
     const config = { ...CONFIG, thresholdOverrides: { alpha: 0.8 } };
     const result = await screenStandards([ target('src/a.ts', window(0, [ 'L1' ])) ], RULES, client, config);
     expect(result.suspects.map((suspect) => suspect.rule)).toEqual([ 'beta' ]);
+  });
+
+  it('takes a cell sitting exactly on its threshold as a suspect', async() => {
+    const { client } = fakeClient({ score: (ruleId) => (ruleId === 'alpha' ? 0.8 : 0.7) });
+    const config = { ...CONFIG, thresholdOverrides: { alpha: 0.8 } };
+    const result = await screenStandards([ target('src/a.ts', window(0, [ 'L1' ])) ], RULES, client, config);
+    expect(result.suspects.map((suspect) => suspect.rule)).toEqual([ 'alpha', 'beta' ]);
   });
 
   it('falls back to the window start when a suspect window has no changed line, and when the model names an id outside the window', async() => {
@@ -188,15 +214,19 @@ describe('screenStandards', () => {
     expect(result.cut).toBe(2);
   });
 
-  it('names no suspects when a locate call fails, keeping the cells', async() => {
-    const { client } = fakeClient({
+  it('names no suspects when a locate call fails, even the ones located before it, keeping the cells', async() => {
+    const { client, requests } = fakeClient({
       score: () => 0.9,
-      fail: (body) => (body.questions.line?.type === 'choice' ? Response.json({ error: 'boom' }, { status: 500 }) : undefined),
+      fail: (body) => {
+        const isSecondLocate = body.questions.line?.type === 'choice' && body.state.file === 'src/b.ts';
+        return isSecondLocate ? Response.json({ error: 'boom' }, { status: 500 }) : undefined;
+      },
     });
     const files = [ target('src/a.ts', window(0, [ 'L1' ])), target('src/b.ts', window(0, [ 'L1' ])) ];
     const result = await screenStandards(files, [ rule('alpha') ], client, { ...CONFIG, concurrency: 1 });
     expect(result.failure).toMatch(/^InternalServerError: /);
     expect(result.cells).toHaveLength(2);
+    expect(requests.filter((request) => request.questions.line?.type === 'choice')).toHaveLength(2);
     expect(result.suspects).toEqual([]);
     expect(result.cut).toBe(0);
   });

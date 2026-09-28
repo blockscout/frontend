@@ -45,9 +45,21 @@ describe('renderReport', () => {
   it('clips a long drop reason and omits the pending section when nothing is pending', () => {
     const reason = 'x'.repeat(80);
     const output = renderReport({ ...REPORT, pending: [], rules: [ { ...REPORT.rules[0], topDropReason: reason } ] });
-    expect(output).toContain(`${ 'x'.repeat(59) }…`);
+    expect(output).toContain(`  ${ 'x'.repeat(59) }…\n`);
     expect(output).not.toContain(reason);
     expect(output).not.toContain('pending origins:');
+  });
+
+  it('keeps a drop reason that just fits and clips one a character longer', () => {
+    const fits = 'y'.repeat(60);
+    const longer = 'z'.repeat(61);
+    const output = renderReport({ ...REPORT, pending: [], rules: [
+      { ...REPORT.rules[0], topDropReason: fits },
+      { ...REPORT.rules[1], topDropReason: longer },
+    ] });
+    expect(output).toContain(`  ${ fits }\n`);
+    expect(output).toContain(`  ${ 'z'.repeat(59) }…`);
+    expect(output).not.toContain(longer);
   });
 });
 

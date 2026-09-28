@@ -178,6 +178,7 @@ export function parseOriginsInput(text: string): OriginsInput {
   const trimmed = text.trim();
   if (trimmed.startsWith('[')) {
     const parsed: unknown = JSON.parse(trimmed);
+    // Stryker disable next-line ConditionalExpression: JSON text that starts with "[" parses to an array or throws, so this guard only narrows the type
     if (!Array.isArray(parsed)) throw new Error('A JSON findings input must be an array');
     return fromJson(parsed);
   }

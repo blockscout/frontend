@@ -103,6 +103,7 @@ function bestCells(cells: ReadonlyArray<Cell>, files: ReadonlyArray<FileWindows>
     const current = best.get(key);
     if (current !== undefined && current.score >= cell.score) continue;
     const windowRef = windowsByFile.get(cell.file)?.[cell.window];
+    // Stryker disable next-line ConditionalExpression: every cell was scored from a window of `files`, so the lookup narrows the type and never misses
     if (windowRef !== undefined) best.set(key, { ...cell, windowRef });
   }
   return [ ...best.values() ];
