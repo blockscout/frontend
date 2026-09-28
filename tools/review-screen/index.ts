@@ -1,0 +1,179 @@
+/* eslint-disable no-console -- this is a CLI whose entire job is to print a JSON report to stdout */
+import path from 'path';
+
+import { TypeSafeClient, TypeSafeError } from '@typesafe-ai/sdk';
+
+import type { FlagSpec } from '../cli/flags';
+import { parseArgs as parseFlags } from '../cli/flags';
+import {
+  CONCURRENT_REQUESTS, CONTEXT_LINES, DEFAULT_STANDARDS_THRESHOLD, MAX_CHANGED_LINES_PER_WINDOW, MAX_STATE_CHARS, MAX_SUSPECTS, MODEL,
+  SIDECAR_DIR, STANDARDS_THRESHOLD_OVERRIDES,
+} from './config';
+import type { ScreenClient, StandardsResult } from './grid/standards';
+import { screenStandards } from './grid/standards';
+import { RULES } from './rubric';
+import type { Change, Scope } from './select/change';
+import { resolveChange } from './select/change';
+import type { FileWindows } from './select/hunks';
+import { buildWindows, readHunks } from './select/hunks';
+import type { RunStatus, SidecarRecord } from './sidecar';
+import { resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
+
+// The screen never fails a review: a missing key or an API error still exits 0, with the status and
+// reason in the JSON, and every run writes its sidecar. Only a bug in the tool itself exits non-zero.
+
+export interface CliOptions {
+  scope: Scope;
+  base: string | undefined;
+  spec: string | undefined;
+  ticket: string | undefined;
+}
+
+const USAGE = `Usage:
+  review:screen [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>]
+
+  Screens a change against the standards rubric with Jev and prints the suspects as JSON on stdout.
+  Every run writes a sidecar with every cell score to <main checkout>/.ai/jev/.
+
+  --scope branch       (default) diff from the merge-base with main; untracked files included
+  --scope uncommitted  diff HEAD against the working tree; untracked files included
+  --base <ref>         use this base verbatim instead of deriving it from the scope
+  --spec <path>        use this task spec verbatim instead of resolving it from the issue branch
+  --ticket <NN>        name the ticket in the sidecar file; under --scope uncommitted it defaults to
+                       the first unchecked box in the task's progress.md
+
+  Without TYPESAFE_API_KEY in the environment the run is skipped; an API failure is reported as failed.
+  Both exit 0.`;
+
+function readScope(raw: string): Scope {
+  if (raw === 'branch' || raw === 'uncommitted') return raw;
+  throw new Error(`Invalid value for --scope: ${ raw }\n${ USAGE }`);
+}
+
+const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpec<CliOptions>>([
+  [ '--help', { kind: 'switch', apply: () => {
+    console.log(USAGE);
+    process.exit(0);
+  } } ],
+  [ '-h', { kind: 'switch', apply: () => {
+    console.log(USAGE);
+    process.exit(0);
+  } } ],
+  [ '--scope', { kind: 'value', apply: (options, value) => {
+    options.scope = readScope(value);
+  } } ],
+  [ '--base', { kind: 'value', apply: (options, value) => {
+    options.base = value;
+  } } ],
+  [ '--spec', { kind: 'value', apply: (options, value) => {
+    options.spec = value;
+  } } ],
+  [ '--ticket', { kind: 'value', apply: (options, value) => {
+    options.ticket = value;
+  } } ],
+]);
+
+export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
+  const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, {
+    scope: 'branch',
+    base: undefined,
+    spec: undefined,
+    ticket: undefined,
+  }, { kind: 'reject', usage: USAGE });
+  if (rest.length > 0) throw new Error(`Unexpected argument: ${ rest[0] }\n${ USAGE }`);
+  return options;
+}
+
+type ClientOutcome =
+  { readonly ok: true; readonly client: ScreenClient } |
+  { readonly ok: false; readonly reason: string };
+
+// The SDK reads the key itself; a missing one surfaces as the constructor throwing, which is the
+// `skipped` outcome rather than a crash.
+function createClient(): ClientOutcome {
+  try {
+    return { ok: true, client: new TypeSafeClient({ defaultModel: MODEL }) };
+  } catch (error) {
+    if (error instanceof TypeSafeError) return { ok: false, reason: error.message };
+    throw error;
+  }
+}
+
+function windowsOf(change: Change, cwd: string): Array<FileWindows> {
+  const limits = { maxChars: MAX_STATE_CHARS, maxChangedLines: MAX_CHANGED_LINES_PER_WINDOW };
+  return change.files
+    .map((file) => ({ file: file.path, windows: buildWindows(readHunks(file.path, file.untracked, change.base, CONTEXT_LINES, cwd), limits) }))
+    .filter((target) => target.windows.length > 0);
+}
+
+const EMPTY_STANDARDS: StandardsResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
+
+function statusOf(client: ClientOutcome, standards: StandardsResult): { readonly status: RunStatus; readonly reason: string | undefined } {
+  if (!client.ok) return { status: 'skipped', reason: client.reason };
+  if (standards.failure !== undefined) return { status: 'failed', reason: standards.failure };
+  return { status: 'ok', reason: undefined };
+}
+
+function buildRecord(change: Change, client: ClientOutcome, standards: StandardsResult): SidecarRecord {
+  return {
+    version: 1,
+    createdAt: new Date().toISOString(),
+    ...statusOf(client, standards),
+    model: standards.model,
+    inputs: { scope: change.scope, base: change.base, branch: change.branch, ticket: change.ticket, spec: change.spec, files: change.files },
+    standards: { cells: standards.cells, suspects: standards.suspects, cut: standards.cut },
+    spec: { status: 'not-implemented' },
+    calls: standards.calls,
+  };
+}
+
+async function main(): Promise<void> {
+  const options = parseArgs(process.argv.slice(2));
+  const cwd = process.cwd();
+  const change = resolveChange(options, cwd);
+  const client = createClient();
+
+  const standards = client.ok ?
+    await screenStandards(windowsOf(change, cwd), RULES, client.client, {
+      model: MODEL,
+      defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
+      thresholdOverrides: STANDARDS_THRESHOLD_OVERRIDES,
+      maxSuspects: MAX_SUSPECTS,
+      concurrency: CONCURRENT_REQUESTS,
+    }) :
+    EMPTY_STANDARDS;
+
+  const record = buildRecord(change, client, standards);
+  const sidecar = path.join(resolveMainCheckout(cwd), SIDECAR_DIR, sidecarFileName({
+    date: new Date(record.createdAt),
+    branch: change.branch,
+    scope: change.scope,
+    ticket: change.ticket,
+  }));
+  writeSidecar(sidecar, record);
+
+  console.log(JSON.stringify({
+    status: record.status,
+    reason: record.reason,
+    model: record.model,
+    sidecar,
+    standards: { cells: record.standards.cells.length, suspects: record.standards.suspects, cut: record.standards.cut },
+    spec: record.spec,
+  }, null, 2));
+}
+
+// run.sh always executes the compiled `tools/review-screen/dist/review-screen/index.js`, so that path
+// is what marks this module as the process entry point; under vitest the entry is vitest's own binary.
+const CLI_ENTRY_PATH = 'review-screen/dist/review-screen/index.js';
+
+function isProcessEntryPoint(): boolean {
+  const entry = process.argv[1]?.replace(/\\/g, '/');
+  return entry !== undefined && entry.endsWith(CLI_ENTRY_PATH);
+}
+
+if (isProcessEntryPoint()) {
+  main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : String(error));
+    process.exitCode = 1;
+  });
+}

@@ -83,8 +83,8 @@ and run again.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add `@typesafe-ai/sdk` dev dependency, `tools/review-screen/{run.sh,tsconfig.json,config.ts}`, the `review:screen` script, dist ignores
-- [ ] 2 `[agent]` `select/`: scope/base/spec/ticket resolution, touched + untracked files, hunks-with-context → line-id state, windowing (+ specs)
-- [ ] 3 `[agent]` `grid/standards.ts`: per-file `noul` batch, `choice` locate, thresholds and cap → suspects (+ specs with an injected client)
-- [ ] 4 `[agent]` `sidecar.ts`: main-checkout resolution, file naming, cells/timings/usage/model record (+ specs)
-- [ ] 5 `[agent]` `index.ts`: flags, orchestration, `skipped|failed` handling, JSON output; `CONTEXT.md` + `AGENTS.md` line
+- [x] 1 `[agent]` Add `@typesafe-ai/sdk` dev dependency, `tools/review-screen/{run.sh,tsconfig.json,config.ts}`, the `review:screen` script, dist ignores
+- [x] 2 `[agent]` `select/`: scope/base/spec/ticket resolution, touched + untracked files, hunks-with-context → line-id state, windowing (+ specs)
+- [x] 3 `[agent]` `grid/standards.ts`: per-file `noul` batch, `choice` locate, thresholds and cap → suspects (+ specs with an injected client)
+- [x] 4 `[agent]` `sidecar.ts`: main-checkout resolution, file naming, cells/timings/usage/model record (+ specs)
+- [x] 5 `[agent]` `index.ts`: flags, orchestration, `skipped|failed` handling, JSON output; `CONTEXT.md` + `AGENTS.md` line

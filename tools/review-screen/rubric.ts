@@ -1,7 +1,4 @@
-type JsonValue = string | number | boolean | null | Array<JsonValue> | { [key: string]: JsonValue };
-
-// Mirrors the SDK's `EntryType` (`@typesafe-ai/sdk`); ticket 02 adds the dependency and swaps this alias out.
-export type EntryType = string | { [key: string]: JsonValue } | Array<JsonValue>;
+import type { EntryType } from '@typesafe-ai/sdk';
 
 export interface Rule {
   readonly id: string;

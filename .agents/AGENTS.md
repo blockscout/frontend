@@ -65,6 +65,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 - `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
+- `tools/review-screen/` — the Jev review-screen pilot: what a suspect is, what a run must never do, where the sidecars go.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.
