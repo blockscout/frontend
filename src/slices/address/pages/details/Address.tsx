@@ -48,7 +48,6 @@ import AlternativeExplorers from 'src/features/alternative-explorers/components/
 import AddressDeposits from 'src/features/chain-variants/beacon-chain/pages/address/AddressDeposits';
 import AddressWithdrawals from 'src/features/chain-variants/beacon-chain/pages/address/AddressWithdrawals';
 import AddressEpochRewards from 'src/features/chain-variants/celo/pages/address/AddressEpochRewards';
-import AddressMultichainInfoButton from 'src/features/multichain-button/pages/address/AddressMultichainInfoButton';
 import { useAddressClusters } from 'src/features/name-services/clusters/hooks/useAddressClusters';
 import AddressClusters from 'src/features/name-services/clusters/pages/address/AddressClusters';
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
@@ -457,7 +456,6 @@ const AddressPageContent = () => {
       <AddressQrCode hash={ addressQuery.data?.filecoin?.robust ?? checkSummedHash } isLoading={ isLoading }/>
       <ActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      <AddressMultichainInfoButton loading={ isLoading } addressData={ addressQuery.data }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.slices.contract.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled &&
