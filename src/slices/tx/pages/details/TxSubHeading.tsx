@@ -158,7 +158,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       >
         { !hasTag && <ActionsMenu isLoading={ isLoading }/> }
         { appActionData && (
-          <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
+          <AppActionButton data={ appActionData } addressHash={ txQuery.data?.to?.hash } txHash={ hash } source="Txn"/>
         ) }
         <AlternativeExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>

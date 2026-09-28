@@ -138,7 +138,7 @@ Type extends EventTypes.PAGE_WIDGET ? (
   } | {
     Type: 'Action button';
     Info: string;
-    Source: 'Txn' | 'NFT collection' | 'NFT item';
+    Source: 'Token' | 'NFT collection' | 'NFT item' | 'Txn';
   } | {
     Type: 'Address tag';
     Info: string;

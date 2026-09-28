@@ -12,6 +12,8 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import AddressQrCode from 'src/slices/address/pages/details/info/AddressQrCode';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
+import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'src/features/multichain/context';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -28,6 +30,7 @@ interface Props {
 
 const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => {
   const multichainContext = useMultichainContext();
+  const appActionData = useAppActionData(token?.address_hash, !isLoading);
 
   const title = (() => {
     if (typeof instance?.metadata?.name === 'string') {
@@ -58,13 +61,13 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
         new URL('https://' + instance.external_app_url);
 
       return (
-        <Link external href={ url.toString() } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
+        <Link external href={ url.toString() } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: appActionData ? 0 : 'auto' }}>
           { url.hostname || instance.external_app_url }
         </Link>
       );
     } catch (error) {
       return (
-        <Link external href={ instance.external_app_url } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
+        <Link external href={ instance.external_app_url } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: appActionData ? 0 : 'auto' }}>
           View in app
         </Link>
       );
@@ -97,6 +100,14 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
       { !isLoading && token && <TokenAddToWallet token={ token } tokenId={ instance?.id } variant="button"/> }
       <AddressQrCode hash={ address.hash } isLoading={ isLoading }/>
       <ActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
+      { appActionData && (
+        <AppActionButton
+          data={ appActionData }
+          addressHash={ token?.address_hash }
+          source="NFT item"
+          ml={{ base: 0, lg: 'auto' }}
+        />
+      ) }
       { appLink }
     </Flex>
   );

@@ -7,7 +7,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
 import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
-import { getTokenTypeName } from 'src/slices/token/utils/token-types';
+import { getTokenTypeName, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -19,13 +19,14 @@ import AddressAlerts from 'src/slices/address/pages/details/info/AddressAlerts';
 import AddressQrCode from 'src/slices/address/pages/details/info/AddressQrCode';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
+import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
 import formatAccountTags from 'src/features/address-metadata/components/tag/format-account-tags';
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
 import sortMetadataTags from 'src/features/address-metadata/components/tag/sort';
 import useAddressMetadataInfoQuery from 'src/features/address-metadata/hooks/useAddressMetadataInfoQuery';
+import { getAppActionData } from 'src/features/address-metadata/utils/get-app-action-data';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'src/features/multichain/context';
-import TokenActionButton from 'src/features/token-action-button/components/TokenActionButton';
 import TokenVerifiedInfo from 'src/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -49,6 +50,8 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
 
   const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
+  const addressMetadataTags = addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags;
+  const appActionData = getAppActionData(addressMetadataTags);
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
@@ -77,16 +80,15 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       verifiedInfoQuery.data?.projectSector ?
         { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30, meta: null } :
         undefined,
-      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
+      ...(addressMetadataTags?.filter(tag => tag.tagType !== 'note') || []),
     ].filter(Boolean).sort(sortMetadataTags);
   }, [
-    addressMetadataQuery.data?.addresses,
+    addressMetadataTags,
     addressQuery.data,
     bridgedTokenTagBgColor,
     bridgedTokenTagTextColor,
     tokenQuery.data,
     verifiedInfoQuery.data?.projectSector,
-    hash,
     multichainContext?.chain?.app_config,
   ]);
 
@@ -119,11 +121,14 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
         addressHash={ addressQuery.data?.hash }
         flexGrow={ 1 }
       />
-      <TokenActionButton
-        tokenHash={ hash }
-        tokenType={ tokenQuery.data?.type }
-        isLoading={ tokenQuery.isPlaceholderData }
-      />
+      { appActionData && (
+        <AppActionButton
+          data={ appActionData }
+          addressHash={ hash }
+          source={ isFungibleTokenType(tokenQuery.data?.type, multichainContext?.chain?.app_config) ? 'Token' : 'NFT collection' }
+          ml={{ base: 0, lg: 'auto' }}
+        />
+      ) }
     </>
   );
 
@@ -169,7 +174,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
       />
       { !addressMetadataQuery.isPending && (
         <AddressAlerts
-          tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }
+          tags={ addressMetadataTags }
           isScamToken={ tokenQuery.data?.reputation === 'scam' }
         />
       ) }

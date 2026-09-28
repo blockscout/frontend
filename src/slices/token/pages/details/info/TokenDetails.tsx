@@ -12,11 +12,8 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { TokenTabs } from 'src/slices/token/pages/details/Token';
 
 import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
-import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
-import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
@@ -43,8 +40,6 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
 
   const multichainContext = useMultichainContext();
   const chainSlug = multichainContext?.chain?.slug;
-
-  const appActionData = useAppActionData(hash);
 
   const changeTab = useCallback((tab: TokenTabs) => () => {
     router.push(
@@ -233,24 +228,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
         <TokenNftMarketplaces
           hash={ hash }
           isLoading={ isLoading }
-          appActionData={ appActionData }
-          source="NFT collection"
         />
-      ) }
-
-      { (type !== 'ERC-20' && config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Link to the dapp"
-          >
-            Dapp
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue
-            py="1px"
-          >
-            <AppActionButton data={ appActionData } height="30px" source="NFT collection"/>
-          </DetailedInfo.ItemValue>
-        </>
       ) }
 
       <DetailedInfoSponsoredItem isLoading={ isLoading }/>

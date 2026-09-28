@@ -3,13 +3,8 @@
 import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'src/features/address-metadata/types/client';
-
-import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
-
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
-import TextSeparator from 'src/shared/texts/TextSeparator';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -20,11 +15,9 @@ interface Props {
   hash: string | undefined;
   id?: string;
   isLoading?: boolean;
-  appActionData?: AddressMetadataTagFormatted['meta'];
-  source: 'NFT collection' | 'NFT item';
 }
 
-const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Props) => {
+const TokenNftMarketplaces = ({ hash, id, isLoading }: Props) => {
   if (!hash || config.slices.token.nft.marketplaces.length === 0) {
     return null;
   }
@@ -61,9 +54,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
       >
         Marketplaces
       </DetailedInfo.ItemLabel>
-      <DetailedInfo.ItemValue
-        py={ appActionData ? '1px' : '6px' }
-      >
+      <DetailedInfo.ItemValue py="6px">
         <Skeleton loading={ isLoading } display="flex" flexWrap="wrap" alignItems="center">
           <HStack gap={ 3 }>
             { items.map((item) => {
@@ -81,12 +72,6 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source }: Pr
               );
             }) }
           </HStack>
-          { appActionData && (
-            <>
-              <TextSeparator/>
-              <AppActionButton data={ appActionData } height="30px" source={ source }/>
-            </>
-          ) }
         </Skeleton>
       </DetailedInfo.ItemValue>
     </>
