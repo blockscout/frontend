@@ -61,7 +61,6 @@ const Stats = () => {
               icon={ item.icon }
               isLoading={ statsQuery.isPlaceholderData }
               hint={ item.hint }
-              w={{ base: 'calc((100% - 8px) / 2)', lg: '100%' }}
             />
           )) }
         </StatsContainer>
