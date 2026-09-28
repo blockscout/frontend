@@ -13,6 +13,8 @@ export interface Props extends BadgeProps {
 }
 
 const TYPES_ORDER: schemas['Transaction']['transaction_types'] = [
+  'op_stack_l1_attributes_transaction',
+  'op_stack_post_exec_transaction',
   'blob_transaction',
   'rootstock_remasc',
   'rootstock_bridge',
@@ -57,6 +59,14 @@ const TxType = ({ types, isLoading, ...rest }: Props) => {
     case 'coin_transfer':
       label = 'Coin transfer';
       colorPalette = 'orange';
+      break;
+    case 'op_stack_l1_attributes_transaction':
+      label = 'L1 attr tx';
+      colorPalette = 'green';
+      break;
+    case 'op_stack_post_exec_transaction':
+      label = 'Post exec tx';
+      colorPalette = 'green';
       break;
     case 'rootstock_remasc':
       label = 'REMASC';
