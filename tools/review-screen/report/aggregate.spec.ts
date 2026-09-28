@@ -49,6 +49,7 @@ function sidecar(file: string, overrides: Partial<SidecarRecord> = {}): SidecarF
       standards: { cells: [], suspects: [], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [],
+      elapsedMs: undefined,
       origins: undefined,
       ...overrides,
     },
@@ -126,10 +127,10 @@ describe('aggregateReport', () => {
     expect(report.totals.findings).toEqual({ jev: 1, axis: 3, both: 1 });
   });
 
-  it('sums call timings and input tokens per review, then reports mean and max seconds and mean tokens', () => {
+  it('reports the wall-clock seconds per review as mean and max, and the mean input tokens', () => {
     const report = aggregateReport([
-      sidecar('one.json', { origins: origins([]), calls: [ call(1500, 600), call(500, 400) ] }),
-      sidecar('two.json', { origins: origins([]), calls: [ call(6000, 3000) ] }),
+      sidecar('one.json', { origins: origins([]), elapsedMs: 2000, calls: [ call(1500, 600), call(1500, 400) ] }),
+      sidecar('two.json', { origins: origins([]), elapsedMs: 6000, calls: [ call(6000, 3000) ] }),
       sidecar('skipped.json', { status: 'skipped', reason: 'no key', origins: origins([]) }),
     ], RULE_IDS);
 
@@ -139,9 +140,14 @@ describe('aggregateReport', () => {
 });
 
 describe('per-review sums', () => {
-  it('convert the call timings to seconds and add up input tokens', () => {
-    const { record } = sidecar('one.json', { calls: [ call(250, 100), call(750, 250) ] });
-    expect(addedSecondsOf(record)).toBe(1);
+  it('reads the wall-clock span in seconds, not the sum of the overlapping calls', () => {
+    const { record } = sidecar('one.json', { elapsedMs: 1500, calls: [ call(1000, 100), call(1000, 250) ] });
+    expect(addedSecondsOf(record)).toBe(1.5);
     expect(inputTokensOf(record)).toBe(350);
+  });
+
+  it('falls back to the summed call timings for a sidecar written without a span', () => {
+    const { record } = sidecar('old.json', { calls: [ call(250, 100), call(750, 250) ] });
+    expect(addedSecondsOf(record)).toBe(1);
   });
 });

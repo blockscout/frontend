@@ -32,7 +32,6 @@ export const RULES: ReadonlyArray<Rule> = [
       'a `TODO (design):` or `TODO (api-data):` scaffold marker',
       'an SPDX license header',
       'a comment that was already present and is only moved or reindented',
-      'a module\'s opening comment that states what the file is for and what it must keep true',
     ],
   },
   {
@@ -51,7 +50,6 @@ export const RULES: ReadonlyArray<Rule> = [
       '1 as the first page, 0 as the first index, -1 from indexOf',
       'a URL, a route path, a file name, a label string',
       'CSS-style props: margin, padding, gap, width, font weight, color, border radius, z-index',
-      'values inside a *.spec.ts / *.spec.tsx / *.pw.tsx file or a mock',
       'a literal assigned to an UPPER_SNAKE_CASE constant above the component or function',
       'a constant that only restates the value it names (FIRST_PAGE = 1)',
     ],

@@ -32,7 +32,8 @@ import type { RunStatus, SidecarRecord, SpecRecord } from './sidecar';
 import { readSidecar, resolveMainCheckout, sidecarFileName, windowSpans, writeSidecar } from './sidecar';
 
 // The screen never fails a review: a missing key or an API error still exits 0, with the status and
-// reason in the JSON, and every run writes its sidecar. Only a bug in the tool itself exits non-zero.
+// reason in the JSON, and every run writes its sidecar. Only invalid arguments or a bug in the tool
+// itself exit non-zero, and those write no sidecar.
 
 export interface CliOptions {
   scope: Scope;
@@ -145,7 +146,7 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
   return options;
 }
 
-type ClientOutcome =
+export type ClientOutcome =
   { readonly ok: true; readonly client: ScreenClient } |
   { readonly ok: false; readonly reason: string };
 
@@ -170,12 +171,15 @@ function windowsOf(change: Change, cwd: string): Array<FileWindows> {
 const EMPTY_STANDARDS: StandardsResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
 const EMPTY_SPEC: SpecResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
 
-interface Screened {
+export interface Screened {
   readonly client: ClientOutcome;
   readonly source: SpecSource;
   readonly windows: ReadonlyArray<FileWindows>;
+  // What the spec grid scores once the task folder is excluded; none means the grid is skipped.
+  readonly specFiles: number;
   readonly standards: StandardsResult;
   readonly spec: SpecResult;
+  readonly elapsedMs: number;
 }
 
 function statusOf(screened: Screened): { readonly status: RunStatus; readonly reason: string | undefined } {
@@ -185,10 +189,11 @@ function statusOf(screened: Screened): { readonly status: RunStatus; readonly re
   return { status: 'ok', reason: undefined };
 }
 
-function specRecordOf(screened: Screened): SpecRecord {
+export function specRecordOf(screened: Screened): SpecRecord {
   const { client, source, spec } = screened;
   if (source.status !== 'ok') return source.status === 'no-spec' ? source : { status: 'failed', reason: source.reason, requirements: [], cells: [] };
   if (!client.ok) return { status: 'skipped', reason: client.reason };
+  if (screened.specFiles === 0) return { status: 'skipped', reason: `no touched file outside ${ SPEC_GRID_EXCLUDE } to score` };
   if (spec.failure !== undefined) return { status: 'failed', reason: spec.failure, requirements: source.requirements, cells: spec.cells };
   return { status: 'ok', requirements: source.requirements, cells: spec.cells, suspects: spec.suspects, cut: spec.cut };
 }
@@ -206,6 +211,7 @@ function buildRecord(change: Change, screened: Screened, calibration: boolean): 
     standards: { cells: screened.standards.cells, suspects: screened.standards.suspects, cut: screened.standards.cut },
     spec: specRecordOf(screened),
     calls,
+    elapsedMs: screened.elapsedMs,
     origins: undefined,
   };
 }
@@ -214,7 +220,10 @@ function buildRecord(change: Change, screened: Screened, calibration: boolean): 
 // shared once both have ranked their own suspects.
 async function screen(change: Change, client: ClientOutcome, source: SpecSource, cwd: string): Promise<Screened> {
   const windows = windowsOf(change, cwd);
-  if (!client.ok) return { client, source, windows, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC };
+  const specFiles = specGridFiles(windows, SPEC_GRID_EXCLUDE);
+  const base = { client, source, windows, specFiles: specFiles.length };
+  if (!client.ok) return { ...base, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC, elapsedMs: 0 };
+  const started = performance.now();
   const standards = await screenStandards(windows, RULES, client.client, {
     model: MODEL,
     defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
@@ -223,15 +232,16 @@ async function screen(change: Change, client: ClientOutcome, source: SpecSource,
     concurrency: CONCURRENT_REQUESTS,
   });
   const spec = source.status === 'ok' ?
-    await screenSpec(specGridFiles(windows, SPEC_GRID_EXCLUDE), source.requirements, client.client, {
+    await screenSpec(specFiles, source.requirements, client.client, {
       model: MODEL,
       threshold: SPEC_THRESHOLD,
       maxSuspects: MAX_SUSPECTS,
       concurrency: CONCURRENT_REQUESTS,
     }) :
     EMPTY_SPEC;
+  const elapsedMs = Math.round(performance.now() - started);
   const capped = shareCap(standards, spec, MAX_SUSPECTS);
-  return { client, source, windows, standards: { ...standards, ...capped.standards }, spec: { ...spec, ...capped.spec } };
+  return { ...base, standards: { ...standards, ...capped.standards }, spec: { ...spec, ...capped.spec }, elapsedMs };
 }
 
 function printSpec(record: SpecRecord): unknown {

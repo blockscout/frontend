@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import type { Rule } from '../rubric';
 import type { FileWindows, Window } from '../select/hunks';
 import type { StandardsConfig } from './standards';
-import { rulesFor, screenStandards, selectSuspects, thresholdFor } from './standards';
+import { inGridOrder, rulesFor, screenStandards, selectSuspects, thresholdFor } from './standards';
 
 // The SDK is exercised for real down to `fetch`, which is the system boundary: the fake answers a
 // request body the way the API would, and records every body it saw.
@@ -77,6 +77,18 @@ describe('rulesFor', () => {
     expect(rulesFor('src/a.ts', RULES).map((r) => r.id)).toEqual([ 'alpha', 'beta' ]);
     expect(rulesFor('src/a.tsx', RULES).map((r) => r.id)).toEqual([ 'gamma-tsx' ]);
     expect(rulesFor('README.md', RULES)).toEqual([]);
+  });
+});
+
+describe('inGridOrder', () => {
+  it('sorts by file, then window, then rule', () => {
+    const cells = [
+      { rule: 'beta', file: 'src/b.ts', window: 0, score: 1 },
+      { rule: 'beta', file: 'src/a.ts', window: 1, score: 1 },
+      { rule: 'alpha', file: 'src/a.ts', window: 1, score: 1 },
+      { rule: 'gamma', file: 'src/a.ts', window: 0, score: 1 },
+    ];
+    expect(inGridOrder(cells)).toEqual([ cells[3], cells[2], cells[1], cells[0] ]);
   });
 });
 
@@ -156,15 +168,37 @@ describe('screenStandards', () => {
     expect(result.suspects.map((suspect) => suspect.rule)).toEqual([ 'beta' ]);
   });
 
-  it('falls back to the window start when a suspect window has no changed line, and to it when the model names an unknown id', async() => {
-    const { client, requests } = fakeClient({ score: () => 0.9, pick: () => 'nonsense' });
-    const files = [ target('src/a.ts', window(0, [])), target('src/b.ts', window(0, [ 'L1' ])) ];
+  it('falls back to the window start when a suspect window has no changed line, and when the model names an id outside the window', async() => {
+    const { client, requests } = fakeClient({ score: () => 0.9, pick: (options) => (options.includes('L1') ? 'nonsense' : 'L999') });
+    const files = [ target('src/a.ts', window(0, [])), target('src/b.ts', window(0, [ 'L1' ])), target('src/c.ts', window(0, [ 'L5' ])) ];
     const result = await screenStandards(files, [ rule('alpha') ], client, CONFIG);
     expect(result.suspects).toEqual(expect.arrayContaining([
       { rule: 'alpha', file: 'src/a.ts', line: 10, score: 0.9, window: 0 },
       { rule: 'alpha', file: 'src/b.ts', line: 10, score: 0.9, window: 0 },
+      { rule: 'alpha', file: 'src/c.ts', line: 10, score: 0.9, window: 0 },
     ]));
-    expect(requests.filter((request) => request.questions.line?.type === 'choice')).toHaveLength(1);
+    expect(requests.filter((request) => request.questions.line?.type === 'choice')).toHaveLength(2);
+  });
+
+  it('ranks tied scores in grid order, not in the order the files were listed or finished', async() => {
+    const { client } = fakeClient({ score: () => 0.9 });
+    const files = [ target('src/b.ts', window(0, [ 'L10' ], 'b first')), target('src/a.ts', window(0, [ 'L20' ], 'a second')) ];
+    const result = await screenStandards(files, [ rule('beta'), rule('alpha') ], client, { ...CONFIG, maxSuspects: 2 });
+    expect(result.suspects.map((suspect) => `${ suspect.file } ${ suspect.rule }`)).toEqual([ 'src/a.ts alpha', 'src/a.ts beta' ]);
+    expect(result.cut).toBe(2);
+  });
+
+  it('names no suspects when a locate call fails, keeping the cells', async() => {
+    const { client } = fakeClient({
+      score: () => 0.9,
+      fail: (body) => (body.questions.line?.type === 'choice' ? Response.json({ error: 'boom' }, { status: 500 }) : undefined),
+    });
+    const files = [ target('src/a.ts', window(0, [ 'L1' ])), target('src/b.ts', window(0, [ 'L1' ])) ];
+    const result = await screenStandards(files, [ rule('alpha') ], client, { ...CONFIG, concurrency: 1 });
+    expect(result.failure).toMatch(/^InternalServerError: /);
+    expect(result.cells).toHaveLength(2);
+    expect(result.suspects).toEqual([]);
+    expect(result.cut).toBe(0);
   });
 
   it('caps the suspects at maxSuspects, highest score first, and reports the cut', async() => {

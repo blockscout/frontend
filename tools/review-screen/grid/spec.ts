@@ -5,7 +5,7 @@ import { noul } from '@typesafe-ai/sdk';
 import type { FileWindows, Window } from '../select/hunks';
 import type { Requirement } from '../select/spec';
 import type { CallRecord, ScreenClient } from './shared';
-import { describeFailure, Recorder, runPool, stateOf } from './shared';
+import { compareText, describeFailure, Recorder, runPool, stateOf } from './shared';
 
 // The spec grid: every Functional Requirement × every touched file. One request per window carries
 // every requirement as a named `noul` question phrased so that a high value means "addressed"; a
@@ -62,7 +62,8 @@ const CRITERIA = {
 // the same way.
 export function bestByRequirement(cells: ReadonlyArray<SpecCell>): Array<SpecCell> {
   const best = new Map<string, SpecCell>();
-  for (const cell of cells) {
+  const ordered = [ ...cells ].sort((a, b) => compareText(a.requirement, b.requirement) || compareText(a.file, b.file) || a.window - b.window);
+  for (const cell of ordered) {
     const current = best.get(cell.requirement);
     if (current === undefined || cell.score > current.score) best.set(cell.requirement, cell);
   }

@@ -3,9 +3,6 @@ import { TypeSafeError } from '@typesafe-ai/sdk';
 
 import type { Window } from '../select/hunks';
 
-// What both grids share: the client surface, the per-call record, the bounded pool and the state a
-// window is sent as.
-
 export type ScreenClient = Pick<TypeSafeClient, 'systemOne'>;
 
 export interface CallRecord {
@@ -35,6 +32,13 @@ export async function runPool(tasks: ReadonlyArray<() => Promise<void>>, concurr
   }
   await Promise.all(Array.from({ length: Math.max(1, concurrency) }, worker));
   return failure;
+}
+
+// Cells arrive in completion order; sorting on code-point order is enough to make a rerun rank the
+// same way, and the shared collator in src/ sits outside this tool's tsconfig rootDir.
+export function compareText(a: string, b: string): number {
+  if (a === b) return 0;
+  return a < b ? -1 : 1;
 }
 
 export function describeFailure(failure: TypeSafeError | undefined): string | undefined {

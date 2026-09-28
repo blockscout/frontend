@@ -1,5 +1,6 @@
 import { execFileSync } from 'child_process';
 
+import { EXEC_MAX_BUFFER } from '../../cli/exec';
 import { isInScope } from './scope';
 
 // Diff-scoping: map git-diff hunks against a base ref to the new-side line ranges a
@@ -12,7 +13,7 @@ export type LineRange = [ start: number, end: number ];
 // process's own directory: the mutation-testing specs point these at a throwaway repo, and
 // process.chdir() is unavailable in the worker threads Stryker runs vitest in.
 function git(args: ReadonlyArray<string>, cwd: string): string {
-  return execFileSync('git', args as Array<string>, { cwd, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  return execFileSync('git', args as Array<string>, { cwd, encoding: 'utf8', maxBuffer: EXEC_MAX_BUFFER });
 }
 
 // Compare against the merge-base of the branch and the base ref rather than the base ref tip:

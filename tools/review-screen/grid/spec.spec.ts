@@ -71,14 +71,14 @@ describe('specGridFiles', () => {
 });
 
 describe('bestByRequirement', () => {
-  it('keeps the highest-scoring cell per requirement, first one on a tie', () => {
+  it('keeps the highest-scoring cell per requirement, the first in grid order on a tie whatever order they arrived in', () => {
     const cells = [
-      { requirement: 'FR1', file: 'a', window: 0, score: 0.2 },
-      { requirement: 'FR1', file: 'b', window: 0, score: 0.9 },
-      { requirement: 'FR1', file: 'c', window: 0, score: 0.9 },
       { requirement: 'FR2', file: 'a', window: 1, score: 0.5 },
+      { requirement: 'FR1', file: 'c', window: 0, score: 0.9 },
+      { requirement: 'FR1', file: 'b', window: 0, score: 0.9 },
+      { requirement: 'FR1', file: 'a', window: 0, score: 0.2 },
     ];
-    expect(bestByRequirement(cells)).toEqual([ cells[1], cells[3] ]);
+    expect(bestByRequirement(cells)).toEqual([ cells[2], cells[0] ]);
   });
 });
 

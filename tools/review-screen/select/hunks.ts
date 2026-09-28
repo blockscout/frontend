@@ -2,19 +2,26 @@ import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
+import { EXEC_MAX_BUFFER } from '../../cli/exec';
+
 // A file's change as the model sees it: the changed hunks with their surrounding context, every
 // new-side line carrying a stable id (`L<line>`) the locate step can hand back. Windowing keeps a
 // state under the model's limit — hunks stay whole where they can, and a hunk too big on its own is
 // cut on lines.
 
-export type LineKind = 'context' | 'added' | 'removed';
-
-export interface StateLine {
-  readonly kind: LineKind;
-  // The new-side line number; a removed line has none.
-  readonly line: number | undefined;
+export interface NumberedLine {
+  readonly kind: 'context' | 'added';
+  // The new-side line number.
+  readonly line: number;
   readonly text: string;
 }
+
+export interface RemovedLine {
+  readonly kind: 'removed';
+  readonly text: string;
+}
+
+export type StateLine = NumberedLine | RemovedLine;
 
 export interface Hunk {
   readonly lines: ReadonlyArray<StateLine>;
@@ -77,7 +84,7 @@ export function parseUnifiedDiff(diffText: string): Array<Hunk> {
       lines.push({ kind: 'added', line, text: raw.slice(1) });
       line += 1;
     } else if (marker === '-') {
-      lines.push({ kind: 'removed', line: undefined, text: raw.slice(1) });
+      lines.push({ kind: 'removed', text: raw.slice(1) });
     } else if (marker === ' ') {
       lines.push({ kind: 'context', line, text: raw.slice(1) });
       line += 1;
@@ -106,7 +113,7 @@ export function readHunks(file: string, untracked: boolean, base: string, contex
   const diff = execFileSync('git', [ 'diff', `--unified=${ contextLines }`, '--no-color', base, '--', file ], {
     cwd,
     encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
+    maxBuffer: EXEC_MAX_BUFFER,
   });
   return parseUnifiedDiff(diff);
 }
@@ -114,9 +121,9 @@ export function readHunks(file: string, untracked: boolean, base: string, contex
 export function renderLine(line: StateLine): string {
   switch (line.kind) {
     case 'added':
-      return `${ lineId(line.line as number) } + ${ line.text }`;
+      return `${ lineId(line.line) } + ${ line.text }`;
     case 'context':
-      return `${ lineId(line.line as number) }   ${ line.text }`;
+      return `${ lineId(line.line) }   ${ line.text }`;
     case 'removed':
       return `    - ${ line.text }`;
   }
@@ -155,11 +162,11 @@ function splitHunk(hunk: Hunk, limits: WindowLimits): Array<Hunk> {
 
 function toWindow(hunks: ReadonlyArray<Hunk>, index: number): Window {
   const lines = hunks.flatMap((hunk) => hunk.lines);
-  const numbered = lines.map((line) => line.line).filter((line): line is number => line !== undefined);
+  const numbered = lines.flatMap((line) => line.kind === 'removed' ? [] : [ line.line ]);
   return {
     index,
     state: hunks.map((hunk) => hunk.lines.map(renderLine).join('\n')).join(`\n${ HUNK_SEPARATOR }\n`),
-    changedIds: lines.filter((line) => line.kind === 'added').map((line) => lineId(line.line as number)),
+    changedIds: lines.flatMap((line) => line.kind === 'added' ? [ lineId(line.line) ] : []),
     firstLine: numbered.length > 0 ? Math.min(...numbered) : 1,
     lastLine: numbered.length > 0 ? Math.max(...numbered) : 1,
   };

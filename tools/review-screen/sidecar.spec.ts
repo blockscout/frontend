@@ -64,6 +64,7 @@ describe('writeSidecar', () => {
       standards: { cells: [], suspects: [], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [],
+      elapsedMs: undefined,
       origins: undefined,
     };
     const target = path.join(tmp, '.ai', 'jev', 'x.json');

@@ -30,8 +30,9 @@ and decides. The task spec behind the pilot:
 ## What an editor here must keep true
 
 - **A tool failure never fails a review.** No key, an API error, a diff with nothing to score: all exit 0
-  with the status and reason in the JSON, and every one of them still writes a sidecar. Only a bug in the
-  tool exits non-zero. The `jev` axis brief relies on this.
+  with the status and reason in the JSON, and every one of them still writes a sidecar. Only invalid
+  arguments (a bad `--scope`, a stray argument, flags that do not go together) or a bug in the tool exit
+  non-zero, and those write no sidecar. The `jev` axis brief relies on this.
 - **Explicit inputs are never re-derived.** `--base` and `--spec` are used verbatim, because the review that
   passes them has already pinned its base and the two must agree.
 - **The sidecar keeps every cell, not only the suspects.** Re-tuning a threshold in `./config.ts` is an

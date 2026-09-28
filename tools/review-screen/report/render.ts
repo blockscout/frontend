@@ -1,7 +1,5 @@
 import type { PilotReport, RuleRow } from './aggregate';
 
-// The keep-or-kill table as text. The JSON form is the report object itself.
-
 const MAX_REASON_CHARS = 60;
 const NONE = '—';
 

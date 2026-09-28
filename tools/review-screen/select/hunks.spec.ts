@@ -38,14 +38,14 @@ describe('parseUnifiedDiff', () => {
     expect(parseUnifiedDiff(DIFF)).toEqual([
       { lines: [
         { kind: 'context', line: 3, text: '  keep();' },
-        { kind: 'removed', line: undefined, text: '  old();' },
+        { kind: 'removed', text: '  old();' },
         added(4, '  fresh();'),
         added(5, '  extra();'),
         { kind: 'context', line: 6, text: '  tail();' },
       ] },
       { lines: [
         { kind: 'context', line: 41, text: '  before();' },
-        { kind: 'removed', line: undefined, text: '  gone();' },
+        { kind: 'removed', text: '  gone();' },
         added(42, '  here();'),
       ] },
     ]);
@@ -67,7 +67,7 @@ describe('renderLine', () => {
   it('prefixes numbered lines with their id and marks removed lines without one', () => {
     expect(renderLine(added(12, 'x')).startsWith('L12 + x')).toBe(true);
     expect(renderLine({ kind: 'context', line: 7, text: 'y' })).toMatch(/^L7 {3}y$/);
-    expect(renderLine({ kind: 'removed', line: undefined, text: 'z' })).toMatch(/^ +- z$/);
+    expect(renderLine({ kind: 'removed', text: 'z' })).toMatch(/^ +- z$/);
   });
 });
 
@@ -118,7 +118,7 @@ describe('buildWindows', () => {
   });
 
   it('falls back to line 1 for a window with no numbered line', () => {
-    const removedOnly: Hunk = { lines: [ { kind: 'removed', line: undefined, text: 'x' } ] };
+    const removedOnly: Hunk = { lines: [ { kind: 'removed', text: 'x' } ] };
     expect(buildWindows([ removedOnly ], roomy)[0]).toMatchObject({ changedIds: [], firstLine: 1 });
   });
 

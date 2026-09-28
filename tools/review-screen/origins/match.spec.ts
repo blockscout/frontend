@@ -44,6 +44,7 @@ function record(overrides: Partial<SidecarRecord> = {}): SidecarRecord {
       cut: 0,
     },
     calls: [],
+    elapsedMs: undefined,
     origins: undefined,
     calibration: false,
     ...overrides,
@@ -86,6 +87,32 @@ describe('assignOrigins', () => {
       { suspect: { kind: 'spec', requirement: 'FR1' }, score: 0.1, fate: 'confirmed', finding: 'F4' },
       { suspect: { kind: 'spec', requirement: 'FR2' }, score: 0.2, fate: 'dropped', reason: 'covered by the PR description' },
     ]);
+  });
+
+  it('gives each finding to one suspect only, the nearest by located line, when two suspects share a window', () => {
+    const shared = record({
+      standards: {
+        cells: [],
+        suspects: [
+          { rule: 'no-comments', file: 'src/a.ts', line: 12, score: 0.91, window: 0 },
+          { rule: 'magic-number', file: 'src/a.ts', line: 28, score: 0.8, window: 0 },
+        ],
+        cut: 0,
+      },
+      spec: { status: 'no-spec' },
+    });
+    const input: OriginsInput = {
+      findings: [ finding('F1', 'src/a.ts:27', [ 'standards', 'jev' ]), finding('F2', 'src/a.ts:14', [ 'jev' ]) ],
+      drops: [],
+    };
+    const fates = assignOrigins(shared, input, RECORDED_AT).suspects;
+    expect(fates).toEqual([
+      { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/a.ts', line: 12 }, score: 0.91, fate: 'confirmed', finding: 'F2' },
+      { suspect: { kind: 'standards', rule: 'magic-number', file: 'src/a.ts', line: 28 }, score: 0.8, fate: 'merged', finding: 'F1' },
+    ]);
+
+    const oneFinding: OriginsInput = { findings: [ finding('F1', 'src/a.ts:20', [ 'jev' ]) ], drops: [] };
+    expect(assignOrigins(shared, oneFinding, RECORDED_AT).suspects.map((entry) => entry.fate)).toEqual([ 'confirmed', 'dropped' ]);
   });
 
   it('matches by the window span, not the located line, and never across files', () => {

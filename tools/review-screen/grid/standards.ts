@@ -6,7 +6,7 @@ import type { Rule } from '../rubric';
 import type { FileWindows, Window } from '../select/hunks';
 import { parseLineId } from '../select/hunks';
 import type { CallRecord, ScreenClient } from './shared';
-import { describeFailure, Recorder, runPool, stateOf } from './shared';
+import { compareText, describeFailure, Recorder, runPool, stateOf } from './shared';
 
 // The standards grid: every rubric rule × every touched file its glob matches. One request per
 // window carries all of the file's rules as named `noul` questions; a cell over its threshold gets a
@@ -87,12 +87,18 @@ function scoreWindowTask(target: FileWindows, window: Window, rules: ReadonlyArr
   };
 }
 
+// Cells and located suspects arrive in completion order, which the pool does not fix; grid order
+// (file, window, rule) is what a tie-break and the cap must see so a rerun ranks the same way.
+export function inGridOrder<T extends { readonly file: string; readonly window: number; readonly rule: string }>(items: ReadonlyArray<T>): Array<T> {
+  return [ ...items ].sort((a, b) => compareText(a.file, b.file) || a.window - b.window || compareText(a.rule, b.rule));
+}
+
 // Per rule × file, the window with the highest score is the cell; the others are kept in `cells`
 // for the sidecar but never become suspects on their own.
 function bestCells(cells: ReadonlyArray<Cell>, files: ReadonlyArray<FileWindows>): Array<Candidate> {
   const best = new Map<string, Candidate>();
   const windowsByFile = new Map(files.map((target) => [ target.file, target.windows ] as const));
-  for (const cell of cells) {
+  for (const cell of inGridOrder(cells)) {
     const key = `${ cell.rule }\0${ cell.file }`;
     const current = best.get(key);
     if (current !== undefined && current.score >= cell.score) continue;
@@ -117,7 +123,8 @@ function locateTask(candidate: Candidate, rule: Rule, context: ScreenContext, lo
       questions: { line: choice(question, options) },
       model: config.model,
     }));
-    const line = parseLineId(result.answers.line.choice) ?? windowRef.firstLine;
+    const chosen = result.answers.line.choice;
+    const line = (windowRef.changedIds.includes(chosen) ? parseLineId(chosen) : undefined) ?? windowRef.firstLine;
     located.push({ rule: cell.rule, file: cell.file, line, score: cell.score, window: cell.window });
   };
 }
@@ -147,7 +154,8 @@ export async function screenStandards(
     [];
   const locateFailure = await runPool(locateTasks, config.concurrency);
 
-  const { suspects, cut } = selectSuspects(located, config.maxSuspects);
+  // A locate failure leaves the list partial, so nothing is ranked — the same as a score failure.
+  const { suspects, cut } = locateFailure === undefined ? selectSuspects(inGridOrder(located), config.maxSuspects) : { suspects: [], cut: 0 };
   return {
     cells: recorder.cells,
     suspects,

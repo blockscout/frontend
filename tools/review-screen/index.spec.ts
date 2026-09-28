@@ -2,9 +2,12 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+import { TypeSafeClient } from '@typesafe-ai/sdk';
+
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { parseArgs, printReport, recordOrigins } from './index';
+import type { Screened } from './index';
+import { parseArgs, printReport, recordOrigins, specRecordOf } from './index';
 import type { SidecarRecord } from './sidecar';
 import { readSidecar, writeSidecar } from './sidecar';
 
@@ -75,6 +78,22 @@ describe('parseArgs', () => {
   });
 });
 
+describe('specRecordOf', () => {
+  const client: Screened['client'] = { ok: true, client: new TypeSafeClient({ apiKey: 'test' }) };
+  const empty = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
+  const source: Screened['source'] = { status: 'ok', path: 'spec.md', requirements: [ { id: 'FR1', text: 'one' } ] };
+
+  it('skips the spec grid, saying why, when the task-folder exclusion leaves no file to score', () => {
+    const screened: Screened = { client, source, windows: [], specFiles: 0, standards: empty, spec: empty, elapsedMs: 0 };
+    expect(specRecordOf(screened)).toEqual({ status: 'skipped', reason: 'no touched file outside .agents/tasks/** to score' });
+  });
+
+  it('reports every requirement covered only when at least one file was scored', () => {
+    const screened: Screened = { client, source, windows: [], specFiles: 1, standards: empty, spec: empty, elapsedMs: 0 };
+    expect(specRecordOf(screened)).toEqual({ status: 'ok', requirements: source.requirements, cells: [], suspects: [], cut: 0 });
+  });
+});
+
 describe('--origins', () => {
   let tmp = '';
 
@@ -98,6 +117,7 @@ describe('--origins', () => {
       standards: { cells: [], suspects: [ { rule: 'no-comments', file: 'src/a.ts', line: 4, score: 0.9, window: 0 } ], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [],
+      elapsedMs: undefined,
       origins: undefined,
     };
     writeSidecar(sidecar, record);
@@ -144,6 +164,7 @@ describe('--report', () => {
       standards: { cells: [], suspects: [], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [ { kind: 'noul', file: 'src/a.ts', window: 0, ms: 2000, usage: { input_tokens: 500, output_tokens: 10 } } ],
+      elapsedMs: 2000,
       origins: undefined,
       ...overrides,
     };

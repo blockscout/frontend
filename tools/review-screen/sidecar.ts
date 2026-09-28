@@ -67,6 +67,10 @@ export interface SidecarRecord {
   };
   readonly spec: SpecRecord;
   readonly calls: ReadonlyArray<CallRecord>;
+  // Wall-clock span of the screen. The calls overlap (`CONCURRENT_REQUESTS`), so their sum overstates
+  // what a review waited; a sidecar written before this field existed has none and `--report` falls
+  // back to the sum.
+  readonly elapsedMs: number | undefined;
   readonly origins: OriginsRecord | undefined;
 }
 
@@ -118,7 +122,7 @@ export function readSidecar(filePath: string): SidecarRecord {
   // Only this tool writes the folder, and the version check above is the one field an edited file
   // could drift on; validating every cell of a record we wrote ourselves would double the module.
   const record = parsed as unknown as SidecarRecord;
-  // A sidecar written before `windows` or `calibration` existed still reads: its suspects match on the
-  // exact line, and it counts as a pilot review.
-  return { ...record, calibration: record.calibration ?? false, windows: record.windows ?? [], origins: record.origins };
+  // A sidecar written before `windows`, `calibration` or `elapsedMs` existed still reads: its suspects
+  // match on the exact line, and it counts as a pilot review.
+  return { ...record, calibration: record.calibration ?? false, windows: record.windows ?? [], elapsedMs: record.elapsedMs, origins: record.origins };
 }

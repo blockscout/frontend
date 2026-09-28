@@ -62,29 +62,42 @@ function spanOf(suspect: Suspect, spans: ReadonlyArray<WindowSpan>): { readonly 
   return span ?? { firstLine: suspect.line, lastLine: suspect.line };
 }
 
-export function findingMatchesStandards(finding: FindingRow, suspect: Suspect, spans: ReadonlyArray<WindowSpan>): boolean {
-  if (finding.location.kind !== 'line' || finding.location.file !== suspect.file) return false;
+// How far a finding sits from the suspect, or `undefined` when it does not match at all. Two suspects
+// in one window (two rules, one file) each get their own finding: the nearest unclaimed one wins.
+export type Distance = (finding: FindingRow) => number | undefined;
+
+export function standardsDistance(finding: FindingRow, suspect: Suspect, spans: ReadonlyArray<WindowSpan>): number | undefined {
+  if (finding.location.kind !== 'line' || finding.location.file !== suspect.file) return undefined;
   const { firstLine, lastLine } = spanOf(suspect, spans);
-  return finding.location.line >= firstLine && finding.location.line <= lastLine;
+  const inside = finding.location.line >= firstLine && finding.location.line <= lastLine;
+  return inside ? Math.abs(finding.location.line - suspect.line) : undefined;
 }
 
-export function findingMatchesSpec(finding: FindingRow, suspect: SpecSuspect): boolean {
-  return finding.location.kind === 'requirement' && finding.location.requirement === suspect.requirement;
+export function specDistance(finding: FindingRow, suspect: SpecSuspect): number | undefined {
+  return finding.location.kind === 'requirement' && finding.location.requirement === suspect.requirement ? 0 : undefined;
 }
 
 function sameSuspect(ref: SuspectRef, suspect: SuspectRef): boolean {
   return formatSuspectRef(ref) === formatSuspectRef(suspect);
 }
 
-function fateOf(
-  ref: SuspectRef,
-  matches: (finding: FindingRow) => boolean,
-  input: OriginsInput,
-): SuspectFate {
+function nearestUnclaimed(input: OriginsInput, distanceOf: Distance, claimed: Set<string>): FindingRow | undefined {
+  let best: { readonly finding: FindingRow; readonly distance: number } | undefined;
+  for (const candidate of input.findings) {
+    if (claimed.has(candidate.id) || !candidate.sources.includes(JEV_SOURCE)) continue;
+    const distance = distanceOf(candidate);
+    if (distance === undefined) continue;
+    if (best === undefined || distance < best.distance) best = { finding: candidate, distance };
+  }
+  return best?.finding;
+}
+
+function fateOf(ref: SuspectRef, distanceOf: Distance, input: OriginsInput, claimed: Set<string>): SuspectFate {
   const drop = input.drops.find((entry: DropEntry) => sameSuspect(entry.suspect, ref));
   if (drop !== undefined) return { fate: 'dropped', reason: drop.reason };
-  const finding = input.findings.find((candidate) => candidate.sources.includes(JEV_SOURCE) && matches(candidate));
+  const finding = nearestUnclaimed(input, distanceOf, claimed);
   if (finding === undefined) return { fate: 'dropped', reason: NOT_REPORTED };
+  claimed.add(finding.id);
   return originOf(finding.sources) === 'both' ? { fate: 'merged', finding: finding.id } : { fate: 'confirmed', finding: finding.id };
 }
 
@@ -104,13 +117,14 @@ function withFate(scored: ScoredSuspect, fate: SuspectFate): SuspectFateRecord {
 }
 
 export function assignOrigins(record: SidecarRecord, input: OriginsInput, recordedAt: string): OriginsRecord {
+  const claimed = new Set<string>();
   const standards = record.standards.suspects.map((suspect) => {
     const ref: SuspectRef = { kind: 'standards', rule: suspect.rule, file: suspect.file, line: suspect.line };
-    return withFate({ suspect: ref, score: suspect.score }, fateOf(ref, (finding) => findingMatchesStandards(finding, suspect, record.windows), input));
+    return withFate({ suspect: ref, score: suspect.score }, fateOf(ref, (finding) => standardsDistance(finding, suspect, record.windows), input, claimed));
   });
   const spec = specSuspects(record).map((suspect) => {
     const ref: SuspectRef = { kind: 'spec', requirement: suspect.requirement };
-    return withFate({ suspect: ref, score: suspect.score }, fateOf(ref, (finding) => findingMatchesSpec(finding, suspect), input));
+    return withFate({ suspect: ref, score: suspect.score }, fateOf(ref, (finding) => specDistance(finding, suspect), input, claimed));
   });
   return {
     recordedAt,

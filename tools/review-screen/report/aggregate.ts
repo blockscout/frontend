@@ -1,4 +1,4 @@
-import type { SuspectFateRecord } from '../origins/match';
+import type { OriginsRecord, SuspectFateRecord } from '../origins/match';
 import type { SidecarRecord } from '../sidecar';
 
 // The pilot table's numbers, from the sidecars alone. A calibration run is left out; a review whose
@@ -35,8 +35,12 @@ export interface PilotReport {
   readonly pending: ReadonlyArray<string>;
 }
 
+interface CountedRecord extends SidecarRecord {
+  readonly origins: OriginsRecord;
+}
+
 interface Counted extends SidecarFile {
-  readonly record: SidecarRecord & { readonly origins: NonNullable<SidecarRecord['origins']> };
+  readonly record: CountedRecord;
 }
 
 function isCounted(sidecar: SidecarFile): sidecar is Counted {
@@ -91,8 +95,12 @@ function mean(values: ReadonlyArray<number>): number {
   return values.length === 0 ? 0 : values.reduce((sum, value) => sum + value, 0) / values.length;
 }
 
+// Milliseconds to seconds; `src/toolkit/utils/consts` sits outside this tool's tsconfig rootDir.
+const MS_PER_SECOND = 1_000;
+
 export function addedSecondsOf(record: SidecarRecord): number {
-  return record.calls.reduce((sum, call) => sum + call.ms, 0) / 1000;
+  const ms = record.elapsedMs ?? record.calls.reduce((sum, call) => sum + call.ms, 0);
+  return ms / MS_PER_SECOND;
 }
 
 export function inputTokensOf(record: SidecarRecord): number {
