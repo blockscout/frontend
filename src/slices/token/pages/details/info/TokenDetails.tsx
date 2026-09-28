@@ -6,10 +6,11 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import { isConfidentialTokenType } from 'src/slices/token/utils/token-types';
+import { isConfidentialTokenType, isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { TokenTabs } from 'src/slices/token/pages/details/Token';
+import { formatUiMultiplier, getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
@@ -25,6 +26,7 @@ import AssetValue from 'src/shared/values/entity/AssetValue';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
+import TokenMultiplierHistoryInline from './TokenMultiplierHistoryInline';
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
@@ -89,6 +91,9 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
     zilliqa,
   } = data || {};
 
+  const multiplier = getUiMultiplier(data, multichainContext?.chain?.app_config);
+  const multiplierChangesCount = isLoadingCounters ? 0 : Number(counters?.ui_multiplier_changes_count ?? 0);
+
   return (
     <DetailedInfo.Container>
       { zilliqa?.zrc2_address_hash && (
@@ -119,6 +124,25 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
             <Skeleton loading={ isLoading } display="inline-block">
               <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
             </Skeleton>
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
+      { multiplier && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Token amounts shown are scaled by this factor compared to the raw ERC-20 token"
+            isLoading={ isLoading }
+          >
+            Multiplier
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue multiRow>
+            <Skeleton loading={ isLoading } display="inline-block">
+              <span>{ formatUiMultiplier(multiplier) }</span>
+            </Skeleton>
+            { hash && !isLoading && multiplierChangesCount > 0 && (
+              <TokenMultiplierHistoryInline hash={ hash } changesCount={ multiplierChangesCount }/>
+            ) }
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -182,6 +206,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
               asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
               accuracy={ 3 }
               decimals={ decimals ?? '0' }
+              multiplier={ multiplier }
               loading={ isLoading }
               w="100%"
             />
@@ -229,7 +254,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
         </>
       ) }
 
-      { type !== 'ERC-20' && (
+      { !isFungibleTokenType(type) && (
         <TokenNftMarketplaces
           hash={ hash }
           isLoading={ isLoading }
@@ -238,7 +263,7 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
         />
       ) }
 
-      { (type !== 'ERC-20' && config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
+      { (!isFungibleTokenType(type) && config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailedInfo.ItemLabel
             hint="Link to the dapp"

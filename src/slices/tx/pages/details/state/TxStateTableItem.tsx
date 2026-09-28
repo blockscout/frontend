@@ -4,6 +4,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
@@ -13,11 +14,12 @@ import { getStateElements } from './utils';
 
 interface Props {
   data: schemas['StateChange'];
+  chainData?: ClusterChainConfig;
   isLoading?: boolean;
 }
 
-const TxStateTableItem = ({ data, isLoading }: Props) => {
-  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading);
+const TxStateTableItem = ({ data, chainData, isLoading }: Props) => {
+  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading, chainData?.app_config);
 
   return (
     <TableRow>

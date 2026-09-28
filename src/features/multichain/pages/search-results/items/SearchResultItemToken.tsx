@@ -6,6 +6,7 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
@@ -26,6 +27,7 @@ interface Props {
 }
 
 const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
+  const isFungibleToken = isFungibleTokenType(data.type, chain.app_config);
 
   const isVerified = contract.isVerified({ chain_infos: mapValues(data.chain_infos, (chainInfo) => ({ ...chainInfo, is_contract: true, coin_balance: '0' })) });
 
@@ -72,8 +74,8 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
           ml="auto"
           maxW={{ base: '60%', lg: 'unset' }}
         >
-          { (data.type as string) === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-          { (data.type as string) !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+          { isFungibleToken && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+          { !isFungibleToken && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
         </Text>
       </Flex>
     </SearchResultListItem>

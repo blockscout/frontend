@@ -150,9 +150,9 @@ export const withTokenTransfer: schemas['TransactionResponse'] = {
   },
   token_transfers: [
     tokenTransferMock.erc20,
+    tokenTransferMock.erc8056,
     tokenTransferMock.erc721,
     tokenTransferMock.erc1155A,
-    tokenTransferMock.erc1155B,
     tokenTransferMock.erc1155C,
     tokenTransferMock.erc1155D,
     tokenTransferMock.erc404A,

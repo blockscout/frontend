@@ -188,8 +188,8 @@ importers:
         specifier: 1.5.1
         version: 1.5.1
       '@blockscout/api-types':
-        specifier: 0.0.1-beta.d261ddc
-        version: 0.0.1-beta.d261ddc
+        specifier: 0.0.1-beta.40c5c457b4
+        version: 0.0.1-beta.40c5c457b4
       '@blockscout/bens-types':
         specifier: 1.7.1
         version: 1.7.1
@@ -200,8 +200,8 @@ importers:
         specifier: 1.8.2
         version: 1.8.2
       '@blockscout/multichain-aggregator-types':
-        specifier: 2.1.6
-        version: 2.1.6
+        specifier: 2.1.8
+        version: 2.1.8
       '@blockscout/points-types':
         specifier: 1.4.1
         version: 1.4.1
@@ -1712,8 +1712,8 @@ packages:
   '@blockscout/admin-rs-types@1.5.1':
     resolution: {integrity: sha512-+wGwULmzzfwkASJKwPB1X09iqmNUeIPu7Pc5INQxL2XunllTs32bhyvji1XqyA+VmF5yOxxYhQuLhNqCeN4SfQ==}
 
-  '@blockscout/api-types@0.0.1-beta.d261ddc':
-    resolution: {integrity: sha512-9xB/r+C+MrtGhkielJojMPPfEQXQu+wpU09pctQoRfyfkdGVfWz5HCz8fqRY8D6CrBbR8P8+TKXYyF/NhwUJBA==}
+  '@blockscout/api-types@0.0.1-beta.40c5c457b4':
+    resolution: {integrity: sha512-CF6Qc4rGsi1XT6n2dxMFaF+CqVWSOucw59KAeHCvpyVfhnk+1Jlqq78Vl7p4mmrmofQ7w+/K4dTFWeroOT+jHw==}
 
   '@blockscout/bens-types@1.7.1':
     resolution: {integrity: sha512-MNIvYbj1I2vcU2rb6otlRnVMIpFG2B1WDqC7HicNrt10DbM5yPZNfBcsNM+Mhk/965Aeg529Fd+BkV9zhINqjA==}
@@ -1724,8 +1724,8 @@ packages:
   '@blockscout/interchain-indexer-types@1.8.2':
     resolution: {integrity: sha512-VIOLpOTZQ839DzA4Brx+bB85nO3Tv5LI9FV7y8wMFC6x9b1272CxBxiuijcpgag6cZ0d1q3xcMIsaUKui63DDQ==}
 
-  '@blockscout/multichain-aggregator-types@2.1.6':
-    resolution: {integrity: sha512-qpotHqUXhp8NFZ9JioCn2B/gewWQ5stTV9QoHKnUbO/0HzXkLvJXdsOjqhkBlaVcOKEMFY08+T3t9O0oI0wQEA==}
+  '@blockscout/multichain-aggregator-types@2.1.8':
+    resolution: {integrity: sha512-j8dqb4h22FYQv3JdYa2pJp30P8YmLW556z/6u/JaT8rQyPylUY1oIZJ5944yhOtJsDUAgwzLsafFiPShTLgRog==}
 
   '@blockscout/points-types@1.4.1':
     resolution: {integrity: sha512-8aIE1od1zzXeVfQCIO8LU1aWT/CRx82t+1ZK4RbgFFrxWH8RX0Yo+I6haeraVj3qKjxiMkBda1xMbGohiKgXSg==}
@@ -9453,9 +9453,6 @@ packages:
     resolution: {integrity: sha512-HVLACW1TppGYjJ8H6/jqH/pqOtKRw6wMlrB23xfExmFWxFquAIWCmwoLsOyN96K4a5KbmOf5At9ZUO3GZbetAw==}
     engines: {node: '>= 0.4'}
 
-  es-module-lexer@2.1.0:
-    resolution: {integrity: sha512-n27zTYMjYu1aj4MjCWzSP7G9r75utsaoc8m61weK+W8JMBGGQybd43GstCXZ3WNmSFtGT9wi59qQTW6mhTR5LQ==}
-
   es-module-lexer@2.3.2:
     resolution: {integrity: sha512-poHGpORABojJJucnV9KbOavETW8lBVnphkW77ER5/BQ5Fz7oXSoCNek7IH3vR5nRjdsEz926ibFYX8KtLQmdyw==}
 
@@ -15820,7 +15817,7 @@ snapshots:
 
   '@blockscout/admin-rs-types@1.5.1': {}
 
-  '@blockscout/api-types@0.0.1-beta.d261ddc': {}
+  '@blockscout/api-types@0.0.1-beta.40c5c457b4': {}
 
   '@blockscout/bens-types@1.7.1': {}
 
@@ -15828,7 +15825,7 @@ snapshots:
 
   '@blockscout/interchain-indexer-types@1.8.2': {}
 
-  '@blockscout/multichain-aggregator-types@2.1.6': {}
+  '@blockscout/multichain-aggregator-types@2.1.8': {}
 
   '@blockscout/points-types@1.4.1': {}
 
@@ -18801,8 +18798,7 @@ snapshots:
       - utf-8-validate
 
   ? '@lifi/widget-light@4.3.2(patch_hash=8ee9f6665560f5ce16422afed5a38522d274ad98ca518fe83619f682b53ed378)(@wagmi/core@2.22.1(@tanstack/query-core@5.55.4)(@types/react@19.1.7)(@typescript/typescript6@6.0.2)(react@19.1.4)(use-sync-external-store@1.4.0(react@19.1.4))(viem@2.41.2(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(utf-8-validate@6.0.6)(zod@4.4.3)))(@wallet-standard/base@1.1.0)(react@19.1.4)(viem@2.41.2(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(utf-8-validate@6.0.6)(zod@4.4.3))(wagmi@2.19.5(@tanstack/query-core@5.55.4)(@tanstack/react-query@5.55.4(react@19.1.4))(@types/react@19.1.7)(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(debug@4.4.3(supports-color@10.2.2))(fastestsmallesttextencoderdecoder@1.0.22)(react-native@0.85.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(supports-color@10.2.2)(utf-8-validate@6.0.6))(react@19.1.4)(supports-color@10.2.2)(utf-8-validate@6.0.6)(viem@2.41.2(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(utf-8-validate@6.0.6)(zod@4.4.3))(zod@4.4.3))'
-  :
-    dependencies:
+  : dependencies:
       react: 19.1.4
     optionalDependencies:
       '@wagmi/core': 2.22.1(@tanstack/query-core@5.55.4)(@types/react@19.1.7)(@typescript/typescript6@6.0.2)(react@19.1.4)(use-sync-external-store@1.4.0(react@19.1.4))(viem@2.41.2(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(utf-8-validate@6.0.6)(zod@4.4.3))
@@ -28137,8 +28133,6 @@ snapshots:
       iterator.prototype: 1.1.5
       math-intrinsics: 1.1.0
 
-  es-module-lexer@2.1.0: {}
-
   es-module-lexer@2.3.2: {}
 
   es-object-atoms@1.1.2:
@@ -33976,7 +33970,7 @@ snapshots:
       browserslist: 4.28.2
       chrome-trace-event: 1.0.4
       enhanced-resolve: 5.23.0
-      es-module-lexer: 2.1.0
+      es-module-lexer: 2.3.2
       eslint-scope: 5.1.1
       events: 3.3.0
       glob-to-regexp: 0.4.1
