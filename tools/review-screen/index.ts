@@ -18,6 +18,9 @@ import { screenStandards } from './grid/standards';
 import type { SuspectFateRecord } from './origins/match';
 import { assignOrigins } from './origins/match';
 import { formatSuspectRef, parseOriginsInput } from './origins/parse';
+import type { SidecarFile } from './report/aggregate';
+import { aggregateReport } from './report/aggregate';
+import { renderReport, renderReportJson } from './report/render';
 import { RULES } from './rubric';
 import type { Change, Scope } from './select/change';
 import { resolveChange } from './select/change';
@@ -39,6 +42,8 @@ export interface CliOptions {
   origins: string | undefined;
   findings: string | undefined;
   calibration: boolean;
+  report: boolean;
+  json: boolean;
 }
 
 const STDIN = '-';
@@ -46,6 +51,7 @@ const STDIN = '-';
 const USAGE = `Usage:
   review:screen [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>]
   review:screen --origins <sidecar> --findings <path|->
+  review:screen --report [--json]
 
   Screens a change with Jev — every rubric rule against every touched file, and, when the change has
   a task spec, every Functional Requirement against every touched file — and prints the suspects as
@@ -69,7 +75,14 @@ const USAGE = `Usage:
                        Markdown tables; - reads stdin
                          finding: { id, axis, location: "<path>:<line>" | "FR<n>" | "—", sources: [...] }
                          drop:    { suspect: "<rule> <path>:<line>" | "FR<n>", fate: "dropped", reason }
-                         tables:  | id | axis | location | sources |   and   | suspect | fate | reason |`;
+                         tables:  | id | axis | location | sources |   and   | suspect | fate | reason |
+
+  --report             the pilot table over every sidecar in <main checkout>/.ai/jev/: per rule, suspects
+                       sent / confirmed / merged / dropped with the top drop reason; the jev / axis / both
+                       finding counts; added seconds and input tokens per review. Calibration runs are
+                       left out; a sidecar --origins has not been run on is listed as pending and not
+                       counted. Nothing is computed during a review.
+  --json               with --report: print the same data as JSON`;
 
 function readScope(raw: string): Scope {
   if (raw === 'branch' || raw === 'uncommitted') return raw;
@@ -106,6 +119,12 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--calibration', { kind: 'switch', apply: (options) => {
     options.calibration = true;
   } } ],
+  [ '--report', { kind: 'switch', apply: (options) => {
+    options.report = true;
+  } } ],
+  [ '--json', { kind: 'switch', apply: (options) => {
+    options.json = true;
+  } } ],
 ]);
 
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
@@ -117,9 +136,12 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     origins: undefined,
     findings: undefined,
     calibration: false,
+    report: false,
+    json: false,
   }, { kind: 'reject', usage: USAGE });
   if (rest.length > 0) throw new Error(`Unexpected argument: ${ rest[0] }\n${ USAGE }`);
   if ((options.origins === undefined) !== (options.findings === undefined)) throw new Error(`--origins and --findings go together\n${ USAGE }`);
+  if (options.json && !options.report) throw new Error(`--json goes with --report\n${ USAGE }`);
   return options;
 }
 
@@ -247,9 +269,26 @@ export function recordOrigins(sidecar: string, readInput: () => string): unknown
   };
 }
 
+export function readSidecarDir(dir: string): Array<SidecarFile> {
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir)
+    .filter((file) => file.endsWith('.json'))
+    .sort()
+    .map((file) => ({ file, record: readSidecar(path.join(dir, file)) }));
+}
+
+export function printReport(dir: string, json: boolean): string {
+  const report = aggregateReport(readSidecarDir(dir), RULES.map((rule) => rule.id));
+  return json ? renderReportJson(report) : renderReport(report);
+}
+
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const cwd = process.cwd();
+  if (options.report) {
+    console.log(printReport(path.join(resolveMainCheckout(cwd), SIDECAR_DIR), options.json));
+    return;
+  }
   if (options.origins !== undefined && options.findings !== undefined) {
     const findings = options.findings;
     console.log(JSON.stringify(recordOrigins(path.resolve(cwd, options.origins), () => readFindings(findings)), null, 2));

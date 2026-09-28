@@ -24,6 +24,7 @@ and decides. The task spec behind the pilot:
 | How are the Functional Requirements read out of a spec? | `./select/spec.ts` |
 | After a review: how does a suspect get its fate, a finding its origin? | `./origins/match.ts` (`--origins`) |
 | What does `--findings` accept? | `pnpm review:screen --help`; the two readers in `./origins/parse.ts` |
+| After the pilot: what is the keep-or-kill table made of? | `./report/aggregate.ts` (`--report`), printed by `./report/render.ts` |
 | How is it wired into the review? | `.agents/skills/review-changes/axes.md`, the `jev` axis brief |
 
 ## What an editor here must keep true
@@ -61,6 +62,14 @@ and decides. The task spec behind the pilot:
   field, so a calibration sidecar in `.ai/jev/` never inflates the pilot's counts. Screen such a diff from
   a detached worktree at the commit under review with `--base` its merge-base, and give it a `--ticket`
   that names the PR, or the same-day runs overwrite one another.
+- **`--report` counts a review only once `--origins` has run on it.** Without fates every suspect in
+  a sidecar would read as dropped and drag the rule's precision down, so such a sidecar is listed as
+  *pending origins* and counts nowhere — not in the rule rows, not in the timings. A `skipped` or
+  `failed` review with an `origins` block does count: its findings are all `axis`, its added time is
+  zero, which is the honest number for a review the screen contributed nothing to.
+- **`--report` computes nothing a review would need.** It is an offline read of the sidecars, run by
+  the developer when deciding keep or kill; no review step calls it, and the `jev` brief never
+  mentions it.
 - **`jev` membership comes from `sources`, not from `axis`.** A finding's `axis` is its label
   (`standards`, `spec`, …); which sides raised it is the orchestrator's `sources` list. A `jev`-sourced
   finding with an axis alongside is `both`, and its suspect is `merged` rather than `confirmed`.
@@ -73,6 +82,9 @@ and decides. The task spec behind the pilot:
   unless `--ticket` tells them apart.
   A rerun also drops the sidecar's `origins` block — run `--origins` again if the review's table still
   stands. Running `--origins` twice replaces the block; it never appends.
+- **A `merged` suspect is not a `confirmed` one in the table.** The rule rows keep the two apart:
+  `confirmed` is a finding only the `jev` axis raised, `merged` one an axis also found. Both are
+  hits for the rule's precision; only `confirmed` is unique contribution.
 - **A spec finding must carry its `FR<n>` in `location` to match a spec suspect.** The review's table
   writes `—` for a finding with no line; a spec suspect has no line either, so the requirement id is the
   only handle. Without it the suspect is `not reported` even when the finding came from it.
@@ -104,5 +116,8 @@ and decides. The task spec behind the pilot:
   the cap shared with the standards grid
 - `./origins/parse.ts` — the findings table and the drop list, from a JSON array or Markdown tables
 - `./origins/match.ts` — fate per suspect, origin per finding, the window and requirement matching
+- `./report/aggregate.ts` — the pilot table's numbers: per-rule fates, finding origins, added seconds
+  and tokens per review, the calibration and pending filters
+- `./report/render.ts` — the table as text, and as JSON under `--json`
 - `./sidecar.ts` — main-checkout resolution, file naming, the record shape, reading one back
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

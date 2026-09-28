@@ -12,4 +12,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 04 → `tickets/04-origins/`
 - [x] 05 → `tickets/05-calibrate-thresholds/`
 - [x] 06 → `tickets/06-workflow-integration/`
-- [ ] 07 → `tickets/07-report/`
+- [x] 07 → `tickets/07-report/`

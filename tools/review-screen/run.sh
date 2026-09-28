@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# Usage: tools/review-screen/run.sh [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>]
+# Usage: tools/review-screen/run.sh [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>] [--calibration]
+#        tools/review-screen/run.sh --origins <sidecar> --findings <path|->
+#        tools/review-screen/run.sh --report [--json]
 
 set -e
 

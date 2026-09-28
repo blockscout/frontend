@@ -4,7 +4,7 @@ import path from 'path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { parseArgs, recordOrigins } from './index';
+import { parseArgs, printReport, recordOrigins } from './index';
 import type { SidecarRecord } from './sidecar';
 import { readSidecar, writeSidecar } from './sidecar';
 
@@ -27,6 +27,8 @@ describe('parseArgs', () => {
       origins: undefined,
       findings: undefined,
       calibration: false,
+      report: false,
+      json: false,
     });
   });
 
@@ -39,6 +41,8 @@ describe('parseArgs', () => {
       origins: undefined,
       findings: undefined,
       calibration: false,
+      report: false,
+      json: false,
     });
     expect(parseArgs([ '--scope=uncommitted', '--base=abc123' ])).toMatchObject({ scope: 'uncommitted', base: 'abc123' });
   });
@@ -52,6 +56,12 @@ describe('parseArgs', () => {
     expect(parseArgs([ '--origins', '.ai/jev/x.json', '--findings', '-' ])).toMatchObject({ origins: '.ai/jev/x.json', findings: '-' });
     expect(() => parseArgs([ '--origins', '.ai/jev/x.json' ])).toThrow(/--origins and --findings go together\nUsage:/);
     expect(() => parseArgs([ '--findings', 'f.md' ])).toThrow('--origins and --findings go together');
+  });
+
+  it('reads --report with an optional --json, and rejects --json on its own', () => {
+    expect(parseArgs([ '--report' ])).toMatchObject({ report: true, json: false });
+    expect(parseArgs([ '--report', '--json' ])).toMatchObject({ report: true, json: true });
+    expect(() => parseArgs([ '--json' ])).toThrow(/--json goes with --report\nUsage:/);
   });
 
   it('rejects a scope other than branch or uncommitted', () => {
@@ -110,5 +120,65 @@ describe('--origins', () => {
       { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/a.ts', line: 4 }, score: 0.9, fate: 'dropped', reason: 'not reported' },
     ]);
     expect(Object.keys(afterSecond)).toEqual(Object.keys(afterFirst));
+  });
+});
+
+describe('--report', () => {
+  let tmp = '';
+
+  afterEach(() => {
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+    tmp = '';
+  });
+
+  function pilotRecord(overrides: Partial<SidecarRecord>): SidecarRecord {
+    return {
+      version: 1,
+      createdAt: '2026-09-28T23:30:00.000Z',
+      status: 'ok',
+      reason: undefined,
+      calibration: false,
+      model: 'jev-1.13.0',
+      inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', ticket: undefined, spec: undefined, files: [] },
+      windows: [],
+      standards: { cells: [], suspects: [], cut: 0 },
+      spec: { status: 'no-spec' },
+      calls: [ { kind: 'noul', file: 'src/a.ts', window: 0, ms: 2000, usage: { input_tokens: 500, output_tokens: 10 } } ],
+      origins: undefined,
+      ...overrides,
+    };
+  }
+
+  it('prints an empty table when the sidecar folder does not exist yet', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-report-'));
+    const output = printReport(path.join(tmp, 'missing'), false);
+    expect(output).toContain('reviews: 0 counted · 0 pending origins');
+    expect(output).toMatch(/^explanatory-comment\s+0\s+0\s+0\s+0\s+—$/m);
+  });
+
+  it('reads every sidecar in the folder, in name order, and prints the same data as text or JSON', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-report-'));
+    writeSidecar(path.join(tmp, '2026-09-28-b-branch.json'), pilotRecord({}));
+    writeSidecar(path.join(tmp, '2026-09-27-a-branch.json'), pilotRecord({ origins: {
+      recordedAt: '2026-09-27T00:00:00.000Z',
+      findings: [ { id: 'F1', axis: 'standards', sources: [ 'jev' ], origin: 'jev' } ],
+      suspects: [ { suspect: { kind: 'standards', rule: 'magic-number', file: 'src/a.ts', line: 4 }, score: 0.9, fate: 'confirmed', finding: 'F1' } ],
+    } }));
+    writeSidecar(path.join(tmp, 'calibration.json'), pilotRecord({ calibration: true }));
+    fs.writeFileSync(path.join(tmp, 'notes.txt'), 'ignored');
+
+    const text = printReport(tmp, false);
+    expect(text).toMatch(/^magic-number\s+1\s+1\s+0\s+0\s+—$/m);
+    expect(text).toContain('reviews: 1 counted · 1 pending origins');
+    expect(text).toContain('findings: jev 1 / axis 0 / both 0');
+    expect(text).toContain('added seconds per review: mean 2.0 · max 2.0');
+    expect(text).toContain('input tokens per review: mean 500');
+    expect(text).toContain('  2026-09-28-b-branch.json');
+
+    expect(JSON.parse(printReport(tmp, true))).toMatchObject({
+      rules: expect.arrayContaining([ { rule: 'magic-number', sent: 1, confirmed: 1, merged: 0, dropped: 0, topDropReason: undefined } ]),
+      totals: { reviews: 1, pending: 1, findings: { jev: 1, axis: 0, both: 0 }, addedSeconds: { mean: 2, max: 2 }, meanInputTokens: 500 },
+      pending: [ '2026-09-28-b-branch.json' ],
+    });
   });
 });
