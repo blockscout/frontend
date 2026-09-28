@@ -86,7 +86,7 @@ export const chainB = {
       ...chainA.app_config?.slices,
       token: {
         ...chainA.app_config?.slices?.token,
-        additionalTypes: [ { id: 'ERC-7984', name: 'ERC-7984' } ],
+        additionalTypes: [ { id: 'ERC-7984', name: 'ERC-7984' }, { id: 'ERC-8056', name: 'ERC-8056' } ],
       },
     },
     apis: {

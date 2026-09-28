@@ -140,6 +140,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   flashblocks: [
     [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
   ],
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
+  ],
   verifiedAddresses: [
     [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],
     [ 'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML', 'Send <b>99 USDC/USDT</b> to one of the addresses below:<br>Duck Chain: 0xFB74767C1ce1aadA0a0E114441173b57f8C1571b<br>Goose Chaing: 0x4675C7e5BaAFBFFbca748158bEcBA61ef3b0a263' ],

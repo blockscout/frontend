@@ -10,8 +10,8 @@ import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/util
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
-
-import multichainConfig from 'src/features/multichain/chains-config';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
@@ -21,6 +21,8 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
+import { getTokenChain } from './utils';
+
 interface Props {
   data: AddressTokenItem;
   isLoading: boolean;
@@ -28,20 +30,15 @@ interface Props {
 
 const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
 
+  const chainInfo = React.useMemo(() => getTokenChain(data), [ data ]);
+
+  const multiplier = getUiMultiplier(data.token, chainInfo?.app_config);
+
   const {
     valueBn: tokenQuantity,
+    rawValueBn: tokenRawQuantity,
     usdBn: tokenValue,
-  } = calculateUsdValue({ amount: data.value, exchangeRate: data.token.exchange_rate, decimals: data.token.decimals });
-
-  const chainInfo = React.useMemo(() => {
-    if (!data.chain_values) {
-      return;
-    }
-
-    const chainId = Object.keys(data.chain_values)[0];
-    const chain = multichainConfig()?.chains.find((chain) => chain.id === chainId);
-    return chain;
-  }, [ data.chain_values ]);
+  } = calculateUsdValue({ amount: data.value, exchangeRate: data.token.exchange_rate, decimals: data.token.decimals, multiplier });
 
   const isNativeToken = chainInfo?.app_config.slices.address.nativeTokenAddress &&
     data.token.address_hash.toLowerCase() === chainInfo?.app_config.slices.address.nativeTokenAddress.toLowerCase();
@@ -89,6 +86,9 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
         ) : (
           <SimpleValue
             value={ tokenQuantity }
+            rawValue={ tokenRawQuantity }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             loading={ isLoading }
             color={ isNativeToken ? 'text.secondary' : undefined }
           />
