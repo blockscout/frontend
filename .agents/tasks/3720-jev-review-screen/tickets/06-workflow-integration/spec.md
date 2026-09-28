@@ -20,23 +20,23 @@ zero suspects leaves a three-axis review with the reason stated.
 
 How to verify: `/review-changes md --scope branch` on this branch with and without `TYPESAFE_API_KEY`.
 
-- [ ] `axes.md` has a `## Jev axis` section: run the screen with the orchestrator's base and spec passed
+- [x] `axes.md` has a `## Jev axis` section: run the screen with the orchestrator's base and spec passed
       explicitly, verify each suspect against the cited rule file or FR, never look beyond the suspect list,
       return confirmed findings (axis label `standards` or `spec`), the drop list, and the sidecar path;
       no total word cap, the per-finding cap applies. It names the script, never the env var.
-- [ ] `SKILL.md` step 2 dispatches the `jev` axis in the same message as the others and says the spec gate
+- [x] `SKILL.md` step 2 dispatches the `jev` axis in the same message as the others and says the spec gate
       does not remove it (with no spec its spec grid is empty, its standards grid still runs).
-- [ ] `SKILL.md` step 4 keeps one finding per defect and records `sources` per surviving finding (the
+- [x] `SKILL.md` step 4 keeps one finding per defect and records `sources` per surviving finding (the
       axes that raised it, `jev` included); step 5 adds the post-publish `--origins` subagent dispatch
       (fresh `general-purpose`, given the `jev` brief, the sidecar path, the final table with
       `sources`, and the drop list).
-- [ ] The terminal close adds: `jev: <n> suspects · <c> confirmed · <d> dropped · origins jev <x> / axis
+- [x] The terminal close adds: `jev: <n> suspects · <c> confirmed · <d> dropped · origins jev <x> / axis
       <y> / both <z>`; on `skipped`/`failed`/zero suspects it prints the reason instead.
-- [ ] `output-pr.md` and `output-md.md` are untouched except that `Axes:` may list `jev` with the others —
+- [x] `output-pr.md` and `output-md.md` are untouched except that `Axes:` may list `jev` with the others —
       findings carry no provenance marker.
-- [ ] `.claude/agents/code-reviewer.md` description no longer counts the axes.
-- [ ] `.agents/GLOSSARY.md` gains a `Jev` row; `pnpm lint:doc-links` passes.
-- [ ] `(human)` A dry run on this branch in `md` mode shows the fourth axis dispatched, the `jev` line in
+- [x] `.claude/agents/code-reviewer.md` description no longer counts the axes.
+- [x] `.agents/GLOSSARY.md` gains a `Jev` row; `pnpm lint:doc-links` passes.
+- [x] `(human)` A dry run on this branch in `md` mode shows the fourth axis dispatched, the `jev` line in
       the terminal close, and an `origins` block in the sidecar.
 
 ## Details
@@ -60,7 +60,7 @@ How to verify: `/review-changes md --scope branch` on this branch with and witho
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the `## Jev axis` brief in `axes.md` — skill: `writing-for-agents`
-- [ ] 2 `[agent]` Edit `SKILL.md` steps 2, 4, 5 and the terminal close; update `code-reviewer.md` description
-- [ ] 3 `[agent]` Add the `Jev` glossary row — skill: `update-glossary`
-- [ ] 4 `[agent]` Dry run in `md` mode on this branch; record the sidecar path in `notes.md`
+- [x] 1 `[agent]` Write the `## Jev axis` brief in `axes.md` — skill: `writing-for-agents`
+- [x] 2 `[agent]` Edit `SKILL.md` steps 2, 4, 5 and the terminal close; update `code-reviewer.md` description
+- [x] 3 `[agent]` Add the `Jev` glossary row — skill: `update-glossary`
+- [x] 4 `[agent]` Dry run in `md` mode on this branch; record the sidecar path in `notes.md`
