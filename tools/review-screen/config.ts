@@ -2,12 +2,14 @@
 // what the sidecar records.
 export const MODEL = 'jev-1.13.0';
 
-// Starting points only — ticket 05 calibrates all three against past diffs with known findings.
 export const DEFAULT_STANDARDS_THRESHOLD = 0.7;
-export const STANDARDS_THRESHOLD_OVERRIDES: Readonly<Record<string, number>> = {};
+export const STANDARDS_THRESHOLD_OVERRIDES: Readonly<Record<string, number>> = {
+  // Real breaches of this rule score in the low 0.6s, where the other rules only produce noise.
+  'inline-empty-default': 0.6,
+};
 // The spec grid asks "does this file address the requirement", so a requirement is a suspect when
 // its best score stays *below* this.
-export const SPEC_THRESHOLD = 0.3;
+export const SPEC_THRESHOLD = 0.7;
 // The task folder describes the requirements rather than implementing them, so its files would score
 // every requirement high and hide the real gaps; the spec grid never sees them.
 export const SPEC_GRID_EXCLUDE = '.agents/tasks/**';

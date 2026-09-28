@@ -45,6 +45,7 @@ function record(overrides: Partial<SidecarRecord> = {}): SidecarRecord {
     },
     calls: [],
     origins: undefined,
+    calibration: false,
     ...overrides,
   };
 }

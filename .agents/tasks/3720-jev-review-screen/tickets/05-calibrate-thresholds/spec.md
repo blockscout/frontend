@@ -39,5 +39,5 @@ catches what at what false-positive cost — goes to this ticket's `notes.md`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the `--calibration` switch; screen each PR from a detached worktree; collect sidecars
-- [ ] 2 `[agent]` Compare with known findings; write `notes.md`; set `config.ts`
+- [x] 1 `[agent]` Add the `--calibration` switch; screen each PR from a detached worktree; collect sidecars
+- [x] 2 `[agent]` Compare with known findings; write `notes.md`; set `config.ts`

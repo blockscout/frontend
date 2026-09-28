@@ -57,6 +57,7 @@ describe('writeSidecar', () => {
       createdAt: DATE.toISOString(),
       status: 'skipped',
       reason: 'no key',
+      calibration: false,
       model: undefined,
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', ticket: undefined, spec: undefined, files: [] },
       windows: [],
@@ -72,6 +73,7 @@ describe('writeSidecar', () => {
       createdAt: '2026-09-28T23:30:00.000Z',
       status: 'skipped',
       reason: 'no key',
+      calibration: false,
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', files: [] },
       windows: [],
       standards: { cells: [], suspects: [], cut: 0 },
@@ -92,7 +94,7 @@ describe('readSidecar', () => {
     expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar');
   });
 
-  it('fills in an empty window list for a sidecar written before spans were recorded', () => {
+  it('fills in an empty window list and a pilot marker for a sidecar written before either was recorded', () => {
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-sidecar-'));
     const target = path.join(tmp, 'x.json');
     fs.writeFileSync(target, JSON.stringify({
@@ -102,6 +104,6 @@ describe('readSidecar', () => {
       spec: { status: 'no-spec' },
       calls: [],
     }));
-    expect(readSidecar(target)).toMatchObject({ version: 1, windows: [] });
+    expect(readSidecar(target)).toMatchObject({ version: 1, windows: [], calibration: false });
   });
 });

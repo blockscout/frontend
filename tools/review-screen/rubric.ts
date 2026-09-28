@@ -32,6 +32,7 @@ export const RULES: ReadonlyArray<Rule> = [
       'a `TODO (design):` or `TODO (api-data):` scaffold marker',
       'an SPDX license header',
       'a comment that was already present and is only moved or reindented',
+      'a module\'s opening comment that states what the file is for and what it must keep true',
     ],
   },
   {

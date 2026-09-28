@@ -19,7 +19,15 @@ function runOrigins(sidecar: string, findings: string): OriginsOutput {
 
 describe('parseArgs', () => {
   it('defaults to the branch scope with nothing explicit', () => {
-    expect(parseArgs([])).toEqual({ scope: 'branch', base: undefined, spec: undefined, ticket: undefined, origins: undefined, findings: undefined });
+    expect(parseArgs([])).toEqual({
+      scope: 'branch',
+      base: undefined,
+      spec: undefined,
+      ticket: undefined,
+      origins: undefined,
+      findings: undefined,
+      calibration: false,
+    });
   });
 
   it('reads every flag in both the separate-token and inline forms', () => {
@@ -30,8 +38,14 @@ describe('parseArgs', () => {
       ticket: '02',
       origins: undefined,
       findings: undefined,
+      calibration: false,
     });
     expect(parseArgs([ '--scope=uncommitted', '--base=abc123' ])).toMatchObject({ scope: 'uncommitted', base: 'abc123' });
+  });
+
+  it('marks a calibration run with the bare switch', () => {
+    expect(parseArgs([ '--calibration', '--base', 'abc123' ])).toMatchObject({ calibration: true, base: 'abc123' });
+    expect(() => parseArgs([ '--calibration=yes' ])).toThrow('--calibration takes no value');
   });
 
   it('reads --origins with --findings, and rejects one without the other', () => {
@@ -67,6 +81,7 @@ describe('--origins', () => {
       createdAt: '2026-09-28T23:30:00.000Z',
       status: 'ok',
       reason: undefined,
+      calibration: false,
       model: 'jev-1.13.0',
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', ticket: undefined, spec: undefined, files: [ { path: 'src/a.ts', untracked: false } ] },
       windows: [ { file: 'src/a.ts', window: 0, firstLine: 1, lastLine: 20 } ],

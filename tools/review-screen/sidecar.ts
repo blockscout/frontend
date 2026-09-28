@@ -55,6 +55,8 @@ export interface SidecarRecord {
   readonly createdAt: string;
   readonly status: RunStatus;
   readonly reason: string | undefined;
+  // A past diff screened to tune the thresholds, not a pilot review; `--report` leaves it out.
+  readonly calibration: boolean;
   readonly model: string | undefined;
   readonly inputs: SidecarInputs;
   readonly windows: ReadonlyArray<WindowSpan>;
@@ -116,6 +118,7 @@ export function readSidecar(filePath: string): SidecarRecord {
   // Only this tool writes the folder, and the version check above is the one field an edited file
   // could drift on; validating every cell of a record we wrote ourselves would double the module.
   const record = parsed as unknown as SidecarRecord;
-  // A sidecar written before `windows` existed still reads; its suspects then match on the exact line.
-  return { ...record, windows: record.windows ?? [], origins: record.origins };
+  // A sidecar written before `windows` or `calibration` existed still reads: its suspects match on the
+  // exact line, and it counts as a pilot review.
+  return { ...record, calibration: record.calibration ?? false, windows: record.windows ?? [], origins: record.origins };
 }

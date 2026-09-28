@@ -56,6 +56,11 @@ and decides. The task spec behind the pilot:
   `FR<n>`. The `jev` axis's drop list is the only other input; a suspect named by neither is `dropped`
   with reason `not reported`. Keep it that way: the subagent that runs it forwards the table and nothing
   else, so any judgement added here would be a judgement made without the code in front of it.
+- **A calibration run is not a pilot review.** A past diff screened to tune `./config.ts` is run with
+  `--calibration`, which sets `calibration: true` in its sidecar; `--report` filters on that
+  field, so a calibration sidecar in `.ai/jev/` never inflates the pilot's counts. Screen such a diff from
+  a detached worktree at the commit under review with `--base` its merge-base, and give it a `--ticket`
+  that names the PR, or the same-day runs overwrite one another.
 - **`jev` membership comes from `sources`, not from `axis`.** A finding's `axis` is its label
   (`standards`, `spec`, …); which sides raised it is the orchestrator's `sources` list. A `jev`-sourced
   finding with an axis alongside is `both`, and its suspect is `merged` rather than `confirmed`.
@@ -63,7 +68,9 @@ and decides. The task spec behind the pilot:
 ## Gotchas
 
 - **Rerunning on the same day, branch and scope overwrites the sidecar.** The name carries no time of day.
-  A calibration or dry run that should survive the next run needs a different `--ticket` or a copied file.
+  A calibration or dry run that should survive the next run needs a different `--ticket` or a copied file;
+  a detached checkout has no branch name and gets `detached`, so two PRs screened the same day collide
+  unless `--ticket` tells them apart.
   A rerun also drops the sidecar's `origins` block — run `--origins` again if the review's table still
   stands. Running `--origins` twice replaces the block; it never appends.
 - **A spec finding must carry its `FR<n>` in `location` to match a spec suspect.** The review's table
@@ -73,8 +80,9 @@ and decides. The task spec behind the pilot:
   `spec.md` and ticket specs would otherwise score every requirement high — the spec *states* each one —
   and hide the requirements no code addresses yet. The standards grid still sees those files.
 - **A requirement about things outside the diff scores low everywhere.** A requirement that names docs,
-  a PR description or a later ticket will be a suspect on every run by construction; that is expected,
-  and it is what the calibration of `SPEC_THRESHOLD` (ticket 05 of the task) tunes against.
+  a PR description or a later ticket will be a suspect on every run by construction, and so will one
+  about code the change *removes*, since the state carries new-side lines only. That is expected; the
+  `jev` axis drops such a suspect with that reason.
 - **A `choice` question takes at most 255 options**, so a window never carries more changed lines than
   that even when it fits the character budget. A huge single hunk therefore becomes several windows, and
   the file's cell is the max across them.

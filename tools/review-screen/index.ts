@@ -38,6 +38,7 @@ export interface CliOptions {
   ticket: string | undefined;
   origins: string | undefined;
   findings: string | undefined;
+  calibration: boolean;
 }
 
 const STDIN = '-';
@@ -56,6 +57,8 @@ const USAGE = `Usage:
   --spec <path>        use this task spec verbatim instead of resolving it from the issue branch
   --ticket <NN>        name the ticket in the sidecar file; under --scope uncommitted it defaults to
                        the first unchecked box in the task's progress.md
+  --calibration        mark the sidecar as a calibration run (a past diff screened to tune the
+                       thresholds), so --report leaves it out of the pilot's numbers
 
   Without TYPESAFE_API_KEY in the environment the run is skipped; an API failure is reported as failed.
   Both exit 0.
@@ -100,6 +103,9 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--findings', { kind: 'value', apply: (options, value) => {
     options.findings = value;
   } } ],
+  [ '--calibration', { kind: 'switch', apply: (options) => {
+    options.calibration = true;
+  } } ],
 ]);
 
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
@@ -110,6 +116,7 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     ticket: undefined,
     origins: undefined,
     findings: undefined,
+    calibration: false,
   }, { kind: 'reject', usage: USAGE });
   if (rest.length > 0) throw new Error(`Unexpected argument: ${ rest[0] }\n${ USAGE }`);
   if ((options.origins === undefined) !== (options.findings === undefined)) throw new Error(`--origins and --findings go together\n${ USAGE }`);
@@ -164,12 +171,13 @@ function specRecordOf(screened: Screened): SpecRecord {
   return { status: 'ok', requirements: source.requirements, cells: spec.cells, suspects: spec.suspects, cut: spec.cut };
 }
 
-function buildRecord(change: Change, screened: Screened): SidecarRecord {
+function buildRecord(change: Change, screened: Screened, calibration: boolean): SidecarRecord {
   const calls: Array<CallRecord> = [ ...screened.standards.calls, ...screened.spec.calls ];
   return {
     version: 1,
     createdAt: new Date().toISOString(),
     ...statusOf(screened),
+    calibration,
     model: screened.standards.model ?? screened.spec.model,
     inputs: { scope: change.scope, base: change.base, branch: change.branch, ticket: change.ticket, spec: change.spec, files: change.files },
     windows: windowSpans(screened.windows),
@@ -250,7 +258,7 @@ async function main(): Promise<void> {
   const change = resolveChange(options, cwd);
   const screened = await screen(change, createClient(), readSpec(change.spec, cwd), cwd);
 
-  const record = buildRecord(change, screened);
+  const record = buildRecord(change, screened, options.calibration);
   const sidecar = path.join(resolveMainCheckout(cwd), SIDECAR_DIR, sidecarFileName({
     date: new Date(record.createdAt),
     branch: change.branch,
