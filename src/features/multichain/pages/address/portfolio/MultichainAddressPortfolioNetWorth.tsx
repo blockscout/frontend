@@ -105,12 +105,12 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
           textStyle="sm"
           alignItems="center"
         >
-          <HStack alignItems="center" flexWrap="wrap" gap={ 3 }>
-            <HStack w={{ base: 'full', lg: 'auto' }}>
+          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
+            <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
               <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
               <Text fontWeight={ 500 }>
                 Total net worth
-                <chakra.span color="text.secondary"> (without NFT)</chakra.span>
+                <chakra.span color="text.secondary" fontWeight={ 400 }> (without NFT)</chakra.span>
               </Text>
             </HStack>
             <SimpleValue
