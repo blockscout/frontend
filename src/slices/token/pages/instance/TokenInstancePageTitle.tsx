@@ -48,7 +48,19 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
     return `ID ${ instance.id }`;
   })();
 
-  const tokenTag = token ? <Tag loading={ isLoading }>{ getTokenTypeName(token.type) }</Tag> : null;
+  const contentAfter = (
+    <>
+      { token && <Tag loading={ isLoading }>{ getTokenTypeName(token.type) }</Tag> }
+      { appActionData && (
+        <AppActionButton
+          data={ appActionData }
+          addressHash={ token?.address_hash }
+          source="NFT item"
+          ml={{ base: 0, lg: 'auto' }}
+        />
+      ) }
+    </>
+  );
 
   const appLink = (() => {
     if (!instance?.external_app_url) {
@@ -61,13 +73,13 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
         new URL('https://' + instance.external_app_url);
 
       return (
-        <Link external href={ url.toString() } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: appActionData ? 0 : 'auto' }}>
+        <Link external href={ url.toString() } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
           { url.hostname || instance.external_app_url }
         </Link>
       );
     } catch (error) {
       return (
-        <Link external href={ instance.external_app_url } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: appActionData ? 0 : 'auto' }}>
+        <Link external href={ instance.external_app_url } variant="underlaid" loading={ isLoading } ml={{ base: 0, lg: 'auto' }}>
           View in app
         </Link>
       );
@@ -100,14 +112,6 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
       { !isLoading && token && <TokenAddToWallet token={ token } tokenId={ instance?.id } variant="button"/> }
       <AddressQrCode hash={ address.hash } isLoading={ isLoading }/>
       <ActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
-      { appActionData && (
-        <AppActionButton
-          data={ appActionData }
-          addressHash={ token?.address_hash }
-          source="NFT item"
-          ml={{ base: 0, lg: 'auto' }}
-        />
-      ) }
       { appLink }
     </Flex>
   );
@@ -115,7 +119,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
   return (
     <PageTitle
       title={ title }
-      contentAfter={ tokenTag }
+      contentAfter={ contentAfter }
       secondRow={ titleSecondRow }
       isLoading={ isLoading }
     />
