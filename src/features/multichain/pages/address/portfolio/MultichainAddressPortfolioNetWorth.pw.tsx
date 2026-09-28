@@ -42,7 +42,7 @@ test('base view +@mobile', async({ render, page }) => {
   });
 });
 
-test.describe('md desktop', () => {
+test.describe('small desktop', () => {
   test.use({ viewport: { width: 1024, height: 768 } });
   test('base view', async({ render, page }) => {
     const component = await render(
