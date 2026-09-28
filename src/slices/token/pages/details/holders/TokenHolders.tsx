@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -16,7 +15,8 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
-import TokenHoldersList from './TokenHoldersList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import TokenHoldersTable from './TokenHoldersTable';
 
 interface Props {
@@ -59,25 +59,15 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
   const items = holdersQuery.data?.items;
 
   const content = items && token ? (
-    <>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <TokenHoldersTable
-          data={ items }
-          token={ token }
-          top={ ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ holdersQuery.isInitialLoading }
-          resetKey={ holdersQuery.queryHash }
-        />
-      </Box>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        <TokenHoldersList
-          data={ items }
-          token={ token }
-          isLoading={ holdersQuery.isInitialLoading }
-          resetKey={ holdersQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TokenHoldersTable
+        data={ items }
+        token={ token }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
+        isLoading={ holdersQuery.isInitialLoading }
+        resetKey={ holdersQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

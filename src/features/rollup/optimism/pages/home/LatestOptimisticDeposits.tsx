@@ -14,12 +14,10 @@ import LatestTxsFallback from 'src/slices/home/pages/index/txs/LatestTxsFallback
 import LatestDeposits from 'src/features/rollup/common/pages/home/LatestDeposits';
 import { L2_DEPOSIT_ITEM } from 'src/features/rollup/optimism/stubs';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 
 const LatestOptimisticDeposits = () => {
-  const isMobile = useIsMobile();
-  const itemsCount = isMobile ? 2 : 5;
+  const itemsCount = 5;
   const { data, isPlaceholderData, isError } = useApiQuery('core:homepage_optimistic_deposits', {
     queryOptions: {
       placeholderData: Array(itemsCount).fill(L2_DEPOSIT_ITEM),

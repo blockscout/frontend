@@ -18,12 +18,12 @@ interface Props {
 
 const TagSearchTable = ({ items, top, isLoading }: Props) => {
   return (
-    <TableRoot>
+    <TableRoot minW="500px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader width="70%">Address</TableColumnHeader>
-          <TableColumnHeader width="15%" isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
-          <TableColumnHeader width="15%" isNumeric>Txn count</TableColumnHeader>
+          <TableColumnHeader width="60%">Address</TableColumnHeader>
+          <TableColumnHeader width="20%" isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
+          <TableColumnHeader width="20%" isNumeric>Txn count</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

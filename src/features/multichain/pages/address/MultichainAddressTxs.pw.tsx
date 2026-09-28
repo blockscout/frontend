@@ -10,7 +10,6 @@ import * as chainDataMock from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
-import * as pwConfig from 'playwright/utils/config';
 
 import MultichainAddressTxs from './MultichainAddressTxs';
 
@@ -53,13 +52,5 @@ test.describe('local txs', () => {
 
   test('base view', async() => {
     await expect(component).toHaveScreenshot();
-  });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: pwConfig.viewport.mobile });
-
-    test('base view', async() => {
-      await expect(component).toHaveScreenshot();
-    });
   });
 });

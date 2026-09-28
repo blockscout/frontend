@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import DataList from 'src/shared/lists/DataList';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
-import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
 
 type Props = {
@@ -16,25 +16,15 @@ const TABS_HEIGHT = 88;
 
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <BeaconChainWithdrawalsList
-          items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isInitialLoading }
-          view="block"
-          resetKey={ blockWithdrawalsQuery.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainWithdrawalsTable
-          items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isInitialLoading }
-          top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
-          view="block"
-          resetKey={ blockWithdrawalsQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainWithdrawalsTable
+        items={ blockWithdrawalsQuery.data.items }
+        isLoading={ blockWithdrawalsQuery.isInitialLoading }
+        top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+        view="block"
+        resetKey={ blockWithdrawalsQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null ;
 
   return (

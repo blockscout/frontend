@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
@@ -23,12 +22,12 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import AddressModal from './AddressModal/AddressModal';
 import DeleteAddressModal from './DeleteAddressModal';
 import WatchlistEmailAlert from './WatchlistEmailAlert';
-import WatchListItem from './WatchlistTable/WatchListItem';
 import WatchlistTable from './WatchlistTable/WatchlistTable';
 
 const WatchList: React.FC = () => {
@@ -105,19 +104,7 @@ const WatchList: React.FC = () => {
           actionBar={ actionBar }
           isTransitioning={ isTransitioning }
         >
-          <Box display={{ base: 'block', lg: 'none' }}>
-            { data?.items.map((item, index) => (
-              <WatchListItem
-                key={ item.address_hash + (isInitialLoading ? index : '') }
-                item={ item }
-                isLoading={ isInitialLoading }
-                onDeleteClick={ onDeleteClick }
-                onEditClick={ onEditClick }
-                hasEmail={ hasEmail }
-              />
-            )) }
-          </Box>
-          <Box display={{ base: 'none', lg: 'block' }}>
+          <TableContainerScrollable>
             <WatchlistTable
               data={ data?.items }
               isLoading={ isInitialLoading }
@@ -126,7 +113,7 @@ const WatchList: React.FC = () => {
               top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
               hasEmail={ hasEmail }
             />
-          </Box>
+          </TableContainerScrollable>
         </DataList>
         <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
           <Button

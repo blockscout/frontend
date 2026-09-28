@@ -14,7 +14,7 @@ const hooksConfig = {
   },
 };
 
-test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
+test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   await mockTextAd();
   await mockEnvs(ENVS_MAP.arbitrumRollup);
   await mockApiResponse(

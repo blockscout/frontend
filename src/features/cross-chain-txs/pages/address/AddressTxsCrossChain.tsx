@@ -23,7 +23,6 @@ const AddressTxsCrossChain = ({ pagination, isLoading, ...rest }: Props) => {
       <TransactionsCrossChainContent
         pagination={ pagination }
         isLoading={ isLoading }
-        isTableView
         stickyHeader={ !isMobile }
         { ...rest }
       />

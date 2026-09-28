@@ -49,7 +49,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, showSocketErrorAlert, s
               <TimeFormatToggle/>
             </TableColumnHeader>
             <TableColumnHeader width="200px">Method</TableColumnHeader>
-            <TableColumnHeader width={{ lg: '224px', xl: '380px' }}>From/To</TableColumnHeader>
+            <TableColumnHeader width={{ base: '224px', xl: '380px' }}>From/To</TableColumnHeader>
             { (tokenType && NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
               <TableColumnHeader width={ hasTokenIds(tokenType) ? '50%' : '100%' }>Token ID</TableColumnHeader>
             }

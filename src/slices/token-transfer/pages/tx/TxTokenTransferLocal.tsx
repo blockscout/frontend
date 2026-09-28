@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import TokenTransferList from 'src/slices/token-transfer/components/list/TokenTransferList';
 import TokenTransferTable from 'src/slices/token-transfer/components/list/TokenTransferTable';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 interface Props {
   txQuery: TxQuery;
@@ -36,19 +36,14 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   }
 
   const content = tokenTransferQuery.data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TokenTransferTable
-          data={ items }
-          top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ isInitialLoading }
-          resetKey={ tokenTransferQuery.queryHash }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        <TokenTransferList data={ items } isLoading={ isInitialLoading } resetKey={ tokenTransferQuery.queryHash }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TokenTransferTable
+        data={ items }
+        top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP }
+        isLoading={ isInitialLoading }
+        resetKey={ tokenTransferQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -10,7 +9,6 @@ import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
 import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
-import UserOpsList from 'src/features/user-ops/pages/index/UserOpsList';
 import UserOpsTable from 'src/features/user-ops/pages/index/UserOpsTable';
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
@@ -18,6 +16,8 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const MultichainUserOps = () => {
 
@@ -38,7 +38,7 @@ const MultichainUserOps = () => {
 
   const content = query.data?.items ? (
     <MultichainProvider chainId={ chain?.id }>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <UserOpsTable
           items={ query.data.items }
           top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
@@ -47,17 +47,7 @@ const MultichainUserOps = () => {
           showSender
           resetKey={ query.queryHash }
         />
-      </Box>
-      <Box hideFrom="lg">
-        <UserOpsList
-          items={ query.data.items }
-          isLoading={ query.isInitialLoading }
-          showTx
-          showSender
-          chainData={ chain }
-          resetKey={ query.queryHash }
-        />
-      </Box>
+      </TableContainerScrollable>
     </MultichainProvider>
   ) : null;
 

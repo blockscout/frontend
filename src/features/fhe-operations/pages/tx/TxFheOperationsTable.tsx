@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -9,7 +8,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
-import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TxFHEOperationsTableItem from './TxFheOperationsTableItem';
 
@@ -24,7 +23,7 @@ const TxFHEOperationsTable = ({ data, isLoading, resetKey }: Props) => {
 
   return (
     <AddressHighlightProvider>
-      <Box maxW="100%" overflowX="auto" hideBelow="lg">
+      <TableContainerScrollable>
         <TableRoot tableLayout="fixed" minWidth="900px" w="100%">
           <TableHeader>
             <TableRow>
@@ -49,7 +48,7 @@ const TxFHEOperationsTable = ({ data, isLoading, resetKey }: Props) => {
             <TableRow ref={ cutRef }/>
           </TableBody>
         </TableRoot>
-      </Box>
+      </TableContainerScrollable>
     </AddressHighlightProvider>
   );
 };

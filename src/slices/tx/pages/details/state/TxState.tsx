@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -14,7 +14,8 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
-import TxStateList from './TxStateList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import TxStateTable from './TxStateTable';
 
 interface Props {
@@ -42,14 +43,9 @@ const TxState = ({ txQuery }: Props) => {
   }
 
   const content = data ? (
-    <>
-      <Box hideBelow="lg">
-        <TxStateTable data={ data.items } isLoading={ isInitialLoading } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
-      </Box>
-      <Box hideFrom="lg">
-        <TxStateList data={ data.items } isLoading={ isInitialLoading }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxStateTable data={ data.items } isLoading={ isInitialLoading } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = pagination.isVisible ? (

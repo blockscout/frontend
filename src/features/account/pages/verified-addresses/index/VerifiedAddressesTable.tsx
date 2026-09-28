@@ -19,7 +19,7 @@ interface Props {
 
 const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isLoading }: Props) => {
   return (
-    <TableRoot>
+    <TableRoot minW="800px">
       <TableHeader>
         <TableRow>
           <TableColumnHeader>Address</TableColumnHeader>

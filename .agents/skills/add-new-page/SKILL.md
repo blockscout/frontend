@@ -43,13 +43,13 @@ substitute the placeholders and delete any optional blocks you don't need:
 Template sets:
 - `templates/general/{Page,GeneralInfo}.tsx.tmpl` (`Page` = non-tabbed general page; `GeneralInfo` = a general-content body, used as a tab panel)
 - `templates/detail/{Page,Details}.tsx.tmpl`
-- `templates/index/{Page,Content,Table,TableItem,List,ListItem}.tsx.tmpl`
+- `templates/index/{Page,Content,Table,TableItem}.tsx.tmpl`
 - `templates/tabs/PageWithTabs.tsx.tmpl` (tabbed page shell — `PageTitle` + `RoutedTabs`)
 - `templates/route.tsx.tmpl` (shared route wrapper; has a commented dynamic-route variant)
 
 A **page shell** is one of: a non-tabbed `Page.tsx.tmpl` (embeds a single content body) or the tabbed
 `PageWithTabs.tsx.tmpl` (renders `RoutedTabs`). A **content body** is `Details` (detail), `Content` +
-`Table`/`List`/items (index), or `GeneralInfo` (general). Tabbed pages combine one shell with one body per tab.
+`Table`/`TableItem` (index), or `GeneralInfo` (general). Tabbed pages combine one shell with one body per tab.
 
 **Naming the destination files.** Drop the `.tmpl` extension and name each component file after the
 component it exports — i.e. the `__PageName__`-prefixed name used in the template's `const` / `import`
@@ -65,8 +65,6 @@ route wrapper is named after the route, not the component.
 | `index/Content.tsx.tmpl` | `__PageName__Content.tsx` → `ValidatorsContent.tsx` |
 | `index/Table.tsx.tmpl` | `__PageName__Table.tsx` → `ValidatorsTable.tsx` |
 | `index/TableItem.tsx.tmpl` | `__PageName__TableItem.tsx` → `ValidatorsTableItem.tsx` |
-| `index/List.tsx.tmpl` | `__PageName__List.tsx` → `ValidatorsList.tsx` |
-| `index/ListItem.tsx.tmpl` | `__PageName__ListItem.tsx` → `ValidatorsListItem.tsx` |
 | `general/GeneralInfo.tsx.tmpl` | `__PageName__GeneralInfo.tsx` → `ValidatorsGeneralInfo.tsx` |
 | `tabs/PageWithTabs.tsx.tmpl` | `__PageName__.tsx` → `Validators.tsx` |
 | `route.tsx.tmpl` | `src/pages/__route__.tsx` → `src/pages/validators.tsx` |
@@ -76,8 +74,7 @@ components live in their own kebab-case sub-folder** under it (mirrors
 `src/slices/tx/pages/details/{info,logs,state,…}`). Name a tab's components after the tab so same-type tabs
 don't collide: replace the `__PageName__` base with `__PageName__<TabName>` (PascalCase tab name), and rename
 the body's sub-components/imports to match. E.g. an `index`-type tab "Active" on page `Validators` → folder
-`active/` holding `ValidatorsActive` (from `Content`), `ValidatorsActiveTable`, `ValidatorsActiveTableItem`,
-`ValidatorsActiveList`, `ValidatorsActiveListItem`. A `detail`-type tab "Details" → folder `info/` holding
+`active/` holding `ValidatorsActive` (from `Content`), `ValidatorsActiveTable`, `ValidatorsActiveTableItem`. A `detail`-type tab "Details" → folder `info/` holding
 `ValidatorsDetails` (from `Details`). A `general`-type tab "Stats" → folder `stats/` holding `ValidatorsStats`
 (from `GeneralInfo`).
 
@@ -90,7 +87,7 @@ Propose each of the following and **wait for the user's explicit approval**. Ask
 obvious from the conversation or the codebase.
 
 1. **Layout** — does the page have **tabs**? Decide this first; ask if it isn't obvious from the conversation.
-   - **No tabs** → pick the single content type: `index` (list + table views), `detail` (label/value grid),
+   - **No tabs** → pick the single content type: `index` (table view), `detail` (label/value grid),
      or `general` (title + content).
    - **Tabs** → list the tabs **in order**; for each, give a **name** (the tab title) and a **content type**
      (`details` / `index` / `general info`). That's enough at this stage. **A `details` tab, if present, must
@@ -141,10 +138,11 @@ The **content bodies** are the same regardless of tabs — reference these exemp
   `src/features/gas-tracker/pages/index/GasTracker.tsx`.
 - **detail** (`Details.tsx`) — a `DetailedInfo.Container` grid of `ItemLabel`/`ItemValue` rows wrapped in
   `Skeleton`. Exemplars `src/slices/block/pages/details/BlockDetails.tsx`; grid `src/shared/detailed-info/DetailedInfo.tsx`.
-- **index** (`Content.tsx` + `Table`/`TableItem` + `List`/`ListItem`) — `Content.tsx` is `DataList` + dual
-  view (`<Box hideFrom="lg">` mobile `List`, `<Box hideBelow="lg">` desktop `Table`); `Table`/`List` render
-  one row per item via dedicated `TableItem`/`ListItem` components (mirroring `BlocksTableItem`/`BlocksListItem`).
-  Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem,BlocksList,BlocksListItem}.tsx`;
+- **index** (`Content.tsx` + `Table`/`TableItem`) — `Content.tsx` is `DataList` wrapping the `Table` in
+  `TableContainerScrollable`, one view for every viewport (mobile scrolls it horizontally); the `Table` root's
+  `minWidth` is set from its columns' content so they don't compress. `Table` renders one row per item via a
+  dedicated `TableItem` component (mirroring `BlocksTableItem`).
+  Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem}.tsx`;
   `src/shared/lists/DataList.tsx`.
   Replace the `DataList` placeholders with the page's entity (don't leave the generic "items"):
   set `emptyText` to a plural no-data sentence (`"There are no blocks."`) and `emptyStateProps={{ term: '<entity>' }}` to 
@@ -158,7 +156,7 @@ Use the single page shell that embeds its one content body directly:
 
 - **general** → `general/Page.tsx.tmpl` (content inline; no separate body needed).
 - **detail** → `detail/Page.tsx.tmpl` (reads the route param, renders `PageTitle` + `Details`) + `detail/Details.tsx.tmpl`.
-- **index** → `index/Page.tsx.tmpl` (renders `PageTitle` + `Content`) + `index/{Content,Table,TableItem,List,ListItem}.tsx.tmpl`.
+- **index** → `index/Page.tsx.tmpl` (renders `PageTitle` + `Content`) + `index/{Content,Table,TableItem}.tsx.tmpl`.
 
 ### B. With tabs
 

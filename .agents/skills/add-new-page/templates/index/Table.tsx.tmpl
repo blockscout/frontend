@@ -14,7 +14,8 @@ interface Props {
 
 const __PageName__Table = ({ items, isLoading }: Props) => {
   return (
-    <TableRoot>
+    // TODO (design): set `minWidth` from the columns' content so they don't compress when the table scrolls on mobile.
+    <TableRoot minWidth="950px">
       <TableHeaderSticky top={ 0 }>
         <TableRow>
           { /* TODO (api-data): define columns */ }

@@ -22,7 +22,6 @@ interface Props {
   enableTimeIncrement?: boolean;
   top?: number;
   sorting: TransactionsSortingValue;
-  showTableView?: boolean;
 };
 
 const TxsWithApiSorting = ({
@@ -35,7 +34,6 @@ const TxsWithApiSorting = ({
   enableTimeIncrement,
   top,
   sorting,
-  showTableView,
 }: Props) => {
   const { onSortingChange } = query;
   const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
@@ -58,7 +56,6 @@ const TxsWithApiSorting = ({
       setSorting={ handleSortChange }
       sort={ sorting }
       pagination={ query.pagination }
-      showTableView={ showTableView }
       resetKey={ query.queryHash }
     />
   );

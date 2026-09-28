@@ -36,7 +36,7 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading, top, resetKey }: P
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot>
+    <TableRoot minW="1000px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeaderSortable

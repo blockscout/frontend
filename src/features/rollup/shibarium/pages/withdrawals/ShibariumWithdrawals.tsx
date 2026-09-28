@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -17,9 +16,9 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import WithdrawalsList from './WithdrawalsList';
 import WithdrawalsTable from './WithdrawalsTable';
 
 const ShibariumWithdrawals = () => {
@@ -46,19 +45,14 @@ const ShibariumWithdrawals = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <WithdrawalsTable
-          items={ data.items }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <WithdrawalsTable
+        items={ data.items }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

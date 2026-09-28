@@ -19,7 +19,7 @@ const TxAssetFlowsTable = ({ items, isPlaceholderData, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isPlaceholderData, resetKey });
 
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ 75 }>
         <TableRow>
           <TableColumnHeader>

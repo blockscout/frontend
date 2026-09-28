@@ -28,7 +28,7 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, r
 
   return (
     <AddressHighlightProvider>
-      <TableRoot tableLayout="auto">
+      <TableRoot tableLayout="auto" minW="1000px">
         <TableHeaderSticky top={ top }>
           <TableRow>
             <TableColumnHeader w={ currentAddress ? '86px' : '42px' }/>

@@ -24,7 +24,7 @@ const PoolsTable = ({ items, page, isLoading, top, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot minWidth="900px">
+    <TableRoot minWidth="700px">
       <TableHeaderSticky top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader width="70%">Pool</TableColumnHeader>

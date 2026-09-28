@@ -111,7 +111,7 @@ export const TableContainerScrollable = ({
       overflowX={{ base: 'scroll', lg: 'unset' }}
       mx={{ base: -3, lg: 0 }}
       px={{ base: 3, lg: 0 }}
-      maxW={{ base: '100vw', lg: undefined }}
+      maxW={{ base: '100vw', lg: 'initial' }}
     >
       { children }
     </Box>

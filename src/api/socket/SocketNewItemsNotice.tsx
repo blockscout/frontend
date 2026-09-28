@@ -113,12 +113,3 @@ export const Desktop = ({ ...props }: Props) => {
     </SocketNewItemsNotice>
   );
 };
-
-export const Mobile = ({ ...props }: Props) => {
-  return (
-    <SocketNewItemsNotice
-      borderBottomRadius={ 0 }
-      { ...props }
-    />
-  );
-};

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -9,7 +8,6 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
-import OptimisticL2WithdrawalsList from 'src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsList';
 import OptimisticL2WithdrawalsTable from 'src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTable';
 import { L2_WITHDRAWAL_ITEM } from 'src/features/rollup/optimism/stubs';
 
@@ -19,6 +17,7 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
 const OptimisticL2Withdrawals = () => {
@@ -45,19 +44,14 @@ const OptimisticL2Withdrawals = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <OptimisticL2WithdrawalsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <OptimisticL2WithdrawalsTable
-          items={ data.items }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <OptimisticL2WithdrawalsTable
+        items={ data.items }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

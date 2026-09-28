@@ -5,7 +5,7 @@ import { zetaChainCCTXList } from 'src/features/chain-variants/zeta-chain/mocks/
 import { zetaChainCCTXConfig } from 'src/features/chain-variants/zeta-chain/mocks/cctx-config';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect, devices } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 
@@ -40,32 +40,4 @@ test('base view +@dark-mode', async({ render, mockApiResponse }) => {
     });
 
   await expect(component).toHaveScreenshot();
-});
-
-test.describe('mobile', () => {
-  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-  test('base view +@dark-mode', async({ render, mockApiResponse }) => {
-    await mockApiResponse('zetachain:transactions', zetaChainCCTXList, {
-      queryParams: {
-        status_reduced: [ 'Success', 'Failed' ],
-        limit: 50,
-        offset: 0,
-        direction: 'DESC',
-      },
-    });
-
-    const component = await render(
-      <Box pt="134px">
-        <ZetaChainCCTXsTab/>
-      </Box>, {
-        hooksConfig: {
-          router: {
-            query: { tab: 'cctx' },
-          },
-        },
-      });
-
-    await expect(component).toHaveScreenshot();
-  });
 });

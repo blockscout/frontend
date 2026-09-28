@@ -8,7 +8,7 @@ import Validators from './ValidatorsZilliqa';
 
 const chainType = 'zilliqa';
 
-test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
+test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType ],
   ]);

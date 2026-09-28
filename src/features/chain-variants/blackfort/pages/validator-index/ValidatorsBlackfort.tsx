@@ -23,9 +23,10 @@ import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import { VALIDATORS_BLACKFORT_SORT_OPTIONS } from './utils';
 import ValidatorsCounters from './ValidatorsCounters';
-import ValidatorsList from './ValidatorsList';
 import ValidatorsTable from './ValidatorsTable';
 
 const sortCollection = createListCollection({
@@ -78,21 +79,16 @@ const ValidatorsBlackfort = () => {
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <ValidatorsTable
-          data={ data.items }
-          sort={ sort }
-          setSorting={ handleSortChange }
-          isLoading={ isInitialLoading }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ValidatorsTable
+        data={ data.items }
+        sort={ sort }
+        setSorting={ handleSortChange }
+        isLoading={ isInitialLoading }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

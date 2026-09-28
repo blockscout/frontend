@@ -16,7 +16,7 @@ interface Props {
 
 const ArbitrumL2TxnWithdrawalsTable = ({ data, txHash, isLoading }: Props) => {
   return (
-    <TableRoot minW="900px">
+    <TableRoot minW="900px" mt={ 6 }>
       <TableHeader>
         <TableRow>
           <TableColumnHeader width="150px">Message #</TableColumnHeader>

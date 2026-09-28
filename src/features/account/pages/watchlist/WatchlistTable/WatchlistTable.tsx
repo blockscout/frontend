@@ -19,7 +19,7 @@ interface Props {
 
 const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasEmail }: Props) => {
   return (
-    <TableRoot minWidth="600px">
+    <TableRoot minWidth="800px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="70%">Address</TableColumnHeader>

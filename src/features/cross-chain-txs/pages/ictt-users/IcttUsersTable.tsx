@@ -33,7 +33,7 @@ const IcttUsersTable = ({ data, isLoading, sort, setSorting, resetKey }: Props) 
   }, [ sort, setSorting ]);
 
   return (
-    <TableRoot minW="1100px">
+    <TableRoot minW="500px">
       <TableHeaderSticky top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <TableRow>
           <TableColumnHeader width="50%">Chain</TableColumnHeader>

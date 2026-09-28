@@ -17,26 +17,26 @@ channel and group ID, so a moved channel or renamed group is fixed in one place.
 | Placeholder              | Meaning                                                                 |
 | ------------------------ | ----------------------------------------------------------------------- |
 | `<alpha-tag>`            | The pre-release tag, e.g. `v1.3.0-alpha`.                               |
-| `<breaking-env-changes>` | Bulleted list of breaking ENV changes, or the single line `None.`       |
+| `<breaking-env-changes>` | Bulleted list of breaking ENV changes, or the single line `Отсутствуют.`        |
 | `<release-url>`          | Link to the published GitHub pre-release.                              |
 | `<qa-group-mention>`     | QA team group mention token `<!subteam^<group-id>>`, built from `.agents/TEAM.md`. |
 
 A change is **breaking** if a deployment must change its config to keep working: a
 **removed** variable, a **renamed** variable, or a change to a **required**/default value
 or **allowed value set**. New optional variables are *not* breaking. When in doubt, list it
-and mark it `(potentially breaking)` — better to over-report than to miss one.
+and mark it `(возможно, ломающее)` — better to over-report than to miss one.
 
 ## Template
 
 ```
-📦 Frontend pre-release *`<alpha-tag>`* is ready for staging.
+📦 Пре-релиз фронтенда *`<alpha-tag>`* готов для стейджинга.
 
-Could you please roll up this pre-release tag on the staging instances?
+Раскатите, пожалуйста, этот тег на стейджинг-инстансы.
 
-*Breaking ENV changes:*
+*Ломающие изменения ENV:*
 <breaking-env-changes>
 
-Release notes: <release-url>
+Содержание релиза: <release-url>
 
 cc <qa-group-mention>
 ```
@@ -44,16 +44,16 @@ cc <qa-group-mention>
 ### Example — with breaking changes
 
 ```
-📦 Frontend pre-release *`v1.3.0-alpha`* is ready for staging.
+📦 Пре-релиз фронтенда *`v1.3.0-alpha`* готов для стейджинга.
 
-Could you please roll up this pre-release tag on the staging instances?
+Раскатите, пожалуйста, этот тег на стейджинг-инстансы.
 
-*Breaking ENV changes:*
-• Removed `NEXT_PUBLIC_FOO` — the X feature now reads from `NEXT_PUBLIC_BAR` instead.
-• Renamed `NEXT_PUBLIC_OLD` → `NEXT_PUBLIC_NEW`.
-• `NEXT_PUBLIC_AD_BANNER_PROVIDER`: removed the `hype` option (potentially breaking).
+*Ломающие изменения ENV:*
+• Удалена `NEXT_PUBLIC_FOO` — фича X теперь читает `NEXT_PUBLIC_BAR`.
+• Переименована `NEXT_PUBLIC_OLD` → `NEXT_PUBLIC_NEW`.
+• `NEXT_PUBLIC_AD_BANNER_PROVIDER`: удалено значение `hype` (возможно, ломающее).
 
-Release notes: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
+Содержание релиза: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
 
 cc <qa-group-mention>
 ```
@@ -61,13 +61,13 @@ cc <qa-group-mention>
 ### Example — no breaking changes
 
 ```
-📦 Frontend pre-release *`v1.3.0-alpha`* is ready for staging.
+📦 Пре-релиз фронтенда *`v1.3.0-alpha`* готов для стейджинга.
 
-Could you please roll up this pre-release tag on the staging instances?
+Раскатите, пожалуйста, этот тег на стейджинг-инстансы.
 
-*Breaking ENV changes:* None.
+*Ломающие изменения ENV:* Отсутствуют.
 
-Release notes: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
+Содержание релиза: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha
 
 cc <qa-group-mention>
 ```

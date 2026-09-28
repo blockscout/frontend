@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { createListCollection } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -12,25 +12,28 @@ import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import compareBns from 'src/shared/numbers/compareBns';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import { default as getNextSortValueShared } from 'src/shared/sort/get-next-sort-value';
+import Sort from 'src/shared/sort/Sort';
 
-import type { Sort, SortField } from '../../utils/utils';
-import TxInternalsList from './TxInternalsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
+import type { Sort as SortValue, SortField } from '../../utils/utils';
+import { SORT_OPTIONS, SORT_SEQUENCE } from './sort';
 import TxInternalsTable from './TxInternalsTable';
 
-const SORT_SEQUENCE: Record<SortField, Array<Sort>> = {
-  value: [ 'value-desc', 'value-asc', 'default' ],
-  'gas-limit': [ 'gas-limit-desc', 'gas-limit-asc', 'default' ],
-};
+const sortCollection = createListCollection({
+  items: SORT_OPTIONS,
+});
 
-const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);
+const getNextSortValue = (getNextSortValueShared<SortField, SortValue>).bind(undefined, SORT_SEQUENCE);
 
-const sortFn = (sort: Sort) => (a: schemas['InternalTransaction'], b: schemas['InternalTransaction']) => {
+const sortFn = (sort: SortValue) => (a: schemas['InternalTransaction'], b: schemas['InternalTransaction']) => {
   switch (sort) {
     case 'value-desc': {
       return compareBns(b.value, a.value);
@@ -69,7 +72,8 @@ const TxInternals = ({ txQuery }: Props) => {
   // filters are not implemented yet in api
   // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
   // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
-  const [ sort, setSort ] = React.useState<Sort>('default');
+  const isMobile = useIsMobile();
+  const [ sort, setSort ] = React.useState<SortValue>('default');
   const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:tx_internal_txs',
     pathParams: { hash: txQuery.data?.hash },
@@ -91,6 +95,10 @@ const TxInternals = ({ txQuery }: Props) => {
     setSort(getNextSortValue(field));
   }, [ isInitialLoading ]);
 
+  const handleSortValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
+    setSort(value[0] as SortValue);
+  }, []);
+
   if (!txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data?.status) {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
@@ -102,24 +110,29 @@ const TxInternals = ({ txQuery }: Props) => {
     .sort(sortFn(sort));
 
   const content = filteredData ? (
-    <>
-      <Box hideFrom="lg"><TxInternalsList data={ filteredData } isLoading={ isInitialLoading } resetKey={ queryHash }/></Box>
-      <Box hideBelow="lg">
-        <TxInternalsTable
-          data={ filteredData }
-          sort={ sort }
-          onSortToggle={ handleSortToggle }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxInternalsTable
+        data={ filteredData }
+        sort={ sort }
+        onSortToggle={ handleSortToggle }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
-  const actionBar = pagination.isVisible ? (
+  const actionBar = (isMobile || pagination.isVisible) ? (
     <ActionBar mt={ -6 }>
       { /* <FilterInput onChange={ setSearchTerm } maxW="360px" ml={ 3 } size="xs" placeholder="Search by addresses, hash, method..."/> */ }
+      <Sort
+        name="tx_internal_txs_sorting"
+        defaultValue={ [ sort ] }
+        collection={ sortCollection }
+        onValueChange={ handleSortValueChange }
+        isLoading={ isInitialLoading }
+        hideFrom="lg"
+      />
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   ) : null;

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -15,7 +14,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import AddressesList from './AddressesList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
@@ -50,27 +50,16 @@ const Accounts = () => {
   }, [ data?.total_supply ]);
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <AddressesTable
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          items={ data.items }
-          totalSupply={ totalSupply }
-          pageStartIndex={ pageStartIndex }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        <AddressesList
-          items={ data.items }
-          totalSupply={ totalSupply }
-          pageStartIndex={ pageStartIndex }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <AddressesTable
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        items={ data.items }
+        totalSupply={ totalSupply }
+        pageStartIndex={ pageStartIndex }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

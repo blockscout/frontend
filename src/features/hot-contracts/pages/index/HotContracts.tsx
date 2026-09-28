@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, createListCollection, Flex } from '@chakra-ui/react';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'src/features/hot-contracts/types/api';
@@ -11,7 +11,6 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import HotContractsIntervalSelect from 'src/features/hot-contracts/pages/index/HotContractsIntervalSelect';
-import HotContractsList from 'src/features/hot-contracts/pages/index/HotContractsList';
 import HotContractsTable from 'src/features/hot-contracts/pages/index/HotContractsTable';
 import { HOT_CONTRACTS } from 'src/features/hot-contracts/stubs';
 import { getIntervalValueFromQuery, SORT_OPTIONS } from 'src/features/hot-contracts/utils';
@@ -25,6 +24,7 @@ import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,
@@ -61,26 +61,16 @@ const HotContracts = () => {
   }, [ onFilterChange ]);
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <HotContractsList
-          items={ data.items }
-          isLoading={ isLoading }
-          exchangeRate={ statsQuery.data?.coin_price ?? null }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <HotContractsTable
-          items={ data.items }
-          isLoading={ isLoading }
-          sort={ sort }
-          setSorting={ handleSortChange }
-          exchangeRate={ statsQuery.data?.coin_price ?? null }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <HotContractsTable
+        items={ data.items }
+        isLoading={ isLoading }
+        sort={ sort }
+        setSorting={ handleSortChange }
+        exchangeRate={ statsQuery.data?.coin_price ?? null }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = (

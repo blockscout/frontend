@@ -23,7 +23,7 @@ const TxAuthorizationsTable = ({ data, isLoading, resetKey }: Props) => {
 
   return (
     <AddressHighlightProvider>
-      <TableRoot>
+      <TableRoot minW="900px">
         <TableHeaderSticky>
           <TableRow>
             <TableColumnHeader width="50%">Authority</TableColumnHeader>

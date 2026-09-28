@@ -612,8 +612,18 @@ describe('values derived from the URL', () => {
 
   it('renders the stub, not the previous rows, while the next page loads', async() => {
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
-    fetchMock.once(JSON.stringify(responses.page_2), responseInit);
-    fetchMock.once(JSON.stringify(responses.page_3), responseInit);
+    const releasePages: Array<() => void> = [];
+    for (const pageResponse of [ responses.page_2, responses.page_3 ]) {
+      let release!: () => void;
+      const pending = new Promise<void>((resolve) => {
+        release = resolve;
+      });
+      fetchMock.once(async() => {
+        await pending;
+        return JSON.stringify(pageResponse);
+      }, responseInit);
+      releasePages.push(release);
+    }
     const stub = generateListStub<'core:address_txs'>(TX_ITEM, 1, { next_page_params: null });
     const paramsWithStub: Params<'core:address_txs'> = {
       ...params,
@@ -634,6 +644,7 @@ describe('values derived from the URL', () => {
       expect(result.current.isTransitioning).toBe(false);
       expect(result.current.pagination.isLoading).toBe(true);
 
+      releasePages[expectedPage - 2]();
       await waitForApiResponse();
 
       expect(result.current.isInitialLoading).toBe(false);

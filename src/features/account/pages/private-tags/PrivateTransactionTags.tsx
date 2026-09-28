@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'src/features/account/types/api';
@@ -16,11 +15,11 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 import TransactionModal from './TransactionModal/TransactionModal';
-import TransactionTagListItem from './TransactionTagTable/TransactionTagListItem';
 import TransactionTagTable from './TransactionTagTable/TransactionTagTable';
 
 const PrivateTransactionTags = () => {
@@ -81,18 +80,7 @@ const PrivateTransactionTags = () => {
         actionBar={ actionBar }
         isTransitioning={ isTransitioning }
       >
-        <Box display={{ base: 'block', lg: 'none' }}>
-          { transactionTagsData?.items.map((item, index) => (
-            <TransactionTagListItem
-              key={ item.id + (isInitialLoading ? String(index) : '') }
-              item={ item }
-              isLoading={ isInitialLoading }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-            />
-          )) }
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }}>
+        <TableContainerScrollable>
           <TransactionTagTable
             data={ transactionTagsData?.items }
             isLoading={ isInitialLoading }
@@ -100,7 +88,7 @@ const PrivateTransactionTags = () => {
             onEditClick={ onEditClick }
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
-        </Box>
+        </TableContainerScrollable>
       </DataList>
       <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
         <Button

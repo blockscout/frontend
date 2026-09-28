@@ -22,7 +22,7 @@ const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="50%">BLS public key</TableColumnHeader>

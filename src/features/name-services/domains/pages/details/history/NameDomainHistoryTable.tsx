@@ -24,7 +24,7 @@ const NameDomainHistoryTable = ({ items, domain, isLoading, sort, onSortToggle }
   const sortedItems = React.useMemo(() => items.slice().sort(sortFn(sort)), [ items, sort ]);
 
   return (
-    <TableRoot>
+    <TableRoot minW="900px">
       <TableHeaderSticky top={ 0 }>
         <TableRow>
           <TableColumnHeader width="25%">Txn hash</TableColumnHeader>

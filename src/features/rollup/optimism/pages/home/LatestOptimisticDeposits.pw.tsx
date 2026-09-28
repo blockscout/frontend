@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import LatestOptimisticDeposits from './LatestOptimisticDeposits';
 
-test('default view +@mobile +@dark-mode', async({ render, mockApiResponse, mockEnvs }) => {
+test('default view +@dark-mode', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
   mockApiResponse('core:homepage_optimistic_deposits', depositMock.data.items);
   const component = await render(<LatestOptimisticDeposits/>);

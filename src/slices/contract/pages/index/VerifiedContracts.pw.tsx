@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import VerifiedContracts from './VerifiedContracts';
 
-test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
+test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   test.slow();
   await mockTextAd();
   await mockEnvs([ [ 'NEXT_PUBLIC_STATS_API_HOST', '' ] ]);

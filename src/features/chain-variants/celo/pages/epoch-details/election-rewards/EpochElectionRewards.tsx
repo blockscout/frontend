@@ -6,9 +6,8 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import { Heading } from 'src/toolkit/chakra/heading';
-import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import EpochElectionRewardsListItem from './EpochElectionRewardsListItem';
 import EpochElectionRewardsTableItem from './EpochElectionRewardsTableItem';
 
 interface Props {
@@ -24,8 +23,8 @@ const EpochElectionRewards = ({ data, isLoading }: Props) => {
   return (
     <Box mt={ 6 }>
       <Heading level="3" mb={ 3 }>Election rewards</Heading>
-      <Box hideBelow="lg">
-        <TableRoot style={{ tableLayout: 'auto' }}>
+      <TableContainerScrollable>
+        <TableRoot style={{ tableLayout: 'auto' }} minW="700px">
           <TableHeaderSticky>
             <TableRow>
               <TableColumnHeader width="24px"/>
@@ -54,26 +53,7 @@ const EpochElectionRewards = ({ data, isLoading }: Props) => {
             }) }
           </TableBody>
         </TableRoot>
-      </Box>
-      <Box hideFrom="lg">
-        { Object.entries(data.aggregated_election_rewards).map((entry) => {
-          const key = entry[0] as keyof schemas['CeloEpochDetailed']['aggregated_election_rewards'];
-          const value = entry[1];
-
-          if (!value) {
-            return null;
-          }
-
-          return (
-            <EpochElectionRewardsListItem
-              key={ key }
-              type={ key }
-              isLoading={ isLoading }
-              data={ value }
-            />
-          );
-        }) }
-      </Box>
+      </TableContainerScrollable>
     </Box>
   );
 };

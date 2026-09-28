@@ -27,7 +27,7 @@ const allTokens = {
 };
 
 // FIXME: test is flaky, screenshot in docker container is different from local
-test.skip('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+test.skip('base view +@dark-mode', async({ render, mockApiResponse }) => {
 
   await mockApiResponse('core:tokens', allTokens);
 
@@ -41,7 +41,7 @@ test.skip('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) =
   await expect(component).toHaveScreenshot();
 });
 
-test('with search +@mobile +@dark-mode', async({ page, render, mockApiResponse }) => {
+test('with search +@dark-mode', async({ page, render, mockApiResponse }) => {
   const filteredTokens = {
     items: [
       tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c,

@@ -38,14 +38,4 @@ test.describe('txs', () => {
       await expect(component).toHaveScreenshot();
     });
   });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: pwConfig.viewport.mobile });
-    test.slow();
-
-    test('base view', async({ render }) => {
-      const component = await render(<TokenTransfersCrossChain/>);
-      await expect(component).toHaveScreenshot({ timeout: 30_000 });
-    });
-  });
 });

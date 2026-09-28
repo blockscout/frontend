@@ -27,7 +27,7 @@ test('details tab', async({ render, mockTextAd, mockApiResponse, mockAssetRespon
   await expect(component).toHaveScreenshot();
 });
 
-test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
+test('history tab', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
   await mockTextAd();
   await mockApiResponse('bens:domain_info', ensDomainMock.ensDomainA, {
     pathParams: { name: ensDomainMock.ensDomainA.name },

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -16,9 +16,9 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import { DEPOSIT } from '../../stubs/deposits';
-import BeaconChainDepositsList from './BeaconChainDepositsList';
 import BeaconChainDepositsTable from './BeaconChainDepositsTable';
 
 const feature = config.features.beaconChain;
@@ -43,25 +43,15 @@ const BeaconChainDeposits = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <BeaconChainDepositsList
-          items={ data.items }
-          view="list"
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainDepositsTable
-          items={ data.items }
-          view="list"
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isInitialLoading }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainDepositsTable
+        items={ data.items }
+        view="list"
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

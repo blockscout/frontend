@@ -104,7 +104,7 @@ is known non-empty.
 
 Send **one** message with the `general-purpose` subagents the change actually has axes for. Each gets: the
 base ref, the touched-file list plus untracked files, the check output as established fact, and
-[`axes.md`](axes.md) — its own brief, the finding shape and the word cap all live there.
+[`axes.md`](axes.md) — its own brief, the finding shape and the per-finding cap all live there.
 
 **The spec axis is gated on a spec existing.** Plenty of changes have none — work done outside the task
 workflow, and any task finished inside its own grilling session (see "Not every task needs a spec" in

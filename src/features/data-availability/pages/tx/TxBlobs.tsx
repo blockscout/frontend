@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -13,7 +12,8 @@ import { TX_BLOB } from 'src/features/data-availability/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 
-import TxBlobsList from './TxBlobsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import TxBlobsTable from './TxBlobsTable';
 
 interface Props {
@@ -34,14 +34,9 @@ const TxBlobs = ({ txQuery }: Props) => {
   }
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData }/>
-      </Box>
-      <Box hideFrom="lg">
-        <TxBlobsList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (

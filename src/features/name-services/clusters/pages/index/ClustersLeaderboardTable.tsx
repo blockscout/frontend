@@ -21,14 +21,14 @@ const ClustersLeaderboardTable = ({ data, isLoading, top, resetKey }: Props) => 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot>
+    <TableRoot minW="800px">
       <TableHeaderSticky top={ top }>
         <TableRow>
-          <TableColumnHeader width="5%">Rank</TableColumnHeader>
-          <TableColumnHeader width="40%">Cluster name</TableColumnHeader>
-          <TableColumnHeader width="10%">Names</TableColumnHeader>
-          <TableColumnHeader width="10%">Total backing</TableColumnHeader>
-          <TableColumnHeader width="10%">Active chains</TableColumnHeader>
+          <TableColumnHeader width="60px">Rank</TableColumnHeader>
+          <TableColumnHeader width="50%">Cluster name</TableColumnHeader>
+          <TableColumnHeader width="15%">Names</TableColumnHeader>
+          <TableColumnHeader width="15%">Total backing</TableColumnHeader>
+          <TableColumnHeader width="15%">Active chains</TableColumnHeader>
         </TableRow>
       </TableHeaderSticky>
       <TableBody>

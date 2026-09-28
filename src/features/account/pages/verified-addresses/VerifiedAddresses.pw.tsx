@@ -17,7 +17,7 @@ test.beforeEach(async({ mockAssetResponse }) => {
   await mockAssetResponse(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, './playwright/mocks/image_s.jpg');
 });
 
-test('base view +@mobile', async({ render, mockApiResponse }) => {
+test('base view', async({ render, mockApiResponse }) => {
   await mockApiResponse('contractInfo:verified_addresses', mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1' } });
   await mockApiResponse('admin:token_info_applications', mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT, { pathParams: { instanceId: '1', id: undefined } });
   await mockApiResponse('core:user_info', profileMock.base);

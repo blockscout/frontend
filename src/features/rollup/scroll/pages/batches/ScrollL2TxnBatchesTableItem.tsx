@@ -47,6 +47,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <BlockEntityL1
           number={ item.commitment_transaction.block_number }
           isLoading={ isLoading }
+          noIcon
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -55,6 +56,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           truncation="constant_long"
           noCopy
+          noIcon
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -70,6 +72,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           <BlockEntityL1
             number={ item.confirmation_transaction.block_number }
             isLoading={ isLoading }
+            noIcon
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </TableCell>
@@ -80,6 +83,7 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             isLoading={ isLoading }
             truncation="constant_long"
             noCopy
+            noIcon
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </TableCell>

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -9,7 +8,6 @@ import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import useAddressInternalTxsQuery from 'src/slices/address/pages/details/internal-txs/useAddressInternalTxsQuery';
 import AddressTxsFilter from 'src/slices/address/pages/details/txs/AddressTxsFilter';
-import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
@@ -19,6 +17,8 @@ import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import getAvailableChainIds from './get-available-chain-ids';
 
@@ -43,12 +43,9 @@ const MultichainAddressInternalTxs = ({ addressData, isLoading }: Props) => {
 
   const content = data?.items ? (
     <MultichainProvider chainId={ chainData?.id }>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } currentAddress={ hash } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <InternalTxsTable data={ data.items } currentAddress={ hash } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
-      </Box>
+      </TableContainerScrollable>
     </MultichainProvider>
   ) : null ;
 

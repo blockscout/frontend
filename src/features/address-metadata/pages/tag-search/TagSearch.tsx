@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Flex } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -18,9 +18,9 @@ import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import MetadataTag from '../../components/tag/MetadataTag';
-import TagSearchListItem from './TagSearchListItem';
 import TagSearchTable from './TagSearchTable';
 
 const TagSearch = () => {
@@ -48,26 +48,13 @@ const TagSearch = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TagSearchTable
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          items={ data.items }
-          isLoading={ isInitialLoading }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        { data.items.map((item, index) => {
-          return (
-            <TagSearchListItem
-              key={ item.hash + (isInitialLoading ? index : '') }
-              item={ item }
-              isLoading={ isInitialLoading }
-            />
-          );
-        }) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TagSearchTable
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        items={ data.items }
+        isLoading={ isInitialLoading }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {

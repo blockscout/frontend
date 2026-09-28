@@ -14,10 +14,10 @@ import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilt
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import { TAC_OPERATION } from '../../stubs';
-import TacOperationsList from './TacOperationsList';
 import TacOperationsTable from './TacOperationsTable';
 
 const TacOperations = () => {
@@ -65,14 +65,9 @@ const TacOperations = () => {
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <TacOperationsList items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <TacOperationsTable items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TacOperationsTable items={ data.items } isLoading={ isInitialLoading } resetKey={ queryHash }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (

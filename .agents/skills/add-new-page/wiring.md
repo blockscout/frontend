@@ -6,7 +6,7 @@ was scaffolded earlier (its `TODO (api-data):` markers are still in place); on d
 run the *Data* item of the Step 0 interview first.
 
 **The worklist is the tag.** Grep the page's directories for `TODO (api-data):` — every hit
-(page shell, `Content`, `Table`/`TableItem`, `List`/`ListItem`, `Details`, `GeneralInfo`) is
+(page shell, `Content`, `Table`/`TableItem`, `Details`, `GeneralInfo`) is
 a spot this phase must resolve (the done-condition is checked in Step W5). `TODO (design):`
 markers are the next stage's worklist — leave them in place, and add new ones for any
 representation decision you defer (Step W4).
@@ -45,7 +45,7 @@ Mocks and tests are **not** produced here.
 
 Replace the scaffold's placeholder `items` / `data` / `isLoading` / `isError` consts, and
 replace the `unknown` item/data types with the payload (item) type **everywhere it appears** —
-the page shell *and* the `Table`/`TableItem`/`List`/`ListItem` (or `Details`) components each
+the page shell *and* the `Table`/`TableItem` (or `Details`) components each
 carry their own `unknown` marker.
 
 - **index, paginated resource** — in the page shell, `useApiPaginatedQuery({ resourceName,
@@ -69,8 +69,7 @@ carry their own `unknown` marker.
 
 Inventory the payload fields from the type + sample body and render **all of them** in the
 scaffolded body — `DetailedInfo` rows in `Details` for detail pages; for index pages the
-columns in `Table`, the cells in `TableItem`, **and** the label/value pairs in `ListItem`
-(desktop and mobile views must show the same fields); free layout in `GeneralInfo` for
+columns in `Table` and the cells in `TableItem`; free layout in `GeneralInfo` for
 general:
 
 - Use the obvious shared component **only when the field is unambiguous** — an address

@@ -205,7 +205,6 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
               socketType="address_txs"
               top={ ACTION_BAR_HEIGHT_DESKTOP }
               sorting={ txsQueryLocal.sort }
-              showTableView
             />
           </MultichainProvider>
         </SocketProvider>

@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import OptimisticL2OutputRoots from './OptimisticL2OutputRoots';
 
-test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockTextAd();

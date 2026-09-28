@@ -6,28 +6,13 @@ import type { schemas } from '@blockscout/api-types';
 import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
-import { test as base, expect, devices } from 'playwright/lib';
+import { test as base, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
 import LatestTxs from './LatestTxs';
 
 export const test = base.extend<socketServer.SocketServerFixture>({
   createSocket: socketServer.createSocket,
-});
-
-test.describe('mobile', () => {
-  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-  test('default view', async({ render, mockApiResponse }) => {
-    await mockApiResponse('core:homepage_txs', [
-      txMock.base,
-      txMock.withContractCreation,
-      txMock.withTokenTransfer,
-      txMock.withWatchListNames,
-    ]);
-
-    const component = await render(<LatestTxs/>);
-    await expect(component).toHaveScreenshot();
-  });
 });
 
 test('default view +@dark-mode', async({ render, mockApiResponse }) => {

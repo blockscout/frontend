@@ -13,14 +13,12 @@ import LatestTxsFallback from 'src/slices/home/pages/index/txs/LatestTxsFallback
 
 import LatestDeposits from 'src/features/rollup/common/pages/home/LatestDeposits';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 
 import { ARBITRUM_MESSAGES_ITEM } from '../../stubs';
 
 const LatestArbitrumDeposits = () => {
-  const isMobile = useIsMobile();
-  const itemsCount = isMobile ? 2 : 5;
+  const itemsCount = 5;
   const { data, isPlaceholderData, isError } = useApiQuery('core:homepage_arbitrum_deposits', {
     queryOptions: {
       placeholderData: { items: Array(itemsCount).fill(ARBITRUM_MESSAGES_ITEM) },

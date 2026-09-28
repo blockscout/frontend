@@ -20,6 +20,7 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import MarketplaceAppIframe from '../../components/MarketplaceAppIframe';
 import useAppQuery from '../../hooks/useAppQuery';
 import useAutoConnectWallet from '../../hooks/useAutoConnectWallet';
+import { useExternalDappRedirect } from '../../hooks/useExternalDappRedirect';
 import { getAppUrl } from '../../utils/dapp';
 import MarketplaceAppTopBar from './MarketplaceAppTopBar';
 
@@ -45,6 +46,9 @@ export default function MarketplaceApp() {
     () => getAppUrl(isPlaceholderData ? undefined : data?.url, router),
     [ data?.url, isPlaceholderData, router ],
   );
+
+  const isExternal = !isPlaceholderData && Boolean(data?.external);
+  useExternalDappRedirect(appUrl, isExternal);
 
   const message = useMemo(() => ({
     blockscoutColorMode: colorMode,
@@ -78,7 +82,7 @@ export default function MarketplaceApp() {
       />
       <MarketplaceAppIframe
         appId={ id }
-        appUrl={ appUrl }
+        appUrl={ isExternal ? undefined : appUrl }
         message={ message }
         mx={{ base: -4, lg: -6 }}
       />

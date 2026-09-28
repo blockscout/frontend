@@ -31,11 +31,11 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import * as regexp from 'src/toolkit/utils/regexp';
 
 import SearchResultsInput from './SearchResultsInput';
-import SearchResultsList from './SearchResultsList';
 import SearchResultsTable from './SearchResultsTable';
 
 const nameServicesFeature = config.features.nameServices;
@@ -189,27 +189,16 @@ const SearchResultsPageContent = () => {
     }
 
     return (
-      <>
-        <Box hideFrom="lg">
-          <SearchResultsList
-            items={ displayedItems }
-            searchTerm={ appliedSearchTerm }
-            isLoading={ isLoading }
-            addressFormat={ settingsContext?.addressFormat }
-            resetKey={ `${ query.queryHash }:${ appliedSearchTerm }` }
-          />
-        </Box>
-        <Box hideBelow="lg">
-          <SearchResultsTable
-            items={ displayedItems }
-            searchTerm={ appliedSearchTerm }
-            isLoading={ isLoading }
-            addressFormat={ settingsContext?.addressFormat }
-            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-            resetKey={ `${ query.queryHash }:${ appliedSearchTerm }` }
-          />
-        </Box>
-      </>
+      <TableContainerScrollable>
+        <SearchResultsTable
+          items={ displayedItems }
+          searchTerm={ appliedSearchTerm }
+          isLoading={ isLoading }
+          addressFormat={ settingsContext?.addressFormat }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          resetKey={ `${ query.queryHash }:${ appliedSearchTerm }` }
+        />
+      </TableContainerScrollable>
     );
   })();
 

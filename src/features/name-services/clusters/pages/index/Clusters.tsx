@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -25,11 +25,10 @@ import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import ClustersActionBar from './ClustersActionBar';
-import ClustersDirectoryList from './ClustersDirectoryList';
 import ClustersDirectoryTable from './ClustersDirectoryTable';
-import ClustersLeaderboardList from './ClustersLeaderboardList';
 import ClustersLeaderboardTable from './ClustersLeaderboardTable';
 
 const Clusters = () => {
@@ -91,42 +90,24 @@ const Clusters = () => {
   const resetKey = `${ viewMode }:${ debouncedSearchTerm }:${ page }`;
 
   const content = (
-    <>
-      <Box hideFrom="lg">
-        { showDirectoryView ? (
-          <ClustersDirectoryList
-            data={ directoryData }
-            isLoading={ isLoading }
-            isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
-            resetKey={ resetKey }
-          />
-        ) : (
-          <ClustersLeaderboardList
-            data={ leaderboardData }
-            isLoading={ isLoading }
-            resetKey={ resetKey }
-          />
-        ) }
-      </Box>
-      <Box hideBelow="lg">
-        { showDirectoryView ? (
-          <ClustersDirectoryTable
-            data={ directoryData }
-            isLoading={ isLoading }
-            isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
-            top={ ACTION_BAR_HEIGHT_DESKTOP }
-            resetKey={ resetKey }
-          />
-        ) : (
-          <ClustersLeaderboardTable
-            data={ leaderboardData }
-            isLoading={ isLoading }
-            top={ ACTION_BAR_HEIGHT_DESKTOP }
-            resetKey={ resetKey }
-          />
-        ) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      { showDirectoryView ? (
+        <ClustersDirectoryTable
+          data={ directoryData }
+          isLoading={ isLoading }
+          isClusterDetailsLoading={ isClusterDetailsLoading && inputType === 'address' }
+          top={ ACTION_BAR_HEIGHT_DESKTOP }
+          resetKey={ resetKey }
+        />
+      ) : (
+        <ClustersLeaderboardTable
+          data={ leaderboardData }
+          isLoading={ isLoading }
+          top={ ACTION_BAR_HEIGHT_DESKTOP }
+          resetKey={ resetKey }
+        />
+      ) }
+    </TableContainerScrollable>
   );
 
   const actionBar = (

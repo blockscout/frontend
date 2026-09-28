@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { List, chakra, Box } from '@chakra-ui/react';
+import { List, chakra } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -17,7 +17,6 @@ import useProfileQuery from 'src/features/account/hooks/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'src/features/account/hooks/useRedirectForInvalidAuthToken';
 import AddressVerificationModal from 'src/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
 import VerifiedAddressesEmailAlert from 'src/features/account/pages/verified-addresses/index/VerifiedAddressesEmailAlert';
-import VerifiedAddressesListItem from 'src/features/account/pages/verified-addresses/index/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'src/features/account/pages/verified-addresses/index/VerifiedAddressesTable';
 import TokenInfoForm from 'src/features/account/pages/verified-addresses/token-info/TokenInfoForm';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'src/features/account/stubs';
@@ -30,6 +29,7 @@ import { collator } from 'src/shared/texts/collator';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { BackToButton } from 'src/toolkit/components/buttons/BackToButton';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
@@ -161,32 +161,15 @@ const VerifiedAddresses = () => {
 
     if (addressesQuery.data?.verifiedAddresses) {
       return (
-        <>
-          <Box hideFrom="lg" key="content-mobile">
-            { addressesQuery.data.verifiedAddresses.map((item, index) => (
-              <VerifiedAddressesListItem
-                key={ item.contractAddress + (isLoading ? index : '') }
-                item={ item }
-                application={
-                  applicationsQuery.data?.submissions
-                    ?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase())
-                }
-                onAdd={ handleItemAdd }
-                onEdit={ handleItemEdit }
-                isLoading={ isLoading }
-              />
-            )) }
-          </Box>
-          <Box hideBelow="lg" key="content-desktop">
-            <VerifiedAddressesTable
-              data={ addressesQuery.data.verifiedAddresses }
-              applications={ applicationsQuery.data?.submissions }
-              onItemEdit={ handleItemEdit }
-              onItemAdd={ handleItemAdd }
-              isLoading={ isLoading }
-            />
-          </Box>
-        </>
+        <TableContainerScrollable>
+          <VerifiedAddressesTable
+            data={ addressesQuery.data.verifiedAddresses }
+            applications={ applicationsQuery.data?.submissions }
+            onItemEdit={ handleItemEdit }
+            onItemAdd={ handleItemAdd }
+            isLoading={ isLoading }
+          />
+        </TableContainerScrollable>
       );
     }
 

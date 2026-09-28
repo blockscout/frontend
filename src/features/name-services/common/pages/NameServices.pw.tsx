@@ -5,7 +5,7 @@ import { clustersLeaderboardMock } from 'src/features/name-services/clusters/moc
 import * as ensDomainMock from 'src/features/name-services/domains/mocks/domain';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect, devices } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import NameServices from './NameServices';
 
@@ -48,15 +48,6 @@ test.describe('domains', () => {
     test.slow();
     const component = await render(<NameServices/>, { hooksConfig });
     await expect(component).toHaveScreenshot({ timeout: 10_000 });
-  });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-    test('default view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig });
-      await expect(component).toHaveScreenshot({ timeout: 10_000 });
-    });
   });
 
   test('filters', async({ render, page }) => {
@@ -124,19 +115,5 @@ test.describe('directories', () => {
   test('leaderboard view', async({ render }) => {
     const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
     await expect(component).toHaveScreenshot();
-  });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-    test('directory view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.directories });
-      await expect(component).toHaveScreenshot();
-    });
-
-    test('leaderboard view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
-      await expect(component).toHaveScreenshot();
-    });
   });
 });

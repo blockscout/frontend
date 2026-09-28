@@ -34,13 +34,4 @@ test.describe('txs', () => {
       await expect(component).toHaveScreenshot({ timeout: 30_000 });
     });
   });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: pwConfig.viewport.mobile });
-
-    test('base view', async({ render }) => {
-      const component = await render(<TransactionsCrossChain/>);
-      await expect(component).toHaveScreenshot({ timeout: 30_000 });
-    });
-  });
 });
