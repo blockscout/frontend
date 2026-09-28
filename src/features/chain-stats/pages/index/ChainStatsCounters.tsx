@@ -11,6 +11,10 @@ import StatsWidget from 'src/shared/stats/StatsWidget';
 
 import { CHAIN_STATS_COUNTER } from '../../stubs/counters';
 
+const COLUMNS_NUM = {
+  desktop: 4,
+  mobile: 2,
+};
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const ChainStatsCounters = () => {
@@ -32,7 +36,7 @@ const ChainStatsCounters = () => {
   }
 
   return (
-    <StatsContainer desktopColumns={ 4 }>
+    <StatsContainer columnsNum={ COLUMNS_NUM }>
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {
 

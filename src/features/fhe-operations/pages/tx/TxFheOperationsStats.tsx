@@ -14,10 +14,7 @@ interface Props {
 
 const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, isLoading }: Props) => {
   return (
-    <StatsContainer
-      desktopColumns={ 3 }
-      mb={ 6 }
-    >
+    <StatsContainer mb={ 6 }>
       <StatsWidget
         label="Total HCU"
         hint="Sum of all Homomorphic Computation Units consumed by FHE operations in this transaction"
