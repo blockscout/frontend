@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 import { useCrossChainCountersQuery } from '../../hooks/useCrossChainCountersQuery';
@@ -18,21 +18,14 @@ const TransactionsCrossChainStats = (props: Props) => {
   }
 
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns="1fr"
-      rowGap={ 3 }
-      columnGap={ 3 }
-      mb={ 6 }
-      { ...props }
-    >
+    <StatsContainer mb={ 6 } { ...props }>
       <StatsWidget
         label="Cross-chain txns"
         value={ Number(value).toLocaleString() }
         period="24h"
         isLoading={ isPlaceholderData }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 
