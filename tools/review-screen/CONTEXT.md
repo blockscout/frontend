@@ -22,6 +22,8 @@ and decides. The task spec behind the pilot:
 | Where does a standards cell become a suspect? | `./grid/standards.ts` |
 | Where does a requirement become a suspect? Where is the cap shared? | `./grid/spec.ts` |
 | How are the Functional Requirements read out of a spec? | `./select/spec.ts` |
+| After a review: how does a suspect get its fate, a finding its origin? | `./origins/match.ts` (`--origins`) |
+| What does `--findings` accept? | `pnpm review:screen --help`; the two readers in `./origins/parse.ts` |
 | How is it wired into the review? | `.agents/skills/review-changes/axes.md`, the `jev` axis brief |
 
 ## What an editor here must keep true
@@ -48,11 +50,25 @@ and decides. The task spec behind the pilot:
   fails the run: a bad spec path still gets the review its standards grid.
 - **Line ids are new-side line numbers.** Under `--scope uncommitted` they match the working tree; under
   `--scope branch` too, because both diff against the working tree, never a commit.
+- **`--origins` matches mechanically, never by reading code.** A finding meets a standards suspect when
+  it sits in the same file inside the suspect's window — the line span the sidecar records under
+  `windows`, since by then the diff may be gone — and a spec suspect when its location is the same
+  `FR<n>`. The `jev` axis's drop list is the only other input; a suspect named by neither is `dropped`
+  with reason `not reported`. Keep it that way: the subagent that runs it forwards the table and nothing
+  else, so any judgement added here would be a judgement made without the code in front of it.
+- **`jev` membership comes from `sources`, not from `axis`.** A finding's `axis` is its label
+  (`standards`, `spec`, …); which sides raised it is the orchestrator's `sources` list. A `jev`-sourced
+  finding with an axis alongside is `both`, and its suspect is `merged` rather than `confirmed`.
 
 ## Gotchas
 
 - **Rerunning on the same day, branch and scope overwrites the sidecar.** The name carries no time of day.
   A calibration or dry run that should survive the next run needs a different `--ticket` or a copied file.
+  A rerun also drops the sidecar's `origins` block — run `--origins` again if the review's table still
+  stands. Running `--origins` twice replaces the block; it never appends.
+- **A spec finding must carry its `FR<n>` in `location` to match a spec suspect.** The review's table
+  writes `—` for a finding with no line; a spec suspect has no line either, so the requirement id is the
+  only handle. Without it the suspect is `not reported` even when the finding came from it.
 - **The task folder is excluded from the spec grid** (`SPEC_GRID_EXCLUDE`). A branch that adds its own
   `spec.md` and ticket specs would otherwise score every requirement high — the spec *states* each one —
   and hide the requirements no code addresses yet. The standards grid still sees those files.
@@ -78,5 +94,7 @@ and decides. The task spec behind the pilot:
 - `./grid/standards.ts` — `noul` batch per window, `choice` locate per suspect, threshold and cap
 - `./grid/spec.ts` — `noul` batch per window over the requirements, max over files, the inverted threshold,
   the cap shared with the standards grid
-- `./sidecar.ts` — main-checkout resolution, file naming, the record shape
+- `./origins/parse.ts` — the findings table and the drop list, from a JSON array or Markdown tables
+- `./origins/match.ts` — fate per suspect, origin per finding, the window and requirement matching
+- `./sidecar.ts` — main-checkout resolution, file naming, the record shape, reading one back
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

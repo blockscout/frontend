@@ -28,11 +28,14 @@ export interface Cell {
   readonly score: number;
 }
 
+// `window` names the window the score came from; `--origins` matches a review finding to the suspect
+// by that window's line span, which the sidecar records.
 export interface Suspect {
   readonly rule: string;
   readonly file: string;
   readonly line: number;
   readonly score: number;
+  readonly window: number;
 }
 
 export interface StandardsResult {
@@ -47,10 +50,6 @@ export interface StandardsResult {
 
 interface Candidate extends Cell {
   readonly windowRef: Window;
-}
-
-interface Located extends Suspect {
-  readonly window: number;
 }
 
 export function thresholdFor(rule: string, config: StandardsConfig): number {
@@ -103,7 +102,7 @@ function bestCells(cells: ReadonlyArray<Cell>, files: ReadonlyArray<FileWindows>
   return [ ...best.values() ];
 }
 
-function locateTask(candidate: Candidate, rule: Rule, context: ScreenContext, located: Array<Located>): () => Promise<void> {
+function locateTask(candidate: Candidate, rule: Rule, context: ScreenContext, located: Array<Suspect>): () => Promise<void> {
   return async() => {
     const { client, config, recorder } = context;
     const { windowRef, ...cell } = candidate;
@@ -140,7 +139,7 @@ export async function screenStandards(
   });
   const scoreFailure = await runPool(scoreTasks, config.concurrency);
 
-  const located: Array<Located> = [];
+  const located: Array<Suspect> = [];
   const overThreshold = bestCells(recorder.cells, files).filter((candidate) => candidate.score >= thresholdFor(candidate.rule, config));
   const ruleById = new Map(rules.map((rule) => [ rule.id, rule ] as const));
   const locateTasks = scoreFailure === undefined ?
@@ -151,7 +150,7 @@ export async function screenStandards(
   const { suspects, cut } = selectSuspects(located, config.maxSuspects);
   return {
     cells: recorder.cells,
-    suspects: suspects.map(({ window: _window, ...suspect }) => suspect),
+    suspects,
     cut,
     calls: recorder.calls,
     model: recorder.model,

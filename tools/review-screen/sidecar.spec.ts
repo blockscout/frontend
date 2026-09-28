@@ -6,7 +6,7 @@ import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import type { SidecarRecord } from './sidecar';
-import { resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
+import { readSidecar, resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
 
 let tmp = '';
 
@@ -59,9 +59,11 @@ describe('writeSidecar', () => {
       reason: 'no key',
       model: undefined,
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', ticket: undefined, spec: undefined, files: [] },
+      windows: [],
       standards: { cells: [], suspects: [], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [],
+      origins: undefined,
     };
     const target = path.join(tmp, '.ai', 'jev', 'x.json');
     writeSidecar(target, record);
@@ -71,9 +73,35 @@ describe('writeSidecar', () => {
       status: 'skipped',
       reason: 'no key',
       inputs: { scope: 'branch', base: 'abc', branch: 'issue-1', files: [] },
+      windows: [],
       standards: { cells: [], suspects: [], cut: 0 },
       spec: { status: 'no-spec' },
       calls: [],
     });
+    expect(readSidecar(target)).toEqual({ ...record, reason: 'no key' });
+  });
+});
+
+describe('readSidecar', () => {
+  it('rejects a file that is not a sidecar of the current version', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-sidecar-'));
+    const target = path.join(tmp, 'x.json');
+    fs.writeFileSync(target, JSON.stringify({ version: 99 }));
+    expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar (version 1)');
+    fs.writeFileSync(target, JSON.stringify([]));
+    expect(() => readSidecar(target)).toThrow('Not a review-screen sidecar');
+  });
+
+  it('fills in an empty window list for a sidecar written before spans were recorded', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-sidecar-'));
+    const target = path.join(tmp, 'x.json');
+    fs.writeFileSync(target, JSON.stringify({
+      version: 1,
+      status: 'ok',
+      standards: { cells: [], suspects: [], cut: 0 },
+      spec: { status: 'no-spec' },
+      calls: [],
+    }));
+    expect(readSidecar(target)).toMatchObject({ version: 1, windows: [] });
   });
 });

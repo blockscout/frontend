@@ -25,6 +25,7 @@ export interface Window {
   readonly state: string;
   readonly changedIds: ReadonlyArray<string>;
   readonly firstLine: number;
+  readonly lastLine: number;
 }
 
 export interface WindowLimits {
@@ -160,6 +161,7 @@ function toWindow(hunks: ReadonlyArray<Hunk>, index: number): Window {
     state: hunks.map((hunk) => hunk.lines.map(renderLine).join('\n')).join(`\n${ HUNK_SEPARATOR }\n`),
     changedIds: lines.filter((line) => line.kind === 'added').map((line) => lineId(line.line as number)),
     firstLine: numbered.length > 0 ? Math.min(...numbered) : 1,
+    lastLine: numbered.length > 0 ? Math.max(...numbered) : 1,
   };
 }
 

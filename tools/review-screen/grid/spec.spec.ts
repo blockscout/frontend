@@ -49,7 +49,7 @@ function requirement(n: number): Requirement {
 }
 
 function window(index: number, state: string = `window ${ index }`): Window {
-  return { index, state, changedIds: [ 'L1' ], firstLine: 1 };
+  return { index, state, changedIds: [ 'L1' ], firstLine: 1, lastLine: 1 };
 }
 
 function target(file: string, ...windows: Array<Window>): FileWindows {

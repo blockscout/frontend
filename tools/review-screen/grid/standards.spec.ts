@@ -61,7 +61,7 @@ function rule(id: string, glob: string = '**/*.ts'): Rule {
 }
 
 function window(index: number, changedIds: ReadonlyArray<string>, state: string = `window ${ index }`): Window {
-  return { index, state, changedIds, firstLine: 10 * (index + 1) };
+  return { index, state, changedIds, firstLine: 10 * (index + 1), lastLine: 10 * (index + 1) + 9 };
 }
 
 function target(file: string, ...windows: Array<Window>): FileWindows {
@@ -91,9 +91,9 @@ describe('thresholdFor', () => {
 describe('selectSuspects', () => {
   it('ranks by score, caps the list and counts what was cut', () => {
     const candidates = [
-      { rule: 'a', file: 'f', line: 1, score: 0.71 },
-      { rule: 'b', file: 'f', line: 2, score: 0.99 },
-      { rule: 'c', file: 'f', line: 3, score: 0.8 },
+      { rule: 'a', file: 'f', line: 1, score: 0.71, window: 0 },
+      { rule: 'b', file: 'f', line: 2, score: 0.99, window: 0 },
+      { rule: 'c', file: 'f', line: 3, score: 0.8, window: 0 },
     ];
     expect(selectSuspects(candidates, 2)).toEqual({
       suspects: [ candidates[1], candidates[2] ],
@@ -138,7 +138,7 @@ describe('screenStandards', () => {
 
     const result = await screenStandards(files, RULES, client, CONFIG);
 
-    expect(result.suspects).toEqual([ { rule: 'alpha', file: 'src/a.ts', line: 21, score: 0.95 } ]);
+    expect(result.suspects).toEqual([ { rule: 'alpha', file: 'src/a.ts', line: 21, score: 0.95, window: 1 } ]);
     const locate = requests.filter((request) => request.questions.line?.type === 'choice');
     expect(locate).toHaveLength(1);
     expect(locate[0].state.changes).toBe('window 1');
@@ -161,8 +161,8 @@ describe('screenStandards', () => {
     const files = [ target('src/a.ts', window(0, [])), target('src/b.ts', window(0, [ 'L1' ])) ];
     const result = await screenStandards(files, [ rule('alpha') ], client, CONFIG);
     expect(result.suspects).toEqual(expect.arrayContaining([
-      { rule: 'alpha', file: 'src/a.ts', line: 10, score: 0.9 },
-      { rule: 'alpha', file: 'src/b.ts', line: 10, score: 0.9 },
+      { rule: 'alpha', file: 'src/a.ts', line: 10, score: 0.9, window: 0 },
+      { rule: 'alpha', file: 'src/b.ts', line: 10, score: 0.9, window: 0 },
     ]));
     expect(requests.filter((request) => request.questions.line?.type === 'choice')).toHaveLength(1);
   });

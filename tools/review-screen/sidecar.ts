@@ -5,7 +5,9 @@ import path from 'path';
 import type { CallRecord } from './grid/shared';
 import type { SpecCell, SpecSuspect } from './grid/spec';
 import type { Cell, Suspect } from './grid/standards';
+import type { OriginsRecord } from './origins/match';
 import type { Scope, TouchedFile } from './select/change';
+import type { FileWindows } from './select/hunks';
 import type { Requirement } from './select/spec';
 
 // One JSON record per run, in the main checkout's `.ai/jev/` so every worktree adds to the same
@@ -39,6 +41,15 @@ export interface SidecarInputs {
   readonly files: ReadonlyArray<TouchedFile>;
 }
 
+// The line span of one window, keyed by file and window index — what `--origins` needs to say whether a
+// finding's line falls inside a suspect's window once the diff itself is gone.
+export interface WindowSpan {
+  readonly file: string;
+  readonly window: number;
+  readonly firstLine: number;
+  readonly lastLine: number;
+}
+
 export interface SidecarRecord {
   readonly version: number;
   readonly createdAt: string;
@@ -46,6 +57,7 @@ export interface SidecarRecord {
   readonly reason: string | undefined;
   readonly model: string | undefined;
   readonly inputs: SidecarInputs;
+  readonly windows: ReadonlyArray<WindowSpan>;
   readonly standards: {
     readonly cells: ReadonlyArray<Cell>;
     readonly suspects: ReadonlyArray<Suspect>;
@@ -53,6 +65,16 @@ export interface SidecarRecord {
   };
   readonly spec: SpecRecord;
   readonly calls: ReadonlyArray<CallRecord>;
+  readonly origins: OriginsRecord | undefined;
+}
+
+export function windowSpans(files: ReadonlyArray<FileWindows>): Array<WindowSpan> {
+  return files.flatMap((target) => target.windows.map((window) => ({
+    file: target.file,
+    window: window.index,
+    firstLine: window.firstLine,
+    lastLine: window.lastLine,
+  })));
 }
 
 export interface SidecarName {
@@ -82,4 +104,18 @@ export function sidecarFileName(name: SidecarName): string {
 export function writeSidecar(filePath: string, record: SidecarRecord): void {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, `${ JSON.stringify(record, null, 2) }\n`);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+export function readSidecar(filePath: string): SidecarRecord {
+  const parsed: unknown = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  if (!isRecord(parsed) || parsed.version !== SIDECAR_VERSION) throw new Error(`Not a review-screen sidecar (version ${ SIDECAR_VERSION }): ${ filePath }`);
+  // Only this tool writes the folder, and the version check above is the one field an edited file
+  // could drift on; validating every cell of a record we wrote ourselves would double the module.
+  const record = parsed as unknown as SidecarRecord;
+  // A sidecar written before `windows` existed still reads; its suspects then match on the exact line.
+  return { ...record, windows: record.windows ?? [], origins: record.origins };
 }

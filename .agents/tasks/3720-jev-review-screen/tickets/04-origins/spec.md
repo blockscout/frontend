@@ -18,24 +18,24 @@ same requirement id for a spec suspect — so the subagent that later runs this 
 How to verify: run the screen on this branch, hand-write a small findings table, run `--origins`, open the
 sidecar.
 
-- [ ] `--findings` accepts a JSON array or a Markdown table (`| id | axis | location | sources |`, the
+- [x] `--findings` accepts a JSON array or a Markdown table (`| id | axis | location | sources |`, the
       review's final table) from a path or stdin; `sources` is the orchestrator's per-finding list of
       raising axes, which is where `jev` membership comes from.
-- [ ] The `jev` axis's drop list is part of the same input: `{ suspect: <rule+file+line or requirement>,
+- [x] The `jev` axis's drop list is part of the same input: `{ suspect: <rule+file+line or requirement>,
       fate: 'dropped', reason }` entries; a suspect named nowhere is recorded as `dropped` with reason
       `not reported`.
-- [ ] Each finding gets `origin`: `jev` when its sources are only `jev`, `axis` when `jev` is absent,
+- [x] Each finding gets `origin`: `jev` when its sources are only `jev`, `axis` when `jev` is absent,
       `both` otherwise. Each confirmed suspect that shares file+window with an axis-sourced finding is
       `merged` with that finding's id.
-- [ ] The sidecar is rewritten in place with `origins: { findings: […], suspects: […], recordedAt }`;
+- [x] The sidecar is rewritten in place with `origins: { findings: […], suspects: […], recordedAt }`;
       running `--origins` twice replaces the block rather than appending.
-- [ ] Running `--origins` on a sidecar with `status: skipped|failed` still records the findings' origins
+- [x] Running `--origins` on a sidecar with `status: skipped|failed` still records the findings' origins
       (all `axis`) so `--report` counts that review.
-- [ ] vitest specs: table parsing (both formats), origin classification, merge matching by window,
+- [x] vitest specs: table parsing (both formats), origin classification, merge matching by window,
       idempotent rewrite.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `origins/parse.ts`: findings table + drop list parsing (+ specs)
-- [ ] 2 `[agent]` `origins/match.ts`: fate and origin assignment (+ specs)
-- [ ] 3 `[agent]` `--origins` flags in `index.ts`, sidecar rewrite; extend `CONTEXT.md`
+- [x] 1 `[agent]` `origins/parse.ts`: findings table + drop list parsing (+ specs)
+- [x] 2 `[agent]` `origins/match.ts`: fate and origin assignment (+ specs)
+- [x] 3 `[agent]` `--origins` flags in `index.ts`, sidecar rewrite; extend `CONTEXT.md`

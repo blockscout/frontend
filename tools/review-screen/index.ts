@@ -1,4 +1,5 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to print a JSON report to stdout */
+import fs from 'fs';
 import path from 'path';
 
 import { TypeSafeClient, TypeSafeError } from '@typesafe-ai/sdk';
@@ -14,6 +15,9 @@ import type { SpecResult } from './grid/spec';
 import { screenSpec, shareCap, specGridFiles } from './grid/spec';
 import type { StandardsResult } from './grid/standards';
 import { screenStandards } from './grid/standards';
+import type { SuspectFateRecord } from './origins/match';
+import { assignOrigins } from './origins/match';
+import { formatSuspectRef, parseOriginsInput } from './origins/parse';
 import { RULES } from './rubric';
 import type { Change, Scope } from './select/change';
 import { resolveChange } from './select/change';
@@ -22,7 +26,7 @@ import { buildWindows, readHunks } from './select/hunks';
 import type { SpecSource } from './select/spec';
 import { readSpec } from './select/spec';
 import type { RunStatus, SidecarRecord, SpecRecord } from './sidecar';
-import { resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
+import { readSidecar, resolveMainCheckout, sidecarFileName, windowSpans, writeSidecar } from './sidecar';
 
 // The screen never fails a review: a missing key or an API error still exits 0, with the status and
 // reason in the JSON, and every run writes its sidecar. Only a bug in the tool itself exits non-zero.
@@ -32,10 +36,15 @@ export interface CliOptions {
   base: string | undefined;
   spec: string | undefined;
   ticket: string | undefined;
+  origins: string | undefined;
+  findings: string | undefined;
 }
+
+const STDIN = '-';
 
 const USAGE = `Usage:
   review:screen [--scope branch|uncommitted] [--base <ref>] [--spec <path>] [--ticket <NN>]
+  review:screen --origins <sidecar> --findings <path|->
 
   Screens a change with Jev — every rubric rule against every touched file, and, when the change has
   a task spec, every Functional Requirement against every touched file — and prints the suspects as
@@ -49,7 +58,15 @@ const USAGE = `Usage:
                        the first unchecked box in the task's progress.md
 
   Without TYPESAFE_API_KEY in the environment the run is skipped; an API failure is reported as failed.
-  Both exit 0.`;
+  Both exit 0.
+
+  --origins <sidecar>  after the review is published: record each suspect's fate and each finding's
+                       origin (axis | jev | both) into that sidecar, replacing any earlier record
+  --findings <path|->  the review's final findings and the jev axis's drop list, as a JSON array or as
+                       Markdown tables; - reads stdin
+                         finding: { id, axis, location: "<path>:<line>" | "FR<n>" | "—", sources: [...] }
+                         drop:    { suspect: "<rule> <path>:<line>" | "FR<n>", fate: "dropped", reason }
+                         tables:  | id | axis | location | sources |   and   | suspect | fate | reason |`;
 
 function readScope(raw: string): Scope {
   if (raw === 'branch' || raw === 'uncommitted') return raw;
@@ -77,6 +94,12 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--ticket', { kind: 'value', apply: (options, value) => {
     options.ticket = value;
   } } ],
+  [ '--origins', { kind: 'value', apply: (options, value) => {
+    options.origins = value;
+  } } ],
+  [ '--findings', { kind: 'value', apply: (options, value) => {
+    options.findings = value;
+  } } ],
 ]);
 
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
@@ -85,8 +108,11 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     base: undefined,
     spec: undefined,
     ticket: undefined,
+    origins: undefined,
+    findings: undefined,
   }, { kind: 'reject', usage: USAGE });
   if (rest.length > 0) throw new Error(`Unexpected argument: ${ rest[0] }\n${ USAGE }`);
+  if ((options.origins === undefined) !== (options.findings === undefined)) throw new Error(`--origins and --findings go together\n${ USAGE }`);
   return options;
 }
 
@@ -118,6 +144,7 @@ const EMPTY_SPEC: SpecResult = { cells: [], suspects: [], cut: 0, calls: [], mod
 interface Screened {
   readonly client: ClientOutcome;
   readonly source: SpecSource;
+  readonly windows: ReadonlyArray<FileWindows>;
   readonly standards: StandardsResult;
   readonly spec: SpecResult;
 }
@@ -145,17 +172,19 @@ function buildRecord(change: Change, screened: Screened): SidecarRecord {
     ...statusOf(screened),
     model: screened.standards.model ?? screened.spec.model,
     inputs: { scope: change.scope, base: change.base, branch: change.branch, ticket: change.ticket, spec: change.spec, files: change.files },
+    windows: windowSpans(screened.windows),
     standards: { cells: screened.standards.cells, suspects: screened.standards.suspects, cut: screened.standards.cut },
     spec: specRecordOf(screened),
     calls,
+    origins: undefined,
   };
 }
 
 // The two grids run one after the other so a single pool bounds the request rate, and the cap is
 // shared once both have ranked their own suspects.
 async function screen(change: Change, client: ClientOutcome, source: SpecSource, cwd: string): Promise<Screened> {
-  if (!client.ok) return { client, source, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC };
   const windows = windowsOf(change, cwd);
+  if (!client.ok) return { client, source, windows, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC };
   const standards = await screenStandards(windows, RULES, client.client, {
     model: MODEL,
     defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
@@ -172,7 +201,7 @@ async function screen(change: Change, client: ClientOutcome, source: SpecSource,
     }) :
     EMPTY_SPEC;
   const capped = shareCap(standards, spec, MAX_SUSPECTS);
-  return { client, source, standards: { ...standards, ...capped.standards }, spec: { ...spec, ...capped.spec } };
+  return { client, source, windows, standards: { ...standards, ...capped.standards }, spec: { ...spec, ...capped.spec } };
 }
 
 function printSpec(record: SpecRecord): unknown {
@@ -186,9 +215,38 @@ function printSpec(record: SpecRecord): unknown {
   }
 }
 
+function readFindings(source: string): string {
+  return fs.readFileSync(source === STDIN ? process.stdin.fd : source, 'utf8');
+}
+
+function printFate(entry: SuspectFateRecord): Record<string, string> {
+  const suspect = formatSuspectRef(entry.suspect);
+  return entry.fate === 'dropped' ?
+    { suspect, fate: entry.fate, reason: entry.reason } :
+    { suspect, fate: entry.fate, finding: entry.finding };
+}
+
+export function recordOrigins(sidecar: string, readInput: () => string): unknown {
+  const input = parseOriginsInput(readInput());
+  const record = readSidecar(sidecar);
+  const origins = assignOrigins(record, input, new Date().toISOString());
+  writeSidecar(sidecar, { ...record, origins });
+  return {
+    sidecar,
+    status: record.status,
+    findings: origins.findings.map(({ id, origin }) => ({ id, origin })),
+    suspects: origins.suspects.map(printFate),
+  };
+}
+
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
   const cwd = process.cwd();
+  if (options.origins !== undefined && options.findings !== undefined) {
+    const findings = options.findings;
+    console.log(JSON.stringify(recordOrigins(path.resolve(cwd, options.origins), () => readFindings(findings)), null, 2));
+    return;
+  }
   const change = resolveChange(options, cwd);
   const screened = await screen(change, createClient(), readSpec(change.spec, cwd), cwd);
 
