@@ -2,17 +2,12 @@
 
 import { useMemo } from 'react';
 
-import config from 'src/config';
-
+import type { AppActionData } from '../utils/get-app-action-data';
+import { getAppActionData } from '../utils/get-app-action-data';
 import useAddressMetadataInfoQuery from './useAddressMetadataInfoQuery';
 
-export default function useAppActionData(address: string | undefined = '', isEnabled = true) {
+export default function useAppActionData(address: string | undefined = '', isEnabled = true): AppActionData | null {
   const memoizedArray = useMemo(() => address ? [ address ] : [], [ address ]);
   const { data } = useAddressMetadataInfoQuery(memoizedArray, isEnabled);
-  const metadata = data?.addresses[address?.toLowerCase()];
-  const tag = metadata?.tags?.find(({ tagType }) => tagType === 'protocol');
-  if (tag?.meta?.appMarketplaceURL || (config.features.marketplace.isEnabled && tag?.meta?.appID)) {
-    return tag.meta;
-  }
-  return null;
+  return getAppActionData(data?.addresses[address?.toLowerCase()]?.tags);
 }

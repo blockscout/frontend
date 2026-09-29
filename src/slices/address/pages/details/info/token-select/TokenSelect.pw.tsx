@@ -1,13 +1,14 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import MockAddressPage from 'src/slices/address/pages/details/AddressPageMock';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
-import { tokenInfoERC20c, tokenInfoERC20a } from 'src/slices/token/mocks/info';
+import { tokenInfoERC20a, tokenInfoERC20c } from 'src/slices/token/mocks/info';
 
-import { test, expect, devices } from 'playwright/lib';
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
+import { devices, expect, test } from 'playwright/lib';
 
 import TokenSelect from './TokenSelect';
 
@@ -27,9 +28,17 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
   await mockApiResponse('core:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
+  await mockApiResponse(
+    'core:address_tokens',
+    { items: [], next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-7984' }, times: 1 },
+  );
+  await mockApiResponse('core:address_tokens', tokensMock.erc8056List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-8056' }, times: 1 });
 });
 
-test('base view +@dark-mode', async({ render, page }) => {
+test('base view +@dark-mode', async({ render, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.additionalTokenTypes);
+
   await render(
     <MockAddressPage>
       <Flex>

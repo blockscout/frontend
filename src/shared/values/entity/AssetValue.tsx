@@ -42,6 +42,7 @@ const AssetValue = ({
   hasExchangeRateToggle,
   layout = 'horizontal',
   tooltipContent,
+  multiplier,
   ...rest
 }: Props) => {
   const hasHistorical = Boolean(historicalExchangeRate);
@@ -66,12 +67,14 @@ const AssetValue = ({
     return <chakra.span { ...rest }>-</chakra.span>;
   }
 
-  const { valueBn, usdBn } = calculateUsdValue({ amount, decimals, accuracy, accuracyUsd, exchangeRate: activeExchangeRate });
+  const { valueBn, rawValueBn, usdBn } = calculateUsdValue({ amount, decimals, accuracy, accuracyUsd, exchangeRate: activeExchangeRate, multiplier });
 
   if (!activeExchangeRate) {
     return (
       <SimpleValue
         value={ valueBn }
+        rawValue={ rawValueBn }
+        multiplier={ multiplier }
         accuracy={ accuracy }
         startElement={ startElement }
         endElement={ endElement ?? (typeof asset === 'string' ? `${ thinsp }${ asset }` : asset) }
@@ -86,6 +89,8 @@ const AssetValue = ({
   const nativeValue = (
     <SimpleValue
       value={ valueBn }
+      rawValue={ rawValueBn }
+      multiplier={ multiplier }
       accuracy={ accuracy }
       startElement={ startElement }
       endElement={ endElement ?? (typeof asset === 'string' ? `${ thinsp }${ asset }` : asset) }

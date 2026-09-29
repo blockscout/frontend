@@ -162,6 +162,7 @@ export default tseslint.config(
     '.claude/worktrees/',
     'next.config.js',
     'tools/code-complexity/dist/',
+    'tools/review-screen/dist/',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },

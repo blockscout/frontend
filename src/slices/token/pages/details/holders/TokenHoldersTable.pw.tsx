@@ -1,17 +1,19 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react';
 
-import { tokenHoldersERC20, tokenHoldersERC1155 } from 'src/slices/token/mocks/holders';
-import { tokenInfo, tokenInfoERC1155a } from 'src/slices/token/mocks/info';
+import { tokenHoldersERC1155, tokenHoldersERC20 } from 'src/slices/token/mocks/holders';
+import { tokenInfoERC1155a, tokenInfoERC8056 } from 'src/slices/token/mocks/info';
 
-import { test, expect } from 'playwright/lib';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { expect, test } from 'playwright/lib';
 
 import TokenHoldersTable from './TokenHoldersTable';
 
-test('base view without IDs', async({ render }) => {
+test('base view without IDs', async({ render, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.additionalTokenTypes);
+
   const component = await render(
     <Box pt="128px">
-      <TokenHoldersTable data={ tokenHoldersERC20.items } token={ tokenInfo } top={ 88 }/>
+      <TokenHoldersTable data={ tokenHoldersERC20.items } token={ tokenInfoERC8056 } top={ 88 }/>
     </Box>,
   );
 

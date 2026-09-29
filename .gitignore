@@ -78,6 +78,9 @@ npm-debug.log*
 # compiled Playwright runner
 /tools/playwright/dist/
 
+# compiled review-screen CLI
+/tools/review-screen/dist/
+
 # typescript
 *.tsbuildinfo
 

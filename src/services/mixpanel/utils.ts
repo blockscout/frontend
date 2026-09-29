@@ -4,6 +4,8 @@ import type { WalletType } from 'src/features/web3-wallet/types/config';
 
 import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
 
+import type { AppActionSource } from 'src/features/address-metadata/utils/build-app-action-url';
+
 export enum EventTypes {
   PAGE_VIEW = 'Page view',
   SEARCH_QUERY = 'Search query',
@@ -138,7 +140,7 @@ Type extends EventTypes.PAGE_WIDGET ? (
   } | {
     Type: 'Action button';
     Info: string;
-    Source: 'Txn' | 'NFT collection' | 'NFT item';
+    Source: AppActionSource;
   } | {
     Type: 'Address tag';
     Info: string;

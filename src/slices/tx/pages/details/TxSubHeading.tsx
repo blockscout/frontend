@@ -12,8 +12,6 @@ import ActionsMenu from 'src/shell/page/actions-menu/ActionsMenu';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
-import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
-import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'src/features/multichain/context';
 import { TX_INTERPRETATION } from 'src/features/tx-interpretation/blockscout/stubs';
@@ -38,8 +36,6 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
 
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
-
-  const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
 
   const txInterpretationQuery = useApiQuery('core:tx_interpretation', {
     pathParams: { hash },
@@ -157,9 +153,6 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <ActionsMenu isLoading={ isLoading }/> }
-        { appActionData && (
-          <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
-        ) }
         <AlternativeExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>
     </Box>

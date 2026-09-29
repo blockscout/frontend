@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ColumnsIds } from '../types/client';
+import type { ColumnsIds, TxTableColumn } from '../types/client';
 
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -11,14 +11,13 @@ import { Button } from 'src/toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 
-import { TABLE_COLUMNS } from '../utils/consts';
-
 interface Props {
+  tableColumns: Array<TxTableColumn>;
   columns: Record<ColumnsIds, boolean>;
   onChange: (val: Record<ColumnsIds, boolean>) => void;
 }
 
-const ColumnsButton = ({ columns, onChange }: Props) => {
+const ColumnsButton = ({ tableColumns, columns, onChange }: Props) => {
   const handleValueChange = React.useCallback((value: Array<string>) => {
     const newCols = value.reduce((acc, key) => {
       acc[key as ColumnsIds] = true;
@@ -48,7 +47,7 @@ const ColumnsButton = ({ columns, onChange }: Props) => {
             gridTemplateColumns="160px 160px"
             gap={ 3 }
           >
-            { TABLE_COLUMNS.map(col => (
+            { tableColumns.map(col => (
               <Checkbox
                 key={ col.id }
                 value={ col.id }

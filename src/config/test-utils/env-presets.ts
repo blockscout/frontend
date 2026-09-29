@@ -140,11 +140,8 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   flashblocks: [
     [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
   ],
-  tokenActionButton: [
-    [
-      'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',
-      '{"text":"Buy on Duck Portal","url":"https://portal.duck.io/swap?chainId=1&token={hash}","colors":{"_default":{"bg":["rgb(179, 167, 0)","rgb(134, 86, 239)"],"text":["white"]}}}',
-    ],
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
   ],
   verifiedAddresses: [
     [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],

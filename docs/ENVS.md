@@ -1085,7 +1085,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `[{ name: string; url_template: string; dapp_id?: string; logo: string }]` | Multichain portfolio application config. See [below](#multichain-button-configuration-properties) | - | - | `[{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'}]` | v1.31.0+ |
+| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `[{ name: string; url_template: string; dapp_id?: string; logo: string; view?: 'full' \| 'icon' }]` | Multichain portfolio application config. See [below](#multichain-button-configuration-properties) | - | - | `[{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'}]` | v1.31.0+ |
 
 #### Multichain button configuration properties
 
@@ -1095,7 +1095,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
-| promo | `boolean` | Make the provider stand out by placing their logo prominently at the first place in the section and in the page subheader. | - | - | `true` |
+| view | `'full' \| 'icon'` | Button view: `full` shows the logo with the name, `icon` shows the logo only | - | `full` | `icon` |
 
 &nbsp;
 ### Multichain explorer
@@ -1194,27 +1194,6 @@ Solidity-to-UML smart contract visualizer.
 | Variable | Compulsoriness |
 | --- | --- |
 | [NEXT_PUBLIC_VISUALIZE_API_HOST](#visualize-api) | Required |
-
-&nbsp;
-
-### Token action button
-
-An action button on the ERC-20 token page, leading to an external site. On desktop it is right-aligned in the token title row; on mobile it takes a dedicated row below the token tags. In a multichain cluster the variable is cluster-level: one button, shown on the token pages of every chain in the cluster.
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
-| --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
-
-#### Token action button configuration properties
-
-_Note_ Here, some values are arrays of up to two strings. The first string represents the value for the light color mode, and the second string represents the value for the dark color mode. If the array contains only one string, it will be used for both color modes.
-
-| Variable | Type | Description | Compulsoriness | Default value | Example value |
-| --- | --- | --- | --- | --- | --- |
-| text | `string` | Text on the button | Required | - | `Buy on Example Portal` |
-| url | `string` | Link the button leads to. May contain the `{hash}` placeholder, which is replaced with the lowercased address hash of the token being viewed. It opens in a new tab, so the button gets a "leave site" icon, and `utm_source` / `utm_medium` params are appended automatically. | Required | - | `https://portal.example.com/swap?chainId=1&token={hash}` |
-| logo | `[string, string]` | Urls of the logo displayed before the button text. The recommended image size is 20x20 pixels (1:1 aspect ratio). | - | - | `['https://example.com/logo-light.svg','https://example.com/logo-dark.svg']` |
-| colors | `{'_default': {'bg'?: [string, string], 'text'?: [string, string]}}` | Button colors per state. Only the `_default` state is configurable; on hover the button dims. | - | `{'_default':{'bg':['button.solid.bg'],'text':['button.solid.text']}}` | `{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}` |
 
 &nbsp;
 

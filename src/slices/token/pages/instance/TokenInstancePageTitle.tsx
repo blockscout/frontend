@@ -12,6 +12,8 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import AddressQrCode from 'src/slices/address/pages/details/info/AddressQrCode';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
+import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
+import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import { useMultichainContext } from 'src/features/multichain/context';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -28,6 +30,7 @@ interface Props {
 
 const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => {
   const multichainContext = useMultichainContext();
+  const appActionData = useAppActionData(token?.address_hash, !isLoading);
 
   const title = (() => {
     if (typeof instance?.metadata?.name === 'string') {
@@ -45,7 +48,18 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
     return `ID ${ instance.id }`;
   })();
 
-  const tokenTag = token ? <Tag loading={ isLoading }>{ getTokenTypeName(token.type) }</Tag> : null;
+  const contentAfter = (
+    <Flex alignItems="center" justifyContent="space-between" flexGrow={ 1 } flexWrap="wrap" gap={ 3 }>
+      { token && <Tag loading={ isLoading }>{ getTokenTypeName(token.type) }</Tag> }
+      { appActionData && (
+        <AppActionButton
+          data={ appActionData }
+          addressHash={ token?.address_hash }
+          source="NFT item"
+        />
+      ) }
+    </Flex>
+  );
 
   const appLink = (() => {
     if (!instance?.external_app_url) {
@@ -104,7 +118,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
   return (
     <PageTitle
       title={ title }
-      contentAfter={ tokenTag }
+      contentAfter={ contentAfter }
       secondRow={ titleSecondRow }
       isLoading={ isLoading }
     />
