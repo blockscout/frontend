@@ -49,17 +49,16 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
   })();
 
   const contentAfter = (
-    <>
+    <Flex alignItems="center" justifyContent="space-between" flexGrow={ 1 } flexWrap="wrap" gap={ 3 }>
       { token && <Tag loading={ isLoading }>{ getTokenTypeName(token.type) }</Tag> }
       { appActionData && (
         <AppActionButton
           data={ appActionData }
           addressHash={ token?.address_hash }
           source="NFT item"
-          ml={{ base: 0, lg: 'auto' }}
         />
       ) }
-    </>
+    </Flex>
   );
 
   const appLink = (() => {

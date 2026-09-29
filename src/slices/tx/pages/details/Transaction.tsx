@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,7 +14,9 @@ import TxInternals from 'src/slices/internal-tx/pages/tx/TxInternals';
 import TxTokenTransfer from 'src/slices/token-transfer/pages/tx/TxTokenTransfer';
 import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 
+import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
 import MetadataTags from 'src/features/address-metadata/components/tag/MetadataTags';
+import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
 import { getVisibleProtocolTags } from 'src/features/address-metadata/utils/get-visible-protocol-tags';
 import TextAd from 'src/features/ads/text/components/TextAd';
 import TxDetailsWrapped from 'src/features/chain-variants/suave/pages/tx/TxDetailsWrapped';
@@ -103,6 +106,8 @@ const TransactionPageContent = () => {
       );
   })();
 
+  const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
+
   const txTags: Array<TMetadataTag> = data?.transaction_tag ?
     [ { slug: data.transaction_tag, name: data.transaction_tag, tagType: 'private_tag' as const, ordinal: 1 } ] : [];
 
@@ -123,11 +128,16 @@ const TransactionPageContent = () => {
 
   const isTabsLoading = txQuery.isPlaceholderData && !txQuery.errorUpdateCount;
 
-  const tags = (
-    <MetadataTags
-      isLoading={ isTabsLoading }
-      tags={ txTags }
-    />
+  const contentAfter = (
+    <Flex alignItems="center" justifyContent="space-between" flexGrow={ 1 } flexWrap="wrap" gap={ 3 }>
+      <MetadataTags
+        isLoading={ isTabsLoading }
+        tags={ txTags }
+      />
+      { appActionData && (
+        <AppActionButton data={ appActionData } addressHash={ txQuery.data?.to?.hash } txHash={ hash } source="Txn"/>
+      ) }
+    </Flex>
   );
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.transaction_tag) } txQuery={ txQuery }/>;
@@ -141,7 +151,7 @@ const TransactionPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title="Transaction details"
-        contentAfter={ tags }
+        contentAfter={ contentAfter }
         secondRow={ titleSecondRow }
       />
       <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>

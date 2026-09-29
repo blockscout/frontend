@@ -1,10 +1,9 @@
 import React from 'react';
 
-import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 import * as txMock from 'src/slices/tx/mocks/details';
 
-import { generateAddressMetadataInfo, protocolTagWithMeta } from 'src/features/address-metadata/mocks/tags';
+import { generateAddressMetadataInfo, protocolTag } from 'src/features/address-metadata/mocks/tags';
 import { txInterpretation } from 'src/features/tx-interpretation/blockscout/mocks';
 import { transaction as novesTransaction } from 'src/features/tx-interpretation/noves/mocks';
 
@@ -47,16 +46,6 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with interpretation and action button +@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
-    const meta = { ...protocolTagWithMeta.meta, appMarketplaceURL: undefined };
-    const metadataResponse = generateAddressMetadataInfo(recipientHash, { ...protocolTagWithMeta, meta });
-    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
-    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
-    await expect(component).toHaveScreenshot();
-  });
-
   test('with interpretation and recipient name +@mobile', async({ render, mockApiResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientName } as TxQuery;
     await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
@@ -88,38 +77,12 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with interpretation and view all link, and action button (external link) +@mobile', async({
-    render, mockApiResponse, mockAssetResponse,
-  }) => {
-    const metadataResponse = generateAddressMetadataInfo(recipientHash, protocolTagWithMeta);
-    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
-    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
-    await mockApiResponse(
-      'core:tx_interpretation',
-      { data: { summaries: [ ...txInterpretation.data.summaries, ...txInterpretation.data.summaries ] } },
-      { pathParams: { hash } },
-    );
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('no interpretation, has method called', async({ render, mockApiResponse, mockAssetResponse }) => {
+  test('no interpretation, has method called', async({ render, mockApiResponse }) => {
     const newTxQuery = { ...txQuery, data: { ...txMock.withRecipientContract, status: 'error' } } as TxQuery;
-    const metadataResponse = generateAddressMetadataInfo(recipientHash, protocolTagWithMeta);
+    const metadataResponse = generateAddressMetadataInfo(recipientHash, protocolTag);
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
-    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('core:tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
 
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('no interpretation, with action button', async({ render, mockApiResponse, mockAssetResponse }) => {
-    const metadataResponse = generateAddressMetadataInfo(recipientHash, protocolTagWithMeta);
-    await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
-    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
-
-    const newTxQuery = { ...txQuery, data: { ...txMock.pending, to: addressParamMock.contract } } as TxQuery;
     const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
     await expect(component).toHaveScreenshot();
   });

@@ -115,20 +115,21 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
           <SpriteIcon name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
         </Tooltip>
       ) }
-      <MetadataTags
-        isLoading={ isTagsLoading }
-        tags={ tags }
-        addressHash={ addressQuery.data?.hash }
-        flexGrow={ 1 }
-      />
-      { appActionData && (
-        <AppActionButton
-          data={ appActionData }
-          addressHash={ hash }
-          source={ isFungibleTokenType(tokenQuery.data?.type, multichainContext?.chain?.app_config) ? 'Token' : 'NFT collection' }
-          ml={{ base: 0, lg: 'auto' }}
+      <Flex alignItems="center" justifyContent="space-between" flexGrow={ 1 } flexWrap="wrap" gap={ 3 }>
+        <MetadataTags
+          isLoading={ isTagsLoading }
+          tags={ tags }
+          addressHash={ addressQuery.data?.hash }
+          flexGrow={ 1 }
         />
-      ) }
+        { appActionData && (
+          <AppActionButton
+            data={ appActionData }
+            addressHash={ hash }
+            source={ isFungibleTokenType(tokenQuery.data?.type, multichainContext?.chain?.app_config) ? 'Token' : 'NFT collection' }
+          />
+        ) }
+      </Flex>
     </>
   );
 
