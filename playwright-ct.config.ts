@@ -129,6 +129,8 @@ const config: PlaywrightTestConfig = defineConfig({
 
           // Mock for reCaptcha hook
           { find: 'src/services/re-captcha/useReCaptcha', replacement: './playwright/mocks/client/services/re-captcha/useReCaptcha.js' },
+          // Mock for reCaptcha widget, so Google's script never loads and never fires the init error
+          { find: /^react-google-recaptcha$/, replacement: './playwright/mocks/modules/react-google-recaptcha.js' },
 
           // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
           // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
