@@ -4,6 +4,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+import { EXEC_MAX_BUFFER } from '../../cli/exec';
 import type { CoverageData } from './read';
 import { readCoverageOrEmpty } from './read';
 
@@ -17,7 +18,6 @@ import { readCoverageOrEmpty } from './read';
 
 const VITEST_BIN = path.join('node_modules', '.bin', 'vitest');
 const COVERAGE_FILE = 'coverage-final.json';
-const EXEC_MAX_BUFFER = 64 * 1024 * 1024;
 
 // Primed-request drift tests (src/server/primedRequests/CONTEXT.md) import huge swaths of the app, so
 // `related` pulls them in for almost any file at a large page-mount cost and no useful coverage.

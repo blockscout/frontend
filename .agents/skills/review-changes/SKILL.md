@@ -1,8 +1,8 @@
 ---
 name: review-changes
 description: >-
-  Review a change on three axes — spec compliance, repo standards, correctness — then publish the findings 
-  as inline PR comments or into a review file in the task folder.
+  Review a change axis by axis — spec compliance, repo standards, correctness, and a Jev screen — then
+  publish the findings as inline PR comments or into a review file in the task folder.
 argument-hint: pr|md [--round first|follow-up] [--scope branch|uncommitted] [--as <tag>] [--ticket <NN>]
 disable-model-invocation: true
 ---
@@ -57,7 +57,7 @@ with a tag, you are the second reviewer and carry on.
 
 Resolve the base and the preconditions, and **fail fast before spawning anything**. A breached
 precondition, a base that does not resolve (`git rev-parse`), or an empty diff stops the run here, not
-inside three subagents.
+inside the subagents.
 
 | output · `--scope` | Base | Precondition | Repo checks |
 | --- | --- | --- | --- |
@@ -102,16 +102,19 @@ is known non-empty.
 
 ## 2. Round `first` — spawn the axes
 
-Send **one** message with the `general-purpose` subagents the change actually has axes for. Each gets: the
-base ref, the touched-file list plus untracked files, the check output as established fact, and
+Send **one** message with the `general-purpose` subagents the change actually has axes for — the `jev`
+axis among them. Each gets: the scope, the base ref, the touched-file list plus untracked files, the spec
+path when one resolved and the ticket when the run has one, the check output as established fact, and
 [`axes.md`](axes.md) — its own brief, the finding shape and the per-finding cap all live there.
 
 **The spec axis is gated on a spec existing.** Plenty of changes have none — work done outside the task
 workflow, and any task finished inside its own grilling session (see "Not every task needs a spec" in
 [`../../tasks/README.md`](../../tasks/README.md)). Confirm `spec.md` is there before dispatching. With no
-spec, run **two** axes and say so in the report.
+spec, run **two** blind axes plus `jev` and say so in the report.
 
-**Done when**: every dispatched axis has returned, or one has failed and you have noted which.
+**Done when**: every dispatched axis has returned, or one has failed and you have noted which. A `jev`
+axis reporting `skipped`, `failed` or no suspects has returned: the review proceeds on the blind axes and
+the terminal close carries its reason.
 
 ## 3. Round `follow-up` — arbitration
 
@@ -144,14 +147,16 @@ to `blocker` because that axis is all it can see.
   escape hatch. Only `pr` mode records it — `md` mode is read by agents alone, so the escape hatch there is
   `resolve-review`'s Gate 1, which puts the question to the developer in the terminal.
 - **One defect, one label.** The same defect seen through two axes is one finding: pick the sharper label
-  and drop the other. Never report it twice.
+  and drop the other. Never report it twice. Keep a `sources` list per surviving finding so the merge keeps a record of who saw it; a `jev` finding's label is the
+  grid its brief named, `standards` or `spec`.
 - **Another reviewer's finding stays theirs.** A defect already raised under a different tag gets a
   concurrence on their thread, not a second id under yours.
 - **Anchor check.** For every surviving finding, open its `file:line`. Confirm the quoted code is actually
   there and the claim still holds. Drop what fails. Hallucinated line numbers and stale claims are the two
   things that end a reviewer's credibility.
 
-**Done when**: every finding has a normalized severity, a verified anchor, and exactly one axis label.
+**Done when**: every finding has a normalized severity, a verified anchor, exactly one axis label, and its
+`sources`.
 
 ## 5. Publish
 
@@ -169,11 +174,24 @@ indistinguishable from a review that never ran.
 **The outcome is defined here; both output files render this definition rather than restating it.** It is
 `blocked` while any `blocker` or `major` is open, and `cleared` once only nits remain.
 
+**Then record the origins**, whenever the `jev` axis returned a sidecar path. Spawn one fresh
+`general-purpose` subagent with the `## Jev axis` brief in [`axes.md`](axes.md), the sidecar path, the
+final table in the shape its Origins section gives — `| id | axis | location | sources |`, where a
+requirement finding with no line writes its `FR<n>` as the location — and the `jev` axis's drop table
+verbatim. It returns the tool's JSON: an origin per finding, a fate per suspect.
+
 Then close **in the terminal** with where the review was published — the review's `html_url` from the POST
 response, or the review file's path — counts per severity, counts per axis (an axis that came back empty is
-worth a second look), and the outcome.
+worth a second look), one `jev` line, and the outcome. The `jev` line:
 
-**Done when**: the review is published and the counts reported.
+```
+jev: <n> suspects · <c> confirmed · <d> dropped · origins jev <x> / axis <y> / both <z>
+```
+
+Suspects, confirmed and dropped come from the axis's return, the origin split from the `--origins` JSON.
+When the screen was `skipped` or `failed`, or sent no suspects, the line carries the reason instead.
+
+**Done when**: the review is published, the origins recorded, and the counts reported.
 
 ## Out of bounds
 

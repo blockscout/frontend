@@ -40,6 +40,7 @@
     "**",
     "!/src/**",
     "!/tools/**",
+    "!/.agents/**",
     "!/vitest/**",
     "!/decs.d.ts",
     "!/global.d.ts",
