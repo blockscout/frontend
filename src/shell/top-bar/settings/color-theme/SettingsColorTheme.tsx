@@ -11,7 +11,7 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
 import SettingsSample from '../SettingsSample';
 import type { ColorThemeId } from './config';
-import { getDefaultColorTheme, getThemeHexWithOverrides, isColorThemeAvailable } from './utils';
+import { getInitialColorTheme, getThemeHexWithOverrides } from './utils';
 
 const MIN_THEMES_FOR_SWITCHER = 2;
 
@@ -47,20 +47,11 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   }, [ setColorMode ]);
 
   React.useEffect(() => {
-    const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE) as ColorMode | undefined;
-    const cookieColorTheme = cookies.get(cookies.NAMES.COLOR_THEME) as ColorThemeId | undefined;
-
-    const nextColorMode = (() => {
-      if (!cookieColorMode) {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
-
-      return cookieColorMode;
-    })();
-
-    const nextColorTheme = cookieColorTheme && isColorThemeAvailable(cookieColorTheme) ?
-      cookieColorTheme :
-      getDefaultColorTheme(nextColorMode);
+    const nextColorTheme = getInitialColorTheme({
+      cookieColorMode: cookies.get(cookies.NAMES.COLOR_MODE) as ColorMode | undefined,
+      cookieColorTheme: cookies.get(cookies.NAMES.COLOR_THEME),
+      prefersDark: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    });
 
     setTheme(nextColorTheme);
     setActiveThemeId(nextColorTheme);
