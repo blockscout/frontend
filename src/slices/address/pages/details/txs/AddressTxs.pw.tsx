@@ -83,9 +83,12 @@ test.describe('socket', () => {
     const channel = await socketServer.joinChannel(socket, `addresses:${ CURRENT_ADDRESS.toLowerCase() }`);
 
     await expect(page.locator('tbody tr')).toHaveCount(2);
+    await expect(page.locator('tbody tr').nth(1)).toContainText('Pending');
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base ] });
 
+    await expect(page.locator('tbody tr').nth(1)).toContainText(String(txMock.base.block_number));
+    await expect(page.locator('tbody tr').nth(1)).not.toContainText('Pending');
     await expect(page.locator('tbody tr')).toHaveCount(2);
   });
 

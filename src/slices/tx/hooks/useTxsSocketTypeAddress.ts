@@ -73,12 +73,13 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
         const newItems: Array<schemas['Transaction']> = [];
         let newCount = 0;
         let hasUpdatedItems = false;
+        const prevItems = [ ...prevData.items ];
 
         payload.transactions.forEach(tx => {
-          const currIndex = prevData.items.findIndex((item) => item.hash === tx.hash);
+          const currIndex = prevItems.findIndex((item) => item.hash === tx.hash);
 
           if (currIndex > -1) {
-            prevData.items[currIndex] = tx;
+            prevItems[currIndex] = tx;
             hasUpdatedItems = true;
           } else {
             const isMatch = matchFilter(filterValue as AddressFromToFilter, tx, currentAddress);
@@ -107,7 +108,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ...prevData,
           items: [
             ...newItems,
-            ...prevData.items,
+            ...prevItems,
           ].sort(sortTxsFromSocket(sort)),
         };
       });
