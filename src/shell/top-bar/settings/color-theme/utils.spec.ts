@@ -54,3 +54,38 @@ describe('getDefaultColorTheme', () => {
     expect(getDefaultColorTheme('dark')).toBe('light');
   });
 });
+
+describe('getInitialColorTheme', () => {
+  const DEFAULT_LIGHT = [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'light' ] satisfies [ string, string ];
+
+  it('keeps an available theme from the cookie', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'dim', prefersDark: false })).toBe('dim');
+  });
+
+  it('derives the theme from the cookie color mode when the cookie theme is unavailable', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'sepia', prefersDark: false })).toBe('dark');
+  });
+
+  it('prefers the configured default over the OS preference when there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('light');
+  });
+
+  it('uses the exact configured default theme, not just its color mode', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'dim' ] ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('dim');
+  });
+
+  it('follows the OS preference when no default is configured and there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('dark');
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('light');
+  });
+});
