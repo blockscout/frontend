@@ -82,16 +82,11 @@ test.describe('socket', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `addresses:${ CURRENT_ADDRESS.toLowerCase() }`);
 
-    const itemsCount = await page.locator('tbody tr').count();
-    expect(itemsCount).toBe(2);
+    await expect(page.locator('tbody tr')).toHaveCount(2);
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base ] });
 
-    const secondRow = page.locator('tbody tr:nth-child(2)');
-    await secondRow.waitFor();
-
-    const itemsCountNew = await page.locator('tbody tr').count();
-    expect(itemsCountNew).toBe(2);
+    await expect(page.locator('tbody tr')).toHaveCount(2);
   });
 
   test('with overload', async({ render, mockApiResponse, page, createSocket }) => {
@@ -112,19 +107,13 @@ test.describe('socket', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `addresses:${ CURRENT_ADDRESS.toLowerCase() }`);
 
-    const itemsCount = await page.locator('tbody tr').count();
-    expect(itemsCount).toBe(2);
+    await expect(page.locator('tbody tr')).toHaveCount(2);
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base3, txMock.base4 ] });
 
-    const thirdRow = page.locator('tbody tr:nth-child(3)');
-    await thirdRow.waitFor();
+    await expect(page.locator('tbody tr')).toHaveCount(3);
 
-    const itemsCountNew = await page.locator('tbody tr').count();
-    expect(itemsCountNew).toBe(3);
-
-    const counter = await page.locator('tbody tr:nth-child(1)').textContent();
-    expect(counter?.startsWith('2 ')).toBe(true);
+    await expect(page.locator('tbody tr').first()).toHaveText(/^2 /);
   });
 
   test('without overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
@@ -151,16 +140,11 @@ test.describe('socket', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `addresses:${ CURRENT_ADDRESS.toLowerCase() }`);
 
-    const itemsCount = await page.locator('tbody tr').count();
-    expect(itemsCount).toBe(2);
+    await expect(page.locator('tbody tr')).toHaveCount(2);
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2 ] });
 
-    const secondRow = page.locator('tbody tr:nth-child(2)');
-    await secondRow.waitFor();
-
-    const itemsCountNew = await page.locator('tbody tr').count();
-    expect(itemsCountNew).toBe(3);
+    await expect(page.locator('tbody tr')).toHaveCount(3);
   });
 
   test('with overload, with filters', async({ render, mockApiResponse, page, createSocket }) => {
@@ -187,18 +171,12 @@ test.describe('socket', () => {
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `addresses:${ CURRENT_ADDRESS.toLowerCase() }`);
 
-    const itemsCount = await page.locator('tbody tr').count();
-    expect(itemsCount).toBe(2);
+    await expect(page.locator('tbody tr')).toHaveCount(2);
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base3, txMock.base4 ] });
 
-    const thirdRow = page.locator('tbody tr:nth-child(3)');
-    await thirdRow.waitFor();
+    await expect(page.locator('tbody tr')).toHaveCount(3);
 
-    const itemsCountNew = await page.locator('tbody tr').count();
-    expect(itemsCountNew).toBe(3);
-
-    const counter = await page.locator('tbody tr:nth-child(1)').textContent();
-    expect(counter?.startsWith('1 ')).toBe(true);
+    await expect(page.locator('tbody tr').first()).toHaveText(/^1 /);
   });
 });
