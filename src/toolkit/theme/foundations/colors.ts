@@ -41,8 +41,8 @@ const DEFAULT_THEME_COLORS = {
     },
     option: {
       bg: {
-        _light: { value: '{colors.blackAlpha.800}' },
-        _dark: { value: '{colors.gray.500}' },
+        _light: { value: '{colors.blue.500}' },
+        _dark: { value: '{colors.blue.500}' },
       },
     },
   },
