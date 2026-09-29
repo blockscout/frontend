@@ -36,13 +36,13 @@ const DEFAULT_THEME_COLORS = {
       },
       bg: {
         _light: { value: '{colors.blackAlpha.50}' },
-        _dark: { value: '{colors.whiteAlpha.50}' },
+        _dark: { value: '{colors.whiteAlpha.100}' },
       },
     },
     option: {
       bg: {
         _light: { value: '{colors.blackAlpha.800}' },
-        _dark: { value: '{colors.gray.600}' },
+        _dark: { value: '{colors.gray.500}' },
       },
     },
   },
