@@ -5,6 +5,8 @@ import React from 'react';
 
 import type { MetadataTag as TMetadataTag } from './types';
 
+import { isHiddenTag } from 'src/features/address-metadata/utils/is-hidden-tag';
+
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
@@ -21,8 +23,9 @@ interface Props {
   noColors?: boolean;
 }
 
-const MetadataTags = ({ tags, addressHash, className, isLoading, noColors }: Props) => {
+const MetadataTags = ({ tags: allTags, addressHash, className, isLoading, noColors }: Props) => {
   const isMobile = useIsMobile();
+  const tags = React.useMemo(() => allTags.filter((tag) => !isHiddenTag(tag)), [ allTags ]);
   const visibleNum = isMobile ? 2 : 3;
 
   const metaSuitesPlaceholder = config.features.metasuites.isEnabled ?

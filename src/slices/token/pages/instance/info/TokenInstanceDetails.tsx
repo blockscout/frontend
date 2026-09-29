@@ -9,10 +9,6 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import NftMedia from 'src/slices/token/components/nft-media/NftMedia';
 import TokenNftMarketplaces from 'src/slices/token/pages/details/info/TokenNftMarketplaces';
 
-import AppActionButton from 'src/features/address-metadata/components/AppActionButton';
-import useAppActionData from 'src/features/address-metadata/hooks/useAppActionData';
-
-import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
@@ -32,7 +28,6 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, isLoading }: Props) => {
-  const appActionData = useAppActionData(token?.address_hash, !isLoading);
   const isMounted = useIsMounted();
 
   if (!data || !token || !isMounted) {
@@ -86,22 +81,7 @@ const TokenInstanceDetails = ({ data, token, isLoading }: Props) => {
             isLoading={ isLoading }
             hash={ token.address_hash }
             id={ data.id }
-            appActionData={ appActionData }
-            source="NFT item"
           />
-
-          { (config.slices.token.nft.marketplaces.length === 0 && appActionData) && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint="Link to the dapp"
-              >
-                Dapp
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue py="1px">
-                <AppActionButton data={ appActionData } height="30px" source="NFT item"/>
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
         </DetailedInfo.Container>
         <NftMedia
           data={ data }

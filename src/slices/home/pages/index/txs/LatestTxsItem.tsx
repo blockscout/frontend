@@ -19,6 +19,7 @@ import TxType from 'src/slices/tx/components/TxType';
 
 import TxWatchListTags from 'src/features/account/components/TxWatchListTags';
 import MetadataTag from 'src/features/address-metadata/components/tag/MetadataTag';
+import { getVisibleProtocolTags } from 'src/features/address-metadata/utils/get-visible-protocol-tags';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -39,7 +40,7 @@ interface Props {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
-  const protocolTag = tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+  const protocolTag = getVisibleProtocolTags(tx.to?.metadata?.tags)[0];
 
   const tagsCount = [
     1, // tx type
