@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
 
 export const beaconChainSchema = yup
@@ -30,6 +32,9 @@ export const beaconChainSchema = yup
       .when('NEXT_PUBLIC_HAS_BEACON_CHAIN', {
         is: (value: boolean) => value,
         then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to "true"'),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_BEACON_CHAIN_VALIDATOR_URL_TEMPLATE cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to "true"',
+        ),
       }),
   });

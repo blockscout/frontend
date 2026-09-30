@@ -1,6 +1,10 @@
-import { HighlightsBannerConfig } from "types/homepage";
-import { urlTest } from "../../utils";
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
+import type { HighlightsBannerConfig } from 'src/slices/home/types/client';
+
+import { urlTest } from '../../utils';
 
 const highlightsBannerConfigSchema: yup.ObjectSchema<HighlightsBannerConfig> = yup.object({
   title: yup.string().required(),
@@ -21,5 +25,5 @@ export const highlightsConfigSchema = yup
       .array()
       .json()
       .of(highlightsBannerConfigSchema)
-      .min(2)
+      .min(2),
   });

@@ -1,4 +1,5 @@
-/* eslint-disable max-len */
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 declare module 'yup' {
   interface StringSchema {
     // Yup's URL validator is not perfect so we made our own
@@ -16,24 +17,25 @@ type AddressProfileAPIConfig = {
   tag_bg_color?: string;
   tag_text_color?: string;
 };
+import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
-import { GAS_UNITS } from 'src/slices/gas/types/config';
-import type { GasUnit } from 'src/slices/gas/types/config';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from 'src/features/tx-interpretation/common/types/config';
 import { VALIDATORS_CHAIN_TYPE } from 'src/features/validators/types/config';
 import type { ValidatorsChainType } from 'src/features/validators/types/config';
 import type { WalletType } from 'src/features/web3-wallet/types/config';
 import { SUPPORTED_WALLETS } from 'src/features/web3-wallet/types/config';
-import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
+import type { GasUnit } from 'src/slices/gas/types/config';
+import { GAS_UNITS } from 'src/slices/gas/types/config';
 
 import { replaceQuotes } from 'src/config/utils/envs';
-import { urlTest, protocols } from './utils';
+
 import apisSchema from './schemas/apis';
 import chainSchema from './schemas/chain';
-import metaSchema from './schemas/meta';
-import * as uiSchemas from './schemas/ui';
 import * as featuresSchemas from './schemas/features';
+import metaSchema from './schemas/meta';
 import servicesSchema from './schemas/services';
+import * as uiSchemas from './schemas/ui';
+import { urlTest, protocols } from './utils';
 
 const schema = yup
   .object()
@@ -54,7 +56,6 @@ const schema = yup
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
     NEXT_PUBLIC_APP_ENV: yup.string(),
     NEXT_PUBLIC_APP_INSTANCE: yup.string(),
-
 
     // Features configuration
     // NOTE: As a rule of thumb, only include features that require a single ENV variable here.
@@ -188,6 +189,6 @@ const schema = yup
   .concat(featuresSchemas.tacSchema)
   .concat(featuresSchemas.userOpsSchema)
   .concat(featuresSchemas.zetaChainSchema)
-  .concat(servicesSchema)
+  .concat(servicesSchema);
 
 export default schema;

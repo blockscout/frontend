@@ -23,7 +23,7 @@ export default defineConfig({
   resolve: {
     alias: {
       src: resolve(__dirname, '../../../src'),
-      public: resolve(__dirname, '../../../public'),
+      'public': resolve(__dirname, '../../../public'),
     },
   },
 });

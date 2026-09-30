@@ -155,7 +155,16 @@ export default tseslint.config(
   { files: [ '**/*.{js,mjs,cjs,ts,mts,jsx,tsx}', '**/*.pw.tsx' ] },
 
   { ignores: [
-    'deploy/tools/',
+    // deploy/tools packages other than envs-validator keep their own toolchain and stay outside the root
+    // ESLint and TypeScript projects for now (issue #3675)
+    'deploy/tools/essential-dapps-chains-config-generator/',
+    'deploy/tools/favicon-generator/',
+    'deploy/tools/feature-reporter/',
+    'deploy/tools/llms-txt-generator/',
+    'deploy/tools/multichain-config-generator/',
+    'deploy/tools/sitemap-generator/',
+    'deploy/tools/envs-validator/dist/',
+    'deploy/tools/envs-validator/public/',
     'public/',
     '.git/',
     // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap

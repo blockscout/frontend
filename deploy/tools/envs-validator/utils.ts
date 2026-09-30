@@ -1,4 +1,6 @@
-import * as yup from 'yup';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import type * as yup from 'yup';
 
 export const protocols = [ 'http', 'https' ];
 

@@ -1,5 +1,9 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
 import { replaceQuotes } from 'src/config/utils/envs';
+
 import { urlTest } from '../../utils';
 
 export const crossChainTxsSchema = yup

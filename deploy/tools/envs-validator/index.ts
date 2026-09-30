@@ -1,12 +1,15 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 /* eslint-disable no-console */
 import fs from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import type { ValidationError } from 'yup';
 
 import { buildExternalAssetFilePath } from 'src/config/utils/envs';
+
 import schema from './schema';
 import schemaMultichain from './schema_multichain';
-import { fileURLToPath } from 'node:url';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const distDir = dirname(currentFilePath);

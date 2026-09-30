@@ -1,7 +1,12 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
-import { urlTest } from '../../utils';
+
+import type { BridgedTokenChain, TokenBridge } from 'src/features/bridged-tokens/types/client';
+
 import { replaceQuotes } from 'src/config/utils/envs';
-import type { BridgedTokenChain, TokenBridge } from 'src/slices/token/types/client';
+
+import { urlTest } from '../../utils';
 
 const bridgedTokenChainSchema: yup.ObjectSchema<BridgedTokenChain> = yup
   .object({

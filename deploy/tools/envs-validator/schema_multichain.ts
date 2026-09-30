@@ -1,18 +1,23 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 declare module 'yup' {
-    interface StringSchema {
-      // Yup's URL validator is not perfect so we made our own
-      // https://github.com/jquense/yup/pull/1859
-      url(): never;
-    }
+  interface StringSchema {
+    // Yup's URL validator is not perfect so we made our own
+    // https://github.com/jquense/yup/pull/1859
+    url(): never;
   }
-  
+}
+
 import * as yup from 'yup';
-import { urlTest, protocols } from './utils';
-import * as uiSchemas from './schemas/ui';
+
+import { IDENTICON_TYPES } from 'src/slices/address/types/config';
+
+import { replaceQuotes } from 'src/config/utils/envs';
+
 import * as featuresSchemas from './schemas/features';
 import servicesSchemas from './schemas/services';
-import { replaceQuotes } from 'src/config/utils/envs';
-import { IDENTICON_TYPES } from 'src/slices/address/types/config';
+import * as uiSchemas from './schemas/ui';
+import { urlTest, protocols } from './utils';
 
 const schema = yup
   .object()
@@ -50,9 +55,9 @@ const schema = yup
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
 
-    NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean().equals([false]),
-    NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean().equals([false]),
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean().equals([false]),
+    NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean().equals([ false ]),
+    NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean().equals([ false ]),
+    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean().equals([ false ]),
     NEXT_PUBLIC_API_DOCS_TABS: yup.array().transform(replaceQuotes).json().max(0),
 
     // 6. Multichain configuration

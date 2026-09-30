@@ -1,9 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
-import type { MarketplaceAppBase, MarketplaceAppSocialInfo, EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
-import { urlTest } from '../../utils';
+
+import type { EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
+
 import { replaceQuotes } from 'src/config/utils/envs';
 
-const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppBase & MarketplaceAppSocialInfo> = yup
+import { urlTest } from '../../utils';
+
+const marketplaceAppSchema = yup
   .object({
     id: yup.string().required(),
     external: yup.boolean(),
@@ -39,7 +44,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema,
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
@@ -49,7 +54,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema,
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
@@ -57,7 +62,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
@@ -65,7 +70,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema.test(urlTest),
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_FEATURED_APP: yup
@@ -73,7 +78,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema,
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL: yup
@@ -81,7 +86,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema.test(urlTest),
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL: yup
@@ -89,7 +94,7 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema.test(urlTest),
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: yup
@@ -97,41 +102,45 @@ export const marketplaceSchema = yup
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema,
-        // eslint-disable-next-line max-len
+
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: yup
       .mixed()
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
-        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, it should contain optional swap/revoke/multisend sections with required fields', (data) => {
-          const isUndefined = data === undefined;
-          const chainsSchema = yup.array().of(yup.string().required()).min(1).required();
-          const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
-            swap: yup.lazy(value => value ?
-              yup.object<EssentialDappsConfig['swap']>().shape({
-                chains: chainsSchema,
-                fee: yup.string().required(),
-                integrator: yup.string().required(),
-              }) :
-              yup.object().nullable(),
-            ),
-            revoke: yup.lazy(value => value ?
-              yup.object<EssentialDappsConfig['revoke']>().shape({ chains: chainsSchema }) :
-              yup.object().nullable(),
-            ),
-            multisend: yup.lazy(value => value ?
-              yup.object<EssentialDappsConfig['multisend']>().shape({
-                chains: chainsSchema,
-                posthogKey: yup.string(),
-                posthogHost: yup.string().test(urlTest),
-              }) :
-              yup.object().nullable(),
-            ),
-          });
-          return isUndefined || valueSchema.isValidSync(data);
-        }),
-        // eslint-disable-next-line max-len
+        then: (schema) => schema.test(
+          'shape',
+          'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, ' +
+          'it should contain optional swap/revoke/multisend sections with required fields',
+          (data) => {
+            const isUndefined = data === undefined;
+            const chainsSchema = yup.array().of(yup.string().required()).min(1).required();
+            const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
+              swap: yup.lazy(value => value ?
+                yup.object<EssentialDappsConfig['swap']>().shape({
+                  chains: chainsSchema,
+                  fee: yup.string().required(),
+                  integrator: yup.string().required(),
+                }) :
+                yup.object().nullable(),
+              ),
+              revoke: yup.lazy(value => value ?
+                yup.object<EssentialDappsConfig['revoke']>().shape({ chains: chainsSchema }) :
+                yup.object().nullable(),
+              ),
+              multisend: yup.lazy(value => value ?
+                yup.object<EssentialDappsConfig['multisend']>().shape({
+                  chains: chainsSchema,
+                  posthogKey: yup.string(),
+                  posthogHost: yup.string().test(urlTest),
+                }) :
+                yup.object().nullable(),
+              ),
+            });
+            return isUndefined || valueSchema.isValidSync(data);
+          }),
+
         otherwise: (schema) => schema.test(
           'not-exist',
           'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',

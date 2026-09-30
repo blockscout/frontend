@@ -1,5 +1,8 @@
-import { AuthProvider } from 'src/features/account/types/client';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
+import type { AuthProvider } from 'src/features/account/types/client';
 
 export const accountSchema = yup
   .object()
@@ -17,13 +20,19 @@ export const accountSchema = yup
       .when('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER', {
         is: (value: AuthProvider) => value === 'dynamic',
         then: (schema) => schema.required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID can only be used if NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set to \'dynamic\' '),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID can only be used if NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set to \'dynamic\' ',
+        ),
       }),
     NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML: yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value === true,
         then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML can only be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is set to \'true\''),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML can only be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is set to \'true\'',
+        ),
       }),
   });
