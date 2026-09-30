@@ -15,18 +15,17 @@ interface Props {
 
 const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
   const bgColor = { base: 'white', _dark: 'gray.900' };
-  const activeBgColor = { base: 'blue.50', _dark: 'whiteAlpha.100' };
   const activeBorderColor = { base: 'blackAlpha.800', _dark: 'gray.50' };
 
   return (
-    <Box p="9px" bgColor={ isActive ? activeBgColor : 'transparent' } borderRadius="base">
+    <Box p="9px" bgColor={ isActive ? 'selected.control.bg' : 'transparent' } borderRadius="base">
       <Tooltip content={ label }>
         <Box
           bg={ bg }
           boxSize="22px"
           borderRadius="full"
           borderWidth="1px"
-          borderColor={ isActive ? activeBgColor : bgColor }
+          borderColor={ isActive ? 'selected.control.bg' : bgColor }
           position="relative"
           cursor="pointer"
           _before={{

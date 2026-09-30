@@ -35,7 +35,7 @@ const DEFAULT_THEME_COLORS = {
         _dark: { value: '{colors.gray.50}' },
       },
       bg: {
-        _light: { value: '{colors.blackAlpha.50}' },
+        _light: { value: '{colors.blackAlpha.100}' },
         _dark: { value: '{colors.whiteAlpha.100}' },
       },
     },
