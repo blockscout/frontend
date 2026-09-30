@@ -12,6 +12,7 @@ import AddressEntityZetaChain from './AddressEntityZetaChain';
 test.use({ viewport: { width: 180, height: 140 } });
 
 const CCTX_CONFIG_URL = 'http://localhost:3000/zeta-config.json';
+const SEPOLIA_LOGO_URL = 'https://example.com/sepolia-logo.svg';
 
 test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
   await mockEnvs([
@@ -24,7 +25,7 @@ test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
 });
 
 test('with chain icon', async({ render, mockAssetResponse }) => {
-  await mockAssetResponse('https://example.com/sepolia-logo.svg', './playwright/mocks/image_svg.svg');
+  await mockAssetResponse(SEPOLIA_LOGO_URL, './playwright/mocks/image_svg.svg');
   const component = await render(
     <AddressEntityZetaChain
       address={ addressParamMock.withoutName }
@@ -35,13 +36,17 @@ test('with chain icon', async({ render, mockAssetResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with chain icon stub +@dark-mode', async({ render }) => {
+test('with chain icon stub +@dark-mode', async({ render, page }) => {
+  // the stub replaces the loading skeleton only after the global interceptor aborts the logo request
+  const chainLogoRequestFailed = page.waitForEvent('requestfailed', (request) => request.url() === SEPOLIA_LOGO_URL);
+
   const component = await render(
     <AddressEntityZetaChain
       address={ addressParamMock.withoutName }
       chainId="11155111"
     />,
   );
+  await chainLogoRequestFailed;
 
   await expect(component).toHaveScreenshot();
 });
