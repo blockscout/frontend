@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -93,7 +94,14 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
                   <WagmiProvider config={ wagmiConfig! }>
                     <RewardsContextProvider>
                       <CsvExportContextProvider>
-                        { children }
+                        { /*
+                          The mount locator resolves to the only child of #root, or to #root when there are several.
+                          Without the wrapper, a component whose first render is null leaves the color mode script
+                          as the only child, and the screenshot waits for that hidden script to become visible.
+                        */ }
+                        <Box display="contents">
+                          { children }
+                        </Box>
                       </CsvExportContextProvider>
                     </RewardsContextProvider>
                   </WagmiProvider>
