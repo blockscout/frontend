@@ -382,7 +382,7 @@ Meta tags, Open Graph, and SEO.
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) or file content string representation. It contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` \| `[{'title':'Astar(EVM)','url':'https://astar.blockscout.com/','group':'Mainnets','icon':'https://example.com/astar.svg'}]` | v1.0.x+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK | `string` | Link to the all chains resource. Will be displayed at the bottom of featured networks list. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | - | `https://example.com` | v2.3.0+ |
 | NEXT_PUBLIC_FEATURED_NETWORKS_MODE | `tabs \| list` | Indicates how the networks are presented: in one list or in separate tabs. | Works only if NEXT_PUBLIC_FEATURED_NETWORKS is set | `list` | `tabs` | v2.5.0+ |
-| NEXT_PUBLIC_COLOR_THEMES | `Array<'light' \| 'dim' \| 'midnight' \| 'dark'>` | Color themes the app offers in the settings menu. | - | all themes | `['light', 'dark']` | upcoming |
+| NEXT_PUBLIC_COLOR_THEMES | `Array<'light' \| 'dim' \| 'midnight' \| 'dark'>` | Color themes the app offers in the settings menu. | - | all themes | `['light', 'dark']` | v2.11.2+ |
 | NEXT_PUBLIC_COLOR_THEME_DEFAULT | `'light' \| 'dim' \| 'midnight' \| 'dark'` | Preferred color theme of the app. Must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES, if that variable is set. | - | none, unless the themes offered by NEXT_PUBLIC_COLOR_THEMES cannot cover both light and dark `prefers-color-scheme`, in which case the last (darkest) one of them | `midnight` | v1.30.0+ |
 | NEXT_PUBLIC_COLOR_THEME_OVERRIDES | `string` | Color overrides for the default theme; pass a JSON-like string that represents a subset of the `DEFAULT_THEME_COLORS` object (see `toolkit/theme/foundations/colors.ts`) to customize the app's main colors. See [here](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=29124-23813&t=XOv4ahHUSsTDlNkN-4) the Figma worksheet with description of available color tokens. | - | - | `{'text':{'primary':{'_light':{'value':'rgba(16,17,18,0.80)'},'_dark':{'value':'rgba(222,217,217)'}}}}` | v2.3.0+ |
 
@@ -886,8 +886,8 @@ This feature enables cross-chain transaction tracking and visualization, allowin
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED | `boolean` | The flag that enables the feature | Required | - | `true` | v2.7.0+ |
-| NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS | `Array<number>` | Ids of the interchain indexer bridges whose messages and transfers this instance is allowed to show. The indexer is shared between deployments and indexes every bridge it knows about, so the ids define this instance's slice of it. | Required | - | `'[1,2]'` | upcoming |
-| NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS | `boolean` | Set to `true` to also show messages and transfers whose counterparty chain is not indexed by any of the configured bridges. Such rows have an incomplete counterparty side. | - | `false` | `true` | upcoming |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS | `Array<number>` | Ids of the interchain indexer bridges whose messages and transfers this instance is allowed to show. The indexer is shared between deployments and indexes every bridge it knows about, so the ids define this instance's slice of it. | Required | - | `'[1,2]'` | v2.12.0+ |
+| NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS | `boolean` | Set to `true` to also show messages and transfers whose counterparty chain is not indexed by any of the configured bridges. Such rows have an incomplete counterparty side. | - | `false` | `true` | v2.12.0+ |
 
 **Dependencies**
 
@@ -926,7 +926,7 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon?: string; dappId?: string, url?: string, isEssentialDapp?: boolean }]` | An array of dropdown items containing the button text, icon name and dappId in Dappscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'swap','isEssentialDapp':true},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` | v1.31.0+ |
-| NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT | `{ desktop: string; mobile?: string }` | Text on the button that opens the dropdown. `mobile` is the shorter form shown on narrow screens. Keep `desktop` within ~24 characters and `mobile` within ~10. | - | `{'desktop':'Blockscout DeFi','mobile':'DeFi'}` | `{'desktop':'MyChain DeFi','mobile':'DeFi'}` | upcoming |
+| NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT | `{ desktop: string; mobile?: string }` | Text on the button that opens the dropdown. `mobile` is the shorter form shown on narrow screens. Keep `desktop` within ~24 characters and `mobile` within ~10. | - | `{'desktop':'Blockscout DeFi','mobile':'DeFi'}` | `{'desktop':'MyChain DeFi','mobile':'DeFi'}` | v2.11.2+ |
 
 &nbsp;
 
