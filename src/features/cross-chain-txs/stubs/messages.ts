@@ -5,7 +5,7 @@ import type {
   StatsBridgedTokenRow,
   StatsChainRow,
 } from '@blockscout/interchain-indexer-types';
-import { MessageStatus } from '@blockscout/interchain-indexer-types';
+import { MessageStatus, TokenInfo_TokenType } from '@blockscout/interchain-indexer-types';
 
 import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
@@ -17,6 +17,7 @@ const TOKEN = {
   name: 'Wrapped AVAX',
   symbol: 'WAVAX',
   decimals: '18',
+  type: TokenInfo_TokenType.ERC20,
 };
 
 const CHAIN = {
@@ -103,6 +104,7 @@ export const INTERCHAIN_BRIDGED_TOKEN_ITEM = {
       symbol: 'WAVAX',
       icon_url: undefined,
       decimals: 18,
+      type: TokenInfo_TokenType.ERC20,
     },
   ],
 } satisfies StatsBridgedTokenRow;
