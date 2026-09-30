@@ -31,12 +31,12 @@ const DEFAULT_THEME_COLORS = {
   selected: {
     control: {
       text: {
-        _light: { value: '{colors.blue.700}' },
+        _light: { value: '{colors.blackAlpha.800}' },
         _dark: { value: '{colors.gray.50}' },
       },
       bg: {
-        _light: { value: '{colors.blue.50}' },
-        _dark: { value: '{colors.whiteAlpha.50}' },
+        _light: { value: '{colors.blackAlpha.100}' },
+        _dark: { value: '{colors.whiteAlpha.100}' },
       },
     },
     option: {
@@ -91,13 +91,13 @@ const DEFAULT_THEME_COLORS = {
   navigation: {
     bg: {
       selected: {
-        _light: { value: '{colors.blue.50}' },
+        _light: { value: '{colors.blackAlpha.50}' },
         _dark: { value: '{colors.gray.800}' },
       },
     },
     text: {
       selected: {
-        _light: { value: '{colors.blue.700}' },
+        _light: { value: '{colors.blackAlpha.800}' },
         _dark: { value: '{colors.gray.50}' },
       },
     },
@@ -110,15 +110,15 @@ const DEFAULT_THEME_COLORS = {
   },
   topbar: {
     bg: {
-      _light: { value: '{colors.gray.50}' },
+      _light: { value: '{colors.blackAlpha.50}' },
       _dark: { value: '{colors.whiteAlpha.100}' },
     },
   },
   tabs: {
     text: {
       primary: {
-        _light: { value: '{colors.blue.700}' },
-        _dark: { value: '{colors.blue.100}' },
+        _light: { value: '{colors.blackAlpha.800}' },
+        _dark: { value: '{colors.gray.50}' },
       },
     },
   },

@@ -19,7 +19,7 @@ export const COLOR_THEMES: Array<ColorTheme> = [
     label: 'Light',
     colorMode: 'light',
     hex: '#FFFFFF',
-    sampleBg: 'linear-gradient(154deg, #EFEFEF 50%, rgba(255, 255, 255, 0.00) 330.86%)',
+    sampleBg: 'rgba(255, 255, 255, 1)',
   },
   {
     id: 'dim',
