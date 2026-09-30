@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type * as yup from 'yup';
+import * as yup from 'yup';
 
 export const protocols = [ 'http', 'https' ];
 
@@ -24,10 +24,22 @@ export const urlTest: yup.TestConfig = {
   exclusive: true,
 };
 
-export const getYupValidationErrorMessage = (error: unknown) =>
+export const getYupValidationErrorMessage = (error: unknown): string =>
   typeof error === 'object' &&
   error !== null &&
   'errors' in error &&
   Array.isArray(error.errors) ?
     error.errors.join(', ') :
     '';
+
+export function getValidationErrors(schema: yup.AnySchema, value: unknown): Array<string> {
+  try {
+    schema.validateSync(value, { stripUnknown: false, abortEarly: false });
+    return [];
+  } catch (error) {
+    if (error instanceof yup.ValidationError) {
+      return error.errors;
+    }
+    throw error;
+  }
+}
