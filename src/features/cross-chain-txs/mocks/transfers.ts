@@ -81,7 +81,6 @@ export const transferWithUnindexedDestination = {
   has_unindexed_chain: true,
 } satisfies InterchainTransfer;
 
-// xDai bridge: native xDAI leaves Gnosis and lands as ERC-20 DAI on Ethereum.
 export const transferNative = {
   ...transferA,
   message_id: '0x00000064000000000000000000000000000000000000000000000000000014f4',
