@@ -80,7 +80,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
 
           return (
             <BridgedTokensTableItem
-              key={ String(tokenInfo?.token_address) + (isLoading ? index : '') }
+              key={ item.stats_asset_id + (isLoading ? index : '') }
               data={ item }
               tokenInfo={ tokenInfo }
               chainInfo={ chainInfo }

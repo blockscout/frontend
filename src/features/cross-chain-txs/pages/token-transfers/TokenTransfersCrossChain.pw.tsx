@@ -24,6 +24,7 @@ test.describe('txs', () => {
     await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
     await mockAssetResponse(crossChainConfigMock.config[1].logo as string, './playwright/mocks/goose.png');
     await mockAssetResponse(crossChainTransfersMock.transferA.source_token.icon_url as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(crossChainTransfersMock.transferNative.destination_token.icon_url, './playwright/mocks/image_md.jpg');
   });
 
   test.describe('desktop', () => {
