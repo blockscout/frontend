@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: (format, entryName) => `${ entryName }.js`,
     },
     rollupOptions: {
-      external: [ 'node:worker_threads', 'node:url', 'node:path', 'node:fs' ],
+      external: [ 'node:worker_threads', 'node:url', 'node:path', 'node:fs', 'node:fs/promises' ],
       output: {
         dir: 'dist',
         entryFileNames: '[name].js',

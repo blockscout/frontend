@@ -716,12 +716,6 @@ importers:
 
   deploy/tools/envs-validator:
     devDependencies:
-      dotenv-cli:
-        specifier: ^7.4.4
-        version: 7.4.4
-      typescript:
-        specifier: 7.0.2
-        version: 7.0.2
       vite:
         specifier: 6.4.3
         version: 6.4.3(@types/node@24.13.4)(terser@5.48.0)(yaml@2.9.0)

@@ -142,9 +142,9 @@ URL of a same-origin asset, etc.), this section doesn't apply.
 
 ## Step 3 — Validator schema and tests
 
-Add the rule and a test preset entry. The full procedure (which schema file,
-where in the schema, JSON shape conventions, JSON-URL example assets,
-companion-variable rules, running the tests, verifying the negative path)
+Add the rule and its spec cases. The full procedure (which schema file,
+where in the schema, JSON shape conventions, JSON-URL fixtures,
+companion-variable rules, running the tests)
 lives in `deploy/tools/envs-validator/CONTEXT.md` — follow the "Adding a new
 variable" section there.
 

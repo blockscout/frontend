@@ -100,7 +100,8 @@ cp /tmp/instance.env /tmp/instance.validate.env
 jq -r '.localEnvs | to_entries[] | "\(.key)=\(.value)"' tools/dev-server/envs-rules.json >> /tmp/instance.validate.env
 ```
 
-From `deploy/tools/envs-validator/`, the preamble in `test.sh` (collect placeholders, copy `test/assets`, build), then:
+From `deploy/tools/envs-validator/`, build the bundle and the placeholder registry as described under
+"Validating a real instance config by hand" in its `CONTEXT.md`, then:
 
 ```bash
 pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- pnpm run validate
