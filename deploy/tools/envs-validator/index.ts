@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { buildExternalAssetFilePath } from 'src/config/utils/envs';
 
 import type { CheckReport, EnvMap } from './checks';
-import { ENVS_WITH_JSON_CONFIG, pickAppEnvs, runChecks } from './checks';
+import { ENVS_WITH_JSON_CONFIG, findEnvsWithoutPlaceholder, pickAppEnvs, runChecks } from './checks';
 import { parseEnvNames } from './registry';
 
 const distDir = dirname(fileURLToPath(import.meta.url));
@@ -28,7 +28,10 @@ async function main(): Promise<void> {
     const envs = pickAppEnvs(process.env);
     const registryNames = parseEnvNames(await readRootFile('.env.registry'));
     const buildTimeNames = parseEnvNames(await readRootFile('.env'));
-    const jsonConfigs = await readJsonConfigs(envs);
+    // A missing JSON-config file must not pre-empt the placeholder report, so the files are only
+    // read once every variable is known to have a placeholder.
+    const hasPlaceholderErrors = findEnvsWithoutPlaceholder(envs, registryNames, buildTimeNames).length > 0;
+    const jsonConfigs = hasPlaceholderErrors ? {} : await readJsonConfigs(envs);
 
     const report = runChecks({ envs, registryNames, buildTimeNames, jsonConfigs });
     printReport(report);

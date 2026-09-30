@@ -12,7 +12,7 @@
 //  - `playwright/**`, `vitest/**`, `*.config.*` — test support and configuration, out on the same
 //    grounds specs are.
 //  - repo-root runtime files (`instrumentation*.ts`, `startup.node.ts`) — measured clean,
-//    and an allowlist of two directories is worth more than covering them.
+//    and a short allowlist of directories is worth more than covering them.
 
 const ROOTS: ReadonlyArray<string> = [ 'src/', 'tools/', 'deploy/tools/envs-validator/' ];
 

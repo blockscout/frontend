@@ -37,7 +37,7 @@ describe('isInScope', () => {
     expect(isInScope('tools/code-complexity/vitest.config.ts')).toBe(false);
   });
 
-  it('excludes everything outside the two allowlisted roots', () => {
+  it('excludes everything outside the allowlisted roots', () => {
     expect(isInScope('startup.node.ts')).toBe(false);
     expect(isInScope('instrumentation.ts')).toBe(false);
     expect(isInScope('docs/example.ts')).toBe(false);

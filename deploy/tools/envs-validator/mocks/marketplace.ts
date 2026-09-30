@@ -3,23 +3,23 @@
 import type { EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
 
 export interface MarketplaceAppConfig {
-  id: string;
-  external?: boolean;
-  title: string;
-  logo: string;
-  logoDarkMode?: string;
-  shortDescription: string;
-  categories: Array<string>;
-  url: string;
-  author: string;
-  description: string;
-  site?: string;
-  twitter?: string;
-  telegram?: string;
-  github?: string | Array<string>;
-  discord?: string;
-  internalWallet?: boolean;
-  priority?: number;
+  readonly id: string;
+  readonly external?: boolean;
+  readonly title: string;
+  readonly logo: string;
+  readonly logoDarkMode?: string;
+  readonly shortDescription: string;
+  readonly categories: Array<string>;
+  readonly url: string;
+  readonly author: string;
+  readonly description: string;
+  readonly site?: string;
+  readonly twitter?: string;
+  readonly telegram?: string;
+  readonly github?: string | Array<string>;
+  readonly discord?: string;
+  readonly internalWallet?: boolean;
+  readonly priority?: number;
 }
 
 export const marketplaceApps: Array<MarketplaceAppConfig> = [

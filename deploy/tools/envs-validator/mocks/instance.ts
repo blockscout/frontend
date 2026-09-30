@@ -1,76 +1,27 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Address3rdPartyWidget } from 'src/features/address-3rd-party-widgets/types/view';
-import type { AlternativeExplorer } from 'src/features/alternative-explorers/types/client';
-import type { BridgedTokenChain, TokenBridge } from 'src/features/bridged-tokens/types/client';
 import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
-import type { DeFiDropdownButtonText, DeFiDropdownItem } from 'src/features/defi-dropdown/types/client';
 import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
 import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
-import type { CustomLinksGroup } from 'src/shell/footer/types';
-import type { NavigationPromoBannerConfig } from 'src/shell/navigation/types';
-import type { FeaturedNetwork } from 'src/shell/top-bar/chain-menu/types';
-import type { ContractCodeIde } from 'src/slices/contract/types/config';
-import type { HighlightsBannerConfig } from 'src/slices/home/types/client';
 import type { HeroBannerConfig } from 'src/slices/home/types/config';
-import type { NftMarketplaceItem } from 'src/slices/token/types/client';
-
-import type { FontFamily } from 'src/config/misc';
 
 import { toEnvValue } from '../test-utils';
-
-const featuredNetworks: Array<FeaturedNetwork> = [
-  { title: 'Ethereum', url: 'https://eth.blockscout.com/', group: 'Mainnets', icon: 'https://example.com/logo.svg' },
-  {
-    title: 'Goerli',
-    url: 'https://eth-goerli.blockscout.com/',
-    group: 'Testnets',
-    isActive: true,
-    icon: 'https://example.com/logo.svg',
-    invertIconInDarkMode: true,
-  },
-];
-
-const footerLinks: Array<CustomLinksGroup> = [
-  { title: 'Foo', links: [ { text: 'Home', url: 'https://example.com' } ] },
-  {
-    title: 'Developers',
-    links: [ { text: 'Develop', url: 'https://example.com', iconUrl: [ 'https://example.com/a.jpg', 'https://example.com/b.svg' ] } ],
-  },
-];
-
-const highlights: Array<HighlightsBannerConfig> = [
-  { title: 'Duck Deep into Transactions', description: 'Explore and track all blockchain transactions', page_path: '/txs' },
-  { title: 'Capybara Hot Spring Pools', description: 'Monitor liquidity and staking pools', is_pinned: true, redirect_url: 'https://example.com' },
-];
-
-const address3rdPartyWidgets: Record<string, Address3rdPartyWidget> = {
-  'widget-1': {
-    name: 'Widget 1',
-    url: 'https://example.com/widget-1/{address}',
-    icon: 'https://example.com/icon.svg',
-    title: 'Widget 1',
-    valuePath: 'result.value',
-    pages: [ 'eoa', 'contract', 'token' ],
-  },
-};
-
-const heroBanner: HeroBannerConfig = {
-  background: [ 'lightpink' ],
-  text_color: [ 'deepskyblue', 'white' ],
-  border: [ '3px solid black' ],
-  search: {
-    background: [ 'white', 'rgb(26,32,44)' ],
-    border_width: [ '2px', '2px' ],
-    border_color: {
-      _empty: [ 'rgb(203,213,224)', 'rgb(74,85,104)' ],
-      _hover: [ 'rgb(66,153,225)', 'rgb(99,179,237)' ],
-      _focus: [ 'rgb(49,130,206)', 'rgb(43,108,176)' ],
-      _filled: [ 'rgb(160,174,192)', 'rgb(113,128,150)' ],
-    },
-  },
-};
+import { address3rdPartyWidgetsConfig } from './address3rdPartyWidgets';
+import { bridgedTokenChains, tokenBridges } from './bridgedToken';
+import { deFiDropdownButtonText, deFiDropdownItems } from './defiDropdown';
+import { highlightsConfig } from './highlights';
+import {
+  contractCodeIdes,
+  featuredNetworks,
+  fontFamilyBody,
+  fontFamilyHeading,
+  footerLinks,
+  heroBannerConfig,
+  networkExplorers,
+  nftMarketplaces,
+  promoBannerConfigFull,
+} from './ui';
 
 const multichainHeroBanner: HeroBannerConfig = {
   background: [ 'linear-gradient(90deg, rgb(232, 52, 53) 0%, rgb(139, 28, 232) 100%)' ],
@@ -82,35 +33,6 @@ const multichainHeroBanner: HeroBannerConfig = {
   },
 };
 
-const bridgedTokensChains: Array<BridgedTokenChain> = [ { id: '1', title: 'Ethereum', short_title: 'ETH', base_url: 'https://example.com' } ];
-const bridgedTokensBridges: Array<TokenBridge> = [ { type: 'omni', title: 'OmniBridge', short_title: 'OMNI' } ];
-
-const contractCodeIdes: Array<ContractCodeIde> = [
-  { title: 'Remix IDE', url: 'https://remix.blockscout.com/?address={hash}&blockscout={domain}', icon_url: 'https://example.com/icon.svg' },
-];
-
-const fontHeading: FontFamily = { name: 'Montserrat', url: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap' };
-const fontBody: FontFamily = { name: 'Raleway', url: 'https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap' };
-
-const networkExplorers: Array<AlternativeExplorer> = [
-  { title: 'Explorer', baseUrl: 'https://example.com/', paths: { tx: '/tx', address: '/address', token: '/token', block: '/block', blob: '/blob' } },
-];
-
-const nftMarketplaces: Array<NftMarketplaceItem> = [
-  {
-    name: 'NFT Marketplace',
-    collection_url: 'https://example.com/{hash}',
-    instance_url: 'https://example.com/{hash}/{id}',
-    logo_url: 'https://example.com/logo.png',
-  },
-];
-
-const defiDropdownItems: Array<DeFiDropdownItem> = [
-  { text: 'Swap', icon: 'swap', dappId: 'uniswap' },
-  { text: 'Payment link', icon: 'payment_link', url: 'https://example.com' },
-];
-const defiDropdownButtonText: DeFiDropdownButtonText = { desktop: 'Blockscout DeFi', mobile: 'DeFi' };
-
 const multichainBalanceProviders: Array<MultichainProviderConfig> = [
   { name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/zerion.svg' },
 ];
@@ -120,14 +42,6 @@ const gasRefuelProvider: GasRefuelProviderConfig = {
   dapp_id: 'smol-refuel',
   url_template: 'https://smolrefuel.com/?outboundChain={chainId}&partner=blockscout',
   logo: 'https://example.com/smolrefuel.png',
-};
-
-const navigationPromoBanner: NavigationPromoBannerConfig = {
-  img_url: 'https://example.com/promo.svg',
-  text: 'Promo text',
-  bg_color: { light: 'rgb(250, 245, 255)', dark: 'rgb(68, 51, 122)' },
-  text_color: { light: 'rgb(107, 70, 193)', dark: 'rgb(233, 216, 253)' },
-  link_url: 'https://example.com',
 };
 
 const statsRefetchInterval: Record<StatsApiResourceNameRefetchInterval, number> = {
@@ -153,7 +67,7 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: 'xxx',
   NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: 'UA-XXXXXX-X',
   NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: 'xxx',
-  NEXT_PUBLIC_USERCENTRICS_CONFIG: JSON.stringify({ settingsId: 'xxx', rulesetId: 'xxx' }),
+  NEXT_PUBLIC_USERCENTRICS_CONFIG: toEnvValue({ settingsId: 'xxx', rulesetId: 'xxx' }),
   NEXT_PUBLIC_USERCENTRICS_DRAFT: 'true',
   NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: toEnvValue({ record_sessions_percent: 0.5, record_heatmap_data: true }),
   NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: 'xxx',
@@ -166,8 +80,8 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_APP_ENV: 'development',
   NEXT_PUBLIC_APP_PORT: '3000',
   NEXT_PUBLIC_APP_PROTOCOL: 'http',
-  NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS: toEnvValue(bridgedTokensChains),
-  NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES: toEnvValue(bridgedTokensBridges),
+  NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS: toEnvValue(bridgedTokenChains),
+  NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES: toEnvValue(tokenBridges),
   NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
   NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dim',
   NEXT_PUBLIC_CONTRACT_CODE_IDES: toEnvValue(contractCodeIdes),
@@ -179,8 +93,8 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_FEATURED_NETWORKS_MODE: 'list',
   NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: toEnvValue([ '/accounts', '/apps' ]),
   NEXT_PUBLIC_NAVIGATION_LAYOUT: 'horizontal',
-  NEXT_PUBLIC_FONT_FAMILY_HEADING: toEnvValue(fontHeading),
-  NEXT_PUBLIC_FONT_FAMILY_BODY: toEnvValue(fontBody),
+  NEXT_PUBLIC_FONT_FAMILY_HEADING: toEnvValue(fontFamilyHeading),
+  NEXT_PUBLIC_FONT_FAMILY_BODY: toEnvValue(fontFamilyBody),
   NEXT_PUBLIC_FOOTER_LINKS: JSON.stringify(footerLinks),
   NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: 'false',
   NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: 'false',
@@ -189,7 +103,7 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: 'false',
   NEXT_PUBLIC_HOMEPAGE_CHARTS: toEnvValue([ 'daily_txs' ]),
   NEXT_PUBLIC_HOMEPAGE_STATS: toEnvValue([ 'total_blocks', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker', 'current_epoch' ]),
-  NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: toEnvValue(heroBanner),
+  NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: toEnvValue(heroBannerConfig),
   NEXT_PUBLIC_HOT_CONTRACTS_ENABLED: 'true',
   NEXT_PUBLIC_GAS_TRACKER_ENABLED: 'true',
   NEXT_PUBLIC_GAS_TRACKER_UNITS: toEnvValue([ 'gwei' ]),
@@ -237,17 +151,17 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET: 'false',
   NEXT_PUBLIC_WEB3_WALLETS: toEnvValue([ 'coinbase', 'metamask', 'token_pocket' ]),
   NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: 'stability',
-  NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue(defiDropdownItems),
-  NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: toEnvValue(defiDropdownButtonText),
+  NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue(deFiDropdownItems),
+  NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: toEnvValue(deFiDropdownButtonText),
   NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue(multichainBalanceProviders),
   NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: toEnvValue(gasRefuelProvider),
   NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: 'https://example.com',
-  NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: toEnvValue([ 'widget-1', 'widget-2' ]),
-  NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify(address3rdPartyWidgets),
-  NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: toEnvValue(navigationPromoBanner),
+  NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: toEnvValue(Object.keys(address3rdPartyWidgetsConfig)),
+  NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify(address3rdPartyWidgetsConfig),
+  NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: toEnvValue(promoBannerConfigFull),
   NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: 'wss://example.com/ws',
   NEXT_PUBLIC_FLASHBLOCKS_NAME: 'flashblock',
-  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: JSON.stringify(highlights),
+  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: JSON.stringify(highlightsConfig),
   NEXT_PUBLIC_NAME_SERVICE_API_HOST: 'https://example.com',
   NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS: toEnvValue([ 'duck', 'goose' ]),
   NEXT_PUBLIC_CLUSTERS_API_HOST: 'https://example.com',

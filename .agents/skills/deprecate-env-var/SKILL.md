@@ -213,10 +213,6 @@ the `DEPRECATED_ENVS` entry and the rejection rule you added in Phase 1.
   release notes and the roll-up request to DevOps, so this description is how
   DevOps learns what to drop from deployment-values, and for which release. It is
   the only place that list needs to live.
-- **Run the validator suite:**
-  ```bash
-  pnpm test:vitest deploy/tools/envs-validator
-  ```
-  For a grace-period guard, add a spec case that sets the old variable without
-  the new one and asserts the exact error message. See
-  `deploy/tools/envs-validator/CONTEXT.md` for details.
+- **Run the validator suite** — the command and the spec conventions (including
+  the grace-period guard's rejection case) are in
+  `deploy/tools/envs-validator/CONTEXT.md`.
