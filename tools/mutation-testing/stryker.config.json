@@ -41,6 +41,7 @@
     "!/src/**",
     "!/tools/**",
     "!/.agents/**",
+    "!/deploy/scripts/download_assets.sh",
     "!/vitest/**",
     "!/decs.d.ts",
     "!/global.d.ts",
