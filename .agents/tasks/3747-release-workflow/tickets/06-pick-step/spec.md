@@ -25,7 +25,8 @@ and fails when there is none. This reworks T05's `prepare vX.Y` and `alpha`.
       branch exists or the line has an open pre-release. Then picks, makes the docs commit, pushes the
       branch, and creates the draft pre-release `vX.Y.Z` with the notes.
 - [ ] `alpha <tag> [--dry-run]` infers `release/vX.Y.Z` from the tag, fails before writing anything when the
-      release has no pre-release, then picks, makes the docs commit, and runs T05's sequence (check-tag,
+      release has no pre-release or the line's open pre-release belongs to another version (an open
+      `v2.13.0` pre-release is never re-pointed to `v2.13.1-alpha.1`), then picks, makes the docs commit, and runs T05's sequence (check-tag,
       re-point, tag, push branch and tag, watch the run) against the branch head after picking.
 - [ ] Both work on the operator's checkout: they require a clean working tree, switch to the release
       branch, and refuse when it has diverged from `origin`. A pick conflict exits non-zero naming the PR
