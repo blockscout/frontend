@@ -42,6 +42,6 @@ https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-26175
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move `ColumnsButton` to `src/shared/filters/`, generic column id, drop the label;
+- [x] 1 `[agent]` Move `ColumnsButton` to `src/shared/filters/`, generic column id, drop the label;
       rewire the advanced filter import; keep `or_and` naming at the call site
-- [ ] 2 `[agent]` Unit spec for the shared button (renders every column, emits the toggled set)
+- [x] 2 `[agent]` Unit spec for the shared button (renders every column, emits the toggled set)

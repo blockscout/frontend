@@ -23,6 +23,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
+import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -37,7 +38,6 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-import ColumnsButton from '../../components/ColumnsButton';
 import { ADVANCED_FILTER_ITEM } from '../../stubs';
 import { getTableColumns, TABLE_COLUMNS } from '../../utils/consts';
 import { getAdvancedFilterTypes, getDurationFromAge, getFilterTags } from '../../utils/lib';
@@ -157,6 +157,10 @@ const AdvancedFilter = () => {
 
   const tableColumns = React.useMemo(() => getTableColumns(chainConfig), [ chainConfig ]);
   const columnsToShow = React.useMemo(() => tableColumns.filter(c => columns[c.id]), [ columns, tableColumns ]);
+  const selectorColumns = React.useMemo(
+    () => tableColumns.map(c => c.id === 'or_and' ? { ...c, name: 'And/Or' } : c),
+    [ tableColumns ],
+  );
 
   if (isLoading) {
     return null;
@@ -178,7 +182,7 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ColumnsButton tableColumns={ tableColumns } columns={ columns } onChange={ setColumns }/>
+      <ColumnsButton tableColumns={ selectorColumns } columns={ columns } onChange={ setColumns }/>
       <CsvExport
         type="advanced_filters"
         resourceName="core:advanced_filter_csv"
