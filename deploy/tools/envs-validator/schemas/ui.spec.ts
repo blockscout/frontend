@@ -152,6 +152,13 @@ describe('navigationSchema', () => {
       })).toEqual([ 'NEXT_PUBLIC_FEATURED_NETWORKS.0.icon: Invalid URL: Received ""' ]);
     });
 
+    it('rejects the all-networks link when the featured networks list is empty', () => {
+      expect(getValidationErrors(navigationSchema, {
+        NEXT_PUBLIC_FEATURED_NETWORKS: JSON.stringify([]),
+        NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: 'https://example.com',
+      })).toEqual([ 'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK can only be set when NEXT_PUBLIC_FEATURED_NETWORKS is configured' ]);
+    });
+
     it('rejects a malformed all-networks link', () => {
       expect(getValidationErrors(navigationSchema, { ...FEATURED, NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: 'not a url' })).toEqual([
         'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: Invalid URL: Received "not a url"',
@@ -263,6 +270,10 @@ describe('miscSchema', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'sepia' })).toEqual([
         picklistMessage('NEXT_PUBLIC_COLOR_THEME_DEFAULT', [ 'light', 'dim', 'midnight', 'dark' ], 'sepia'),
       ]);
+    });
+
+    it('accepts a default theme without a themes list', () => {
+      expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dim' })).toEqual([]);
     });
 
     it('rejects a default theme that is not among the listed themes', () => {

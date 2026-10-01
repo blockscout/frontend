@@ -144,6 +144,10 @@ describe('composeSchemas', () => {
     expect(getValidationErrors(schema, { NEXT_PUBLIC_A: 'true' })).toEqual([ 'NEXT_PUBLIC_A can only be used with NEXT_PUBLIC_B' ]);
   });
 
+  it('reports only the type error for a value that is not an object', () => {
+    expect(getValidationErrors(schema, null)).toEqual([ 'Invalid type: Expected Object but received null' ]);
+  });
+
   it('reports unknown variables once, alongside the other errors', () => {
     expect(getValidationErrors(schema, { NEXT_PUBLIC_B: 'nope', NEXT_PUBLIC_C: '1', NEXT_PUBLIC_D: '2' })).toEqual([
       'Unknown ENV variables were provided: NEXT_PUBLIC_C, NEXT_PUBLIC_D',

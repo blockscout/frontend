@@ -94,6 +94,13 @@ describe('adsSchema', () => {
     });
   });
 
+  it('does not count sevio zones when the banner provider is not sevio', () => {
+    expect(getValidationErrors(adsSchema, {
+      NEXT_PUBLIC_AD_BANNER_PROVIDER: 'slise',
+      NEXT_PUBLIC_AD_BANNER_SEVIO_ZONES: toEnvValue([ sevioZones[0] ]),
+    })).toEqual([]);
+  });
+
   it('rejects sevio zones that are not exactly two', () => {
     expect(getValidationErrors(adsSchema, {
       NEXT_PUBLIC_AD_BANNER_PROVIDER: 'sevio',

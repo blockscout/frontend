@@ -125,7 +125,7 @@ interface FlatIssue {
 function flattenIssues(issues: ReadonlyArray<v.BaseIssue<unknown>>, parentPath: ReadonlyArray<v.IssuePathItem> = []): Array<FlatIssue> {
   return issues.flatMap((issue) => {
     const path = [ ...parentPath, ...(issue.path ?? []) ];
-    if (issue.issues && issue.issues.length > 0) {
+    if (issue.issues) {
       return flattenIssues(issue.issues, path);
     }
     return [ { message: issue.message, input: issue.input, path } ];
@@ -156,6 +156,7 @@ export function composeSchemas(schemas: ReadonlyArray<EnvSchema>): ComposedSchem
         const result = v.safeParse(subSchema, dataset.value);
         flattenIssues(result.issues ?? []).forEach((issue) => addIssue({
           message: issue.message,
+          // Stryker disable next-line ConditionalExpression,EqualityOperator: an empty path prints like no path; the branch only satisfies the tuple type
           path: issue.path.length > 0 ? [ ...issue.path ] as [ v.IssuePathItem, ...Array<v.IssuePathItem> ] : undefined,
           input: issue.input,
         }));

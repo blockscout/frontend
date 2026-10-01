@@ -25,6 +25,9 @@ describe('bridgedTokensSchema', () => {
     expect(getValidationErrors(bridgedTokensSchema, BRIDGES)).toEqual([
       'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES cannot not be used without NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS',
     ]);
+    expect(getValidationErrors(bridgedTokensSchema, { ...BRIDGES, NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS: toEnvValue([]) })).toEqual([
+      'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES cannot not be used without NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS',
+    ]);
   });
 
   it('rejects a chain with a malformed base URL', () => {

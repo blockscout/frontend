@@ -24,6 +24,9 @@ describe('zetaChainSchema', () => {
     expect(getValidationErrors(zetaChainSchema, { NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: 'https://zetachain-indexer.duckdns.org' })).toEqual([
       'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
     ]);
+    expect(getValidationErrors(zetaChainSchema, { ...REQUIRED, NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: JSON.stringify([]) })).toEqual([
+      'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
+    ]);
   });
 
   it('rejects a malformed API host', () => {
