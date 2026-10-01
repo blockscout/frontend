@@ -34,7 +34,8 @@ How to verify: `gh workflow run label-issues-in-release.yml --ref issue-3747 -f 
       `issues` output) plus a `dry_run` input, and is checkout + install + one CLI call with
       `pull-requests: write`, `issues: write`.
 - [ ] `release.yml` calls the remove step and the version-label step; `update_project_cards` still receives
-      the issues output. `pre-release.yml` applies `pre-release` only for the initial alpha as today.
+      the issues output. `pre-release.yml` applies `pre-release` on every alpha
+      (idempotent; also catches PRs picked between alphas).
 - [ ] `(human)` The dry-run dispatch on `v2.12.3` lists the PRs picked into that patch and nothing from
       `main` after the fork.
 
@@ -46,6 +47,6 @@ How to verify: `gh workflow run label-issues-in-release.yml --ref issue-3747 -f 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `resolvePr`, `previousTag`, `releasePrs` pure logic + specs
-- [ ] 2 `[agent]` `label` subcommand (apply / remove / dry-run)
-- [ ] 3 `[agent]` Rewrite `label-issues-in-release.yml`, `release.yml`, `pre-release.yml` around the CLI
+- [x] 1 `[agent]` `resolvePr`, `previousTag`, `releasePrs` pure logic + specs
+- [x] 2 `[agent]` `label` subcommand (apply / remove / dry-run)
+- [x] 3 `[agent]` Rewrite `label-issues-in-release.yml`, `release.yml`, `pre-release.yml` around the CLI
