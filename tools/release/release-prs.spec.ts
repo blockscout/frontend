@@ -13,7 +13,8 @@ function resolver(messages: Record<string, string> = {}, associations: Record<st
 }
 
 function pr(number: number, labels: ReadonlyArray<string> = [], closingIssues: ReleasePullRequest['closingIssues'] = []): ReleasePullRequest {
-  return { number, title: `PR ${ number }`, labels, closingIssues };
+  const url = `https://github.com/blockscout/frontend/pull/${ number }`;
+  return { number, title: `PR ${ number }`, author: 'tom2drum', url, body: '', labels, closingIssues };
 }
 
 describe('resolvePr', () => {

@@ -3,17 +3,20 @@ import type { FlagSpec } from '../cli/flags';
 import { parseArgs } from '../cli/flags';
 import { checkPrCommand } from './commands/check-pr';
 import { labelCommand } from './commands/label';
+import { notesCommand } from './commands/notes';
 
 const USAGE = `Usage: pnpm release <subcommand> [args]
 
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels
-  label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere`;
+  label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere
+  notes <tag>         print the release notes of a tag`;
 
 type Command = (args: ReadonlyArray<string>) => number;
 
 const COMMANDS: ReadonlyMap<string, Command> = new Map<string, Command>([
   [ 'check-pr', checkPrCommand ],
   [ 'label', labelCommand ],
+  [ 'notes', notesCommand ],
 ]);
 
 interface Options {

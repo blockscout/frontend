@@ -35,5 +35,5 @@ template moves from the repo root into the module.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move the template, `renderNotes` + section builders with specs
-- [ ] 2 `[agent]` `notes` subcommand
+- [x] 1 `[agent]` Move the template, `renderNotes` + section builders with specs
+- [x] 2 `[agent]` `notes` subcommand

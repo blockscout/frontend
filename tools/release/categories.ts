@@ -22,3 +22,6 @@ export const CATEGORY_LABELS: ReadonlySet<string> = new Set(CATEGORIES.flatMap((
 export const DEPENDENCIES_LABEL = 'dependencies';
 
 export const RELEASE_LABEL = 'release';
+
+// The section of a PR that carries no category label, e.g. one merged before the PR check existed.
+export const CATCH_ALL_LABEL = 'chore';

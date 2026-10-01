@@ -2,10 +2,10 @@
 import type { FlagSpec } from '../../cli/flags';
 import { parseArgs } from '../../cli/flags';
 import { addLabel, ensureLabel, listLabeled, removeLabel } from '../github';
-import type { ReleasePullRequest } from '../release-prs';
 import { issuesToLabel, releasePrs } from '../release-prs';
 import { RELEASE_SOURCE } from '../release-source';
 import { parseTagOrThrow } from '../versions';
+import { describePr, logExclusions, logList } from './report';
 
 const USAGE = `Usage: pnpm release label <tag> --label <name> [--description <text>] [--color <hex>] [--dry-run]
        pnpm release label <tag> --remove <name> [--dry-run]
@@ -71,25 +71,13 @@ export function parseLabelArgs(args: ReadonlyArray<string>): LabelArgs {
   return { tag, action: toAction(options), dryRun: options.dryRun };
 }
 
-function describePr({ number, title }: ReleasePullRequest): string {
-  return `#${ number } ${ title }`;
-}
-
-function logList(heading: string, items: ReadonlyArray<string>): void {
-  console.error(`${ heading } (${ items.length }):`);
-  for (const item of items) {
-    console.error(`  ${ item }`);
-  }
-}
-
 function applyLabel(tag: string, action: Extract<LabelAction, { kind: 'apply' }>, dryRun: boolean): number {
   const { previousTag, prs, skipped, unresolved } = releasePrs(tag, RELEASE_SOURCE);
   const issues = issuesToLabel(prs, tag);
 
   console.error(`Release ${ tag }, compared with ${ previousTag }`);
   logList('PRs to label', prs.map(describePr));
-  logList('Skipped, already in another release', skipped.map((pr) => `${ describePr(pr) } [${ pr.labels.join(', ') }]`));
-  logList('Commits without a PR', unresolved.map(({ sha, message }) => `${ sha.slice(0, 10) } ${ message.split('\n', 1)[0] }`));
+  logExclusions(skipped, unresolved);
   logList('Issues to label', issues.map((number) => `#${ number }`));
 
   if (dryRun) {

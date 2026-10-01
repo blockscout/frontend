@@ -18,6 +18,9 @@ export interface Issue {
 export interface ReleasePullRequest {
   readonly number: number;
   readonly title: string;
+  readonly author: string;
+  readonly url: string;
+  readonly body: string;
   readonly labels: ReadonlyArray<string>;
   readonly closingIssues: ReadonlyArray<Issue>;
 }

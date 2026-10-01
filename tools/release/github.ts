@@ -52,6 +52,9 @@ interface ReleasePullRequestResponse {
       readonly pullRequest: {
         readonly number: number;
         readonly title: string;
+        readonly url: string;
+        readonly body: string;
+        readonly author: { readonly login: string } | null;
         readonly labels: LabelsConnection;
         readonly closingIssuesReferences: {
           readonly nodes: ReadonlyArray<{
@@ -72,6 +75,9 @@ const RELEASE_PULL_REQUEST_QUERY = `
       pullRequest(number: $number) {
         number
         title
+        url
+        body
+        author { login }
         labels(first: 100) { nodes { name } }
         closingIssuesReferences(first: 50) {
           nodes {
@@ -96,6 +102,10 @@ export function fetchReleasePullRequest(number: number): ReleasePullRequest {
   return {
     number: pullRequest.number,
     title: pullRequest.title,
+    // A deleted account leaves a PR without an author; GitHub shows it as this placeholder user.
+    author: pullRequest.author?.login ?? 'ghost',
+    url: pullRequest.url,
+    body: pullRequest.body,
     labels: labelNames(pullRequest.labels),
     closingIssues: pullRequest.closingIssuesReferences.nodes
       .filter((issue) => issue.repository.nameWithOwner === repository.nameWithOwner)
@@ -134,4 +144,12 @@ export function removeLabel(number: number, name: string): void {
 export function listLabeled(name: string): Array<number> {
   const path = `repos/{owner}/{repo}/issues?labels=${ encodeURIComponent(name) }&state=all&per_page=100`;
   return gh([ 'api', '--paginate', path, '--jq', '.[].number' ]).split('\n').filter(Boolean).map(Number);
+}
+
+// Only for its "New Contributors" list: GitHub knows who contributed before, the checkout does not.
+export function generateReleaseNotes(tag: string, previousTag: string): string {
+  return gh([
+    'api', '--method', 'POST', 'repos/{owner}/{repo}/releases/generate-notes',
+    '-f', `tag_name=${ tag }`, '-f', `previous_tag_name=${ previousTag }`, '--jq', '.body',
+  ]);
 }
