@@ -3,13 +3,14 @@
 | | |
 | --- | --- |
 | Parent spec | [`../../spec.md`](../../spec.md), ticket 07 of #3747 |
-| Blocked by | T05, T06 |
+| Blocked by | T06, T09 |
 
 ## What to build
 
 A reader knows which command to run and why from one page. `docs/RELEASING.md` holds the decision table
-("I need to… → run …"), one state diagram of a release line (main → release branch → alpha → final →
-hotfix), the label rules for PR authors, and the section ↔ label table. A unit test fails when the table
+("I need to… → run …"), one state diagram of a release (prepare cuts `release/vX.Y.Z` from `main` or the
+previous final tag → alphas, each picking `backport` PRs → final), the label rules for PR authors, and the
+section ↔ label table. A unit test fails when the table
 drifts from `tools/release/categories.ts`. `docs/CONTRIBUTING.md` links to it.
 
 ## Acceptance criteria

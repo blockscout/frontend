@@ -7,7 +7,7 @@
 
 ## What to build
 
-The operator runs `/release prepare|alpha|publish|pick` in a session; the skill wraps the CLI with the
+The operator runs `/release prepare|alpha|publish` in a session; the skill wraps the CLI with the
 human checkpoints and references `docs/RELEASING.md` instead of restating it. `prepare-release` and its
 `fetch-release-prs.js` are removed; `slack-message-template.md` moves under the new skill and the staging
 roll-up request keeps today's content, with breaking ENV changes derived from the notes' ENV section.
@@ -17,7 +17,8 @@ roll-up request keeps today's content, with breaking ENV changes derived from th
 - [ ] `.agents/skills/release/SKILL.md` (`disable-model-invocation: true`) with one section per phase:
       prerequisites (`check-github-cli`), the command, the stop-and-wait points (review the draft release
       and the docs diff before `alpha`; approve the resolved diff before any `--continue` or push after a
-      `pick` conflict; approve the Slack draft), and the hotfix flow as pick → alpha → publish.
+      pick conflict in `prepare` or `alpha`, then re-run the same command; approve the Slack draft), and
+      the hotfix flow as prepare → alpha → publish, the same phases as a minor.
 - [ ] `.agents/skills/prepare-release/` is deleted; `release-prs-data.json` leaves `.gitignore`; no
       reference to `fetch-release-prs.js` remains (`pnpm lint:doc-links` passes).
 - [ ] `create-pr` reads `docs/PULL_REQUEST_TEMPLATE.md` and carries no section copy (verify; adjust only if
