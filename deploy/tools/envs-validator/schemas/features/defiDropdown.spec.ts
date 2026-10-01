@@ -31,31 +31,31 @@ describe('defiDropdownSchema', () => {
       ...ITEMS,
       NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: toEnvValue({ mobile: 'DeFi' }),
     })).toEqual([
-      'Invalid schema were provided for NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT, it should have a required desktop and an optional mobile field',
+      'NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT.desktop: Invalid key: Expected "desktop" but received undefined',
     ]);
   });
 
   it('rejects an item with neither dappId nor url', () => {
     expect(getValidationErrors(defiDropdownSchema, {
       NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue([ { text: 'Swap', icon: 'swap' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: Either dappId or url is required' ]);
+    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS.0: Either dappId or url is required' ]);
   });
 
   it('rejects an item with a malformed url', () => {
     expect(getValidationErrors(defiDropdownSchema, {
       NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue([ { text: 'Payment link', url: 'not a url' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS[0].url is not a valid URL' ]);
+    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS.0.url: Invalid URL: Received "not a url"' ]);
   });
 
   it('rejects an item without text', () => {
     expect(getValidationErrors(defiDropdownSchema, {
       NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue([ { dappId: 'uniswap' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS[0].text is a required field' ]);
+    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS.0.text: Invalid key: Expected "text" but received undefined' ]);
   });
 
   it('rejects an item with a malformed essential flag', () => {
     expect(getValidationErrors(defiDropdownSchema, {
       NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue([ { text: 'Swap', dappId: 'uniswap', isEssentialDapp: 'yes' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS[0].isEssentialDapp must be a `boolean` type, but the final value was: `"yes"`.' ]);
+    })).toEqual([ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS.0.isEssentialDapp: Invalid type: Expected boolean but received "yes"' ]);
   });
 });

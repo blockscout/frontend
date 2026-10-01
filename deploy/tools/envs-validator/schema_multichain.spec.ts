@@ -19,8 +19,8 @@ describe('multichain schema', () => {
 
   it('requires the app host and network name only', () => {
     expect(getValidationErrors(schema, {}).sort()).toEqual([
-      'NEXT_PUBLIC_APP_HOST is a required field',
-      'NEXT_PUBLIC_NETWORK_NAME is a required field',
+      'NEXT_PUBLIC_APP_HOST: Invalid key: Expected "NEXT_PUBLIC_APP_HOST" but received undefined',
+      'NEXT_PUBLIC_NETWORK_NAME: Invalid key: Expected "NEXT_PUBLIC_NETWORK_NAME" but received undefined',
     ]);
   });
 
@@ -44,13 +44,13 @@ describe('multichain schema', () => {
       'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED',
     ])('accepts %s set to false and rejects it set to true', (name) => {
       expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'false' })).toEqual([]);
-      expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'true' })).toEqual([ `${ name } must be one of the following values: false` ]);
+      expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'true' })).toEqual([ `${ name }: Invalid type: Expected false but received true` ]);
     });
 
     it('accepts an empty API docs tabs list and rejects a non-empty one', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_API_DOCS_TABS: '[]' })).toEqual([]);
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_API_DOCS_TABS: toEnvValue([ 'rest_api' ]) })).toEqual([
-        'NEXT_PUBLIC_API_DOCS_TABS field must have less than or equal to 0 items',
+        'NEXT_PUBLIC_API_DOCS_TABS: Invalid length: Expected <=0 but received 1',
       ]);
     });
   });
@@ -68,7 +68,7 @@ describe('multichain schema', () => {
       'NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST',
       'NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST',
     ])('rejects a malformed %s', (name) => {
-      expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'not a url' })).toEqual([ `${ name } is not a valid URL` ]);
+      expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
     });
   });
 });

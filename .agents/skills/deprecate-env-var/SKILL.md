@@ -14,8 +14,8 @@ structured, the three value types, and where validation lives.
 Two startup checks make a removed variable fail loudly, so you rarely need to
 write a custom guard:
 
-- The validator schemas use `.noUnknown(true)` — any `NEXT_PUBLIC_*` key not
-  declared in a schema fails validation.
+- `composeSchemas` in `deploy/tools/envs-validator/utils.ts` rejects any
+  `NEXT_PUBLIC_*` key no schema declares.
 - The placeholder check (`findEnvsWithoutPlaceholder` in
   `deploy/tools/envs-validator/checks.ts`) fails startup if an env has no
   build-time placeholder. Placeholders come from
@@ -151,10 +151,10 @@ See `tools/dev-server/CONTEXT.md` § "Dropped envs" for the full why.
 
 ### A6 — (Optional) friendlier error for a replaced variable
 
-The `.noUnknown` + congruity checks already fail startup with a generic
+The unknown-variable + congruity checks already fail startup with a generic
 message. If the variable was **replaced** and you want operators to see a
 clear "use X instead" message, keep the variable in the schema as a
-`yup.mixed().test('not-exist', '<message>', value => value === undefined)`
+`v.optional(v.pipe(v.string(), v.check(() => false, '<message>')))`
 rule, with a spec case asserting the message.
 
 ---

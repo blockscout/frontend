@@ -38,27 +38,27 @@ describe('rollupSchema', () => {
 
   it('requires the parent chain once a rollup type is set', () => {
     expect(getValidationErrors(rollupSchema, { NEXT_PUBLIC_ROLLUP_TYPE: 'scroll' })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.baseUrl is a required field',
+      'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN is required when NEXT_PUBLIC_ROLLUP_TYPE is set',
     ]);
   });
 
   it('rejects an unsupported rollup type', () => {
     expect(getValidationErrors(rollupSchema, { NEXT_PUBLIC_ROLLUP_TYPE: 'duck', ...PARENT_CHAIN })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_TYPE must be one of the following values: optimistic, arbitrum, shibarium, zkSync, scroll',
+      'NEXT_PUBLIC_ROLLUP_TYPE: Invalid type: Expected ("optimistic" | "arbitrum" | "shibarium" | "zkSync" | "scroll") but received "duck"',
     ]);
   });
 
   describe('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', () => {
     it('is rejected without a rollup type', () => {
       expect(getValidationErrors(rollupSchema, PARENT_CHAIN)).toEqual([
-        'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN must be a `object` type, but the final value was: `"{\'baseUrl\':\'https://explorer.duckchain.io\'}"`.',
+        'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
       ]);
     });
 
     it('rejects a chain without a base URL', () => {
       const { baseUrl, ...chain } = parentChainFull;
       expect(getValidationErrors(rollupSchema, { ...SCROLL, NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: toEnvValue(chain) })).toEqual([
-        'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.baseUrl is a required field',
+        'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.baseUrl: Invalid key: Expected "baseUrl" but received undefined',
       ]);
     });
 
@@ -66,21 +66,21 @@ describe('rollupSchema', () => {
       expect(getValidationErrors(rollupSchema, {
         ...SCROLL,
         NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: toEnvValue({ ...parentChainFull, rpcUrls: [ 'not a url' ] }),
-      })).toEqual([ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.rpcUrls[0] is not a valid URL' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.rpcUrls.0: Invalid URL: Received "not a url"' ]);
     });
 
     it('rejects a chain with a non-numeric id', () => {
       expect(getValidationErrors(rollupSchema, {
         ...SCROLL,
         NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: toEnvValue({ ...parentChainFull, id: 'duck' }),
-      })).toEqual([ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.id must be a `number` type, but the final value was: `NaN` (cast from the value `NaN`).' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.id: Invalid type: Expected number but received "duck"' ]);
     });
 
     it('rejects a currency without a symbol', () => {
       expect(getValidationErrors(rollupSchema, {
         ...SCROLL,
         NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: toEnvValue({ ...parentChainFull, currency: { name: 'Quack', decimals: 18 } }),
-      })).toEqual([ 'in "currency" property symbol is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN.currency.symbol: Invalid key: Expected "symbol" but received undefined' ]);
     });
   });
 
@@ -127,13 +127,13 @@ describe('rollupSchema', () => {
 
   it('rejects a malformed L2 withdrawal URL', () => {
     expect(getValidationErrors(rollupSchema, { ...OPTIMISTIC, NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: 'not a url' })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL is not a valid URL',
+      'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: Invalid URL: Received "not a url"',
     ]);
   });
 
   it('rejects a non-boolean fault proof flag', () => {
     expect(getValidationErrors(rollupSchema, { ...OPTIMISTIC, NEXT_PUBLIC_FAULT_PROOF_ENABLED: 'yes' })).toEqual([
-      'NEXT_PUBLIC_FAULT_PROOF_ENABLED must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_FAULT_PROOF_ENABLED: Expected "true" or "false" but received "yes"',
     ]);
   });
 
@@ -147,7 +147,7 @@ describe('rollupSchema', () => {
 
     it('rejects a namespace of the wrong length', () => {
       expect(getValidationErrors(rollupSchema, { ...ARBITRUM, NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: '0xca1de12a' })).toEqual([
-        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE must be at least 60 characters',
+        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: Invalid length: Expected 60 but received 10',
       ]);
     });
 
@@ -156,8 +156,9 @@ describe('rollupSchema', () => {
         ...ARBITRUM,
         NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: '0x0000000000000000000000000000000000000000ca1de12a9905be97zzzz',
       })).toEqual([
-        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE must be at most 60 characters',
-        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE must match the following: "/^0x[\\da-fA-F]+$/"',
+        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: Invalid length: Expected 60 but received 62',
+        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: Invalid format: Expected /^0x[\\da-fA-F]+$/ but received ' +
+        '"0x0000000000000000000000000000000000000000ca1de12a9905be97zzzz"',
       ]);
     });
   });
@@ -179,26 +180,26 @@ describe('rollupSchema', () => {
 
     it('is rejected when malformed', () => {
       expect(getValidationErrors(rollupSchema, { ...ARBITRUM, NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL: 'not a url' })).toEqual([
-        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL is not a valid URL',
+        'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL: Invalid URL: Received "not a url"',
       ]);
     });
   });
 
   it('rejects an unsupported stage index', () => {
     expect(getValidationErrors(rollupSchema, { ...OPTIMISTIC, NEXT_PUBLIC_ROLLUP_STAGE_INDEX: '3' })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_STAGE_INDEX must be one of the following values: 1, 2',
+      'NEXT_PUBLIC_ROLLUP_STAGE_INDEX: Invalid type: Expected (1 | 2) but received 3',
     ]);
   });
 
   it('rejects a layer number below 2', () => {
     expect(getValidationErrors(rollupSchema, { ...OPTIMISTIC, NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: '1' })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER must be greater than or equal to 2',
+      'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: Invalid value: Expected >=2 but received 1',
     ]);
   });
 
   it('rejects a non-integer layer number', () => {
     expect(getValidationErrors(rollupSchema, { ...OPTIMISTIC, NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: '2.5' })).toEqual([
-      'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER must be an integer',
+      'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: Invalid integer: Received 2.5',
     ]);
   });
 });

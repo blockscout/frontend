@@ -21,19 +21,21 @@ describe('crossChainTxsSchema', () => {
 
   it('rejects a malformed enabled flag', () => {
     expect(getValidationErrors(crossChainTxsSchema, { NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: 'yes', ...BRIDGE_IDS })).toEqual([
-      'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: Expected "true" or "false" but received "yes"',
     ]);
   });
 
   it('rejects the enabled flag without bridge ids', () => {
-    expect(getValidationErrors(crossChainTxsSchema, ENABLED)).toEqual([ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS is a required field' ]);
+    expect(getValidationErrors(crossChainTxsSchema, ENABLED)).toEqual([
+      'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS is required when NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED is set',
+    ]);
   });
 
   it('rejects a bridge id that is not a number', () => {
     expect(getValidationErrors(crossChainTxsSchema, {
       ...ENABLED,
       NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS: toEnvValue([ 'omni' ]),
-    })).toEqual([ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS[0] must be a `number` type, but the final value was: `NaN` (cast from the value `"["`).' ]);
+    })).toEqual([ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS.0: Invalid type: Expected number but received "omni"' ]);
   });
 
   it('rejects a malformed indexer API host', () => {
@@ -41,7 +43,7 @@ describe('crossChainTxsSchema', () => {
       ...ENABLED,
       ...BRIDGE_IDS,
       NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: 'not a url',
-    })).toEqual([ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST is not a valid URL' ]);
+    })).toEqual([ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: Invalid URL: Received "not a url"' ]);
   });
 
   it.each([

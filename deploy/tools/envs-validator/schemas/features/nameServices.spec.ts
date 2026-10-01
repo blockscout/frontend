@@ -20,7 +20,7 @@ describe('nameServicesSchema', () => {
     'NEXT_PUBLIC_NAME_SERVICE_API_HOST',
     'NEXT_PUBLIC_CLUSTERS_API_HOST',
   ])('rejects a malformed %s', (name) => {
-    expect(getValidationErrors(nameServicesSchema, { [name]: 'not a url' })).toEqual([ `${ name } is not a valid URL` ]);
+    expect(getValidationErrors(nameServicesSchema, { [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
   });
 
   describe('NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS', () => {
@@ -34,7 +34,7 @@ describe('nameServicesSchema', () => {
       expect(getValidationErrors(nameServicesSchema, {
         NEXT_PUBLIC_NAME_SERVICE_API_HOST: 'https://example.com',
         NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS: toEnvValue([]),
-      })).toEqual([ 'NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS field must have at least 1 items' ]);
+      })).toEqual([ 'NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS: Invalid length: Expected >=1 but received 0' ]);
     });
   });
 
@@ -49,7 +49,7 @@ describe('nameServicesSchema', () => {
       expect(getValidationErrors(nameServicesSchema, {
         NEXT_PUBLIC_CLUSTERS_API_HOST: 'https://example.com',
         NEXT_PUBLIC_CLUSTERS_CDN_URL: 'not a url',
-      })).toEqual([ 'NEXT_PUBLIC_CLUSTERS_CDN_URL is not a valid URL' ]);
+      })).toEqual([ 'NEXT_PUBLIC_CLUSTERS_CDN_URL: Invalid URL: Received "not a url"' ]);
     });
   });
 });

@@ -1,47 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import { replaceQuotes } from 'src/config/utils/envs';
+import { envBoolean, envJson, envUrl, requiredIf, requires } from '../../utils';
 
-import { urlTest } from '../../utils';
-
-export const crossChainTxsSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(yup.number().required())
-      .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.required(),
-        otherwise: (schema) => schema.max(
-          -1,
-          'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
-        ),
-      }),
-    NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS: yup
-      .boolean()
-      .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
-        is: (value: boolean) => value,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: yup
-      .string()
-      .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-  });
+export const crossChainTxsSchema = v.pipe(
+  v.object({
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS: v.optional(envJson(v.array(v.number()))),
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS: v.optional(envBoolean()),
+    NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: v.optional(envUrl()),
+  }),
+  requires('NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requiredIf('NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requires('NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requires('NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+);

@@ -107,7 +107,7 @@ From `deploy/tools/envs-validator/`, build the bundle and the placeholder regist
 pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- pnpm run validate
 ```
 
-Schema organisation: `deploy/tools/envs-validator/CONTEXT.md`. This is what catches missing companion variables (`.when(...)`), forbidden combinations, and malformed nested JSON — a documentation check cannot.
+Schema organisation: `deploy/tools/envs-validator/CONTEXT.md`. This is what catches missing companion variables, forbidden combinations, and malformed nested JSON — a documentation check cannot.
 
 ## Fetched configs
 

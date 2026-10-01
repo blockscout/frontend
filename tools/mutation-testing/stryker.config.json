@@ -40,6 +40,7 @@
     "**",
     "!/src/**",
     "!/tools/**",
+    "!/deploy/tools/envs-validator/**",
     "!/.agents/**",
     "!/deploy/scripts/download_assets.sh",
     "!/vitest/**",

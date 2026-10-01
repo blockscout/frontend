@@ -23,12 +23,12 @@ describe('userOpsSchema', () => {
     expect(getValidationErrors(userOpsSchema, {
       NEXT_PUBLIC_HAS_USER_OPS: 'true',
       NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: 'not a url',
-    })).toEqual([ 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST is not a valid URL' ]);
+    })).toEqual([ 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: Invalid URL: Received "not a url"' ]);
   });
 
   it('rejects a non-boolean flag', () => {
     expect(getValidationErrors(userOpsSchema, { NEXT_PUBLIC_HAS_USER_OPS: 'yes' })).toEqual([
-      'NEXT_PUBLIC_HAS_USER_OPS must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_HAS_USER_OPS: Expected "true" or "false" but received "yes"',
     ]);
   });
 });

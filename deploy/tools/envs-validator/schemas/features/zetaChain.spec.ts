@@ -24,11 +24,14 @@ describe('zetaChainSchema', () => {
     expect(getValidationErrors(zetaChainSchema, { NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: 'https://zetachain-indexer.duckdns.org' })).toEqual([
       'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
     ]);
+    expect(getValidationErrors(zetaChainSchema, { ...REQUIRED, NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: JSON.stringify([]) })).toEqual([
+      'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
+    ]);
   });
 
   it('rejects a malformed API host', () => {
     expect(getValidationErrors(zetaChainSchema, { ...REQUIRED, NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: 'not a url' })).toEqual([
-      'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not a valid URL',
+      'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: Invalid URL: Received "not a url"',
     ]);
   });
 
@@ -43,7 +46,7 @@ describe('zetaChainSchema', () => {
       expect(getValidationErrors(zetaChainSchema, {
         ...REQUIRED,
         NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: JSON.stringify([ { chain_name: 'ZetaChain Athens' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL[0].chain_id is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL.0.chain_id: Invalid key: Expected "chain_id" but received undefined' ]);
     });
 
     it('rejects a chain with a non-numeric id', () => {
@@ -51,7 +54,7 @@ describe('zetaChainSchema', () => {
         ...REQUIRED,
         NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: JSON.stringify([ { ...zetaChainChainsConfig[0], chain_id: 'athens' } ]),
       })).toEqual([
-        'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL[0].chain_id must be a `number` type, but the final value was: `NaN` (cast from the value `NaN`).',
+        'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL.0.chain_id: Invalid type: Expected number but received "athens"',
       ]);
     });
 
@@ -59,7 +62,7 @@ describe('zetaChainSchema', () => {
       expect(getValidationErrors(zetaChainSchema, {
         ...REQUIRED,
         NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: JSON.stringify([ { ...zetaChainChainsConfig[0], instance_url: 'not a url' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL[0].instance_url is not a valid URL' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL.0.instance_url: Invalid URL: Received "not a url"' ]);
     });
   });
 
@@ -75,7 +78,7 @@ describe('zetaChainSchema', () => {
       expect(getValidationErrors(zetaChainSchema, {
         ...REQUIRED,
         NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: toEnvValue([ entry ]),
-      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG[0].template is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG.0.template: Invalid key: Expected "template" but received undefined' ]);
     });
   });
 });

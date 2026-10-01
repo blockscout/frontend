@@ -1,29 +1,23 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import type { HighlightsBannerConfig } from 'src/slices/home/types/client';
+import { envJson } from '../../utils';
 
-import { urlTest } from '../../utils';
+const colorPairSchema = v.optional(v.pipe(v.array(v.string()), v.maxLength(2)));
 
-const highlightsBannerConfigSchema: yup.ObjectSchema<HighlightsBannerConfig> = yup.object({
-  title: yup.string().required(),
-  description: yup.string().required(),
-  title_color: yup.array().max(2).of(yup.string()),
-  description_color: yup.array().max(2).of(yup.string()),
-  background: yup.array().max(2).of(yup.string()),
-  side_img_url: yup.array().max(2).of(yup.string()),
-  is_pinned: yup.boolean(),
-  page_path: yup.string(),
-  redirect_url: yup.string().test(urlTest),
+const highlightsBannerConfigSchema = v.object({
+  title: v.pipe(v.string(), v.nonEmpty()),
+  description: v.pipe(v.string(), v.nonEmpty()),
+  title_color: colorPairSchema,
+  description_color: colorPairSchema,
+  background: colorPairSchema,
+  side_img_url: colorPairSchema,
+  is_pinned: v.optional(v.boolean()),
+  page_path: v.optional(v.string()),
+  redirect_url: v.optional(v.pipe(v.string(), v.url())),
 });
 
-export const highlightsConfigSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: yup
-      .array()
-      .json()
-      .of(highlightsBannerConfigSchema)
-      .min(2),
-  });
+export const highlightsConfigSchema = v.object({
+  NEXT_PUBLIC_HOMEPAGE_HIGHLIGHTS_CONFIG: v.optional(envJson(v.pipe(v.array(highlightsBannerConfigSchema), v.minLength(2)))),
+});

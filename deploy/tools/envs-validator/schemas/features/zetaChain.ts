@@ -1,71 +1,42 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import type { ZetaChainChainsConfigEnv } from 'src/features/chain-variants/zeta-chain/types/client';
+import { companionRule, envJson, envUrl, requires } from '../../utils';
 
-import { replaceQuotes } from 'src/config/utils/envs';
-
-import { urlTest } from '../../utils';
-
-const zetaChainCCTXConfigSchema: yup.ObjectSchema<ZetaChainChainsConfigEnv> = yup.object({
-  chain_id: yup.number().required(),
-  chain_name: yup.string().required(),
-  chain_logo: yup.string(),
-  instance_url: yup.string().test(urlTest),
-  address_url_template: yup.string(),
-  tx_url_template: yup.string(),
+const zetaChainCCTXConfigSchema = v.object({
+  chain_id: v.number(),
+  chain_name: v.pipe(v.string(), v.nonEmpty()),
+  chain_logo: v.optional(v.string()),
+  instance_url: v.optional(v.pipe(v.string(), v.url())),
+  address_url_template: v.optional(v.string()),
+  tx_url_template: v.optional(v.string()),
 });
 
-export const zetaChainSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(zetaChainCCTXConfigSchema)
-      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .of(
-        yup.object({
-          regex: yup.string().required(),
-          template: yup.string().required(),
-          name: yup.string().required(),
-        }),
-      )
-      .when('NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-  })
-  .test(
-    'zetachain-api-host-dependency',
+const externalSearchItemSchema = v.object({
+  regex: v.pipe(v.string(), v.nonEmpty()),
+  template: v.pipe(v.string(), v.nonEmpty()),
+  name: v.pipe(v.string(), v.nonEmpty()),
+});
+
+export const zetaChainSchema = v.pipe(
+  v.looseObject({
+    NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST: v.optional(envUrl()),
+    NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL: v.optional(envJson(v.array(zetaChainCCTXConfigSchema))),
+    NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG: v.optional(envJson(v.array(externalSearchItemSchema))),
+  }),
+  requires('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+    message: 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+  }),
+  requires('NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', {
+    message: 'NEXT_PUBLIC_ZETACHAIN_EXTERNAL_SEARCH_CONFIG cannot be used if NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST is not set',
+  }),
+  companionRule(
+    [ 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST', 'NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' ],
+    (input) => {
+      const chainsConfig = input.NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL;
+      return !input.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST || (Array.isArray(chainsConfig) && chainsConfig.length > 0);
+    },
     'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL',
-    function(value) {
-      const hasApiHost = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST);
-      const hasChainsConfig = Boolean(value?.NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL?.length);
-
-      if (hasApiHost && !hasChainsConfig) {
-        return this.createError({ message: 'NEXT_PUBLIC_ZETACHAIN_SERVICE_API_HOST cannot be used without NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL' });
-      }
-
-      return true;
-    });
+  ),
+);

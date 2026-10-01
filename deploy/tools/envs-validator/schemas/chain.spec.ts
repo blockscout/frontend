@@ -30,26 +30,26 @@ describe('chainSchema', () => {
 
   it('requires the network id and name', () => {
     expect(getValidationErrors(chainSchema, {})).toEqual([
-      'NEXT_PUBLIC_NETWORK_NAME is a required field',
-      'NEXT_PUBLIC_NETWORK_ID is a required field',
+      'NEXT_PUBLIC_NETWORK_NAME: Invalid key: Expected "NEXT_PUBLIC_NETWORK_NAME" but received undefined',
+      'NEXT_PUBLIC_NETWORK_ID: Invalid key: Expected "NEXT_PUBLIC_NETWORK_ID" but received undefined',
     ]);
   });
 
   it('rejects a network id that is not a positive integer', () => {
     expect(getValidationErrors(chainSchema, { ...REQUIRED, NEXT_PUBLIC_NETWORK_ID: '-1' })).toEqual([
-      'NEXT_PUBLIC_NETWORK_ID must be a positive number',
+      'NEXT_PUBLIC_NETWORK_ID: Invalid value: Expected >=1 but received -1',
     ]);
     expect(getValidationErrors(chainSchema, { ...REQUIRED, NEXT_PUBLIC_NETWORK_ID: '1.5' })).toEqual([
-      'NEXT_PUBLIC_NETWORK_ID must be an integer',
+      'NEXT_PUBLIC_NETWORK_ID: Invalid integer: Received 1.5',
     ]);
     expect(getValidationErrors(chainSchema, { ...REQUIRED, NEXT_PUBLIC_NETWORK_ID: 'one' })).toEqual([
-      'NEXT_PUBLIC_NETWORK_ID must be a `number` type, but the final value was: `NaN` (cast from the value `"one"`).',
+      'NEXT_PUBLIC_NETWORK_ID: Expected a decimal number but received "one"',
     ]);
   });
 
   it('rejects currency decimals that are not a positive integer', () => {
     expect(getValidationErrors(chainSchema, { ...REQUIRED, NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: '0' })).toEqual([
-      'NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS must be a positive number',
+      'NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: Invalid value: Expected >=1 but received 0',
     ]);
   });
 
@@ -58,7 +58,7 @@ describe('chainSchema', () => {
     'NEXT_PUBLIC_IS_TESTNET',
   ])('rejects a non-boolean %s', (name) => {
     expect(getValidationErrors(chainSchema, { ...REQUIRED, [name]: 'yes' })).toEqual([
-      `${ name } must be a \`boolean\` type, but the final value was: \`"yes"\`.`,
+      `${ name }: Expected "true" or "false" but received "yes"`,
     ]);
   });
 
@@ -79,7 +79,8 @@ describe('chainSchema', () => {
         ...REQUIRED,
         NEXT_PUBLIC_NETWORK_RPC_URL: toEnvValue([ 'https://example.com', 'not a url' ]),
       })).toEqual([
-        'Invalid schema were provided for NEXT_PUBLIC_NETWORK_RPC_URL, it should be either array of URLs or URL string',
+        'NEXT_PUBLIC_NETWORK_RPC_URL: Invalid URL: Received "[\'https://example.com\',\'not a url\']"',
+        'NEXT_PUBLIC_NETWORK_RPC_URL.1: Invalid URL: Received "not a url"',
       ]);
     });
   });
@@ -87,7 +88,7 @@ describe('chainSchema', () => {
   describe('verification type', () => {
     it('rejects an unknown value', () => {
       expect(getValidationErrors(chainSchema, { ...REQUIRED, NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: 'staking' })).toEqual([
-        'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE must be one of the following values: validation, mining, fee reception',
+        'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: Invalid type: Expected ("validation" | "mining" | "fee reception") but received "staking"',
       ]);
     });
 
@@ -105,14 +106,14 @@ describe('chainSchema', () => {
       expect(getValidationErrors(chainSchema, {
         ...REQUIRED,
         NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES: toEnvValue([ { id: 'ERC-404' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES[0].name is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES.0.name: Invalid key: Expected "name" but received undefined' ]);
     });
 
     it('rejects an entry with an unknown property', () => {
       expect(getValidationErrors(chainSchema, {
         ...REQUIRED,
         NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES: toEnvValue([ { id: 'ERC-404', name: 'ERC-404', symbol: 'X' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES[0] field has unspecified keys: symbol' ]);
+      })).toEqual([ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES.0.symbol: Invalid key: Expected never but received "symbol"' ]);
     });
   });
 });
