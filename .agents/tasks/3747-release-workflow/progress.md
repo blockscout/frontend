@@ -7,7 +7,7 @@ what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
 - [x] 01 → `tickets/01-release-tool-check-pr/`
-- [ ] 02 → `tickets/02-label-command-workflows/`
+- [x] 02 → `tickets/02-label-command-workflows/`
 - [ ] 03 → `tickets/03-notes-command/`
 - [ ] 04 → `tickets/04-check-tag-ci-gates/`
 - [ ] 05 → `tickets/05-prepare-alpha/`
