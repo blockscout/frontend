@@ -118,6 +118,28 @@ export function fetchAssociatedPr(sha: string): number | undefined {
   return pulls.find(({ merged_at: mergedAt }) => mergedAt !== null)?.number;
 }
 
+// The issues endpoint answers for PRs and issues alike, so a `#N` naming an issue reads as "not a PR"
+// instead of a 404.
+interface IssueResponse {
+  readonly labels: ReadonlyArray<{ readonly name: string }>;
+  readonly pull_request?: object;
+}
+
+export function fetchPrLabels(number: number): ReadonlyArray<string> | undefined {
+  const issue = ghApi<IssueResponse>(`repos/{owner}/{repo}/issues/${ number }`);
+  return issue.pull_request === undefined ? undefined : issue.labels.map(({ name }) => name);
+}
+
+// Listed rather than fetched by tag: `releases/tags/<tag>` never returns a draft, and the line's
+// pre-release stays a draft through its alphas. Seeing drafts takes push access.
+export function fetchReleaseBodies(tag: string): Array<string> {
+  const jq = `.[] | select(.tag_name == ${ JSON.stringify(tag) }) | .body // "" | @json`;
+  return gh([ 'api', '--paginate', 'repos/{owner}/{repo}/releases', '--jq', jq ])
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line) as string);
+}
+
 function labelPath(name: string): string {
   return `repos/{owner}/{repo}/labels/${ encodeURIComponent(name) }`;
 }

@@ -14,15 +14,15 @@ before `publish_image`; the local commands (T05, T06) run it before pushing.
 
 ## Acceptance criteria
 
-- [ ] Pure `findUpcoming(docs)` and `findVersionedPrs(releaseBody, prLabels)` with specs; PR numbers are
+- [x] Pure `findUpcoming(docs)` and `findVersionedPrs(releaseBody, prLabels)` with specs; PR numbers are
       parsed from `/pull/<N>` links and `#N` references in the body.
-- [ ] `check-tag <tag>` reads the docs from the checkout, fetches the release by tag (draft or published),
+- [x] `check-tag <tag>` reads the docs from the checkout, fetches the release by tag (draft or published),
       prints each failure and exits non-zero on any. A tag without a release passes the notes check.
-- [ ] `pre-release.yml` and `release.yml` have a `check_tag` job that `publish_image` `needs`.
-- [ ] The release body is available when each job runs: `release.yml` fires on `released`; `pre-release.yml`
+- [x] `pre-release.yml` and `release.yml` have a `check_tag` job that `publish_image` `needs`.
+- [x] The release body is available when each job runs: `release.yml` fires on `released`; `pre-release.yml`
       fires on the tag push, after T05's `alpha` has re-pointed the draft.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Pure checks + specs, `check-tag` subcommand
-- [ ] 2 `[agent]` `check_tag` jobs in both workflows
+- [x] 1 `[agent]` Pure checks + specs, `check-tag` subcommand
+- [x] 2 `[agent]` `check_tag` jobs in both workflows

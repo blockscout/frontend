@@ -64,8 +64,19 @@ jobs:
         permissions:
             issues: read
 
+    check_tag:
+        name: Check release tag
+        uses: './.github/workflows/check-tag.yml'
+        with:
+            tag: ${{ github.ref_name }}
+        permissions:
+            contents: read
+            issues: read
+            pull-requests: read
+
     publish_image:
         name: Publish Docker image
+        needs: check_tag
         uses: './.github/workflows/publish-image.yml'
         secrets: inherit
         with:

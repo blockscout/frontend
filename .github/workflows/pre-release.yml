@@ -15,8 +15,20 @@ jobs:
           contents: read
           pull-requests: write
 
+    check_tag:
+        name: Check release tag
+        uses: './.github/workflows/check-tag.yml'
+        with:
+            tag: ${{ github.ref_name }}
+        # The line's pre-release is still a draft at an alpha, and only push access lists drafts.
+        permissions:
+            contents: write
+            issues: read
+            pull-requests: read
+
     publish_image:
         name: Publish Docker image
+        needs: check_tag
         uses: './.github/workflows/publish-image.yml'
         secrets: inherit
         with:

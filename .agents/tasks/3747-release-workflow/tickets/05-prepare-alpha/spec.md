@@ -11,8 +11,8 @@ Cutting a release line and publishing an alpha are each one command. `prepare vX
 from `main`, replaces `upcoming` in `docs/ENVS.md` and `docs/DEPRECATED_ENVS.md` with `vX.Y.0+`, commits
 `chore: prepare release vX.Y.0` on the branch, pushes it, generates the notes and creates the draft
 pre-release for `vX.Y.0`. `alpha vX.Y.Z-alpha.N` infers the branch from the version, runs `check-tag`
-locally, tags the branch head, pushes the tag (firing `pre-release.yml`), re-points the line's single
-pre-release to the tag, regenerates its notes, waits for the workflow run and reports its result.
+locally, tags the branch head, re-points the line's single pre-release to the tag, regenerates its notes,
+pushes the tag (firing `pre-release.yml`), waits for the workflow run and reports its result.
 
 ## Acceptance criteria
 
@@ -30,6 +30,9 @@ pre-release to the tag, regenerates its notes, waits for the workflow run and re
 ## Details
 
 - git operations are `git` shell-outs on the operator's checkout; never `git add -A`.
+- `alpha` re-points the pre-release (`tag_name`, notes) **before** it pushes the tag: `pre-release.yml`'s
+  `check_tag` job (T04) looks the release up by tag when the push fires it, and finds nothing — so checks
+  no notes — while the draft still names the previous tag. A draft may name a tag that does not exist yet.
 - The staging Slack request is not part of the CLI; it stays in the skill (T08), fed by the notes' ENV
   section.
 
