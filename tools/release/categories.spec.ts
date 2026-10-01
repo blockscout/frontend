@@ -10,7 +10,7 @@ describe('CATEGORIES', () => {
       { section: 'Performance Improvements', labels: [ 'performance' ] },
       { section: 'Dependencies Updates', labels: [ 'dependencies' ] },
       { section: 'Design Updates', labels: [ 'design' ] },
-      { section: 'DX & Tooling', labels: [ 'refactoring' ] },
+      { section: 'DX & Tooling', labels: [ 'refactoring', 'tech', 'devops' ] },
       { section: 'Other Changes', labels: [ 'chore' ] },
     ]);
   });
@@ -24,7 +24,7 @@ describe('CATEGORIES', () => {
 describe('CATEGORY_LABELS', () => {
   it('is every label of the mapping and nothing else', () => {
     expect([ ...CATEGORY_LABELS ].sort()).toEqual([
-      'bug', 'chore', 'client feature', 'dependencies', 'design', 'enhancement', 'feature', 'performance', 'refactoring',
+      'bug', 'chore', 'client feature', 'dependencies', 'design', 'devops', 'enhancement', 'feature', 'performance', 'refactoring', 'tech',
     ]);
   });
 

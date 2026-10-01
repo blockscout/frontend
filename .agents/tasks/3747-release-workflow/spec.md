@@ -53,8 +53,9 @@ dropping those files. Conflicts are resolved once: the release branch is never m
    trailer), and prints the PRs it skipped. `backport` is replaced by the version label when the PR is
    released; a PR that was not picked keeps `backport`.
 7. A `pull_request` check fails when the body lacks a heading of `docs/PULL_REQUEST_TEMPLATE.md`, still
-   contains the template's placeholder text, carries no category label, carries more than one category
-   label, or combines `dependencies` with any other category. PRs labeled `release` are exempt.
+   contains the template's placeholder text, carries no category label, carries labels of more than one
+   category (release-notes section), or combines `dependencies` with any other category. Several labels of
+   one category pass. PRs labeled `release` are exempt.
 8. `chore` is the catch-all category ("Other changes"). The section ↔ label mapping has one source of truth
    in the release tool; `docs/RELEASING.md` reproduces it and a unit test fails when the two drift.
 9. One GitHub pre-release per release line: created by prepare as a draft, re-pointed to each new alpha tag
@@ -118,7 +119,8 @@ None. Developer tooling, CI workflows, docs, and agent skills only.
 
 - Reuse `chore` as the catch-all; create `backport` and `release`. Allowed category set = every label in the
   mapping table (`feature`, `enhancement`, `client feature`, `bug`, `performance`, `dependencies`, `design`,
-  `refactoring`, `chore`). `dependencies` is only for PRs whose sole purpose is bumping a package version.
+  `refactoring`, `tech`, `devops`, `chore`). `dependencies` is only for PRs whose sole purpose is bumping a
+  package version.
 - The `pre-release` and version label jobs must not derive the PR set from a bare SHA range: with the
   release branch, the previous release can sit on another branch, so the range would include already
   shipped PRs. The exclusion in requirement 4 is what keeps them correct.

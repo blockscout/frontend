@@ -1,4 +1,4 @@
-import { CATEGORY_LABELS, DEPENDENCIES_LABEL, RELEASE_LABEL } from './categories';
+import { CATEGORIES, CATEGORY_LABELS, DEPENDENCIES_LABEL, RELEASE_LABEL } from './categories';
 
 export interface TemplateSection {
   readonly heading: string;
@@ -34,20 +34,27 @@ function templateFailures(body: string, template: string): Array<string> {
   ]);
 }
 
-function categoryFailures(labels: ReadonlyArray<string>): Array<string> {
-  const categories = labels.filter((label) => CATEGORY_LABELS.has(label));
+function describeCategory(section: string, labels: ReadonlyArray<string>): string {
+  return `${ section } (${ labels.join(', ') })`;
+}
 
-  if (categories.length === 0) {
+function categoryFailures(labels: ReadonlyArray<string>): Array<string> {
+  const matched = CATEGORIES
+    .map(({ section, labels: sectionLabels }) => ({ section, labels: labels.filter((label) => sectionLabels.includes(label)) }))
+    .filter((category) => category.labels.length > 0);
+
+  if (matched.length === 0) {
     return [ `No category label; add one of: ${ [ ...CATEGORY_LABELS ].join(', ') }` ];
   }
-  if (categories.length === 1) {
+  if (matched.length === 1) {
     return [];
   }
-  if (categories.includes(DEPENDENCIES_LABEL)) {
-    const others = categories.filter((label) => label !== DEPENDENCIES_LABEL);
+  if (labels.includes(DEPENDENCIES_LABEL)) {
+    const others = matched.flatMap((category) => category.labels).filter((label) => label !== DEPENDENCIES_LABEL);
     return [ `"${ DEPENDENCIES_LABEL }" is only for PRs that just bump a package and cannot be combined with: ${ others.join(', ') }` ];
   }
-  return [ `More than one category label: ${ categories.join(', ') }; keep one` ];
+  const described = matched.map(({ section, labels: categoryLabels }) => describeCategory(section, categoryLabels));
+  return [ `More than one category: ${ described.join('; ') }. Keep labels of one category only` ];
 }
 
 export function checkPr(body: string, labels: ReadonlyArray<string>, template: string): Array<string> {

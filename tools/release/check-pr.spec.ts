@@ -96,16 +96,19 @@ describe('checkPr', () => {
 
   it('reports a missing category label, listing the allowed ones', () => {
     expect(checkPr(FILLED_BODY, [ 'QA' ], TEMPLATE)).toEqual([
-      'No category label; add one of: feature, enhancement, client feature, bug, performance, dependencies, design, refactoring, chore',
+      'No category label; add one of: feature, enhancement, client feature, bug, performance, dependencies, design, refactoring, tech, devops, chore',
     ]);
   });
 
-  it('reports more than one category label', () => {
-    expect(checkPr(FILLED_BODY, [ 'bug', 'chore' ], TEMPLATE)).toEqual([ 'More than one category label: bug, chore; keep one' ]);
+  it('reports labels from more than one category, grouped by category', () => {
+    expect(checkPr(FILLED_BODY, [ 'chore', 'bug', 'enhancement', 'feature' ], TEMPLATE)).toEqual([
+      'More than one category: New Features (enhancement, feature); Bug Fixes (bug); Other Changes (chore). Keep labels of one category only',
+    ]);
   });
 
-  it('counts two labels of the same section as two categories', () => {
-    expect(checkPr(FILLED_BODY, [ 'feature', 'enhancement' ], TEMPLATE)).toEqual([ 'More than one category label: feature, enhancement; keep one' ]);
+  it('passes several labels of the same category', () => {
+    expect(checkPr(FILLED_BODY, [ 'feature', 'enhancement' ], TEMPLATE)).toEqual([]);
+    expect(checkPr(FILLED_BODY, [ 'tech', 'devops', 'refactoring' ], TEMPLATE)).toEqual([]);
   });
 
   it('reports dependencies combined with another category instead of the generic count failure', () => {
