@@ -6,7 +6,7 @@ LANDED: its commit exists, `Blocked by` edges read it to release dependents, and
 what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement-ticket` checks the box at
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
-- [ ] 01 → `tickets/01-release-tool-check-pr/`
+- [x] 01 → `tickets/01-release-tool-check-pr/`
 - [ ] 02 → `tickets/02-label-command-workflows/`
 - [ ] 03 → `tickets/03-notes-command/`
 - [ ] 04 → `tickets/04-check-tag-ci-gates/`

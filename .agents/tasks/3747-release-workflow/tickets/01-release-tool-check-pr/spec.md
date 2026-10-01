@@ -16,7 +16,8 @@ that every later subcommand reads is created here as the single source of truth.
 
 ## Acceptance criteria
 
-How to verify: open the task's draft PR; the new check appears and reflects its body and labels.
+How to verify: mark the task's PR ready for review (or run the CLI against it); the new check reflects its
+body and labels.
 
 - [ ] `tools/release/` has `run.sh`, `tsconfig.json`, `index.ts` (CLI dispatch), co-located `*.spec.ts`,
       a `/tools/release/dist/` `.gitignore` entry, and is type-checked by `pnpm lint:tsc`, linted by ESLint,
@@ -32,7 +33,8 @@ How to verify: open the task's draft PR; the new check appears and reflects its 
       category. A `release` label short-circuits to no failures. Specs cover every rule and the exemption.
 - [ ] `check-pr <number>` fetches body and labels, prints the failures and exits non-zero on any.
 - [ ] `.github/workflows/pull-request-check.yml` runs on the events above with `pull-requests: read`, and
-      is checkout + pnpm install + one CLI call. Drafts are not skipped.
+      is checkout + pnpm install + one CLI call. Drafts are skipped: the spec-first workflow opens them
+      before the description is written; `ready_for_review` runs the check.
 - [ ] Labels `backport` ("Ship in the current patch line") and `release` ("Release PRs; exempt from the PR
       check") exist on the repository.
 - [ ] `(human)` The check runs on this task's PR and its verdict matches the PR's body and labels.
@@ -47,8 +49,8 @@ How to verify: open the task's draft PR; the new check appears and reflects its 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold `tools/release/` (run.sh, tsconfig, dispatch, gitignore, `pnpm release` script) and the `gh`-backed I/O layer
-- [ ] 2 `[agent]` `categories.ts` mapping + spec
-- [ ] 3 `[agent]` Pure `checkPr` + specs, `check-pr` subcommand
-- [ ] 4 `[agent]` `pull-request-check.yml` workflow
-- [ ] 5 `[agent]` Create the `backport` and `release` labels with `gh label create`
+- [x] 1 `[agent]` Scaffold `tools/release/` (run.sh, tsconfig, dispatch, gitignore, `pnpm release` script) and the `gh`-backed I/O layer
+- [x] 2 `[agent]` `categories.ts` mapping + spec
+- [x] 3 `[agent]` Pure `checkPr` + specs, `check-pr` subcommand
+- [x] 4 `[agent]` `pull-request-check.yml` workflow
+- [x] 5 `[agent]` Create the `backport` and `release` labels with `gh label create`
