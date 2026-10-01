@@ -12,7 +12,7 @@ export const CATEGORIES: ReadonlyArray<Category> = [
   { section: 'Performance Improvements', labels: [ 'performance' ] },
   { section: 'Dependencies Updates', labels: [ 'dependencies' ] },
   { section: 'Design Updates', labels: [ 'design' ] },
-  { section: 'DX & Tooling', labels: [ 'refactoring' ] },
+  { section: 'DX & Tooling', labels: [ 'refactoring', 'tech', 'devops' ] },
   { section: 'Other Changes', labels: [ 'chore' ] },
 ];
 
