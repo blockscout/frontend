@@ -52,7 +52,7 @@ export const buildExternalAssetFilePath = (name: string, value: string) => {
   return fileExtension ? `/assets/configs/${ fileName }.${ fileExtension }` : `/assets/configs/${ fileName }`;
 };
 
-function parseUrl(value: string) {
+function parseUrl(value: string): URL | undefined {
   try {
     return new URL(value);
   } catch (error) {
