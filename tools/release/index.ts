@@ -1,13 +1,17 @@
 /* eslint-disable no-console -- CLI tool, console output is the interface */
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs } from '../cli/flags';
+import { alphaCommand } from './commands/alpha';
 import { checkPrCommand } from './commands/check-pr';
 import { checkTagCommand } from './commands/check-tag';
 import { labelCommand } from './commands/label';
 import { notesCommand } from './commands/notes';
+import { prepareCommand } from './commands/prepare';
 
 const USAGE = `Usage: pnpm release <subcommand> [args]
 
+  prepare <vX.Y>      cut release/vX.Y from main and create the line's draft pre-release
+  alpha <tag>         tag release/vX.Y as an alpha, re-point the pre-release to it and watch its CI run
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels
   check-tag <tag>     check that a tag ships no "upcoming" ENV docs and no PR another release shipped
   label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere
@@ -16,6 +20,8 @@ const USAGE = `Usage: pnpm release <subcommand> [args]
 type Command = (args: ReadonlyArray<string>) => number;
 
 const COMMANDS: ReadonlyMap<string, Command> = new Map<string, Command>([
+  [ 'prepare', prepareCommand ],
+  [ 'alpha', alphaCommand ],
   [ 'check-pr', checkPrCommand ],
   [ 'check-tag', checkTagCommand ],
   [ 'label', labelCommand ],

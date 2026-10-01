@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { isVersionLabel, parseTag, previousTag, versionLabel } from './versions';
+import {
+  isVersionLabel,
+  minorTag,
+  parseAlphaTagOrThrow,
+  parseLineOrThrow,
+  parseTag,
+  previousTag,
+  releaseBranch,
+  versionLabel,
+} from './versions';
 
 const TAGS = [
   'v2.11.0-alpha', 'v2.11.0', 'v2.11.1', 'v2.11.5',
@@ -80,5 +89,47 @@ describe('previousTag', () => {
 
   it('throws when nothing precedes the tag', () => {
     expect(() => previousTag('v2.11.0', [ 'v2.11.0' ])).toThrow('No release precedes v2.11.0');
+  });
+});
+
+describe('parseAlphaTagOrThrow', () => {
+  it('reads an alpha tag', () => {
+    expect(parseAlphaTagOrThrow('v2.13.1-alpha.2')).toEqual({ major: 2, minor: 13, patch: 1, prerelease: 'alpha.2' });
+  });
+
+  it.each([ 'v2.13.1', 'v2.13.0-alpha', 'v2.13.0-beta.1', 'v2.13.0-alpha.1.1' ])('rejects %s', (tag) => {
+    expect(() => parseAlphaTagOrThrow(tag)).toThrow(`Not an alpha tag: "${ tag }"; expected vX.Y.Z-alpha.N`);
+  });
+
+  it('rejects a non-tag as a non-tag', () => {
+    expect(() => parseAlphaTagOrThrow('main')).toThrow('Not a release tag: "main"');
+  });
+});
+
+describe('parseLineOrThrow', () => {
+  it('reads a line', () => {
+    expect(parseLineOrThrow('v2.13')).toEqual({ major: 2, minor: 13 });
+  });
+
+  it.each([ '2.13', 'v2.13.0', 'v2', 'release/v2.13' ])('rejects %s', (line) => {
+    expect(() => parseLineOrThrow(line)).toThrow(`Not a release line: "${ line }"; expected vX.Y`);
+  });
+});
+
+describe('releaseBranch', () => {
+  it('names the branch of a line', () => {
+    expect(releaseBranch(parseLineOrThrow('v2.13'))).toBe('release/v2.13');
+  });
+
+  it('infers the branch of a tag, a hotfix alpha included', () => {
+    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.0-alpha.1'))).toBe('release/v2.13');
+    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.1-alpha.2'))).toBe('release/v2.13');
+    expect(releaseBranch(parseAlphaTagOrThrow('v3.0.4-alpha.1'))).toBe('release/v3.0');
+  });
+});
+
+describe('minorTag', () => {
+  it('is the first release of the line', () => {
+    expect(minorTag(parseLineOrThrow('v2.13'))).toBe('v2.13.0');
   });
 });

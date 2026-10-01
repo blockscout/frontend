@@ -4,7 +4,7 @@ import path from 'node:path';
 
 import { parseArgs } from '../../cli/flags';
 import type { PrLabels } from '../check-tag';
-import { findUpcoming, findVersionedPrs } from '../check-tag';
+import { ENV_DOCS, findUpcoming, findVersionedPrs } from '../check-tag';
 import { repoRoot } from '../git';
 import { fetchPrLabels, fetchReleaseBodies } from '../github';
 import { parseTagOrThrow } from '../versions';
@@ -13,8 +13,6 @@ const USAGE = `Usage: pnpm release check-tag <tag>
 
   fails when the ENV docs in the checkout still say "upcoming", or when the tag's GitHub release lists a PR
   already shipped by another release`;
-
-const ENV_DOCS = [ 'docs/ENVS.md', 'docs/DEPRECATED_ENVS.md' ];
 
 export interface TagCheckSource {
   readonly readDoc: (path: string) => string;

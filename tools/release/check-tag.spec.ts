@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { PrLabels } from './check-tag';
-import { bodyPrNumbers, findUpcoming, findVersionedPrs } from './check-tag';
+import { bodyPrNumbers, findUpcoming, findVersionedPrs, replaceUpcoming } from './check-tag';
 
 describe('findUpcoming', () => {
   it('reports every line that still says "upcoming", with its file and line number', () => {
@@ -22,6 +22,27 @@ describe('findUpcoming', () => {
 
   it('does not match the word inside another one', () => {
     expect(findUpcoming([ { path: 'docs/ENVS.md', content: 'upcomingVersion\nNOT_UPCOMING' } ])).toEqual([]);
+  });
+});
+
+describe('replaceUpcoming', () => {
+  it('releases every placeholder as the tag and counts them', () => {
+    const content = '| NEXT_PUBLIC_A | v2.12.0+ |\n| NEXT_PUBLIC_B | upcoming |\n| NEXT_PUBLIC_C | <Upcoming> |\n| NEXT_PUBLIC_D | `upcoming` |\n';
+
+    expect(replaceUpcoming(content, 'v2.13.0')).toEqual({
+      content: '| NEXT_PUBLIC_A | v2.12.0+ |\n| NEXT_PUBLIC_B | v2.13.0+ |\n| NEXT_PUBLIC_C | v2.13.0+ |\n| NEXT_PUBLIC_D | `v2.13.0+` |\n',
+      count: 3,
+    });
+  });
+
+  it('leaves the word inside another one alone', () => {
+    expect(replaceUpcoming('upcomingVersion\nNOT_UPCOMING', 'v2.13.0')).toEqual({ content: 'upcomingVersion\nNOT_UPCOMING', count: 0 });
+  });
+
+  it('leaves nothing for the tag check to flag', () => {
+    const { content } = replaceUpcoming('| A | upcoming |\n| B | <UPCOMING> |\n| C | Upcoming |', 'v2.13.0');
+
+    expect(findUpcoming([ { path: 'docs/ENVS.md', content } ])).toEqual([]);
   });
 });
 

@@ -6,16 +6,19 @@ import type { FlagSpec } from '../../cli/flags';
 import { parseArgs } from '../../cli/flags';
 import { repoRoot } from '../git';
 import { releaseNotes } from '../notes';
-import { API_VERSION_HEADING, unreadableApiVersions } from '../notes-sections';
 import { RELEASE_SOURCE } from '../release-source';
 import { parseTagOrThrow } from '../versions';
-import { describePr, logExclusions, logList } from './report';
+import { logReleaseNotes } from './report';
 
 const USAGE = `Usage: pnpm release notes <tag> [--out <file>]
 
   prints the release notes of the tag, or writes them to --out`;
 
 const TEMPLATE_PATH = 'tools/release/notes-template.md';
+
+export function readNotesTemplate(): string {
+  return fs.readFileSync(path.join(repoRoot(), TEMPLATE_PATH), 'utf8');
+}
 
 export interface NotesArgs {
   readonly tag: string;
@@ -44,21 +47,13 @@ export function parseNotesArgs(args: ReadonlyArray<string>): NotesArgs {
 
 export function notesCommand(args: ReadonlyArray<string>): number {
   const { tag, out } = parseNotesArgs(args);
-  const template = fs.readFileSync(path.join(repoRoot(), TEMPLATE_PATH), 'utf8');
-  const { previousTag, prs, skipped, unresolved, markdown } = releaseNotes(tag, RELEASE_SOURCE, template);
-
-  console.error(`Release ${ tag }, compared with ${ previousTag }`);
-  logList('PRs in the notes', prs.map(describePr));
-  logExclusions(skipped, unresolved);
-  const unreadable = unreadableApiVersions(prs);
-  if (unreadable.length > 0) {
-    logList(`Not in Compatibility, "${ API_VERSION_HEADING }" names no "<service> v<version>"; check by hand`, unreadable.map((number) => `#${ number }`));
-  }
+  const notes = releaseNotes(tag, RELEASE_SOURCE, readNotesTemplate());
+  logReleaseNotes(tag, notes);
 
   if (out === undefined) {
-    console.log(markdown);
+    console.log(notes.markdown);
   } else {
-    fs.writeFileSync(out, markdown);
+    fs.writeFileSync(out, notes.markdown);
     console.error(`\nNotes written to ${ path.resolve(out) }.`);
   }
   return 0;

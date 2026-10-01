@@ -11,3 +11,12 @@ export const RELEASE_SOURCE: NotesSource = {
   pullRequest: fetchReleasePullRequest,
   generatedNotes: generateReleaseNotes,
 };
+
+// For a tag not cut yet: the notes are read up to the commit it is going to name.
+export function releaseSourceAt(head: string): NotesSource {
+  return {
+    ...RELEASE_SOURCE,
+    commits: (from) => listCommits(from, head),
+    generatedNotes: (tag, previousTag) => generateReleaseNotes(tag, previousTag, head),
+  };
+}

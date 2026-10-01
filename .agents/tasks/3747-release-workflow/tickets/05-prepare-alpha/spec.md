@@ -38,6 +38,6 @@ pushes the tag (firing `pre-release.yml`), waits for the workflow run and report
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Version / branch / upcoming pure logic + specs
-- [ ] 2 `[agent]` `prepare` subcommand
-- [ ] 3 `[agent]` `alpha` subcommand with the run watch
+- [x] 1 `[agent]` Version / branch / upcoming pure logic + specs
+- [x] 2 `[agent]` `prepare` subcommand
+- [x] 3 `[agent]` `alpha` subcommand with the run watch

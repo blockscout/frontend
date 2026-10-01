@@ -20,7 +20,11 @@ export interface VersionedPr {
 // Undefined when the number is an issue: a `#N` reference can name either.
 export type PrLabels = (number: number) => ReadonlyArray<string> | undefined;
 
+export const ENV_DOCS = [ 'docs/ENVS.md', 'docs/DEPRECATED_ENVS.md' ];
+
 const UPCOMING = /\bupcoming\b/i;
+// Every mention the check above flags, with the `<upcoming>` spelling swallowed whole.
+const UPCOMING_PLACEHOLDER = /<upcoming>|\bupcoming\b/gi;
 // Only links into this repository: a backend PR quoted in the notes has a number of its own.
 const PR_LINK = /github\.com\/blockscout\/frontend\/pull\/(\d+)\b/g;
 const PR_REFERENCE = /(?<![\w&/])#(\d+)\b/g;
@@ -31,6 +35,18 @@ export function findUpcoming(docs: ReadonlyArray<Doc>): Array<UpcomingMention> {
     .split('\n')
     .map((text, index) => ({ path, line: index + 1, text: text.trim() }))
     .filter(({ text }) => UPCOMING.test(text)));
+}
+
+export interface UpcomingReplacement {
+  readonly content: string;
+  readonly count: number;
+}
+
+export function replaceUpcoming(content: string, tag: string): UpcomingReplacement {
+  return {
+    content: content.replace(UPCOMING_PLACEHOLDER, `${ tag }+`),
+    count: content.match(UPCOMING_PLACEHOLDER)?.length ?? 0,
+  };
 }
 
 export function bodyPrNumbers(body: string): Array<number> {

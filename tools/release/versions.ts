@@ -5,8 +5,16 @@ export interface Version {
   readonly prerelease: string | undefined;
 }
 
+// A release line: the minor every `vX.Y.*` tag and `release/vX.Y` belong to.
+export interface Line {
+  readonly major: number;
+  readonly minor: number;
+}
+
 const TAG = /^v(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/;
 const VERSION_LABEL = /^v\d+\.\d+\.\d+$/;
+const LINE = /^v(\d+)\.(\d+)$/;
+const ALPHA = /^alpha\.\d+$/;
 
 export function parseTag(tag: string): Version | undefined {
   const match = TAG.exec(tag);
@@ -23,6 +31,40 @@ export function parseTagOrThrow(tag: string): Version {
     throw new Error(`Not a release tag: "${ tag }"; expected vX.Y.Z or vX.Y.Z-<pre-release>`);
   }
   return version;
+}
+
+export function parseAlphaTagOrThrow(tag: string): Version {
+  const version = parseTagOrThrow(tag);
+  if (version.prerelease === undefined || !ALPHA.test(version.prerelease)) {
+    throw new Error(`Not an alpha tag: "${ tag }"; expected vX.Y.Z-alpha.N`);
+  }
+  return version;
+}
+
+export function parseLineOrThrow(line: string): Line {
+  const match = LINE.exec(line);
+  if (match === null) {
+    throw new Error(`Not a release line: "${ line }"; expected vX.Y`);
+  }
+  const [ , major, minor ] = match;
+  return { major: Number(major), minor: Number(minor) };
+}
+
+export function formatLine({ major, minor }: Line): string {
+  return `v${ major }.${ minor }`;
+}
+
+export function isSameLine(a: Line, b: Line): boolean {
+  return a.major === b.major && a.minor === b.minor;
+}
+
+export function releaseBranch(line: Line): string {
+  return `release/${ formatLine(line) }`;
+}
+
+// The tag of the line's first release, which its pre-release names until the first alpha.
+export function minorTag(line: Line): string {
+  return `${ formatLine(line) }.0`;
 }
 
 export function formatVersion({ major, minor, patch }: Version): string {

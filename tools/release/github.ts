@@ -1,14 +1,15 @@
 import { execFileSync } from 'node:child_process';
 
 import { EXEC_MAX_BUFFER } from '../cli/exec';
+import type { GithubRelease } from './pre-release';
 import type { ReleasePullRequest } from './release-prs';
 
 // Every GitHub call goes through the `gh` CLI, which reads GH_TOKEN in CI and the operator's own
 // `gh auth` session locally, so the tool carries no token handling and no HTTP client of its own.
 // `{owner}/{repo}` in an API path is filled in by `gh` from the checkout's remote (or GH_REPO).
 
-export function gh(args: ReadonlyArray<string>): string {
-  return execFileSync('gh', args as Array<string>, { encoding: 'utf8', maxBuffer: EXEC_MAX_BUFFER });
+export function gh(args: ReadonlyArray<string>, input?: string): string {
+  return execFileSync('gh', args as Array<string>, { input, encoding: 'utf8', maxBuffer: EXEC_MAX_BUFFER });
 }
 
 export function ghApi<Response>(path: string): Response {
@@ -169,9 +170,76 @@ export function listLabeled(name: string): Array<number> {
 }
 
 // Only for its "New Contributors" list: GitHub knows who contributed before, the checkout does not.
-export function generateReleaseNotes(tag: string, previousTag: string): string {
+// A tag not pushed yet needs the commit it will name as its target.
+export function generateReleaseNotes(tag: string, previousTag: string, target?: string): string {
+  const targetField = target === undefined ? [] : [ '-f', `target_commitish=${ target }` ];
   return gh([
     'api', '--method', 'POST', 'repos/{owner}/{repo}/releases/generate-notes',
-    '-f', `tag_name=${ tag }`, '-f', `previous_tag_name=${ previousTag }`, '--jq', '.body',
+    '-f', `tag_name=${ tag }`, '-f', `previous_tag_name=${ previousTag }`, ...targetField, '--jq', '.body',
   ]);
+}
+
+// Sent as a JSON body on stdin: release notes outgrow what fits in a `-f` argument.
+function ghSend<Response>(method: 'POST' | 'PATCH', apiPath: string, payload: object): Response {
+  return JSON.parse(gh([ 'api', '--method', method, apiPath, '--input', '-' ], JSON.stringify(payload))) as Response;
+}
+
+interface ReleaseResponse {
+  readonly id: number;
+  readonly tag_name: string;
+  readonly draft: boolean;
+  readonly prerelease: boolean;
+  readonly html_url: string;
+}
+
+function toGithubRelease(release: ReleaseResponse): GithubRelease {
+  return { id: release.id, tagName: release.tag_name, draft: release.draft, prerelease: release.prerelease, url: release.html_url };
+}
+
+export function listReleases(): Array<GithubRelease> {
+  return gh([ 'api', '--paginate', 'repos/{owner}/{repo}/releases', '--jq', '.[] | { id, tag_name, draft, prerelease, html_url } | @json' ])
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => toGithubRelease(JSON.parse(line) as ReleaseResponse));
+}
+
+export interface ReleaseContent {
+  readonly tagName: string;
+  readonly target: string;
+  readonly body: string;
+}
+
+function releaseFields({ tagName, target, body }: ReleaseContent): object {
+  return { tag_name: tagName, target_commitish: target, name: tagName, body };
+}
+
+export function createDraftPreRelease(content: ReleaseContent): GithubRelease {
+  return toGithubRelease(ghSend('POST', 'repos/{owner}/{repo}/releases', { ...releaseFields(content), draft: true, prerelease: true }));
+}
+
+export function updateRelease(id: number, content: ReleaseContent): GithubRelease {
+  return toGithubRelease(ghSend('PATCH', `repos/{owner}/{repo}/releases/${ id }`, releaseFields(content)));
+}
+
+export interface WorkflowRun {
+  readonly id: number;
+  readonly url: string;
+}
+
+// A tag push runs with the tag as its "branch".
+export function findTagRun(workflow: string, tag: string): WorkflowRun | undefined {
+  const runs = JSON.parse(gh([
+    'run', 'list', '--workflow', workflow, '--branch', tag, '--event', 'push', '--limit', '1', '--json', 'databaseId,url',
+  ])) as ReadonlyArray<{ readonly databaseId: number; readonly url: string }>;
+  return runs.map(({ databaseId, url }) => ({ id: databaseId, url }))[0];
+}
+
+// The live progress goes to stderr, keeping stdout for the command's result.
+export function watchRun(id: number): boolean {
+  try {
+    execFileSync('gh', [ 'run', 'watch', String(id), '--exit-status' ], { stdio: [ 'ignore', 2, 2 ] });
+    return true;
+  } catch {
+    return false;
+  }
 }
