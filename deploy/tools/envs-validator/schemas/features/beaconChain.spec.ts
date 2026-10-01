@@ -19,13 +19,13 @@ describe('beaconChainSchema', () => {
 
   it('rejects a malformed flag', () => {
     expect(getValidationErrors(beaconChainSchema, { NEXT_PUBLIC_HAS_BEACON_CHAIN: 'yes' })).toEqual([
-      'NEXT_PUBLIC_HAS_BEACON_CHAIN must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_HAS_BEACON_CHAIN: Expected "true" or "false" but received "yes"',
     ]);
   });
 
   it('rejects an empty currency symbol', () => {
     expect(getValidationErrors(beaconChainSchema, { ...ENABLED, NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL: '' })).toEqual([
-      'NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL must be at least 1 characters',
+      'NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL: Invalid length: Expected !0 but received 0',
     ]);
   });
 

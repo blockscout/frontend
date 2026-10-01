@@ -21,10 +21,10 @@ describe('single-chain schema', () => {
 
   it('requires the app host, API host, network name and network id', () => {
     expect(getValidationErrors(schema, {}).sort()).toEqual([
-      'NEXT_PUBLIC_API_HOST is a required field',
-      'NEXT_PUBLIC_APP_HOST is a required field',
-      'NEXT_PUBLIC_NETWORK_ID is a required field',
-      'NEXT_PUBLIC_NETWORK_NAME is a required field',
+      'NEXT_PUBLIC_API_HOST: Invalid key: Expected "NEXT_PUBLIC_API_HOST" but received undefined',
+      'NEXT_PUBLIC_APP_HOST: Invalid key: Expected "NEXT_PUBLIC_APP_HOST" but received undefined',
+      'NEXT_PUBLIC_NETWORK_ID: Invalid key: Expected "NEXT_PUBLIC_NETWORK_ID" but received undefined',
+      'NEXT_PUBLIC_NETWORK_NAME: Invalid key: Expected "NEXT_PUBLIC_NETWORK_NAME" but received undefined',
     ]);
   });
 
@@ -110,7 +110,7 @@ describe('single-chain schema', () => {
 
     it('rejects an unsupported wallet', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_WEB3_WALLETS: toEnvValue([ 'duck_wallet' ]) })).toEqual([
-        'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal',
+        'NEXT_PUBLIC_WEB3_WALLETS: Invalid type: Expected ("none" | string) but received "[\'duck_wallet\']"',
       ]);
     });
   });
@@ -125,7 +125,7 @@ describe('single-chain schema', () => {
 
     it('rejects a provider without a url template', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: toEnvValue({ name: 'Need gas?' }) })).toEqual([
-        'Invalid schema were provided for NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG, it should have name and url template',
+        'NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG.url_template: Invalid key: Expected "url_template" but received undefined',
       ]);
     });
   });
@@ -140,7 +140,7 @@ describe('single-chain schema', () => {
 
     it('rejects a config without an api url template', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_ADDRESS_USERNAME_TAG: toEnvValue({ tag_icon: 'https://example.com/icon.svg' }) })).toEqual([
-        'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_USERNAME_TAG, it should have api_url_template',
+        'NEXT_PUBLIC_ADDRESS_USERNAME_TAG.api_url_template: Invalid key: Expected "api_url_template" but received undefined',
       ]);
     });
   });
@@ -153,7 +153,7 @@ describe('single-chain schema', () => {
     it('rejects a config without the explorer url template', () => {
       const incomplete = { chain_name: txExternalTxsConfig.chain_name, chain_logo_url: txExternalTxsConfig.chain_logo_url };
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG: toEnvValue(incomplete) })).toEqual([
-        'Invalid schema were provided for NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG, it should have chain_name, chain_logo_url, and explorer_url_template',
+        'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG.explorer_url_template: Invalid key: Expected "explorer_url_template" but received undefined',
       ]);
     });
   });
@@ -169,7 +169,7 @@ describe('single-chain schema', () => {
 
     it('rejects a config that is not an object', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_USERCENTRICS_CONFIG: 'xxx' })).toEqual([
-        'Invalid schema for NEXT_PUBLIC_USERCENTRICS_CONFIG, it should have settingsId or rulesetId',
+        'NEXT_PUBLIC_USERCENTRICS_CONFIG: Invalid JSON: Received "xxx"',
       ]);
     });
 
@@ -194,31 +194,33 @@ describe('single-chain schema', () => {
 
     it('rejects an unsupported transaction interpretation provider', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER: 'duck' })).toEqual([
-        'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER must be one of the following values: blockscout, noves, none',
+        'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER: Invalid type: Expected ("blockscout" | "noves" | "none") but received "duck"',
       ]);
     });
 
     it('rejects an unsupported validators chain type', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: 'duck' })).toEqual([
-        'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE must be one of the following values: stability, blackfort, zilliqa',
+        'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: Invalid type: Expected ("stability" | "blackfort" | "zilliqa") but received "duck"',
       ]);
     });
 
     it('rejects an unsupported gas tracker unit', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_GAS_TRACKER_UNITS: toEnvValue([ 'eth' ]) })).toEqual([
-        'NEXT_PUBLIC_GAS_TRACKER_UNITS[0] must be one of the following values: usd, gwei',
+        'NEXT_PUBLIC_GAS_TRACKER_UNITS.0: Invalid type: Expected ("usd" | "gwei") but received "eth"',
       ]);
     });
 
     it('rejects an unsupported app protocol', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_APP_PROTOCOL: 'ftp' })).toEqual([
-        'NEXT_PUBLIC_APP_PROTOCOL must be one of the following values: http, https',
+        'NEXT_PUBLIC_APP_PROTOCOL: Invalid type: Expected ("http" | "https") but received "ftp"',
       ]);
     });
 
     it('rejects an app port that is not a positive integer', () => {
-      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_APP_PORT: '-1' })).toEqual([ 'NEXT_PUBLIC_APP_PORT must be a positive number' ]);
-      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_APP_PORT: '1.5' })).toEqual([ 'NEXT_PUBLIC_APP_PORT must be an integer' ]);
+      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_APP_PORT: '-1' })).toEqual([
+        'NEXT_PUBLIC_APP_PORT: Invalid value: Expected >=1 but received -1',
+      ]);
+      expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_APP_PORT: '1.5' })).toEqual([ 'NEXT_PUBLIC_APP_PORT: Invalid integer: Received 1.5' ]);
     });
   });
 
@@ -235,7 +237,7 @@ describe('single-chain schema', () => {
     'NEXT_PUBLIC_USE_NEXT_JS_PROXY',
   ])('rejects a non-boolean %s', (name) => {
     expect(getValidationErrors(schema, { ...REQUIRED, [name]: 'yes' })).toEqual([
-      `${ name } must be a \`boolean\` type, but the final value was: \`"yes"\`.`,
+      `${ name }: Expected "true" or "false" but received "yes"`,
     ]);
   });
 });

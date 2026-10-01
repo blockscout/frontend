@@ -1,182 +1,86 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import type { EssentialDappsConfig, MarketplaceTitles } from 'src/features/marketplace/types/client';
+import { envBoolean, envJson, envUrl, requiredIf, requires } from '../../utils';
 
-import { replaceQuotes } from 'src/config/utils/envs';
+const nestedUrlSchema = v.pipe(v.string(), v.url());
+const nestedRequiredStringSchema = v.pipe(v.string(), v.nonEmpty());
 
-import { urlTest } from '../../utils';
+const marketplaceAppSchema = v.object({
+  id: nestedRequiredStringSchema,
+  external: v.optional(v.boolean()),
+  title: nestedRequiredStringSchema,
+  logo: nestedUrlSchema,
+  logoDarkMode: v.optional(nestedUrlSchema),
+  shortDescription: nestedRequiredStringSchema,
+  categories: v.array(nestedRequiredStringSchema),
+  url: nestedUrlSchema,
+  author: nestedRequiredStringSchema,
+  description: nestedRequiredStringSchema,
+  site: v.optional(nestedUrlSchema),
+  twitter: v.optional(nestedUrlSchema),
+  telegram: v.optional(nestedUrlSchema),
+  github: v.optional(v.union([ v.array(nestedUrlSchema), nestedUrlSchema ])),
+  discord: v.optional(nestedUrlSchema),
+  internalWallet: v.optional(v.boolean()),
+  priority: v.optional(v.number()),
+});
 
-const marketplaceAppSchema = yup
-  .object({
-    id: yup.string().required(),
-    external: yup.boolean(),
-    title: yup.string().required(),
-    logo: yup.string().test(urlTest).required(),
-    logoDarkMode: yup.string().test(urlTest),
-    shortDescription: yup.string().required(),
-    categories: yup.array().of(yup.string().required()).required(),
-    url: yup.string().test(urlTest).required(),
-    author: yup.string().required(),
-    description: yup.string().required(),
-    site: yup.string().test(urlTest),
-    twitter: yup.string().test(urlTest),
-    telegram: yup.string().test(urlTest),
-    github: yup.lazy(value =>
-      Array.isArray(value) ?
-        yup.array().of(yup.string().required().test(urlTest)) :
-        yup.string().test(urlTest),
-    ),
-    discord: yup.string().test(urlTest),
-    internalWallet: yup.boolean(),
-    priority: yup.number(),
-  });
+const essentialDappChainsSchema = v.pipe(v.array(nestedRequiredStringSchema), v.minLength(1));
 
-export const marketplaceSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_MARKETPLACE_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
-      .array()
-      .json()
-      .of(marketplaceAppSchema)
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
+const essentialDappsConfigSchema = v.object({
+  swap: v.optional(v.nullable(v.object({
+    chains: essentialDappChainsSchema,
+    fee: nestedRequiredStringSchema,
+    integrator: nestedRequiredStringSchema,
+  }))),
+  revoke: v.optional(v.nullable(v.object({
+    chains: essentialDappChainsSchema,
+  }))),
+  multisend: v.optional(v.nullable(v.object({
+    chains: essentialDappChainsSchema,
+    posthogKey: v.optional(v.string()),
+    posthogHost: v.optional(nestedUrlSchema),
+  }))),
+});
 
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
-      .array()
-      .json()
-      .of(yup.string())
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
+const marketplaceTitlesSchema = v.object({
+  menu_item: v.optional(v.string()),
+  title: v.optional(v.string()),
+  subtitle_essential_dapps: v.optional(v.string()),
+  subtitle_list: v.optional(v.string()),
+});
 
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test(urlTest).required(),
+const dependentOnMarketplaceEnabled = (name: string) => requires(name, 'NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+  message: `${ name } cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED`,
+});
 
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test(urlTest),
-
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_FEATURED_APP: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test(urlTest),
-
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test(urlTest),
-
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: yup
-      .mixed()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test(
-          'shape',
-          'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, ' +
-          'it should contain optional swap/revoke/multisend sections with required fields',
-          (data) => {
-            const isUndefined = data === undefined;
-            const chainsSchema = yup.array().of(yup.string().required()).min(1).required();
-            const valueSchema = yup.object<EssentialDappsConfig>().transform(replaceQuotes).json().shape({
-              swap: yup.lazy(value => value ?
-                yup.object<EssentialDappsConfig['swap']>().shape({
-                  chains: chainsSchema,
-                  fee: yup.string().required(),
-                  integrator: yup.string().required(),
-                }) :
-                yup.object().nullable(),
-              ),
-              revoke: yup.lazy(value => value ?
-                yup.object<EssentialDappsConfig['revoke']>().shape({ chains: chainsSchema }) :
-                yup.object().nullable(),
-              ),
-              multisend: yup.lazy(value => value ?
-                yup.object<EssentialDappsConfig['multisend']>().shape({
-                  chains: chainsSchema,
-                  posthogKey: yup.string(),
-                  posthogHost: yup.string().test(urlTest),
-                }) :
-                yup.object().nullable(),
-              ),
-            });
-            return isUndefined || valueSchema.isValidSync(data);
-          }),
-
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_TITLES: yup
-      .mixed()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema.test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_TITLES', (data) => {
-          const isUndefined = data === undefined;
-          const valueSchema = yup.object<MarketplaceTitles>().transform(replaceQuotes).json().shape({
-            menu_item: yup.string(),
-            title: yup.string(),
-            subtitle_essential_dapps: yup.string(),
-            subtitle_list: yup.string(),
-          });
-
-          return isUndefined || valueSchema.isValidSync(data);
-        }),
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_MARKETPLACE_TITLES cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: yup
-      .boolean()
-      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: true,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-  });
+export const marketplaceSchema = v.pipe(
+  v.object({
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: v.optional(envJson(v.array(marketplaceAppSchema))),
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: v.optional(envJson(v.array(v.string()))),
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: v.optional(envUrl()),
+    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: v.optional(envUrl()),
+    NEXT_PUBLIC_MARKETPLACE_FEATURED_APP: v.optional(v.string()),
+    NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL: v.optional(envUrl()),
+    NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL: v.optional(envUrl()),
+    NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: v.optional(v.string()),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: v.optional(envJson(essentialDappsConfigSchema)),
+    NEXT_PUBLIC_MARKETPLACE_TITLES: v.optional(envJson(marketplaceTitlesSchema)),
+    NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: v.optional(envBoolean()),
+  }),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM'),
+  requiredIf('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM', 'NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_FEATURED_APP'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_TITLES'),
+  dependentOnMarketplaceEnabled('NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED'),
+);

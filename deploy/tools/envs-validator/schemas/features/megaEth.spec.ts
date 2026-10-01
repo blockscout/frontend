@@ -17,6 +17,6 @@ describe('megaEthSchema', () => {
     'NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS',
     'NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC',
   ])('rejects a malformed %s', (name) => {
-    expect(getValidationErrors(megaEthSchema, { [name]: 'not a url' })).toEqual([ `${ name } is not a valid URL` ]);
+    expect(getValidationErrors(megaEthSchema, { [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
   });
 });

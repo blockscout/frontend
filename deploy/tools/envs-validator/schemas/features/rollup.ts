@@ -1,156 +1,76 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
 import { ROLLUP_TYPES } from 'src/features/rollup/common/types/config';
 
-import { replaceQuotes } from 'src/config/utils/envs';
-
 import * as regexp from 'src/toolkit/utils/regexp';
 
-import { urlTest, getYupValidationErrorMessage } from '../../utils';
+import { envBoolean, envJson, envNumber, envPositiveInteger, envUrl, requiredIf, requires } from '../../utils';
 
-const parentChainCurrencySchema = yup
-  .object()
-  .shape({
-    name: yup.string().required(),
-    symbol: yup.string().required(),
-    decimals: yup.number().required(),
-  });
+const parentChainCurrencySchema = v.object({
+  name: v.pipe(v.string(), v.nonEmpty()),
+  symbol: v.pipe(v.string(), v.nonEmpty()),
+  decimals: v.number(),
+});
 
-export const rollupSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_ROLLUP_TYPE: yup.string().oneOf(ROLLUP_TYPES),
-    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: yup
-      .object()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value,
-        then: (schema) => {
-          return schema.transform(replaceQuotes).json().shape({
-            id: yup.number(),
-            name: yup.string(),
-            baseUrl: yup.string().test(urlTest).required(),
-            rpcUrls: yup.array().of(yup.string().test(urlTest)),
-            currency: yup
-              .mixed()
-              .test(
-                'shape',
-                (ctx) => {
-                  try {
-                    parentChainCurrencySchema.validateSync(ctx.originalValue);
-                    throw new Error('Unknown validation error');
-                  } catch (error: unknown) {
-                    const message = getYupValidationErrorMessage(error);
-                    return 'in "currency" property ' + (message ? `${ message }` : '');
-                  }
-                },
-                (data) => {
-                  const isUndefined = data === undefined;
-                  return isUndefined || parentChainCurrencySchema.isValidSync(data);
-                },
-              ),
-            isTestnet: yup.boolean(),
-          });
-        },
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value === 'optimistic',
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
-      }),
-    NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
-      .boolean()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: 'optimistic',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_INTEROP_ENABLED: yup
-      .boolean()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: 'optimistic',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_INTEROP_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_FAULT_PROOF_ENABLED: yup.boolean()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: 'optimistic',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_FAULT_PROOF_ENABLED can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: yup
-      .boolean()
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: yup
-      .string()
-      .min(60)
-      .max(60)
-      .matches(regexp.HEX_REGEXP_WITH_0X)
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value === 'arbitrum',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' '),
-      }),
-    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL: yup
-      .string()
-      .test(urlTest)
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value === 'arbitrum' || value === 'optimistic',
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(
-          -1,
-          'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' or \'optimistic\'',
-        ),
-      }),
-    NEXT_PUBLIC_ROLLUP_STAGE_INDEX: yup.number().oneOf([ 1, 2 ])
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_STAGE_INDEX can only be used with NEXT_PUBLIC_ROLLUP_TYPE',
-          value => value === undefined,
-        ),
-      }),
-    NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: yup.number()
-      .positive()
-      .integer()
-      .min(2)
-      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER can only be used with NEXT_PUBLIC_ROLLUP_TYPE',
-          value => value === undefined,
-        ),
-      }),
-  });
+const parentChainSchema = v.object({
+  id: v.optional(v.number()),
+  name: v.optional(v.string()),
+  baseUrl: v.pipe(v.string(), v.nonEmpty(), v.url()),
+  rpcUrls: v.optional(v.array(v.pipe(v.string(), v.url()))),
+  currency: v.optional(parentChainCurrencySchema),
+  isTestnet: v.optional(v.boolean()),
+});
+
+const isOptimistic = (type: unknown) => type === 'optimistic';
+const isArbitrum = (type: unknown) => type === 'arbitrum';
+
+export const rollupSchema = v.pipe(
+  v.looseObject({
+    NEXT_PUBLIC_ROLLUP_TYPE: v.optional(v.picklist(ROLLUP_TYPES)),
+    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: v.optional(envJson(parentChainSchema)),
+    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: v.optional(envUrl()),
+    NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_INTEROP_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_FAULT_PROOF_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: v.optional(envBoolean()),
+    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: v.optional(v.pipe(v.string(), v.length(60), v.regex(regexp.HEX_REGEXP_WITH_0X))),
+    NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL: v.optional(envUrl()),
+    NEXT_PUBLIC_ROLLUP_STAGE_INDEX: v.optional(v.pipe(envNumber(), v.picklist([ 1, 2 ]))),
+    NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: v.optional(v.pipe(envPositiveInteger(), v.minValue(2))),
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    message: 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
+  }),
+  requiredIf('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', 'NEXT_PUBLIC_ROLLUP_TYPE'),
+  requires('NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: isOptimistic,
+    message: 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: isOptimistic,
+    message: 'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+  }),
+  requires('NEXT_PUBLIC_INTEROP_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: isOptimistic,
+    message: 'NEXT_PUBLIC_INTEROP_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+  }),
+  requires('NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: isOptimistic,
+    message: 'NEXT_PUBLIC_FAULT_PROOF_ENABLED can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    message: 'NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined',
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: isArbitrum,
+    message: 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' ',
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'NEXT_PUBLIC_ROLLUP_TYPE', {
+    when: (type) => isArbitrum(type) || isOptimistic(type),
+    message: 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' or \'optimistic\'',
+  }),
+  requires('NEXT_PUBLIC_ROLLUP_STAGE_INDEX', 'NEXT_PUBLIC_ROLLUP_TYPE'),
+  requires('NEXT_PUBLIC_ROLLUP_LAYER_NUMBER', 'NEXT_PUBLIC_ROLLUP_TYPE'),
+);

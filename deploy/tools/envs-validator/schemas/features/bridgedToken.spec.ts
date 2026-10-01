@@ -16,7 +16,9 @@ describe('bridgedTokensSchema', () => {
   });
 
   it('rejects chains without bridges', () => {
-    expect(getValidationErrors(bridgedTokensSchema, CHAINS)).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES is a required field' ]);
+    expect(getValidationErrors(bridgedTokensSchema, CHAINS)).toEqual([
+      'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES is required when NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS is set',
+    ]);
   });
 
   it('rejects bridges without chains', () => {
@@ -29,7 +31,7 @@ describe('bridgedTokensSchema', () => {
     expect(getValidationErrors(bridgedTokensSchema, {
       ...BRIDGES,
       NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS: toEnvValue([ { ...bridgedTokenChains[0], base_url: 'not a url' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS[0].base_url is not a valid URL' ]);
+    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS.0.base_url: Invalid URL: Received "not a url"' ]);
   });
 
   it('rejects a chain missing a required field', () => {
@@ -37,7 +39,7 @@ describe('bridgedTokensSchema', () => {
     expect(getValidationErrors(bridgedTokensSchema, {
       ...BRIDGES,
       NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS: toEnvValue([ chain ]),
-    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS[0].title is a required field' ]);
+    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS.0.title: Invalid key: Expected "title" but received undefined' ]);
   });
 
   it('rejects a bridge missing a required field', () => {
@@ -45,6 +47,6 @@ describe('bridgedTokensSchema', () => {
     expect(getValidationErrors(bridgedTokensSchema, {
       ...CHAINS,
       NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES: toEnvValue([ bridge ]),
-    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES[0].type is a required field' ]);
+    })).toEqual([ 'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES.0.type: Invalid key: Expected "type" but received undefined' ]);
   });
 });

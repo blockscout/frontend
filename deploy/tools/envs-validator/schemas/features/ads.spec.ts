@@ -41,16 +41,16 @@ describe('adsSchema', () => {
   });
 
   it.each([
-    [ 'NEXT_PUBLIC_AD_TEXT_PROVIDER', 'sevio, none' ],
-    [ 'NEXT_PUBLIC_AD_BANNER_PROVIDER', 'slise, adbutler, sevio, none' ],
-    [ 'NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER', 'adbutler' ],
+    [ 'NEXT_PUBLIC_AD_TEXT_PROVIDER', '("sevio" | "none")' ],
+    [ 'NEXT_PUBLIC_AD_BANNER_PROVIDER', '("slise" | "adbutler" | "sevio" | "none")' ],
+    [ 'NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER', '"adbutler"' ],
   ])('rejects an unsupported %s', (name, values) => {
-    expect(getValidationErrors(adsSchema, { [name]: 'unknown' })).toEqual([ `${ name } must be one of the following values: ${ values }` ]);
+    expect(getValidationErrors(adsSchema, { [name]: 'unknown' })).toEqual([ `${ name }: Invalid type: Expected ${ values } but received "unknown"` ]);
   });
 
   it('rejects a malformed specify flag', () => {
     expect(getValidationErrors(adsSchema, { NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY: 'yes' })).toEqual([
-      'NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY: Expected "true" or "false" but received "yes"',
     ]);
   });
 
@@ -60,12 +60,8 @@ describe('adsSchema', () => {
   ])('adbutler as %s', (name, base) => {
     it('rejects missing device configs', () => {
       expect(getValidationErrors(adsSchema, { ...base, [name]: 'adbutler' })).toEqual([
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.width is a required field',
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.id is a required field',
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.height is a required field',
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE.width is a required field',
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE.id is a required field',
-        'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE.height is a required field',
+        `NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP is required when ${ name } is set`,
+        `NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE is required when ${ name } is set`,
       ]);
     });
 
@@ -75,7 +71,7 @@ describe('adsSchema', () => {
         [name]: 'adbutler',
         ...ADBUTLER_CONFIGS,
         NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: toEnvValue({ ...adButlerConfigMobile, width: '0' }),
-      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE.width must be a positive number' ]);
+      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE.width: Invalid value: Expected >0 but received 0' ]);
     });
 
     it('rejects a device config with a non-numeric size', () => {
@@ -84,7 +80,7 @@ describe('adsSchema', () => {
         [name]: 'adbutler',
         ...ADBUTLER_CONFIGS,
         NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: toEnvValue({ ...adButlerConfigDesktop, height: 'tall' }),
-      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.height must be a `number` type, but the final value was: `NaN` (cast from the value `NaN`).' ]);
+      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.height: Expected a decimal number but received "tall"' ]);
     });
 
     it('rejects a device config missing the id', () => {
@@ -94,7 +90,7 @@ describe('adsSchema', () => {
         [name]: 'adbutler',
         ...ADBUTLER_CONFIGS,
         NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: toEnvValue(config),
-      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.id is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP.id: Invalid key: Expected "id" but received undefined' ]);
     });
   });
 

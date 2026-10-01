@@ -24,12 +24,12 @@ describe('multichainButtonSchema', () => {
   it('rejects a provider without a URL template', () => {
     expect(getValidationErrors(multichainButtonSchema, {
       NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue([ { name: provider.name, logo: provider.logo } ]),
-    })).toEqual([ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG[0].url_template is a required field' ]);
+    })).toEqual([ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG.0.url_template: Invalid key: Expected "url_template" but received undefined' ]);
   });
 
   it('rejects a provider with an unsupported view', () => {
     expect(getValidationErrors(multichainButtonSchema, {
       NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue([ { ...provider, view: 'compact' } ]),
-    })).toEqual([ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG[0].view must be one of the following values: full, icon' ]);
+    })).toEqual([ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG.0.view: Invalid type: Expected ("full" | "icon") but received "compact"' ]);
   });
 });

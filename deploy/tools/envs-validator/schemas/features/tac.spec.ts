@@ -19,7 +19,7 @@ describe('tacSchema', () => {
 
   it('rejects a malformed API host', () => {
     expect(getValidationErrors(tacSchema, { NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST: 'not a url' })).toEqual([
-      'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST is not a valid URL',
+      'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST: Invalid URL: Received "not a url"',
     ]);
   });
 
@@ -27,7 +27,7 @@ describe('tacSchema', () => {
     expect(getValidationErrors(tacSchema, {
       NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST: 'https://tac.blockscout.com',
       NEXT_PUBLIC_TAC_TON_EXPLORER_URL: 'not a url',
-    })).toEqual([ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL is not a valid URL' ]);
+    })).toEqual([ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL: Invalid URL: Received "not a url"' ]);
   });
 
   it('rejects the TON explorer URL without the API host', () => {

@@ -34,13 +34,13 @@ describe('marketplaceSchema', () => {
 
   it('requires the submit form when the marketplace is enabled', () => {
     expect(getValidationErrors(marketplaceSchema, { NEXT_PUBLIC_MARKETPLACE_ENABLED: 'true' })).toEqual([
-      'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM is a required field',
+      'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM is required when NEXT_PUBLIC_MARKETPLACE_ENABLED is set',
     ]);
   });
 
   it('rejects a non-boolean enabled flag', () => {
     expect(getValidationErrors(marketplaceSchema, { NEXT_PUBLIC_MARKETPLACE_ENABLED: 'yes' })).toEqual([
-      'NEXT_PUBLIC_MARKETPLACE_ENABLED must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_MARKETPLACE_ENABLED: Expected "true" or "false" but received "yes"',
     ]);
   });
 
@@ -62,7 +62,7 @@ describe('marketplaceSchema', () => {
     'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL',
     'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL',
   ])('rejects a malformed %s', (name) => {
-    expect(getValidationErrors(marketplaceSchema, { ...ENABLED, [name]: 'not a url' })).toEqual([ `${ name } is not a valid URL` ]);
+    expect(getValidationErrors(marketplaceSchema, { ...ENABLED, [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
   });
 
   describe('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', () => {
@@ -78,42 +78,39 @@ describe('marketplaceSchema', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: JSON.stringify([ app ]),
-      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL[0].id is a required field' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL.0.id: Invalid key: Expected "id" but received undefined' ]);
     });
 
     it('rejects an app with a malformed logo URL', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: JSON.stringify([ { ...marketplaceApps[0], logo: 'not a url' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL[0].logo is not a valid URL' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL.0.logo: Invalid URL: Received "not a url"' ]);
     });
 
     it('rejects an app with a malformed github link in the list', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: JSON.stringify([ { ...marketplaceApps[0], github: [ 'not a url' ] } ]),
-      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL[0].github[0] is not a valid URL' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL.0.github.0: Invalid URL: Received "not a url"' ]);
     });
 
     it('rejects an app with a non-boolean external flag', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: JSON.stringify([ { ...marketplaceApps[0], external: 'yes' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL[0].external must be a `boolean` type, but the final value was: `"yes"`.' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL.0.external: Invalid type: Expected boolean but received "yes"' ]);
     });
 
     it('rejects an app with a non-numeric priority', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: JSON.stringify([ { ...marketplaceApps[0], priority: 'high' } ]),
-      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL[0].priority must be a `number` type, but the final value was: `NaN` (cast from the value `NaN`).' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL.0.priority: Invalid type: Expected number but received "high"' ]);
     });
   });
 
   describe('NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', () => {
-    const message = 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG, ' +
-      'it should contain optional swap/revoke/multisend sections with required fields';
-
     it('accepts a single section', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
@@ -125,21 +122,21 @@ describe('marketplaceSchema', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: toEnvValue({ swap: { chains: [ '1' ], fee: '0.004' } }),
-      })).toEqual([ message ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG.swap.integrator: Invalid key: Expected "integrator" but received undefined' ]);
     });
 
     it('rejects a section with an empty chain list', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: toEnvValue({ revoke: { chains: [] } }),
-      })).toEqual([ message ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG.revoke.chains: Invalid length: Expected >=1 but received 0' ]);
     });
 
     it('rejects a multisend section with a malformed posthog host', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG: toEnvValue({ multisend: { chains: [ '1' ], posthogHost: 'not a url' } }),
-      })).toEqual([ message ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG.multisend.posthogHost: Invalid URL: Received "not a url"' ]);
     });
   });
 
@@ -148,13 +145,13 @@ describe('marketplaceSchema', () => {
       expect(getValidationErrors(marketplaceSchema, {
         ...ENABLED,
         NEXT_PUBLIC_MARKETPLACE_TITLES: toEnvValue({ title: [ 'Dappscout' ] }),
-      })).toEqual([ 'Invalid schema were provided for NEXT_PUBLIC_MARKETPLACE_TITLES' ]);
+      })).toEqual([ 'NEXT_PUBLIC_MARKETPLACE_TITLES.title: Invalid type: Expected string but received Array' ]);
     });
   });
 
   it('rejects a non-boolean essential dapps ad flag', () => {
     expect(getValidationErrors(marketplaceSchema, { ...ENABLED, NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: 'yes' })).toEqual([
-      'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_AD_ENABLED: Expected "true" or "false" but received "yes"',
     ]);
   });
 });

@@ -151,10 +151,10 @@ See `tools/dev-server/CONTEXT.md` § "Dropped envs" for the full why.
 
 ### A6 — (Optional) friendlier error for a replaced variable
 
-The `.noUnknown` + congruity checks already fail startup with a generic
+The unknown-variable + congruity checks already fail startup with a generic
 message. If the variable was **replaced** and you want operators to see a
 clear "use X instead" message, keep the variable in the schema as a
-`yup.mixed().test('not-exist', '<message>', value => value === undefined)`
+`v.optional(v.pipe(v.string(), v.check(() => false, '<message>')))`
 rule, with a spec case asserting the message.
 
 ---

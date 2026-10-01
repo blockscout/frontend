@@ -27,24 +27,24 @@ describe('apisSchema', () => {
   });
 
   it('requires the API host', () => {
-    expect(getValidationErrors(apisSchema, {})).toEqual([ 'NEXT_PUBLIC_API_HOST is a required field' ]);
+    expect(getValidationErrors(apisSchema, {})).toEqual([ 'NEXT_PUBLIC_API_HOST: Invalid key: Expected "NEXT_PUBLIC_API_HOST" but received undefined' ]);
   });
 
   it('rejects an unsupported protocol', () => {
     expect(getValidationErrors(apisSchema, { ...REQUIRED, NEXT_PUBLIC_API_PROTOCOL: 'ftp' })).toEqual([
-      'NEXT_PUBLIC_API_PROTOCOL must be one of the following values: http, https',
+      'NEXT_PUBLIC_API_PROTOCOL: Invalid type: Expected ("http" | "https") but received "ftp"',
     ]);
     expect(getValidationErrors(apisSchema, { ...REQUIRED, NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: 'http' })).toEqual([
-      'NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL must be one of the following values: ws, wss',
+      'NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: Invalid type: Expected ("ws" | "wss") but received "http"',
     ]);
   });
 
   it('rejects a port that is not a positive integer', () => {
     expect(getValidationErrors(apisSchema, { ...REQUIRED, NEXT_PUBLIC_API_PORT: '-1' })).toEqual([
-      'NEXT_PUBLIC_API_PORT must be a positive number',
+      'NEXT_PUBLIC_API_PORT: Invalid value: Expected >=1 but received -1',
     ]);
     expect(getValidationErrors(apisSchema, { ...REQUIRED, NEXT_PUBLIC_API_PORT: '1.5' })).toEqual([
-      'NEXT_PUBLIC_API_PORT must be an integer',
+      'NEXT_PUBLIC_API_PORT: Invalid integer: Received 1.5',
     ]);
   });
 
@@ -64,7 +64,7 @@ describe('apisSchema', () => {
         NEXT_PUBLIC_STATS_API_HOST: 'https://stats.example.com',
         NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL: toEnvValue({ 'stats:counters': -1 }),
       })).toEqual([
-        'Invalid schema was provided for NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL: stats:counters must be a positive number',
+        'NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL.stats:counters: Invalid value: Expected >=1 but received -1',
       ]);
     });
 
@@ -74,7 +74,7 @@ describe('apisSchema', () => {
         NEXT_PUBLIC_STATS_API_HOST: 'https://stats.example.com',
         NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL: toEnvValue({ 'stats:unknown': 1 }),
       })).toEqual([
-        'Invalid schema was provided for NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL: this object contains unknown properties: stats:unknown',
+        'NEXT_PUBLIC_STATS_API_REFETCH_INTERVAL.stats:unknown: Invalid key: Expected never but received "stats:unknown"',
       ]);
     });
 
@@ -125,6 +125,6 @@ describe('apisSchema', () => {
     'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST',
     'NEXT_PUBLIC_METADATA_SERVICE_API_HOST',
   ])('rejects a malformed %s', (name) => {
-    expect(getValidationErrors(apisSchema, { ...REQUIRED, [name]: 'not a url' })).toEqual([ `${ name } is not a valid URL` ]);
+    expect(getValidationErrors(apisSchema, { ...REQUIRED, [name]: 'not a url' })).toEqual([ `${ name }: Invalid URL: Received "not a url"` ]);
   });
 });
