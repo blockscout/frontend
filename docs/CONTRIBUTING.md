@@ -106,15 +106,8 @@ These are the steps that you have to follow to make everything work:
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/review-2/values.yaml.gotmpl` - review development environment (second instance)
 6. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
-7. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
-8. Check if modified validation schema is valid by doing the following steps:
-    - change your current directory to `deploy/tools/envs-validator`
-    - install deps with `pnpm` command
-    - add your variable into `./test/.env.base` test preset or create a new test preset if needed
-    - if your variable contains a link to the external JSON config file:
-      - add example of file content into `./test/assets` directory; the file name should be constructed by stripping away prefix `NEXT_PUBLIC_` and postfix `_URL` if any, and converting the remaining string to lowercase (for example, `NEXT_PUBLIC_MARKETPLACE_CONFIG_URL` will become `marketplace_config.json`)
-      - in the main script `index.ts` extend array `envsWithJsonConfig` with your variable name
-    - run `pnpm test` command to see the validation result
+7. Add a validation rule for the new variable to the schemas in `deploy/tools/envs-validator` and cover it in the sibling `*.spec.ts` file; `deploy/tools/envs-validator/CONTEXT.md` describes where the rule goes and how the specs are written
+8. Run `pnpm test:vitest deploy/tools/envs-validator` to see the validation result
 9. Don't forget to mention in the PR notes that new ENV variable was added  
 
 &nbsp;

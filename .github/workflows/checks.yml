@@ -10,7 +10,8 @@ on:
       - '.vscode/**'
       - '.agents/**'
       - '.cursor/**'
-      - 'deploy/**'
+      - 'deploy/values/**'
+      - 'deploy/scripts/**'
       - 'docs/**'
       - 'public/**'
 
@@ -72,6 +73,9 @@ jobs:
           - name: Check preset lists are in sync with registry
             run: pnpm presets:lint
 
+          - name: Build the envs-validator bundle
+            run: pnpm --filter envs-validator build
+
   toolkit_build_check:
     name: Toolkit build check
     needs: [ code_quality ]
@@ -120,35 +124,9 @@ jobs:
             exit 1
           fi
 
-  envs_validation:
-    name: ENV variables validation
-    runs-on: ubuntu-latest
-    needs: [ code_quality ]
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 12.4.1
-          cache: true
-
-      - name: Setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24.21.0
-          cache: 'pnpm'
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run validation tests
-        run: pnpm --filter envs-validator test
-
   vitest_tests:
     name: Unit tests
-    needs: [ code_quality, envs_validation ]
+    needs: [ code_quality ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -219,7 +197,7 @@ jobs:
   pw_changes:
     name: Check for Playwright-relevant changes
     runs-on: ubuntu-latest
-    needs: [ code_quality, envs_validation ]
+    needs: [ code_quality ]
     if: github.event_name == 'pull_request'
     outputs:
       has_changes: ${{ steps.diff.outputs.has_changes }}
@@ -251,13 +229,12 @@ jobs:
 
   pw_tests:
     name: 'Playwright tests / ${{ matrix.name }}'
-    needs: [ code_quality, envs_validation, pw_changes ]
+    needs: [ code_quality, pw_changes ]
     # The gate only runs on pull requests; a skipped gate (workflow_call from pre-release, manual
     # dispatch) means a full run.
     if: |
       always() &&
       needs.code_quality.result == 'success' &&
-      needs.envs_validation.result == 'success' &&
       (needs.pw_changes.result == 'skipped' || (needs.pw_changes.result == 'success' && needs.pw_changes.outputs.has_changes == 'true'))
     runs-on: ubuntu-latest
     container:

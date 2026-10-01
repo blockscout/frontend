@@ -1,6 +1,10 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
 import { FLASHBLOCKS_NAMES } from 'src/features/flashblocks/types/config';
 import type { FlashblocksName } from 'src/features/flashblocks/types/config';
+
 import { urlTest } from '../../utils';
 
 export const flashblocksSchema = yup

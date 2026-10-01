@@ -1,13 +1,17 @@
-import { replaceQuotes } from 'src/config/utils/envs';
-import { MultichainProviderConfig, MultichainProviderView } from 'src/features/multichain-button/types/client';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
 
+import type { MultichainProviderConfig, MultichainProviderView } from 'src/features/multichain-button/types/client';
+
+import { replaceQuotes } from 'src/config/utils/envs';
+
 const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig> = yup.object({
-    name: yup.string().required(),
-    url_template: yup.string().required(),
-    logo: yup.string().required(),
-    dapp_id: yup.string(),
-    view: yup.string<MultichainProviderView>().oneOf([ 'full', 'icon' ]),
+  name: yup.string().required(),
+  url_template: yup.string().required(),
+  logo: yup.string().required(),
+  dapp_id: yup.string(),
+  view: yup.string<MultichainProviderView>().oneOf([ 'full', 'icon' ]),
 });
 
 export const multichainButtonSchema = yup
@@ -17,5 +21,5 @@ export const multichainButtonSchema = yup
       .array()
       .transform(replaceQuotes)
       .json()
-      .of(multichainProviderConfigSchema)
+      .of(multichainProviderConfigSchema),
   });

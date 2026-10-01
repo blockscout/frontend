@@ -1,8 +1,14 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
-import { urlTest, getYupValidationErrorMessage } from '../../utils';
-import { replaceQuotes } from 'src/config/utils/envs';
-import * as regexp from 'src/toolkit/utils/regexp';
+
 import { ROLLUP_TYPES } from 'src/features/rollup/common/types/config';
+
+import { replaceQuotes } from 'src/config/utils/envs';
+
+import * as regexp from 'src/toolkit/utils/regexp';
+
+import { urlTest, getYupValidationErrorMessage } from '../../utils';
 
 const parentChainCurrencySchema = yup
   .object()
@@ -36,7 +42,7 @@ export const rollupSchema = yup
                     throw new Error('Unknown validation error');
                   } catch (error: unknown) {
                     const message = getYupValidationErrorMessage(error);
-                    return 'in \"currency\" property ' + (message ? `${ message }` : '');
+                    return 'in "currency" property ' + (message ? `${ message }` : '');
                   }
                 },
                 (data) => {
@@ -45,7 +51,7 @@ export const rollupSchema = yup
                 },
               ),
             isTestnet: yup.boolean(),
-          })
+          });
         },
         otherwise: (schema) => schema.test(
           'not-exist',
@@ -119,7 +125,10 @@ export const rollupSchema = yup
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'arbitrum' || value === 'optimistic',
         then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' or \'optimistic\''),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' or \'optimistic\'',
+        ),
       }),
     NEXT_PUBLIC_ROLLUP_STAGE_INDEX: yup.number().oneOf([ 1, 2 ])
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
@@ -131,17 +140,17 @@ export const rollupSchema = yup
           value => value === undefined,
         ),
       }),
-      NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: yup.number()
-        .positive()
-        .integer()
-        .min(2)
-        .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-          is: (value: string) => Boolean(value),
-          then: (schema) => schema,
-          otherwise: (schema) => schema.test(
-            'not-exist',
-            'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER can only be used with NEXT_PUBLIC_ROLLUP_TYPE',
-            value => value === undefined,
-          ),
-        }),
+    NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: yup.number()
+      .positive()
+      .integer()
+      .min(2)
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_LAYER_NUMBER can only be used with NEXT_PUBLIC_ROLLUP_TYPE',
+          value => value === undefined,
+        ),
+      }),
   });

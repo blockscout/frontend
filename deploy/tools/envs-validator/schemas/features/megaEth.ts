@@ -1,4 +1,7 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
 import { urlTest } from '../../utils';
 
 export const megaEthSchema = yup

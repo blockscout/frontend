@@ -1,8 +1,13 @@
-import * as yup from 'yup';
-import type { DeFiDropdownButtonText, DeFiDropdownItem } from 'src/features/defi-dropdown/types/client';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import type { IconName } from 'public/icons/name';
-import { urlTest } from '../../utils';
+import * as yup from 'yup';
+
+import type { DeFiDropdownButtonText, DeFiDropdownItem } from 'src/features/defi-dropdown/types/client';
+
 import { replaceQuotes } from 'src/config/utils/envs';
+
+import { urlTest } from '../../utils';
 
 const MIN_ITEMS_FOR_DROPDOWN = 2;
 
@@ -28,7 +33,7 @@ const deFiDropdownButtonTextSchema = yup
   });
 
 export const defiDropdownSchema = yup.object({
-    NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
+  NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
     .array()
     .transform(replaceQuotes)
     .json()

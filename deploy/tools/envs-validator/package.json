@@ -5,12 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "vite build --logLevel error",
-    "validate": "node ./dist/index.js",
-    "test": "./test.sh"
+    "validate": "node ./dist/index.js"
   },
   "devDependencies": {
-    "dotenv-cli": "^7.4.4",
-    "typescript": "7.0.2",
     "vite": "6.4.3",
     "yup": "^1.7.1"
   }

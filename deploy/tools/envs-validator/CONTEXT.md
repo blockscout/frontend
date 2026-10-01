@@ -3,12 +3,22 @@
 Validates the container's `NEXT_PUBLIC_*` environment against a [yup](https://github.com/jquense/yup) schema at
 startup.
 
-## Schemas
+## Layout
 
-- **`schema.ts`** — the default top-level schema; selected when
-  `NEXT_PUBLIC_MULTICHAIN_ENABLED` is unset or `false`.
-- **`schema_multichain.ts`** — the multichain variant; selected when
-  `NEXT_PUBLIC_MULTICHAIN_ENABLED=true`.
+- **`index.ts`** — the CLI the container runs: reads the environment, the placeholder registry and the
+  downloaded JSON configs, prints the report, sets the exit code. No rule lives here.
+- **`checks.ts`** — the pure core (`runChecks`). Everything the CLI decides is decided here on pre-read
+  inputs, which is what the specs exercise.
+- **`deprecations.ts`** — variables that only produce a startup warning.
+- **`schema.ts`** — the default top-level schema; selected when `NEXT_PUBLIC_MULTICHAIN_ENABLED` is unset or
+  `false`.
+- **`schema_multichain.ts`** — the multichain variant; selected when `NEXT_PUBLIC_MULTICHAIN_ENABLED=true`.
+- **`schemas/`** — the sub-schemas the top-level ones are concatenated from; `schemas/features/<name>.ts`
+  per multi-variable feature.
+- **`mocks/`** — typed fixtures shared by the specs. `test-utils.ts` holds `toEnvValue`.
+
+The package is type-checked, linted and tested from the repo root like `src/`. Only the `vite` build is its
+own: the Dockerfile ships `dist/index.js`.
 
 ## Adding a new variable
 
@@ -18,39 +28,19 @@ startup.
 
 2. **Write the rule** following the conventions in this file.
 
-3. **Add it to a test preset under `test/`:**
-   - Default: append to `test/.env.base`. Most variables belong here.
-   - If the variable has alternative configurations that depend on other
-     variables (e.g. provider-specific add-ons for
-     `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER`), use `test/.env.alt` to cover
-     the second shape.
-   - For larger, self-contained scenarios (ads, rollups, chain variants,
-     marketplace, …) it can make sense to add to or create a dedicated
-     `test/.env.<scenario>` preset. This is a judgement call, not a rule.
-   - **Multichain-only variable** → `test/.env.multichain` (validated
-     standalone, without `.env.common`).
-   - **JSON config URL variable** → also drop an example payload at
-     `test/assets/configs/<name>.json` (filename = the env name with
-     `NEXT_PUBLIC_` and `_URL` stripped, lowercased) and register the
-     variable in the `envsWithJsonConfig` array in `index.ts`.
+3. **Test it in the sibling spec** (`schemas/features/<name>.spec.ts`, `schema.spec.ts`, …): one case
+   with an accepted value and one per rejection path asserting the exact message. A JSON-shaped value is a
+   typed object passed through `toEnvValue`, which produces the single-quoted form operators use. A
+   variable applying in both modes needs a line in both top-level specs.
+   - **JSON config URL variable** → register it in `ENVS_WITH_JSON_CONFIG` in `checks.ts`; at validation
+     time the variable carries the downloaded file content, not the URL, so the spec feeds it
+     `JSON.stringify(content)`.
 
 4. **Run the suite:**
    ```bash
-   # from the tool directory
-   pnpm test
-
-   # or from the repo root
-   pnpm --filter envs-validator test
+   pnpm test:vitest deploy/tools/envs-validator
    ```
-   Each preset should end with `👍 All good!`. A failure prints the
-   aggregated yup errors for that preset — fix top-down, since later
-   errors can be downstream of earlier ones.
-
-5. **Verify the negative path.** The presets only exercise the happy
-   path, so the rule itself isn't proven until you see it reject bad
-   input. Temporarily edit the preset to violate the rule (wrong type,
-   missing companion variable, malformed JSON), re-run the suite,
-   confirm the expected error fires, then revert.
+   `docs.spec.ts` fails until the variable has a row in `docs/ENVS.md`.
 
 ## Conventions
 
@@ -111,6 +101,10 @@ NEXT_PUBLIC_B: yup.array().when('NEXT_PUBLIC_A', {
 checks. See `tacSchema`, `beaconChainSchema`, and `marketplaceSchema` for
 working examples.
 
+A `.when` may name a variable declared in another schema file; it only resolves once the files are
+concatenated, so the sub-schema spec passes the sibling key alongside and `schema.spec.ts` covers the
+composed case.
+
 ### Deeply-nested JSON: `yup.mixed().test('shape', …)`
 
 For JSON values with non-trivial nested shapes, don't inline `.shape({…})`
@@ -148,3 +142,16 @@ the auto-derived one. Existing examples: `NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG
 
 There's an explicit comment in `schema.ts` codifying this split; don't
 let the top-level schema grow a cluster of related vars.
+
+## Validating a real instance config by hand
+
+The CLI needs the bundle and the placeholder registry the container has at startup:
+
+```bash
+cd deploy/tools/envs-validator
+pnpm run build
+../../scripts/collect_envs.sh ../../../docs/ENVS.md
+pnpm exec dotenv -e /path/to/instance.env -- pnpm run validate
+```
+
+`collect_envs.sh` writes `.env.registry` and `.env` next to the bundle; both are git-ignored.

@@ -1,36 +1,44 @@
-import { replaceQuotes } from "src/config/utils/envs";
-import { Address3rdPartyWidget, ADDRESS_3RD_PARTY_WIDGET_PAGES } from "src/features/address-3rd-party-widgets/types/view";
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import * as yup from 'yup';
+
+import type { Address3rdPartyWidget } from 'src/features/address-3rd-party-widgets/types/view';
+import { ADDRESS_3RD_PARTY_WIDGET_PAGES } from 'src/features/address-3rd-party-widgets/types/view';
+
+import { replaceQuotes } from 'src/config/utils/envs';
 
 export const address3rdPartyWidgetsConfigSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: yup
       .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value', (data) => {
-        const isUndefined = data === undefined;
-        const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
-        const valueSchema = yup.lazy((objValue) => {
-          let schema = yup.object();
-          Object.keys(objValue).forEach((key) => {
-            schema = schema.shape({
-              [key]: yup.object<Address3rdPartyWidget>().shape({
-                name: yup.string().required(),
-                url: yup.string().required(),
-                icon: yup.string().required(),
-                title: yup.string().required(),
-                hint: yup.string().optional(),
-                valuePath: yup.string().required(),
-                valueTitlePath: yup.string().optional(),
-                pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
-                chainIds: yup.object<Record<string, string>>().optional(),
-              }),
+      .test(
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value',
+        (data) => {
+          const isUndefined = data === undefined;
+          const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+          const valueSchema = yup.lazy((objValue) => {
+            let schema = yup.object();
+            Object.keys(objValue).forEach((key) => {
+              schema = schema.shape({
+                [key]: yup.object<Address3rdPartyWidget>().shape({
+                  name: yup.string().required(),
+                  url: yup.string().required(),
+                  icon: yup.string().required(),
+                  title: yup.string().required(),
+                  hint: yup.string().optional(),
+                  valuePath: yup.string().required(),
+                  valueTitlePath: yup.string().optional(),
+                  pages: yup.array().of(yup.string().oneOf(ADDRESS_3RD_PARTY_WIDGET_PAGES)).required(),
+                  chainIds: yup.object<Record<string, string>>().optional(),
+                }),
+              });
             });
+            return schema;
           });
-          return schema;
-        });
-        return isUndefined || valueSchema.isValidSync(parsedData);
-      }),
+          return isUndefined || valueSchema.isValidSync(parsedData);
+        }),
     NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: yup
       .array()
       .transform(replaceQuotes)
@@ -39,6 +47,9 @@ export const address3rdPartyWidgetsConfigSchema = yup
       .when('NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL', {
         is: (value: string) => value,
         then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL is not provided'),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS cannot not be used if NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL is not provided',
+        ),
       }),
-  });   
+  });

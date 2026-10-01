@@ -16,8 +16,9 @@ write a custom guard:
 
 - The validator schemas use `.noUnknown(true)` — any `NEXT_PUBLIC_*` key not
   declared in a schema fails validation.
-- `checkPlaceholdersCongruity` (in `deploy/tools/envs-validator/index.ts`)
-  throws if an env has no build-time placeholder. Placeholders come from
+- The placeholder check (`findEnvsWithoutPlaceholder` in
+  `deploy/tools/envs-validator/checks.ts`) fails startup if an env has no
+  build-time placeholder. Placeholders come from
   `.env.registry`, which `collect_envs.sh` generates by scanning
   `docs/ENVS.md`.
 
@@ -30,8 +31,8 @@ variable in *both* places until the final removal.
 
 A variable already mid-grace-period must **not** be treated as a fresh
 deprecation. First check whether it is **already deprecated** from an earlier
-release: grep `deploy/tools/envs-validator/index.ts` for a
-`printDeprecationWarning` / `checkDeprecatedEnvs` entry naming it, and check its
+release: look for its entry in `DEPRECATED_ENVS` in
+`deploy/tools/envs-validator/deprecations.ts`, and check its
 `docs/ENVS.md` row for a "Deprecated…" annotation.
 
 - **Already in a grace period** — a request to "remove it" *is* the removal
@@ -114,11 +115,10 @@ set only in per-instance files, or nowhere.
   `schema_multichain.ts`, or in a feature sub-schema under
   `schemas/features/<name>.ts`. Remove it from **both** schemas / sub-schemas
   if it applied in both modes.
-- Remove the variable from every test preset under
-  `deploy/tools/envs-validator/test/` (`.env.base`, `.env.alt`,
-  `.env.multichain`, scenario presets). If it was a JSON-config-URL variable,
-  also delete its example payload under `test/assets/configs/` and its entry in
-  the `envsWithJsonConfig` array in `index.ts`.
+- Remove the variable's cases from the sibling `*.spec.ts` and from the full
+  configurations in `deploy/tools/envs-validator/mocks/instance.ts`. If it was a
+  JSON-config-URL variable, also delete its fixture under `mocks/` and its entry
+  in `ENVS_WITH_JSON_CONFIG` in `checks.ts`.
 
 ### A3 — Remove the app code
 
@@ -153,8 +153,9 @@ See `tools/dev-server/CONTEXT.md` § "Dropped envs" for the full why.
 
 The `.noUnknown` + congruity checks already fail startup with a generic
 message. If the variable was **replaced** and you want operators to see a
-clear "use X instead" message, add a guard to `checkDeprecatedEnvs()` in
-`deploy/tools/envs-validator/index.ts` that throws with that message.
+clear "use X instead" message, keep the variable in the schema as a
+`yup.mixed().test('not-exist', '<message>', value => value === undefined)`
+rule, with a spec case asserting the message.
 
 ---
 
@@ -180,23 +181,24 @@ clear "use X instead" message, add a guard to `checkDeprecatedEnvs()` in
 
 3. **Validator schema** — keep the old variable accepted in `schema.ts` /
    `schema_multichain.ts`. If it was **Required**, make it optional now (the new
-   variable carries the requirement). Keep its test-preset entries valid.
+   variable carries the requirement). Keep its spec cases valid.
 
-4. **Validator messaging** (`deploy/tools/envs-validator/index.ts`):
-   - Always add a non-fatal warning in `printDeprecationWarning()` when the old
-     variable is present (the `❗❗❗ … will be removed in the next release …`
-     block).
-   - **If there is a replacement:** also add a guard in `checkDeprecatedEnvs()`
-     that **throws** when the old variable is set *without* the new one — forces
-     operators onto the new name while still accepting both. (This is the
-     `NEXT_PUBLIC_RE_CAPTCHA_*` pattern from #2384.)
-   - **If there is no replacement:** warn only; do not throw.
+4. **Validator messaging** (`deploy/tools/envs-validator/`):
+   - Always add an entry to `DEPRECATED_ENVS` in `deprecations.ts`: a non-fatal
+     `… will be removed in the next release …` warning printed when the old
+     variable is present.
+   - **If there is a replacement:** also make the old variable's schema rule
+     reject it when set *without* the new one (a `.when` on the new name with a
+     `not-exist` test in the otherwise-branch, see the tool's `CONTEXT.md`) —
+     forces operators onto the new name while still accepting both. (This is the
+     `NEXT_PUBLIC_RE_CAPTCHA_*` pattern from #2384.) Add a spec case for both
+     paths.
+   - **If there is no replacement:** warn only; do not reject.
 
 ### Phase 2 — Removal release (a later PR)
 
 Run the entire **Branch A** checklist for the old variable, **plus**: remove
-the warning block you added to `printDeprecationWarning()` and the guard in
-`checkDeprecatedEnvs()` in Phase 1.
+the `DEPRECATED_ENVS` entry and the rejection rule you added in Phase 1.
 
 ---
 
@@ -211,11 +213,6 @@ the warning block you added to `printDeprecationWarning()` and the guard in
   release notes and the roll-up request to DevOps, so this description is how
   DevOps learns what to drop from deployment-values, and for which release. It is
   the only place that list needs to live.
-- **Run the validator suite and check the negative path:**
-  ```bash
-  pnpm --filter envs-validator test
-  ```
-  Each preset should end with `👍 All good!`. For a grace-period guard,
-  temporarily set the old variable without the new one in a preset and confirm
-  startup fails as intended, then revert. See
-  `deploy/tools/envs-validator/CONTEXT.md` for details.
+- **Run the validator suite** — the command and the spec conventions (including
+  the grace-period guard's rejection case) are in
+  `deploy/tools/envs-validator/CONTEXT.md`.

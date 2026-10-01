@@ -20,9 +20,14 @@ describe('isInScope', () => {
     expect(isInScope('tools/scripts/legacy.cjs')).toBe(true);
   });
 
-  it('excludes deploy/ — it is outside ESLint and the root tsconfig (issue #3675)', () => {
+  it('includes the deploy packages that are under ESLint and the root tsconfig', () => {
+    expect(isInScope('deploy/tools/envs-validator/index.ts')).toBe(true);
+    expect(isInScope('deploy/tools/envs-validator/schemas/features/rollup.ts')).toBe(true);
+  });
+
+  it('excludes the rest of deploy/ — it is outside ESLint and the root tsconfig (issue #3675)', () => {
     expect(isInScope('deploy/scripts/run.ts')).toBe(false);
-    expect(isInScope('deploy/tools/envs-validator/index.ts')).toBe(false);
+    expect(isInScope('deploy/tools/favicon-generator/index.ts')).toBe(false);
   });
 
   it('excludes test support and configuration', () => {
@@ -32,7 +37,7 @@ describe('isInScope', () => {
     expect(isInScope('tools/code-complexity/vitest.config.ts')).toBe(false);
   });
 
-  it('excludes everything outside the two allowlisted roots', () => {
+  it('excludes everything outside the allowlisted roots', () => {
     expect(isInScope('startup.node.ts')).toBe(false);
     expect(isInScope('instrumentation.ts')).toBe(false);
     expect(isInScope('docs/example.ts')).toBe(false);
