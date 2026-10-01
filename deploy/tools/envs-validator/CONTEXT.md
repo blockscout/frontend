@@ -52,15 +52,18 @@ not by lint, so they're easy to miss.
 
 Every variable arrives as a string and valibot does not coerce, so a bare `v.boolean()` or `v.number()`
 rejects every real value. Use the env parsers (`envBoolean`, `envNumber`, `envPositiveInteger`, `envUrl`,
-`envRequiredString`, `envJson`) for top-level variables; *inside* a JSON value the fields are real JS
-types and take plain `v.string()` / `v.number()` / `v.boolean()`.
+`envRequiredString`, `envJson`) for top-level variables. *Inside* a JSON value the fields are real JS
+types and take plain `v.string()` / `v.number()` / `v.boolean()`, with two exceptions: a field documented
+as a decimal *string* (AdButler `width`/`height`) stays on `envNumber`, and a URL field is
+`v.pipe(v.string(), v.url())`, which rejects `''` — `envUrl` is for top-level variables only.
 
 The parsers are stricter than the app's tolerance on purpose: a boolean is only `true`/`false` (the app
 reads `=== 'true'`, so `1` or `TRUE` would pass validation and silently mean *false*), and a number is a
 plain decimal.
 
 `envUrl` accepts the empty string — operators unset a variable with `FOO=`, and the container turns a
-missing value into `''` as well. `envBoolean`, `envNumber` and `envJson` reject it, as they always did.
+missing value into `''` as well. `envBoolean`, `envNumber` and `envJson` reject it, as they always did, and
+a companion rule treats `''` as "not provided".
 
 ### JSON-shaped values: `envJson(schema)`
 
@@ -71,22 +74,11 @@ maintain.
 
 ### Companion variables: `requires` / `requiredIf` on the object
 
-"B only when A" is an object-level rule, not a per-field one:
-
-```ts
-export const tacSchema = v.pipe(
-  v.looseObject({
-    NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST: v.optional(envUrl()),
-    NEXT_PUBLIC_TAC_TON_EXPLORER_URL: v.optional(envUrl()),
-  }),
-  requires('NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST'),
-);
-```
-
-`requires(B, A, { when, message })` forbids B unless A is set (or `when(A)` holds); `requiredIf` is the
-mirror image. `when` receives the *parsed* value of A — a flag is `true`/`false`, a JSON list is an array.
-The rule only runs once both variables are individually valid, so a malformed A yields one error, not
-two. Anything these two can't express goes through `companionRule` with the same semantics.
+"B only when A" is an object-level rule, not a per-field one — `schemas/features/tac.ts` is the smallest
+example; `requires`, `requiredIf` and the general `companionRule` are in `utils.ts`. Two things about them
+are not visible from a call site: `when` receives the *parsed* value of A (a flag is `true`/`false`, a
+JSON list is an array), and the rule only runs once both variables are individually valid, so a malformed
+A yields one error, not two.
 
 A rule may name a variable declared in another schema file. Two things make that work, and both are easy
 to miss: the sub-schema must be a `v.looseObject` (a plain `v.object` strips the foreign key before the
@@ -102,14 +94,13 @@ reported once, listing every unknown name. Entries that both top-level schemas n
 
 ### Where to put the rule
 
-- **One-variable feature** (single flag or single URL) — declare it inline in `schema.ts` under the
-  single-variable features block.
+- **One-variable feature** (single flag or single URL) — declare it inline in `schema.ts`, in
+  `singleVariableFeaturesSchema`.
 - **Multi-variable feature** (two or more related variables, conditional relationships, nested config) —
   create or extend a dedicated sub-schema under `schemas/features/<name>.ts` and re-export it through
   `schemas/features/index.ts`.
 
-There's an explicit comment in `schema.ts` codifying this split; don't let the top-level schema grow a
-cluster of related vars.
+Don't let the top-level schema grow a cluster of related vars.
 
 ## Validating a real instance config by hand
 

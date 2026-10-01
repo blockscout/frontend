@@ -79,7 +79,8 @@ describe('chainSchema', () => {
         ...REQUIRED,
         NEXT_PUBLIC_NETWORK_RPC_URL: toEnvValue([ 'https://example.com', 'not a url' ]),
       })).toEqual([
-        'NEXT_PUBLIC_NETWORK_RPC_URL: Invalid type: Expected string but received "[\'https://example.com\',\'not a url\']"',
+        'NEXT_PUBLIC_NETWORK_RPC_URL: Invalid URL: Received "[\'https://example.com\',\'not a url\']"',
+        'NEXT_PUBLIC_NETWORK_RPC_URL.1: Invalid URL: Received "not a url"',
       ]);
     });
   });

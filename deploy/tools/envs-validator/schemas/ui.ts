@@ -25,6 +25,7 @@ import { companionRule, envBoolean, envJson, envUrl, requiredIf, requires } from
 
 const requiredString = () => v.pipe(v.string(), v.nonEmpty());
 const requiredUrl = () => v.pipe(v.string(), v.nonEmpty(), v.url());
+const optionalUrl = () => v.optional(v.pipe(v.string(), v.url()));
 const colorPair = () => v.optional(v.pipe(v.array(v.string()), v.maxLength(2)));
 
 const heroBannerButtonStateSchema: v.GenericSchema<HeroBannerButtonState> = v.object({
@@ -80,7 +81,7 @@ const featuredNetworkSchema: v.GenericSchema<FeaturedNetwork> = v.object({
   title: requiredString(),
   url: requiredUrl(),
   group: v.picklist(NETWORK_GROUPS),
-  icon: v.optional(envUrl()),
+  icon: optionalUrl(),
   isActive: v.optional(v.boolean()),
   invertIconInDarkMode: v.optional(v.boolean()),
 });
@@ -184,7 +185,7 @@ export const miscSchema = v.pipe(
 
 const networkExplorerSchema: v.GenericSchema<AlternativeExplorer> = v.object({
   title: requiredString(),
-  logo: v.optional(envUrl()),
+  logo: optionalUrl(),
   baseUrl: requiredUrl(),
   paths: v.object({
     tx: v.optional(v.string()),
@@ -203,8 +204,8 @@ const contractCodeIdeSchema: v.GenericSchema<ContractCodeIde> = v.object({
 
 const nftMarketplaceSchema: v.GenericSchema<NftMarketplaceItem> = v.object({
   name: requiredString(),
-  collection_url: v.optional(envUrl()),
-  instance_url: v.optional(envUrl()),
+  collection_url: optionalUrl(),
+  instance_url: optionalUrl(),
   logo_url: requiredUrl(),
 });
 

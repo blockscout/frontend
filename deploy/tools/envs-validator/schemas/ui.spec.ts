@@ -146,6 +146,12 @@ describe('navigationSchema', () => {
       })).toEqual([ 'NEXT_PUBLIC_FEATURED_NETWORKS.0.url: Invalid URL: Received "not a url"' ]);
     });
 
+    it('rejects a network with an empty icon URL', () => {
+      expect(getValidationErrors(navigationSchema, {
+        NEXT_PUBLIC_FEATURED_NETWORKS: JSON.stringify([ { ...featuredNetworks[0], icon: '' } ]),
+      })).toEqual([ 'NEXT_PUBLIC_FEATURED_NETWORKS.0.icon: Invalid URL: Received ""' ]);
+    });
+
     it('rejects a malformed all-networks link', () => {
       expect(getValidationErrors(navigationSchema, { ...FEATURED, NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: 'not a url' })).toEqual([
         'NEXT_PUBLIC_FEATURED_NETWORKS_ALL_LINK: Invalid URL: Received "not a url"',
@@ -188,7 +194,10 @@ describe('navigationSchema', () => {
       expect(getValidationErrors(navigationSchema, {
         NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: toEnvValue({ img_url: 'https://example.com/promo.svg', text: 'Promo text' }),
       })).toEqual([
-        'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG: Invalid type: Expected Object but received Object',
+        'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG.bg_color: Invalid key: Expected "bg_color" but received undefined',
+        'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG.text_color: Invalid key: Expected "text_color" but received undefined',
+        'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG.link_url: Invalid key: Expected "link_url" but received undefined',
+        'NEXT_PUBLIC_NAVIGATION_PROMO_BANNER_CONFIG.img_url: Invalid type: Expected Object but received "https://example.com/promo.svg"',
       ]);
     });
   });
@@ -384,7 +393,8 @@ describe('viewsSchema', () => {
 
     it('rejects an unknown method id', () => {
       expect(getValidationErrors(viewsSchema, { NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: toEnvValue([ 'vyper-brownie' ]) })).toEqual([
-        'NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: Invalid type: Expected ("none" | string) but received "[\'vyper-brownie\']"',
+        'NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: Invalid type: Expected "none" but received "[\'vyper-brownie\']"',
+        picklistMessage('NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS.0', [ 'solidity-hardhat', 'solidity-foundry' ], 'vyper-brownie'),
       ]);
     });
   });

@@ -120,6 +120,7 @@ describe('companion rules', () => {
 
     it('demands the dependent once the dependency is set', () => {
       expect(getValidationErrors(schema, { NEXT_PUBLIC_A: 'true' })).toEqual([ 'NEXT_PUBLIC_B is required when NEXT_PUBLIC_A is set' ]);
+      expect(getValidationErrors(schema, { NEXT_PUBLIC_A: 'true', NEXT_PUBLIC_B: '' })).toEqual([ 'NEXT_PUBLIC_B is required when NEXT_PUBLIC_A is set' ]);
       expect(getValidationErrors(schema, { NEXT_PUBLIC_A: 'true', NEXT_PUBLIC_B: 'x' })).toEqual([]);
       expect(getValidationErrors(schema, { NEXT_PUBLIC_A: 'false' })).toEqual([]);
     });

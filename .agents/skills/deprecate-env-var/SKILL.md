@@ -14,8 +14,8 @@ structured, the three value types, and where validation lives.
 Two startup checks make a removed variable fail loudly, so you rarely need to
 write a custom guard:
 
-- The validator schemas use `.noUnknown(true)` — any `NEXT_PUBLIC_*` key not
-  declared in a schema fails validation.
+- `composeSchemas` in `deploy/tools/envs-validator/utils.ts` rejects any
+  `NEXT_PUBLIC_*` key no schema declares.
 - The placeholder check (`findEnvsWithoutPlaceholder` in
   `deploy/tools/envs-validator/checks.ts`) fails startup if an env has no
   build-time placeholder. Placeholders come from

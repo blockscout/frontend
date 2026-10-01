@@ -36,6 +36,9 @@ describe('marketplaceSchema', () => {
     expect(getValidationErrors(marketplaceSchema, { NEXT_PUBLIC_MARKETPLACE_ENABLED: 'true' })).toEqual([
       'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM is required when NEXT_PUBLIC_MARKETPLACE_ENABLED is set',
     ]);
+    expect(getValidationErrors(marketplaceSchema, { NEXT_PUBLIC_MARKETPLACE_ENABLED: 'true', NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: '' })).toEqual([
+      'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM is required when NEXT_PUBLIC_MARKETPLACE_ENABLED is set',
+    ]);
   });
 
   it('rejects a non-boolean enabled flag', () => {

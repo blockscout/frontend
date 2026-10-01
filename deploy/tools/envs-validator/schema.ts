@@ -52,8 +52,6 @@ const usercentricsConfigSchema = v.object({
   rulesetId: v.optional(v.string()),
 });
 
-// Features that need a single ENV variable live here; multi-variable features get their own file in
-// "./schemas/features".
 const singleVariableFeaturesSchema = v.pipe(
   v.looseObject({
     NEXT_PUBLIC_WEB3_WALLETS: v.optional(v.union([ v.literal('none'), envJson(v.array(v.picklist(SUPPORTED_WALLETS))) ])),

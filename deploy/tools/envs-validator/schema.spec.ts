@@ -110,7 +110,8 @@ describe('single-chain schema', () => {
 
     it('rejects an unsupported wallet', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_WEB3_WALLETS: toEnvValue([ 'duck_wallet' ]) })).toEqual([
-        'NEXT_PUBLIC_WEB3_WALLETS: Invalid type: Expected ("none" | string) but received "[\'duck_wallet\']"',
+        'NEXT_PUBLIC_WEB3_WALLETS: Invalid type: Expected "none" but received "[\'duck_wallet\']"',
+        'NEXT_PUBLIC_WEB3_WALLETS.0: Invalid type: Expected ("metamask" | "coinbase" | "token_pocket" | "rabby" | "okx" | "trust") but received "duck_wallet"',
       ]);
     });
   });

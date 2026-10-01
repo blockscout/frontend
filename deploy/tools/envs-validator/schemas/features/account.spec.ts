@@ -53,6 +53,13 @@ describe('accountSchema', () => {
     expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic' })).toEqual([
       'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
     ]);
+    expect(getValidationErrors(accountSchema, {
+      ...SUPPORTED,
+      NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic',
+      NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID: '',
+    })).toEqual([
+      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
+    ]);
   });
 
   it('rejects the environment id with a provider other than dynamic', () => {
