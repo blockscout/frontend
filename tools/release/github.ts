@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 
 import { EXEC_MAX_BUFFER } from '../cli/exec';
+import type { BackportPullRequest } from './picks';
 import type { GithubRelease } from './pre-release';
 import type { ReleasePullRequest } from './release-prs';
 
@@ -129,6 +130,30 @@ interface IssueResponse {
 export function fetchPrLabels(number: number): ReadonlyArray<string> | undefined {
   const issue = ghApi<IssueResponse>(`repos/{owner}/{repo}/issues/${ number }`);
   return issue.pull_request === undefined ? undefined : issue.labels.map(({ name }) => name);
+}
+
+interface BackportPullRequestResponse {
+  readonly number: number;
+  readonly title: string;
+  readonly labels: ReadonlyArray<{ readonly name: string }>;
+  readonly mergeCommit: { readonly oid: string } | null;
+}
+
+const BACKPORT_LABEL = 'backport';
+const BACKPORT_PR_LIMIT = 200;
+
+// Only PRs merged to main: a PR merged elsewhere has no main commit to pick.
+export function listBackportPrs(): Array<BackportPullRequest> {
+  const prs = JSON.parse(gh([
+    'pr', 'list', '--state', 'merged', '--base', 'main', '--label', BACKPORT_LABEL, '--limit', String(BACKPORT_PR_LIMIT),
+    '--json', 'number,title,labels,mergeCommit',
+  ])) as ReadonlyArray<BackportPullRequestResponse>;
+  return prs.map(({ number, title, labels, mergeCommit }) => {
+    if (mergeCommit === null) {
+      throw new Error(`PR #${ number } is merged but GitHub reports no merge commit`);
+    }
+    return { number, title, labels: labels.map(({ name }) => name), mergeSha: mergeCommit.oid };
+  });
 }
 
 // Listed rather than fetched by tag: `releases/tags/<tag>` never returns a draft, and the line's

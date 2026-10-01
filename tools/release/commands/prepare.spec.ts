@@ -1,60 +1,64 @@
 import { describe, expect, it } from 'vitest';
 
-import { branchStep, parsePrepareArgs, releaseEnvDocs } from './prepare';
+import { baseRef, cutStepTitle, parsePrepareArgs } from './prepare';
 
 describe('parsePrepareArgs', () => {
-  it('reads the line', () => {
-    expect(parsePrepareArgs([ 'v2.13' ])).toEqual({ line: { major: 2, minor: 13 }, dryRun: false });
+  it('reads the release tag and its version', () => {
+    expect(parsePrepareArgs([ 'v2.13.1' ])).toEqual({
+      tag: 'v2.13.1',
+      version: { major: 2, minor: 13, patch: 1, prerelease: undefined },
+      dryRun: false,
+    });
   });
 
   it('reads the dry run', () => {
-    expect(parsePrepareArgs([ 'v2.13', '--dry-run' ])).toEqual({ line: { major: 2, minor: 13 }, dryRun: true });
+    expect(parsePrepareArgs([ 'v2.13.0', '--dry-run' ])).toMatchObject({ tag: 'v2.13.0', dryRun: true });
   });
 
   it.each([
-    [ 'no line', [] ],
-    [ 'two lines', [ 'v2.13', 'v2.14' ] ],
+    [ 'no tag', [] ],
+    [ 'two tags', [ 'v2.13.0', 'v2.14.0' ] ],
   ])('rejects %s with the usage', (_, args) => {
-    expect(() => parsePrepareArgs(args)).toThrow('Usage: pnpm release prepare <vX.Y>');
+    expect(() => parsePrepareArgs(args)).toThrow('Usage: pnpm release prepare <vX.Y.Z>');
   });
 
-  it('rejects a tag in place of a line', () => {
-    expect(() => parsePrepareArgs([ 'v2.13.0' ])).toThrow('Not a release line: "v2.13.0"');
+  it('rejects a line in place of a tag', () => {
+    expect(() => parsePrepareArgs([ 'v2.13' ])).toThrow('Not a release tag: "v2.13"');
+  });
+
+  it('rejects an alpha tag', () => {
+    expect(() => parsePrepareArgs([ 'v2.13.0-alpha.1' ])).toThrow('Not a final tag: "v2.13.0-alpha.1"');
   });
 
   it('rejects an unknown flag', () => {
-    expect(() => parsePrepareArgs([ 'v2.13', '--force' ])).toThrow('Unknown flag: --force');
+    expect(() => parsePrepareArgs([ 'v2.13.0', '--force' ])).toThrow('Unknown flag: --force');
   });
 });
 
-describe('releaseEnvDocs', () => {
-  it('releases "upcoming" in each ENV doc that has it, leaving out the others', () => {
-    const docs: Record<string, string> = {
-      'docs/ENVS.md': '| A | upcoming |\n| B | v2.12.0+ |\n| C | <upcoming> |\n',
-      'docs/DEPRECATED_ENVS.md': '| D | v2.11.0+ |\n',
-    };
+describe('baseRef', () => {
+  it('reads main from origin for a minor', () => {
+    expect(baseRef({ kind: 'main' })).toBe('origin/main');
+  });
 
-    expect(releaseEnvDocs((docPath) => docs[docPath], 'v2.13.0')).toEqual([
-      { path: 'docs/ENVS.md', content: '| A | v2.13.0+ |\n| B | v2.12.0+ |\n| C | v2.13.0+ |\n', count: 2 },
-    ]);
+  it('is the previous tag for a patch', () => {
+    expect(baseRef({ kind: 'tag', tag: 'v2.13.0' })).toBe('v2.13.0');
   });
 });
 
-describe('branchStep', () => {
-  const BASE = '0123456789abcdef0123456789abcdef01234567';
+describe('cutStepTitle', () => {
+  const SHA = '0123456789abcdef0123456789abcdef01234567';
 
-  it('names the docs commit and the counts it replaces', () => {
-    const docs = [ { path: 'docs/ENVS.md', content: '', count: 2 }, { path: 'docs/DEPRECATED_ENVS.md', content: '', count: 1 } ];
-
-    expect(branchStep('release/v2.13', BASE, docs, 'v2.13.0').title).toBe(
-      'Cut release/v2.13 at origin/main (0123456789) plus the commit "chore: prepare release v2.13.0", ' +
-      '"upcoming" → v2.13.0+ in docs/ENVS.md (2), docs/DEPRECATED_ENVS.md (1)',
-    );
+  it('cuts a minor from main', () => {
+    expect(cutStepTitle('release/v2.13.0', 'origin/main', SHA, false)).toBe('Cut release/v2.13.0 at origin/main (0123456789)');
   });
 
-  it('cuts the branch with no commit when no doc says "upcoming"', () => {
-    expect(branchStep('release/v2.13', BASE, [], 'v2.13.0').title).toBe(
-      'Cut release/v2.13 at origin/main (0123456789); the ENV docs say "upcoming" nowhere, so no docs commit',
+  it('cuts a patch from the previous tag', () => {
+    expect(cutStepTitle('release/v2.13.1', 'v2.13.0', SHA, false)).toBe('Cut release/v2.13.1 at v2.13.0 (0123456789)');
+  });
+
+  it('resumes a branch an earlier run left behind', () => {
+    expect(cutStepTitle('release/v2.13.0', 'origin/main', SHA, true)).toBe(
+      'Switch to release/v2.13.0, cut at origin/main (0123456789) by an earlier run that stopped; resuming',
     );
   });
 });

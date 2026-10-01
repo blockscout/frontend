@@ -1,93 +1,98 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
-import { ENV_DOCS, replaceUpcoming } from '../check-tag';
-import type { FileChange } from '../git';
-import { commitFiles, createBranch, fetchBranch, hasLocalRef, hasRemoteRef, push, REMOTE, remoteBranch, resolveCommit, showFile } from '../git';
+import { createBranchAt, fetchBranch, hasLocalRef, hasRemoteRef, isAncestor, listTags, pushBranch, REMOTE, remoteBranch, switchBranch } from '../git';
 import { createDraftPreRelease, listReleases } from '../github';
 import { releaseNotes } from '../notes';
 import { findLinePreRelease } from '../pre-release';
 import { releaseSourceAt } from '../release-source';
-import type { Line } from '../versions';
-import { formatLine, minorTag, parseLineOrThrow, releaseBranch } from '../versions';
+import type { ReleaseBase, Version } from '../versions';
+import { formatLine, parseFinalTagOrThrow, releaseBase, releaseBranch } from '../versions';
 import { parsePhaseArgs } from './args';
 import { readNotesTemplate } from './notes';
-import type { Step } from './report';
-import { logReleaseNotes, runSteps } from './report';
+import type { BranchView } from './release-branch';
+import { assertCheckoutReady, checkoutView, refView, updateReleaseBranch } from './release-branch';
+import type { StepRunner } from './report';
+import { logReleaseNotes, stepRunner } from './report';
 
-const USAGE = `Usage: pnpm release prepare <vX.Y> [--dry-run]
+const USAGE = `Usage: pnpm release prepare <vX.Y.Z> [--dry-run]
 
-  cuts release/vX.Y from main with "upcoming" in the ENV docs released as vX.Y.0+, pushes it, and creates
-  the line's draft pre-release vX.Y.0 with its notes`;
+  cuts release/vX.Y.Z from main (Z = 0) or from vX.Y.(Z-1) (a patch), picks the merged "backport" PRs onto
+  it, releases "upcoming" in the ENV docs as vX.Y.Z+, pushes the branch and creates the draft pre-release
+  vX.Y.Z with its notes`;
 
 export interface PrepareArgs {
-  readonly line: Line;
+  readonly tag: string;
+  readonly version: Version;
   readonly dryRun: boolean;
-}
-
-export interface EnvDocUpdate extends FileChange {
-  readonly count: number;
 }
 
 export function parsePrepareArgs(args: ReadonlyArray<string>): PrepareArgs {
   const { target, dryRun } = parsePhaseArgs(args, USAGE);
-  return { line: parseLineOrThrow(target), dryRun };
+  return { tag: target, version: parseFinalTagOrThrow(target), dryRun };
 }
 
-export function prepareCommitMessage(tag: string): string {
-  return `chore: prepare release ${ tag }`;
+export function baseRef(base: ReleaseBase): string {
+  return base.kind === 'main' ? remoteBranch('main') : base.tag;
 }
 
-export function releaseEnvDocs(readDoc: (docPath: string) => string, tag: string): Array<EnvDocUpdate> {
-  return ENV_DOCS
-    .map((docPath) => ({ path: docPath, ...replaceUpcoming(readDoc(docPath), tag) }))
-    .filter(({ count }) => count > 0);
+export function cutStepTitle(branch: string, start: string, sha: string, resumed: boolean): string {
+  const at = `${ start } (${ sha.slice(0, 10) })`;
+  return resumed ?
+    `Switch to ${ branch }, cut at ${ at } by an earlier run that stopped; resuming` :
+    `Cut ${ branch } at ${ at }`;
 }
 
-// A docs commit is the only commit made on a release branch alone, so without "upcoming" there is none.
-export function branchStep(branch: string, base: string, docs: ReadonlyArray<EnvDocUpdate>, tag: string): Step {
-  const from = `${ remoteBranch('main') } (${ base.slice(0, 10) })`;
-  if (docs.length === 0) {
-    return { title: `Cut ${ branch } at ${ from }; the ENV docs say "upcoming" nowhere, so no docs commit`, run: () => createBranch(branch, base) };
+function assertReleaseIsNew(version: Version, tag: string, branch: string): void {
+  if (hasRemoteRef(`refs/tags/${ tag }`)) {
+    throw new Error(`${ tag } is already released`);
   }
-
-  const message = prepareCommitMessage(tag);
-  const replaced = docs.map(({ path: docPath, count }) => `${ docPath } (${ count })`).join(', ');
-  return {
-    title: `Cut ${ branch } at ${ from } plus the commit "${ message }", "upcoming" → ${ tag }+ in ${ replaced }`,
-    run: () => createBranch(branch, commitFiles(base, docs, message)),
-  };
-}
-
-function assertLineIsNew(line: Line, branch: string): void {
-  const ref = `refs/heads/${ branch }`;
-  if (hasLocalRef(ref) || hasRemoteRef(ref)) {
-    throw new Error(`${ branch } already exists, locally or on ${ REMOTE }; a line is prepared once`);
+  if (hasRemoteRef(`refs/heads/${ branch }`)) {
+    throw new Error(`${ branch } is already on ${ REMOTE }; a release is prepared once`);
   }
-  const preRelease = findLinePreRelease(listReleases(), line);
+  const preRelease = findLinePreRelease(listReleases(), version);
   if (preRelease !== undefined) {
-    throw new Error(`Line ${ formatLine(line) } already has the pre-release ${ preRelease.tagName }: ${ preRelease.url }`);
+    const open = `${ preRelease.tagName } (${ preRelease.url })`;
+    throw new Error(`Line ${ formatLine(version) } has the open pre-release ${ open }; publish it before preparing ${ tag }`);
   }
+}
+
+// A local branch is a run that stopped at a pick; it is resumed as long as it was cut where this run would cut.
+function assertResumable(branch: string, start: string): boolean {
+  const resumed = hasLocalRef(`refs/heads/${ branch }`);
+  if (resumed && !isAncestor(start, branch)) {
+    throw new Error(`${ branch } exists locally but does not descend from ${ start }; delete it with "git branch -D ${ branch }" and re-run`);
+  }
+  return resumed;
+}
+
+function cutReleaseBranch(steps: StepRunner, branch: string, start: string, dryRun: boolean): BranchView {
+  const resumed = assertResumable(branch, start);
+  const view = refView(resumed ? branch : start);
+  if (!dryRun) {
+    assertCheckoutReady();
+  }
+  steps.run(cutStepTitle(branch, start, view.head(), resumed), () => resumed ? switchBranch(branch) : createBranchAt(branch, start));
+  return dryRun ? view : checkoutView();
 }
 
 export function prepareCommand(args: ReadonlyArray<string>): number {
-  const { line, dryRun } = parsePrepareArgs(args);
-  const tag = minorTag(line);
-  const branch = releaseBranch(line);
+  const { tag, version, dryRun } = parsePrepareArgs(args);
+  const branch = releaseBranch(version);
 
   fetchBranch('main');
-  assertLineIsNew(line, branch);
-  const base = resolveCommit(remoteBranch('main'));
-  const docs = releaseEnvDocs((docPath) => showFile(base, docPath), tag);
-  const notes = releaseNotes(tag, releaseSourceAt(base), readNotesTemplate());
+  assertReleaseIsNew(version, tag, branch);
+  const start = baseRef(releaseBase(version, listTags()));
+
+  const steps = stepRunner(dryRun);
+  const view = cutReleaseBranch(steps, branch, start, dryRun);
+  updateReleaseBranch(steps, view, tag);
+  const notes = releaseNotes(tag, releaseSourceAt(view.head()), readNotesTemplate());
   logReleaseNotes(tag, notes);
 
-  runSteps([
-    branchStep(branch, base, docs, tag),
-    { title: `Push ${ branch } to ${ REMOTE }`, run: () => push(`refs/heads/${ branch }`) },
-    {
-      title: `Create the draft pre-release ${ tag } on ${ branch } with the notes`,
-      run: () => console.log(createDraftPreRelease({ tagName: tag, target: branch, body: notes.markdown }).url),
-    },
-  ], dryRun);
+  steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
+  steps.run(`Create the draft pre-release ${ tag } on ${ branch } with the notes`, () => {
+    console.log(createDraftPreRelease({ tagName: tag, target: branch, body: notes.markdown }).url);
+  });
+  steps.finish();
 
   if (dryRun) {
     console.log(notes.markdown);

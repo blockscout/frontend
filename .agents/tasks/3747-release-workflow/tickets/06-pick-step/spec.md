@@ -51,6 +51,6 @@ and fails when there is none. This reworks T05's `prepare vX.Y` and `alpha`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `planPicks` + specs, the pick runner with the conflict stop and the checks
-- [ ] 2 `[agent]` Branch per release and checkout handling in `prepare` / `alpha`; pick + docs step wired
+- [x] 1 `[agent]` `planPicks` + specs, the pick runner with the conflict stop and the checks
+- [x] 2 `[agent]` Branch per release and checkout handling in `prepare` / `alpha`; pick + docs step wired
       into both; `alpha` stops creating a missing pre-release

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseAlphaArgs, preReleaseStep } from './alpha';
+import { parseAlphaArgs } from './alpha';
 
 describe('parseAlphaArgs', () => {
   it('reads the alpha tag and its version', () => {
@@ -28,24 +28,5 @@ describe('parseAlphaArgs', () => {
 
   it('rejects an unknown flag', () => {
     expect(() => parseAlphaArgs([ 'v2.13.0-alpha.1', '--force' ])).toThrow('Unknown flag: --force');
-  });
-});
-
-describe('preReleaseStep', () => {
-  const CONTENT = { tagName: 'v2.13.0-alpha.2', target: '0123456789abcdef', body: '## Notes' };
-
-  it('re-points the line\'s pre-release', () => {
-    const url = 'https://github.com/blockscout/frontend/releases/tag/untagged-1';
-    const preRelease = { id: 7, tagName: 'v2.13.0-alpha.1', draft: true, prerelease: true, url };
-
-    expect(preReleaseStep(preRelease, CONTENT, 'release/v2.13').title).toBe(
-      'Re-point the pre-release v2.13.0-alpha.1 to v2.13.0-alpha.2 and replace its notes: https://github.com/blockscout/frontend/releases/tag/untagged-1',
-    );
-  });
-
-  it('creates a pre-release when the line has none', () => {
-    expect(preReleaseStep(undefined, CONTENT, 'release/v2.13').title).toBe(
-      'Create the draft pre-release v2.13.0-alpha.2 on release/v2.13 with the notes; the line has none',
-    );
   });
 });

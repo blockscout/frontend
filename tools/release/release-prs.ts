@@ -38,8 +38,13 @@ export interface ReleasePrs {
   readonly unresolved: ReadonlyArray<Commit>;
 }
 
-const CHERRY_PICK_TRAILER = /^\(cherry picked from commit ([0-9a-f]{7,40})\)$/m;
+const CHERRY_PICK_TRAILER = /^\(cherry picked from commit ([0-9a-f]{7,40})\)$/gm;
 const PR_REFERENCE = /\(#(\d+)\)/g;
+
+// Every source a commit names: a pick of a pick carries one trailer per hop.
+export function cherryPickSources(message: string): Array<string> {
+  return [ ...message.matchAll(CHERRY_PICK_TRAILER) ].map(([ , sha ]) => sha);
+}
 
 function subjectPr(message: string): number | undefined {
   const [ subject ] = message.split('\n', 1);
@@ -50,7 +55,7 @@ function subjectPr(message: string): number | undefined {
 // A picked commit is resolved through its source on `main`, never its own subject, which the operator
 // may have edited while resolving a conflict.
 export function resolvePr(commit: Commit, resolver: PrResolver): number | undefined {
-  const source = CHERRY_PICK_TRAILER.exec(commit.message)?.[1];
+  const [ source ] = cherryPickSources(commit.message);
   if (source !== undefined) {
     return resolvePr({ sha: source, message: resolver.commitMessage(source) }, resolver);
   }

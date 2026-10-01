@@ -1,6 +1,5 @@
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
-import os from 'node:os';
 import path from 'node:path';
 
 import { EXEC_MAX_BUFFER } from '../cli/exec';
@@ -47,6 +46,10 @@ export function listCommits(from: string, to: string): Array<Commit> {
   return parseLog(git([ 'log', '--reverse', `--format=%H${ FIELD_SEPARATOR }%B${ RECORD_SEPARATOR }`, `${ from }..${ to }` ]));
 }
 
+export function listShas(from: string, to: string): Array<string> {
+  return git([ 'rev-list', '--reverse', `${ from }..${ to }` ]).split('\n').filter(Boolean);
+}
+
 export function commitMessage(sha: string): string {
   return git([ 'log', '-1', '--format=%B', sha ]).trim();
 }
@@ -62,6 +65,19 @@ export function remoteBranch(branch: string): string {
 
 export function resolveCommit(ref: string): string {
   return git([ 'rev-parse', '--verify', `${ ref }^{commit}` ]).trim();
+}
+
+export function mergeBase(a: string, b: string): string {
+  return git([ 'merge-base', a, b ]).trim();
+}
+
+export function isAncestor(ancestor: string, descendant: string): boolean {
+  try {
+    git([ 'merge-base', '--is-ancestor', ancestor, descendant ]);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function hasLocalRef(ref: string): boolean {
@@ -81,32 +97,53 @@ export function showFile(ref: string, filePath: string): string {
   return git([ 'show', `${ ref }:${ filePath }` ]);
 }
 
+export function hasCleanWorkingTree(): boolean {
+  return git([ 'status', '--porcelain', '--untracked-files=no' ]).trim() === '';
+}
+
+export function hasCherryPickInProgress(): boolean {
+  return hasLocalRef('CHERRY_PICK_HEAD');
+}
+
+export function switchBranch(branch: string): void {
+  git([ 'switch', '--quiet', branch ]);
+}
+
+export function createBranchAt(branch: string, start: string): void {
+  git([ 'switch', '--quiet', '--no-track', '--create', branch, start ]);
+}
+
+export function trackRemoteBranch(branch: string): void {
+  git([ 'switch', '--quiet', '--track', '--create', branch, remoteBranch(branch) ]);
+}
+
+export function fastForward(ref: string): void {
+  git([ 'merge', '--quiet', '--ff-only', ref ]);
+}
+
+export function cherryPick(sha: string): void {
+  git([ 'cherry-pick', '-x', sha ]);
+}
+
+export function unmergedFiles(): Array<string> {
+  return git([ 'diff', '--name-only', '--diff-filter=U' ]).split('\n').filter(Boolean);
+}
+
 export interface FileChange {
   readonly path: string;
   readonly content: string;
 }
 
-// Built on a throwaway index from the object store, so the operator's checkout and index stay as they
-// are and no hook (lint-staged, LFS) runs against a tree that is not checked out.
-export function commitFiles(parent: string, files: ReadonlyArray<FileChange>, message: string): string {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'release-index-'));
-  // eslint-disable-next-line no-restricted-properties -- Node CLI handing its environment to git, not an app env var
-  const env = { ...process.env, GIT_INDEX_FILE: path.join(dir, 'index') };
-  try {
-    git([ 'read-tree', parent ], { env });
-    for (const file of files) {
-      const blob = git([ 'hash-object', '-w', '--stdin' ], { input: file.content }).trim();
-      git([ 'update-index', '--cacheinfo', `100644,${ blob },${ file.path }` ], { env });
-    }
-    const tree = git([ 'write-tree' ], { env }).trim();
-    return git([ 'commit-tree', tree, '-p', parent, '-m', message ]).trim();
-  } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+// Through the checkout and with explicit paths: the release branch is checked out while this runs, and
+// nothing else the operator may have lying around belongs in a docs commit.
+export function writeAndCommit(files: ReadonlyArray<FileChange>, message: string): string {
+  const root = repoRoot();
+  for (const file of files) {
+    fs.writeFileSync(path.join(root, file.path), file.content);
   }
-}
-
-export function createBranch(branch: string, sha: string): void {
-  git([ 'branch', '--no-track', branch, sha ]);
+  git([ 'add', '--', ...files.map((file) => file.path) ], { cwd: root });
+  git([ 'commit', '--quiet', '-m', message ], { cwd: root });
+  return resolveCommit('HEAD');
 }
 
 export function createTag(tag: string, sha: string): void {
@@ -114,5 +151,9 @@ export function createTag(tag: string, sha: string): void {
 }
 
 export function push(ref: string): void {
-  git([ 'push', REMOTE, ref ]);
+  git([ 'push', '--quiet', REMOTE, ref ]);
+}
+
+export function pushBranch(branch: string): void {
+  git([ 'push', '--quiet', '--set-upstream', REMOTE, branch ]);
 }

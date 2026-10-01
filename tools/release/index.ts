@@ -10,8 +10,10 @@ import { prepareCommand } from './commands/prepare';
 
 const USAGE = `Usage: pnpm release <subcommand> [args]
 
-  prepare <vX.Y>      cut release/vX.Y from main and create the line's draft pre-release
-  alpha <tag>         tag release/vX.Y as an alpha, re-point the pre-release to it and watch its CI run
+  prepare <vX.Y.Z>    cut release/vX.Y.Z (from main, or from vX.Y.Z-1 for a patch), pick the "backport" PRs
+                      onto it and create the draft pre-release
+  alpha <tag>         pick the "backport" PRs onto release/vX.Y.Z, tag its head as the alpha, re-point the
+                      pre-release to it and watch its CI run
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels
   check-tag <tag>     check that a tag ships no "upcoming" ENV docs and no PR another release shipped
   label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere

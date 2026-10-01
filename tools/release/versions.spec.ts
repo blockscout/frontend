@@ -2,11 +2,12 @@ import { describe, expect, it } from 'vitest';
 
 import {
   isVersionLabel,
-  minorTag,
+  latestFinalTag,
   parseAlphaTagOrThrow,
-  parseLineOrThrow,
+  parseFinalTagOrThrow,
   parseTag,
   previousTag,
+  releaseBase,
   releaseBranch,
   versionLabel,
 } from './versions';
@@ -106,30 +107,67 @@ describe('parseAlphaTagOrThrow', () => {
   });
 });
 
-describe('parseLineOrThrow', () => {
-  it('reads a line', () => {
-    expect(parseLineOrThrow('v2.13')).toEqual({ major: 2, minor: 13 });
+describe('parseFinalTagOrThrow', () => {
+  it('reads a final tag', () => {
+    expect(parseFinalTagOrThrow('v2.13.1')).toEqual({ major: 2, minor: 13, patch: 1, prerelease: undefined });
   });
 
-  it.each([ '2.13', 'v2.13.0', 'v2', 'release/v2.13' ])('rejects %s', (line) => {
-    expect(() => parseLineOrThrow(line)).toThrow(`Not a release line: "${ line }"; expected vX.Y`);
+  it('rejects a pre-release tag', () => {
+    expect(() => parseFinalTagOrThrow('v2.13.0-alpha.1')).toThrow('Not a final tag: "v2.13.0-alpha.1"; expected vX.Y.Z');
+  });
+
+  it('rejects a non-tag as a non-tag', () => {
+    expect(() => parseFinalTagOrThrow('v2.13')).toThrow('Not a release tag: "v2.13"');
   });
 });
 
 describe('releaseBranch', () => {
-  it('names the branch of a line', () => {
-    expect(releaseBranch(parseLineOrThrow('v2.13'))).toBe('release/v2.13');
+  it('gives every release its own branch', () => {
+    expect(releaseBranch(parseFinalTagOrThrow('v2.13.0'))).toBe('release/v2.13.0');
+    expect(releaseBranch(parseFinalTagOrThrow('v2.13.1'))).toBe('release/v2.13.1');
   });
 
-  it('infers the branch of a tag, a hotfix alpha included', () => {
-    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.0-alpha.1'))).toBe('release/v2.13');
-    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.1-alpha.2'))).toBe('release/v2.13');
-    expect(releaseBranch(parseAlphaTagOrThrow('v3.0.4-alpha.1'))).toBe('release/v3.0');
+  it('infers the branch of an alpha tag, a hotfix alpha included', () => {
+    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.0-alpha.1'))).toBe('release/v2.13.0');
+    expect(releaseBranch(parseAlphaTagOrThrow('v2.13.1-alpha.2'))).toBe('release/v2.13.1');
+    expect(releaseBranch(parseAlphaTagOrThrow('v3.0.4-alpha.1'))).toBe('release/v3.0.4');
   });
 });
 
-describe('minorTag', () => {
-  it('is the first release of the line', () => {
-    expect(minorTag(parseLineOrThrow('v2.13'))).toBe('v2.13.0');
+describe('latestFinalTag', () => {
+  it('is the highest final tag of the line', () => {
+    expect(latestFinalTag({ major: 2, minor: 12 }, TAGS)).toBe('v2.12.3');
+  });
+
+  it('ignores pre-release tags', () => {
+    expect(latestFinalTag({ major: 2, minor: 14 }, TAGS)).toBeUndefined();
+  });
+});
+
+describe('releaseBase', () => {
+  it('cuts a minor from main', () => {
+    expect(releaseBase(parseFinalTagOrThrow('v2.14.0'), TAGS)).toEqual({ kind: 'main' });
+  });
+
+  it('cuts a patch from the previous release of the line', () => {
+    expect(releaseBase(parseFinalTagOrThrow('v2.12.4'), TAGS)).toEqual({ kind: 'tag', tag: 'v2.12.3' });
+  });
+
+  it('refuses a patch that skips a release', () => {
+    expect(() => releaseBase(parseFinalTagOrThrow('v2.12.5'), TAGS)).toThrow(
+      'v2.12.5 must follow v2.12.4 as the line\'s latest release; the latest is v2.12.3',
+    );
+  });
+
+  it('refuses a patch of a release already followed by another', () => {
+    expect(() => releaseBase(parseFinalTagOrThrow('v2.12.2'), TAGS)).toThrow(
+      'v2.12.2 must follow v2.12.1 as the line\'s latest release; the latest is v2.12.3',
+    );
+  });
+
+  it('refuses a patch of a line that has no release', () => {
+    expect(() => releaseBase(parseFinalTagOrThrow('v2.14.1'), TAGS)).toThrow(
+      'v2.14.1 must follow v2.14.0 as the line\'s latest release; line v2.14 has no release yet',
+    );
   });
 });

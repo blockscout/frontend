@@ -5,7 +5,7 @@ export interface Version {
   readonly prerelease: string | undefined;
 }
 
-// A release line: the minor every `vX.Y.*` tag and `release/vX.Y` belong to.
+// A release line: the minor every `vX.Y.*` tag belongs to; a line keeps one open pre-release at a time.
 export interface Line {
   readonly major: number;
   readonly minor: number;
@@ -13,7 +13,6 @@ export interface Line {
 
 const TAG = /^v(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/;
 const VERSION_LABEL = /^v\d+\.\d+\.\d+$/;
-const LINE = /^v(\d+)\.(\d+)$/;
 const ALPHA = /^alpha\.\d+$/;
 
 export function parseTag(tag: string): Version | undefined {
@@ -41,13 +40,12 @@ export function parseAlphaTagOrThrow(tag: string): Version {
   return version;
 }
 
-export function parseLineOrThrow(line: string): Line {
-  const match = LINE.exec(line);
-  if (match === null) {
-    throw new Error(`Not a release line: "${ line }"; expected vX.Y`);
+export function parseFinalTagOrThrow(tag: string): Version {
+  const version = parseTagOrThrow(tag);
+  if (version.prerelease !== undefined) {
+    throw new Error(`Not a final tag: "${ tag }"; expected vX.Y.Z`);
   }
-  const [ , major, minor ] = match;
-  return { major: Number(major), minor: Number(minor) };
+  return version;
 }
 
 export function formatLine({ major, minor }: Line): string {
@@ -58,17 +56,13 @@ export function isSameLine(a: Line, b: Line): boolean {
   return a.major === b.major && a.minor === b.minor;
 }
 
-export function releaseBranch(line: Line): string {
-  return `release/${ formatLine(line) }`;
-}
-
-// The tag of the line's first release, which its pre-release names until the first alpha.
-export function minorTag(line: Line): string {
-  return `${ formatLine(line) }.0`;
-}
-
 export function formatVersion({ major, minor, patch }: Version): string {
   return `v${ major }.${ minor }.${ patch }`;
+}
+
+// Every release has its own branch, so an alpha of a patch never lands on the branch of the minor.
+export function releaseBranch(version: Version): string {
+  return `release/${ formatVersion(version) }`;
 }
 
 // The label a release stamps on what it shipped is its final version, also when the tag is an alpha of it.
@@ -91,17 +85,43 @@ function isEarlierRelease(candidate: Version, current: Version): boolean {
   return candidate.major < current.major || (candidate.major === current.major && candidate.minor < current.minor);
 }
 
-// Read off the tag list rather than release dates, so a hotfix on an older line resolves within that line.
-export function previousTag(tag: string, tags: ReadonlyArray<string>): string {
-  const current = parseTagOrThrow(tag);
-  const [ previous ] = tags
+function finalVersionsLatestFirst(tags: ReadonlyArray<string>): Array<Version> {
+  return tags
     .map(parseTag)
     .filter((version): version is Version => version !== undefined && version.prerelease === undefined)
-    .filter((version) => isEarlierRelease(version, current))
     .sort((a, b) => compareVersions(b, a));
+}
+
+// Read off the tag list rather than release dates, so a hotfix on an older line resolves within that line.
+export function previousTag(tag: string, tags: ReadonlyArray<string>): string {
+  const [ previous ] = finalVersionsLatestFirst(tags).filter((version) => isEarlierRelease(version, parseTagOrThrow(tag)));
 
   if (previous === undefined) {
     throw new Error(`No release precedes ${ tag }`);
   }
   return formatVersion(previous);
+}
+
+export function latestFinalTag(line: Line, tags: ReadonlyArray<string>): string | undefined {
+  const [ latest ] = finalVersionsLatestFirst(tags).filter((version) => isSameLine(version, line));
+  return latest === undefined ? undefined : formatVersion(latest);
+}
+
+export type ReleaseBase =
+  { readonly kind: 'main' } |
+  { readonly kind: 'tag'; readonly tag: string };
+
+// A minor forks from main; a patch continues from the line's latest release, so the line stays a single
+// chain of picks and the previous tag is always an ancestor of the next.
+export function releaseBase(version: Version, tags: ReadonlyArray<string>): ReleaseBase {
+  if (version.patch === 0) {
+    return { kind: 'main' };
+  }
+  const previous = formatVersion({ ...version, patch: version.patch - 1 });
+  const latest = latestFinalTag(version, tags);
+  if (latest !== previous) {
+    const actual = latest === undefined ? `line ${ formatLine(version) } has no release yet` : `the latest is ${ latest }`;
+    throw new Error(`${ formatVersion(version) } must follow ${ previous } as the line's latest release; ${ actual }`);
+  }
+  return { kind: 'tag', tag: previous };
 }
