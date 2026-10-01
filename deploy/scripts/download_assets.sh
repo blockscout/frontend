@@ -36,7 +36,9 @@ mkdir -p "$ASSETS_DIR"
 # Track failed downloads
 FAILED_DOWNLOADS=0
 
-# Function to determine the target file name based on the environment variable
+# Function to determine the target file name based on the environment variable.
+# Must mirror buildExternalAssetFilePath() in src/config/utils/envs.ts, which is how the app
+# computes the path it will request.
 get_target_filename() {
     local env_var="$1"
     local url="${!env_var}"
@@ -46,29 +48,26 @@ get_target_filename() {
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
 
-    # Check if the URL starts with "file://"
+    local filename
     if [[ "$url" == file://* ]]; then
-        # Extract the local file path
-        local file_path="${url#file://}"
-        # Get the filename from the local file path
-        local filename=$(basename "$file_path")
-        # Extract the extension from the filename
-        local extension="${filename##*.}"
+        filename=$(basename "${url#file://}")
+    elif [[ "$url" == http* ]]; then
+        # Remove query parameters and fragment from the URL and get the last path segment
+        filename=$(basename "${url%%[\?#]*}")
     else
-        if [[ "$url" == http* ]]; then
-            # Remove query parameters from the URL and get the filename
-            local filename=$(basename "${url%%\?*}")
-            # Extract the extension from the filename
-            local extension="${filename##*.}"
-        else
-            local extension="json"
-        fi
+        # Raw JSON content
+        echo "$name_lc.json"
+        return
     fi
 
-    # Convert the extension to lowercase
-    extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
+    # A path without a file extension (e.g. Cloudflare Images ".../<id>/public") is saved under the bare name
+    if [[ "$filename" != *.* ]]; then
+        echo "$name_lc"
+        return
+    fi
 
-    # Construct the custom file name
+    local extension="${filename##*.}"
+    extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
     echo "$name_lc.$extension"
 }
 
