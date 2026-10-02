@@ -29,6 +29,7 @@ export enum NAMES {
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
   SHOW_POOR_REPUTATION_TOKENS = 'show_poor_reputation_tokens',
   APP_PROFILE = 'app_profile',
+  TOKEN_TRANSFER_COLUMNS = 'token_transfer_columns',
 }
 
 /**

@@ -30,6 +30,7 @@ export enum EventTypes {
   PROMO_BANNER = 'Promo banner',
   APP_FEEDBACK = 'App feedback',
   ADDRESS_WIDGET = 'Address widget',
+  TABLE_COLUMNS = 'Table columns',
 }
 
 /* eslint-disable  @stylistic/indent */
@@ -182,6 +183,12 @@ Type extends EventTypes.APP_FEEDBACK ? {
 } :
 Type extends EventTypes.ADDRESS_WIDGET ? {
   Name: string;
+} :
+Type extends EventTypes.TABLE_COLUMNS ? {
+  Table: 'Token transfers';
+  Surface: string;
+  Column: string;
+  State: 'On' | 'Off' | 'Reset';
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

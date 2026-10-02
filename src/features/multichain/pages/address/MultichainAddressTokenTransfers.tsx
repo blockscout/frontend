@@ -16,6 +16,7 @@ import useAddressCountersQuery from 'src/slices/address/hooks/useAddressCounters
 import AddressTokenTransfersLocal from 'src/slices/address/pages/details/token-transfers/AddressTokenTransfersLocal';
 import useAddressTokenTransfersQuery from 'src/slices/address/pages/details/token-transfers/useAddressTokenTransfersQuery';
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
 import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/AddressAdvancedFilterLink';
@@ -29,6 +30,7 @@ import { MultichainProvider } from 'src/features/multichain/context';
 import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
+import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -86,6 +88,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
     enabled: isLocalTab && !isLoading && chainIds.length > 0,
     chain: chainData,
   });
+  const columnsState = useTokenTransferColumns('address');
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
@@ -152,6 +155,14 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               defaultAddressFilter={ transfersQueryLocal.filters.filter }
               isLoading={ transfersQueryLocal.query.isInitialLoading }
               chainConfig={ chainData?.app_config }
+            />
+            <ColumnsButton
+              tableColumns={ columnsState.selectableColumns }
+              columns={ columnsState.checkedColumns }
+              onChange={ columnsState.onColumnsChange }
+              selected={ columnsState.isCustomized }
+              onReset={ columnsState.onColumnsReset }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
             />
             { chainSelect }
             <CsvExport
@@ -222,6 +233,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               onTypeFilterChange={ transfersQueryLocal.onTypeFilterChange }
               onAddressFilterChange={ transfersQueryLocal.onAddressFilterChange }
               addressHash={ hash }
+              columnsState={ columnsState }
             />
           </SocketProvider>
         </MultichainProvider>
