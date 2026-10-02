@@ -78,6 +78,7 @@ const TokenTransfersTable = ({
           <TableBody>
             { showSocketInfo && (
               <SocketNewItemsNotice.Desktop
+                colSpan={ visibleColumns.length + (chainData ? 1 : 0) }
                 showErrorAlert={ showSocketErrorAlert }
                 num={ socketInfoNum }
                 type="token_transfer"

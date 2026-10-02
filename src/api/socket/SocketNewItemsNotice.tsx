@@ -25,6 +25,7 @@ interface Props {
   num?: number;
   isLoading?: boolean;
   onLinkClick?: () => void;
+  colSpan?: number;
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorAlert, type = 'transaction', isLoading, onLinkClick }: Props) => {
@@ -98,7 +99,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
 
 export default SocketNewItemsNotice;
 
-export const Desktop = ({ ...props }: Props) => {
+export const Desktop = ({ colSpan = 100, ...props }: Props) => {
   return (
     <SocketNewItemsNotice
       borderRadius={ props.isLoading ? 'sm' : 0 }
@@ -109,7 +110,7 @@ export const Desktop = ({ ...props }: Props) => {
       my={ props.isLoading ? '6px' : 0 }
       { ...props }
     >
-      { ({ content }) => <TableRow><TableCell colSpan={ 100 } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</TableCell></TableRow> }
+      { ({ content }) => <TableRow><TableCell colSpan={ colSpan } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</TableCell></TableRow> }
     </SocketNewItemsNotice>
   );
 };

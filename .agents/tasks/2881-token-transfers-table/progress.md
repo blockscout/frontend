@@ -9,7 +9,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 01 → `tickets/01-shared-columns-button/`
 - [x] 02 → `tickets/02-unified-table-index-page/`
 - [x] 03 → `tickets/03-column-selector-persistence/`
-- [ ] 04 → `tickets/04-address-tab/`
+- [x] 04 → `tickets/04-address-tab/`
 - [ ] 05 → `tickets/05-tx-tab/`
 - [ ] 06 → `tickets/06-token-tab/`
 - [ ] 07 → `tickets/07-type-from-to-design-answers/`

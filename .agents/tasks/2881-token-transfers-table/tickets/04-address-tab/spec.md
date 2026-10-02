@@ -45,8 +45,8 @@ that; if T05 lands first, move the deletion into this ticket before it starts.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Swap `AddressTokenTransfersLocal` to the unified table; add the selector to desktop
+- [x] 1 `[agent]` Swap `AddressTokenTransfersLocal` to the unified table; add the selector to desktop
       right slot, mobile action bar, and the multichain wrapper
-- [ ] 2 `[human]` Style to mockup —
+- [x] 2 `[human]` Style to mockup —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-32182); regenerate the
       two pw baselines
