@@ -96,7 +96,7 @@ export function checkoutPlan(branch: string, state: LocalBranchState): CheckoutP
   }
 }
 
-function readLocalBranchState(branch: string): LocalBranchState {
+export function readLocalBranchState(branch: string): LocalBranchState {
   const remote = remoteBranch(branch);
   if (!hasLocalRef(`refs/heads/${ branch }`)) {
     return 'missing';

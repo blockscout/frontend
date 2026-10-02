@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { approvedAlpha, describeCommit, docsConflictMessage, parsePublishArgs, publishState } from './publish';
+import { approvedAlpha, describeCommit, docsConflictMessage, needsMainPush, parsePublishArgs, publishState } from './publish';
 
 const HEAD = '0123456789abcdef0123456789abcdef01234567';
 const OTHER = 'fedcba9876543210fedcba9876543210fedcba98';
@@ -90,5 +90,21 @@ describe('publishState', () => {
     expect(() => publishState('v2.13.0', 'release/v2.13.0', OTHER, HEAD)).toThrow(
       'v2.13.0 is on origin at fedcba9876, not at the head of release/v2.13.0 (0123456789)',
     );
+  });
+});
+
+describe('needsMainPush', () => {
+  const commit = { sha: HEAD, message: 'chore: prepare release v2.13.0' };
+
+  it('pushes when a docs commit is left to pick', () => {
+    expect(needsMainPush({ picks: [ commit ], skipped: [] }, 'current')).toBe(true);
+  });
+
+  it('pushes a local main ahead of origin with a continued pick, nothing left to pick', () => {
+    expect(needsMainPush({ picks: [], skipped: [ { commit, sha: OTHER } ] }, 'ahead')).toBe(true);
+  });
+
+  it.each([ 'missing', 'current', 'behind' ] as const)('leaves main alone when every docs commit is on origin and the local branch is %s', (state) => {
+    expect(needsMainPush({ picks: [], skipped: [ { commit, sha: OTHER } ] }, state)).toBe(false);
   });
 });

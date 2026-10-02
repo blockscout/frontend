@@ -27,7 +27,8 @@ import { latestAlphaTag, parseFinalTagOrThrow, releaseBranch } from '../versions
 import { parsePhaseArgs } from './args';
 import { checkTag } from './check-tag';
 import { readNotesTemplate } from './notes';
-import { checkoutBranch, pickCommit } from './release-branch';
+import type { LocalBranchState } from './release-branch';
+import { checkoutBranch, checkoutPlan, pickCommit, readLocalBranchState } from './release-branch';
 import type { StepRunner } from './report';
 import { logList, logReleaseNotes, stepRunner } from './report';
 import { assertTagIsNew, watchTagRun } from './tag-run';
@@ -92,14 +93,21 @@ function logDocsPlan({ picks, skipped }: DocsPickPlan): void {
   logList(`Docs commits already on ${ MAIN }`, skipped.map(({ commit, sha }) => `${ describeCommit(commit) }: picked as ${ sha.slice(0, 10) }`));
 }
 
-function docsPlanAt(head: string, previousTag: string, tag: string): DocsPickPlan {
-  const main = remoteBranch(MAIN);
+// Planned against the main the checkout will use: after the operator continued a stopped pick, the local main
+// is ahead of origin with that commit, which its trailer then skips rather than picks onto itself again.
+function docsPlanAt(head: string, previousTag: string, tag: string, main: string): DocsPickPlan {
   const docs = docsCommits(listCommits(previousTag, head), tag);
   return planDocsPicks(docs, listCommits(mergeBase(head, main), main));
 }
 
-function returnDocsToMain(steps: StepRunner, plan: DocsPickPlan, dryRun: boolean): void {
-  if (plan.picks.length === 0) {
+// A local main ahead of origin holds a continued pick that is not pushed yet, so it goes even with nothing
+// left to pick.
+export function needsMainPush({ picks }: DocsPickPlan, mainState: LocalBranchState): boolean {
+  return picks.length > 0 || mainState === 'ahead';
+}
+
+function returnDocsToMain(steps: StepRunner, plan: DocsPickPlan, mainState: LocalBranchState, dryRun: boolean): void {
+  if (!needsMainPush(plan, mainState)) {
     return;
   }
   checkoutBranch(steps, MAIN, dryRun);
@@ -161,7 +169,8 @@ export function publishCommand(args: ReadonlyArray<string>): number {
   if (state === 'new' && !checkRelease(release)) {
     return 1;
   }
-  const docsPlan = docsPlanAt(head, notes.previousTag, tag);
+  const mainState = readLocalBranchState(MAIN);
+  const docsPlan = docsPlanAt(head, notes.previousTag, tag, checkoutPlan(MAIN, mainState).ref);
   logDocsPlan(docsPlan);
 
   const steps = stepRunner(dryRun);
@@ -170,7 +179,7 @@ export function publishCommand(args: ReadonlyArray<string>): number {
   } else {
     console.error(`${ tag } is already on ${ REMOTE } at the head of ${ branch } and published; resuming with the docs commits.`);
   }
-  returnDocsToMain(steps, docsPlan, dryRun);
+  returnDocsToMain(steps, docsPlan, mainState, dryRun);
   steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'release'));
   steps.finish();
 
