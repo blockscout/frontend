@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { baseRef, cutStepTitle, parsePrepareArgs } from './prepare';
+import { baseRef, cutStepTitle, isPicksOnly, parsePrepareArgs } from './prepare';
 
 describe('parsePrepareArgs', () => {
   it('reads the release tag and its version', () => {
@@ -60,5 +60,26 @@ describe('cutStepTitle', () => {
     expect(cutStepTitle('release/v2.13.0', 'origin/main', SHA, true)).toBe(
       'Switch to release/v2.13.0, cut at origin/main (0123456789) by an earlier run that stopped; resuming',
     );
+  });
+});
+
+describe('isPicksOnly', () => {
+  const pick = { sha: 'a', message: 'Fix the badge (#3600)\n\n(cherry picked from commit 0123456789abcdef0123456789abcdef01234567)' };
+  const docs = { sha: 'b', message: 'chore: prepare release v2.13.0' };
+
+  it('accepts a branch of picks and the docs commit of the release', () => {
+    expect(isPicksOnly([ pick, docs ], 'v2.13.0')).toBe(true);
+  });
+
+  it('accepts a branch with nothing past the fork point', () => {
+    expect(isPicksOnly([], 'v2.13.0')).toBe(true);
+  });
+
+  it('refuses a commit made on the branch by hand', () => {
+    expect(isPicksOnly([ pick, { sha: 'c', message: 'Fix the badge on the branch' } ], 'v2.13.0')).toBe(false);
+  });
+
+  it('refuses the docs commit of another release', () => {
+    expect(isPicksOnly([ docs ], 'v2.13.1')).toBe(false);
   });
 });

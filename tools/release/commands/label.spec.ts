@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseLabelArgs } from './label';
+import { parseLabelArgs, shippedBackports } from './label';
 
 describe('parseLabelArgs', () => {
   it('reads an apply with its label defaults', () => {
@@ -53,5 +53,18 @@ describe('parseLabelArgs', () => {
 
   it('rejects an unknown flag', () => {
     expect(() => parseLabelArgs([ 'v2.13.0', '--label', 'v2.13.0', '--force' ])).toThrow('Unknown flag: --force');
+  });
+});
+
+describe('shippedBackports', () => {
+  const pr = (number: number, labels: ReadonlyArray<string>) => ({ number, title: '', author: '', url: '', body: '', labels, closingIssues: [] });
+  const prs = [ pr(1, [ 'bug', 'backport' ]), pr(2, [ 'feature' ]), pr(3, [ 'backport' ]) ];
+
+  it('names the shipped PRs that carry "backport" when the label is a version', () => {
+    expect(shippedBackports(prs, 'v2.13.1')).toEqual([ 1, 3 ]);
+  });
+
+  it('drops nothing for a label that is not a version', () => {
+    expect(shippedBackports(prs, 'pre-release')).toEqual([]);
   });
 });

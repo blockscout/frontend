@@ -27,7 +27,9 @@ const UPCOMING = /\bupcoming\b/i;
 const UPCOMING_PLACEHOLDER = /<upcoming>|\bupcoming\b/gi;
 // Only links into this repository: a backend PR quoted in the notes has a number of its own.
 const PR_LINK = /github\.com\/blockscout\/frontend\/pull\/(\d+)\b/g;
-const PR_REFERENCE = /(?<![\w&/])#(\d+)\b/g;
+// Only the entries the generator writes: a `#N` inside a PR title ("Revert … (#N)") or copied prose names a
+// PR the notes do not list.
+const ENV_ENTRY = /^- #(\d+)$/gm;
 
 export function findUpcoming(docs: ReadonlyArray<Doc>): Array<UpcomingMention> {
   return docs.flatMap(({ path, content }) => content
@@ -50,7 +52,7 @@ export function replaceUpcoming(content: string, tag: string): UpcomingReplaceme
 }
 
 export function bodyPrNumbers(body: string): Array<number> {
-  const numbers = [ ...body.matchAll(PR_LINK), ...body.matchAll(PR_REFERENCE) ].map(([ , number ]) => Number(number));
+  const numbers = [ ...body.matchAll(PR_LINK), ...body.replace(/\r\n?/g, '\n').matchAll(ENV_ENTRY) ].map(([ , number ]) => Number(number));
   return [ ...new Set(numbers) ].sort((a, b) => a - b);
 }
 

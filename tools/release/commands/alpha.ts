@@ -41,6 +41,7 @@ export function alphaCommand(args: ReadonlyArray<string>): number {
     throw new Error(`${ branch } is not on ${ REMOTE }; cut it with "pnpm release prepare ${ releaseTag }"`);
   }
   fetchBranch(branch);
+  fetchBranch('main');
   assertTagIsNew(tag);
   const preRelease = findReleasePreRelease(listReleases(), version);
 
@@ -59,10 +60,11 @@ export function alphaCommand(args: ReadonlyArray<string>): number {
 
   const content = { tagName: tag, target: head, body: notes.markdown };
   steps.run(`Tag ${ branch } at ${ head.slice(0, 10) } as ${ tag }`, () => createTag(tag, head));
+  // The branch goes first: the re-point names the head as the release target, which GitHub must already have.
+  steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
   steps.run(`Re-point the pre-release ${ preRelease.tagName } to ${ tag } and replace its notes: ${ preRelease.url }`, () => {
     updateRelease(preRelease.id, content);
   });
-  steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
   steps.run(`Push ${ tag } to ${ REMOTE }, which fires ${ WORKFLOW }`, () => push(`refs/tags/${ tag }`));
   steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'push'));
   steps.finish();

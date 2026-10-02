@@ -206,8 +206,6 @@ the `DEPRECATED_ENVS` entry and the rejection rule you added in Phase 1.
 
 - **Version columns** stay `upcoming`; `pnpm release prepare` and `alpha` rewrite
   them to the shipping tag.
-- **Label the PR `ENVs`** so the change is picked up into the "Changes in ENV
-  variables" section of the release notes.
 - **Name every removed variable in the PR description**, and say the removal is
   breaking. The release notes copy the PR body's "Environment variables" section
   as written, and the `release` skill derives the roll-up request to DevOps from

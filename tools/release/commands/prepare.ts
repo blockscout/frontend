@@ -1,15 +1,32 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
-import { createBranchAt, fetchBranch, hasLocalRef, hasRemoteRef, isAncestor, listTags, pushBranch, REMOTE, remoteBranch, switchBranch } from '../git';
+import { prepareCommitMessage } from '../docs-picks';
+import {
+  createBranchAt,
+  fetchBranch,
+  hasLocalRef,
+  hasRemoteRef,
+  isAncestor,
+  listCommits,
+  listTags,
+  mergeBase,
+  pushBranch,
+  REMOTE,
+  remoteBranch,
+  resolveCommit,
+  switchBranch,
+} from '../git';
 import { createDraftPreRelease, listReleases } from '../github';
 import { releaseNotes } from '../notes';
 import { findLinePreRelease } from '../pre-release';
+import type { Commit } from '../release-prs';
+import { cherryPickSources } from '../release-prs';
 import { releaseSourceAt } from '../release-source';
 import type { ReleaseBase, Version } from '../versions';
 import { formatLine, parseFinalTagOrThrow, releaseBase, releaseBranch } from '../versions';
 import { parsePhaseArgs } from './args';
 import { readNotesTemplate } from './notes';
 import type { BranchView } from './release-branch';
-import { assertCheckoutReady, checkoutView, refView, updateReleaseBranch } from './release-branch';
+import { assertCheckoutReady, checkoutBranch, checkoutView, refView, updateReleaseBranch } from './release-branch';
 import type { StepRunner } from './report';
 import { logReleaseNotes, stepRunner } from './report';
 
@@ -41,37 +58,59 @@ export function cutStepTitle(branch: string, start: string, sha: string, resumed
     `Cut ${ branch } at ${ at }`;
 }
 
-function assertReleaseIsNew(version: Version, tag: string, branch: string): void {
+// Whether the branch is on origin says where a stopped run got to: a push that went through, followed by a
+// draft call that did not, leaves the branch there with no pre-release, and the re-run picks up from it.
+function releaseState(version: Version, tag: string, branch: string): 'new' | 'pushed' {
   if (hasRemoteRef(`refs/tags/${ tag }`)) {
     throw new Error(`${ tag } is already released`);
-  }
-  if (hasRemoteRef(`refs/heads/${ branch }`)) {
-    throw new Error(`${ branch } is already on ${ REMOTE }; a release is prepared once`);
   }
   const preRelease = findLinePreRelease(listReleases(), version);
   if (preRelease !== undefined) {
     const open = `${ preRelease.tagName } (${ preRelease.url })`;
     throw new Error(`Line ${ formatLine(version) } has the open pre-release ${ open }; publish it before preparing ${ tag }`);
   }
+  return hasRemoteRef(`refs/heads/${ branch }`) ? 'pushed' : 'new';
 }
 
-// A local branch is a run that stopped at a pick; it is resumed as long as it was cut where this run would cut.
-function assertResumable(branch: string, start: string): boolean {
-  const resumed = hasLocalRef(`refs/heads/${ branch }`);
-  if (resumed && !isAncestor(start, branch)) {
-    throw new Error(`${ branch } exists locally but does not descend from ${ start }; delete it with "git branch -D ${ branch }" and re-run`);
+// A minor's cut point on main moves on with every merge, so a resumed branch is recognised by what sits
+// past its fork point instead: nothing but picks and the release's docs commit.
+export function isPicksOnly(commits: ReadonlyArray<Commit>, tag: string): boolean {
+  const docsSubject = prepareCommitMessage(tag);
+  return commits.every(({ message }) => cherryPickSources(message).length > 0 || message.split('\n', 1)[0] === docsSubject);
+}
+
+interface CutPoint {
+  readonly sha: string;
+  readonly resumed: boolean;
+}
+
+function cutPoint(base: ReleaseBase, branch: string, tag: string): CutPoint {
+  const start = baseRef(base);
+  if (!hasLocalRef(`refs/heads/${ branch }`)) {
+    return { sha: resolveCommit(start), resumed: false };
   }
-  return resumed;
+  const deleteHint = `delete it with "git branch -D ${ branch }" and re-run`;
+  if (base.kind === 'tag') {
+    if (!isAncestor(start, branch)) {
+      throw new Error(`${ branch } exists locally but does not descend from ${ start }; ${ deleteHint }`);
+    }
+    return { sha: resolveCommit(start), resumed: true };
+  }
+  const fork = mergeBase(branch, start);
+  if (!isPicksOnly(listCommits(fork, branch), tag)) {
+    throw new Error(`${ branch } exists locally with commits that are neither picks from main nor the docs commit of ${ tag }; ${ deleteHint }`);
+  }
+  return { sha: fork, resumed: true };
 }
 
-function cutReleaseBranch(steps: StepRunner, branch: string, start: string, dryRun: boolean): BranchView {
-  const resumed = assertResumable(branch, start);
-  const view = refView(resumed ? branch : start);
+function cutReleaseBranch(steps: StepRunner, base: ReleaseBase, branch: string, tag: string, dryRun: boolean): BranchView {
+  const start = baseRef(base);
+  const { sha, resumed } = cutPoint(base, branch, tag);
   if (!dryRun) {
     assertCheckoutReady();
   }
-  steps.run(cutStepTitle(branch, start, view.head(), resumed), () => resumed ? switchBranch(branch) : createBranchAt(branch, start));
-  return dryRun ? view : checkoutView();
+  steps.run(cutStepTitle(branch, start, sha, resumed), () => resumed ? switchBranch(branch) : createBranchAt(branch, start));
+  return dryRun ? refView(resumed ? branch : start) : checkoutView();
 }
 
 export function prepareCommand(args: ReadonlyArray<string>): number {
@@ -79,11 +118,11 @@ export function prepareCommand(args: ReadonlyArray<string>): number {
   const branch = releaseBranch(version);
 
   fetchBranch('main');
-  assertReleaseIsNew(version, tag, branch);
-  const start = baseRef(releaseBase(version, listTags()));
+  const state = releaseState(version, tag, branch);
+  const base = releaseBase(version, listTags());
 
   const steps = stepRunner(dryRun);
-  const view = cutReleaseBranch(steps, branch, start, dryRun);
+  const view = state === 'pushed' ? checkoutBranch(steps, branch, dryRun) : cutReleaseBranch(steps, base, branch, tag, dryRun);
   updateReleaseBranch(steps, view, tag);
   const notes = releaseNotes(tag, releaseSourceAt(view.head()), readNotesTemplate());
   logReleaseNotes(tag, notes);

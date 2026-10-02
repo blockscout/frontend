@@ -16,7 +16,6 @@ const FLAGS: ReadonlyMap<string, FlagSpec<Options>> = new Map<string, FlagSpec<O
   } } ],
 ]);
 
-// The shape every release phase takes: one line or tag, and a dry run that prints the plan.
 export function parsePhaseArgs(args: ReadonlyArray<string>, usage: string): PhaseArgs {
   const { options, rest } = parseArgs<Options>(args, FLAGS, { dryRun: false }, { kind: 'reject', usage });
   if (rest.length !== 1) {

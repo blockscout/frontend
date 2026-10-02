@@ -1,10 +1,11 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
 import type { FlagSpec } from '../../cli/flags';
 import { parseArgs } from '../../cli/flags';
-import { addLabel, ensureLabel, listLabeled, removeLabel } from '../github';
+import { addLabel, BACKPORT_LABEL, ensureLabel, listLabeled, removeLabel } from '../github';
+import type { ReleasePullRequest } from '../release-prs';
 import { issuesToLabel, releasePrs } from '../release-prs';
 import { RELEASE_SOURCE } from '../release-source';
-import { parseTagOrThrow } from '../versions';
+import { isVersionLabel, parseTagOrThrow } from '../versions';
 import { describePr, logExclusions, logList } from './report';
 
 const USAGE = `Usage: pnpm release label <tag> --label <name> [--description <text>] [--color <hex>] [--dry-run]
@@ -71,14 +72,22 @@ export function parseLabelArgs(args: ReadonlyArray<string>): LabelArgs {
   return { tag, action: toAction(options), dryRun: options.dryRun };
 }
 
+// The version label replaces `backport` on the PRs it ships; a PR that was never picked is not in `prs`
+// and keeps it for the next release.
+export function shippedBackports(prs: ReadonlyArray<ReleasePullRequest>, label: string): Array<number> {
+  return isVersionLabel(label) ? prs.filter((pr) => pr.labels.includes(BACKPORT_LABEL)).map(({ number }) => number) : [];
+}
+
 function applyLabel(tag: string, action: Extract<LabelAction, { kind: 'apply' }>, dryRun: boolean): number {
   const { previousTag, prs, skipped, unresolved } = releasePrs(tag, RELEASE_SOURCE);
   const issues = issuesToLabel(prs, tag);
+  const backports = shippedBackports(prs, action.label);
 
   console.error(`Release ${ tag }, compared with ${ previousTag }`);
   logList('PRs to label', prs.map(describePr));
   logExclusions(skipped, unresolved);
   logList('Issues to label', issues.map((number) => `#${ number }`));
+  logList(`PRs to drop "${ BACKPORT_LABEL }" from`, backports.map((number) => `#${ number }`));
 
   if (dryRun) {
     console.error(`\nDry run: label "${ action.label }" not applied.`);
@@ -87,7 +96,11 @@ function applyLabel(tag: string, action: Extract<LabelAction, { kind: 'apply' }>
     for (const number of [ ...prs.map((pr) => pr.number), ...issues ]) {
       addLabel(number, action.label);
     }
+    for (const number of backports) {
+      removeLabel(number, BACKPORT_LABEL);
+    }
     console.error(`Labeled ${ prs.length } PRs and ${ issues.length } issues with "${ action.label }".`);
+    console.error(`Dropped "${ BACKPORT_LABEL }" from ${ backports.length } PRs.`);
   }
 
   console.log(JSON.stringify(issues));

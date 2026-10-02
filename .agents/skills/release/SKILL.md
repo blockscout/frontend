@@ -39,9 +39,7 @@ The CLI pushes; the agent never pushes a release branch, a tag or `main` by hand
 
 ## `prepare vX.Y.Z`
 
-Run `pnpm release prepare vX.Y.Z`. It cuts the branch, picks, releases `upcoming` in the ENV docs in a docs
-commit, pushes the branch and creates the draft pre-release with the notes. Then hand off; the next phase
-is the operator's to invoke:
+Run `pnpm release prepare vX.Y.Z`. When it exits, hand off; the next phase is the operator's to invoke:
 
 - The draft pre-release URL from the command's output, to review and edit the notes on GitHub.
 - The docs diff: `git diff <start>..HEAD -- docs/`, `<start>` being the cut point the command printed
@@ -51,11 +49,7 @@ is the operator's to invoke:
 ## `alpha vX.Y.Z-alpha.N`
 
 Before running, the operator has reviewed the draft release and the docs diff of `prepare` (or of the
-previous alpha). Run `pnpm release alpha vX.Y.Z-alpha.N` in the background. It picks and releases
-`upcoming` again, runs the tag check, tags, re-points the pre-release to the tag with regenerated notes,
-pushes and watches `pre-release.yml`.
-
-When it exits:
+previous alpha). Run `pnpm release alpha vX.Y.Z-alpha.N` in the background. When it exits:
 
 - **Tag check failed** — nothing was tagged or pushed. Report the failures; they are the operator's to fix
   on `main` (a PR with the `backport` label, picked by the next run) or on the release branch (docs only).
@@ -69,16 +63,14 @@ When it exits:
 ## `publish vX.Y.Z`
 
 The operator invokes it once QA has approved the staging build; the branch head must be the latest alpha.
-Run `pnpm release publish vX.Y.Z` in the background. It tags the head, publishes the pre-release as the
-final release marked latest, cherry-picks the release's docs commits onto `main` and watches `release.yml`.
+Run `pnpm release publish vX.Y.Z` in the background.
 
 - A docs cherry-pick onto `main` can conflict; it is the same stop as a pick conflict above — approve the
-  resolved diff, `git cherry-pick --continue`, re-run the same command.
+  resolved diff, `git cherry-pick --continue`, re-run the same command, which skips the tag and the release
+  already on GitHub.
 - When it exits, report the release URL and the CI run; on a failed run, the failing job with its URL.
 
 ## A hotfix
 
-The same three phases: `prepare vX.Y.Z` with `Z > 0` cuts from the line's previous final tag instead of
-`main`, the `backport` PRs are picked onto it, `alpha` puts it on staging, `publish` finalises it. A fix
-found while a release is on staging takes this path into the open release: a PR to `main`, the `backport`
-label, the next `alpha`.
+The same three phases with `Z > 0`; where the branch is cut from, and how a fix found on staging reaches
+the open release, is the decision table in `docs/RELEASING.md`.

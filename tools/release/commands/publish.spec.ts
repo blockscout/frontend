@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { approvedAlpha, describeCommit, docsConflictMessage, parsePublishArgs } from './publish';
+import { approvedAlpha, describeCommit, docsConflictMessage, parsePublishArgs, publishState } from './publish';
 
 const HEAD = '0123456789abcdef0123456789abcdef01234567';
 const OTHER = 'fedcba9876543210fedcba9876543210fedcba98';
@@ -73,6 +73,22 @@ describe('docsConflictMessage', () => {
     expect(docsConflictMessage(commit, [ 'docs/ENVS.md' ])).toBe(
       'Cherry-picking the docs commit 0123456789 chore: prepare release v2.13.0 onto main conflicts in docs/ENVS.md; ' +
       'resolve the conflicts, run "git cherry-pick --continue" and re-run the command, which resumes after this commit',
+    );
+  });
+});
+
+describe('publishState', () => {
+  it('is new when the tag is not on origin', () => {
+    expect(publishState('v2.13.0', 'release/v2.13.0', undefined, HEAD)).toBe('new');
+  });
+
+  it('resumes a published tag at the branch head', () => {
+    expect(publishState('v2.13.0', 'release/v2.13.0', HEAD, HEAD)).toBe('published');
+  });
+
+  it('refuses a tag on origin that is not the branch head', () => {
+    expect(() => publishState('v2.13.0', 'release/v2.13.0', OTHER, HEAD)).toThrow(
+      'v2.13.0 is on origin at fedcba9876, not at the head of release/v2.13.0 (0123456789)',
     );
   });
 });

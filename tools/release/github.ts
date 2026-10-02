@@ -13,13 +13,13 @@ export function gh(args: ReadonlyArray<string>, input?: string): string {
   return execFileSync('gh', args as Array<string>, { input, encoding: 'utf8', maxBuffer: EXEC_MAX_BUFFER });
 }
 
-export function ghApi<Response>(path: string): Response {
-  return JSON.parse(gh([ 'api', path ])) as Response;
+export function ghApi<TResponse>(path: string): TResponse {
+  return JSON.parse(gh([ 'api', path ])) as TResponse;
 }
 
-function ghGraphql<Response>(query: string, variables: Record<string, string | number>): Response {
+function ghGraphql<TResponse>(query: string, variables: Record<string, string | number>): TResponse {
   const fields = Object.entries(variables).flatMap(([ name, value ]) => [ '-F', `${ name }=${ value }` ]);
-  return JSON.parse(gh([ 'api', 'graphql', '-f', `query=${ query }`, '-F', 'owner={owner}', '-F', 'repo={repo}', ...fields ])) as Response;
+  return JSON.parse(gh([ 'api', 'graphql', '-f', `query=${ query }`, '-F', 'owner={owner}', '-F', 'repo={repo}', ...fields ])) as TResponse;
 }
 
 export interface PullRequest {
@@ -139,7 +139,7 @@ interface BackportPullRequestResponse {
   readonly mergeCommit: { readonly oid: string } | null;
 }
 
-const BACKPORT_LABEL = 'backport';
+export const BACKPORT_LABEL = 'backport';
 const BACKPORT_PR_LIMIT = 200;
 
 // Only PRs merged to main: a PR merged elsewhere has no main commit to pick.
@@ -148,6 +148,9 @@ export function listBackportPrs(): Array<BackportPullRequest> {
     'pr', 'list', '--state', 'merged', '--base', 'main', '--label', BACKPORT_LABEL, '--limit', String(BACKPORT_PR_LIMIT),
     '--json', 'number,title,labels,mergeCommit',
   ])) as ReadonlyArray<BackportPullRequestResponse>;
+  if (prs.length >= BACKPORT_PR_LIMIT) {
+    throw new Error(`More than ${ BACKPORT_PR_LIMIT } merged "${ BACKPORT_LABEL }" PRs; the list is cut off, so raise BACKPORT_PR_LIMIT`);
+  }
   return prs.map(({ number, title, labels, mergeCommit }) => {
     if (mergeCommit === null) {
       throw new Error(`PR #${ number } is merged but GitHub reports no merge commit`);
@@ -205,8 +208,8 @@ export function generateReleaseNotes(tag: string, previousTag: string, target?: 
 }
 
 // Sent as a JSON body on stdin: release notes outgrow what fits in a `-f` argument.
-function ghSend<Response>(method: 'POST' | 'PATCH', apiPath: string, payload: object): Response {
-  return JSON.parse(gh([ 'api', '--method', method, apiPath, '--input', '-' ], JSON.stringify(payload))) as Response;
+function ghSend<TResponse>(method: 'POST' | 'PATCH', apiPath: string, payload: object): TResponse {
+  return JSON.parse(gh([ 'api', '--method', method, apiPath, '--input', '-' ], JSON.stringify(payload))) as TResponse;
 }
 
 interface ReleaseResponse {

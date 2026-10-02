@@ -47,28 +47,32 @@ describe('replaceUpcoming', () => {
 });
 
 describe('bodyPrNumbers', () => {
-  it('reads PR links and #N references, once each, in number order', () => {
+  it('reads PR links and ENV entries, once each, in number order', () => {
     const body = [
       '- Add the release tool by @tom in https://github.com/blockscout/frontend/pull/3750',
       '- Fix a typo by @ann in https://github.com/blockscout/frontend/pull/3701',
       '## 🚨 Changes in ENV variables',
       '- #3750',
       '  - NEXT_PUBLIC_A',
+      '- #3702\r\n  - NEXT_PUBLIC_B',
     ].join('\n');
 
-    expect(bodyPrNumbers(body)).toEqual([ 3701, 3750 ]);
+    expect(bodyPrNumbers(body)).toEqual([ 3701, 3702, 3750 ]);
   });
 
-  it('ignores PR links into other repositories, anchors, headings and HTML entities', () => {
+  it('ignores PR links into other repositories, anchors, and a #N inside a title or copied prose', () => {
     const body = [
+      '- Revert "Add the badge (#3600)" by @tom in https://github.com/blockscout/frontend/pull/3750',
+      '## 🚨 Changes in ENV variables',
+      '- #3750',
+      '  - NEXT_PUBLIC_A replaces the one from #3600',
+      '  - #3601 is unrelated',
       '## 💑 Compatibility',
       'See https://github.com/blockscout/blockscout/pull/9001',
       'https://github.com/blockscout/frontend/blob/v2.13.0/docs/ENVS.md#L12',
-      'a&#123;b',
-      'x#5',
     ].join('\n');
 
-    expect(bodyPrNumbers(body)).toEqual([]);
+    expect(bodyPrNumbers(body)).toEqual([ 3750 ]);
   });
 });
 
@@ -82,16 +86,16 @@ describe('findVersionedPrs', () => {
   const prLabels: PrLabels = (number) => labels.get(number);
 
   it('reports PRs already carrying the version label of another release', () => {
-    expect(findVersionedPrs('#1 #2 #4', prLabels, 'v2.13.0')).toEqual([ { number: 2, versionLabels: [ 'v2.12.1' ] } ]);
+    expect(findVersionedPrs('- #1\n- #2\n- #4', prLabels, 'v2.13.0')).toEqual([ { number: 2, versionLabels: [ 'v2.12.1' ] } ]);
   });
 
   it('does not count the tag\'s own version label, which the release workflow applies concurrently', () => {
-    expect(findVersionedPrs('#3', prLabels, 'v2.13.0')).toEqual([]);
-    expect(findVersionedPrs('#3', prLabels, 'v2.13.0-alpha.2')).toEqual([]);
+    expect(findVersionedPrs('- #3', prLabels, 'v2.13.0')).toEqual([]);
+    expect(findVersionedPrs('- #3', prLabels, 'v2.13.0-alpha.2')).toEqual([]);
   });
 
   it('reports the label of an earlier release of the same line', () => {
-    expect(findVersionedPrs('#3', prLabels, 'v2.13.1')).toEqual([ { number: 3, versionLabels: [ 'v2.13.0' ] } ]);
+    expect(findVersionedPrs('- #3', prLabels, 'v2.13.1')).toEqual([ { number: 3, versionLabels: [ 'v2.13.0' ] } ]);
   });
 
   it('skips references that are issues, not PRs', () => {

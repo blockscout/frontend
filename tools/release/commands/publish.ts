@@ -17,6 +17,7 @@ import {
   showFile,
 } from '../git';
 import { fetchPrLabels, listReleases, publishRelease } from '../github';
+import type { ReleaseNotes } from '../notes';
 import { releaseNotes } from '../notes';
 import { findReleasePreRelease } from '../pre-release';
 import type { Commit } from '../release-prs';
@@ -74,6 +75,18 @@ export function approvedAlpha(tag: string, branch: string, head: string, alphaTa
   return alphaTag;
 }
 
+// The tag on origin is where an earlier run got to: it published and stopped at the docs picks or the main
+// push, and the re-run does not tag or publish again. A tag elsewhere than the head is not this release.
+export function publishState(tag: string, branch: string, taggedSha: string | undefined, head: string): 'new' | 'published' {
+  if (taggedSha === undefined) {
+    return 'new';
+  }
+  if (taggedSha !== head) {
+    throw new Error(`${ tag } is on ${ REMOTE } at ${ taggedSha.slice(0, 10) }, not at the head of ${ branch } (${ head.slice(0, 10) })`);
+  }
+  return 'published';
+}
+
 function logDocsPlan({ picks, skipped }: DocsPickPlan): void {
   logList(`Docs commits to cherry-pick onto ${ MAIN }`, picks.map(describeCommit));
   logList(`Docs commits already on ${ MAIN }`, skipped.map(({ commit, sha }) => `${ describeCommit(commit) }: picked as ${ sha.slice(0, 10) }`));
@@ -96,6 +109,37 @@ function returnDocsToMain(steps: StepRunner, plan: DocsPickPlan, dryRun: boolean
   steps.run(`Push ${ MAIN } to ${ REMOTE }`, () => pushBranch(MAIN));
 }
 
+interface Release {
+  readonly tag: string;
+  readonly version: Version;
+  readonly branch: string;
+  readonly head: string;
+  readonly notes: ReleaseNotes;
+}
+
+function checkRelease({ tag, head, notes }: Release): boolean {
+  const { failures } = checkTag(tag, { readDoc: (docPath) => showFile(head, docPath), releaseBodies: () => [ notes.markdown ], prLabels: fetchPrLabels });
+  if (failures.length > 0) {
+    logList(`\nTag ${ tag } fails the tag check, nothing tagged or published`, failures);
+  }
+  return failures.length === 0;
+}
+
+function releaseSteps(steps: StepRunner, { tag, version, branch, head, notes }: Release): void {
+  const alpha = latestAlphaTag(version, listTags());
+  const alphaSha = alpha !== undefined && isAncestor(alpha, head) ? resolveCommit(alpha) : undefined;
+  const alphaTag = approvedAlpha(tag, branch, head, alpha, alphaSha);
+  const preRelease = findReleasePreRelease(listReleases(), version);
+
+  steps.run(`Tag ${ branch } at ${ head.slice(0, 10) } (${ alphaTag }) as ${ tag }`, () => createTag(tag, head));
+  steps.run(`Push ${ tag } to ${ REMOTE }`, () => push(`refs/tags/${ tag }`));
+  const publishTitle = `Publish the pre-release ${ preRelease.tagName } as the final release ${ tag } marked latest, with the notes regenerated, ` +
+    `which fires ${ WORKFLOW }: ${ preRelease.url }`;
+  steps.run(publishTitle, () => {
+    console.log(publishRelease(preRelease.id, { tagName: tag, target: head, body: notes.markdown }).url);
+  });
+}
+
 export function publishCommand(args: ReadonlyArray<string>): number {
   const { tag, version, dryRun } = parsePublishArgs(args);
   const branch = releaseBranch(version);
@@ -105,31 +149,27 @@ export function publishCommand(args: ReadonlyArray<string>): number {
   }
   fetchBranch(branch);
   fetchBranch(MAIN);
-  assertTagIsNew(tag);
   const head = resolveCommit(remoteBranch(branch));
-  const alpha = latestAlphaTag(version, listTags());
-  const alphaSha = alpha !== undefined && isAncestor(alpha, head) ? resolveCommit(alpha) : undefined;
-  const alphaTag = approvedAlpha(tag, branch, head, alpha, alphaSha);
-  const preRelease = findReleasePreRelease(listReleases(), version);
+  const state = publishState(tag, branch, hasRemoteRef(`refs/tags/${ tag }`) ? resolveCommit(tag) : undefined, head);
+  if (state === 'new') {
+    assertTagIsNew(tag);
+  }
 
   const notes = releaseNotes(tag, releaseSourceAt(head), readNotesTemplate());
   logReleaseNotes(tag, notes);
-  const { failures } = checkTag(tag, { readDoc: (docPath) => showFile(head, docPath), releaseBodies: () => [ notes.markdown ], prLabels: fetchPrLabels });
-  if (failures.length > 0) {
-    logList(`\nTag ${ tag } fails the tag check, nothing tagged or published`, failures);
+  const release: Release = { tag, version, branch, head, notes };
+  if (state === 'new' && !checkRelease(release)) {
     return 1;
   }
   const docsPlan = docsPlanAt(head, notes.previousTag, tag);
   logDocsPlan(docsPlan);
 
   const steps = stepRunner(dryRun);
-  steps.run(`Tag ${ branch } at ${ head.slice(0, 10) } (${ alphaTag }) as ${ tag }`, () => createTag(tag, head));
-  steps.run(`Push ${ tag } to ${ REMOTE }`, () => push(`refs/tags/${ tag }`));
-  const publishTitle = `Publish the pre-release ${ preRelease.tagName } as the final release ${ tag } marked latest, with the notes regenerated, ` +
-    `which fires ${ WORKFLOW }: ${ preRelease.url }`;
-  steps.run(publishTitle, () => {
-    console.log(publishRelease(preRelease.id, { tagName: tag, target: head, body: notes.markdown }).url);
-  });
+  if (state === 'new') {
+    releaseSteps(steps, release);
+  } else {
+    console.error(`${ tag } is already on ${ REMOTE } at the head of ${ branch } and published; resuming with the docs commits.`);
+  }
   returnDocsToMain(steps, docsPlan, dryRun);
   steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'release'));
   steps.finish();
