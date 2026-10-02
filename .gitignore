@@ -103,7 +103,6 @@ npm-debug.log*
 # build outputs
 /toolkit/package/dist
 license.json
-release-prs-data.json
 
 .ai
 /ds-bundle
