@@ -12,6 +12,6 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 04 → `tickets/04-check-tag-ci-gates/`
 - [x] 05 → `tickets/05-prepare-alpha/`
 - [x] 06 → `tickets/06-pick-step/`
-- [ ] 07 → `tickets/07-releasing-doc/`
+- [x] 07 → `tickets/07-releasing-doc/`
 - [ ] 08 → `tickets/08-release-skill/`
 - [x] 09 → `tickets/09-publish/`

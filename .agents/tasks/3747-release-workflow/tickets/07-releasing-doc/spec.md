@@ -25,5 +25,5 @@ drifts from `tools/release/categories.ts`. `docs/CONTRIBUTING.md` links to it.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write `docs/RELEASING.md` + the CONTRIBUTING links
-- [ ] 2 `[agent]` Drift spec
+- [x] 1 `[agent]` Write `docs/RELEASING.md` + the CONTRIBUTING links
+- [x] 2 `[agent]` Drift spec
