@@ -7,6 +7,7 @@ import { checkTagCommand } from './commands/check-tag';
 import { labelCommand } from './commands/label';
 import { notesCommand } from './commands/notes';
 import { prepareCommand } from './commands/prepare';
+import { publishCommand } from './commands/publish';
 
 const USAGE = `Usage: pnpm release <subcommand> [args]
 
@@ -14,6 +15,8 @@ const USAGE = `Usage: pnpm release <subcommand> [args]
                       onto it and create the draft pre-release
   alpha <tag>         pick the "backport" PRs onto release/vX.Y.Z, tag its head as the alpha, re-point the
                       pre-release to it and watch its CI run
+  publish <vX.Y.Z>    tag the latest alpha as the final release marked latest, return the docs commits to
+                      main and watch its CI run
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels
   check-tag <tag>     check that a tag ships no "upcoming" ENV docs and no PR another release shipped
   label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere
@@ -24,6 +27,7 @@ type Command = (args: ReadonlyArray<string>) => number;
 const COMMANDS: ReadonlyMap<string, Command> = new Map<string, Command>([
   [ 'prepare', prepareCommand ],
   [ 'alpha', alphaCommand ],
+  [ 'publish', publishCommand ],
   [ 'check-pr', checkPrCommand ],
   [ 'check-tag', checkTagCommand ],
   [ 'label', labelCommand ],

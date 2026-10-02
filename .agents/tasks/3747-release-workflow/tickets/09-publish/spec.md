@@ -30,4 +30,4 @@ release's docs commits to `main` with `-x`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `publish` subcommand
+- [x] 1 `[agent]` `publish` subcommand

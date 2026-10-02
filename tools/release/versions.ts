@@ -107,6 +107,19 @@ export function latestFinalTag(line: Line, tags: ReadonlyArray<string>): string 
   return latest === undefined ? undefined : formatVersion(latest);
 }
 
+function alphaNumber(version: Version): number | undefined {
+  return version.prerelease !== undefined && ALPHA.test(version.prerelease) ? Number(version.prerelease.split('.')[1]) : undefined;
+}
+
+export function latestAlphaTag(version: Version, tags: ReadonlyArray<string>): string | undefined {
+  const numbers = tags
+    .map(parseTag)
+    .filter((candidate): candidate is Version => candidate !== undefined && compareVersions(candidate, version) === 0)
+    .map(alphaNumber)
+    .filter((number): number is number => number !== undefined);
+  return numbers.length === 0 ? undefined : `${ formatVersion(version) }-alpha.${ Math.max(...numbers) }`;
+}
+
 export type ReleaseBase =
   { readonly kind: 'main' } |
   { readonly kind: 'tag'; readonly tag: string };

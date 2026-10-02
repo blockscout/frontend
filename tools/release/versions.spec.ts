@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   isVersionLabel,
+  latestAlphaTag,
   latestFinalTag,
   parseAlphaTagOrThrow,
   parseFinalTagOrThrow,
@@ -141,6 +142,19 @@ describe('latestFinalTag', () => {
 
   it('ignores pre-release tags', () => {
     expect(latestFinalTag({ major: 2, minor: 14 }, TAGS)).toBeUndefined();
+  });
+});
+
+describe('latestAlphaTag', () => {
+  it('is the highest-numbered alpha of the version', () => {
+    const tags = [ 'v2.13.0-alpha.1', 'v2.13.0-alpha.10', 'v2.13.0-alpha.2', 'v2.13.1-alpha.11', 'v2.13.0' ];
+
+    expect(latestAlphaTag(parseFinalTagOrThrow('v2.13.0'), tags)).toBe('v2.13.0-alpha.10');
+  });
+
+  it('ignores an unnumbered pre-release and the alphas of other versions', () => {
+    expect(latestAlphaTag(parseFinalTagOrThrow('v2.12.0'), TAGS)).toBe('v2.12.0-alpha.1');
+    expect(latestAlphaTag(parseFinalTagOrThrow('v2.11.0'), TAGS)).toBeUndefined();
   });
 });
 

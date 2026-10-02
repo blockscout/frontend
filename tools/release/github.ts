@@ -246,15 +246,23 @@ export function updateRelease(id: number, content: ReleaseContent): GithubReleas
   return toGithubRelease(ghSend('PATCH', `repos/{owner}/{repo}/releases/${ id }`, releaseFields(content)));
 }
 
+// Turns the pre-release into the final release: published, marked latest, which fires release.yml.
+export function publishRelease(id: number, content: ReleaseContent): GithubRelease {
+  const fields = { ...releaseFields(content), draft: false, prerelease: false, make_latest: 'true' };
+  return toGithubRelease(ghSend('PATCH', `repos/{owner}/{repo}/releases/${ id }`, fields));
+}
+
 export interface WorkflowRun {
   readonly id: number;
   readonly url: string;
 }
 
-// A tag push runs with the tag as its "branch".
-export function findTagRun(workflow: string, tag: string): WorkflowRun | undefined {
+export type RunEvent = 'push' | 'release';
+
+// A run of a tag, whether the tag push or the release event fired it, lists the tag as its "branch".
+export function findTagRun(workflow: string, tag: string, event: RunEvent): WorkflowRun | undefined {
   const runs = JSON.parse(gh([
-    'run', 'list', '--workflow', workflow, '--branch', tag, '--event', 'push', '--limit', '1', '--json', 'databaseId,url',
+    'run', 'list', '--workflow', workflow, '--branch', tag, '--event', event, '--limit', '1', '--json', 'databaseId,url',
   ])) as ReadonlyArray<{ readonly databaseId: number; readonly url: string }>;
   return runs.map(({ databaseId, url }) => ({ id: databaseId, url }))[0];
 }

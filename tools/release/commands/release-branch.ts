@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { ENV_DOCS, replaceUpcoming } from '../check-tag';
+import { prepareCommitMessage } from '../docs-picks';
 import type { FileChange } from '../git';
 import {
   cherryPick,
@@ -113,7 +114,7 @@ export function assertCheckoutReady(): void {
 }
 
 // Switches the operator's checkout to the branch in a real run; a dry run only picks the ref to read.
-export function checkoutReleaseBranch(steps: StepRunner, branch: string, dryRun: boolean): BranchView {
+export function checkoutBranch(steps: StepRunner, branch: string, dryRun: boolean): BranchView {
   const plan = checkoutPlan(branch, readLocalBranchState(branch));
   if (!dryRun) {
     assertCheckoutReady();
@@ -133,17 +134,14 @@ export function pickConflictMessage(pr: BackportPullRequest, files: ReadonlyArra
     'run "git cherry-pick --continue" and re-run the command, which resumes after this pick';
 }
 
-function pick(pr: BackportPullRequest): void {
+// A conflict is the operator's to resolve: the cherry-pick stays in progress and the error says how to go on.
+export function pickCommit(sha: string, conflictMessage: (files: ReadonlyArray<string>) => string): void {
   try {
-    cherryPick(pr.mergeSha);
+    cherryPick(sha);
   } catch (error) {
     const files = unmergedFiles();
-    throw files.length === 0 ? error : new Error(pickConflictMessage(pr, files));
+    throw files.length === 0 ? error : new Error(conflictMessage(files));
   }
-}
-
-export function prepareCommitMessage(tag: string): string {
-  return `chore: prepare release ${ tag }`;
 }
 
 export interface EnvDocUpdate extends FileChange {
@@ -190,7 +188,7 @@ export function updateReleaseBranch(steps: StepRunner, view: BranchView, tag: st
   const plan = pickPlanAt(view.head());
   logPickPlan(plan);
   for (const pr of plan.picks) {
-    steps.run(`Pick ${ describeBackportPr(pr) }`, () => pick(pr));
+    steps.run(`Pick ${ describeBackportPr(pr) }`, () => pickCommit(pr.mergeSha, (files) => pickConflictMessage(pr, files)));
   }
   steps.run(envDocsStepTitle(releaseEnvDocs(view.readDoc, tag), tag, view.ref), () => commitEnvDocs(tag));
   steps.run('Run "pnpm lint:tsc"', runTypeCheck);
