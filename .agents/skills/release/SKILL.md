@@ -2,6 +2,7 @@
 name: release
 description: Run one phase of a release — prepare, alpha or publish — through the release CLI, stopping at the operator's checkpoints
 disable-model-invocation: true
+argument-hint: prepare <vX.Y.Z> | alpha <vX.Y.Z-alpha.N> | publish <vX.Y.Z>
 ---
 # Release
 
