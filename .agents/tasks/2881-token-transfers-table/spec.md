@@ -41,7 +41,7 @@ does. The chosen set survives reloads.
    | --- | --- | --- | --- | --- |
    | Txn hash | on | on | on | unavailable |
    | Type | on | on | off | on |
-   | Method | on | on | on | on |
+   | Method | on | on | on | unavailable |
    | Timestamp | on | on | on | unavailable |
    | Block | on | on | off | unavailable |
    | From / To | on | on | on | on |

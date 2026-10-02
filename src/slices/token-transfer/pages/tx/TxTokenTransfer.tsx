@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +10,7 @@ import type { TokenType } from 'src/slices/token/types/api';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
@@ -20,6 +22,7 @@ import TxTokenTransferCrossChain from 'src/features/cross-chain-txs/pages/tx/TxT
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -61,6 +64,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
     () => getTokenFilterValue(typeParam, multichainContext?.chain?.app_config) || NO_TYPES,
     [ typeParam, multichainContext?.chain?.app_config ],
   );
+  const columnsState = useTokenTransferColumns('tx');
 
   const crossChainQuery = useTxCrossChainTransfersQuery({
     hash: String(txQuery.data?.hash),
@@ -87,6 +91,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           tokenTransferFilter={ tokenTransferFilter }
           tokenTransferQuery={ localQuery }
           numActiveFilters={ typeFilter.length }
+          columnsState={ columnsState }
         />
       ),
     },
@@ -140,13 +145,22 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
       }
       return (
         <>
-          <TokenTransferFilter
-            defaultTypeFilters={ typeFilter }
-            onTypeFilterChange={ handleTypeFilterChange }
-            appliedFiltersNum={ typeFilter.length }
-            isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
-            chainConfig={ multichainContext?.chain?.app_config }
-          />
+          <HStack gap={{ base: 2, lg: 3 }}>
+            <TokenTransferFilter
+              defaultTypeFilters={ typeFilter }
+              onTypeFilterChange={ handleTypeFilterChange }
+              appliedFiltersNum={ typeFilter.length }
+              isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
+              chainConfig={ multichainContext?.chain?.app_config }
+            />
+            <ColumnsButton
+              tableColumns={ columnsState.selectableColumns }
+              columns={ columnsState.checkedColumns }
+              onChange={ columnsState.onColumnsChange }
+              selected={ columnsState.isCustomized }
+              onReset={ columnsState.onColumnsReset }
+            />
+          </HStack>
           <Pagination ml="auto" { ...localQuery.pagination }/>
         </>
       );

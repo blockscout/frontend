@@ -8,7 +8,7 @@
 ## What to build
 
 The transaction page's token-transfers tab (and the user-op page's, which reuses it with a client-side
-log-index filter) renders the unified table with the `tx` surface: Txn hash, Timestamp and Block are
+log-index filter) renders the unified table with the `tx` surface: Txn hash, Method, Timestamp and Block are
 unavailable (constant per row, and null in the endpoint), everything else on. The selector sits beside the
 type filter in the tabs right slot. With the address tab (T04) and this tab moved, the shared list table
 has no consumer: delete it, its item, spec, Playwright file and screenshots, moving the surviving spec
@@ -26,7 +26,7 @@ How to verify: `pnpm dev:preset eth`, open a tx with token transfers, "Token tra
       placement follows wherever the type filter renders on mobile.
 - [ ] `components/list/TokenTransferTable*.tsx`, its `.spec.tsx`, `.pw.tsx` and `__screenshots__`
       are deleted; the `token: null` case lives in the unified table's spec.
-- [ ] `(human)` Tx tab shows Type, Method, From/To, Token ID, Amount, Asset, Value; the selector offers
+- [ ] `(human)` Tx tab shows Token type, Transfer type, From/To, Token ID, Amount, Asset, Value; the selector offers
       only those; the user-op tab shows the filtered subset.
 
 ## Details
@@ -39,7 +39,7 @@ first, leave table A in place and move leaf 2 into T04.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Swap `TxTokenTransferLocal` to the unified table; selector in the right slot
-- [ ] 2 `[agent]` Delete table A + tests/screenshots; migrate the spec case
-- [ ] 3 `[human]` Style to mockup —
+- [x] 1 `[agent]` Swap `TxTokenTransferLocal` to the unified table; selector in the right slot
+- [x] 2 `[agent]` Delete table A + tests/screenshots; migrate the spec case
+- [x] 3 `[human]` Style to mockup —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3883-4723)

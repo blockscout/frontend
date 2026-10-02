@@ -90,7 +90,7 @@ describe('getVisibleColumnIds', () => {
 
   it('never shows a column unavailable on the surface', () => {
     expect(getVisibleColumnIds('tx', { tx_hash: true, block: true })).toEqual(
-      [ 'type', 'transfer_type', 'method', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
     );
   });
 });

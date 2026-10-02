@@ -4,25 +4,22 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
-
-import TokenTransferTable from 'src/slices/token-transfer/components/list/TokenTransferTable';
+import TokenTransfersTable from 'src/slices/token-transfer/components/table/TokenTransfersTable';
+import type { TokenTransferColumnsState } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
-
-import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 interface Props {
   txQuery: TxQuery;
   tokenTransferQuery: ApiPaginatedQueryResult<'core:tx_token_transfers'>;
   tokenTransferFilter?: (data: schemas['TokenTransfer']) => boolean;
   numActiveFilters: number;
-  tableTop?: number;
+  columnsState: TokenTransferColumnsState;
 }
 
-const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter, numActiveFilters, tableTop }: Props) => {
+const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter, numActiveFilters, columnsState }: Props) => {
   const { isInitialLoading, isTransitioning } = tokenTransferQuery;
 
   let items: Array<schemas['TokenTransfer']> = [];
@@ -36,14 +33,13 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
   }
 
   const content = tokenTransferQuery.data?.items ? (
-    <TableContainerScrollable>
-      <TokenTransferTable
-        data={ items }
-        top={ tableTop ?? ACTION_BAR_HEIGHT_DESKTOP }
-        isLoading={ isInitialLoading }
-        resetKey={ tokenTransferQuery.queryHash }
-      />
-    </TableContainerScrollable>
+    <TokenTransfersTable
+      surface="tx"
+      columns={ columnsState.columns }
+      items={ items }
+      isLoading={ isInitialLoading }
+      resetKey={ tokenTransferQuery.queryHash }
+    />
   ) : null;
 
   return (

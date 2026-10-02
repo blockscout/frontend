@@ -18,15 +18,15 @@ describe('getAvailableColumns', () => {
     );
   });
 
-  it('does not offer the hash, timestamp and block columns on the tx surface', () => {
+  it('does not offer the hash, method, timestamp and block columns on the tx surface', () => {
     expect(getAvailableColumns('tx').map(({ id }) => id)).toEqual(
-      [ 'type', 'transfer_type', 'method', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
     );
   });
 
   it('names the columns for display', () => {
     expect(getAvailableColumns('index').map(({ name }) => name)).toEqual(
-      [ 'Txn hash', 'Token type', 'Transfer Type', 'Method', 'Timestamp', 'Block', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ],
+      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ],
     );
   });
 
@@ -49,7 +49,7 @@ describe('getDefaultColumnIds', () => {
 
   it('shows every available column by default on the tx surface', () => {
     expect(getDefaultColumnIds('tx')).toEqual(
-      [ 'type', 'transfer_type', 'method', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
     );
   });
 

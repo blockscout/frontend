@@ -6,8 +6,8 @@ import type { TokenTransferColumn, TokenTransferColumnId, TokenTransferColumnSta
 
 export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
   { id: 'tx_hash', name: 'Txn hash', width: '135px' },
-  { id: 'type', name: 'Token type', width: '90px' },
-  { id: 'transfer_type', name: 'Transfer Type', width: '145px' },
+  { id: 'type', name: 'Token type', width: '95px' },
+  { id: 'transfer_type', name: 'Transfer type', width: '145px' },
   { id: 'method', name: 'Method', width: '120px' },
   { id: 'timestamp', name: 'Timestamp', width: '170px' },
   { id: 'block', name: 'Block', width: '100px' },
@@ -65,7 +65,7 @@ export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, Surfac
     tx_hash: 'unavailable',
     type: 'on',
     transfer_type: 'on',
-    method: 'on',
+    method: 'unavailable',
     timestamp: 'unavailable',
     block: 'unavailable',
     from_to: 'on',
