@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../../spec.md`](../../spec.md) → ticket 06 of #2881 |
-| Blocked by | T03 |
+| Blocked by | T03, T08 |
 
 ## What to build
 
@@ -23,8 +23,9 @@ How to verify: `pnpm dev:preset eth`, open an ERC-20 token and an ERC-721 token 
       `TableContainerScrollable` wrapper and `top` prop are removed (the table scrolls itself).
 - [ ] Token ID shows the id for NFT rows and a dash for fungible rows (not hidden by token type as
       today — the column is selectable per FR 2).
-- [ ] Selector added to the `ActionBar` beside `TokenAdvancedFilterLink`; choices persist under the
-      `token` surface key, shared by token and instance pages.
+- [ ] Selector added to the `ActionBar` beside `TokenAdvancedFilterLink`, with `selected` and `onReset`
+      from the hook, as on the index page (T08); choices persist under the `token` surface key, shared
+      by token and instance pages.
 - [ ] `pages/token/TokenTransferTable*.tsx` deleted; `TokenTransfer.pw.tsx` keeps its four cases.
 - [ ] Token page routes render on the server: no flash of the default columns after a toggle + reload.
 - [ ] `(human)` Token and instance tabs show the FR 2 token defaults; Token type, Transfer type and Block

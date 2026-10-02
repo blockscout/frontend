@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../../spec.md`](../../spec.md) → ticket 04 of #2881 |
-| Blocked by | T03 |
+| Blocked by | T03, T08 |
 
 ## What to build
 
@@ -23,7 +23,8 @@ How to verify: `pnpm dev:preset eth`, open an active address, "Token transfers" 
       its `TableContainerScrollable` wrapper and `top` prop are removed (the table scrolls itself).
 - [ ] Selector button added to `AddressTokenTransfers`'s right slot and the mobile `ActionBar` in
       `AddressTokenTransfersLocal`, plus `MultichainAddressTokenTransfers`'s right slot; column
-      choices persist under the `address` surface key.
+      choices persist under the `address` surface key. Each selector gets `selected` and `onReset` from
+      the hook, as on the index page (T08).
 - [ ] Filters, CSV export, advanced-filter link, pagination, socket notice unchanged (FR 5).
 - [ ] `AddressTokenTransfers.pw.tsx` and `MultichainAddressTokenTransfers.pw.tsx` keep every case;
       baselines regenerated after the style leaf.

@@ -3,7 +3,7 @@
 | | |
 | --- | --- |
 | Parent spec | [`../../spec.md`](../../spec.md) → ticket 05 of #2881 |
-| Blocked by | T03 |
+| Blocked by | T03, T08 |
 
 ## What to build
 
@@ -20,7 +20,8 @@ How to verify: `pnpm dev:preset eth`, open a tx with token transfers, "Token tra
 
 - [ ] `TxTokenTransferLocal` renders the unified table with surface `tx`; `tokenTransferFilter` still
       applies client-side (user-op page).
-- [ ] Selector in `TxTokenTransfer`'s right slot next to the type filter. This surface has no mobile
+- [ ] Selector in `TxTokenTransfer`'s right slot next to the type filter, with `selected` and
+      `onReset` from the hook, as on the index page (T08). This surface has no mobile
       action bar today and FR 5 forbids adding controls, so no action bar is introduced; mobile
       placement follows wherever the type filter renders on mobile.
 - [ ] `components/list/TokenTransferTable*.tsx`, its `.spec.tsx`, `.pw.tsx` and `__screenshots__`
