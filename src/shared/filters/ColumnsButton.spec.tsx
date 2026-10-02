@@ -22,6 +22,23 @@ const renderOpened = (columns: Record<ColumnId, boolean>) => {
   return { onChange };
 };
 
+const renderOpenedWithReset = (selected: boolean) => {
+  const onReset = vi.fn();
+  render(
+    <ColumnsButton
+      tableColumns={ TABLE_COLUMNS }
+      columns={{ hash: true, from: false, amount: true }}
+      onChange={ vi.fn() }
+      selected={ selected }
+      onReset={ onReset }
+    />,
+  );
+  fireEvent.click(screen.getByRole('button', { name: 'Columns' }));
+  return { onReset };
+};
+
+const findResetButton = (): Promise<HTMLButtonElement> => screen.findByRole('button', { name: 'Reset', hidden: true });
+
 const getCheckbox = (name: string): HTMLInputElement => screen.getByRole('checkbox', { name, hidden: true });
 const isChecked = (name: string): boolean => getCheckbox(name).checked;
 
@@ -68,5 +85,28 @@ describe('ColumnsButton', () => {
     fireEvent.click(getCheckbox('Amount'));
 
     await waitFor(() => expect(onChange).toHaveBeenLastCalledWith({ hash: true, amount: true }));
+  });
+
+  it('offers no Reset without a reset handler', async() => {
+    renderOpened({ hash: true, from: true, amount: true });
+
+    await screen.findByText('Txn hash');
+    expect(screen.queryByRole('button', { name: 'Reset', hidden: true })).toBeNull();
+  });
+
+  it('resets the columns from the selector when they are customized', async() => {
+    const { onReset } = renderOpenedWithReset(true);
+
+    const resetButton = await findResetButton();
+    expect(resetButton.disabled).toBe(false);
+    fireEvent.click(resetButton);
+
+    expect(onReset).toHaveBeenCalledTimes(1);
+  });
+
+  it('disables Reset while the columns are the defaults', async() => {
+    renderOpenedWithReset(false);
+
+    expect((await findResetButton()).disabled).toBe(true);
   });
 });

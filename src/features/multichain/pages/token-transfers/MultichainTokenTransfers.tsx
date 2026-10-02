@@ -112,6 +112,7 @@ const MultichainTokenTransfers = () => {
           columns={ columnsState.checkedColumns }
           onChange={ columnsState.onColumnsChange }
           selected={ columnsState.isCustomized }
+          onReset={ columnsState.onColumnsReset }
         />
       ) }
       <ChainSelect

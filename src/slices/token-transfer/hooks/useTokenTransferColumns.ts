@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { isEqual } from 'es-toolkit';
+import { isEqual, omit } from 'es-toolkit';
 import React from 'react';
 
 import type {
@@ -27,6 +27,7 @@ export interface TokenTransferColumnsState {
   readonly checkedColumns: CheckedColumns;
   readonly isCustomized: boolean;
   readonly onColumnsChange: (checkedColumns: CheckedColumns) => void;
+  readonly onColumnsReset: () => void;
 }
 
 function readOverridesMap(serverCookies?: string): TokenTransferColumnOverridesMap {
@@ -67,11 +68,29 @@ export function useTokenTransferColumns(surface: TokenTransferSurface): TokenTra
     });
   }, [ surface, selectableColumns, columns ]);
 
+  const onColumnsReset = React.useCallback(() => {
+    if (!isCustomized) {
+      return;
+    }
+
+    const overridesMap = omit(readOverridesMap(), [ surface ]);
+    cookies.set(cookies.NAMES.TOKEN_TRANSFER_COLUMNS, serializeColumnOverrides(overridesMap), { expires: 365 });
+    setOverrides(undefined);
+
+    mixpanel.logEvent(mixpanel.EventTypes.TABLE_COLUMNS, {
+      Table: 'Token transfers',
+      Surface: surface,
+      Column: 'All',
+      State: 'Reset',
+    });
+  }, [ surface, isCustomized ]);
+
   return React.useMemo(() => ({
     columns,
     selectableColumns,
     checkedColumns,
     isCustomized,
     onColumnsChange,
-  }), [ columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange ]);
+    onColumnsReset,
+  }), [ columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange, onColumnsReset ]);
 }

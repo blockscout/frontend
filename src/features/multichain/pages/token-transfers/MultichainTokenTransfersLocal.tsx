@@ -49,6 +49,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange, 
           columns={ columnsState.checkedColumns }
           onChange={ columnsState.onColumnsChange }
           selected={ columnsState.isCustomized }
+          onReset={ columnsState.onColumnsReset }
         />
       </HStack>
       <Pagination { ...query.pagination }/>

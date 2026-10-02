@@ -36,7 +36,7 @@ export const DrawerCloseTrigger = React.forwardRef<
   return (
     <ChakraDrawer.CloseTrigger
       position="absolute"
-      top="7"
+      top="26px"
       insetEnd="5"
       { ...props }
       asChild

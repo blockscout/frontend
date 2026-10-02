@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { Button } from 'src/toolkit/chakra/button';
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 import { DrawerBody, DrawerCloseTrigger, DrawerContent, DrawerHeader, DrawerRoot, DrawerTitle, DrawerTrigger } from 'src/toolkit/chakra/drawer';
 import { IconButton } from 'src/toolkit/chakra/icon-button';
@@ -20,9 +22,10 @@ interface Props<TColumnId extends string> {
   columns: Partial<Record<TColumnId, boolean>>;
   onChange: (val: Record<TColumnId, boolean>) => void;
   selected?: boolean;
+  onReset?: () => void;
 }
 
-const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange, selected }: Props<TColumnId>) => {
+const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange, selected, onReset }: Props<TColumnId>) => {
 
   const isMobile = useIsMobile();
 
@@ -36,7 +39,18 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
 
   const value = React.useMemo(() => tableColumns.filter(({ id }) => columns[id]).map(({ id }) => id), [ tableColumns, columns ]);
 
-  const content = (
+  const resetButton = onReset && (
+    <Button
+      variant="link"
+      onClick={ onReset }
+      disabled={ !selected }
+      textStyle="sm"
+    >
+      Reset
+    </Button>
+  );
+
+  const checkboxes = (
     <CheckboxGroup
       value={ value }
       onValueChange={ handleValueChange }
@@ -75,11 +89,16 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>Columns</DrawerTitle>
+            <DrawerTitle>
+              <Flex justifyContent="space-between">
+                Columns
+                { resetButton }
+              </Flex>
+            </DrawerTitle>
             <DrawerCloseTrigger/>
           </DrawerHeader>
           <DrawerBody>
-            { content }
+            { checkboxes }
           </DrawerBody>
         </DrawerContent>
       </DrawerRoot>
@@ -93,7 +112,11 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody>
-          { content }
+          <Flex justifyContent="space-between" textStyle="sm" mb={ 5 }>
+            <Box fontWeight={ 600 } color="text.secondary">Columns</Box>
+            { resetButton }
+          </Flex>
+          { checkboxes }
         </PopoverBody>
       </PopoverContent>
     </PopoverRoot>

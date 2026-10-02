@@ -20,7 +20,7 @@ import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
-  const { columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange } = useTokenTransferColumns('index');
+  const { columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange, onColumnsReset } = useTokenTransferColumns('index');
 
   const content = (
     <TokenTransfersTable
@@ -48,6 +48,7 @@ const TokenTransfersLocal = () => {
           columns={ checkedColumns }
           onChange={ onColumnsChange }
           selected={ isCustomized }
+          onReset={ onColumnsReset }
         />
       </HStack>
       <Pagination { ...query.pagination }/>

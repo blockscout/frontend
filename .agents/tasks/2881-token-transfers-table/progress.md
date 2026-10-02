@@ -13,4 +13,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [ ] 05 → `tickets/05-tx-tab/`
 - [ ] 06 → `tickets/06-token-tab/`
 - [ ] 07 → `tickets/07-type-from-to-design-answers/`
-- [ ] 08 → `tickets/08-column-selector-reset/`
+- [x] 08 → `tickets/08-column-selector-reset/`

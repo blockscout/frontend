@@ -165,6 +165,59 @@ describe('useTokenTransferColumns', () => {
     });
   });
 
+  it('resets the columns to the surface defaults and keeps the selection stored for other surfaces', async() => {
+    setCookie({ index: { block: false, asset: false }, token: { block: true } });
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('index');
+      expect(result.current.isCustomized).toBe(true);
+
+      act(() => {
+        result.current.onColumnsReset();
+      });
+
+      const { getDefaultColumnIds } = await import('../utils/columns');
+      expect(result.current.columns).toEqual(getDefaultColumnIds('index'));
+      expect(result.current.isCustomized).toBe(false);
+
+      const { parseColumnOverrides } = await import('../utils/column-overrides');
+      const { get, NAMES } = await import('src/shared/storage/cookies');
+      expect(parseColumnOverrides(get(NAMES.TOKEN_TRANSFER_COLUMNS))).toEqual({ token: { block: true } });
+    });
+  });
+
+  it('logs one reset event for the whole surface', async() => {
+    setCookie({ index: { block: false, asset: false } });
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('index');
+      act(() => {
+        result.current.onColumnsReset();
+      });
+
+      expect(mixpanel.track).toHaveBeenCalledTimes(1);
+      expect(mixpanel.track).toHaveBeenCalledWith(
+        'Table columns',
+        { Table: 'Token transfers', Surface: 'index', Column: 'All', State: 'Reset' },
+        undefined,
+        undefined,
+      );
+    });
+  });
+
+  it('does nothing on reset while the columns match the defaults', async() => {
+    setCookie({ index: { block: true } });
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('index');
+      act(() => {
+        result.current.onColumnsReset();
+      });
+
+      expect(mixpanel.track).not.toHaveBeenCalled();
+    });
+  });
+
   it('logs nothing when the selection does not change', async() => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('index');
