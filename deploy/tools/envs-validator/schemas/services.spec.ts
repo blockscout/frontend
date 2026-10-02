@@ -24,7 +24,7 @@ describe('servicesSchema', () => {
 
   it('rejects featured wallet ids that are not a JSON array', () => {
     expect(getValidationErrors(servicesSchema, { NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS: 'xxx' })).toEqual([
-      'NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS must be a `array` type, but the final value was: `"xxx"`.',
+      'NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS: Invalid JSON: Received "xxx"',
     ]);
   });
 
@@ -40,7 +40,7 @@ describe('servicesSchema', () => {
         NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: 'xxx',
         NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: 'not json',
       })).toEqual([
-        'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES must be a `object` type, but the final value was: `"not json"`.',
+        'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: Invalid JSON: Received "not json"',
       ]);
     });
   });

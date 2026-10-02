@@ -19,13 +19,13 @@ describe('apiDocsSchema', () => {
 
   it('rejects an unknown tab id', () => {
     expect(getValidationErrors(apiDocsSchema, { NEXT_PUBLIC_API_DOCS_TABS: toEnvValue([ 'rest_api', 'soap_api' ]) })).toEqual([
-      'NEXT_PUBLIC_API_DOCS_TABS[1] must be one of the following values: rest_api, eth_rpc_api, rpc_api, graphql_api',
+      'NEXT_PUBLIC_API_DOCS_TABS.1: Invalid type: Expected ("rest_api" | "eth_rpc_api" | "rpc_api" | "graphql_api") but received "soap_api"',
     ]);
   });
 
   it('rejects a value that is not a JSON array', () => {
     expect(getValidationErrors(apiDocsSchema, { NEXT_PUBLIC_API_DOCS_TABS: 'rest_api' })).toEqual([
-      'NEXT_PUBLIC_API_DOCS_TABS must be a `array` type, but the final value was: `"rest_api"`.',
+      'NEXT_PUBLIC_API_DOCS_TABS: Invalid JSON: Received "rest_api"',
     ]);
   });
 });

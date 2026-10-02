@@ -89,15 +89,15 @@ describe('validateEnvs', () => {
   it('collects every error instead of stopping at the first one', () => {
     const errors = validateEnvs({ ...MINIMAL_ENVS, NEXT_PUBLIC_APP_PORT: 'abc', NEXT_PUBLIC_NETWORK_ID: 'xyz' }, {});
     expect(errors.toSorted()).toEqual([
-      'NEXT_PUBLIC_APP_PORT must be a `number` type, but the final value was: `NaN` (cast from the value `"abc"`).',
-      'NEXT_PUBLIC_NETWORK_ID must be a `number` type, but the final value was: `NaN` (cast from the value `"xyz"`).',
+      'NEXT_PUBLIC_APP_PORT: Expected a decimal number but received "abc"',
+      'NEXT_PUBLIC_NETWORK_ID: Expected a decimal number but received "xyz"',
     ]);
   });
 
   it('validates against the multichain schema when NEXT_PUBLIC_MULTICHAIN_ENABLED is true', () => {
     expect(validateEnvs(MINIMAL_MULTICHAIN_ENVS, {})).toEqual([]);
     expect(validateEnvs({ ...MINIMAL_MULTICHAIN_ENVS, NEXT_PUBLIC_GAS_TRACKER_ENABLED: 'true' }, {})).toEqual([
-      'NEXT_PUBLIC_GAS_TRACKER_ENABLED must be one of the following values: false',
+      'NEXT_PUBLIC_GAS_TRACKER_ENABLED: Invalid type: Expected false but received true',
     ]);
   });
 
@@ -105,7 +105,7 @@ describe('validateEnvs', () => {
     const envs = { ...MINIMAL_ENVS, NEXT_PUBLIC_FOOTER_LINKS: 'https://example.com/links.json' };
     expect(validateEnvs(envs, { NEXT_PUBLIC_FOOTER_LINKS: '[{"title":"Foo","links":[]}]' })).toEqual([]);
     expect(validateEnvs(envs, { NEXT_PUBLIC_FOOTER_LINKS: '[{"links":[]}]' })).toEqual([
-      'NEXT_PUBLIC_FOOTER_LINKS[0].title is a required field',
+      'NEXT_PUBLIC_FOOTER_LINKS.0.title: Invalid key: Expected "title" but received undefined',
     ]);
   });
 });
@@ -142,7 +142,7 @@ describe('runChecks', () => {
       ok: false,
       deprecationWarnings: [],
       placeholderErrors: [],
-      validationErrors: [ 'NEXT_PUBLIC_APP_PROTOCOL must be one of the following values: http, https' ],
+      validationErrors: [ 'NEXT_PUBLIC_APP_PROTOCOL: Invalid type: Expected ("http" | "https") but received "ftp"' ],
     });
   });
 

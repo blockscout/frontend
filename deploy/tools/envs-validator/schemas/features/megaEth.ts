@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import { urlTest } from '../../utils';
+import { envUrl } from '../../utils';
 
-export const megaEthSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS: yup.string().test(urlTest),
-    NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC: yup.string().test(urlTest),
-  });
+export const megaEthSchema = v.object({
+  NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS: v.optional(envUrl()),
+  NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_RPC: v.optional(envUrl()),
+});

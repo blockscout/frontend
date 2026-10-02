@@ -1,39 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import { replaceQuotes } from 'src/config/utils/envs';
+import { envJson, envUrl, requires } from '../../utils';
 
-import { urlTest } from '../../utils';
+export const nameServicesSchema = v.pipe(
+  v.looseObject({
+    NEXT_PUBLIC_NAME_SERVICE_API_HOST: v.optional(envUrl()),
+    NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS: v.optional(envJson(v.pipe(v.array(v.string()), v.minLength(1)))),
 
-export const nameServicesSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS: yup
-      .array()
-      .transform(replaceQuotes)
-      .json()
-      .when('NEXT_PUBLIC_NAME_SERVICE_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema.of(yup.string()).min(1).optional(),
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS cannot not be used if NEXT_PUBLIC_NAME_SERVICE_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-
-    NEXT_PUBLIC_CLUSTERS_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_CLUSTERS_CDN_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_CLUSTERS_API_HOST', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema.test(urlTest).optional(),
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_CLUSTERS_CDN_URL cannot not be used if NEXT_PUBLIC_CLUSTERS_API_HOST is not set',
-          value => value === undefined,
-        ),
-      }),
-  });
+    NEXT_PUBLIC_CLUSTERS_API_HOST: v.optional(envUrl()),
+    NEXT_PUBLIC_CLUSTERS_CDN_URL: v.optional(envUrl()),
+  }),
+  requires('NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS', 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', {
+    message: 'NEXT_PUBLIC_NAME_SERVICE_PROTOCOLS cannot not be used if NEXT_PUBLIC_NAME_SERVICE_API_HOST is not set',
+  }),
+  requires('NEXT_PUBLIC_CLUSTERS_CDN_URL', 'NEXT_PUBLIC_CLUSTERS_API_HOST', {
+    message: 'NEXT_PUBLIC_CLUSTERS_CDN_URL cannot not be used if NEXT_PUBLIC_CLUSTERS_API_HOST is not set',
+  }),
+);

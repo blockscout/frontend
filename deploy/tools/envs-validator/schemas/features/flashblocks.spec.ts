@@ -18,13 +18,13 @@ describe('flashblocksSchema', () => {
 
   it('rejects a malformed socket URL', () => {
     expect(getValidationErrors(flashblocksSchema, { NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: 'not a url' })).toEqual([
-      'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL is not a valid URL',
+      'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL: Invalid URL: Received "not a url"',
     ]);
   });
 
   it('rejects an unsupported name', () => {
     expect(getValidationErrors(flashblocksSchema, { ...SOCKET_URL, NEXT_PUBLIC_FLASHBLOCKS_NAME: 'miniblock' })).toEqual([
-      'NEXT_PUBLIC_FLASHBLOCKS_NAME must be one of the following values: flashblock, subblock',
+      'NEXT_PUBLIC_FLASHBLOCKS_NAME: Invalid type: Expected ("flashblock" | "subblock") but received "miniblock"',
     ]);
   });
 

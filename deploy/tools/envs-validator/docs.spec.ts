@@ -17,7 +17,7 @@ const documentedNames = new Set([
   ...extractDocumentedEnvNames(readDoc('BUILD-TIME_ENVS.md')),
 ]);
 const deprecatedNames = new Set(extractDocumentedEnvNames(readDoc('DEPRECATED_ENVS.md')));
-const schemaNames = new Set([ ...Object.keys(schema.fields), ...Object.keys(schemaMultichain.fields) ]);
+const schemaNames = new Set([ ...schema.envNames, ...schemaMultichain.envNames ]);
 
 describe('docs/ENVS.md', () => {
   it('has a row for every variable the schemas accept', () => {

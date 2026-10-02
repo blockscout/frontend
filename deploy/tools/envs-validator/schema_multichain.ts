@@ -1,83 +1,64 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-declare module 'yup' {
-  interface StringSchema {
-    // Yup's URL validator is not perfect so we made our own
-    // https://github.com/jquense/yup/pull/1859
-    url(): never;
-  }
-}
-
-import * as yup from 'yup';
+import * as v from 'valibot';
 
 import { IDENTICON_TYPES } from 'src/slices/address/types/config';
 
-import { replaceQuotes } from 'src/config/utils/envs';
-
+import { appSchema, buildTimeSchema, proxySchema } from './schemas/app';
 import * as featuresSchemas from './schemas/features';
-import servicesSchemas from './schemas/services';
+import servicesSchema from './schemas/services';
 import * as uiSchemas from './schemas/ui';
-import { urlTest, protocols } from './utils';
+import { composeSchemas, envBoolean, envJson, envRequiredString, envUrl } from './utils';
 
-const schema = yup
-  .object()
-  .noUnknown(true, (params) => {
-    return `Unknown ENV variables were provided: ${ params.unknown }`;
-  })
-  .shape({
-    // I. Build-time ENVs
-    // -----------------
-    NEXT_PUBLIC_GIT_TAG: yup.string(),
-    NEXT_PUBLIC_GIT_COMMIT_SHA: yup.string(),
+const chainSchema = v.object({
+  NEXT_PUBLIC_NETWORK_NAME: envRequiredString(),
+  NEXT_PUBLIC_NETWORK_SHORT_NAME: v.optional(v.string()),
+  NEXT_PUBLIC_IS_TESTNET: v.optional(envBoolean()),
+});
 
-    // II. Run-time ENVs
-    // -----------------
-    // 1. App configuration
-    NEXT_PUBLIC_APP_HOST: yup.string().required(),
-    NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
-    NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
-    NEXT_PUBLIC_APP_ENV: yup.string(),
-    NEXT_PUBLIC_APP_INSTANCE: yup.string(),
+// Only the view settings that multichain mode actually supports.
+const viewsSchema = v.object({
+  NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: v.optional(v.picklist(IDENTICON_TYPES)),
+  NEXT_PUBLIC_INTERNAL_TXS_ENABLED: v.optional(envBoolean()),
+});
 
-    // 2. Blockchain parameters
-    NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),
-    NEXT_PUBLIC_NETWORK_SHORT_NAME: yup.string(),
-    NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
+// Not every feature is supported in multichain mode; the ones enabled by default must be turned off
+// explicitly, hence the `false`-only flags.
+const featuresSchema = v.object({
+  NEXT_PUBLIC_OG_DESCRIPTION: v.optional(v.string()),
+  NEXT_PUBLIC_OG_IMAGE_URL: v.optional(envUrl()),
 
-    // 3. UI views configuration
-    // Some settings that we actually support in multichain mode
-    NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
-    NEXT_PUBLIC_INTERNAL_TXS_ENABLED: yup.boolean(),
+  NEXT_PUBLIC_GAS_TRACKER_ENABLED: v.optional(v.pipe(envBoolean(), v.literal(false))),
+  NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: v.optional(v.pipe(envBoolean(), v.literal(false))),
+  NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: v.optional(v.pipe(envBoolean(), v.literal(false))),
+  NEXT_PUBLIC_API_DOCS_TABS: v.optional(envJson(v.pipe(v.array(v.unknown()), v.maxLength(0)))),
+});
 
-    // 5. Features configuration
-    // NOTE!: Not all features are supported in multichain mode, and some of them not relevant or enabled per chain basis
-    // Below listed supported features and the features that are enabled by default, so we have to turn them off
-    NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
-    NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
+const multichainSchema = v.object({
+  NEXT_PUBLIC_MULTICHAIN_ENABLED: v.optional(envBoolean()),
+  NEXT_PUBLIC_MULTICHAIN_CLUSTER: v.optional(v.string()),
+  NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: v.optional(envUrl()),
+  NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST: v.optional(envUrl()),
+});
 
-    NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean().equals([ false ]),
-    NEXT_PUBLIC_ADVANCED_FILTER_ENABLED: yup.boolean().equals([ false ]),
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean().equals([ false ]),
-    NEXT_PUBLIC_API_DOCS_TABS: yup.array().transform(replaceQuotes).json().max(0),
-
-    // 6. Multichain configuration
-    NEXT_PUBLIC_MULTICHAIN_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_MULTICHAIN_CLUSTER: yup.string(),
-    NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST: yup.string().test(urlTest),
-
-    // Misc
-    NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
-  })
-  .concat(uiSchemas.homepageSchema)
-  .concat(uiSchemas.navigationSchema)
-  .concat(uiSchemas.footerSchema)
-  .concat(uiSchemas.miscSchema)
-  .concat(featuresSchemas.adsSchema)
-  .concat(featuresSchemas.crossChainTxsSchema)
-  .concat(featuresSchemas.defiDropdownSchema)
-  .concat(featuresSchemas.multichainButtonSchema)
-  .concat(featuresSchemas.userOpsSchema)
-  .concat(servicesSchemas);
+const schema = composeSchemas([
+  buildTimeSchema,
+  appSchema,
+  proxySchema,
+  chainSchema,
+  viewsSchema,
+  featuresSchema,
+  multichainSchema,
+  uiSchemas.homepageSchema,
+  uiSchemas.navigationSchema,
+  uiSchemas.footerSchema,
+  uiSchemas.miscSchema,
+  featuresSchemas.adsSchema,
+  featuresSchemas.crossChainTxsSchema,
+  featuresSchemas.defiDropdownSchema,
+  featuresSchemas.multichainButtonSchema,
+  featuresSchemas.userOpsSchema,
+  servicesSchema,
+]);
 
 export default schema;

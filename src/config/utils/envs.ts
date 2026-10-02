@@ -39,24 +39,23 @@ export const getExternalAssetFilePath = (envName: string) => {
 };
 
 export const buildExternalAssetFilePath = (name: string, value: string) => {
-  try {
-    const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
+  const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
+  const url = parseUrl(value);
 
-    const fileExtension = getAssetFileExtension(value);
-    if (!fileExtension) {
-      throw new Error('Cannot get file path');
-    }
-    return `/assets/configs/${ fileName }.${ fileExtension }`;
-  } catch (error) {
-    return;
+  if (!url) {
+    return parseEnvJson(value) ? `/assets/configs/${ fileName }.json` : undefined;
   }
+
+  // Must mirror get_target_filename() in deploy/scripts/download_assets.sh: a URL whose path has no
+  // file extension (e.g. Cloudflare Images "…/<id>/public") is saved under the bare file name.
+  const fileExtension = url.pathname.match(regexp.FILE_EXTENSION)?.[1]?.toLowerCase();
+  return fileExtension ? `/assets/configs/${ fileName }.${ fileExtension }` : `/assets/configs/${ fileName }`;
 };
 
-function getAssetFileExtension(value: string) {
+function parseUrl(value: string): URL | undefined {
   try {
-    const url = new URL(value);
-    return url.pathname.match(regexp.FILE_EXTENSION)?.[1];
+    return new URL(value);
   } catch (error) {
-    return parseEnvJson(value) ? 'json' : undefined;
+    return;
   }
 }

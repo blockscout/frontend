@@ -1,19 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import * as yup from 'yup';
+import * as v from 'valibot';
 
-import { urlTest } from '../../utils';
+import { envBoolean, envUrl, requires } from '../../utils';
 
-export const userOpsSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
-    NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: yup
-      .string()
-      .test(urlTest)
-      .when('NEXT_PUBLIC_HAS_USER_OPS', {
-        is: (value: boolean) => value,
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST can only be used if NEXT_PUBLIC_HAS_USER_OPS is set to \'true\''),
-      }),
-  });
+export const userOpsSchema = v.pipe(
+  v.looseObject({
+    NEXT_PUBLIC_HAS_USER_OPS: v.optional(envBoolean()),
+    NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST: v.optional(envUrl()),
+  }),
+  requires('NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST', 'NEXT_PUBLIC_HAS_USER_OPS', {
+    message: 'NEXT_PUBLIC_USER_OPS_INDEXER_API_HOST can only be used if NEXT_PUBLIC_HAS_USER_OPS is set to \'true\'',
+  }),
+);

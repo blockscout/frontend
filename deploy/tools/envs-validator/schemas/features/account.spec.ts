@@ -33,13 +33,13 @@ describe('accountSchema', () => {
 
   it('rejects a malformed account flag', () => {
     expect(getValidationErrors(accountSchema, { NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: 'yes' })).toEqual([
-      'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED must be a `boolean` type, but the final value was: `"yes"`.',
+      'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: Expected "true" or "false" but received "yes"',
     ]);
   });
 
   it('rejects an unsupported auth provider', () => {
     expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'okta' })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER must be one of the following values: auth0, dynamic',
+      'NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: Invalid type: Expected ("auth0" | "dynamic") but received "okta"',
     ]);
   });
 
@@ -51,7 +51,14 @@ describe('accountSchema', () => {
 
   it('rejects the dynamic provider without an environment id', () => {
     expect(getValidationErrors(accountSchema, { ...SUPPORTED, NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic' })).toEqual([
-      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is a required field',
+      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
+    ]);
+    expect(getValidationErrors(accountSchema, {
+      ...SUPPORTED,
+      NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER: 'dynamic',
+      NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID: '',
+    })).toEqual([
+      'NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID is required when NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER is set',
     ]);
   });
 

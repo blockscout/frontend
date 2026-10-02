@@ -49,7 +49,7 @@ Gotchas:
 Some directories have a `CONTEXT.md` documenting non-obvious patterns specific to that area. Read the relevant one before working in (or reaching into) that directory:
 
 - `deploy/scripts/` — how the frontend container is built and starts up (Dockerfile stages, entrypoint).
-- `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against yup schemas.
+- `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against valibot schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
 - `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.

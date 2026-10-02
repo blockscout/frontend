@@ -18,7 +18,7 @@ describe('metaSchema', () => {
 
   it('rejects a malformed Open Graph image URL', () => {
     expect(getValidationErrors(metaSchema, { NEXT_PUBLIC_OG_IMAGE_URL: 'not a url' })).toEqual([
-      'NEXT_PUBLIC_OG_IMAGE_URL is not a valid URL',
+      'NEXT_PUBLIC_OG_IMAGE_URL: Invalid URL: Received "not a url"',
     ]);
   });
 
@@ -28,7 +28,7 @@ describe('metaSchema', () => {
     'NEXT_PUBLIC_SEO_ENHANCED_DATA_ENABLED',
   ])('rejects a non-boolean %s', (name) => {
     expect(getValidationErrors(metaSchema, { [name]: 'yes' })).toEqual([
-      `${ name } must be a \`boolean\` type, but the final value was: \`"yes"\`.`,
+      `${ name }: Expected "true" or "false" but received "yes"`,
     ]);
   });
 });

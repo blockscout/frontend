@@ -36,7 +36,14 @@ mkdir -p "$ASSETS_DIR"
 # Track failed downloads
 FAILED_DOWNLOADS=0
 
-# Function to determine the target file name based on the environment variable
+# Returns 0 when the value is a URL with a scheme (e.g. https://, file://), which is what the app treats as a URL.
+is_url() {
+    [[ "$1" =~ ^[A-Za-z][A-Za-z0-9+.-]*:// ]]
+}
+
+# Function to determine the target file name based on the environment variable.
+# Must mirror buildExternalAssetFilePath() in src/config/utils/envs.ts, which is how the app
+# computes the path it will request (see src/config/utils/envs.spec.ts for the parity test).
 get_target_filename() {
     local env_var="$1"
     local url="${!env_var}"
@@ -46,30 +53,30 @@ get_target_filename() {
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
 
-    # Check if the URL starts with "file://"
-    if [[ "$url" == file://* ]]; then
-        # Extract the local file path
-        local file_path="${url#file://}"
-        # Get the filename from the local file path
-        local filename=$(basename "$file_path")
-        # Extract the extension from the filename
-        local extension="${filename##*.}"
-    else
-        if [[ "$url" == http* ]]; then
-            # Remove query parameters from the URL and get the filename
-            local filename=$(basename "${url%%\?*}")
-            # Extract the extension from the filename
-            local extension="${filename##*.}"
-        else
-            local extension="json"
-        fi
+    if ! is_url "$url"; then
+        # Raw JSON content
+        echo "$name_lc.json"
+        return
     fi
 
-    # Convert the extension to lowercase
-    extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
+    # URL path: drop the scheme and host, then the query string and the fragment
+    local path="${url#*://}"
+    if [[ "$path" == */* ]]; then
+        path="/${path#*/}"
+    else
+        path="/"
+    fi
+    path="${path%%[\?#]*}"
 
-    # Construct the custom file name
-    echo "$name_lc.$extension"
+    # Extension of the last path segment (empty when the path ends with "/"), same rule as the app's
+    # FILE_EXTENSION regexp. A path without one (e.g. Cloudflare Images ".../<id>/public") is saved under the bare name
+    local segment="${path##*/}"
+    if [[ "$segment" =~ \.([0-9A-Za-z]+)$ ]]; then
+        local extension=$(echo "${BASH_REMATCH[1]}" | tr '[:upper:]' '[:lower:]')
+        echo "$name_lc.$extension"
+    else
+        echo "$name_lc"
+    fi
 }
 
 # Function to download and save an asset
@@ -91,7 +98,7 @@ download_and_save_asset() {
         cp "${url#file://}" "$destination"
     else
         # Check if the value is a URL
-        if [[ "$url" == http* ]]; then
+        if is_url "$url"; then
             # Download the asset using curl with built-in retries
             if ! curl -f -s --connect-timeout 10 --max-time 60 --retry 3 --retry-delay 3 --retry-max-time 180 -o "$destination" "$url"; then
                 echo "   [-] $env_var: Failed to download from $url after 3 retry attempts (timeout or connection error)"
@@ -107,7 +114,7 @@ download_and_save_asset() {
         fi
     fi
 
-    if [[ "$url" == file://* ]] || [[ "$url" == http* ]]; then
+    if is_url "$url"; then
         local source_name=$url
     else
         local source_name="raw input"

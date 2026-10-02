@@ -9,8 +9,6 @@ import { address3rdPartyWidgetsConfigSchema } from './address3rdPartyWidgets';
 
 const CONFIG = { NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify(address3rdPartyWidgetsConfig) };
 
-const SHAPE_ERROR = 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL, it should have name, url, icon, title, value';
-
 describe('address3rdPartyWidgetsConfigSchema', () => {
   it('accepts the widget list together with the downloaded config', () => {
     expect(getValidationErrors(address3rdPartyWidgetsConfigSchema, {
@@ -35,14 +33,14 @@ describe('address3rdPartyWidgetsConfigSchema', () => {
     expect(getValidationErrors(address3rdPartyWidgetsConfigSchema, {
       ...CONFIG,
       NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: toEnvValue([ {} ]),
-    })).toEqual([ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS[0] must be a `string` type, but the final value was: `{}` (cast from the value `"["`).' ]);
+    })).toEqual([ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS.0: Invalid type: Expected string but received Object' ]);
   });
 
   it('rejects a widget config missing a required field', () => {
     const { valuePath, ...widget } = address3rdPartyWidgetsConfig['widget-2'];
     expect(getValidationErrors(address3rdPartyWidgetsConfigSchema, {
       NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify({ 'widget-2': widget }),
-    })).toEqual([ SHAPE_ERROR ]);
+    })).toEqual([ 'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL.widget-2.valuePath: Invalid key: Expected "valuePath" but received undefined' ]);
   });
 
   it('rejects a widget config with an unknown page', () => {
@@ -50,6 +48,8 @@ describe('address3rdPartyWidgetsConfigSchema', () => {
       NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL: JSON.stringify({
         'widget-2': { ...address3rdPartyWidgetsConfig['widget-2'], pages: [ 'block' ] },
       }),
-    })).toEqual([ SHAPE_ERROR ]);
+    })).toEqual([
+      'NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS_CONFIG_URL.widget-2.pages.0: Invalid type: Expected ("eoa" | "contract" | "token") but received "block"',
+    ]);
   });
 });
