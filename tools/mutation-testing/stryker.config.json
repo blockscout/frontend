@@ -43,6 +43,8 @@
     "!/deploy/tools/envs-validator/**",
     "!/.agents/**",
     "!/deploy/scripts/download_assets.sh",
+    "!/docs/PULL_REQUEST_TEMPLATE.md",
+    "!/docs/RELEASING.md",
     "!/vitest/**",
     "!/decs.d.ts",
     "!/global.d.ts",

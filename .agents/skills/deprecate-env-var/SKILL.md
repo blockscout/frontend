@@ -204,13 +204,12 @@ the `DEPRECATED_ENVS` entry and the rejection rule you added in Phase 1.
 
 ## Both branches — finishing up
 
-- **Version columns** stay `upcoming`; the `prepare-release` skill rewrites them
-  to the shipping tag.
-- **Label the PR `ENVs`** so the change is picked up into the "Changes in ENV
-  variables" section of the release notes.
+- **Version columns** stay `upcoming`; `pnpm release prepare` and `alpha` rewrite
+  them to the shipping tag.
 - **Name every removed variable in the PR description**, and say the removal is
-  breaking. `prepare-release` reads `ENVs`-labelled PR bodies to build both the
-  release notes and the roll-up request to DevOps, so this description is how
+  breaking. The release notes copy the PR body's "Environment variables" section
+  as written, and the `release` skill derives the roll-up request to DevOps from
+  the notes, so this description is how
   DevOps learns what to drop from deployment-values, and for which release. It is
   the only place that list needs to live.
 - **Run the validator suite** — the command and the spec conventions (including
