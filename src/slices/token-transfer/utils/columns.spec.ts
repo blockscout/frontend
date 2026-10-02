@@ -7,15 +7,10 @@ import { getAvailableColumns, getDefaultColumnIds } from './columns';
 const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'asset', 'value' ];
 
 describe('getAvailableColumns', () => {
-  it('offers the whole vocabulary in order on the index and address surfaces', () => {
+  it('offers the whole vocabulary in order on the index, address and token surfaces', () => {
     expect(getAvailableColumns('index').map(({ id }) => id)).toEqual(ALL_COLUMNS);
     expect(getAvailableColumns('address').map(({ id }) => id)).toEqual(ALL_COLUMNS);
-  });
-
-  it('does not offer the asset column on the token surface', () => {
-    expect(getAvailableColumns('token').map(({ id }) => id)).toEqual(
-      [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'value' ],
-    );
+    expect(getAvailableColumns('token').map(({ id }) => id)).toEqual(ALL_COLUMNS);
   });
 
   it('does not offer the hash, method, timestamp and block columns on the tx surface', () => {
@@ -43,7 +38,7 @@ describe('getDefaultColumnIds', () => {
 
   it('hides the type columns and block by default on the token surface', () => {
     expect(getDefaultColumnIds('token')).toEqual(
-      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'value' ],
+      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
     );
   });
 

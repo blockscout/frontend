@@ -162,6 +162,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               onChange={ columnsState.onColumnsChange }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
+              isLoading={ transfersQueryLocal.query.isInitialLoading }
             />
             { chainSelect }
             <CsvExport

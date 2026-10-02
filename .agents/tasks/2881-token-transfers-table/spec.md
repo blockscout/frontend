@@ -47,7 +47,7 @@ does. The chosen set survives reloads.
    | From / To | on | on | on | on |
    | Token ID | on | on | on | on |
    | Amount | on | on | on | on |
-   | Asset | on | on | unavailable | on |
+   | Asset | on | on | on | on |
    | Value | on | on | on | on |
 
    "Off" columns are hidden by default but offered in the selector; "unavailable" columns are neither

@@ -85,6 +85,7 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
           onChange={ columnsState.onColumnsChange }
           selected={ columnsState.isCustomized }
           onReset={ columnsState.onColumnsReset }
+          isLoading={ isInitialLoading }
         />
         <CsvExport
           type="address_token_transfers"

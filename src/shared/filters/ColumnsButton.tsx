@@ -23,9 +23,10 @@ interface Props<TColumnId extends string> {
   onChange: (val: Record<TColumnId, boolean>) => void;
   selected?: boolean;
   onReset?: () => void;
+  isLoading?: boolean;
 }
 
-const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange, selected, onReset }: Props<TColumnId>) => {
+const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange, selected, onReset, isLoading }: Props<TColumnId>) => {
 
   const isMobile = useIsMobile();
 
@@ -76,6 +77,7 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
       size="md"
       aria-label="Columns"
       selected={ selected }
+      loadingSkeleton={ isLoading }
     >
       <SpriteIcon name="columns"/>
     </IconButton>

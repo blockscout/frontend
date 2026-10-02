@@ -159,6 +159,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
               onChange={ columnsState.onColumnsChange }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
+              isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
             />
           </HStack>
           <Pagination ml="auto" { ...localQuery.pagination }/>

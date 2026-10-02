@@ -8,25 +8,25 @@
 ## What to build
 
 The token page's token-transfers tab and the token instance page's transfers tab render the unified table
-with the `token` surface: Asset is unavailable, Token type, Transfer type and Block are off by default but
+with the `token` surface: Token type, Transfer type and Block are off by default but
 selectable, the rest on. The selector joins the action bar next to the advanced-filter link. On the instance page the row whose
 token id equals the current instance is not linked and the instance data overrides the entity, as today;
-the Value column keeps its symbol in the header. The token-page table, its row and Playwright file are
-deleted; the `TokenTransfer.pw.tsx` page cases (erc20, erc721, erc1155, erc8056) stay.
+the token symbol shows in the Asset column, as in the mockup. The token-page table, its row, and the
+`TokenTransfer.pw.tsx` page cases (duplicates of the unified table's own) are deleted.
 
 ## Acceptance criteria
 
 How to verify: `pnpm dev:preset eth`, open an ERC-20 token and an ERC-721 token instance, transfers tab
 
-- [ ] `pages/token/TokenTransfer.tsx` renders the unified table with surface `token`, passing `tokenId`,
-      `token`, `instance` so `NftEntity` gets `noLink` on the current id and the instance override; its
+- [ ] `pages/token/TokenTransfer.tsx` renders the unified table with surface `token`, passing `tokenId`
+      and `instance` so `NftEntity` gets `noLink` on the current id and the instance override; its
       `TableContainerScrollable` wrapper and `top` prop are removed (the table scrolls itself).
 - [ ] Token ID shows the id for NFT rows and a dash for fungible rows (not hidden by token type as
       today — the column is selectable per FR 2).
 - [ ] Selector added to the `ActionBar` beside `TokenAdvancedFilterLink`, with `selected` and `onReset`
       from the hook, as on the index page (T08); choices persist under the `token` surface key, shared
       by token and instance pages.
-- [ ] `pages/token/TokenTransferTable*.tsx` deleted; `TokenTransfer.pw.tsx` keeps its four cases.
+- [ ] `pages/token/TokenTransferTable*.tsx` and `TokenTransfer.pw.tsx` with its screenshots deleted.
 - [ ] Token page routes render on the server: no flash of the default columns after a toggle + reload.
 - [ ] `(human)` Token and instance tabs show the FR 2 token defaults; Token type, Transfer type and Block
       appear when toggled on; the current instance id is not a link; a reload keeps the chosen columns from first paint.
@@ -45,9 +45,8 @@ table shows the column whenever the surface config says so and renders a dash wh
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Swap `TokenTransfer.tsx` to the unified table (token + instance props); selector in the
+- [x] 1 `[agent]` Swap `TokenTransfer.tsx` to the unified table (token + instance props); selector in the
       action bar
-- [ ] 2 `[agent]` Delete table C + its pw file/screenshots
-- [ ] 3 `[human]` Style to mockup —
-      [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3883-4329); regenerate
-      `TokenTransfer.pw.tsx` baselines
+- [x] 2 `[agent]` Delete table C + the page pw file/screenshots
+- [x] 3 `[human]` Style to mockup —
+      [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3883-4329)

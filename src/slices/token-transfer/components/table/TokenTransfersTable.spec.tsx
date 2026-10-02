@@ -9,6 +9,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, within } from 'vitest/lib';
 
 import { erc1155A, erc1155B, erc1155C, erc1155D, erc20, erc721 } from '../../mocks';
+import { getDefaultColumnIds } from '../../utils/columns';
 import TokenTransfersTable from './TokenTransfersTable';
 
 const BATCH_PAGE = [ erc1155A, erc1155B, erc1155C, erc1155D ];
@@ -79,5 +80,11 @@ describe('TokenTransfersTable', () => {
 
     expect(container.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(container.querySelectorAll('tbody tr td')).toHaveLength(ALL_COLUMNS.length);
+  });
+
+  it('renders the token surface defaults', () => {
+    const { container } = render(<TokenTransfersTable surface="token" columns={ getDefaultColumnIds('token') } items={ NEXT_PAGE }/>);
+
+    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Method', 'Timestamp', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ]);
   });
 });

@@ -57,7 +57,7 @@ export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, Surfac
     from_to: 'on',
     token_id: 'on',
     amount: 'on',
-    asset: 'unavailable',
+    asset: 'on',
     value: 'on',
   },
   // the transaction endpoint returns method and timestamp as null, and the hash and block are the same for every row

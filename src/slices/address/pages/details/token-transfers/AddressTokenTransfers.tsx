@@ -142,6 +142,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               onChange={ columnsState.onColumnsChange }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
+              isLoading={ localQuery.query.isInitialLoading }
             />
             <CsvExport
               type="address_token_transfers"

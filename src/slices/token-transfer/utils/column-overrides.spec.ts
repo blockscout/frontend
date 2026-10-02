@@ -72,13 +72,13 @@ describe('setColumnVisibility', () => {
 describe('getVisibleColumnIds', () => {
   it('returns the surface defaults when there are no overrides', () => {
     expect(getVisibleColumnIds('token', undefined)).toEqual(
-      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'value' ],
+      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
     );
   });
 
   it('applies the overrides in vocabulary order', () => {
     expect(getVisibleColumnIds('token', { block: true, type: true, value: false })).toEqual(
-      [ 'tx_hash', 'type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount' ],
+      [ 'tx_hash', 'type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'asset' ],
     );
   });
 
