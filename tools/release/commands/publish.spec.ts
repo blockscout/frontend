@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { approvedAlpha, describeCommit, docsConflictMessage, needsMainPush, parsePublishArgs, publishState } from './publish';
+import { approvedAlpha, describeCommit, docsConflictMessage, foreignMainCommits, needsMainPush, parsePublishArgs, publishState } from './publish';
 
 const HEAD = '0123456789abcdef0123456789abcdef01234567';
 const OTHER = 'fedcba9876543210fedcba9876543210fedcba98';
@@ -106,5 +106,23 @@ describe('needsMainPush', () => {
 
   it.each([ 'missing', 'current', 'behind' ] as const)('leaves main alone when every docs commit is on origin and the local branch is %s', (state) => {
     expect(needsMainPush({ picks: [], skipped: [ { commit, sha: OTHER } ] }, state)).toBe(false);
+  });
+});
+
+describe('foreignMainCommits', () => {
+  const docs = { sha: HEAD, message: 'chore: prepare release v2.13.0' };
+  const picked = { sha: OTHER, message: 'chore: prepare release v2.13.0\n\n(cherry picked from commit ' + HEAD + ')' };
+  const wip = { sha: 'abc'.padEnd(40, '0'), message: 'wip: something local' };
+
+  it('passes a main ahead with only the continued picks of the release', () => {
+    expect(foreignMainCommits([ picked ], { picks: [], skipped: [ { commit: docs, sha: OTHER } ] })).toEqual([]);
+  });
+
+  it('returns the ahead commits that are not picks of the release', () => {
+    expect(foreignMainCommits([ picked, wip ], { picks: [], skipped: [ { commit: docs, sha: OTHER } ] })).toEqual([ wip ]);
+  });
+
+  it('returns every ahead commit when the release has nothing picked', () => {
+    expect(foreignMainCommits([ wip ], { picks: [ docs ], skipped: [] })).toEqual([ wip ]);
   });
 });

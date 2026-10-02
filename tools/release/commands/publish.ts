@@ -106,6 +106,24 @@ export function needsMainPush({ picks }: DocsPickPlan, mainState: LocalBranchSta
   return picks.length > 0 || mainState === 'ahead';
 }
 
+// Whatever a local main is ahead of origin with goes along with the push, so only this release's continued
+// picks may be there: a release's docs commit on main is a skipped pick, anything else is the operator's.
+export function foreignMainCommits(ahead: ReadonlyArray<Commit>, { skipped }: DocsPickPlan): Array<Commit> {
+  const picked = new Set(skipped.map(({ sha }) => sha));
+  return ahead.filter(({ sha }) => !picked.has(sha));
+}
+
+function assertMainAheadWithDocsOnly(tag: string, plan: DocsPickPlan, mainState: LocalBranchState): void {
+  if (mainState !== 'ahead') {
+    return;
+  }
+  const foreign = foreignMainCommits(listCommits(remoteBranch(MAIN), MAIN), plan);
+  if (foreign.length > 0) {
+    throw new Error(`${ MAIN } is ahead of ${ remoteBranch(MAIN) } with commits that are not docs commits of ${ tag }: ` +
+      `${ foreign.map(describeCommit).join(', ') }; push or drop them by hand and re-run`);
+  }
+}
+
 function returnDocsToMain(steps: StepRunner, plan: DocsPickPlan, mainState: LocalBranchState, dryRun: boolean): void {
   if (!needsMainPush(plan, mainState)) {
     return;
@@ -171,6 +189,7 @@ export function publishCommand(args: ReadonlyArray<string>): number {
   }
   const mainState = readLocalBranchState(MAIN);
   const docsPlan = docsPlanAt(head, notes.previousTag, tag, checkoutPlan(MAIN, mainState).ref);
+  assertMainAheadWithDocsOnly(tag, docsPlan, mainState);
   logDocsPlan(docsPlan);
 
   const steps = stepRunner(dryRun);
