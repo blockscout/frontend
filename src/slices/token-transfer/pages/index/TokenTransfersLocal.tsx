@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
 
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
@@ -12,23 +12,24 @@ import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import { TableContainerScrollable } from 'src/toolkit/chakra/table';
-
+import TokenTransfersTable from '../../components/table/TokenTransfersTable';
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
-import TokenTransfersTable from './TokenTransfersTable';
+import { getDefaultColumnIds } from '../../utils/columns';
+
+const COLUMNS = getDefaultColumnIds('index');
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
 
   const content = (
-    <TableContainerScrollable>
-      <TokenTransfersTable
-        items={ query.data?.items }
-        top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ query.isInitialLoading }
-        resetKey={ query.queryHash }
-      />
-    </TableContainerScrollable>
+    <TokenTransfersTable
+      surface="index"
+      columns={ COLUMNS }
+      items={ query.data?.items }
+      isLoading={ query.isInitialLoading }
+      resetKey={ query.queryHash }
+      enableTimeIncrement
+    />
   );
 
   const filter = (

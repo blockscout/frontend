@@ -6,7 +6,8 @@ import type { TokenType } from 'src/slices/token/types/api';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import TokenTransfersTable from 'src/slices/token-transfer/pages/index/TokenTransfersTable';
+import TokenTransfersTable from 'src/slices/token-transfer/components/table/TokenTransfersTable';
+import { getDefaultColumnIds } from 'src/slices/token-transfer/utils/columns';
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -17,9 +18,7 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
-import { TableContainerScrollable } from 'src/toolkit/chakra/table';
-
-const ACTION_BAR_HEIGHT = 24 * 2 + 40;
+const COLUMNS = getDefaultColumnIds('index');
 
 interface Props {
   query: ApiPaginatedQueryResult<'core:token_transfers_all'>;
@@ -55,15 +54,14 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange }
       actionBar={ actionBar }
       isTransitioning={ query.isTransitioning }
     >
-      <TableContainerScrollable>
-        <TokenTransfersTable
-          items={ query.data?.items }
-          top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT : 0 }
-          isLoading={ query.isInitialLoading }
-          chainData={ chainData }
-          resetKey={ query.queryHash }
-        />
-      </TableContainerScrollable>
+      <TokenTransfersTable
+        surface="index"
+        columns={ COLUMNS }
+        items={ query.data?.items }
+        isLoading={ query.isInitialLoading }
+        resetKey={ query.queryHash }
+        enableTimeIncrement
+      />
     </DataList>
   );
 };

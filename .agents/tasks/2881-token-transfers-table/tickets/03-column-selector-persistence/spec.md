@@ -33,7 +33,6 @@ How to verify: `pnpm dev:preset eth`, open `/token-transfers`, toggle a column, 
       `MultichainTokenTransfers`'s right slot + `MultichainTokenTransfersLocal`'s mobile action bar.
 - [ ] Unit specs: override map merge/serialisation, default-change does not resurrect stale lists
       (a column newly defaulted "on" shows unless explicitly overridden), event payload.
-- [ ] One extra screenshot in `TokenTransfers.pw.tsx` with the selector open, `+@mobile` tagged.
 - [ ] `(human)` Toggling columns updates the table at once; after a hard reload the chosen set is
       visible on first paint; the multichain page behaves the same.
 
@@ -56,7 +55,7 @@ shared, the advanced filter page inherits whatever is chosen.
 - [ ] 2 `[agent]` `useTokenTransferColumns(surface)` hook, SSR-seeded; Mixpanel event registry entry +
       log on toggle; spec
 - [ ] 3 `[agent]` Place `ColumnsButton` on the index surface (local + multichain, desktop + mobile
-      action bar); selector-open pw case scaffold
+      action bar)
 - [ ] 4 `[human]` Style the selector (desktop popover, mobile drawer) to mockup —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3893-28801); regenerate
-      baselines (index page + advanced filter)
+      advanced filter baselines

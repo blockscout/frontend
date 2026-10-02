@@ -12,10 +12,11 @@ target. Phrase it as a checklist of facts." -->
 ### Q01 — What does the "Type" column show: the token standard, the transfer kind (mint/burn/transfer), or both?
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) the cell content is named — standard tag, mint/burn badge, or both; (2) if standard only, whether the mint/burn badge is dropped entirely from the table.
 - Slack: https://blockscout.slack.com/archives/D03PDKKMLQH/p1790873263136199
-- Answer:
+- Answer: both, as two columns — "Token type" (standard tag) and "Transfer type" (mint/burn badge, kept
+  in the table; may become off by default later). Decided by the developer in T02, 2026-10-02.
 
 ### Q02 — Do From and To stay one combined column (one selector entry) or become two independent columns?
 

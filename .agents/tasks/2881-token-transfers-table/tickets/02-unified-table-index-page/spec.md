@@ -63,11 +63,11 @@ https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3889-33029 (mobile 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Column config module (vocabulary, names, per-surface availability/defaults) + spec
-- [ ] 2 `[agent]` Unified table + per-column cell switch scaffold with `TODO (design):` markers; wire
+- [x] 1 `[agent]` Column config module (vocabulary, names, per-surface availability/defaults) + spec
+- [x] 2 `[agent]` Unified table + per-column cell switch scaffold with `TODO (design):` markers; wire
       `TokenTransfersLocal` and `MultichainTokenTransfersLocal`
-- [ ] 3 `[agent]` Delete the index table/row; move its unit specs onto the new table; add cell-switch specs
+- [x] 3 `[agent]` Delete the index table/row; move its unit specs onto the new table; add cell-switch specs
       for the FR 6 variants
-- [ ] 4 `[human]` Style the table to mockup (column widths, From/To arrow, Type cell) —
+- [x] 4 `[human]` Style the table to mockup (column widths, From/To arrow, Type cell) —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-31715); regenerate
       `TokenTransfers.pw.tsx` baselines

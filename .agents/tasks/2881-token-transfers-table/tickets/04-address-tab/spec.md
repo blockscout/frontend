@@ -19,7 +19,8 @@ transaction tab until T05.
 How to verify: `pnpm dev:preset eth`, open an active address, "Token transfers" tab
 
 - [ ] `AddressTokenTransfersLocal` renders the unified table with surface `address`, passing
-      `baseAddress` so `AddressFromTo` highlights the current address, and the socket props as today.
+      `baseAddress` so `AddressFromTo` highlights the current address, and the socket props as today;
+      its `TableContainerScrollable` wrapper and `top` prop are removed (the table scrolls itself).
 - [ ] Selector button added to `AddressTokenTransfers`'s right slot and the mobile `ActionBar` in
       `AddressTokenTransfersLocal`, plus `MultichainAddressTokenTransfers`'s right slot; column
       choices persist under the `address` surface key.
@@ -30,6 +31,12 @@ How to verify: `pnpm dev:preset eth`, open an active address, "Token transfers" 
       selector toggles columns and the choice survives reload, on desktop and mobile.
 
 ## Details
+
+The unified table owns its horizontal scroll container (`TableContainerScrollable` with
+`onlyMobile={ false }`, scrollable on every viewport) and has no sticky header, so it takes no `top` prop:
+the surface drops its own `TableContainerScrollable` wrapper and the `top={ ACTION_BAR_HEIGHT_DESKTOP }`
+it passes today. Type is two columns since T02 (Q01): Token type (standard tag) and Transfer type
+(mint/burn badge).
 
 Mockup: https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-32182 (also the multichain
 address variant). Table A (`components/list/TokenTransferTable*.tsx`) is not deleted here — T05 does
