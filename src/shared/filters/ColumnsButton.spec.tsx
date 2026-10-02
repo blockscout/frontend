@@ -35,6 +35,14 @@ describe('ColumnsButton', () => {
     expect(trigger.textContent).toBe('');
   });
 
+  it('marks the trigger as selected only when asked to', () => {
+    const { rerender } = render(<ColumnsButton tableColumns={ TABLE_COLUMNS } columns={{ hash: true }} onChange={ vi.fn() } selected/>);
+    expect(screen.getByRole('button', { name: 'Columns' }).hasAttribute('data-selected')).toBe(true);
+
+    rerender(<ColumnsButton tableColumns={ TABLE_COLUMNS } columns={{ hash: true }} onChange={ vi.fn() }/>);
+    expect(screen.getByRole('button', { name: 'Columns' }).hasAttribute('data-selected')).toBe(false);
+  });
+
   it('offers every table column by its display name, checked per the current selection', async() => {
     renderOpened({ hash: true, from: false, amount: true });
 

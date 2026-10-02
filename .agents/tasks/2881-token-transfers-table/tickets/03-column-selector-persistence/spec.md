@@ -51,11 +51,11 @@ shared, the advanced filter page inherits whatever is chosen.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Cookie name + override-map utils (parse / merge / serialise) + spec
-- [ ] 2 `[agent]` `useTokenTransferColumns(surface)` hook, SSR-seeded; Mixpanel event registry entry +
+- [x] 1 `[agent]` Cookie name + override-map utils (parse / merge / serialise) + spec
+- [x] 2 `[agent]` `useTokenTransferColumns(surface)` hook, SSR-seeded; Mixpanel event registry entry +
       log on toggle; spec
-- [ ] 3 `[agent]` Place `ColumnsButton` on the index surface (local + multichain, desktop + mobile
+- [x] 3 `[agent]` Place `ColumnsButton` on the index surface (local + multichain, desktop + mobile
       action bar)
-- [ ] 4 `[human]` Style the selector (desktop popover, mobile drawer) to mockup —
+- [x] 4 `[human]` Style the selector (desktop popover, mobile drawer) to mockup —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3893-28801); regenerate
       advanced filter baselines

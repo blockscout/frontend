@@ -23,3 +23,7 @@ export interface TokenTransferColumn {
 }
 
 export type TokenTransferColumnState = 'on' | 'off' | 'unavailable';
+
+export type TokenTransferColumnOverrides = Partial<Record<TokenTransferColumnId, boolean>>;
+
+export type TokenTransferColumnOverridesMap = Partial<Record<TokenTransferSurface, TokenTransferColumnOverrides>>;

@@ -16,12 +16,13 @@ export interface ColumnsButtonColumn<TColumnId extends string> {
 }
 
 interface Props<TColumnId extends string> {
-  tableColumns: Array<ColumnsButtonColumn<TColumnId>>;
-  columns: Record<TColumnId, boolean>;
+  tableColumns: ReadonlyArray<ColumnsButtonColumn<TColumnId>>;
+  columns: Partial<Record<TColumnId, boolean>>;
   onChange: (val: Record<TColumnId, boolean>) => void;
+  selected?: boolean;
 }
 
-const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange }: Props<TColumnId>) => {
+const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChange, selected }: Props<TColumnId>) => {
 
   const isMobile = useIsMobile();
 
@@ -33,9 +34,11 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
     onChange(newCols);
   }, [ onChange ]);
 
+  const value = React.useMemo(() => tableColumns.filter(({ id }) => columns[id]).map(({ id }) => id), [ tableColumns, columns ]);
+
   const content = (
     <CheckboxGroup
-      defaultValue={ Object.keys(columns).filter((key) => columns[key as TColumnId]) }
+      value={ value }
       onValueChange={ handleValueChange }
       display="grid"
       gridTemplateColumns="160px 160px"
@@ -58,6 +61,7 @@ const ColumnsButton = <TColumnId extends string>({ tableColumns, columns, onChan
       variant="dropdown"
       size="md"
       aria-label="Columns"
+      selected={ selected }
     >
       <SpriteIcon name="columns"/>
     </IconButton>
