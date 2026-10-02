@@ -106,8 +106,8 @@ export function unreadableApiVersions(prs: ReadonlyArray<ReleasePullRequest>): A
 
 function compareVersions(a: string, b: string): number {
   const [ aParts, bParts ] = [ a, b ].map((version) => version.split('.').map(Number));
-  const index = [ 0, 1, 2 ].find((position) => (aParts[position] ?? 0) !== (bParts[position] ?? 0));
-  return index === undefined ? 0 : (aParts[index] ?? 0) - (bParts[index] ?? 0);
+  const index = [ 0, 1, 2 ].find((position) => (aParts[position] ?? 0) !== (bParts[position] ?? 0)) ?? 0;
+  return (aParts[index] ?? 0) - (bParts[index] ?? 0);
 }
 
 export function compatibilityRows(prs: ReadonlyArray<ReleasePullRequest>): string {

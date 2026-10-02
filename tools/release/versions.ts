@@ -13,7 +13,7 @@ export interface Line {
 
 const TAG = /^v(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?$/;
 const VERSION_LABEL = /^v\d+\.\d+\.\d+$/;
-const ALPHA = /^alpha\.\d+$/;
+const ALPHA_TAG = /^(v\d+\.\d+\.\d+)-alpha\.(\d+)$/;
 
 export function parseTag(tag: string): Version | undefined {
   const match = TAG.exec(tag);
@@ -34,7 +34,7 @@ export function parseTagOrThrow(tag: string): Version {
 
 export function parseAlphaTagOrThrow(tag: string): Version {
   const version = parseTagOrThrow(tag);
-  if (version.prerelease === undefined || !ALPHA.test(version.prerelease)) {
+  if (!ALPHA_TAG.test(tag)) {
     throw new Error(`Not an alpha tag: "${ tag }"; expected vX.Y.Z-alpha.N`);
   }
   return version;
@@ -107,17 +107,13 @@ export function latestFinalTag(line: Line, tags: ReadonlyArray<string>): string 
   return latest === undefined ? undefined : formatVersion(latest);
 }
 
-function alphaNumber(version: Version): number | undefined {
-  return version.prerelease !== undefined && ALPHA.test(version.prerelease) ? Number(version.prerelease.split('.')[1]) : undefined;
-}
-
 export function latestAlphaTag(version: Version, tags: ReadonlyArray<string>): string | undefined {
+  const final = formatVersion(version);
   const numbers = tags
-    .map(parseTag)
-    .filter((candidate): candidate is Version => candidate !== undefined && compareVersions(candidate, version) === 0)
-    .map(alphaNumber)
-    .filter((number): number is number => number !== undefined);
-  return numbers.length === 0 ? undefined : `${ formatVersion(version) }-alpha.${ Math.max(...numbers) }`;
+    .map((tag) => ALPHA_TAG.exec(tag))
+    .filter((match): match is RegExpExecArray => match !== null && match[1] === final)
+    .map((match) => Number(match[2]));
+  return numbers.length === 0 ? undefined : `${ final }-alpha.${ Math.max(...numbers) }`;
 }
 
 export type ReleaseBase =

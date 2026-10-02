@@ -89,6 +89,14 @@ describe('previousTag', () => {
     expect(previousTag('v2.11.6', TAGS)).toBe('v2.11.5');
   });
 
+  it('never leaves the major for a patch, whichever side the other major is on', () => {
+    expect(previousTag('v2.12.3', [ 'v1.12.2', 'v2.12.2', 'v3.12.2' ])).toBe('v2.12.2');
+  });
+
+  it('never takes a later major for a minor', () => {
+    expect(previousTag('v2.13.0', [ 'v2.12.3', 'v3.0.0', 'v3.1.0' ])).toBe('v2.12.3');
+  });
+
   it('throws when nothing precedes the tag', () => {
     expect(() => previousTag('v2.11.0', [ 'v2.11.0' ])).toThrow('No release precedes v2.11.0');
   });

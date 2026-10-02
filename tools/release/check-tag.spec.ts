@@ -99,7 +99,7 @@ describe('findVersionedPrs', () => {
   });
 
   it('skips references that are issues, not PRs', () => {
-    expect(findVersionedPrs('#99', prLabels, 'v2.13.0')).toEqual([]);
+    expect(findVersionedPrs('- #99', prLabels, 'v2.13.0')).toEqual([]);
   });
 
   it('passes an empty body', () => {
