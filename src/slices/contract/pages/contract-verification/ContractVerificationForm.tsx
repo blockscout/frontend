@@ -132,7 +132,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     analytics.logEvent(
       analytics.EventTypes.CONTRACT_VERIFICATION,
       { Status: 'Finished', Method: methodNameRef.current || '' },
-      { send_immediately: true },
+      { sendImmediately: true },
     );
 
     window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));

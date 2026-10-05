@@ -44,7 +44,7 @@ export default function useLogout() {
         rewardsLogout();
       }
 
-      analytics.logEvent(analytics.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { sendImmediately: true });
       analytics.reset();
 
       if (

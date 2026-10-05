@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { peopleSet, peopleSetOnce } from 'src/services/mixpanel/queue';
+import { peopleSet, peopleSetOnce } from './queue';
 
 interface UserProfileProperties {
   'With Account': boolean;

@@ -67,8 +67,8 @@ them) is untouched: `config.services.mixpanel` keeps its shape.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Define `AnalyticsProvider` / `ProviderInitOptions` in `src/shared/analytics/provider.ts`
-- [ ] 2 `[agent]` Move the queue into `src/shared/analytics/queue.ts` and generalise it to N providers with per-provider failure isolation
-- [ ] 3 `[agent]` Reduce `src/services/mixpanel/` to `config.ts` + `provider.ts`; rewire `useInit` to build the provider list and run the common setup through the interface
-- [ ] 4 `[agent]` Rewrite `queue.spec.ts` against fake providers (enable matrix, FR7, backdating, cap, reset-in-window); update the three external specs
-- [ ] 5 `[agent]` Add the ESLint `no-restricted-imports` vendor rule with the allowed-folder exceptions; run lint, tsc, vitest, complexity gate
+- [x] 1 `[agent]` Define `AnalyticsProvider` / `ProviderInitOptions` in `src/shared/analytics/provider.ts`
+- [x] 2 `[agent]` Move the queue into `src/shared/analytics/queue.ts` and generalise it to N providers with per-provider failure isolation
+- [x] 3 `[agent]` Reduce `src/services/mixpanel/` to `config.ts` + `provider.ts`; rewire `useInit` to build the provider list and run the common setup through the interface
+- [x] 4 `[agent]` Rewrite `queue.spec.ts` against fake providers (enable matrix, FR7, backdating, cap, reset-in-window); update the three external specs
+- [x] 5 `[agent]` Add the ESLint `no-restricted-imports` vendor rule with the allowed-folder exceptions; run lint, tsc, vitest, complexity gate
