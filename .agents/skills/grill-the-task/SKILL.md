@@ -108,16 +108,14 @@ routes it manually.
 
 ### Watch for replies and drive each question to settled
 
-Once the questions are sent, don't hand the reply round-trip back to the developer to poll. Launch the
-**`slack-watch`** skill with one `CHANNEL:THREAD_TS` argument per `pending` question thread (the channel
-id and parent `ts` from each `slack_send_message` you just sent). That skill owns how to start, stop, and
-relaunch on Claude Code vs Cursor — follow it. Adding or resolving a question later means stopping the
-watcher and relaunching with the new thread list; questions move at human pace, so the restart is free.
-If the tokens aren't set up, `slack-watch` guides the developer through it; until then, the developer
-polls manually as before.
+Once the questions are sent, don't hand the reply round-trip back to the developer to poll. Run the
+**`slack-subscribe`** skill — one registration per `pending` question thread (the channel id and parent
+`ts` from each `slack_send_message` you just sent), all in this turn — then stop once; a settled question
+is unsubscribed the same way. Outside
+local Claude Code that skill stops at its readiness check, and the developer polls manually as before.
 
-On each `NEW …` notification, read the reply with `slack_read_thread` on that `thread_ts`, then for the
-question that thread belongs to:
+Each forwarded reply arrives as a cross-session message carrying its `thread_ts`. Read the thread with
+`slack_read_thread`, then for the question that thread belongs to:
 
 - **Assess** the reply against the question's `Resolved when:` criterion — session-held here, since this
   runs before `to-spec`; it only becomes a `questions.md` line once `to-spec` writes one (lifecycle step 2).
