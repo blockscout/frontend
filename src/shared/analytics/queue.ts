@@ -93,6 +93,7 @@ function dispatch(call: QueuedCall): void {
   if (queue.length >= MAX_QUEUE_LENGTH || getEnabledProviders().length === 0) {
     return;
   }
+  // Stryker disable next-line ConditionalExpression: only the track variant carries options; the check narrows the union, and other calls ignore options anyway
   queue.push(call.method === 'track' ? { ...call, options: { ...call.options, timestamp: Date.now() } } : call);
 }
 

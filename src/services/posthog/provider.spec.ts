@@ -84,7 +84,15 @@ describe('posthog provider', () => {
     expect(sdk.capture).toHaveBeenCalledWith('Button click', { Content: 'burger menu' }, { timestamp: new Date(CALL_TIME_MS) });
   });
 
-  it('should send an event immediately when asked to', async() => {
+  it('should send a live event immediately without backdating it', async() => {
+    const provider = await initProvider([ [ 'NEXT_PUBLIC_POSTHOG_API_KEY', API_KEY ] ]);
+
+    provider.track('Account access', { Action: 'Logged out' }, { sendImmediately: true });
+
+    expect(sdk.capture).toHaveBeenCalledWith('Account access', { Action: 'Logged out' }, { send_instantly: true });
+  });
+
+  it('should send a replayed event immediately with its original call time', async() => {
     const provider = await initProvider([ [ 'NEXT_PUBLIC_POSTHOG_API_KEY', API_KEY ] ]);
 
     provider.track('Account access', { Action: 'Logged out' }, { sendImmediately: true, timestamp: CALL_TIME_MS });
