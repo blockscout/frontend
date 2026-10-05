@@ -22,7 +22,7 @@ export enum NAMES {
   LOCAL_TIME = 'local_time',
   INDEXING_ALERT = 'indexing_alert',
   ADBLOCK_DETECTED = 'adblock_detected',
-  MIXPANEL_DEBUG = '_mixpanel_debug',
+  ANALYTICS_DEBUG = '_analytics_debug',
   ADDRESS_NFT_DISPLAY_TYPE = 'address_nft_display_type',
   HIDE_ADD_TO_WALLET_BUTTON = 'hide_add_to_wallet_button',
   UUID = 'uuid',
@@ -38,7 +38,7 @@ export enum NAMES {
 export const PRIVATE_MODE_DISALLOWED: ReadonlyArray<NAMES> = [
   NAMES.UUID,
   NAMES.ADBLOCK_DETECTED,
-  NAMES.MIXPANEL_DEBUG,
+  NAMES.ANALYTICS_DEBUG,
 ];
 
 export const getDefaultAttributes = () => ({

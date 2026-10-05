@@ -18,7 +18,7 @@ import type { SmartContractVerificationConfig } from 'src/slices/contract/pages/
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import getErrorObjStatusCode from 'src/shared/errors/get-error-obj-status-code';
 import capitalizeFirstLetter from 'src/shared/texts/capitalize-first-letter';
 import delay from 'src/shared/utils/delay';
@@ -129,8 +129,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       description: 'Contract is successfully verified.',
     });
 
-    mixpanel.logEvent(
-      mixpanel.EventTypes.CONTRACT_VERIFICATION,
+    analytics.logEvent(
+      analytics.EventTypes.CONTRACT_VERIFICATION,
       { Status: 'Finished', Method: methodNameRef.current || '' },
       { send_immediately: true },
     );
@@ -190,7 +190,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       reset(getDefaultValues(methodValue, config, hash || address, licenseType));
 
       const methodName = METHOD_LABELS[methodValue];
-      mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
+      analytics.logEvent(analytics.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
       methodNameRef.current = methodName;
     }
   // !!! should run only when method is changed

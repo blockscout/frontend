@@ -12,7 +12,7 @@ import useGetCsrfToken from 'src/features/account/hooks/useGetCsrfToken';
 import { useRewardsContext } from 'src/features/rewards/context';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
 
@@ -30,10 +30,10 @@ interface Props {
   onClose: (isSuccess?: boolean, rewardsApiToken?: string) => void;
   mixpanelConfig?: {
     wallet_connect?: {
-      source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+      source: analytics.EventPayload<analytics.EventTypes.WALLET_CONNECT>['Source'];
     };
     account_link_info: {
-      source: mixpanel.EventPayload<mixpanel.EventTypes.ACCOUNT_LINK_INFO>['Source'];
+      source: analytics.EventPayload<analytics.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };
   closeOnError?: boolean;
@@ -51,15 +51,15 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
 
   React.useEffect(() => {
     if ('isAuth' in initialScreen && initialScreen.isAuth) {
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Status: 'Started',
         Type: initialScreen.type === 'connect_wallet' ? 'Wallet' : 'Email',
         Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
       });
     } else {
-      mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+      analytics.logEvent(analytics.EventTypes.LOGIN, {
         Action: 'Started',
-        Source: mixpanel.getPageType(router.pathname),
+        Source: analytics.getPageType(router.pathname),
       });
     }
   }, [ initialScreen, mixpanelConfig, router.pathname ]);
@@ -80,13 +80,13 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     setIsSuccess(true);
 
     if ('isAuth' in initialScreen && initialScreen.isAuth) {
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Status: 'Finished',
         Type: screen.type === 'success_wallet' ? 'Wallet' : 'Email',
         Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
       });
     } else {
-      mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+      analytics.logEvent(analytics.EventTypes.LOGIN, {
         Action: 'Success',
         Source: screen.type === 'success_wallet' ? 'Wallet' : 'Email',
       });

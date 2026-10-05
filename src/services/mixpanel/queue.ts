@@ -13,7 +13,7 @@ type QueuedCall = {
   args: TrackFnArgs;
   timestamp: number;
 } | {
-  method: 'people.set' | 'people.set_once' | 'people.increment';
+  method: 'people.set' | 'people.set_once';
   props: Dict;
 } | {
   method: 'reset';
@@ -108,17 +108,6 @@ export function peopleSetOnce(props: Dict): void {
   enqueue({ method: 'people.set_once', props });
 }
 
-export function peopleIncrement(props: Dict): void {
-  if (!isEnabled()) {
-    return;
-  }
-  if (instance) {
-    instance.people.increment(props);
-    return;
-  }
-  enqueue({ method: 'people.increment', props });
-}
-
 export function reset(): void {
   if (!isEnabled()) {
     return;
@@ -144,9 +133,6 @@ function flushQueue(mixpanel: Mixpanel) {
         break;
       case 'people.set_once':
         mixpanel.people.set_once(call.props);
-        break;
-      case 'people.increment':
-        mixpanel.people.increment(call.props);
         break;
       case 'reset':
         mixpanel.reset();

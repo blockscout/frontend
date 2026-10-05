@@ -13,10 +13,10 @@ import * as cookies from 'src/shared/storage/cookies';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
+import { EventTypes } from './events';
 import getPageType from './get-page-type';
 import getTabName from './get-tab-name';
 import logEvent from './log-event';
-import { EventTypes } from './utils';
 
 export default function useLogPageView(isInitialized: boolean) {
   const router = useRouter();

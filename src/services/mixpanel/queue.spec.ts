@@ -8,7 +8,6 @@ const mixpanelMock = vi.hoisted(() => ({
   people: {
     set: vi.fn(),
     set_once: vi.fn(),
-    increment: vi.fn(),
   },
   reset: vi.fn(),
 }));
@@ -105,12 +104,10 @@ describe('mixpanel queue', () => {
       const queue = await importQueue();
 
       queue.peopleSetOnce({ 'First Time Join': '2026-07-16' });
-      queue.peopleIncrement({ Visits: 1 });
       queue.reset();
       await queue.init(PROJECT_TOKEN, {}, NOOP_SETUP);
 
       expect(mixpanelMock.people.set_once).toHaveBeenCalledWith({ 'First Time Join': '2026-07-16' });
-      expect(mixpanelMock.people.increment).toHaveBeenCalledWith({ Visits: 1 });
       expect(mixpanelMock.reset).toHaveBeenCalledOnce();
     });
 
@@ -177,13 +174,11 @@ describe('mixpanel queue', () => {
       queue.track('Button click', { Content: 'burger menu' });
       queue.peopleSet({ 'With Account': true });
       queue.peopleSetOnce({ 'First Time Join': '2026-07-16' });
-      queue.peopleIncrement({ Visits: 1 });
       queue.reset();
 
       expect(mixpanelMock.track).toHaveBeenCalledWith('Button click', { Content: 'burger menu' });
       expect(mixpanelMock.people.set).toHaveBeenCalledWith({ 'With Account': true });
       expect(mixpanelMock.people.set_once).toHaveBeenCalledWith({ 'First Time Join': '2026-07-16' });
-      expect(mixpanelMock.people.increment).toHaveBeenCalledWith({ Visits: 1 });
       expect(mixpanelMock.reset).toHaveBeenCalledOnce();
     });
 

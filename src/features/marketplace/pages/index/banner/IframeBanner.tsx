@@ -3,7 +3,7 @@
 import { chakra } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -16,7 +16,7 @@ const IframeBanner = ({ contentUrl, linkUrl }: { contentUrl: string; linkUrl: st
   }, []);
 
   const handleClick = useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PROMO_BANNER, { Source: 'Marketplace', Link: linkUrl });
+    analytics.logEvent(analytics.EventTypes.PROMO_BANNER, { Source: 'Marketplace', Link: linkUrl });
   }, [ linkUrl ]);
 
   return (

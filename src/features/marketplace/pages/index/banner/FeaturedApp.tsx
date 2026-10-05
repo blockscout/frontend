@@ -7,7 +7,7 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
@@ -41,7 +41,7 @@ const FeaturedApp = ({
   const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
   }, [ id ]);
 
   const handleFavoriteClick = useCallback(() => {

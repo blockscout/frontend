@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
 
@@ -34,7 +34,7 @@ export default function useAddChainClick({ source, onSuccess }: Props) {
         description: 'Successfully added network to your wallet',
       });
 
-      mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
+      analytics.logEvent(analytics.EventTypes.ADD_TO_WALLET, {
         Target: 'network',
         Wallet: wallet,
         Source: source,

@@ -7,23 +7,22 @@ import React from 'react';
 import { deviceType } from 'react-device-detect';
 
 import config from 'src/config';
+import * as queue from 'src/services/mixpanel/queue';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
-import * as queue from './queue';
-
 const multichainFeature = config.features.multichain;
 
 // upper bound for the idle-callback deferral, so init is not postponed indefinitely on busy pages
 const IDLE_INIT_TIMEOUT = 2 * SECOND;
 
-export default function useMixpanelInit() {
+export default function useInit() {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
-  const debugFlagQuery = React.useRef(getQueryParamString(router.query._mixpanel_debug));
+  const debugFlagQuery = React.useRef(getQueryParamString(router.query._analytics_debug));
 
   React.useEffect(() => {
     const projectToken = config.services.mixpanel.projectToken;
@@ -33,7 +32,7 @@ export default function useMixpanelInit() {
 
     // cookie-derived state is captured at mount so that the deferred init sees the same values
     // a synchronous init would have (auth may change while init waits for an idle slot)
-    const debugFlagCookie = cookies.get(cookies.NAMES.MIXPANEL_DEBUG);
+    const debugFlagCookie = cookies.get(cookies.NAMES.ANALYTICS_DEBUG);
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
     const uuid = cookies.get(cookies.NAMES.UUID);
 
@@ -75,7 +74,7 @@ export default function useMixpanelInit() {
 
       setIsInitialized(true);
       if (debugFlagQuery.current && !debugFlagCookie) {
-        cookies.set(cookies.NAMES.MIXPANEL_DEBUG, 'true');
+        cookies.set(cookies.NAMES.ANALYTICS_DEBUG, 'true');
       }
     };
 

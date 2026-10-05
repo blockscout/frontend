@@ -22,7 +22,7 @@ import TokenInfoForm from 'src/features/account/pages/verified-addresses/token-i
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'src/features/account/stubs';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { collator } from 'src/shared/texts/collator';
@@ -212,7 +212,7 @@ const VerifiedAddresses = () => {
       </DataList>
       { addButton }
       <AddressVerificationModal
-        pageType={ mixpanel.getPageType('/account/verified-addresses') }
+        pageType={ analytics.getPageType('/account/verified-addresses') }
         open={ modalProps.open }
         onOpenChange={ modalProps.onOpenChange }
         onSubmit={ handleAddressSubmit }

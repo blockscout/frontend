@@ -6,7 +6,7 @@ import type { AddressVerificationFormFirstStepFields } from './types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
 
@@ -31,8 +31,8 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
   const [ data, setData ] = React.useState<StateData>({ address: '', signingMessage: '', contractCreator: '' });
 
   React.useEffect(() => {
-    open && mixpanel.logEvent(
-      mixpanel.EventTypes.VERIFY_ADDRESS,
+    open && analytics.logEvent(
+      analytics.EventTypes.VERIFY_ADDRESS,
       { Action: 'Form opened', 'Page type': pageType },
     );
   }, [ open, pageType ]);
@@ -40,8 +40,8 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
   const handleGoToSecondStep = React.useCallback((firstStepResult: typeof data) => {
     setData(firstStepResult);
     setStepIndex((prev) => prev + 1);
-    mixpanel.logEvent(
-      mixpanel.EventTypes.VERIFY_ADDRESS,
+    analytics.logEvent(
+      analytics.EventTypes.VERIFY_ADDRESS,
       { Action: 'Address entered', 'Page type': pageType },
     );
   }, [ pageType ]);
@@ -50,8 +50,8 @@ const AddressVerificationModal = ({ defaultAddress, open, onOpenChange, onSubmit
     onSubmit(address);
     setStepIndex((prev) => prev + 1);
     setData((prev) => ({ ...prev, isToken: Boolean(address.metadata?.tokenName) }));
-    mixpanel.logEvent(
-      mixpanel.EventTypes.VERIFY_ADDRESS,
+    analytics.logEvent(
+      analytics.EventTypes.VERIFY_ADDRESS,
       { Action: 'Sign ownership', 'Page type': pageType, 'Sign method': signMethod },
     );
   }, [ onSubmit, pageType ]);

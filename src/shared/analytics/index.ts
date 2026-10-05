@@ -3,10 +3,10 @@
 import getPageType, { PAGE_TYPE_DICT } from './get-page-type';
 import logEvent from './log-event';
 import reset from './reset';
+import useInit from './useInit';
 import useLogPageView from './useLogPageView';
-import useInit from './useMixpanelInit';
 import * as userProfile from './user-profile';
-export * from './utils';
+export * from './events';
 
 export {
   useInit,

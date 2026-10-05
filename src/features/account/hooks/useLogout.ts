@@ -12,7 +12,7 @@ import useWalletReown from 'src/features/connect-wallet/hooks/wallet/useWalletRe
 import { useRewardsContext } from 'src/features/rewards/context';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
@@ -44,8 +44,8 @@ export default function useLogout() {
         rewardsLogout();
       }
 
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
-      mixpanel.reset();
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
+      analytics.reset();
 
       if (
         PROTECTED_ROUTES.includes(router.pathname) ||

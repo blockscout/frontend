@@ -67,7 +67,7 @@ Docs: `docs/ENVS.md` and any `CONTEXT.md` mentioning `_mixpanel_debug` get the n
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move the public API files into `src/shared/analytics/` (table above), fix internal imports, add `index.ts`; drop `userProfile.increment` and `peopleIncrement`
-- [ ] 2 `[agent]` Rename the debug switch (`cookies.NAMES.ANALYTICS_DEBUG` = `_analytics_debug`, query param in `useInit`); grep the repo for leftovers
-- [ ] 3 `[agent]` Migrate all call sites to the facade with `ast-grep` (incl. `PageNextJs.ts`, `growthbook/init.ts`); fix type-only and named imports by hand
-- [ ] 4 `[agent]` Update the four external spec files; run lint, tsc, vitest, complexity gate
+- [x] 1 `[agent]` Move the public API files into `src/shared/analytics/` (table above), fix internal imports, add `index.ts`; drop `userProfile.increment` and `peopleIncrement`
+- [x] 2 `[agent]` Rename the debug switch (`cookies.NAMES.ANALYTICS_DEBUG` = `_analytics_debug`, query param in `useInit`); grep the repo for leftovers
+- [x] 3 `[agent]` Migrate all call sites to the facade with `ast-grep` (incl. `PageNextJs.ts`, `growthbook/init.ts`); fix type-only and named imports by hand
+- [x] 4 `[agent]` Update the four external spec files; run lint, tsc, vitest, complexity gate

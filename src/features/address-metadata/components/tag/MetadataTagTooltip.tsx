@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { MetadataTag } from './types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -41,7 +41,7 @@ const EntityTagTooltip = ({ data, children }: Props) => {
       return;
     }
 
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, {
       Type: 'Address tag',
       Info: data.slug,
       URL: data.meta.tooltipUrl,

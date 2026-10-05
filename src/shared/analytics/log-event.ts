@@ -2,8 +2,9 @@
 
 import type { Mixpanel } from 'mixpanel-browser';
 
-import { track } from './queue';
-import type { EventTypes, EventPayload } from './utils';
+import { track } from 'src/services/mixpanel/queue';
+
+import type { EventTypes, EventPayload } from './events';
 
 type TrackFnArgs = Parameters<Mixpanel['track']>;
 
