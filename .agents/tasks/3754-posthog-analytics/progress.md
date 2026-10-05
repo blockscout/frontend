@@ -8,4 +8,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-analytics-facade/`
 - [x] 02 → `tickets/02-multi-provider-queue/`
-- [ ] 03 → `tickets/03-posthog-provider/`
+- [x] 03 → `tickets/03-posthog-provider/`

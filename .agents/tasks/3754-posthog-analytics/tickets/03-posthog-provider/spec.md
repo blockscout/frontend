@@ -97,8 +97,8 @@ pageleave, session recording and feature flags off; `localStorage` persistence),
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add `NEXT_PUBLIC_POSTHOG_API_KEY` (docs, config, validator, mocks, `.env.example`) — skill: `add-env-var`
-- [ ] 2 `[agent]` Add `NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES` with the `requires` rule — skill: `add-env-var`
-- [ ] 3 `[agent]` Consent + CSP: `posthog` entry in Usercentrics `SERVICES`, `posthog` CSP policy + spec, register in `generateCspPolicy`; add the pinned `posthog-js` dependency
-- [ ] 4 `[agent]` Implement `src/services/posthog/provider.ts` (+ `provider.spec.ts`) and register it in `useInit`
-- [ ] 5 `[agent]` Runtime verification with the Playwright MCP (console + network) and the PostHog MCP HogQL data check; lint, tsc, vitest, complexity gate
+- [x] 1 `[agent]` Add `NEXT_PUBLIC_POSTHOG_API_KEY` (docs, config, validator, mocks, `.env.example`) — skill: `add-env-var`
+- [x] 2 `[agent]` Add `NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES` with the `requires` rule — skill: `add-env-var`
+- [x] 3 `[agent]` Consent + CSP: `posthog` entry in Usercentrics `SERVICES`, `posthog` CSP policy + spec, register in `generateCspPolicy`; add the pinned `posthog-js` dependency
+- [x] 4 `[agent]` Implement `src/services/posthog/provider.ts` (+ `provider.spec.ts`) and register it in `useInit`
+- [x] 5 `[agent]` Runtime verification with the Playwright MCP (console + network) and the PostHog MCP HogQL data check; lint, tsc, vitest, complexity gate
