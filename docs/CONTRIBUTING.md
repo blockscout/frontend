@@ -172,13 +172,19 @@ Run the tests with `pnpm test:pw` (the whole suite) or `pnpm test:pw --changed` 
 1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "skip checks" to your PR, so all CI checks will not be triggered. 
 2. Once you finish your work, remove label "skip checks" from PR, if it was added before, and publish PR if it was in the draft state
 3. Make sure that all code checks and tests are successfully passed
-4. Add description to your Pull Request and link an existing issue(s) that it is fixing
+4. Fill in every section of the Pull Request template, link the issue(s) it fixes, and add a category label; the PR check enforces both, see the [label rules](./RELEASING.md#labels)
 5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team is committed to reviewing patches in a timely manner.
 6. After code review is done, we merge pull requests by squashing all commits and editing the commit message if necessary using the GitHub user interface.
 
 *Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
 
 *Note*, if your Pull Request adds a feature that is not privacy-compliant (e.g. tracking, analytics, or a third-party service), make sure it is disabled in private mode, so a privacy-focused deployment can turn it off.
+
+&nbsp;
+
+## Releasing
+
+How a release is cut, put on staging and published, and how a merged PR gets into one, is in [RELEASING.md](./RELEASING.md).
 
 &nbsp;
 

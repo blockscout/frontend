@@ -81,6 +81,9 @@ npm-debug.log*
 # compiled review-screen CLI
 /tools/review-screen/dist/
 
+# compiled release tool
+/tools/release/dist/
+
 # typescript
 *.tsbuildinfo
 
@@ -100,7 +103,6 @@ npm-debug.log*
 # build outputs
 /toolkit/package/dist
 license.json
-release-prs-data.json
 
 .ai
 /ds-bundle
