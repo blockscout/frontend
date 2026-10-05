@@ -1,20 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { AnalyticsProvider } from './provider';
-
-const registry = vi.hoisted(() => ({
-  enabledProviders: [] as Array<unknown>,
-}));
-
-vi.mock('./providers', () => ({
-  getEnabledProviders: () => registry.enabledProviders,
-}));
 
 const CALL_TIME_MS = 1_752_600_000_000;
 const QUEUE_CAP = 100;
 const NO_DEBUG = { debug: false };
 
 const NOOP_SETUP = () => {};
+
+const MIXPANEL_ENABLED: Array<[ string, string ]> = [ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-token' ] ];
+const BOTH_ENABLED: Array<[ string, string ]> = [ ...MIXPANEL_ENABLED, [ 'NEXT_PUBLIC_POSTHOG_API_KEY', 'test-key' ] ];
+const NONE_ENABLED: Array<[ string, string ]> = [];
 
 interface FakeProvider extends AnalyticsProvider {
   readonly calls: Array<string>;
@@ -43,9 +40,9 @@ function entries(...providers: Array<AnalyticsProvider>) {
 }
 
 // the module keeps its state (buffer, init promise, live providers) at module scope, so every
-// test imports a fresh copy
-async function importQueue() {
-  return await import('./queue');
+// test imports a fresh copy; which providers are enabled is decided by the envs it is imported under
+async function importQueue(envs = BOTH_ENABLED) {
+  return withEnvs(envs, () => import('./queue'));
 }
 
 describe('analytics queue', () => {
@@ -53,10 +50,8 @@ describe('analytics queue', () => {
   let second: FakeProvider;
 
   beforeEach(() => {
-    vi.resetModules();
     first = createFakeProvider();
     second = createFakeProvider();
-    registry.enabledProviders = [ first, second ];
     vi.spyOn(Date, 'now').mockReturnValue(CALL_TIME_MS);
   });
 
@@ -183,8 +178,7 @@ describe('analytics queue', () => {
 
   describe('enabled providers', () => {
     it('should send calls only to the initialized provider when just one is enabled', async() => {
-      registry.enabledProviders = [ first ];
-      const queue = await importQueue();
+      const queue = await importQueue(MIXPANEL_ENABLED);
 
       queue.track('Button click', { Content: 'buffered' });
       await queue.init(entries(first), NOOP_SETUP);
@@ -195,8 +189,7 @@ describe('analytics queue', () => {
     });
 
     it('should not buffer anything when no provider is enabled', async() => {
-      registry.enabledProviders = [];
-      const queue = await importQueue();
+      const queue = await importQueue(NONE_ENABLED);
 
       queue.track('Button click', { Content: 'burger menu' });
       queue.peopleSet({ 'With Account': true });
