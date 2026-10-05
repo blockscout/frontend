@@ -20,8 +20,6 @@ Only send a DevOps message we are **sure** of. Every other rule serves that.
 - **Mirror** the requester's targeting language. Unstated is not undeterminable — the DevOps bot resolves instances.
 - **Drift.** `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` and `NEXT_PUBLIC_COLOR_THEME_OVERRIDES` ship with a `frontend-configs` file change in the same run; take the skin branch.
 
-No commit without the user's explicit confirmation in this conversation — the one exception is the skin branch's phase 1, which runs unattended up to the demo link.
-
 ## Scope
 
 **In:** variables in `docs/ENVS.md`, including start-time ones such as `FAVICON_MASTER_URL`.
@@ -67,7 +65,7 @@ Run the startup validator against the live env plus our change, before drafting.
 
 ### 5. Draft the DevOps message
 
-Compose it per **The DevOps message** below. Show it to the user and wait.
+Compose it per **The DevOps message** below. Show it to the user and wait (run by Honk: send without waiting).
 
 **Done when:** the user has approved the exact text.
 
@@ -115,7 +113,7 @@ JSON the instance **fetches** at startup — not instance chrome, no demo.
 
 Checkout: a workspace folder named `frontend-configs` or `blockscout_frontend_configs`. If none, stop and ask the user to add it.
 
-Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR — this PR is merged to `main`, where live instances fetch from. (Skin phase 1 is the exception: its PR stays unmerged for review, so it needs no confirmation.) The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
+Follow the `check-github-cli` skill. Commit and open the PR without asking; confirm with the user before the **merge to `main`** — that is where live instances fetch from. (Run by Honk: no confirmation, see below.) The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
 
 | Directory | Variable |
 | --- | --- |
@@ -128,6 +126,18 @@ Follow the `check-github-cli` skill. Confirm with the user before the commit and
 Hosted icons for **inlined** lists (the env holds the JSON; the file is the URL inside it): `configs/ide-icons/` → `NEXT_PUBLIC_CONTRACT_CODE_IDES`; `configs/nft-marketplace-logos/` → `NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES`; `configs/multichain-balance/` → `NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG`.
 
 After merge to `main`, confirm each raw URL returns 200. If the instance already has that URL, the DevOps ask is a restart to re-fetch — no new `KEY=value`. If the URL is new, or the value is inlined, it goes in the block as usual.
+
+## Run by Honk
+
+When the Honk orchestrator runs this skill headless (`claude -p`), there is no user in the conversation. Every gate above is released — the worker's tool allow/deny list is the only guard. A **stop** becomes a return: end the turn with a first line `STATUS: <status>` followed by the text the user would have seen (the question, or the draft to approve), and the orchestrator resumes this session with the answer.
+
+| Status | When |
+| --- | --- |
+| `needs_user` | any "stop and tell the user" in this skill — ambiguity, intent, out-of-scope ask, missing `frontend-configs` checkout, Figma unreachable; the message carries the question |
+| `needs_approval` | the next step needs a tool the worker profile denies (a merge, a DevOps post); the message carries what would be done and the exact draft |
+| `awaiting_designer` | skin phase 1 ended on `slack-subscribe`; the designer's reply resumes the run |
+| `handed_over` | DevOps message sent and the source thread replied to |
+| `out_of_scope` | the request is not a frontend config change |
 
 ## The DevOps message
 

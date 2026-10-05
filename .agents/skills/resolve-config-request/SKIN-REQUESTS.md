@@ -53,27 +53,27 @@ Verify the theme by **computed values** — read the resolved CSS custom propert
 
 ## Phase 1 — demo
 
-**Phase 1 runs to the demo link without stopping.** No gate — designer's or user's — on the branch, the commits, the configs PR, the demo deploy, or the demo-link post. The PR is open but unmerged and the demo dies with its branch, so nothing here can touch a production instance; the parent's commit confirmation does not apply. The demo *is* the review surface, and a confirmation asked before it exists is asked of someone who cannot yet see what they are confirming.
+**Phase 1 runs to the demo link without stopping.** No gate — designer's or user's — on the branch, the commits, the configs PR, the demo deploy, or the demo-link post. The PR is open but unmerged and the demo dies with its branch, so nothing here can touch a production instance. The demo *is* the review surface, and a confirmation asked before it exists is asked of someone who cannot yet see what they are confirming.
 
-The requester (designer) is the gatekeeper for phase 2. Do not hand the session back to the user to monitor: **subscribe to the designer's replies on the source thread with the `slack-watch` skill** as the last action of phase 1, then stop.
+The requester (designer) is the gatekeeper for phase 2. Do not hand the session back to the user to monitor: **subscribe to the designer's replies on the source thread with the `slack-subscribe` skill** as the last action of phase 1, then stop.
 
 1. Produce the assets and JSON configs from the thread and Figma.
-2. Open a PR on `frontend-configs` (target `main` branch). No confirmation, per above; `create-pr` exceptions: parent **Fetched configs**.
+2. Open a PR on `frontend-configs` (target `main` branch). `create-pr` exceptions: parent **Fetched configs**.
 3. Point the demo at the PR-branch raw URLs (see **Demo mechanics**). Deploy it.
 4. Verify on the live demo, then post the demo link to the requester. Post it without asking — the named exception to `AGENTS.md`'s approve-before-sending rule.
-5. Subscribe to the designer's replies on the source thread with `slack-watch`, then **stop**. This is the run's only stop; the watch is what resumes it — see **On the designer's reply**.
+5. Subscribe to the designer's replies on the source thread with `slack-subscribe`, then **stop**. This is the run's only stop; the forwarded reply is what resumes it — see **On the designer's reply**. Before stopping, state the branch, the PR link, and the demo URL in the session: a resumed run has only the transcript.
 
-**Done when:** the configs PR is open, the demo is live, the requester has the link, the `slack-watch` subscription is running, and this run has stopped.
+**Done when:** the configs PR is open, the demo is live, the requester has the link, the thread is subscribed, and this run has stopped (run by Honk: `STATUS: awaiting_designer`).
 
 ## On the designer's reply
 
-When `slack-watch` wakes the session, read the new reply and act on it directly:
+The reply arrives as a cross-session message from Honk. Read it and act on it directly:
 
 - **Approval** (the designer signs off) → go to **Phase 2**.
-- **Change request** → stay in phase 1: apply the asked changes using the same technique as for the initial request; redeploy the demo and re-post the refreshed demo link; leave the watch running.
+- **Change request** → stay in phase 1: apply the asked changes using the same technique as for the initial request; redeploy the demo and re-post the refreshed demo link; the subscription stays.
 - **A question, or anything turning on intent you cannot pin** → stop and ask the user (the *Sure* principle: intent questions go to the user, not the designer).
 
-Loop on replies until approval. The watch is torn down in phase 2.
+Loop on replies until approval. The subscription is removed in phase 2.
 
 ## Phase 2 — ship
 
@@ -86,7 +86,7 @@ Starts when the designer approves.
    - demo destroyed: `gh workflow run cleanup.yml --ref <branch>`; hostname returns 404
    - temporary frontend branch deleted, local and remote
    - `git status` clean
-   - the `slack-watch` thread subscription stopped
+   - the source thread unsubscribed (`slack-subscribe --remove`)
 
 The review-image cleanup is broken ([frontend#3638](https://github.com/blockscout/frontend/issues/3638)); hostname 404 is the bar, not image deletion.
 

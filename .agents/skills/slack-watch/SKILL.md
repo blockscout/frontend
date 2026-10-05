@@ -1,14 +1,15 @@
 ---
 name: slack-watch
 description: >-
-  Watch Slack threads (DMs and channels) for new replies over a Socket Mode
-  WebSocket, printing one line per genuinely-new reply. Use to be notified
-  inside a live local Claude Code or Cursor session (not a cloud agent).
+  Deprecated — use slack-subscribe. Watch Slack threads for new replies over a
+  Socket Mode WebSocket; only for a Cursor session or while Honk is not running.
 ---
 
 <!-- cspell:ignore acks xapp xoxp xoxb WXYZ AwaitShell -->
 
 # Slack watch
+
+> **Deprecated.** Subscribe through the `slack-subscribe` skill instead. This script opens a second Socket Mode connection on the same app token as the Honk orchestrator, and Slack delivers each event to only **one** connection — while Honk is connected, running this watcher makes both of them miss replies. Use it only when no Honk session is connected to Slack (`~/.claude/channels/honk/honk.log` records every connect).
 
 A push subscription to replies in specific Slack threads — **DM threads and channel threads both**. The script holds one Socket Mode WebSocket, acks every event, and prints one line per new reply — nothing else. It knows nothing about tasks or questions; it filters a thread list you give it and reports. The caller (a session, a skill) decides what a reply means and reads it via the Slack MCP (`slack_read_thread`).
 
