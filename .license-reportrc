@@ -1,6 +1,7 @@
 {
     "exclude": [
-        // It currently has two licenses (MIT and Apache-2.0), which are not correctly recognized by license-report-check.
-        "@helia/verified-fetch"
+        // These have two licenses (MIT and Apache-2.0), which are not correctly recognized by license-report-check.
+        "@helia/verified-fetch",
+        "posthog-js"
     ]
 }
