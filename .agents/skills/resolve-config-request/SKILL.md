@@ -28,7 +28,8 @@ Only send a DevOps message we are **sure** of. Every other rule serves that.
 
 - **Not configurable** — needs a code change. Stop and offer the `create-issue` skill. The channel carries these; they look like ordinary requests.
 - **Retired variable named** — read `docs/DEPRECATED_ENVS.md` and propose the replacement.
-- **Outside the frontend, or mixed with a non-configurable ask** — do the configurable frontend part only, and tell the user what was left out.
+- **Outside the frontend** — nothing here to configure. Stop and tell the user.
+- **Mixed with a non-configurable ask** — not an exit: do the configurable frontend part, and tell the user what was left out.
 - **CDN-only trees** in `frontend-configs` with no `docs/ENVS.md` variable (`multisearch/`, `token-icons/`, `nft-images/`, `explorer-logos/`, `meta-suites-logos/`) — stop and tell the user.
 
 ## Steps
@@ -65,9 +66,9 @@ Run the startup validator against the live env plus our change, before drafting.
 
 ### 5. Draft the DevOps message
 
-Compose it per **The DevOps message** below. Show it to the user and wait (run by Honk: send without waiting).
+Compose it per **The DevOps message** below. Show it to the user and wait (run by Honk: no wait — go straight to step 6).
 
-**Done when:** the user has approved the exact text (run by Honk: the message is composed).
+**Done when:** the user has approved the exact text (run by Honk: the text is final and step 6 runs).
 
 ### 6. Send, then hand over
 
