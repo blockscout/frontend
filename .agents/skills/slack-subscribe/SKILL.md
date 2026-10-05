@@ -13,27 +13,27 @@ A session **registers interest** in a thread and stops. One other process — th
 
 Contract: the tuple `(channel, thread_ts, session)`. The pilot stores it in a local file; a later version carries it in the Slack message's `metadata` instead. The commands below do not change.
 
+Every command below runs with the shell at the **repo or worktree root** — the script records its working directory as the `cwd` a headless resume starts in, so the skill directory is the wrong place to run it from.
+
 ## 1. Ready
 
-From **this skill's directory** (the folder that contains this `SKILL.md`):
-
-1. `scripts/slack-subscribe` is executable; Node 22+ on `PATH`.
+1. `.claude/skills/slack-subscribe/scripts/slack-subscribe` is executable; Node 22+ on `PATH`.
 2. This is a local Claude Code session — the script reads `CLAUDE_CODE_SESSION_ID` from the Bash tool's environment. In Cursor or a cloud agent the variable is absent: stop and tell the developer to run this step in local Claude Code.
 
 **Done when:** both hold, or the run has stopped.
 
 ## 2. Subscribe, then stop
 
-The thread is `CHANNEL:THREAD_TS` (channel id + parent `ts` from `slack_send_message`) or a permalink.
+The thread is `CHANNEL:THREAD_TS` (channel id + parent `ts` from `slack_send_message`) or a permalink — a reply's permalink works too, its `thread_ts` query names the parent.
 
 ```bash
-scripts/slack-subscribe C0123ABCD:1700000000.000200
-scripts/slack-subscribe "https://blockscout.slack.com/archives/C0123ABCD/p1700000000000200"
+.claude/skills/slack-subscribe/scripts/slack-subscribe C0123ABCD:1700000000.000200
+.claude/skills/slack-subscribe/scripts/slack-subscribe "https://blockscout.slack.com/archives/C0123ABCD/p1700000000000200"
 ```
 
-Prints `SUBSCRIBED <channel>:<thread_ts> session=<id>`. Re-running on the same thread is a no-op overwrite. Run the script from the working directory the resumed run should use (the repo or worktree root) — it records `cwd`.
+Prints `SUBSCRIBED <channel>:<thread_ts> session=<id>`. Re-running on the same thread is a no-op overwrite. Several threads to watch: one call each, all in this turn.
 
-Then **end the turn**. Nothing else to launch, nothing to await. The reply arrives as a new turn:
+Once every thread is registered, **end the turn** — once. Nothing else to launch, nothing to await. The reply arrives as a new turn:
 
 ```
 <cross-session-message from="honk-…">
@@ -41,18 +41,18 @@ Then **end the turn**. Nothing else to launch, nothing to await. The reply arriv
 </cross-session-message>
 ```
 
-Act on it per the skill that subscribed. Read the full thread with `slack_read_thread` when the forwarded text is not enough.
+Act on it per the skill that subscribed, then end the turn again; the other registered threads stay registered. Read the full thread with `slack_read_thread` when the forwarded text is not enough.
 
 **Leave state findable.** If this session is gone when a reply lands, Honk resumes it headless (`claude -p --resume <session_id>`) in the recorded `cwd`. The resumed run has only the transcript, so every artefact the next step needs — branch name, PR link, demo URL, the pending question — must have been stated in the session before stopping.
 
-**Done when:** the `SUBSCRIBED` line is printed and the turn has ended.
+**Done when:** a `SUBSCRIBED` line is printed per thread and the turn has ended.
 
 ## 3. Unsubscribe
 
 At teardown, or when the question is settled:
 
 ```bash
-scripts/slack-subscribe --remove C0123ABCD:1700000000.000200
+.claude/skills/slack-subscribe/scripts/slack-subscribe --remove C0123ABCD:1700000000.000200
 ```
 
 Prints `REMOVED …` (or `ABSENT …` when it was never registered — also fine).

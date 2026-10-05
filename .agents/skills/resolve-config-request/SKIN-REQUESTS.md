@@ -70,10 +70,10 @@ The requester (designer) is the gatekeeper for phase 2. Do not hand the session 
 The reply arrives as a cross-session message from Honk. Read it and act on it directly:
 
 - **Approval** (the designer signs off) → go to **Phase 2**.
-- **Change request** → stay in phase 1: apply the asked changes using the same technique as for the initial request; redeploy the demo and re-post the refreshed demo link; the subscription stays.
+- **Change request** → stay in phase 1: apply the asked changes using the same technique as for the initial request; redeploy the demo and re-post the refreshed demo link; then stop exactly as step 5 did — restate branch, PR, demo URL, `STATUS: awaiting_designer` under Honk, end the turn. The subscription stays; the next reply is a new turn.
 - **A question, or anything turning on intent you cannot pin** → stop and ask the user (the *Sure* principle: intent questions go to the user, not the designer).
 
-Loop on replies until approval. The subscription is removed in phase 2.
+Each reply is one turn; repeat until approval. The subscription is removed in phase 2.
 
 ## Phase 2 — ship
 

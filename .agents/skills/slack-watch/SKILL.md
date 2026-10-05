@@ -2,7 +2,7 @@
 name: slack-watch
 description: >-
   Deprecated — use slack-subscribe. Watch Slack threads for new replies over a
-  Socket Mode WebSocket; only for a Cursor session or while Honk is not running.
+  Socket Mode WebSocket; only while no Honk session is connected to Slack.
 disable-model-invocation: true
 ---
 

@@ -15,7 +15,9 @@
 //   scripts/slack-subscribe --remove <thread>        unregister
 //   scripts/slack-subscribe --session <id> <thread>  override the session id
 // <thread> is "C…:1700000000.000200" or a Slack permalink
-// (…/archives/<channel>/p<ts-without-dot>, or app.slack.com …/thread/<channel>-<ts>).
+// (…/archives/<channel>/p<ts-without-dot>[?thread_ts=<parent>], or
+// app.slack.com …/thread/<channel>-<ts>). A reply's permalink carries the
+// parent in its thread_ts query — that parent is what gets registered.
 // The session id defaults to $CLAUDE_CODE_SESSION_ID (set in Claude Code's Bash tool).
 // cspell:ignore ENOENT
 'use strict';
@@ -32,16 +34,24 @@ function die(msg) {
   process.exit(1);
 }
 
-// "1709834567890123" → "1709834567.890123"
-const dotTs = (p) => `${p.slice(0, -6)}.${p.slice(-6)}`;
+// "1709834567890123" or "1709834567.890123" → "1709834567.890123"
+const dotTs = (p) => (p.includes('.') ? p : `${p.slice(0, -6)}.${p.slice(-6)}`);
+const TS = String.raw`(\d{10}\.\d{6}|\d{16})`;
+
+// The ?thread_ts= query on a reply's permalink names the parent; the /p digits
+// are the reply itself, which no forwarded event would ever match.
+function queryThreadTs(arg) {
+  const m = arg.match(/[?&]thread_ts=(\d{10}\.\d{6})(?:[&#]|$)/);
+  return m ? m[1] : null;
+}
 
 function parseThread(arg) {
-  let m = arg.match(/^([CDG][A-Z0-9]+):(\d{10}\.\d{6})$/);
-  if (m) return { channel: m[1], thread_ts: m[2] };
-  m = arg.match(/\/archives\/([CDG][A-Z0-9]+)\/p(\d{16})(?:[/?#]|$)/);
+  let m = arg.match(new RegExp(String.raw`^([CDG][A-Z0-9]+):${TS}$`));
   if (m) return { channel: m[1], thread_ts: dotTs(m[2]) };
-  m = arg.match(/\/thread\/([CDG][A-Z0-9]+)-(\d{16})(?:[/?#]|$)/);
-  if (m) return { channel: m[1], thread_ts: dotTs(m[2]) };
+  m = arg.match(new RegExp(String.raw`/archives/([CDG][A-Z0-9]+)/p${TS}(?:[/?#]|$)`));
+  if (m) return { channel: m[1], thread_ts: queryThreadTs(arg) || dotTs(m[2]) };
+  m = arg.match(new RegExp(String.raw`/thread/([CDG][A-Z0-9]+)-${TS}(?:[/?#]|$)`));
+  if (m) return { channel: m[1], thread_ts: queryThreadTs(arg) || dotTs(m[2]) };
   die(`cannot parse thread '${arg}' — expected CHANNEL:THREAD_TS or a Slack permalink`);
 }
 

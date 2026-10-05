@@ -13,7 +13,7 @@ Convert **intent → variables**. The request already carries the intent; this s
 Only send a DevOps message we are **sure** of. Every other rule serves that.
 
 - **Stop** on ambiguity. If the variable cannot be pinned, or the value is not in the documented set of allowed values, stop and tell the user.
-- **The user is the face.** Uncertainty and clarifying questions go to the user. Requester-facing posts are only the handover reply after an approved send, and the demo link on the skin branch.
+- **The user is the face.** Uncertainty and clarifying questions go to the user. Requester-facing posts are only the handover reply after the send, and the demo link on the skin branch.
 - **Intent is given.** Any question that turns on what someone *wants* is a stop, not a judgement call.
 - **Operator.** `docs/ENVS.md` is the manual. The docs pin legal values, not the consumers. A value the docs cannot pin is a documentation gap, fixed as documentation.
 - **Off.** Prefer a documented off-value over unsetting. Unset only when the docs show the default *is* the desired state.
@@ -67,7 +67,7 @@ Run the startup validator against the live env plus our change, before drafting.
 
 Compose it per **The DevOps message** below. Show it to the user and wait (run by Honk: send without waiting).
 
-**Done when:** the user has approved the exact text.
+**Done when:** the user has approved the exact text (run by Honk: the message is composed).
 
 ### 6. Send, then hand over
 
@@ -129,15 +129,17 @@ After merge to `main`, confirm each raw URL returns 200. If the instance already
 
 ## Run by Honk
 
-When the Honk orchestrator runs this skill headless (`claude -p`), there is no user in the conversation. Every gate above is released — the worker's tool allow/deny list is the only guard. A **stop** becomes a return: end the turn with a first line `STATUS: <status>` followed by the text the user would have seen (the question, or the draft to approve), and the orchestrator resumes this session with the answer.
+When the Honk orchestrator runs this skill headless (`claude -p`), there is no user in the conversation. Every "show the user and wait" above is released: the DevOps post and the merge to `main` happen without confirmation. The one gate left is the worker's tool allow/deny list — a denied tool is reported, not worked around. A **stop** becomes a return: end the turn with a first line `STATUS: <status>` followed by the text the user would have seen, and the orchestrator resumes this session with the answer where one is expected.
 
-| Status | When |
-| --- | --- |
-| `needs_user` | any "stop and tell the user" in this skill — ambiguity, intent, out-of-scope ask, missing `frontend-configs` checkout, Figma unreachable; the message carries the question |
-| `needs_approval` | the next step needs a tool the worker profile denies (a merge, a DevOps post); the message carries what would be done and the exact draft |
-| `awaiting_designer` | skin phase 1 ended on `slack-subscribe`; the designer's reply resumes the run |
-| `handed_over` | DevOps message sent and the source thread replied to |
-| `out_of_scope` | the request is not a frontend config change |
+| Status | When | Resumed? |
+| --- | --- | --- |
+| `needs_user` | a stop that needs an answer — ambiguity, intent, missing `frontend-configs` checkout, Figma unreachable; the message carries the question | yes, with the answer |
+| `needs_approval` | the next step needs a tool the worker profile denies (a merge, a DevOps post); the message carries what would be done and the exact draft | yes, once a human did it or allowed it |
+| `awaiting_designer` | skin phase 1 ended on `slack-subscribe`; the designer's reply resumes the run | yes, with the reply |
+| `handed_over` | DevOps message sent and the source thread replied to | no |
+| `out_of_scope` | a **Scope** exit — not configurable, outside the frontend, CDN-only tree; the message carries that exit's text (the `create-issue` offer included) | no |
+
+A mixed ask and a retired variable are not exits: the run continues on the configurable part, and the leftover is noted in the final message.
 
 ## The DevOps message
 

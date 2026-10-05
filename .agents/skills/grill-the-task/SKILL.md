@@ -109,8 +109,9 @@ routes it manually.
 ### Watch for replies and drive each question to settled
 
 Once the questions are sent, don't hand the reply round-trip back to the developer to poll. Run the
-**`slack-subscribe`** skill once per `pending` question thread (the channel id and parent `ts` from each
-`slack_send_message` you just sent), then stop; a settled question is unsubscribed the same way. Outside
+**`slack-subscribe`** skill — one registration per `pending` question thread (the channel id and parent
+`ts` from each `slack_send_message` you just sent), all in this turn — then stop once; a settled question
+is unsubscribed the same way. Outside
 local Claude Code that skill stops at its readiness check, and the developer polls manually as before.
 
 Each forwarded reply arrives as a cross-session message carrying its `thread_ts`. Read the thread with
