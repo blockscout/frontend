@@ -22,14 +22,14 @@ import { FormFieldEmail } from 'src/toolkit/components/forms/fields/FormFieldEma
 interface Props {
   onSubmit: (screen: Screen) => void;
   isAuth?: boolean;
-  mixpanelConfig?: {
+  analyticsConfig?: {
     account_link_info: {
       source: analytics.EventPayload<analytics.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };
 }
 
-const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
+const AuthModalScreenEmail = ({ onSubmit, isAuth, analyticsConfig }: Props) => {
 
   const apiFetch = useApiFetch();
   const recaptcha = useReCaptcha();
@@ -58,8 +58,8 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
       await recaptcha.fetchProtectedResource(sendCodeFetchFactory(formData.email));
 
       if (isAuth) {
-        mixpanelConfig?.account_link_info.source !== 'Profile' && analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
-          Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
+        analyticsConfig?.account_link_info.source !== 'Profile' && analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
+          Source: analyticsConfig?.account_link_info.source ?? 'Profile dropdown',
           Status: 'OTP sent',
           Type: 'Email',
         });
@@ -76,7 +76,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ recaptcha, sendCodeFetchFactory, isAuth, onSubmit, mixpanelConfig?.account_link_info.source ]);
+  }, [ recaptcha, sendCodeFetchFactory, isAuth, onSubmit, analyticsConfig?.account_link_info.source ]);
 
   return (
     <FormProvider { ...formApi }>

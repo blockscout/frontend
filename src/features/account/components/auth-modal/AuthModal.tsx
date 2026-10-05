@@ -28,7 +28,7 @@ const feature = config.features.account;
 interface Props {
   initialScreen: Screen;
   onClose: (isSuccess?: boolean, rewardsApiToken?: string) => void;
-  mixpanelConfig?: {
+  analyticsConfig?: {
     wallet_connect?: {
       source: analytics.EventPayload<analytics.EventTypes.WALLET_CONNECT>['Source'];
     };
@@ -39,7 +39,7 @@ interface Props {
   closeOnError?: boolean;
 }
 
-const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Props) => {
+const AuthModal = ({ initialScreen, onClose, analyticsConfig, closeOnError }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
   const [ isSuccess, setIsSuccess ] = React.useState(false);
   const [ rewardsApiToken, setRewardsApiToken ] = React.useState<string | undefined>(undefined);
@@ -54,7 +54,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Status: 'Started',
         Type: initialScreen.type === 'connect_wallet' ? 'Wallet' : 'Email',
-        Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
+        Source: analyticsConfig?.account_link_info.source ?? 'Profile dropdown',
       });
     } else {
       analytics.logEvent(analytics.EventTypes.LOGIN, {
@@ -62,7 +62,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
         Source: analytics.getPageType(router.pathname),
       });
     }
-  }, [ initialScreen, mixpanelConfig, router.pathname ]);
+  }, [ initialScreen, analyticsConfig, router.pathname ]);
 
   const onNextStep = React.useCallback((screen: Screen) => {
     setSteps((prev) => [ ...prev, screen ]);
@@ -83,7 +83,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
       analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Status: 'Finished',
         Type: screen.type === 'success_wallet' ? 'Wallet' : 'Email',
-        Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
+        Source: analyticsConfig?.account_link_info.source ?? 'Profile dropdown',
       });
     } else {
       analytics.logEvent(analytics.EventTypes.LOGIN, {
@@ -101,7 +101,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
     }
 
     onNextStep(screen);
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, onRewardsLoginSuccess ]);
+  }, [ initialScreen, analyticsConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient, onRewardsLoginSuccess ]);
 
   const onModalClose = React.useCallback(() => {
     onClose(isSuccess, rewardsApiToken);
@@ -140,7 +140,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
             onError={ onReset }
             isAuth={ currentStep.isAuth }
             loginToRewards={ currentStep.loginToRewards }
-            source={ mixpanelConfig?.wallet_connect?.source }
+            source={ analyticsConfig?.wallet_connect?.source }
           />
         );
       case 'email':
@@ -148,7 +148,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig, closeOnError }: Pro
           <AuthModalScreenEmail
             onSubmit={ onNextStep }
             isAuth={ currentStep.isAuth }
-            mixpanelConfig={ mixpanelConfig }
+            analyticsConfig={ analyticsConfig }
           />
         );
       case 'otp_code':

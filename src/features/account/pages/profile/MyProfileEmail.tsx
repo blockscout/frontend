@@ -28,7 +28,7 @@ import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
 
-const MIXPANEL_CONFIG = {
+const ANALYTICS_CONFIG = {
   account_link_info: {
     source: 'Profile' as const,
   },
@@ -116,7 +116,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         <AuthModal
           initialScreen={{ type: 'otp_code', isAuth: true, email: formApi.getValues('email') }}
           onClose={ authModal.onClose }
-          mixpanelConfig={ MIXPANEL_CONFIG }
+          analyticsConfig={ ANALYTICS_CONFIG }
         />
       ) }
     </section>

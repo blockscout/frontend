@@ -50,7 +50,7 @@ function setupProvider(provider: AnalyticsProvider, { isAuth, uuid }: UserIdenti
   });
 }
 
-export default function useInit() {
+export default function useInit(): boolean {
   const [ isInitialized, setIsInitialized ] = React.useState(false);
   const router = useRouter();
   const debugFlagQuery = React.useRef(getQueryParamString(router.query._analytics_debug));

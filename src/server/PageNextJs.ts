@@ -28,8 +28,8 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   useNotifyOnNavigation();
   useUpdateUsercentricsConsent();
 
-  const isMixPanelInitialized = analytics.useInit();
-  analytics.useLogPageView(isMixPanelInitialized);
+  const isAnalyticsInitialized = analytics.useInit();
+  analytics.useLogPageView(isAnalyticsInitialized);
 
   return isMounted ? props.children : null;
 };
