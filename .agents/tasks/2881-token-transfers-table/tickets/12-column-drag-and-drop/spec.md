@@ -51,7 +51,9 @@ then `/advanced-filter` for the in-memory variant; a mobile viewport for the dra
 - [ ] `TokenTransfersTable` renders columns in the order passed (the "keeps the vocabulary order" spec
       flips), so the multichain variants inherit the order through the hook with no change of their own.
 - [ ] The advanced filter page holds an ordered id list in state and passes it through
-      `columnsToShow` / `selectorColumns`; the table follows the order.
+      `columnsToShow` / `selectorColumns`; the table follows the order. Its selector offers Reset,
+      enabled (and the trigger marked selected) while a column is hidden or moved; Reset restores
+      every column in the default order, in memory.
 - [ ] `EventTypes.TABLE_COLUMNS` `State` gains `'Moved up' | 'Moved down'`; exactly one event per drop
       whose index changed, `Column` = the moved column's display name. Drops that land on the same index
       log nothing and write nothing.
@@ -93,18 +95,18 @@ default order; FR 3, 4 and 7 extend to reordering; FR 8 allows the advanced filt
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`; rebuild the sprite
+- [x] 1 `[agent]` Add `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities`; rebuild the sprite
       (`move` in `name.d.ts`)
-- [ ] 2 `[agent]` `ColumnsButton`: single-column rows with handle, lazy `SortableColumnList`
+- [x] 2 `[agent]` `ColumnsButton`: single-column rows with handle, lazy `SortableColumnList`
       (`DndContext` + sensors + `useSortable` rows) with static fallback, `onOrderChange`; keyboard
       reorder spec
-- [ ] 3 `[agent]` Token transfers persistence: new per-surface `{ visibility, order }` shape, order
+- [x] 3 `[agent]` Token transfers persistence: new per-surface `{ visibility, order }` shape, order
       utils (serialise / parse / drift merge), hook `onColumnsReorder`, Reset + `isCustomized`,
       Mixpanel `Moved up` / `Moved down`; specs
-- [ ] 4 `[agent]` Table renders in passed order (flip the order spec); wire `onOrderChange` on every
+- [x] 4 `[agent]` Table renders in passed order (flip the order spec); wire `onOrderChange` on every
       surface that mounts the hook (index, address, token, tx, multichain index + address)
-- [ ] 5 `[agent]` Advanced filter: ordered-ids state, pass order to the table and the selector
-- [ ] 6 `[agent]` Style the rows and the lifted row to the mockup —
+- [x] 5 `[agent]` Advanced filter: ordered-ids state, pass order to the table and the selector
+- [x] 6 `[agent]` Style the rows and the lifted row to the mockup —
       [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34054-7396);
       regenerate advanced filter baselines
-- [ ] 7 `[human]` Verify leaf 6 against the mockup on desktop and mobile; verify touch drag in the drawer
+- [x] 7 `[human]` Verify leaf 6 against the mockup on desktop and mobile; verify touch drag in the drawer

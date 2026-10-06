@@ -45,6 +45,7 @@ import AdvancedFilterTable from './AdvancedFilterTable';
 
 const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
 TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
+const DEFAULT_COLUMN_ORDER: Array<ColumnsIds> = [];
 
 const AGE_RANGE_FIELDS = [ 'age_from', 'age_to' ] as const;
 
@@ -87,6 +88,7 @@ const AdvancedFilter = () => {
   );
 
   const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
+  const [ columnOrder, setColumnOrder ] = React.useState<Array<ColumnsIds>>(DEFAULT_COLUMN_ORDER);
   const { data, isError, isLoading, pagination, onFilterChange, isInitialLoading, isTransitioning, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:advanced_filter',
     queryParams: filters,
@@ -155,8 +157,20 @@ const AdvancedFilter = () => {
     onFilterChange({});
   }, [ onFilterChange ]);
 
-  const tableColumns = React.useMemo(() => getTableColumns(chainConfig), [ chainConfig ]);
+  const availableColumns = React.useMemo(() => getTableColumns(chainConfig), [ chainConfig ]);
+  const tableColumns = React.useMemo(() => {
+    const orderedColumns = columnOrder
+      .map((id) => availableColumns.find((column) => column.id === id))
+      .filter((column) => column !== undefined);
+    return [ ...orderedColumns, ...availableColumns.filter((column) => !columnOrder.includes(column.id)) ];
+  }, [ availableColumns, columnOrder ]);
   const columnsToShow = React.useMemo(() => tableColumns.filter(c => columns[c.id]), [ columns, tableColumns ]);
+  const isColumnsCustomized = tableColumns.some((column, index) => !columns[column.id] || column.id !== availableColumns[index].id);
+
+  const handleColumnsReset = React.useCallback(() => {
+    setColumns(COLUMNS_CHECKED);
+    setColumnOrder(DEFAULT_COLUMN_ORDER);
+  }, []);
   const selectorColumns = React.useMemo(
     () => tableColumns.map(c => c.id === 'or_and' ? { ...c, name: 'And/Or' } : c),
     [ tableColumns ],
@@ -182,7 +196,14 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ColumnsButton tableColumns={ selectorColumns } columns={ columns } onChange={ setColumns }/>
+      <ColumnsButton
+        tableColumns={ selectorColumns }
+        columns={ columns }
+        onChange={ setColumns }
+        onOrderChange={ setColumnOrder }
+        selected={ isColumnsCustomized }
+        onReset={ handleColumnsReset }
+      />
       <CsvExport
         type="advanced_filters"
         resourceName="core:advanced_filter_csv"

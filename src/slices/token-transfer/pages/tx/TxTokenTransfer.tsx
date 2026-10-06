@@ -157,6 +157,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
               tableColumns={ columnsState.selectableColumns }
               columns={ columnsState.checkedColumns }
               onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
               isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }

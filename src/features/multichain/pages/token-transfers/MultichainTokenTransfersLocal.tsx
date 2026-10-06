@@ -48,6 +48,7 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange, 
           tableColumns={ columnsState.selectableColumns }
           columns={ columnsState.checkedColumns }
           onChange={ columnsState.onColumnsChange }
+          onOrderChange={ columnsState.onColumnsReorder }
           selected={ columnsState.isCustomized }
           onReset={ columnsState.onColumnsReset }
         />

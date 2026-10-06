@@ -54,10 +54,12 @@ const TokenTransfersTable = ({
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
-  const visibleColumns = React.useMemo(
-    () => getAvailableColumns(surface).filter((column) => columns.includes(column.id)),
-    [ surface, columns ],
-  );
+  const visibleColumns = React.useMemo(() => {
+    const availableColumns = getAvailableColumns(surface);
+    return columns
+      .map((id) => availableColumns.find((column) => column.id === id))
+      .filter((column) => column !== undefined);
+  }, [ surface, columns ]);
 
   return (
     <AddressHighlightProvider>

@@ -49,10 +49,12 @@ describe('TokenTransfersTable', () => {
     expect(container.querySelectorAll('tbody tr:first-child td')).toHaveLength(ALL_COLUMNS.length);
   });
 
-  it('keeps the vocabulary order whatever order the columns are passed in', () => {
+  it('renders the columns in the order they are passed in', () => {
     const { container } = render(<TokenTransfersTable surface="index" columns={ [ 'value', 'tx_hash', 'type' ] } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Token type', 'Value' ]);
+    expect(getHeaders(container)).toEqual([ 'Value', 'Txn hash', 'Token type' ]);
+    const [ , txHashCell ] = Array.from(container.querySelectorAll('tbody tr:first-child td'));
+    expect(txHashCell.textContent).toContain(erc20.transaction_hash?.slice(0, 4));
   });
 
   it('does not render a column that is unavailable on the surface', () => {

@@ -140,6 +140,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               tableColumns={ columnsState.selectableColumns }
               columns={ columnsState.checkedColumns }
               onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
               isLoading={ localQuery.query.isInitialLoading }

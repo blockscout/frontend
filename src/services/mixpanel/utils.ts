@@ -188,7 +188,7 @@ Type extends EventTypes.TABLE_COLUMNS ? {
   Table: 'Token transfers';
   Surface: string;
   Column: string;
-  State: 'On' | 'Off' | 'Reset';
+  State: 'On' | 'Off' | 'Reset' | 'Moved up' | 'Moved down';
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

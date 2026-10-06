@@ -160,6 +160,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
               tableColumns={ columnsState.selectableColumns }
               columns={ columnsState.checkedColumns }
               onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
               selected={ columnsState.isCustomized }
               onReset={ columnsState.onColumnsReset }
               isLoading={ transfersQueryLocal.query.isInitialLoading }

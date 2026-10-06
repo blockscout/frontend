@@ -20,7 +20,7 @@ import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
-  const { columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange, onColumnsReset } = useTokenTransferColumns('index');
+  const { columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange, onColumnsReorder, onColumnsReset } = useTokenTransferColumns('index');
 
   const content = (
     <TokenTransfersTable
@@ -47,6 +47,7 @@ const TokenTransfersLocal = () => {
           tableColumns={ selectableColumns }
           columns={ checkedColumns }
           onChange={ onColumnsChange }
+          onOrderChange={ onColumnsReorder }
           selected={ isCustomized }
           onReset={ onColumnsReset }
         />
