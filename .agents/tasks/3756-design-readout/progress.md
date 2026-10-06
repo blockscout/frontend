@@ -8,7 +8,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-tool-skeleton-scoping-outline/`
 - [x] 02 → `tickets/02-reverse-color-map/`
-- [ ] 03 → `tickets/03-values-and-sidecar/`
+- [x] 03 → `tickets/03-values-and-sidecar/`
 - [ ] 04 → `tickets/04-text-shape-and-icon-recognition/`
 - [ ] 05 → `tickets/05-color-tokens-and-composites/`
 - [ ] 06 → `tickets/06-rerun-corrections-gap-log/`

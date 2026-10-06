@@ -8,15 +8,59 @@ export interface BoundingBox {
   readonly height: number;
 }
 
+export interface FigmaColor {
+  readonly r: number;
+  readonly g: number;
+  readonly b: number;
+  readonly a: number;
+}
+
+export interface FigmaPaint {
+  readonly type: string;
+  readonly visible?: boolean;
+  readonly opacity?: number;
+  readonly color?: FigmaColor;
+}
+
+export interface FigmaTextStyle {
+  readonly fontFamily?: string;
+  readonly fontWeight?: number;
+  readonly fontSize?: number;
+  readonly lineHeightPx?: number;
+}
+
 // The subset of a REST node this tool reads; the payload carries far more and is dumped verbatim.
 export interface FigmaNode {
   readonly id: string;
   readonly name: string;
   readonly type: string;
   readonly visible?: boolean;
+  readonly opacity?: number;
   readonly children?: ReadonlyArray<FigmaNode>;
   readonly absoluteBoundingBox?: BoundingBox | null;
   readonly exposedInstances?: ReadonlyArray<string>;
+  readonly fills?: ReadonlyArray<FigmaPaint>;
+  readonly strokes?: ReadonlyArray<FigmaPaint>;
+  readonly characters?: string;
+  readonly style?: FigmaTextStyle;
+  readonly componentId?: string;
+  // Property (`fill`, `text`, `stroke`, …) → style id, resolved by the entry's `styles` map.
+  readonly styles?: Readonly<Record<string, string>>;
+}
+
+export interface FigmaStyle {
+  readonly name: string;
+  readonly styleType: string;
+}
+
+export interface FigmaComponent {
+  readonly name: string;
+}
+
+export interface NodeEntry {
+  readonly document: FigmaNode;
+  readonly styles?: Readonly<Record<string, FigmaStyle>>;
+  readonly components?: Readonly<Record<string, FigmaComponent>>;
 }
 
 // `GET /v1/files/:key/nodes`: file metadata plus one entry per requested id, `null` when the id is
@@ -25,7 +69,7 @@ export interface NodesResponse {
   readonly name: string;
   readonly lastModified: string;
   readonly version: string;
-  readonly nodes: Readonly<Record<string, { readonly document: FigmaNode } | null>>;
+  readonly nodes: Readonly<Record<string, NodeEntry | null>>;
 }
 
 export class FigmaFetchError extends Error {}
@@ -57,8 +101,12 @@ export async function fetchNodes(ref: NodeRef, env: Env = process.env): Promise<
   return await response.json() as NodesResponse;
 }
 
-export function rootOf(payload: NodesResponse, nodeId: string): FigmaNode {
+export function entryOf(payload: NodesResponse, nodeId: string): NodeEntry {
   const entry = payload.nodes[nodeId];
   if (entry === undefined || entry === null) throw new FigmaFetchError(`Node ${ nodeId } is not in file "${ payload.name }".`);
-  return entry.document;
+  return entry;
+}
+
+export function rootOf(payload: NodesResponse, nodeId: string): FigmaNode {
+  return entryOf(payload, nodeId).document;
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Usage: tools/design-readout/run.sh <figma node URL> [--dump <path>]
+# Usage: tools/design-readout/run.sh <figma node URL> [--regions <ids>] [--dump <path>]
 
 set -e
 

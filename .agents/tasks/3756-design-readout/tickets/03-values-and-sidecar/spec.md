@@ -39,6 +39,6 @@ values and bounding box; hints are printed, never stored. Confirmation of the ou
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Prefactor: lift main-checkout resolution from review-screen into `tools/cli/`
-- [ ] 2 `[agent]` Value extraction per leaf with hint disagreement flags, specs over fixtures
-- [ ] 3 `[agent]` Sidecar write/read, `--regions`, record shape, `CONTEXT.md` rows
+- [x] 1 `[agent]` Prefactor: lift main-checkout resolution from review-screen into `tools/cli/`
+- [x] 2 `[agent]` Value extraction per leaf with hint disagreement flags, specs over fixtures
+- [x] 3 `[agent]` Sidecar write/read, `--regions`, record shape, `CONTEXT.md` rows
