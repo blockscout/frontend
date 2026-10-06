@@ -32,9 +32,9 @@ does. The chosen set survives reloads.
 
 1. Every token-transfer view (index page, address tab, token tab, token instance tab, transaction tab,
    and the user-op and multichain variants that reuse them) renders the same table component with the
-   same column vocabulary in the same order: Txn hash, Type, Method, Timestamp, Block, From, To,
-   Amount, ID / Asset, Value. In multichain context a chain column precedes them and cannot be
-   hidden.
+   same column vocabulary in the same default order: Txn hash, Type, Method, Timestamp, Block, From,
+   To, Amount, ID / Asset, Value. In multichain context a chain column precedes them and cannot be
+   hidden or moved.
 2. Each surface has a default column selection that matches its mockup, with Value on everywhere:
 
    | Column | Index | Address tab | Token / instance tab | Tx tab |
@@ -52,10 +52,11 @@ does. The chosen set survives reloads.
    "Off" columns are hidden by default but offered in the selector; "unavailable" columns are neither
    rendered nor offered, because their value is constant for every row on that surface.
 3. A column selector button sits next to each surface's existing filter control (tabs right slot or
-   action bar, wherever that surface keeps its controls today) and toggles the available columns. The
-   mobile selector is the same control in the mobile action bar.
-4. The user's selection is persisted per surface and restored on the next visit, including on
-   server-rendered first paint, with no flash of the default layout.
+   action bar, wherever that surface keeps its controls today) and toggles the available columns; its
+   rows can be dragged by a handle to reorder the columns, hidden ones included. The mobile selector is
+   the same control in the mobile action bar.
+4. The user's selection and column order are persisted per surface and restored on the next visit,
+   including on server-rendered first paint, with no flash of the default layout.
 5. Each surface keeps exactly the controls it has today — the token-type filter, the address
    in/out filter, CSV export, the advanced-filter link, pagination, and the socket "new items" notice
    are neither added to nor removed from any surface.
@@ -64,9 +65,10 @@ does. The chosen set survives reloads.
    amounts show the token-multiplier and confidential-value variants, and NFT rows show the token id
    (instance image, id, symbol) inside the ID / Asset cell with "1" as the amount when they carry no
    value, while fungible rows show icon and symbol only.
-7. Toggling a column emits one Mixpanel event carrying the surface, the column and the new state.
-8. The advanced filter page's column selector becomes icon-only (no "Columns" label), with no other
-   change to that page.
+7. Toggling a column emits one Mixpanel event carrying the surface, the column and the new state;
+   moving a column emits one carrying the surface, the column and the direction.
+8. The advanced filter page's column selector becomes icon-only (no "Columns" label) and, since the
+   control is shared, reorders that table's columns in memory; no other change to that page.
 
 ## Data & API
 

@@ -58,8 +58,13 @@ target. Phrase it as a checklist of facts." -->
 ### Q06 — Drag-and-drop column reordering in the column selector
 
 - Owner: Designer (Tatyana) — dropdown redesign
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) dropdown / drawer layout with a drag handle on the right of each row; (2) whether the order is stored per surface like visibility.
 - Source: https://app.fireflies.ai/view/01M40TAXK5AET660ZW5PWP6588?t=2173 (proposal), ?t=2238 (handle in the selector, not the table header), ?t=2282 (recorded), ?t=2285 (meeting: token transfers only)
 - Note: the developer decided (2026-10-05) to apply it to the advanced filter table as well, since both share `ColumnsButton` and a unified behaviour is simpler than disabling it per page.
-- Answer:
+- Mockup: https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34054-7396
+- Answer: single-column list, drag handle on the **left** of each row (not the right as proposed), lifted
+  row with a shadow while siblings shift; order stored per surface next to visibility in the same cookie,
+  cleared by Reset; hidden rows reorder too; the advanced filter reorders in memory only. Library:
+  `@dnd-kit/core` + `@dnd-kit/sortable` (rubric in the ticket's `research.md`). Tatyana's mockup plus
+  developer decisions, 2026-10-06. Realised as T12.
