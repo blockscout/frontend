@@ -76,7 +76,7 @@ const TokenMultiplierHistoryInline = ({ hash, changesCount }: Props) => {
         overflowX={{ base: 'scroll', lg: 'unset' }}
       >
         <Grid
-          gridTemplateColumns="120px 100px 140px 170px 80px"
+          gridTemplateColumns="120px 100px 180px 170px 80px"
           alignItems="center"
           textStyle="sm"
           bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.50' }}
