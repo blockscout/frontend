@@ -16,6 +16,7 @@ spec behind the tool and the phases after this one: `.agents/tasks/3756-design-r
 | What does a run print? | `./scope.ts` (`renderOutline`), `./index.ts` (the header) |
 | How does the fetch fail, and with what message? | `./figma.ts` |
 | What does the raw payload look like? | `./fixtures/`, one `--dump` per node, named `<node id>-<light\|dark>.json` |
+| Which tokens does a hex serve, in which mode? Which role narrows to which token prefixes? | `./colormap.ts` builds the map from the theme and answers over it; `./config.ts` holds the role prefixes |
 
 ## What an editor here must keep true
 
@@ -33,6 +34,10 @@ spec behind the tool and the phases after this one: `.agents/tasks/3756-design-r
   or a mobile variant of it is a separate link. So the tool never looks for siblings, variants or
   states, and a hidden layer (visibility off) is not part of the screen: it is dropped before any
   rule runs, never counted, never printed.
+- **The color map reads the theme defaults, not the theme.** It is built at run time from the
+  config-free modules `src/toolkit/theme/foundations/colorsDefault.ts` and `semanticTokensDefault.ts`,
+  so an instance's runtime color overrides are never in it; nothing under this folder may import
+  `src/config`, directly or through the composed theme modules.
 - **Fixtures are captured with `--dump`, never hand-edited.** They are the raw response for one node,
   so a payload field the tool starts reading is already in them; the file name records the color mode
   the payload showed.
@@ -44,6 +49,11 @@ spec behind the tool and the phases after this one: `.agents/tasks/3756-design-r
   and a loader icon as tall as the row passes the same test. The outline is printed to be confirmed
   for exactly this reason.
 
+- **A color that serves a token in both modes casts no mode vote.** Light-mode `text.primary`
+  (`blackAlpha.800`) is also the dark-mode hero button's selected text, so a naive "resolves in exactly
+  one mode" test gave a light screen no light votes at all. Detection counts only the tokens one mode
+  does not share with the other.
+
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, the header and the outline on stdout; flag mechanics
@@ -52,5 +62,7 @@ spec behind the tool and the phases after this one: `.agents/tasks/3756-design-r
 - `./url.ts` — Figma node link → file key and canonical node id
 - `./figma.ts` — the nodes request, the node types the tool reads, the failure messages
 - `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
+- `./colormap.ts` — the reverse color map built from the theme defaults: token reference resolution,
+  the hex → tokens lookup, color mode detection
 - `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

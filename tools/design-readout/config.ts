@@ -9,3 +9,11 @@ export const CHROME_NAMES: ReadonlyArray<string> = [ 'menu', 'navigation', 'top 
 // A child "spans" its parent when their edges differ by no more than this; Figma reports fractional
 // boxes for auto-layout frames.
 export const SPAN_TOLERANCE_PX = 1;
+
+// A readout role narrows a color lookup to the semantic tokens under these path prefixes.
+export const COLOR_ROLE_PREFIXES = {
+  text: [ 'text.' ],
+  background: [ 'bg.' ],
+  border: [ 'border.' ],
+  icon: [ 'icon.' ],
+} as const;

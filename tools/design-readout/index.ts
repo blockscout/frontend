@@ -81,9 +81,9 @@ async function main(): Promise<void> {
   console.log(renderOutline(scopeOutline(rootOf(payload, ref.nodeId))));
 }
 
-// run.sh always executes the compiled `tools/design-readout/dist/design-readout/index.js`, so that path
+// run.sh always executes the compiled `tools/design-readout/dist/tools/design-readout/index.js`, so that path
 // is what marks this module as the process entry point; under vitest the entry is vitest's own binary.
-const CLI_ENTRY_PATH = 'design-readout/dist/design-readout/index.js';
+const CLI_ENTRY_PATH = 'design-readout/dist/tools/design-readout/index.js';
 
 function isProcessEntryPoint(): boolean {
   const entry = process.argv[1]?.replace(/\\/g, '/');
