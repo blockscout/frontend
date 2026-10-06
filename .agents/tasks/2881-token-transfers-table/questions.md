@@ -46,10 +46,14 @@ target. Phrase it as a checklist of facts." -->
 ### Q05 — Merge Token ID into the Amount / Asset cells
 
 - Owner: Designer (Tatyana) — mockup variants
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) the merged cell layout and whether a separate Token ID column survives; (2) ERC-721 and ERC-404 show amount "1"; (3) asset image is the NFT instance image when a token id is present, the token icon otherwise; (4) how amount and id are told apart for ERC-1155.
 - Source: https://app.fireflies.ai/view/01M40TAXK5AET660ZW5PWP6588?t=1844 (proposal), ?t=1951 (image rule), ?t=2039 (Tatyana takes the mockup), ?t=2140 (1155 confusion)
-- Answer:
+- Mockup: https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-31747
+- Answer: Token ID column removed; Asset becomes "ID / Asset" showing NFT image + id + symbol (fungible
+  rows unchanged); Amount shows "1" for NFT rows without a value; NFT Value is a dash; ERC-1155 follows
+  the same rules (the icon separates value and id); ERC-404 without an id renders as fungible. Tatyana's
+  mockup plus developer decisions, 2026-10-06. Realised as T11.
 
 ### Q06 — Drag-and-drop column reordering in the column selector
 

@@ -33,7 +33,7 @@ does. The chosen set survives reloads.
 1. Every token-transfer view (index page, address tab, token tab, token instance tab, transaction tab,
    and the user-op and multichain variants that reuse them) renders the same table component with the
    same column vocabulary in the same order: Txn hash, Type, Method, Timestamp, Block, From, To,
-   Token ID, Amount, Asset, Value. In multichain context a chain column precedes them and cannot be
+   Amount, ID / Asset, Value. In multichain context a chain column precedes them and cannot be
    hidden.
 2. Each surface has a default column selection that matches its mockup, with Value on everywhere:
 
@@ -45,9 +45,8 @@ does. The chosen set survives reloads.
    | Timestamp | on | on | on | unavailable |
    | Block | on | on | off | unavailable |
    | From / To | on | on | on | on |
-   | Token ID | on | on | on | on |
    | Amount | on | on | on | on |
-   | Asset | on | on | on | on |
+   | ID / Asset | on | on | on | on |
    | Value | on | on | on | on |
 
    "Off" columns are hidden by default but offered in the selector; "unavailable" columns are neither
@@ -63,7 +62,8 @@ does. The chosen set survives reloads.
 6. The cells keep today's behaviour: the address tab highlights the current address, the token instance
    tab does not link the current token id, the Timestamp header keeps the time-format toggle, fungible
    amounts show the token-multiplier and confidential-value variants, and NFT rows show the token id
-   while fungible rows show a dash in that column.
+   (instance image, id, symbol) inside the ID / Asset cell with "1" as the amount when they carry no
+   value, while fungible rows show icon and symbol only.
 7. Toggling a column emits one Mixpanel event carrying the surface, the column and the new state.
 8. The advanced filter page's column selector becomes icon-only (no "Columns" label), with no other
    change to that page.
@@ -101,7 +101,7 @@ Deliberate deviations from the mockups:
 - Value is on by default on every surface (mockups show it only on the address tab).
 - The mobile list/table view switcher is not built: the list views were removed in #3722 and that
   decision is final. Mobile shows the horizontally scrolled table only.
-- The mobile drawer in the mockup omits Block and Token ID; the selector offers every available column.
+- The mobile drawer in the mockup omits Block; the selector offers every available column.
 - The control set per surface stays as it is today (see FR 5), not the uniform
   Filter · Columns · CSV · Advanced bar the mockups draw on every screen.
 
@@ -140,4 +140,3 @@ the `[human]` style leaves.
 - Adding CSV export, filters or advanced-filter links to surfaces that lack them today, and any backend
   work that would enable them.
 - Sorting in any token-transfer table.
-- NFT previews or combined amount/token-id cells from the superseded Notion design notes.
