@@ -79,10 +79,14 @@ Each reply is one turn; repeat until approval. The subscription is removed in ph
 
 Starts when the designer approves.
 
-1. Merge the configs PR. Swap every branch URL to `main` and confirm each returns 200 — that is when instances can fetch them.
-2. For inlined vars (hero banner, colour theme), regenerate the strings from the merged files (the converter above). URL vars (homepage highlights, asset URLs): the env value is the `main` raw URL. Navigation promo: the inlined string produced in phase 1.
-3. Run the parent skill from **Read current state** through **Send, then hand over**.
-4. **Teardown** — checkable, they fail silently when skipped:
+1. Merge the configs PR using exactly this command:
+   ```bash
+   gh pr merge -R blockscout/frontend-configs <number> --merge --delete-branch
+   ```
+2. Swap every branch URL to `main` and confirm each returns 200 — that is when instances can fetch them.
+3. For inlined vars (hero banner, colour theme), regenerate the strings from the merged files (the converter above). URL vars (homepage highlights, asset URLs): the env value is the `main` raw URL. Navigation promo: the inlined string produced in phase 1.
+4. Run the parent skill from **Read current state** through **Send, then hand over**.
+5. **Teardown** — checkable, they fail silently when skipped:
    - demo destroyed: `gh workflow run cleanup.yml --ref <branch>`; hostname returns 404
    - temporary frontend branch deleted, local and remote
    - `git status` clean

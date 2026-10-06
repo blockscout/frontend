@@ -126,6 +126,12 @@ Follow the `check-github-cli` skill. Commit and open the PR without asking; conf
 
 Hosted icons for **inlined** lists (the env holds the JSON; the file is the URL inside it): `configs/ide-icons/` → `NEXT_PUBLIC_CONTRACT_CODE_IDES`; `configs/nft-marketplace-logos/` → `NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES`; `configs/multichain-balance/` → `NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG`.
 
+Merge PR with exactly this form:
+
+```bash
+gh pr merge -R blockscout/frontend-configs <number> --merge --delete-branch
+```
+
 After merge to `main`, confirm each raw URL returns 200. If the instance already has that URL, the DevOps ask is a restart to re-fetch — no new `KEY=value`. If the URL is new, or the value is inlined, it goes in the block as usual.
 
 ## Run by Honk
