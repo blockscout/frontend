@@ -8,15 +8,15 @@ import type { UserInfo } from 'src/features/account/types/api';
 
 import useSignInWithWallet from 'src/features/account/hooks/useSignInWithWallet';
 
-import type * as mixpanel from 'src/services/mixpanel';
 import ReCaptcha from 'src/services/re-captcha/ReCaptcha';
 import useReCaptcha from 'src/services/re-captcha/useReCaptcha';
+import type * as analytics from 'src/shared/analytics';
 
 interface Props {
   onSuccess: (screen: ScreenSuccess) => void;
   onError: (isAuth?: boolean) => void;
   isAuth?: boolean;
-  source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+  source?: analytics.EventPayload<analytics.EventTypes.WALLET_CONNECT>['Source'];
   loginToRewards?: boolean;
 }
 

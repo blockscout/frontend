@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'src/features/account/types/api';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import FormModal from 'src/shared/forms/FormModal';
 
 import AddressForm from './AddressForm';
@@ -24,16 +24,16 @@ const AddressModal: React.FC<Props> = ({ open, onOpenChange, onSuccess, data, pa
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   React.useEffect(() => {
-    open && !data?.id && mixpanel.logEvent(
-      mixpanel.EventTypes.PRIVATE_TAG,
+    open && !data?.id && analytics.logEvent(
+      analytics.EventTypes.PRIVATE_TAG,
       { Action: 'Form opened', 'Page type': pageType, 'Tag type': 'Address' },
     );
   }, [ data?.id, open, pageType ]);
 
   const handleSuccess = React.useCallback(() => {
     if (!data?.id) {
-      mixpanel.logEvent(
-        mixpanel.EventTypes.PRIVATE_TAG,
+      analytics.logEvent(
+        analytics.EventTypes.PRIVATE_TAG,
         { Action: 'Submit', 'Page type': pageType, 'Tag type': 'Address' },
       );
     }

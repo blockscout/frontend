@@ -6,7 +6,7 @@ import React from 'react';
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
 
 import config from 'src/config';
-import type { EventTypes, EventPayload } from 'src/services/mixpanel';
+import type { EventTypes, EventPayload } from 'src/shared/analytics';
 
 import type { PopoverContentProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'src/toolkit/chakra/popover';

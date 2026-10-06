@@ -102,6 +102,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Google ReCaptcha](#google-recaptcha)
   - [GrowthBook](#growthbook)
   - [Mixpanel](#mixpanel)
+  - [PostHog](#posthog)
   - [OpenTelemetry](#opentelemetry)
   - [Rollbar](#rollbar)
   - [Usercentrics CMP](#usercentrics-cmp)
@@ -1296,6 +1297,15 @@ To obtain the variable values, please refer to the [reCAPTCHA documentation](htt
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | Required | - | `<your-secret>` | v1.1.0+ |
 | NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES | `string` | Pass a JSON-like string that represents a subset of the [Mixpanel SDK configuration](https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript#library-configuration) to override the project's default properties. | - | - | `{"record_sessions_percent": 0.5}` | v2.3.0+ |
+
+&nbsp;
+
+### PostHog
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_POSTHOG_API_KEY | `string` | Project API key for [PostHog](https://posthog.com/) product analytics | Required | - | `<your-secret>` | upcoming |
+| NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES | `string` | JSON-like string with a subset of the [posthog-js config](https://posthog.com/docs/libraries/js/config) merged over the app defaults | - | - | `{"disable_session_recording": false}` | upcoming |
 
 &nbsp;
 

@@ -12,7 +12,7 @@ import useWalletReown from 'src/features/connect-wallet/hooks/wallet/useWalletRe
 import { getWeb3Runtime } from 'src/features/connect-wallet/utils/runtime';
 
 import config from 'src/config';
-import type * as mixpanel from 'src/services/mixpanel';
+import type * as analytics from 'src/shared/analytics';
 import getErrorMessage from 'src/shared/errors/get-error-message';
 import getErrorObj from 'src/shared/errors/get-error-obj';
 import getErrorObjPayload from 'src/shared/errors/get-error-obj-payload';
@@ -44,7 +44,7 @@ function composeMessage(address: string, nonceBlockscout: string, nonceRewards: 
 interface Props {
   onSuccess?: ({ address, profile, rewardsToken }: { address: string; profile: UserInfo; rewardsToken?: string }) => void;
   onError?: () => void;
-  source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+  source?: analytics.EventPayload<analytics.EventTypes.WALLET_CONNECT>['Source'];
   isAuth?: boolean;
   loginToRewards?: boolean;
   fetchProtectedResource: <T>(fetcher: (token?: string) => Promise<T>, token?: string) => Promise<T>;

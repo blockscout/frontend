@@ -7,16 +7,15 @@ import React from 'react';
 import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
 import { getDefaultColorTheme } from 'src/shell/top-bar/settings/color-theme/utils';
 
-import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
+import { EventTypes } from './events';
 import getPageType from './get-page-type';
 import getTabName from './get-tab-name';
 import logEvent from './log-event';
-import { EventTypes } from './utils';
 
 export default function useLogPageView(isInitialized: boolean) {
   const router = useRouter();
@@ -28,7 +27,7 @@ export default function useLogPageView(isInitialized: boolean) {
   const { colorMode } = useColorMode();
 
   React.useEffect(() => {
-    if (!config.services.mixpanel.projectToken || !isInitialized) {
+    if (!isInitialized) {
       return;
     }
 

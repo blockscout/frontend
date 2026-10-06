@@ -14,7 +14,7 @@ import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
@@ -74,7 +74,7 @@ const RevokeContent = () => {
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
     setApprovalsPage(1);
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, {
       Type: 'Chain switch',
       Info: value[0],
       Source: 'Revoke essential dapp',

@@ -26,4 +26,20 @@ export default yup.object({
           value => value === undefined,
         ),
       }),
+
+    // posthog
+    NEXT_PUBLIC_POSTHOG_API_KEY: yup.string(),
+    NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: yup
+      .object()
+      .transform(replaceQuotes)
+      .json()
+      .when('NEXT_PUBLIC_POSTHOG_API_KEY', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_POSTHOG_API_KEY is set to a non-empty string',
+          value => value === undefined,
+        ),
+      }),
 });

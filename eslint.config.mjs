@@ -83,7 +83,41 @@ const RESTRICTED_MODULES = {
     },
   ],
   patterns: [
-    'src/sprite/icons/*',
+    { group: [ 'src/sprite/icons/*' ] },
+  ],
+};
+
+const ANALYTICS_VENDOR_MESSAGE =
+  'Analytics vendors are reached only through the provider-neutral facade. Please import from "src/shared/analytics" instead.';
+
+const ANALYTICS_VENDOR_ALLOWED_FILES = [
+  'src/shared/analytics/**',
+  'src/services/mixpanel/**',
+  'src/services/posthog/**',
+  'src/config/**',
+  'src/server/csp/**',
+  '**/*.spec.{ts,tsx}',
+];
+
+const RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS = {
+  paths: [
+    ...RESTRICTED_MODULES.paths,
+    { name: 'mixpanel-browser', message: ANALYTICS_VENDOR_MESSAGE },
+    { name: 'posthog-js', message: ANALYTICS_VENDOR_MESSAGE },
+  ],
+  patterns: [
+    ...RESTRICTED_MODULES.patterns,
+    {
+      group: [
+        'mixpanel-browser/**',
+        'posthog-js/**',
+        'src/services/mixpanel',
+        'src/services/mixpanel/**',
+        'src/services/posthog',
+        'src/services/posthog/**',
+      ],
+      message: ANALYTICS_VENDOR_MESSAGE,
+    },
   ],
 };
 
@@ -642,7 +676,7 @@ export default tseslint.config(
 
       // restricted imports, properties and syntax
       'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX ],
-      'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
+      'no-restricted-imports': [ 'error', RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS ],
       'no-restricted-properties': [ 2,
         {
           object: 'process',
@@ -681,6 +715,12 @@ export default tseslint.config(
         { selector: 'ExportNamedDeclaration', message: APP_CONFIG_NAMED_EXPORT_MESSAGE },
         { selector: 'ExportAllDeclaration', message: APP_CONFIG_NAMED_EXPORT_MESSAGE },
       ],
+    },
+  },
+  {
+    files: ANALYTICS_VENDOR_ALLOWED_FILES,
+    rules: {
+      'no-restricted-imports': [ 'error', RESTRICTED_MODULES ],
     },
   },
   {

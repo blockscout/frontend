@@ -140,6 +140,7 @@
     "phoenix": "^1.8.7",
     "pino-http": "^8.6.1",
     "pino-pretty": "^9.4.1",
+    "posthog-js": "1.434.15",
     "prom-client": "15.1.1",
     "qrcode": "^1.5.4",
     "react": "19.1.4",

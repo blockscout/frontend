@@ -10,7 +10,7 @@ import type { AppActionData } from 'src/features/address-metadata/utils/get-app-
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -36,7 +36,7 @@ const AppActionButton = ({ data, className, addressHash, txHash, source }: Props
   const handleClick = React.useCallback(() => {
     const info = appID || actionURL;
     if (info) {
-      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: info, Source: source });
+      analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: info, Source: source });
     }
   }, [ source, appID, actionURL ]);
 

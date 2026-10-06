@@ -14,7 +14,7 @@ import useFetchTokens from 'src/slices/token/pages/address/useFetchTokens';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
@@ -48,7 +48,7 @@ const TokenSelect = () => {
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
   const handleIconButtonClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Tokens show all (icon)' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Tokens show all (icon)' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [ ]);
 
