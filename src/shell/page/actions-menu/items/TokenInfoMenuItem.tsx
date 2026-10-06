@@ -13,7 +13,7 @@ import useIsAuth from 'src/features/account/hooks/useIsAuth';
 import AddressVerificationModal from 'src/features/account/pages/verified-addresses/address-verification/AddressVerificationModal';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { MenuItem } from 'src/toolkit/chakra/menu';
@@ -106,7 +106,7 @@ const TokenInfoMenuItem = ({ hash, type }: ItemProps) => {
       { element }
       <AddressVerificationModal
         defaultAddress={ hash }
-        pageType={ mixpanel.getPageType('/token/[hash]') }
+        pageType={ analytics.getPageType('/token/[hash]') }
         open={ modal.open }
         onOpenChange={ modal.onOpenChange }
         onSubmit={ handleVerifiedAddressSubmit }

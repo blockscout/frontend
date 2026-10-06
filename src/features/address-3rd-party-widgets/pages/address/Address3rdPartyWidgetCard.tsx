@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import type { Address3rdPartyWidget } from 'src/features/address-3rd-party-widgets/types/view';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Image } from 'src/toolkit/chakra/image';
@@ -40,7 +40,7 @@ const Address3rdPartyWidgetCard = ({ name, config, address, isLoading }: Props) 
   });
 
   const handleClick = useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.ADDRESS_WIDGET, { Name: name });
+    analytics.logEvent(analytics.EventTypes.ADDRESS_WIDGET, { Name: name });
   }, [ name ]);
 
   if (!config) {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 const STORAGE_KEY = 'favoriteApps';
 
@@ -18,7 +18,7 @@ export default function useFavoriteApps() {
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>(getFavoriteApps());
 
   const onFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'App page' | 'Banner') => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
 
     const favoriteApps = getFavoriteApps();
 

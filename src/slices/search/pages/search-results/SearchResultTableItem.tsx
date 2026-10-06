@@ -26,7 +26,7 @@ import * as BlobEntity from 'src/features/data-availability/components/entity/Bl
 import * as EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
 import highlightText from 'src/shared/texts/highlight-text';
@@ -56,7 +56,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
 
   const handleLinkClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     saveToRecentKeywords(searchTerm);
-    mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+    analytics.logEvent(analytics.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
       'Source page type': 'Search results',
       'Result URL': e.currentTarget.href,

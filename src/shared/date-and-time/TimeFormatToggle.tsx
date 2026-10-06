@@ -6,7 +6,7 @@ import React from 'react';
 
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';
@@ -20,7 +20,7 @@ const TimeFormatToggle = (props: Props) => {
 
   const handleClick = React.useCallback(() => {
     settings?.toggleTimeFormat();
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Switch time format', Source: 'Table header' });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Switch time format', Source: 'Table header' });
   }, [ settings ]);
 
   const text = (() => {

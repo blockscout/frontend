@@ -18,7 +18,7 @@ const runtimeMock = vi.hoisted(() => ({
   subscribeModalState: vi.fn(() => () => {}),
 }));
 
-const mixpanelMock = vi.hoisted(() => ({
+const analyticsMock = vi.hoisted(() => ({
   logEvent: vi.fn(),
   userProfile: { setOnce: vi.fn() },
   EventTypes: { WALLET_CONNECT: 'WALLET_CONNECT' },
@@ -38,7 +38,7 @@ vi.mock('../../utils/runtime', () => ({
   ensureLoaded: () => Promise.resolve(runtimeMock),
 }));
 
-vi.mock('src/services/mixpanel', () => mixpanelMock);
+vi.mock('src/shared/analytics', () => analyticsMock);
 
 describe('useWalletReown', () => {
   beforeEach(() => {
@@ -60,7 +60,7 @@ describe('useWalletReown', () => {
       });
 
       expect(runtimeMock.openModal).toHaveBeenCalledTimes(1);
-      expect(mixpanelMock.logEvent).toHaveBeenCalledWith('WALLET_CONNECT', { Source: 'Header', Status: 'Started' });
+      expect(analyticsMock.logEvent).toHaveBeenCalledWith('WALLET_CONNECT', { Source: 'Header', Status: 'Started' });
     });
 
     it('logs WALLET_CONNECT Connected + profile flag on a fresh connection after connect()', async() => {
@@ -69,14 +69,14 @@ describe('useWalletReown', () => {
       await act(async() => {
         await result.current.connect();
       });
-      mixpanelMock.logEvent.mockClear();
+      analyticsMock.logEvent.mockClear();
 
       act(() => {
         bridgeState.connectionHandlers?.onConnect?.({ address: '0x1', isReconnected: false });
       });
 
-      expect(mixpanelMock.logEvent).toHaveBeenCalledWith('WALLET_CONNECT', { Source: 'Header', Status: 'Connected' });
-      expect(mixpanelMock.userProfile.setOnce).toHaveBeenCalledWith({ 'With Connected Wallet': true });
+      expect(analyticsMock.logEvent).toHaveBeenCalledWith('WALLET_CONNECT', { Source: 'Header', Status: 'Connected' });
+      expect(analyticsMock.userProfile.setOnce).toHaveBeenCalledWith({ 'With Connected Wallet': true });
       expect(onConnect).toHaveBeenCalledTimes(1);
     });
 
@@ -89,13 +89,13 @@ describe('useWalletReown', () => {
       });
 
       // the disabled runtime's openModal is a no-op, so nothing was started
-      expect(mixpanelMock.logEvent).not.toHaveBeenCalled();
+      expect(analyticsMock.logEvent).not.toHaveBeenCalled();
 
       // and a later bridge connect must not be attributed to this click
       act(() => {
         bridgeState.connectionHandlers?.onConnect?.({ address: '0x1', isReconnected: false });
       });
-      expect(mixpanelMock.logEvent).not.toHaveBeenCalled();
+      expect(analyticsMock.logEvent).not.toHaveBeenCalled();
       expect(onConnect).not.toHaveBeenCalled();
     });
 
@@ -104,13 +104,13 @@ describe('useWalletReown', () => {
       await act(async() => {
         await result.current.connect();
       });
-      mixpanelMock.logEvent.mockClear();
+      analyticsMock.logEvent.mockClear();
 
       act(() => {
         bridgeState.connectionHandlers?.onConnect?.({ address: '0x1', isReconnected: true });
       });
 
-      expect(mixpanelMock.logEvent).not.toHaveBeenCalled();
+      expect(analyticsMock.logEvent).not.toHaveBeenCalled();
     });
 
     it('does not log Connected when the connection was not user-initiated (openModal, not connect)', async() => {
@@ -119,12 +119,12 @@ describe('useWalletReown', () => {
         await result.current.openModal();
       });
 
-      expect(mixpanelMock.logEvent).not.toHaveBeenCalled();
+      expect(analyticsMock.logEvent).not.toHaveBeenCalled();
 
       act(() => {
         bridgeState.connectionHandlers?.onConnect?.({ address: '0x1', isReconnected: false });
       });
-      expect(mixpanelMock.logEvent).not.toHaveBeenCalled();
+      expect(analyticsMock.logEvent).not.toHaveBeenCalled();
     });
   });
 

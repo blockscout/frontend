@@ -14,7 +14,7 @@ import UserProfileDesktop from 'src/features/account/components/user-profile/Use
 import RewardsButton from 'src/features/rewards/components/RewardsButton';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -42,7 +42,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading }: Props) => {
   }, [ appProps.referrer ]);
 
   const handleBackToClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: mixpanel.PAGE_TYPE_DICT['/apps/[id]'] });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Back to', Source: analytics.PAGE_TYPE_DICT['/apps/[id]'] });
   }, []);
 
   return (
