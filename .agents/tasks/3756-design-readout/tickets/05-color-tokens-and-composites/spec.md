@@ -20,6 +20,10 @@ readout now carries tokens and composite decisions per node, and the color-mode 
 - [ ] Each fill resolves to zero, one or several tokens through the lookup with its role; the hex is
       trusted over the style hint and a disagreement is reported, not stored; specs cover the multi-hit
       and the unmapped hex (Unrecognized with hex and role).
+- [ ] A style hint whose stated mode (`Dark/…`, `Light/…`) is the opposite of the run's detected mode
+      is a disagreement even when the token it names is unknown to the theme (today `values.ts` leaves
+      it `unchecked`); a spec covers the `🖤 Dark/button.primary` hint over `#2B6CB0` (`blue.600`,
+      light `link.primary`) on the light row `22842:169552` of the Details file.
 - [ ] Composite rules are a table like the text shapes: entity + arrow + entity, amount + ticker; specs
       cover a hit and a near-miss (an ambiguous member blocks the composite).
 - [ ] Stdout Recognized items show their tokens and composites; Ambiguous and Unrecognized lists are
@@ -31,6 +35,9 @@ readout now carries tokens and composite decisions per node, and the color-mode 
 
 - Sibling order for composites is the bounding-box order inside the parent (left to right, then top
   to bottom), not layer order; Figma layer order is unreliable in these files.
+- The Details file is "🖥️ Blockscout desktop pages" (the T01 fixtures came from it; its key is in
+  the developer's link, not here — cspell rejects it); `22842-169552` is a light-mode row there with
+  the mode-mismatched hint above.
 
 ## Leaf worklist
 
