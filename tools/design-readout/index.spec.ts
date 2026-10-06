@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import type { NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
 import { dumpPayload, parseArgs, readoutOf } from './index';
+import { loadSpriteNames } from './recognize';
 
 const URL = 'https://www.figma.com/design/abcDEF0123456789abcDEF/Pages?node-id=22842-174340';
 
@@ -40,21 +41,33 @@ describe('parseArgs', () => {
 
 describe('readoutOf', () => {
   const entry = readFixture('22842-178383-dark.json', '22842:178383');
+  const sprites = loadSpriteNames();
 
   it('defaults the regions to the content root and extracts the leaves under it', () => {
-    const { regions, extraction } = readoutOf(entry, undefined);
+    const { regions, extraction } = readoutOf(entry, undefined, sprites);
     expect(regions).toEqual([ '22842:178383' ]);
     expect(extraction.leaves.map((leaf) => leaf.id)).toEqual([ '22842:178386', '22842:178400', '22842:178403', '22842:178408', '22842:178412' ]);
   });
 
+  it('recognizes one leaf per extracted leaf: the block number and the timestamp hit, the amounts do not', () => {
+    const { recognitions } = readoutOf(entry, undefined, sprites);
+    expect(recognitions).toEqual([
+      { id: '22842:178386', status: 'recognized', decision: { signal: 'number', value: '1248139', entities: [ 'block', 'batch', 'epoch' ] } },
+      { id: '22842:178400', status: 'recognized', decision: { signal: 'relative-timestamp', value: '10s ago', entities: [ 'timestamp' ] } },
+      { id: '22842:178403', status: 'unrecognized', decision: null },
+      { id: '22842:178408', status: 'unrecognized', decision: null },
+      { id: '22842:178412', status: 'unrecognized', decision: null },
+    ]);
+  });
+
   it('extracts only under the given regions', () => {
-    const { regions, extraction } = readoutOf(entry, [ '22842:178399', '22842:178406' ]);
+    const { regions, extraction } = readoutOf(entry, [ '22842:178399', '22842:178406' ], sprites);
     expect(regions).toEqual([ '22842:178399', '22842:178406' ]);
     expect(extraction.leaves.map((leaf) => leaf.id)).toEqual([ '22842:178400', '22842:178408' ]);
   });
 
   it('fails on a region that is not under the node', () => {
-    expect(() => readoutOf(entry, [ '1:1' ])).toThrow('Region 1:1 is not under node 22842:178383.');
+    expect(() => readoutOf(entry, [ '1:1' ], sprites)).toThrow('Region 1:1 is not under node 22842:178383.');
   });
 });
 

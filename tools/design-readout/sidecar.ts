@@ -4,19 +4,20 @@ import path from 'path';
 import type { ColorMode } from './colormap';
 import { SIDECAR_DIR } from './config';
 import type { BoundingBox } from './figma';
+import type { Decision, Recognition, RecognitionStatus } from './recognize';
 import type { Leaf, LeafValues } from './values';
 
 export const SIDECAR_VERSION = 1;
 
-// Per node: the values and box this run extracted, plus the slots later phases fill — the decision
-// (component, props, tokens, the signal that fired), its status, and the developer's correction. A
-// `null` slot is one nothing has filled yet.
+// Per node: the values and box this run extracted, what recognition decided (the signal that fired
+// and what it says the node is; `null` when nothing fired) with its status, and the slot for the
+// developer's correction, `null` until one is given.
 export interface NodeRecord {
   readonly id: string;
   readonly values: LeafValues;
   readonly bbox: BoundingBox | null;
-  readonly decision: null;
-  readonly status: null;
+  readonly decision: Decision | null;
+  readonly status: RecognitionStatus;
   readonly correction: null;
 }
 
@@ -42,9 +43,17 @@ export interface SidecarInputs {
   readonly fileVersion: string;
   readonly regions: ReadonlyArray<string>;
   readonly leaves: ReadonlyArray<Leaf>;
+  readonly recognitions: ReadonlyArray<Recognition>;
+}
+
+function nodeRecordOf(leaf: Leaf, recognitions: ReadonlyMap<string, Recognition>): NodeRecord {
+  const recognition = recognitions.get(leaf.id);
+  if (recognition === undefined) throw new Error(`Leaf ${ leaf.id } has no recognition.`);
+  return { id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision: recognition.decision, status: recognition.status, correction: null };
 }
 
 export function buildRecord(inputs: SidecarInputs): SidecarRecord {
+  const recognitions = new Map(inputs.recognitions.map((recognition) => [ recognition.id, recognition ]));
   return {
     version: SIDECAR_VERSION,
     createdAt: inputs.createdAt,
@@ -53,7 +62,7 @@ export function buildRecord(inputs: SidecarInputs): SidecarRecord {
     file: { lastModified: inputs.lastModified, version: inputs.fileVersion },
     colorMode: null,
     regions: inputs.regions,
-    nodes: inputs.leaves.map((leaf) => ({ id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision: null, status: null, correction: null })),
+    nodes: inputs.leaves.map((leaf) => nodeRecordOf(leaf, recognitions)),
   };
 }
 

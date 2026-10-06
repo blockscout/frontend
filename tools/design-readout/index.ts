@@ -8,6 +8,8 @@ import { parseArgs as parseFlags } from '../cli/flags';
 import { buildThemeColorMap } from './colormap';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
+import type { Recognition } from './recognize';
+import { loadSpriteNames, recognize, renderRecognition } from './recognize';
 import { describeNode, renderOutline, scopeOutline, summarize } from './scope';
 import { buildRecord, sidecarPath, writeSidecar } from './sidecar';
 import type { NodeRef } from './url';
@@ -32,6 +34,10 @@ const USAGE = `Usage:
   icon instance name, trailing glyphs, bounding box — prints them with the Figma style and component
   names as hints (flagged where a hint disagrees with the value), and writes the values to one JSON
   sidecar under the main checkout's .ai/design-readout/. Hints are printed only, never written.
+
+  Last, it says what it recognizes per leaf — text shapes (hashes, numbers, timestamps, tickers, NFT
+  ids) first, then icon instance names against the sprite — and ends with the Recognized count and
+  the full Ambiguous and Unrecognized lists with their values; it names no component.
 
   <figma node URL>     https://www.figma.com/design/<fileKey>/<name>?node-id=<A>-<B>
                        (the node id is accepted as A-B or A:B; the file key comes from the URL)
@@ -101,10 +107,11 @@ export function dumpPayload(target: string, payload: NodesResponse, cwd: string)
 export interface Readout {
   readonly regions: ReadonlyArray<string>;
   readonly extraction: Extraction;
+  readonly recognitions: ReadonlyArray<Recognition>;
 }
 
 // The regions default to the outline's content root; chrome the outline dropped is excluded either way.
-export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | undefined): Readout {
+export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | undefined, spriteNames: ReadonlyArray<string>): Readout {
   const root = entry.document;
   const outline = scopeOutline(root);
   const regions = regionIds ?? [ outline.contentRoot.id ];
@@ -114,7 +121,8 @@ export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | u
     return node;
   });
   const excluded = new Set(outline.chrome.map((dropped) => dropped.id));
-  return { regions, extraction: extractValues(entry, nodes, excluded, buildThemeColorMap()) };
+  const extraction = extractValues(entry, nodes, excluded, buildThemeColorMap());
+  return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames) };
 }
 
 async function main(): Promise<void> {
@@ -126,7 +134,7 @@ async function main(): Promise<void> {
   console.log('');
   console.log(renderOutline(scopeOutline(entry.document)));
   console.log('');
-  const { regions, extraction } = readoutOf(entry, options.regions);
+  const { regions, extraction, recognitions } = readoutOf(entry, options.regions, loadSpriteNames());
   console.log(`Regions: ${ regions.join(', ') }`);
   console.log(renderExtraction(extraction));
   const target = sidecarPath(resolveMainCheckout(process.cwd()), ref.fileKey, ref.nodeId);
@@ -138,9 +146,12 @@ async function main(): Promise<void> {
     fileVersion: payload.version,
     regions,
     leaves: extraction.leaves,
+    recognitions,
   }));
   console.log('');
   console.log(`Sidecar written to ${ target }`);
+  console.log('');
+  console.log(renderRecognition(extraction.leaves, recognitions));
 }
 
 // run.sh always executes the compiled `tools/design-readout/dist/tools/design-readout/index.js`, so that path

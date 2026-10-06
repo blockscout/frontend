@@ -37,6 +37,6 @@ guessed component.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Lookalike normalizer and text-shape rule table with specs
-- [ ] 2 `[agent]` Icon-by-name recognition against the sprite name list with specs
-- [ ] 3 `[agent]` Status + decision in the sidecar; stdout lists; `CONTEXT.md` rows
+- [x] 1 `[agent]` Lookalike normalizer and text-shape rule table with specs
+- [x] 2 `[agent]` Icon-by-name recognition against the sprite name list with specs
+- [x] 3 `[agent]` Status + decision in the sidecar; stdout lists; `CONTEXT.md` rows
