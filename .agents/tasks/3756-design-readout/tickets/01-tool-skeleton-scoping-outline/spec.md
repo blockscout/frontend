@@ -8,9 +8,9 @@
 ## What to build
 
 A developer runs `pnpm design:readout <figma node URL>` and gets the scoping outline for that node: the
-content root the tool descended to, the mobile variant if one sits beside it, hidden full-width siblings
-(alternate screens), hidden children of the content root (states), and the chrome it dropped at each
-level, with the rule that dropped it (structural or name list). The outline is for the developer to
+content root the tool descended to and the chrome it dropped at each level, with the rule that dropped
+it (structural or name list). One link is one screen in one state: hidden layers are ignored, and
+siblings or variants are never looked for. The outline is for the developer to
 confirm before any readout; it is text on stdout. Without a token, or with a rejected one, the run fails
 with one clear line and never tries another source. `--help` documents the flags and that personal access
 tokens expire after at most 90 days. Nothing is written to disk yet — that is ticket 03.
@@ -29,13 +29,14 @@ How to verify: `pnpm design:readout <URL from Details>` in a shell that has the 
 - [ ] `--dump <path>` writes the raw REST payload so a fixture can be captured from any node later.
 - [ ] Scoping is a pure function over the node tree with specs against the saved fixtures: descends
       single-visible-child wrappers, drops chrome (structural rule *or* the shipped name list), stops at
-      the first node with two or more non-chrome children; hidden nodes are listed, never skipped.
+      the first node with two or more non-chrome children, then keeps dropping name-list chrome anywhere
+      inside it; hidden layers are ignored throughout.
 - [ ] `tools/design-readout/fixtures/` holds the two captured payloads named by node id, and a spec reads
       them; the fixtures are the only Figma data the tests touch.
 - [ ] `CONTEXT.md` follows `.agents/rules/docs.md` (where-to-look table, constraints, gotchas); the
       token variable is named in `config.ts` only, never in `CONTEXT.md` or any skill text.
 - [ ] `(human)` The outline printed for each of the two Details nodes matches what you see in Figma:
-      right content root, hidden candidates listed, chrome dropped and nothing else.
+      right content root, chrome dropped and nothing else.
 
 ## Details
 
@@ -46,10 +47,13 @@ How to verify: `pnpm design:readout <URL from Details>` in a shell that has the 
   shows it.
 - The developer's shell already exports the token (see Skill inputs); the agent inherits it, so it can
   run the tool and capture the fixtures itself. Capture them with `--dump`, not by hand-editing.
-- Chrome name list shipped in `config.ts`: menu, navigation, top bar, search header, footer (case- and
-  whitespace-insensitive substring match on the layer name).
-- Structural chrome rule: a library instance with no exposed children whose box spans the parent's
-  full width or full height.
+- Chrome name list shipped in `config.ts`: menu, navigation, top bar, search header, footer (substring
+  match on the layer name ignoring case and separators, so `topbar_desktop` meets `top bar`).
+- Structural chrome rule: a library instance with no exposed children whose box spans the *screen's*
+  (the linked node's) full width or full height — measured against the parent it would eat an
+  empty-state instance filling its column.
+- Wrapper rule: a plain frame whose visible children are all chrome is chrome (a sidebar frame holding
+  the menu and its collapse bar); otherwise the descent stops at it as a second content child.
 - `tools/review-screen/CONTEXT.md` is the model for the constraints section; the review-screen
   "A tool failure never fails a review" rule does *not* carry over — here a failed fetch is a failed run.
 
@@ -63,8 +67,8 @@ How to verify: `pnpm design:readout <URL from Details>` in a shell that has the 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold `tools/design-readout/` (run.sh, tsconfig, config, flags, `--help`, URL parse, package script)
-- [ ] 2 `[agent]` Figma nodes fetch with token handling and `--dump`
-- [ ] 3 `[agent]` Capture the two fixtures with `--dump` and commit them
-- [ ] 4 `[agent]` Scoping outline (content root, mobile variant, hidden candidates, chrome) with specs over the fixtures
-- [ ] 5 `[agent]` `CONTEXT.md` for the tool; add the tool to the per-directory list in `.agents/CLAUDE.md`
+- [x] 1 `[agent]` Scaffold `tools/design-readout/` (run.sh, tsconfig, config, flags, `--help`, URL parse, package script)
+- [x] 2 `[agent]` Figma nodes fetch with token handling and `--dump`
+- [x] 3 `[agent]` Capture the two fixtures with `--dump` and commit them
+- [x] 4 `[agent]` Scoping outline (content root, chrome) with specs over the fixtures
+- [x] 5 `[agent]` `CONTEXT.md` for the tool; add the tool to the per-directory list in `.agents/CLAUDE.md`

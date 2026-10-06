@@ -59,6 +59,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
+- `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/doc-links/` — the doc-link checker.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.

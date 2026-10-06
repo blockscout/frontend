@@ -1,0 +1,56 @@
+# Design readout — context
+
+Turns a Figma node into material a developer confirms before any markup work: in this phase, the
+*scoping outline* — which node is the content root and which chrome was dropped on the way down, with
+the rule that dropped it. It reads the node through the Figma REST API, never through the MCP; the task
+spec behind the tool and the phases after this one: `.agents/tasks/3756-design-readout/spec.md`.
+
+## Where to look
+
+| Question | Answer lives in |
+| --- | --- |
+| How do I run it? What do the flags do? | `pnpm design:readout --help` |
+| Which layer names count as chrome? Which token variable? | `./config.ts` |
+| Which URL forms are accepted? | `./url.ts`, with `./url.spec.ts` as the list |
+| How is the content root chosen, what is chrome, why do the chrome rules not reach equally far? | `./scope.ts` |
+| What does a run print? | `./scope.ts` (`renderOutline`), `./index.ts` (the header) |
+| How does the fetch fail, and with what message? | `./figma.ts` |
+| What does the raw payload look like? | `./fixtures/`, one `--dump` per node, named `<node id>-<light\|dark>.json` |
+
+## What an editor here must keep true
+
+- **A failed fetch is a failed run.** No token, a rejected token, a node not in the file: all exit
+  non-zero with one line on stderr and nothing on stdout, and the tool never tries another source. This
+  is the opposite of `tools/review-screen/`, whose failures still produce output; do not copy that rule
+  over.
+- **The token variable is named in `./config.ts` only.** Not here, not in a skill, not in `--help`. An
+  agent told the variable's name will try to set it.
+- **Scoping is a pure function of the node tree.** Everything in `./scope.ts` takes the REST payload's
+  document and nothing else, so the specs run over `./fixtures/` and the tests never reach Figma.
+  Keep new rules inside that boundary; a rule that needs a second request belongs in `./figma.ts` and
+  must be fed into `scopeOutline` as data.
+- **One link is one screen.** The developer links the exact node of one screen in one state; a state
+  or a mobile variant of it is a separate link. So the tool never looks for siblings, variants or
+  states, and a hidden layer (visibility off) is not part of the screen: it is dropped before any
+  rule runs, never counted, never printed.
+- **Fixtures are captured with `--dump`, never hand-edited.** They are the raw response for one node,
+  so a payload field the tool starts reading is already in them; the file name records the color mode
+  the payload showed.
+
+## Gotchas
+
+- **The structural rule measures against the linked node, so what you link changes what is chrome.**
+  Link a page frame and a sealed instance as tall as the page is a side rail; link a single table row
+  and a loader icon as tall as the row passes the same test. The outline is printed to be confirmed
+  for exactly this reason.
+
+## File map
+
+- `./index.ts` — flags, the fetch, `--dump`, the header and the outline on stdout; flag mechanics
+  shared with the sibling tools in `../cli/flags.ts`
+- `./config.ts` — token variable, API base, chrome name list, span tolerance
+- `./url.ts` — Figma node link → file key and canonical node id
+- `./figma.ts` — the nodes request, the node types the tool reads, the failure messages
+- `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
+- `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
+- `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

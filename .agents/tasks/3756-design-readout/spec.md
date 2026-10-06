@@ -34,12 +34,17 @@ is built only if the phase 1 gap log is small.
    the environment; the variable is the tool's concern only and no agent instruction names it. A missing or
    rejected token fails the run with a clear message; the tool never falls back to another source.
 2. **Scoping outline.** The tool's first output for a node is an outline for the developer to confirm:
-   the content root, the mobile variant, hidden full-width siblings (alternate screens), hidden children of
-   the content root (states), and the chrome it dropped. Chrome is recognized structurally (library
-   instances with no exposed children spanning the parent's width or height) *or* by a name list the tool
-   ships (menu, navigation, top bar, search header, footer). The content root is reached by descending
+   the content root and the chrome it dropped on the way down. One link is one screen in one state: a
+   state or a mobile variant of the screen is a separate node the developer links separately, so the
+   tool never looks for siblings or variants, and hidden layers (visibility off) are not part of the
+   screen and are ignored. Chrome is recognized structurally (library instances with no exposed children
+   spanning the *screen's* width or height — the linked node's, not the parent's, so an empty-state
+   instance filling its column is content), by a name list the tool ships (menu, navigation, top bar,
+   search header, footer; matched across case and separators), or by holding nothing but chrome (a
+   sidebar frame wrapping the menu and its collapse bar). The content root is reached by descending
    through single-visible-child wrappers, dropping chrome at each level, until a node with two or more
-   non-chrome children. Hidden nodes are listed as candidates, never skipped silently.
+   non-chrome children; inside the content root, chrome is still dropped wherever the name list matches
+   (a search header beside the page title), while the structural rule stops at the root.
 3. **Readout.** For each confirmed region the tool extracts, per leaf node, the *values*: text content,
    fill hex plus opacity per role (text, background, border, icon), font family / weight / size / line
    height, icon instance name, trailing glyphs, bounding box. The Figma style and component names are
