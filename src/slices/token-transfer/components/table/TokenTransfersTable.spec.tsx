@@ -14,7 +14,7 @@ import TokenTransfersTable from './TokenTransfersTable';
 
 const BATCH_PAGE = [ erc1155A, erc1155B, erc1155C, erc1155D ];
 const NEXT_PAGE = [ erc20, erc721 ];
-const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'asset', 'value' ] as const;
+const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ] as const;
 // The backend can push a transfer whose token is not catalogued yet (seen on
 // the address Token transfers tab via the websocket feed). The schema types the
 // field as non-null, so the mock has to be cast.
@@ -44,7 +44,7 @@ describe('TokenTransfersTable', () => {
     const { container } = render(<TokenTransfersTable surface="index" columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
 
     expect(getHeaders(container)).toEqual(
-      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ],
+      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
     expect(container.querySelectorAll('tbody tr:first-child td')).toHaveLength(ALL_COLUMNS.length);
   });
@@ -58,7 +58,7 @@ describe('TokenTransfersTable', () => {
   it('does not render a column that is unavailable on the surface', () => {
     const { container } = render(<TokenTransfersTable surface="tx" columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Token type', 'Transfer type', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ]);
+    expect(getHeaders(container)).toEqual([ 'Token type', 'Transfer type', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
   });
 
   it('puts the time format toggle in the timestamp header', () => {
@@ -85,6 +85,6 @@ describe('TokenTransfersTable', () => {
   it('renders the token surface defaults', () => {
     const { container } = render(<TokenTransfersTable surface="token" columns={ getDefaultColumnIds('token') } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Method', 'Timestamp', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ]);
+    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Method', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
   });
 });

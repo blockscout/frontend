@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransferColumnId } from '../../types/client';
@@ -126,26 +127,12 @@ const FromToCell = ({ item, isLoading, baseAddress }: CellProps) => (
   />
 );
 
-const TokenIdCell = ({ item, isLoading, tokenId, instance }: CellProps) => {
-  const nftTokenId = getNftTokenId(item);
-  if (!item.token || nftTokenId === undefined) {
-    return <Dash isLoading={ isLoading }/>;
-  }
-  const rowInstance = item.total && 'token_instance' in item.total ? item.total.token_instance : undefined;
-  return (
-    <NftEntity
-      hash={ item.token.address_hash }
-      id={ nftTokenId }
-      instance={ instance || rowInstance }
-      noLink={ tokenId === nftTokenId }
-      isLoading={ isLoading }
-    />
-  );
-};
-
 const AmountCell = ({ item, isLoading, chainConfig }: CellProps) => {
   const amount = getFungibleAmount(item);
   if (!amount) {
+    if (getNftTokenId(item) !== undefined) {
+      return <Skeleton loading={ isLoading }>1</Skeleton>;
+    }
     return item.token && isConfidentialTokenType(item.token.type) ?
       <ConfidentialValue loading={ isLoading }/> :
       <Dash isLoading={ isLoading }/>;
@@ -162,11 +149,37 @@ const AmountCell = ({ item, isLoading, chainConfig }: CellProps) => {
   );
 };
 
-const AssetCell = ({ item, isLoading }: CellProps) => {
+const AssetCell = ({ item, isLoading, tokenId, instance }: CellProps) => {
   if (!item.token) {
     return <Dash isLoading={ isLoading }/>;
   }
-  return <TokenEntity token={ item.token } isLoading={ isLoading } noCopy onlySymbol icon={{ marginRight: 1 }}/>;
+  const nftTokenId = getNftTokenId(item);
+  if (nftTokenId === undefined) {
+    return <TokenEntity token={ item.token } isLoading={ isLoading } noCopy onlySymbol icon={{ marginRight: 1 }}/>;
+  }
+  const rowInstance = item.total && 'token_instance' in item.total ? item.total.token_instance : undefined;
+  return (
+    <Flex alignItems="center" columnGap={ 2 }>
+      <NftEntity
+        hash={ item.token.address_hash }
+        id={ nftTokenId }
+        instance={ instance ?? rowInstance }
+        noLink={ tokenId === nftTokenId }
+        isLoading={ isLoading }
+        w="auto"
+        maxW="50%"
+      />
+      <TokenEntity
+        token={ item.token }
+        isLoading={ isLoading }
+        noIcon
+        noCopy
+        onlySymbol
+        w="auto"
+        maxW="50%"
+      />
+    </Flex>
+  );
 };
 
 const ValueCell = ({ item, isLoading, chainConfig }: CellProps) => {
@@ -200,8 +213,6 @@ const TokenTransferCellByColumn = ({ column, ...rest }: Props) => {
       return <BlockCell { ...rest }/>;
     case 'from_to':
       return <FromToCell { ...rest }/>;
-    case 'token_id':
-      return <TokenIdCell { ...rest }/>;
     case 'amount':
       return <AmountCell { ...rest }/>;
     case 'asset':

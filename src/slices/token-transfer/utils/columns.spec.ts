@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getAvailableColumns, getDefaultColumnIds } from './columns';
 
-const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'asset', 'value' ];
+const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ];
 
 describe('getAvailableColumns', () => {
   it('offers the whole vocabulary in order on the index, address and token surfaces', () => {
@@ -15,13 +15,13 @@ describe('getAvailableColumns', () => {
 
   it('does not offer the hash, method, timestamp and block columns on the tx surface', () => {
     expect(getAvailableColumns('tx').map(({ id }) => id)).toEqual(
-      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 
   it('names the columns for display', () => {
     expect(getAvailableColumns('index').map(({ name }) => name)).toEqual(
-      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Token ID', 'Amount', 'Asset', 'Value' ],
+      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
   });
 
@@ -38,13 +38,13 @@ describe('getDefaultColumnIds', () => {
 
   it('hides the type columns and block by default on the token surface', () => {
     expect(getDefaultColumnIds('token')).toEqual(
-      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 
   it('shows every available column by default on the tx surface', () => {
     expect(getDefaultColumnIds('tx')).toEqual(
-      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 

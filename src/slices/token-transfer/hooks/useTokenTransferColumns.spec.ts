@@ -37,9 +37,9 @@ describe('useTokenTransferColumns', () => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('tx');
 
-      expect(result.current.columns).toEqual([ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ]);
+      expect(result.current.columns).toEqual([ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ]);
       expect(result.current.selectableColumns.map(({ id }) => id)).toEqual(
-        [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+        [ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ],
       );
     });
   });
@@ -77,7 +77,7 @@ describe('useTokenTransferColumns', () => {
 
       const { result: nextVisit } = await renderColumnsHook('index');
       expect(nextVisit.current.columns).toEqual(
-        [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+        [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
       );
     });
   });

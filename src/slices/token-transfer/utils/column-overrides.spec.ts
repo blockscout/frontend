@@ -33,6 +33,12 @@ describe('parseColumnOverrides', () => {
     expect(parseColumnOverrides(cookie)).toEqual({ index: { block: false } });
   });
 
+  it('ignores the stale token_id column', () => {
+    expect(parseColumnOverrides(JSON.stringify({ index: { token_id: false, block: false } }))).toEqual({
+      index: { block: false },
+    });
+  });
+
   it('reads back what was serialised', () => {
     const overridesMap = { index: { block: false }, token: { type: true, timestamp: false } };
 
@@ -72,25 +78,25 @@ describe('setColumnVisibility', () => {
 describe('getVisibleColumnIds', () => {
   it('returns the surface defaults when there are no overrides', () => {
     expect(getVisibleColumnIds('token', undefined)).toEqual(
-      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'tx_hash', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 
   it('applies the overrides in vocabulary order', () => {
     expect(getVisibleColumnIds('token', { block: true, type: true, value: false })).toEqual(
-      [ 'tx_hash', 'type', 'method', 'timestamp', 'block', 'from_to', 'token_id', 'amount', 'asset' ],
+      [ 'tx_hash', 'type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset' ],
     );
   });
 
   it('lets columns absent from the overrides follow the current surface defaults', () => {
     expect(getVisibleColumnIds('index', { block: false })).toEqual(
-      [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 
   it('never shows a column unavailable on the surface', () => {
     expect(getVisibleColumnIds('tx', { tx_hash: true, block: true })).toEqual(
-      [ 'type', 'transfer_type', 'from_to', 'token_id', 'amount', 'asset', 'value' ],
+      [ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ],
     );
   });
 });

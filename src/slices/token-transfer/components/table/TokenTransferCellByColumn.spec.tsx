@@ -13,7 +13,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-import { erc1155A, erc20, erc721, erc8056 } from '../../mocks';
+import { erc1155A, erc20, erc404A, erc404B, erc721, erc8056 } from '../../mocks';
 import type { Props } from './TokenTransferCellByColumn';
 import TokenTransferCellByColumn from './TokenTransferCellByColumn';
 
@@ -58,28 +58,6 @@ describe('TokenTransferCellByColumn', () => {
     });
   });
 
-  describe('token id', () => {
-    it('shows the token id of an NFT row as a link to the instance', () => {
-      renderCell(erc721, 'token_id');
-
-      expect(screen.getByText('875879856')).toBeDefined();
-      expect(getInstanceLink()).toBeDefined();
-    });
-
-    it('shows a dash for a fungible row', () => {
-      const cell = renderCell(erc20, 'token_id');
-
-      expect(cell.textContent).toBe('-');
-    });
-
-    it('does not link the token id of the current instance', () => {
-      renderCell(erc721, 'token_id', { tokenId: '875879856' });
-
-      expect(screen.getByText('875879856')).toBeDefined();
-      expect(getInstanceLink()).toBeUndefined();
-    });
-  });
-
   describe('amount', () => {
     it('shows the fungible amount without its USD value', () => {
       const cell = renderCell(erc20, 'amount');
@@ -93,10 +71,28 @@ describe('TokenTransferCellByColumn', () => {
       expect(cell.textContent).toBe('•••••');
     });
 
-    it('shows a dash for an NFT row without a value', () => {
+    it('shows one for an NFT row without a value', () => {
       const cell = renderCell(erc721, 'amount');
 
-      expect(cell.textContent).toBe('-');
+      expect(cell.textContent).toBe('1');
+    });
+
+    it('shows one for an ERC-404 row with a token id', () => {
+      const cell = renderCell(erc404B, 'amount');
+
+      expect(cell.textContent).toBe('1');
+    });
+
+    it('shows the value of an ERC-1155 row rather than its token id', () => {
+      const cell = renderCell(erc1155A, 'amount');
+
+      expect(cell.textContent).toBe('42');
+    });
+
+    it('shows the fungible amount of an ERC-404 row without a token id', () => {
+      const cell = renderCell(erc404A, 'amount');
+
+      expect(cell.textContent).toBe('42,000,000');
     });
 
     it('scales the amount by the token multiplier and tags it', async() => {
@@ -125,11 +121,38 @@ describe('TokenTransferCellByColumn', () => {
   });
 
   describe('asset', () => {
-    it('shows the token symbol', () => {
+    it('shows only the token symbol for a fungible row', () => {
       const cell = renderCell(erc20, 'asset');
 
-      expect(cell.textContent).toContain('ARIA');
-      expect(cell.textContent).not.toContain('ARIANEE');
+      expect(cell.textContent).toBe('ARIA');
+      expect(getInstanceLink()).toBeUndefined();
+    });
+
+    it('shows the token id of an NFT row as a link to the instance, then the token symbol', () => {
+      const cell = renderCell(erc721, 'asset');
+
+      expect(cell.textContent).toBe('875879856AriaSA');
+      expect(getInstanceLink()?.textContent).toBe('875879856');
+    });
+
+    it('does not link the token id of the current instance', () => {
+      const cell = renderCell(erc721, 'asset', { tokenId: '875879856' });
+
+      expect(cell.textContent).toBe('875879856AriaSA');
+      expect(getInstanceLink()).toBeUndefined();
+    });
+
+    it('shows the token id of an ERC-1155 row beside the symbol', () => {
+      renderCell(erc1155A, 'asset');
+
+      expect(getInstanceLink()?.textContent).toBe('123');
+    });
+
+    it('shows only the token symbol for an ERC-404 row without a token id', () => {
+      const cell = renderCell(erc404A, 'asset');
+
+      expect(cell.textContent).toBe('MY_SYMBOL_IS_VERY_LONG');
+      expect(getInstanceLink()).toBeUndefined();
     });
   });
 });

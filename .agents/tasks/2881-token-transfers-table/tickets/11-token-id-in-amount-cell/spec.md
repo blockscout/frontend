@@ -70,9 +70,9 @@ cells" bullet leaves Out of scope.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Remove `token_id` from the vocabulary / surface states; rename and widen `asset`;
+- [x] 1 `[agent]` Remove `token_id` from the vocabulary / surface states; rename and widen `asset`;
       update column specs
-- [ ] 2 `[agent]` `AssetCell` NFT branch (`NftEntity` + symbol link, 50/50) and `AmountCell` `1`
+- [x] 2 `[agent]` `AssetCell` NFT branch (`NftEntity` + symbol link, 50/50) and `AmountCell` `1`
       fallback; move and extend the cell specs
-- [ ] 3 `[human]` Style the cell to the mockup and regenerate the Playwright baselines —
+- [x] 3 `[human]` Style the cell to the mockup and regenerate the Playwright baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=3882-31747)
