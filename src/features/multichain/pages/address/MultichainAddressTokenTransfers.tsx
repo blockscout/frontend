@@ -30,8 +30,8 @@ import { MultichainProvider } from 'src/features/multichain/context';
 import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';

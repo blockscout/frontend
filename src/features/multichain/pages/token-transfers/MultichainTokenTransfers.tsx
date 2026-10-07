@@ -20,9 +20,9 @@ import { MultichainProvider } from 'src/features/multichain/context';
 import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 

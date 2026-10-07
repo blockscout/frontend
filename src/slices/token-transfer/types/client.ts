@@ -20,14 +20,3 @@ export interface TokenTransferColumn {
   readonly isNumeric?: boolean;
   readonly width: string;
 }
-
-export type TokenTransferColumnState = 'on' | 'off' | 'unavailable';
-
-export type TokenTransferColumnVisibility = Partial<Record<TokenTransferColumnId, boolean>>;
-
-export interface TokenTransferColumnOverrides {
-  readonly visibility?: TokenTransferColumnVisibility;
-  readonly order?: ReadonlyArray<TokenTransferColumnId>;
-}
-
-export type TokenTransferColumnOverridesMap = Partial<Record<TokenTransferSurface, TokenTransferColumnOverrides>>;

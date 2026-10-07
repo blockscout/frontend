@@ -9,8 +9,8 @@ import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 

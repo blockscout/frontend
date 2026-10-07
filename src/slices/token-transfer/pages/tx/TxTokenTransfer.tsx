@@ -22,9 +22,9 @@ import TxTokenTransferCrossChain from 'src/features/cross-chain-txs/pages/tx/TxT
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getQueryParamString from 'src/shared/router/get-query-param-string';

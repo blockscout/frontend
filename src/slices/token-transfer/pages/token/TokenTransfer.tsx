@@ -16,7 +16,7 @@ import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useToke
 
 import TokenAdvancedFilterLink from 'src/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
 
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 import Pagination from 'src/shared/pagination/Pagination';

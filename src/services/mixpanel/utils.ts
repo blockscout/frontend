@@ -185,8 +185,8 @@ Type extends EventTypes.ADDRESS_WIDGET ? {
   Name: string;
 } :
 Type extends EventTypes.TABLE_COLUMNS ? {
-  Table: 'Token transfers';
-  Surface: string;
+  Table: 'Token transfers' | 'Advanced filter';
+  Surface?: string;
   Column: string;
   State: 'On' | 'Off' | 'Reset' | 'Moved up' | 'Moved down';
 } :

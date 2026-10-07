@@ -2,7 +2,8 @@
 
 import { mapValues } from 'es-toolkit';
 
-import type { TokenTransferColumn, TokenTransferColumnId, TokenTransferColumnState, TokenTransferSurface } from '../types/client';
+import type { TokenTransferColumn, TokenTransferColumnId, TokenTransferSurface } from '../types/client';
+import type { ColumnStates } from 'src/shared/lists/columns/types';
 
 export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
   { id: 'tx_hash', name: 'Txn hash', width: '135px' },
@@ -17,9 +18,7 @@ export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
   { id: 'value', name: 'Value', isNumeric: true, width: '120px' },
 ];
 
-type SurfaceColumnStates = Readonly<Record<TokenTransferColumnId, TokenTransferColumnState>>;
-
-export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, SurfaceColumnStates>> = {
+export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<TokenTransferColumnId>>> = {
   index: {
     tx_hash: 'on',
     type: 'on',

@@ -15,8 +15,8 @@ import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/A
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import ColumnsButton from 'src/shared/filters/ColumnsButton';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';

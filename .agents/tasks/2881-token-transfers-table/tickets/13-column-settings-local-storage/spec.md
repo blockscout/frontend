@@ -97,15 +97,15 @@ Decisions from the developer grilling, 2026-10-07:
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move `ColumnsButton` + `ColumnList*` + spec to `src/shared/lists/columns/`; update
+- [x] 1 `[agent]` Move `ColumnsButton` + `ColumnList*` + spec to `src/shared/lists/columns/`; update
       importers
-- [ ] 2 `[agent]` Generic overrides utils (single `{ visibility, order }` object, column-agnostic) +
+- [x] 2 `[agent]` Generic overrides utils (single `{ visibility, order }` object, column-agnostic) +
       localStorage store (`useSyncExternalStore` subscribe / snapshot cache / same-tab notify / `storage`
       event / in-memory fallback); specs
-- [ ] 3 `[agent]` `usePersistedColumns` hook; Mixpanel `TABLE_COLUMNS` payload change (`Table` union,
+- [x] 3 `[agent]` `usePersistedColumns` hook; Mixpanel `TABLE_COLUMNS` payload change (`Table` union,
       optional `Surface`, `Column` = id); spec
-- [ ] 4 `[agent]` `useTokenTransferColumns` as a wrapper; remove the cookie name, the server-cookie read and
+- [x] 4 `[agent]` `useTokenTransferColumns` as a wrapper; remove the cookie name, the server-cookie read and
       the surface-map utils; slim its spec
-- [ ] 5 `[agent]` Advanced filter on the shared hook (multiplier `unavailable` per chain); Vitest
-- [ ] 6 `[human]` Verify hard reload, client navigation, cross-tab sync and Safari private mode on both
+- [x] 5 `[agent]` Advanced filter on the shared hook (multiplier `unavailable` per chain); Vitest
+- [x] 6 `[human]` Verify hard reload, client navigation, cross-tab sync and Safari private mode on both
       tables
