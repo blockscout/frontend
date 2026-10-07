@@ -18,15 +18,15 @@ without `--gap` is rejected, because every correction is by definition a miss.
 
 ## Acceptance criteria
 
-- [ ] Re-run diff is a pure function over two records with specs: unchanged (prints nothing per
+- [x] Re-run diff is a pure function over two records with specs: unchanged (prints nothing per
       node), changed values, changed decision, new node, vanished node.
-- [ ] Carry-over: a correction on an unchanged node is kept and counted as recognized by correction;
+- [x] Carry-over: a correction on an unchanged node is kept and counted as recognized by correction;
       on a changed node it is kept and flagged stale; specs cover both.
-- [ ] `--correct` + `--gap` update the sidecar and append to `gaps.md`; the category is validated
+- [x] `--correct` + `--gap` update the sidecar and append to `gaps.md`; the category is validated
       against the six; a correction with no `--gap` exits non-zero with the reason.
-- [ ] `gaps.md` is created with a header line on first write and only appended afterwards; a spec
+- [x] `gaps.md` is created with a header line on first write and only appended afterwards; a spec
       writes twice into a temp dir.
-- [ ] `CONTEXT.md` gains the gap log row and the "a correction is always a miss" constraint.
+- [x] `CONTEXT.md` gains the gap log row and the "a correction is always a miss" constraint.
 
 ## Details
 
@@ -35,6 +35,6 @@ without `--gap` is rejected, because every correction is by definition a miss.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Re-run diff and correction carry-over with specs
-- [ ] 2 `[agent]` `--correct` / `--gap` flags, sidecar update, `gaps.md` append, specs
-- [ ] 3 `[agent]` `CONTEXT.md` rows and `--help`
+- [x] 1 `[agent]` Re-run diff and correction carry-over with specs
+- [x] 2 `[agent]` `--correct` / `--gap` flags, sidecar update, `gaps.md` append, specs
+- [x] 3 `[agent]` `CONTEXT.md` rows and `--help`

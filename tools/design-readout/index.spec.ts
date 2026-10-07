@@ -6,8 +6,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import type { NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
-import { dumpPayload, parseArgs, readoutOf } from './index';
+import { GAP_LOG_HEADER, gapLogPath } from './gaps';
+import { dumpPayload, parseArgs, readoutOf, recordCorrection } from './index';
 import { loadSpriteNames } from './recognize';
+import { buildRecord, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 
 const URL = 'https://www.figma.com/design/abcDEF0123456789abcDEF/Pages?node-id=22842-174340';
 
@@ -19,8 +21,9 @@ function readFixture(file: string, nodeId: string): NodeEntry {
 describe('parseArgs', () => {
   it('takes the node URL as the one positional and --dump in both forms', () => {
     expect(parseArgs([ URL ])).toEqual({
-      options: { dump: undefined, regions: undefined },
+      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined },
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
+      correction: undefined,
     });
     expect(parseArgs([ URL, '--dump', 'out.json' ]).options.dump).toBe('out.json');
     expect(parseArgs([ '--dump=out.json', URL ]).options.dump).toBe('out.json');
@@ -36,6 +39,87 @@ describe('parseArgs', () => {
     expect(() => parseArgs([ URL, URL ])).toThrow(/Unexpected argument/);
     expect(() => parseArgs([ '22842:174340' ])).toThrow(/Not a Figma node URL: 22842:174340\nUsage:/);
     expect(() => parseArgs([ URL, '--json' ])).toThrow(/Unknown flag: --json/);
+  });
+
+  it('takes --correct with the node id, the component and its props as words, and the --gap category', () => {
+    expect(parseArgs([ URL, '--correct', '22842-178386', 'BlockEntity', 'noIcon', 'size=sm', '--gap', 'context' ]).correction).toEqual({
+      nodeId: '22842:178386',
+      component: 'BlockEntity',
+      props: [ 'noIcon', 'size=sm' ],
+      gap: 'context',
+    });
+    expect(parseArgs([ '--gap=icon', URL, '--correct=1:2', 'IconSvg' ]).correction).toEqual({ nodeId: '1:2', component: 'IconSvg', props: [], gap: 'icon' });
+  });
+
+  it('rejects a correction without --gap, because a correction is always a miss', () => {
+    expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity' ]))
+      .toThrow(/A correction is always a miss: --correct needs --gap <shape\|icon\|color\|composite\|context\|layout>\nUsage:/);
+  });
+
+  it('rejects a bad category, a correction with no component, a bad node id, and --gap on its own', () => {
+    expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity', '--gap', 'typo' ]))
+      .toThrow(/Not a gap category: typo; --gap takes one of shape, icon, color, composite, context, layout\nUsage:/);
+    expect(() => parseArgs([ URL, '--correct', '1-2', '--gap', 'shape' ])).toThrow(/--correct 1:2 needs the component the node is, after the URL\nUsage:/);
+    expect(() => parseArgs([ URL, '--correct', 'abc', 'BlockEntity', '--gap', 'shape' ])).toThrow(/Not a node id in --correct: abc\nUsage:/);
+    expect(() => parseArgs([ URL, '--gap', 'shape' ])).toThrow(/--gap goes with --correct/);
+  });
+});
+
+describe('recordCorrection', () => {
+  const ref = { fileKey: 'KEY', nodeId: '22842:178383' };
+  const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const };
+  let tmp = '';
+
+  afterEach(() => {
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+    tmp = '';
+  });
+
+  function seedSidecar(): string {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-correct-'));
+    const entry = readFixture('22842-178383-dark.json', '22842:178383');
+    const { regions, extraction, recognitions } = readoutOf(entry, undefined, loadSpriteNames());
+    const target = sidecarPath(tmp, ref.fileKey, ref.nodeId);
+    writeSidecar(target, buildRecord({
+      createdAt: '2026-10-06T10:00:00.000Z',
+      fileKey: ref.fileKey,
+      nodeId: ref.nodeId,
+      lastModified: '2026-10-01T00:00:00Z',
+      fileVersion: '42',
+      colorMode: extraction.colorMode.mode,
+      regions,
+      leaves: extraction.leaves,
+      recognitions,
+    }));
+    return target;
+  }
+
+  it('writes the correction into the sidecar and appends one line to the gap log, without a fetch', () => {
+    const target = seedSidecar();
+    const now = new Date('2026-10-07T09:30:00.000Z');
+    const { record, gapLine } = recordCorrection(tmp, ref, request, now);
+    const correction = { component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context', recordedAt: '2026-10-07T09:30:00.000Z', stale: false };
+    expect(record.nodes.find((node) => node.id === '22842:178386')?.correction).toEqual(correction);
+    expect(readSidecar(target)).toEqual(record);
+    expect(gapLine).toBe([
+      '- 2026-10-07 | KEY | 22842:178386 | context | ',
+      'recognized: 22842:178386 text "1248139" — Inter 700 14/20; text #63B3ED — number: block or batch or epoch | BlockEntity noIcon',
+    ].join(''));
+    expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gapLine }\n`);
+  });
+
+  it('fails on a missing sidecar, naming the path it expected', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-correct-'));
+    expect(() => recordCorrection(tmp, ref, request, new Date())).toThrow(
+      `No sidecar for node 22842:178383: run the readout first; it writes ${ sidecarPath(tmp, 'KEY', '22842:178383') }.`,
+    );
+    expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
+  });
+
+  it('fails on a node the sidecar does not hold, and logs no gap', () => {
+    seedSidecar();
+    expect(() => recordCorrection(tmp, ref, { ...request, nodeId: '9:9' }, new Date())).toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
+    expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
   });
 });
 

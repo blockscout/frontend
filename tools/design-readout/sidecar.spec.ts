@@ -5,7 +5,7 @@ import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import type { Recognition } from './recognize';
-import { buildRecord, readSidecar, sidecarPath, writeSidecar } from './sidecar';
+import { applyCorrection, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 import type { Leaf } from './values';
 
 let tmp = '';
@@ -114,6 +114,34 @@ describe('buildRecord', () => {
       expect(Object.keys(node).sort()).toEqual([ 'bbox', 'composite', 'correction', 'decision', 'id', 'status', 'tokens', 'values' ]);
     }
     expect(JSON.stringify(built)).not.toMatch(/hint|style|component|layer|name/i);
+  });
+});
+
+describe('isGapCategory', () => {
+  it('accepts exactly the six categories', () => {
+    for (const category of [ 'shape', 'icon', 'color', 'composite', 'context', 'layout' ]) expect(isGapCategory(category)).toBe(true);
+    expect(isGapCategory('Shape')).toBe(false);
+    expect(isGapCategory('typo')).toBe(false);
+  });
+});
+
+describe('applyCorrection', () => {
+  const correction = { component: 'IconSvg', props: [ 'name=x' ], gap: 'icon' as const, recordedAt: '2026-10-07T09:30:00.000Z', stale: false };
+
+  it('sets the correction on the named node and leaves the rest of the record alone', () => {
+    const corrected = applyCorrection(record(), '1:3', correction);
+    expect(corrected.nodes[1]).toEqual({ ...record().nodes[1], correction });
+    expect({ ...corrected, nodes: undefined }).toEqual({ ...record(), nodes: undefined });
+    expect(corrected.nodes[0]).toEqual(record().nodes[0]);
+  });
+
+  it('replaces an earlier correction on the same node', () => {
+    const twice = applyCorrection(applyCorrection(record(), '1:3', { ...correction, stale: true }), '1:3', correction);
+    expect(twice.nodes[1].correction).toEqual(correction);
+  });
+
+  it('rejects a node that is not in the record, naming the ones that are', () => {
+    expect(() => applyCorrection(record(), '9:9', correction)).toThrow('Node 9:9 is not in the sidecar of 22842:178383; its nodes are 1:2, 1:3.');
   });
 });
 

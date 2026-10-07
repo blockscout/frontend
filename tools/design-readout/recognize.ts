@@ -352,7 +352,7 @@ function describeUnmapped(tokens: ReadonlyArray<ColorTokens>): string {
   return `no token serves ${ unmapped.map((entry) => `${ entry.role } ${ entry.color }`).join(', ') }`;
 }
 
-function describeWhy(leaf: Leaf, recognition: Recognition): string {
+export function describeWhy(leaf: Leaf, recognition: Pick<Recognition, 'decision' | 'status' | 'tokens'>): string {
   const { decision } = recognition;
   if (decision === null) {
     if (leaf.values.kind === 'icon') return `no sprite icon is named like "${ leaf.values.icon }"`;

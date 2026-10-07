@@ -28,6 +28,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | How is an icon instance name matched to a sprite name? What counts as "beside"? | `normalizeIconName` / `matchIconName` in `./recognize.ts`; the adjacency gap in `./config.ts` |
 | Which composites exist, what are their parts, when does one not fire? | `COMPOSITE_RULES` in `./recognize.ts` and the comment above it; the member gap in `./config.ts` |
 | What can a node's status be, and what does each mean? | `RecognitionStatus` in `./recognize.ts`: `recognized` (a signal fired and settles the shape), `ambiguous` (a signal fired but the shape alone cannot settle it — a truncated hash with no entity icon beside it), `unrecognized` (nothing fired; the values are listed, never a guess) |
+| What does a second run for the same node print, and what counts as a change? | `diffRecords` and `renderRerun` in `./rerun.ts`: values or decision per node, new and vanished nodes; a box move alone is not a change |
+| What happens to a correction when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
+| How do I record what a node really is? | `pnpm design:readout <url> --correct <nodeId> <component> [<props…>] --gap <category>`; `recordCorrection` in `./index.ts`, the slot is `Correction` in `./sidecar.ts` |
+| Where is the gap log, what is one line of it, which categories exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` in `./config.ts` is the list |
 
 ## What an editor here must keep true
 
@@ -60,6 +64,12 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   style names misleading; a hint in the record would be read back as a fact by the next phase.
 - **The sidecar lives in the main checkout**, resolved through the git common dir (`../cli/checkout.ts`),
   so every worktree reads and writes the same record for a node and the file outlives the worktree.
+- **A correction is always a miss.** `--correct` without `--gap` exits non-zero: the phase 2
+  decision is a hand count over `gaps.md`, and a correction that skips the log makes the count lie
+  small. The gap log is append-only, header once; nothing here rewrites or prunes it.
+- **A re-run never drops a correction on its own.** Values changed under it → kept and `stale`;
+  decision changed under it (a new rule) → kept as-is, since the developer judged the values, not
+  the rule. Only a vanished node takes its correction with it, and the re-run says so.
 - **Fixtures are captured with `--dump`, never hand-edited.** They are the raw response for one node,
   so a payload field the tool starts reading is already in them; the file name records the color mode
   the payload showed.
@@ -88,9 +98,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, `--regions`, the header, outline and values on stdout, the
-  sidecar write; flag mechanics shared with the sibling tools in `../cli/flags.ts`
-- `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder, what a
-  text style name is taken to claim
+  sidecar write or the re-run diff, the `--correct` path; flag mechanics shared with the sibling
+  tools in `../cli/flags.ts`
+- `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder, gap log
+  name and categories, what a text style name is taken to claim
 - `./url.ts` — Figma node link → file key and canonical node id
 - `./figma.ts` — the nodes request, the node types the tool reads, the failure messages
 - `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
@@ -101,6 +112,9 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - `./recognize.ts` — the lookalike normalizer, the text-shape rule table, icon matching against the
   sprite list, fills → tokens, the composite rule table, the per-leaf status and decision, the closing
   stdout lists
-- `./sidecar.ts` — the record shape, its path under the main checkout, writing and reading one
+- `./sidecar.ts` — the record shape with the correction slot, its path under the main checkout,
+  writing, reading and correcting one
+- `./rerun.ts` — the diff of two records, the correction carry-over, the re-run text
+- `./gaps.ts` — the gap log: its path, one line's format, the append
 - `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

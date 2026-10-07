@@ -6,12 +6,16 @@ import { resolveMainCheckout } from '../cli/checkout';
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
 import { buildThemeColorMap } from './colormap';
+import { GAP_CATEGORIES } from './config';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
+import { appendGap, gapLogPath } from './gaps';
 import type { Recognition } from './recognize';
 import { loadSpriteNames, recognize, renderRecognition } from './recognize';
+import { carryCorrections, diffRecords, renderRerun } from './rerun';
 import { describeNode, renderOutline, scopeOutline, summarize } from './scope';
-import { buildRecord, sidecarPath, writeSidecar } from './sidecar';
+import type { Correction, GapCategory, SidecarRecord } from './sidecar';
+import { applyCorrection, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 import type { NodeRef } from './url';
 import { parseNodeRef } from './url';
 import type { Extraction } from './values';
@@ -20,10 +24,13 @@ import { extractValues, findNode, renderExtraction } from './values';
 export interface CliOptions {
   dump: string | undefined;
   regions: ReadonlyArray<string> | undefined;
+  correct: string | undefined;
+  gap: GapCategory | undefined;
 }
 
 const USAGE = `Usage:
   design:readout <figma node URL> [--regions <ids>] [--dump <path>]
+  design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category>
 
   Reads the node through the Figma REST API and prints its scoping outline for you to confirm: the
   content root the tool descended to and the chrome dropped at each level with the rule that dropped
@@ -42,11 +49,22 @@ const USAGE = `Usage:
   with tokens and composites and the full Ambiguous and Unrecognized lists with their values; it
   names no component.
 
+  A node that already has a sidecar is diffed against it instead: only the leaves whose values or
+  decision changed are printed, plus new and vanished ones. A correction carries over to the new
+  sidecar; where the node's values changed it is kept but flagged STALE for you to re-confirm.
+
+  --correct records what a node really is, against what the tool said, and appends one line to the
+  gap log beside the sidecars (.ai/design-readout/gaps.md). It works on the existing sidecar and
+  needs no token. A correction is always a miss, so --gap is required with it.
+
   <figma node URL>     https://www.figma.com/design/<fileKey>/<name>?node-id=<A>-<B>
                        (the node id is accepted as A-B or A:B; the file key comes from the URL)
   --regions <ids>      the confirmed regions, comma-separated node ids (A-B or A:B); default: the
                        content root the outline names
   --dump <path>        also write the raw REST payload to this file, e.g. to capture a test fixture
+  --correct <nodeId>   the leaf to correct, by node id (A-B or A:B), followed by the repo component
+                       it is and any props, as words: --correct 22842-178386 BlockEntity noIcon
+  --gap <category>     the kind of miss the correction fixes: ${ GAP_CATEGORIES.join(', ') }
 
   The run needs a Figma personal access token in the environment and fails without one; it never
   reads another source. Personal access tokens expire after at most 90 days, so a rejected token
@@ -54,12 +72,19 @@ const USAGE = `Usage:
 
 const NODE_ID = /^(\d+)[-:](\d+)$/;
 
+function parseNodeId(raw: string, flag: string): string {
+  const match = NODE_ID.exec(raw.trim());
+  if (match === null) throw new Error(`Not a node id in ${ flag }: ${ raw.trim() }\n${ USAGE }`);
+  return `${ match[1] }:${ match[2] }`;
+}
+
 function parseRegionIds(value: string): Array<string> {
-  return value.split(',').map((raw) => {
-    const match = NODE_ID.exec(raw.trim());
-    if (match === null) throw new Error(`Not a node id in --regions: ${ raw.trim() }\n${ USAGE }`);
-    return `${ match[1] }:${ match[2] }`;
-  });
+  return value.split(',').map((raw) => parseNodeId(raw, '--regions'));
+}
+
+function parseGapCategory(value: string): GapCategory {
+  if (!isGapCategory(value)) throw new Error(`Not a gap category: ${ value }; --gap takes one of ${ GAP_CATEGORIES.join(', ') }\n${ USAGE }`);
+  return value;
 }
 
 const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpec<CliOptions>>([
@@ -77,20 +102,48 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--regions', { kind: 'value', apply: (options, value) => {
     options.regions = parseRegionIds(value);
   } } ],
+  [ '--correct', { kind: 'value', apply: (options, value) => {
+    options.correct = parseNodeId(value, '--correct');
+  } } ],
+  [ '--gap', { kind: 'value', apply: (options, value) => {
+    options.gap = parseGapCategory(value);
+  } } ],
 ]);
+
+export interface CorrectionRequest {
+  readonly nodeId: string;
+  readonly component: string;
+  readonly props: ReadonlyArray<string>;
+  readonly gap: GapCategory;
+}
 
 export interface ParsedCli {
   readonly options: CliOptions;
   readonly ref: NodeRef;
+  readonly correction: CorrectionRequest | undefined;
+}
+
+const DEFAULT_OPTIONS: CliOptions = { dump: undefined, regions: undefined, correct: undefined, gap: undefined };
+
+function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): CorrectionRequest | undefined {
+  if (options.correct === undefined) {
+    if (options.gap !== undefined) throw new Error(`--gap goes with --correct; nothing to log without a correction\n${ USAGE }`);
+    if (words.length > 0) throw new Error(`Unexpected argument: ${ words[0] }\n${ USAGE }`);
+    return undefined;
+  }
+  if (words.length === 0) throw new Error(`--correct ${ options.correct } needs the component the node is, after the URL\n${ USAGE }`);
+  if (options.gap === undefined) {
+    throw new Error(`A correction is always a miss: --correct needs --gap <${ GAP_CATEGORIES.join('|') }>\n${ USAGE }`);
+  }
+  return { nodeId: options.correct, component: words[0], props: words.slice(1), gap: options.gap };
 }
 
 export function parseArgs(argv: ReadonlyArray<string>): ParsedCli {
-  const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, { dump: undefined, regions: undefined }, { kind: 'reject', usage: USAGE });
+  const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, { ...DEFAULT_OPTIONS }, { kind: 'reject', usage: USAGE });
   if (rest.length === 0) throw new Error(`Missing the Figma node URL\n${ USAGE }`);
-  if (rest.length > 1) throw new Error(`Unexpected argument: ${ rest[1] }\n${ USAGE }`);
   const ref = parseNodeRef(rest[0]);
   if (ref === undefined) throw new Error(`Not a Figma node URL: ${ rest[0] }\n${ USAGE }`);
-  return { options, ref };
+  return { options, ref, correction: parseCorrection(options, rest.slice(1)) };
 }
 
 function renderHeader(payload: NodesResponse, root: FigmaNode): string {
@@ -129,8 +182,35 @@ export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | u
   return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames, map, extraction.colorMode.mode) };
 }
 
-async function main(): Promise<void> {
-  const { options, ref } = parseArgs(process.argv.slice(2));
+export interface CorrectionOutcome {
+  readonly record: SidecarRecord;
+  readonly gapLine: string;
+}
+
+// Offline on purpose: the correction is about the sidecar the developer just read, so a fetch would
+// only risk writing a correction against values they have not seen.
+export function recordCorrection(mainCheckout: string, ref: NodeRef, request: CorrectionRequest, now: Date): CorrectionOutcome {
+  const target = sidecarPath(mainCheckout, ref.fileKey, ref.nodeId);
+  if (!fs.existsSync(target)) throw new Error(`No sidecar for node ${ ref.nodeId }: run the readout first; it writes ${ target }.`);
+  const recordedAt = now.toISOString();
+  const correction: Correction = { component: request.component, props: request.props, gap: request.gap, recordedAt, stale: false };
+  const record = applyCorrection(readSidecar(target), request.nodeId, correction);
+  writeSidecar(target, record);
+  const node = record.nodes.find((candidate) => candidate.id === request.nodeId);
+  if (node === undefined) throw new Error(`Node ${ request.nodeId } vanished from the sidecar while correcting it.`);
+  const gapLine = appendGap(gapLogPath(mainCheckout), { date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
+  return { record, gapLine };
+}
+
+function runCorrection(ref: NodeRef, request: CorrectionRequest): void {
+  const mainCheckout = resolveMainCheckout(process.cwd());
+  const { gapLine } = recordCorrection(mainCheckout, ref, request, new Date());
+  console.log(`Correction recorded for ${ request.nodeId } in ${ sidecarPath(mainCheckout, ref.fileKey, ref.nodeId) }`);
+  console.log(`Gap logged in ${ gapLogPath(mainCheckout) }:`);
+  console.log(gapLine);
+}
+
+async function runReadout(ref: NodeRef, options: CliOptions): Promise<void> {
   const payload = await fetchNodes(ref);
   if (options.dump !== undefined) console.log(`Raw payload written to ${ dumpPayload(options.dump, payload, process.cwd()) }`);
   const entry = entryOf(payload, ref.nodeId);
@@ -140,9 +220,8 @@ async function main(): Promise<void> {
   console.log('');
   const { regions, extraction, recognitions } = readoutOf(entry, options.regions, loadSpriteNames());
   console.log(`Regions: ${ regions.join(', ') }`);
-  console.log(renderExtraction(extraction));
   const target = sidecarPath(resolveMainCheckout(process.cwd()), ref.fileKey, ref.nodeId);
-  writeSidecar(target, buildRecord({
+  const record = buildRecord({
     createdAt: new Date().toISOString(),
     fileKey: ref.fileKey,
     nodeId: ref.nodeId,
@@ -152,11 +231,32 @@ async function main(): Promise<void> {
     regions,
     leaves: extraction.leaves,
     recognitions,
-  }));
+  });
+  const previous = fs.existsSync(target) ? readSidecar(target) : undefined;
+  if (previous === undefined) {
+    console.log(renderExtraction(extraction));
+    writeSidecar(target, record);
+    console.log('');
+    console.log(`Sidecar written to ${ target }`);
+    console.log('');
+    console.log(renderRecognition(extraction.leaves, recognitions));
+    return;
+  }
+  const merged = carryCorrections(previous, record);
+  writeSidecar(target, merged);
   console.log('');
-  console.log(`Sidecar written to ${ target }`);
+  console.log(`Sidecar updated at ${ target }`);
   console.log('');
-  console.log(renderRecognition(extraction.leaves, recognitions));
+  console.log(renderRerun(diffRecords(previous, merged)));
+}
+
+async function main(): Promise<void> {
+  const { options, ref, correction } = parseArgs(process.argv.slice(2));
+  if (correction !== undefined) {
+    runCorrection(ref, correction);
+    return;
+  }
+  await runReadout(ref, options);
 }
 
 // run.sh always executes the compiled `tools/design-readout/dist/tools/design-readout/index.js`, so that path

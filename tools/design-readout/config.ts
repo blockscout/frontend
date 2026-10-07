@@ -13,6 +13,12 @@ export const SPAN_TOLERANCE_PX = 1;
 // Where a run's record goes, under the main checkout.
 export const SIDECAR_DIR = '.ai/design-readout';
 
+// The gap log beside the sidecars: one line per miss, appended by `--correct`, never rewritten.
+export const GAP_LOG_FILE = 'gaps.md';
+
+// Every correction is a miss of one of these kinds; `--gap` takes exactly one of them.
+export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout' ] as const;
+
 // What a Figma text style name claims, read off its `text-<size>` and `font-<weight>` segments. The
 // pixel sizes mirror the `text.*` text styles of the theme, which this tool must not import (they
 // read app config).
