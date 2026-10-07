@@ -91,7 +91,7 @@ describe('TokenTransfersTable', () => {
     const { container } = render(<TokenTransfersTable surface="address" columns={ columns } items={ NEXT_PAGE } baseAddress={ erc20.to.hash }/>);
 
     expect(getHeaders(container)).toEqual(
-      [ 'In / Out', 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
+      [ 'In / Out', 'Txn hash', 'Token type', 'Method', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
     expect(container.querySelector('tbody tr:first-child td')?.textContent).toBe('In');
   });

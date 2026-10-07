@@ -71,9 +71,13 @@ describe('getSurfaceColumnStates', () => {
     );
   });
 
-  it('shows every available column by default on the index and address surfaces', () => {
-    expect(getDefaultIds('index', MULTIPLIER_ENABLED)).toEqual(WITHOUT_IN_OUT);
-    expect(getDefaultIds('address', MULTIPLIER_ENABLED)).toEqual(ALL_COLUMNS);
+  it('hides Transfer type and Block by default on the index and address surfaces', () => {
+    expect(getDefaultIds('index', MULTIPLIER_ENABLED)).toEqual(
+      [ 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
+    );
+    expect(getDefaultIds('address', MULTIPLIER_ENABLED)).toEqual(
+      [ 'in_out', 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
+    );
   });
 
   it('hides the type columns and block by default on the token surface', () => {
@@ -82,9 +86,9 @@ describe('getSurfaceColumnStates', () => {
     );
   });
 
-  it('shows every available column by default on the tx surface', () => {
+  it('hides Transfer type by default on the tx surface', () => {
     expect(getDefaultIds('tx', MULTIPLIER_ENABLED)).toEqual(
-      [ 'type', 'transfer_type', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
+      [ 'type', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
     );
   });
 
@@ -127,7 +131,9 @@ describe('getSurfaceColumnStates', () => {
 
     it('leaves the other columns unchanged when unavailable', () => {
       expect(getAvailableIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_IN_OUT_AND_MULTIPLIER);
-      expect(getDefaultIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_IN_OUT_AND_MULTIPLIER);
+      expect(getDefaultIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(
+        [ 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
+      );
     });
   });
 });

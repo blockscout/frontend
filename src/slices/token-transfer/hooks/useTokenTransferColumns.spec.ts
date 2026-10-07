@@ -52,7 +52,7 @@ describe('useTokenTransferColumns', () => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('tx');
 
-      expect(result.current.columns).toEqual([ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ]);
+      expect(result.current.columns).toEqual([ 'type', 'from_to', 'amount', 'asset', 'value' ]);
       expect(result.current.selectableColumns.map(({ id }) => id)).toEqual(
         [ 'type', 'transfer_type', 'from_to', 'amount', 'asset', 'value' ],
       );
@@ -74,7 +74,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('address');
 
       expect(result.current.columns).toEqual(
-        [ 'in_out', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ],
+        [ 'in_out', 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
       );
     });
   });
@@ -89,7 +89,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('address');
 
       expect(result.current.columns).toEqual(
-        [ 'in_out', 'value', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset' ],
+        [ 'in_out', 'value', 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'amount', 'asset' ],
       );
     });
   });
@@ -98,10 +98,10 @@ describe('useTokenTransferColumns', () => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('index');
       act(() => {
-        result.current.onColumnsChange({ ...result.current.checkedColumns, block: false });
+        result.current.onColumnsChange({ ...result.current.checkedColumns, block: true });
       });
 
-      expect(JSON.parse(window.localStorage.getItem('table_columns_token_transfers_index') ?? '')).toEqual({ visibility: { block: false } });
+      expect(JSON.parse(window.localStorage.getItem('table_columns_token_transfers_index') ?? '')).toEqual({ visibility: { block: true } });
     });
   });
 
@@ -116,6 +116,16 @@ describe('useTokenTransferColumns', () => {
       expect(token.current.columns).toContain('block');
       expect(index.current.isCustomized).toBe(false);
       expect(address.current.isCustomized).toBe(false);
+    });
+  });
+
+  it('keeps a stored choice to show an off-by-default column, and a stored hide of it changes nothing', async() => {
+    window.localStorage.setItem('table_columns_token_transfers_index', JSON.stringify({ visibility: { transfer_type: true, block: false } }));
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('index');
+
+      expect(result.current.columns).toEqual([ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ]);
     });
   });
 
@@ -141,7 +151,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('index', { chainConfig: chainWithErc8056 });
 
       expect(result.current.columns).toEqual(
-        [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
+        [ 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
       );
     });
   });
@@ -179,7 +189,7 @@ describe('useTokenTransferColumns', () => {
       });
       rerender({ chainConfig: chainWithErc8056 });
 
-      expect(result.current.columns).toEqual([ 'value', 'type', 'transfer_type', 'from_to', 'multiplier', 'amount', 'asset' ]);
+      expect(result.current.columns).toEqual([ 'value', 'type', 'from_to', 'multiplier', 'amount', 'asset' ]);
     });
   });
 

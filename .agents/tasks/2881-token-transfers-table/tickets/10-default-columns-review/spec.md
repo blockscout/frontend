@@ -51,6 +51,6 @@ parallel.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Block and Transfer type `off` in the surface states; unit specs
-- [ ] 2 `[human]` Verify defaults and the selector on the index, address and tx tabs; regenerate
+- [x] 1 `[agent]` Block and Transfer type `off` in the surface states; unit specs
+- [x] 2 `[human]` Verify defaults and the selector on the index, address and tx tabs; regenerate
       Playwright baselines
