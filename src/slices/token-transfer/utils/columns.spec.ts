@@ -24,8 +24,9 @@ const chainWithErc8056 = {
   },
 } as ClusterChainConfig['app_config'];
 
-const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'multiplier', 'amount', 'asset', 'value' ];
-const WITHOUT_MULTIPLIER = ALL_COLUMNS.filter((id) => id !== 'multiplier');
+const ALL_COLUMNS = [ 'in_out', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'multiplier', 'amount', 'asset', 'value' ];
+const WITHOUT_IN_OUT = ALL_COLUMNS.filter((id) => id !== 'in_out');
+const WITHOUT_IN_OUT_AND_MULTIPLIER = WITHOUT_IN_OUT.filter((id) => id !== 'multiplier');
 const MULTIPLIER_ENABLED: SurfaceColumnStatesParams = { chainConfig: chainWithErc8056 };
 
 const getAvailableIds = (...args: Parameters<typeof getSurfaceColumnStates>) =>
@@ -36,7 +37,7 @@ const getDefaultIds = (...args: Parameters<typeof getSurfaceColumnStates>) =>
 describe('TOKEN_TRANSFER_COLUMNS', () => {
   it('names the columns for display, in vocabulary order', () => {
     expect(TOKEN_TRANSFER_COLUMNS.map(({ name }) => name)).toEqual(
-      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Multiplier', 'Amount', 'ID / Asset', 'Value' ],
+      [ 'In / Out', 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Multiplier', 'Amount', 'ID / Asset', 'Value' ],
     );
   });
 
@@ -46,13 +47,22 @@ describe('TOKEN_TRANSFER_COLUMNS', () => {
 });
 
 describe('getSurfaceColumnStates', () => {
-  it('offers the whole vocabulary in order on the index and address surfaces', () => {
-    expect(getAvailableIds('index', MULTIPLIER_ENABLED)).toEqual(ALL_COLUMNS);
+  it('offers the whole vocabulary in order on the address surface, In / Out first', () => {
     expect(getAvailableIds('address', MULTIPLIER_ENABLED)).toEqual(ALL_COLUMNS);
   });
 
-  it('offers the whole vocabulary on the token surface of an ERC-8056 token', () => {
-    expect(getAvailableIds('token', { ...MULTIPLIER_ENABLED, tokenType: 'ERC-8056' })).toEqual(ALL_COLUMNS);
+  it('offers every column but In / Out on the index surface', () => {
+    expect(getAvailableIds('index', MULTIPLIER_ENABLED)).toEqual(WITHOUT_IN_OUT);
+  });
+
+  it('offers every column but In / Out on the token surface of an ERC-8056 token', () => {
+    expect(getAvailableIds('token', { ...MULTIPLIER_ENABLED, tokenType: 'ERC-8056' })).toEqual(WITHOUT_IN_OUT);
+  });
+
+  it('does not offer In / Out on the index, token and tx surfaces', () => {
+    expect(getSurfaceColumnStates('index', MULTIPLIER_ENABLED).in_out).toBe('unavailable');
+    expect(getSurfaceColumnStates('token', MULTIPLIER_ENABLED).in_out).toBe('unavailable');
+    expect(getSurfaceColumnStates('tx', MULTIPLIER_ENABLED).in_out).toBe('unavailable');
   });
 
   it('does not offer the hash, method, timestamp and block columns on the tx surface', () => {
@@ -61,8 +71,8 @@ describe('getSurfaceColumnStates', () => {
     );
   });
 
-  it('shows every column by default on the index and address surfaces', () => {
-    expect(getDefaultIds('index', MULTIPLIER_ENABLED)).toEqual(ALL_COLUMNS);
+  it('shows every available column by default on the index and address surfaces', () => {
+    expect(getDefaultIds('index', MULTIPLIER_ENABLED)).toEqual(WITHOUT_IN_OUT);
     expect(getDefaultIds('address', MULTIPLIER_ENABLED)).toEqual(ALL_COLUMNS);
   });
 
@@ -116,8 +126,8 @@ describe('getSurfaceColumnStates', () => {
     });
 
     it('leaves the other columns unchanged when unavailable', () => {
-      expect(getAvailableIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_MULTIPLIER);
-      expect(getDefaultIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_MULTIPLIER);
+      expect(getAvailableIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_IN_OUT_AND_MULTIPLIER);
+      expect(getDefaultIds('index', { chainConfig: chainWithoutErc8056 })).toEqual(WITHOUT_IN_OUT_AND_MULTIPLIER);
     });
   });
 });

@@ -3,6 +3,7 @@
 export type TokenTransferSurface = 'index' | 'address' | 'token' | 'tx';
 
 export type TokenTransferColumnId =
+  'in_out' |
   'tx_hash' |
   'type' |
   'transfer_type' |

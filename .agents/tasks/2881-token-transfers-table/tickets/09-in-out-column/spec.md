@@ -77,9 +77,9 @@ cross-chain tab) on a preset that has the interchain indexer.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `AddressFromToTag` extracted from `CrossChainFromToTag`; cross-chain tag renders
+- [x] 1 `[agent]` `AddressFromToTag` extracted from `CrossChainFromToTag`; cross-chain tag renders
       through it
-- [ ] 2 `[agent]` `in_out` column id, registry entry and surface states; `InOutCell`; stale From / To
+- [x] 2 `[agent]` `in_out` column id, registry entry and surface states; `InOutCell`; stale From / To
       TODO trimmed; unit specs
-- [ ] 3 `[human]` Column width and tag alignment checked against the cross-chain table; availability
+- [x] 3 `[human]` Column width and tag alignment checked against the cross-chain table; availability
       verified on every surface; Playwright baselines regenerated

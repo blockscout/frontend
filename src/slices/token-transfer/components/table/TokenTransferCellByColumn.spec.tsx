@@ -39,8 +39,42 @@ const renderCell = (item: schemas['TokenTransfer'], column: Props['column'], pro
 
 const getInstanceLink = () => screen.queryAllByRole('link').find((link) => link.getAttribute('href')?.includes('/instance/'));
 
+const SELF_TRANSFER = { ...erc20, to: { ...erc20.to, hash: erc20.from.hash } };
+
 describe('TokenTransferCellByColumn', () => {
   afterEach(cleanup);
+
+  describe('in / out', () => {
+    it('tags a transfer to the base address as incoming', () => {
+      const cell = renderCell(erc20, 'in_out', { baseAddress: erc20.to.hash });
+
+      expect(cell.textContent).toBe('In');
+    });
+
+    it('tags a transfer from the base address as outgoing', () => {
+      const cell = renderCell(erc20, 'in_out', { baseAddress: erc20.from.hash.toLowerCase() });
+
+      expect(cell.textContent).toBe('Out');
+    });
+
+    it('tags a transfer from the base address to itself as self', () => {
+      const cell = renderCell(SELF_TRANSFER, 'in_out', { baseAddress: erc20.from.hash });
+
+      expect(cell.textContent).toBe('Self');
+    });
+
+    it('shows a dash when the base address is neither side', () => {
+      const cell = renderCell(erc20, 'in_out', { baseAddress: erc721.from.hash });
+
+      expect(cell.textContent).toBe('-');
+    });
+
+    it('shows a dash without a base address', () => {
+      const cell = renderCell(erc20, 'in_out');
+
+      expect(cell.textContent).toBe('-');
+    });
+  });
 
   describe('type', () => {
     it('shows the token standard', () => {

@@ -69,6 +69,31 @@ describe('useTokenTransferColumns', () => {
     });
   });
 
+  it('shows In / Out first among the address surface defaults', async() => {
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('address');
+
+      expect(result.current.columns).toEqual(
+        [ 'in_out', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ],
+      );
+    });
+  });
+
+  it('puts In / Out back first when the stored order lacks it', async() => {
+    window.localStorage.setItem(
+      'table_columns_token_transfers_address',
+      JSON.stringify({ order: [ 'value', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset' ] }),
+    );
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook('address');
+
+      expect(result.current.columns).toEqual(
+        [ 'in_out', 'value', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset' ],
+      );
+    });
+  });
+
   it('stores each surface under its own key', async() => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('index');

@@ -16,7 +16,7 @@ import TokenTransfersTable from './TokenTransfersTable';
 
 const BATCH_PAGE = [ erc1155A, erc1155B, erc1155C, erc1155D ];
 const NEXT_PAGE = [ erc20, erc721 ];
-const ALL_COLUMNS = [ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ] as const;
+const ALL_COLUMNS = [ 'in_out', 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'block', 'from_to', 'amount', 'asset', 'value' ] as const;
 // The backend can push a transfer whose token is not catalogued yet (seen on
 // the address Token transfers tab via the websocket feed). The schema types the
 // field as non-null, so the mock has to be cast.
@@ -43,10 +43,10 @@ describe('TokenTransfersTable', () => {
   });
 
   it('renders every column of the vocabulary in order', () => {
-    const { container } = render(<TokenTransfersTable surface="index" columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
+    const { container } = render(<TokenTransfersTable surface="address" columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
 
     expect(getHeaders(container)).toEqual(
-      [ 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
+      [ 'In / Out', 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
     expect(container.querySelectorAll('tbody tr:first-child td')).toHaveLength(ALL_COLUMNS.length);
   });
@@ -80,10 +80,26 @@ describe('TokenTransfersTable', () => {
   });
 
   it('renders a row without a token instead of crashing', () => {
-    const { container } = render(<TokenTransfersTable surface="index" columns={ ALL_COLUMNS } items={ [ WITHOUT_TOKEN ] }/>);
+    const { container } = render(<TokenTransfersTable surface="address" columns={ ALL_COLUMNS } items={ [ WITHOUT_TOKEN ] }/>);
 
     expect(container.querySelectorAll('tbody tr')).toHaveLength(1);
     expect(container.querySelectorAll('tbody tr td')).toHaveLength(ALL_COLUMNS.length);
+  });
+
+  it('renders the address surface defaults, In / Out first', () => {
+    const columns = getDefaultColumnIds(TOKEN_TRANSFER_COLUMNS, getSurfaceColumnStates('address', {}));
+    const { container } = render(<TokenTransfersTable surface="address" columns={ columns } items={ NEXT_PAGE } baseAddress={ erc20.to.hash }/>);
+
+    expect(getHeaders(container)).toEqual(
+      [ 'In / Out', 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
+    );
+    expect(container.querySelector('tbody tr:first-child td')?.textContent).toBe('In');
+  });
+
+  it('does not render In / Out on the index surface', () => {
+    const { container } = render(<TokenTransfersTable surface="index" columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
+
+    expect(getHeaders(container)).not.toContain('In / Out');
   });
 
   it('renders the token surface defaults', () => {

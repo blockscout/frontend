@@ -9,6 +9,8 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType, NFT_TOKEN_TYPE_IDS } from 'src/slices/token/utils/token-types';
 
 import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
+import AddressFromToTag from 'src/slices/address/components/from-to/AddressFromToTag';
+import { getTxCourseType } from 'src/slices/address/utils/tx';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -60,6 +62,14 @@ function getNftTokenId(item: CellProps['item']): string | undefined {
   }
   return item.total.token_id;
 }
+
+const InOutCell = ({ item, isLoading, baseAddress }: CellProps) => {
+  const type = getTxCourseType(item.from.hash, item.to?.hash, baseAddress);
+  if (type === 'unspecified') {
+    return <Dash isLoading={ isLoading }/>;
+  }
+  return <AddressFromToTag type={ type } isLoading={ isLoading }/>;
+};
 
 const TxHashCell = ({ item, isLoading }: CellProps) => {
   if (!item.transaction_hash) {
@@ -116,8 +126,8 @@ const BlockCell = ({ item, isLoading }: CellProps) => (
 );
 
 const FromToCell = ({ item, isLoading, baseAddress }: CellProps) => (
-  // TODO (design): From/To arrow and column width per mockup; one combined column pending Q02
   <AddressFromTo
+    plainArrow
     from={ item.from }
     to={ item.to }
     current={ baseAddress }
@@ -215,6 +225,8 @@ const ValueCell = ({ item, isLoading, chainConfig }: CellProps) => {
 
 const TokenTransferCellByColumn = ({ column, ...rest }: Props) => {
   switch (column) {
+    case 'in_out':
+      return <InOutCell { ...rest }/>;
     case 'tx_hash':
       return <TxHashCell { ...rest }/>;
     case 'type':

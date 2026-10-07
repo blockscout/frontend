@@ -8,6 +8,7 @@ import type { ChainConfig } from 'src/slices/token/types/client';
 import { isTokenMultiplierEnabled, UI_MULTIPLIER_TOKEN_TYPE } from 'src/slices/token/utils/ui-multiplier';
 
 export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
+  { id: 'in_out', name: 'In / Out', width: '70px' },
   { id: 'tx_hash', name: 'Txn hash', width: '135px' },
   { id: 'type', name: 'Token type', width: '95px' },
   { id: 'transfer_type', name: 'Transfer type', width: '145px' },
@@ -23,6 +24,7 @@ export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
 
 const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<Exclude<TokenTransferColumnId, 'multiplier'>>>> = {
   index: {
+    in_out: 'unavailable',
     tx_hash: 'on',
     type: 'on',
     transfer_type: 'on',
@@ -35,6 +37,7 @@ const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<
     value: 'on',
   },
   address: {
+    in_out: 'on',
     tx_hash: 'on',
     type: 'on',
     transfer_type: 'on',
@@ -47,6 +50,7 @@ const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<
     value: 'on',
   },
   token: {
+    in_out: 'unavailable',
     tx_hash: 'on',
     type: 'off',
     transfer_type: 'off',
@@ -60,6 +64,7 @@ const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<
   },
   // the transaction endpoint returns method and timestamp as null, and the hash and block are the same for every row
   tx: {
+    in_out: 'unavailable',
     tx_hash: 'unavailable',
     type: 'on',
     transfer_type: 'on',
