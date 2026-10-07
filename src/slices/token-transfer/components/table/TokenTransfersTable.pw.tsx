@@ -5,7 +5,7 @@ import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { expect, test } from 'playwright/lib';
 
-import { getDefaultColumnIds } from '../../utils/columns';
+import { TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
 import TokenTransfersTable from './TokenTransfersTable';
 
 test('base view', async({ render, mockAssetResponse, mockEnvs, page }) => {
@@ -16,7 +16,7 @@ test('base view', async({ render, mockAssetResponse, mockEnvs, page }) => {
     <TokenTransfersTable
       items={ tokenTransferMock.mixTokens.items }
       surface="index"
-      columns={ getDefaultColumnIds('index') }
+      columns={ TOKEN_TRANSFER_COLUMNS.map(({ id }) => id) }
     />,
   );
 

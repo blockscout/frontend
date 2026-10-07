@@ -19,4 +19,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 11 → `tickets/11-token-id-in-amount-cell/`
 - [x] 12 → `tickets/12-column-drag-and-drop/`
 - [x] 13 → `tickets/13-column-settings-local-storage/`
-- [ ] 14 → `tickets/14-multiplier-column/`
+- [x] 14 → `tickets/14-multiplier-column/`

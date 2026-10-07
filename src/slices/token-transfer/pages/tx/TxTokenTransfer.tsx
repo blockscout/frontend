@@ -64,7 +64,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
     () => getTokenFilterValue(typeParam, multichainContext?.chain?.app_config) || NO_TYPES,
     [ typeParam, multichainContext?.chain?.app_config ],
   );
-  const columnsState = useTokenTransferColumns('tx');
+  const columnsState = useTokenTransferColumns('tx', { typeFilter, chainConfig: multichainContext?.chain?.app_config });
 
   const crossChainQuery = useTxCrossChainTransfersQuery({
     hash: String(txQuery.data?.hash),

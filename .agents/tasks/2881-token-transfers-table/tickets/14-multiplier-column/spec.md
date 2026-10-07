@@ -86,10 +86,10 @@ T10 (defaults review) will find the surface states behind a function instead of 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Missing columns slot into their default position in `getOrderedColumns`; spec
-- [ ] 2 `[agent]` `multiplier` column id + registry entry; surface states as a function of chain config,
+- [x] 1 `[agent]` Missing columns slot into their default position in `getOrderedColumns`; spec
+- [x] 2 `[agent]` `multiplier` column id + registry entry; surface states as a function of chain config,
       type filter and token type; `useTokenTransferColumns` inputs and all call sites; specs
-- [ ] 3 `[agent]` `MultiplierCell` (factor or dash) and the tag removed from `AmountCell`; cell specs
-- [ ] 4 `[human]` Match the cell to the advanced filter's column, verify availability toggling on every
+- [x] 3 `[agent]` `MultiplierCell` (factor or dash) and the tag removed from `AmountCell`; cell specs
+- [x] 4 `[human]` Match the cell to the advanced filter's column, verify availability toggling on every
       surface, regenerate Playwright baselines —
       [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6004-40199)

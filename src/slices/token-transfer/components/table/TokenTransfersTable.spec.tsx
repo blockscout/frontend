@@ -5,11 +5,13 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import { getDefaultColumnIds } from 'src/shared/lists/columns/column-overrides';
+
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen, within } from 'vitest/lib';
 
 import { erc1155A, erc1155B, erc1155C, erc1155D, erc20, erc721 } from '../../mocks';
-import { getDefaultColumnIds } from '../../utils/columns';
+import { getSurfaceColumnStates, TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
 import TokenTransfersTable from './TokenTransfersTable';
 
 const BATCH_PAGE = [ erc1155A, erc1155B, erc1155C, erc1155D ];
@@ -85,7 +87,8 @@ describe('TokenTransfersTable', () => {
   });
 
   it('renders the token surface defaults', () => {
-    const { container } = render(<TokenTransfersTable surface="token" columns={ getDefaultColumnIds('token') } items={ NEXT_PAGE }/>);
+    const columns = getDefaultColumnIds(TOKEN_TRANSFER_COLUMNS, getSurfaceColumnStates('token', {}));
+    const { container } = render(<TokenTransfersTable surface="token" columns={ columns } items={ NEXT_PAGE }/>);
 
     expect(getHeaders(container)).toEqual([ 'Txn hash', 'Method', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
   });

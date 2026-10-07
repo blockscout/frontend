@@ -56,7 +56,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     currentAddress: hash,
     enabled: isQueryEnabled && isLocalTab,
   });
-  const columnsState = useTokenTransferColumns('address');
+  const columnsState = useTokenTransferColumns('address', { typeFilter: localQuery.filters.type });
 
   const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_transfers',

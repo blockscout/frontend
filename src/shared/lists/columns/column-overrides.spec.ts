@@ -119,8 +119,8 @@ describe('setColumnOrder', () => {
     });
   });
 
-  it('completes a partial order with the remaining columns in default order', () => {
-    expect(setColumnOrder(undefined, AVAILABLE_COLUMNS, [ 'amount' ])).toEqual({
+  it('completes a partial order with the remaining columns at their default positions', () => {
+    expect(setColumnOrder(undefined, AVAILABLE_COLUMNS, [ 'amount', 'hash' ])).toEqual({
       order: [ 'amount', 'hash', 'block', 'from' ],
     });
   });
@@ -149,8 +149,16 @@ describe('getOrderedColumns', () => {
     expect(getOrderedIds([ 'fee', 'amount', 'hash', 'block', 'from' ])).toEqual([ 'amount', 'hash', 'block', 'from' ]);
   });
 
-  it('appends the columns missing from the stored order in default order', () => {
-    expect(getOrderedIds([ 'amount', 'block' ])).toEqual([ 'amount', 'block', 'hash', 'from' ]);
+  it('puts a column missing from the stored order back after its default predecessor', () => {
+    expect(getOrderedIds([ 'amount', 'block', 'hash' ])).toEqual([ 'amount', 'block', 'from', 'hash' ]);
+  });
+
+  it('puts a column without a default predecessor back first', () => {
+    expect(getOrderedIds([ 'amount', 'from', 'block' ])).toEqual([ 'hash', 'amount', 'from', 'block' ]);
+  });
+
+  it('keeps consecutive missing columns together in default order', () => {
+    expect(getOrderedIds([ 'amount', 'hash' ])).toEqual([ 'amount', 'hash', 'block', 'from' ]);
   });
 });
 

@@ -49,7 +49,7 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'multiplier',
     name: 'Multiplier',
-    width: '80px',
+    width: '90px',
     isNumeric: true,
     noFilter: true,
   },

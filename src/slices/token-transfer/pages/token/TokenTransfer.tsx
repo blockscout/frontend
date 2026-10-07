@@ -15,6 +15,7 @@ import TokenTransfersTable from 'src/slices/token-transfer/components/table/Toke
 import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 
 import TokenAdvancedFilterLink from 'src/features/advanced-filter/pages/token/TokenAdvancedFilterLink';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
@@ -34,7 +35,8 @@ interface Props {
 const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance }: Props) => {
   const [ newItemsCount, setNewItemsCount ] = useGradualIncrement(0);
   const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
-  const columnsState = useTokenTransferColumns('token');
+  const multichainContext = useMultichainContext();
+  const columnsState = useTokenTransferColumns('token', { tokenType: token?.type, chainConfig: multichainContext?.chain?.app_config });
 
   // The backend emits `token_transfer` events for the whole token, not per instance, so on the NFT
   // instance page they produce false "N more transfers" notices.

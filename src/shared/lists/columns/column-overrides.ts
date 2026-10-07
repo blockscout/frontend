@@ -95,11 +95,20 @@ export function getOrderedColumns<TColumn extends TableColumn<TColumnId>, TColum
     return availableColumns;
   }
 
-  const storedColumns = order
+  const orderedColumns = order
     .map((id) => availableColumns.find((column) => column.id === id))
     .filter((column) => column !== undefined);
-  const missingColumns = availableColumns.filter(({ id }) => !order.includes(id));
-  return [ ...storedColumns, ...missingColumns ];
+
+  availableColumns.forEach((column, defaultIndex) => {
+    if (order.includes(column.id)) {
+      return;
+    }
+
+    const precedingColumn = availableColumns.slice(0, defaultIndex).findLast((item) => orderedColumns.includes(item));
+    orderedColumns.splice(precedingColumn ? orderedColumns.indexOf(precedingColumn) + 1 : 0, 0, column);
+  });
+
+  return orderedColumns;
 }
 
 export function getVisibleColumnIds<TColumn extends TableColumn<TColumnId>, TColumnId extends string = TColumn['id']>(

@@ -53,7 +53,7 @@ const MultichainTokenTransfers = () => {
 
   const { chainValue, chain, onChainValueChange } = useChainValue();
   const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, chain });
-  const columnsState = useTokenTransferColumns('index');
+  const columnsState = useTokenTransferColumns('index', { typeFilter: queryLocal.typeFilter, chainConfig: chain?.app_config });
   const chainId = chain?.id;
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {

@@ -12,7 +12,7 @@ import AddressFromTo from 'src/slices/address/components/from-to/AddressFromTo';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import NftEntity from 'src/slices/token/components/entity/NftEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
-import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
+import { formatUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -24,6 +24,7 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import { getTokenTransferUiMultiplier } from '../../utils/get-token-transfer-ui-multiplier';
 import TokenTransferTypeBadge from '../TokenTransferTypeBadge';
@@ -127,6 +128,23 @@ const FromToCell = ({ item, isLoading, baseAddress }: CellProps) => (
   />
 );
 
+const MultiplierCell = ({ item, isLoading, chainConfig }: CellProps) => {
+  const multiplier = getTokenTransferUiMultiplier(item, chainConfig);
+  if (!multiplier) {
+    return <Dash isLoading={ isLoading }/>;
+  }
+  return (
+    <Truncate
+      value={ formatUiMultiplier(multiplier) }
+      loading={ isLoading }
+      color="text.secondary"
+      type="end"
+      maxW="100%"
+      display="block"
+    />
+  );
+};
+
 const AmountCell = ({ item, isLoading, chainConfig }: CellProps) => {
   const amount = getFungibleAmount(item);
   if (!amount) {
@@ -137,13 +155,11 @@ const AmountCell = ({ item, isLoading, chainConfig }: CellProps) => {
       <ConfidentialValue loading={ isLoading }/> :
       <Dash isLoading={ isLoading }/>;
   }
-  const multiplier = getTokenTransferUiMultiplier(item, chainConfig);
   return (
     <AssetValue
       amount={ amount.value }
       decimals={ amount.decimals }
-      multiplier={ multiplier }
-      startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
+      multiplier={ getTokenTransferUiMultiplier(item, chainConfig) }
       loading={ isLoading }
     />
   );
@@ -213,6 +229,8 @@ const TokenTransferCellByColumn = ({ column, ...rest }: Props) => {
       return <BlockCell { ...rest }/>;
     case 'from_to':
       return <FromToCell { ...rest }/>;
+    case 'multiplier':
+      return <MultiplierCell { ...rest }/>;
     case 'amount':
       return <AmountCell { ...rest }/>;
     case 'asset':

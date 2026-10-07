@@ -81,7 +81,7 @@ describe('usePersistedColumns', () => {
   });
 
   it('renders the defaults on the server whatever is stored', async() => {
-    store({ visibility: { hash: false }, order: [ 'amount' ] });
+    store({ visibility: { hash: false }, order: [ 'amount', 'hash', 'block', 'from' ] });
 
     await withMixpanel(async() => {
       const ColumnsProbe = await renderColumnsProbe();
@@ -91,7 +91,7 @@ describe('usePersistedColumns', () => {
   });
 
   it('hydrates the server markup without a warning and switches to the stored columns', async() => {
-    store({ visibility: { hash: false }, order: [ 'amount' ] });
+    store({ visibility: { hash: false }, order: [ 'amount', 'hash', 'block', 'from' ] });
     const consoleError = vi.spyOn(console, 'error');
 
     await withMixpanel(async() => {
@@ -110,7 +110,7 @@ describe('usePersistedColumns', () => {
   });
 
   it('starts from the stored columns on the first client render', async() => {
-    store({ visibility: { block: true }, order: [ 'amount', 'block' ] });
+    store({ visibility: { block: true }, order: [ 'amount', 'block', 'hash', 'from' ] });
 
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook();
@@ -200,7 +200,7 @@ describe('usePersistedColumns', () => {
   });
 
   it('resets by removing the key', async() => {
-    store({ visibility: { hash: false }, order: [ 'amount' ] });
+    store({ visibility: { hash: false }, order: [ 'amount', 'hash', 'block', 'from' ] });
 
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook();

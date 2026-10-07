@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { mapValues } from 'es-toolkit';
-
 import type { TokenTransferColumn, TokenTransferColumnId, TokenTransferSurface } from '../types/client';
-import type { ColumnStates } from 'src/shared/lists/columns/types';
+import type { ColumnState, ColumnStates } from 'src/shared/lists/columns/types';
+import type { TokenType } from 'src/slices/token/types/api';
+import type { ChainConfig } from 'src/slices/token/types/client';
+
+import { isTokenMultiplierEnabled, UI_MULTIPLIER_TOKEN_TYPE } from 'src/slices/token/utils/ui-multiplier';
 
 export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
   { id: 'tx_hash', name: 'Txn hash', width: '135px' },
@@ -13,12 +15,13 @@ export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
   { id: 'timestamp', name: 'Timestamp', width: '170px' },
   { id: 'block', name: 'Block', width: '100px' },
   { id: 'from_to', name: 'From / To', width: '350px' },
-  { id: 'amount', name: 'Amount', isNumeric: true, width: '180px' },
+  { id: 'multiplier', name: 'Multiplier', isNumeric: true, width: '90px' },
+  { id: 'amount', name: 'Amount', isNumeric: true, width: '130px' },
   { id: 'asset', name: 'ID / Asset', width: '240px' },
   { id: 'value', name: 'Value', isNumeric: true, width: '120px' },
 ];
 
-export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<TokenTransferColumnId>>> = {
+const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<Exclude<TokenTransferColumnId, 'multiplier'>>>> = {
   index: {
     tx_hash: 'on',
     type: 'on',
@@ -70,20 +73,28 @@ export const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, Column
   },
 };
 
-const AVAILABLE_COLUMNS = mapValues(
-  SURFACE_COLUMN_STATES,
-  (states) => TOKEN_TRANSFER_COLUMNS.filter((column) => states[column.id] !== 'unavailable'),
-);
-
-const DEFAULT_COLUMN_IDS = mapValues(
-  SURFACE_COLUMN_STATES,
-  (states) => TOKEN_TRANSFER_COLUMNS.filter((column) => states[column.id] === 'on').map((column) => column.id),
-);
-
-export function getAvailableColumns(surface: TokenTransferSurface): ReadonlyArray<TokenTransferColumn> {
-  return AVAILABLE_COLUMNS[surface];
+export interface SurfaceColumnStatesParams {
+  readonly chainConfig?: ChainConfig;
+  readonly typeFilter?: ReadonlyArray<TokenType>;
+  readonly tokenType?: TokenType | null;
 }
 
-export function getDefaultColumnIds(surface: TokenTransferSurface): ReadonlyArray<TokenTransferColumnId> {
-  return DEFAULT_COLUMN_IDS[surface];
+function getMultiplierState(surface: TokenTransferSurface, { chainConfig, typeFilter, tokenType }: SurfaceColumnStatesParams): ColumnState {
+  if (!isTokenMultiplierEnabled(chainConfig)) {
+    return 'unavailable';
+  }
+
+  if (typeFilter && typeFilter.length > 0 && !typeFilter.includes(UI_MULTIPLIER_TOKEN_TYPE)) {
+    return 'unavailable';
+  }
+
+  if (surface === 'token' && tokenType !== UI_MULTIPLIER_TOKEN_TYPE) {
+    return 'unavailable';
+  }
+
+  return 'on';
+}
+
+export function getSurfaceColumnStates(surface: TokenTransferSurface, params: SurfaceColumnStatesParams): ColumnStates<TokenTransferColumnId> {
+  return { ...SURFACE_COLUMN_STATES[surface], multiplier: getMultiplierState(surface, params) };
 }

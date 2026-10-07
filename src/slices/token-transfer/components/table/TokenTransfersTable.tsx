@@ -16,7 +16,7 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import { getAvailableColumns } from '../../utils/columns';
+import { getSurfaceColumnStates, TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
 import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersTableItem from './TokenTransfersTableItem';
 
@@ -55,11 +55,12 @@ const TokenTransfersTable = ({
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   const visibleColumns = React.useMemo(() => {
-    const availableColumns = getAvailableColumns(surface);
+    const states = getSurfaceColumnStates(surface, { chainConfig: chainData?.app_config });
     return columns
-      .map((id) => availableColumns.find((column) => column.id === id))
+      .filter((id) => states[id] !== 'unavailable')
+      .map((id) => TOKEN_TRANSFER_COLUMNS.find((column) => column.id === id))
       .filter((column) => column !== undefined);
-  }, [ surface, columns ]);
+  }, [ surface, columns, chainData ]);
 
   return (
     <AddressHighlightProvider>

@@ -10,6 +10,7 @@ export type TokenTransferColumnId =
   'timestamp' |
   'block' |
   'from_to' |
+  'multiplier' |
   'amount' |
   'asset' |
   'value';

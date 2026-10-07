@@ -95,14 +95,32 @@ describe('TokenTransferCellByColumn', () => {
       expect(cell.textContent).toBe('42,000,000');
     });
 
-    it('scales the amount by the token multiplier and tags it', async() => {
+    it('scales the amount by the token multiplier without tagging it', async() => {
       const text = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
         const { 'default': Cell } = await import('./TokenTransferCellByColumn');
         render(<div data-testid={ CELL_TEST_ID }><Cell { ...DEFAULT_PROPS } item={ erc8056 } column="amount"/></div>);
         return screen.getByTestId(CELL_TEST_ID).textContent;
       });
 
-      expect(text).toBe('1.69x0.05334886');
+      expect(text).toBe('0.05334886');
+    });
+  });
+
+  describe('multiplier', () => {
+    it('shows the factor in force when an ERC-8056 transfer happened', async() => {
+      const text = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
+        const { 'default': Cell } = await import('./TokenTransferCellByColumn');
+        render(<div data-testid={ CELL_TEST_ID }><Cell { ...DEFAULT_PROPS } item={ erc8056 } column="multiplier"/></div>);
+        return screen.getByTestId(CELL_TEST_ID).textContent;
+      });
+
+      expect(text).toBe('1.69x');
+    });
+
+    it('shows a dash for a transfer without a multiplier', () => {
+      const cell = renderCell(erc20, 'multiplier');
+
+      expect(cell.textContent).toBe('-');
     });
   });
 

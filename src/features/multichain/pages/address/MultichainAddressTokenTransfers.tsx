@@ -88,7 +88,7 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
     enabled: isLocalTab && !isLoading && chainIds.length > 0,
     chain: chainData,
   });
-  const columnsState = useTokenTransferColumns('address');
+  const columnsState = useTokenTransferColumns('address', { typeFilter: transfersQueryLocal.filters.type, chainConfig: chainData?.app_config });
 
   const countersQueryLocal = useAddressCountersQuery({
     hash,
