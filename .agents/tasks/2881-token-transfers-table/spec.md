@@ -55,8 +55,10 @@ does. The chosen set survives reloads.
    action bar, wherever that surface keeps its controls today) and toggles the available columns; its
    rows can be dragged by a handle to reorder the columns, hidden ones included. The mobile selector is
    the same control in the mobile action bar.
-4. The user's selection and column order are persisted per surface and restored on the next visit,
-   including on server-rendered first paint, with no flash of the default layout.
+4. The user's selection and column order are persisted per surface in the browser and restored on the
+   next visit. Client-side navigation shows them at once; on a hard reload the server-rendered skeleton
+   carries the default columns and switches to the user's at hydration, before any row data is shown. A
+   change in one tab applies to the other open tabs.
 5. Each surface keeps exactly the controls it has today — the token-type filter, the address
    in/out filter, CSV export, the advanced-filter link, pagination, and the socket "new items" notice
    are neither added to nor removed from any surface.
@@ -65,10 +67,13 @@ does. The chosen set survives reloads.
    amounts show the token-multiplier and confidential-value variants, and NFT rows show the token id
    (instance image, id, symbol) inside the ID / Asset cell with "1" as the amount when they carry no
    value, while fungible rows show icon and symbol only.
-7. Toggling a column emits one Mixpanel event carrying the surface, the column and the new state;
-   moving a column emits one carrying the surface, the column and the direction.
+7. Toggling a column emits one Mixpanel event carrying the table, the surface, the column id and the new
+   state; moving a column emits one carrying the table, the surface, the column id and the direction.
+   The advanced filter emits the same events without a surface.
 8. The advanced filter page's column selector becomes icon-only (no "Columns" label) and, since the
-   control is shared, reorders that table's columns in memory; no other change to that page.
+   control is shared, reorders that table's columns; its selection and order are persisted like a
+   token-transfer surface (FR 4), as one setting for the whole app regardless of chain; no other change
+   to that page.
 
 ## Data & API
 
@@ -118,25 +123,28 @@ the `[human]` style leaves.
   the spirit of the advanced filter's `ItemByColumn` switch, so a column is added once.
 - **A column config module** owns the vocabulary, the display names, and the per-surface availability
   and defaults (FR 2). Consumers identify themselves by surface, not by passing column lists.
-- **The selector UI is the advanced filter's `ColumnsButton`, extracted** to a shared location and made
-  icon-only; the advanced filter keeps its own column state and table and only adopts the moved button.
-- **Persistence is a cookie** read through the existing cookies utility, following the `NAMES` pattern
-  used for the transactions sort and the NFT display type. One cookie holds a JSON map of surface →
-  overrides from the defaults, so a change to the defaults does not resurrect stale full lists. The
-  cookie is read on the server so the first paint already has the user's columns (FR 4).
+- **The selector UI is the advanced filter's `ColumnsButton`, extracted** to `src/shared/lists/columns/`
+  and made icon-only, next to a table-agnostic persisted-columns hook. The advanced filter keeps its own
+  column registry and table and uses the shared hook; the token-transfer slice wraps it per surface.
+- **Persistence is localStorage**, one key per table + surface under a common `table_columns_` prefix,
+  each holding only the overrides from the defaults, so a change to the defaults does not resurrect stale
+  full lists. A cookie was dropped because it grows with every configurable table, is capped at 4 KB and
+  rides on every request; the cost is the hydration-time switch described in FR 4. Per-key values keep a
+  future cross-instance settings sync simple.
 - **Type column semantics and From/To splitting are gated on Q01 and Q02** in `questions.md`. Until
   answered: Type renders the token-standard tag with the mint/burn badge beside it; From and To are a
   single combined column backed by the existing `AddressFromTo` entity and toggled by a single selector
   entry.
-- **Analytics** is one new Mixpanel event, following the existing event-registry convention.
+- **Analytics** is one new Mixpanel event shared by both tables, following the existing event-registry
+  convention; it logs column ids, not display names.
 - **Tests**: the unit specs of the deleted tables move to the new table; the Playwright files of each
   surface keep their cases; a selector-open state gets one screenshot.
 - **One PR, one commit per ticket**, so the deletion of each old table can be reverted on its own.
 
 ## Out of scope
 
-- The advanced filter table itself: its column set, header filters, the "Fee" → "Tx fee" rename, and its
-  persistence (only the shared button is touched).
+- The advanced filter table itself: its column set, header filters and the "Fee" → "Tx fee" rename (only
+  the shared selector and column persistence are touched).
 - Cross-chain transfer tables (interchain indexer data) on the index, address and transaction pages.
 - The inline token-transfer snippets on the transaction details and Celo epoch pages.
 - Adding CSV export, filters or advanced-filter links to surfaces that lack them today, and any backend

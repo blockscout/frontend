@@ -67,4 +67,13 @@ target. Phrase it as a checklist of facts." -->
   row with a shadow while siblings shift; order stored per surface next to visibility in the same cookie,
   cleared by Reset; hidden rows reorder too; the advanced filter reorders in memory only. Library:
   `@dnd-kit/core` + `@dnd-kit/sortable` (rubric in the ticket's `research.md`). Tatyana's mockup plus
-  developer decisions, 2026-10-06. Realised as T12.
+  developer decisions, 2026-10-06. Realised as T12. Storage revised 2026-10-07 (developer): order and
+  visibility move to localStorage and the advanced filter persists too — realised as T13.
+
+### Q07 — Should token transfers get a separate Multiplier column, as the advanced filter has?
+
+- Owner: Designer (Tatyana)
+- Status: `pending`
+- Resolved when: (1) separate column or the tag inside the Amount cell stays; (2) if a column, its position, default state per surface, and whether the Amount tag is dropped.
+- Source: developer grilling 2026-10-07. Today token transfers show the multiplier as a tag in the Amount cell ([5995:28720](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-28720)), the advanced filter as its own column ([6004:40199](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6004-40199)), per #3671. No ticket until answered; may not be done at all.
+- Answer:
