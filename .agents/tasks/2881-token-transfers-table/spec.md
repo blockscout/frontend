@@ -32,18 +32,20 @@ does. The chosen set survives reloads.
 
 1. Every token-transfer view (index page, address tab, token tab, token instance tab, transaction tab,
    and the user-op and multichain variants that reuse them) renders the same table component with the
-   same column vocabulary in the same default order: Txn hash, Type, Method, Timestamp, Block, From,
-   To, Multiplier, Amount, ID / Asset, Value. In multichain context a chain column precedes them and
-   cannot be hidden or moved.
+   same column vocabulary in the same default order: In / Out, Txn hash, Token type, Transfer type,
+   Method, Timestamp, Block, From / To, Multiplier, Amount, ID / Asset, Value. In multichain context a
+   chain column precedes them and cannot be hidden or moved.
 2. Each surface has a default column selection that matches its mockup, with Value on everywhere:
 
    | Column | Index | Address tab | Token / instance tab | Tx tab |
    | --- | --- | --- | --- | --- |
+   | In / Out | unavailable | on | unavailable | unavailable |
    | Txn hash | on | on | on | unavailable |
-   | Type | on | on | off | on |
+   | Token type | on | on | off | on |
+   | Transfer type | off | off | off | off |
    | Method | on | on | on | unavailable |
    | Timestamp | on | on | on | unavailable |
-   | Block | on | on | off | unavailable |
+   | Block | off | off | off | unavailable |
    | From / To | on | on | on | on |
    | Multiplier | on* | on* | on* | on* |
    | Amount | on | on | on | on |
@@ -67,12 +69,13 @@ does. The chosen set survives reloads.
 5. Each surface keeps exactly the controls it has today — the token-type filter, the address
    in/out filter, CSV export, the advanced-filter link, pagination, and the socket "new items" notice
    are neither added to nor removed from any surface.
-6. The cells keep today's behaviour: the address tab highlights the current address, the token instance
-   tab does not link the current token id, the Timestamp header keeps the time-format toggle, fungible
-   amounts are scaled by the token multiplier (raw value in the tooltip, the factor in the Multiplier
-   column rather than a tag) and show the confidential-value variant, and NFT rows show the token id
-   (instance image, id, symbol) inside the ID / Asset cell with "1" as the amount when they carry no
-   value, while fungible rows show icon and symbol only.
+6. The cells keep today's behaviour: the address tab highlights the current address and spells the
+   direction relative to it in the In / Out column (In, Out, Self, or a dash when it is neither side),
+   the token instance tab does not link the current token id, the Timestamp header keeps the
+   time-format toggle, fungible amounts are scaled by the token multiplier (raw value in the tooltip,
+   the factor in the Multiplier column rather than a tag) and show the confidential-value variant, and
+   NFT rows show the token id (instance image, id, symbol) inside the ID / Asset cell with "1" as the
+   amount when they carry no value, while fungible rows show icon and symbol only.
 7. Toggling a column emits one Mixpanel event carrying the table, the surface, the column id and the new
    state; moving a column emits one carrying the table, the surface, the column id and the direction.
    The advanced filter emits the same events without a surface.
@@ -137,10 +140,9 @@ the `[human]` style leaves.
   full lists. A cookie was dropped because it grows with every configurable table, is capped at 4 KB and
   rides on every request; the cost is the hydration-time switch described in FR 4. Per-key values keep a
   future cross-instance settings sync simple.
-- **Type column semantics and From/To splitting are gated on Q01 and Q02** in `questions.md`. Until
-  answered: Type renders the token-standard tag with the mint/burn badge beside it; From and To are a
-  single combined column backed by the existing `AddressFromTo` entity and toggled by a single selector
-  entry.
+- **Type is two columns, From / To is one** (Q01, Q02): "Token type" renders the token-standard tag and
+  "Transfer type" the mint/burn badge; From and To stay a single combined column backed by the existing
+  `AddressFromTo` entity and toggled by a single selector entry.
 - **Analytics** is one new Mixpanel event shared by both tables, following the existing event-registry
   convention; it logs column ids, not display names.
 - **Tests**: the unit specs of the deleted tables move to the new table; the Playwright files of each

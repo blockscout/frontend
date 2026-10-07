@@ -21,27 +21,32 @@ target. Phrase it as a checklist of facts." -->
 ### Q02 — Do From and To stay one combined column (one selector entry) or become two independent columns?
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) one column or two; (2) if two, which column the direction arrow belongs to.
 - Slack: https://blockscout.slack.com/archives/D03PDKKMLQH/p1790873263136199
-- Answer:
+- Answer: one combined column, as shipped in T02 — no change needed. 2026-10-07.
 
 ### Q03 — In/Out column: where does it sit in the column order, and is it on by default?
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) position in the vocabulary — first column (as on multichain) or next to From / To; (2) on or off by default on the address, contract and token surfaces.
 - Source: front-end weekly 2026-10-05 — https://app.fireflies.ai/view/01M40TAXK5AET660ZW5PWP6588?t=997 (proposal), https://app.fireflies.ai/view/01M40TAXK5AET660ZW5PWP6588?t=1152 (placement debate)
 - Known so far: agreed as a separate, optional column with the words "in" / "out" in addition to the direction arrow, not replacing it (Ulyana, Nikita). Offered only where direction is meaningful — address, contract, token surfaces. Lowercase for now; caps revisited after use (Tatyana, ?t=1329).
-- Answer:
+- Answer: a regular "In / Out" column, first in the vocabulary (right after the multichain chain
+  column), `on` on the address surface (contract and multichain address included) and unavailable on
+  index, token and tx — the token tab has no current address to measure against. Tags styled as the
+  cross-chain transfers' In / Out / Self (capitalised); a dash when the address is neither side. Kept
+  under the address in/out filter. Developer decisions, 2026-10-07. Realised as T09.
 
 ### Q04 — Default column set and order for narrow desktop widths
 
 - Owner: Product (Nikita), after the team tries the demo on heavy-portfolio wallets
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) final default on/off per surface (candidates: Block off, Transfer type off); (2) final column order (candidates: Amount / Asset / Value before Method, Method pushed back); (3) whether "Transfer type" keeps its name; (4) whether filter-driven hiding (Token ID under the ERC-20 filter, Amount / Value under ERC-721) is wanted, given it may fight the user's saved selection.
 - Source: https://app.fireflies.ai/view/01M40TAXK5AET660ZW5PWP6588?t=1436 (raised), ?t=1592 (Transfer type off), ?t=1612 (Block off), ?t=1823 (parked), ?t=642 (naming), ?t=1480 (filter-driven hiding)
-- Answer:
+- Answer: Block and Transfer type `off` wherever they are available; the column order stays as it is;
+  "Transfer type" keeps its name; no filter-driven hiding. 2026-10-07. Realised as T10.
 
 ### Q05 — Merge Token ID into the Amount / Asset cells
 
