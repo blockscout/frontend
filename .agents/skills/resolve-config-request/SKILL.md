@@ -99,10 +99,10 @@ cp /tmp/instance.env /tmp/instance.validate.env
 jq -r '.localEnvs | to_entries[] | "\(.key)=\(.value)"' tools/dev-server/envs-rules.json >> /tmp/instance.validate.env
 ```
 
-From `deploy/tools/envs-validator/`, build the bundle and the placeholder registry as described under
-"Validating a real instance config by hand" in its `CONTEXT.md`, then:
+From `deploy/tools/envs-validator/`, prepare as in its `CONTEXT.md` ("Validating a real instance config by hand"), with the same overlay on the asset download so a changed or new config URL is the one validated:
 
 ```bash
+pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- ../../scripts/download_assets.sh ./public/assets/configs
 pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- pnpm run validate
 ```
 
@@ -136,7 +136,7 @@ After merge to `main`, confirm each raw URL returns 200. If the instance already
 
 ## Run by Honk
 
-When the Honk orchestrator runs this skill headless (`claude -p`), there is no user in the conversation. Every "show the user and wait" above is released: the DevOps post and the merge to `main` happen without confirmation. The one gate left is the worker's tool allow/deny list — a denied tool is reported, not worked around. A **stop** becomes a return: end the turn with a first line `STATUS: <status>` followed by the text the user would have seen, and the orchestrator resumes this session with the answer where one is expected.
+When the Honk orchestrator runs this skill headless, follow [`honk.md`](../../honk.md). This skill's statuses:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
