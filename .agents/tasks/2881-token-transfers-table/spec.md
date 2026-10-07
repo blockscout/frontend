@@ -33,8 +33,8 @@ does. The chosen set survives reloads.
 1. Every token-transfer view (index page, address tab, token tab, token instance tab, transaction tab,
    and the user-op and multichain variants that reuse them) renders the same table component with the
    same column vocabulary in the same default order: Txn hash, Type, Method, Timestamp, Block, From,
-   To, Amount, ID / Asset, Value. In multichain context a chain column precedes them and cannot be
-   hidden or moved.
+   To, Multiplier, Amount, ID / Asset, Value. In multichain context a chain column precedes them and
+   cannot be hidden or moved.
 2. Each surface has a default column selection that matches its mockup, with Value on everywhere:
 
    | Column | Index | Address tab | Token / instance tab | Tx tab |
@@ -45,12 +45,17 @@ does. The chosen set survives reloads.
    | Timestamp | on | on | on | unavailable |
    | Block | on | on | off | unavailable |
    | From / To | on | on | on | on |
+   | Multiplier | on* | on* | on* | on* |
    | Amount | on | on | on | on |
    | ID / Asset | on | on | on | on |
    | Value | on | on | on | on |
 
    "Off" columns are hidden by default but offered in the selector; "unavailable" columns are neither
    rendered nor offered, because their value is constant for every row on that surface.
+
+   \* Multiplier is unavailable when the chain has ERC-8056 off, when the type filter is set without
+   ERC-8056, and on the token / instance tab when the token is not ERC-8056; a user's stored choice for
+   it survives while it is unavailable.
 3. A column selector button sits next to each surface's existing filter control (tabs right slot or
    action bar, wherever that surface keeps its controls today) and toggles the available columns; its
    rows can be dragged by a handle to reorder the columns, hidden ones included. The mobile selector is
@@ -64,7 +69,8 @@ does. The chosen set survives reloads.
    are neither added to nor removed from any surface.
 6. The cells keep today's behaviour: the address tab highlights the current address, the token instance
    tab does not link the current token id, the Timestamp header keeps the time-format toggle, fungible
-   amounts show the token-multiplier and confidential-value variants, and NFT rows show the token id
+   amounts are scaled by the token multiplier (raw value in the tooltip, the factor in the Multiplier
+   column rather than a tag) and show the confidential-value variant, and NFT rows show the token id
    (instance image, id, symbol) inside the ID / Asset cell with "1" as the amount when they carry no
    value, while fungible rows show icon and symbol only.
 7. Toggling a column emits one Mixpanel event carrying the table, the surface, the column id and the new

@@ -73,7 +73,11 @@ target. Phrase it as a checklist of facts." -->
 ### Q07 — Should token transfers get a separate Multiplier column, as the advanced filter has?
 
 - Owner: Designer (Tatyana)
-- Status: `pending`
+- Status: `resolved`
 - Resolved when: (1) separate column or the tag inside the Amount cell stays; (2) if a column, its position, default state per surface, and whether the Amount tag is dropped.
 - Source: developer grilling 2026-10-07. Today token transfers show the multiplier as a tag in the Amount cell ([5995:28720](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=5995-28720)), the advanced filter as its own column ([6004:40199](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6004-40199)), per #3671. No ticket until answered; may not be done at all.
-- Answer:
+- Answer: a separate Multiplier column, styled as the advanced filter's; the tag leaves the Amount cell
+  (amount stays scaled, tooltip unchanged). Placed right before Amount; `on` wherever available, and
+  unavailable when the chain has ERC-8056 off, when the type filter is set without ERC-8056, or on the
+  token surface for a non-ERC-8056 token. Rows without a multiplier show a dash. Tatyana's answer plus
+  developer decisions, 2026-10-07. Realised as T14.
