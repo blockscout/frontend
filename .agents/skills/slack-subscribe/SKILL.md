@@ -43,7 +43,7 @@ Once every thread is registered, **end the turn** — once. Nothing else to laun
 
 Act on it per the skill that subscribed, then end the turn again; the other registered threads stay registered. Read the full thread with `slack_read_thread` when the forwarded text is not enough.
 
-**Leave state findable.** If this session is gone when a reply lands, Honk resumes it headless (`claude -p --resume <session_id>`) in the recorded `cwd`. The resumed run has only the transcript, so every artefact the next step needs — branch name, PR link, demo URL, the pending question — must have been stated in the session before stopping.
+**Leave state findable.** If this session is gone when a reply lands, Honk resumes it headless — see [`honk.md`](../../honk.md) → Resume for what the transcript must carry before stopping.
 
 **Done when:** a `SUBSCRIBED` line is printed per thread and the turn has ended.
 

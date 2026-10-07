@@ -16,7 +16,8 @@ Post to Slack only through the command the run's prompt names. `./slack-message.
 
 ## A stop is a return
 
-A stop the skill would make in a chat — a question, an approval, a wait for someone's reply — ends the turn.
+A stop the skill would make in a chat — a question, an approval for a denied tool (`needs_approval`), a wait for
+someone's reply — ends the turn.
 The final message opens with a plain first line `STATUS: <status>`, a status from the skill's table, then
 the text the user would have seen. Honk reads only that first line to decide what happens next; a run
 that ends without it counts as failed.
