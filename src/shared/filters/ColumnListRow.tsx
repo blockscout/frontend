@@ -25,8 +25,7 @@ const ColumnListRow = ({ column, rowRef, rowStyle, handleRef, handleProps, isDra
       ref={ rowRef }
       style={ rowStyle }
       alignItems="center"
-      gap={ 3 }
-      h={ 8 }
+      gap={ 2 }
       position="relative"
       zIndex={ isDragging ? 1 : undefined }
       bgColor={ isDragging ? 'popover.bg' : undefined }
@@ -44,6 +43,7 @@ const ColumnListRow = ({ column, rowRef, rowStyle, handleRef, handleProps, isDra
         borderRadius="sm"
         aria-hidden={ handleProps ? undefined : true }
         { ...handleProps }
+        p={ 1.5 }
       >
         <SpriteIcon name="move" boxSize={ 5 }/>
       </chakra.span>
