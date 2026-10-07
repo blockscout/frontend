@@ -68,7 +68,10 @@ const BeaconChainWithdrawals = () => {
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
             { BigNumber(countersQuery.data.withdrawals_count).toFormat() } withdrawals processed
-            and { calculateUsdValue({ amount: countersQuery.data.withdrawals_sum }).valueStr } { currencyUnits.ether } withdrawn
+            and { calculateUsdValue({
+              amount: countersQuery.data.withdrawals_sum,
+              decimals: String(config.chain.currency.decimals),
+            }).valueStr } { currencyUnits.ether } withdrawn
           </Text>
         ) }
       </Skeleton>
