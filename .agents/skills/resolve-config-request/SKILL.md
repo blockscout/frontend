@@ -136,7 +136,7 @@ After merge to `main`, confirm each raw URL returns 200. If the instance already
 
 ## Run by Honk
 
-When the Honk orchestrator runs this skill headless (`claude -p`), there is no user in the conversation. Every "show the user and wait" above is released: the DevOps post and the merge to `main` happen without confirmation. The one gate left is the worker's tool allow/deny list — a denied tool is reported, not worked around. A **stop** becomes a return: end the turn with a first line `STATUS: <status>` followed by the text the user would have seen, and the orchestrator resumes this session with the answer where one is expected.
+When the Honk orchestrator runs this skill headless, follow `.agents/honk.md`: no confirmations, a denied tool is a stop, every stop returns a `STATUS:` line, and Honk resumes the session. This skill's statuses:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
