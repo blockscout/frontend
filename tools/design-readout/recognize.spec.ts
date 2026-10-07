@@ -1,24 +1,35 @@
 import { describe, expect, it } from 'vitest';
 
+import { buildThemeColorMap } from './colormap';
 import type { Recognition } from './recognize';
 import {
-  loadSpriteNames, matchIconName, matchTextShape, normalizeIconName, normalizeLookalikes, parseSpriteNames, recognize, renderRecognition,
-  TEXT_SHAPE_RULES,
+  COMPOSITE_RULES, loadSpriteNames, matchIconName, matchTextShape, normalizeIconName, normalizeLookalikes, orderByBox, parseSpriteNames, recognize,
+  renderRecognition, TEXT_SHAPE_RULES,
 } from './recognize';
-import type { Leaf } from './values';
+import type { Leaf, RoleColor } from './values';
 
 const SPRITES: ReadonlyArray<string> = [ 'arrows/east', 'apps_list', 'clock-light', 'gas_xl', 'gas', 'status/success', 'contracts/verified' ];
+const MAP = buildThemeColorMap();
+const NO_COLORS: ReadonlyArray<RoleColor> = [];
 
-function text(id: string, characters: string, x = 0, y = 0): Leaf {
+function text(id: string, characters: string, x = 0, y = 0, colors = NO_COLORS): Leaf {
   return {
     id,
     bbox: { x, y, width: 60, height: 20 },
-    values: { kind: 'text', text: characters, trailingGlyphs: undefined, font: undefined, colors: [] },
+    values: { kind: 'text', text: characters, trailingGlyphs: undefined, font: undefined, colors },
   };
 }
 
 function icon(id: string, name: string, x = 0, y = 0): Leaf {
   return { id, bbox: { x, y, width: 20, height: 20 }, values: { kind: 'icon', icon: name, colors: [] } };
+}
+
+function box(id: string, colors: ReadonlyArray<RoleColor>, x = 0, y = 0): Leaf {
+  return { id, bbox: { x, y, width: 40, height: 20 }, values: { kind: 'box', colors } };
+}
+
+function recognizeDark(leaves: ReadonlyArray<Leaf>): ReadonlyArray<Recognition> {
+  return recognize(leaves, SPRITES, MAP, 'dark');
 }
 
 describe('normalizeLookalikes', () => {
@@ -61,6 +72,8 @@ describe('matchTextShape', () => {
   it('reads a bare or grouped integer as a block, batch or epoch number and a # id as an NFT id', () => {
     expect(matchTextShape('1248139')).toMatchObject({ signal: 'number', entities: [ 'block', 'batch', 'epoch' ] });
     expect(matchTextShape('1,248,139')?.signal).toBe('number');
+    expect(matchTextShape('0.5612')).toMatchObject({ signal: 'amount', entities: [ 'amount' ] });
+    expect(matchTextShape('1,234.56')?.signal).toBe('amount');
     expect(matchTextShape('#1234')).toMatchObject({ signal: 'nft-id', entities: [ 'nft' ] });
     expect(matchTextShape('#1234…890')?.signal).toBe('nft-id');
   });
@@ -124,43 +137,128 @@ describe('matchIconName', () => {
 describe('recognize', () => {
   it('runs text shapes first and icon names second, recording the signal on each decision', () => {
     const leaves = [ text('t', '1248139'), icon('i', 'Icons/contracts/verified', 100, 100), text('p', '$0.56') ];
-    expect(recognize(leaves, SPRITES)).toEqual<Array<Recognition>>([
-      { id: 't', status: 'recognized', decision: { signal: 'number', value: '1248139', entities: [ 'block', 'batch', 'epoch' ] } },
-      { id: 'i', status: 'recognized', decision: { signal: 'icon', icon: 'contracts/verified' } },
-      { id: 'p', status: 'unrecognized', decision: null },
+    expect(recognizeDark(leaves)).toEqual<Array<Recognition>>([
+      { id: 't', status: 'recognized', decision: { signal: 'number', value: '1248139', entities: [ 'block', 'batch', 'epoch' ] }, tokens: [], composite: null },
+      { id: 'i', status: 'recognized', decision: { signal: 'icon', icon: 'contracts/verified' }, tokens: [], composite: null },
+      { id: 'p', status: 'unrecognized', decision: null, tokens: [], composite: null },
     ]);
   });
 
   it('marks a truncated hash ambiguous when no icon sits beside it, recognized when one does', () => {
-    const alone = recognize([ text('h', '0x05a3…f2d1') ], SPRITES);
+    const alone = recognizeDark([ text('h', '0x05a3…f2d1') ]);
     expect(alone[0]).toMatchObject({ status: 'ambiguous', decision: { signal: 'truncated-hash' } });
-    const beside = recognize([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 28, 0) ], SPRITES);
+    const beside = recognizeDark([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 28, 0) ]);
     expect(beside.map((recognition) => recognition.status)).toEqual([ 'recognized', 'recognized' ]);
-    const farAway = recognize([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 60, 0) ], SPRITES);
+    const farAway = recognizeDark([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 60, 0) ]);
     expect(farAway[1].status).toBe('ambiguous');
-    const otherRow = recognize([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 28, 40) ], SPRITES);
+    const otherRow = recognizeDark([ icon('i', 'contracts/verified', 0, 0), text('h', '0x05a3…f2d1', 28, 40) ]);
     expect(otherRow[1].status).toBe('ambiguous');
   });
 
-  it('leaves an icon no sprite matches and a painted box unrecognized', () => {
-    const box: Leaf = { id: 'b', bbox: null, values: { kind: 'box', colors: [ { role: 'background', hex: '#FFFFFF', alpha: 1 } ] } };
-    expect(recognize([ icon('i', 'Icons/Sparkle'), box ], SPRITES)).toEqual([
-      { id: 'i', status: 'unrecognized', decision: null },
-      { id: 'b', status: 'unrecognized', decision: null },
+  it('leaves an icon no sprite matches unrecognized', () => {
+    expect(recognizeDark([ icon('i', 'Icons/Sparkle') ])).toEqual([ { id: 'i', status: 'unrecognized', decision: null, tokens: [], composite: null } ]);
+  });
+
+  it('resolves every fill to the tokens of its role in the run mode, several when the hex serves several', () => {
+    const primary = text('t', 'Hi', 0, 0, [ { role: 'text', hex: '#FFFFFF', alpha: 0.8 } ]);
+    expect(recognize([ primary ], SPRITES, MAP, 'dark')[0].tokens).toEqual([
+      { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] },
+    ]);
+    expect(recognize([ primary ], SPRITES, MAP, 'light')[0].tokens).toEqual([ { role: 'text', color: '#FFFFFF/80', tokens: [] } ]);
+  });
+
+  it('recognizes a painted box when every fill is a token and leaves it unrecognized with the unmapped hex otherwise', () => {
+    const card = box('c', [ { role: 'background', hex: '#101112', alpha: 1 }, { role: 'border', hex: '#FFFFFF', alpha: 0.06 } ]);
+    const [ recognized ] = recognizeDark([ card ]);
+    expect(recognized).toMatchObject({ status: 'recognized', decision: { signal: 'color' } });
+    expect(recognized.tokens[0]).toEqual({ role: 'background', color: '#101112', tokens: [ 'bg.primary' ] });
+    expect(recognized.tokens[1]).toMatchObject({ role: 'border', color: '#FFFFFF/6', tokens: expect.arrayContaining([ 'border.divider' ]) });
+    const stray = box('s', [ { role: 'background', hex: '#123456', alpha: 1 }, { role: 'border', hex: '#FFFFFF', alpha: 0.06 } ]);
+    expect(recognizeDark([ stray ])[0]).toMatchObject({
+      status: 'unrecognized',
+      decision: null,
+      tokens: [ { color: '#123456', tokens: [] }, { color: '#FFFFFF/6' } ],
+    });
+  });
+});
+
+describe('COMPOSITE_RULES', () => {
+  it('is a table of two rules in reading order: hash, arrow, hash and amount, ticker', () => {
+    expect(COMPOSITE_RULES.map((rule) => [ rule.signal, rule.parts.map((part) => part.part) ])).toEqual([
+      [ 'from-to', [ 'from', 'arrow', 'to' ] ],
+      [ 'amount-ticker', [ 'amount', 'ticker' ] ],
     ]);
   });
 });
 
+describe('orderByBox', () => {
+  it('orders rows of overlapping boxes top to bottom and each row left to right, dropping unboxed items', () => {
+    const items = [ text('c', '', 100, 2), text('d', '', 0, 40), text('a', '', 0, 0), { id: 'n', bbox: null }, text('b', '', 50, 10) ];
+    expect(orderByBox(items).map((item) => item.id)).toEqual([ 'a', 'b', 'c', 'd' ]);
+  });
+});
+
+describe('composites', () => {
+  const fromTo = [
+    icon('fi', 'contracts/verified', 0, 0), text('from', '0x05a3…f2d1', 28, 0), icon('arrow', 'arrows/east', 96, 0),
+    icon('ti', 'contracts/verified', 124, 0), text('to', '0x9b1c…0a77', 152, 0),
+  ];
+
+  it('joins hash, arrow, hash into a from/to pair over the entity icons between them, in box order not layer order', () => {
+    const recognitions = recognizeDark([ ...fromTo ].reverse());
+    const members = { from: 'from', arrow: 'arrow', to: 'to' };
+    expect(recognitions.find((entry) => entry.id === 'from')?.composite).toEqual({ signal: 'from-to', part: 'from', members });
+    expect(recognitions.find((entry) => entry.id === 'arrow')?.composite).toEqual({ signal: 'from-to', part: 'arrow', members });
+    expect(recognitions.find((entry) => entry.id === 'to')?.composite).toEqual({ signal: 'from-to', part: 'to', members });
+    expect(recognitions.find((entry) => entry.id === 'fi')?.composite).toBeNull();
+  });
+
+  it('does not fire when a member is only ambiguous, missing, out of order or too far away', () => {
+    const head = fromTo.slice(0, 3);
+    const noIcon = recognizeDark([ ...head, text('to', '0x9b1c…0a77', 124, 0) ]);
+    expect(noIcon.find((entry) => entry.id === 'to')?.status).toBe('ambiguous');
+    expect(noIcon.every((entry) => entry.composite === null)).toBe(true);
+    const noArrow = recognizeDark(fromTo.filter((leaf) => leaf.id !== 'arrow'));
+    expect(noArrow.every((entry) => entry.composite === null)).toBe(true);
+    const twoArrows = recognizeDark([
+      ...head, icon('arrow2', 'arrows/east', 124, 0), icon('ti', 'contracts/verified', 152, 0), text('to', '0x9b1c…0a77', 180, 0),
+    ]);
+    expect(twoArrows.every((entry) => entry.composite === null)).toBe(true);
+    const farApart = recognizeDark([ ...head, icon('ti', 'contracts/verified', 200, 0), text('to', '0x9b1c…0a77', 228, 0) ]);
+    expect(farApart.every((entry) => entry.composite === null)).toBe(true);
+  });
+
+  it('joins an amount or a bare number with the ticker beside it, once per leaf', () => {
+    const recognitions = recognizeDark([ text('v', '0.5612', 0, 0), text('c', 'ETH', 64, 0), text('n', '1248139', 0, 30), text('c2', 'USDT', 64, 30) ]);
+    expect(recognitions.map((entry) => entry.composite)).toEqual([
+      { signal: 'amount-ticker', part: 'amount', members: { amount: 'v', ticker: 'c' } },
+      { signal: 'amount-ticker', part: 'ticker', members: { amount: 'v', ticker: 'c' } },
+      { signal: 'amount-ticker', part: 'amount', members: { amount: 'n', ticker: 'c2' } },
+      { signal: 'amount-ticker', part: 'ticker', members: { amount: 'n', ticker: 'c2' } },
+    ]);
+    const label = recognizeDark([ text('v', '0.5612', 0, 0), text('l', 'Value', 64, 0), text('c', 'ETH', 128, 0) ]);
+    expect(label.map((entry) => entry.composite?.part ?? null)).toEqual([ 'amount', null, 'ticker' ]);
+  });
+});
+
 describe('renderRecognition', () => {
-  it('ends with the recognized count and the ambiguous and unrecognized items with id, values and box', () => {
-    const leaves = [ text('t', '1248139', 10, 20), text('h', '0x05a3…f2d1', 80, 20), icon('i', 'Icons/Sparkle', 180, 20), text('p', '$0.56', 220, 20) ];
-    expect(renderRecognition(leaves, recognize(leaves, SPRITES))).toBe([
-      'Recognized: 1 of 4',
+  it('lists the recognized items with tokens and composites, then the ambiguous and unrecognized items with id, values and box', () => {
+    const leaves = [
+      text('t', '1248139', 10, 20, [ { role: 'text', hex: '#63B3ED', alpha: 1 } ]), text('h', '0x05a3…f2d1', 80, 20), icon('i', 'Icons/Sparkle', 180, 20),
+      text('p', '$0.56', 220, 20), text('v', '0.5612', 10, 50), text('c', 'ETH', 80, 50),
+      box('b', [ { role: 'background', hex: '#123456', alpha: 1 } ], 10, 80),
+    ];
+    expect(renderRecognition(leaves, recognizeDark(leaves))).toBe([
+      'Recognized: 3 of 7',
+      '  - t text "1248139" — no font; text #63B3ED; at 10,20 60×20 — number: block or batch or epoch; tokens: text #63B3ED → link.primary',
+      '  - v text "0.5612" — no font; ; at 10,50 60×20 — amount: amount; tokens: no fill; amount of amount-ticker (amount v, ticker c)',
+      '  - c text "ETH" — no font; ; at 80,50 60×20 — ticker: ticker; tokens: no fill; ticker of amount-ticker (amount v, ticker c)',
       'Ambiguous: 1',
-      '  - h text "0x05a3…f2d1" — no font; ; at 80,20 60×20 — truncated-hash: address or transaction, no icon beside it',
-      'Unrecognized: 2',
-      '  - i icon "Icons/Sparkle" — ; at 180,20 20×20 — no sprite icon is named like "Icons/Sparkle"',
-      '  - p text "$0.56" — no font; ; at 220,20 60×20 — no text-shape rule matches',
+      '  - h text "0x05a3…f2d1" — no font; ; at 80,20 60×20 — truncated-hash: address or transaction, no icon beside it; tokens: no fill',
+      'Unrecognized: 3',
+      '  - i icon "Icons/Sparkle" — ; at 180,20 20×20 — no sprite icon is named like "Icons/Sparkle"; tokens: no fill',
+      '  - p text "$0.56" — no font; ; at 220,20 60×20 — no text-shape rule matches; tokens: no fill',
+      '  - b box — background #123456; at 10,80 40×20 — no token serves background #123456; tokens: background #123456 → no token',
     ].join('\n'));
   });
 });

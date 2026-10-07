@@ -4,20 +4,23 @@ import path from 'path';
 import type { ColorMode } from './colormap';
 import { SIDECAR_DIR } from './config';
 import type { BoundingBox } from './figma';
-import type { Decision, Recognition, RecognitionStatus } from './recognize';
+import type { ColorTokens, CompositeMembership, Decision, Recognition, RecognitionStatus } from './recognize';
 import type { Leaf, LeafValues } from './values';
 
-export const SIDECAR_VERSION = 1;
+export const SIDECAR_VERSION = 2;
 
 // Per node: the values and box this run extracted, what recognition decided (the signal that fired
-// and what it says the node is; `null` when nothing fired) with its status, and the slot for the
-// developer's correction, `null` until one is given.
+// and what it says the node is; `null` when nothing fired) with its status, the tokens each fill
+// resolved to in the run's mode, the composite the node is part of (`null` when none fired), and
+// the slot for the developer's correction, `null` until one is given.
 export interface NodeRecord {
   readonly id: string;
   readonly values: LeafValues;
   readonly bbox: BoundingBox | null;
   readonly decision: Decision | null;
   readonly status: RecognitionStatus;
+  readonly tokens: ReadonlyArray<ColorTokens>;
+  readonly composite: CompositeMembership | null;
   readonly correction: null;
 }
 
@@ -30,7 +33,7 @@ export interface SidecarRecord {
     readonly lastModified: string;
     readonly version: string;
   };
-  readonly colorMode: ColorMode | null;
+  readonly colorMode: ColorMode;
   readonly regions: ReadonlyArray<string>;
   readonly nodes: ReadonlyArray<NodeRecord>;
 }
@@ -41,6 +44,7 @@ export interface SidecarInputs {
   readonly nodeId: string;
   readonly lastModified: string;
   readonly fileVersion: string;
+  readonly colorMode: ColorMode;
   readonly regions: ReadonlyArray<string>;
   readonly leaves: ReadonlyArray<Leaf>;
   readonly recognitions: ReadonlyArray<Recognition>;
@@ -49,7 +53,8 @@ export interface SidecarInputs {
 function nodeRecordOf(leaf: Leaf, recognitions: ReadonlyMap<string, Recognition>): NodeRecord {
   const recognition = recognitions.get(leaf.id);
   if (recognition === undefined) throw new Error(`Leaf ${ leaf.id } has no recognition.`);
-  return { id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision: recognition.decision, status: recognition.status, correction: null };
+  const { decision, status, tokens, composite } = recognition;
+  return { id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision, status, tokens, composite, correction: null };
 }
 
 export function buildRecord(inputs: SidecarInputs): SidecarRecord {
@@ -60,7 +65,7 @@ export function buildRecord(inputs: SidecarInputs): SidecarRecord {
     fileKey: inputs.fileKey,
     nodeId: inputs.nodeId,
     file: { lastModified: inputs.lastModified, version: inputs.fileVersion },
-    colorMode: null,
+    colorMode: inputs.colorMode,
     regions: inputs.regions,
     nodes: inputs.leaves.map((leaf) => nodeRecordOf(leaf, recognitions)),
   };

@@ -4,8 +4,9 @@ Turns a Figma node into material a developer confirms before any markup work: th
 which node is the content root and which chrome was dropped on the way down, with the rule that
 dropped it — under the confirmed regions, the *values* of every leaf (text, fills per role, font,
 icon instance name, trailing glyphs, bounding box) — and per leaf what the tool *recognizes* from
-those values (a hash, a number, a timestamp, a sprite icon), with a status and the signal that fired,
-all written to a sidecar. It reads the node through the Figma REST API, never through the MCP; the
+those values (a hash, a number, a timestamp, a sprite icon, the theme tokens each fill serves in the
+color mode the fills voted for, a from/to pair or an amount with its ticker over neighbours), with a
+status and the signal that fired, all written to a sidecar. It reads the node through the Figma REST API, never through the MCP; the
 task spec behind the tool and the phases after this one: `.agents/tasks/3756-design-readout/spec.md`.
 
 ## Where to look
@@ -21,10 +22,12 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | Where does a run's record go, and what is in it? | `<main checkout>/.ai/design-readout/<fileKey>-<nodeId>.json`, one per node; `./sidecar.ts` is the shape |
 | How does the fetch fail, and with what message? | `./figma.ts` |
 | What does the raw payload look like? | `./fixtures/`, one `--dump` per node, named `<node id>-<light\|dark>.json` |
-| Which tokens does a hex serve, in which mode? Which role narrows to which token prefixes? | `./colormap.ts` builds the map from the theme and answers over it; `./config.ts` holds the role prefixes |
+| Which tokens does a hex serve, in which mode? Which role narrows to which tokens? | `./colormap.ts` builds the map from the theme and answers over it; `./config.ts` holds the role patterns |
+| How is the run's color mode decided, and what breaks a tie? | `detectColorMode` in `./colormap.ts`; `extractValues` in `./values.ts` feeds it every fill and the linked node's own background |
 | Which text shapes are recognized, in what order, with what example? Which characters are lookalikes? | `TEXT_SHAPE_RULES` in `./recognize.ts`, one example per rule; `./config.ts` holds the lookalike table |
 | How is an icon instance name matched to a sprite name? What counts as "beside"? | `normalizeIconName` / `matchIconName` in `./recognize.ts`; the adjacency gap in `./config.ts` |
-| What can a node's status be, and what does each mean? | `RecognitionStatus` in `./recognize.ts`: `recognized` (a signal fired and settles the shape), `ambiguous` (a signal fired but the shape alone cannot settle it — a truncated hash with no icon beside it), `unrecognized` (nothing fired; the values are listed, never a guess) |
+| Which composites exist, what are their parts, when does one not fire? | `COMPOSITE_RULES` in `./recognize.ts` and the comment above it; the member gap in `./config.ts` |
+| What can a node's status be, and what does each mean? | `RecognitionStatus` in `./recognize.ts`: `recognized` (a signal fired and settles the shape), `ambiguous` (a signal fired but the shape alone cannot settle it — a truncated hash with no entity icon beside it), `unrecognized` (nothing fired; the values are listed, never a guess) |
 
 ## What an editor here must keep true
 
@@ -73,6 +76,15 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   one mode" test gave a light screen no light votes at all. Detection counts only the tokens one mode
   does not share with the other.
 
+- **A composite part is matched against the part the rule expects next, not the first part whose
+  predicate fits.** `from` and `to` share one predicate, so "find the first matching part" read every
+  `to` hash as a second `from` and no from/to pair ever fired. A new rule with two parts of one kind
+  hits the same trap.
+
+- **An arrow beside a truncated hash is not the icon that settles it.** The adjacency rule counts
+  entity icons only; counting any icon made the `to` hash of a from/to pair "recognized" through the
+  arrow alone, which is exactly the ambiguity the rule exists to keep.
+
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, `--regions`, the header, outline and values on stdout, the
@@ -84,10 +96,11 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
 - `./colormap.ts` — the reverse color map built from the theme defaults: token reference resolution,
   the hex → tokens lookup, color mode detection
-- `./values.ts` — the leaf walk under the confirmed regions: values per leaf, the hints and their
-  verdicts, the text rendering of both
+- `./values.ts` — the leaf walk under the confirmed regions: values per leaf, the color-mode vote,
+  the hints and their verdicts in that mode, the text rendering of all three
 - `./recognize.ts` — the lookalike normalizer, the text-shape rule table, icon matching against the
-  sprite list, the per-leaf status and decision, the closing stdout lists
+  sprite list, fills → tokens, the composite rule table, the per-leaf status and decision, the closing
+  stdout lists
 - `./sidecar.ts` — the record shape, its path under the main checkout, writing and reading one
 - `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

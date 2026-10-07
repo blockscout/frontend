@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { buildThemeColorMap } from './colormap';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
-import type { Hint, Leaf } from './values';
+import type { Extraction, Leaf } from './values';
 import { describeLeaf, extractValues, findNode, renderExtraction } from './values';
 
 const MAP = buildThemeColorMap();
@@ -32,7 +32,7 @@ function entryWith(document: FigmaNode, styles: NodeEntry['styles'] = {}, compon
   return { document, styles, components };
 }
 
-function extract(entry: NodeEntry, excluded: ReadonlySet<string> = NONE): { leaves: ReadonlyArray<Leaf>; hints: ReadonlyArray<Hint> } {
+function extract(entry: NodeEntry, excluded: ReadonlySet<string> = NONE): Extraction {
   return extractValues(entry, [ entry.document ], excluded, MAP);
 }
 
@@ -143,16 +143,37 @@ describe('hints', () => {
     expect(hints).toEqual([ { nodeId: 't', layer: 't', source: 'fill style', name: '🖤 Dark/text.primary', verdict: { kind: 'agrees' } } ]);
   });
 
-  it('reports a disagreement with both sides when the hint names a token the value does not serve', () => {
-    const { hints } = extract(textWithFillStyle('🤍 Light/text.primary', '#FFFFFF', 0.8));
-    expect(hints[0].verdict).toEqual({ kind: 'disagrees', value: '#FFFFFF/80 → light: whiteAlpha.800' });
+  it('reports a disagreement with both sides when the hint names a token the value does not serve in the run mode', () => {
+    const { hints } = extract(textWithFillStyle('🖤 Dark/text.secondary', '#FFFFFF', 0.8));
+    expect(hints[0].verdict).toEqual({ kind: 'disagrees', value: '#FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary' });
   });
 
-  it('checks a mode-free hint against both modes', () => {
+  it('reports a hint stated for the other mode as a disagreement, whatever token it names', () => {
+    const { hints, colorMode } = extract(textWithFillStyle('🤍 Light/text.primary', '#FFFFFF', 0.8));
+    expect(colorMode.mode).toBe('dark');
+    expect(hints[0].verdict).toEqual({
+      kind: 'disagrees',
+      value: 'stated for light, the run reads dark; #FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary',
+    });
+  });
+
+  it('flags the dark button hint over the light-mode link blue of the Details row, a token the theme does not know', () => {
+    const { hints, colorMode } = extract(readFixture('22842-169552-light.json', '22842:169552'));
+    expect(colorMode).toMatchObject({ mode: 'light', decidedBy: 'majority' });
+    expect(hints.find((hint) => hint.nodeId === '22842:169555' && hint.source === 'fill style')).toEqual({
+      nodeId: '22842:169555',
+      layer: 'Asset Name Copy 2',
+      source: 'fill style',
+      name: '🖤 Dark/button.primary',
+      verdict: { kind: 'disagrees', value: 'stated for dark, the run reads light; #2B6CB0 → light: link.primary' },
+    });
+    expect(hints.filter((hint) => hint.verdict.kind === 'disagrees')).toHaveLength(1);
+  });
+
+  it('checks a mode-free hint in the run mode', () => {
     expect(extract(textWithFillStyle('gray/400', '#A0AEC0')).hints[0].verdict).toEqual({ kind: 'agrees' });
     const { hints } = extract(textWithFillStyle('gray/500', '#A0AEC0'));
-    expect(hints[0].verdict.kind).toBe('disagrees');
-    expect(hints[0].verdict).toMatchObject({ value: expect.stringMatching(/^#A0AEC0 → light: .*; dark: .*gray\.400/) });
+    expect(hints[0].verdict).toMatchObject({ kind: 'disagrees', value: expect.stringMatching(/^#A0AEC0 → (light|dark): /) });
   });
 
   it('leaves a hint unchecked when it names no theme token or the node paints nothing', () => {
@@ -163,8 +184,9 @@ describe('hints', () => {
     expect(hints[0].verdict).toEqual({ kind: 'unchecked', reason: 'the node paints no solid color' });
   });
 
-  it('judges the fixture fill hints: dark hints agree, the light one does not', () => {
-    const { hints } = extract(DARK_ROW);
+  it('judges the fixture fill hints in the mode the fills voted for', () => {
+    const { hints, colorMode } = extract(DARK_ROW);
+    expect(colorMode).toEqual({ mode: 'dark', decidedBy: 'majority', votes: { light: 0, dark: 5 } });
     const fills = hints.filter((hint) => hint.source === 'fill style').map((hint) => [ hint.nodeId, hint.name, hint.verdict.kind ]);
     expect(fills).toEqual([
       [ '22842:178386', '🖤 Dark/link.primary', 'agrees' ],
@@ -199,6 +221,28 @@ describe('hints', () => {
   });
 });
 
+describe('color mode', () => {
+  const paletteOnlyText = node('t', 'TEXT', { characters: 'x', fills: solid('#000000') });
+
+  it('breaks a tie between the fills with the linked node\'s own background, even when the regions sit below it', () => {
+    const page = node('page', 'FRAME', { fills: solid('#101112') }, [ paletteOnlyText ]);
+    const entry = entryWith(page);
+    expect(extractValues(entry, [ paletteOnlyText ], NONE, MAP).colorMode)
+      .toEqual({ mode: 'dark', decidedBy: 'frame-background', votes: { light: 0, dark: 0 } });
+    expect(extract(entry).colorMode).toMatchObject({ mode: 'dark', decidedBy: 'majority' });
+  });
+
+  it('reads the light tx row light although its grays paint dark-mode backgrounds: each fill votes with its own role', () => {
+    const { colorMode } = extract(readFixture('13983-116369-light.json', '13983:116369'));
+    expect(colorMode).toMatchObject({ mode: 'light', decidedBy: 'majority' });
+    expect(colorMode.votes.light).toBeGreaterThan(colorMode.votes.dark);
+  });
+
+  it('falls back to light when neither the fills nor the linked node\'s background lean either way', () => {
+    expect(extract(entryWith(paletteOnlyText)).colorMode).toEqual({ mode: 'light', decidedBy: 'default', votes: { light: 0, dark: 0 } });
+  });
+});
+
 describe('findNode', () => {
   it('finds a node by id anywhere under the root, or nothing', () => {
     expect(findNode(DARK_ROW.document, '22842:178403')?.name).toBe('Asset Name Copy 2');
@@ -212,10 +256,12 @@ describe('renderExtraction', () => {
     const entry = textWithTwoHints();
     const rendered = renderExtraction(extract(entry));
     expect(rendered).toBe([
+      'Color mode: dark (by majority; 0 light, 1 dark)',
       'Values: 1 leaves',
       '  - t text "Hi ↗" +"↗" — Inter 700 14/20; text #FFFFFF/80',
       'Figma hints (not stored): 2, 1 disagreeing',
-      '  - t "t" fill style "Light/text.primary": DISAGREES with value #FFFFFF/80 → light: whiteAlpha.800',
+      '  - t "t" fill style "Light/text.primary": DISAGREES with value stated for light, the run reads dark; ' +
+        '#FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary',
       '  - t "t" text style "text-sm/font-bold": agrees',
     ].join('\n'));
   });

@@ -1,9 +1,9 @@
 import { DEFAULT_THEME_COLORS, PALETTE_COLORS } from '../../src/toolkit/theme/foundations/colorsDefault';
 import { SEMANTIC_TOKENS_DEFAULT } from '../../src/toolkit/theme/foundations/semanticTokensDefault';
-import { COLOR_ROLE_PREFIXES } from './config';
+import { COLOR_ROLE_PATTERNS } from './config';
 
 export type ColorMode = 'light' | 'dark';
-export type ColorRole = keyof typeof COLOR_ROLE_PREFIXES;
+export type ColorRole = keyof typeof COLOR_ROLE_PATTERNS;
 
 // A resolved color: six upper-case hex digits plus an alpha in [0, 1], where 1 is opaque.
 export interface ColorValue {
@@ -185,12 +185,12 @@ function semanticTokensFor(map: ColorMap, value: ColorValue, mode: ColorMode): R
   return map.semantic[mode][colorKey(value)] ?? NO_TOKENS;
 }
 
-// Every token the color serves in the mode, semantic first; a role keeps only the tokens under its prefixes.
+// Every token the color serves in the mode, semantic first; a role keeps only the tokens its patterns name.
 export function lookupTokens(map: ColorMap, value: ColorValue, mode: ColorMode, role?: ColorRole): Array<string> {
   const all = [ ...semanticTokensFor(map, value, mode), ...(map.palette[colorKey(value)] ?? NO_TOKENS) ];
   if (role === undefined) return all;
-  const prefixes: ReadonlyArray<string> = COLOR_ROLE_PREFIXES[role];
-  return all.filter((name) => prefixes.some((prefix) => name.startsWith(prefix)));
+  const patterns: ReadonlyArray<RegExp> = COLOR_ROLE_PATTERNS[role];
+  return all.filter((name) => patterns.some((pattern) => pattern.test(name)));
 }
 
 export interface ModeDetection {
@@ -199,19 +199,25 @@ export interface ModeDetection {
   readonly votes: Record<ColorMode, number>;
 }
 
+// A fill that votes on the mode; with a role, only that role's tokens count for it.
+export interface VotingColor extends ColorValue {
+  readonly role?: ColorRole;
+}
+
 // The mode a color leans to: the one where it serves more semantic tokens that the other mode does not
 // share. A token the color serves in both modes says nothing, and neither do palette names, which are
-// mode-free.
-function leaningMode(map: ColorMap, value: ColorValue): ColorMode | undefined {
-  const inLight = semanticTokensFor(map, value, 'light');
-  const inDark = semanticTokensFor(map, value, 'dark');
+// mode-free. The role matters: `gray.600` is a light-mode text and a dark-mode background, so a
+// text fill of it must not be read as a dark vote.
+function leaningMode(map: ColorMap, value: VotingColor): ColorMode | undefined {
+  const inLight = lookupTokens(map, value, 'light', value.role);
+  const inDark = lookupTokens(map, value, 'dark', value.role);
   const lightOnly = inLight.filter((name) => !inDark.includes(name)).length;
   const darkOnly = inDark.filter((name) => !inLight.includes(name)).length;
   if (lightOnly === darkOnly) return undefined;
   return lightOnly > darkOnly ? 'light' : 'dark';
 }
 
-export function detectColorMode(map: ColorMap, values: ReadonlyArray<ColorValue>, frameBackground: ColorValue | undefined): ModeDetection {
+export function detectColorMode(map: ColorMap, values: ReadonlyArray<VotingColor>, frameBackground: VotingColor | undefined): ModeDetection {
   const votes: Record<ColorMode, number> = { light: 0, dark: 0 };
   for (const value of values) {
     const mode = leaningMode(map, value);

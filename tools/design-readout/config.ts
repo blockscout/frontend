@@ -35,10 +35,15 @@ export const SPRITE_NAMES_FILE = 'public/icons/name.d.ts';
 // this; the shipped entity rows put `gap: 2` (8px) between the icon and the hash.
 export const ICON_ADJACENCY_GAP_PX = 16;
 
-// A readout role narrows a color lookup to the semantic tokens under these path prefixes.
-export const COLOR_ROLE_PREFIXES = {
-  text: [ 'text.' ],
-  background: [ 'bg.' ],
-  border: [ 'border.' ],
-  icon: [ 'icon.' ],
+// Members of a composite (a hash and the arrow to the next hash, an amount and its ticker) sit this
+// close at most; the shipped from/to and value cells put `gap: 2` or `3` (8–12px) between them.
+export const COMPOSITE_ADJACENCY_GAP_PX = 16;
+
+// A readout role narrows a color lookup to the semantic tokens these patterns name. A link token is
+// a text color unless its path says it paints a background (`link.navigation.bg.group`).
+export const COLOR_ROLE_PATTERNS = {
+  text: [ /^text\./, /^link\.(?!.*\.bg\b)/ ],
+  background: [ /^bg\./ ],
+  border: [ /^border\./ ],
+  icon: [ /^icon\./ ],
 } as const;

@@ -1,15 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 
-import { ICON_ADJACENCY_GAP_PX, LOOKALIKE_CHARACTERS, SPRITE_NAMES_FILE } from './config';
+import type { ColorMap, ColorMode, ColorRole } from './colormap';
+import { colorKey, lookupTokens } from './colormap';
+import { COMPOSITE_ADJACENCY_GAP_PX, ICON_ADJACENCY_GAP_PX, LOOKALIKE_CHARACTERS, SPRITE_NAMES_FILE } from './config';
 import type { BoundingBox } from './figma';
-import type { Leaf } from './values';
+import type { Leaf, RoleColor } from './values';
 import { describeLeaf } from './values';
 
-export type Entity = 'address' | 'transaction' | 'method' | 'block' | 'batch' | 'epoch' | 'nft' | 'timestamp' | 'ticker';
+export type Entity = 'address' | 'transaction' | 'method' | 'block' | 'batch' | 'epoch' | 'nft' | 'timestamp' | 'ticker' | 'amount';
 
 export type TextShapeSignal =
-  'address' | 'transaction-hash' | 'method-id' | 'truncated-hash' | 'number' | 'nft-id' | 'relative-timestamp' | 'absolute-timestamp' | 'ticker';
+  'address' | 'transaction-hash' | 'method-id' | 'truncated-hash' | 'number' | 'amount' | 'nft-id' | 'relative-timestamp' | 'absolute-timestamp' |
+  'ticker';
 
 export interface TextShapeRule {
   readonly signal: TextShapeSignal;
@@ -40,6 +43,7 @@ export const TEXT_SHAPE_RULES: ReadonlyArray<TextShapeRule> = [
   { signal: 'truncated-hash', entities: [ 'address', 'transaction' ], pattern: /^0x[0-9a-f]{2,}…(?:[0-9a-f]{2,})?$/i, example: '0x05a3…f2d1' },
   { signal: 'nft-id', entities: [ 'nft' ], pattern: /^#\d+(?:…\d+)?$/, example: '#1234' },
   { signal: 'number', entities: [ 'block', 'batch', 'epoch' ], pattern: /^(?:\d{1,3}(?:,\d{3})+|\d+)$/, example: '1248139' },
+  { signal: 'amount', entities: [ 'amount' ], pattern: /^(?:\d{1,3}(?:,\d{3})+|\d+)\.\d+$/, example: '0.5612' },
   {
     signal: 'relative-timestamp',
     entities: [ 'timestamp' ],
@@ -125,92 +129,268 @@ export function matchIconName(instanceName: string, spriteNames: ReadonlyArray<s
 export type RecognitionStatus = 'recognized' | 'ambiguous' | 'unrecognized';
 
 // What the signal says the node is: for a text, its shape and the entities that shape can be; for an
-// icon, the sprite name its instance name resolved to. Never a component.
+// icon, the sprite name its instance name resolved to; for a painted box, that every fill is a theme
+// token. Never a component.
 export type Decision =
   { readonly signal: TextShapeSignal; readonly value: string; readonly entities: ReadonlyArray<Entity> } |
-  { readonly signal: 'icon'; readonly icon: string };
+  { readonly signal: 'icon'; readonly icon: string } |
+  { readonly signal: 'color' };
+
+// One fill resolved through the reverse map in the run's mode: the tokens it serves under its role,
+// empty when none does.
+export interface ColorTokens {
+  readonly role: ColorRole;
+  readonly color: string;
+  readonly tokens: ReadonlyArray<string>;
+}
+
+export type CompositeSignal = 'from-to' | 'amount-ticker';
+
+// A node's place in a composite: which rule fired, which part it plays, and the ids of every part.
+export interface CompositeMembership {
+  readonly signal: CompositeSignal;
+  readonly part: string;
+  readonly members: Readonly<Record<string, string>>;
+}
 
 export interface Recognition {
   readonly id: string;
   readonly status: RecognitionStatus;
   readonly decision: Decision | null;
+  readonly tokens: ReadonlyArray<ColorTokens>;
+  readonly composite: CompositeMembership | null;
 }
 
-function isBeside(a: BoundingBox | null, b: BoundingBox | null): boolean {
+function isBeside(a: BoundingBox | null, b: BoundingBox | null, maxGap: number): boolean {
   if (a === null || b === null) return false;
   const overlapsVertically = a.y < b.y + b.height && b.y < a.y + a.height;
   const gap = Math.max(a.x - (b.x + b.width), b.x - (a.x + a.width));
-  return overlapsVertically && gap <= ICON_ADJACENCY_GAP_PX;
+  return overlapsVertically && gap <= maxGap;
 }
 
-function hasIconBeside(leaf: Leaf, leaves: ReadonlyArray<Leaf>): boolean {
-  return leaves.some((other) => other.values.kind === 'icon' && isBeside(leaf.bbox, other.bbox));
+const ARROW_ICON = /^arrows\//;
+
+function isEntityIcon(leaf: Leaf, spriteNames: ReadonlyArray<string>): boolean {
+  if (leaf.values.kind !== 'icon') return false;
+  const sprite = matchIconName(leaf.values.icon, spriteNames);
+  return sprite === undefined || !ARROW_ICON.test(sprite);
 }
 
-// A truncated hash stands for an entity only with the entity's icon beside it; alone, nothing says
-// whether the designer meant an address or a transaction.
-function recognizeText(leaf: Leaf, text: string, leaves: ReadonlyArray<Leaf>): Recognition {
+function hasEntityIconBeside(leaf: Leaf, context: RecognitionContext): boolean {
+  return context.leaves.some((other) => isEntityIcon(other, context.spriteNames) && isBeside(leaf.bbox, other.bbox, ICON_ADJACENCY_GAP_PX));
+}
+
+type ShapeRecognition = Pick<Recognition, 'status' | 'decision'>;
+
+// A truncated hash stands for an entity only with the entity's icon beside it; alone, or with just
+// the arrow to the next hash, nothing says whether the designer meant an address or a transaction.
+function recognizeText(leaf: Leaf, text: string, context: RecognitionContext): ShapeRecognition {
   const match = matchTextShape(text);
-  if (match === undefined) return { id: leaf.id, status: 'unrecognized', decision: null };
-  const ambiguous = match.signal === 'truncated-hash' && !hasIconBeside(leaf, leaves);
-  return { id: leaf.id, status: ambiguous ? 'ambiguous' : 'recognized', decision: match };
+  if (match === undefined) return { status: 'unrecognized', decision: null };
+  const ambiguous = match.signal === 'truncated-hash' && !hasEntityIconBeside(leaf, context);
+  return { status: ambiguous ? 'ambiguous' : 'recognized', decision: match };
 }
 
-function recognizeIcon(leaf: Leaf, instanceName: string, spriteNames: ReadonlyArray<string>): Recognition {
+function recognizeIcon(instanceName: string, spriteNames: ReadonlyArray<string>): ShapeRecognition {
   const icon = matchIconName(instanceName, spriteNames);
-  if (icon === undefined) return { id: leaf.id, status: 'unrecognized', decision: null };
-  return { id: leaf.id, status: 'recognized', decision: { signal: 'icon', icon } };
+  if (icon === undefined) return { status: 'unrecognized', decision: null };
+  return { status: 'recognized', decision: { signal: 'icon', icon } };
 }
 
-function recognizeLeaf(leaf: Leaf, leaves: ReadonlyArray<Leaf>, spriteNames: ReadonlyArray<string>): Recognition {
+// A painted box has no text or icon to read: its fills are all it says, so it is recognized when
+// every one of them is a theme token.
+function recognizeBox(tokens: ReadonlyArray<ColorTokens>): ShapeRecognition {
+  const everyFillIsAToken = tokens.length > 0 && tokens.every((entry) => entry.tokens.length > 0);
+  return everyFillIsAToken ? { status: 'recognized', decision: { signal: 'color' } } : { status: 'unrecognized', decision: null };
+}
+
+export function resolveTokens(colors: ReadonlyArray<RoleColor>, map: ColorMap, mode: ColorMode): ReadonlyArray<ColorTokens> {
+  return colors.map((color) => ({ role: color.role, color: colorKey(color), tokens: lookupTokens(map, color, mode, color.role) }));
+}
+
+interface RecognitionContext {
+  readonly leaves: ReadonlyArray<Leaf>;
+  readonly spriteNames: ReadonlyArray<string>;
+  readonly map: ColorMap;
+  readonly mode: ColorMode;
+}
+
+function recognizeLeaf(leaf: Leaf, context: RecognitionContext): Recognition {
   const { values } = leaf;
-  switch (values.kind) {
-    case 'text':
-      return recognizeText(leaf, values.text, leaves);
-    case 'icon':
-      return recognizeIcon(leaf, values.icon, spriteNames);
-    case 'box':
-      return { id: leaf.id, status: 'unrecognized', decision: null };
-  }
+  const tokens = resolveTokens(values.colors, context.map, context.mode);
+  const shape = ((): ShapeRecognition => {
+    switch (values.kind) {
+      case 'text':
+        return recognizeText(leaf, values.text, context);
+      case 'icon':
+        return recognizeIcon(values.icon, context.spriteNames);
+      case 'box':
+        return recognizeBox(tokens);
+    }
+  })();
+  return { id: leaf.id, ...shape, tokens, composite: null };
 }
 
-// One recognition per leaf, in leaf order: text-shape rules first, icon names second; a painted box
-// has no text or icon to read and stays unrecognized here.
-export function recognize(leaves: ReadonlyArray<Leaf>, spriteNames: ReadonlyArray<string>): ReadonlyArray<Recognition> {
-  return leaves.map((leaf) => recognizeLeaf(leaf, leaves, spriteNames));
+export interface CompositePart {
+  readonly part: string;
+  readonly matches: (decision: Decision) => boolean;
+}
+
+export interface CompositeRule {
+  readonly signal: CompositeSignal;
+  readonly parts: ReadonlyArray<CompositePart>;
+}
+
+const HASH_SIGNALS: ReadonlyArray<string> = [ 'address', 'transaction-hash', 'truncated-hash' ];
+const AMOUNT_SIGNALS: ReadonlyArray<string> = [ 'amount', 'number' ];
+
+const isHash = (decision: Decision): boolean => HASH_SIGNALS.includes(decision.signal);
+const isArrow = (decision: Decision): boolean => decision.signal === 'icon' && ARROW_ICON.test(decision.icon);
+const isAmount = (decision: Decision): boolean => AMOUNT_SIGNALS.includes(decision.signal);
+const isTicker = (decision: Decision): boolean => decision.signal === 'ticker';
+
+// The parts in reading order. A rule fires over recognized leaves that sit within the composite gap
+// of each other; a leaf that matches none of the parts (the entity icon beside a hash) may sit
+// between two parts, a leaf that matches a part out of order ends the attempt, and a part whose
+// leaf is only ambiguous blocks the rule — a composite never promotes what the shape could not settle.
+export const COMPOSITE_RULES: ReadonlyArray<CompositeRule> = [
+  { signal: 'from-to', parts: [ { part: 'from', matches: isHash }, { part: 'arrow', matches: isArrow }, { part: 'to', matches: isHash } ] },
+  { signal: 'amount-ticker', parts: [ { part: 'amount', matches: isAmount }, { part: 'ticker', matches: isTicker } ] },
+];
+
+interface Member {
+  readonly leaf: Leaf;
+  readonly recognition: Recognition;
+}
+
+// Bounding-box order, not layer order: rows of vertically overlapping boxes top to bottom, left to
+// right inside a row. A leaf with no box takes no part in a composite.
+export function orderByBox<TItem extends { readonly bbox: BoundingBox | null }>(items: ReadonlyArray<TItem>): Array<TItem> {
+  const boxed = items.filter((item) => item.bbox !== null).sort((a, b) => (a.bbox?.y ?? 0) - (b.bbox?.y ?? 0));
+  const rows: Array<{ bottom: number; items: Array<TItem> }> = [];
+  for (const item of boxed) {
+    const box = item.bbox as BoundingBox;
+    const row = rows[rows.length - 1];
+    if (row !== undefined && box.y < row.bottom) {
+      row.items.push(item);
+      row.bottom = Math.max(row.bottom, box.y + box.height);
+    } else {
+      rows.push({ bottom: box.y + box.height, items: [ item ] });
+    }
+  }
+  return rows.flatMap((row) => row.items.sort((a, b) => (a.bbox?.x ?? 0) - (b.bbox?.x ?? 0)));
+}
+
+type PartHit = { readonly kind: 'next' } | { readonly kind: 'foreign' } | { readonly kind: 'blocked' };
+
+function classifyMember(member: Member, rule: CompositeRule, nextPart: number, taken: ReadonlySet<string>): PartHit {
+  const { decision, status } = member.recognition;
+  if (decision === null) return { kind: 'foreign' };
+  if (!rule.parts.some((part) => part.matches(decision))) return { kind: 'foreign' };
+  const fitsNext = rule.parts[nextPart].matches(decision) && status === 'recognized' && !taken.has(member.leaf.id);
+  return fitsNext ? { kind: 'next' } : { kind: 'blocked' };
+}
+
+function matchRuleAt(ordered: ReadonlyArray<Member>, start: number, rule: CompositeRule, taken: ReadonlySet<string>): Record<string, string> | undefined {
+  const members: Record<string, string> = {};
+  let nextPart = 0;
+  for (let index = start; index < ordered.length; index++) {
+    const member = ordered[index];
+    if (index > start && !isBeside(ordered[index - 1].leaf.bbox, member.leaf.bbox, COMPOSITE_ADJACENCY_GAP_PX)) return undefined;
+    const hit = classifyMember(member, rule, nextPart, taken);
+    if (hit.kind === 'blocked') return undefined;
+    if (hit.kind === 'foreign') continue;
+    members[rule.parts[nextPart].part] = member.leaf.id;
+    nextPart += 1;
+    if (nextPart === rule.parts.length) return members;
+  }
+  return undefined;
+}
+
+function withComposite(recognition: Recognition, signal: CompositeSignal, members: Record<string, string>): Recognition {
+  const part = Object.keys(members).find((key) => members[key] === recognition.id);
+  return part === undefined ? recognition : { ...recognition, composite: { signal, part, members } };
+}
+
+// Composites run after every leaf has its own recognition, each rule once over the ordered leaves,
+// and a leaf joins at most one composite.
+export function applyComposites(leaves: ReadonlyArray<Leaf>, recognitions: ReadonlyArray<Recognition>): ReadonlyArray<Recognition> {
+  const byId = new Map(recognitions.map((recognition) => [ recognition.id, recognition ]));
+  const ordered = orderByBox(leaves).map((leaf): Member => {
+    const recognition = byId.get(leaf.id);
+    if (recognition === undefined) throw new Error(`Leaf ${ leaf.id } has no recognition.`);
+    return { leaf, recognition };
+  });
+  const taken = new Set<string>();
+  for (const rule of COMPOSITE_RULES) {
+    for (let start = 0; start < ordered.length; start++) {
+      const members = matchRuleAt(ordered, start, rule, taken);
+      if (members === undefined) continue;
+      for (const id of Object.values(members)) {
+        taken.add(id);
+        byId.set(id, withComposite(byId.get(id) as Recognition, rule.signal, members));
+      }
+    }
+  }
+  return recognitions.map((recognition) => byId.get(recognition.id) as Recognition);
+}
+
+// One recognition per leaf, in leaf order: text-shape rules first, icon names second, every fill
+// resolved to its tokens in the run's mode, and the composite rules last over what is recognized.
+export function recognize(leaves: ReadonlyArray<Leaf>, spriteNames: ReadonlyArray<string>, map: ColorMap, mode: ColorMode): ReadonlyArray<Recognition> {
+  const context: RecognitionContext = { leaves, spriteNames, map, mode };
+  return applyComposites(leaves, leaves.map((leaf) => recognizeLeaf(leaf, context)));
 }
 
 function describeBox(bbox: BoundingBox | null): string {
   return bbox === null ? 'no box' : `at ${ bbox.x },${ bbox.y } ${ bbox.width }×${ bbox.height }`;
 }
 
+function describeUnmapped(tokens: ReadonlyArray<ColorTokens>): string {
+  const unmapped = tokens.filter((entry) => entry.tokens.length === 0);
+  if (unmapped.length === 0) return 'a painted box has no text or icon to read';
+  return `no token serves ${ unmapped.map((entry) => `${ entry.role } ${ entry.color }`).join(', ') }`;
+}
+
 function describeWhy(leaf: Leaf, recognition: Recognition): string {
   const { decision } = recognition;
   if (decision === null) {
     if (leaf.values.kind === 'icon') return `no sprite icon is named like "${ leaf.values.icon }"`;
-    return leaf.values.kind === 'text' ? 'no text-shape rule matches' : 'a painted box has no text or icon to read';
+    return leaf.values.kind === 'text' ? 'no text-shape rule matches' : describeUnmapped(recognition.tokens);
   }
   if (decision.signal === 'icon') return `icon "${ decision.icon }"`;
+  if (decision.signal === 'color') return 'every fill is a theme token';
   return `${ decision.signal }: ${ decision.entities.join(' or ') }${ recognition.status === 'ambiguous' ? ', no icon beside it' : '' }`;
+}
+
+export function describeTokens(tokens: ReadonlyArray<ColorTokens>): string {
+  if (tokens.length === 0) return 'no fill';
+  return tokens.map((entry) => `${ entry.role } ${ entry.color } → ${ entry.tokens.length === 0 ? 'no token' : entry.tokens.join(', ') }`).join('; ');
+}
+
+export function describeComposite(composite: CompositeMembership | null): string {
+  if (composite === null) return '';
+  const others = Object.entries(composite.members).map(([ part, id ]) => `${ part } ${ id }`).join(', ');
+  return `; ${ composite.part } of ${ composite.signal } (${ others })`;
 }
 
 function renderList(title: string, leaves: ReadonlyArray<Leaf>, recognitions: ReadonlyArray<Recognition>, status: RecognitionStatus): Array<string> {
   const byId = new Map(leaves.map((leaf) => [ leaf.id, leaf ]));
   const items = recognitions.filter((recognition) => recognition.status === status);
+  const detail = (recognition: Recognition): string => `; tokens: ${ describeTokens(recognition.tokens) }${ describeComposite(recognition.composite) }`;
   return [
-    `${ title }: ${ items.length }`,
+    `${ title }: ${ items.length }${ status === 'recognized' ? ` of ${ recognitions.length }` : '' }`,
     ...items.map((recognition) => {
       const leaf = byId.get(recognition.id);
       if (leaf === undefined) throw new Error(`Recognition ${ recognition.id } has no leaf.`);
-      return `  - ${ describeLeaf(leaf) }; ${ describeBox(leaf.bbox) } — ${ describeWhy(leaf, recognition) }`;
+      return `  - ${ describeLeaf(leaf) }; ${ describeBox(leaf.bbox) } — ${ describeWhy(leaf, recognition) }${ detail(recognition) }`;
     }),
   ];
 }
 
 export function renderRecognition(leaves: ReadonlyArray<Leaf>, recognitions: ReadonlyArray<Recognition>): string {
-  const recognized = recognitions.filter((recognition) => recognition.status === 'recognized').length;
   return [
-    `Recognized: ${ recognized } of ${ recognitions.length }`,
+    ...renderList('Recognized', leaves, recognitions, 'recognized'),
     ...renderList('Ambiguous', leaves, recognitions, 'ambiguous'),
     ...renderList('Unrecognized', leaves, recognitions, 'unrecognized'),
   ].join('\n');

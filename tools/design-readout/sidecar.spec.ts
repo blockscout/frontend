@@ -30,9 +30,12 @@ const LEAVES: ReadonlyArray<Leaf> = [
   { id: '1:3', bbox: null, values: { kind: 'icon', icon: 'Icons/x', colors: [] } },
 ];
 
+const TOKENS: Recognition['tokens'] = [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'text.primary' ] } ];
+const COMPOSITE: Recognition['composite'] = { signal: 'from-to', part: 'arrow', members: { from: '1:1', arrow: '1:3', to: '1:4' } };
+
 const RECOGNITIONS: ReadonlyArray<Recognition> = [
-  { id: '1:2', status: 'unrecognized', decision: null },
-  { id: '1:3', status: 'recognized', decision: { signal: 'icon', icon: 'x' } },
+  { id: '1:2', status: 'unrecognized', decision: null, tokens: TOKENS, composite: null },
+  { id: '1:3', status: 'recognized', decision: { signal: 'icon', icon: 'x' }, tokens: [], composite: COMPOSITE },
 ];
 
 function record(): ReturnType<typeof buildRecord> {
@@ -42,6 +45,7 @@ function record(): ReturnType<typeof buildRecord> {
     nodeId: '22842:178383',
     lastModified: '2026-10-01T00:00:00Z',
     fileVersion: '42',
+    colorMode: 'dark',
     regions: [ '22842:178383' ],
     leaves: LEAVES,
     recognitions: RECOGNITIONS,
@@ -55,18 +59,36 @@ describe('sidecarPath', () => {
 });
 
 describe('buildRecord', () => {
-  it('carries the file identity, an empty color mode slot and one node per leaf with its status, decision and an empty correction', () => {
+  it('carries the file identity, the color mode and one node per leaf with its status, decision, tokens, composite and an empty correction', () => {
     expect(record()).toEqual({
-      version: 1,
+      version: 2,
       createdAt: '2026-10-06T10:00:00.000Z',
       fileKey: 'KEY',
       nodeId: '22842:178383',
       file: { lastModified: '2026-10-01T00:00:00Z', version: '42' },
-      colorMode: null,
+      colorMode: 'dark',
       regions: [ '22842:178383' ],
       nodes: [
-        { id: '1:2', values: LEAVES[0].values, bbox: { x: 1, y: 2, width: 3, height: 4 }, decision: null, status: 'unrecognized', correction: null },
-        { id: '1:3', values: LEAVES[1].values, bbox: null, decision: { signal: 'icon', icon: 'x' }, status: 'recognized', correction: null },
+        {
+          id: '1:2',
+          values: LEAVES[0].values,
+          bbox: { x: 1, y: 2, width: 3, height: 4 },
+          decision: null,
+          status: 'unrecognized',
+          tokens: TOKENS,
+          composite: null,
+          correction: null,
+        },
+        {
+          id: '1:3',
+          values: LEAVES[1].values,
+          bbox: null,
+          decision: { signal: 'icon', icon: 'x' },
+          status: 'recognized',
+          tokens: [],
+          composite: COMPOSITE,
+          correction: null,
+        },
       ],
     });
   });
@@ -78,6 +100,7 @@ describe('buildRecord', () => {
       nodeId: '22842:178383',
       lastModified: '2026-10-01T00:00:00Z',
       fileVersion: '42',
+      colorMode: 'dark',
       regions: [ '22842:178383' ],
       leaves: LEAVES,
       recognitions: RECOGNITIONS.slice(0, 1),
@@ -88,7 +111,7 @@ describe('buildRecord', () => {
     const built = record();
     expect(Object.keys(built).sort()).toEqual([ 'colorMode', 'createdAt', 'file', 'fileKey', 'nodeId', 'nodes', 'regions', 'version' ]);
     for (const node of built.nodes) {
-      expect(Object.keys(node).sort()).toEqual([ 'bbox', 'correction', 'decision', 'id', 'status', 'values' ]);
+      expect(Object.keys(node).sort()).toEqual([ 'bbox', 'composite', 'correction', 'decision', 'id', 'status', 'tokens', 'values' ]);
     }
     expect(JSON.stringify(built)).not.toMatch(/hint|style|component|layer|name/i);
   });
@@ -99,7 +122,7 @@ describe('writeSidecar / readSidecar', () => {
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-sidecar-'));
     const target = sidecarPath(tmp, 'KEY', '22842:178383');
     writeSidecar(target, record());
-    expect(fs.readFileSync(target, 'utf8')).toMatch(/^\{\n {2}"version": 1,\n/);
+    expect(fs.readFileSync(target, 'utf8')).toMatch(/^\{\n {2}"version": 2,\n/);
     expect(readSidecar(target)).toEqual(record());
   });
 
@@ -107,7 +130,7 @@ describe('writeSidecar / readSidecar', () => {
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-sidecar-'));
     const target = path.join(tmp, 'x.json');
     fs.writeFileSync(target, JSON.stringify({ version: 99 }));
-    expect(() => readSidecar(target)).toThrow('Not a design-readout sidecar (version 1)');
+    expect(() => readSidecar(target)).toThrow('Not a design-readout sidecar (version 2)');
     fs.writeFileSync(target, JSON.stringify(null));
     expect(() => readSidecar(target)).toThrow('Not a design-readout sidecar');
   });

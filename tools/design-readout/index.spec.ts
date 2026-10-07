@@ -49,14 +49,22 @@ describe('readoutOf', () => {
     expect(extraction.leaves.map((leaf) => leaf.id)).toEqual([ '22842:178386', '22842:178400', '22842:178403', '22842:178408', '22842:178412' ]);
   });
 
-  it('recognizes one leaf per extracted leaf: the block number and the timestamp hit, the amounts do not', () => {
-    const { recognitions } = readoutOf(entry, undefined, sprites);
-    expect(recognitions).toEqual([
-      { id: '22842:178386', status: 'recognized', decision: { signal: 'number', value: '1248139', entities: [ 'block', 'batch', 'epoch' ] } },
-      { id: '22842:178400', status: 'recognized', decision: { signal: 'relative-timestamp', value: '10s ago', entities: [ 'timestamp' ] } },
-      { id: '22842:178403', status: 'unrecognized', decision: null },
-      { id: '22842:178408', status: 'unrecognized', decision: null },
-      { id: '22842:178412', status: 'unrecognized', decision: null },
+  it('recognizes one leaf per extracted leaf in the detected dark mode: the block number and the timestamp hit, the gas values do not', () => {
+    const { extraction, recognitions } = readoutOf(entry, undefined, sprites);
+    expect(extraction.colorMode.mode).toBe('dark');
+    expect(recognitions.map(({ id, status, decision, composite }) => ({ id, status, decision, composite }))).toEqual([
+      { id: '22842:178386', status: 'recognized', decision: { signal: 'number', value: '1248139', entities: [ 'block', 'batch', 'epoch' ] }, composite: null },
+      { id: '22842:178400', status: 'recognized', decision: { signal: 'relative-timestamp', value: '10s ago', entities: [ 'timestamp' ] }, composite: null },
+      { id: '22842:178403', status: 'unrecognized', decision: null, composite: null },
+      { id: '22842:178408', status: 'unrecognized', decision: null, composite: null },
+      { id: '22842:178412', status: 'unrecognized', decision: null, composite: null },
+    ]);
+    expect(recognitions.map((recognition) => recognition.tokens)).toEqual([
+      [ { role: 'text', color: '#63B3ED', tokens: [ 'link.primary' ] } ],
+      [ { role: 'text', color: '#A0AEC0', tokens: [ 'link.secondary', 'link.subtle', 'link.subtle.hover', 'text.secondary' ] } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
     ]);
   });
 

@@ -16,19 +16,19 @@ readout now carries tokens and composite decisions per node, and the color-mode 
 
 ## Acceptance criteria
 
-- [ ] Mode detection from ticket 02 is applied per run and written to the sidecar's `colorMode`.
-- [ ] Each fill resolves to zero, one or several tokens through the lookup with its role; the hex is
+- [x] Mode detection from ticket 02 is applied per run and written to the sidecar's `colorMode`.
+- [x] Each fill resolves to zero, one or several tokens through the lookup with its role; the hex is
       trusted over the style hint and a disagreement is reported, not stored; specs cover the multi-hit
       and the unmapped hex (Unrecognized with hex and role).
-- [ ] A style hint whose stated mode (`Dark/…`, `Light/…`) is the opposite of the run's detected mode
+- [x] A style hint whose stated mode (`Dark/…`, `Light/…`) is the opposite of the run's detected mode
       is a disagreement even when the token it names is unknown to the theme (today `values.ts` leaves
       it `unchecked`); a spec covers the `🖤 Dark/button.primary` hint over `#2B6CB0` (`blue.600`,
       light `link.primary`) on the light row `22842:169552` of the Details file.
-- [ ] Composite rules are a table like the text shapes: entity + arrow + entity, amount + ticker; specs
+- [x] Composite rules are a table like the text shapes: entity + arrow + entity, amount + ticker; specs
       cover a hit and a near-miss (an ambiguous member blocks the composite).
-- [ ] Stdout Recognized items show their tokens and composites; Ambiguous and Unrecognized lists are
+- [x] Stdout Recognized items show their tokens and composites; Ambiguous and Unrecognized items show their tokens too; the lists are otherwise
       unchanged in shape.
-- [ ] `(human)` Run against the dark-mode Details node of ticket 01: mode reads dark, the primary text
+- [x] `(human)` Run against the dark-mode Details node of ticket 01: mode reads dark, the primary text
       fill resolves to `text.primary`, and the readout's three lists look right against the frame.
 
 ## Details
@@ -41,6 +41,6 @@ readout now carries tokens and composite decisions per node, and the color-mode 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Mode detection per run + hex/role → tokens in the decision, specs
-- [ ] 2 `[agent]` Composite rules over recognized siblings, specs
-- [ ] 3 `[agent]` Stdout and sidecar carry tokens, composites and `colorMode`
+- [x] 1 `[agent]` Mode detection per run + hex/role → tokens in the decision, specs
+- [x] 2 `[agent]` Composite rules over recognized siblings, specs
+- [x] 3 `[agent]` Stdout and sidecar carry tokens, composites and `colorMode`

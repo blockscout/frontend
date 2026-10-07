@@ -1,5 +1,5 @@
-import type { ColorMap, ColorMode, ColorRole, ColorValue } from './colormap';
-import { colorKey, lookupTokens } from './colormap';
+import type { ColorMap, ColorMode, ColorRole, ColorValue, ModeDetection } from './colormap';
+import { colorKey, detectColorMode, lookupTokens } from './colormap';
 import { TEXT_STYLE_HINT_SIZES_PX, TEXT_STYLE_HINT_WEIGHTS } from './config';
 import type { BoundingBox, FigmaNode, FigmaPaint, NodeEntry } from './figma';
 
@@ -52,6 +52,7 @@ export interface Hint {
 export interface Extraction {
   readonly leaves: ReadonlyArray<Leaf>;
   readonly hints: ReadonlyArray<Hint>;
+  readonly colorMode: ModeDetection;
 }
 
 const ICON_SHAPES: ReadonlySet<string> = new Set([ 'VECTOR', 'BOOLEAN_OPERATION', 'STAR', 'POLYGON', 'LINE' ]);
@@ -153,16 +154,23 @@ function isKnownToken(map: ColorMap, token: string): boolean {
   return serves(map.palette) || MODES.some((mode) => serves(map.semantic[mode]));
 }
 
-function colorHintVerdict(map: ColorMap, name: string, value: ColorValue | undefined): HintVerdict {
+function describeTokens(map: ColorMap, value: RoleColor, mode: ColorMode): string {
+  const tokens = lookupTokens(map, value, mode, value.role);
+  return `${ colorKey(value) } → ${ mode }: ${ tokens.length === 0 ? `no ${ value.role } token` : tokens.join(', ') }`;
+}
+
+// A hint stated for the other mode disagrees before its token is looked at: the file mixes light and
+// dark styles, and a dark style on a light screen is the designer's slip whatever token it names.
+function colorHintVerdict(map: ColorMap, runMode: ColorMode, name: string, value: RoleColor | undefined): HintVerdict {
   if (value === undefined) return { kind: 'unchecked', reason: 'the node paints no solid color' };
   const { mode, token } = parseStyleHintName(name);
+  if (mode !== undefined && mode !== runMode) {
+    return { kind: 'disagrees', value: `stated for ${ mode }, the run reads ${ runMode }; ${ describeTokens(map, value, runMode) }` };
+  }
   if (token === undefined) return { kind: 'unchecked', reason: 'the style name carries no token' };
   if (!isKnownToken(map, token)) return { kind: 'unchecked', reason: `"${ token }" is not a theme token` };
-  const modes = mode === undefined ? MODES : [ mode ];
-  const resolved = modes.map((candidate) => ({ mode: candidate, tokens: lookupTokens(map, value, candidate) }));
-  if (resolved.some((entry) => entry.tokens.includes(token))) return { kind: 'agrees' };
-  const sides = resolved.map((entry) => `${ entry.mode }: ${ entry.tokens.length === 0 ? 'no token' : entry.tokens.join(', ') }`).join('; ');
-  return { kind: 'disagrees', value: `${ colorKey(value) } → ${ sides }` };
+  if (lookupTokens(map, value, runMode).includes(token)) return { kind: 'agrees' };
+  return { kind: 'disagrees', value: describeTokens(map, value, runMode) };
 }
 
 interface TextHintClaim {
@@ -189,12 +197,24 @@ function textHintVerdict(name: string, font: FontValues | undefined): HintVerdic
   return mismatches.length === 0 ? { kind: 'agrees' } : { kind: 'disagrees', value: mismatches.join(', ') };
 }
 
+// A hint with the value it is judged against; the verdict waits for the run's color mode, which the
+// leaves decide only once they are all collected.
+interface PendingHint {
+  readonly nodeId: string;
+  readonly layer: string;
+  readonly source: HintSource;
+  readonly name: string;
+  readonly against:
+    { readonly kind: 'color'; readonly value: RoleColor | undefined } |
+    { readonly kind: 'font'; readonly font: FontValues | undefined } |
+    { readonly kind: 'label' };
+}
+
 interface WalkContext {
   readonly entry: NodeEntry;
   readonly excluded: ReadonlySet<string>;
-  readonly map: ColorMap;
   readonly leaves: Array<Leaf>;
-  readonly hints: Array<Hint>;
+  readonly pending: Array<PendingHint>;
 }
 
 function styleName(entry: NodeEntry, node: FigmaNode, property: string): string | undefined {
@@ -202,7 +222,7 @@ function styleName(entry: NodeEntry, node: FigmaNode, property: string): string 
   return id === undefined ? undefined : entry.styles?.[id]?.name;
 }
 
-function firstColor(values: LeafValues | undefined, role: ColorRole): ColorValue | undefined {
+function firstColor(values: LeafValues | undefined, role: ColorRole): RoleColor | undefined {
   return values?.colors.find((color) => color.role === role);
 }
 
@@ -213,16 +233,33 @@ function fillRoleOf(node: FigmaNode, values: LeafValues | undefined): ColorRole 
 }
 
 function collectHints(node: FigmaNode, values: LeafValues | undefined, context: WalkContext): void {
-  const { entry, map, hints } = context;
-  const hint = (source: HintSource, name: string | undefined, verdict: (name: string) => HintVerdict): void => {
-    if (name !== undefined) hints.push({ nodeId: node.id, layer: node.name, source, name, verdict: verdict(name) });
+  const { entry, pending } = context;
+  const hint = (source: HintSource, name: string | undefined, against: PendingHint['against']): void => {
+    if (name !== undefined) pending.push({ nodeId: node.id, layer: node.name, source, name, against });
   };
-  const fillRole = fillRoleOf(node, values);
-  hint('fill style', styleName(entry, node, 'fill'), (name) => colorHintVerdict(map, name, firstColor(values, fillRole)));
-  hint('stroke style', styleName(entry, node, 'stroke'), (name) => colorHintVerdict(map, name, firstColor(values, 'border')));
-  hint('text style', styleName(entry, node, 'text'), (name) => textHintVerdict(name, fontOf(node)));
+  hint('fill style', styleName(entry, node, 'fill'), { kind: 'color', value: firstColor(values, fillRoleOf(node, values)) });
+  hint('stroke style', styleName(entry, node, 'stroke'), { kind: 'color', value: firstColor(values, 'border') });
+  hint('text style', styleName(entry, node, 'text'), { kind: 'font', font: fontOf(node) });
   const component = node.componentId === undefined ? undefined : entry.components?.[node.componentId]?.name;
-  hint('component', component, () => ({ kind: 'unchecked', reason: 'a component name is a label, not a value' }));
+  hint('component', component, { kind: 'label' });
+}
+
+function judgeHint(pending: PendingHint, map: ColorMap, mode: ColorMode): Hint {
+  const { against, ...hint } = pending;
+  switch (against.kind) {
+    case 'color':
+      return { ...hint, verdict: colorHintVerdict(map, mode, hint.name, against.value) };
+    case 'font':
+      return { ...hint, verdict: textHintVerdict(hint.name, against.font) };
+    case 'label':
+      return { ...hint, verdict: { kind: 'unchecked', reason: 'a component name is a label, not a value' } };
+  }
+}
+
+// The linked node's own fill is the screen background. It is also a leaf when the node is a region,
+// so the tiebreak only matters for regions narrower than the node.
+function frameBackground(root: FigmaNode): ColorValue | undefined {
+  return roleColors(root.fills, 'background', root.opacity ?? 1)[0];
 }
 
 function walk(node: FigmaNode, context: WalkContext): void {
@@ -244,11 +281,14 @@ export function findNode(root: FigmaNode, id: string): FigmaNode | undefined {
 }
 
 // Values per leaf under each region, in document order; hidden layers and excluded ids (dropped
-// chrome) are skipped with their subtrees. The theme map is only read to judge the hints.
+// chrome) are skipped with their subtrees. Every fill of every leaf votes on the color mode, and
+// the hints are judged in the mode the vote settled on.
 export function extractValues(entry: NodeEntry, regions: ReadonlyArray<FigmaNode>, excluded: ReadonlySet<string>, map: ColorMap): Extraction {
-  const context: WalkContext = { entry, excluded, map, leaves: [], hints: [] };
+  const context: WalkContext = { entry, excluded, leaves: [], pending: [] };
   for (const region of regions) walk(region, context);
-  return { leaves: context.leaves, hints: context.hints };
+  const { leaves, pending } = context;
+  const colorMode = detectColorMode(map, leaves.flatMap((leaf) => leaf.values.colors), frameBackground(entry.document));
+  return { leaves, hints: pending.map((hint) => judgeHint(hint, map, colorMode.mode)), colorMode };
 }
 
 function describeColors(colors: ReadonlyArray<RoleColor>): string {
@@ -285,10 +325,26 @@ function describeVerdict(verdict: HintVerdict): string {
   }
 }
 
+function describeDecidedBy(decidedBy: ModeDetection['decidedBy']): string {
+  switch (decidedBy) {
+    case 'majority':
+      return 'by majority';
+    case 'frame-background':
+      return 'a tie, by the frame background';
+    case 'default':
+      return 'no vote, the default';
+  }
+}
+
+export function describeColorMode({ mode, decidedBy, votes }: ModeDetection): string {
+  return `Color mode: ${ mode } (${ describeDecidedBy(decidedBy) }; ${ votes.light } light, ${ votes.dark } dark)`;
+}
+
 export function renderExtraction(extraction: Extraction): string {
-  const { leaves, hints } = extraction;
+  const { leaves, hints, colorMode } = extraction;
   const disagreements = hints.filter((hint) => hint.verdict.kind === 'disagrees').length;
   return [
+    describeColorMode(colorMode),
     `Values: ${ leaves.length } leaves`,
     ...leaves.map((leaf) => `  - ${ describeLeaf(leaf) }`),
     `Figma hints (not stored): ${ hints.length }, ${ disagreements } disagreeing`,

@@ -35,9 +35,12 @@ const USAGE = `Usage:
   names as hints (flagged where a hint disagrees with the value), and writes the values to one JSON
   sidecar under the main checkout's .ai/design-readout/. Hints are printed only, never written.
 
-  Last, it says what it recognizes per leaf — text shapes (hashes, numbers, timestamps, tickers, NFT
-  ids) first, then icon instance names against the sprite — and ends with the Recognized count and
-  the full Ambiguous and Unrecognized lists with their values; it names no component.
+  Last, it says what it recognizes per leaf — text shapes (hashes, numbers, amounts, timestamps,
+  tickers, NFT ids) first, then icon instance names against the sprite, then every fill resolved to
+  its theme tokens in the color mode the values voted for, then composites over recognized
+  neighbours (hash, arrow, hash as from/to; amount and ticker) — and ends with the Recognized list
+  with tokens and composites and the full Ambiguous and Unrecognized lists with their values; it
+  names no component.
 
   <figma node URL>     https://www.figma.com/design/<fileKey>/<name>?node-id=<A>-<B>
                        (the node id is accepted as A-B or A:B; the file key comes from the URL)
@@ -121,8 +124,9 @@ export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | u
     return node;
   });
   const excluded = new Set(outline.chrome.map((dropped) => dropped.id));
-  const extraction = extractValues(entry, nodes, excluded, buildThemeColorMap());
-  return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames) };
+  const map = buildThemeColorMap();
+  const extraction = extractValues(entry, nodes, excluded, map);
+  return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames, map, extraction.colorMode.mode) };
 }
 
 async function main(): Promise<void> {
@@ -144,6 +148,7 @@ async function main(): Promise<void> {
     nodeId: ref.nodeId,
     lastModified: payload.lastModified,
     fileVersion: payload.version,
+    colorMode: extraction.colorMode.mode,
     regions,
     leaves: extraction.leaves,
     recognitions,
