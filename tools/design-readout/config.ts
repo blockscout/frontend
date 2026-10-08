@@ -20,7 +20,7 @@ export const CALIBRATION_DIR = 'tools/design-readout/calibration';
 export const GAP_LOG_FILE = 'gaps.md';
 
 // Every correction is a miss of one of these kinds; `--gap` takes exactly one of them.
-export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout' ] as const;
+export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout', 'convention' ] as const;
 
 // What a Figma text style name claims, read off its `text-<size>` and `font-<weight>` segments. The
 // pixel sizes mirror the `text.*` text styles of the theme, which this tool must not import (they

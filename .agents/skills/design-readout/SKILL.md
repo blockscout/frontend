@@ -57,14 +57,14 @@ the task context (file paths when they exist, the developer's line otherwise), t
 path when there is one, and [`readout-brief.md`](readout-brief.md) — the judgment rules and the exact
 return shape live there. The subagent reads the sidecar and the shipped code; this session reads neither.
 
-**Done when**: the return is the Ambiguous, Unrecognized and Layout lists plus one Recognized count. A
-return carrying anything else — a component table, values, prose — is cut to those four before it is
-relayed, never pasted whole.
+**Done when**: the return is the Ambiguous, Unrecognized, Layout and By convention lists plus one
+Recognized count. A return carrying anything else — a component table, values, prose — is cut to those
+five before it is relayed, never pasted whole.
 
 ## 3. Settle — with the developer
 
-Walk the lists in order: Ambiguous, Unrecognized, Layout. Per item, the developer either settles it or
-sends it on:
+Walk the lists in order: Ambiguous, Unrecognized, Layout, By convention. Per item, the developer
+settles it, sends it on, or — a Layout item only — names it a convention:
 
 - **Settled** — record it through the tool, with the gap category the brief proposed and the developer
   confirmed. A settled Layout question that changes a node's component or props is recorded the same
@@ -77,15 +77,31 @@ sends it on:
 - **Sent on** — a design-intent question the developer cannot answer goes to the designer through the
   calling skill's question flow; the item stays in its list with the question beside it.
 
+- **Convention** — the developer says "that's just how we do it": the repo answered this layout
+  question long ago and will answer it the same way next time. Draft the line, read it back, and on
+  the developer's confirmation append it to `tools/design-readout/layout-conventions.md` by a plain
+  edit in this session. That file is one table and nothing else, one row per convention, with the
+  columns *What the mockup shows / the question*, *Convention*, *Unless* (empty when there is no
+  exception) and *Code home* — a file or directory path, never a line number; no date, no node id. A
+  convention that also changes a node's component or props is recorded through the tool with the
+  category `convention`, so the sidecar carries the props while the gap log can set the line aside:
+
+  ```bash
+  pnpm design:readout "<url>" --correct <nodeId> <Component> [<props…>] --gap convention
+  ```
+
 A **shipped-code-vs-mockup conflict** is presented with both sides and settled by the developer; the
 record carries the pick with the category `context`.
 
-**Done when**: every Ambiguous and Unrecognized item is recorded or sent on, and the Layout list holds
-only open questions.
+A **By convention** item is already settled: the developer reviews each application and either lets it stand or edits the convention's line
+in the file.
+
+**Done when**: every Ambiguous and Unrecognized item is recorded or sent on, the Layout list holds
+only open questions, and every By convention line is reviewed.
 
 ## 4. Hand back
 
-Return to the caller the sidecar path, the three lists as they now stand and the Recognized count. The
+Return to the caller the sidecar path, the four lists and the Recognized count. The
 file that carries a readout into a task folder follows [`readout-template.md`](readout-template.md);
 writing it is the task workflow's job, not this skill's.
 

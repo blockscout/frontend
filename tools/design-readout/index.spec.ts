@@ -76,12 +76,12 @@ describe('parseArgs', () => {
 
   it('rejects a correction without --gap, because a correction is always a miss', () => {
     expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity' ]))
-      .toThrow(/A correction is always a miss: --correct needs --gap <shape\|icon\|color\|composite\|context\|layout>\nUsage:/);
+      .toThrow(/A correction is always a miss: --correct needs --gap <shape\|icon\|color\|composite\|context\|layout\|convention>\nUsage:/);
   });
 
   it('rejects a bad category, a correction with no component, a bad node id, and --gap on its own', () => {
     expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity', '--gap', 'typo' ]))
-      .toThrow(/Not a gap category: typo; --gap takes one of shape, icon, color, composite, context, layout\nUsage:/);
+      .toThrow(/Not a gap category: typo; --gap takes one of shape, icon, color, composite, context, layout, convention\nUsage:/);
     expect(() => parseArgs([ URL, '--correct', '1-2', '--gap', 'shape' ])).toThrow(/--correct 1:2 needs the component the node is, after the URL\nUsage:/);
     expect(() => parseArgs([ URL, '--correct', 'abc', 'BlockEntity', '--gap', 'shape' ])).toThrow(/Not a node id in --correct: abc\nUsage:/);
     expect(() => parseArgs([ URL, '--gap', 'shape' ])).toThrow(/--gap goes with --correct/);

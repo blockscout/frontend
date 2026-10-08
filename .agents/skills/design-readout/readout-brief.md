@@ -3,11 +3,12 @@
 You are the subagent [`SKILL.md`](SKILL.md) step 2 dispatched. The orchestrator gave you the sidecar
 path, the tool's stdout file, the Figma node URL, the task context, and the API response type path
 when the task has one. The tool has already extracted the values and recognized what it can; you add
-the judgment it cannot make and return four things.
+the judgment it cannot make and return five things.
 
 ## What you return
 
-Exactly this, and nothing else — no component table, no values beyond the lines below, no preamble:
+Exactly these five blocks, and nothing else — no component table, no values beyond the lines below,
+no preamble:
 
 ```
 Recognized: <n> of <total>
@@ -20,6 +21,9 @@ Unrecognized:
 
 Layout:
 - <question> — nodes <ids> — <the two readings>
+
+By convention:
+- <convention> — nodes <ids>[ — mockup shows <the opposite>]
 ```
 
 A proposal is **one** shipped component you located, named with its file path the first time, or
@@ -36,11 +40,13 @@ your way.
   reported beside its node in whichever list the node lands in, as `hint: <name> disagrees`. A hint
   that agrees adds nothing.
 - The task context and, when given, the API response type.
+- `tools/design-readout/layout-conventions.md`, in full: the layout questions the repo has already
+  answered, one convention per row with its exception and code home.
 - The shipped component the task context names, when it names one — a `*TableItem.tsx`, a details
   page — read in full: it is where props such as `noIcon`, `truncation` and `fontWeight` come from.
 
-**Done when**: every node in the sidecar is in your hands with its status, and the context override
-below has its inputs.
+**Done when**: every node in the sidecar is in your hands with its status, the conventions are in
+your hands, and the context override below has its inputs.
 
 ## 2. Judge
 
@@ -90,6 +96,12 @@ against the shipped row's cell list); a secondary line that is a tooltip in code
 in the mockup; a column the shipped component has and the mockup lacks, or the reverse. Each question
 carries the node ids and both readings. State the question; do not answer it.
 
+A question a line in the conventions file answers is not a question: apply the convention as a fact
+and put it on the `By convention` list instead, one line per convention applied, with every node it
+settled. The convention wins even where the mockup draws the opposite and that line then ends in `mockup shows <what the mockup draws>` so the
+developer reviews the override; it raises no `context` conflict. A convention that changes nothing on
+the node is still listed, so the developer sees every application.
+
 ### Shipped code vs mockup
 
 Where the shipped component and the mockup disagree about a node — the mockup draws an icon the code
@@ -97,7 +109,8 @@ passes `noIcon` for, a weight the code does not set — the node is Ambiguous wi
 proposal left to the developer, category `context`. Never pick.
 
 **Done when**: every node is on exactly one list or counted as Recognized, every proposal names a file
-you opened, and every disagreeing hint is beside its node.
+you opened, every disagreeing hint is beside its node, and no Layout question is one the conventions
+file answers.
 
 ## 3. Return
 

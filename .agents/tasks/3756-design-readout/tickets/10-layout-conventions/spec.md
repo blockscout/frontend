@@ -30,9 +30,9 @@ the tabs row; price-like cells are right-aligned under `isNumeric` column header
 
 ## Acceptance criteria
 
-- [ ] `tools/design-readout/layout-conventions.md` exists, tracked, with a header stating the one-line
-      format and the append rule (one line per convention, appended in the session that settled it,
-      no dates, no node ids), and the three seed lines.
+- [ ] `tools/design-readout/layout-conventions.md` exists, tracked, holding nothing but one table with
+      the three seed rows; the columns and the append rule (one row per convention, appended in the
+      session that settled it, no dates, no node ids) live in `SKILL.md`'s convention outcome.
 - [ ] `readout-brief.md` step 1 reads the conventions file; step 2's Layout rule applies a listed
       convention instead of raising the question; the return shape gains `By convention:` with one line
       per applied convention — `<convention> — nodes <ids>[ — mockup shows <the opposite>]` — and the
@@ -49,14 +49,14 @@ the tabs row; price-like cells are right-aligned under `isNumeric` column header
       gains an ActionBar or mobile-list line (single home).
 - [ ] `readout-template.md` is unchanged — `design-readout.md` does not carry conventions.
 - [ ] `pnpm lint:doc-links` and the tool's specs pass.
-- [ ] `(human)` Re-run the skill on node `22842:178272` (gas price history): the Layout list no longer
+- [x] `(human)` Re-run the skill on node `22842:178272` (gas price history): the Layout list no longer
       carries the mobile-list and pagination questions, `By convention` lists the three seeds with
       their nodes, and nothing beyond the five blocks reaches the main context.
 
 ## Details
 
-- Line format, fixed in the file's header and nowhere else:
-  `- <what the mockup shows / the question> → <convention>[; unless <exception>] — <code home>`.
+- Row format, fixed in `SKILL.md`'s convention outcome and nowhere else: the columns *What the mockup
+  shows / the question*, *Convention*, *Unless*, *Code home*.
   Code home is a file or directory path (`src/shell/page/action-bar/ActionBar.tsx`,
   `src/toolkit/chakra/table.tsx`, `src/shared/pagination/`), never a line number.
 - No node id or date on a line: ids rot as mockups change, and provenance is the git history.
@@ -70,8 +70,8 @@ the tabs row; price-like cells are right-aligned under `isNumeric` column header
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `layout-conventions.md` with header and three seeds; `GAP_CATEGORIES` + spec; FR 11 word
-- [ ] 2 `[agent]` `readout-brief.md` read step, Layout rule, five-block return shape
-- [ ] 3 `[agent]` `SKILL.md` convention outcome in step 3, five-block cut in step 2, hand-back in step 4
-- [ ] 4 `[agent]` `tools/design-readout/CONTEXT.md` row and constraint; `pnpm lint:doc-links`
-- [ ] 5 `[human]` Re-run on `22842:178272`, confirm the `(human)` criterion
+- [x] 1 `[agent]` `layout-conventions.md` as one table with the three seed rows; `GAP_CATEGORIES` + spec; FR 11 word
+- [x] 2 `[agent]` `readout-brief.md` read step, Layout rule, five-block return shape
+- [x] 3 `[agent]` `SKILL.md` convention outcome in step 3, five-block cut in step 2, hand-back in step 4
+- [x] 4 `[agent]` `tools/design-readout/CONTEXT.md` row and constraint; `pnpm lint:doc-links`
+- [x] 5 `[human]` Re-run on `22842:178272`, confirm the `(human)` criterion

@@ -118,8 +118,8 @@ describe('buildRecord', () => {
 });
 
 describe('isGapCategory', () => {
-  it('accepts exactly the six categories', () => {
-    for (const category of [ 'shape', 'icon', 'color', 'composite', 'context', 'layout' ]) expect(isGapCategory(category)).toBe(true);
+  it('accepts exactly the seven categories', () => {
+    for (const category of [ 'shape', 'icon', 'color', 'composite', 'context', 'layout', 'convention' ]) expect(isGapCategory(category)).toBe(true);
     expect(isGapCategory('Shape')).toBe(false);
     expect(isGapCategory('typo')).toBe(false);
   });

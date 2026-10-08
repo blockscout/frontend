@@ -84,9 +84,9 @@ is built only if the phase 1 gap log is small.
     marks its entry stale rather than failing the run. The set is seeded with the five hand-calibrated nodes
     plus roughly ten shipped table row components with their Figma nodes (Q01).
 11. **Gap log.** `.ai/design-readout/gaps.md`, one line per miss with a category from shape / icon /
-    color / composite / context / layout. The skill appends a line whenever the developer corrects an
-    Ambiguous or Unrecognized item in session (category proposed, developer confirms); misses found during
-    the markup leaf are added by hand. The phase 2 decision is a hand count over this file.
+    color / composite / context / layout / convention. The skill appends a line whenever the developer
+    corrects an Ambiguous or Unrecognized item in session (category proposed, developer confirms); misses
+    found during the markup leaf are added by hand. The phase 2 decision is a hand count over this file.
 12. **Workflow integration.**
     - `grill-the-task` runs the readout as part of its research for every Figma link the task carries:
       scoping outline confirmed in the main session, readout in a subagent, Ambiguous items resolved by the

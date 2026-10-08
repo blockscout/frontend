@@ -32,6 +32,7 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | What happens to a correction when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
 | How do I record what a node really is? | `pnpm design:readout <url> --correct <nodeId> <component> [<props…>] --gap <category>`; `recordCorrection` in `./index.ts`, the slot is `Correction` in `./sidecar.ts` |
 | Where is the gap log, what is one line of it, which categories exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` in `./config.ts` is the list |
+| Which layout questions are already settled, and where does a new convention go? | `./layout-conventions.md`, one table, one row per convention with its code home; the `design-readout` skill fixes the columns, reads the file before judging and appends to it |
 | Which nodes is recognition checked against, and what does each entry hold? | `./calibration/<entry>/`: `snapshot.json` is the tool's own extraction of the node, `expected.json` the Figma link, the shipped component's path and per cell the component, its props and the signals recognition must give; the schemas sit at the top of `./calibration.ts` |
 | How do I add an entry? | A folder under `./calibration/` with an `expected.json` (link, node id, component path, `cells: {}`), then `pnpm design:readout --refresh <entry>` to capture the snapshot, then the cells, read off the shipped component's JSX and keyed by the leaf ids the snapshot shows; `--calibrate` must pass before the commit |
 | `--calibrate` reports a miss. What does it mean? | Recognition over a committed snapshot no longer says what the entry expects: a rule change regressed that cell, or improved it (a cell pinned `unrecognized` now hits), in which case the entry is updated in the same change. The run is offline, so it never means Figma changed |
@@ -75,6 +76,13 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   is one line: a correction whose file key, category, values and correction match an existing line
   adds none, and says so. The sidecar still takes a correction per node, so every cell carries its
   component.
+- **A convention is appended in the session that settled it, and carries no node id.** The file
+  grows only from a developer saying "that's just how we do it" over a real Layout item; a row
+  written later, from memory, records a convention nobody applied. Node ids rot as mockups change
+  and dates duplicate the history the commit already keeps, so a row names the question, the
+  convention, the exception and the code home, nothing else. A correction that carries a
+  convention's props is logged with the category `convention`, so the phase 2 count over `gaps.md`
+  can set those lines aside and `layout` lines mean real misses.
 - **A re-run never drops a correction on its own.** Values changed under it → kept and `stale`;
   decision changed under it (a new rule) → kept as-is, since the developer judged the values, not
   the rule. Only a vanished node takes its correction with it, and the re-run says so.
@@ -139,5 +147,6 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - `./calibration.ts` — the entry schemas and loader, the per-signal checks and the `--calibrate`
   report, the `--refresh` capture and the stale marking
 - `./calibration/` — the committed set, one folder per labeled node
+- `./layout-conventions.md` — the settled layout questions, one line each, read and appended by the skill
 - `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored
