@@ -5,7 +5,7 @@ import path from 'path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import { resolveMainCheckout } from './checkout';
+import { resolveCheckoutRoot, resolveMainCheckout } from './checkout';
 
 let tmp = '';
 
@@ -32,5 +32,7 @@ describe('resolveMainCheckout', () => {
 
     expect(resolveMainCheckout(main)).toBe(main);
     expect(resolveMainCheckout(worktree)).toBe(main);
+    expect(resolveCheckoutRoot(main)).toBe(main);
+    expect(resolveCheckoutRoot(worktree)).toBe(worktree);
   });
 });

@@ -2,6 +2,7 @@ import type { ColorMap, ColorMode, ColorRole, ColorValue, ModeDetection } from '
 import { colorKey, detectColorMode, lookupTokens } from './colormap';
 import { TEXT_STYLE_HINT_SIZES_PX, TEXT_STYLE_HINT_WEIGHTS } from './config';
 import type { BoundingBox, FigmaNode, FigmaPaint, NodeEntry } from './figma';
+import { scopeOutline } from './scope';
 
 export interface RoleColor extends ColorValue {
   readonly role: ColorRole;
@@ -258,7 +259,7 @@ function judgeHint(pending: PendingHint, map: ColorMap, mode: ColorMode): Hint {
 
 // The linked node's own fill is the screen background. It is also a leaf when the node is a region,
 // so the tiebreak only matters for regions narrower than the node.
-function frameBackground(root: FigmaNode): ColorValue | undefined {
+export function frameBackground(root: FigmaNode): ColorValue | undefined {
   return roleColors(root.fills, 'background', root.opacity ?? 1)[0];
 }
 
@@ -289,6 +290,25 @@ export function extractValues(entry: NodeEntry, regions: ReadonlyArray<FigmaNode
   const { leaves, pending } = context;
   const colorMode = detectColorMode(map, leaves.flatMap((leaf) => leaf.values.colors), frameBackground(entry.document));
   return { leaves, hints: pending.map((hint) => judgeHint(hint, map, colorMode.mode)), colorMode };
+}
+
+export interface RegionExtraction {
+  readonly regions: ReadonlyArray<string>;
+  readonly extraction: Extraction;
+}
+
+// The regions default to the outline's content root; chrome the outline dropped is excluded either way.
+export function extractRegions(entry: NodeEntry, regionIds: ReadonlyArray<string> | undefined, map: ColorMap): RegionExtraction {
+  const root = entry.document;
+  const outline = scopeOutline(root);
+  const regions = regionIds ?? [ outline.contentRoot.id ];
+  const nodes = regions.map((id) => {
+    const node = findNode(root, id);
+    if (node === undefined) throw new Error(`Region ${ id } is not under node ${ root.id }.`);
+    return node;
+  });
+  const excluded = new Set(outline.chrome.map((dropped) => dropped.id));
+  return { regions, extraction: extractValues(entry, nodes, excluded, map) };
 }
 
 function describeColors(colors: ReadonlyArray<RoleColor>): string {

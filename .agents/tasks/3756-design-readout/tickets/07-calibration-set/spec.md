@@ -18,16 +18,16 @@ the five hand-calibrated nodes and the ~10 shipped row components from Q01.
 
 ## Acceptance criteria
 
-- [ ] Entry format: one folder per entry with `snapshot.json` (extraction output) and `expected.json`
+- [x] Entry format: one folder per entry with `snapshot.json` (extraction output) and `expected.json`
       (component + props per cell, keyed by node id, plus the Figma node URL and the repo component
       path); a spec validates the shape and rejects an entry with an unknown node id.
-- [ ] `--calibrate` runs offline, prints hits/misses per signal and per entry, exits non-zero on a miss;
+- [x] `--calibrate` runs offline, prints hits/misses per signal and per entry, exits non-zero on a miss;
       a spec runs it over a small synthetic entry with one deliberate miss.
-- [ ] `--refresh` re-extracts with the live tree and overwrites `snapshot.json`; a 404 / missing node
+- [x] `--refresh` re-extracts with the live tree and overwrites `snapshot.json`; a 404 / missing node
       sets `stale: true` on `expected.json` and the run continues; specs cover both with a mocked fetch.
-- [ ] `--calibrate` is wired into the test pipeline; the committed set passes.
-- [ ] The set contains the Q01 entries, each with the expected cells filled from the shipped component.
-- [ ] `CONTEXT.md` gains the calibration rows: how to add an entry, what a miss means, when to refresh.
+- [x] `--calibrate` is wired into the test pipeline; the committed set passes.
+- [x] The set contains the Q01 entries, each with the expected cells filled from the shipped component.
+- [x] `CONTEXT.md` gains the calibration rows: how to add an entry, what a miss means, when to refresh.
 
 ## Details
 
@@ -37,8 +37,8 @@ the five hand-calibrated nodes and the ~10 shipped row components from Q01.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Entry format, loader and validation with specs
-- [ ] 2 `[agent]` `--calibrate` report and exit code, pipeline wiring, specs
-- [ ] 3 `[agent]` `--refresh` with stale marking, specs
-- [ ] 4 `[agent]` Seed the set from Q01 (capture snapshots via `--refresh`, write expected cells from the shipped components)
-- [ ] 5 `[agent]` `CONTEXT.md` calibration rows
+- [x] 1 `[agent]` Entry format, loader and validation with specs
+- [x] 2 `[agent]` `--calibrate` report and exit code, pipeline wiring, specs
+- [x] 3 `[agent]` `--refresh` with stale marking, specs
+- [x] 4 `[agent]` Seed the set from Q01 (capture snapshots via `--refresh`, write expected cells from the shipped components)
+- [x] 5 `[agent]` `CONTEXT.md` calibration rows

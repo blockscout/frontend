@@ -13,6 +13,9 @@ export const SPAN_TOLERANCE_PX = 1;
 // Where a run's record goes, under the main checkout.
 export const SIDECAR_DIR = '.ai/design-readout';
 
+// The committed calibration set, one folder per labeled node, under the repo root.
+export const CALIBRATION_DIR = 'tools/design-readout/calibration';
+
 // The gap log beside the sidecars: one line per miss, appended by `--correct`, never rewritten.
 export const GAP_LOG_FILE = 'gaps.md';
 

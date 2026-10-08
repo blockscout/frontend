@@ -5,6 +5,7 @@ import type { ColorMode } from './colormap';
 import { GAP_CATEGORIES, SIDECAR_DIR } from './config';
 import type { BoundingBox } from './figma';
 import type { ColorTokens, CompositeMembership, Decision, Recognition, RecognitionStatus } from './recognize';
+import { fileSafeNodeId } from './url';
 import type { Leaf, LeafValues } from './values';
 
 export const SIDECAR_VERSION = 2;
@@ -96,7 +97,7 @@ export function applyCorrection(record: SidecarRecord, nodeId: string, correctio
 }
 
 export function sidecarPath(mainCheckout: string, fileKey: string, nodeId: string): string {
-  return path.join(mainCheckout, SIDECAR_DIR, `${ fileKey }-${ nodeId.replace(':', '-') }.json`);
+  return path.join(mainCheckout, SIDECAR_DIR, `${ fileKey }-${ fileSafeNodeId(nodeId) }.json`);
 }
 
 export function writeSidecar(filePath: string, record: SidecarRecord): void {

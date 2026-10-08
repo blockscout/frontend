@@ -7,6 +7,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import type { NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
 import { GAP_LOG_HEADER, gapLogPath } from './gaps';
+import type { CliOptions, CorrectionRequest } from './index';
 import { dumpPayload, parseArgs, readoutOf, recordCorrection } from './index';
 import { loadSpriteNames } from './recognize';
 import { buildRecord, readSidecar, sidecarPath, writeSidecar } from './sidecar';
@@ -18,20 +19,43 @@ function readFixture(file: string, nodeId: string): NodeEntry {
   return entryOf(payload, nodeId);
 }
 
+function readout(argv: ReadonlyArray<string>): CliOptions {
+  const parsed = parseArgs(argv);
+  if (parsed.kind !== 'readout') throw new Error(`Expected a readout, got ${ parsed.kind }`);
+  return parsed.options;
+}
+
+function correction(argv: ReadonlyArray<string>): CorrectionRequest {
+  const parsed = parseArgs(argv);
+  if (parsed.kind !== 'correct') throw new Error(`Expected a correction, got ${ parsed.kind }`);
+  return parsed.correction;
+}
+
 describe('parseArgs', () => {
   it('takes the node URL as the one positional and --dump in both forms', () => {
     expect(parseArgs([ URL ])).toEqual({
-      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined },
+      kind: 'readout',
+      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined, calibrate: false, refresh: false },
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
-      correction: undefined,
     });
-    expect(parseArgs([ URL, '--dump', 'out.json' ]).options.dump).toBe('out.json');
-    expect(parseArgs([ '--dump=out.json', URL ]).options.dump).toBe('out.json');
+    expect(readout([ URL, '--dump', 'out.json' ]).dump).toBe('out.json');
+    expect(readout([ '--dump=out.json', URL ]).dump).toBe('out.json');
   });
 
-  it('takes --regions as comma-separated node ids in either form, canonicalized', () => {
-    expect(parseArgs([ URL, '--regions', '1-2, 3:4' ]).options.regions).toEqual([ '1:2', '3:4' ]);
+  it('takes --regions as comma-separated node ids in either form, nested ones included, canonicalized', () => {
+    expect(readout([ URL, '--regions', '1-2, 3:4,I5-6;7-8' ]).regions).toEqual([ '1:2', '3:4', 'I5:6;7:8' ]);
     expect(() => parseArgs([ URL, '--regions', '1-2,abc' ])).toThrow(/Not a node id in --regions: abc\nUsage:/);
+  });
+
+  it('takes --calibrate and --refresh [<entry>] without a URL, and rejects a URL or a per-node flag with them', () => {
+    expect(parseArgs([ '--calibrate' ])).toEqual({ kind: 'calibrate' });
+    expect(parseArgs([ '--refresh' ])).toEqual({ kind: 'refresh', entry: undefined });
+    expect(parseArgs([ '--refresh', 'blocks-table-item' ])).toEqual({ kind: 'refresh', entry: 'blocks-table-item' });
+    expect(() => parseArgs([ '--calibrate', URL ])).toThrow(/--calibrate takes no argument: https/);
+    expect(() => parseArgs([ '--refresh', 'a', 'b' ])).toThrow(/--refresh takes at most one entry name: a b/);
+    expect(() => parseArgs([ '--calibrate', '--refresh' ])).toThrow(/--calibrate and --refresh are separate runs/);
+    expect(() => parseArgs([ '--calibrate', '--dump', 'x' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
+    expect(() => parseArgs([ '--refresh', '--gap', 'shape' ])).toThrow(/--refresh works on the calibration set and takes no per-node flag/);
   });
 
   it('rejects a missing, extra or malformed URL with the usage line', () => {
@@ -42,13 +66,12 @@ describe('parseArgs', () => {
   });
 
   it('takes --correct with the node id, the component and its props as words, and the --gap category', () => {
-    expect(parseArgs([ URL, '--correct', '22842-178386', 'BlockEntity', 'noIcon', 'size=sm', '--gap', 'context' ]).correction).toEqual({
-      nodeId: '22842:178386',
-      component: 'BlockEntity',
-      props: [ 'noIcon', 'size=sm' ],
-      gap: 'context',
+    expect(parseArgs([ URL, '--correct', '22842-178386', 'BlockEntity', 'noIcon', 'size=sm', '--gap', 'context' ])).toEqual({
+      kind: 'correct',
+      ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
+      correction: { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon', 'size=sm' ], gap: 'context' },
     });
-    expect(parseArgs([ '--gap=icon', URL, '--correct=1:2', 'IconSvg' ]).correction).toEqual({ nodeId: '1:2', component: 'IconSvg', props: [], gap: 'icon' });
+    expect(correction([ '--gap=icon', URL, '--correct=I1:2;3:4', 'IconSvg' ])).toEqual({ nodeId: 'I1:2;3:4', component: 'IconSvg', props: [], gap: 'icon' });
   });
 
   it('rejects a correction without --gap, because a correction is always a miss', () => {

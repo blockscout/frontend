@@ -1,0 +1,34 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=29024-135150",
+  "nodeId": "I29024:135150;28406:92845;17439:63824",
+  "component": "src/shared/detailed-info/DetailedInfoTimestamp.tsx",
+  "stale": false,
+  "cells": {
+    "I29024:135150;28406:92845;26864:6728": {
+      "component": "DetailedInfoTimestamp",
+      "props": {},
+      "shape": "relative-timestamp",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I29024:135150;28406:92845;31535:2910": {
+      "component": "SpriteIcon",
+      "props": {
+        "name": "clock-light",
+        "boxSize": "14px"
+      },
+      "status": "unrecognized"
+    },
+    "I29024:135150;28406:92845;26864:6730": {
+      "component": "Truncate",
+      "props": {
+        "type": "end"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

@@ -72,7 +72,15 @@ export interface NodesResponse {
   readonly nodes: Readonly<Record<string, NodeEntry | null>>;
 }
 
-export class FigmaFetchError extends Error {}
+// `status` is the HTTP status the request failed with; undefined when the run never reached Figma.
+export class FigmaFetchError extends Error {
+  readonly status: number | undefined;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.status = status;
+  }
+}
 
 export type Env = Readonly<Record<string, string | undefined>>;
 
@@ -97,7 +105,7 @@ export async function fetchNodes(ref: NodeRef, env: Env = process.env): Promise<
   const token = readToken(env);
   const url = `${ FIGMA_API_BASE }/v1/files/${ ref.fileKey }/nodes?ids=${ encodeURIComponent(ref.nodeId) }`;
   const response = await fetch(url, { headers: { 'X-Figma-Token': token } });
-  if (!response.ok) throw new FigmaFetchError(describeFailure(response.status));
+  if (!response.ok) throw new FigmaFetchError(describeFailure(response.status), response.status);
   return await response.json() as NodesResponse;
 }
 

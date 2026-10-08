@@ -2,11 +2,13 @@
 import fs from 'fs';
 import path from 'path';
 
-import { resolveMainCheckout } from '../cli/checkout';
+import { resolveCheckoutRoot, resolveMainCheckout } from '../cli/checkout';
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
+import type { CalibrationEntry } from './calibration';
+import { calibrateSet, calibrationDir, describeRefresh, hasMiss, loadCalibration, refreshEntry, renderCalibration } from './calibration';
 import { buildThemeColorMap } from './colormap';
-import { GAP_CATEGORIES } from './config';
+import { CALIBRATION_DIR, GAP_CATEGORIES } from './config';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
 import { appendGap, gapLogPath } from './gaps';
@@ -17,20 +19,24 @@ import { describeNode, renderOutline, scopeOutline, summarize } from './scope';
 import type { Correction, GapCategory, SidecarRecord } from './sidecar';
 import { applyCorrection, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 import type { NodeRef } from './url';
-import { parseNodeRef } from './url';
+import { parseNodeId as parseCanonicalNodeId, parseNodeRef } from './url';
 import type { Extraction } from './values';
-import { extractValues, findNode, renderExtraction } from './values';
+import { extractRegions, renderExtraction } from './values';
 
 export interface CliOptions {
   dump: string | undefined;
   regions: ReadonlyArray<string> | undefined;
   correct: string | undefined;
   gap: GapCategory | undefined;
+  calibrate: boolean;
+  refresh: boolean;
 }
 
 const USAGE = `Usage:
   design:readout <figma node URL> [--regions <ids>] [--dump <path>]
   design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category>
+  design:readout --calibrate
+  design:readout --refresh [<entry>]
 
   Reads the node through the Figma REST API and prints its scoping outline for you to confirm: the
   content root the tool descended to and the chrome dropped at each level with the rule that dropped
@@ -57,25 +63,32 @@ const USAGE = `Usage:
   gap log beside the sidecars (.ai/design-readout/gaps.md). It works on the existing sidecar and
   needs no token. A correction is always a miss, so --gap is required with it.
 
+  --calibrate runs recognition over the committed calibration set (${ CALIBRATION_DIR }: one folder
+  per labeled node with the tool's own value snapshot and the expected component, props and signals
+  per cell) offline, with no token, and prints hits and misses per entry and per signal; any miss
+  exits non-zero. --refresh re-fetches every snapshot (or one entry's) from Figma with the token; a
+  node that is gone marks its entry stale, which --calibrate then skips.
+
   <figma node URL>     https://www.figma.com/design/<fileKey>/<name>?node-id=<A>-<B>
-                       (the node id is accepted as A-B or A:B; the file key comes from the URL)
+                       (the node id is accepted as A-B or A:B; a node inside a component instance
+                       carries the instance path, I<A>:<B>;<C>:<D>; the file key comes from the URL)
   --regions <ids>      the confirmed regions, comma-separated node ids (A-B or A:B); default: the
                        content root the outline names
   --dump <path>        also write the raw REST payload to this file, e.g. to capture a test fixture
   --correct <nodeId>   the leaf to correct, by node id (A-B or A:B), followed by the repo component
                        it is and any props, as words: --correct 22842-178386 BlockEntity noIcon
   --gap <category>     the kind of miss the correction fixes: ${ GAP_CATEGORIES.join(', ') }
+  --calibrate          check the calibration set; takes no URL
+  --refresh [<entry>]  re-capture the calibration snapshots, or the one entry named by its folder
 
   The run needs a Figma personal access token in the environment and fails without one; it never
   reads another source. Personal access tokens expire after at most 90 days, so a rejected token
   usually means a new one is due.`;
 
-const NODE_ID = /^(\d+)[-:](\d+)$/;
-
 function parseNodeId(raw: string, flag: string): string {
-  const match = NODE_ID.exec(raw.trim());
-  if (match === null) throw new Error(`Not a node id in ${ flag }: ${ raw.trim() }\n${ USAGE }`);
-  return `${ match[1] }:${ match[2] }`;
+  const nodeId = parseCanonicalNodeId(raw);
+  if (nodeId === undefined) throw new Error(`Not a node id in ${ flag }: ${ raw.trim() }\n${ USAGE }`);
+  return nodeId;
 }
 
 function parseRegionIds(value: string): Array<string> {
@@ -108,6 +121,12 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--gap', { kind: 'value', apply: (options, value) => {
     options.gap = parseGapCategory(value);
   } } ],
+  [ '--calibrate', { kind: 'switch', apply: (options) => {
+    options.calibrate = true;
+  } } ],
+  [ '--refresh', { kind: 'switch', apply: (options) => {
+    options.refresh = true;
+  } } ],
 ]);
 
 export interface CorrectionRequest {
@@ -117,13 +136,13 @@ export interface CorrectionRequest {
   readonly gap: GapCategory;
 }
 
-export interface ParsedCli {
-  readonly options: CliOptions;
-  readonly ref: NodeRef;
-  readonly correction: CorrectionRequest | undefined;
-}
+export type ParsedCli =
+  { readonly kind: 'readout'; readonly options: CliOptions; readonly ref: NodeRef } |
+  { readonly kind: 'correct'; readonly ref: NodeRef; readonly correction: CorrectionRequest } |
+  { readonly kind: 'calibrate' } |
+  { readonly kind: 'refresh'; readonly entry: string | undefined };
 
-const DEFAULT_OPTIONS: CliOptions = { dump: undefined, regions: undefined, correct: undefined, gap: undefined };
+const DEFAULT_OPTIONS: CliOptions = { dump: undefined, regions: undefined, correct: undefined, gap: undefined, calibrate: false, refresh: false };
 
 function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): CorrectionRequest | undefined {
   if (options.correct === undefined) {
@@ -138,12 +157,29 @@ function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): Cor
   return { nodeId: options.correct, component: words[0], props: words.slice(1), gap: options.gap };
 }
 
+// --calibrate and --refresh work on the committed set, not on a node: neither takes a URL or any
+// of the per-node flags.
+function parseSetCommand(options: CliOptions, rest: ReadonlyArray<string>): ParsedCli {
+  const flag = options.calibrate ? '--calibrate' : '--refresh';
+  if (options.calibrate && options.refresh) throw new Error(`--calibrate and --refresh are separate runs\n${ USAGE }`);
+  const perNode = [ options.dump, options.regions, options.correct, options.gap ].some((value) => value !== undefined);
+  if (perNode) throw new Error(`${ flag } works on the calibration set and takes no per-node flag\n${ USAGE }`);
+  if (options.calibrate) {
+    if (rest.length > 0) throw new Error(`--calibrate takes no argument: ${ rest[0] }\n${ USAGE }`);
+    return { kind: 'calibrate' };
+  }
+  if (rest.length > 1) throw new Error(`--refresh takes at most one entry name: ${ rest.join(' ') }\n${ USAGE }`);
+  return { kind: 'refresh', entry: rest[0] };
+}
+
 export function parseArgs(argv: ReadonlyArray<string>): ParsedCli {
   const { options, rest } = parseFlags<CliOptions>(argv, FLAGS, { ...DEFAULT_OPTIONS }, { kind: 'reject', usage: USAGE });
+  if (options.calibrate || options.refresh) return parseSetCommand(options, rest);
   if (rest.length === 0) throw new Error(`Missing the Figma node URL\n${ USAGE }`);
   const ref = parseNodeRef(rest[0]);
   if (ref === undefined) throw new Error(`Not a Figma node URL: ${ rest[0] }\n${ USAGE }`);
-  return { options, ref, correction: parseCorrection(options, rest.slice(1)) };
+  const correction = parseCorrection(options, rest.slice(1));
+  return correction === undefined ? { kind: 'readout', options, ref } : { kind: 'correct', ref, correction };
 }
 
 function renderHeader(payload: NodesResponse, root: FigmaNode): string {
@@ -166,19 +202,9 @@ export interface Readout {
   readonly recognitions: ReadonlyArray<Recognition>;
 }
 
-// The regions default to the outline's content root; chrome the outline dropped is excluded either way.
 export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | undefined, spriteNames: ReadonlyArray<string>): Readout {
-  const root = entry.document;
-  const outline = scopeOutline(root);
-  const regions = regionIds ?? [ outline.contentRoot.id ];
-  const nodes = regions.map((id) => {
-    const node = findNode(root, id);
-    if (node === undefined) throw new Error(`Region ${ id } is not under node ${ root.id }.`);
-    return node;
-  });
-  const excluded = new Set(outline.chrome.map((dropped) => dropped.id));
   const map = buildThemeColorMap();
-  const extraction = extractValues(entry, nodes, excluded, map);
+  const { regions, extraction } = extractRegions(entry, regionIds, map);
   return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames, map, extraction.colorMode.mode) };
 }
 
@@ -250,13 +276,43 @@ async function runReadout(ref: NodeRef, options: CliOptions): Promise<void> {
   console.log(renderRerun(diffRecords(previous, merged)));
 }
 
-async function main(): Promise<void> {
-  const { options, ref, correction } = parseArgs(process.argv.slice(2));
-  if (correction !== undefined) {
-    runCorrection(ref, correction);
-    return;
+function runCalibrate(): void {
+  const results = calibrateSet(loadCalibration(calibrationDir(resolveCheckoutRoot(process.cwd()))), loadSpriteNames());
+  console.log(renderCalibration(results));
+  if (hasMiss(results)) process.exitCode = 1;
+}
+
+function selectEntries(entries: ReadonlyArray<CalibrationEntry>, name: string | undefined): ReadonlyArray<CalibrationEntry> {
+  if (name === undefined) return entries;
+  const entry = entries.find((candidate) => candidate.name === name);
+  if (entry === undefined) throw new Error(`No calibration entry named ${ name }; the entries are ${ entries.map((candidate) => candidate.name).join(', ') }.`);
+  return [ entry ];
+}
+
+async function runRefresh(name: string | undefined): Promise<void> {
+  const entries = selectEntries(loadCalibration(calibrationDir(resolveCheckoutRoot(process.cwd()))), name);
+  const map = buildThemeColorMap();
+  console.log(`Refreshing ${ entries.length } calibration ${ entries.length === 1 ? 'entry' : 'entries' }:`);
+  for (const entry of entries) {
+    console.log(describeRefresh(await refreshEntry(entry, fetchNodes, new Date(), map)));
   }
-  await runReadout(ref, options);
+}
+
+async function main(): Promise<void> {
+  const parsed = parseArgs(process.argv.slice(2));
+  switch (parsed.kind) {
+    case 'correct':
+      runCorrection(parsed.ref, parsed.correction);
+      return;
+    case 'calibrate':
+      runCalibrate();
+      return;
+    case 'refresh':
+      await runRefresh(parsed.entry);
+      return;
+    case 'readout':
+      await runReadout(parsed.ref, parsed.options);
+  }
 }
 
 // run.sh always executes the compiled `tools/design-readout/dist/tools/design-readout/index.js`, so that path

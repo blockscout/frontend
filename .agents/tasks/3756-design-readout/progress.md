@@ -12,6 +12,6 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 04 → `tickets/04-text-shape-and-icon-recognition/`
 - [x] 05 → `tickets/05-color-tokens-and-composites/`
 - [x] 06 → `tickets/06-rerun-corrections-gap-log/`
-- [ ] 07 → `tickets/07-calibration-set/`
+- [x] 07 → `tickets/07-calibration-set/`
 - [ ] 08 → `tickets/08-skill-delegation-glossary/`
 - [ ] 09 → `tickets/09-workflow-integration/`

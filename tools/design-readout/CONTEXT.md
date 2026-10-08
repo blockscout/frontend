@@ -32,6 +32,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | What happens to a correction when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
 | How do I record what a node really is? | `pnpm design:readout <url> --correct <nodeId> <component> [<props…>] --gap <category>`; `recordCorrection` in `./index.ts`, the slot is `Correction` in `./sidecar.ts` |
 | Where is the gap log, what is one line of it, which categories exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` in `./config.ts` is the list |
+| Which nodes is recognition checked against, and what does each entry hold? | `./calibration/<entry>/`: `snapshot.json` is the tool's own extraction of the node, `expected.json` the Figma link, the shipped component's path and per cell the component, its props and the signals recognition must give; the schemas sit at the top of `./calibration.ts` |
+| How do I add an entry? | A folder under `./calibration/` with an `expected.json` (link, node id, component path, `cells: {}`), then `pnpm design:readout --refresh <entry>` to capture the snapshot, then the cells, read off the shipped component's JSX and keyed by the leaf ids the snapshot shows; `--calibrate` must pass before the commit |
+| `--calibrate` reports a miss. What does it mean? | Recognition over a committed snapshot no longer says what the entry expects: a rule change regressed that cell, or improved it (a cell pinned `unrecognized` now hits), in which case the entry is updated in the same change. The run is offline, so it never means Figma changed |
+| When do I `--refresh`? | When the mockup changed and the entry should follow it, or the entry's `stale` flag is set and the node is back. A refresh overwrites the snapshot only; the cells stay and `--calibrate` says which no longer hold |
 
 ## What an editor here must keep true
 
@@ -70,6 +74,13 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - **A re-run never drops a correction on its own.** Values changed under it → kept and `stale`;
   decision changed under it (a new rule) → kept as-is, since the developer judged the values, not
   the rule. Only a vanished node takes its correction with it, and the re-run says so.
+- **A snapshot is the tool's extraction, captured with `--refresh`, never hand-edited and never a raw
+  payload.** It holds values, boxes and the frame background only, so recognition can be re-run over
+  it offline and a payload field the tool starts reading has to be captured again, by a refresh.
+  `--calibrate` needs no token; the spec that runs the committed set is what keeps it green in CI.
+- **The committed calibration set passes.** `--calibrate` exits non-zero on any miss and the spec
+  asserts the same, so a recognition change that moves a calibrated cell lands together with the
+  entry update that says so. A vanished node is `stale`, skipped and reported, never a miss.
 - **Fixtures are captured with `--dump`, never hand-edited.** They are the raw response for one node,
   so a payload field the tool starts reading is already in them; the file name records the color mode
   the payload showed.
@@ -91,6 +102,11 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   `to` hash as a second `from` and no from/to pair ever fired. A new rule with two parts of one kind
   hits the same trap.
 
+- **A cell's expectation pins what recognition says today, which is not always the truth.** An
+  identicon beside an address or a `Fire` instance for the `flame` sprite is `unrecognized` and the
+  entry says so; a cell that stated the sprite would fail the committed set. The gap log, not the
+  calibration set, is where the truth is recorded.
+
 - **An arrow beside a truncated hash is not the icon that settles it.** The adjacency rule counts
   entity icons only; counting any icon made the `to` hash of a from/to pair "recognized" through the
   arrow alone, which is exactly the ambiguity the rule exists to keep.
@@ -98,10 +114,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, `--regions`, the header, outline and values on stdout, the
-  sidecar write or the re-run diff, the `--correct` path; flag mechanics shared with the sibling
-  tools in `../cli/flags.ts`
-- `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder, gap log
-  name and categories, what a text style name is taken to claim
+  sidecar write or the re-run diff, the `--correct`, `--calibrate` and `--refresh` paths; flag
+  mechanics shared with the sibling tools in `../cli/flags.ts`
+- `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder,
+  calibration folder, gap log name and categories, what a text style name is taken to claim
 - `./url.ts` — Figma node link → file key and canonical node id
 - `./figma.ts` — the nodes request, the node types the tool reads, the failure messages
 - `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
@@ -116,5 +132,8 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   writing, reading and correcting one
 - `./rerun.ts` — the diff of two records, the correction carry-over, the re-run text
 - `./gaps.ts` — the gap log: its path, one line's format, the append
+- `./calibration.ts` — the entry schemas and loader, the per-signal checks and the `--calibrate`
+  report, the `--refresh` capture and the stale marking
+- `./calibration/` — the committed set, one folder per labeled node
 - `./fixtures/` — raw payloads captured with `--dump`, the only Figma data the specs touch
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored
