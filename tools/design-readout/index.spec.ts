@@ -120,15 +120,16 @@ describe('recordCorrection', () => {
   it('writes the correction into the sidecar and appends one line to the gap log, without a fetch', () => {
     const target = seedSidecar();
     const now = new Date('2026-10-07T09:30:00.000Z');
-    const { record, gapLine } = recordCorrection(tmp, ref, request, now);
+    const { record, gap } = recordCorrection(tmp, ref, request, now);
     const correction = { component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context', recordedAt: '2026-10-07T09:30:00.000Z', stale: false };
     expect(record.nodes.find((node) => node.id === '22842:178386')?.correction).toEqual(correction);
     expect(readSidecar(target)).toEqual(record);
-    expect(gapLine).toBe([
+    expect(gap.appended).toBe(true);
+    expect(gap.line).toBe([
       '- 2026-10-07 | KEY | 22842:178386 | context | ',
       'recognized: 22842:178386 text "1248139" — Inter 700 14/20; text #63B3ED — number: block or batch or epoch | BlockEntity noIcon',
     ].join(''));
-    expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gapLine }\n`);
+    expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gap.line }\n`);
   });
 
   it('fails on a missing sidecar, naming the path it expected', () => {

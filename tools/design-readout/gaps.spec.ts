@@ -66,7 +66,26 @@ describe('appendGap', () => {
     const target = gapLogPath(tmp);
     const first = appendGap(target, ENTRY);
     const second = appendGap(target, { ...ENTRY, date: '2026-10-08', nodeId: '1:1', correction: { ...CORRECTION, gap: 'shape' } });
-    expect(fs.readFileSync(target, 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ first }\n${ second }\n`);
-    expect(second).toMatch(/^- 2026-10-08 \| KEY \| 1:1 \| shape \| /);
+    expect(fs.readFileSync(target, 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ first.line }\n${ second.line }\n`);
+    expect(second).toEqual({ line: expect.stringMatching(/^- 2026-10-08 \| KEY \| 1:1 \| shape \| /), appended: true });
+  });
+
+  it('adds no line for the same miss on another node of the same file', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-gaps-'));
+    const target = gapLogPath(tmp);
+    const first = appendGap(target, ENTRY);
+    const repeat = appendGap(target, { ...ENTRY, date: '2026-10-09', nodeId: '1:1', node: { ...NODE, id: '1:1' } });
+    expect(repeat.appended).toBe(false);
+    expect(fs.readFileSync(target, 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ first.line }\n`);
+  });
+
+  it('keeps a line for the same values under another file key, category or correction', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-gaps-'));
+    const target = gapLogPath(tmp);
+    appendGap(target, ENTRY);
+    expect(appendGap(target, { ...ENTRY, fileKey: 'OTHER' }).appended).toBe(true);
+    expect(appendGap(target, { ...ENTRY, correction: { ...CORRECTION, gap: 'shape' } }).appended).toBe(true);
+    expect(appendGap(target, { ...ENTRY, correction: { ...CORRECTION, props: [] } }).appended).toBe(true);
+    expect(fs.readFileSync(target, 'utf8').split('\n').filter((line) => line.startsWith('- '))).toHaveLength(4);
   });
 });

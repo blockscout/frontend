@@ -71,6 +71,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - **A correction is always a miss.** `--correct` without `--gap` exits non-zero: the phase 2
   decision is a hand count over `gaps.md`, and a correction that skips the log makes the count lie
   small. The gap log is append-only, header once; nothing here rewrites or prunes it.
+- **The gap log counts kinds of miss, not nodes.** The same cell repeated down eight rows of a mockup
+  is one line: a correction whose file key, category, values and correction match an existing line
+  adds none, and says so. The sidecar still takes a correction per node, so every cell carries its
+  component.
 - **A re-run never drops a correction on its own.** Values changed under it → kept and `stale`;
   decision changed under it (a new rule) → kept as-is, since the developer judged the values, not
   the rule. Only a vanished node takes its correction with it, and the re-run says so.

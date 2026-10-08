@@ -11,6 +11,7 @@ import { buildThemeColorMap } from './colormap';
 import { CALIBRATION_DIR, GAP_CATEGORIES } from './config';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
+import type { GapAppend } from './gaps';
 import { appendGap, gapLogPath } from './gaps';
 import type { Recognition } from './recognize';
 import { loadSpriteNames, recognize, renderRecognition } from './recognize';
@@ -60,8 +61,9 @@ const USAGE = `Usage:
   sidecar; where the node's values changed it is kept but flagged STALE for you to re-confirm.
 
   --correct records what a node really is, against what the tool said, and appends one line to the
-  gap log beside the sidecars (.ai/design-readout/gaps.md). It works on the existing sidecar and
-  needs no token. A correction is always a miss, so --gap is required with it.
+  gap log beside the sidecars (.ai/design-readout/gaps.md); the same miss on another node of the
+  same file (same category, same values, same correction) adds no line. It works on the existing
+  sidecar and needs no token. A correction is always a miss, so --gap is required with it.
 
   --calibrate runs recognition over the committed calibration set (${ CALIBRATION_DIR }: one folder
   per labeled node with the tool's own value snapshot and the expected component, props and signals
@@ -210,7 +212,7 @@ export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | u
 
 export interface CorrectionOutcome {
   readonly record: SidecarRecord;
-  readonly gapLine: string;
+  readonly gap: GapAppend;
 }
 
 // Offline on purpose: the correction is about the sidecar the developer just read, so a fetch would
@@ -224,16 +226,16 @@ export function recordCorrection(mainCheckout: string, ref: NodeRef, request: Co
   writeSidecar(target, record);
   const node = record.nodes.find((candidate) => candidate.id === request.nodeId);
   if (node === undefined) throw new Error(`Node ${ request.nodeId } vanished from the sidecar while correcting it.`);
-  const gapLine = appendGap(gapLogPath(mainCheckout), { date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
-  return { record, gapLine };
+  const gap = appendGap(gapLogPath(mainCheckout), { date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
+  return { record, gap };
 }
 
 function runCorrection(ref: NodeRef, request: CorrectionRequest): void {
   const mainCheckout = resolveMainCheckout(process.cwd());
-  const { gapLine } = recordCorrection(mainCheckout, ref, request, new Date());
+  const { gap } = recordCorrection(mainCheckout, ref, request, new Date());
   console.log(`Correction recorded for ${ request.nodeId } in ${ sidecarPath(mainCheckout, ref.fileKey, ref.nodeId) }`);
-  console.log(`Gap logged in ${ gapLogPath(mainCheckout) }:`);
-  console.log(gapLine);
+  console.log(gap.appended ? `Gap logged in ${ gapLogPath(mainCheckout) }:` : `Same miss already in ${ gapLogPath(mainCheckout) }, no line added:`);
+  console.log(gap.line);
 }
 
 async function runReadout(ref: NodeRef, options: CliOptions): Promise<void> {

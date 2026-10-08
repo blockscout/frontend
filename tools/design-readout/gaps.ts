@@ -32,10 +32,25 @@ export function formatGapLine({ date, fileKey, nodeId, correction, node }: GapEn
   return `- ${ date } | ${ fileKey } | ${ nodeId } | ${ correction.gap } | ${ describeToolSaid(node) } | ${ describeDeveloperSaid(correction) }`;
 }
 
-export function appendGap(filePath: string, entry: GapEntry): string {
+// A miss is the kind of thing the tool got wrong, not the node it got it wrong on: the same cell
+// repeated down eight rows of a mockup is one miss, so the phase 2 count reads kinds. The key is the
+// line without its date and node id.
+function missOf(line: string): string {
+  const [ , fileKey, nodeId, ...rest ] = line.replace(/^- /, '').split(' | ');
+  return `${ fileKey } | ${ rest.join(' | ').replace(`${ nodeId } `, '') }`;
+}
+
+export interface GapAppend {
+  readonly line: string;
+  readonly appended: boolean;
+}
+
+export function appendGap(filePath: string, entry: GapEntry): GapAppend {
   const line = formatGapLine(entry);
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  const prefix = fs.existsSync(filePath) ? '' : `${ GAP_LOG_HEADER }\n`;
+  const existing = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8').split('\n') : undefined;
+  if (existing?.some((candidate) => candidate.startsWith('- ') && missOf(candidate) === missOf(line))) return { line, appended: false };
+  const prefix = existing === undefined ? `${ GAP_LOG_HEADER }\n` : '';
   fs.appendFileSync(filePath, `${ prefix }${ line }\n`);
-  return line;
+  return { line, appended: true };
 }
