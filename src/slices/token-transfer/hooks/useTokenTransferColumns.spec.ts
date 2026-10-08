@@ -199,6 +199,7 @@ describe('useTokenTransferColumns', () => {
       const { result: erc20 } = await renderColumnsHook('token', { chainConfig: chainWithErc8056, tokenType: 'ERC-20' });
 
       expect(erc8056.current.columns).toContain('multiplier');
+      expect(erc8056.current.selectableColumns.filter(({ isNumeric }) => isNumeric).map(({ id }) => id)).toEqual([ 'multiplier', 'amount', 'value' ]);
       expect(erc20.current.selectableColumns.map(({ id }) => id)).not.toContain('multiplier');
     });
   });

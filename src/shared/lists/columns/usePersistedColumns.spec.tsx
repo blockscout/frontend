@@ -188,6 +188,42 @@ describe('usePersistedColumns', () => {
     });
   });
 
+  it('counts moving a hidden column as a customization', async() => {
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook();
+      act(() => {
+        result.current.onColumnsReorder([ 'block', 'hash', 'from', 'amount' ], 'block');
+      });
+
+      expect(result.current.columns).toEqual([ 'hash', 'from', 'amount' ]);
+      expect(result.current.isCustomized).toBe(true);
+    });
+  });
+
+  it('neither logs nor stores a move of a column the selector does not offer', async() => {
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook();
+      act(() => {
+        result.current.onColumnsReorder([ 'fee', 'hash', 'block', 'from', 'amount' ], 'fee');
+      });
+
+      expect(readStored()).toBeNull();
+      expect(mixpanel.track).not.toHaveBeenCalled();
+    });
+  });
+
+  it('neither logs nor stores a move whose order lacks the moved column', async() => {
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook();
+      act(() => {
+        result.current.onColumnsReorder([ 'hash', 'block', 'amount' ], 'from');
+      });
+
+      expect(readStored()).toBeNull();
+      expect(mixpanel.track).not.toHaveBeenCalled();
+    });
+  });
+
   it('neither logs nor stores a move that leaves the column in place', async() => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook();
@@ -302,6 +338,20 @@ describe('usePersistedColumns', () => {
 
       expect(mixpanel.track).not.toHaveBeenCalled();
       expect(readStored()).toBeNull();
+    });
+  });
+
+  it('leaves the stored value as it is when the selection does not change', async() => {
+    const stored = JSON.stringify({ visibility: { block: true, retired: true } });
+    store(stored);
+
+    await withMixpanel(async() => {
+      const { result } = await renderColumnsHook();
+      act(() => {
+        result.current.onColumnsChange({ ...result.current.checkedColumns });
+      });
+
+      expect(readStored()).toBe(stored);
     });
   });
 });

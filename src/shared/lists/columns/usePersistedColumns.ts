@@ -98,6 +98,7 @@ export function usePersistedColumns<TColumn extends TableColumn<TColumnId>, TCol
 
     writeOverrides(setColumnOrder(readOverrides(), availableColumns, order));
 
+    // Stryker disable next-line EqualityOperator: toIndex === fromIndex has already returned above
     logEvent(EventTypes.TABLE_COLUMNS, { ...analytics, Column: movedId, State: toIndex < fromIndex ? 'Moved up' : 'Moved down' });
   }, [ selectableColumns, availableColumns, analytics, readOverrides, writeOverrides ]);
 

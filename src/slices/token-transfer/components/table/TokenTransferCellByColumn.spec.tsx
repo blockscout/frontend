@@ -40,6 +40,8 @@ const renderCell = (item: schemas['TokenTransfer'], column: Props['column'], pro
 const getInstanceLink = () => screen.queryAllByRole('link').find((link) => link.getAttribute('href')?.includes('/instance/'));
 
 const SELF_TRANSFER = { ...erc20, to: { ...erc20.to, hash: erc20.from.hash } };
+// the backend can push a transfer whose token is not catalogued yet; the schema types the field as non-null
+const NFT_WITHOUT_TOKEN = { ...erc721, token: null } as unknown as schemas['TokenTransfer'];
 
 describe('TokenTransferCellByColumn', () => {
   afterEach(cleanup);
@@ -109,6 +111,30 @@ describe('TokenTransferCellByColumn', () => {
       const cell = renderCell(erc721, 'amount');
 
       expect(cell.textContent).toBe('1');
+    });
+
+    it('shows a dash for an NFT row whose token is unknown', () => {
+      const cell = renderCell(NFT_WITHOUT_TOKEN, 'amount');
+
+      expect(cell.textContent).toBe('-');
+    });
+
+    it('shows a dash for an NFT row without a total', () => {
+      const cell = renderCell({ ...erc721, total: null }, 'amount');
+
+      expect(cell.textContent).toBe('-');
+    });
+
+    it('shows one for an ERC-404 row with a token id and a null value', () => {
+      const cell = renderCell({ ...erc404B, total: { token_id: '4625304364899952', value: null, decimals: '18', token_instance: null } }, 'amount');
+
+      expect(cell.textContent).toBe('1');
+    });
+
+    it('shows a dash for an ERC-404 row with neither a value nor a token id', () => {
+      const cell = renderCell({ ...erc404A, total: { token_id: null, value: null, decimals: '18', token_instance: null } }, 'amount');
+
+      expect(cell.textContent).toBe('-');
     });
 
     it('shows one for an ERC-404 row with a token id', () => {

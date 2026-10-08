@@ -17,7 +17,7 @@ function parseVisibility<TColumnId extends string>(
   }
 
   const entries = Object.entries(value).filter(([ key, isVisible ]) => isColumnId(key) && typeof isVisible === 'boolean');
-  return entries.length > 0 ? Object.fromEntries(entries) as ColumnVisibility<TColumnId> : undefined;
+  return Object.fromEntries(entries) as ColumnVisibility<TColumnId>;
 }
 
 function parseOrder<TColumnId extends string>(
@@ -51,6 +51,7 @@ export function parseColumnOverrides<TColumnId extends string>(
   rawValue: string | null,
   columnIds: ReadonlyArray<TColumnId>,
 ): ColumnOverrides<TColumnId> | undefined {
+  // Stryker disable next-line ConditionalExpression: narrows `string | null` for JSON.parse; null and '' read as no overrides either way
   if (!rawValue) {
     return;
   }
@@ -59,6 +60,7 @@ export function parseColumnOverrides<TColumnId extends string>(
 
   try {
     const parsed: unknown = JSON.parse(rawValue);
+    // Stryker disable next-line ConditionalExpression: narrows `unknown` for the property reads below; a non-object reads as no overrides either way
     if (!isPlainObject(parsed)) {
       return;
     }

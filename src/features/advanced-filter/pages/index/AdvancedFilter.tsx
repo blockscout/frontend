@@ -163,6 +163,7 @@ const AdvancedFilter = () => {
     analytics: COLUMNS_ANALYTICS,
   });
   const columnsToShow = React.useMemo(
+    // Stryker disable next-line ConditionalExpression: every id comes from TABLE_COLUMNS, so find always hits; the filter narrows away undefined
     () => columns.map((id) => TABLE_COLUMNS.find((column) => column.id === id)).filter((column) => column !== undefined),
     [ columns ],
   );

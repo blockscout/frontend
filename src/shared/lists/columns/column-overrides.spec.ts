@@ -65,6 +65,7 @@ describe('parseColumnOverrides', () => {
 
   it('reads a value with nothing valid left as no overrides', () => {
     expect(parseColumnOverrides(JSON.stringify({ visibility: { foo: true }, order: 'amount' }), COLUMN_IDS)).toBeUndefined();
+    expect(parseColumnOverrides(JSON.stringify({ order: [ 'foo' ] }), COLUMN_IDS)).toBeUndefined();
   });
 
   it('reads back what was serialised', () => {

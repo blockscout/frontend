@@ -52,11 +52,11 @@ const TokenTransfersTable = ({
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
-  const visibleColumns = React.useMemo(() => {
-    return columns
-      .map((id) => TOKEN_TRANSFER_COLUMNS.find((column) => column.id === id))
-      .filter((column) => column !== undefined);
-  }, [ columns ]);
+  const visibleColumns = React.useMemo(
+    // Stryker disable next-line ConditionalExpression: every column id is in TOKEN_TRANSFER_COLUMNS, so find always hits; the filter narrows away undefined
+    () => columns.map((id) => TOKEN_TRANSFER_COLUMNS.find((column) => column.id === id)).filter((column) => column !== undefined),
+    [ columns ],
+  );
 
   return (
     <AddressHighlightProvider>

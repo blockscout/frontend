@@ -51,9 +51,6 @@ export function subscribeToColumnStorage(key: string, listener: Listener): () =>
 
   return () => {
     keyListeners.delete(listener);
-    if (keyListeners.size === 0) {
-      listeners.delete(key);
-    }
     window.removeEventListener('storage', handleStorage);
   };
 }
