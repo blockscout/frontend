@@ -4,14 +4,14 @@ import type { HTMLChakraProps } from '@chakra-ui/react';
 import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TableColumn } from './types';
+
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Checkbox } from 'src/toolkit/chakra/checkbox';
 
-import type { ColumnsButtonColumn } from './ColumnsButton';
-
 interface Props {
-  readonly column: ColumnsButtonColumn<string>;
+  readonly column: TableColumn;
   readonly rowRef?: React.Ref<HTMLDivElement>;
   readonly rowStyle?: React.CSSProperties;
   readonly handleRef?: React.Ref<HTMLSpanElement>;

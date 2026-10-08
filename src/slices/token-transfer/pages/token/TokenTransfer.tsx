@@ -80,7 +80,6 @@ const TokenTransfer = ({ tokenId, token, isLoading: isLoadingProp, tokenInstance
 
   const content = transfersQuery.data?.items && token ? (
     <TokenTransfersTable
-      surface="token"
       columns={ columnsState.columns }
       items={ transfersQuery.data.items }
       showSocketInfo={ isSocketEnabled && transfersQuery.pagination.page === 1 }

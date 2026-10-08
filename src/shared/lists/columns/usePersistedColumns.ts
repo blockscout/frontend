@@ -4,6 +4,7 @@ import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { ColumnOverrides, ColumnStates, ColumnVisibility, TableColumn } from './types';
+import type { DistributiveOmit } from 'src/shared/types/utils';
 
 import type { EventPayload } from 'src/shared/analytics';
 import { EventTypes, logEvent } from 'src/shared/analytics';
@@ -20,7 +21,7 @@ import {
 } from './column-overrides';
 import { readColumnStorage, subscribeToColumnStorage, writeColumnStorage } from './column-storage';
 
-export type TableColumnsAnalytics = Omit<EventPayload<EventTypes.TABLE_COLUMNS>, 'Column' | 'State'>;
+export type TableColumnsAnalytics = DistributiveOmit<EventPayload<EventTypes.TABLE_COLUMNS>, 'Column' | 'State'>;
 
 interface Params<TColumn extends TableColumn<TColumnId>, TColumnId extends string = TColumn['id']> {
   readonly storageKey: string;

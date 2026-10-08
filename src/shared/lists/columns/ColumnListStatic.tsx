@@ -2,11 +2,12 @@
 
 import React from 'react';
 
+import type { TableColumn } from './types';
+
 import ColumnListRow from './ColumnListRow';
-import type { ColumnsButtonColumn } from './ColumnsButton';
 
 interface Props {
-  readonly columns: ReadonlyArray<ColumnsButtonColumn<string>>;
+  readonly columns: ReadonlyArray<TableColumn>;
 }
 
 const ColumnListStatic = ({ columns }: Props) => {

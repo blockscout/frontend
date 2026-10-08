@@ -15,8 +15,7 @@ test('base view', async({ render, mockAssetResponse, mockEnvs, page }) => {
   const component = await render(
     <TokenTransfersTable
       items={ tokenTransferMock.mixTokens.items }
-      surface="index"
-      columns={ TOKEN_TRANSFER_COLUMNS.map(({ id }) => id) }
+      columns={ TOKEN_TRANSFER_COLUMNS.map(({ id }) => id).filter((id) => id !== 'in_out') }
     />,
   );
 

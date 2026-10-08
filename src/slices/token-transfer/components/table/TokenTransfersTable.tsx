@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { TokenTransferColumnId, TokenTransferSurface } from '../../types/client';
+import type { TokenTransferColumnId } from '../../types/client';
 import type { schemas } from '@blockscout/api-types';
 
 import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -16,12 +16,11 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import { getSurfaceColumnStates, TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
+import { TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
 import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersTableItem from './TokenTransfersTableItem';
 
 interface Props {
-  readonly surface: TokenTransferSurface;
   readonly columns: ReadonlyArray<TokenTransferColumnId>;
   readonly items: Array<schemas['TokenTransfer']> | undefined;
   readonly isLoading?: boolean;
@@ -36,7 +35,6 @@ interface Props {
 }
 
 const TokenTransfersTable = ({
-  surface,
   columns,
   items,
   isLoading,
@@ -55,12 +53,10 @@ const TokenTransfersTable = ({
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   const visibleColumns = React.useMemo(() => {
-    const states = getSurfaceColumnStates(surface, { chainConfig: chainData?.app_config });
     return columns
-      .filter((id) => states[id] !== 'unavailable')
       .map((id) => TOKEN_TRANSFER_COLUMNS.find((column) => column.id === id))
       .filter((column) => column !== undefined);
-  }, [ surface, columns, chainData ]);
+  }, [ columns ]);
 
   return (
     <AddressHighlightProvider>

@@ -53,7 +53,6 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
 
   const content = data?.items ? (
     <TokenTransfersTable
-      surface="address"
       columns={ columnsState.columns }
       items={ data.items }
       baseAddress={ addressHash }

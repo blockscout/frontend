@@ -4,6 +4,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import type { ColumnVisibility, TableColumn } from './types';
+
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -15,25 +17,20 @@ import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/to
 
 import ColumnListStatic from './ColumnListStatic';
 
-export interface ColumnsButtonColumn<TColumnId extends string> {
-  readonly id: TColumnId;
-  readonly name: string;
-}
-
-const ColumnListContext = React.createContext<ReadonlyArray<ColumnsButtonColumn<string>>>([]);
+const ColumnListContext = React.createContext<ReadonlyArray<TableColumn>>([]);
 
 const ColumnListLoading = () => <ColumnListStatic columns={ React.useContext(ColumnListContext) }/>;
 
 const ColumnListSortable = dynamic(() => import('./ColumnListSortable'), { ssr: false, loading: ColumnListLoading });
 
 interface Props<TColumnId extends string> {
-  tableColumns: ReadonlyArray<ColumnsButtonColumn<TColumnId>>;
-  columns: Partial<Record<TColumnId, boolean>>;
-  onChange: (val: Record<TColumnId, boolean>) => void;
-  onOrderChange: (ids: Array<TColumnId>, movedId: TColumnId) => void;
-  selected?: boolean;
-  onReset?: () => void;
-  isLoading?: boolean;
+  readonly tableColumns: ReadonlyArray<TableColumn<TColumnId>>;
+  readonly columns: ColumnVisibility<TColumnId>;
+  readonly onChange: (checkedColumns: ColumnVisibility<TColumnId>) => void;
+  readonly onOrderChange: (ids: Array<TColumnId>, movedId: TColumnId) => void;
+  readonly selected?: boolean;
+  readonly onReset?: () => void;
+  readonly isLoading?: boolean;
 }
 
 const ColumnsButton = <TColumnId extends string>({
@@ -49,12 +46,12 @@ const ColumnsButton = <TColumnId extends string>({
   const isMobile = useIsMobile();
 
   const handleValueChange = React.useCallback((value: Array<string>) => {
-    const newCols = value.reduce((acc, key) => {
-      acc[key as TColumnId] = true;
-      return acc;
-    }, {} as Record<TColumnId, boolean>);
-    onChange(newCols);
-  }, [ onChange ]);
+    const checkedColumns: ColumnVisibility<TColumnId> = {};
+    tableColumns.forEach(({ id }) => {
+      checkedColumns[id] = value.includes(id);
+    });
+    onChange(checkedColumns);
+  }, [ tableColumns, onChange ]);
 
   const handleMove = React.useCallback((fromIndex: number, toIndex: number) => {
     const ids = tableColumns.map(({ id }) => id);

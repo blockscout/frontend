@@ -60,8 +60,10 @@ does. The chosen set survives reloads.
    it survives while it is unavailable.
 3. A column selector button sits next to each surface's existing filter control (tabs right slot or
    action bar, wherever that surface keeps its controls today) and toggles the available columns; its
-   rows can be dragged by a handle to reorder the columns, hidden ones included. The mobile selector is
-   the same control in the mobile action bar.
+   rows can be dragged by a handle to reorder the columns, hidden ones included. A "Reset" link in the
+   selector, styled like the type filter popover's Reset, restores the surface's default selection and
+   order; it is disabled while the columns already match the defaults. The mobile selector is the same
+   control in the mobile action bar.
 4. The user's selection and column order are persisted per surface in the browser and restored on the
    next visit. Client-side navigation shows them at once; on a hard reload the server-rendered skeleton
    carries the default columns and switches to the user's at hydration, before any row data is shown. A
@@ -77,12 +79,13 @@ does. The chosen set survives reloads.
    NFT rows show the token id (instance image, id, symbol) inside the ID / Asset cell with "1" as the
    amount when they carry no value, while fungible rows show icon and symbol only.
 7. Toggling a column emits one Mixpanel event carrying the table, the surface, the column id and the new
-   state; moving a column emits one carrying the table, the surface, the column id and the direction.
-   The advanced filter emits the same events without a surface.
+   state; moving a column emits one carrying the table, the surface, the column id and the direction;
+   a reset emits one carrying the table, the surface, column "All" and the state "Reset". The advanced
+   filter emits the same events without a surface.
 8. The advanced filter page's column selector becomes icon-only (no "Columns" label) and, since the
-   control is shared, reorders that table's columns; its selection and order are persisted like a
-   token-transfer surface (FR 4), as one setting for the whole app regardless of chain; no other change
-   to that page.
+   control is shared, reorders and resets that table's columns; its selection and order are persisted
+   like a token-transfer surface (FR 4), as one setting for the whole app regardless of chain; no other
+   change to that page.
 
 ## Data & API
 

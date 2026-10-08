@@ -1,22 +1,5 @@
 import { vi } from 'vitest';
 
-// Phoenix socket mocking for Vitest.
-//
-// Replaces the transport only — `SocketProvider`, `useSocketChannel` and `useSocketMessage` stay
-// real. Channels join successfully, so the queries a page enables from an `onJoin` callback run
-// here the way they do in a browser. `sendSocketMessage` delivers a server event to the handlers
-// subscribed via `channel.on`.
-//
-// Two ways to install it:
-// - `mockSocket()` uses `vi.doMock`, which applies only to modules imported AFTER the call — pair it
-//   with `resetModules` + dynamic imports (checkPrimedRequests.tsx), and clean up with
-//   `vi.doUnmock('phoenix')`.
-// - `vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule))` at the
-//   top of a spec that imports the component statically.
-//
-// Mounting under `vitest/lib`'s TestApp additionally requires passing
-// `socketUrl={ MOCK_SOCKET_URL }`, since the provider skips socket creation without a url.
-
 /** any non-empty url works — the mocked socket never opens a connection */
 export const MOCK_SOCKET_URL = 'wss://localhost/socket';
 
@@ -44,7 +27,15 @@ function createMockPush(): MockPush {
   return push;
 }
 
-function createMockChannel(topic: string) {
+interface MockChannel {
+  join: () => MockPush;
+  leave: () => MockPush;
+  push: () => MockPush;
+  on: (event: string, handler: MessageHandler) => number;
+  off: (event: string, ref: number) => void;
+}
+
+function createMockChannel(topic: string): MockChannel {
   let nextHandlerRef = 0;
   const subscriptions: ChannelSubscriptions = new Map();
   subscriptionsByTopic.set(topic, subscriptions);

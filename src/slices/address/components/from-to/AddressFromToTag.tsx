@@ -13,8 +13,8 @@ const TAGS = {
 };
 
 interface Props extends BadgeProps {
-  type: Exclude<TxCourseType, 'unspecified'>;
-  isLoading?: boolean;
+  readonly type: Exclude<TxCourseType, 'unspecified'>;
+  readonly isLoading?: boolean;
 }
 
 const AddressFromToTag = ({ type, isLoading, ...rest }: Props) => {

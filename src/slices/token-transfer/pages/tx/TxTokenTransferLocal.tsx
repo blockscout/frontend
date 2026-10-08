@@ -34,7 +34,6 @@ const TxTokenTransferLocal = ({ txQuery, tokenTransferQuery, tokenTransferFilter
 
   const content = tokenTransferQuery.data?.items ? (
     <TokenTransfersTable
-      surface="tx"
       columns={ columnsState.columns }
       items={ items }
       isLoading={ isInitialLoading }

@@ -63,10 +63,10 @@ const MultichainTokenTransfersLocal = ({ query, typeFilter, onTokenTypesChange, 
       itemsNum={ query.data?.items.length }
       emptyText="There are no token transfers."
       actionBar={ actionBar }
+      hasActiveFilters={ Boolean(typeFilter.length) }
       isTransitioning={ query.isTransitioning }
     >
       <TokenTransfersTable
-        surface="index"
         columns={ columnsState.columns }
         items={ query.data?.items }
         isLoading={ query.isInitialLoading }

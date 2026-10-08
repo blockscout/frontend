@@ -99,7 +99,10 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, showErrorA
 
 export default SocketNewItemsNotice;
 
-export const Desktop = ({ colSpan = 100, ...props }: Props) => {
+// the notice row must span the whole table, so the fallback has to exceed any table's column count
+const FALLBACK_COL_SPAN = 100;
+
+export const Desktop = ({ colSpan = FALLBACK_COL_SPAN, ...props }: Props) => {
   return (
     <SocketNewItemsNotice
       borderRadius={ props.isLoading ? 'sm' : 0 }

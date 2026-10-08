@@ -116,7 +116,7 @@ describe('ColumnsButton', () => {
     await screen.findByText('From');
     fireEvent.click(getCheckbox('From'));
 
-    await waitFor(() => expect(onChange).toHaveBeenLastCalledWith({ hash: true, amount: true }));
+    await waitFor(() => expect(onChange).toHaveBeenLastCalledWith({ hash: true, from: false, amount: true }));
   });
 
   it('emits the selection with a column switched on', async() => {
@@ -125,7 +125,7 @@ describe('ColumnsButton', () => {
     await screen.findByText('Amount');
     fireEvent.click(getCheckbox('Amount'));
 
-    await waitFor(() => expect(onChange).toHaveBeenLastCalledWith({ hash: true, amount: true }));
+    await waitFor(() => expect(onChange).toHaveBeenLastCalledWith({ hash: true, from: false, amount: true }));
   });
 
   it('offers no Reset without a reset handler', async() => {

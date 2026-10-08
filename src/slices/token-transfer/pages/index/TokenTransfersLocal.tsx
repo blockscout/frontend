@@ -32,7 +32,6 @@ const TokenTransfersLocal = () => {
 
   const content = (
     <TokenTransfersTable
-      surface="index"
       columns={ columns }
       items={ query.data?.items }
       isLoading={ query.isInitialLoading }

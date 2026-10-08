@@ -6,8 +6,9 @@ import { SortableContext, sortableKeyboardCoordinates, useSortable, verticalList
 import { CSS } from '@dnd-kit/utilities';
 import React from 'react';
 
+import type { TableColumn } from './types';
+
 import ColumnListRow from './ColumnListRow';
-import type { ColumnsButtonColumn } from './ColumnsButton';
 
 const MOUSE_ACTIVATION_CONSTRAINT = { distance: 5 };
 const TOUCH_ACTIVATION_CONSTRAINT = { delay: 250, tolerance: 5 };
@@ -16,12 +17,12 @@ const restrictToVerticalAxis: Modifier = ({ transform }) => ({ ...transform, x: 
 const MODIFIERS = [ restrictToVerticalAxis ];
 
 interface Props {
-  readonly columns: ReadonlyArray<ColumnsButtonColumn<string>>;
+  readonly columns: ReadonlyArray<TableColumn>;
   readonly onMove: (fromIndex: number, toIndex: number) => void;
 }
 
 interface RowProps {
-  readonly column: ColumnsButtonColumn<string>;
+  readonly column: TableColumn;
 }
 
 const ColumnListSortableRow = ({ column }: RowProps) => {
