@@ -51,6 +51,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Operation** | entity | **TAC**-specific entity representing a bridge operation between the TON and EVM ecosystems. No equivalent on standard EVM chains. |
 | **Pools** | entity | DEX liquidity pool positions tracked on-chain. |
 | **Public Tags** | feature | Community-submitted labels for addresses, visible on address pages. A sub-feature of **Address Metadata**. |
+| **Readout (design readout)** | concept | The tool-produced mapping of a Figma node to repo components, props and design tokens, with every ambiguous, unrecognized and layout item listed for a developer to resolve before markup. Recognition only, never implementation; the skill of the same name drives it. |
 | **Rewards** | feature | The Blockscout Merits program — a token rewards and incentives system operated by Blockscout. Entirely distinct from **Block Reward** (on-chain block-producer payouts). |
 | **Rollup** | concept | A chain that settles transactions on a parent (L1) chain. Introduces specific entities: deposits, withdrawals, transaction batches, output roots. Contrast with **Chain Variant**. |
 | **SolidityScan** | service | Third-party smart contract security vulnerability scanner integrated into contract detail pages. |

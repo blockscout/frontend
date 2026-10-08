@@ -18,6 +18,7 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
   `add-new-page` templates use), which is what makes the handover to a human explicit.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`) and Playwright test **scaffolds** (`*.pw.tsx` files, fixtures, mock data).
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
+- Design readouts from Figma nodes (`design-readout` skill) — recognition only, never implementation.
 
 ## Humans only, for now
 

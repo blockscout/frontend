@@ -22,16 +22,16 @@ line; the glossary gains **Readout**.
 
 ## Acceptance criteria
 
-- [ ] `SKILL.md` carries dual frontmatter per `.agents/README.md`, names the tool command and its
+- [x] `SKILL.md` carries dual frontmatter per `.agents/README.md`, names the tool command and its
       flags by pointing at `--help`, never names the token variable, and says the tool needs a token
       and stops when it is missing.
-- [ ] The subagent brief is a separate file the skill hands over (like `review-changes/axes.md`), with
+- [x] The subagent brief is a separate file the skill hands over (like `review-changes/axes.md`), with
       the judgment rules (context override, fingerprints, layout questions) and the exact return shape.
-- [ ] `readout-template.md` in the skill folder defines `design-readout.md`'s four sections.
-- [ ] `.agents/delegation.md` gains the one line under "Agents may do today"; the markup line stays
+- [x] `readout-template.md` in the skill folder defines `design-readout.md`'s four sections.
+- [x] `.agents/delegation.md` gains the one line under "Agents may do today"; the markup line stays
       under humans-only, unchanged.
-- [ ] `.agents/GLOSSARY.md` gains the row from Skill inputs; `pnpm lint:doc-links` passes.
-- [ ] `(human)` Run the skill on one of the ticket 01 nodes: outline confirmed in session, subagent
+- [x] `.agents/GLOSSARY.md` gains the row from Skill inputs; `pnpm lint:doc-links` passes.
+- [x] `(human)` Run the skill on one of the ticket 01 nodes: outline confirmed in session, subagent
       returns the three lists and a count, nothing else leaks into the main context.
 
 ## Details
@@ -54,6 +54,6 @@ line; the glossary gains **Readout**.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `SKILL.md` + subagent brief + `readout-template.md`
-- [ ] 2 `[agent]` `delegation.md` line
-- [ ] 3 `[agent]` Glossary row — skill: `update-glossary`
+- [x] 1 `[agent]` `SKILL.md` + subagent brief + `readout-template.md`
+- [x] 2 `[agent]` `delegation.md` line
+- [x] 3 `[agent]` Glossary row — skill: `update-glossary`
