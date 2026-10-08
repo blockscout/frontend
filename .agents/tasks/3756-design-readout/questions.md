@@ -19,3 +19,16 @@
     8. src/features/user-ops/pages/index/UserOpsTableItem.tsx - https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/%25F0%259F%2596%25A5%25EF%25B8%258F-Blockscout-desktop-pages?node-id=25201-111693&t=UXMWov7fkUnqatDj-11 - Node I25201:111693;24311:103865;24311:87534
     9. src/features/gas-tracker/components/GasTrackerPrices.tsx - https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/%25F0%259F%2596%25A5%25EF%25B8%258F-Blockscout-desktop-pages?node-id=22842-177328&t=UXMWov7fkUnqatDj-11 - Node 22842:177328
     10. src/features/hot-contracts/pages/index/HotContractsTableItem.tsx - https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/%25F0%259F%2596%25A5%25EF%25B8%258F-Blockscout-desktop-pages?node-id=29131-74920&t=UXMWov7fkUnqatDj-11 - Node 29131:74920
+
+### Q02 — Loosen the markup line in `delegation.md` inside this task, or wait for the gap log?
+
+- Owner: Frontend (tom)
+- Status: `pending`
+- Resolved when: a yes/no on moving "final markup and styling to match the designer's Figma mockups" to
+  "Agents may do today" within this task — with a mandatory `(human)` criterion on every ticket carrying a
+  style leaf, and visual polish / design sign-off staying human — and, if yes, the spec's Out of scope
+  amended accordingly and ticket 11 cut (`delegation.md`, `concepts.md` ticket model, `ticket-template.md`,
+  `to-tickets` Step 6, `implement-ticket` hand-off timing, `grill-the-task` wording); if no, a follow-up
+  issue filed once the gap log holds entries from real markup leaves.
+- Slack: — (developer-held; no outreach needed)
+- Answer: —
