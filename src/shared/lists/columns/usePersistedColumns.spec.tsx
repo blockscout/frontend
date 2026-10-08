@@ -42,8 +42,9 @@ const readStored = () => window.localStorage.getItem(STORAGE_KEY);
 const withMixpanel = (run: () => Promise<void>) => withEnvs([ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ] ], run);
 
 const importHook = async() => {
-  const { init } = await import('src/services/mixpanel/queue');
-  await init('test-mixpanel', {}, () => {});
+  const { init } = await import('src/shared/analytics/queue');
+  const { getEnabledProviders } = await import('src/shared/analytics/providers');
+  await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
   return (await import('./usePersistedColumns')).usePersistedColumns;
 };
 
@@ -261,8 +262,8 @@ describe('usePersistedColumns', () => {
       });
 
       expect(mixpanel.track).toHaveBeenCalledTimes(2);
-      expect(mixpanel.track).toHaveBeenNthCalledWith(1, 'Table columns', { Table: 'Advanced filter', Column: 'block', State: 'On' }, undefined, undefined);
-      expect(mixpanel.track).toHaveBeenNthCalledWith(2, 'Table columns', { Table: 'Advanced filter', Column: 'from', State: 'Off' }, undefined, undefined);
+      expect(mixpanel.track).toHaveBeenNthCalledWith(1, 'Table columns', { Table: 'Advanced filter', Column: 'block', State: 'On' }, undefined);
+      expect(mixpanel.track).toHaveBeenNthCalledWith(2, 'Table columns', { Table: 'Advanced filter', Column: 'from', State: 'Off' }, undefined);
     });
   });
 
@@ -281,13 +282,13 @@ describe('usePersistedColumns', () => {
 
       expect(mixpanel.track).toHaveBeenCalledTimes(3);
       expect(mixpanel.track).toHaveBeenNthCalledWith(
-        1, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'from', State: 'Moved down' }, undefined, undefined,
+        1, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'from', State: 'Moved down' }, undefined,
       );
       expect(mixpanel.track).toHaveBeenNthCalledWith(
-        2, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'amount', State: 'Moved up' }, undefined, undefined,
+        2, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'amount', State: 'Moved up' }, undefined,
       );
       expect(mixpanel.track).toHaveBeenNthCalledWith(
-        3, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'All', State: 'Reset' }, undefined, undefined,
+        3, 'Table columns', { Table: 'Token transfers', Surface: 'index', Column: 'All', State: 'Reset' }, undefined,
       );
     });
   });

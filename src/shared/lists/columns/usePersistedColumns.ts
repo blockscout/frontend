@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { ColumnOverrides, ColumnStates, ColumnVisibility, TableColumn } from './types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import type { EventPayload } from 'src/shared/analytics';
+import { EventTypes, logEvent } from 'src/shared/analytics';
 
 import {
   getAvailableColumns,
@@ -19,7 +20,7 @@ import {
 } from './column-overrides';
 import { readColumnStorage, subscribeToColumnStorage, writeColumnStorage } from './column-storage';
 
-export type TableColumnsAnalytics = Omit<mixpanel.EventPayload<mixpanel.EventTypes.TABLE_COLUMNS>, 'Column' | 'State'>;
+export type TableColumnsAnalytics = Omit<EventPayload<EventTypes.TABLE_COLUMNS>, 'Column' | 'State'>;
 
 interface Params<TColumn extends TableColumn<TColumnId>, TColumnId extends string = TColumn['id']> {
   readonly storageKey: string;
@@ -83,7 +84,7 @@ export function usePersistedColumns<TColumn extends TableColumn<TColumnId>, TCol
     ));
 
     toggledColumns.forEach(({ id }) => {
-      mixpanel.logEvent(mixpanel.EventTypes.TABLE_COLUMNS, { ...analytics, Column: id, State: nextCheckedColumns[id] ? 'On' : 'Off' });
+      logEvent(EventTypes.TABLE_COLUMNS, { ...analytics, Column: id, State: nextCheckedColumns[id] ? 'On' : 'Off' });
     });
   }, [ selectableColumns, visibleColumnIds, states, analytics, readOverrides, writeOverrides ]);
 
@@ -96,7 +97,7 @@ export function usePersistedColumns<TColumn extends TableColumn<TColumnId>, TCol
 
     writeOverrides(setColumnOrder(readOverrides(), availableColumns, order));
 
-    mixpanel.logEvent(mixpanel.EventTypes.TABLE_COLUMNS, { ...analytics, Column: movedId, State: toIndex < fromIndex ? 'Moved up' : 'Moved down' });
+    logEvent(EventTypes.TABLE_COLUMNS, { ...analytics, Column: movedId, State: toIndex < fromIndex ? 'Moved up' : 'Moved down' });
   }, [ selectableColumns, availableColumns, analytics, readOverrides, writeOverrides ]);
 
   const onColumnsReset = React.useCallback(() => {
@@ -106,7 +107,7 @@ export function usePersistedColumns<TColumn extends TableColumn<TColumnId>, TCol
 
     writeOverrides(undefined);
 
-    mixpanel.logEvent(mixpanel.EventTypes.TABLE_COLUMNS, { ...analytics, Column: 'All', State: 'Reset' });
+    logEvent(EventTypes.TABLE_COLUMNS, { ...analytics, Column: 'All', State: 'Reset' });
   }, [ isCustomized, analytics, writeOverrides ]);
 
   return React.useMemo(() => ({

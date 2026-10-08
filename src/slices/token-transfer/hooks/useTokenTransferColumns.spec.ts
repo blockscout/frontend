@@ -35,8 +35,9 @@ const NO_PARAMS: SurfaceColumnStatesParams = {};
 const ERC20_FILTER = [ 'ERC-20' ];
 
 const renderColumnsHook = async(surface: TokenTransferSurface, params: SurfaceColumnStatesParams = NO_PARAMS) => {
-  const { init } = await import('src/services/mixpanel/queue');
-  await init('test-mixpanel', {}, () => {});
+  const { init } = await import('src/shared/analytics/queue');
+  const { getEnabledProviders } = await import('src/shared/analytics/providers');
+  await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
   const { useTokenTransferColumns } = await import('./useTokenTransferColumns');
   return renderHook((props: SurfaceColumnStatesParams) => useTokenTransferColumns(surface, props), { initialProps: params });
 };
@@ -140,7 +141,6 @@ describe('useTokenTransferColumns', () => {
       expect(mixpanel.track).toHaveBeenCalledWith(
         'Table columns',
         { Table: 'Token transfers', Surface: 'token', Column: 'block', State: 'On' },
-        undefined,
         undefined,
       );
     });
