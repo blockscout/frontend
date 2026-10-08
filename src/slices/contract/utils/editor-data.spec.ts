@@ -37,9 +37,31 @@ describe('getEditorData', () => {
     ]);
   });
 
-  test('names the main file by language when the API gives no path', () => {
-    expect(getEditorData(makeContract({ file_path: '', language: 'vyper' }))?.[0].file_path).toBe('/index.vy');
-    expect(getEditorData(makeContract({ file_path: null, language: 'solidity' }))?.[0].file_path).toBe('/index.sol');
+  test.each([
+    [ 'solidity', '/index.sol' ],
+    [ 'vyper', '/index.vy' ],
+    [ 'yul', '/index.yul' ],
+    [ 'scilla', '/index.scilla' ],
+    [ 'stylus_rust', '/index.rs' ],
+    [ 'geas', '/index.eas' ],
+    [ null, '/index.sol' ],
+  ] as const)('names the main file by language when the API gives no path (%s)', (language, expected) => {
+    expect(getEditorData(makeContract({ file_path: null, language }))?.[0].file_path).toBe(expected);
+  });
+
+  test('keeps distinct paths whose content happens to be identical', () => {
+    const result = getEditorData(makeContract({
+      additional_sources: [
+        { file_path: 'contracts/interfaces/IERC165.sol', source_code: 'interface' },
+        { file_path: 'contracts/external/IERC165.sol', source_code: 'interface' },
+      ],
+    }));
+
+    expect(result?.map((file) => file.file_path)).toEqual([
+      '/contracts/proxies/SafeProxy.sol',
+      '/contracts/interfaces/IERC165.sol',
+      '/contracts/external/IERC165.sol',
+    ]);
   });
 
   test('drops additional sources without a path or content', () => {

@@ -5,7 +5,7 @@ import type { SmartContract } from 'src/slices/contract/types/api';
 
 import formatFilePath from 'src/shared/code-editor/utils/formatFilePath';
 
-function getMainFileExtension(language: SmartContract['language']) {
+function getMainFileExtension(language: SmartContract['language']): string {
   switch (language) {
     case 'vyper':
       return 'vy';
@@ -27,7 +27,7 @@ function getMainFileExtension(language: SmartContract['language']) {
 // After normalization they map to one Monaco model URI, and creating it twice crashes the editor.
 // Only byte-identical repeats are dropped; the same path with different content is a backend bug
 // that should stay visible rather than be silently resolved here.
-function isRepeat(file: File, index: number, files: Array<File>) {
+function isRepeat(file: File, index: number, files: Array<File>): boolean {
   return files.findIndex((item) => item.file_path === file.file_path && item.source_code === file.source_code) !== index;
 }
 
