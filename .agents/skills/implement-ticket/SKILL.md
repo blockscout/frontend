@@ -37,6 +37,21 @@ Start at the **first unchecked** leaf and work in order, checking each box as it
 after a human touchpoint skips the leaves already checked. Stop at the first **unchecked** `[human]` leaf
 and hand off (Step 5).
 
+**Before a `[human]` style leaf that links a readout**, check the mockup has not moved under it. Read
+`file.lastModified` from the node's sidecar (`tools/design-readout/CONTEXT.md` says where it lives),
+then re-run the tool on the leaf's Figma node:
+
+```bash
+pnpm design:readout "<figma node URL>"
+```
+
+The run's header prints the file's current last-modified; when it is newer than the sidecar's, the run
+has already diffed against the sidecar — surface the changed, new and vanished leaves and any
+correction flagged `STALE` to the developer in the hand-off, and regenerate that node's block in
+`design-readout.md` from the updated sidecar (shape: `.agents/skills/design-readout/readout-template.md`).
+When it is not newer, say so in one line and hand off. A run that fails on the token is relayed in one
+line and the hand-off proceeds without the check — the developer decides whether to re-run first.
+
 ## Step 4 — Verify
 
 Run every code-quality check the repo defines (per `.agents/rules/code-quality.md`) plus the relevant unit 

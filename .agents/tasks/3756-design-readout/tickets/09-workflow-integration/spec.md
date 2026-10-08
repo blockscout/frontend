@@ -19,16 +19,16 @@ file's `lastModified` is newer than the sidecar's and surfaces the changed leave
 
 ## Acceptance criteria
 
-- [ ] `grill-the-task` Step 1 item 4 invokes the skill; the enumerate-only wording is replaced; the
+- [x] `grill-the-task` Step 1 item 4 invokes the skill; the enumerate-only wording is replaced; the
       Ambiguous-first routing is stated; the no-spec small-task path is stated.
-- [ ] `to-spec` writes `design-readout.md` from the sidecar when one exists for a task link; the
+- [x] `to-spec` writes `design-readout.md` from the sidecar when one exists for a task link; the
       template in the skill folder is the only definition of its shape.
-- [ ] `structure.md` tree and ownership table gain `design-readout.md` (written by `to-spec`, pruned
+- [x] `structure.md` tree and ownership table gain `design-readout.md` (written by `to-spec`, pruned
       at land); `finalize-task` Step 1 lists it.
-- [ ] `to-tickets` ticket template's style-leaf line links the readout next to the Figma node.
-- [ ] `implement-ticket` compares `lastModified` before a `[human]` style leaf and re-runs on a newer
+- [x] `to-tickets` ticket template's style-leaf line links the readout next to the Figma node.
+- [x] `implement-ticket` compares `lastModified` before a `[human]` style leaf and re-runs on a newer
       file, reporting the diff; the step names the tool command, not the token.
-- [ ] `.agents/tasks/README.md` lifecycle mentions the readout once; `pnpm lint:doc-links` passes.
+- [x] `.agents/tasks/README.md` lifecycle mentions the readout once; `pnpm lint:doc-links` passes.
 
 ## Details
 
@@ -37,7 +37,7 @@ file's `lastModified` is newer than the sidecar's and surfaces the changed leave
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `grill-the-task` research step and small-task path
-- [ ] 2 `[agent]` `to-spec` writes `design-readout.md`; `structure.md` row; `finalize-task` prune line
-- [ ] 3 `[agent]` `to-tickets` style-leaf link; `implement-ticket` re-run gate
-- [ ] 4 `[agent]` `tasks/README.md` lifecycle line; doc-links check
+- [x] 1 `[agent]` `grill-the-task` research step and small-task path
+- [x] 2 `[agent]` `to-spec` writes `design-readout.md`; `structure.md` row; `finalize-task` prune line
+- [x] 3 `[agent]` `to-tickets` style-leaf link; `implement-ticket` re-run gate
+- [x] 4 `[agent]` `tasks/README.md` lifecycle line; doc-links check

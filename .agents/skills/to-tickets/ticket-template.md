@@ -59,9 +59,12 @@ state machine. A UI component is two linked leaves (scaffold → style). Visual 
 default; extend or pack per `.agents/rules/tests-visual.md`. A leaf names the skill it runs; its
 answers live in Skill inputs above, not inline here.
 
+A `[human]` style leaf links the Figma node and, when the task has a `design-readout.md`, that node's
+block in it, right beside the node; a task without a readout links the node alone.
+
 A leaf's checkbox is PROGRESS STATE — how far the ticket has got, since it has no commit yet. It is never
 a changelog: one line at most, and durable decisions get folded into the sections above instead. -->
 
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource`
 - [ ] 2 `[agent]` <title> — skill: `add-new-page`
-- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>)
+- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>) · [readout](../../design-readout.md#<node heading anchor>)

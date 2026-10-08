@@ -70,8 +70,10 @@ uninterrupted.
 Per approved ticket, write `tickets/NN-<slug>/spec.md` from [`ticket-template.md`](ticket-template.md) — What
 to build, Acceptance criteria (tagging `(human)` per the ticket model), the Skill inputs from Step 5, the
 Leaf worklist with each leaf tagged `[agent]` / `[human]` per `.agents/delegation.md`, and the header's
-`Blocked by` edges (`T<NN>` / `Q<NN>`). A ticket that can't be scoped gets a `brief.md` instead — its goal,
-the known context, and the blocking unknowns with their owners.
+`Blocked by` edges (`T<NN>` / `Q<NN>`). A `[human]` style leaf links its Figma node and, when the task
+folder has a `design-readout.md`, that node's block in it; the style leaf and its `(human)` criterion stay
+human regardless of what the readout recognized. A ticket that can't be scoped gets a `brief.md` instead —
+its goal, the known context, and the blocking unknowns with their owners.
 
 Create (or append to) `progress.md` from [`progress-template.md`](progress-template.md) — one checkbox line
 per ticket. When scoping a deferred ticket, **append** its siblings and retarget the `Blocked by` edges that

@@ -29,10 +29,13 @@ Gather, in roughly this order:
 3. **The API** — for every endpoint the issue names, fetch a real sample response (the `resolve-api-url`
    skill resolves instance URLs; then `curl`). Note pagination/sorting/filtering params and whether the API
    is production-deployed or staging-only.
-4. **Figma mockups** — via the Figma MCP tools, **enumerate-only**: list screens/frames, their elements,
-   columns, states, and record a node link per screen. Do **not** extract visual/styling details — appearance
-   stays with the mockups and the `[human]` style leaves (see `.agents/delegation.md`). If the Figma
-   MCP is not connected, have the developer describe the mockups instead.
+4. **Figma mockups** — run the `design-readout` skill once per Figma link the task carries. It returns
+  the Ambiguous, Unrecognized and Layout lists with a Recognized count. **Ambiguous items go to
+   the developer first**. Only a genuine
+   design-intent question the developer cannot answer becomes an open question for the designer
+   (Step 3). Record a node link per screen. The readout names components; it extracts no
+   styling for anyone to apply — appearance stays with the mockups and the `[human]` style leaves
+   (see `.agents/delegation.md`). If the tool cannot run, skip the step.
 
 Then run two mechanical cross-checks; every mismatch becomes an open question for the backend owner or PM:
 
@@ -145,5 +148,6 @@ Decide, by a rough sizing judgment, whether the task needs a spec — one sessio
 breakdown is needed for this call ("Not every task needs a spec" in `.agents/tasks/README.md`).
 
 - **Small task** — implement it in this same session, then hand off to the `create-pr` skill. If a `pending` question blocks the work, wait for the
-  reply and pick the implementation back up here.
+  reply and pick the implementation back up here. The readout from Step 1 is not written anywhere: it
+  stays in this session and in the sidecar the tool wrote, and the markup is done against those.
 - **Larger task** — suggest proceeding with the `to-spec` skill **in this same session**.
