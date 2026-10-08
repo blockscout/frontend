@@ -15,3 +15,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 07 → `tickets/07-calibration-set/`
 - [x] 08 → `tickets/08-skill-delegation-glossary/`
 - [ ] 09 → `tickets/09-workflow-integration/`
+- [ ] 10 → `tickets/10-layout-conventions/`
