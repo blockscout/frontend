@@ -25,13 +25,18 @@ const ColumnListRow = ({ column, rowRef, rowStyle, handleRef, handleProps, isDra
       ref={ rowRef }
       style={ rowStyle }
       alignItems="center"
-      gap={ 2 }
+      gap={ 3 }
       position="relative"
       zIndex={ isDragging ? 1 : undefined }
       bgColor={ isDragging ? 'popover.bg' : undefined }
       boxShadow={ isDragging ? 'size.lg' : undefined }
       borderRadius="sm"
+      ml={ -1 }
+      pl={ 1 }
     >
+      <Checkbox value={ column.id } size="md" w="100%">
+        { column.name }
+      </Checkbox>
       <chakra.span
         ref={ handleRef }
         display="inline-flex"
@@ -47,9 +52,6 @@ const ColumnListRow = ({ column, rowRef, rowStyle, handleRef, handleProps, isDra
       >
         <SpriteIcon name="move" boxSize={ 5 }/>
       </chakra.span>
-      <Checkbox value={ column.id } size="md" w="100%">
-        { column.name }
-      </Checkbox>
     </Flex>
   );
 };
