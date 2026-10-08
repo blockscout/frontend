@@ -3,15 +3,14 @@
 import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { File } from 'src/shared/code-editor/types';
 import type { SmartContract } from 'src/slices/contract/types/api';
 
+import { getEditorData } from 'src/slices/contract/utils/editor-data';
 import { formatLanguageName } from 'src/slices/contract/utils/language';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import CodeEditor from 'src/shared/code-editor/CodeEditor';
-import formatFilePath from 'src/shared/code-editor/utils/formatFilePath';
 import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
@@ -21,41 +20,6 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 import ContractCodeIdes from './ContractCodeIdes';
 import ContractExternalLibraries from './ContractExternalLibraries';
-
-function getEditorData(contractInfo: SmartContract | undefined): Array<File> | undefined {
-  if (!contractInfo || !contractInfo.source_code) {
-    return undefined;
-  }
-
-  const extension = (() => {
-    switch (contractInfo.language) {
-      case 'vyper':
-        return 'vy';
-      case 'yul':
-        return 'yul';
-      case 'scilla':
-        return 'scilla';
-      case 'stylus_rust':
-        return 'rs';
-      case 'geas':
-        return 'eas';
-      default:
-        return 'sol';
-    }
-  })();
-
-  const result: Array<File> = [
-    { file_path: formatFilePath(contractInfo.file_path || `index.${ extension }`), source_code: contractInfo.source_code },
-    ...(contractInfo.additional_sources || [])
-      .filter((source) => source.file_path && source.source_code)
-      .map((source) => ({
-        source_code: source.source_code || '',
-        file_path: formatFilePath(source.file_path || ''),
-      })),
-  ];
-
-  return result;
-}
 
 interface Props {
   data: SmartContract | undefined;
