@@ -234,7 +234,7 @@ title/description (`default` only, no `enhanced`):
 
 ## Step 7 — Page-type analytics
 
-In `src/services/mixpanel/get-page-type.ts` add an entry to `PAGE_TYPE_DICT` (a
+In `src/shared/analytics/get-page-type.ts` add an entry to `PAGE_TYPE_DICT` (a
 `Record<Route['pathname'], string>`). **Suggest** a human-readable name; let the user adjust:
 ```ts
 '__pathname__': '__title__',

@@ -10,7 +10,6 @@
   "eth": "https://eth.blockscout.com",
   "eth_sepolia": "https://eth-sepolia.blockscout.com",
   "filecoin": "https://filecoin.blockscout.com",
-  "garnet": "https://explorer.garnetchain.com",
   "gnosis": "https://gnosis.blockscout.com",
   "gnosis_chiado": "https://gnosis-chiado.blockscout.com",
   "hpp": "https://explorer.hpp.io",
@@ -25,7 +24,6 @@
   "rootstock": "https://rootstock.blockscout.com",
   "rootstock_testnet": "https://rootstock-testnet.blockscout.com",
   "robinhood": "https://robinhoodchain.blockscout.com",
-  "scroll_sepolia": "https://scroll-sepolia.blockscout.com",
   "shibarium": "https://www.shibariumscan.io",
   "stability_testnet": "https://stability-testnet.blockscout.com",
   "staging": "https://eth-sepolia.k8s-dev.blockscout.com",
@@ -35,6 +33,5 @@
   "zetachain": "https://zetascan.com",
   "zetachain_testnet": "https://testnet.zetascan.com",
   "zilliqa": "https://zilliqa.blockscout.com",
-  "zksync": "https://zksync.blockscout.com",
-  "zora": "https://explorer.zora.energy"
+  "zksync": "https://zksync.blockscout.com"
 }

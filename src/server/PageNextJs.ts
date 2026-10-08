@@ -9,8 +9,8 @@ import useGetCsrfToken from 'src/features/account/hooks/useGetCsrfToken';
 import useAdblockDetect from 'src/features/ads/common/hooks/useAdblockDetect';
 import useNotifyOnNavigation from 'src/features/metasuites/hooks/useNotifyOnNavigation';
 
-import * as mixpanel from 'src/services/mixpanel';
 import useUpdateUsercentricsConsent from 'src/services/usercentrics/useUpdateUsercentricsConsent';
+import * as analytics from 'src/shared/analytics';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 
 interface Props<Pathname extends Route['pathname']> {
@@ -28,8 +28,8 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
   useNotifyOnNavigation();
   useUpdateUsercentricsConsent();
 
-  const isMixPanelInitialized = mixpanel.useInit();
-  mixpanel.useLogPageView(isMixPanelInitialized);
+  const isAnalyticsInitialized = analytics.useInit();
+  analytics.useLogPageView(isAnalyticsInitialized);
 
   return isMounted ? props.children : null;
 };

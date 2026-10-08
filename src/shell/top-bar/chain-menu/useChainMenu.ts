@@ -12,7 +12,7 @@ import type { ResourceError } from 'src/api/resources';
 import multichainConfig from 'src/features/multichain/chains-config';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
@@ -59,7 +59,7 @@ export default function useChainMenu() {
 
   const handleOpenChange = React.useCallback((details: { open: boolean }) => {
     if (details.open) {
-      mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Network menu', Source: 'Header' });
+      analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Network menu', Source: 'Header' });
     }
     onOpenChange(details);
   }, [ onOpenChange ]);

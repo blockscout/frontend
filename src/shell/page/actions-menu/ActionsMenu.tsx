@@ -8,7 +8,7 @@ import type { ItemProps } from './types';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -36,7 +36,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   const isTxPage = router.pathname === '/tx/[hash]';
 
   const handleButtonClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
 
   const items = [

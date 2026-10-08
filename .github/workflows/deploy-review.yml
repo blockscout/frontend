@@ -35,7 +35,6 @@ on:
             - eth
             - eth_sepolia
             - filecoin
-            - garnet
             - gnosis
             - gnosis_chiado
             - hpp
@@ -50,7 +49,6 @@ on:
             - rootstock
             - rootstock_testnet
             - robinhood
-            - scroll_sepolia
             - shibarium
             - stability_testnet
             - staging
@@ -61,7 +59,6 @@ on:
             - zetachain_testnet
             - zilliqa
             - zksync
-            - zora
             # presets:end
 
 permissions:

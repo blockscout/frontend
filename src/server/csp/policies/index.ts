@@ -13,6 +13,7 @@ export { megaEth } from './mega-eth';
 export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { multichain } from './multichain';
+export { posthog } from './posthog';
 export { reCaptcha } from './re-captcha';
 export { rollbar } from './rollbar';
 export { rollup } from './rollup';

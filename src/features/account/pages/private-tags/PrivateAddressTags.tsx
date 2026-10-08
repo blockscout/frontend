@@ -9,7 +9,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 import AccountPageDescription from 'src/features/account/components/AccountPageDescription';
 import { PRIVATE_TAG_ADDRESS } from 'src/features/account/stubs';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -101,7 +101,7 @@ const PrivateAddressTags = () => {
       <AddressModal
         { ...addressModalProps }
         data={ addressModalData }
-        pageType={ mixpanel.getPageType('/account/tag-address') }
+        pageType={ analytics.getPageType('/account/tag-address') }
         onOpenChange={ onAddressModalOpenChange }
         onSuccess={ onAddOrEditSuccess }
       />
