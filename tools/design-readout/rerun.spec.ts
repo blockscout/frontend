@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { carryCorrections, diffRecords, renderRerun } from './rerun';
-import type { Correction, NodeRecord, SidecarRecord } from './sidecar';
+import type { Correction, NodeRecord, Override, SidecarRecord } from './sidecar';
 
 const TEXT: NodeRecord = {
   id: '1:2',
@@ -18,6 +18,7 @@ const TEXT: NodeRecord = {
   tokens: [ { role: 'text', color: '#63B3ED', tokens: [ 'link.primary' ] } ],
   composite: null,
   correction: null,
+  override: null,
 };
 
 const ICON: NodeRecord = {
@@ -29,9 +30,11 @@ const ICON: NodeRecord = {
   tokens: [],
   composite: null,
   correction: null,
+  override: null,
 };
 
 const CORRECTION: Correction = { component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context', recordedAt: '2026-10-06T12:00:00.000Z', stale: false };
+const OVERRIDE: Override = { props: [ 'bg=whiteAlpha.100', 'fontWeight=500' ], recordedAt: '2026-10-06T12:30:00.000Z', stale: false };
 
 function record(nodes: ReadonlyArray<NodeRecord>, overrides: Partial<SidecarRecord> = {}): SidecarRecord {
   return {
@@ -58,6 +61,13 @@ describe('diffRecords', () => {
   it('reports an identical node as unchanged, and a box move alone as unchanged too', () => {
     const moved = { ...TEXT, bbox: { x: 5, y: 5, width: 60, height: 20 } };
     expect(diffRecords(record([ TEXT ]), record([ moved ], LATER)).changes).toEqual([ { kind: 'unchanged', node: moved } ]);
+  });
+
+  it('reports a node whose only difference is a key JSON dropped on the way to disk as unchanged', () => {
+    const fromDisk = JSON.parse(JSON.stringify(TEXT)) as NodeRecord;
+    expect(fromDisk.values).not.toHaveProperty('trailingGlyphs');
+    expect(diffRecords(record([ fromDisk ]), record([ TEXT ], LATER)).changes).toEqual([ { kind: 'unchanged', node: TEXT } ]);
+    expect(carryCorrections(record([ { ...fromDisk, correction: CORRECTION } ]), record([ TEXT ], LATER)).nodes[0].correction).toEqual(CORRECTION);
   });
 
   it('reports changed values, a changed decision, and both, naming which', () => {
@@ -115,6 +125,32 @@ describe('carryCorrections', () => {
     const merged = carryCorrections(record([ corrected ]), record([ ICON ], LATER));
     expect(merged.nodes).toEqual([ ICON ]);
   });
+
+  describe('override', () => {
+    const overridden: NodeRecord = { ...TEXT, correction: CORRECTION, override: OVERRIDE };
+
+    it('keeps an override on an unchanged node as it was, beside the correction', () => {
+      const merged = carryCorrections(record([ overridden ]), record([ TEXT ], LATER));
+      expect(merged.nodes[0]).toEqual(overridden);
+    });
+
+    it('keeps an override on a node whose values changed, flagged stale', () => {
+      const merged = carryCorrections(record([ overridden ]), record([ withText(TEXT, '1248140') ], LATER));
+      expect(merged.nodes[0].override).toEqual({ ...OVERRIDE, stale: true });
+      expect(merged.nodes[0].correction).toEqual({ ...CORRECTION, stale: true });
+    });
+
+    it('keeps an override unflagged when only the tool\'s decision changed, and never un-flags a stale one', () => {
+      expect(carryCorrections(record([ overridden ]), record([ { ...TEXT, status: 'ambiguous' } ], LATER)).nodes[0].override).toEqual(OVERRIDE);
+      const stale = { ...TEXT, override: { ...OVERRIDE, stale: true } };
+      expect(carryCorrections(record([ stale ]), record([ TEXT ], LATER)).nodes[0].override).toEqual({ ...OVERRIDE, stale: true });
+    });
+
+    it('gives a new node no override and drops the one of a vanished node', () => {
+      const merged = carryCorrections(record([ overridden ]), record([ ICON ], LATER));
+      expect(merged.nodes).toEqual([ ICON ]);
+    });
+  });
 });
 
 describe('renderRerun', () => {
@@ -147,5 +183,22 @@ describe('renderRerun', () => {
     const previous = record([ { ...TEXT, correction: CORRECTION } ]);
     const next = carryCorrections(previous, record([], LATER));
     expect(renderRerun(diffRecords(previous, next))).toContain('  - vanished 1:2; its correction BlockEntity noIcon (context) is dropped');
+  });
+
+  it('names an override on a changed line, stale or kept, after the correction when both exist', () => {
+    const previous = record([ { ...TEXT, correction: CORRECTION, override: OVERRIDE }, { ...ICON, override: OVERRIDE } ]);
+    const next = carryCorrections(previous, record([ withText(TEXT, '1248140'), { ...ICON, status: 'ambiguous' } ], LATER));
+    const text = renderRerun(diffRecords(previous, next));
+    expect(text).toContain([
+      '  ~ 1:2 changed values; correction BlockEntity noIcon (context) is now STALE, re-confirm it',
+      '; override bg=whiteAlpha.100 fontWeight=500 is now STALE, re-confirm it',
+    ].join(''));
+    expect(text).toContain('  ~ 1:3 changed decision; override bg=whiteAlpha.100 fontWeight=500 kept');
+  });
+
+  it('says when a vanished node takes its override with it, and marks an already stale one', () => {
+    const previous = record([ { ...TEXT, override: { ...OVERRIDE, stale: true } } ]);
+    const next = carryCorrections(previous, record([], LATER));
+    expect(renderRerun(diffRecords(previous, next))).toContain('  - vanished 1:2; its override bg=whiteAlpha.100 fontWeight=500 (STALE) is dropped');
   });
 });

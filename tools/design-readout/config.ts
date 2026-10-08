@@ -22,6 +22,10 @@ export const GAP_LOG_FILE = 'gaps.md';
 // Every correction is a miss of one of these kinds; `--gap` takes exactly one of them.
 export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout', 'convention' ] as const;
 
+// The Chakra color props an `--override` checks against the node's resolved tokens, by the fill role
+// each paints. Any prop outside this map is taken as given: the tool validates no Chakra prop name.
+export const OVERRIDE_COLOR_PROPS = { bg: 'background', color: 'text', borderColor: 'border' } as const;
+
 // What a Figma text style name claims, read off its `text-<size>` and `font-<weight>` segments. The
 // pixel sizes mirror the `text.*` text styles of the theme, which this tool must not import (they
 // read app config).

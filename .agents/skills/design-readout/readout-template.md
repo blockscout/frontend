@@ -16,7 +16,7 @@ Sidecar `<path>` · color mode `<light|dark>` · file version `<version>` · reg
 
 | Node | Content | Component | Props | Tokens | Signal |
 | --- | --- | --- | --- | --- | --- |
-| `<nodeId>` | `<text or icon name>` | `<Component>` | `<props, as words>` | `<role → token>` | `<shape / icon / color / composite / context / correction>` |
+| `<nodeId>` | `<text or icon name>` | `<Component>` | `<props, as words>[ · override <prop>=<value>…]` | `<role → token>` | `<shape / icon / color / composite / context / correction>` |
 
 ### Ambiguous
 
@@ -38,7 +38,9 @@ What goes where:
 - **Recognized** holds every node with a component: the tool's recognitions as the subagent mapped
   them, the context-override hits (signal `context`), and every developer correction (signal
   `correction`, the corrected component). One row per node; a composite's members sit on the first
-  member's row with the others' ids in Content.
+  member's row with the others' ids in Content. A node's `override` sits in its Props cell after the
+  component's own props, as `· override <prop>=<value>…`; it never moves a node between lists, and it
+  sits beside a correction when the node carries both. The Signal column does not name it.
 - **Ambiguous** and **Unrecognized** hold what is still open at write time, each line with the
   proposal and gap category from the skill's return. An item the developer settled in session has
   moved to Recognized; an item sent to the designer carries its question.

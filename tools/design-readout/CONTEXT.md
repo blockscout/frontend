@@ -29,8 +29,9 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | Which composites exist, what are their parts, when does one not fire? | `COMPOSITE_RULES` in `./recognize.ts` and the comment above it; the member gap in `./config.ts` |
 | What can a node's status be, and what does each mean? | `RecognitionStatus` in `./recognize.ts`: `recognized` (a signal fired and settles the shape), `ambiguous` (a signal fired but the shape alone cannot settle it — a truncated hash with no entity icon beside it), `unrecognized` (nothing fired; the values are listed, never a guess) |
 | What does a second run for the same node print, and what counts as a change? | `diffRecords` and `renderRerun` in `./rerun.ts`: values or decision per node, new and vanished nodes; a box move alone is not a change |
-| What happens to a correction when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
+| What happens to a correction or an override when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
 | How do I record what a node really is? | `pnpm design:readout <url> --correct <nodeId> <component> [<props…>] --gap <category>`; `recordCorrection` in `./index.ts`, the slot is `Correction` in `./sidecar.ts` |
+| How do I record a deliberate style change on a node the tool read right? | `pnpm design:readout <url> --override <nodeId> <prop=value…>`; `recordOverride` in `./index.ts`, the slot is `Override` in `./sidecar.ts`, the color props it checks are `OVERRIDE_COLOR_PROPS` in `./config.ts` |
 | Where is the gap log, what is one line of it, which categories exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` in `./config.ts` is the list |
 | Which layout questions are already settled, and where does a new convention go? | `./layout-conventions.md`, one table, one row per convention with its code home; the `design-readout` skill fixes the columns, reads the file before judging and appends to it |
 | Which nodes is recognition checked against, and what does each entry hold? | `./calibration/<entry>/`: `snapshot.json` is the tool's own extraction of the node, `expected.json` the Figma link, the shipped component's path and per cell the component, its props and the signals recognition must give; the schemas sit at the top of `./calibration.ts` |
@@ -72,6 +73,12 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - **A correction is always a miss.** `--correct` without `--gap` exits non-zero: the phase 2
   decision is a hand count over `gaps.md`, and a correction that skips the log makes the count lie
   small. The gap log is append-only, header once; nothing here rewrites or prunes it.
+- **An override is never a miss.** `--override` appends no gap line, names no component and takes
+  no `--gap`; the parser rejects it beside `--correct`. The slot sits beside `correction` so one node
+  can carry a real miss and a deliberate style at once. A color prop (`bg`, `color`, `borderColor`)
+  is checked against the tokens the node's sidecar resolved for that fill and nothing else, so the
+  check is offline and the override can only name a token the Recognized list printed. The
+  correction rule above stays as written.
 - **The gap log counts kinds of miss, not nodes.** The same cell repeated down eight rows of a mockup
   is one line: a correction whose file key, category, values and correction match an existing line
   adds none, and says so. The sidecar still takes a correction per node, so every cell carries its
@@ -85,7 +92,8 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   can set those lines aside and `layout` lines mean real misses.
 - **A re-run never drops a correction on its own.** Values changed under it → kept and `stale`;
   decision changed under it (a new rule) → kept as-is, since the developer judged the values, not
-  the rule. Only a vanished node takes its correction with it, and the re-run says so.
+  the rule. Only a vanished node takes its correction with it, and the re-run says so. An override
+  is carried under the same rule.
 - **A snapshot is the tool's extraction, captured with `--refresh`, never hand-edited and never a raw
   payload.** It holds values, boxes and the frame background only, so recognition can be re-run over
   it offline and a payload field the tool starts reading has to be captured again, by a refresh.
@@ -126,7 +134,7 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, `--regions`, the header, outline and values on stdout, the
-  sidecar write or the re-run diff, the `--correct`, `--calibrate` and `--refresh` paths; flag
+  sidecar write or the re-run diff, the `--correct`, `--override`, `--calibrate` and `--refresh` paths; flag
   mechanics shared with the sibling tools in `../cli/flags.ts`
 - `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder,
   calibration folder, gap log name and categories, what a text style name is taken to claim
@@ -140,8 +148,8 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - `./recognize.ts` — the lookalike normalizer, the text-shape rule table, icon matching against the
   sprite list, fills → tokens, the composite rule table, the per-leaf status and decision, the closing
   stdout lists
-- `./sidecar.ts` — the record shape with the correction slot, its path under the main checkout,
-  writing, reading and correcting one
+- `./sidecar.ts` — the record shape with the correction and override slots, its path under the main
+  checkout, writing, reading, correcting and overriding one
 - `./rerun.ts` — the diff of two records, the correction carry-over, the re-run text
 - `./gaps.ts` — the gap log: its path, one line's format, the append
 - `./calibration.ts` — the entry schemas and loader, the per-signal checks and the `--calibrate`

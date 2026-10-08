@@ -7,8 +7,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import type { NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
 import { GAP_LOG_HEADER, gapLogPath } from './gaps';
-import type { CliOptions, CorrectionRequest } from './index';
-import { dumpPayload, parseArgs, readoutOf, recordCorrection } from './index';
+import type { CliOptions, CorrectionRequest, OverrideRequest } from './index';
+import { dumpPayload, parseArgs, readoutOf, recordCorrection, recordOverride } from './index';
 import { loadSpriteNames } from './recognize';
 import { buildRecord, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 
@@ -31,11 +31,17 @@ function correction(argv: ReadonlyArray<string>): CorrectionRequest {
   return parsed.correction;
 }
 
+function override(argv: ReadonlyArray<string>): OverrideRequest {
+  const parsed = parseArgs(argv);
+  if (parsed.kind !== 'override') throw new Error(`Expected an override, got ${ parsed.kind }`);
+  return parsed.override;
+}
+
 describe('parseArgs', () => {
   it('takes the node URL as the one positional and --dump in both forms', () => {
     expect(parseArgs([ URL ])).toEqual({
       kind: 'readout',
-      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined, calibrate: false, refresh: false },
+      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, calibrate: false, refresh: false },
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
     });
     expect(readout([ URL, '--dump', 'out.json' ]).dump).toBe('out.json');
@@ -56,6 +62,26 @@ describe('parseArgs', () => {
     expect(() => parseArgs([ '--calibrate', '--refresh' ])).toThrow(/--calibrate and --refresh are separate runs/);
     expect(() => parseArgs([ '--calibrate', '--dump', 'x' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
     expect(() => parseArgs([ '--refresh', '--gap', 'shape' ])).toThrow(/--refresh works on the calibration set and takes no per-node flag/);
+    expect(() => parseArgs([ '--calibrate', '--override', '1-2' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
+  });
+
+  it('takes --override with the node id and one or more prop=value words', () => {
+    expect(parseArgs([ URL, '--override', '22842-178386', 'bg=whiteAlpha.100', 'fontWeight=500' ])).toEqual({
+      kind: 'override',
+      ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
+      override: { nodeId: '22842:178386', props: [ 'bg=whiteAlpha.100', 'fontWeight=500' ] },
+    });
+    expect(override([ '--override=I1:2;3:4', URL, 'color=text.primary' ])).toEqual({ nodeId: 'I1:2;3:4', props: [ 'color=text.primary' ] });
+  });
+
+  it('rejects --override with --correct or --gap, with no word, with a word that is not prop=value, and with a bad node id', () => {
+    expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--correct', '1-2', 'Box', '--gap', 'color' ]))
+      .toThrow(/--override and --correct are separate runs: an override is never a miss and takes no --gap\nUsage:/);
+    expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--gap', 'color' ])).toThrow(/--override and --correct are separate runs/);
+    expect(() => parseArgs([ URL, '--override', '1-2' ])).toThrow(/--override 1:2 needs at least one <prop>=<value> word, after the URL\nUsage:/);
+    expect(() => parseArgs([ URL, '--override', '1-2', 'noIcon' ])).toThrow(/An override is one <prop>=<value> per word, no spaces inside: noIcon\nUsage:/);
+    expect(() => parseArgs([ URL, '--override', '1-2', 'bg=' ])).toThrow(/An override is one <prop>=<value> per word, no spaces inside: bg=/);
+    expect(() => parseArgs([ URL, '--override', 'abc', 'bg=x' ])).toThrow(/Not a node id in --override: abc\nUsage:/);
   });
 
   it('rejects a missing, extra or malformed URL with the usage line', () => {
@@ -144,6 +170,75 @@ describe('recordCorrection', () => {
     seedSidecar();
     expect(() => recordCorrection(tmp, ref, { ...request, nodeId: '9:9' }, new Date())).toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
     expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
+  });
+});
+
+describe('recordOverride', () => {
+  const ref = { fileKey: 'KEY', nodeId: '22842:178383' };
+  let tmp = '';
+
+  afterEach(() => {
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+    tmp = '';
+  });
+
+  function seedSidecar(): string {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-override-'));
+    const entry = readFixture('22842-178383-dark.json', '22842:178383');
+    const { regions, extraction, recognitions } = readoutOf(entry, undefined, loadSpriteNames());
+    const target = sidecarPath(tmp, ref.fileKey, ref.nodeId);
+    writeSidecar(target, buildRecord({
+      createdAt: '2026-10-06T10:00:00.000Z',
+      fileKey: ref.fileKey,
+      nodeId: ref.nodeId,
+      lastModified: '2026-10-01T00:00:00Z',
+      fileVersion: '42',
+      colorMode: extraction.colorMode.mode,
+      regions,
+      leaves: extraction.leaves,
+      recognitions,
+    }));
+    return target;
+  }
+
+  it('writes the override into the sidecar beside an untouched correction, logs no gap, and takes a non-color prop unchecked', () => {
+    const target = seedSidecar();
+    const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const };
+    recordCorrection(tmp, ref, request, new Date('2026-10-07T09:30:00.000Z'));
+    fs.rmSync(gapLogPath(tmp));
+    const props = [ 'color=link.primary', 'fontWeight=500' ];
+    const record = recordOverride(tmp, ref, { nodeId: '22842:178386', props }, new Date('2026-10-08T09:30:00.000Z'));
+    const node = record.nodes.find((candidate) => candidate.id === '22842:178386');
+    expect(node?.override).toEqual({ props: [ 'color=link.primary', 'fontWeight=500' ], recordedAt: '2026-10-08T09:30:00.000Z', stale: false });
+    expect(node?.correction).toEqual({ component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context', recordedAt: '2026-10-07T09:30:00.000Z', stale: false });
+    expect(readSidecar(target)).toEqual(record);
+    expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
+  });
+
+  it('refuses a color prop naming a token the node does not resolve for that role, listing the ones it does', () => {
+    const target = seedSidecar();
+    const before = fs.readFileSync(target, 'utf8');
+    expect(() => recordOverride(tmp, ref, { nodeId: '22842:178386', props: [ 'color=text.primary' ] }, new Date()))
+      .toThrow('color=text.primary names a token the mockup does not draw on 22842:178386: the node resolved text tokens link.primary.');
+    expect(() => recordOverride(tmp, ref, { nodeId: '22842:178386', props: [ 'bg=whiteAlpha.100' ] }, new Date()))
+      .toThrow('bg=whiteAlpha.100 names a token the mockup does not draw on 22842:178386: the node resolved no background fill.');
+    const unmapped = readSidecar(target).nodes[0];
+    writeSidecar(target, { ...readSidecar(target), nodes: [ { ...unmapped, tokens: [ { role: 'background', color: '#FFFFFF/6', tokens: [] } ] } ] });
+    expect(() => recordOverride(tmp, ref, { nodeId: unmapped.id, props: [ 'bg=whiteAlpha.100' ] }, new Date()))
+      .toThrow(`bg=whiteAlpha.100 names a token the mockup does not draw on ${ unmapped.id }: the node resolved no token for its background fill #FFFFFF/6.`);
+    fs.writeFileSync(target, before);
+    expect(fs.readFileSync(target, 'utf8')).toBe(before);
+    expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
+  });
+
+  it('fails on a missing sidecar and on a node the sidecar does not hold', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-override-'));
+    expect(() => recordOverride(tmp, ref, { nodeId: '22842:178386', props: [ 'fontWeight=500' ] }, new Date())).toThrow(
+      `No sidecar for node 22842:178383: run the readout first; it writes ${ sidecarPath(tmp, 'KEY', '22842:178383') }.`,
+    );
+    seedSidecar();
+    expect(() => recordOverride(tmp, ref, { nodeId: '9:9', props: [ 'fontWeight=500' ] }, new Date()))
+      .toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
   });
 });
 

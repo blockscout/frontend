@@ -72,7 +72,7 @@ is built only if the phase 1 gap log is small.
 8. **Sidecar.** Every run writes one JSON to `.ai/design-readout/` in the main checkout (resolved through
    the git common dir): file key, node id, file `lastModified` and `version`, the detected color mode, and
    per node its values, decision (component, props, tokens, the signal that fired), status (recognized /
-   ambiguous / unrecognized), the human correction once given, and bounding box. Figma hints are not
+   ambiguous / unrecognized), the human correction and the style override once given, and bounding box. Figma hints are not
    stored.
 9. **Re-run.** Running the tool again for a node it has a sidecar for diffs against it and reports only
    changed leaves; settled corrections carry over. `implement-ticket` re-runs before a markup leaf when

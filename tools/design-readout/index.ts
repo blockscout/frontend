@@ -8,17 +8,17 @@ import { parseArgs as parseFlags } from '../cli/flags';
 import type { CalibrationEntry } from './calibration';
 import { calibrateSet, calibrationDir, describeRefresh, hasMiss, loadCalibration, refreshEntry, renderCalibration } from './calibration';
 import { buildThemeColorMap } from './colormap';
-import { CALIBRATION_DIR, GAP_CATEGORIES } from './config';
+import { CALIBRATION_DIR, GAP_CATEGORIES, OVERRIDE_COLOR_PROPS } from './config';
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
 import type { GapAppend } from './gaps';
 import { appendGap, gapLogPath } from './gaps';
-import type { Recognition } from './recognize';
+import type { ColorTokens, Recognition } from './recognize';
 import { loadSpriteNames, recognize, renderRecognition } from './recognize';
 import { carryCorrections, diffRecords, renderRerun } from './rerun';
 import { describeNode, renderOutline, scopeOutline, summarize } from './scope';
-import type { Correction, GapCategory, SidecarRecord } from './sidecar';
-import { applyCorrection, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
+import type { Correction, GapCategory, NodeRecord, Override, SidecarRecord } from './sidecar';
+import { applyCorrection, applyOverride, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 import type { NodeRef } from './url';
 import { parseNodeId as parseCanonicalNodeId, parseNodeRef } from './url';
 import type { Extraction } from './values';
@@ -29,6 +29,7 @@ export interface CliOptions {
   regions: ReadonlyArray<string> | undefined;
   correct: string | undefined;
   gap: GapCategory | undefined;
+  override: string | undefined;
   calibrate: boolean;
   refresh: boolean;
 }
@@ -36,6 +37,7 @@ export interface CliOptions {
 const USAGE = `Usage:
   design:readout <figma node URL> [--regions <ids>] [--dump <path>]
   design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category>
+  design:readout <figma node URL> --override <nodeId> <prop=value> [<prop=value…>]
   design:readout --calibrate
   design:readout --refresh [<entry>]
 
@@ -65,6 +67,16 @@ const USAGE = `Usage:
   same file (same category, same values, same correction) adds no line. It works on the existing
   sidecar and needs no token. A correction is always a miss, so --gap is required with it.
 
+  --override records a deliberate style change on a node the tool read right: the shipped component
+  with these Chakra props, as <prop>=<value> words (bg=whiteAlpha.100, color=text.primary,
+  fontWeight=500) — the prop name as written in JSX, the value a theme token or a plain value, no
+  spaces inside a word. An override is never a miss: it names no component, takes no --gap and logs
+  no gap line; the disagreement is design intent. A color prop (${ Object.keys(OVERRIDE_COLOR_PROPS).join(', ') }) is
+  checked against the tokens the node resolved for that fill and refused when the mockup does not
+  draw it; any other prop is taken as given. Repeating --override on a node replaces the earlier
+  override whole. Like --correct it works on the existing sidecar and needs no token; the two are
+  separate runs.
+
   --calibrate runs recognition over the committed calibration set (${ CALIBRATION_DIR }: one folder
   per labeled node with the tool's own value snapshot and the expected component, props and signals
   per cell) offline, with no token, and prints hits and misses per entry and per signal; any miss
@@ -80,6 +92,8 @@ const USAGE = `Usage:
   --correct <nodeId>   the leaf to correct, by node id (A-B or A:B), followed by the repo component
                        it is and any props, as words: --correct 22842-178386 BlockEntity noIcon
   --gap <category>     the kind of miss the correction fixes: ${ GAP_CATEGORIES.join(', ') }
+  --override <nodeId>  the leaf the mockup styles on purpose, by node id (A-B or A:B), followed by
+                       the Chakra props it adds, as words: --override 22842-178386 bg=whiteAlpha.100
   --calibrate          check the calibration set; takes no URL
   --refresh [<entry>]  re-capture the calibration snapshots, or the one entry named by its folder
 
@@ -123,6 +137,9 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--gap', { kind: 'value', apply: (options, value) => {
     options.gap = parseGapCategory(value);
   } } ],
+  [ '--override', { kind: 'value', apply: (options, value) => {
+    options.override = parseNodeId(value, '--override');
+  } } ],
   [ '--calibrate', { kind: 'switch', apply: (options) => {
     options.calibrate = true;
   } } ],
@@ -138,13 +155,21 @@ export interface CorrectionRequest {
   readonly gap: GapCategory;
 }
 
+export interface OverrideRequest {
+  readonly nodeId: string;
+  readonly props: ReadonlyArray<string>;
+}
+
 export type ParsedCli =
   { readonly kind: 'readout'; readonly options: CliOptions; readonly ref: NodeRef } |
   { readonly kind: 'correct'; readonly ref: NodeRef; readonly correction: CorrectionRequest } |
+  { readonly kind: 'override'; readonly ref: NodeRef; readonly override: OverrideRequest } |
   { readonly kind: 'calibrate' } |
   { readonly kind: 'refresh'; readonly entry: string | undefined };
 
-const DEFAULT_OPTIONS: CliOptions = { dump: undefined, regions: undefined, correct: undefined, gap: undefined, calibrate: false, refresh: false };
+const DEFAULT_OPTIONS: CliOptions = {
+  dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, calibrate: false, refresh: false,
+};
 
 function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): CorrectionRequest | undefined {
   if (options.correct === undefined) {
@@ -159,12 +184,24 @@ function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): Cor
   return { nodeId: options.correct, component: words[0], props: words.slice(1), gap: options.gap };
 }
 
+// An override is not a correction: no component, no --gap, and never in the same run as --correct.
+function parseOverride(options: CliOptions, words: ReadonlyArray<string>): OverrideRequest | undefined {
+  if (options.override === undefined) return undefined;
+  if (options.correct !== undefined || options.gap !== undefined) {
+    throw new Error(`--override and --correct are separate runs: an override is never a miss and takes no --gap\n${ USAGE }`);
+  }
+  if (words.length === 0) throw new Error(`--override ${ options.override } needs at least one <prop>=<value> word, after the URL\n${ USAGE }`);
+  const bare = words.find((word) => !/^[^=\s]+=\S+$/.test(word));
+  if (bare !== undefined) throw new Error(`An override is one <prop>=<value> per word, no spaces inside: ${ bare }\n${ USAGE }`);
+  return { nodeId: options.override, props: words };
+}
+
 // --calibrate and --refresh work on the committed set, not on a node: neither takes a URL or any
 // of the per-node flags.
 function parseSetCommand(options: CliOptions, rest: ReadonlyArray<string>): ParsedCli {
   const flag = options.calibrate ? '--calibrate' : '--refresh';
   if (options.calibrate && options.refresh) throw new Error(`--calibrate and --refresh are separate runs\n${ USAGE }`);
-  const perNode = [ options.dump, options.regions, options.correct, options.gap ].some((value) => value !== undefined);
+  const perNode = [ options.dump, options.regions, options.correct, options.gap, options.override ].some((value) => value !== undefined);
   if (perNode) throw new Error(`${ flag } works on the calibration set and takes no per-node flag\n${ USAGE }`);
   if (options.calibrate) {
     if (rest.length > 0) throw new Error(`--calibrate takes no argument: ${ rest[0] }\n${ USAGE }`);
@@ -180,6 +217,8 @@ export function parseArgs(argv: ReadonlyArray<string>): ParsedCli {
   if (rest.length === 0) throw new Error(`Missing the Figma node URL\n${ USAGE }`);
   const ref = parseNodeRef(rest[0]);
   if (ref === undefined) throw new Error(`Not a Figma node URL: ${ rest[0] }\n${ USAGE }`);
+  const override = parseOverride(options, rest.slice(1));
+  if (override !== undefined) return { kind: 'override', ref, override };
   const correction = parseCorrection(options, rest.slice(1));
   return correction === undefined ? { kind: 'readout', options, ref } : { kind: 'correct', ref, correction };
 }
@@ -210,6 +249,60 @@ export function readoutOf(entry: NodeEntry, regionIds: ReadonlyArray<string> | u
   return { regions, extraction, recognitions: recognize(extraction.leaves, spriteNames, map, extraction.colorMode.mode) };
 }
 
+type OverrideColorProp = keyof typeof OVERRIDE_COLOR_PROPS;
+
+function isOverrideColorProp(prop: string): prop is OverrideColorProp {
+  return Object.hasOwn(OVERRIDE_COLOR_PROPS, prop);
+}
+
+function describeResolved(role: string, fills: ReadonlyArray<ColorTokens>): string {
+  if (fills.length === 0) return `no ${ role } fill`;
+  const resolved = fills.flatMap((tokens) => tokens.tokens);
+  if (resolved.length === 0) return `no token for its ${ role } fill ${ fills.map((fill) => fill.color).join(', ') }`;
+  return `${ role } tokens ${ resolved.join(', ') }`;
+}
+
+// The check reads the node's recorded tokens and nothing else: no theme lookup, so it is offline
+// and the match is against what the Recognized list printed for that fill.
+function checkColorProp(node: NodeRecord, prop: OverrideColorProp, value: string): void {
+  const role = OVERRIDE_COLOR_PROPS[prop];
+  const fills = node.tokens.filter((tokens) => tokens.role === role);
+  const resolved = fills.flatMap((tokens) => tokens.tokens);
+  if (resolved.includes(value)) return;
+  throw new Error(`${ prop }=${ value } names a token the mockup does not draw on ${ node.id }: the node resolved ${ describeResolved(role, fills) }.`);
+}
+
+function sidecarTarget(mainCheckout: string, ref: NodeRef): string {
+  const target = sidecarPath(mainCheckout, ref.fileKey, ref.nodeId);
+  if (!fs.existsSync(target)) throw new Error(`No sidecar for node ${ ref.nodeId }: run the readout first; it writes ${ target }.`);
+  return target;
+}
+
+// Offline like a correction, and unlike one it touches the gap log not at all: the tool read the
+// values right, the disagreement is design intent.
+export function recordOverride(mainCheckout: string, ref: NodeRef, request: OverrideRequest, now: Date): SidecarRecord {
+  const target = sidecarTarget(mainCheckout, ref);
+  const previous = readSidecar(target);
+  const node = previous.nodes.find((candidate) => candidate.id === request.nodeId);
+  if (node !== undefined) {
+    for (const word of request.props) {
+      const [ prop, value ] = word.split('=', 2);
+      if (isOverrideColorProp(prop)) checkColorProp(node, prop, value);
+    }
+  }
+  const override: Override = { props: request.props, recordedAt: now.toISOString(), stale: false };
+  const record = applyOverride(previous, request.nodeId, override);
+  writeSidecar(target, record);
+  return record;
+}
+
+function runOverride(ref: NodeRef, request: OverrideRequest): void {
+  const mainCheckout = resolveMainCheckout(process.cwd());
+  recordOverride(mainCheckout, ref, request, new Date());
+  console.log(`Override recorded for ${ request.nodeId } in ${ sidecarPath(mainCheckout, ref.fileKey, ref.nodeId) }: ${ request.props.join(' ') }`);
+  console.log('No gap logged: an override is design intent, not a miss.');
+}
+
 export interface CorrectionOutcome {
   readonly record: SidecarRecord;
   readonly gap: GapAppend;
@@ -218,8 +311,7 @@ export interface CorrectionOutcome {
 // Offline on purpose: the correction is about the sidecar the developer just read, so a fetch would
 // only risk writing a correction against values they have not seen.
 export function recordCorrection(mainCheckout: string, ref: NodeRef, request: CorrectionRequest, now: Date): CorrectionOutcome {
-  const target = sidecarPath(mainCheckout, ref.fileKey, ref.nodeId);
-  if (!fs.existsSync(target)) throw new Error(`No sidecar for node ${ ref.nodeId }: run the readout first; it writes ${ target }.`);
+  const target = sidecarTarget(mainCheckout, ref);
   const recordedAt = now.toISOString();
   const correction: Correction = { component: request.component, props: request.props, gap: request.gap, recordedAt, stale: false };
   const record = applyCorrection(readSidecar(target), request.nodeId, correction);
@@ -305,6 +397,9 @@ async function main(): Promise<void> {
   switch (parsed.kind) {
     case 'correct':
       runCorrection(parsed.ref, parsed.correction);
+      return;
+    case 'override':
+      runOverride(parsed.ref, parsed.override);
       return;
     case 'calibrate':
       runCalibrate();

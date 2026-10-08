@@ -45,7 +45,8 @@ themselves; a different choice is a re-run with `--regions`. Everything past the
 values, the hints, the lists — stays in the file for the subagent.
 
 A node that already has a sidecar prints a diff instead of values; the sidecar is complete either way,
-and a correction flagged `STALE` in that diff goes to the developer with the Ambiguous items in step 3.
+and a correction or override flagged `STALE` in that diff goes to the developer with the Ambiguous
+items in step 3.
 
 **Done when**: the developer has said yes to the regions, and the `Sidecar written to` or
 `Sidecar updated at` line in `$OUT` names the record.
@@ -90,8 +91,15 @@ settles it, sends it on, or — a Layout item only — names it a convention:
   pnpm design:readout "<url>" --correct <nodeId> <Component> [<props…>] --gap convention
   ```
 
-A **shipped-code-vs-mockup conflict** is presented with both sides and settled by the developer; the
-record carries the pick with the category `context`.
+A **shipped-code-vs-mockup conflict** is presented with both sides and settled by the developer, one
+of two ways. The shipped code is wrong here: a correction with the category `context`, as above. The
+mockup styles this one instance on purpose, and the line carries an `override:` tail: an override,
+which names no component and logs no gap — the tool read the values right, the disagreement is
+design intent. A color prop is checked against the tokens the node resolved for that fill.
+
+  ```bash
+  pnpm design:readout "<url>" --override <nodeId> <prop=value> [<prop=value…>]
+  ```
 
 A **By convention** item is already settled: the developer reviews each application and either lets it stand or edits the convention's line
 in the file.

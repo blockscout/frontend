@@ -29,6 +29,7 @@ const NODE: NodeRecord = {
   tokens: [ { role: 'text', color: '#63B3ED', tokens: [ 'link.primary' ] } ],
   composite: null,
   correction: null,
+  override: null,
 };
 
 const CORRECTION: Correction = {

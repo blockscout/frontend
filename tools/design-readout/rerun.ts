@@ -1,7 +1,7 @@
 import { isEqual } from 'es-toolkit';
 
 import { describeWhy } from './recognize';
-import type { Correction, NodeRecord, SidecarRecord } from './sidecar';
+import type { Correction, NodeRecord, Override, SidecarRecord } from './sidecar';
 import { describeLeaf } from './values';
 
 export type NodeChange =
@@ -24,9 +24,15 @@ function decisionOf({ decision, status, tokens, composite }: NodeRecord): Decisi
   return { decision, status, tokens, composite };
 }
 
+// The previous record came back through JSON, which drops a key whose value is `undefined`
+// (`trailingGlyphs`), so the fresh extraction is put through the same round trip before comparing.
+function stored<T>(value: T): T {
+  return JSON.parse(JSON.stringify(value)) as T;
+}
+
 function changeOf(previous: NodeRecord, next: NodeRecord): NodeChange {
-  const values = !isEqual(previous.values, next.values);
-  const decision = !isEqual(decisionOf(previous), decisionOf(next));
+  const values = !isEqual(stored(previous.values), stored(next.values));
+  const decision = !isEqual(stored(decisionOf(previous)), stored(decisionOf(next)));
   if (!values && !decision) return { kind: 'unchanged', node: next };
   return { kind: 'changed', previous, next, values, decision };
 }
@@ -53,12 +59,21 @@ export function diffRecords(previous: SidecarRecord, next: SidecarRecord): Rerun
 
 // A correction is the developer's word on the values they saw: it holds while the values hold, and
 // a decision change alone (a new rule in the tool) does not unsettle it. Once the values differ the
-// correction is kept but marked stale, for the developer to re-confirm with a new `--correct`.
+// correction is kept but marked stale, for the developer to re-confirm with a new `--correct`. An
+// override is carried under the same rule.
+function valuesChanged(old: NodeRecord, next: NodeRecord): boolean {
+  const change = changeOf(old, next);
+  return change.kind === 'changed' && change.values;
+}
+
 function carriedCorrection(old: NodeRecord, next: NodeRecord): Correction | null {
   if (old.correction === null) return null;
-  const change = changeOf(old, next);
-  const valuesChanged = change.kind === 'changed' && change.values;
-  return valuesChanged ? { ...old.correction, stale: true } : old.correction;
+  return valuesChanged(old, next) ? { ...old.correction, stale: true } : old.correction;
+}
+
+function carriedOverride(old: NodeRecord, next: NodeRecord): Override | null {
+  if (old.override === null) return null;
+  return valuesChanged(old, next) ? { ...old.override, stale: true } : old.override;
 }
 
 export function carryCorrections(previous: SidecarRecord, next: SidecarRecord): SidecarRecord {
@@ -67,7 +82,8 @@ export function carryCorrections(previous: SidecarRecord, next: SidecarRecord): 
     ...next,
     nodes: next.nodes.map((node) => {
       const old = before.get(node.id);
-      return { ...node, correction: old === undefined ? null : carriedCorrection(old, node) };
+      if (old === undefined) return { ...node, correction: null, override: null };
+      return { ...node, correction: carriedCorrection(old, node), override: carriedOverride(old, node) };
     }),
   };
 }
@@ -77,18 +93,24 @@ export function describeCorrection(correction: Correction): string {
   return `${ correction.component }${ props } (${ correction.gap }${ correction.stale ? ', STALE' : '' })`;
 }
 
+export function describeOverride(override: Override): string {
+  return `${ override.props.join(' ') }${ override.stale ? ' (STALE)' : '' }`;
+}
+
 function describeRecord(node: NodeRecord): string {
   return `${ describeLeaf(node) } — ${ describeWhy(node, node) }`;
 }
 
 function describeChanged(change: Extract<NodeChange, { kind: 'changed' }>): Array<string> {
   const what = [ change.values ? 'values' : undefined, change.decision ? 'decision' : undefined ].filter((part) => part !== undefined).join(' and ');
-  const previous = change.previous.correction;
-  const correction = previous === null ?
-    '' :
-    `; correction ${ describeCorrection(previous) } ${ change.values ? 'is now STALE, re-confirm it' : 'kept' }`;
+  const fate = change.values ? 'is now STALE, re-confirm it' : 'kept';
+  const { correction, override } = change.previous;
+  const carried = [
+    correction === null ? '' : `; correction ${ describeCorrection(correction) } ${ fate }`,
+    override === null ? '' : `; override ${ describeOverride(override) } ${ fate }`,
+  ].join('');
   return [
-    `  ~ ${ change.next.id } changed ${ what }${ correction }`,
+    `  ~ ${ change.next.id } changed ${ what }${ carried }`,
     `      was ${ describeRecord(change.previous) }`,
     `      now ${ describeRecord(change.next) }`,
   ];
@@ -101,8 +123,12 @@ function renderChange(change: NodeChange): Array<string> {
     case 'new':
       return [ `  + new ${ describeRecord(change.node) }` ];
     case 'vanished': {
-      const correction = change.node.correction === null ? '' : `; its correction ${ describeCorrection(change.node.correction) } is dropped`;
-      return [ `  - vanished ${ change.node.id }${ correction }` ];
+      const { correction, override } = change.node;
+      const dropped = [
+        correction === null ? '' : `; its correction ${ describeCorrection(correction) } is dropped`,
+        override === null ? '' : `; its override ${ describeOverride(override) } is dropped`,
+      ].join('');
+      return [ `  - vanished ${ change.node.id }${ dropped }` ];
     }
     case 'changed':
       return describeChanged(change);

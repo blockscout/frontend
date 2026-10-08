@@ -5,7 +5,7 @@ import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import type { Recognition } from './recognize';
-import { applyCorrection, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
+import { applyCorrection, applyOverride, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 import type { Leaf } from './values';
 
 let tmp = '';
@@ -59,7 +59,7 @@ describe('sidecarPath', () => {
 });
 
 describe('buildRecord', () => {
-  it('carries the file identity, the color mode and one node per leaf with its status, decision, tokens, composite and an empty correction', () => {
+  it('carries the file identity, the color mode and one node per leaf with its status, decision, tokens, composite and empty developer slots', () => {
     expect(record()).toEqual({
       version: 2,
       createdAt: '2026-10-06T10:00:00.000Z',
@@ -78,6 +78,7 @@ describe('buildRecord', () => {
           tokens: TOKENS,
           composite: null,
           correction: null,
+          override: null,
         },
         {
           id: '1:3',
@@ -88,6 +89,7 @@ describe('buildRecord', () => {
           tokens: [],
           composite: COMPOSITE,
           correction: null,
+          override: null,
         },
       ],
     });
@@ -111,7 +113,7 @@ describe('buildRecord', () => {
     const built = record();
     expect(Object.keys(built).sort()).toEqual([ 'colorMode', 'createdAt', 'file', 'fileKey', 'nodeId', 'nodes', 'regions', 'version' ]);
     for (const node of built.nodes) {
-      expect(Object.keys(node).sort()).toEqual([ 'bbox', 'composite', 'correction', 'decision', 'id', 'status', 'tokens', 'values' ]);
+      expect(Object.keys(node).sort()).toEqual([ 'bbox', 'composite', 'correction', 'decision', 'id', 'override', 'status', 'tokens', 'values' ]);
     }
     expect(JSON.stringify(built)).not.toMatch(/hint|style|component|layer|name/i);
   });
@@ -145,12 +147,42 @@ describe('applyCorrection', () => {
   });
 });
 
+describe('applyOverride', () => {
+  const override = { props: [ 'bg=whiteAlpha.100', 'fontWeight=500' ], recordedAt: '2026-10-08T09:30:00.000Z', stale: false };
+  const correction = { component: 'IconSvg', props: [ 'name=x' ], gap: 'icon' as const, recordedAt: '2026-10-07T09:30:00.000Z', stale: false };
+
+  it('sets the override on the named node, beside its correction, and leaves the rest of the record alone', () => {
+    const corrected = applyCorrection(record(), '1:3', correction);
+    const overridden = applyOverride(corrected, '1:3', override);
+    expect(overridden.nodes[1]).toEqual({ ...record().nodes[1], correction, override });
+    expect({ ...overridden, nodes: undefined }).toEqual({ ...record(), nodes: undefined });
+    expect(overridden.nodes[0]).toEqual(record().nodes[0]);
+  });
+
+  it('replaces an earlier override on the same node whole', () => {
+    const twice = applyOverride(applyOverride(record(), '1:3', { ...override, props: [ 'color=text.primary' ], stale: true }), '1:3', override);
+    expect(twice.nodes[1].override).toEqual(override);
+  });
+
+  it('rejects a node that is not in the record, naming the ones that are', () => {
+    expect(() => applyOverride(record(), '9:9', override)).toThrow('Node 9:9 is not in the sidecar of 22842:178383; its nodes are 1:2, 1:3.');
+  });
+});
+
 describe('writeSidecar / readSidecar', () => {
   it('writes pretty JSON, creating the folder, and reads the same record back', () => {
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-sidecar-'));
     const target = sidecarPath(tmp, 'KEY', '22842:178383');
     writeSidecar(target, record());
     expect(fs.readFileSync(target, 'utf8')).toMatch(/^\{\n {2}"version": 2,\n/);
+    expect(readSidecar(target)).toEqual(record());
+  });
+
+  it('reads a version-2 record written before the override slot with every override null', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-sidecar-'));
+    const target = path.join(tmp, 'old.json');
+    const legacy = { ...record(), nodes: record().nodes.map(({ override: _, ...node }) => node) };
+    fs.writeFileSync(target, JSON.stringify(legacy));
     expect(readSidecar(target)).toEqual(record());
   });
 

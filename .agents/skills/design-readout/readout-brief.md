@@ -14,7 +14,7 @@ no preamble:
 Recognized: <n> of <total>
 
 Ambiguous:
-- <nodeId> "<text or icon name>" at <x>,<y> — <what it can be> — proposal: <Component> [<props>] — gap: <category>
+- <nodeId> "<text or icon name>" at <x>,<y> — <what it can be> — proposal: <Component> [<props>] — gap: <category>[ — override: <prop>=<token>[ <prop>=<token>]]
 
 Unrecognized:
 - <nodeId> <kind> "<text or icon name>" at <x>,<y> — <values: fills → tokens, font> — proposal: <Component> [<props>] | none — gap: <category>
@@ -33,9 +33,11 @@ your way.
 
 ## 1. Read
 
-- The sidecar, in full: per node its values, `decision`, `status`, `tokens`, `composite`, `correction`.
-  A node with a `correction` is settled unless `stale` is true; a stale one goes on the Ambiguous list
-  with the correction as the proposal.
+- The sidecar, in full: per node its values, `decision`, `status`, `tokens`, `composite`, `correction`,
+  `override`. A node with a `correction` is settled unless `stale` is true; a stale one goes on the
+  Ambiguous list with the correction as the proposal. A node with an `override` is settled the same
+  way: the shipped component with those props on purpose; a stale one goes on the Ambiguous list with
+  the override as the proposal, in the `override:` tail.
 - The stdout file, for the hint verdicts only: a line where a hint **disagrees** with the value is
   reported beside its node in whichever list the node lands in, as `hint: <name> disagrees`. A hint
   that agrees adds nothing.
@@ -106,7 +108,11 @@ the node is still listed, so the developer sees every application.
 
 Where the shipped component and the mockup disagree about a node — the mockup draws an icon the code
 passes `noIcon` for, a weight the code does not set — the node is Ambiguous with both sides named and
-proposal left to the developer, category `context`. Never pick.
+proposal left to the developer, category `context`. Where the disagreement is a style the shipped
+component takes as a prop — a fill, a weight, a border — the line also ends with the override form,
+`— override: <prop>=<token>[ <prop>=<token>]`, the Chakra prop as written in JSX and the token the
+node's `tokens` resolved for that fill, so the developer can either correct the node (the shipped
+code is wrong here) or override it (the mockup styles this one instance on purpose). Never pick.
 
 **Done when**: every node is on exactly one list or counted as Recognized, every proposal names a file
 you opened, every disagreeing hint is beside its node, and no Layout question is one the conventions

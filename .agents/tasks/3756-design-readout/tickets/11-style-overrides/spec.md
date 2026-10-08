@@ -66,7 +66,7 @@ belongs in the theme is the developer's call at the style leaf, not the tool's.
       change; "What an editor here must keep true" gains the rule that an override is never a miss —
       no gap line, no component, color props checked against the node's resolved tokens — and the
       correction rule stays as written. `pnpm lint:doc-links` and the tool's specs pass.
-- [ ] `(human)` Re-run the skill on node `22842:178041` (estimated cost of tx actions): record the
+- [x] `(human)` Re-run the skill on node `22842:178041` (estimated cost of tx actions): record the
       header-row background and column-header color as overrides, see them in the Recognized Props
       cell of the regenerated block, and `gaps.md` gains no line.
 
@@ -89,7 +89,7 @@ belongs in the theme is the developer's call at the style leaf, not the tool's.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `config.ts` prop → role map; `sidecar.ts` `Override` slot, reader default, apply; `index.ts` `--override` parse, record, token check, usage; specs; FR 8 phrase
-- [ ] 2 `[agent]` `rerun.ts` carry-over and re-run text for overrides; `rerun.spec.ts`
-- [ ] 3 `[agent]` `readout-brief.md` conflict tail and settled rule; `SKILL.md` step 1 and 3; `readout-template.md` Props cell; `CONTEXT.md` row and rule; `pnpm lint:doc-links`
-- [ ] 4 `[human]` Re-run on `22842:178041`, record the two overrides, confirm the `(human)` criterion
+- [x] 1 `[agent]` `config.ts` prop → role map; `sidecar.ts` `Override` slot, reader default, apply; `index.ts` `--override` parse, record, token check, usage; specs; FR 8 phrase
+- [x] 2 `[agent]` `rerun.ts` carry-over and re-run text for overrides; `rerun.spec.ts`
+- [x] 3 `[agent]` `readout-brief.md` conflict tail and settled rule; `SKILL.md` step 1 and 3; `readout-template.md` Props cell; `CONTEXT.md` row and rule; `pnpm lint:doc-links`
+- [x] 4 `[human]` Re-run on `22842:178041`, record the two overrides, confirm the `(human)` criterion

@@ -23,10 +23,19 @@ export interface Correction {
   readonly stale: boolean;
 }
 
+// What the mockup styles on purpose, on a node whose component the tool read right: Chakra props as
+// `<prop>=<value>` words, over the shipped component's own. Not a miss: it names no component and logs
+// no gap. `stale` follows the correction's rule — set by a re-run whose values differ.
+export interface Override {
+  readonly props: ReadonlyArray<string>;
+  readonly recordedAt: string;
+  readonly stale: boolean;
+}
+
 // Per node: the values and box this run extracted, what recognition decided (the signal that fired
 // and what it says the node is; `null` when nothing fired) with its status, the tokens each fill
 // resolved to in the run's mode, the composite the node is part of (`null` when none fired), and
-// the slot for the developer's correction, `null` until one is given.
+// the slots for the developer's correction and style override, each `null` until given.
 export interface NodeRecord {
   readonly id: string;
   readonly values: LeafValues;
@@ -36,6 +45,7 @@ export interface NodeRecord {
   readonly tokens: ReadonlyArray<ColorTokens>;
   readonly composite: CompositeMembership | null;
   readonly correction: Correction | null;
+  readonly override: Override | null;
 }
 
 export interface SidecarRecord {
@@ -68,7 +78,7 @@ function nodeRecordOf(leaf: Leaf, recognitions: ReadonlyMap<string, Recognition>
   const recognition = recognitions.get(leaf.id);
   if (recognition === undefined) throw new Error(`Leaf ${ leaf.id } has no recognition.`);
   const { decision, status, tokens, composite } = recognition;
-  return { id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision, status, tokens, composite, correction: null };
+  return { id: leaf.id, values: leaf.values, bbox: leaf.bbox, decision, status, tokens, composite, correction: null, override: null };
 }
 
 export function buildRecord(inputs: SidecarInputs): SidecarRecord {
@@ -89,11 +99,21 @@ export function isGapCategory(value: string): value is GapCategory {
   return (GAP_CATEGORIES as ReadonlyArray<string>).includes(value);
 }
 
-export function applyCorrection(record: SidecarRecord, nodeId: string, correction: Correction): SidecarRecord {
+function assertNode(record: SidecarRecord, nodeId: string): void {
   if (!record.nodes.some((node) => node.id === nodeId)) {
     throw new Error(`Node ${ nodeId } is not in the sidecar of ${ record.nodeId }; its nodes are ${ record.nodes.map((node) => node.id).join(', ') }.`);
   }
+}
+
+export function applyCorrection(record: SidecarRecord, nodeId: string, correction: Correction): SidecarRecord {
+  assertNode(record, nodeId);
   return { ...record, nodes: record.nodes.map((node) => node.id === nodeId ? { ...node, correction } : node) };
+}
+
+// Replaces the node's override whole, as `applyCorrection` does; the correction slot is untouched.
+export function applyOverride(record: SidecarRecord, nodeId: string, override: Override): SidecarRecord {
+  assertNode(record, nodeId);
+  return { ...record, nodes: record.nodes.map((node) => node.id === nodeId ? { ...node, override } : node) };
 }
 
 export function sidecarPath(mainCheckout: string, fileKey: string, nodeId: string): string {
@@ -112,6 +132,8 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 export function readSidecar(filePath: string): SidecarRecord {
   const parsed: unknown = JSON.parse(fs.readFileSync(filePath, 'utf8'));
   if (!isRecord(parsed) || parsed.version !== SIDECAR_VERSION) throw new Error(`Not a design-readout sidecar (version ${ SIDECAR_VERSION }): ${ filePath }`);
-  // Only this tool writes the folder; the version is the one field an edited file could drift on.
-  return parsed as unknown as SidecarRecord;
+  // Only this tool writes the folder; the version is the one field an edited file could drift on. The
+  // override slot came after version 2 was cut, so a record written before it reads back with `null`.
+  const record = parsed as unknown as SidecarRecord;
+  return { ...record, nodes: record.nodes.map((node) => ({ ...node, override: node.override ?? null })) };
 }
