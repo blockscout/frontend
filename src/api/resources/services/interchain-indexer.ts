@@ -73,6 +73,7 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
   bridged_tokens: {
     path: '/api/v1/stats/chain/:chainId/bridged-tokens',
     pathParams: [ 'chainId' as const ],
+    filterFields: [ 'q' as const ],
     scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
