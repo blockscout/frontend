@@ -23,9 +23,11 @@ of five style names were misleading.
 The task does recognition on our side. A `design-readout` tool and skill turn a Figma node into a readout
 that names the repo component, its props and the design tokens per node, and lists every ambiguous,
 unrecognized and layout item explicitly for a developer to resolve *before* any markup work starts. Phase 1
-is the readout only; the developer still does the markup leaf by hand and logs every miss. Phase 2 —
-automated verification of the rendered page against the readout, and loosening the delegation boundary —
-is built only if the phase 1 gap log is small.
+built the readout as the developer's input for a hand-made markup leaf. Q02 then loosened the boundary:
+the readout is a *supporting* input, the agent does the markup leaf from it — or from the tool's values
+alone when no readout was made — and the developer verifies in the running app and has every correction
+recorded. Phase 2 — automated verification of the rendered page against the readout — is a later issue;
+the gap log is read by hand.
 
 ## Functional requirements
 
@@ -75,31 +77,40 @@ is built only if the phase 1 gap log is small.
    ambiguous / unrecognized), the human correction and the style override once given, and bounding box. Figma hints are not
    stored.
 9. **Re-run.** Running the tool again for a node it has a sidecar for diffs against it and reports only
-   changed leaves; settled corrections carry over. `implement-ticket` re-runs before a markup leaf when
-   the file's `lastModified` is newer than the sidecar's.
+   changed leaves; settled corrections carry over. No workflow step re-runs on its own; the developer
+   re-runs when the mockup moved.
 10. **Calibration.** `tools/design-readout/calibration/` holds committed value snapshots (the tool's own
     extraction, not raw Figma payloads) for a labeled set, each paired with the expected component and
     props per cell. `pnpm design:readout --calibrate` runs recognition over the snapshots offline and
     prints hits and misses per signal; `--refresh` re-fetches a snapshot from Figma, and a vanished node
     marks its entry stale rather than failing the run. The set is seeded with the five hand-calibrated nodes
     plus roughly ten shipped table row components with their Figma nodes (Q01).
-11. **Gap log.** `.ai/design-readout/gaps.md`, one line per miss with a category from shape / icon /
-    color / composite / context / layout / convention. The skill appends a line whenever the developer
-    corrects an Ambiguous or Unrecognized item in session (category proposed, developer confirms); misses
-    found during the markup leaf are added by hand. The phase 2 decision is a hand count over this file.
+11. **Gap log.** `.ai/design-readout/gaps.md`, one line per miss with a stage (readout / markup) and a
+    category from shape / icon / color / composite / context / layout / convention / markup. The skill
+    appends a line whenever the developer corrects an Ambiguous or Unrecognized item in session (category
+    proposed, developer confirms). Misses found at the markup leaf are the developer's own edits: on
+    request the agent reads the developer's diff against the hand-off tree and records each one —
+    node-mapped through `--correct` / `--override`, the rest through `--note <text> --gap markup`. The
+    phase 2 decision is a hand count over this file.
 12. **Workflow integration.**
-    - `grill-the-task` runs the readout as part of its research for every Figma link the task carries:
-      scoping outline confirmed in the main session, readout in a subagent, Ambiguous items resolved by the
-      developer first and only genuine design-intent questions routed to the designer.
-    - `to-spec` writes `design-readout.md` into the task folder (Recognized table, Ambiguous,
-      Unrecognized, Layout questions) from the sidecar; `structure.md` gains its row; it is pruned at land
-      like the ticket files.
-    - `to-tickets` links the readout from the `[human]` style leaf. The style leaf and the `(human)`
-      verification stay unchanged in phase 1.
-    - `delegation.md` gains one line under "Agents may do today": design readouts from Figma nodes —
-      recognition only, never implementation. The markup line stays under humans-only.
-    - A small task that gets no spec runs the readout at grill time all the same; the output stays in
-      session and in the sidecar.
+    - `grill-the-task` enumerates the Figma links, one node per screen and state, and asks for the nav
+      icon of every new route (a sprite name, or a question to the designer); it runs no readout.
+    - The readout is an optional step the developer runs between `to-spec` and `to-tickets`, per link or
+      with no URL for every spec link without a block yet: scoping outline confirmed in the main session,
+      readout in a subagent, Ambiguous items resolved by the developer first; the skill writes
+      `design-readout.md` into the task folder (Recognized table, Ambiguous, Unrecognized, Layout
+      questions) and a `questions.md` entry per design-intent question the developer sends on.
+      `structure.md` carries the file's row; it is pruned at land like the ticket files.
+    - `to-tickets` cuts the style leaf `[agent]` with a mandatory `(human)` "matches the mockup"
+      criterion and links the readout block beside the Figma node when one exists. A style leaf covers
+      every breakpoint.
+    - `implement-ticket` runs the markup leaf in a subagent from the readout, or from the tool's own run
+      when there is none; at hand-off it stages the work and prints its tree hash; on the developer's
+      request it records their corrections from the diff. No `TODO (design):` markers: an item still
+      with the designer is a `Blocked by Q<NN>` edge and nothing else.
+    - `delegation.md`: design readouts, markup and styling to the mockup, and sprite icons the readout
+      recognized are agent work; visual polish, Playwright baselines and design sign-off stay human.
+    - A small task that gets no spec gets no readout; the agent styles from the tool's run.
 
 ## Data & API
 
@@ -133,8 +144,15 @@ None. This task ships no user-facing surface.
 - **Hex first, hints as labels.** The dark-mode probe returned `rgba(255,255,255,0.8)` with a style hint
   naming `text.primary` at `#FFFFFF`; the value resolves to `whiteAlpha.800` → `text.primary` (dark), the
   hint's hex would have mis-tokenized to `white`. The same file mixes light and dark hints.
-- **Readout at grill time, not build time**, so ambiguities become `questions.md` entries before tickets
-  are cut; that is the whole point of the question gate in `implement-ticket`.
+- **Readout after the spec, before tickets** (Q02; at first it ran inside grilling). The spec carries the
+  context the readout's judgment needs — entity family, API resource type — and ambiguities still become
+  `questions.md` entries before tickets are cut, which is the whole point of the question gate in
+  `implement-ticket`. Running it in its own session keeps the grill short.
+- **Supporting, not required** (Q02). The agent styles with or without a readout and the developer always
+  verifies; the readout's worth is the question gate and the logged corrections, not a precondition.
+- **Corrections come from the developer's diff, not from dictation** (Q02): fixing by hand is faster than
+  describing the fix; the agent's job is to read the diff and log it. The boundary is the tree hash the
+  agent prints at hand-off, so staging on either side cannot blur it, and nothing unverified is committed.
 - **The readout is a pruned task artifact, not spec content.** A per-node component table in the spec's UI
   inventory would be the value-copying that `concepts.md` forbids.
 - **Sidecar shape is the minimum the phase 2 decision and calibration need**: status, correction and gap
@@ -149,7 +167,10 @@ None. This task ships no user-facing surface.
 ## Out of scope
 
 - **Phase 2**: automated verification of a rendered component against the readout (pixel or structure
-  diff), a `verify-design` review axis, and loosening the markup line in `delegation.md`.
+  diff) and a `verify-design` review axis. A side-by-side of a Playwright shot and the Figma screenshot
+  in the hand-off is the first candidate.
+- **Agent-run Playwright baselines**: the developer runs the one command after verifying.
+- **Dropping `TODO (api-data):` markers**: they are `add-new-page`'s own phase marker, not a hand-over.
 - **Icon geometry matching** against sprite sources.
 - **Any change to the designer's Figma workflow or file hygiene.**
 - **Automated routing of Ambiguous items to the designer** — they go through the normal grill-time
