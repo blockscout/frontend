@@ -126,5 +126,5 @@ no statuses of its own; the shared three with their triggers here:
 | Status | When | Resumed? |
 | --- | --- | --- |
 | `done` | the event is muted, the PR is open, or the fixing commit is named, and the step 7 message is shown — and, for a Slack-sourced run, posted; the message is that text | no |
-| `needs_user` | step 1 found no event link or several, or the precheck failed; the message carries the question or the setup to do | yes, with the answer |
+| `needs_user` | step 1 found no event link or several, the precheck failed, or step 3 hit a group item; the message carries the question (for a group item, which constituent-item link to send) or the setup to do | yes, with the answer |
 | `needs_approval` | the mute, the push, the PR creation or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
