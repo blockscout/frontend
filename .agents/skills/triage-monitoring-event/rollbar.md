@@ -32,13 +32,15 @@ the variable above is the one this skill expects.
   environment, `code_version` and the exception message, so page, user agent and telemetry are gone.
   Raise `max_tokens` or lower the limit until the ones to read are `full`.
 - A **group item** answers `group_item_not_supported` instead of a list: its occurrences are on its
-  constituent items.
+  constituent items, which the response does not name — the skill stops there and asks for one.
 - **Frames are minified and no source maps are uploaded**, so file, line and column in the trace name
   nothing. Only the message, the page, the telemetry and the release locate the code.
 
-## Muting, resolving
+## Muting
 
-Update the item to status `muted`; for an already-fixed event, to status `resolved` with
-`resolvedInVersion` set to the fixing commit on `main` — Rollbar reactivates a resolved item on its own
-when a newer version reports it again. The update tool takes the item's numeric **`id`** from the details
+Update the item to status `muted`. The update tool takes the item's numeric **`id`** from the details
 response (the long one, `1806137227`-shaped) — **not** the counter from the URL. They are different numbers.
+
+An already-fixed event is **not** resolved here: `resolvedInVersion` reactivates only on a semver `>=` or,
+when both sides are SHAs, on commit ancestry, and the deployed `code_version` is a release tag while the
+fix is a commit SHA, so the item would never reopen. Leave it active.

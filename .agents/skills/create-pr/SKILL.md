@@ -45,7 +45,8 @@ the PR does from the title alone:
 At this stage nothing is implemented, so **do not** describe changes, env vars, or checklists — the
 description is a placeholder pointing at the plan:
 
-1. **Prepare the branch** — commit `spec.md` and `questions.md` if needed (with the user's approval), push
+1. **Prepare the branch** — commit `spec.md` and `questions.md` if needed (with the user's approval —
+   reached from `to-spec`, they are already committed and its content confirmation covers this), push
    with `-u`.
 2. **Compose the placeholder body** (skip the PR template — it describes finished work):
    - `Resolves #<ISSUE_NUMBER>` — the branch is `issue-<number>`, so extract the number from it.

@@ -7,8 +7,9 @@ argument-hint: <event URL or id, or a Slack message/thread link carrying one>
 # Triage a monitoring event
 
 One event in, one of three outcomes out: the event is **muted** in the monitoring tool, a **PR** with
-the fix is open, or the event is marked **resolved** because `main` already carries the fix. All three
-are a click to undo, so the run goes end-to-end without asking. The user reads the final message.
+the fix is open, or the event is reported as **already fixed** on `main`, with the commit named. The mute
+and the PR are a click to undo, and the third changes nothing, so the run goes end-to-end without asking.
+The user reads the final message.
 
 The monitoring provider is Rollbar; everything provider-specific — reaching the tool, reading an event,
 muting it — is in [`rollbar.md`](rollbar.md). The steps below name the operations; that file says how.
@@ -38,6 +39,9 @@ configure, from the provider doc, and end there.
 title and exception class, the occurrence count, first and last timestamps, the release version, and
 per occurrence the page URL, the user agent and the telemetry leading up to the error.
 
+A **group item** (the provider doc says how it answers) has no occurrences of its own: a stop — ask for
+the link of one of its constituent items.
+
 **Done when:** the event and every occurrence the list returned are in hand, however many came back.
 
 ### 4. Locate the code
@@ -49,9 +53,10 @@ the frames do and do not give):
 - the **page**: the page URL maps to a route under `src/pages`; the error is on that route's render path;
 - the **telemetry**: the console and network lines before the error name the request or action that
   triggered it;
-- the **release**: the release version is a git tag. If `main` has since changed the suspected code, read
-  it as of the tag (`git show <tag>:<path>`) and check whether `main` already fixed it — that is the
-  **Already fixed** outcome in step 5, with the fixing commit named.
+- the **release**: the release version is a git tag or, for a build without one, a commit SHA; either is
+  a rev. If `main` has since changed the suspected code, read it as of that rev (`git show <rev>:<path>`)
+  and check whether `main` already fixed it — that is the **Already fixed** outcome in step 5, with the
+  fixing commit named.
 
 **Done when:** the throw site is named, or it is established that the throw is outside our code (browser,
 extension, SDK, infrastructure).
@@ -95,16 +100,17 @@ ships — except when the fix is a filter (step 5), which also runs 6a.
 
 ### 6c. Already fixed
 
-**Resolve the event** per the provider doc,
-naming the fixing commit as the version; the tool reopens it by itself if a later release throws again.
+Nothing to change: no PR, and the event stays active in the monitoring tool. It resolves when the release carrying the fixing commit ships. (Marking it resolved
+against the commit does not work. See explanation in provider doc.)
 
-**Done when:** the tool reports the new status.
+**Done when:** the fixing commit on `main` is named for the final message.
 
 ### 7. Report
 
 Compose the **final message**: the outcome in one line with its link (PR, or the event), the
 justification from step 5, for a mute the one-line test a future reader can reuse to recognise the same
-noise, and for an already-fixed event the commit on `main` that fixes it.
+noise, and for an already-fixed event the commit on `main` that fixes it and that the event stays active
+until the release carrying it ships.
 
 When the input was a Slack thread, post the same text as a reply in that thread, written per
 `.agents/slack-message.md`. Post it without asking — the named exception to `AGENTS.md`'s
@@ -119,6 +125,6 @@ no statuses of its own; the shared three with their triggers here:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
-| `done` | the event is muted, resolved, or the PR is open, and the step 7 message is posted; the message is that text | no |
+| `done` | the event is muted, the PR is open, or the fixing commit is named, and the step 7 message is shown — and, for a Slack-sourced run, posted; the message is that text | no |
 | `needs_user` | step 1 found no event link or several, or the precheck failed; the message carries the question or the setup to do | yes, with the answer |
-| `needs_approval` | the mute, the resolve, the push, the PR creation or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
+| `needs_approval` | the mute, the push, the PR creation or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
