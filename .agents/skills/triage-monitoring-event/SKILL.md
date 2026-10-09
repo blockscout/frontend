@@ -6,9 +6,9 @@ argument-hint: <event URL or id, or a Slack message/thread link carrying one>
 ---
 # Triage a monitoring event
 
-One event in, one of two outcomes out: the event is **muted** in the monitoring tool, or a **PR** with
-the fix is open. Both are a click to undo, so the run goes end-to-end without asking. The user reads
-the final message.
+One event in, one of three outcomes out: the event is **muted** in the monitoring tool, a **PR** with
+the fix is open, or the event is marked **resolved** because `main` already carries the fix. All three
+are a click to undo, so the run goes end-to-end without asking. The user reads the final message.
 
 The monitoring provider is Rollbar; everything provider-specific — reaching the tool, reading an event,
 muting it — is in [`rollbar.md`](rollbar.md). The steps below name the operations; that file says how.
@@ -38,7 +38,7 @@ configure, from the provider doc, and end there.
 title and exception class, the occurrence count, first and last timestamps, the release version, and
 per occurrence the page URL, the user agent and the telemetry leading up to the error.
 
-**Done when:** the event and at least five occurrences are in hand.
+**Done when:** the event and every occurrence the list returned are in hand, however many came back.
 
 ### 4. Locate the code
 
@@ -50,7 +50,8 @@ the frames do and do not give):
 - the **telemetry**: the console and network lines before the error name the request or action that
   triggered it;
 - the **release**: the release version is a git tag. If `main` has since changed the suspected code, read
-  it as of the tag (`git show <tag>:<path>`) and check whether `main` already fixed it.
+  it as of the tag (`git show <tag>:<path>`) and check whether `main` already fixed it — that is the
+  **Already fixed** outcome in step 5, with the fixing commit named.
 
 **Done when:** the throw site is named, or it is established that the throw is outside our code (browser,
 extension, SDK, infrastructure).
@@ -62,13 +63,14 @@ Pick one outcome, with the test:
 | Outcome | When |
 | --- | --- |
 | **Mute** | Noise: the throw is environmental or outside our code — scraper and headless user agents, extensions, network and infra failures, a vendored SDK's expected rejection — and nothing we ship would change it. |
-| **Fix PR** | Our code throws, or handles a legitimate situation badly, on a path a real user reaches. |
+| **Fix PR** | Our code throws, or handles a legitimate situation badly, on a path a real user reaches, and `main` still has the bug. |
+| **Already fixed** | A bug by the Fix PR test, but a commit on `main` after the release already fixes it. |
 
 A mute silences one event signature. When the same noise family will come back under new titles (a
 variable URL, host or count in the message), a **filter** is the fix — a `checkIgnore` helper or an
 `ignoredMessages` entry in `src/services/rollbar/clientConfig.ts`, with the reason comment that file's
 entries carry. That is the Fix PR outcome, and the event is muted too (step 6a), since the filter only
-lands with the next release.
+lands with the next release — the one case where a fix PR also mutes.
 
 **Done when:** the outcome and its one-paragraph justification are written down for the final message.
 
@@ -86,29 +88,37 @@ regression unit test where the throw is unit-testable, lint and type-check clean
 
 Then follow the `create-pr` skill, Mode C. The Description names the
 event as a link, the occurrence count and the environment signal that made it a bug, and what the fix
-changes. The event stays active in the monitoring tool: it resolves when the release carrying the fix
-ships.
+changes. The event stays active in the monitoring tool, so it resolves when the release carrying the fix
+ships — except when the fix is a filter (step 5), which also runs 6a.
 
 **Done when:** the PR link is in hand and `git status` is clean.
+
+### 6c. Already fixed
+
+**Resolve the event** per the provider doc,
+naming the fixing commit as the version; the tool reopens it by itself if a later release throws again.
+
+**Done when:** the tool reports the new status.
 
 ### 7. Report
 
 Compose the **final message**: the outcome in one line with its link (PR, or the event), the
-justification from step 5, and — for a mute — the one-line test a future reader can reuse to recognise
-the same noise.
+justification from step 5, for a mute the one-line test a future reader can reuse to recognise the same
+noise, and for an already-fixed event the commit on `main` that fixes it.
 
 When the input was a Slack thread, post the same text as a reply in that thread, written per
-`.agents/slack-message.md`.
+`.agents/slack-message.md`. Post it without asking — the named exception to `AGENTS.md`'s
+approve-before-sending rule.
 
 **Done when:** the message is shown to the user and, for a Slack-sourced run, posted in the thread.
 
 ## Run by Honk
 
 When the Honk orchestrator runs this skill headless, follow [`honk.md`](../../honk.md). This skill adds
-no statuses of its own: a finished run — muted, or PR open — needs nothing from an operator, so it ends
-with the step 7 message in free form, no `STATUS:` line.
+no statuses of its own; the shared three with their triggers here:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
+| `done` | the event is muted, resolved, or the PR is open, and the step 7 message is posted; the message is that text | no |
 | `needs_user` | step 1 found no event link or several, or the precheck failed; the message carries the question or the setup to do | yes, with the answer |
-| `needs_approval` | the mute, the push, the PR creation or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
+| `needs_approval` | the mute, the resolve, the push, the PR creation or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |

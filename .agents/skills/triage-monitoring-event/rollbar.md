@@ -24,13 +24,21 @@ the variable above is the one this skill expects.
 
 - An event is an **item**. The URL ends `/item/Frontend/<counter>`; the counter, plus the project
   `Frontend`, is what the read tools take.
-- Fetch the item details, then list occurrences with a limit of five or so. Occurrences carry the page
-  under `request.url`, the user agent under `client.javascript.browser`, the release under
-  `code_version` and the console trail under `body.telemetry`.
+- Fetch the item details, then list occurrences with a limit of five or so. A full occurrence nests its
+  payload under `data`: the page is `data.request.url`, the user agent `data.client.javascript.browser`,
+  the release `data.code_version` and the console trail `data.body.telemetry`.
+- The list is budgeted by `max_tokens`. When the response carries a top-level `_truncation`, some
+  occurrences came back below `full` (`_tier` says which): the `compact` tier keeps only level,
+  environment, `code_version` and the exception message, so page, user agent and telemetry are gone.
+  Raise `max_tokens` or lower the limit until the ones to read are `full`.
+- A **group item** answers `group_item_not_supported` instead of a list: its occurrences are on its
+  constituent items.
 - **Frames are minified and no source maps are uploaded**, so file, line and column in the trace name
   nothing. Only the message, the page, the telemetry and the release locate the code.
 
-## Muting
+## Muting, resolving
 
-Update the item to status `muted`. The update tool takes the item's numeric **`id`** from the details
+Update the item to status `muted`; for an already-fixed event, to status `resolved` with
+`resolvedInVersion` set to the fixing commit on `main` — Rollbar reactivates a resolved item on its own
+when a newer version reports it again. The update tool takes the item's numeric **`id`** from the details
 response (the long one, `1806137227`-shaped) — **not** the counter from the URL. They are different numbers.
