@@ -55,6 +55,6 @@ no longer writes `design-readout.md`. A small task that gets no spec gets no rea
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` `design-readout/SKILL.md`: optional URL, hand-back writes `design-readout.md` and `questions.md` entries, description
-- [ ] 2 `[agent]` `grill-the-task` enumerate-only + nav icon; `to-spec` + `spec-template.md`; `to-tickets` wording
-- [ ] 3 `[agent]` `tasks/README.md` lifecycle line; `structure.md` row; `CONTEXT.md`; `pnpm lint:doc-links`
+- [x] 1 `[agent]` `design-readout/SKILL.md`: optional URL, hand-back writes `design-readout.md` and `questions.md` entries, description
+- [x] 2 `[agent]` `grill-the-task` enumerate-only + nav icon; `to-spec` + `spec-template.md`; `to-tickets` wording
+- [x] 3 `[agent]` `tasks/README.md` lifecycle line; `structure.md` row; `CONTEXT.md`; `pnpm lint:doc-links`

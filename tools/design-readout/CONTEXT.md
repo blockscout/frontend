@@ -1,6 +1,8 @@
 # Design readout — context
 
-Turns a Figma node into material a developer confirms before any markup work: the *scoping outline* —
+Turns a Figma node into material a developer confirms once the task's spec is written and before its
+tickets are cut (the `design-readout` skill is that step; `.agents/tasks/README.md` places it): the
+*scoping outline* —
 which node is the content root and which chrome was dropped on the way down, with the rule that
 dropped it — under the confirmed regions, the *values* of every leaf (text, fills per role, font,
 icon instance name, trailing glyphs, bounding box) — and per leaf what the tool *recognizes* from

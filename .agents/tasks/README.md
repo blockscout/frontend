@@ -28,6 +28,8 @@ Each step names the skill that runs it; the session model — what runs where, a
 
 1. **Grill** — run `grill-the-task` with the issue URL.
 2. **Spec** — `to-spec` writes `spec.md` and `questions.md`, then opens the draft PR.
+   - *Optional* — **Design readout** — the developer runs `design-readout` for the spec's Figma links; it
+     writes `design-readout.md` and the designer questions into `questions.md`.
 3. **Break into tickets** — `to-tickets` runs with the spec and open questions as its input. It writes the
    ticket files and `progress.md`.
 4. **Answers** — when colleagues reply, read the threads and fold each decision into `questions.md`. When an

@@ -18,4 +18,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 10 → `tickets/10-layout-conventions/`
 - [x] 11 → `tickets/11-style-overrides/`
 - [ ] 12 → `tickets/12-delegation-loosening/`
-- [ ] 13 → `tickets/13-readout-after-spec/`
+- [x] 13 → `tickets/13-readout-after-spec/`

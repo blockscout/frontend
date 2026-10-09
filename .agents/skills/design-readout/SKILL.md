@@ -2,10 +2,8 @@
 name: design-readout
 description: >-
   Read one Figma node into a design readout — per node the repo component, its props and the theme
-  tokens, with every ambiguous, unrecognized and layout item listed for the developer to settle.
-  Use for each Figma link a task carries, at grill time and again before a markup leaf when the file
-  changed. Recognition only, never implementation.
-argument-hint: <figma node URL>
+  tokens, with every ambiguous, unrecognized and layout item listed for the developer to settle. Recognition only, never implementation.
+argument-hint: [figma node URL]
 ---
 
 # Design readout
@@ -19,11 +17,13 @@ What the tool does on its own and where its record lives: `tools/design-readout/
 
 | Input | Source | Missing |
 | --- | --- | --- |
-| Figma node URL *(positional)* | the task's issue, spec or ticket | stop |
+| Figma node URL *(positional, optional)* | the task's issue, spec or ticket | every Figma link in the task's `spec.md` that has no block in `design-readout.md` yet; no task folder either → stop |
 | Task context | the task's `spec.md` or ticket `spec.md` in session; else the conversation | ask the developer one line: which screen, which entity family |
 | API response type | the resource's type file, when the task names a resource | the context override has one leg less; say so in the dispatch |
 
-One link is one screen in one state. A second state or the mobile variant is a second run.
+One link is one screen in one state. A second state or the mobile variant is a second run. The task
+folder is resolved from the branch (`issue-<number>`, layout in `../../tasks/structure.md`); with no
+URL, steps 1–4 run once per link still without a block, in the spec's order.
 
 The tool needs a Figma personal access token in the environment. A run that fails on the token prints
 one line on stderr: relay it and stop. Obtaining the token is the developer's two-minute job; the skill
@@ -75,8 +75,8 @@ settles it, sends it on, or — a Layout item only — names it a convention:
   pnpm design:readout "<url>" --correct <nodeId> <Component> [<props…>] --gap <category>
   ```
 
-- **Sent on** — a design-intent question the developer cannot answer goes to the designer through the
-  calling skill's question flow; the item stays in its list with the question beside it.
+- **Sent on** — a design-intent question the developer cannot answer goes to the designer: step 4
+  writes it as a `questions.md` entry; the item stays in its list with the question beside it.
 
 - **Convention** — the developer says "that's just how we do it": the repo answered this layout
   question long ago and will answer it the same way next time. Draft the line, read it back, and on
@@ -109,9 +109,9 @@ only open questions, and every By convention line is reviewed.
 
 ## 4. Hand back
 
-Return to the caller the sidecar path, the four lists and the Recognized count. The
-file that carries a readout into a task folder follows [`readout-template.md`](readout-template.md);
-writing it is the task workflow's job, not this skill's.
+Write the node’s block to the task folder’s `design-readout.md`. If the file does not exist, write it to the project root instead. Use the format defined in [`readout-template.md`](readout-template.md): create the file from the template if it does not exist, replace the block for the same node if it does, and read the rows from the sidecar and the settled lists.
+
+Then, if a task folder exists for any item forwarded in step 3, append one entry to the task’s `questions.md`, using the format defined in `.agents/skills/to-spec/questions-template.md`.
 
 ## Rules — binding in every step
 

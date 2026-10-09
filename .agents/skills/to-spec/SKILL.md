@@ -25,12 +25,6 @@ Derive the task folder from the issue: `.agents/tasks/<issue-number>-<slug>/` (l
 - **`spec.md`** from [`spec-template.md`](spec-template.md).
 - **`questions.md`** from [`questions-template.md`](questions-template.md).
 
-And a third when the grilling ran a design readout — a sidecar exists for a Figma link the task carries
-(`tools/design-readout/CONTEXT.md` says where the tool writes it):
-
-- **`design-readout.md`** from the sidecar if it is exist (see tools/design-readout/config.ts for exact path) and the lists the `design-readout` skill returned, one block
-  per node, in the shape [`../design-readout/readout-template.md`](../design-readout/readout-template.md)
-  defines.
 
 Keep the spec an **index of decisions**, not a worklog — what to build and why, pointing at detail (its
 Slack thread, the code, the PR) rather than copying it. **Show the user the files and get their
@@ -42,8 +36,7 @@ The content confirmation in Step 1 is the only prompt. Once it's given, run this
 again** — it authorizes the branch, commit, push, and draft PR together:
 
 1. **Branch** — `issue-<number>` off `main`. Create/switch if needed and record it in the spec header.
-2. **Commit** — commit `spec.md`, `questions.md` and `design-readout.md` (when written) as the branch's
-   first commit.
+2. **Commit** — commit `spec.md` and `questions.md` as the branch's first commit.
 3. **Draft PR** — hand off to the `create-pr` skill (draft-placeholder mode, feature branch → `main`); it
    pushes and opens the draft with no further confirmation. Why the draft opens this early is in
    [`../../tasks/README.md`](../../tasks/README.md).
