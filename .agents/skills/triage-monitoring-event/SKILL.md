@@ -84,7 +84,7 @@ Work on a fresh branch off `origin/main`: `monitoring-<id>-<kebab-slug>`. Apply 
 (`.agents/rules/code-quality.md`, `.agents/rules/typescript.md`, `.agents/rules/tests-unit.md`): a
 regression unit test where the throw is unit-testable, lint and type-check clean on the changed files.
 
-Then follow the `create-pr` skill, Mode C, skipping its confirmation steps. The Description names the
+Then follow the `create-pr` skill, Mode C. The Description names the
 event as a link, the occurrence count and the environment signal that made it a bug, and what the fix
 changes. The event stays active in the monitoring tool: it resolves when the release carrying the fix
 ships.

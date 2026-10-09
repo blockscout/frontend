@@ -24,7 +24,7 @@ Done when one body of material is in hand, or the run has stopped.
 
 Done when exactly one topic is selected, or the run has stopped.
 
-- Several issue-worthy topics → list them in one short round and wait. "All of them" means a separate issue per topic: confirm and create each before starting the next.
+- Several issue-worthy topics → list them in one short round and wait. "All of them" means a separate issue per topic, created one after another.
 - File when the problem or request can be stated in a couple of sentences. Missing repro, acceptance criteria, or technical detail is fine — omit those sections later.
 - No request or problem in the source, or the subject itself cannot be named → stop and tell them the issue cannot be created.
 
@@ -34,7 +34,7 @@ Done when repository, type, labels, title and body are all decided.
 
 Follow the `check-github-cli` skill before any `gh` command below. Do not proceed with `gh` until `gh auth status` succeeds.
 
-**Repository.** Recommend one: this workspace's `origin` when it is a `blockscout/*` repo and the topic fits; otherwise a best-guess `blockscout/*` repo from the topic. Skip fork remotes. If they say it is the wrong place, list `blockscout` source repos (`gh repo list blockscout --source --no-archived --limit 100 --json name,description`) or take an `owner/name` they type.
+**Repository.** Pick one: this workspace's `origin` when it is a `blockscout/*` repo and the topic fits; otherwise a best-guess `blockscout/*` repo from the topic. Skip fork remotes. If the user later says it is the wrong place, move the issue with `gh issue transfer <url> <owner/name>` — list `blockscout` source repos (`gh repo list blockscout --source --no-archived --limit 100 --json name,description`) when they need to pick.
 
 **Type.** Infer one of `Bug`, `Task`, or `Feature` from the topic: unexpected broken behavior → `Bug`; new user-facing capability → `Feature`; otherwise `Task`.
 
@@ -68,11 +68,9 @@ Follow the `check-github-cli` skill before any `gh` command below. Do not procee
 
 **Public-safe.** People unnamed and unattributed; no links to the private source (Slack, Notion, Fireflies, internal docs); no client names; no unreleased dates or roadmap.
 
-## Step 4 — Confirm, create, stop
+## Step 4 — Create, stop
 
-Present repository, type, title, body, labels (or "None"), and project board (or "None") and wait. Apply requested edits and re-confirm.
-
-Then create:
+Create:
 
 ```bash
 gh issue create \
@@ -98,4 +96,4 @@ gh project item-add <number> --owner <owner> --url <issue-url>
 
 Unlisted repos skip the board. A board failure does not undo the issue — report it and still show the issue link.
 
-Show a clickable Markdown link to the new issue. The skill is done — no grilling, speccing, or implementing unless they ask in a follow-up.
+Show a clickable Markdown link to the new issue, with its repository, type and labels (or "None") on one line. The skill is done — no grilling, speccing, or implementing unless they ask in a follow-up.
