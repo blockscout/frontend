@@ -97,3 +97,14 @@ gh project item-add <number> --owner <owner> --url <issue-url>
 Unlisted repos skip the board. A board failure does not undo the issue — report it and still show the issue link.
 
 Show a clickable Markdown link to the new issue, with its repository, type and labels (or "None") on one line. The skill is done — no grilling, speccing, or implementing unless they ask in a follow-up.
+
+## Run by Honk
+
+When the Honk orchestrator runs this skill headless, follow [`honk.md`](../../honk.md). This skill adds
+no statuses of its own: a finished run needs nothing from an operator, so it ends with the Step 4 message 
+in free form, no `STATUS:` line.
+
+| Status | When | Resumed? |
+| --- | --- | --- |
+| `needs_user` | the source could not be fetched, has no issue-worthy topic or several of them, or `gh` is not authenticated or lacks the `project` scope; the message carries the question or the setup to do | yes, with the answer |
+| `needs_approval` | `gh issue create` or `gh project item-add` needs a tool the worker profile denies; the message carries exactly what would be run | yes, once a human did it or allowed it |
