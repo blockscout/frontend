@@ -7,6 +7,7 @@ import React from 'react';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 
 import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/AddressAdvancedFilterLink';
 import TokenTransfersCrossChainContent from 'src/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainContent';
@@ -16,6 +17,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
@@ -54,6 +56,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     currentAddress: hash,
     enabled: isQueryEnabled && isLocalTab,
   });
+  const columnsState = useTokenTransferColumns('address', { typeFilter: localQuery.filters.type });
 
   const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_transfers',
@@ -79,6 +82,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
           onTypeFilterChange={ localQuery.onTypeFilterChange }
           onAddressFilterChange={ localQuery.onAddressFilterChange }
           addressHash={ hash }
+          columnsState={ columnsState }
           overloadCount={ overloadCount }
         />
       ),
@@ -130,6 +134,15 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               withAddressFilter
               onAddressFilterChange={ localQuery.onAddressFilterChange }
               defaultAddressFilter={ localQuery.filters.filter }
+              isLoading={ localQuery.query.isInitialLoading }
+            />
+            <ColumnsButton
+              tableColumns={ columnsState.selectableColumns }
+              columns={ columnsState.checkedColumns }
+              onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
+              selected={ columnsState.isCustomized }
+              onReset={ columnsState.onColumnsReset }
               isLoading={ localQuery.query.isInitialLoading }
             />
             <CsvExport

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { WalletType } from 'src/features/web3-wallet/types/config';
+import type { TokenTransferSurface } from 'src/slices/token-transfer/types/client';
 
 import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
 
@@ -30,6 +31,7 @@ export enum EventTypes {
   PROMO_BANNER = 'Promo banner',
   APP_FEEDBACK = 'App feedback',
   ADDRESS_WIDGET = 'Address widget',
+  TABLE_COLUMNS = 'Table columns',
 }
 
 /* eslint-disable  @stylistic/indent */
@@ -182,6 +184,15 @@ Type extends EventTypes.APP_FEEDBACK ? {
 } :
 Type extends EventTypes.ADDRESS_WIDGET ? {
   Name: string;
+} :
+Type extends EventTypes.TABLE_COLUMNS ? ({
+  Table: 'Token transfers';
+  Surface: TokenTransferSurface;
+} | {
+  Table: 'Advanced filter';
+}) & {
+  Column: string;
+  State: 'On' | 'Off' | 'Reset' | 'Moved up' | 'Moved down';
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

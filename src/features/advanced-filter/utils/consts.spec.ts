@@ -22,30 +22,41 @@ const chainWithErc8056 = {
   },
 } as ClusterChainConfig['app_config'];
 
-describe('getTableColumns', () => {
-  it('places the multiplier column between to and amount when the instance enables ERC-8056', async() => {
-    const ids = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
-      const { getTableColumns } = await import('./consts');
-      return getTableColumns().map((column) => column.id);
+describe('getColumnStates', () => {
+  it('shows the multiplier column when the instance enables ERC-8056', async() => {
+    const state = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
+      const { getColumnStates } = await import('./consts');
+      return getColumnStates().multiplier;
     });
+    expect(state).toBe('on');
+  });
+
+  it('places the multiplier column between to and amount', async() => {
+    const { TABLE_COLUMNS } = await import('./consts');
+    const ids = TABLE_COLUMNS.map((column) => column.id);
     expect(ids.slice(ids.indexOf('to'), ids.indexOf('amount') + 1)).toEqual([ 'to', 'multiplier', 'amount' ]);
   });
 
-  it('omits the multiplier column when the instance does not enable ERC-8056', async() => {
-    const { getTableColumns } = await import('./consts');
-    expect(getTableColumns().map((column) => column.id)).not.toContain('multiplier');
+  it('shows every other column', async() => {
+    const { getColumnStates } = await import('./consts');
+    expect(Object.entries(getColumnStates()).filter(([ , state ]) => state !== 'on').map(([ id ]) => id)).toEqual([ 'multiplier' ]);
+  });
+
+  it('hides the multiplier column when the instance does not enable ERC-8056', async() => {
+    const { getColumnStates } = await import('./consts');
+    expect(getColumnStates().multiplier).toBe('unavailable');
   });
 
   it('shows the multiplier column when the focused chain enables ERC-8056, regardless of the cluster config', async() => {
-    const { getTableColumns } = await import('./consts');
-    expect(getTableColumns(chainWithErc8056).map((column) => column.id)).toContain('multiplier');
+    const { getColumnStates } = await import('./consts');
+    expect(getColumnStates(chainWithErc8056).multiplier).toBe('on');
   });
 
-  it('omits the multiplier column when the focused chain does not enable ERC-8056, regardless of the cluster config', async() => {
-    const ids = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
-      const { getTableColumns } = await import('./consts');
-      return getTableColumns(chainWithoutErc8056).map((column) => column.id);
+  it('hides the multiplier column when the focused chain does not enable ERC-8056, regardless of the cluster config', async() => {
+    const state = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
+      const { getColumnStates } = await import('./consts');
+      return getColumnStates(chainWithoutErc8056).multiplier;
     });
-    expect(ids).not.toContain('multiplier');
+    expect(state).toBe('unavailable');
   });
 });

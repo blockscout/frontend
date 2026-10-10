@@ -220,6 +220,15 @@ importers:
       '@chakra-ui/react':
         specifier: 3.36.1
         version: 3.36.1(@emotion/react@11.14.0(@types/react@19.1.7)(react@19.1.4)(supports-color@10.2.2))(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@dnd-kit/core':
+        specifier: 6.3.1
+        version: 6.3.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@dnd-kit/sortable':
+        specifier: 10.0.0
+        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4))(react@19.1.4)
+      '@dnd-kit/utilities':
+        specifier: 3.2.2
+        version: 3.2.2(react@19.1.4)
       '@dynamic-labs/ethereum':
         specifier: 4.91.4
         version: 4.91.4(@dynamic-labs-wallet/primitives@1.0.48)(@types/react@19.1.7)(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(debug@4.4.3(supports-color@10.2.2))(fastestsmallesttextencoderdecoder@1.0.22)(react-dom@19.1.4(react@19.1.4))(react-native@0.85.3(@babel/core@7.29.7(supports-color@10.2.2))(@types/react@19.1.7)(bufferutil@4.1.0)(react@19.1.4)(supports-color@10.2.2)(utf-8-validate@6.0.6))(react@19.1.4)(supports-color@10.2.2)(use-sync-external-store@1.4.0(react@19.1.4))(utf-8-validate@6.0.6)(viem@2.41.2(@typescript/typescript6@6.0.2)(bufferutil@4.1.0)(utf-8-validate@6.0.6)(zod@4.4.3))(zod@4.4.3)
@@ -2118,6 +2127,28 @@ packages:
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
+
+  '@dnd-kit/accessibility@3.1.1':
+    resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
+    peerDependencies:
+      react: '>=16.8.0'
+
+  '@dnd-kit/core@6.3.1':
+    resolution: {integrity: sha512-xkGBRQQab4RLwgXxoqETICr6S5JlogafbhNsidmrkVv2YRs5MLwpjoF2qpiGjQt8S9AoxtIV603s0GIUpY5eYQ==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@dnd-kit/sortable@10.0.0':
+    resolution: {integrity: sha512-+xqhmIIzvAYMGfBYYnbKuNicfSsk4RksY2XdmJhT+HAC01nix6fHCztU68jooFiMUB01Ky3F0FyOvhG/BZrWkg==}
+    peerDependencies:
+      '@dnd-kit/core': ^6.3.0
+      react: '>=16.8.0'
+
+  '@dnd-kit/utilities@3.2.2':
+    resolution: {integrity: sha512-+MKAJEOfaBe5SmV6t34p80MMKhjvUz0vRrvVJbPT0WElzaOJ/1xs+D+KDv+tD/NE5ujfrChEcshd4fLn0wpiqg==}
+    peerDependencies:
+      react: '>=16.8.0'
 
   '@dnsquery/dns-packet@6.1.1':
     resolution: {integrity: sha512-WXTuFvL3G+74SchFAtz3FgIYVOe196ycvGsMgvSH/8Goptb1qpIQtIuM4SOK9G9lhMWYpHxnXyy544ZhluFOew==}
@@ -16325,6 +16356,31 @@ snapshots:
   '@csstools/normalize.css@12.1.1': {}
 
   '@discoveryjs/json-ext@0.5.7': {}
+
+  '@dnd-kit/accessibility@3.1.1(react@19.1.4)':
+    dependencies:
+      react: 19.1.4
+      tslib: 2.8.1
+
+  '@dnd-kit/core@6.3.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      '@dnd-kit/accessibility': 3.1.1(react@19.1.4)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.4)
+      react: 19.1.4
+      react-dom: 19.1.4(react@19.1.4)
+      tslib: 2.8.1
+
+  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4))(react@19.1.4)':
+    dependencies:
+      '@dnd-kit/core': 6.3.1(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
+      '@dnd-kit/utilities': 3.2.2(react@19.1.4)
+      react: 19.1.4
+      tslib: 2.8.1
+
+  '@dnd-kit/utilities@3.2.2(react@19.1.4)':
+    dependencies:
+      react: 19.1.4
+      tslib: 2.8.1
 
   '@dnsquery/dns-packet@6.1.1':
     dependencies:

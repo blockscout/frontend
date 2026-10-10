@@ -156,7 +156,7 @@ await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
 
-**`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
+**`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join, or that react to live socket messages. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
 
 ```tsx
 import { mockSocket, MOCK_SOCKET_URL } from 'vitest/utils/mockSocket';
@@ -167,7 +167,16 @@ render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
 await flushPromises();
 ```
 
-It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all. Server-sent events are not simulated yet.
+It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
+
+A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.spec.tsx`):
+
+```tsx
+vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
+
+render(<SocketProvider url={ MOCK_SOCKET_URL }><AddressTokenTransfers/></SocketProvider>);
+act(() => sendSocketMessage('addresses:0x…', 'token_transfer', { token_transfers: [ … ] }));
+```
 
 ## Mocking fetch responses
 

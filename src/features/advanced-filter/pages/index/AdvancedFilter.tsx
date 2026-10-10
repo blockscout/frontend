@@ -10,7 +10,6 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 import { ADVANCED_FILTER_ADDRESS_RELATION, ADVANCED_FILTER_AGES } from '../../types/api';
-import type { ColumnsIds } from '../../types/client';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -23,6 +22,9 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
+import type { TableColumnsAnalytics } from 'src/shared/lists/columns/usePersistedColumns';
+import { usePersistedColumns } from 'src/shared/lists/columns/usePersistedColumns';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -37,14 +39,13 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { Link } from 'src/toolkit/chakra/link';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-import ColumnsButton from '../../components/ColumnsButton';
 import { ADVANCED_FILTER_ITEM } from '../../stubs';
-import { getTableColumns, TABLE_COLUMNS } from '../../utils/consts';
+import { getColumnStates, TABLE_COLUMNS } from '../../utils/consts';
 import { getAdvancedFilterTypes, getDurationFromAge, getFilterTags } from '../../utils/lib';
 import AdvancedFilterTable from './AdvancedFilterTable';
 
-const COLUMNS_CHECKED = {} as Record<ColumnsIds, boolean>;
-TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
+const SELECTOR_COLUMNS = TABLE_COLUMNS.map(c => c.id === 'or_and' ? { ...c, name: 'And/Or' } : c);
+const COLUMNS_ANALYTICS: TableColumnsAnalytics = { Table: 'Advanced filter' };
 
 const AGE_RANGE_FIELDS = [ 'age_from', 'age_to' ] as const;
 
@@ -86,7 +87,6 @@ const AdvancedFilter = () => {
     [ urlFiltersKey, chainConfig ],
   );
 
-  const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
   const { data, isError, isLoading, pagination, onFilterChange, isInitialLoading, isTransitioning, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:advanced_filter',
     queryParams: filters,
@@ -155,8 +155,18 @@ const AdvancedFilter = () => {
     onFilterChange({});
   }, [ onFilterChange ]);
 
-  const tableColumns = React.useMemo(() => getTableColumns(chainConfig), [ chainConfig ]);
-  const columnsToShow = React.useMemo(() => tableColumns.filter(c => columns[c.id]), [ columns, tableColumns ]);
+  const columnStates = React.useMemo(() => getColumnStates(chainConfig), [ chainConfig ]);
+  const { columns, selectableColumns, checkedColumns, isCustomized, onColumnsChange, onColumnsReorder, onColumnsReset } = usePersistedColumns({
+    storageKey: 'table_columns_advanced_filter',
+    columns: SELECTOR_COLUMNS,
+    states: columnStates,
+    analytics: COLUMNS_ANALYTICS,
+  });
+  const columnsToShow = React.useMemo(
+    // Stryker disable next-line ConditionalExpression: every id comes from TABLE_COLUMNS, so find always hits; the filter narrows away undefined
+    () => columns.map((id) => TABLE_COLUMNS.find((column) => column.id === id)).filter((column) => column !== undefined),
+    [ columns ],
+  );
 
   if (isLoading) {
     return null;
@@ -178,7 +188,14 @@ const AdvancedFilter = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      <ColumnsButton tableColumns={ tableColumns } columns={ columns } onChange={ setColumns }/>
+      <ColumnsButton
+        tableColumns={ selectableColumns }
+        columns={ checkedColumns }
+        onChange={ onColumnsChange }
+        onOrderChange={ onColumnsReorder }
+        selected={ isCustomized }
+        onReset={ onColumnsReset }
+      />
       <CsvExport
         type="advanced_filters"
         resourceName="core:advanced_filter_csv"
