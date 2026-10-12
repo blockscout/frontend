@@ -91,7 +91,7 @@ describe('TokenTransfersTable', () => {
     const { container } = render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE } baseAddress={ erc20.to.hash }/>);
 
     expect(getHeaders(container)).toEqual(
-      [ 'In / Out', 'Txn hash', 'Token type', 'Method', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
+      [ 'In / Out', 'Txn hash', 'Token type', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
     expect(container.querySelector('tbody tr:first-child td')?.textContent).toBe('In');
   });
@@ -100,6 +100,6 @@ describe('TokenTransfersTable', () => {
     const columns = getDefaultColumnIds(TOKEN_TRANSFER_COLUMNS, getSurfaceColumnStates('token', {}));
     const { container } = render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Method', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
+    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
   });
 });

@@ -64,7 +64,7 @@ describe('useTokenTransferColumns', () => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('token');
 
-      expect(result.current.columns).toEqual([ 'tx_hash', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ]);
+      expect(result.current.columns).toEqual([ 'tx_hash', 'timestamp', 'from_to', 'amount', 'asset', 'value' ]);
       expect(result.current.selectableColumns.map(({ id }) => id)).toContain('block');
       expect(result.current.checkedColumns.block).toBeFalsy();
     });
@@ -75,7 +75,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('address');
 
       expect(result.current.columns).toEqual(
-        [ 'in_out', 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
+        [ 'in_out', 'tx_hash', 'type', 'timestamp', 'from_to', 'amount', 'asset', 'value' ],
       );
     });
   });
@@ -90,7 +90,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('address');
 
       expect(result.current.columns).toEqual(
-        [ 'in_out', 'value', 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'amount', 'asset' ],
+        [ 'in_out', 'value', 'tx_hash', 'type', 'timestamp', 'from_to', 'amount', 'asset' ],
       );
     });
   });
@@ -126,7 +126,7 @@ describe('useTokenTransferColumns', () => {
     await withMixpanel(async() => {
       const { result } = await renderColumnsHook('index');
 
-      expect(result.current.columns).toEqual([ 'tx_hash', 'type', 'transfer_type', 'method', 'timestamp', 'from_to', 'amount', 'asset', 'value' ]);
+      expect(result.current.columns).toEqual([ 'tx_hash', 'type', 'transfer_type', 'timestamp', 'from_to', 'amount', 'asset', 'value' ]);
     });
   });
 
@@ -151,7 +151,7 @@ describe('useTokenTransferColumns', () => {
       const { result } = await renderColumnsHook('index', { chainConfig: chainWithErc8056 });
 
       expect(result.current.columns).toEqual(
-        [ 'tx_hash', 'type', 'method', 'timestamp', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
+        [ 'tx_hash', 'type', 'timestamp', 'from_to', 'multiplier', 'amount', 'asset', 'value' ],
       );
     });
   });
