@@ -90,6 +90,12 @@ export function buildClientConfig(accessToken: string): Configuration {
       'Proposal expired',
       'Pairing expired',
       'Session request expired',
+
+      // The WalletConnect relay rejects the auth JWT its client SDK signs with the device clock when
+      // that clock is skewed ("not yet valid" when ahead, "expired" when behind), closing the socket
+      // with code 3000. A wrong system clock on the visitor's machine, not a fault we can fix; the
+      // timestamps in the message make every burst a new title, so match the shared relay prefix.
+      'JWT validation error',
     ],
     maxItems: 10, // Max items per page load
     // uncaught / unhandledrejection coverage is owned by the early window listeners in queue.ts —
