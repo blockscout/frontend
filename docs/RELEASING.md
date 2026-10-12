@@ -67,18 +67,11 @@ Rules for PR authors, enforced by the PR check on every non-draft PR:
 - The body keeps every heading of `docs/PULL_REQUEST_TEMPLATE.md` and none of its placeholder text. The
   "Environment variables" and "Minimum API version" sections are copied into the release notes as written.
 - The PR carries labels of exactly one category from the table below. Several labels of one category are
-  fine; labels of two categories are not. `dependencies` is only for a PR whose sole purpose is a package
-  bump and never shares a PR with another category. `chore` is the catch-all.
+  fine; labels of two categories are not.
 - A PR labeled `release` is exempt from both rules.
 
-Labels the release workflow reads or writes:
-
-| Label | Meaning |
-| --- | --- |
-| `backport` | Set by hand on a merged PR: ship it in the release being prepared. The next `prepare` or `alpha` picks it. Replaced by the version label when the PR is released; a PR that was never picked keeps it. When two releases are open, the PR goes to whichever picks it first. |
-| `pre-release` | Set by `pre-release.yml` on the PRs an alpha shipped and the issues they close; removed by `release.yml` at the final release. |
-| `vX.Y.Z` | Set by `release.yml` on every PR the final tag shipped and the issues they close. A PR carrying any version label is never relabeled and never listed in another release's notes, so a backport appears only in the notes of the patch that shipped it. |
-| `release` | A PR of the release mechanics rather than a change to ship; the PR check skips it. |
+What `backport`, `pre-release`, `vX.Y.Z` and `release` mean, and who sets them, is in
+[ISSUE_LABELS.md](./ISSUE_LABELS.md#release-mechanics).
 
 ## Release-notes sections
 
