@@ -37,6 +37,6 @@ again** — it authorizes the branch, commit, push, and draft PR together:
 1. **Branch** — `issue-<number>` off `main`. Create/switch if needed and record it in the spec header.
 2. **Commit** — commit `spec.md` and `questions.md` as the branch's first commit.
 3. **Draft PR** — hand off to the `create-pr` skill (draft-placeholder mode, feature branch → `main`); it
-   pushes and opens the draft with no further confirmation. Why the draft opens this early is in
+   pushes and opens the draft. Why the draft opens this early is in
    [`../../tasks/README.md`](../../tasks/README.md).
 

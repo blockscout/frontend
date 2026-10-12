@@ -7,7 +7,7 @@ import { formatUiMultiplier, parseUiMultiplier } from 'src/slices/token/utils/ui
 
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   oldMultiplier: string;
@@ -18,7 +18,13 @@ interface Props {
 const TokenMultiplierChangeValue = ({ oldMultiplier, newMultiplier, isLoading }: Props) => {
   return (
     <HStack>
-      <Skeleton loading={ isLoading } color="text.secondary">{ formatUiMultiplier(parseUiMultiplier(oldMultiplier)) }</Skeleton>
+      <Truncate
+        value={ formatUiMultiplier(parseUiMultiplier(oldMultiplier)) }
+        type="end"
+        loading={ isLoading }
+        color="text.secondary"
+        maxW="calc(50% - 18px)"
+      />
       <SpriteIcon
         name="arrows/east"
         isLoading={ isLoading }
@@ -26,7 +32,13 @@ const TokenMultiplierChangeValue = ({ oldMultiplier, newMultiplier, isLoading }:
         flexShrink={ 0 }
         color="icon.primary"
       />
-      <Skeleton loading={ isLoading }>{ formatUiMultiplier(parseUiMultiplier(newMultiplier)) }</Skeleton>
+      <Truncate
+        value={ formatUiMultiplier(parseUiMultiplier(newMultiplier)) }
+        type="end"
+        loading={ isLoading }
+        color="text.secondary"
+        maxW="calc(50% - 18px)"
+      />
     </HStack>
   );
 };

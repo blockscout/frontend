@@ -39,10 +39,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
-      # Ensure npm 12.4.1 is installed
-      - name: Update npm
-        run: npm install -g npm@12.4.1
-
       - name: Update package version
         run: |
           cd ./src/toolkit/package

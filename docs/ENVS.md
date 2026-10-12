@@ -424,6 +424,7 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | upcoming |
 | NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 #### Block fields list
@@ -436,6 +437,12 @@ Meta tags, Open Graph, and SEO.
 | `miner` | Address of block's miner or validator |
 | `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
+
+#### Block views list
+| Id | Description |
+| --- | --- |
+| `reorgs` | Forked blocks tab on the blocks page |
+| `uncles` | Uncle blocks tab on the blocks page |
 
 &nbsp;
 

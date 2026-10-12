@@ -8,7 +8,7 @@ import { NETWORK_GROUPS } from 'src/shell/top-bar/chain-menu/types';
 import type { FeaturedNetwork } from 'src/shell/top-bar/chain-menu/types';
 import type { AddressFormat } from 'src/slices/address/types/config';
 import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'src/slices/address/types/config';
-import { BLOCK_FIELDS_IDS } from 'src/slices/block/types/config';
+import { BLOCK_FIELDS_IDS, BLOCK_VIEWS_IDS } from 'src/slices/block/types/config';
 import type { ContractCodeIde } from 'src/slices/contract/types/config';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS } from 'src/slices/contract/types/config';
 import type { HeroBannerButtonState, HeroBannerSearchBorderColorState } from 'src/slices/home/types/config';
@@ -217,6 +217,7 @@ const hasBech32Format = (value: unknown) => Array.isArray(value) && (value as Ar
 export const viewsSchema = v.pipe(
   v.object({
     NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: v.optional(envJson(v.array(v.picklist(BLOCK_FIELDS_IDS)))),
+    NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS: v.optional(envJson(v.array(v.picklist(BLOCK_VIEWS_IDS)))),
     NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: v.optional(envBoolean()),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: v.optional(v.picklist(IDENTICON_TYPES)),
     NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: v.optional(envJson(v.array(v.picklist(ADDRESS_FORMATS)))),

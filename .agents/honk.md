@@ -22,14 +22,17 @@ The final message opens with a plain first line `STATUS: <status>`, a status fro
 the text the user would have seen. Honk reads only that first line to decide what happens next; a run
 that ends without it counts as failed.
 
-Two stops every skill shares; its table lists them with its own triggers:
+Statuses every skill shares; its table lists them with its own triggers:
 
-| Status | When | The message carries |
-| --- | --- | --- |
-| `needs_user` | an answer only a person can give: ambiguity, intent, a missing prerequisite | the question |
-| `needs_approval` | the next step needs a denied tool | the exact command or message (target and text) |
+| Status | When | The message carries | Resumed? |
+| --- | --- | --- | --- |
+| `needs_user` | an answer only a person can give: ambiguity, intent, a missing prerequisite | the question | yes, with the answer |
+| `needs_approval` | the next step needs a denied tool | the exact command or message (target and text) | yes, once a human did it or allowed it |
+| `done` | the skill finished and nothing waits on an operator | the skill's final message | no |
 
-The skill's table adds its other statuses and marks which ones Honk resumes.
+A success is a stop too: it ends with `STATUS: done`, never with a free-form message, since a run that
+ends without a status counts as failed. The skill's table adds its other statuses and marks which ones
+Honk resumes.
 
 ## Resume
 

@@ -144,6 +144,7 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS: '0x471EcE3750Da237f93B8E339c536989b8978a438',
   NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: toEnvValue([ 'solidity-hardhat', 'solidity-foundry' ]),
   NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: toEnvValue([ 'burnt_fees', 'total_reward' ]),
+  NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS: toEnvValue([ 'reorgs', 'uncles' ]),
   NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: 'false',
   NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: toEnvValue(nftMarketplaces),
   NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: toEnvValue([ 'fee_per_gas', 'set_max_gas_limit' ]),

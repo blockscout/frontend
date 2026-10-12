@@ -34,9 +34,10 @@ test('base view +@dark-mode', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('hidden fields', async({ render, mockApiResponse, mockEnvs }) => {
+test('hidden fields and views', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
     ...ENVS_MAP.blockHiddenFields,
+    ...ENVS_MAP.blockHiddenViews,
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED', 'false' ],
   ]);
   await mockApiResponse('core:blocks', baseListResponse, { queryParams: { type: 'block' } });
