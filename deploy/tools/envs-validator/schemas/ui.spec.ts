@@ -304,6 +304,7 @@ describe('viewsSchema', () => {
   it('accepts the block, address, contract, tx and token view settings', () => {
     expect(getValidationErrors(viewsSchema, {
       NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: toEnvValue([ 'burnt_fees', 'total_reward' ]),
+      NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS: toEnvValue([ 'reorgs', 'uncles' ]),
       NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: 'false',
       NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: 'gradient_avatar',
       NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: toEnvValue([ 'base16' ]),
@@ -341,6 +342,7 @@ describe('viewsSchema', () => {
 
   it.each([
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '("base_fee" | "burnt_fees" | "total_reward" | "nonce" | "miner" | "L1_status" | "batch")' ],
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS', '("reorgs" | "uncles")' ],
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT', '("base16" | "bech32")' ],
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', '"top_accounts"' ],
     [
