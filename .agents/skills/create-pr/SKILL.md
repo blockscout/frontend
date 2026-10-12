@@ -87,7 +87,7 @@ Every label and its meaning is in `./docs/ISSUE_LABELS.md`; the PR check (`.gith
 fails a non-draft PR whose labels break the category rule. Apply with `gh pr edit <N> --add-label <label>`.
 
 1. **Category — exactly one.** Take it from the issue's labels (`gh issue view <N> --json labels`) when
-   the issue carries one category; when it carries none or two, pick the one that fits the work and say
+   the issue carries one category; when it carries none or more than one, pick the one that fits the work and say
    which in the output. Several labels of the same category are fine. Do not copy the issue's other labels.
 2. **Scope (Modes B and C)** — from the real diff: `ENVs` if `./docs/ENVS.md` changed; `breaking changes`
    if the description says something is not backwards compatible.

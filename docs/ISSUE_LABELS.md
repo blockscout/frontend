@@ -6,9 +6,9 @@ delete it rather than pick it up.
 
 ## Category
 
-A PR must carry labels of **exactly one** category; the PR check enforces it on every non-draft PR. The
-categories, the labels in each, and the release-notes section they map to are in
-[RELEASING.md](./RELEASING.md#labels); the code source of truth is `tools/release/categories.ts`.
+The rules the PR check enforces are in [RELEASING.md](./RELEASING.md#labels); which release-notes section
+each label maps to is in [RELEASING.md](./RELEASING.md#release-notes-sections), and the code source of
+truth for both is `tools/release/categories.ts`.
 
 | Label | On | Meaning |
 | --- | --- | --- |
@@ -30,20 +30,20 @@ Read or written by the release workflow, see [RELEASING.md](./RELEASING.md).
 
 | Label | On | Meaning |
 | --- | --- | --- |
-| `backport` | PR | Set by hand on a merged PR: ship it in the release being prepared. The next `prepare` or `alpha` picks it. Replaced by the version label when the PR is released; a PR that was never picked keeps it. When two releases are open, the PR goes to whichever picks it first. |
+| `backport` | PR | Set by hand on a merged PR: ship it in the release being prepared. The next `prepare` or `alpha` picks it. Replaced by the version label when the PR is released; a PR that was never picked keeps it. With two lines open, both pick it; once one publishes and stamps its version label, the other's tag is refused until the pick is dropped. |
 | `pre-release` | both | Set by `pre-release.yml` on the PRs an alpha shipped and the issues they close; removed by `release.yml` at the final release. |
-| `vX.Y.Z` | both | Set by `release.yml` on every PR the final tag shipped and the issues they close. |
-| `release` | PR | A PR of the release mechanics rather than a change to ship. |
+| `vX.Y.Z` | both | Set by `release.yml` on every PR the final tag shipped and the issues they close. A PR carrying a version label is never relabeled, never picked onto another release branch, and never listed in another release's notes. |
+| `release` | PR | A PR of the release mechanics rather than a change to ship; the PR check skips it. |
 
 ## Workflow state
 
 | Label | On | Meaning |
 | --- | --- | --- |
 | `triage` | issue | Needs triage. |
-| `available for contribution` | issue | Open to external contributors; everything else is reserved for the core team, see [CONTRIBUTING.md](./CONTRIBUTING.md). |
+| `available for contribution` | issue | Open to external contributors, as newly submitted issues are; who may take the rest is in [CONTRIBUTING.md](./CONTRIBUTING.md). |
 | `task for agent` | issue | Scoped for an AI agent to implement through the task workflow. |
 | `epic` | issue | Umbrella issue tracking a set of sub-issues. |
-| `need info` | issue | Waiting for more information from the author. After 14 days without activity `stale-issues.yml` marks it `stale`, and closes it 7 days later. |
+| `need info` | issue | Waiting for more information from the author; `stale-issues.yml` marks it `stale` and then closes it when nothing happens. |
 | `stale` | issue | Set by `stale-issues.yml`; do not set by hand. |
 | `need design` | issue | Blocked on a design. |
 | `need API` | issue | Blocked on a backend change. |
