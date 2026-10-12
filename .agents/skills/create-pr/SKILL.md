@@ -56,8 +56,7 @@ description is a placeholder pointing at the plan:
      and the final description will be written when the PR is marked ready for review.
 3. **Create as draft**: `gh pr create --draft --title "..." --body-file ...`.
    Title per "PR title" above (not "spec for..."; the PR becomes the task's PR, describing the whole task).
-4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
-   labels — nothing is implemented yet; Mode B adds them from the real diff.
+4. **Labels** — the category label only, per "Labels" below. Scope labels wait for Mode B.
 5. Link the created PR in the output.
 
 ## Mode B — Finalize a draft into ready-for-review
@@ -67,10 +66,7 @@ description is a placeholder pointing at the plan:
    wants; resolve conflicts before continuing.
 2. **Rewrite the description** following "Writing the description" below — the placeholder body is
    replaced wholesale: `gh pr edit <N> --body-file ...`.
-3. **Labels from the real diff** — ENVs label if `./docs/ENVS.md` changed; dependencies label only if the
-   **dependency sections** of `package.json` changed (`dependencies`, `devDependencies`,
-   `peerDependencies`, `pnpm`/`overrides`) — inspect `git diff origin/main -- package.json` and ignore
-   changes confined to `scripts` or other fields; plus the issue's labels if not already copied.
+3. **Labels** — see "Labels" below, including the check.
 4. **Flip to ready**: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
 5. Link the PR in the output.
@@ -82,8 +78,21 @@ description is a placeholder pointing at the plan:
    it came from an issue, otherwise a kebab-case slug naming the change.
 2. **Write the description** — see "Writing the description" below.
 3. **Create**: `gh pr create --title "..." --body-file ...` (add `--draft` only if the user asked for it).
-4. **Labels** — as Mode B step 3.
+4. **Labels** — see "Labels" below, including the check.
 5. Link the created PR in the output.
+
+## Labels (all modes)
+
+Every label and its meaning is in `./docs/ISSUE_LABELS.md`; the PR check (`.github/workflows/pull-request-check.yml`)
+fails a non-draft PR whose labels break the category rule. Apply with `gh pr edit <N> --add-label <label>`.
+
+1. **Category — exactly one.** Take it from the issue's labels (`gh issue view <N> --json labels`) when
+   the issue carries one category; when it carries none or more than one, pick the one that fits the work and say
+   which in the output. Several labels of the same category are fine. Do not copy the issue's other labels.
+2. **Scope (Modes B and C)** — from the real diff: `ENVs` if `./docs/ENVS.md` changed; `breaking changes`
+   if the description says something is not backwards compatible.
+3. **Check (Modes B and C)** — `pnpm release check-pr <N>` must pass before the PR is reported done; fix
+   what it names (body headings, placeholders, labels) rather than reporting the failure.
 
 ## Writing the description (Modes B and C)
 

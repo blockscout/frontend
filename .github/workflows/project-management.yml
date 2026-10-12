@@ -96,16 +96,3 @@ jobs:
             issues: ${{ needs.pr_linked_issues.outputs.issues }}
         permissions:
           issues: read
-
-    copy_labels:
-        name: Copy issues labels to pull request
-        needs: [ pr_linked_issues ]
-        if: ${{ needs.pr_linked_issues.outputs.issues }}
-        uses: './.github/workflows/copy-issues-labels.yml'
-        secrets: inherit
-        with:
-            pr_number: ${{ github.event.pull_request.number }}
-            issues: ${{ needs.pr_linked_issues.outputs.issues }}
-        permissions:
-          issues: read
-          pull-requests: write
