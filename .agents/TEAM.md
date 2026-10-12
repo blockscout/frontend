@@ -54,6 +54,12 @@ Own: core API endpoints and response models, field propagation across services, 
 | --- | --- |
 | Core API | S064H6TD6MA |
 
+### Channels
+
+| Purpose | Channel | Channel ID |
+| --- | --- | --- |
+| Default for core API questions | blockscout-elixir | C04NCPZGRAR |
+
 ## Microservices API
 
 Own: microservice API endpoints and their response models (metadata, stats, admin, interchain, etc.).
@@ -91,12 +97,19 @@ Own: architecture, the delegation boundary.
 | tom | @tom2drum | U03MN1588AU | ✓ |
 | Max | @maxaleks | UKP0RR9K9 | |
 
+### Bots
+| Name | Role | Bot ID | But used ID
+| --- | --- | --- | --- |
+| Rollbar | Post error monitoring events | B0AADAP5PM0 | U0A9XT13GB1 |
+
+
 ### Channels
 
 | Purpose | Channel | Channel ID |
 | --- | --- | --- |
 | Default for frontend questions | blockscout-frontend | C03MMUTQDNU |
 | Ask a frontend engineer to prepare an instance's config | front-config-requests | C08D60ZL1QB |
+| Get alert events from the error monitoring system | blockscout-sentry-alerts | C05ULMSURUZ |
 
 ### Groups
 
