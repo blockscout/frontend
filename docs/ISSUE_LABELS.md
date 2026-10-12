@@ -7,8 +7,8 @@ delete it rather than pick it up.
 ## Category
 
 The rules the PR check enforces are in [RELEASING.md](./RELEASING.md#labels); which release-notes section
-each label maps to is in [RELEASING.md](./RELEASING.md#release-notes-sections), and the code source of
-truth for both is `tools/release/categories.ts`.
+each label maps to is in [RELEASING.md](./RELEASING.md#release-notes-sections), with
+`tools/release/categories.ts` as its code source of truth.
 
 | Label | On | Meaning |
 | --- | --- | --- |
@@ -30,7 +30,7 @@ Read or written by the release workflow, see [RELEASING.md](./RELEASING.md).
 
 | Label | On | Meaning |
 | --- | --- | --- |
-| `backport` | PR | Set by hand on a merged PR: ship it in the release being prepared. The next `prepare` or `alpha` picks it. Replaced by the version label when the PR is released; a PR that was never picked keeps it. With two lines open, both pick it; once one publishes and stamps its version label, the other's tag is refused until the pick is dropped. |
+| `backport` | PR | Set by hand on a merged PR: ship it in the release being prepared. The next `prepare` or `alpha` picks it. Replaced by the version label when the PR is released; a PR that was never picked keeps it. With two lines open, both pick it until one publishes and stamps its version label. |
 | `pre-release` | both | Set by `pre-release.yml` on the PRs an alpha shipped and the issues they close; removed by `release.yml` at the final release. |
 | `vX.Y.Z` | both | Set by `release.yml` on every PR the final tag shipped and the issues they close. A PR carrying a version label is never relabeled, never picked onto another release branch, and never listed in another release's notes. |
 | `release` | PR | A PR of the release mechanics rather than a change to ship; the PR check skips it. |
