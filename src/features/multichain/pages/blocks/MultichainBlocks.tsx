@@ -42,12 +42,16 @@ const MultichainBlocks = () => {
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
   const { chainValue, chain, onChainValueChange } = useChainValue();
+  const hiddenViews = chain?.app_config.slices.block.hiddenViews;
+
+  const isReorgsTab = !hiddenViews?.reorgs && tab === 'reorgs';
+  const isUnclesTab = !hiddenViews?.uncles && tab === 'uncles';
 
   const blocksQuery = useApiPaginatedQuery({
     resourceName: 'core:blocks',
     queryParams: { type: 'block' },
     options: {
-      enabled: tab === 'blocks' || !tab,
+      enabled: !isReorgsTab && !isUnclesTab,
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
@@ -60,7 +64,7 @@ const MultichainBlocks = () => {
     resourceName: 'core:blocks',
     queryParams: { type: 'reorg' },
     options: {
-      enabled: tab === 'reorgs',
+      enabled: isReorgsTab,
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
@@ -73,7 +77,7 @@ const MultichainBlocks = () => {
     resourceName: 'core:blocks',
     queryParams: { type: 'uncle' },
     options: {
-      enabled: tab === 'uncles',
+      enabled: isUnclesTab,
       placeholderData: generateListStub<'core:blocks'>(BLOCK_ITEM, 50, { next_page_params: {
         block_number: 8988686,
         items_count: 50,
@@ -84,16 +88,18 @@ const MultichainBlocks = () => {
 
   const tabs: Array<TabItemRegular> = [
     { id: 'blocks', title: 'All', component: <MultichainBlocksContent type="block" query={ blocksQuery } chainId={ chain?.id }/> },
-    { id: 'reorgs', title: 'Forked', component: <MultichainBlocksContent type="reorg" query={ reorgsQuery } chainId={ chain?.id }/> },
-    { id: 'uncles', title: 'Uncles', component: <MultichainBlocksContent type="uncle" query={ unclesQuery } chainId={ chain?.id }/> },
-  ];
+    !hiddenViews?.reorgs && { id: 'reorgs', title: 'Forked', component: <MultichainBlocksContent type="reorg" query={ reorgsQuery } chainId={ chain?.id }/> },
+    !hiddenViews?.uncles && { id: 'uncles', title: 'Uncles', component: <MultichainBlocksContent type="uncle" query={ unclesQuery } chainId={ chain?.id }/> },
+  ].filter(Boolean);
 
   const currentQuery = (() => {
-    switch (tab) {
-      case 'reorgs': return reorgsQuery;
-      case 'uncles': return unclesQuery;
-      default: return blocksQuery;
+    if (isReorgsTab) {
+      return reorgsQuery;
     }
+    if (isUnclesTab) {
+      return unclesQuery;
+    }
+    return blocksQuery;
   })();
 
   const leftSlot = (

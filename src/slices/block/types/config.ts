@@ -11,3 +11,10 @@ export const BLOCK_FIELDS_IDS = [
 ] as const;
 
 export type BlockFieldId = (typeof BLOCK_FIELDS_IDS)[number];
+
+export const BLOCK_VIEWS_IDS = [
+  'reorgs',
+  'uncles',
+] as const;
+
+export type BlockViewId = (typeof BLOCK_VIEWS_IDS)[number];

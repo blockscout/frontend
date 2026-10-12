@@ -52,6 +52,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   blockHiddenFields: [
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
   ],
+  blockHiddenViews: [
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS', '["reorgs", "uncles"]' ],
+  ],
   stabilityEnvs: [
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', '["top_accounts"]' ],
     [ 'NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS', '["value","fee_currency","gas_price","gas_fees","burnt_fees"]' ],
