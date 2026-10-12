@@ -2,11 +2,10 @@
 
 import React from 'react';
 
-import { Badge, type BadgeProps } from 'src/toolkit/chakra/badge';
+import AddressFromToTag from 'src/slices/address/components/from-to/AddressFromToTag';
+import type { TxCourseType } from 'src/slices/address/utils/tx';
 
-const SELF_TAG = { text: 'Self', colorPalette: 'gray' as const };
-const OUT_TAG = { text: 'Out', colorPalette: 'yellow' as const };
-const IN_TAG = { text: 'In', colorPalette: 'teal' as const };
+import type { BadgeProps } from 'src/toolkit/chakra/badge';
 
 interface Props extends BadgeProps {
   currentAddress: string;
@@ -17,33 +16,23 @@ interface Props extends BadgeProps {
 
 const CrossChainFromToTag = ({ currentAddress, sender, recipient, isLoading, ...rest }: Props) => {
 
-  const { text, colorPalette } = (() => {
+  const type: Exclude<TxCourseType, 'unspecified'> = (() => {
     if (sender?.toLowerCase() === currentAddress.toLowerCase() && recipient?.toLowerCase() === currentAddress.toLowerCase()) {
-      return SELF_TAG;
+      return 'self';
     }
 
     if (sender?.toLowerCase() === currentAddress.toLowerCase()) {
-      return OUT_TAG;
+      return 'out';
     }
 
     if (recipient?.toLowerCase() === currentAddress.toLowerCase()) {
-      return IN_TAG;
+      return 'in';
     }
 
-    return SELF_TAG;
+    return 'self';
   })();
 
-  return (
-    <Badge
-      loading={ isLoading }
-      colorPalette={ colorPalette }
-      minW={ 10 }
-      justifyContent="center"
-      { ...rest }
-    >
-      { text }
-    </Badge>
-  );
+  return <AddressFromToTag type={ type } isLoading={ isLoading } { ...rest }/>;
 };
 
 export default React.memo(CrossChainFromToTag);

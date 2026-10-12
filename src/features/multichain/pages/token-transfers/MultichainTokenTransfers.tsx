@@ -8,6 +8,7 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
 
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import useTokenTransfersQuery from 'src/slices/token-transfer/hooks/useTokenTransfersQuery';
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
@@ -21,6 +22,7 @@ import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 import config from 'src/config';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -51,6 +53,7 @@ const MultichainTokenTransfers = () => {
 
   const { chainValue, chain, onChainValueChange } = useChainValue();
   const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, chain });
+  const columnsState = useTokenTransferColumns('index', { typeFilter: queryLocal.typeFilter, chainConfig: chain?.app_config });
   const chainId = chain?.id;
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
@@ -81,12 +84,13 @@ const MultichainTokenTransfers = () => {
               query={ queryLocal.query }
               typeFilter={ queryLocal.typeFilter }
               onTokenTypesChange={ queryLocal.onTokenTypesChange }
+              columnsState={ columnsState }
             />
           </MultichainProvider>
         ),
       },
     ];
-  }, [ queryLocal.query, queryLocal.typeFilter, queryLocal.onTokenTypesChange, chainId ]);
+  }, [ queryLocal.query, queryLocal.typeFilter, queryLocal.onTokenTypesChange, columnsState, chainId ]);
 
   const filter = isLocalTab && (
     <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ queryLocal.typeFilter.length }>
@@ -102,6 +106,16 @@ const MultichainTokenTransfers = () => {
   const rightSlot = isLocalTab && (
     <>
       { !isMobile && filter }
+      { !isMobile && (
+        <ColumnsButton
+          tableColumns={ columnsState.selectableColumns }
+          columns={ columnsState.checkedColumns }
+          onChange={ columnsState.onColumnsChange }
+          onOrderChange={ columnsState.onColumnsReorder }
+          selected={ columnsState.isCustomized }
+          onReset={ columnsState.onColumnsReset }
+        />
+      ) }
       <ChainSelect
         value={ chainValue }
         onValueChange={ handleChainValueChange }
