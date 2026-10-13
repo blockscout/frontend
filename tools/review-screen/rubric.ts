@@ -20,6 +20,7 @@ export const RULES: ReadonlyArray<Rule> = [
     question: 'Does the changed code add a comment that describes what the code does instead of why the obvious approach fails?',
     examples: [
       'a comment that restates the line below it ("memoize the filtered list")',
+      'a file-opening or fixture-opening comment that says what the file or object contains ("the shape every phase takes")',
       'a JSDoc block that repeats the function name, its parameter names or its types',
       'diff narration: what the change replaced ("replaces the old useEffect", "previously this used X")',
       'commented-out code',
@@ -184,12 +185,15 @@ export const RULES: ReadonlyArray<Rule> = [
   {
     id: 'code-restating-doc',
     cites: '.agents/rules/docs.md',
-    glob: '{**/CONTEXT.md,docs/**/*.md,**/README.md}',
-    question: 'Does the changed documentation text describe what the code does in a way a reader gets by opening the file?',
+    glob: '{**/CONTEXT.md,docs/**/*.md,**/README.md,.agents/**/*.md}',
+    question: 'Does the changed documentation text repeat something the code or another doc already states?',
     examples: [
       'a walk-through of control flow: "X runs Y, then Z parses the result and maps it onto W"',
       'a list of a function\'s parameters, props or return type',
       'a restated package.json script or --help output',
+      'a procedure, command or recipe copied from another doc or skill, with or without a pointer to it',
+      'a sample that is a verbatim copy of a source file',
+      'a value the config or workflow file already holds ("after 14 days", "on port 3000")',
       'a directory listing that the file system already gives',
       'a description of what the change replaced',
     ],
@@ -199,7 +203,9 @@ export const RULES: ReadonlyArray<Rule> = [
       'a gotcha: the surprise and its consequence, not the mechanism',
       'local vocabulary a term means only in this area',
       'a pointer or link to an ADR, a rule file or another doc',
+      'a reference table that is the authoritative list, such as the env vars in docs/ENVS.md',
       'a README of a published package that documents a public API for its consumers',
+      'a spec or ticket file under .agents/tasks/',
     ],
   },
 ];
