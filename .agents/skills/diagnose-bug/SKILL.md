@@ -45,8 +45,8 @@ disproportionate effort here; be relentless. Treat the loop as a product once it
 (cache setup, narrow the scope), sharper (assert the exact symptom, not "didn't crash"), more
 deterministic (pin time, seed data, freeze network).
 
-A loop that reveals the **API response itself is wrong** (the data rung) settles the diagnosis early:
-go to step 6 with **Not a frontend bug**.
+A loop that reveals the **API response itself is wrong** — at the data rung, or already in the
+dev-server rung's network list — settles the diagnosis early: go to step 6 with **Not a frontend bug**.
 
 A **non-deterministic** bug needs a *higher reproduction rate*, not a clean repro: loop the trigger,
 narrow timing windows, inject delays, until it is debuggable.
@@ -54,7 +54,8 @@ narrow timing windows, inject delays, until it is debuggable.
 When the whole ladder is exhausted with nothing red, go to step 6 with **Cannot reproduce**.
 
 **Done when:** one command (a test path, a browser sequence, a curl) has been run at least once, its
-invocation and output shown, and it is red-capable, deterministic, fast and agent-runnable.
+invocation and output shown, and it is red-capable, fast and agent-runnable, and either deterministic or
+— for a non-deterministic bug — red at a stated rate (*n* of *m* runs) high enough to debug.
 
 ### 3. Reproduce and minimise
 
@@ -87,10 +88,12 @@ single grep. `no-console` is an ESLint error here, so a stray one also fails the
 A **performance regression** gets a baseline measurement first (timing in the loop, the profiler per
 `tools/profiling/CONTEXT.md`) and a bisect second; logs are usually the wrong probe.
 
-A **regression** gets its culprit named: `git log -S` or blame on the lines the fix touches, or
-`git bisect run` with the loop as the script. The culprit decides the backport (step 8).
+A **regression** gets its culprit named: `git bisect run` with the loop as the script when the loop is a
+rung-1 or rung-2 command (a browser sequence has no exit code), otherwise `git log -S` or blame on the
+lines the fix touches. The culprit decides the backport (step 7).
 
-**Done when:** one hypothesis survives and the others are shown falsified.
+**Done when:** one hypothesis survives and the others are shown falsified. None surviving means a new
+ranked three; more than one means keep falsifying until one remains.
 
 ### 6. Classify
 
@@ -99,13 +102,30 @@ A **regression** gets its culprit named: `git log -S` or blame on the lines the 
 | **Fix PR** | Our code is the cause, `origin/main` still has it, and the fix is inside what `.agents/delegation.md` lets an agent do. |
 | **Already fixed** | A commit on `origin/main` after the reported release fixes it (read the suspected code as of the release rev with `git show <rev>:<path>`; the instance's `/node-api/config` reports its tag or commit). |
 | **Not a frontend bug** | The page renders faithfully what the API, the instance config or the chain gives it; the evidence is the request and its payload. |
-| **Needs human fix** | The cause is found, but the fix is on the human side of `.agents/delegation.md` (styling to a mockup, a visual asset, a design call). |
+| **Needs human fix** | The cause is found, but the fix is on the human side of `.agents/delegation.md` (styling to a mockup, a visual asset, a design call); or the bug lives only on the release branch (a bad pick; `origin/main` is clean) — name the pick, open no PR. |
 | **Cannot reproduce** | The ladder is exhausted with no red loop. |
 
-**Done when:** the outcome and a one-paragraph justification are written down for step 9. Only
-**Fix PR** continues to step 7; the others go to step 8.
+**Done when:** the outcome and a one-paragraph justification are written down for step 9. **Fix PR**
+and **Already fixed** continue to step 7; only **Fix PR** goes on to step 8; the others go to step 9.
 
-### 7. Fix and regression test
+### 7. Backport
+
+A release is **in flight** when `gh release list --json tagName,isPrerelease,isDraft` shows a release
+that is a pre-release or a draft; its PRs are listed in that release's body (`gh release view <tag>
+--json body`) plus the merged PRs labelled `backport` not picked yet. The fix goes in the release when:
+
+- the culprit commit (step 5) belongs to one of the release's PRs, or the report came from staging; or
+- the source asks for the fix in the release (step 1).
+
+No release in flight means no backport. The label is `backport` (`gh pr edit <N> --add-label backport`):
+for **Already fixed** set it now on the fixing PR when that PR is not in the release yet, and name the
+reason in the step 9 report; for **Fix PR** it goes on the new PR in step 8, whose description names the
+reason.
+
+**Done when:** the decision and its reason are written down, and for **Already fixed** the label is set
+or does not need to be set.
+
+### 8. Fix and regression test
 
 Branch off `origin/main`: `issue-<N>` for an issue, otherwise `bug-<kebab-slug>`.
 
@@ -123,24 +143,10 @@ Branch off `origin/main`: `issue-<N>` for an issue, otherwise `bug-<kebab-slug>`
 6. **Commit**, then follow the `create-pr` skill, Mode C. The Description carries, in this order:
    what was broken, the root cause, the fix, how it was verified (the regression test named, or why
    there is none). Additional information carries the hypotheses ruled out and the backport decision
-   from step 8.
+   from step 7 with its reason.
+7. **Label** the PR `backport` when step 7 decided so.
 
-**Done when:** the PR link is in hand and `git status` is clean.
-
-### 8. Backport
-
-A release is **in flight** when `gh release list --json tagName,isPrerelease,isDraft` shows a release
-that is a pre-release or a draft; its PRs are `pnpm release notes <tag>` plus the merged PRs labelled
-`backport` not picked yet. Label a PR `backport` (`gh pr edit <N> --add-label backport`) when:
-
-- the culprit commit (step 5) belongs to one of the release's PRs, or the report came from staging; or
-- the source asks for the fix in the release (step 1).
-
-For **Fix PR** the label goes on the new PR; for **Already fixed** on the fixing PR when it is not in
-the release yet. The PR description names the reason the label was set. No release in flight means 
-no label.
-
-**Done when:** the label is set or does not need to be set.
+**Done when:** the PR link is in hand, the label matches step 7, and `git status` is clean.
 
 ### 9. Report
 
@@ -159,7 +165,7 @@ approve-before-sending rule. Slack text follows `.agents/slack-message.md`.
 | GitHub issue | nothing — the PR's `Resolves #N` links it | comment, close | comment, close | comment | comment, label `need info` |
 | Conversation | the final message only | | | | |
 
-**Done when:** the message is shown to the user and, for a Slack or issue source, posted.
+**Done when:** the message is shown to the user and posted where the table above names a post.
 
 ## Run by Honk
 
@@ -168,6 +174,6 @@ no statuses of its own; the shared three with their triggers here:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
-| `done` | the outcome is Fix PR, Already fixed, Not a frontend bug or Needs human fix, and the step 9 message is shown and posted; the message is that text | no |
-| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, also posted to the source | yes, with the artifacts |
+| `done` | the outcome is Fix PR, Already fixed, Not a frontend bug or Needs human fix, and the step 9 message is shown and posted where the step 9 table names a post; the message is that text | no |
+| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, also posted where the step 9 table names a post | yes, with the artifacts |
 | `needs_approval` | the push, the PR creation, a label, an issue comment or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
