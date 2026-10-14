@@ -71,8 +71,8 @@ ticket. This is what lets the later `implement-ticket` run go uninterrupted.
 Per approved ticket, write `tickets/NN-<slug>/spec.md` from [`ticket-template.md`](ticket-template.md) — What
 to build, Acceptance criteria (tagging `(human)` per the ticket model), the Skill inputs from Step 5, the
 Leaf worklist with each leaf tagged `[agent]` / `[human]` per `.agents/delegation.md`, and the header's
-`Blocked by` edges (`T<NN>` / `Q<NN>`). Every linked Figma node gets one `[agent]` style leaf, after the
-skill leaf that scaffolds it when there is one (`add-new-page`); it links its Figma node and, when the task
+`Blocked by` edges (`T<NN>` / `Q<NN>`). UI leaves follow the rule in "Leaves" in `.agents/tasks/concepts.md`: every linked Figma node gets one
+`[agent]` style leaf, after the scaffold leaf when there is one; it links its Figma node and, when the task
 folder has a `design-readout.md`, that node's block in it, and the ticket carries the criterion
 `(human) <component> matches the mockup at every breakpoint`. A ticket that can't be scoped gets a
 `brief.md` instead — its goal, the known context, and the blocking unknowns with their owners.

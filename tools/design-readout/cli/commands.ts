@@ -117,7 +117,7 @@ export function recordCorrection(mainCheckout: string, ref: NodeRef, request: Co
   writeSidecar(target, record);
   const node = record.nodes.find((candidate) => candidate.id === request.nodeId);
   if (node === undefined) throw new Error(`Node ${ request.nodeId } vanished from the sidecar while correcting it.`);
-  const entry = gapOfCorrection({ date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
+  const entry = gapOfCorrection({ date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node, stage: request.stage });
   return { record, gap: appendGap(gapLogPath(mainCheckout), entry) };
 }
 

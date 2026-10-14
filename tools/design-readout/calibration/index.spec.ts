@@ -77,7 +77,7 @@ afterEach(() => {
   fetchMock.resetMocks();
 });
 
-function writeEntry(name: string, expected: Expected, snapshot: Snapshot | undefined): string {
+function writeEntry(name: string, expected: unknown, snapshot: Snapshot | undefined): string {
   if (!tmp) tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-calibration-'));
   const dir = path.join(tmp, name);
   fs.mkdirSync(dir, { recursive: true });
@@ -104,7 +104,7 @@ describe('loadEntry', () => {
   });
 
   it('rejects a malformed cell, a snapshot of another version, and a missing expected file, naming the file and the path', () => {
-    const badCell = { ...EXPECTED, cells: { '1:10': { component: 'BlockEntity', props: {}, shape: 'hash' } } } as unknown as Expected;
+    const badCell = { ...EXPECTED, cells: { '1:10': { component: 'BlockEntity', props: {}, shape: 'hash' } } };
     expect(() => loadEntry(writeEntry('cell', badCell, SNAPSHOT))).toThrow(/Not a valid calibration file .*cell\/expected\.json: cells\.1:10\.shape: /);
     expect(() => loadEntry(writeEntry('version', EXPECTED, { ...SNAPSHOT, version: 0 }))).toThrow(/version\/snapshot\.json: version: /);
     expect(() => loadEntry(writeEntry('url', { ...EXPECTED, url: 'https://example.com' }, SNAPSHOT))).toThrow(/url: not a Figma node URL/);
@@ -158,7 +158,7 @@ describe('calibrateEntry', () => {
     if (result.kind !== 'checked') throw new Error('unreachable');
     expect(result.cells.flatMap((cell) => cell.checks)).toEqual([
       { signal: 'shape', expected: 'amount, recognized', actual: 'number, recognized', hit: false },
-      { signal: 'color', expected: 'text text.secondary', actual: 'text link.primary', hit: false },
+      { signal: 'color', expected: 'text text.secondary', actual: 'text badge.bright.blue.fg, link.primary', hit: false },
       { signal: 'icon', expected: 'copy_check, recognized', actual: 'copy, recognized', hit: false },
       { signal: 'shape', expected: 'any, ambiguous', actual: 'truncated-hash, recognized', hit: false },
       { signal: 'composite', expected: 'amount-ticker', actual: 'from-to', hit: false },

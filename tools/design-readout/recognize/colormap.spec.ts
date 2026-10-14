@@ -108,6 +108,13 @@ describe('lookupTokens over the real theme', () => {
     expect(lookupTokens(THEME_MAP, opaque('#718096'), 'light', 'icon')).toEqual([ 'icon.primary' ]);
   });
 
+  it('keeps the badge and tag families in the role their leaf names, so a badge fill resolves its color scheme', () => {
+    expect(lookupTokens(THEME_MAP, opaque('#F0FFF4'), 'light', 'background')).toContain('badge.green.bg');
+    expect(lookupTokens(THEME_MAP, opaque('#38A169'), 'light', 'text')).toContain('badge.green.fg');
+    expect(lookupTokens(THEME_MAP, opaque('#38A169'), 'light', 'background')).not.toContain('badge.green.fg');
+    expect(lookupTokens(THEME_MAP, parseColorLiteral('rgba(16,17,18,0.04)') as ColorValue, 'light', 'border')).toContain('tag.root.select.border');
+  });
+
   it('counts a link as a text color unless its path paints a background', () => {
     expect(lookupTokens(THEME_MAP, opaque('#63B3ED'), 'dark', 'text')).toEqual([ 'link.primary' ]);
     expect(lookupTokens(THEME_MAP, opaque('#ffffff'), 'light')).toContain('link.navigation.bg.group');
@@ -141,7 +148,7 @@ describe('detectColorMode over the real theme', () => {
   it('lets a fill with a role vote only with that role\'s tokens', () => {
     const gray600 = opaque('#4A5568');
     expect(detectColorMode(THEME_MAP, [ gray600 ], undefined)).toMatchObject({ mode: 'dark', decidedBy: 'majority' });
-    expect(detectColorMode(THEME_MAP, [ { ...gray600, role: 'text' } ], undefined)).toMatchObject({ decidedBy: 'default', votes: { light: 0, dark: 0 } });
+    expect(detectColorMode(THEME_MAP, [ { ...gray600, role: 'text' } ], undefined)).toMatchObject({ mode: 'light', votes: { light: 1, dark: 0 } });
     expect(detectColorMode(THEME_MAP, [ { ...opaque('#718096'), role: 'text' } ], undefined)).toMatchObject({ mode: 'light', votes: { light: 1, dark: 0 } });
   });
 

@@ -56,9 +56,8 @@ the developer and records the answer here. -->
 then styling) while the ticket cuts across them.
 
 Tag every leaf `[agent]` or `[human]` — explicitly, never implied; `implement-ticket` reads the tags as its
-state machine. UI work is a leaf per project skill the ticket runs plus one style leaf per linked Figma
-node — so a new page is `add-new-page` → style, while a change to an existing component is the style
-leaf alone. Visual tests are not a third leaf by default; extend or pack per
+state machine. UI work follows the leaf rule in "Leaves" in `.agents/tasks/concepts.md` — so a new page is
+`add-new-page` → style, while a change to an existing component is the style leaf alone. Visual tests are not a third leaf by default; extend or pack per
 `.agents/rules/tests-visual.md`. A leaf names the skill it runs; its answers live in Skill inputs above,
 not inline here.
 

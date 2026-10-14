@@ -45,7 +45,7 @@ Each leaf carries `[agent]` or `[human]` per the capability boundary in
 the tag as its state machine. 
 
 UI work follows the rule:
-- an optional leaf per project scaffold skill the ticket runs (`add-new-page`)
+- an optional leaf per project scaffold skill the ticket runs (`add-new-page`), before the style leaf
 - a style leaf per linked Figma node that takes it to the mockup and links the exact node and, when the task has a `design-readout.md`, that node's block beside it.
 
 A leaf's checkbox is **progress state**: a ticket has no commit until it finishes, so the boxes are the

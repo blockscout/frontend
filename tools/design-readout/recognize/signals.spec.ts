@@ -84,6 +84,7 @@ describe('matchTextShape', () => {
     expect(matchTextShape('2 hours ago')?.signal).toBe('relative-timestamp');
     expect(matchTextShape('Oct 6, 2026 12:34:56')).toMatchObject({ signal: 'absolute-timestamp' });
     expect(matchTextShape('2026-10-06 12:34')?.signal).toBe('absolute-timestamp');
+    expect(matchTextShape('Jul 17 2023 16:50:24 PM')?.signal).toBe('absolute-timestamp');
   });
 
   it('reads a short upper-case word as a ticker', () => {
@@ -162,7 +163,14 @@ describe('recognize', () => {
   it('resolves every fill to the tokens of its role in the run mode, several when the hex serves several', () => {
     const primary = text('t', 'Hi', 0, 0, [ { role: 'text', hex: '#FFFFFF', alpha: 0.8 } ]);
     expect(recognize([ primary ], SPRITES, MAP, 'dark')[0].tokens).toEqual([
-      { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] },
+      {
+        role: 'text',
+        color: '#FFFFFF/80',
+        tokens: [
+          'badge.blue_alt.fg', 'badge.gray.fg', 'badge.purple_alt.fg', 'link.menu', 'link.navigation.fg',
+          'tag.root.clickable.fg', 'tag.root.subtle.fg', 'text.primary',
+        ],
+      },
     ]);
     expect(recognize([ primary ], SPRITES, MAP, 'light')[0].tokens).toEqual([ { role: 'text', color: '#FFFFFF/80', tokens: [] } ]);
   });

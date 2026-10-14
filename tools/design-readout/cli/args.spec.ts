@@ -28,7 +28,8 @@ describe('parseArgs', () => {
     expect(parseArgs([ URL ])).toEqual({
       kind: 'readout',
       options: {
-        dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, note: undefined, calibrate: false, refresh: false,
+        dump: undefined, regions: undefined, correct: undefined, gap: undefined, stage: undefined, override: undefined, note: undefined,
+        calibrate: false, refresh: false,
       },
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
     });
@@ -107,9 +108,20 @@ describe('parseArgs', () => {
     expect(parseArgs([ URL, '--correct', '22842-178386', 'BlockEntity', 'noIcon', 'size=sm', '--gap', 'context' ])).toEqual({
       kind: 'correct',
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
-      correction: { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon', 'size=sm' ], gap: 'context' },
+      correction: { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon', 'size=sm' ], gap: 'context', stage: 'readout' },
     });
-    expect(correction([ '--gap=icon', URL, '--correct=I1:2;3:4', 'IconSvg' ])).toEqual({ nodeId: 'I1:2;3:4', component: 'IconSvg', props: [], gap: 'icon' });
+    expect(correction([ '--gap=icon', URL, '--correct=I1:2;3:4', 'IconSvg' ]))
+      .toEqual({ nodeId: 'I1:2;3:4', component: 'IconSvg', props: [], gap: 'icon', stage: 'readout' });
+  });
+
+  it('takes --stage markup on a correction the developer found at the markup leaf, and rejects it anywhere else', () => {
+    expect(correction([ URL, '--correct', '1-2', 'BlockEntity', '--gap', 'shape', '--stage', 'markup' ]).stage).toBe('markup');
+    expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity', '--gap', 'shape', '--stage', 'later' ]))
+      .toThrow(/Not a gap stage: later; --stage takes one of readout, markup\nUsage:/);
+    expect(() => parseArgs([ URL, '--note', 'cells wrap', '--gap', 'markup', '--stage', 'markup' ]))
+      .toThrow(/A note is always a markup-stage miss: --stage goes with --correct only\nUsage:/);
+    expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--stage', 'markup' ])).toThrow(/--override and --correct are separate runs/);
+    expect(() => parseArgs([ URL, '--stage', 'markup' ])).toThrow(/--stage goes with --correct; nothing to log without a correction\nUsage:/);
   });
 
   it('rejects a correction without --gap, because a correction is always a miss', () => {

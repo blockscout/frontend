@@ -24,8 +24,8 @@ The task does recognition on our side. A `design-readout` tool and skill turn a 
 that names the repo component, its props and the design tokens per node, and lists every ambiguous,
 unrecognized and layout item explicitly for a developer to resolve *before* any markup work starts. Phase 1
 built the readout as the developer's input for a hand-made markup leaf. Q02 then loosened the boundary:
-the readout is a *supporting* input, the agent does the markup leaf from it — or from the tool's values
-alone when no readout was made — and the developer verifies in the running app and has every correction
+the readout is a *supporting* input, the agent does the markup leaf from it — or from the mockup alone
+when no readout was made — and the developer verifies in the running app and has every correction
 recorded. Phase 2 — automated verification of the rendered page against the readout — is a later issue;
 the gap log is read by hand.
 
@@ -65,8 +65,9 @@ the gap log is read by hand.
    judgment parts the tool cannot (context override from the ticket and API resource type toward
    interchain / L1 / external entity variants; badge and tag fingerprints; layout questions such as a
    value shown in its own column vs under another cell), and produces the readout. It runs in a
-   subagent and returns only the Ambiguous, Unrecognized and Layout lists with a count of Recognized
-   nodes.
+   subagent and returns only the Ambiguous, Unrecognized, Layout and By convention lists (the last
+   one the layout questions `layout-conventions.md` already answers, applied) with a count of
+   Recognized nodes.
 7. **Readout rules.** Never invent a component — an unmatched node is Unrecognized with its resolved
    values, not a guess. Trust the hex over the Figma style name and record the disagreement. When the
    shipped code and the mockup conflict (a batch icon in Figma vs `noIcon` in the shipped row), report the
@@ -83,8 +84,8 @@ the gap log is read by hand.
     extraction, not raw Figma payloads) for a labeled set, each paired with the expected component and
     props per cell. `pnpm design:readout --calibrate` runs recognition over the snapshots offline and
     prints hits and misses per signal; `--refresh` re-fetches a snapshot from Figma, and a vanished node
-    marks its entry stale rather than failing the run. The set is seeded with the five hand-calibrated nodes
-    plus roughly ten shipped table row components with their Figma nodes (Q01).
+    marks its entry stale rather than failing the run. The set is seeded with ten shipped components,
+    six of them table rows, each with its Figma node (Q01).
 11. **Gap log.** `.ai/design-readout/gaps.md`, one line per miss with a stage (readout / markup) and a
     category from shape / icon / color / composite / context / layout / convention / markup. The skill
     appends a line whenever the developer corrects an Ambiguous or Unrecognized item in session (category
@@ -93,8 +94,8 @@ the gap log is read by hand.
     node-mapped through `--correct` / `--override`, the rest through `--note <text> --gap markup`. The
     phase 2 decision is a hand count over this file.
 12. **Workflow integration.**
-    - `grill-the-task` enumerates the Figma links, one node per screen and state, and asks for the nav
-      icon of every new route (a sprite name, or a question to the designer); it runs no readout.
+    - `grill-the-task` enumerates the Figma links, one node per screen and state; it runs no readout.
+      A new route's nav icon is `add-new-page`'s own Step 0 input, not an interview item.
     - The readout is an optional step the developer runs between `to-spec` and `to-tickets`, per link or
       with no URL for every spec link without a block yet: scoping outline confirmed in the main session,
       readout in a subagent, Ambiguous items resolved by the developer first; the skill writes
@@ -104,13 +105,13 @@ the gap log is read by hand.
     - `to-tickets` cuts the style leaf `[agent]` with a mandatory `(human)` "matches the mockup"
       criterion and links the readout block beside the Figma node when one exists. A style leaf covers
       every breakpoint.
-    - `implement-ticket` runs the markup leaf in a subagent from the readout, or from the tool's own run
-      when there is none; at hand-off it stages the work and prints its tree hash; on the developer's
+    - `implement-ticket` runs the markup leaf in session from the readout, or from the mockup through
+      the Figma MCP when there is none — it never runs the tool, which is the developer's step; at hand-off it stages the work and prints its tree hash; on the developer's
       request it records their corrections from the diff. No `TODO (design):` markers: an item still
       with the designer is a `Blocked by Q<NN>` edge and nothing else.
     - `delegation.md`: design readouts, markup and styling to the mockup, and sprite icons the readout
       recognized are agent work; visual polish, Playwright baselines and design sign-off stay human.
-    - A small task that gets no spec gets no readout; the agent styles from the tool's run.
+    - A small task that gets no spec gets no readout; the agent styles from the mockup.
 
 ## Data & API
 

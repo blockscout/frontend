@@ -40,7 +40,7 @@ const CORRECTION: Correction = {
   stale: false,
 };
 
-const CORRECTION_GAP = { date: '2026-10-07', fileKey: 'KEY', nodeId: '22842:178386', correction: CORRECTION, node: NODE };
+const CORRECTION_GAP = { date: '2026-10-07', fileKey: 'KEY', nodeId: '22842:178386', correction: CORRECTION, node: NODE, stage: 'readout' as const };
 const ENTRY = gapOfCorrection(CORRECTION_GAP);
 const NOTE = gapOfNote({ date: '2026-10-09', fileKey: 'KEY', gap: 'markup', text: 'the row gap is 8px in the app, 12px in the mockup' });
 
@@ -65,6 +65,7 @@ describe('gapOfCorrection', () => {
 
   it('writes a bare component when the correction has no props', () => {
     expect(gapOfCorrection({ ...CORRECTION_GAP, correction: { ...CORRECTION, props: [] } }).developerSaid).toBe('BlockEntity');
+    expect(gapOfCorrection({ ...CORRECTION_GAP, stage: 'markup' }).stage).toBe('markup');
   });
 });
 

@@ -109,7 +109,7 @@ only open questions, and every By convention line is reviewed.
 
 ## 4. Hand back
 
-Write the node’s block to the task folder’s `design-readout.md`. If the file does not exist, write it to the project root instead. Use the format defined in [`readout-template.md`](readout-template.md): create the file from the template if it does not exist, replace the block for the same node if it does, and read the rows from the sidecar and the settled lists.
+Write the node’s block to the task folder’s `design-readout.md`, in the format defined in [`readout-template.md`](readout-template.md): create the file from the template if it does not exist, replace the block for the same node if it does, and read the rows from the sidecar and the settled lists.
 
 Then, if a task folder exists for any item forwarded in step 3, append one entry to the task’s `questions.md`, using the format defined in `.agents/skills/to-spec/questions-template.md`.
 

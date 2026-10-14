@@ -57,10 +57,12 @@ export const ICON_ADJACENCY_GAP_PX = 16;
 export const COMPOSITE_ADJACENCY_GAP_PX = 16;
 
 // A readout role narrows a color lookup to the semantic tokens these patterns name. A link token is
-// a text color unless its path says it paints a background (`link.navigation.bg.group`).
+// a text color unless its path says it paints a background (`link.navigation.bg.group`). The badge
+// and tag families keep their `bg` / `fg` / `border` leaves, which is what the skill's badge and tag
+// fingerprints read the color scheme from.
 export const COLOR_ROLE_PATTERNS = {
-  text: [ /^text\./, /^link\.(?!.*\.bg\b)/ ],
-  background: [ /^bg\./ ],
-  border: [ /^border\./ ],
+  text: [ /^text\./, /^link\.(?!.*\.bg\b)/, /^(?:badge|tag)\..*\.fg$/ ],
+  background: [ /^bg\./, /^(?:badge|tag)\..*\.bg$/ ],
+  border: [ /^border\./, /^(?:badge|tag)\..*\.border$/ ],
   icon: [ /^icon\./ ],
 } as const;

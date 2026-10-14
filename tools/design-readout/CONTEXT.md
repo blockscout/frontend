@@ -42,16 +42,15 @@ means a rule change moved a cell, and the entry is updated in the same change.
   to set it.
 - **Scoping is a pure function of the REST payload.** `./extract/scope.ts` takes the document and nothing
   else, so its specs run over `./fixtures/` and never reach Figma. A rule that needs a second request
-  belongs in `./fetch/figma.ts` and reaches `scopeOutline` as data.
+  belongs in `./fetch/figma.ts` and reaches `./extract/scope.ts` as data.
 - **Nothing under this folder imports `src/config`**, directly or through the composed theme
   modules. The color map is built from the config-free theme defaults, so an instance's runtime
   color overrides are never in it.
 - **Recognition names no component.** The tool decides a signal and what it says; mapping that to a
   repo component is the skill's judgment with the ticket in hand. Icon names come from the generated
-  `public/icons/name.d.ts`, read at run time, so the tool and `IconName` cannot drift.
+  `public/icons/name.d.ts`, read at run time, so the tool and the sprite cannot drift.
 - **Hints are never stored.** A Figma style, component or layer name is printed beside the value and
-  goes nowhere else. The calibration that started this task found three of five style names
-  misleading; a hint in the record would be read back as a fact by the next phase.
+  goes nowhere else; a hint in the record would be read back as a fact by the next phase.
 - **A correction is always a miss, an override never is.** `--correct` and `--note` without `--gap`
   exit non-zero. The phase 2 decision is a hand count over `gaps.md`, and a miss that skips the log
   makes the count lie small. A correction with the category `convention` lets that count set the

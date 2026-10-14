@@ -44,8 +44,8 @@ Leave these out. Every one of them has a source that cannot go stale:
 - What the change replaced. The commit and the PR carry that.
 - Anything another source states. Link instead, so the fact has one home. A source is not only
   another `.md`: a module's header comment, a tool's `--help` text, a skill and a spec all count.
-  Each kind of fact has one home: what a thing *means* sits as the comment on the code that
-  implements it; how to *invoke* it is `--help`; the *procedure* around it is the skill; the
+  Each kind of fact has one home: what a thing *means* sits in the code's names and types, with a
+  comment only where `code-quality.md` allows one; how to *invoke* it is `--help`; the *procedure* around it is the skill; the
   *constraint* and what breaks is the `CONTEXT.md`.
 
 The drop test, for every line of an existing doc: if this line goes, can the reader still find the

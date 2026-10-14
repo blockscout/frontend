@@ -3,7 +3,7 @@ export interface NodeRef {
   readonly nodeId: string;
 }
 
-const FILE_PATH = /^\/(?:design|file)\/([A-Za-z0-9]+)(?:\/|$)/;
+const FILE_PATH = /^\/(?:design|file)\/([A-Za-z0-9]+)(?:\/branch\/([A-Za-z0-9]+))?(?:\/|$)/;
 const NODE_ID_SEGMENT = '\\d+[-:]\\d+';
 const NODE_ID = new RegExp(`^I?(${ NODE_ID_SEGMENT }(?:;${ NODE_ID_SEGMENT })*)$`);
 const SEGMENT_SEPARATOR = /[-:]/;
@@ -31,12 +31,19 @@ function parseUrl(input: string): URL | undefined {
   }
 }
 
+function isFigmaHost(hostname: string): boolean {
+  return hostname === 'figma.com' || hostname.endsWith('.figma.com');
+}
+
 // A Figma node link: `https://www.figma.com/design/<fileKey>/<name>?node-id=<A>-<B>`. The node id is
 // accepted in its URL form (`A-B`) and its canonical form (`A:B`), and is always returned canonical.
+// A branch link carries `/branch/<branchKey>/` after the file key, and the REST API serves the
+// branch's content under the branch key only, so that is the key returned.
 export function parseNodeRef(input: string): NodeRef | undefined {
   const url = parseUrl(input);
-  if (url === undefined || !url.hostname.endsWith('figma.com')) return undefined;
-  const fileKey = FILE_PATH.exec(url.pathname)?.[1];
+  if (url === undefined || !isFigmaHost(url.hostname)) return undefined;
+  const [ , mainKey, branchKey ] = FILE_PATH.exec(url.pathname) ?? [];
+  const fileKey = branchKey ?? mainKey;
   const nodeId = parseNodeId(url.searchParams.get('node-id') ?? '');
   if (fileKey === undefined || nodeId === undefined) return undefined;
   return { fileKey, nodeId };

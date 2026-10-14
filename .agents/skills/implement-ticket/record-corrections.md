@@ -16,7 +16,7 @@ the leaf had one, the node's block in the task folder's `design-readout.md` and 
    uncertain mapping is a note, never a guessed correction. A leaf that had no readout has no sidecar
    to map to, so every one of its corrections is a note.
 3. **Propose one line per correction**, as the command that records it:
-   - a mapped miss → `pnpm design:readout "<url>" --correct <nodeId> <component> [<props…>] --gap <category>`;
+   - a mapped miss → `pnpm design:readout "<url>" --correct <nodeId> <component> [<props…>] --gap <category> --stage markup`;
    - a mapped deliberate style → `pnpm design:readout "<url>" --override <nodeId> <prop=value…>` (no gap line);
    - anything else → `pnpm design:readout "<url>" --note "<what the developer changed>" --gap <category>`,
      `markup` when no other category names the kind of miss. The tool needs no sidecar for a note.

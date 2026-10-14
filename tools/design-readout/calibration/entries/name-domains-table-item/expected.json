@@ -54,7 +54,7 @@
     "13859:49010": {
       "component": "TimeWithTooltip",
       "props": {},
-      "status": "unrecognized",
+      "shape": "absolute-timestamp",
       "color": {
         "text": "text.primary"
       }
@@ -64,7 +64,7 @@
       "props": {
         "color": "inherit"
       },
-      "status": "unrecognized"
+      "shape": "absolute-timestamp"
     }
   }
 }

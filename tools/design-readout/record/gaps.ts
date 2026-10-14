@@ -39,10 +39,13 @@ export interface CorrectionGap {
   readonly nodeId: string;
   readonly correction: Correction;
   readonly node: NodeRecord;
+  readonly stage: GapStage;
 }
 
-export function gapOfCorrection({ date, fileKey, nodeId, correction, node }: CorrectionGap): GapEntry {
-  return { date, fileKey, nodeId, gap: correction.gap, stage: 'readout', toolSaid: describeToolSaid(node), developerSaid: describeDeveloperSaid(correction) };
+// A correction names a node, so it can surface at either stage: while settling the readout, or at
+// the markup leaf when the developer's fix maps back to a leaf the sidecar holds.
+export function gapOfCorrection({ date, fileKey, nodeId, correction, node, stage }: CorrectionGap): GapEntry {
+  return { date, fileKey, nodeId, gap: correction.gap, stage, toolSaid: describeToolSaid(node), developerSaid: describeDeveloperSaid(correction) };
 }
 
 export interface NoteGap {

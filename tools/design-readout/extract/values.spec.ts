@@ -9,6 +9,10 @@ import { buildThemeColorMap } from '../recognize/colormap';
 import type { Extraction, Leaf } from './values';
 import { describeLeaf, extractValues, findNode, renderExtraction } from './values';
 
+const DARK_PRIMARY_TEXT_TOKENS = [
+  'badge.blue_alt.fg', 'badge.gray.fg', 'badge.purple_alt.fg', 'link.menu', 'link.navigation.fg', 'tag.root.clickable.fg', 'tag.root.subtle.fg', 'text.primary',
+].join(', ');
+
 const MAP = buildThemeColorMap();
 const NONE: ReadonlySet<string> = new Set();
 
@@ -145,7 +149,7 @@ describe('hints', () => {
 
   it('reports a disagreement with both sides when the hint names a token the value does not serve in the run mode', () => {
     const { hints } = extract(textWithFillStyle('🖤 Dark/text.secondary', '#FFFFFF', 0.8));
-    expect(hints[0].verdict).toEqual({ kind: 'disagrees', value: '#FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary' });
+    expect(hints[0].verdict).toEqual({ kind: 'disagrees', value: `#FFFFFF/80 → dark: ${ DARK_PRIMARY_TEXT_TOKENS }` });
   });
 
   it('reports a hint stated for the other mode as a disagreement, whatever token it names', () => {
@@ -153,7 +157,7 @@ describe('hints', () => {
     expect(colorMode.mode).toBe('dark');
     expect(hints[0].verdict).toEqual({
       kind: 'disagrees',
-      value: 'stated for light, the run reads dark; #FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary',
+      value: `stated for light, the run reads dark; #FFFFFF/80 → dark: ${ DARK_PRIMARY_TEXT_TOKENS }`,
     });
   });
 
@@ -165,7 +169,7 @@ describe('hints', () => {
       layer: 'Asset Name Copy 2',
       source: 'fill style',
       name: '🖤 Dark/button.primary',
-      verdict: { kind: 'disagrees', value: 'stated for dark, the run reads light; #2B6CB0 → light: link.primary' },
+      verdict: { kind: 'disagrees', value: 'stated for dark, the run reads light; #2B6CB0 → light: badge.bright.blue.fg, link.primary' },
     });
     expect(hints.filter((hint) => hint.verdict.kind === 'disagrees')).toHaveLength(1);
   });
@@ -261,7 +265,7 @@ describe('renderExtraction', () => {
       '  - t text "Hi ↗" +"↗" — Inter 700 14/20; text #FFFFFF/80',
       'Figma hints (not stored): 2, 1 disagreeing',
       '  - t "t" fill style "Light/text.primary": DISAGREES with value stated for light, the run reads dark; ' +
-        '#FFFFFF/80 → dark: link.menu, link.navigation.fg, text.primary',
+        `#FFFFFF/80 → dark: ${ DARK_PRIMARY_TEXT_TOKENS }`,
       '  - t "t" text style "text-sm/font-bold": agrees',
     ].join('\n'));
   });

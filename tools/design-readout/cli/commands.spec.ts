@@ -11,6 +11,10 @@ import { GAP_LOG_HEADER, gapLogPath } from '../record/gaps';
 import { buildRecord, readSidecar, sidecarPath, writeSidecar } from '../record/sidecar';
 import { dumpPayload, readoutOf, recordCorrection, recordNote, recordOverride } from './commands';
 
+const DARK_PRIMARY_TEXT_TOKENS = [
+  'badge.blue_alt.fg', 'badge.gray.fg', 'badge.purple_alt.fg', 'link.menu', 'link.navigation.fg', 'tag.root.clickable.fg', 'tag.root.subtle.fg', 'text.primary',
+];
+
 function readFixture(file: string, nodeId: string): NodeEntry {
   const payload = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'fixtures', file), 'utf8')) as NodesResponse;
   return entryOf(payload, nodeId);
@@ -18,7 +22,7 @@ function readFixture(file: string, nodeId: string): NodeEntry {
 
 describe('recordCorrection', () => {
   const ref = { fileKey: 'KEY', nodeId: '22842:178383' };
-  const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const };
+  const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const, stage: 'readout' as const };
   let tmp = '';
 
   afterEach(() => {
@@ -131,7 +135,7 @@ describe('recordOverride', () => {
 
   it('writes the override into the sidecar beside an untouched correction, logs no gap, and takes a non-color prop unchecked', () => {
     const target = seedSidecar();
-    const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const };
+    const request = { nodeId: '22842:178386', component: 'BlockEntity', props: [ 'noIcon' ], gap: 'context' as const, stage: 'readout' as const };
     recordCorrection(tmp, ref, request, new Date('2026-10-07T09:30:00.000Z'));
     fs.rmSync(gapLogPath(tmp));
     const props = [ 'color=link.primary', 'fontWeight=500' ];
@@ -193,9 +197,9 @@ describe('readoutOf', () => {
     expect(recognitions.map((recognition) => recognition.tokens)).toEqual([
       [ { role: 'text', color: '#63B3ED', tokens: [ 'link.primary' ] } ],
       [ { role: 'text', color: '#A0AEC0', tokens: [ 'link.secondary', 'link.subtle', 'link.subtle.hover', 'text.secondary' ] } ],
-      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
-      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
-      [ { role: 'text', color: '#FFFFFF/80', tokens: [ 'link.menu', 'link.navigation.fg', 'text.primary' ] } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],
+      [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],
     ]);
   });
 

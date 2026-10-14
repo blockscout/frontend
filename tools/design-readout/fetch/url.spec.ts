@@ -18,8 +18,14 @@ describe('parseNodeRef', () => {
     expect(parseNodeRef('https://figma.com/design/abcDEF0123456789abcDEF?node-id=1-2')).toEqual({ fileKey: 'abcDEF0123456789abcDEF', nodeId: '1:2' });
   });
 
+  it('returns the branch key of a branch link, since the REST API serves branch content under it alone', () => {
+    expect(parseNodeRef('https://www.figma.com/design/abcDEF0123456789abcDEF/branch/brKEY0123456789/Pages?node-id=1-2'))
+      .toEqual({ fileKey: 'brKEY0123456789', nodeId: '1:2' });
+  });
+
   it('rejects anything that is not a figma node link', () => {
     expect(parseNodeRef('22842:174340')).toBeUndefined();
+    expect(parseNodeRef('https://notfigma.com/design/abcDEF0123456789abcDEF?node-id=1-2')).toBeUndefined();
     expect(parseNodeRef('https://www.figma.com/design/abcDEF0123456789abcDEF/Pages')).toBeUndefined();
     expect(parseNodeRef('https://www.figma.com/design/abcDEF0123456789abcDEF/Pages?node-id=abc')).toBeUndefined();
     expect(parseNodeRef('https://example.com/design/abcDEF0123456789abcDEF?node-id=1-2')).toBeUndefined();

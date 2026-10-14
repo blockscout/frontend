@@ -1,9 +1,10 @@
 /* eslint-disable no-console -- --help prints the usage to stdout and exits */
 import type { FlagSpec } from '../../cli/flags';
 import { parseArgs as parseFlags } from '../../cli/flags';
-import { CALIBRATION_DIR, GAP_CATEGORIES, OVERRIDE_COLOR_PROPS } from '../config';
+import { CALIBRATION_DIR, GAP_CATEGORIES, GAP_STAGES, OVERRIDE_COLOR_PROPS } from '../config';
 import type { NodeRef } from '../fetch/url';
 import { parseNodeId as parseCanonicalNodeId, parseNodeRef } from '../fetch/url';
+import type { GapStage } from '../record/gaps';
 import type { GapCategory } from '../record/sidecar';
 import { isGapCategory } from '../record/sidecar';
 
@@ -12,6 +13,7 @@ export interface CliOptions {
   regions: ReadonlyArray<string> | undefined;
   correct: string | undefined;
   gap: GapCategory | undefined;
+  stage: GapStage | undefined;
   override: string | undefined;
   note: string | undefined;
   calibrate: boolean;
@@ -20,7 +22,7 @@ export interface CliOptions {
 
 const USAGE = `Usage:
   design:readout <figma node URL> [--regions <ids>] [--dump <path>]
-  design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category>
+  design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category> [--stage <stage>]
   design:readout <figma node URL> --override <nodeId> <prop=value> [<prop=value…>]
   design:readout <figma node URL> --note "<text>" --gap <category>
   design:readout --calibrate
@@ -46,6 +48,9 @@ const USAGE = `Usage:
                        the same miss on another node of the same file adds no gap line:
                        --correct 22842-178386 BlockEntity noIcon --gap shape
   --gap <category>     the kind of miss a correction or note records: ${ GAP_CATEGORIES.join(', ') }
+  --stage <stage>      where a correction's miss surfaced: ${ GAP_STAGES.join(' | ') }; default readout. A
+                       miss the developer found in the running app against the agent's markup is
+                       --stage markup; a note is always markup
   --override <nodeId>  the Chakra props the mockup adds on purpose, as <prop>=<value> words, no spaces
                        inside a word; replaces the node's earlier override whole. A color prop
                        (${ Object.keys(OVERRIDE_COLOR_PROPS).join(', ') }) must name a token the node resolved for that fill:
@@ -76,6 +81,15 @@ function parseGapCategory(value: string): GapCategory {
   return value;
 }
 
+function isGapStage(value: string): value is GapStage {
+  return (GAP_STAGES as ReadonlyArray<string>).includes(value);
+}
+
+function parseGapStage(value: string): GapStage {
+  if (!isGapStage(value)) throw new Error(`Not a gap stage: ${ value }; --stage takes one of ${ GAP_STAGES.join(', ') }\n${ USAGE }`);
+  return value;
+}
+
 const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpec<CliOptions>>([
   [ '--help', { kind: 'switch', apply: () => {
     console.log(USAGE);
@@ -97,6 +111,9 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--gap', { kind: 'value', apply: (options, value) => {
     options.gap = parseGapCategory(value);
   } } ],
+  [ '--stage', { kind: 'value', apply: (options, value) => {
+    options.stage = parseGapStage(value);
+  } } ],
   [ '--override', { kind: 'value', apply: (options, value) => {
     options.override = parseNodeId(value, '--override');
   } } ],
@@ -116,6 +133,7 @@ export interface CorrectionRequest {
   readonly component: string;
   readonly props: ReadonlyArray<string>;
   readonly gap: GapCategory;
+  readonly stage: GapStage;
 }
 
 export interface OverrideRequest {
@@ -137,7 +155,8 @@ export type ParsedCli =
   { readonly kind: 'refresh'; readonly entry: string | undefined };
 
 const DEFAULT_OPTIONS: CliOptions = {
-  dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, note: undefined, calibrate: false, refresh: false,
+  dump: undefined, regions: undefined, correct: undefined, gap: undefined, stage: undefined, override: undefined, note: undefined,
+  calibrate: false, refresh: false,
 };
 
 // A note is its own run: it names no node, so it sits beside neither --correct nor --override, and
@@ -148,6 +167,7 @@ function parseNote(options: CliOptions, words: ReadonlyArray<string>): NoteReque
     throw new Error(`--note is its own run: a note names no node, so it goes with neither --correct nor --override\n${ USAGE }`);
   }
   if (options.gap === undefined) throw new Error(`A note is always a miss: --note needs --gap <${ GAP_CATEGORIES.join('|') }>\n${ USAGE }`);
+  if (options.stage !== undefined) throw new Error(`A note is always a markup-stage miss: --stage goes with --correct only\n${ USAGE }`);
   if (options.note.trim() === '') throw new Error(`--note needs the text of the miss, in quotes\n${ USAGE }`);
   if (words.length > 0) throw new Error(`Unexpected argument: ${ words[0] }\n${ USAGE }`);
   return { text: options.note.trim(), gap: options.gap };
@@ -156,6 +176,7 @@ function parseNote(options: CliOptions, words: ReadonlyArray<string>): NoteReque
 function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): CorrectionRequest | undefined {
   if (options.correct === undefined) {
     if (options.gap !== undefined) throw new Error(`--gap goes with --correct; nothing to log without a correction\n${ USAGE }`);
+    if (options.stage !== undefined) throw new Error(`--stage goes with --correct; nothing to log without a correction\n${ USAGE }`);
     if (words.length > 0) throw new Error(`Unexpected argument: ${ words[0] }\n${ USAGE }`);
     return undefined;
   }
@@ -163,13 +184,13 @@ function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): Cor
   if (options.gap === undefined) {
     throw new Error(`A correction is always a miss: --correct needs --gap <${ GAP_CATEGORIES.join('|') }>\n${ USAGE }`);
   }
-  return { nodeId: options.correct, component: words[0], props: words.slice(1), gap: options.gap };
+  return { nodeId: options.correct, component: words[0], props: words.slice(1), gap: options.gap, stage: options.stage ?? 'readout' };
 }
 
 // An override is not a correction: no component, no --gap, and never in the same run as --correct.
 function parseOverride(options: CliOptions, words: ReadonlyArray<string>): OverrideRequest | undefined {
   if (options.override === undefined) return undefined;
-  if (options.correct !== undefined || options.gap !== undefined) {
+  if (options.correct !== undefined || options.gap !== undefined || options.stage !== undefined) {
     throw new Error(`--override and --correct are separate runs: an override is never a miss and takes no --gap\n${ USAGE }`);
   }
   if (words.length === 0) throw new Error(`--override ${ options.override } needs at least one <prop>=<value> word, after the URL\n${ USAGE }`);

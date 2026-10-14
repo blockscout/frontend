@@ -25,7 +25,7 @@
       "props": {
         "type": "end"
       },
-      "status": "unrecognized",
+      "shape": "absolute-timestamp",
       "color": {
         "text": "text.primary"
       }
