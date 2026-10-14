@@ -136,7 +136,7 @@
         },
         {
             "type": "shell",
-            "command": "pnpm test:pw --changed ${input:pwArgs}",
+            "command": "pnpm test:pw --docker --changed ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: changed",
             "detail": "run visual components tests affected by the changed files in the current branch",
