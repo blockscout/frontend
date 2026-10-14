@@ -54,7 +54,7 @@ const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
     <VerifyWith
       className={ className }
       links={ explorersLinks }
-      label="Verify with other explorers"
+      label="Verify with other sources"
       longText={ `${ explorersLinks.length } Explorer${ explorersLinks.length > 1 ? 's' : '' }` }
       shortText={ explorersLinks.length.toString() }
     />

@@ -6,7 +6,6 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
-import type { PopoverRootProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
@@ -17,14 +16,19 @@ interface Props {
   label: string;
   longText: string;
   shortText?: string;
-  popoverProps?: Partial<PopoverRootProps>;
 }
 
-const VerifyWith = ({ className, links, label, longText, shortText, popoverProps }: Props) => {
+const VerifyWith = ({ className, links, label, longText, shortText }: Props) => {
   const popover = useDisclosure();
 
   return (
-    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange } { ...popoverProps }>
+    <PopoverRoot
+      open={ popover.open }
+      onOpenChange={ popover.onOpenChange }
+      // We render links to the partner pages in the popover body.
+      // So it has to be mounted immediately, so search engines can index the links.
+      lazyMount={ false }
+    >
       <Tooltip content={ label } disabled={ popover.open } disableOnMobile closeOnClick>
         <Box className={ className }>
           <PopoverTrigger>
