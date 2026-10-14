@@ -5,7 +5,7 @@ import * as v from 'valibot';
 import { CALIBRATION_DIR } from '../config';
 import type { Leaf } from '../extract/values';
 import { extractRegions, frameBackground } from '../extract/values';
-import type { NodesResponse } from '../fetch/figma';
+import type { NodeEntry, NodesResponse } from '../fetch/figma';
 import { FigmaFetchError } from '../fetch/figma';
 import type { NodeRef } from '../fetch/url';
 import { parseNodeRef } from '../fetch/url';
@@ -200,13 +200,13 @@ function describeDecision(recognition: Recognition): string {
 function checkDecision(cell: ExpectedCell, leaf: Leaf, recognition: Recognition): SignalCheck | undefined {
   const expectedDecision = cell.shape ?? cell.icon;
   const expectedStatus = cell.status ?? (expectedDecision === undefined ? undefined : 'recognized');
-  if (expectedDecision === undefined && expectedStatus === undefined) return undefined;
+  if (expectedStatus === undefined) return undefined;
   const actualDecision = describeDecision(recognition);
   const decisionHit = expectedDecision === undefined || expectedDecision === actualDecision;
-  const statusHit = expectedStatus === undefined || expectedStatus === recognition.status;
+  const statusHit = expectedStatus === recognition.status;
   return {
     signal: signalOfLeaf(leaf),
-    expected: `${ expectedDecision ?? 'any' }, ${ expectedStatus ?? 'any status' }`,
+    expected: `${ expectedDecision ?? 'any' }, ${ expectedStatus }`,
     actual: `${ actualDecision }, ${ recognition.status }`,
     hit: decisionHit && statusHit,
   };
@@ -237,13 +237,12 @@ export function calibrateEntry(entry: CalibrationEntry, spriteNames: ReadonlyArr
   if (entry.snapshot === undefined) return { name: entry.name, kind: 'no-snapshot' };
   const { leaves, frameBackground: background } = entry.snapshot;
   const mode = detectColorMode(map, leaves.flatMap((leaf) => leaf.values.colors), background ?? undefined).mode;
-  const recognitions = new Map(recognize(leaves, spriteNames, map, mode).map((recognition) => [ recognition.id, recognition ]));
-  const byId = new Map(leaves.map((leaf) => [ leaf.id, leaf ]));
+  const recognitions = recognize(leaves, spriteNames, map, mode);
+  const byId = new Map(leaves.map((leaf, index) => [ leaf.id, { leaf, recognition: recognitions[index] } ]));
   const cells = Object.entries(entry.expected.cells).map(([ nodeId, cell ]) => {
-    const leaf = byId.get(nodeId);
-    const recognition = recognitions.get(nodeId);
-    if (leaf === undefined || recognition === undefined) throw new Error(`Calibration entry ${ entry.name }: cell ${ nodeId } has no leaf.`);
-    return checkCell(nodeId, cell, leaf, recognition);
+    const found = byId.get(nodeId);
+    if (found === undefined) throw new Error(`Calibration entry ${ entry.name }: cell ${ nodeId } has no leaf.`);
+    return checkCell(nodeId, cell, found.leaf, found.recognition);
   });
   return { name: entry.name, kind: 'checked', colorMode: mode, cells };
 }
@@ -329,11 +328,13 @@ function refOf(expected: Expected): NodeRef {
   return { fileKey: ref.fileKey, nodeId: expected.nodeId };
 }
 
-async function fetchEntryNode(ref: NodeRef, fetchNodes: FetchNodes): Promise<{ readonly payload: NodesResponse } | { readonly gone: string }> {
+type FetchedEntry = { readonly payload: NodesResponse; readonly node: NodeEntry } | { readonly gone: string };
+
+async function fetchEntryNode(ref: NodeRef, fetchNodes: FetchNodes): Promise<FetchedEntry> {
   try {
     const payload = await fetchNodes(ref);
-    const entry = payload.nodes[ref.nodeId];
-    return entry === undefined || entry === null ? { gone: `node ${ ref.nodeId } is not in file "${ payload.name }"` } : { payload };
+    const node = payload.nodes[ref.nodeId];
+    return node === undefined || node === null ? { gone: `node ${ ref.nodeId } is not in file "${ payload.name }"` } : { payload, node };
   } catch (error: unknown) {
     if (error instanceof FigmaFetchError && error.status === 404) return { gone: error.message };
     throw error;
@@ -360,9 +361,7 @@ export async function refreshEntry(
   const ref = refOf(entry.expected);
   const fetched = await fetchEntryNode(ref, fetchNodes);
   if ('gone' in fetched) return markStale(entry, fetched.gone);
-  const { payload } = fetched;
-  const node = payload.nodes[ref.nodeId];
-  if (node === undefined || node === null) throw new Error(`Node ${ ref.nodeId } vanished while refreshing ${ entry.name }.`);
+  const { payload, node } = fetched;
   const { regions, extraction } = extractRegions(node, entry.expected.regions, map);
   const snapshot: Snapshot = {
     version: SNAPSHOT_VERSION,

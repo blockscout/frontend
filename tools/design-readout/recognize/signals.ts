@@ -176,6 +176,7 @@ const ARROW_ICON = /^arrows\//;
 function isEntityIcon(leaf: Leaf, spriteNames: ReadonlyArray<string>): boolean {
   if (leaf.values.kind !== 'icon') return false;
   const sprite = matchIconName(leaf.values.icon, spriteNames);
+  // Stryker disable next-line ConditionalExpression: the undefined check narrows the type; an unmatched name is not an arrow either way
   return sprite === undefined || !ARROW_ICON.test(sprite);
 }
 
@@ -248,6 +249,7 @@ const HASH_SIGNALS: ReadonlyArray<string> = [ 'address', 'transaction-hash', 'tr
 const AMOUNT_SIGNALS: ReadonlyArray<string> = [ 'amount', 'number' ];
 
 const isHash = (decision: Decision): boolean => HASH_SIGNALS.includes(decision.signal);
+// Stryker disable next-line ConditionalExpression: the signal check narrows the type; a decision without an icon is not an arrow either way
 const isArrow = (decision: Decision): boolean => decision.signal === 'icon' && ARROW_ICON.test(decision.icon);
 const isAmount = (decision: Decision): boolean => AMOUNT_SIGNALS.includes(decision.signal);
 const isTicker = (decision: Decision): boolean => decision.signal === 'ticker';
@@ -312,6 +314,7 @@ function matchRuleAt(ordered: ReadonlyArray<Member>, start: number, rule: Compos
 
 function withComposite(recognition: Recognition, signal: CompositeSignal, members: Record<string, string>): Recognition {
   const part = Object.keys(members).find((key) => members[key] === recognition.id);
+  // Stryker disable next-line ConditionalExpression: called only for the ids in members, so the part is always found
   return part === undefined ? recognition : { ...recognition, composite: { signal, part, members } };
 }
 
@@ -326,6 +329,7 @@ export function applyComposites(leaves: ReadonlyArray<Leaf>, recognitions: Reado
   });
   const taken = new Set<string>();
   for (const rule of COMPOSITE_RULES) {
+    // Stryker disable next-line EqualityOperator: a pass starting past the last leaf matches nothing
     for (let start = 0; start < ordered.length; start++) {
       const members = matchRuleAt(ordered, start, rule, taken);
       if (members === undefined) continue;

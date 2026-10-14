@@ -64,6 +64,16 @@ describe('recordCorrection', () => {
     expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gap.line }\n`);
   });
 
+  it('describes the corrected node itself in the gap line, not the first node of the sidecar', () => {
+    seedSidecar();
+    const timestamp = { ...request, nodeId: '22842:178400', component: 'TimeWithTooltip', props: [] };
+    const { gap } = recordCorrection(tmp, ref, timestamp, new Date('2026-10-07T09:30:00.000Z'));
+    expect(gap.line).toBe([
+      '- 2026-10-07 | KEY | 22842:178400 | context | readout | ',
+      'recognized: 22842:178400 text "10s ago" — Inter 400 14/20; text #A0AEC0 — relative-timestamp: timestamp | TimeWithTooltip',
+    ].join(''));
+  });
+
   it('fails on a missing sidecar, naming the path it expected', () => {
     tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-correct-'));
     expect(() => recordCorrection(tmp, ref, request, new Date())).toThrow(
@@ -154,6 +164,9 @@ describe('recordOverride', () => {
       .toThrow('color=text.primary names a token the mockup does not draw on 22842:178386: the node resolved text tokens link.primary.');
     expect(() => recordOverride(tmp, ref, { nodeId: '22842:178386', props: [ 'bg=whiteAlpha.100' ] }, new Date()))
       .toThrow('bg=whiteAlpha.100 names a token the mockup does not draw on 22842:178386: the node resolved no background fill.');
+    expect(() => recordOverride(tmp, ref, { nodeId: '22842:178400', props: [ 'color=link.primary' ] }, new Date()))
+      .toThrow('color=link.primary names a token the mockup does not draw on 22842:178400: ' +
+        'the node resolved text tokens link.secondary, link.subtle, link.subtle.hover, text.secondary.');
     const unmapped = readSidecar(target).nodes[0];
     writeSidecar(target, { ...readSidecar(target), nodes: [ { ...unmapped, tokens: [ { role: 'background', color: '#FFFFFF/6', tokens: [] } ] } ] });
     expect(() => recordOverride(tmp, ref, { nodeId: unmapped.id, props: [ 'bg=whiteAlpha.100' ] }, new Date()))
@@ -170,6 +183,8 @@ describe('recordOverride', () => {
     );
     seedSidecar();
     expect(() => recordOverride(tmp, ref, { nodeId: '9:9', props: [ 'fontWeight=500' ] }, new Date()))
+      .toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
+    expect(() => recordOverride(tmp, ref, { nodeId: '9:9', props: [ 'color=link.primary' ] }, new Date()))
       .toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
   });
 });
@@ -223,8 +238,8 @@ describe('dumpPayload', () => {
 
   it('writes the payload as JSON at the path resolved from cwd, creating folders', () => {
     const payload = { name: 'f', lastModified: 'm', version: 'v', nodes: {} };
-    const file = dumpPayload('nested/out.json', payload, dir);
-    expect(file).toBe(path.join(dir, 'nested/out.json'));
+    const file = dumpPayload('nested/deeper/out.json', payload, dir);
+    expect(file).toBe(path.join(dir, 'nested/deeper/out.json'));
     expect(JSON.parse(fs.readFileSync(file, 'utf8'))).toEqual(payload);
   });
 });

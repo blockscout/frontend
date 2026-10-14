@@ -126,6 +126,7 @@ export function writeSidecar(filePath: string, record: SidecarRecord): void {
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
+  // Stryker disable next-line ConditionalExpression: a primitive reads `version` as undefined and fails the same check; the typeof only narrows the type
   return typeof value === 'object' && value !== null;
 }
 

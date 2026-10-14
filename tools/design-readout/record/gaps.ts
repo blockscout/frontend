@@ -71,6 +71,7 @@ export function formatGapLine({ date, fileKey, nodeId, gap, stage, toolSaid, dev
 function missOf(line: string): string {
   const [ , fileKey, nodeId, category, , ...rest ] = line.replace(/^- /, '').split(' | ');
   const said = rest.join(' | ');
+  // Stryker disable next-line ConditionalExpression: with no node id the replace strips the one leading space every note line shares, so every key moves alike
   return `${ fileKey } | ${ category } | ${ nodeId === '' ? said : said.replace(`${ nodeId } `, '') }`;
 }
 

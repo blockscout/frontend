@@ -91,6 +91,7 @@ describe('parseArgs', () => {
     expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--correct', '1-2', 'Box', '--gap', 'color' ]))
       .toThrow(/--override and --correct are separate runs: an override is never a miss and takes no --gap\nUsage:/);
     expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--gap', 'color' ])).toThrow(/--override and --correct are separate runs/);
+    expect(() => parseArgs([ URL, '--override', '1-2', 'bg=x', '--correct', '1-2', 'Box' ])).toThrow(/--override and --correct are separate runs/);
     expect(() => parseArgs([ URL, '--override', '1-2' ])).toThrow(/--override 1:2 needs at least one <prop>=<value> word, after the URL\nUsage:/);
     expect(() => parseArgs([ URL, '--override', '1-2', 'noIcon' ])).toThrow(/An override is one <prop>=<value> per word, no spaces inside: noIcon\nUsage:/);
     expect(() => parseArgs([ URL, '--override', '1-2', 'bg=' ])).toThrow(/An override is one <prop>=<value> per word, no spaces inside: bg=/);

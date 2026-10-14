@@ -126,6 +126,12 @@ describe('carryCorrections', () => {
     expect(merged.nodes).toEqual([ ICON ]);
   });
 
+  it('leaves a node that had no correction or override without one when its values change', () => {
+    const merged = carryCorrections(record([ TEXT ]), record([ withText(TEXT, '1248140') ], LATER));
+    expect(merged.nodes[0].correction).toBeNull();
+    expect(merged.nodes[0].override).toBeNull();
+  });
+
   describe('override', () => {
     const overridden: NodeRecord = { ...TEXT, correction: CORRECTION, override: OVERRIDE };
 
@@ -173,10 +179,10 @@ describe('renderRerun', () => {
 
   it('counts an unchanged corrected node as recognized by correction and says a kept correction is kept', () => {
     const corrected: NodeRecord = { ...TEXT, correction: CORRECTION };
-    const previous = record([ corrected, { ...ICON, correction: { ...CORRECTION, component: 'IconSvg' } } ]);
+    const previous = record([ corrected, { ...ICON, correction: { ...CORRECTION, component: 'IconSvg', props: [] } } ]);
     const next = carryCorrections(previous, record([ TEXT, { ...ICON, status: 'ambiguous' } ], LATER));
-    expect(renderRerun(diffRecords(previous, next))).toContain('Unchanged: 1 (1 recognized by correction)');
-    expect(renderRerun(diffRecords(previous, next))).toContain('  ~ 1:3 changed decision; correction IconSvg noIcon (context) kept');
+    expect(renderRerun(diffRecords(previous, next))).toContain(', color mode light\nUnchanged: 1 (1 recognized by correction)');
+    expect(renderRerun(diffRecords(previous, next))).toContain('  ~ 1:3 changed decision; correction IconSvg (context) kept');
   });
 
   it('says when a vanished node takes its correction with it', () => {

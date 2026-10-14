@@ -116,6 +116,7 @@ export function recordCorrection(mainCheckout: string, ref: NodeRef, request: Co
   const record = applyCorrection(readSidecar(target), request.nodeId, correction);
   writeSidecar(target, record);
   const node = record.nodes.find((candidate) => candidate.id === request.nodeId);
+  // Stryker disable next-line ConditionalExpression: applyCorrection already threw for a node the sidecar lacks; this only narrows the type
   if (node === undefined) throw new Error(`Node ${ request.nodeId } vanished from the sidecar while correcting it.`);
   const entry = gapOfCorrection({ date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node, stage: request.stage });
   return { record, gap: appendGap(gapLogPath(mainCheckout), entry) };

@@ -63,6 +63,7 @@ export function diffRecords(previous: SidecarRecord, next: SidecarRecord): Rerun
 // override is carried under the same rule.
 function valuesChanged(old: NodeRecord, next: NodeRecord): boolean {
   const change = changeOf(old, next);
+  // Stryker disable next-line ConditionalExpression: the kind check narrows the union; an unchanged node has no values flag to read
   return change.kind === 'changed' && change.values;
 }
 

@@ -128,6 +128,20 @@ describe('scopeOutline descent', () => {
     ]);
   });
 
+  it('spans at exactly the tolerance, and never when the instance or the screen has no box', () => {
+    const content = node('Content', { width: 1114, height: 2800 }, {}, [ node('A', { width: 1, height: 1 }), node('B', { width: 1, height: 1 }) ]);
+    const edge = node('Banner', { width: 1113, height: 60 }, { type: 'INSTANCE' });
+    expect(scopeOutline(node('Page', { width: 1114, height: 3000 }, {}, [ edge, content ])).chrome.map((chrome) => chrome.rule))
+      .toEqual([ { kind: 'structural', spans: 'width' } ]);
+    const boxless = node('Rail', PAGE, { type: 'INSTANCE', absoluteBoundingBox: null });
+    expect(scopeOutline(node('Page', PAGE, {}, [ boxless, content ])).chrome).toEqual([]);
+    const sealed = node('Rail', PAGE, { type: 'INSTANCE' });
+    expect(scopeOutline(node('Page', PAGE, { absoluteBoundingBox: null }, [ sealed, content ])).chrome).toEqual([]);
+    const outline = scopeOutline(node('Page', PAGE, { absoluteBoundingBox: undefined }, [ sealed, content ]));
+    expect(outline.chrome).toEqual([]);
+    expect(renderOutline(outline)).toContain('Content root: Page#1440x3000 "Page" FRAME no box');
+  });
+
   it('keeps a sealed instance that fills its column but not the screen, and descends into it', () => {
     const emptyState = node('Verify_empty', { width: 1114, height: 440 }, { type: 'INSTANCE' }, [
       node('Icon', { width: 40, height: 40 }),

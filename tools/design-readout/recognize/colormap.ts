@@ -156,8 +156,9 @@ export function buildColorMap({ palette, themeDefaults, semanticColors }: ThemeS
   collectLeaves(themeDefaults, [ 'theme' ], themeLeaves);
   for (const leaf of themeLeaves) {
     const keyed = themeLeafMode(leaf);
-    const resolved = keyed === undefined ? undefined : resolveToken(tree, leaf.value, keyed.mode);
-    if (keyed !== undefined && resolved !== undefined) addEntry(semantic[keyed.mode], colorKey(resolved), keyed.name);
+    if (keyed === undefined) continue;
+    const resolved = resolveToken(tree, leaf.value, keyed.mode);
+    if (resolved !== undefined) addEntry(semantic[keyed.mode], colorKey(resolved), keyed.name);
   }
 
   const semanticLeaves: Array<TokenLeaf> = [];
@@ -214,6 +215,7 @@ function leaningMode(map: ColorMap, value: VotingColor): ColorMode | undefined {
   const lightOnly = inLight.filter((name) => !inDark.includes(name)).length;
   const darkOnly = inDark.filter((name) => !inLight.includes(name)).length;
   if (lightOnly === darkOnly) return undefined;
+  // Stryker disable next-line EqualityOperator: a tie returned above, so > and >= cannot differ here
   return lightOnly > darkOnly ? 'light' : 'dark';
 }
 
@@ -223,6 +225,7 @@ export function detectColorMode(map: ColorMap, values: ReadonlyArray<VotingColor
     const mode = leaningMode(map, value);
     if (mode !== undefined) votes[mode] += 1;
   }
+  // Stryker disable next-line EqualityOperator: inside the tie guard, so > and >= cannot differ here
   if (votes.light !== votes.dark) return { mode: votes.light > votes.dark ? 'light' : 'dark', decidedBy: 'majority', votes };
 
   const background = frameBackground === undefined ? undefined : leaningMode(map, frameBackground);

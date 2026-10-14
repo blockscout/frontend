@@ -133,6 +133,7 @@ function leafValuesOf(node: FigmaNode): LeafValues | undefined {
 }
 
 function isWalkedInto(node: FigmaNode, values: LeafValues | undefined): boolean {
+  // Stryker disable next-line ConditionalExpression: a TEXT node carries no children in the REST payload, so walking into one is a no-op either way
   return values?.kind !== 'text' && values?.kind !== 'icon' && !ICON_SHAPES.has(node.type) && !BOX_SHAPES.has(node.type);
 }
 
@@ -220,6 +221,7 @@ interface WalkContext {
 
 function styleName(entry: NodeEntry, node: FigmaNode, property: string): string | undefined {
   const id = node.styles?.[property];
+  // Stryker disable next-line ConditionalExpression: an undefined id indexes nothing; the guard only types the lookup
   return id === undefined ? undefined : entry.styles?.[id]?.name;
 }
 
@@ -241,6 +243,7 @@ function collectHints(node: FigmaNode, values: LeafValues | undefined, context: 
   hint('fill style', styleName(entry, node, 'fill'), { kind: 'color', value: firstColor(values, fillRoleOf(node, values)) });
   hint('stroke style', styleName(entry, node, 'stroke'), { kind: 'color', value: firstColor(values, 'border') });
   hint('text style', styleName(entry, node, 'text'), { kind: 'font', font: fontOf(node) });
+  // Stryker disable next-line ConditionalExpression: an undefined id indexes nothing; the guard only types the lookup
   const component = node.componentId === undefined ? undefined : entry.components?.[node.componentId]?.name;
   hint('component', component, { kind: 'label' });
 }

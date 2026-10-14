@@ -130,6 +130,32 @@ describe('extractValues', () => {
     expect(extract(entryWith(percent)).leaves[0].values).toMatchObject({ trailingGlyphs: undefined });
   });
 
+  it('reads only a visible solid paint with a color, and scales its alpha by the paint and the node opacity', () => {
+    const fills: FigmaNode['fills'] = [
+      { type: 'GRADIENT_LINEAR', color: { r: 1, g: 0, b: 0, a: 1 } },
+      { type: 'SOLID', visible: false, color: { r: 1, g: 0, b: 0, a: 1 } },
+      { type: 'SOLID' },
+      ...solid('#000000', 0.8) ?? [],
+    ];
+    const text = node('t', 'TEXT', { characters: 'x', fills, opacity: 0.5 });
+    const { colors } = extract(entryWith(text)).leaves[0].values;
+    expect(colors).toHaveLength(1);
+    expect(colors[0]).toMatchObject({ role: 'text', hex: '#000000' });
+    expect(colors[0].alpha).toBeCloseTo(0.4);
+  });
+
+  it('takes the icon color from the first visible fill inside, past an unpainted child, and ignores hidden text', () => {
+    const icon = node('inst', 'INSTANCE', { name: 'Icons/x', fills: [] }, [
+      node('wrap', 'FRAME', { fills: [] }),
+      node('hidden', 'VECTOR', { visible: false, fills: solid('#FF0000') }),
+      node('label', 'TEXT', { visible: false, characters: 'x', fills: solid('#000000') }),
+      node('v', 'VECTOR', { fills: solid('#0000FF') }),
+    ]);
+    const { leaves } = extract(entryWith(icon));
+    expect(leaves).toHaveLength(1);
+    expect(leaves[0].values).toEqual({ kind: 'icon', icon: 'Icons/x', colors: [ { role: 'icon', hex: '#0000FF', alpha: 1 } ] });
+  });
+
   it('gives a free-standing vector the icon role', () => {
     const vector = node('v', 'VECTOR', { fills: solid('#F44336') });
     expect(extract(entryWith(vector)).leaves[0].values).toEqual({ kind: 'box', colors: [ { role: 'icon', hex: '#F44336', alpha: 1 } ] });
@@ -172,6 +198,17 @@ describe('hints', () => {
       verdict: { kind: 'disagrees', value: 'stated for dark, the run reads light; #2B6CB0 → light: badge.bright.blue.fg, link.primary' },
     });
     expect(hints.filter((hint) => hint.verdict.kind === 'disagrees')).toHaveLength(1);
+  });
+
+  it('reads the mode past an emoji-only segment, and a name that is only a mode carries no token', () => {
+    expect(extract(textWithFillStyle('🖤/Dark/text.primary', '#FFFFFF', 0.8)).hints[0].verdict).toEqual({ kind: 'agrees' });
+    expect(extract(textWithFillStyle('🖤 Dark', '#FFFFFF', 0.8)).hints[0].verdict).toEqual({ kind: 'unchecked', reason: 'the style name carries no token' });
+  });
+
+  it('says the role has no token when the fill serves none in the run mode', () => {
+    const { hints, colorMode } = extract(textWithFillStyle('Dark/text.primary', '#123456'));
+    expect(colorMode.mode).toBe('light');
+    expect(hints[0].verdict).toEqual({ kind: 'disagrees', value: 'stated for dark, the run reads light; #123456 → light: no text token' });
   });
 
   it('checks a mode-free hint in the run mode', () => {
@@ -218,10 +255,29 @@ describe('hints', () => {
     expect(unknown.verdict).toEqual({ kind: 'unchecked', reason: 'the style name claims no size or weight the tool knows' });
   });
 
-  it('checks a stroke style against the border color', () => {
-    const frame = node('f', 'FRAME', { strokes: solid('#E2E8F0'), styles: { stroke: 's1' } }, []);
+  it('checks a text style that claims only a size or only a weight, and leaves one unchecked on a node without a text style', () => {
+    const styled = (name: string, style: FigmaNode['style']): NodeEntry => entryWith(
+      node('t', 'TEXT', { characters: 'x', fills: solid('#000000'), style, styles: { text: 's1' } }),
+      { s1: { name, styleType: 'TEXT' } },
+    );
+    const font = { fontFamily: 'Inter', fontWeight: 700, fontSize: 14, lineHeightPx: 20 };
+    expect(extract(styled('text-sm', font)).hints[0].verdict).toEqual({ kind: 'agrees' });
+    expect(extract(styled('font-bold', font)).hints[0].verdict).toEqual({ kind: 'agrees' });
+    expect(extract(styled('text-sm', { ...font, fontSize: 16 })).hints[0].verdict).toEqual({ kind: 'disagrees', value: 'size 14px vs 16px' });
+    expect(extract(styled('text-sm/font-bold', undefined)).hints[0].verdict).toEqual({ kind: 'unchecked', reason: 'the node has no text style' });
+  });
+
+  it('checks a stroke style against the border color, not the fill', () => {
+    const frame = node('f', 'FRAME', { fills: solid('#FFFFFF'), strokes: solid('#E2E8F0'), styles: { stroke: 's1' } }, []);
     const { hints } = extract(entryWith(frame, { s1: { name: 'gray/200', styleType: 'FILL' } }));
     expect(hints).toEqual([ { nodeId: 'f', layer: 'f', source: 'stroke style', name: 'gray/200', verdict: { kind: 'agrees' } } ]);
+  });
+
+  it('checks a fill style against the icon color of an instance and the background of a frame', () => {
+    const icon = node('i', 'INSTANCE', { name: 'Icons/x', fills: [], styles: { fill: 's1' } }, [ node('v', 'VECTOR', { fills: solid('#718096') }) ]);
+    expect(extract(entryWith(icon, { s1: { name: 'gray/500', styleType: 'FILL' } })).hints[0].verdict).toEqual({ kind: 'agrees' });
+    const frame = node('f', 'FRAME', { fills: solid('#EDF2F7'), styles: { fill: 's1' } }, []);
+    expect(extract(entryWith(frame, { s1: { name: 'gray/100', styleType: 'FILL' } })).hints[0].verdict).toEqual({ kind: 'agrees' });
   });
 });
 
@@ -243,7 +299,9 @@ describe('color mode', () => {
   });
 
   it('falls back to light when neither the fills nor the linked node\'s background lean either way', () => {
-    expect(extract(entryWith(paletteOnlyText)).colorMode).toEqual({ mode: 'light', decidedBy: 'default', votes: { light: 0, dark: 0 } });
+    const extraction = extract(entryWith(paletteOnlyText));
+    expect(extraction.colorMode).toEqual({ mode: 'light', decidedBy: 'default', votes: { light: 0, dark: 0 } });
+    expect(renderExtraction(extraction)).toContain('Color mode: light (no vote, the default; 0 light, 0 dark)');
   });
 });
 
@@ -268,6 +326,12 @@ describe('renderExtraction', () => {
         `#FFFFFF/80 → dark: ${ DARK_PRIMARY_TEXT_TOKENS }`,
       '  - t "t" text style "text-sm/font-bold": agrees',
     ].join('\n'));
+  });
+
+  it('counts no disagreement when every hint agrees', () => {
+    const frame = node('f', 'FRAME', { strokes: solid('#E2E8F0'), styles: { stroke: 's1' } }, []);
+    const rendered = renderExtraction(extract(entryWith(frame, { s1: { name: 'gray/200', styleType: 'FILL' } })));
+    expect(rendered).toContain('Figma hints (not stored): 1, 0 disagreeing');
   });
 
   it('describes an icon and a box leaf', () => {

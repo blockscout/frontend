@@ -166,6 +166,25 @@ describe('calibrateEntry', () => {
     expect(hasMiss([ result ])).toBe(true);
   });
 
+  it('checks a color against the tokens of that role only, and names the fill that resolved none', () => {
+    const cells: Expected['cells'] = { '1:10': { component: 'BlockEntity', props: {}, color: { background: 'link.primary' } } };
+    const result = calibrateEntry({ ...entry, expected: { ...EXPECTED, cells } }, SPRITES, map);
+    if (result.kind !== 'checked') throw new Error('unreachable');
+    expect(result.cells[0].checks).toEqual([ { signal: 'color', expected: 'background link.primary', actual: 'background no token', hit: false } ]);
+  });
+
+  it('lets the frame background decide the mode when no fill votes', () => {
+    const unmapped = { ...LEAVES[0], values: { ...LEAVES[0].values, colors: [ { role: 'text' as const, hex: '#123456', alpha: 1 } ] } };
+    const snapshot: Snapshot = { ...SNAPSHOT, leaves: [ unmapped ], frameBackground: { hex: '#101112', alpha: 1 } };
+    const cells: Expected['cells'] = { '1:10': { component: 'BlockEntity', props: {} } };
+    expect(calibrateEntry({ ...entry, expected: { ...EXPECTED, cells }, snapshot }, SPRITES, map)).toMatchObject({ kind: 'checked', colorMode: 'dark' });
+  });
+
+  it('fails on a cell keyed by a node id the snapshot has no leaf for', () => {
+    const cells: Expected['cells'] = { '9:9': { component: 'X', props: {} } };
+    expect(() => calibrateEntry({ ...entry, expected: { ...EXPECTED, cells } }, SPRITES, map)).toThrow('Calibration entry blocks: cell 9:9 has no leaf.');
+  });
+
   it('skips a stale entry and flags one without a snapshot', () => {
     expect(calibrateEntry({ ...entry, expected: { ...EXPECTED, stale: true } }, SPRITES, map)).toEqual({ name: 'blocks', kind: 'stale' });
     expect(calibrateEntry({ ...entry, snapshot: undefined }, SPRITES, map)).toEqual({ name: 'blocks', kind: 'no-snapshot' });
@@ -260,6 +279,15 @@ describe('refreshEntry', () => {
 
     fetchMock.mockResponseOnce('', { status: 404 });
     expect(await refreshEntry(loadEntry(dir), fetchWithToken, now)).toMatchObject({ kind: 'stale', reason: /Figma returned 404/ });
+
+    fetchMock.mockResponseOnce(JSON.stringify({ ...payload(), nodes: {} }));
+    expect(await refreshEntry(loadEntry(dir), fetchWithToken, now)).toEqual({ name: 'blocks', kind: 'stale', reason: 'node 1:2 is not in file "Pages"' });
+  });
+
+  it('refuses an entry whose url is not a Figma node link before fetching anything', async() => {
+    const entry: CalibrationEntry = { name: 'blocks', dir: '/nowhere', expected: { ...EXPECTED, url: 'https://example.com' }, snapshot: SNAPSHOT };
+    await expect(refreshEntry(entry, fetchWithToken, now)).rejects.toThrow('Not a Figma node URL: https://example.com');
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   it('stops on a rejected token or a missing one, touching nothing', async() => {
@@ -275,6 +303,16 @@ describe('refreshEntry', () => {
     fetchMock.mockResponseOnce(JSON.stringify(payload()));
     expect(await refreshEntry(loadEntry(dir), fetchWithToken, now)).toEqual({ name: 'blocks', kind: 'refreshed', leaves: 1 });
     expect((readJson(path.join(dir, SNAPSHOT_FILE)) as Snapshot).regions).toEqual([ '1:11' ]);
+  });
+
+  it('records a null frame background when the root paints none', async() => {
+    const dir = writeEntry('blocks', { ...EXPECTED, cells: {} }, undefined);
+    const bare = payload();
+    const { fills, ...root } = bare.nodes['1:2']?.document ?? {};
+    expect(fills).toBeDefined();
+    fetchMock.mockResponseOnce(JSON.stringify({ ...bare, nodes: { '1:2': { document: root } } }));
+    await refreshEntry(loadEntry(dir), fetchWithToken, now);
+    expect((readJson(path.join(dir, SNAPSHOT_FILE)) as Snapshot).frameBackground).toBeNull();
   });
 });
 

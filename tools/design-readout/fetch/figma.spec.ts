@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
 import { TOKEN_ENV } from '../config';
-import { fetchNodes, rootOf } from './figma';
+import { entryOf, fetchNodes, rootOf } from './figma';
 
 const REF = { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' };
 
@@ -20,6 +20,17 @@ describe('fetchNodes', () => {
     fetchMock.mockResponseOnce('', { status: 403 });
     await expect(fetchNodes(REF, { [TOKEN_ENV]: 'expired' })).rejects
       .toThrow('Figma rejected the token (HTTP 403); personal access tokens expire after at most 90 days.');
+    fetchMock.mockResponseOnce('', { status: 401 });
+    await expect(fetchNodes(REF, { [TOKEN_ENV]: 'expired' })).rejects
+      .toThrow('Figma rejected the token (HTTP 401); personal access tokens expire after at most 90 days.');
+  });
+
+  it('tells a missing file apart from any other failure, keeping the status', async() => {
+    fetchMock.mockResponseOnce('', { status: 404 });
+    await expect(fetchNodes(REF, { [TOKEN_ENV]: 'personal-token' })).rejects
+      .toThrow('Figma returned 404: the file key is wrong or the token has no access to the file.');
+    fetchMock.mockResponseOnce('', { status: 500 });
+    await expect(fetchNodes(REF, { [TOKEN_ENV]: 'personal-token' })).rejects.toThrow('Figma nodes request failed with HTTP 500.');
   });
 
   it('asks the nodes endpoint for the one node with the token in the header', async() => {
@@ -31,7 +42,8 @@ describe('fetchNodes', () => {
     expect(rootOf(payload, '22842:174340').name).toBe('n');
   });
 
-  it('names the node when the file does not contain it', () => {
+  it('names the node when the file does not contain it, whether the entry is null or absent', () => {
     expect(() => rootOf({ name: 'f', lastModified: 'm', version: 'v', nodes: { '1:2': null } }, '1:2')).toThrow('Node 1:2 is not in file "f".');
+    expect(() => entryOf({ name: 'f', lastModified: 'm', version: 'v', nodes: {} }, '1:2')).toThrow('Node 1:2 is not in file "f".');
   });
 });
