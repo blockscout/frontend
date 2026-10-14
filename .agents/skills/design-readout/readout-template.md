@@ -3,7 +3,7 @@
 The shape of the file that carries a node's readout into a task folder: one file per task, one block
 per Figma node. It is written from the node's sidecar (`tools/design-readout/CONTEXT.md` says where
 that lives) and the lists the [`design-readout`](SKILL.md) skill returned, and it is pruned at land
-like the ticket files. Four sections per node, in this order, each present even when empty.
+like the ticket files. Five sections per node, in this order, each present even when empty.
 
 ```md
 # Design readout — <task title>
@@ -31,6 +31,10 @@ Sidecar `<path>` · color mode `<light|dark>` · file version `<version>` · reg
 ### Layout questions
 
 - <question> — nodes `<ids>` — <the two readings> — <answer, once given>
+
+### By convention
+
+- <convention> — nodes `<ids>`[ — mockup shows <the opposite>]
 ```
 
 What goes where:
@@ -46,6 +50,10 @@ What goes where:
   moved to Recognized; an item sent to the designer carries its question.
 - **Layout questions** hold every layout question the subagent raised, answered or not; an answer
   that changed a node is also a Recognized row with signal `correction`.
+- **By convention** holds every application of a `tools/design-readout/layout-conventions.md` row the
+  subagent returned, as reviewed in session: the convention, the nodes it settled, and the
+  `mockup shows` tail where the mockup draws the opposite, so the style leaf follows the convention
+  over the mockup without reopening the question.
 
 The sidecar is the source; this file is a view of it for the ticket's style leaf and is
 regenerated, never hand-edited.

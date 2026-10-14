@@ -100,7 +100,7 @@ the gap log is read by hand.
       with no URL for every spec link without a block yet: scoping outline confirmed in the main session,
       readout in a subagent, Ambiguous items resolved by the developer first; the skill writes
       `design-readout.md` into the task folder (Recognized table, Ambiguous, Unrecognized, Layout
-      questions) and a `questions.md` entry per design-intent question the developer sends on.
+      questions, By convention) and a `questions.md` entry per design-intent question the developer sends on.
       `structure.md` carries the file's row; it is pruned at land like the ticket files.
     - `to-tickets` cuts the style leaf `[agent]` with a mandatory `(human)` "matches the mockup"
       criterion and links the readout block beside the Figma node when one exists. A style leaf covers
