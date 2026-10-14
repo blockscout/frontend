@@ -1,0 +1,66 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=21998-159259",
+  "nodeId": "I21998:159259;20539:210205;27896:45000;27896:44423",
+  "component": "src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgetCard.tsx",
+  "stale": false,
+  "cells": {
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52869": {
+      "component": "Text",
+      "props": {
+        "textStyle": "heading.xl",
+        "color": "text.primary"
+      },
+      "shape": "number",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52871": {
+      "component": "Text",
+      "props": {
+        "textStyle": "sm"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52872": {
+      "component": "Hint",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:53460": {
+      "component": "Image",
+      "props": {
+        "boxSize": 5
+      },
+      "status": "unrecognized"
+    },
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52894": {
+      "component": "Text",
+      "props": {
+        "textStyle": "xs",
+        "color": "text.secondary"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52898": {
+      "component": "SpriteIcon",
+      "props": {
+        "name": "link_external",
+        "boxSize": 3
+      },
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    }
+  }
+}

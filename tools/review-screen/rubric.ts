@@ -30,7 +30,7 @@ export const RULES: ReadonlyArray<Rule> = [
     not_for: [
       'a comment explaining a quirk, workaround or invariant the code cannot show, optionally with an issue link',
       'the reason on an eslint-disable, on a double cast, or on a raw color value',
-      'a `TODO (design):` or `TODO (api-data):` scaffold marker',
+      'a `TODO (api-data):` scaffold marker',
       'an SPDX license header',
       'a comment that was already present and is only moved or reindented',
     ],

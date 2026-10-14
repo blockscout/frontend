@@ -22,7 +22,11 @@
         "public/static/capybara/index.js",
         "src/toolkit/pages/design-system/utils.ts",
         "src/features/external-txs/components/TxExternalTxs.pw.tsx",
-        ".agents/TEAM.md"
+        ".agents/TEAM.md",
+        // raw Figma payloads: the designer's layer names are data, not prose
+        "tools/design-readout/fixtures",
+        // calibration snapshots: the mockups' own layer names and text, plus the Figma file key
+        "tools/design-readout/calibration"
     ],
     "enableGlobDot": true,
     "ignoreRandomStrings": true,
@@ -72,6 +76,7 @@
         "Baiduspider",
         "barooumba",
         "basehead",
+        "bbox",
         "bech",
         "bedag",
         "bingbot",
@@ -215,6 +220,7 @@
         "posthog",
         "protobufjs",
         "PRRT",
+        "pstack",
         "PWDEBUG",
         "pwstory",
         "pyftsubset",

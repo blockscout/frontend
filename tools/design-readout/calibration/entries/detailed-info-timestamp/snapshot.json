@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "I29024:135150;28406:92845;17439:63824",
+  "capturedAt": "2026-10-08T09:19:23.935Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "I29024:135150;28406:92845;26864:6726"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I29024:135150;28406:92845;26864:6728",
+      "values": {
+        "kind": "text",
+        "text": "11s ago",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 16,
+          "lineHeight": 24
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -5915,
+        "y": -568,
+        "width": 57,
+        "height": 24
+      }
+    },
+    {
+      "id": "I29024:135150;28406:92845;31535:2910",
+      "values": {
+        "kind": "icon",
+        "icon": "Timestamp",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#101112",
+            "alpha": 0.05999999865889549
+          }
+        ]
+      },
+      "bbox": {
+        "x": -5841,
+        "y": -566,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29024:135150;28406:92845;26864:6730",
+      "values": {
+        "kind": "text",
+        "text": "Jun 23 2022 02:51:55 PM ",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 16,
+          "lineHeight": 24
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -5817,
+        "y": -568,
+        "width": 194,
+        "height": 24
+      }
+    }
+  ]
+}

@@ -30,6 +30,7 @@ How to verify: `pnpm dev:preset <alias>`, open <route>
 
 - [ ] <criterion the review can check from the diff>
 - [ ] `(human)` <criterion only a person judging the running product can check>
+- [ ] `(human)` <component> matches the mockup at every breakpoint <!-- mandatory on a ticket with a style leaf -->
 
 ## Details
 
@@ -55,13 +56,18 @@ the developer and records the answer here. -->
 then styling) while the ticket cuts across them.
 
 Tag every leaf `[agent]` or `[human]` — explicitly, never implied; `implement-ticket` reads the tags as its
-state machine. A UI component is two linked leaves (scaffold → style). Visual tests are not a third leaf by
-default; extend or pack per `.agents/rules/tests-visual.md`. A leaf names the skill it runs; its
-answers live in Skill inputs above, not inline here.
+state machine. UI work follows the leaf rule in "Leaves" in `.agents/tasks/concepts.md` — so a new page is
+`add-new-page` → style, while a change to an existing component is the style leaf alone. Visual tests are not a third leaf by default; extend or pack per
+`.agents/rules/tests-visual.md`. A leaf names the skill it runs; its answers live in Skill inputs above,
+not inline here.
+
+The style leaf links the Figma node (and the mobile node, when the spec has one) and, when the task has a
+`design-readout.md`, that node's block in it, right beside the node; a task without a readout links the
+node alone. The ticket then carries the mandatory `(human)` criterion above.
 
 A leaf's checkbox is PROGRESS STATE — how far the ticket has got, since it has no commit yet. It is never
 a changelog: one line at most, and durable decisions get folded into the sections above instead. -->
 
 - [ ] 1 `[agent]` <title> — skill: `add-api-resource`
 - [ ] 2 `[agent]` <title> — skill: `add-new-page`
-- [ ] 3 `[human]` Style <component> to mockup — [Figma](<node URL>)
+- [ ] 3 `[agent]` Style <component> to mockup — [Figma](<node URL>) · [readout](../../design-readout.md#<node heading anchor>)

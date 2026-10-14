@@ -1,0 +1,487 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "28972:117729",
+  "capturedAt": "2026-10-08T09:19:17.669Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "I28972:117729;29855:20225"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I28972:117729;933:17025",
+      "values": {
+        "kind": "text",
+        "text": "1248136",
+        "font": {
+          "family": "Inter",
+          "weight": 700,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7475,
+        "y": -690,
+        "width": 60,
+        "height": 30
+      }
+    },
+    {
+      "id": "I28972:117729;26785:88384;13460:162892",
+      "values": {
+        "kind": "text",
+        "text": "10s ago",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7475,
+        "y": -660,
+        "width": 52,
+        "height": 30
+      }
+    },
+    {
+      "id": "I28972:117729;933:17038",
+      "values": {
+        "kind": "text",
+        "text": "238375275275827",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7358.85693359375,
+        "y": -685,
+        "width": 74,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;933:17033",
+      "values": {
+        "kind": "text",
+        "text": "KuCoin Pool",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7243.71435546875,
+        "y": -685,
+        "width": 81,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;29855:20523",
+      "values": {
+        "kind": "icon",
+        "icon": "copy",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#CBD5E0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7157.71435546875,
+        "y": -685,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;29855:20172",
+      "values": {
+        "kind": "text",
+        "text": "74",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7112.5712890625,
+        "y": -685,
+        "width": 60,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;933:17042",
+      "values": {
+        "kind": "text",
+        "text": "8,195,212",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7036.4287109375,
+        "y": -685,
+        "width": 63,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;1024:24251",
+      "values": {
+        "kind": "icon",
+        "icon": "Progress",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#E2E8F0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -7036.4287109375,
+        "y": -647,
+        "width": 50,
+        "height": 4
+      }
+    },
+    {
+      "id": "I28972:117729;1024:24254",
+      "values": {
+        "kind": "text",
+        "text": "23.32%",
+        "font": {
+          "family": "Inter",
+          "weight": 600,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6978.4287109375,
+        "y": -655,
+        "width": 51,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;10998:129147",
+      "values": {
+        "kind": "text",
+        "text": "|",
+        "trailingGlyphs": "|",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 12,
+          "lineHeight": 16
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#E2E8F0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6923.4287109375,
+        "y": -655,
+        "width": 4,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;11004:131274",
+      "values": {
+        "kind": "text",
+        "text": "+36.09%",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6915.4287109375,
+        "y": -655,
+        "width": 80,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;933:17697",
+      "values": {
+        "kind": "text",
+        "text": "2.36345",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6836.28564453125,
+        "y": -685,
+        "width": 57,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;16273:37494",
+      "values": {
+        "kind": "text",
+        "text": "$39703",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6836.28564453125,
+        "y": -655,
+        "width": 53,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;933:17685",
+      "values": {
+        "kind": "icon",
+        "icon": "Fire",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6737.14306640625,
+        "y": -685,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;933:17686",
+      "values": {
+        "kind": "text",
+        "text": "0.134165",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6709.14306640625,
+        "y": -685,
+        "width": 61,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;16700:228085",
+      "values": {
+        "kind": "text",
+        "text": "$0.03",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6640.14306640625,
+        "y": -685,
+        "width": 40,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;966:16124",
+      "values": {
+        "kind": "icon",
+        "icon": "Progress",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#EDF2F7",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6737.14306640625,
+        "y": -647,
+        "width": 50,
+        "height": 4
+      }
+    },
+    {
+      "id": "I28972:117729;966:16008",
+      "values": {
+        "kind": "text",
+        "text": "52.05%",
+        "font": {
+          "family": "Inter",
+          "weight": 600,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#38A169",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6679.14306640625,
+        "y": -655,
+        "width": 52,
+        "height": 20
+      }
+    },
+    {
+      "id": "I28972:117729;29855:20491",
+      "values": {
+        "kind": "text",
+        "text": "0.5668",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -6532,
+        "y": -685,
+        "width": 48,
+        "height": 20
+      }
+    }
+  ]
+}

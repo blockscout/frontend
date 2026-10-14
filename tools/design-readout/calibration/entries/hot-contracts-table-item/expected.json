@@ -1,0 +1,72 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=29131-74920",
+  "nodeId": "29131:74920",
+  "component": "src/features/hot-contracts/pages/index/HotContractsTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "I29131:74925;28249:17341": {
+      "component": "AddressEntity",
+      "props": {},
+      "status": "unrecognized"
+    },
+    "I29131:74925;28249:17345": {
+      "component": "AddressEntity",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "29949:25549": {
+      "component": "MetadataTags",
+      "props": {
+        "noColors": true
+      },
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "29949:25603": {
+      "component": "MetadataTags",
+      "props": {
+        "noColors": true
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "29131:74937": {
+      "component": "Truncate",
+      "props": {
+        "type": "end"
+      },
+      "shape": "number",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "29131:74938": {
+      "component": "Truncate",
+      "props": {
+        "type": "end"
+      },
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "29131:74940": {
+      "component": "NativeCoinValue",
+      "props": {
+        "layout": "vertical",
+        "rowGap": "10px"
+      },
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

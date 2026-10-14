@@ -1,0 +1,226 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "29167:7007",
+  "capturedAt": "2026-10-08T09:19:50.087Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "29167:7007"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I29167:7007;31015:32759",
+      "values": {
+        "kind": "text",
+        "text": "1-29743",
+        "font": {
+          "family": "Inter",
+          "weight": 700,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": -281,
+        "y": 2545,
+        "width": 71,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32763",
+      "values": {
+        "kind": "icon",
+        "icon": "Avatar",
+        "colors": []
+      },
+      "bbox": {
+        "x": -119,
+        "y": 2545,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32765",
+      "values": {
+        "kind": "text",
+        "text": "0xd0...4567",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -91,
+        "y": 2540,
+        "width": 81,
+        "height": 30
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32766",
+      "values": {
+        "kind": "icon",
+        "icon": "copy",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": -2,
+        "y": 2545,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32778",
+      "values": {
+        "kind": "text",
+        "text": "0xd637...4567",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 43,
+        "y": 2545,
+        "width": 97,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:33335",
+      "values": {
+        "kind": "icon",
+        "icon": "copy",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 148,
+        "y": 2545,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32780;13460:162892",
+      "values": {
+        "kind": "text",
+        "text": "10s ago",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 205,
+        "y": 2540,
+        "width": 52,
+        "height": 30
+      }
+    },
+    {
+      "id": "I29167:7007;31015:33343",
+      "values": {
+        "kind": "text",
+        "text": "Ready to prove",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 377,
+        "y": 2545,
+        "width": 100,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29167:7007;31015:32808",
+      "values": {
+        "kind": "text",
+        "text": "n/a",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 589,
+        "y": 2545,
+        "width": 84,
+        "height": 20
+      }
+    }
+  ]
+}

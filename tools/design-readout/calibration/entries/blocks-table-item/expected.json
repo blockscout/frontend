@@ -1,0 +1,145 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=28972-117729",
+  "nodeId": "28972:117729",
+  "component": "src/slices/block/pages/index/BlocksTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "I28972:117729;933:17025": {
+      "component": "BlockEntity",
+      "props": {
+        "noIcon": true,
+        "fontWeight": 600
+      },
+      "shape": "number",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I28972:117729;26785:88384;13460:162892": {
+      "component": "TimeWithTooltip",
+      "props": {
+        "color": "text.secondary",
+        "fontWeight": 400
+      },
+      "shape": "relative-timestamp",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I28972:117729;933:17038": {
+      "component": "Skeleton",
+      "props": {
+        "display": "inline-block"
+      },
+      "shape": "number",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I28972:117729;933:17033": {
+      "component": "AddressEntity",
+      "props": {
+        "truncation": "constant"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I28972:117729;29855:20523": {
+      "component": "AddressEntity",
+      "props": {
+        "truncation": "constant"
+      },
+      "icon": "copy"
+    },
+    "I28972:117729;29855:20172": {
+      "component": "Link",
+      "props": {},
+      "shape": "number",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I28972:117729;933:17042": {
+      "component": "Skeleton",
+      "props": {
+        "display": "inline-block"
+      },
+      "shape": "number",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I28972:117729;1024:24251": {
+      "component": "GasUsed",
+      "props": {},
+      "status": "unrecognized"
+    },
+    "I28972:117729;1024:24254": {
+      "component": "GasUsed",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I28972:117729;11004:131274": {
+      "component": "GasUsed",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I28972:117729;933:17697": {
+      "component": "SimpleValue",
+      "props": {},
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I28972:117729;933:17685": {
+      "component": "SpriteIcon",
+      "props": {
+        "name": "flame",
+        "boxSize": 5
+      },
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.primary"
+      }
+    },
+    "I28972:117729;933:17686": {
+      "component": "NativeCoinValue",
+      "props": {
+        "noSymbol": true,
+        "display": "flex"
+      },
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I28972:117729;966:16008": {
+      "component": "Utilization",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.success"
+      }
+    },
+    "I28972:117729;29855:20491": {
+      "component": "NativeCoinValue",
+      "props": {
+        "gweiThreshold": 4,
+        "units": "wei"
+      },
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

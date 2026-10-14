@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "I21998:159259;20539:210205;20534:197023",
+  "capturedAt": "2026-10-08T09:19:09.191Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "I21998:159259;20539:210205;20534:197143"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I21998:159259;20539:210205;20534:197143",
+      "values": {
+        "kind": "text",
+        "text": ">$15,453.11",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 16,
+          "lineHeight": 24
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 739,
+        "y": -197,
+        "width": 90,
+        "height": 24
+      }
+    }
+  ]
+}

@@ -25,6 +25,9 @@ export default defineConfig({
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],
     include: [ '**/*.spec.ts', '**/*.spec.tsx' ],
+    // the design-readout calibration set is read with fs, not imported, so a `--changed` run would
+    // not see an edited entry; its spec is what keeps the committed set green
+    forceRerunTriggers: [ 'tools/design-readout/calibration/**' ],
     // agent worktrees are full checkouts of the repo; their specs would run a second time.
     // Stryker's sandbox is a copy of the repo too, and survives a run it did not finish.
     exclude: [

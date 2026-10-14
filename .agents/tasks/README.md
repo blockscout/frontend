@@ -28,14 +28,16 @@ Each step names the skill that runs it; the session model — what runs where, a
 
 1. **Grill** — run `grill-the-task` with the issue URL.
 2. **Spec** — `to-spec` writes `spec.md` and `questions.md`, then opens the draft PR.
+   - *Optional* — **Design readout** — the developer runs `design-readout` for the spec's Figma links; it
+     writes `design-readout.md` and the designer questions into `questions.md`.
 3. **Break into tickets** — `to-tickets` runs with the spec and open questions as its input. It writes the
    ticket files and `progress.md`.
 4. **Answers** — when colleagues reply, read the threads and fold each decision into `questions.md`. When an
    answer changes the work, realise it through `to-tickets` — a new sibling ticket, or an edit to the
    affected ticket if it isn't implemented yet, retargeting `Blocked by` edges.
 5. **Implement** — run `implement-ticket <NN>` repeatedly, **one ticket per run**.
-6. **Land** — `finalize-task` prunes `tickets/`, `progress.md`, `questions.md` and any `md`-mode review file
-   (only `spec.md` survives), then hands off to `create-pr` to push, write the real description, and flip
+6. **Land** — `finalize-task` prunes `tickets/` and any
+   `md`-files except the `spec.md`, then hands off to `create-pr` to push, write the real description, and flip
    the draft to ready for review.
 
 ## Supporting files
