@@ -118,10 +118,6 @@ const Pool = () => {
             label="Verify with"
             longText="View in"
             shortText=""
-            // some of the links come from partners
-            // we want them to be in the DOM
-            // so search engines can index them
-            popoverProps={{ lazyMount: false }}
           />
         ) }
       </Flex>
