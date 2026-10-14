@@ -1,8 +1,8 @@
 import { isEqual } from 'es-toolkit';
 
-import { describeWhy } from './recognize';
+import { describeLeaf } from '../extract/values';
+import { describeWhy } from '../recognize/signals';
 import type { Correction, NodeRecord, Override, SidecarRecord } from './sidecar';
-import { describeLeaf } from './values';
 
 export type NodeChange =
   { readonly kind: 'unchanged'; readonly node: NodeRecord } |

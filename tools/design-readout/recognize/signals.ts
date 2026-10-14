@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import type { ColorMap, ColorMode, ColorRole } from './colormap';
+import { COMPOSITE_ADJACENCY_GAP_PX, ICON_ADJACENCY_GAP_PX, LOOKALIKE_CHARACTERS, SPRITE_NAMES_FILE } from '../config';
+import type { Leaf, RoleColor } from '../extract/values';
+import { describeLeaf } from '../extract/values';
+import type { BoundingBox } from '../fetch/figma';
 import { colorKey, lookupTokens } from './colormap';
-import { COMPOSITE_ADJACENCY_GAP_PX, ICON_ADJACENCY_GAP_PX, LOOKALIKE_CHARACTERS, SPRITE_NAMES_FILE } from './config';
-import type { BoundingBox } from './figma';
-import type { Leaf, RoleColor } from './values';
-import { describeLeaf } from './values';
+import type { ColorMap, ColorMode, ColorRole } from './colormap';
 
 export type Entity = 'address' | 'transaction' | 'method' | 'block' | 'batch' | 'epoch' | 'nft' | 'timestamp' | 'ticker' | 'amount';
 
@@ -103,8 +103,8 @@ function findRepoRoot(start: string): string {
   return dir;
 }
 
-// Walks up from this module: the compiled copy runs from `dist/tools/design-readout/`, the specs from
-// `tools/design-readout/`, and the repo root is the first ancestor holding the sprite list.
+// Walks up from this module: the compiled copy runs from `dist/tools/design-readout/recognize/`, the
+// specs from `tools/design-readout/recognize/`, and the repo root is the first ancestor holding the sprite list.
 export function loadSpriteNames(): ReadonlyArray<string> {
   return parseSpriteNames(fs.readFileSync(path.join(findRepoRoot(__dirname), SPRITE_NAMES_FILE), 'utf8'));
 }
@@ -126,6 +126,9 @@ export function matchIconName(instanceName: string, spriteNames: ReadonlyArray<s
   return bySprite.get(normalized) ?? bySprite.get(normalized.replace(SIZE_SUFFIX, ''));
 }
 
+// `recognized`: a signal fired and settles the shape. `ambiguous`: a signal fired but the shape alone
+// cannot settle it (a truncated hash with no entity icon beside it). `unrecognized`: nothing fired;
+// the values are listed, never a guess.
 export type RecognitionStatus = 'recognized' | 'ambiguous' | 'unrecognized';
 
 // What the signal says the node is: for a text, its shape and the entities that shape can be; for an

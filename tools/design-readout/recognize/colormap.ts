@@ -1,6 +1,6 @@
-import { DEFAULT_THEME_COLORS, PALETTE_COLORS } from '../../src/toolkit/theme/foundations/colorsDefault';
-import { SEMANTIC_TOKENS_DEFAULT } from '../../src/toolkit/theme/foundations/semanticTokensDefault';
-import { COLOR_ROLE_PATTERNS } from './config';
+import { DEFAULT_THEME_COLORS, PALETTE_COLORS } from '../../../src/toolkit/theme/foundations/colorsDefault';
+import { SEMANTIC_TOKENS_DEFAULT } from '../../../src/toolkit/theme/foundations/semanticTokensDefault';
+import { COLOR_ROLE_PATTERNS } from '../config';
 
 export type ColorMode = 'light' | 'dark';
 export type ColorRole = keyof typeof COLOR_ROLE_PATTERNS;

@@ -4,9 +4,9 @@ import path from 'path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import type { Recognition } from './recognize';
+import type { Leaf } from '../extract/values';
+import type { Recognition } from '../recognize/signals';
 import { applyCorrection, applyOverride, buildRecord, isGapCategory, readSidecar, sidecarPath, writeSidecar } from './sidecar';
-import type { Leaf } from './values';
 
 let tmp = '';
 

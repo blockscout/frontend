@@ -1,7 +1,7 @@
-import type { ColorMap, ColorMode, ColorRole, ColorValue, ModeDetection } from './colormap';
-import { colorKey, detectColorMode, lookupTokens } from './colormap';
-import { TEXT_STYLE_HINT_SIZES_PX, TEXT_STYLE_HINT_WEIGHTS } from './config';
-import type { BoundingBox, FigmaNode, FigmaPaint, NodeEntry } from './figma';
+import { TEXT_STYLE_HINT_SIZES_PX, TEXT_STYLE_HINT_WEIGHTS } from '../config';
+import type { BoundingBox, FigmaNode, FigmaPaint, NodeEntry } from '../fetch/figma';
+import type { ColorMap, ColorMode, ColorRole, ColorValue, ModeDetection } from '../recognize/colormap';
+import { colorKey, detectColorMode, lookupTokens } from '../recognize/colormap';
 import { scopeOutline } from './scope';
 
 export interface RoleColor extends ColorValue {

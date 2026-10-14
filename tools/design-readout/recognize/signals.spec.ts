@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
+import type { Leaf, RoleColor } from '../extract/values';
 import { buildThemeColorMap } from './colormap';
-import type { Recognition } from './recognize';
+import type { Recognition } from './signals';
 import {
   COMPOSITE_RULES, loadSpriteNames, matchIconName, matchTextShape, normalizeIconName, normalizeLookalikes, orderByBox, parseSpriteNames, recognize,
   renderRecognition, TEXT_SHAPE_RULES,
-} from './recognize';
-import type { Leaf, RoleColor } from './values';
+} from './signals';
 
 const SPRITES: ReadonlyArray<string> = [ 'arrows/east', 'apps_list', 'clock-light', 'gas_xl', 'gas', 'status/success', 'contracts/verified' ];
 const MAP = buildThemeColorMap();

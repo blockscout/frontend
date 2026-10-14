@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 
-import type { GAP_STAGES } from './config';
-import { GAP_LOG_FILE, SIDECAR_DIR } from './config';
-import { describeWhy } from './recognize';
+import type { GAP_STAGES } from '../config';
+import { GAP_LOG_FILE, SIDECAR_DIR } from '../config';
+import { describeLeaf } from '../extract/values';
+import { describeWhy } from '../recognize/signals';
 import type { Correction, GapCategory, NodeRecord } from './sidecar';
-import { describeLeaf } from './values';
 
 export type GapStage = typeof GAP_STAGES[number];
 

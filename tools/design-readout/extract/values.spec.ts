@@ -3,9 +3,9 @@ import path from 'path';
 
 import { describe, expect, it } from 'vitest';
 
-import { buildThemeColorMap } from './colormap';
-import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
-import { entryOf } from './figma';
+import type { FigmaNode, NodeEntry, NodesResponse } from '../fetch/figma';
+import { entryOf } from '../fetch/figma';
+import { buildThemeColorMap } from '../recognize/colormap';
 import type { Extraction, Leaf } from './values';
 import { describeLeaf, extractValues, findNode, renderExtraction } from './values';
 
@@ -13,7 +13,7 @@ const MAP = buildThemeColorMap();
 const NONE: ReadonlySet<string> = new Set();
 
 function readFixture(file: string, nodeId: string): NodeEntry {
-  const payload = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', file), 'utf8')) as NodesResponse;
+  const payload = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'fixtures', file), 'utf8')) as NodesResponse;
   return entryOf(payload, nodeId);
 }
 

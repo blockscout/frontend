@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import { TOKEN_ENV } from './config';
+import { TOKEN_ENV } from '../config';
 import { fetchNodes, rootOf } from './figma';
 
 const REF = { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' };

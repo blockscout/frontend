@@ -1,12 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 
-import type { ColorMode } from './colormap';
-import { GAP_CATEGORIES, SIDECAR_DIR } from './config';
-import type { BoundingBox } from './figma';
-import type { ColorTokens, CompositeMembership, Decision, Recognition, RecognitionStatus } from './recognize';
-import { fileSafeNodeId } from './url';
-import type { Leaf, LeafValues } from './values';
+import { GAP_CATEGORIES, SIDECAR_DIR } from '../config';
+import type { Leaf, LeafValues } from '../extract/values';
+import type { BoundingBox } from '../fetch/figma';
+import { fileSafeNodeId } from '../fetch/url';
+import type { ColorMode } from '../recognize/colormap';
+import type { ColorTokens, CompositeMembership, Decision, Recognition, RecognitionStatus } from '../recognize/signals';
 
 export const SIDECAR_VERSION = 2;
 

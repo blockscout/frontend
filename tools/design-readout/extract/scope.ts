@@ -1,5 +1,5 @@
-import { CHROME_NAMES, SPAN_TOLERANCE_PX } from './config';
-import type { BoundingBox, FigmaNode } from './figma';
+import { CHROME_NAMES, SPAN_TOLERANCE_PX } from '../config';
+import type { BoundingBox, FigmaNode } from '../fetch/figma';
 
 export interface NodeSummary {
   readonly id: string;

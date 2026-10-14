@@ -1,4 +1,4 @@
-import { FIGMA_API_BASE, TOKEN_ENV } from './config';
+import { FIGMA_API_BASE, TOKEN_ENV } from '../config';
 import type { NodeRef } from './url';
 
 export interface BoundingBox {

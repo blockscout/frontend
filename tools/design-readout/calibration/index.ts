@@ -2,17 +2,17 @@ import fs from 'fs';
 import path from 'path';
 import * as v from 'valibot';
 
-import type { ColorMap, ColorRole, ColorValue } from './colormap';
-import { buildThemeColorMap, detectColorMode } from './colormap';
-import { CALIBRATION_DIR } from './config';
-import type { NodesResponse } from './figma';
-import { FigmaFetchError } from './figma';
-import type { Recognition } from './recognize';
-import { COMPOSITE_RULES, recognize, TEXT_SHAPE_RULES } from './recognize';
-import type { NodeRef } from './url';
-import { parseNodeRef } from './url';
-import type { Leaf } from './values';
-import { extractRegions, frameBackground } from './values';
+import { CALIBRATION_DIR } from '../config';
+import type { Leaf } from '../extract/values';
+import { extractRegions, frameBackground } from '../extract/values';
+import type { NodesResponse } from '../fetch/figma';
+import { FigmaFetchError } from '../fetch/figma';
+import type { NodeRef } from '../fetch/url';
+import { parseNodeRef } from '../fetch/url';
+import type { ColorMap, ColorRole, ColorValue } from '../recognize/colormap';
+import { buildThemeColorMap, detectColorMode } from '../recognize/colormap';
+import type { Recognition } from '../recognize/signals';
+import { COMPOSITE_RULES, recognize, TEXT_SHAPE_RULES } from '../recognize/signals';
 
 export const SNAPSHOT_VERSION = 1;
 export const SNAPSHOT_FILE = 'snapshot.json';

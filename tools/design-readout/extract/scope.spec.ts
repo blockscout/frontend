@@ -3,12 +3,12 @@ import path from 'path';
 
 import { describe, expect, it } from 'vitest';
 
-import type { FigmaNode, NodesResponse } from './figma';
-import { rootOf } from './figma';
+import type { FigmaNode, NodesResponse } from '../fetch/figma';
+import { rootOf } from '../fetch/figma';
 import { renderOutline, scopeOutline } from './scope';
 
 function readFixture(file: string, nodeId: string): FigmaNode {
-  const payload = JSON.parse(fs.readFileSync(path.join(__dirname, 'fixtures', file), 'utf8')) as NodesResponse;
+  const payload = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'fixtures', file), 'utf8')) as NodesResponse;
   return rootOf(payload, nodeId);
 }
 

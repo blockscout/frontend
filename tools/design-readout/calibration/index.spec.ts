@@ -4,17 +4,17 @@ import path from 'path';
 
 import { afterEach, describe, expect, it } from 'vitest';
 
-import type { CalibrationEntry, Expected, Snapshot } from './calibration';
+import type { CalibrationEntry, Expected, Snapshot } from '.';
 import {
   calibrateEntry, calibrateSet, calibrationDir, EXPECTED_FILE, hasMiss, loadCalibration, loadEntry, refreshEntry, renderCalibration, SNAPSHOT_FILE,
   SNAPSHOT_VERSION,
-} from './calibration';
-import { buildThemeColorMap } from './colormap';
-import { TOKEN_ENV } from './config';
-import type { NodesResponse } from './figma';
-import { fetchNodes, FigmaFetchError } from './figma';
-import { loadSpriteNames } from './recognize';
-import type { Leaf } from './values';
+} from '.';
+import { TOKEN_ENV } from '../config';
+import type { Leaf } from '../extract/values';
+import type { NodesResponse } from '../fetch/figma';
+import { fetchNodes, FigmaFetchError } from '../fetch/figma';
+import { buildThemeColorMap } from '../recognize/colormap';
+import { loadSpriteNames } from '../recognize/signals';
 
 const SPRITES = [ 'copy', 'token', 'arrows/east' ];
 const URL = 'https://www.figma.com/design/abcDEF0123456789abcDEF/Pages?node-id=1-2';
@@ -124,7 +124,7 @@ describe('loadCalibration', () => {
   });
 
   it('is under the repo root', () => {
-    expect(calibrationDir('/repo')).toBe(path.join('/repo', 'tools', 'design-readout', 'calibration'));
+    expect(calibrationDir('/repo')).toBe(path.join('/repo', 'tools', 'design-readout', 'calibration', 'entries'));
   });
 });
 
@@ -280,7 +280,7 @@ describe('refreshEntry', () => {
 
 describe('the committed calibration set', () => {
   it('loads, and every expected cell holds over its snapshot', () => {
-    const results = calibrateSet(loadCalibration(calibrationDir(path.join(__dirname, '..', '..'))), loadSpriteNames());
+    const results = calibrateSet(loadCalibration(calibrationDir(path.join(__dirname, '..', '..', '..'))), loadSpriteNames());
     expect(results.length).toBeGreaterThanOrEqual(10);
     expect(renderCalibration(results)).toMatch(/\nPASS: \d+ checks$/);
     expect(hasMiss(results)).toBe(false);
