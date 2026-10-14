@@ -8,7 +8,7 @@ import type { NodeEntry, NodesResponse } from './figma';
 import { entryOf } from './figma';
 import { GAP_LOG_HEADER, gapLogPath } from './gaps';
 import type { CliOptions, CorrectionRequest, OverrideRequest } from './index';
-import { dumpPayload, parseArgs, readoutOf, recordCorrection, recordOverride } from './index';
+import { dumpPayload, parseArgs, readoutOf, recordCorrection, recordNote, recordOverride } from './index';
 import { loadSpriteNames } from './recognize';
 import { buildRecord, readSidecar, sidecarPath, writeSidecar } from './sidecar';
 
@@ -41,7 +41,9 @@ describe('parseArgs', () => {
   it('takes the node URL as the one positional and --dump in both forms', () => {
     expect(parseArgs([ URL ])).toEqual({
       kind: 'readout',
-      options: { dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, calibrate: false, refresh: false },
+      options: {
+        dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, note: undefined, calibrate: false, refresh: false,
+      },
       ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
     });
     expect(readout([ URL, '--dump', 'out.json' ]).dump).toBe('out.json');
@@ -63,6 +65,30 @@ describe('parseArgs', () => {
     expect(() => parseArgs([ '--calibrate', '--dump', 'x' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
     expect(() => parseArgs([ '--refresh', '--gap', 'shape' ])).toThrow(/--refresh works on the calibration set and takes no per-node flag/);
     expect(() => parseArgs([ '--calibrate', '--override', '1-2' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
+    expect(() => parseArgs([ '--calibrate', '--note', 'x', '--gap', 'markup' ])).toThrow(/--calibrate works on the calibration set and takes no per-node flag/);
+  });
+
+  it('takes --note with its text and the --gap category, in either flag form', () => {
+    expect(parseArgs([ URL, '--note', 'the row gap is 8px, the mockup has 12px', '--gap', 'markup' ])).toEqual({
+      kind: 'note',
+      ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
+      note: { text: 'the row gap is 8px, the mockup has 12px', gap: 'markup' },
+    });
+    expect(parseArgs([ '--gap=layout', '--note=  cells wrap  ', URL ])).toEqual({
+      kind: 'note',
+      ref: { fileKey: 'abcDEF0123456789abcDEF', nodeId: '22842:174340' },
+      note: { text: 'cells wrap', gap: 'layout' },
+    });
+  });
+
+  it('rejects --note without --gap, with blank text, with a stray word, and beside --correct or --override', () => {
+    expect(() => parseArgs([ URL, '--note', 'cells wrap' ]))
+      .toThrow(/A note is always a miss: --note needs --gap <shape\|icon\|color\|composite\|context\|layout\|convention\|markup>\nUsage:/);
+    expect(() => parseArgs([ URL, '--note', '  ', '--gap', 'markup' ])).toThrow(/--note needs the text of the miss, in quotes\nUsage:/);
+    expect(() => parseArgs([ URL, '--note', 'cells wrap', '--gap', 'markup', 'Box' ])).toThrow(/Unexpected argument: Box/);
+    expect(() => parseArgs([ URL, '--note', 'cells wrap', '--gap', 'markup', '--correct', '1-2', 'Box' ]))
+      .toThrow(/--note is its own run: a note names no node, so it goes with neither --correct nor --override\nUsage:/);
+    expect(() => parseArgs([ URL, '--note', 'cells wrap', '--gap', 'markup', '--override', '1-2', 'bg=x' ])).toThrow(/--note is its own run/);
   });
 
   it('takes --override with the node id and one or more prop=value words', () => {
@@ -102,12 +128,12 @@ describe('parseArgs', () => {
 
   it('rejects a correction without --gap, because a correction is always a miss', () => {
     expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity' ]))
-      .toThrow(/A correction is always a miss: --correct needs --gap <shape\|icon\|color\|composite\|context\|layout\|convention>\nUsage:/);
+      .toThrow(/A correction is always a miss: --correct needs --gap <shape\|icon\|color\|composite\|context\|layout\|convention\|markup>\nUsage:/);
   });
 
   it('rejects a bad category, a correction with no component, a bad node id, and --gap on its own', () => {
     expect(() => parseArgs([ URL, '--correct', '1-2', 'BlockEntity', '--gap', 'typo' ]))
-      .toThrow(/Not a gap category: typo; --gap takes one of shape, icon, color, composite, context, layout, convention\nUsage:/);
+      .toThrow(/Not a gap category: typo; --gap takes one of shape, icon, color, composite, context, layout, convention, markup\nUsage:/);
     expect(() => parseArgs([ URL, '--correct', '1-2', '--gap', 'shape' ])).toThrow(/--correct 1:2 needs the component the node is, after the URL\nUsage:/);
     expect(() => parseArgs([ URL, '--correct', 'abc', 'BlockEntity', '--gap', 'shape' ])).toThrow(/Not a node id in --correct: abc\nUsage:/);
     expect(() => parseArgs([ URL, '--gap', 'shape' ])).toThrow(/--gap goes with --correct/);
@@ -152,7 +178,7 @@ describe('recordCorrection', () => {
     expect(readSidecar(target)).toEqual(record);
     expect(gap.appended).toBe(true);
     expect(gap.line).toBe([
-      '- 2026-10-07 | KEY | 22842:178386 | context | ',
+      '- 2026-10-07 | KEY | 22842:178386 | context | readout | ',
       'recognized: 22842:178386 text "1248139" — Inter 700 14/20; text #63B3ED — number: block or batch or epoch | BlockEntity noIcon',
     ].join(''));
     expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gap.line }\n`);
@@ -170,6 +196,32 @@ describe('recordCorrection', () => {
     seedSidecar();
     expect(() => recordCorrection(tmp, ref, { ...request, nodeId: '9:9' }, new Date())).toThrow(/Node 9:9 is not in the sidecar of 22842:178383/);
     expect(fs.existsSync(gapLogPath(tmp))).toBe(false);
+  });
+});
+
+describe('recordNote', () => {
+  const ref = { fileKey: 'KEY', nodeId: '22842:178383' };
+  let tmp = '';
+
+  afterEach(() => {
+    if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
+    tmp = '';
+  });
+
+  it('appends a markup-stage line with an empty node id, with no sidecar on disk', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-note-'));
+    const gap = recordNote(tmp, ref, { text: 'the row gap is 8px, the mockup has 12px', gap: 'markup' }, new Date('2026-10-09T09:30:00.000Z'));
+    expect(gap).toEqual({ line: '- 2026-10-09 | KEY |  | markup | markup |  | the row gap is 8px, the mockup has 12px', appended: true });
+    expect(fs.readFileSync(gapLogPath(tmp), 'utf8')).toBe(`${ GAP_LOG_HEADER }\n${ gap.line }\n`);
+    expect(fs.existsSync(sidecarPath(tmp, ref.fileKey, ref.nodeId))).toBe(false);
+  });
+
+  it('adds no line for the same note again', () => {
+    tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'design-readout-note-'));
+    const request = { text: 'cells wrap', gap: 'layout' as const };
+    const first = recordNote(tmp, ref, request, new Date('2026-10-09T09:30:00.000Z'));
+    const repeat = recordNote(tmp, ref, request, new Date('2026-10-10T09:30:00.000Z'));
+    expect(repeat).toEqual({ line: first.line.replace('2026-10-09', '2026-10-10'), appended: false });
   });
 });
 

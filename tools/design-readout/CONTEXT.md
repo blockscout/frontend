@@ -34,7 +34,8 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 | What happens to a correction or an override when the node changes? | `carryCorrections` in `./rerun.ts`: kept as-is while the values hold, kept and flagged `stale` once they differ, dropped with a vanished node |
 | How do I record what a node really is? | `pnpm design:readout <url> --correct <nodeId> <component> [<props…>] --gap <category>`; `recordCorrection` in `./index.ts`, the slot is `Correction` in `./sidecar.ts` |
 | How do I record a deliberate style change on a node the tool read right? | `pnpm design:readout <url> --override <nodeId> <prop=value…>`; `recordOverride` in `./index.ts`, the slot is `Override` in `./sidecar.ts`, the color props it checks are `OVERRIDE_COLOR_PROPS` in `./config.ts` |
-| Where is the gap log, what is one line of it, which categories exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` in `./config.ts` is the list |
+| Where is the gap log, what is one line of it, which categories and stages exist? | `<main checkout>/.ai/design-readout/gaps.md`; `./gaps.ts` writes it, `GAP_CATEGORIES` and `GAP_STAGES` in `./config.ts` are the lists; the stage column says where the miss surfaced: `readout` while confirming the tool's lists, `markup` while verifying an agent's styling in the running app |
+| How do I record a markup miss that maps to no node? | `pnpm design:readout <url> --note "<text>" --gap <category>`; `recordNote` in `./index.ts`. The URL supplies the file key only; no sidecar is read or written |
 | Which layout questions are already settled, and where does a new convention go? | `./layout-conventions.md`, one table, one row per convention with its code home; the `design-readout` skill fixes the columns, reads the file before judging and appends to it |
 | Which nodes is recognition checked against, and what does each entry hold? | `./calibration/<entry>/`: `snapshot.json` is the tool's own extraction of the node, `expected.json` the Figma link, the shipped component's path and per cell the component, its props and the signals recognition must give; the schemas sit at the top of `./calibration.ts` |
 | How do I add an entry? | A folder under `./calibration/` with an `expected.json` (link, node id, component path, `cells: {}`), then `pnpm design:readout --refresh <entry>` to capture the snapshot, then the cells, read off the shipped component's JSX and keyed by the leaf ids the snapshot shows; `--calibrate` must pass before the commit |
@@ -72,19 +73,19 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
   style names misleading; a hint in the record would be read back as a fact by the next phase.
 - **The sidecar lives in the main checkout**, resolved through the git common dir (`../cli/checkout.ts`),
   so every worktree reads and writes the same record for a node and the file outlives the worktree.
-- **A correction is always a miss.** `--correct` without `--gap` exits non-zero: the phase 2
-  decision is a hand count over `gaps.md`, and a correction that skips the log makes the count lie
-  small. The gap log is append-only, header once; nothing here rewrites or prunes it.
+- **A correction is always a miss, and so is a note.** `--correct` or `--note` without `--gap` exits
+  non-zero: the phase 2 decision is a hand count over `gaps.md`, and a miss that skips the log makes
+  the count lie small. The gap log is append-only, header once; nothing here rewrites or prunes it.
 - **An override is never a miss.** `--override` appends no gap line, names no component and takes
   no `--gap`; the parser rejects it beside `--correct`. The slot sits beside `correction` so one node
   can carry a real miss and a deliberate style at once. A color prop (`bg`, `color`, `borderColor`)
   is checked against the tokens the node's sidecar resolved for that fill and nothing else, so the
   check is offline and the override can only name a token the Recognized list printed. The
   correction rule above stays as written.
-- **The gap log counts kinds of miss, not nodes.** The same cell repeated down eight rows of a mockup
-  is one line: a correction whose file key, category, values and correction match an existing line
-  adds none, and says so. The sidecar still takes a correction per node, so every cell carries its
-  component.
+- **The gap log counts kinds of miss, not nodes or stages.** The same cell repeated down eight rows
+  of a mockup is one line: a correction whose file key, category, values and correction match an
+  existing line adds none, and says so; the stage is left out of the key. The sidecar still takes a
+  correction per node, so every cell carries its component.
 - **A convention is appended in the session that settled it, and carries no node id.** The file
   grows only from a developer saying "that's just how we do it" over a real Layout item; a row
   written later, from memory, records a convention nobody applied. Node ids rot as mockups change
@@ -136,10 +137,10 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 ## File map
 
 - `./index.ts` — flags, the fetch, `--dump`, `--regions`, the header, outline and values on stdout, the
-  sidecar write or the re-run diff, the `--correct`, `--override`, `--calibrate` and `--refresh` paths; flag
-  mechanics shared with the sibling tools in `../cli/flags.ts`
+  sidecar write or the re-run diff, the `--correct`, `--override`, `--note`, `--calibrate` and `--refresh`
+  paths; flag mechanics shared with the sibling tools in `../cli/flags.ts`
 - `./config.ts` — token variable, API base, chrome name list, span tolerance, sidecar folder,
-  calibration folder, gap log name and categories, what a text style name is taken to claim
+  calibration folder, gap log name, categories and stages, what a text style name is taken to claim
 - `./url.ts` — Figma node link → file key and canonical node id
 - `./figma.ts` — the nodes request, the node types the tool reads, the failure messages
 - `./scope.ts` — the descent, the chrome rules, the outline and its text rendering
@@ -153,7 +154,7 @@ task spec behind the tool and the phases after this one: `.agents/tasks/3756-des
 - `./sidecar.ts` — the record shape with the correction and override slots, its path under the main
   checkout, writing, reading, correcting and overriding one
 - `./rerun.ts` — the diff of two records, the correction carry-over, the re-run text
-- `./gaps.ts` — the gap log: its path, one line's format, the append
+- `./gaps.ts` — the gap log: its path, a correction's line and a note's line, the append
 - `./calibration.ts` — the entry schemas and loader, the per-signal checks and the `--calibrate`
   report, the `--refresh` capture and the stale marking
 - `./calibration/` — the committed set, one folder per labeled node

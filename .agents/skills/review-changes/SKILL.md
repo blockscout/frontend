@@ -198,7 +198,8 @@ When the screen was `skipped` or `failed`, or sent no suspects, the line carries
 Not findings, no matter how they look. Each of these otherwise fills a report with noise that trains the
 reader to skim past real problems.
 
-- **Any visual or styling judgement.** Presentation belongs to the `[human]` style leaf.
+- **Any visual or styling judgement.** Presentation belongs to the style leaf and the developer who
+  verifies it in the running app.
 - **Anything the spec's Out of scope section names.**
 - **Missing Playwright screenshot baselines** — human-generated, per [`../../delegation.md`](../../delegation.md).
 - **Style preferences with no basis** in `.agents/rules/`, a `CONTEXT.md`, or the surrounding code. No
@@ -208,5 +209,3 @@ reader to skim past real problems.
   A comment the diff *adds* that is not such a why comment is the opposite: a citable rule breach.
 - **A primitive or shortcut with a why-comment on it.** The comment is an override signal: read it and back
   off rather than arguing with it.
-- **A `TODO (design):` marker that has been consumed.** An *unconsumed* marker, though, is a finding here:
-  by land the `[human]` style leaves have had their turn, so a leftover marker is real dead scaffolding.

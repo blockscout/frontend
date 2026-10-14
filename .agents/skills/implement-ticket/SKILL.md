@@ -37,20 +37,20 @@ Start at the **first unchecked** leaf and work in order, checking each box as it
 after a human touchpoint skips the leaves already checked. Stop at the first **unchecked** `[human]` leaf
 and hand off (Step 5).
 
-**Before a `[human]` style leaf that links a readout**, check the mockup has not moved under it. Read
-`file.lastModified` from the node's sidecar (`tools/design-readout/CONTEXT.md` says where it lives),
-then re-run the tool on the leaf's Figma node:
+**A style leaf** (the one linking a Figma node) takes the component to the mockup. The mockup is the source; the readout is an optional help, never a prerequisite:
 
-```bash
-pnpm design:readout "<figma node URL>"
-```
+- **The leaf links a readout block** → read it (the task folder's `design-readout.md`) and the node's
+  sidecar in the main checkout (`tools/design-readout/CONTEXT.md` says where
+  and what is in it): the component, props and theme tokens per node are already settled there, and the
+  shipped code it names is the reference. Take a Figma screenshot (`get_screenshot` on the linked node)
+  to see what the rows do not show.
+- **No readout** → work from the mockup through the Figma MCP: `get_design_context` on the linked node
+  for structure, values and names, plus `get_screenshot`. Do **not** run `pnpm design:readout`. Map what you see to the repo's components and theme tokens yourself, with
+  `tools/design-readout/layout-conventions.md` for the settled layout questions.
 
-The run's header prints the file's current last-modified; when it is newer than the sidecar's, the run
-has already diffed against the sidecar — surface the changed, new and vanished leaves and any
-correction flagged `STALE` to the developer in the hand-off, and regenerate that node's block in
-`design-readout.md` from the updated sidecar (shape: `.agents/skills/design-readout/readout-template.md`).
-When it is not newer, say so in one line and hand off. A run that fails on the token is relayed in one
-line and the hand-off proceeds without the check — the developer decides whether to re-run first.
+Every style leaf covers **all breakpoints**: the mobile node when the ticket links one, otherwise the
+desktop layout adapted the way neighbouring views do. An item that is still with the designer is a
+`Blocked by Q<NN>` edge on the ticket and nothing else — the leaf leaves no marker in the code for it.
 
 ## Step 4 — Verify
 
@@ -70,7 +70,25 @@ acceptance criterion:
   that names the issue spams its timeline). Done.
 - **Any touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when the
   leaves are all `[agent]` but a `(human)` criterion remains, after implementing them and **before**
-  committing. Say what the developer must do, link the Figma node, and point at the scaffold's
-  `TODO (design):` markers. The developer does the work; for a `[human]` leaf they check its box and ask
-  the session to continue — it resumes from the next unchecked leaf (Step 3), never by re-invoking the
-  skill. Once every leaf is done, the developer commits and checks the `progress.md` box at their commit.
+  committing. **Stage** the work, print the tree hash of the staged state, and stop:
+
+  ```bash
+  git add -A && git write-tree
+  ```
+
+  The hash goes in the hand-off text only — nothing is committed or stashed, and `git diff <tree-hash>`
+  later compares that tree to the working tree whatever is staged by then. Say what the developer does
+  next, in three parts: **verify** in the running app against the linked Figma node, at every
+  breakpoint; **fix** by hand, leaving the fixes **unstaged**; then say **"record my corrections"**
+  (Step 6). For a `[human]` leaf they check its box and ask the session to continue — it resumes from
+  the next unchecked leaf (Step 3), never by re-invoking the skill. Once every leaf is complete, the agent or developer checks the box in `progress.md` and commits the entire body of work.
+
+## Step 6 — Record corrections
+
+Entered when the developer says **"record my corrections"** after a style-leaf hand-off. Spawn a
+**subagent** with [`record-corrections.md`](record-corrections.md) as its brief, the tree hash from the
+hand-off and the leaf's Figma node URL; when the leaf had a readout, point it at the node's block and
+sidecar too. The subagent reads the developer's unstaged fixes back as gap-log lines, confirms the batch
+with the developer and records it; it edits no source file.
+
+After the batch, the developer or the agent commits as in Step 5.

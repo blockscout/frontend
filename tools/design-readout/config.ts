@@ -16,11 +16,15 @@ export const SIDECAR_DIR = '.ai/design-readout';
 // The committed calibration set, one folder per labeled node, under the repo root.
 export const CALIBRATION_DIR = 'tools/design-readout/calibration';
 
-// The gap log beside the sidecars: one line per miss, appended by `--correct`, never rewritten.
+// The gap log beside the sidecars: one line per miss, appended by `--correct` and `--note`, never rewritten.
 export const GAP_LOG_FILE = 'gaps.md';
 
-// Every correction is a miss of one of these kinds; `--gap` takes exactly one of them.
-export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout', 'convention' ] as const;
+// Every correction and every note is a miss of one of these kinds; `--gap` takes exactly one of them.
+export const GAP_CATEGORIES = [ 'shape', 'icon', 'color', 'composite', 'context', 'layout', 'convention', 'markup' ] as const;
+
+// Where a miss surfaced: `readout` while confirming the tool's lists, `markup` while the developer
+// verified an agent's styling in the running app.
+export const GAP_STAGES = [ 'readout', 'markup' ] as const;
 
 // The Chakra color props an `--override` checks against the node's resolved tokens, by the fill role
 // each paints. Any prop outside this map is taken as given: the tool validates no Chakra prop name.

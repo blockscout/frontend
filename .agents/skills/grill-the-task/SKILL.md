@@ -66,8 +66,8 @@ of them, and marching through all six regardless is how a five-minute task turns
    **which upcoming backend release ships the required API changes** (so the frontend release notes can
    reference it) — usually a question for the backend owner.
 4. **UI inventory** — routes, navigation entry points (where do users find this?), cross-links to existing
-   entity pages. For every new route, the **nav icon**: a sprite name from the developer, or — when the
-   icon is not drawn yet — a question to the designer (Step 3). Behavioral states and mobile behavior are standard — don't ask.
+   entity pages. Behavioral states and mobile behavior are standard — don't ask; the executor skills'
+   own inputs are `to-tickets`' to collect.
 5. **Analytics & links** — custom Mixpanel events **only** if there's a new interactive element worth
    tracking (page views are auto-wired); UTM query params on any hardcoded links to Blockscout or partner
    products.

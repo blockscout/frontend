@@ -14,16 +14,15 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 - Data wiring: hooks, query integration, rendering fetched data plainly.
 - Component **scaffolds** — file placement, props and types, data fetching, behavioral states
   (loading / empty / error / pagination), semantic structure built from existing toolkit components, and
-  placeholder presentation. Every deferred visual decision is marked `TODO (design):` (the convention the
-  `add-new-page` templates use), which is what makes the handover to a human explicit.
+  placeholder presentation.
+- Final markup and styling to the mockup, which should **always** be verified by the developer.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`) and Playwright test **scaffolds** (`*.pw.tsx` files, fixtures, mock data).
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
 - Design readouts from Figma nodes (`design-readout` skill) — recognition only, never implementation.
 
 ## Humans only, for now
 
-- Final markup and styling that must match the designer's Figma mockups; visual polish of any kind.
-- Choosing nav/sprite icons and other visual assets.
+- Visual polish of any kind, and any visual asset the readout did not recognize and the spec does not name.
 - Generating and eyeballing Playwright screenshot baselines — and only **once the component matches the
   mockup**, because a baseline of placeholder presentation is worse than no baseline at all.
 - Design sign-off.

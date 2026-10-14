@@ -12,7 +12,7 @@ import { CALIBRATION_DIR, GAP_CATEGORIES, OVERRIDE_COLOR_PROPS } from './config'
 import type { FigmaNode, NodeEntry, NodesResponse } from './figma';
 import { entryOf, FigmaFetchError, fetchNodes } from './figma';
 import type { GapAppend } from './gaps';
-import { appendGap, gapLogPath } from './gaps';
+import { appendGap, gapLogPath, gapOfCorrection, gapOfNote } from './gaps';
 import type { ColorTokens, Recognition } from './recognize';
 import { loadSpriteNames, recognize, renderRecognition } from './recognize';
 import { carryCorrections, diffRecords, renderRerun } from './rerun';
@@ -30,6 +30,7 @@ export interface CliOptions {
   correct: string | undefined;
   gap: GapCategory | undefined;
   override: string | undefined;
+  note: string | undefined;
   calibrate: boolean;
   refresh: boolean;
 }
@@ -38,6 +39,7 @@ const USAGE = `Usage:
   design:readout <figma node URL> [--regions <ids>] [--dump <path>]
   design:readout <figma node URL> --correct <nodeId> <component> [<props…>] --gap <category>
   design:readout <figma node URL> --override <nodeId> <prop=value> [<prop=value…>]
+  design:readout <figma node URL> --note "<text>" --gap <category>
   design:readout --calibrate
   design:readout --refresh [<entry>]
 
@@ -63,9 +65,16 @@ const USAGE = `Usage:
   sidecar; where the node's values changed it is kept but flagged STALE for you to re-confirm.
 
   --correct records what a node really is, against what the tool said, and appends one line to the
-  gap log beside the sidecars (.ai/design-readout/gaps.md); the same miss on another node of the
-  same file (same category, same values, same correction) adds no line. It works on the existing
-  sidecar and needs no token. A correction is always a miss, so --gap is required with it.
+  gap log beside the sidecars (.ai/design-readout/gaps.md) with the stage "readout"; the same miss
+  on another node of the same file (same category, same values, same correction) adds no line. It
+  works on the existing sidecar and needs no token. A correction is always a miss, so --gap is
+  required with it.
+
+  --note records a miss found while verifying an agent's markup in the running app that maps to no
+  node the sidecar holds: one gap line with an empty node id, the text as what the developer said
+  and the stage "markup". The URL supplies the file key only; the run is offline, needs no token
+  and touches no sidecar. Like a correction it is always a miss, so --gap is required with it, and
+  it is its own run: never beside --correct or --override.
 
   --override records a deliberate style change on a node the tool read right: the shipped component
   with these Chakra props, as <prop>=<value> words (bg=whiteAlpha.100, color=text.primary,
@@ -91,9 +100,11 @@ const USAGE = `Usage:
   --dump <path>        also write the raw REST payload to this file, e.g. to capture a test fixture
   --correct <nodeId>   the leaf to correct, by node id (A-B or A:B), followed by the repo component
                        it is and any props, as words: --correct 22842-178386 BlockEntity noIcon
-  --gap <category>     the kind of miss the correction fixes: ${ GAP_CATEGORIES.join(', ') }
+  --gap <category>     the kind of miss the correction or note records: ${ GAP_CATEGORIES.join(', ') }
   --override <nodeId>  the leaf the mockup styles on purpose, by node id (A-B or A:B), followed by
                        the Chakra props it adds, as words: --override 22842-178386 bg=whiteAlpha.100
+  --note "<text>"      a miss with no node to pin it to, in the developer's words; logged with the
+                       stage "markup": --note "row gap is 8px, mockup has 12px" --gap layout
   --calibrate          check the calibration set; takes no URL
   --refresh [<entry>]  re-capture the calibration snapshots, or the one entry named by its folder
 
@@ -140,6 +151,9 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--override', { kind: 'value', apply: (options, value) => {
     options.override = parseNodeId(value, '--override');
   } } ],
+  [ '--note', { kind: 'value', apply: (options, value) => {
+    options.note = value;
+  } } ],
   [ '--calibrate', { kind: 'switch', apply: (options) => {
     options.calibrate = true;
   } } ],
@@ -160,16 +174,35 @@ export interface OverrideRequest {
   readonly props: ReadonlyArray<string>;
 }
 
+export interface NoteRequest {
+  readonly text: string;
+  readonly gap: GapCategory;
+}
+
 export type ParsedCli =
   { readonly kind: 'readout'; readonly options: CliOptions; readonly ref: NodeRef } |
   { readonly kind: 'correct'; readonly ref: NodeRef; readonly correction: CorrectionRequest } |
   { readonly kind: 'override'; readonly ref: NodeRef; readonly override: OverrideRequest } |
+  { readonly kind: 'note'; readonly ref: NodeRef; readonly note: NoteRequest } |
   { readonly kind: 'calibrate' } |
   { readonly kind: 'refresh'; readonly entry: string | undefined };
 
 const DEFAULT_OPTIONS: CliOptions = {
-  dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, calibrate: false, refresh: false,
+  dump: undefined, regions: undefined, correct: undefined, gap: undefined, override: undefined, note: undefined, calibrate: false, refresh: false,
 };
+
+// A note is its own run: it names no node, so it sits beside neither --correct nor --override, and
+// like a correction it is always a miss.
+function parseNote(options: CliOptions, words: ReadonlyArray<string>): NoteRequest | undefined {
+  if (options.note === undefined) return undefined;
+  if (options.correct !== undefined || options.override !== undefined) {
+    throw new Error(`--note is its own run: a note names no node, so it goes with neither --correct nor --override\n${ USAGE }`);
+  }
+  if (options.gap === undefined) throw new Error(`A note is always a miss: --note needs --gap <${ GAP_CATEGORIES.join('|') }>\n${ USAGE }`);
+  if (options.note.trim() === '') throw new Error(`--note needs the text of the miss, in quotes\n${ USAGE }`);
+  if (words.length > 0) throw new Error(`Unexpected argument: ${ words[0] }\n${ USAGE }`);
+  return { text: options.note.trim(), gap: options.gap };
+}
 
 function parseCorrection(options: CliOptions, words: ReadonlyArray<string>): CorrectionRequest | undefined {
   if (options.correct === undefined) {
@@ -201,7 +234,7 @@ function parseOverride(options: CliOptions, words: ReadonlyArray<string>): Overr
 function parseSetCommand(options: CliOptions, rest: ReadonlyArray<string>): ParsedCli {
   const flag = options.calibrate ? '--calibrate' : '--refresh';
   if (options.calibrate && options.refresh) throw new Error(`--calibrate and --refresh are separate runs\n${ USAGE }`);
-  const perNode = [ options.dump, options.regions, options.correct, options.gap, options.override ].some((value) => value !== undefined);
+  const perNode = [ options.dump, options.regions, options.correct, options.gap, options.override, options.note ].some((value) => value !== undefined);
   if (perNode) throw new Error(`${ flag } works on the calibration set and takes no per-node flag\n${ USAGE }`);
   if (options.calibrate) {
     if (rest.length > 0) throw new Error(`--calibrate takes no argument: ${ rest[0] }\n${ USAGE }`);
@@ -217,6 +250,8 @@ export function parseArgs(argv: ReadonlyArray<string>): ParsedCli {
   if (rest.length === 0) throw new Error(`Missing the Figma node URL\n${ USAGE }`);
   const ref = parseNodeRef(rest[0]);
   if (ref === undefined) throw new Error(`Not a Figma node URL: ${ rest[0] }\n${ USAGE }`);
+  const note = parseNote(options, rest.slice(1));
+  if (note !== undefined) return { kind: 'note', ref, note };
   const override = parseOverride(options, rest.slice(1));
   if (override !== undefined) return { kind: 'override', ref, override };
   const correction = parseCorrection(options, rest.slice(1));
@@ -318,16 +353,32 @@ export function recordCorrection(mainCheckout: string, ref: NodeRef, request: Co
   writeSidecar(target, record);
   const node = record.nodes.find((candidate) => candidate.id === request.nodeId);
   if (node === undefined) throw new Error(`Node ${ request.nodeId } vanished from the sidecar while correcting it.`);
-  const gap = appendGap(gapLogPath(mainCheckout), { date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
-  return { record, gap };
+  const entry = gapOfCorrection({ date: recordedAt.split('T')[0], fileKey: ref.fileKey, nodeId: request.nodeId, correction, node });
+  return { record, gap: appendGap(gapLogPath(mainCheckout), entry) };
+}
+
+function printGap(mainCheckout: string, gap: GapAppend): void {
+  console.log(gap.appended ? `Gap logged in ${ gapLogPath(mainCheckout) }:` : `Same miss already in ${ gapLogPath(mainCheckout) }, no line added:`);
+  console.log(gap.line);
 }
 
 function runCorrection(ref: NodeRef, request: CorrectionRequest): void {
   const mainCheckout = resolveMainCheckout(process.cwd());
   const { gap } = recordCorrection(mainCheckout, ref, request, new Date());
   console.log(`Correction recorded for ${ request.nodeId } in ${ sidecarPath(mainCheckout, ref.fileKey, ref.nodeId) }`);
-  console.log(gap.appended ? `Gap logged in ${ gapLogPath(mainCheckout) }:` : `Same miss already in ${ gapLogPath(mainCheckout) }, no line added:`);
-  console.log(gap.line);
+  printGap(mainCheckout, gap);
+}
+
+// The URL is read for its file key and nothing else: a note needs no sidecar, so it works before a
+// readout was ever run on the node.
+export function recordNote(mainCheckout: string, ref: NodeRef, request: NoteRequest, now: Date): GapAppend {
+  const date = now.toISOString().split('T')[0];
+  return appendGap(gapLogPath(mainCheckout), gapOfNote({ date, fileKey: ref.fileKey, gap: request.gap, text: request.text }));
+}
+
+function runNote(ref: NodeRef, request: NoteRequest): void {
+  const mainCheckout = resolveMainCheckout(process.cwd());
+  printGap(mainCheckout, recordNote(mainCheckout, ref, request, new Date()));
 }
 
 async function runReadout(ref: NodeRef, options: CliOptions): Promise<void> {
@@ -400,6 +451,9 @@ async function main(): Promise<void> {
       return;
     case 'override':
       runOverride(parsed.ref, parsed.override);
+      return;
+    case 'note':
+      runNote(parsed.ref, parsed.note);
       return;
     case 'calibrate':
       runCalibrate();

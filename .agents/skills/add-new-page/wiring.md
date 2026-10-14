@@ -7,9 +7,8 @@ run the *Data* item of the Step 0 interview first.
 
 **The worklist is the tag.** Grep the page's directories for `TODO (api-data):` — every hit
 (page shell, `Content`, `Table`/`TableItem`, `Details`, `GeneralInfo`) is
-a spot this phase must resolve (the done-condition is checked in Step W5). `TODO (design):`
-markers are the next stage's worklist — leave them in place, and add new ones for any
-representation decision you defer (Step W4).
+a spot this phase must resolve (the done-condition is checked in Step W5). A representation
+decision this phase defers is listed to the user at the end (Step W4), never marked in the code.
 
 **In scope:** resource declaration (via the `add-api-resource` skill), minimal loading stubs,
 `useApiQuery` / `useApiPaginatedQuery` wiring, pagination controls, plain rendering of every
@@ -77,9 +76,10 @@ general:
   timestamp → the shared time-format helpers.
 - Everything else is **plain text**: numbers/strings as-is; nested objects either split into
   sub-fields or JSON-stringified. **Never invent formatting** (no rounding, units, or
-  truncation decisions) — tag each plain-text field with
-  `// TODO (design): <field> representation` instead, and **list all tagged fields to the
-  user at the end** so the design pass has a worklist.
+  truncation decisions) — leave the field plain and **list every such field to the user at
+  the end**, so the style leaf has a worklist. No marker goes in the code.
+- On a detail page, set every `ItemLabel`'s `hint` to the confirmed text from Step 0 item 7. A field with no confirmed hint keeps the template's
+  `TODO (api-data):` hint placeholder and joins the list above.
 - Replace the scaffold's generic `DataList` placeholders with the real entity: plural
   sentence in `emptyText`, singular `emptyStateProps.term`.
 

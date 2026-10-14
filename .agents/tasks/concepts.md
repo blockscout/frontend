@@ -42,9 +42,11 @@ rather than a linear plan.
 
 Each leaf carries `[agent]` or `[human]` per the capability boundary in
 [`../delegation.md`](../delegation.md) — exactly one, written explicitly, because `implement-ticket` reads
-the tag as its state machine. UI work is **two linked leaves** by default: an `[agent]` scaffold, then a
-`[human]` style leaf that takes it to the mockup — layout, spacing, styling, icons — with the exact Figma
-node linked on that leaf and the scaffold's `TODO (design):` markers as its worklist.
+the tag as its state machine. 
+
+UI work follows the rule:
+- an optional leaf per project scaffold skill the ticket runs (`add-new-page`)
+- a style leaf per linked Figma node that takes it to the mockup and links the exact node and, when the task has a `design-readout.md`, that node's block beside it.
 
 A leaf's checkbox is **progress state**: a ticket has no commit until it finishes, so the boxes are the
 only durable record of how far it has got inside the ticket. They mark which leaves are done, never what
@@ -58,11 +60,10 @@ criterion marked `(human)` is one only a person looking at the running product c
 whole-task review contract is the spec's Functional Requirements (below), so acceptance criteria are not
 needed once the ticket lands.
 
-The test for a `(human)` criterion: *does this change what a user sees or does?*
+The test for a `(human)` criterion: *does this change what a user sees or does in a way that the agent cannot fully verify itself?*
 
-- **Earns one** — component scaffolds (placeholder ones included), data wiring that renders, page
-  behaviour, perf-sensitive changes, anything touching CSP or security, and new dependencies.
-- **Does not** — env vars, API resources and response types, route plumbing, metadata, sitemap, analytics,
+- **Earns one** — final component styling to match the provided mockups, page behaviour, perf-sensitive changes, anything touching CSP or security, and new dependencies.
+- **Does not** — component scaffolds, data wiring that renders, env vars, API resources and response types, route plumbing, metadata, sitemap, analytics,
   unit tests, glossary and docs, behaviour-preserving refactors.
 
 Getting it wrong costs in both directions: a needless `(human)` criterion stalls an unattended chain, and a

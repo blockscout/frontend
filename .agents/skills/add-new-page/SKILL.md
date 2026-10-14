@@ -15,10 +15,11 @@ sorting, search, socket live-updates, mocks, tests, and design polish are out of
 wiring is deferred, the freshly-scaffolded page keeps its intentional `TODO`s and will not fully pass
 `lint`/`tsc` until its data is wired — that is expected.
 
-**TODO tags.** Every deferred piece of work is marked with a stage-tagged TODO, so each later stage can find
-its worklist with a grep: **`TODO (api-data):`** — resolved by the data-wiring phase (`wiring.md`);
-**`TODO (design):`** — content/representation decisions left for the design stage (icons, field hints,
-uncertain value formatting). Keep the tags when scaffolding, and use them for any new deferred work you mark.
+**TODO tag.** Every piece of work deferred to the data-wiring phase is marked **`TODO (api-data):`**, so that
+phase finds its worklist with a grep (`wiring.md`). Keep the tag when scaffolding, and use it for any new
+deferred data work you mark. Nothing is deferred to the style leaf by a marker: a representation decision
+the scaffold cannot make is listed to the user at the end, and a visual item still with the designer is a
+question on the task, not a comment in the code.
 
 **Rule of thumb: never guess.** Whenever information is missing or required to proceed, **pause and ask the
 user, or confirm your findings**, before writing files.
@@ -97,8 +98,8 @@ obvious from the conversation or the codebase.
 3. **Gated or core?** — apply the architecture rule's test: *"Can this exist on a vanilla EVM chain with no
    feature flag?"* If yes → **core slice** (`__area__` = `slices`, no feature config/sitemap). If no →
    **config-gated feature** (`__area__` = `features`).
-4. **Title** and **navigation placement** — the `<PageTitle>` text, the nav label, and which nav group it
-   belongs to.
+4. **Title** and **navigation placement** — the `<PageTitle>` text, the nav label, which nav group it
+   belongs to, and the nav icon (the exact sprite name).
 5. **Metadata** — **suggest** a default page title and description; let the user confirm or refine. Default
    only — do **not** add `enhanced` variants.
 6. **Data — wire data now, or layout only?** If now, collect for **each content body** (per tab if tabbed):
@@ -108,6 +109,7 @@ obvious from the conversation or the codebase.
    the endpoint isn't deployed anywhere yet, wiring is deferred — layout only. For each resource that
    doesn't exist yet, also run the **Step 0 interview of the `add-api-resource` skill** here — after this
    step, no question should remain for the middle of the work.
+7. **Field hints (detail pages)** — Every `DetailedInfo.ItemLabel` on a detail page includes a `hint`: a one-line explanation of the field displayed when users hover over it. Collect the hint text for each field from the available context. If the context does not explicitly specify a hint, draft a suggestion for the user to confirm.
 
 Proceed only once these are settled.
 
@@ -207,13 +209,13 @@ In `src/shell/navigation/useNavItems.ts` add a `NavItem` to the group agreed in 
 const __featureName__: NavItem | null = config.features.__featureName__.isEnabled ? {
   text: '__title__',
   nextRoute: { pathname: '__route__' as const },
-  // TODO (design): set nav icon
+  icon: '<sprite name from Step 0>',
   isActive: pathname.startsWith('__route__'),
 } : null;
 ```
-For a core slice page drop the `config.features.*` guard (or gate on `config.slices.*`). **Do not invent an
-icon** — leave the `// TODO (design): set nav icon` comment and omit the `icon` field so the user assigns the correct
-sprite later. Then insert the item into the appropriate group array.
+For a core slice page drop the `config.features.*` guard (or gate on `config.slices.*`). The `icon` is the
+sprite name settled in Step 0 (`public/icons/name.d.ts` is the list of valid names) — never a guess. Then
+insert the item into the appropriate group array.
 
 ## Step 6 — Metadata
 

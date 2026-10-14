@@ -47,5 +47,5 @@ What goes where:
 - **Layout questions** hold every layout question the subagent raised, answered or not; an answer
   that changed a node is also a Recognized row with signal `correction`.
 
-The sidecar is the source; this file is a view of it for the ticket's `[human]` style leaf and is
+The sidecar is the source; this file is a view of it for the ticket's style leaf and is
 regenerated, never hand-edited.

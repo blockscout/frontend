@@ -49,14 +49,18 @@ visual polish, Playwright baselines and design sign-off stay human.
       ticket carries `(human) <component> matches the mockup at every breakpoint`, and the "stay human
       regardless of what the readout recognized" sentence is gone.
 - [ ] `implement-ticket/SKILL.md`: Step 3 loses the `lastModified` re-run block and gains the style-leaf
-      paragraph (subagent, inputs by path, no-readout path with the tool run and the MCP exception,
-      screenshot allowed, breakpoints rule); Step 5's touchpoint hand-off says: stage, print
+      paragraph (main agent; readout block + sidecar when linked, otherwise the mockup through
+      `get_design_context` + `get_screenshot` with no tool run and no readout written; breakpoints
+      rule); Step 5's touchpoint hand-off says: stage, print
       `git write-tree`, stop, and name the three things the developer does next — verify in the app, fix
-      unstaged, say "record my corrections"; a new Step 6 "Record corrections" describes the diff read
-      (`git diff <tree-hash>`), the per-hunk mapping to sidecar nodes, the two commands, the confirm
-      batch, and that the agent edits no source file in this step. No `TODO (design):` mention.
+      unstaged, say "record my corrections"; a new Step 6 "Record corrections" spawns a subagent with
+      `record-corrections.md`, which describes the diff read (`git diff <tree-hash>`), the per-hunk
+      mapping to sidecar nodes, the two commands, the confirm batch, and that the agent edits no source
+      file. No `TODO (design):` mention.
 - [ ] `add-new-page/SKILL.md`, `wiring.md` and the templates emit no `TODO (design):` marker; the nav
-      icon is read from the spec's UI inventory and set in the scaffold; `review-changes/SKILL.md` and
+      icon and a detail page's per-field hints are `add-new-page` Step 0 inputs that `to-tickets` Step 5
+      collects into the ticket's Skill inputs (drafted, developer-confirmed, else a `Q<NN>` edge), and
+      the scaffold sets them; `review-changes/SKILL.md` and
       `tools/review-screen/rubric.ts` no longer name the marker. `TODO (api-data):` is untouched.
 - [ ] `design-readout/SKILL.md` and `readout-brief.md`: the rule "the MCP serves a screenshot only" is
       unchanged for the readout; a one-line note says the markup leaf's no-readout exception is
@@ -84,8 +88,8 @@ visual polish, Playwright baselines and design sign-off stay human.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Tool: `markup` category, stage column, `--note`, usage, specs; `CONTEXT.md` rows
-- [ ] 2 `[agent]` `delegation.md`, `concepts.md`, `to-tickets` Step 6 + `ticket-template.md`
-- [ ] 3 `[agent]` `implement-ticket`: style-leaf paragraph, hand-off with tree hash, Step 6 record corrections, gate removed
-- [ ] 4 `[agent]` Markers out of `add-new-page` (SKILL, wiring, templates), `review-changes`, `review-screen/rubric.ts`; `design-readout` note; `pnpm lint:doc-links`
-- [ ] 5 `[human]` Run one real style leaf end to end and confirm the `(human)` criterion
+- [x] 1 `[agent]` Tool: `markup` category, stage column, `--note`, usage, specs; `CONTEXT.md` rows
+- [x] 2 `[agent]` `delegation.md`, `concepts.md`, `to-tickets` Step 6 + `ticket-template.md`
+- [x] 3 `[agent]` `implement-ticket`: style-leaf paragraph, hand-off with tree hash, Step 6 record corrections, gate removed
+- [x] 4 `[agent]` Markers out of `add-new-page` (SKILL, wiring, templates), `review-changes`, `review-screen/rubric.ts`; `design-readout` note; `pnpm lint:doc-links`
+- [x] 5 `[human]` Run one real style leaf end to end and confirm the `(human)` criterion
