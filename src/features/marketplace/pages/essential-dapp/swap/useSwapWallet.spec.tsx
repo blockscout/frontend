@@ -53,8 +53,9 @@ async function renderTrackedSwap(): Promise<{
   const { useSwapWallet } = await import('./useSwapWallet');
   const { RewardsContextProvider, useRewardsContext } = await import('src/features/rewards/context');
   const { getResourceKey } = await import('src/api/hooks/useApiQuery');
-  const { init } = await import('src/services/mixpanel/queue');
-  await init('test-mixpanel', {}, () => {});
+  const { init } = await import('src/shared/analytics/queue');
+  const { getEnabledProviders } = await import('src/shared/analytics/providers');
+  await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
   queryClient.setQueryData(getResourceKey('core:user_info'), { address_hash: ACCOUNT });
   queryClient.setQueryData(getResourceKey('rewards:user_check_activity_pass', { queryParams: { address: ACCOUNT } }), { is_valid: true });
 
@@ -339,7 +340,7 @@ describe('Swap batch activity', () => {
       expect(mixpanel.track).toHaveBeenCalledTimes(1);
       expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
         Action: 'Send Transaction', Address: ACCOUNT, AppId: 'swap', Source: 'Essential dapps', ChainId: '1',
-      }), undefined, undefined);
+      }), undefined);
     });
   });
 
@@ -451,7 +452,7 @@ describe('Swap batch activity', () => {
         { path: '/api/v1/user/activity/track/transaction', body: { from_address: ACCOUNT, to_address: OTHER_ACCOUNT, chain_id: '1' } },
         { path: '/api/v1/activity/track/transaction/confirm', body: { tx_hash: TX_HASH, token: ACTIVITY_TOKEN } },
       ]);
-      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: 'Send Transaction' }), undefined, undefined);
+      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: 'Send Transaction' }), undefined);
     });
   });
 
@@ -466,7 +467,7 @@ describe('Swap batch activity', () => {
     await withEnvs(ENV_OVERRIDES, async() => {
       const { result } = await renderTrackedSwap();
       await result.current.wallet.handleRequest('sign', method, params);
-      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: action }), undefined, undefined);
+      expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({ Action: action }), undefined);
     });
   });
 });

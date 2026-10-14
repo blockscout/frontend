@@ -13,14 +13,12 @@ Convert **intent → variables**. The request already carries the intent; this s
 Only send a DevOps message we are **sure** of. Every other rule serves that.
 
 - **Stop** on ambiguity. If the variable cannot be pinned, or the value is not in the documented set of allowed values, stop and tell the user.
-- **The user is the face.** Uncertainty and clarifying questions go to the user. Requester-facing posts are only the handover reply after an approved send, and the demo link on the skin branch.
+- **The user is the face.** Uncertainty and clarifying questions go to the user. Requester-facing posts are only the handover reply after the send, and the demo link on the skin branch.
 - **Intent is given.** Any question that turns on what someone *wants* is a stop, not a judgement call.
 - **Operator.** `docs/ENVS.md` is the manual. The docs pin legal values, not the consumers. A value the docs cannot pin is a documentation gap, fixed as documentation.
 - **Off.** Prefer a documented off-value over unsetting. Unset only when the docs show the default *is* the desired state.
 - **Mirror** the requester's targeting language. Unstated is not undeterminable — the DevOps bot resolves instances.
 - **Drift.** `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` and `NEXT_PUBLIC_COLOR_THEME_OVERRIDES` ship with a `frontend-configs` file change in the same run; take the skin branch.
-
-No commit without the user's explicit confirmation in this conversation — the one exception is the skin branch's phase 1, which runs unattended up to the demo link.
 
 ## Scope
 
@@ -30,7 +28,8 @@ No commit without the user's explicit confirmation in this conversation — the 
 
 - **Not configurable** — needs a code change. Stop and offer the `create-issue` skill. The channel carries these; they look like ordinary requests.
 - **Retired variable named** — read `docs/DEPRECATED_ENVS.md` and propose the replacement.
-- **Outside the frontend, or mixed with a non-configurable ask** — do the configurable frontend part only, and tell the user what was left out.
+- **Outside the frontend** — nothing here to configure. Stop and tell the user.
+- **Mixed with a non-configurable ask** — not an exit: do the configurable frontend part, and tell the user what was left out.
 - **CDN-only trees** in `frontend-configs` with no `docs/ENVS.md` variable (`multisearch/`, `token-icons/`, `nft-images/`, `explorer-logos/`, `meta-suites-logos/`) — stop and tell the user.
 
 ## Steps
@@ -67,9 +66,9 @@ Run the startup validator against the live env plus our change, before drafting.
 
 ### 5. Draft the DevOps message
 
-Compose it per **The DevOps message** below. Show it to the user and wait.
+Compose it per **The DevOps message** below. Show it to the user and wait (run by Honk: no wait — go straight to step 6).
 
-**Done when:** the user has approved the exact text.
+**Done when:** the user has approved the exact text (run by Honk: the text is final and step 6 runs).
 
 ### 6. Send, then hand over
 
@@ -100,10 +99,10 @@ cp /tmp/instance.env /tmp/instance.validate.env
 jq -r '.localEnvs | to_entries[] | "\(.key)=\(.value)"' tools/dev-server/envs-rules.json >> /tmp/instance.validate.env
 ```
 
-From `deploy/tools/envs-validator/`, build the bundle and the placeholder registry as described under
-"Validating a real instance config by hand" in its `CONTEXT.md`, then:
+From `deploy/tools/envs-validator/`, prepare as in its `CONTEXT.md` ("Validating a real instance config by hand"), with the same overlay on the asset download so a changed or new config URL is the one validated:
 
 ```bash
+pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- ../../scripts/download_assets.sh ./public/assets/configs
 pnpm exec dotenv -e /tmp/change.env -e /tmp/instance.validate.env -- pnpm run validate
 ```
 
@@ -115,7 +114,7 @@ JSON the instance **fetches** at startup — not instance chrome, no demo.
 
 Checkout: a workspace folder named `frontend-configs` or `blockscout_frontend_configs`. If none, stop and ask the user to add it.
 
-Follow the `check-github-cli` skill. Confirm with the user before the commit and the PR — this PR is merged to `main`, where live instances fetch from. (Skin phase 1 is the exception: its PR stays unmerged for review, so it needs no confirmation.) The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
+Follow the `check-github-cli` skill. Commit and open the PR without asking; confirm with the user before the **merge to `main`** — that is where live instances fetch from. (Run by Honk: no confirmation, see below.) The `create-pr` skill's frontend template, ENVs label, and issue-from-branch steps do not apply.
 
 | Directory | Variable |
 | --- | --- |
@@ -127,7 +126,27 @@ Follow the `check-github-cli` skill. Confirm with the user before the commit and
 
 Hosted icons for **inlined** lists (the env holds the JSON; the file is the URL inside it): `configs/ide-icons/` → `NEXT_PUBLIC_CONTRACT_CODE_IDES`; `configs/nft-marketplace-logos/` → `NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES`; `configs/multichain-balance/` → `NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG`.
 
+Merge PR with exactly this form:
+
+```bash
+gh pr merge -R blockscout/frontend-configs <number> --merge --delete-branch
+```
+
 After merge to `main`, confirm each raw URL returns 200. If the instance already has that URL, the DevOps ask is a restart to re-fetch — no new `KEY=value`. If the URL is new, or the value is inlined, it goes in the block as usual.
+
+## Run by Honk
+
+When the Honk orchestrator runs this skill headless, follow [`honk.md`](../../honk.md). This skill's statuses:
+
+| Status | When | Resumed? |
+| --- | --- | --- |
+| `needs_user` | a stop that needs an answer — ambiguity, intent, missing `frontend-configs` checkout, Figma unreachable; the message carries the question | yes, with the answer |
+| `needs_approval` | the next step needs a tool the worker profile denies (a merge, a DevOps post); the message carries what would be done and the exact draft | yes, once a human did it or allowed it |
+| `awaiting_designer` | skin phase 1 ended on `slack-subscribe`; the designer's reply resumes the run | yes, with the reply |
+| `handed_over` | DevOps message sent and the source thread replied to | no |
+| `out_of_scope` | a **Scope** exit — not configurable, outside the frontend, CDN-only tree; the message carries that exit's text (the `create-issue` offer included) | no |
+
+A mixed ask and a retired variable are not exits: the run continues on the configurable part, and the leftover is noted in the final message.
 
 ## The DevOps message
 

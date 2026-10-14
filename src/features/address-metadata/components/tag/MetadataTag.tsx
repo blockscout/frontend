@@ -7,7 +7,7 @@ import type { MetadataTag as TMetadataTag } from './types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Link, LinkExternalIcon } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -37,7 +37,7 @@ const MetadataTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }
       return;
     }
 
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, {
       Type: 'Address tag',
       Info: data.slug,
       URL: linkParams.href,

@@ -6,7 +6,7 @@ import type { Params, Result } from './types';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { useWeb3Account, subscribeConnection } from '../../utils/bridge';
 import { ensureLoaded } from '../../utils/runtime';
@@ -30,8 +30,8 @@ export function useWalletReown({ source, onConnect }: Params): Result {
     return subscribeConnection({
       onConnect: ({ isReconnected }) => {
         if (!isReconnected && isConnectionStarted.current) {
-          mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
-          mixpanel.userProfile.setOnce({ 'With Connected Wallet': true });
+          analytics.logEvent(analytics.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+          analytics.userProfile.setOnce({ 'With Connected Wallet': true });
           onConnectRef.current?.();
         }
         isConnectionStarted.current = false;
@@ -71,7 +71,7 @@ export function useWalletReown({ source, onConnect }: Params): Result {
     // the disabled runtime whose `openModal` is a no-op — there is nothing for the user to complete, and no
     // later bridge connect to attribute to this click.
     if (runtime.isReady) {
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      analytics.logEvent(analytics.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
       isConnectionStarted.current = true;
     }
   }, [ source, loadAndOpenModal ]);

@@ -7,8 +7,8 @@ import React from 'react';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
-import * as mixpanel from 'src/services/mixpanel';
 import { useRollbar } from 'src/services/rollbar';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Alert } from 'src/toolkit/chakra/alert';
@@ -37,7 +37,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
   const [ qr, setQr ] = React.useState('');
   const [ error, setError ] = React.useState('');
 
-  const pageType = mixpanel.getPageType(router.pathname);
+  const pageType = analytics.getPageType(router.pathname);
 
   React.useEffect(() => {
     if (open) {
@@ -50,7 +50,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
 
         setError('');
         setQr(svg);
-        mixpanel.logEvent(mixpanel.EventTypes.QR_CODE, { 'Page type': pageType });
+        analytics.logEvent(analytics.EventTypes.QR_CODE, { 'Page type': pageType });
       });
     }
   }, [ hash, open, pageType, rollbar ]);

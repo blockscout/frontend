@@ -8,14 +8,14 @@ import type { UserInfo } from 'src/features/account/types/api';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 export default function useLinkEmailDynamic(): () => void {
   const { updateUserWithModal } = useUserUpdateRequest();
   const queryClient = useQueryClient();
 
   return React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+    analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
       Status: 'Started',
       Type: 'Email',
       Source: 'Profile dropdown',
@@ -24,7 +24,7 @@ export default function useLinkEmailDynamic(): () => void {
       queryClient.setQueryData(getResourceKey('core:user_info'), (prevData: UserInfo | undefined) => {
         return { ...prevData, email: fields.email };
       });
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Status: 'Finished',
         Type: 'Email',
         Source: 'Profile dropdown',

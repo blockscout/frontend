@@ -13,7 +13,7 @@ import useProvider from 'src/features/web3-wallet/hooks/useProvider';
 import useSwitchOrAddChain from 'src/features/web3-wallet/hooks/useSwitchOrAddChain';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -99,7 +99,7 @@ const TokenAddToWallet = ({ className, token, tokenId, isLoading, variant = 'ico
 
         await trackUsage('add_token');
 
-        mixpanel.logEvent(mixpanel.EventTypes.ADD_TO_WALLET, {
+        analytics.logEvent(analytics.EventTypes.ADD_TO_WALLET, {
           Target: 'token',
           Wallet: wallet,
           Token: token.symbol || '',

@@ -18,6 +18,7 @@ function generateCspPolicy(isPrivateMode = false, nonce?: string, primerScriptHa
     descriptors.mixpanel(isPrivateMode),
     descriptors.monaco(),
     descriptors.multichain(),
+    descriptors.posthog(isPrivateMode),
     descriptors.rollbar(isPrivateMode),
     descriptors.usercentrics(isPrivateMode),
     descriptors.rollup(),

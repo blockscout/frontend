@@ -42,13 +42,13 @@ const clickInBanner = async({ target, type, button, isInsideOuterLink }: Click):
   ], async() => {
     const { render, screen, fireEvent } = await import('vitest/lib');
     const { 'default': HeaderAlert } = await import('./HeaderAlert');
-    const mixpanel = await import('src/services/mixpanel');
+    const analytics = await import('src/shared/analytics');
 
     const Harness = () => {
-      const isInitialized = mixpanel.useInit();
+      const isInitialized = analytics.useInit();
       return (
         <>
-          <span>{ isInitialized ? 'mixpanel ready' : 'mixpanel pending' }</span>
+          <span>{ isInitialized ? 'analytics ready' : 'analytics pending' }</span>
           { isInsideOuterLink ? <a href="https://example.com/outer"><HeaderAlert/></a> : <HeaderAlert/> }
         </>
       );
@@ -56,7 +56,7 @@ const clickInBanner = async({ target, type, button, isInsideOuterLink }: Click):
 
     const view = render(<Harness/>);
     try {
-      await screen.findByText('mixpanel ready');
+      await screen.findByText('analytics ready');
       sdk.track.mockClear();
 
       const elements: Record<Target, HTMLElement> = {

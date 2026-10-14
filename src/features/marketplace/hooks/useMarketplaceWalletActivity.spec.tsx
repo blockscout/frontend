@@ -40,8 +40,9 @@ describe('marketplace transaction activity', () => {
       const { useMarketplaceWalletActivity } = await import('./useMarketplaceWalletActivity');
       const { RewardsContextProvider, useRewardsContext } = await import('src/features/rewards/context');
       const { getResourceKey } = await import('src/api/hooks/useApiQuery');
-      const { init } = await import('src/services/mixpanel/queue');
-      await init('test-mixpanel', {}, () => {});
+      const { init } = await import('src/shared/analytics/queue');
+      const { getEnabledProviders } = await import('src/shared/analytics/providers');
+      await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
 
       const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
       queryClient.setQueryData(getResourceKey('core:user_info'), { address_hash: ACCOUNT });
@@ -111,7 +112,7 @@ describe('marketplace transaction activity', () => {
       } else {
         expect(mixpanel.track).toHaveBeenCalledWith(expect.any(String), expect.objectContaining({
           Action: 'Send Transaction', Address: ACCOUNT, AppId: 'swap', Source: 'Essential dapps', ChainId: '10',
-        }), undefined, undefined);
+        }), undefined);
       }
       unmount();
       queryClient.clear();

@@ -10,7 +10,7 @@ import React from 'react';
 import useQuickSearchQuery from 'src/slices/search/hooks/useQuickSearchQuery';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -48,9 +48,9 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
     if (searchTerm) {
       const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: redirect ? 'true' : 'false' } };
       const url = route(resultRoute);
-      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+      analytics.logEvent(analytics.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
-        'Source page type': mixpanel.getPageType(router.pathname),
+        'Source page type': analytics.getPageType(router.pathname),
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
@@ -77,9 +77,9 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     onClose();
-    mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+    analytics.logEvent(analytics.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
-      'Source page type': mixpanel.getPageType(router.pathname),
+      'Source page type': analytics.getPageType(router.pathname),
       'Result URL': event.currentTarget.href,
     });
     saveToRecentKeywords(searchTerm);

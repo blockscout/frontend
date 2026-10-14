@@ -5,9 +5,9 @@ import { useAccount } from 'wagmi';
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
-type WalletAction = mixpanel.EventPayload<mixpanel.EventTypes.WALLET_ACTION>['Action'];
+type WalletAction = analytics.EventPayload<analytics.EventTypes.WALLET_ACTION>['Action'];
 
 interface WalletActivity {
   readonly logEvent: (action: WalletAction) => void;
@@ -20,7 +20,7 @@ export function useMarketplaceWalletActivity(appId: string, isEssentialDapp = fa
   const { trackTransaction, trackTransactionConfirm } = useRewardsActivity();
 
   const logEvent = useCallback((action: WalletAction) => {
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
+    analytics.logEvent(analytics.EventTypes.WALLET_ACTION, {
       Action: action,
       Address: address,
       AppId: appId,

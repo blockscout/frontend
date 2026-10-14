@@ -16,8 +16,14 @@ export default v.pipe(
 
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: v.optional(v.string()),
     NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: v.optional(envJson(v.record(v.string(), v.unknown()))),
+
+    NEXT_PUBLIC_POSTHOG_API_KEY: v.optional(v.string()),
+    NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: v.optional(envJson(v.record(v.string(), v.unknown()))),
   }),
   requires('NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES', 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', {
     message: 'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN is set to a non-empty string',
+  }),
+  requires('NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES', 'NEXT_PUBLIC_POSTHOG_API_KEY', {
+    message: 'NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_POSTHOG_API_KEY is set to a non-empty string',
   }),
 );

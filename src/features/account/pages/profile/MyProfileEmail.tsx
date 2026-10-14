@@ -14,9 +14,9 @@ import useApiFetch from 'src/api/hooks/useApiFetch';
 import AuthModal from 'src/features/account/components/auth-modal/AuthModal';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
 import ReCaptcha from 'src/services/re-captcha/ReCaptcha';
 import useReCaptcha from 'src/services/re-captcha/useReCaptcha';
+import * as analytics from 'src/shared/analytics';
 import getErrorMessage from 'src/shared/errors/get-error-message';
 import getErrorObjPayload from 'src/shared/errors/get-error-obj-payload';
 
@@ -28,7 +28,7 @@ import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
 
-const MIXPANEL_CONFIG = {
+const ANALYTICS_CONFIG = {
   account_link_info: {
     source: 'Profile' as const,
   },
@@ -66,7 +66,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
     try {
       await recaptcha.fetchProtectedResource(authFetchFactory(formData.email));
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
         Source: 'Profile',
         Status: 'OTP sent',
         Type: 'Email',
@@ -116,7 +116,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
         <AuthModal
           initialScreen={{ type: 'otp_code', isAuth: true, email: formApi.getValues('email') }}
           onClose={ authModal.onClose }
-          mixpanelConfig={ MIXPANEL_CONFIG }
+          analyticsConfig={ ANALYTICS_CONFIG }
         />
       ) }
     </section>

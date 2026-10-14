@@ -8,7 +8,7 @@ import AdBanner from 'src/features/ads/banner/components/AdBanner';
 import AddressMultichainButton from 'src/features/multichain-button/pages/address/AddressMultichainButton';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
@@ -43,7 +43,7 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
   }, []);
 
   const topTokensContent = (() => {

@@ -102,6 +102,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Google ReCaptcha](#google-recaptcha)
   - [GrowthBook](#growthbook)
   - [Mixpanel](#mixpanel)
+  - [PostHog](#posthog)
   - [OpenTelemetry](#opentelemetry)
   - [Rollbar](#rollbar)
   - [Usercentrics CMP](#usercentrics-cmp)
@@ -423,6 +424,7 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | upcoming |
 | NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 #### Block fields list
@@ -435,6 +437,12 @@ Meta tags, Open Graph, and SEO.
 | `miner` | Address of block's miner or validator |
 | `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
 | `batch` | Batch index (applicable for Rollup chains) |
+
+#### Block views list
+| Id | Description |
+| --- | --- |
+| `reorgs` | Forked blocks tab on the blocks page |
+| `uncles` | Uncle blocks tab on the blocks page |
 
 &nbsp;
 
@@ -1296,6 +1304,15 @@ To obtain the variable values, please refer to the [reCAPTCHA documentation](htt
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | Required | - | `<your-secret>` | v1.1.0+ |
 | NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES | `string` | Pass a JSON-like string that represents a subset of the [Mixpanel SDK configuration](https://docs.mixpanel.com/docs/tracking-methods/sdks/javascript#library-configuration) to override the project's default properties. | - | - | `{"record_sessions_percent": 0.5}` | v2.3.0+ |
+
+&nbsp;
+
+### PostHog
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_POSTHOG_API_KEY | `string` | Project API key for [PostHog](https://posthog.com/) product analytics | Required | - | `<your-secret>` | upcoming |
+| NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES | `string` | JSON-like string with a subset of the [posthog-js config](https://posthog.com/docs/libraries/js/config) merged over the app defaults | - | - | `{"disable_session_recording": false}` | upcoming |
 
 &nbsp;
 

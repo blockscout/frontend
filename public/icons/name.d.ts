@@ -104,6 +104,7 @@
 	| "monaco/vyper"
 	| "moon-with-star"
 	| "moon"
+	| "move"
 	| "multisend"
 	| "navigation/api_docs"
 	| "navigation/api_keys"

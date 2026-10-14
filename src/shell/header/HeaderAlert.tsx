@@ -7,7 +7,7 @@ import React from 'react';
 import IndexingStatusBlocks from 'src/slices/chain/indexing-status/IndexingStatusBlocks';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { BoxHtml } from 'src/toolkit/chakra/box';
@@ -24,7 +24,7 @@ const handleLinkClick = (event: React.MouseEvent<HTMLDivElement>): void => {
     return;
   }
 
-  mixpanel.logEvent(mixpanel.EventTypes.PROMO_BANNER, { Source: 'Header', Link: link.href });
+  analytics.logEvent(analytics.EventTypes.PROMO_BANNER, { Source: 'Header', Link: link.href });
 };
 
 const HeaderAlert = (props: FlexProps) => {

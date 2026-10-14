@@ -1,0 +1,106 @@
+#!/usr/bin/env node
+// Register this Claude Code session's interest in a Slack thread so the Honk
+// orchestrator — the one process holding the Slack Socket Mode connection —
+// forwards every reply in that thread to this session as a cross-session
+// message. No socket, no polling, no Slack API call: the script only edits a
+// local registry file and exits.
+//
+// Pilot registry: ~/.claude/channels/honk/watches.json, a map keyed
+// "channel:thread_ts" → { channel, thread_ts, session, cwd, registered_at }.
+// Re-registering the same thread overwrites its entry (idempotent). The write
+// is atomic (temp file + rename), so Honk never reads a half-written file.
+//
+// Usage:
+//   scripts/slack-subscribe <thread>                 register
+//   scripts/slack-subscribe --remove <thread>        unregister
+//   scripts/slack-subscribe --session <id> <thread>  override the session id
+// <thread> is "C…:1700000000.000200" or a Slack permalink
+// (…/archives/<channel>/p<ts-without-dot>[?thread_ts=<parent>], or
+// app.slack.com …/thread/<channel>-<ts>). A reply's permalink carries the
+// parent in its thread_ts query — that parent is what gets registered.
+// The session id defaults to $CLAUDE_CODE_SESSION_ID (set in Claude Code's Bash tool).
+// cspell:ignore ENOENT
+'use strict';
+
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+
+const REGISTRY_DIR = path.join(os.homedir(), '.claude', 'channels', 'honk');
+const REGISTRY_FILE = path.join(REGISTRY_DIR, 'watches.json');
+
+function die(msg) {
+  process.stderr.write(`slack-subscribe: ${msg}\n`);
+  process.exit(1);
+}
+
+// "1709834567890123" or "1709834567.890123" → "1709834567.890123"
+const dotTs = (p) => (p.includes('.') ? p : `${p.slice(0, -6)}.${p.slice(-6)}`);
+const TS = String.raw`(\d{10}\.\d{6}|\d{16})`;
+
+// The ?thread_ts= query on a reply's permalink names the parent; the /p digits
+// are the reply itself, which no forwarded event would ever match.
+function queryThreadTs(arg) {
+  const m = arg.match(/[?&]thread_ts=(\d{10}\.\d{6})(?:[&#]|$)/);
+  return m ? m[1] : null;
+}
+
+function parseThread(arg) {
+  let m = arg.match(new RegExp(String.raw`^([CDG][A-Z0-9]+):${TS}$`));
+  if (m) return { channel: m[1], thread_ts: dotTs(m[2]) };
+  m = arg.match(new RegExp(String.raw`/archives/([CDG][A-Z0-9]+)/p${TS}(?:[/?#]|$)`));
+  if (m) return { channel: m[1], thread_ts: queryThreadTs(arg) || dotTs(m[2]) };
+  m = arg.match(new RegExp(String.raw`/thread/([CDG][A-Z0-9]+)-${TS}(?:[/?#]|$)`));
+  if (m) return { channel: m[1], thread_ts: queryThreadTs(arg) || dotTs(m[2]) };
+  die(`cannot parse thread '${arg}' — expected CHANNEL:THREAD_TS or a Slack permalink`);
+}
+
+function readRegistry() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(REGISTRY_FILE, 'utf8'));
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+    die(`${REGISTRY_FILE} is not a JSON object — fix or delete it`);
+  } catch (e) {
+    if (e.code === 'ENOENT') return {};
+    die(`cannot read ${REGISTRY_FILE}: ${e.message}`);
+  }
+}
+
+function writeRegistry(registry) {
+  fs.mkdirSync(REGISTRY_DIR, { recursive: true });
+  const tmp = `${REGISTRY_FILE}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(registry, null, 2) + '\n');
+  fs.renameSync(tmp, REGISTRY_FILE);
+}
+
+// ---- argv
+let remove = false;
+let session = process.env.CLAUDE_CODE_SESSION_ID || '';
+let thread = null;
+const args = process.argv.slice(2);
+for (let i = 0; i < args.length; i++) {
+  const a = args[i];
+  if (a === '--remove') remove = true;
+  else if (a === '--session') session = args[++i] || '';
+  else if (a.startsWith('-')) die(`unknown option '${a}'`);
+  else if (thread) die('exactly one thread per call');
+  else thread = a;
+}
+if (!thread) die('usage: slack-subscribe [--remove] [--session <id>] <CHANNEL:THREAD_TS | permalink>');
+
+const { channel, thread_ts } = parseThread(thread);
+const key = `${channel}:${thread_ts}`;
+const registry = readRegistry();
+
+if (remove) {
+  const existed = key in registry;
+  delete registry[key];
+  writeRegistry(registry);
+  process.stdout.write(`${existed ? 'REMOVED' : 'ABSENT'} ${key}\n`);
+  process.exit(0);
+}
+
+if (!session) die('no session id — CLAUDE_CODE_SESSION_ID is unset (not a Claude Code session?); pass --session <id>');
+registry[key] = { channel, thread_ts, session, cwd: process.cwd(), registered_at: new Date().toISOString() };
+writeRegistry(registry);
+process.stdout.write(`SUBSCRIBED ${key} session=${session}\n`);

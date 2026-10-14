@@ -103,9 +103,25 @@ export const TableHeaderSticky = (props: TableHeaderProps) => {
 
 export const TableContainerScrollable = ({
   children,
+  onlyMobile = true,
 }: {
   children: React.ReactNode;
+  onlyMobile?: boolean;
 }) => {
+
+  if (!onlyMobile) {
+    return (
+      <Box
+        display="grid"
+        overflowX="scroll"
+        mx={{ base: -3, lg: 0 }}
+        px={{ base: 3, lg: 0 }}
+      >
+        { children }
+      </Box>
+    );
+  }
+
   return (
     <Box
       overflowX={{ base: 'scroll', lg: 'unset' }}

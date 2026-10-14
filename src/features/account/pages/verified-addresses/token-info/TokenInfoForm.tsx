@@ -14,8 +14,8 @@ import type { ResourceError } from 'src/api/resources';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
-import * as mixpanel from 'src/services/mixpanel';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import * as analytics from 'src/shared/analytics';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { toaster } from 'src/toolkit/chakra/toaster';
@@ -62,7 +62,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
 
   React.useEffect(() => {
     if (!application?.id && !openEventSent.current) {
-      mixpanel.logEvent(mixpanel.EventTypes.VERIFY_TOKEN, { Action: 'Form opened' });
+      analytics.logEvent(analytics.EventTypes.VERIFY_TOKEN, { Action: 'Form opened' });
       openEventSent.current = true;
     }
   }, [ application?.id ]);
@@ -87,7 +87,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         onSubmit(result);
 
         if (!application?.id) {
-          mixpanel.logEvent(mixpanel.EventTypes.VERIFY_TOKEN, { Action: 'Submit' });
+          analytics.logEvent(analytics.EventTypes.VERIFY_TOKEN, { Action: 'Submit' });
         }
 
       } else {

@@ -70,6 +70,8 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_USERCENTRICS_CONFIG: toEnvValue({ settingsId: 'xxx', rulesetId: 'xxx' }),
   NEXT_PUBLIC_USERCENTRICS_DRAFT: 'true',
   NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: toEnvValue({ record_sessions_percent: 0.5, record_heatmap_data: true }),
+  NEXT_PUBLIC_POSTHOG_API_KEY: 'xxx',
+  NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: toEnvValue({ disable_session_recording: false }),
   NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: 'xxx',
   NEXT_PUBLIC_AD_TEXT_PROVIDER: 'sevio',
   NEXT_PUBLIC_AD_BANNER_PROVIDER: 'slise',
@@ -142,6 +144,7 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS: '0x471EcE3750Da237f93B8E339c536989b8978a438',
   NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: toEnvValue([ 'solidity-hardhat', 'solidity-foundry' ]),
   NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS: toEnvValue([ 'burnt_fees', 'total_reward' ]),
+  NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS: toEnvValue([ 'reorgs', 'uncles' ]),
   NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED: 'false',
   NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: toEnvValue(nftMarketplaces),
   NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: toEnvValue([ 'fee_per_gas', 'set_max_gas_limit' ]),
@@ -200,4 +203,5 @@ export const multichainConfig: Record<string, string> = {
   NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: 'xxx',
   NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: 'xxx',
   NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: 'xxx',
+  NEXT_PUBLIC_POSTHOG_API_KEY: 'xxx',
 };

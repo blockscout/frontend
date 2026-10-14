@@ -15,7 +15,7 @@ import ChainSelectMultichain from 'src/features/multichain/components/ChainSelec
 import type useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import ChainSelect, { isAllOption } from 'src/shared/external-chains/ChainSelect';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
@@ -55,7 +55,7 @@ const ChainStatsDetailsCrossChainTxs = ({
   const chainsQuery = useApiQuery('interchainIndexer:chains');
 
   const handleShare = React.useCallback(async() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: chart.id });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: chart.id });
   }, [ chart.id ]);
 
   const counterPartyChainsConfig = React.useMemo(() => {

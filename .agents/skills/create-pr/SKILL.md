@@ -42,13 +42,11 @@ the PR does from the title alone:
 
 ## Mode A — Draft placeholder (spec time)
 
-**Reached from `to-spec`** after the developer approved the spec content: that approval already covers this
-whole mode, so run steps 1–5 without re-confirming. A direct invocation keeps the confirmation in step 3.
-
 At this stage nothing is implemented, so **do not** describe changes, env vars, or checklists — the
 description is a placeholder pointing at the plan:
 
-1. **Prepare the branch** — commit `spec.md` and `questions.md` if needed (with the user's approval), push
+1. **Prepare the branch** — commit `spec.md` and `questions.md` if needed (with the user's approval —
+   reached from `to-spec`, they are already committed and its content confirmation covers this), push
    with `-u`.
 2. **Compose the placeholder body** (skip the PR template — it describes finished work):
    - `Resolves #<ISSUE_NUMBER>` — the branch is `issue-<number>`, so extract the number from it.
@@ -56,10 +54,9 @@ description is a placeholder pointing at the plan:
    - A link to the spec file on this branch: `.agents/tasks/<dir>/spec.md`.
    - A note that this is a **spec-first draft**: the branch will receive the task's work ticket by ticket,
      and the final description will be written when the PR is marked ready for review.
-3. **Confirm with the user**, then create as draft: `gh pr create --draft --title "..." --body-file ...`.
+3. **Create as draft**: `gh pr create --draft --title "..." --body-file ...`.
    Title per "PR title" above (not "spec for..."; the PR becomes the task's PR, describing the whole task).
-4. **Labels** — copy the issue's labels (`gh issue view <N> --json labels`). Skip ENVs/dependencies
-   labels — nothing is implemented yet; Mode B adds them from the real diff.
+4. **Labels** — the category label only, per "Labels" below. Scope labels wait for Mode B.
 5. Link the created PR in the output.
 
 ## Mode B — Finalize a draft into ready-for-review
@@ -69,11 +66,8 @@ description is a placeholder pointing at the plan:
    wants; resolve conflicts before continuing.
 2. **Rewrite the description** following "Writing the description" below — the placeholder body is
    replaced wholesale: `gh pr edit <N> --body-file ...`.
-3. **Labels from the real diff** — ENVs label if `./docs/ENVS.md` changed; dependencies label only if the
-   **dependency sections** of `package.json` changed (`dependencies`, `devDependencies`,
-   `peerDependencies`, `pnpm`/`overrides`) — inspect `git diff origin/main -- package.json` and ignore
-   changes confined to `scripts` or other fields; plus the issue's labels if not already copied.
-4. **Confirm with the user**, then flip: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
+3. **Labels** — see "Labels" below, including the check.
+4. **Flip to ready**: `gh pr ready <N>`. (On flipping, the Checks workflow runs —
    drafts skip it by design.)
 5. Link the PR in the output.
 
@@ -83,10 +77,22 @@ description is a placeholder pointing at the plan:
    approval, clear message). When the work sits on `main`, create the branch first: `issue-<number>` when
    it came from an issue, otherwise a kebab-case slug naming the change.
 2. **Write the description** — see "Writing the description" below.
-3. **Confirm with the user**, then create: `gh pr create --title "..." --body-file ...` (add `--draft`
-   only if the user asked for it).
-4. **Labels** — as Mode B step 3.
+3. **Create**: `gh pr create --title "..." --body-file ...` (add `--draft` only if the user asked for it).
+4. **Labels** — see "Labels" below, including the check.
 5. Link the created PR in the output.
+
+## Labels (all modes)
+
+Every label and its meaning is in `./docs/ISSUE_LABELS.md`; the PR check (`.github/workflows/pull-request-check.yml`)
+fails a non-draft PR whose labels break the category rule. Apply with `gh pr edit <N> --add-label <label>`.
+
+1. **Category — exactly one.** Take it from the issue's labels (`gh issue view <N> --json labels`) when
+   the issue carries one category; when it carries none or more than one, pick the one that fits the work and say
+   which in the output. Several labels of the same category are fine. Do not copy the issue's other labels.
+2. **Scope (Modes B and C)** — from the real diff: `ENVs` if `./docs/ENVS.md` changed; `breaking changes`
+   if the description says something is not backwards compatible.
+3. **Check (Modes B and C)** — `pnpm release check-pr <N>` must pass before the PR is reported done; fix
+   what it names (body headings, placeholders, labels) rather than reporting the failure.
 
 ## Writing the description (Modes B and C)
 
@@ -103,9 +109,9 @@ description is a placeholder pointing at the plan:
   - **This conversation**, when the work happened here — the decisions and the alternatives ruled out are
     already in context; use them.
   - **The issue**, when the branch names one — its body states the problem the diff only implies.
-  - **The diff and the surrounding code**, otherwise. Infer the intent and write it plainly, then let the
-    user correct it at the confirmation step — that is what the confirmation is for. Where the reasoning
-    genuinely cannot be recovered, ask the user for it rather than inventing a rationale.
+  - **The diff and the surrounding code**, otherwise. Infer the intent and write it plainly; the user
+    corrects it on the open PR. Where the reasoning genuinely cannot be recovered, ask the user for it
+    rather than inventing a rationale.
 - **Environment variables:** if any env vars were added, changed, or removed, compare or read
   `./docs/ENVS.md` (and the validator/ENVS docs if relevant) and fill the **Environment variables** section
   with each variable change and its **purpose** (write "None" if there are none):

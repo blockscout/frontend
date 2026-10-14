@@ -12,7 +12,7 @@ import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { useMultichainContext } from 'src/features/multichain/context';
 import useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSelect';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import { useChartsConfig } from 'src/shared/stats/line-chart-config';
 
 import type { OnValueChangeHandler, SelectOption } from 'src/toolkit/chakra/select';
@@ -66,7 +66,7 @@ const ChainStatsDetailsLineChart = ({
   }, [ onZoomReset, onResolutionChange ]);
 
   const handleShare = React.useCallback(async() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: id });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Share chart', Info: id });
   }, [ id ]);
 
   const resolutionCollection = React.useMemo(() => {

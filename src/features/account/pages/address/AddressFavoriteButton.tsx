@@ -13,7 +13,7 @@ import WatchlistAddModal from 'src/features/account/pages/watchlist/AddressModal
 import DeleteAddressModal from 'src/features/account/pages/watchlist/DeleteAddressModal';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import usePreventFocusAfterModalClosing from 'src/shared/hooks/usePreventFocusAfterModalClosing';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -37,7 +37,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
 
   const handleAddToFavorite = React.useCallback(() => {
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
-    !watchListId && mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Add to watchlist' });
+    !watchListId && analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Add to watchlist' });
   }, [ watchListId, deleteModalProps, addModalProps ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {

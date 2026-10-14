@@ -7,6 +7,7 @@ import { getValidationErrors } from '../utils';
 import servicesSchema from './services';
 
 const mixpanelOverrides = { record_sessions_percent: 0.5, record_heatmap_data: true };
+const posthogOverrides = { disable_session_recording: false };
 
 describe('servicesSchema', () => {
   it('accepts the external service keys', () => {
@@ -19,6 +20,8 @@ describe('servicesSchema', () => {
       NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: 'https://rollbar.com',
       NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: 'xxx',
       NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: toEnvValue(mixpanelOverrides),
+      NEXT_PUBLIC_POSTHOG_API_KEY: 'xxx',
+      NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: toEnvValue(posthogOverrides),
     })).toEqual([]);
   });
 
@@ -41,6 +44,23 @@ describe('servicesSchema', () => {
         NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: 'not json',
       })).toEqual([
         'NEXT_PUBLIC_MIXPANEL_CONFIG_OVERRIDES: Invalid JSON: Received "not json"',
+      ]);
+    });
+  });
+
+  describe('PostHog config overrides', () => {
+    it('rejects the overrides without the API key', () => {
+      expect(getValidationErrors(servicesSchema, { NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: toEnvValue(posthogOverrides) })).toEqual([
+        'NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES can only be used if NEXT_PUBLIC_POSTHOG_API_KEY is set to a non-empty string',
+      ]);
+    });
+
+    it('rejects overrides that are not a JSON object', () => {
+      expect(getValidationErrors(servicesSchema, {
+        NEXT_PUBLIC_POSTHOG_API_KEY: 'xxx',
+        NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: 'not json',
+      })).toEqual([
+        'NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES: Invalid JSON: Received "not json"',
       ]);
     });
   });

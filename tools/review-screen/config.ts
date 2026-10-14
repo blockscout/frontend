@@ -6,6 +6,9 @@ export const DEFAULT_STANDARDS_THRESHOLD = 0.7;
 export const STANDARDS_THRESHOLD_OVERRIDES: Readonly<Record<string, number>> = {
   // Real breaches of this rule score in the low 0.6s, where the other rules only produce noise.
   'inline-empty-default': 0.6,
+  // Over the pilot's first 16 reviews the standards axis raised six comment findings; Jev scored those
+  // files 0.40–0.82, and the only two cells above 0.5 without a finding were tests.
+  'explanatory-comment': 0.5,
 };
 // The spec grid asks "does this file address the requirement", so a requirement is a suspect when
 // its best score stays *below* this.

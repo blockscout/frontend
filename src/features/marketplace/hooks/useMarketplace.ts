@@ -5,7 +5,7 @@ import React from 'react';
 
 import { MarketplaceCategory } from 'src/features/marketplace/types/client';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useDebounce from 'src/shared/hooks/useDebounce';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -37,7 +37,7 @@ export default function useMarketplace() {
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
+    analytics.logEvent(analytics.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
     setSelectedCategoryId(newCategory);
   }, []);
 
@@ -85,7 +85,7 @@ export default function useMarketplace() {
     }
 
     if (debouncedFilterQuery.length > 0) {
-      mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
+      analytics.logEvent(analytics.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
     }
 
     router.replace(

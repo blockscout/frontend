@@ -1,34 +1,43 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
 
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
-import { TableContainerScrollable } from 'src/toolkit/chakra/table';
-
+import TokenTransfersTable from '../../components/table/TokenTransfersTable';
+import { useTokenTransferColumns } from '../../hooks/useTokenTransferColumns';
 import useTokenTransfersQuery from '../../hooks/useTokenTransfersQuery';
-import TokenTransfersTable from './TokenTransfersTable';
 
 const TokenTransfersLocal = () => {
   const { query, typeFilter, onTokenTypesChange } = useTokenTransfersQuery({ enabled: true });
+  const {
+    columns,
+    selectableColumns,
+    checkedColumns,
+    isCustomized,
+    onColumnsChange,
+    onColumnsReorder,
+    onColumnsReset,
+  } = useTokenTransferColumns('index', { typeFilter });
 
   const content = (
-    <TableContainerScrollable>
-      <TokenTransfersTable
-        items={ query.data?.items }
-        top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ query.isInitialLoading }
-        resetKey={ query.queryHash }
-      />
-    </TableContainerScrollable>
+    <TokenTransfersTable
+      columns={ columns }
+      items={ query.data?.items }
+      isLoading={ query.isInitialLoading }
+      resetKey={ query.queryHash }
+      enableTimeIncrement
+    />
   );
 
   const filter = (
@@ -39,7 +48,17 @@ const TokenTransfersLocal = () => {
 
   const actionBar = (
     <ActionBar mt={ -6 }>
-      { filter }
+      <HStack gap={ 3 }>
+        { filter }
+        <ColumnsButton
+          tableColumns={ selectableColumns }
+          columns={ checkedColumns }
+          onChange={ onColumnsChange }
+          onOrderChange={ onColumnsReorder }
+          selected={ isCustomized }
+          onReset={ onColumnsReset }
+        />
+      </HStack>
       <Pagination { ...query.pagination }/>
     </ActionBar>
   );

@@ -4,7 +4,7 @@ import React, { useCallback, useState } from 'react';
 
 import type { TransactionTag } from 'src/features/account/types/api';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import FormModal from 'src/shared/forms/FormModal';
 
 import TransactionForm from './TransactionForm';
@@ -23,18 +23,18 @@ const TransactionModal: React.FC<Props> = ({ open, onOpenChange, onSuccess, data
   const [ isAlertVisible, setAlertVisible ] = useState(false);
 
   React.useEffect(() => {
-    open && !data?.id && mixpanel.logEvent(
-      mixpanel.EventTypes.PRIVATE_TAG,
-      { Action: 'Form opened', 'Page type': mixpanel.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
+    open && !data?.id && analytics.logEvent(
+      analytics.EventTypes.PRIVATE_TAG,
+      { Action: 'Form opened', 'Page type': analytics.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
     );
   }, [ data?.id, open ]);
 
   const handleSuccess = React.useCallback(async() => {
     onSuccess?.();
     if (!data?.id) {
-      mixpanel.logEvent(
-        mixpanel.EventTypes.PRIVATE_TAG,
-        { Action: 'Submit', 'Page type': mixpanel.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
+      analytics.logEvent(
+        analytics.EventTypes.PRIVATE_TAG,
+        { Action: 'Submit', 'Page type': analytics.getPageType('/account/tag-address'), 'Tag type': 'Tx' },
       );
     }
   }, [ data?.id, onSuccess ]);

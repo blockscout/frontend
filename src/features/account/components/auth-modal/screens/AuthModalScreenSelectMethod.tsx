@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { Screen } from '../types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Button } from 'src/toolkit/chakra/button';
 
@@ -16,7 +16,7 @@ interface Props {
 const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
 
   const handleEmailClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+    analytics.logEvent(analytics.EventTypes.LOGIN, {
       Action: 'Email',
       Source: 'Options selector',
     });
@@ -24,7 +24,7 @@ const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
   }, [ onSelectMethod ]);
 
   const handleConnectWalletClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+    analytics.logEvent(analytics.EventTypes.LOGIN, {
       Action: 'Wallet',
       Source: 'Options selector',
     });

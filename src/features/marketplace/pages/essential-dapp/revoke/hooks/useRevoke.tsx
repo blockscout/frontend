@@ -13,7 +13,7 @@ import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
 
@@ -44,7 +44,7 @@ export default function useRevoke(chain?: EssentialDappsChainConfig) {
         chainId: Number(chain?.id),
       });
 
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, {
+      analytics.logEvent(analytics.EventTypes.WALLET_ACTION, {
         Action: 'Send Transaction',
         Address: userAddress,
         AppId: 'revoke',

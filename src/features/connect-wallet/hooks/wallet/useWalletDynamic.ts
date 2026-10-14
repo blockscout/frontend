@@ -6,7 +6,7 @@ import { useAccountEffect } from 'wagmi';
 
 import type { Params, Result } from './types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import useAccountDynamic from '../account/useAccountDynamic';
 
@@ -19,20 +19,20 @@ export default function useWalletDynamic({ source, onConnect }: Params): Result 
 
   const openModal = React.useCallback(async() => {
     setShowDynamicUserProfile(true);
-    mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
+    analytics.logEvent(analytics.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
   }, [ setShowDynamicUserProfile ]);
 
   useDynamicEvents('authFlowOpen', async() => {
     if (!isConnectionStarted.current) {
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      analytics.logEvent(analytics.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
       isConnectionStarted.current = true;
     }
   });
 
   const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
     if (!isReconnected && isConnectionStarted.current) {
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
-      mixpanel.userProfile.setOnce({
+      analytics.logEvent(analytics.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+      analytics.userProfile.setOnce({
         'With Connected Wallet': true,
       });
       onConnect?.();

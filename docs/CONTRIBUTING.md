@@ -176,7 +176,7 @@ Run the tests with `pnpm test:pw` (the whole suite) or `pnpm test:pw --changed` 
 5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team is committed to reviewing patches in a timely manner.
 6. After code review is done, we merge pull requests by squashing all commits and editing the commit message if necessary using the GitHub user interface.
 
-*Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
+*Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add the `breaking changes` label to it (all labels are described in [ISSUE_LABELS.md](./ISSUE_LABELS.md)).
 
 *Note*, if your Pull Request adds a feature that is not privacy-compliant (e.g. tracking, analytics, or a third-party service), make sure it is disabled in private mode, so a privacy-focused deployment can turn it off.
 
