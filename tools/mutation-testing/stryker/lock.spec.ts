@@ -13,6 +13,7 @@ const OTHER_RUN: RunLock = { pid: OTHER_PID, startedAt: '2026-10-15T09:00:00.000
 
 let tempDir: string;
 let lockFile: string;
+let marker: string;
 
 function deps(alivePids: ReadonlyArray<number>): LockDeps {
   return { lockFile, isProcessAlive: (pid) => alivePids.includes(pid), now: () => NOW };
@@ -29,6 +30,7 @@ function readLockFile(): RunLock {
 beforeEach(() => {
   tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'mutation-lock-'));
   lockFile = path.join(tempDir, '.lock');
+  marker = `${ lockFile }.acquiring`;
 });
 
 afterEach(() => {
@@ -43,24 +45,39 @@ describe('acquireLock', () => {
     expect(fs.readdirSync(tempDir)).toEqual([ '.lock' ]);
   });
 
-  // A reader must never see the record half-written, so it is linked into place complete.
+  // A reader must never see the record half-written, so it is moved into place complete.
   it('writes the record in one step', () => {
-    const link = vi.spyOn(fs, 'linkSync');
+    const rename = vi.spyOn(fs, 'renameSync');
     acquireLock('src/a.ts', deps([]));
-    expect(link).toHaveBeenCalledWith(expect.stringContaining(process.pid.toString()), lockFile);
+    expect(rename).toHaveBeenCalledWith(expect.stringContaining(process.pid.toString()), lockFile);
   });
 
-  // The loser of the exclusive create must not clear the record the winner just wrote.
-  it('reports held when another run wins the create, and leaves its record and no draft behind', () => {
-    const winner: RunLock = { pid: OTHER_PID + 1, startedAt: NOW.toISOString(), selection: 'src/c.ts' };
-    const originalLinkSync = fs.linkSync.bind(fs);
-    vi.spyOn(fs, 'linkSync').mockImplementation((from, to) => {
-      writeLock(winner);
-      originalLinkSync(from, to);
+  // Two runs reclaiming the same dead lock must not interleave: the one that gets there second would
+  // otherwise replace the record the first has just put in its place.
+  it('refuses while another run is between reading the lock and writing its own', () => {
+    writeLock(OTHER_RUN);
+    fs.mkdirSync(marker);
+
+    expect(() => acquireLock('src/a.ts', deps([]))).toThrow(/is taking .* this instant/);
+    expect(readLockFile()).toEqual(OTHER_RUN);
+    expect(fs.readdirSync(tempDir).sort()).toEqual([ '.lock', '.lock.acquiring' ]);
+  });
+
+  it('holds other runs off from the read until the record is written', () => {
+    writeLock(OTHER_RUN);
+    const isProcessAlive = vi.fn((): boolean => {
+      expect(fs.existsSync(marker)).toBe(true);
+      return false;
     });
 
-    expect(acquireLock('src/a.ts', deps([ winner.pid ]))).toEqual({ outcome: 'held', holder: winner });
-    expect(readLockFile()).toEqual(winner);
+    expect(acquireLock('src/a.ts', { ...deps([]), isProcessAlive })).toEqual({ outcome: 'acquired', staleLockRemoved: OTHER_RUN });
+    expect(isProcessAlive).toHaveBeenCalledWith(OTHER_PID);
+    expect(fs.existsSync(marker)).toBe(false);
+  });
+
+  it('lets other runs in again after refusing', () => {
+    writeLock(OTHER_RUN);
+    acquireLock('src/a.ts', deps([ OTHER_PID ]));
     expect(fs.readdirSync(tempDir)).toEqual([ '.lock' ]);
   });
 
@@ -85,39 +102,13 @@ describe('acquireLock', () => {
     expect(readLockFile().pid).toBe(process.pid);
   });
 
-  // Two runs reclaim the same dead lock: the one that gets there second must not unlink the record the
-  // first has just put in its place.
-  it('leaves a stale lock alone once another run has already replaced it', () => {
-    const winner: RunLock = { pid: OTHER_PID + 1, startedAt: NOW.toISOString(), selection: 'src/c.ts' };
-    writeLock(OTHER_RUN);
-    const replacedDuringLivenessCheck: LockDeps = {
-      ...deps([ winner.pid ]),
-      isProcessAlive: (pid) => {
-        writeLock(winner);
-        return pid === winner.pid;
-      },
-    };
-
-    expect(acquireLock('src/a.ts', replacedDuringLivenessCheck)).toEqual({ outcome: 'held', holder: winner });
-    expect(readLockFile()).toEqual(winner);
-  });
-
-  it('never claims a holder it cannot read back', () => {
-    vi.spyOn(fs, 'linkSync').mockImplementation(() => {
-      throw Object.assign(new Error('EEXIST'), { code: 'EEXIST' });
-    });
-
-    expect(() => acquireLock('src/a.ts', deps([]))).toThrow(/changed underneath this run twice/);
-    expect(fs.existsSync(lockFile)).toBe(false);
-  });
-
   it('propagates a failure to write the record', () => {
     const missingDir = { ...deps([]), lockFile: path.join(tempDir, 'missing', '.lock') };
     expect(() => acquireLock('src/a.ts', missingDir)).toThrow(/ENOENT/);
   });
 
-  it('propagates a failure to link the record other than the lock already existing', () => {
-    vi.spyOn(fs, 'linkSync').mockImplementation(() => {
+  it('leaves nothing behind when moving the record into place fails', () => {
+    vi.spyOn(fs, 'renameSync').mockImplementation(() => {
       throw Object.assign(new Error('EACCES'), { code: 'EACCES' });
     });
 

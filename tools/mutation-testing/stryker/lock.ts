@@ -47,17 +47,12 @@ export function formatStaleMessage(stale: RunLock): string {
   return `› removed a stale lock left by pid ${ stale.pid } (started ${ stale.startedAt }, mutating ${ stale.selection })`;
 }
 
-// A missing file reads as empty: neither holds a record, and both are safe to replace.
-function readLockFile(lockFile: string): string {
-  try {
-    return fs.readFileSync(lockFile, 'utf8');
-  } catch {
-    return '';
-  }
-}
-
 function readLock(lockFile: string): RunLock | undefined {
-  return parseLock(readLockFile(lockFile));
+  try {
+    return parseLock(fs.readFileSync(lockFile, 'utf8'));
+  } catch {
+    return undefined;
+  }
 }
 
 function errorCode(error: unknown): unknown {
@@ -70,13 +65,6 @@ function removeFile(file: string): void {
   } catch { /* Already gone, which is the state being asked for. */ }
 }
 
-// A stale record is removed only while it is still the record that was judged stale: another run may
-// have taken the lock in between, and unlinking that would leave two runs believing they hold it.
-function removeStaleLock(lockFile: string, staleContents: string): void {
-  if (readLockFile(lockFile) !== staleContents) return;
-  removeFile(lockFile);
-}
-
 function isAlive(pid: number): boolean {
   try {
     process.kill(pid, 0);
@@ -87,41 +75,51 @@ function isAlive(pid: number): boolean {
   }
 }
 
-// The record is written in full to a private file and then hard-linked into place: link() fails
-// with EEXIST when the lock exists, which makes the creation exclusive, and no reader can ever see
-// the lock file half-written — an exclusive open-then-write would expose an empty file in between.
-function tryCreate(lockFile: string, lock: RunLock): boolean {
+// The record is written in full to a private file and renamed over the lock, so no reader can ever
+// see the lock half-written — an open-then-write would expose an empty file in between.
+function writeLock(lockFile: string, lock: RunLock): void {
   const draft = `${ lockFile }.${ lock.pid }.draft`;
-  fs.writeFileSync(draft, JSON.stringify(lock));
   try {
-    fs.linkSync(draft, lockFile);
-    return true;
-  } catch (error) {
-    if (errorCode(error) === 'EEXIST') return false;
-    throw error;
+    fs.writeFileSync(draft, JSON.stringify(lock));
+    fs.renameSync(draft, lockFile);
   } finally {
     removeFile(draft);
+  }
+}
+
+// Reading the lock, judging its holder dead and replacing it are three steps, and a second run doing
+// the same three in between would end with two runs each believing it holds the lock. A directory is
+// the one thing every platform creates atomically and exclusively, so it serialises the sequence.
+function acquireExclusively<T>(lockFile: string, attempt: () => T): T {
+  const marker = `${ lockFile }.acquiring`;
+  try {
+    fs.mkdirSync(marker);
+  } catch (error) {
+    if (errorCode(error) !== 'EEXIST') throw error;
+    throw new Error(`Another test:mutation-testing run is taking ${ lockFile } this instant — start the run again. ` +
+      `If that keeps failing, remove ${ marker }: it was left by a run killed mid-step.`);
+  }
+  try {
+    return attempt();
+  } finally {
+    fs.rmdirSync(marker);
   }
 }
 
 const DEFAULT_DEPS: LockDeps = { lockFile: LOCK_FILE, isProcessAlive: isAlive, now: () => new Date() };
 
 // A record whose pid is dead is left over from a run that was killed outright and never reached
-// releaseLock; it is cleared before the exclusive create. Losing the create means another run took
-// the lock in the gap and holds it now.
+// releaseLock; it is replaced rather than refused.
 export function acquireLock(selection: string, deps: LockDeps = DEFAULT_DEPS): LockAttempt {
   const lock: RunLock = { pid: process.pid, startedAt: deps.now().toISOString(), selection };
 
-  const contents = readLockFile(deps.lockFile);
-  const holder = parseLock(contents);
-  if (holder !== undefined && deps.isProcessAlive(holder.pid)) return { outcome: 'held', holder };
+  return acquireExclusively(deps.lockFile, () => {
+    const holder = readLock(deps.lockFile);
+    if (holder !== undefined && deps.isProcessAlive(holder.pid)) return { outcome: 'held', holder };
 
-  removeStaleLock(deps.lockFile, contents);
-  if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved: holder };
-
-  const winner = readLock(deps.lockFile);
-  if (winner !== undefined) return { outcome: 'held', holder: winner };
-  throw new Error(`${ deps.lockFile } changed underneath this run twice — start the run again.`);
+    writeLock(deps.lockFile, lock);
+    return { outcome: 'acquired', staleLockRemoved: holder };
+  });
 }
 
 // Only the holder removes its own record: a run that lost the race must not release the winner's.

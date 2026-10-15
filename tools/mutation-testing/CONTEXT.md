@@ -73,7 +73,7 @@ These reuse Git plumbing, scope rules, and function classification from `../code
 ### `stryker/`
 
 - `./stryker/invoke.ts` — runs, limits, and stops Stryker without orphaned processes
-- `./stryker/lock.ts` — one run per checkout; `./run.sh` reads the same lock before compiling
+- `./stryker/lock.ts` — one run per checkout
 - `./stryker/streaming-reporter.mts` — preserves results from interrupted runs
 - `./stryker/stream.ts` — reads streamed results
 - `./stryker/results.ts` — selects complete or truncated results
