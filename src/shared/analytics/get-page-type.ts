@@ -88,6 +88,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/login': 'Login',
   '/sprite': 'Sprite',
   '/chakra': 'Chakra UI showcase',
+  '/test': 'Grid table test',
   '/api/metrics': 'Node API: Prometheus metrics',
   '/api/monitoring/invalid-api-schema': 'Node API: Prometheus metrics',
   '/api/log': 'Node API: Request log',

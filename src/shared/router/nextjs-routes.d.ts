@@ -86,6 +86,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/sprite">
     | StaticRoute<"/stats">
     | DynamicRoute<"/stats/[id]", { "id": string }>
+    | StaticRoute<"/test">
     | StaticRoute<"/token-transfers">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>
