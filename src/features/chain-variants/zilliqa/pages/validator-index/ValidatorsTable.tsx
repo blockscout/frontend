@@ -5,6 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -18,8 +19,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['ZilliqaStaker']): string => item.bls_public_key;
+
 const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <TableRoot minW="900px">
@@ -35,7 +39,7 @@ const ValidatorsTable = ({ data, isLoading, top, resetKey }: Props) => {
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <ValidatorsTableItem
-            key={ item.bls_public_key + (isLoading ? index : '') }
+            key={ keys[index] }
             data={ item }
             isLoading={ isLoading }/>
         )) }

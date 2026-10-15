@@ -6,6 +6,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -20,9 +21,12 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: Pick<schemas['TokenBalance'], 'token' | 'value'>): string => item.token?.address_hash ?? '';
+
 const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTypes, resetKey }: Props) => {
   const chainData = useMultichainContext()?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <TableRoot minW="900px">
@@ -38,7 +42,7 @@ const AddressFungibleTokensTable = ({ data, top, isLoading, hasAdditionalTokenTy
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <AddressFungibleTokensTableItem
-            key={ (item.token?.address_hash ?? '') + (isLoading ? index : '') }
+            key={ keys[index] }
             { ...item }
             chainData={ chainData }
             isLoading={ isLoading }

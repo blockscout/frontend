@@ -10,6 +10,7 @@ import { currencyUnits } from 'src/slices/chain/units';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -25,10 +26,13 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['InternalTransaction']): string => item.transaction_hash + '_' + item.index;
+
 const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo = true, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -51,7 +55,7 @@ const InternalTxsTable = ({ data, currentAddress, isLoading, top, showBlockInfo 
         <TableBody>
           { data.slice(0, renderedItemsNum).map((item, index) => (
             <InternalTxsTableItem
-              key={ item.transaction_hash + '_' + item.index + (isLoading ? index : '') }
+              key={ keys[index] }
               data={ item }
               currentAddress={ currentAddress }
               isLoading={ isLoading }

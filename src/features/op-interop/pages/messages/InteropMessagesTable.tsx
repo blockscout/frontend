@@ -5,6 +5,7 @@ import React from 'react';
 import type { InteropMessage } from 'src/features/op-interop/types/api';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
@@ -16,7 +17,11 @@ interface Props {
   isLoading?: boolean;
 }
 
+const getBaseKey = (item: InteropMessage): string => item.init_transaction_hash + '_' + item.nonce;
+
 const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
+  const keys = useUniqueKeys(items, getBaseKey);
+
   return (
     <TableRoot tableLayout="auto" minW="1200px">
       <TableHeaderSticky top={ top }>
@@ -38,7 +43,7 @@ const InteropMessagesTable = ({ items, top, isLoading }: Props) => {
       <TableBody>
         { items?.map((item, index) => (
           <InteropMessagesTableItem
-            key={ item.init_transaction_hash + '_' + item.nonce + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             isLoading={ isLoading }
           />

@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { ApiKeys, ApiKey } from 'src/features/account/types/api';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import ApiKeyTableItem from './ApiKeyTableItem';
@@ -16,7 +18,11 @@ interface Props {
   limit: number;
 }
 
+const getBaseKey = (item: ApiKey): string => item.api_key;
+
 const ApiKeyTable = ({ data, isLoading, onDeleteClick, onEditClick, limit }: Props) => {
+  const keys = useUniqueKeys(data, getBaseKey);
+
   return (
     <TableRoot minWidth="600px">
       <TableHeader>
@@ -28,7 +34,7 @@ const ApiKeyTable = ({ data, isLoading, onDeleteClick, onEditClick, limit }: Pro
       <TableBody>
         { data?.map((item, index) => (
           <ApiKeyTableItem
-            key={ item.api_key + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }

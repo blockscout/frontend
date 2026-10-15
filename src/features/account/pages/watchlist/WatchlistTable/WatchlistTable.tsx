@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { WatchlistAddress } from 'src/features/account/types/api';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import WatchlistTableItem from './WatchListTableItem';
@@ -17,7 +19,11 @@ interface Props {
   hasEmail: boolean;
 }
 
+const getBaseKey = (item: WatchlistAddress): string => item.address_hash;
+
 const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasEmail }: Props) => {
+  const keys = useUniqueKeys(data, getBaseKey);
+
   return (
     <TableRoot minWidth="800px">
       <TableHeaderSticky top={ top }>
@@ -31,7 +37,7 @@ const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top, hasE
       <TableBody>
         { data?.map((item, index) => (
           <WatchlistTableItem
-            key={ item.address_hash + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }
