@@ -30,12 +30,14 @@ const JSON_INPUT = JSON.stringify([
   { suspect: 'no-comments src/a.ts:41', fate: 'confirmed', finding: 'F1' },
 ]);
 
+const UNLABELLED = { rule: undefined, claim: undefined };
+
 const EXPECTED = {
   findings: [
-    { id: 'F1', axis: 'correctness', location: { kind: 'line', file: 'src/a.ts', line: 41 }, sources: [ 'correctness', 'jev' ] },
-    { id: 'F2', axis: 'standards', location: { kind: 'line', file: 'src/b.ts', line: 7 }, sources: [ 'standards' ] },
-    { id: 'F3', axis: 'spec', location: { kind: 'requirement', requirement: 'FR3' }, sources: [ 'jev' ] },
-    { id: 'F4', axis: 'spec', location: { kind: 'none' }, sources: [ 'spec' ] },
+    { id: 'F1', axis: 'correctness', location: { kind: 'line', file: 'src/a.ts', line: 41 }, sources: [ 'correctness', 'jev' ], ...UNLABELLED },
+    { id: 'F2', axis: 'standards', location: { kind: 'line', file: 'src/b.ts', line: 7 }, sources: [ 'standards' ], ...UNLABELLED },
+    { id: 'F3', axis: 'spec', location: { kind: 'requirement', requirement: 'FR3' }, sources: [ 'jev' ], ...UNLABELLED },
+    { id: 'F4', axis: 'spec', location: { kind: 'none' }, sources: [ 'spec' ], ...UNLABELLED },
   ],
   drops: [
     { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/c.ts', line: 12 }, reason: 'the comment explains a workaround' },
@@ -65,14 +67,32 @@ describe('parseOriginsInput', () => {
     ]);
     expect(parseOriginsInput(json)).toEqual({
       findings: [
-        { id: '7', axis: 'spec', location: { kind: 'requirement', requirement: 'FR1' }, sources: [ 'jev' ] },
-        { id: 'F2', axis: 'spec', location: { kind: 'requirement', requirement: 'FR2' }, sources: [] },
+        { id: '7', axis: 'spec', location: { kind: 'requirement', requirement: 'FR1' }, sources: [ 'jev' ], ...UNLABELLED },
+        { id: 'F2', axis: 'spec', location: { kind: 'requirement', requirement: 'FR2' }, sources: [], ...UNLABELLED },
       ],
       drops: [ { suspect: { kind: 'spec', requirement: 'FR5' }, reason: '' } ],
     });
 
     const markdown = '| id | axis | location | sources |\n| --- | --- | --- | --- |\n| F1 | spec | FR1 | — |\n| F2 | spec | FR2 | `, jev` |\n';
     expect(parseOriginsInput(markdown).findings.map((row) => row.sources)).toEqual([ [], [ 'jev' ] ]);
+  });
+
+  it('reads the rule label and the claim when the table carries them, a dash or an empty cell as none', () => {
+    const markdown = [
+      '| id | axis | rule | location | sources | claim |',
+      '| --- | --- | --- | --- | --- | --- |',
+      '| F1 | standards | `explanatory-comment` | src/a.ts:3 | standards | The comment restates the line below. |',
+      '| F2 | standards | — | src/b.ts:9 | standards | |',
+      '| F3 | correctness | | src/c.ts:1 | correctness | — |',
+    ].join('\n');
+    expect(parseOriginsInput(markdown).findings.map(({ rule, claim }) => ({ rule, claim }))).toEqual([
+      { rule: 'explanatory-comment', claim: 'The comment restates the line below.' },
+      { rule: undefined, claim: undefined },
+      { rule: undefined, claim: undefined },
+    ]);
+
+    const json = JSON.stringify([ { id: 'F1', axis: 'standards', location: 'src/a.ts:3', sources: [ 'standards' ], rule: 'magic-number', claim: 7 } ]);
+    expect(parseOriginsInput(json).findings[0]).toMatchObject({ rule: 'magic-number', claim: undefined });
   });
 
   it('rejects Markdown without a findings table, a JSON value that is not an array, and a row missing a column', () => {

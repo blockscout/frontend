@@ -5,7 +5,11 @@ import type { SidecarRecord } from '../sidecar';
 import type { SidecarFile } from './aggregate';
 import { addedSecondsOf, aggregateReport, inputTokensOf } from './aggregate';
 
-const RULE_IDS = [ 'explanatory-comment', 'magic-number' ];
+const RULES = {
+  ids: [ 'explanatory-comment', 'magic-number' ],
+  thresholdOf: (rule: string) => rule === 'magic-number' ? 0.6 : 0.7,
+  sweepThresholds: [ 0.5, 0.7 ],
+};
 
 function call(ms: number, inputTokens: number): SidecarRecord['calls'][number] {
   return { kind: 'noul', file: 'src/a.ts', window: 0, ms, usage: { input_tokens: inputTokens, output_tokens: 10 } };
@@ -29,7 +33,15 @@ function origins(
 ): OriginsRecord {
   return {
     recordedAt: '2026-09-28T12:00:00.000Z',
-    findings: findingOrigins.map((origin, index) => ({ id: `F${ index + 1 }`, axis: 'standards', sources: [ 'jev' ], origin })),
+    findings: findingOrigins.map((origin, index) => ({
+      id: `F${ index + 1 }`,
+      axis: 'standards',
+      sources: [ 'jev' ],
+      origin,
+      location: undefined,
+      rule: undefined,
+      claim: undefined,
+    })),
     suspects,
   };
 }
@@ -67,7 +79,7 @@ describe('aggregateReport', () => {
       sidecar('pending.json', { calls: [ call(9000, 100) ] }),
       sidecar('calibration-pending.json', { calibration: true }),
       sidecar('counted.json', { origins: origins([]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.pending).toEqual([ 'pending.json' ]);
     expect(report.totals).toEqual({
@@ -94,7 +106,7 @@ describe('aggregateReport', () => {
         standardsSuspect('legacy-rule', 'confirmed'),
         specSuspect('confirmed'),
       ]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.rules).toEqual([
       { rule: 'explanatory-comment', sent: 0, confirmed: 0, merged: 0, dropped: 0, topDropReason: undefined },
@@ -111,7 +123,7 @@ describe('aggregateReport', () => {
         standardsSuspect('magic-number', 'dropped', 'common'),
         standardsSuspect('magic-number', 'dropped', 'common'),
       ]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.rules[1].topDropReason).toBe('common');
   });
@@ -124,7 +136,7 @@ describe('aggregateReport', () => {
         standardsSuspect('magic-number', 'dropped', 'first'),
         standardsSuspect('magic-number', 'dropped', 'second'),
       ]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.rules[1].topDropReason).toBe('second');
   });
@@ -133,14 +145,14 @@ describe('aggregateReport', () => {
     const report = aggregateReport([
       sidecar('one.json', { origins: origins([], [ 'jev', 'both', 'axis' ]) }),
       sidecar('skipped.json', { status: 'skipped', reason: 'no key', origins: origins([], [ 'axis', 'axis' ]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.totals.reviews).toBe(2);
     expect(report.totals.findings).toEqual({ jev: 1, axis: 3, both: 1 });
   });
 
   it('reports zero seconds and tokens when no review is counted', () => {
-    const report = aggregateReport([ sidecar('pending.json', { calls: [ call(9000, 100) ] }) ], RULE_IDS);
+    const report = aggregateReport([ sidecar('pending.json', { calls: [ call(9000, 100) ] }) ], RULES);
 
     expect(report.totals).toEqual({
       reviews: 0,
@@ -156,10 +168,70 @@ describe('aggregateReport', () => {
       sidecar('one.json', { origins: origins([]), elapsedMs: 2000, calls: [ call(1500, 600), call(1500, 400) ] }),
       sidecar('two.json', { origins: origins([]), elapsedMs: 6000, calls: [ call(6000, 3000) ] }),
       sidecar('skipped.json', { status: 'skipped', reason: 'no key', origins: origins([]) }),
-    ], RULE_IDS);
+    ], RULES);
 
     expect(report.totals.addedSeconds).toEqual({ mean: (2 + 6 + 0) / 3, max: 6 });
     expect(report.totals.meanInputTokens).toBe((1000 + 3000 + 0) / 3);
+  });
+});
+
+function labelledFinding(id: string, file: string, claim: string | undefined): OriginsRecord['findings'][number] {
+  return { id, axis: 'standards', sources: [ 'standards' ], origin: 'axis', location: { kind: 'line', file, line: 5 }, rule: 'magic-number', claim };
+}
+
+describe('aggregateReport tuning rows', () => {
+  it('carries the per-rule near misses, the sweep at the given thresholds and the coverage totals', () => {
+    const report = aggregateReport([
+      sidecar('one.json', {
+        windows: [ { file: 'src/a.ts', window: 0, firstLine: 1, lastLine: 20 } ],
+        standards: { cells: [ { rule: 'magic-number', file: 'src/a.ts', window: 0, score: 0.55 } ], suspects: [], cut: 0 },
+        origins: {
+          recordedAt: '2026-09-28T12:00:00.000Z',
+          findings: [
+            labelledFinding('F1', 'src/a.ts', 'A bare 4.'),
+            labelledFinding('F2', 'src/b.ts', undefined),
+          ],
+          suspects: [],
+        },
+      }),
+    ], RULES);
+
+    expect(report.nearMisses).toEqual([
+      { rule: 'explanatory-comment', labelled: 0, noCell: 0, scores: undefined },
+      { rule: 'magic-number', labelled: 2, noCell: 1, scores: { min: 0.55, median: 0.55, max: 0.55 } },
+    ]);
+    expect(report.sweep).toEqual([
+      { rule: 'explanatory-comment', threshold: 0.7, at: [ { threshold: 0.5, hit: 0, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 0 } ] },
+      { rule: 'magic-number', threshold: 0.6, at: [ { threshold: 0.5, hit: 1, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 1 } ] },
+    ]);
+    expect(report.coverage).toEqual({ standardsFindings: 2, noCell: 1, outsideWindows: 0, unlocated: 0 });
+  });
+
+  it('reads only counted reviews into the tuning rows, never a calibration or pending one', () => {
+    const labelled: OriginsRecord = { recordedAt: '2026-09-28T12:00:00.000Z', findings: [ labelledFinding('F1', 'src/a.ts', undefined) ], suspects: [] };
+    const cells = [ { rule: 'magic-number', file: 'src/a.ts', window: 0, score: 0.9 } ];
+    const report = aggregateReport([
+      sidecar('calibration.json', { calibration: true, origins: labelled, standards: { cells, suspects: [], cut: 0 } }),
+      sidecar('pending.json', { standards: { cells, suspects: [], cut: 0 } }),
+    ], RULES);
+
+    expect(report.nearMisses[1]).toEqual({ rule: 'magic-number', labelled: 0, noCell: 0, scores: undefined });
+    expect(report.sweep[1].at).toEqual([ { threshold: 0.5, hit: 0, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 0 } ]);
+    expect(report.coverage).toEqual({ standardsFindings: 0, noCell: 0, outsideWindows: 0, unlocated: 0 });
+  });
+
+  it('keeps a skipped or failed review out of the tuning rows while still counting its findings', () => {
+    const labelled: OriginsRecord = { recordedAt: '2026-09-28T12:00:00.000Z', findings: [ labelledFinding('F1', 'src/a.ts', undefined) ], suspects: [] };
+    const partial = [ { rule: 'magic-number', file: 'src/a.ts', window: 0, score: 0.3 } ];
+    const report = aggregateReport([
+      sidecar('skipped.json', { status: 'skipped', reason: 'no key', origins: labelled }),
+      sidecar('failed.json', { status: 'failed', reason: 'api', origins: labelled, standards: { cells: partial, suspects: [], cut: 0 } }),
+    ], RULES);
+
+    expect(report.totals.findings).toEqual({ jev: 0, axis: 2, both: 0 });
+    expect(report.nearMisses[1]).toEqual({ rule: 'magic-number', labelled: 0, noCell: 0, scores: undefined });
+    expect(report.sweep[1].at).toEqual([ { threshold: 0.5, hit: 0, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 0 } ]);
+    expect(report.coverage).toEqual({ standardsFindings: 0, noCell: 0, outsideWindows: 0, unlocated: 0 });
   });
 });
 

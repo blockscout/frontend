@@ -14,6 +14,8 @@ export interface FindingRow {
   readonly axis: string;
   readonly location: FindingLocation;
   readonly sources: ReadonlyArray<string>;
+  readonly rule: string | undefined;
+  readonly claim: string | undefined;
 }
 
 export type SuspectRef =
@@ -79,12 +81,21 @@ function readString(row: Record<string, unknown>, key: string): string {
   return String(value);
 }
 
+function readOptional(row: Record<string, unknown>, key: string): string | undefined {
+  const value = row[key];
+  if (typeof value !== 'string') return undefined;
+  const text = unquote(value);
+  return text === '' || text === NO_LOCATION ? undefined : text;
+}
+
 function findingOf(row: Record<string, unknown>): FindingRow {
   return {
     id: readString(row, 'id').trim(),
     axis: unquote(readString(row, 'axis')),
     location: parseLocation(readString(row, 'location')),
     sources: parseSources(row.sources),
+    rule: readOptional(row, 'rule'),
+    claim: readOptional(row, 'claim'),
   };
 }
 

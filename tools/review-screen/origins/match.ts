@@ -1,7 +1,7 @@
 import type { SpecSuspect } from '../grid/spec';
 import type { Suspect } from '../grid/standards';
 import type { SidecarRecord, WindowSpan } from '../sidecar';
-import type { DropEntry, FindingRow, OriginsInput, SuspectRef } from './parse';
+import type { DropEntry, FindingLocation, FindingRow, OriginsInput, SuspectRef } from './parse';
 import { formatSuspectRef, JEV_SOURCE } from './parse';
 
 // Which side raised each published finding, and what became of each suspect the screen sent. The
@@ -14,6 +14,9 @@ export interface FindingOriginRecord {
   readonly axis: string;
   readonly sources: ReadonlyArray<string>;
   readonly origin: FindingOrigin;
+  readonly location: FindingLocation | undefined;
+  readonly rule: string | undefined;
+  readonly claim: string | undefined;
 }
 
 export type SuspectFate =
@@ -130,7 +133,15 @@ export function assignOrigins(record: SidecarRecord, input: OriginsInput, record
   });
   return {
     recordedAt,
-    findings: input.findings.map((finding) => ({ id: finding.id, axis: finding.axis, sources: finding.sources, origin: originOf(finding.sources) })),
+    findings: input.findings.map((finding) => ({
+      id: finding.id,
+      axis: finding.axis,
+      sources: finding.sources,
+      origin: originOf(finding.sources),
+      location: finding.location,
+      rule: finding.rule,
+      claim: finding.claim,
+    })),
     suspects: [ ...standards, ...spec ],
   };
 }
