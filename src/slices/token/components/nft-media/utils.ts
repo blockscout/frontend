@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { HTMLChakraProps } from '@chakra-ui/react';
+import { CID } from 'multiformats/cid';
 import type React from 'react';
 
 export type MediaType = 'image' | 'video' | 'html';
@@ -58,6 +59,15 @@ function buildIpfsUri(cid: string, path: string, search: string): string {
   return `ipfs://${ cid }${ path === '/' ? '' : path }${ search }`;
 }
 
+function isCid(value: string): boolean {
+  try {
+    CID.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 // verified-fetch accepts only native URIs, but NFT metadata often links to the content through an HTTP gateway.
 // IPNS names are left to the HTTP transport: resolving them needs delegated routing, which the CSP does not allow.
 export function getIpfsUri(url: string): string | undefined {
@@ -76,7 +86,7 @@ export function getIpfsUri(url: string): string | undefined {
   }
 
   const [ subdomainCid, subdomainNamespace, ...gatewayHost ] = hostname.split('.');
-  if (subdomainNamespace === 'ipfs' && gatewayHost.length > 0) {
+  if (subdomainNamespace === 'ipfs' && gatewayHost.length > 0 && isCid(subdomainCid)) {
     return buildIpfsUri(subdomainCid, pathname, search);
   }
 

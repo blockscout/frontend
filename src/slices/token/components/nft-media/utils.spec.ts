@@ -18,6 +18,7 @@ describe('getIpfsUri', () => {
     [ 'https://gateway.pinata.cloud/ipfs/' + CID + '/images/1.png?filename=1.png', 'ipfs://' + CID + '/images/1.png?filename=1.png' ],
     [ 'http://localhost:8080/ipfs/' + CID + '/1.png', 'ipfs://' + CID + '/1.png' ],
     [ 'https://ipfs.io/ipfs/ipfs/' + CID + '/1.png', 'ipfs://' + CID + '/1.png' ],
+    [ 'https://gateway.ipfs.io/ipfs/' + CID + '/1.png', 'ipfs://' + CID + '/1.png' ],
   ])('converts a path gateway URL: %s', (url, expected) => {
     expect(getIpfsUri(url)).toBe(expected);
   });
@@ -44,6 +45,7 @@ describe('getIpfsUri', () => {
     'https://ipfs.io/',
     'https://ipfs.io/ipfs/',
     'https://' + CID + '.ipfs/1.png',
+    'https://' + CID + '.example.com/1.png',
     'ftp://ipfs.io/ipfs/' + CID,
     'ar://some-arweave-id',
     'not a url ipfs',
