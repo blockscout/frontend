@@ -15,6 +15,10 @@ export const JSON_REPORT_FILE = strykerConfig.jsonReporter.fileName;
 export const HTML_REPORT_FILE = strykerConfig.htmlReporter.fileName;
 export const SANDBOX_DIR = strykerConfig.tempDirName;
 
+// Held for the whole of a run. The path is restated in .gitignore and in stryker.config.json's
+// ignorePatterns, neither of which can read it from here.
+export const LOCK_FILE = path.join(TOOL_DIR, '.lock');
+
 // Stryker's own json report is written only once a whole run finishes, so a run stopped at its
 // budget would leave nothing behind. ./stryker/streaming-reporter.mts appends a record here as each
 // mutant is tested, and ./stryker/stream.ts reads it back when the run did not finish.

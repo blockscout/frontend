@@ -15,6 +15,8 @@ import type { MutateTarget } from '../select/files';
 // read as escaping whatever follows it.
 const GLOB_METACHARACTERS = /([\\[\]{}()*?!+@])/g;
 
+const STREAMING_REPORTER_PLUGIN = path.join(__dirname, 'streaming-reporter.mjs');
+
 // A run stopped at its budget has no complete json report, only the stream the reporter plugin
 // appended to. `truncated` is what tells the report which of the two to read, and says so in print.
 export interface RunOutcome {
@@ -59,8 +61,13 @@ export function runStryker(targets: ReadonlyArray<MutateTarget>, budgetMs: numbe
   clearPreviousRun();
 
   // The config file is a positional argument to `stryker run`, not a flag. --mutate takes one
-  // comma-separated list; repeating the flag overwrites it rather than appending.
-  const args = [ 'run', STRYKER_CONFIG_FILE, '--mutate', formatMutateTargets(targets).join(',') ];
+  // comma-separated list; repeating the flag overwrites it rather than appending. The reporter plugin
+  // sits beside this module in the per-run compile directory, which only this process knows.
+  const args = [
+    'run', STRYKER_CONFIG_FILE,
+    '--mutate', formatMutateTargets(targets).join(','),
+    '--appendPlugins', STREAMING_REPORTER_PLUGIN,
+  ];
   const child = spawn(STRYKER_BIN, args, { stdio: 'inherit', detached: true });
 
   return new Promise<RunOutcome>((resolve, reject) => {
