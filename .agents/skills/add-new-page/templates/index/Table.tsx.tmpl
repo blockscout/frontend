@@ -4,6 +4,8 @@ import React from 'react';
 
 import __PageName__TableItem from 'src/__area__/__featureName__/pages/index/__PageName__TableItem';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 interface Props {
@@ -12,7 +14,12 @@ interface Props {
   isLoading?: boolean;
 }
 
+// TODO (api-data): key by the item's identifying fields
+const getBaseKey = (item: unknown): string => String(item);
+
 const __PageName__Table = ({ items, isLoading }: Props) => {
+  const keys = useUniqueKeys(items, getBaseKey);
+
   return (
     <TableRoot minWidth="950px">
       <TableHeaderSticky top={ 0 }>
@@ -25,7 +32,7 @@ const __PageName__Table = ({ items, isLoading }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { items.map((item, index) => (
-          <__PageName__TableItem key={ index } item={ item } isLoading={ isLoading }/>
+          <__PageName__TableItem key={ keys[index] } item={ item } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>

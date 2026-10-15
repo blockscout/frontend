@@ -6,6 +6,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -18,8 +19,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['SignedAuthorization']): string => item.nonce.toString();
+
 const TxAuthorizationsTable = ({ data, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -36,7 +40,7 @@ const TxAuthorizationsTable = ({ data, isLoading, resetKey }: Props) => {
         <TableBody>
           { data.slice(0, renderedItemsNum).map((item, index) => (
             <TxAuthorizationsTableItem
-              key={ item.nonce.toString() + (isLoading ? index : '') }
+              key={ keys[index] }
               data={ item }
               isLoading={ isLoading }
             />

@@ -11,6 +11,7 @@ import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useInitialList from 'src/shared/lists/useInitialList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -33,6 +34,8 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: CctxListItem): string => item.index;
+
 const ZetaChainCCTxsTable = ({
   txs,
   top,
@@ -52,6 +55,7 @@ const ZetaChainCCTxsTable = ({
     idFn: (item) => item.index,
     enabled: !isLoading,
   });
+  const keys = useUniqueKeys(txs, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -136,7 +140,7 @@ const ZetaChainCCTxsTable = ({
           ) }
           { txs.slice(0, renderedItemsNum).map((item, index) => (
             <ZetaChainCCTxsTableItem
-              key={ item.index + (isLoading ? index : '') }
+              key={ keys[index] }
               tx={ item }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }

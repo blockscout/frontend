@@ -6,6 +6,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TagSearchTableItem from './TagSearchTableItem';
@@ -16,7 +18,11 @@ interface Props {
   isLoading?: boolean;
 }
 
+const getBaseKey = (item: schemas['TopAddress']): string => item.hash;
+
 const TagSearchTable = ({ items, top, isLoading }: Props) => {
+  const keys = useUniqueKeys(items, getBaseKey);
+
   return (
     <TableRoot minW="500px">
       <TableHeaderSticky top={ top }>
@@ -29,7 +35,7 @@ const TagSearchTable = ({ items, top, isLoading }: Props) => {
       <TableBody>
         { items.map((item, index) => (
           <TagSearchTableItem
-            key={ item.hash + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             isLoading={ isLoading }
           />

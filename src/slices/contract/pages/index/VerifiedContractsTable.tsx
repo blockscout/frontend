@@ -13,6 +13,7 @@ import { SORT_SEQUENCE } from 'src/slices/contract/pages/index/sort';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
@@ -28,10 +29,13 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['SmartContractListItem']): string => item.address?.hash ?? '';
+
 const VerifiedContractsTable = ({ data, sort, setSorting, isLoading, resetKey }: Props) => {
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   const onSortToggle = React.useCallback((field: VerifiedContractsSortingField) => {
     const value = getNextSortValue<VerifiedContractsSortingField, VerifiedContractsSortingValue>(SORT_SEQUENCE, field)(sort);
@@ -76,7 +80,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading, resetKey }:
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <VerifiedContractsTableItem
-            key={ `${ item.address?.hash ?? '' }${ isLoading ? index : '' }` }
+            key={ keys[index] }
             data={ item }
             isLoading={ isLoading }
             chainData={ chainData }

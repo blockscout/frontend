@@ -8,6 +8,7 @@ import type { StatsChainRow } from '@blockscout/interchain-indexer-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
@@ -24,8 +25,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: StatsChainRow): string => String(item.id);
+
 const IcttUsersTable = ({ data, isLoading, sort, setSorting, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   const onSortToggle = React.useCallback((field: CrossChainChainsStatsSortingField) => {
     const value = getNextSortValue<CrossChainChainsStatsSortingField, CrossChainChainsStatsSortingValue>(ICTT_USERS_SORT_SEQUENCE, field)(sort);
@@ -52,7 +56,7 @@ const IcttUsersTable = ({ data, isLoading, sort, setSorting, resetKey }: Props) 
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <IcttUsersTableItem
-            key={ String(item.id) + (isLoading ? index : '') }
+            key={ keys[index] }
             data={ item }
             isLoading={ isLoading }
           />

@@ -12,12 +12,12 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import { TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
-import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersTableItem from './TokenTransfersTableItem';
 
 interface Props {
@@ -51,6 +51,13 @@ const TokenTransfersTable = ({
   const chainData = multichainContext?.chain;
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
+  const getBaseKey = React.useCallback((item: schemas['TokenTransfer']) => {
+    const tokenId = item.total && 'token_id' in item.total ? item.total.token_id : null;
+
+    return [ item.transaction_hash, item.block_hash, item.log_index, tokenId, chainData?.id ].join('_');
+  }, [ chainData?.id ]);
+  const keys = useUniqueKeys(items, getBaseKey);
 
   const visibleColumns = React.useMemo(
     // Stryker disable next-line ConditionalExpression: every column id is in TOKEN_TRANSFER_COLUMNS, so find always hits; the filter narrows away undefined
@@ -86,7 +93,7 @@ const TokenTransfersTable = ({
             ) }
             { items?.slice(0, renderedItemsNum).map((item, index) => (
               <TokenTransfersTableItem
-                key={ getTokenTransferKey(item) + (isLoading ? index : '') + (chainData ? chainData.id : '') }
+                key={ keys[index] }
                 item={ item }
                 columns={ visibleColumns }
                 chainData={ chainData }

@@ -8,6 +8,7 @@ import type { TokensSortingField, TokensSortingValue } from 'src/slices/token/ty
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import { default as getNextSortValueShared } from 'src/shared/sort/get-next-sort-value';
 
@@ -24,8 +25,16 @@ const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue>> = {
 
 const getNextSortValue = (getNextSortValueShared<TokensSortingField, TokensSortingValue>).bind(undefined, SORT_SEQUENCE);
 
+type Item = schemas['Token'] | AggregatedTokenInfo;
+
+const getBaseKey = (item: Item): string => {
+  const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
+
+  return item.address_hash + (chainIds ? chainIds : '');
+};
+
 type Props = {
-  items: Array<schemas['Token']> | Array<AggregatedTokenInfo>;
+  items: Array<Item>;
   page: number;
   sorting?: TokensSortingValue;
   setSorting?: OnValueChangeHandler;
@@ -38,6 +47,7 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top, resetKe
 
   const hasSorting = setSorting && sorting;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   const sort = React.useCallback((field: TokensSortingField) => {
     if (!hasSorting) {
@@ -100,19 +110,15 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting, top, resetKe
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { items.slice(0, renderedItemsNum).map((item, index) => {
-          const chainIds = 'chain_infos' in item ? Object.keys(item.chain_infos).join(',') : undefined;
-
-          return (
-            <TokensTableItem
-              key={ item.address_hash + (isLoading ? index : '') + (chainIds ? chainIds : '') }
-              token={ item }
-              index={ index }
-              page={ page }
-              isLoading={ isLoading }
-            />
-          );
-        }) }
+        { items.slice(0, renderedItemsNum).map((item, index) => (
+          <TokensTableItem
+            key={ keys[index] }
+            token={ item }
+            index={ index }
+            page={ page }
+            isLoading={ isLoading }
+          />
+        )) }
         <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>

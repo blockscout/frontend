@@ -9,6 +9,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableColumnHeaderSortable, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -24,8 +25,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: bens.Domain): string => item.id;
+
 const NameDomainsTable = ({ items, isLoading, sort, onSortToggle, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -52,7 +56,7 @@ const NameDomainsTable = ({ items, isLoading, sort, onSortToggle, resetKey }: Pr
         </TableHeaderSticky>
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
-            <NameDomainsTableItem key={ item.id + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+            <NameDomainsTableItem key={ keys[index] } { ...item } isLoading={ isLoading }/>
           )) }
           <TableRow ref={ cutRef }/>
         </TableBody>
