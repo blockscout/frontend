@@ -5,17 +5,19 @@ import * as d3 from 'd3';
 import React from 'react';
 
 import { useColorModeValue } from '../../../../chakra/color-mode';
+import { DEFAULT_TICKS_NUM_X } from '../utils/lineChartAxis';
 
 export interface LineChartAxisProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   type: 'left' | 'bottom';
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   noAnimation?: boolean;
-  ticks: number;
+  ticks?: number;
+  tickValues?: Array<Date>;
   tickFormatGenerator?: (axis: d3.Axis<d3.NumberValue>) => (domainValue: d3.AxisDomain, index: number) => string;
   anchorEl?: SVGRectElement | null;
 }
 
-export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: LineChartAxisProps) => {
+export const LineChartAxis = React.memo(({ type, scale, ticks, tickValues, tickFormatGenerator, noAnimation, anchorEl, ...props }: LineChartAxisProps) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColor = useToken('colors', useColorModeValue('blackAlpha.600', 'whiteAlpha.500'));
@@ -26,7 +28,7 @@ export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerat
     }
 
     const axisGenerator = type === 'left' ? d3.axisLeft : d3.axisBottom;
-    const axis = axisGenerator(scale).ticks(ticks);
+    const axis = tickValues ? axisGenerator(scale).tickValues(tickValues) : axisGenerator(scale).ticks(ticks ?? DEFAULT_TICKS_NUM_X);
 
     if (tickFormatGenerator) {
       axis.tickFormat(tickFormatGenerator(axis));
@@ -45,7 +47,7 @@ export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerat
       .attr('opacity', 1)
       .attr('color', textColor)
       .style('font-size', '12px');
-  }, [ scale, ticks, tickFormatGenerator, noAnimation, type, textColor ]);
+  }, [ scale, ticks, tickValues, tickFormatGenerator, noAnimation, type, textColor ]);
 
   React.useEffect(() => {
     if (!anchorEl) {

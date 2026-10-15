@@ -3,14 +3,17 @@
 import * as d3 from 'd3';
 import { maxBy, uniq } from 'es-toolkit';
 
+import { ChartResolution } from '../../types';
 import type { LineChartAxesConfig, LineChartAxisConfig, LineChartData } from '../types';
 
-import { DAY, MONTH, YEAR } from '../../../../utils/consts';
+import { DAY, YEAR } from '../../../../utils/consts';
 
 export const DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS = 2;
 export const DEFAULT_MAXIMUM_FRACTION_DIGITS = 3;
 export const MAXIMUM_SIGNIFICANT_DIGITS_LIMIT = 8;
 export const DEFAULT_LABEL_LENGTH = 5;
+export const DEFAULT_TICKS_NUM_X = 4;
+const MIN_MONTH_GAP = 28 * DAY;
 
 export interface LabelFormatParams extends Intl.NumberFormatOptions {
   maxLabelLength: number;
@@ -18,13 +21,15 @@ export interface LabelFormatParams extends Intl.NumberFormatOptions {
 
 type Data = LineChartData;
 
-export function getAxesParams(data: Data, axesConfig?: LineChartAxesConfig) {
+export function getAxesParams(data: Data, axesConfig?: LineChartAxesConfig, resolution?: ChartResolution) {
   const { labelFormatParams: labelFormatParamsY, scale: yScale } = getAxisParamsY(data, axesConfig?.y, axesConfig?.y?.tickFormatter);
+  const { scale: xScale, tickValues: xTickValues } = getAxisParamsX(data, axesConfig?.x, resolution);
 
   return {
     x: {
-      scale: getAxisParamsX(data).scale,
-      tickFormatter: axesConfig?.x?.tickFormatter ?? tickFormatterX,
+      scale: xScale,
+      tickValues: xTickValues,
+      tickFormatter: axesConfig?.x?.tickFormatter ?? getTickFormatterX(xTickValues, resolution),
     },
     y: {
       scale: yScale,
@@ -34,32 +39,64 @@ export function getAxesParams(data: Data, axesConfig?: LineChartAxesConfig) {
   };
 }
 
-function getAxisParamsX(data: Data) {
+function getAxisParamsX(data: Data, config?: LineChartAxisConfig, resolution?: ChartResolution) {
   const min = d3.min(data, ({ items }) => d3.min(items, ({ date }) => date)) ?? new Date();
   const max = d3.max(data, ({ items }) => d3.max(items, ({ date }) => date)) ?? new Date();
   const scale = d3.scaleUtc().domain([ min, max ]);
+  const tickValues = getTickValuesX(data, scale, config?.ticks ?? DEFAULT_TICKS_NUM_X, resolution);
 
-  return { min, max, scale };
+  return { min, max, scale, tickValues };
 }
 
-const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => {
-  let format: (date: Date) => string;
-  const scale = axis.scale();
-  const extent = scale.domain();
-
-  const span = Number(extent[1]) - Number(extent[0]);
-
-  if (span > 2 * YEAR) {
-    format = d3.utcFormat('%Y');
-  } else if (span > 4 * MONTH) {
-    format = d3.utcFormat('%b \'%y');
-  } else if (span > 2 * DAY) {
-    format = d3.utcFormat('%d %b');
-  } else {
-    format = d3.utcFormat('%H:%M');
+export function getTickValuesX(
+  data: Data,
+  scale: d3.ScaleTime<number, number>,
+  maxTicks: number,
+  resolution?: ChartResolution,
+): Array<Date> {
+  if (resolution) {
+    const dataPoints = uniq(data.flatMap(({ items }) => items.map(({ date }) => date.getTime()))).sort((a, b) => a - b);
+    if (dataPoints.length <= maxTicks) {
+      return dataPoints.map((time) => new Date(time));
+    }
   }
 
-  return format(d as Date);
+  return scale.ticks(maxTicks);
+}
+
+export function getTickFormatX(ticks: Array<Date>, resolution?: ChartResolution): (date: Date) => string {
+  const gaps = ticks.slice(1).map((tick, index) => tick.getTime() - ticks[index].getTime());
+  const gap = d3.min(gaps);
+
+  if (gap === undefined) {
+    return getTickFormatXByResolution(resolution);
+  }
+
+  if (gap >= YEAR) {
+    return d3.utcFormat('%Y');
+  } else if (gap >= MIN_MONTH_GAP) {
+    return d3.utcFormat('%b \'%y');
+  } else if (gap >= DAY) {
+    return d3.utcFormat('%d %b');
+  }
+
+  return d3.utcFormat('%H:%M');
+}
+
+function getTickFormatXByResolution(resolution?: ChartResolution): (date: Date) => string {
+  switch (resolution) {
+    case ChartResolution.YEAR:
+      return d3.utcFormat('%Y');
+    case ChartResolution.MONTH:
+      return d3.utcFormat('%b \'%y');
+    default:
+      return d3.utcFormat('%d %b');
+  }
+}
+
+const getTickFormatterX = (ticks: Array<Date>, resolution?: ChartResolution) => () => {
+  const format = getTickFormatX(ticks, resolution);
+  return (d: d3.AxisDomain) => format(d as Date);
 };
 
 function getAxisParamsY(data: Data, config?: LineChartAxisConfig, tickFormatter?: () => (d: d3.AxisDomain) => string) {
