@@ -27,10 +27,16 @@ const toDay = (date: Date) => date.toISOString().slice(0, 10);
 const octoberDays = Array.from({ length: 30 }, (_, i) => `2025-10-${ String(i + 1).padStart(2, '0') }`);
 
 describe('getTickValuesX', () => {
-  it('puts a tick on every data point when the data is sparser than the tick limit', () => {
+  it('puts a tick on every data point when the data fits within the tick limit', () => {
     const data = makeData([ '2025-07-31', '2025-08-31', '2025-09-30', '2025-10-31' ]);
-    const ticks = getTickValuesX(data, makeScale(data), 8, ChartResolution.MONTH);
+    const ticks = getTickValuesX(data, makeScale(data), 4, ChartResolution.MONTH);
     expect(ticks.map(toDay)).toEqual([ '2025-07-31', '2025-08-31', '2025-09-30', '2025-10-31' ]);
+  });
+
+  it('orders data-point ticks chronologically across charts', () => {
+    const data = [ ...makeData([ '2025-09-30' ]), ...makeData([ '2025-07-31', '2025-08-31' ]) ];
+    const ticks = getTickValuesX(data, makeScale(data), 4, ChartResolution.MONTH);
+    expect(ticks.map(toDay)).toEqual([ '2025-07-31', '2025-08-31', '2025-09-30' ]);
   });
 
   it('falls back to calendar ticks when the data is denser than the tick limit', () => {
@@ -68,6 +74,10 @@ describe('getTickFormatX', () => {
 
   it('labels month-end ticks with month and year', () => {
     expect(labels([ '2025-01-31', '2025-02-28', '2025-03-31' ])).toEqual([ 'Jan \'25', 'Feb \'25', 'Mar \'25' ]);
+  });
+
+  it('labels daily ticks with day and month', () => {
+    expect(labels([ '2025-10-05', '2025-10-06' ])).toEqual([ '05 Oct', '06 Oct' ]);
   });
 
   it('labels weekly ticks with day and month', () => {
