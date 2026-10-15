@@ -12,6 +12,7 @@ A gate on **assertion strength**. It changes a line of code, reruns the specs, a
 | Why only five mutator classes? Why no score threshold? | `./docs/SCOPE.md` |
 | May I suppress a mutant? | `./docs/SUPPRESSING.md` |
 | Why is a run slow or truncated? | `./docs/RUNNING.md` |
+| Why did my run refuse to start? | `./docs/RUNNING.md` |
 | Where does CI run it, and why in its own job? | `./docs/RUNNING.md` |
 | Why does Stryker need repository-level setup? | `./docs/RUNNING.md` |
 | Which file implements each part? | the file map below |
@@ -72,6 +73,7 @@ These reuse Git plumbing, scope rules, and function classification from `../code
 ### `stryker/`
 
 - `./stryker/invoke.ts` — runs, limits, and stops Stryker without orphaned processes
+- `./stryker/lock.ts` — one run per checkout; `./run.sh` reads the same lock before compiling
 - `./stryker/streaming-reporter.mts` — preserves results from interrupted runs
 - `./stryker/stream.ts` — reads streamed results
 - `./stryker/results.ts` — selects complete or truncated results

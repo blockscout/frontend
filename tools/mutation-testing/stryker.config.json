@@ -59,6 +59,7 @@
     "**/dist",
     "tools/mutation-testing/.stryker-tmp",
     "tools/mutation-testing/reports",
+    "tools/mutation-testing/.lock",
     "**/*.pw.tsx"
   ]
 }

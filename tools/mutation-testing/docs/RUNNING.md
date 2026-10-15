@@ -30,6 +30,12 @@ Reports and Stryker's per-run sandbox live in this gitignored folder. A complete
 
 The key failure mode is mistaking a stale report for a fresh one. That is why each run clears previous output before starting, not after finishing.
 
+## One run per checkout
+
+The report files and the sandbox are shared, so a second run started in the same checkout would wipe the first's output mid-write and leave both reading each other's results. A run therefore holds a lock file in this folder for its whole duration, and a second run refuses to start — exit 1, naming the holder's pid, start time and selection. It does not wait. Parallel runs belong in separate worktrees, each with its own checkout.
+
+A run killed outright leaves its lock behind; the next run finds the pid dead, says so, and takes over. CI never meets the lock: one job is one checkout.
+
 ## In CI
 
 `.github/workflows/checks.yml` → the `mutation_tests` job, diff-scoped against `origin/main`, runs only on pull requests. Two details:

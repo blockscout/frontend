@@ -13,6 +13,7 @@ import type { MutateTarget, Selection } from './select/files';
 import { selectFiles } from './select/files';
 import type { RunOutcome } from './stryker/invoke';
 import { runStryker } from './stryker/invoke';
+import { acquireLock, formatHeldMessage, formatStaleMessage, releaseLock } from './stryker/lock';
 import type { Findings } from './stryker/report';
 import { buildFileScores, collectFindings, isFailingRun } from './stryker/report';
 import type { RunResults } from './stryker/results';
@@ -103,6 +104,20 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
   return options;
 }
 
+function describeSelection(options: CliOptions): string {
+  if (options.focusPaths.length > 0) return options.focusPaths.join(', ');
+  if (options.diffSelected) return `--changed vs ${ options.baseRef }`;
+  return 'every eligible file';
+}
+
+// Taken only once there is something to run: an empty selection never touches the shared output, so
+// it has nothing to protect and must not refuse because of a run that does.
+function lockCheckout(options: CliOptions): void {
+  const attempt = acquireLock(describeSelection(options));
+  if (attempt.outcome === 'held') throw new Error(formatHeldMessage(attempt.holder));
+  if (attempt.staleLockRemoved !== undefined) console.error(formatStaleMessage(attempt.staleLockRemoved));
+}
+
 function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>): void {
   for (const file of selection.ineligible) {
     console.error(`› skipped ${ file }: no co-located vitest spec`);
@@ -161,8 +176,14 @@ async function main(): Promise<void> {
     return;
   }
 
+  lockCheckout(options);
   reportSelection(selection);
-  const results = readResults(await runGrouped(selection.targets, options.budgetMs));
+  let results: RunResults;
+  try {
+    results = readResults(await runGrouped(selection.targets, options.budgetMs));
+  } finally {
+    releaseLock();
+  }
   const findings = collectFindings(results.report);
 
   const report = formatReport(results, findings, options.budgetMs);

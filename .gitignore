@@ -74,6 +74,7 @@ npm-debug.log*
 /tools/mutation-testing/dist/
 /tools/mutation-testing/reports/
 /tools/mutation-testing/.stryker-tmp/
+/tools/mutation-testing/.lock
 
 # compiled Playwright runner
 /tools/playwright/dist/
