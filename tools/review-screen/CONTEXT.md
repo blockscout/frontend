@@ -25,7 +25,6 @@ and decides. The task spec behind the pilot:
 | After a review: how does a suspect get its fate, a finding its origin? | `./origins/match.ts` (`--origins`) |
 | What does `--findings` accept? | `pnpm review:screen --help`; the two readers in `./origins/parse.ts` |
 | After the pilot: what is the keep-or-kill table made of? | `./report/aggregate.ts` (`--report`), printed by `./report/render.ts` |
-| Is a rule's low hit rate its threshold, its question or its glob? | `./report/tuning.ts` — the near-miss, sweep and coverage rows of `--report` |
 | How is it wired into the review? | `.agents/skills/review-changes/axes.md`, the `jev` axis brief |
 
 ## What an editor here must keep true
@@ -60,8 +59,8 @@ and decides. The task spec behind the pilot:
   with reason `not reported`. Keep it that way: the subagent that runs it forwards the table and nothing
   else, so any judgement added here would be a judgement made without the code in front of it.
 - **A finding's rule label is the reviewer's, never derived here.** `--origins` stores the `rule`
-  column verbatim and a `—` stays `—`; a label guessed from the claim's wording would make the near-miss
-  and sweep rows measure the guess instead of Jev.
+  column as given, and a `—` or an empty cell is stored as no label; a label guessed from the claim's
+  wording would make the near-miss and sweep rows measure the guess instead of Jev.
 - **The tuning rows score a finding's file by the same max-over-windows cell the threshold sees.**
   Switching to the window containing the line would make the near-miss spread explain a decision the
   screen never made.
@@ -73,8 +72,11 @@ and decides. The task spec behind the pilot:
 - **`--report` counts a review only once `--origins` has run on it.** Without fates every suspect in
   a sidecar would read as dropped and drag the rule's precision down, so such a sidecar is listed as
   *pending origins* and counts nowhere — not in the rule rows, not in the timings. A `skipped` or
-  `failed` review with an `origins` block does count: its findings are all `axis`, its added time is
-  zero, which is the honest number for a review the screen contributed nothing to.
+  `failed` review with an `origins` block counts in the rule rows and the timings: its findings are all
+  `axis`, its added time is zero, which is the honest number for a review the screen contributed nothing
+  to. It stays out of the tuning rows, which read only `ok` sidecars: a skipped run has no cells, so
+  every labelled finding would read as a glob miss, and a failed run keeps a partial grid whose max
+  would read as a miss where a later window was never scored.
 - **`--report` computes nothing a review would need.** It is an offline read of the sidecars, run by
   the developer when deciding keep or kill; no review step calls it, and the `jev` brief never
   mentions it.

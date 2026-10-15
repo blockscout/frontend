@@ -86,7 +86,6 @@ describe('nearMissRows', () => {
 
 describe('sweepRows', () => {
   it('splits every best cell of the rule into hit, noise or missed at each threshold', () => {
-    // src/a.ts 0.65 labelled, src/b.ts 0.8 unlabelled, src/c.ts 0.45 labelled; src/z.ts has no cell and counts nowhere.
     const records = [ withFindings([ labelled('F1', 'src/a.ts', 5), labelled('F2', 'src/c.ts', 1), labelled('F3', 'src/z.ts', 1) ]) ];
     const thresholdOf = (rule: string): number => rule === RULE ? 0.6 : 0.7;
     expect(sweepRows(records, [ RULE, OTHER_RULE ], [ 0.4, 0.5, 0.7 ], thresholdOf)).toEqual([

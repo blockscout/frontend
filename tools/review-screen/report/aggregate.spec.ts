@@ -219,6 +219,20 @@ describe('aggregateReport tuning rows', () => {
     expect(report.sweep[1].at).toEqual([ { threshold: 0.5, hit: 0, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 0 } ]);
     expect(report.coverage).toEqual({ standardsFindings: 0, noCell: 0, outsideWindows: 0, unlocated: 0 });
   });
+
+  it('keeps a skipped or failed review out of the tuning rows while still counting its findings', () => {
+    const labelled: OriginsRecord = { recordedAt: '2026-09-28T12:00:00.000Z', findings: [ labelledFinding('F1', 'src/a.ts', undefined) ], suspects: [] };
+    const partial = [ { rule: 'magic-number', file: 'src/a.ts', window: 0, score: 0.3 } ];
+    const report = aggregateReport([
+      sidecar('skipped.json', { status: 'skipped', reason: 'no key', origins: labelled }),
+      sidecar('failed.json', { status: 'failed', reason: 'api', origins: labelled, standards: { cells: partial, suspects: [], cut: 0 } }),
+    ], RULES);
+
+    expect(report.totals.findings).toEqual({ jev: 0, axis: 2, both: 0 });
+    expect(report.nearMisses[1]).toEqual({ rule: 'magic-number', labelled: 0, noCell: 0, scores: undefined });
+    expect(report.sweep[1].at).toEqual([ { threshold: 0.5, hit: 0, noise: 0, missed: 0 }, { threshold: 0.7, hit: 0, noise: 0, missed: 0 } ]);
+    expect(report.coverage).toEqual({ standardsFindings: 0, noCell: 0, outsideWindows: 0, unlocated: 0 });
+  });
 });
 
 describe('per-review sums', () => {

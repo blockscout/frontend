@@ -149,7 +149,8 @@ to `blocker` because that axis is all it can see.
 - **One defect, one label.** The same defect seen through two axes is one finding: pick the sharper label
   and drop the other. Never report it twice. Keep a `sources` list per surviving finding so the merge keeps a record of who saw it; a `jev` finding's label is the
   grid its brief named, `standards` or `spec`. Keep the `rule` line too — the standards and `jev` axes
-  label each finding with a rubric rule id or `—`; when the two merge, keep the one that is not `—`.
+  label each finding with a rubric rule id or `—`; when the two merge, keep the one that is not `—`,
+  the standards axis's when both have one, and `—` when neither does.
 - **Another reviewer's finding stays theirs.** A defect already raised under a different tag gets a
   concurrence on their thread, not a second id under yours.
 - **Anchor check.** For every surviving finding, open its `file:line`. Confirm the quoted code is actually
@@ -177,10 +178,7 @@ indistinguishable from a review that never ran.
 
 **Then record the origins**, whenever the `jev` axis returned a sidecar path. Spawn one fresh
 `general-purpose` subagent with the `## Jev axis` brief in [`axes.md`](axes.md), the sidecar path, the
-final table in the shape its Origins section gives — `| id | axis | rule | location | sources | claim |`,
-where `rule` is the finding's rubric label or `—`, a requirement finding with no line writes its `FR<n>` as
-the location, and `claim` is the first sentence of the claim with any `|` removed — and the `jev` axis's
-drop table verbatim. It returns the tool's JSON: an origin per finding, a fate per suspect.
+final table in the shape its Origins section gives, and the `jev` axis's drop table verbatim. It returns the tool's JSON: an origin per finding, a fate per suspect.
 
 Then close **in the terminal** with where the review was published — the review's `html_url` from the POST
 response, or the review file's path — counts per severity, counts per axis (an axis that came back empty is

@@ -10,7 +10,6 @@ export const STANDARDS_THRESHOLD_OVERRIDES: Readonly<Record<string, number>> = {
   // files 0.40–0.82, and the only two cells above 0.5 without a finding were tests.
   'explanatory-comment': 0.5,
 };
-// The thresholds `--report` sweeps when asking whether a rule's hit rate is a threshold problem.
 export const SWEEP_THRESHOLDS: ReadonlyArray<number> = [ 0.4, 0.5, 0.6, 0.7 ];
 // The spec grid asks "does this file address the requirement", so a requirement is a suspect when
 // its best score stays *below* this.

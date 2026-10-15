@@ -58,6 +58,12 @@ function isCounted(sidecar: SidecarFile): sidecar is Counted {
   return sidecar.record.origins !== undefined;
 }
 
+// A skipped run has no cells and a failed one a partial grid (the pool stops at the first error, and the
+// sidecar does not say which grid failed), so either would read as glob misses or missed cells.
+function isFullyScored(record: CountedRecord): boolean {
+  return record.status === 'ok';
+}
+
 function rowKey(entry: SuspectFateRecord): string {
   return entry.suspect.kind === 'spec' ? SPEC_ROW : entry.suspect.rule;
 }
@@ -142,12 +148,12 @@ export function aggregateReport(sidecars: ReadonlyArray<SidecarFile>, rules: Rep
   const pilot = sidecars.filter((sidecar) => !sidecar.record.calibration);
   const counted = pilot.filter(isCounted);
   const pending = pilot.filter((sidecar) => !isCounted(sidecar)).map((sidecar) => sidecar.file);
-  const records = counted.map((sidecar) => sidecar.record);
+  const scored = counted.map((sidecar) => sidecar.record).filter(isFullyScored);
   return {
     rules: ruleRows(counted, rules.ids),
-    nearMisses: nearMissRows(records, rules.ids),
-    sweep: sweepRows(records, rules.ids, rules.sweepThresholds, rules.thresholdOf),
-    coverage: coverageTotals(records),
+    nearMisses: nearMissRows(scored, rules.ids),
+    sweep: sweepRows(scored, rules.ids, rules.sweepThresholds, rules.thresholdOf),
+    coverage: coverageTotals(scored),
     totals: totals(counted, pending.length),
     pending,
   };

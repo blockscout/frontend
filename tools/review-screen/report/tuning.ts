@@ -4,11 +4,6 @@ import type { FindingOriginRecord } from '../origins/match';
 import type { FindingLocation } from '../origins/parse';
 import type { SidecarRecord } from '../sidecar';
 
-// The rows that say, per rubric rule, whether a low hit rate is the threshold, the question or the glob:
-// the reviewer's labelled findings against the cell Jev scored on their file, the same cells swept over
-// several thresholds, and the findings the screen had no cell for at all. All of it is read from the
-// kept cells and the labelled findings; nothing is re-scored.
-
 export interface ScoreSpread {
   readonly min: number;
   readonly median: number;
@@ -17,21 +12,15 @@ export interface ScoreSpread {
 
 export interface NearMissRow {
   readonly rule: string;
-  // Reviewer findings labelled with this rule.
   readonly labelled: number;
-  // Of those, the ones whose file the rule had no cell for — the glob never matched it.
   readonly noCell: number;
-  // Spread of the rule's cell on the labelled findings' files, over the findings that had one.
   readonly scores: ScoreSpread | undefined;
 }
 
 export interface SweepCount {
   readonly threshold: number;
-  // Cells at or over the threshold on a file with a labelled finding for the rule.
   readonly hit: number;
-  // Cells at or over the threshold with no labelled finding on the file.
   readonly noise: number;
-  // Cells under the threshold on a file with a labelled finding for the rule.
   readonly missed: number;
 }
 
@@ -43,9 +32,7 @@ export interface SweepRow {
 
 export interface CoverageTotals {
   readonly standardsFindings: number;
-  // Findings in a file the screen scored no cell for, under any rule.
   readonly noCell: number;
-  // Findings in a scored file, but on a line no window contains.
   readonly outsideWindows: number;
   // Findings recorded before `--origins` kept the location; they count in none of the above.
   readonly unlocated: number;
