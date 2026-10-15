@@ -22,7 +22,21 @@ export const TabsTrigger = React.forwardRef<HTMLButtonElement, TabsTriggerProps>
   },
 );
 
-export const TabsContent = ChakraTabs.Content;
+export interface TabsContentProps extends ChakraTabs.ContentProps {}
+
+export const TabsContent = React.forwardRef<HTMLDivElement, TabsContentProps>(
+  function TabsContent({ children, ...rest }, ref) {
+    // A panel that suspends on mount must not suspend an outer boundary: hiding the tabs disconnects
+    // their state machines, and the previous panel then never hides.
+    return (
+      <ChakraTabs.Content ref={ ref } { ...rest }>
+        <React.Suspense fallback={ null }>
+          { children }
+        </React.Suspense>
+      </ChakraTabs.Content>
+    );
+  },
+);
 
 export interface TabsCounterProps {
   count?: number | null;
