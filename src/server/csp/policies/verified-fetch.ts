@@ -2,6 +2,8 @@
 
 import type CspDev from 'csp-dev';
 
+import { VERIFIED_FETCH_GATEWAYS } from 'src/slices/token/utils/verified-fetch';
+
 import config from 'src/config';
 
 import { KEY_WORDS } from '../utils';
@@ -12,10 +14,7 @@ export function verifiedFetch(): CspDev.DirectiveDescriptor {
   }
 
   return {
-    'connect-src': [
-      'https://delegated-ipfs.dev',
-      'https://trustless-gateway.link',
-    ],
+    'connect-src': VERIFIED_FETCH_GATEWAYS,
     'img-src': [
       KEY_WORDS.BLOB,
     ],

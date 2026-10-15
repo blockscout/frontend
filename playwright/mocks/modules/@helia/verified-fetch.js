@@ -1,1 +1,1 @@
-export const verifiedFetch = () => Promise.resolve(new Response());
+export const createVerifiedFetchWithHelia = () => Promise.resolve(() => Promise.resolve(new Response()));

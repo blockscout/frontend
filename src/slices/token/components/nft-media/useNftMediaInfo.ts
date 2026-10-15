@@ -10,7 +10,7 @@ import type { schemas } from '@blockscout/api-types';
 import config from 'src/config';
 
 import type { MediaType, Size, TransportType } from './utils';
-import { getPreliminaryMediaType } from './utils';
+import { getIpfsUri, getPreliminaryMediaType } from './utils';
 
 interface Params {
   data: schemas['TokenInstance'] | schemas['TokenInstanceInTokenInstancesList'];
@@ -177,12 +177,13 @@ function getIpfsData(url: unknown, mediaType: MediaType): MediaInfo | undefined 
     return;
   }
 
-  if (!url.includes('ipfs')) {
+  const ipfsUri = getIpfsUri(url);
+  if (!ipfsUri) {
     return;
   }
 
   return {
-    src: url,
+    src: ipfsUri,
     mediaType,
     transport: 'ipfs',
   };

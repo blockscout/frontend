@@ -34,6 +34,8 @@
     "ignoreRegExpList": [
         // Ignore filecoin f410f-like native addresses
         "f410f[a-z2-7]{39}",
+        // IPFS CIDv1 in base32
+        "b[a-z2-7]{58}",
         // Specify publisher key
         "spk_\\w+",
         // Posthog project key
@@ -68,6 +70,7 @@
         "appkit",
         "Applebot",
         "Arianee",
+        "arweave",
         "ARTIS",
         "astar",
         "asymp",
@@ -120,6 +123,7 @@
         "DRPC",
         "DTEND",
         "duckduckgo",
+        "dweb",
         "dynamicwaas",
         "eamodio",
         "Eigenda",
@@ -159,6 +163,7 @@
         "inpage",
         "internaltx",
         "ipfs",
+        "ipns",
         "iszero",
         "jazzicon",
         "jfif",
