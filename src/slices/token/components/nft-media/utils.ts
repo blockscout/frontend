@@ -51,6 +51,40 @@ export function getPreliminaryMediaType(url: string): MediaType | undefined {
   }
 }
 
+const NATIVE_IPFS_URI_REGEX = /^ipfs:\/\/(?:ipfs\/)?(.+)$/;
+
+function buildIpfsUri(cid: string, path: string, search: string): string {
+  return `ipfs://${ cid }${ path === '/' ? '' : path }${ search }`;
+}
+
+// verified-fetch accepts only native URIs, but NFT metadata often links to the content through an HTTP gateway.
+// IPNS names are left to the HTTP transport: resolving them needs delegated routing, which the CSP does not allow.
+export function getIpfsUri(url: string): string | undefined {
+  const nativeMatch = url.match(NATIVE_IPFS_URI_REGEX);
+  if (nativeMatch) {
+    return `ipfs://${ nativeMatch[1] }`;
+  }
+
+  if (!URL.canParse(url)) {
+    return;
+  }
+
+  const { protocol, hostname, pathname, search } = new URL(url);
+  if (protocol !== 'https:' && protocol !== 'http:') {
+    return;
+  }
+
+  const [ , pathNamespace, pathCid, ...pathRest ] = pathname.split('/');
+  if (pathNamespace === 'ipfs' && pathCid) {
+    return buildIpfsUri(pathCid, pathRest.length > 0 ? `/${ pathRest.join('/') }` : '', search);
+  }
+
+  const [ subdomainCid, subdomainNamespace, ...gatewayHost ] = hostname.split('.');
+  if (subdomainNamespace === 'ipfs' && gatewayHost.length > 0) {
+    return buildIpfsUri(subdomainCid, pathname, search);
+  }
+}
+
 export const mediaStyleProps = {
   transitionProperty: 'transform',
   transitionDuration: 'normal',

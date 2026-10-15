@@ -143,8 +143,10 @@ const config: PlaywrightTestConfig = defineConfig({
           // Fix for @libp2p/utils missing merge-options export
           { find: '@libp2p/utils/merge-options', replacement: 'merge-options' },
 
-          // Mock for @helia/verified-fetch to avoid build issues in tests
+          // Mocks for the Helia packages to avoid build issues in tests
           { find: '@helia/verified-fetch', replacement: './playwright/mocks/modules/@helia/verified-fetch.js' },
+          { find: /^@helia\/http$/, replacement: './playwright/mocks/modules/@helia/http.js' },
+          { find: /^helia$/, replacement: './playwright/mocks/modules/helia.js' },
 
           // Mock for @specify-sh/sdk to avoid build issues in tests
           { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
