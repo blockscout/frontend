@@ -18,6 +18,7 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import { TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
+import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersTableItem from './TokenTransfersTableItem';
 
 interface Props {
@@ -52,11 +53,7 @@ const TokenTransfersTable = ({
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
-  const getBaseKey = React.useCallback((item: schemas['TokenTransfer']) => {
-    const tokenId = item.total && 'token_id' in item.total ? item.total.token_id : null;
-
-    return [ item.transaction_hash, item.block_hash, item.log_index, tokenId, chainData?.id ].join('_');
-  }, [ chainData?.id ]);
+  const getBaseKey = React.useCallback((item: schemas['TokenTransfer']) => getTokenTransferKey(item, chainData?.id), [ chainData?.id ]);
   const keys = useUniqueKeys(items, getBaseKey);
 
   const visibleColumns = React.useMemo(

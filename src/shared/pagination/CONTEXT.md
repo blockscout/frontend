@@ -53,8 +53,8 @@ pushed by `src/features/multichain/hooks/useChainValue.ts`, and only lists that 
 - **A caller must not keep its own copy of a filter or sort value.** The tab switch strips list params
   from the URL to reset the list; a local copy survives the switch and the next push re-applies the stale
   value. Read `filters` / `sorting` from the hook and call its handlers.
-- **Row keys use the index only while the stub renders.** A key that mixes in the loading flag for real
-  data remounts every row on a page transition, which is what the dimmed state exists to avoid.
+- **Row keys follow `src/shared/lists/CONTEXT.md`.** A key that mixes in the loading flag for real data
+  remounts every row on a page transition, which is what the dimmed state exists to avoid.
 - **`queryHash` is the reset key for the lazy-render window.** It changes on page, filter, sort and chain
   changes and stays put on a socket prepend into page 1 — the two cases the window must and must not reset
   on. Do not key the window on `data`.
