@@ -4,9 +4,9 @@ import type { UseAccountReturnType } from 'wagmi';
 
 import type { Params, Result } from '../hooks/wallet/types';
 
-export interface DynamicHooks {
-  useWallet: (params: Params) => Result;
-  useAccount: () => UseAccountReturnType;
+interface DynamicHooks {
+  readonly useWallet: (params: Params) => Result;
+  readonly useAccount: () => UseAccountReturnType;
 }
 
 // The @dynamic-labs hooks must not be imported statically from the synchronous `useWallet` / `useAccount`
@@ -15,7 +15,7 @@ export interface DynamicHooks {
 // renders they resolve synchronously and nothing suspends after first paint.
 let hooks: DynamicHooks | undefined;
 
-export function registerDynamicHooks(value: DynamicHooks) {
+export function registerDynamicHooks(value: DynamicHooks): void {
   hooks = value;
 }
 
