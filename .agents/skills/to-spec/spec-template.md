@@ -32,8 +32,8 @@ staging-only) and the backend release version that ships the changes (for releas
 ## UI inventory
 
 <!-- Affected pages/tabs/components: routes, navigation entry points, cross-links to existing entity
-pages. One Figma node link per screen. State behavioral facts and placement; leave appearance to the
-mockups and the [human] style leaves. When you must lean on existing code, point to it by component or
+pages. One Figma node link per screen and state. State behavioral facts and placement; leave appearance
+to the mockups and the style leaves. When you must lean on existing code, point to it by component or
 symbol name ("match `LogDecodedInputDataTable`") — never transcribe its values, class names, or line
 numbers; those rot and the code owns them. Capture only a deliberate deviation and its reason. See "What
 the spec holds" in `.agents/tasks/concepts.md`. -->

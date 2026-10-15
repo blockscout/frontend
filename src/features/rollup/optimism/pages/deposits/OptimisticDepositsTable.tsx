@@ -9,6 +9,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -22,8 +23,11 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['OptimismDeposit']): string => item.l2_transaction_hash;
+
 const OptimisticDepositsTable = ({ items, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -43,7 +47,7 @@ const OptimisticDepositsTable = ({ items, top, isLoading, resetKey }: Props) => 
         </TableHeaderSticky>
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
-            <OptimisticDepositsTableItem key={ item.l2_transaction_hash + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+            <OptimisticDepositsTableItem key={ keys[index] } item={ item } isLoading={ isLoading }/>
           )) }
           <TableRow ref={ cutRef }/>
         </TableBody>

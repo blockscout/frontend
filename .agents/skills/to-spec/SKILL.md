@@ -20,13 +20,14 @@ every task gets a spec — see "Not every task needs a spec" in
 ## Step 1 — Write the spec and questions
 
 Derive the task folder from the issue: `.agents/tasks/<issue-number>-<slug>/` (layout in
-[`../../tasks/structure.md`](../../tasks/structure.md)). Write two files:
+[`../../tasks/structure.md`](../../tasks/structure.md)). Write files:
 
 - **`spec.md`** from [`spec-template.md`](spec-template.md).
 - **`questions.md`** from [`questions-template.md`](questions-template.md).
 
+
 Keep the spec an **index of decisions**, not a worklog — what to build and why, pointing at detail (its
-Slack thread, the code, the PR) rather than copying it. **Show the user the two files and get their
+Slack thread, the code, the PR) rather than copying it. **Show the user the files and get their
 confirmation of the content — this is the run's one gate.**
 
 ## Step 2 — Branch and draft PR

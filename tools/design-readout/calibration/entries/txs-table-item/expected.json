@@ -1,0 +1,121 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=21998-143467",
+  "nodeId": "I21998:143467;20539:206951",
+  "component": "src/slices/tx/pages/index/list/TxsTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "I21998:143467;20539:206953": {
+      "component": "TxAdditionalInfo",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "I21998:143467;20539:206955": {
+      "component": "TxEntity",
+      "props": {
+        "fontWeight": "bold",
+        "noIcon": true,
+        "truncation": "constant"
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I21998:143467;26785:88063;13460:162892": {
+      "component": "TimeWithTooltip",
+      "props": {
+        "color": "text.secondary"
+      },
+      "shape": "relative-timestamp",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I21998:143467;20539:206966;1015:22864": {
+      "component": "TxType",
+      "props": {},
+      "status": "unrecognized"
+    },
+    "I21998:143467;26785:88079;1003:19143": {
+      "component": "TxStatus",
+      "props": {},
+      "status": "unrecognized"
+    },
+    "I21998:143467;26785:88079;1003:19144": {
+      "component": "TxStatus",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.success"
+      }
+    },
+    "I21998:143467;20539:206977;1003:19153": {
+      "component": "Badge",
+      "props": {
+        "colorPalette": "gray",
+        "truncated": true
+      },
+      "status": "unrecognized"
+    },
+    "I21998:143467;20539:206981": {
+      "component": "BlockEntity",
+      "props": {
+        "noIcon": true,
+        "textStyle": "sm",
+        "fontWeight": 500
+      },
+      "shape": "number",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I21998:143467;20539:206992": {
+      "component": "AddressFromTo",
+      "props": {
+        "mode": "compact"
+      },
+      "status": "unrecognized"
+    },
+    "I21998:143467;20539:206993": {
+      "component": "AddressFromTo",
+      "props": {
+        "mode": "compact"
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I21998:143467;20539:206999": {
+      "component": "AddressFromTo",
+      "props": {
+        "mode": "compact"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I21998:143467;20539:207001": {
+      "component": "NativeCoinValue",
+      "props": {
+        "noSymbol": true,
+        "layout": "vertical",
+        "rowGap": 3
+      },
+      "shape": "amount"
+    },
+    "I21998:143467;20539:207002": {
+      "component": "TxFee",
+      "props": {
+        "accuracy": 8,
+        "layout": "vertical",
+        "rowGap": 3
+      },
+      "shape": "amount"
+    }
+  }
+}

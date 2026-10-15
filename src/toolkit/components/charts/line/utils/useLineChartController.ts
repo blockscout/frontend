@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import type { ChartMargin } from '../../types';
+import type { ChartMargin, ChartResolution } from '../../types';
 import type { LineChartAxesConfig, LineChartData } from '../types';
 
 import { useClientRect } from '../../../../hooks/useClientRect';
@@ -13,15 +13,16 @@ interface Props {
   data: LineChartData;
   margin?: ChartMargin;
   axesConfig?: LineChartAxesConfig;
+  resolution?: ChartResolution;
 }
 
-export function useLineChartController({ data, margin, axesConfig }: Props) {
+export function useLineChartController({ data, margin, axesConfig, resolution }: Props) {
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
 
   // we need to recalculate the axis scale whenever the rect width changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const axesParams = React.useMemo(() => getAxesParams(data, axesConfig), [ data, axesConfig, rect?.width ]);
+  const axesParams = React.useMemo(() => getAxesParams(data, axesConfig, resolution), [ data, axesConfig, resolution, rect?.width ]);
 
   const chartMargin = React.useMemo(() => {
     const PIXELS_PER_DIGIT = 8;
@@ -53,6 +54,7 @@ export function useLineChartController({ data, margin, axesConfig }: Props) {
       axes: {
         x: {
           tickFormatter: axesParams.x.tickFormatter,
+          tickValues: axesParams.x.tickValues,
           scale: xScale,
         },
         y: {
@@ -61,5 +63,5 @@ export function useLineChartController({ data, margin, axesConfig }: Props) {
         },
       },
     };
-  }, [ axesParams.x.tickFormatter, axesParams.y.tickFormatter, chartMargin, innerHeight, innerWidth, rect, ref, xScale, yScale ]);
+  }, [ axesParams.x.tickFormatter, axesParams.x.tickValues, axesParams.y.tickFormatter, chartMargin, innerHeight, innerWidth, rect, ref, xScale, yScale ]);
 }

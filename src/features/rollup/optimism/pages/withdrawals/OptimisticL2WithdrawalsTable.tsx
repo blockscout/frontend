@@ -9,6 +9,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -22,8 +23,11 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['OptimismWithdrawal']): string => String(item.msg_nonce_version) + item.msg_nonce;
+
 const OptimisticL2WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -45,7 +49,7 @@ const OptimisticL2WithdrawalsTable = ({ items, top, isLoading, resetKey }: Props
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
             <OptimisticL2WithdrawalsTableItem
-              key={ String(item.msg_nonce_version) + item.msg_nonce + (isLoading ? index : '') }
+              key={ keys[index] }
               item={ item }
               isLoading={ isLoading }
             />

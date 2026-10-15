@@ -4,6 +4,7 @@ import path from 'path';
 
 import { TypeSafeClient, TypeSafeError } from '@typesafe-ai/sdk';
 
+import { resolveMainCheckout } from '../cli/checkout';
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
 import {
@@ -29,7 +30,7 @@ import { buildWindows, readHunks } from './select/hunks';
 import type { SpecSource } from './select/spec';
 import { readSpec } from './select/spec';
 import type { RunStatus, SidecarRecord, SpecRecord } from './sidecar';
-import { readSidecar, resolveMainCheckout, sidecarFileName, windowSpans, writeSidecar } from './sidecar';
+import { readSidecar, sidecarFileName, windowSpans, writeSidecar } from './sidecar';
 
 // The screen never fails a review: a missing key or an API error still exits 0, with the status and
 // reason in the JSON, and every run writes its sidecar. Only invalid arguments or a bug in the tool

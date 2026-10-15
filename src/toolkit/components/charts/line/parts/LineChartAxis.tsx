@@ -6,16 +6,28 @@ import React from 'react';
 
 import { useColorModeValue } from '../../../../chakra/color-mode';
 
-export interface LineChartAxisProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
-  type: 'left' | 'bottom';
+interface LineChartAxisBaseProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   noAnimation?: boolean;
-  ticks: number;
   tickFormatGenerator?: (axis: d3.Axis<d3.NumberValue>) => (domainValue: d3.AxisDomain, index: number) => string;
   anchorEl?: SVGRectElement | null;
 }
 
-export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerator, noAnimation, anchorEl, ...props }: LineChartAxisProps) => {
+interface LineChartAxisLeftProps extends LineChartAxisBaseProps {
+  type: 'left';
+  ticks: number;
+  tickValues?: never;
+}
+
+interface LineChartAxisBottomProps extends LineChartAxisBaseProps {
+  type: 'bottom';
+  ticks?: never;
+  tickValues: Array<Date>;
+}
+
+export type LineChartAxisProps = LineChartAxisLeftProps | LineChartAxisBottomProps;
+
+export const LineChartAxis = React.memo(({ type, scale, ticks, tickValues, tickFormatGenerator, noAnimation, anchorEl, ...props }: LineChartAxisProps) => {
   const ref = React.useRef<SVGGElement>(null);
 
   const textColor = useToken('colors', useColorModeValue('blackAlpha.600', 'whiteAlpha.500'));
@@ -25,8 +37,7 @@ export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerat
       return;
     }
 
-    const axisGenerator = type === 'left' ? d3.axisLeft : d3.axisBottom;
-    const axis = axisGenerator(scale).ticks(ticks);
+    const axis = type === 'bottom' ? d3.axisBottom(scale).tickValues(tickValues) : d3.axisLeft(scale).ticks(ticks);
 
     if (tickFormatGenerator) {
       axis.tickFormat(tickFormatGenerator(axis));
@@ -45,7 +56,7 @@ export const LineChartAxis = React.memo(({ type, scale, ticks, tickFormatGenerat
       .attr('opacity', 1)
       .attr('color', textColor)
       .style('font-size', '12px');
-  }, [ scale, ticks, tickFormatGenerator, noAnimation, type, textColor ]);
+  }, [ scale, ticks, tickValues, tickFormatGenerator, noAnimation, type, textColor ]);
 
   React.useEffect(() => {
     if (!anchorEl) {

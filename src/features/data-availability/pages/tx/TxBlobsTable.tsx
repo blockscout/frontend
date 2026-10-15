@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TxBlobsTableItem from './TxBlobsTableItem';
@@ -13,7 +15,10 @@ interface Props {
   isLoading?: boolean;
 }
 
+const getBaseKey = (item: schemas['BlobResponse']): string => item.hash;
+
 const TxBlobsTable = ({ data, isLoading }: Props) => {
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <TableRoot minW="600px">
@@ -26,7 +31,7 @@ const TxBlobsTable = ({ data, isLoading }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { data.map((item, index) => (
-          <TxBlobsTableItem key={ item.hash + (isLoading ? index : '') } data={ item } isLoading={ isLoading }/>
+          <TxBlobsTableItem key={ keys[index] } data={ item } isLoading={ isLoading }/>
         )) }
       </TableBody>
     </TableRoot>

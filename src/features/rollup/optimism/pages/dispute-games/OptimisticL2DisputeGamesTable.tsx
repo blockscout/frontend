@@ -7,6 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -21,8 +22,11 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['OptimismGame']): string => String(item.index);
+
 const OptimisticL2DisputeGamesTable = ({ items, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <TableRoot tableLayout="auto" minW="950px">
@@ -54,7 +58,7 @@ const OptimisticL2DisputeGamesTable = ({ items, top, isLoading, resetKey }: Prop
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <OptimisticL2DisputeGamesTableItem
-            key={ String(item.index) + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             isLoading={ isLoading }
           />

@@ -1,0 +1,101 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=25201-111693",
+  "nodeId": "I25201:111693;24311:103865;24311:87534",
+  "component": "src/features/user-ops/pages/index/UserOpsTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "I25201:111693;24311:103865;24311:87538": {
+      "component": "UserOpEntity",
+      "props": {
+        "noIcon": true,
+        "fontWeight": 700,
+        "truncation": "constant_long",
+        "noCopy": true
+      },
+      "shape": "truncated-hash",
+      "status": "ambiguous",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I25201:111693;24311:103865;26785:88405;13460:162892": {
+      "component": "TimeWithTooltip",
+      "props": {
+        "color": "text.secondary"
+      },
+      "shape": "relative-timestamp",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I25201:111693;24311:103865;24311:87555;1003:19144": {
+      "component": "UserOpStatus",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.success"
+      }
+    },
+    "I25201:111693;24311:103865;24311:87610": {
+      "component": "AddressStringOrParam",
+      "props": {
+        "truncation": "constant"
+      },
+      "status": "unrecognized",
+      "color": {
+        "icon": "icon.primary"
+      }
+    },
+    "I25201:111693;24311:103865;24311:87614": {
+      "component": "AddressStringOrParam",
+      "props": {
+        "truncation": "constant"
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I25201:111693;24311:103865;24311:87615": {
+      "component": "AddressStringOrParam",
+      "props": {
+        "truncation": "constant"
+      },
+      "icon": "copy"
+    },
+    "I25201:111693;24311:103865;24311:87568": {
+      "component": "TxEntity",
+      "props": {
+        "truncation": "constant",
+        "noIcon": true
+      },
+      "shape": "truncated-hash",
+      "status": "ambiguous",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I25201:111693;24311:103865;24311:88484": {
+      "component": "BlockEntity",
+      "props": {
+        "textStyle": "sm",
+        "noIcon": true
+      },
+      "shape": "number",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I25201:111693;24311:103865;24311:87660": {
+      "component": "NativeCoinValue",
+      "props": {
+        "layout": "vertical",
+        "noSymbol": true
+      },
+      "shape": "amount",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

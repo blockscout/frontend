@@ -6,6 +6,7 @@ import type * as contractsInfo from '@blockscout/contracts-info-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -20,8 +21,11 @@ interface Props {
   resetKey?: string;
 };
 
+const getBaseKey = (item: contractsInfo.Pool): string => item.pool_id;
+
 const PoolsTable = ({ items, page, isLoading, top, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <TableRoot minWidth="700px">
@@ -35,7 +39,7 @@ const PoolsTable = ({ items, page, isLoading, top, resetKey }: Props) => {
       </TableHeaderSticky>
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
-          <PoolsTableItem key={ item.pool_id + (isLoading ? index : '') } item={ item } index={ index } page={ page } isLoading={ isLoading }/>
+          <PoolsTableItem key={ keys[index] } item={ item } index={ index } page={ page } isLoading={ isLoading }/>
         )) }
         <TableRow ref={ cutRef }/>
       </TableBody>

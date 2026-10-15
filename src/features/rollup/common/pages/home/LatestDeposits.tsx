@@ -13,6 +13,7 @@ import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -125,8 +126,12 @@ const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   );
 };
 
+const getBaseKey = (item: DepositsItem): string => (item.l1TxHash ?? '') + (item.l2TxHash ?? '');
+
 const LatestDeposits = ({ isLoading, items, showSocketErrorAlert, socketItemsNum }: Props) => {
   const depositsUrl = route({ pathname: '/deposits' });
+  const keys = useUniqueKeys(items, getBaseKey);
+
   return (
     <>
       <Box mb={{ base: 3, lg: 4 }} textStyle="sm">
@@ -144,7 +149,7 @@ const LatestDeposits = ({ isLoading, items, showSocketErrorAlert, socketItemsNum
             <TableBody>
               { items.map(((item, index) => (
                 <LatestDepositsItem
-                  key={ (item.l1TxHash ?? '') + (item.l2TxHash ?? '') + (isLoading ? index : '') }
+                  key={ keys[index] }
                   item={ item }
                   isLoading={ isLoading }
                 />

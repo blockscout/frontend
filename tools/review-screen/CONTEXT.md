@@ -120,5 +120,6 @@ and decides. The task spec behind the pilot:
 - `./report/aggregate.ts` — the pilot table's numbers: per-rule fates, finding origins, added seconds
   and tokens per review, the calibration and pending filters
 - `./report/render.ts` — the table as text, and as JSON under `--json`
-- `./sidecar.ts` — main-checkout resolution, file naming, the record shape, reading one back
+- `./sidecar.ts` — file naming, the record shape, reading one back; the main-checkout resolution it
+  uses is shared with the sibling tools in `../cli/checkout.ts`
 - `./run.sh`, `./tsconfig.json` — compile-on-run wrapper; the compiled output is git-ignored

@@ -1,4 +1,3 @@
-import { execFileSync } from 'child_process';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -6,7 +5,7 @@ import path from 'path';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import type { SidecarRecord } from './sidecar';
-import { readSidecar, resolveMainCheckout, sidecarFileName, writeSidecar } from './sidecar';
+import { readSidecar, sidecarFileName, writeSidecar } from './sidecar';
 
 let tmp = '';
 
@@ -14,10 +13,6 @@ afterEach(() => {
   if (tmp) fs.rmSync(tmp, { recursive: true, force: true });
   tmp = '';
 });
-
-function git(cwd: string, ...args: Array<string>): void {
-  execFileSync('git', [ '-c', 'user.email=t@t.t', '-c', 'user.name=t', ...args ], { cwd, stdio: 'ignore' });
-}
 
 const DATE = new Date('2026-09-28T23:30:00Z');
 
@@ -29,23 +24,6 @@ describe('sidecarFileName', () => {
 
   it('flattens path separators in a branch name', () => {
     expect(sidecarFileName({ date: DATE, branch: 'tom/fix thing', scope: 'branch', ticket: undefined })).toBe('2026-09-28-tom-fix-thing-branch.json');
-  });
-});
-
-describe('resolveMainCheckout', () => {
-  it('is the main checkout from both the main checkout and one of its worktrees', () => {
-    tmp = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'review-screen-sidecar-')));
-    const main = path.join(tmp, 'main');
-    fs.mkdirSync(main);
-    git(main, 'init', '-b', 'main');
-    fs.writeFileSync(path.join(main, 'a.txt'), 'a\n');
-    git(main, 'add', '.');
-    git(main, 'commit', '-m', 'a');
-    const worktree = path.join(tmp, 'wt');
-    git(main, 'worktree', 'add', '-b', 'feature', worktree);
-
-    expect(resolveMainCheckout(main)).toBe(main);
-    expect(resolveMainCheckout(worktree)).toBe(main);
   });
 });
 

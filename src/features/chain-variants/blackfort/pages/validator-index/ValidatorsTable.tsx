@@ -10,6 +10,7 @@ import type {
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
@@ -27,8 +28,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: ValidatorBlackfort): string => item.address.hash;
+
 const ValidatorsTable = ({ data, sort, setSorting, isLoading, top, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   const onSortToggle = React.useCallback((field: ValidatorsBlackfortSortingField) => {
     const value = getNextSortValue<ValidatorsBlackfortSortingField, ValidatorsBlackfortSortingValue>(VALIDATORS_BLACKFORT_SORT_SEQUENCE, field)(sort);
@@ -56,7 +60,7 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading, top, resetKey }: P
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <ValidatorsTableItem
-            key={ item.address.hash + (isLoading ? index : '') }
+            key={ keys[index] }
             data={ item }
             isLoading={ isLoading }/>
         )) }

@@ -12,6 +12,7 @@ import { AddressHighlightProvider } from 'src/slices/address/contexts/address-hi
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -52,6 +53,9 @@ const TokenTransfersTable = ({
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
+  const getBaseKey = React.useCallback((item: schemas['TokenTransfer']) => getTokenTransferKey(item, chainData?.id), [ chainData?.id ]);
+  const keys = useUniqueKeys(items, getBaseKey);
+
   const visibleColumns = React.useMemo(
     // Stryker disable next-line ConditionalExpression: every column id is in TOKEN_TRANSFER_COLUMNS, so find always hits; the filter narrows away undefined
     () => columns.map((id) => TOKEN_TRANSFER_COLUMNS.find((column) => column.id === id)).filter((column) => column !== undefined),
@@ -86,7 +90,7 @@ const TokenTransfersTable = ({
             ) }
             { items?.slice(0, renderedItemsNum).map((item, index) => (
               <TokenTransfersTableItem
-                key={ getTokenTransferKey(item) + (isLoading ? index : '') + (chainData ? chainData.id : '') }
+                key={ keys[index] }
                 item={ item }
                 columns={ visibleColumns }
                 chainData={ chainData }

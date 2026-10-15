@@ -10,6 +10,7 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -23,8 +24,11 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['ScrollBridge']): string => String(item.id);
+
 const ScrollL2DepositsTable = ({ items, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -44,7 +48,7 @@ const ScrollL2DepositsTable = ({ items, top, isLoading, resetKey }: Props) => {
         </TableHeaderSticky>
         <TableBody>
           { items.slice(0, renderedItemsNum).map((item, index) => (
-            <ScrollL2DepositsTableItem key={ String(item.id) + (isLoading ? index : '') } item={ item } isLoading={ isLoading }/>
+            <ScrollL2DepositsTableItem key={ keys[index] } item={ item } isLoading={ isLoading }/>
           )) }
           <TableRow ref={ cutRef }/>
         </TableBody>

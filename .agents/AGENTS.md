@@ -54,11 +54,13 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
 - `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
+- `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.
 - `src/shared/pagination/` — the paginated-list components and utils.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
 - `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
+- `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/doc-links/` — the doc-link checker.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.

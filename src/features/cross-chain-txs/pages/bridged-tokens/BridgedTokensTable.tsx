@@ -7,6 +7,7 @@ import type { ChainInfo, StatsBridgedTokenRow } from '@blockscout/interchain-ind
 import { BridgedTokensSort } from '@blockscout/interchain-indexer-types';
 
 import config from 'src/config';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
@@ -26,9 +27,12 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: StatsBridgedTokenRow): string => item.stats_asset_id;
+
 const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chainsData, resetKey }: Props) => {
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   const onSortToggle = React.useCallback((field: CrossChainBridgedTokensSortingField) => {
     const value = getNextSortValue<CrossChainBridgedTokensSortingField, CrossChainBridgedTokensSortingValue>(BRIDGED_TOKENS_SORT_SEQUENCE, field)(sort);
@@ -80,7 +84,7 @@ const BridgedTokensTable = ({ data, isLoading, sort, setSorting, page, top, chai
 
           return (
             <BridgedTokensTableItem
-              key={ item.stats_asset_id + (isLoading ? index : '') }
+              key={ keys[index] }
               data={ item }
               tokenInfo={ tokenInfo }
               chainInfo={ chainInfo }

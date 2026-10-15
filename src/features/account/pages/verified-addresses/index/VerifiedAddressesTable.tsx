@@ -5,6 +5,8 @@ import React from 'react';
 import type * as adminRs from '@blockscout/admin-rs-types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+
 import { TableBody, TableColumnHeader, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import VerifiedAddressesTableItem from './VerifiedAddressesTableItem';
@@ -17,7 +19,11 @@ interface Props {
   isLoading: boolean;
 }
 
+const getBaseKey = (item: contractsInfo.VerifiedAddress): string => item.contractAddress;
+
 const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isLoading }: Props) => {
+  const keys = useUniqueKeys(data, getBaseKey);
+
   return (
     <TableRoot minW="800px">
       <TableHeader>
@@ -32,7 +38,7 @@ const VerifiedAddressesTable = ({ data, applications, onItemEdit, onItemAdd, isL
       <TableBody>
         { data.map((item, index) => (
           <VerifiedAddressesTableItem
-            key={ item.contractAddress + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             application={ applications?.find(({ tokenAddress }) => tokenAddress.toLowerCase() === item.contractAddress.toLowerCase()) }
             onAdd={ onItemAdd }

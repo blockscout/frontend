@@ -9,6 +9,7 @@ import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 
@@ -26,6 +27,8 @@ interface Props {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['HotContract']): string => item.contract_address.hash;
+
 const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
@@ -33,6 +36,8 @@ const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate, r
     const value = getNextSortValue<HotContractsSortingField, HotContractsSortingValue>(SORT_SEQUENCE, field)(sort);
     setSorting({ value: [ value ] });
   }, [ sort, setSorting ]);
+
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <TableRoot minWidth="900px">
@@ -65,7 +70,7 @@ const HotContractsTable = ({ items, isLoading, sort, setSorting, exchangeRate, r
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <HotContractsTableItem
-            key={ item.contract_address.hash + (isLoading ? index : '') }
+            key={ keys[index] }
             isLoading={ isLoading }
             data={ item }
             exchangeRate={ exchangeRate }

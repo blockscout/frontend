@@ -7,6 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -23,8 +24,11 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['TopAddress']): string => item.hash;
+
 const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
     <TableRoot minW="900px">
@@ -40,7 +44,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, re
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <AddressesTableItem
-            key={ item.hash + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             totalSupply={ totalSupply }
             index={ pageStartIndex + index }
