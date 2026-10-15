@@ -158,7 +158,7 @@ describe('--origins', () => {
     expect(second.findings).toEqual([ { id: 'F9', origin: 'axis' } ]);
     expect(second.suspects).toEqual([ { suspect: 'no-comments src/a.ts:4', fate: 'dropped', reason: 'not reported' } ]);
     const afterSecond = readSidecar(sidecar);
-    expect(afterSecond.origins?.findings).toEqual([ { id: 'F9', axis: 'spec', sources: [ 'spec' ], origin: 'axis' } ]);
+    expect(afterSecond.origins?.findings).toEqual([ { id: 'F9', axis: 'spec', sources: [ 'spec' ], origin: 'axis', location: { kind: 'none' } } ]);
     expect(afterSecond.origins?.suspects).toEqual([
       { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/a.ts', line: 4 }, score: 0.9, fate: 'dropped', reason: 'not reported' },
     ]);
@@ -205,7 +205,10 @@ describe('--report', () => {
     writeSidecar(path.join(tmp, '2026-09-28-b-branch.json'), pilotRecord({}));
     writeSidecar(path.join(tmp, '2026-09-27-a-branch.json'), pilotRecord({ origins: {
       recordedAt: '2026-09-27T00:00:00.000Z',
-      findings: [ { id: 'F1', axis: 'standards', sources: [ 'jev' ], origin: 'jev' } ],
+      findings: [ {
+        id: 'F1', axis: 'standards', sources: [ 'jev' ], origin: 'jev',
+        location: { kind: 'line', file: 'src/a.ts', line: 4 }, rule: 'magic-number', claim: 'A bare 4.',
+      } ],
       suspects: [ { suspect: { kind: 'standards', rule: 'magic-number', file: 'src/a.ts', line: 4 }, score: 0.9, fate: 'confirmed', finding: 'F1' } ],
     } }));
     writeSidecar(path.join(tmp, 'calibration.json'), pilotRecord({ calibration: true }));
@@ -218,9 +221,21 @@ describe('--report', () => {
     expect(text).toContain('added seconds per review: mean 2.0 · max 2.0');
     expect(text).toContain('input tokens per review: mean 500');
     expect(text).toContain('  2026-09-28-b-branch.json');
+    expect(text).toMatch(/^magic-number\s+1\s+1\s+—$/m);
+    expect(text).toMatch(/^magic-number\s+0\.7\s+0\/0\/0\s+0\/0\/0\s+0\/0\/0\s+0\/0\/0$/m);
+    expect(text).toMatch(/^explanatory-comment\s+0\.5\s+/m);
+    expect(text).toContain('coverage: 1 standards findings · 1 in a file with no cell · 0 on a line outside every window · 0 with no location recorded');
 
     expect(JSON.parse(printReport(tmp, true))).toMatchObject({
       rules: expect.arrayContaining([ { rule: 'magic-number', sent: 1, confirmed: 1, merged: 0, dropped: 0, topDropReason: undefined } ]),
+      nearMisses: expect.arrayContaining([ { rule: 'magic-number', labelled: 1, noCell: 1 } ]),
+      sweep: expect.arrayContaining([ { rule: 'inline-empty-default', threshold: 0.6, at: [
+        { threshold: 0.4, hit: 0, noise: 0, missed: 0 },
+        { threshold: 0.5, hit: 0, noise: 0, missed: 0 },
+        { threshold: 0.6, hit: 0, noise: 0, missed: 0 },
+        { threshold: 0.7, hit: 0, noise: 0, missed: 0 },
+      ] } ]),
+      coverage: { standardsFindings: 1, noCell: 1, outsideWindows: 0, unlocated: 0 },
       totals: { reviews: 1, pending: 1, findings: { jev: 1, axis: 0, both: 0 }, addedSeconds: { mean: 2, max: 2 }, meanInputTokens: 500 },
       pending: [ '2026-09-28-b-branch.json' ],
     });

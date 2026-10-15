@@ -8,7 +8,7 @@ import { parseLocation } from './parse';
 const RECORDED_AT = '2026-09-28T23:30:00.000Z';
 
 function finding(id: string, location: string, sources: ReadonlyArray<string>, axis: string = 'standards'): FindingRow {
-  return { id, axis, location: parseLocation(location), sources };
+  return { id, axis, location: parseLocation(location), sources, rule: undefined, claim: undefined };
 }
 
 function record(overrides: Partial<SidecarRecord> = {}): SidecarRecord {
@@ -74,11 +74,12 @@ describe('assignOrigins', () => {
     };
     const origins = assignOrigins(record(), input, RECORDED_AT);
     expect(origins.recordedAt).toBe(RECORDED_AT);
+    const unlabelled = { rule: undefined, claim: undefined };
     expect(origins.findings).toEqual([
-      { id: 'F1', axis: 'standards', sources: [ 'jev' ], origin: 'jev' },
-      { id: 'F2', axis: 'standards', sources: [ 'standards', 'jev' ], origin: 'both' },
-      { id: 'F3', axis: 'standards', sources: [ 'standards' ], origin: 'axis' },
-      { id: 'F4', axis: 'spec', sources: [ 'jev' ], origin: 'jev' },
+      { id: 'F1', axis: 'standards', sources: [ 'jev' ], origin: 'jev', location: { kind: 'line', file: 'src/a.ts', line: 25 }, ...unlabelled },
+      { id: 'F2', axis: 'standards', sources: [ 'standards', 'jev' ], origin: 'both', location: { kind: 'line', file: 'src/a.ts', line: 85 }, ...unlabelled },
+      { id: 'F3', axis: 'standards', sources: [ 'standards' ], origin: 'axis', location: { kind: 'line', file: 'src/b.ts', line: 3 }, ...unlabelled },
+      { id: 'F4', axis: 'spec', sources: [ 'jev' ], origin: 'jev', location: { kind: 'requirement', requirement: 'FR1' }, ...unlabelled },
     ]);
     expect(origins.suspects).toEqual([
       { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/a.ts', line: 12 }, score: 0.91, fate: 'confirmed', finding: 'F1' },
@@ -170,6 +171,12 @@ describe('assignOrigins', () => {
       drops: [ { suspect: { kind: 'standards', rule: 'no-comments', file: 'src/a.ts', line: 12 }, reason: '' } ],
     };
     expect(assignOrigins(record(), input, RECORDED_AT).suspects[0]).toMatchObject({ fate: 'dropped', reason: '' });
+  });
+
+  it('keeps the rule label and the claim a finding came with', () => {
+    const labelled: FindingRow = { ...finding('F1', 'src/a.ts:25', [ 'standards' ]), rule: 'no-comments', claim: 'The comment restates the line.' };
+    const origins = assignOrigins(record(), { findings: [ labelled ], drops: [] }, RECORDED_AT);
+    expect(origins.findings[0]).toMatchObject({ id: 'F1', rule: 'no-comments', claim: 'The comment restates the line.' });
   });
 
   it('still classifies every finding as axis on a skipped run with no suspects', () => {

@@ -9,13 +9,13 @@ import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
 import {
   CONCURRENT_REQUESTS, CONTEXT_LINES, DEFAULT_STANDARDS_THRESHOLD, MAX_CHANGED_LINES_PER_WINDOW, MAX_STATE_CHARS, MAX_SUSPECTS, MODEL,
-  SIDECAR_DIR, SPEC_GRID_EXCLUDE, SPEC_THRESHOLD, STANDARDS_THRESHOLD_OVERRIDES,
+  SIDECAR_DIR, SPEC_GRID_EXCLUDE, SPEC_THRESHOLD, STANDARDS_THRESHOLD_OVERRIDES, SWEEP_THRESHOLDS,
 } from './config';
 import type { CallRecord, ScreenClient } from './grid/shared';
 import type { SpecResult } from './grid/spec';
 import { screenSpec, shareCap, specGridFiles } from './grid/spec';
-import type { StandardsResult } from './grid/standards';
-import { screenStandards } from './grid/standards';
+import type { StandardsConfig, StandardsResult } from './grid/standards';
+import { screenStandards, thresholdFor } from './grid/standards';
 import type { SuspectFateRecord } from './origins/match';
 import { assignOrigins } from './origins/match';
 import { formatSuspectRef, parseOriginsInput } from './origins/parse';
@@ -75,15 +75,23 @@ const USAGE = `Usage:
                        origin (axis | jev | both) into that sidecar, replacing any earlier record
   --findings <path|->  the review's final findings and the jev axis's drop list, as a JSON array or as
                        Markdown tables; - reads stdin
-                         finding: { id, axis, location: "<path>:<line>" | "FR<n>" | "—", sources: [...] }
+                         finding: { id, axis, location: "<path>:<line>" | "FR<n>" | "—", sources: [...],
+                                    rule: "<rubric rule id>" | "—", claim: "<first sentence>" }
                          drop:    { suspect: "<rule> <path>:<line>" | "FR<n>", fate: "dropped", reason }
-                         tables:  | id | axis | location | sources |   and   | suspect | fate | reason |
+                         tables:  | id | axis | rule | location | sources | claim |   and   | suspect | fate | reason |
+                         rule and claim are optional; the sidecar keeps location, rule and claim per finding
 
-  --report             the pilot table over every sidecar in <main checkout>/.ai/jev/: per rule, suspects
-                       sent / confirmed / merged / dropped with the top drop reason; the jev / axis / both
-                       finding counts; added seconds and input tokens per review. Calibration runs are
-                       left out; a sidecar --origins has not been run on is listed as pending and not
-                       counted. Nothing is computed during a review.
+  --report             the pilot tables over every sidecar in <main checkout>/.ai/jev/: per rule, suspects
+                       sent / confirmed / merged / dropped with the top drop reason; per rule, the near
+                       misses — reviewer findings labelled with the rule, how many sat in a file the rule
+                       had no cell for, and the min / median / max of the rule's cell on their files; per
+                       rule, a threshold sweep — hit / noise / missed cells at ${ SWEEP_THRESHOLDS.join(' / ') }, where a hit
+                       is a cell over the threshold on a file with a labelled finding, noise one without,
+                       and missed a cell under it on a labelled file; the jev / axis / both finding counts;
+                       added seconds and input tokens per review; a coverage line — standards findings in
+                       a file with no cell, or on a line outside every window. Calibration runs are left
+                       out; a sidecar --origins has not been run on is listed as pending and not counted.
+                       Nothing is computed during a review.
   --json               with --report: print the same data as JSON`;
 
 function readScope(raw: string): Scope {
@@ -169,6 +177,14 @@ function windowsOf(change: Change, cwd: string): Array<FileWindows> {
     .filter((target) => target.windows.length > 0);
 }
 
+const STANDARDS_CONFIG: StandardsConfig = {
+  model: MODEL,
+  defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
+  thresholdOverrides: STANDARDS_THRESHOLD_OVERRIDES,
+  maxSuspects: MAX_SUSPECTS,
+  concurrency: CONCURRENT_REQUESTS,
+};
+
 const EMPTY_STANDARDS: StandardsResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
 const EMPTY_SPEC: SpecResult = { cells: [], suspects: [], cut: 0, calls: [], model: undefined, failure: undefined };
 
@@ -225,13 +241,7 @@ async function screen(change: Change, client: ClientOutcome, source: SpecSource,
   const base = { client, source, windows, specFiles: specFiles.length };
   if (!client.ok) return { ...base, standards: EMPTY_STANDARDS, spec: EMPTY_SPEC, elapsedMs: 0 };
   const started = performance.now();
-  const standards = await screenStandards(windows, RULES, client.client, {
-    model: MODEL,
-    defaultThreshold: DEFAULT_STANDARDS_THRESHOLD,
-    thresholdOverrides: STANDARDS_THRESHOLD_OVERRIDES,
-    maxSuspects: MAX_SUSPECTS,
-    concurrency: CONCURRENT_REQUESTS,
-  });
+  const standards = await screenStandards(windows, RULES, client.client, STANDARDS_CONFIG);
   const spec = source.status === 'ok' ?
     await screenSpec(specFiles, source.requirements, client.client, {
       model: MODEL,
@@ -289,7 +299,11 @@ export function readSidecarDir(dir: string): Array<SidecarFile> {
 }
 
 export function printReport(dir: string, json: boolean): string {
-  const report = aggregateReport(readSidecarDir(dir), RULES.map((rule) => rule.id));
+  const report = aggregateReport(readSidecarDir(dir), {
+    ids: RULES.map((rule) => rule.id),
+    thresholdOf: (rule) => thresholdFor(rule, STANDARDS_CONFIG),
+    sweepThresholds: SWEEP_THRESHOLDS,
+  });
   return json ? renderReportJson(report) : renderReport(report);
 }
 

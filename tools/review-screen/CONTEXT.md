@@ -25,6 +25,7 @@ and decides. The task spec behind the pilot:
 | After a review: how does a suspect get its fate, a finding its origin? | `./origins/match.ts` (`--origins`) |
 | What does `--findings` accept? | `pnpm review:screen --help`; the two readers in `./origins/parse.ts` |
 | After the pilot: what is the keep-or-kill table made of? | `./report/aggregate.ts` (`--report`), printed by `./report/render.ts` |
+| Is a rule's low hit rate its threshold, its question or its glob? | `./report/tuning.ts` — the near-miss, sweep and coverage rows of `--report` |
 | How is it wired into the review? | `.agents/skills/review-changes/axes.md`, the `jev` axis brief |
 
 ## What an editor here must keep true
@@ -58,6 +59,12 @@ and decides. The task spec behind the pilot:
   `FR<n>`. The `jev` axis's drop list is the only other input; a suspect named by neither is `dropped`
   with reason `not reported`. Keep it that way: the subagent that runs it forwards the table and nothing
   else, so any judgement added here would be a judgement made without the code in front of it.
+- **A finding's rule label is the reviewer's, never derived here.** `--origins` stores the `rule`
+  column verbatim and a `—` stays `—`; a label guessed from the claim's wording would make the near-miss
+  and sweep rows measure the guess instead of Jev.
+- **The tuning rows score a finding's file by the same max-over-windows cell the threshold sees.**
+  Switching to the window containing the line would make the near-miss spread explain a decision the
+  screen never made.
 - **A calibration run is not a pilot review.** A past diff screened to tune `./config.ts` is run with
   `--calibration`, which sets `calibration: true` in its sidecar; `--report` filters on that
   field, so a calibration sidecar in `.ai/jev/` never inflates the pilot's counts. Screen such a diff from
@@ -83,6 +90,9 @@ and decides. The task spec behind the pilot:
   unless `--ticket` tells them apart.
   A rerun also drops the sidecar's `origins` block — run `--origins` again if the review's table still
   stands. Running `--origins` twice replaces the block; it never appends.
+- **A sidecar whose `origins` predates the location field counts in the fate rows and in none of the
+  tuning rows.** The coverage line reports it as `no location recorded`; re-running `--origins` from the
+  kept `.findings.md` recovers the location, never the label.
 - **A `merged` suspect is not a `confirmed` one in the table.** The rule rows keep the two apart:
   `confirmed` is a finding only the `jev` axis raised, `merged` one an axis also found. Both are
   hits for the rule's precision; only `confirmed` is unique contribution.
@@ -119,6 +129,8 @@ and decides. The task spec behind the pilot:
 - `./origins/match.ts` — fate per suspect, origin per finding, the window and requirement matching
 - `./report/aggregate.ts` — the pilot table's numbers: per-rule fates, finding origins, added seconds
   and tokens per review, the calibration and pending filters
+- `./report/tuning.ts` — per rule, the near misses, the threshold sweep and the coverage counts, from the
+  kept cells and the labelled findings
 - `./report/render.ts` — the table as text, and as JSON under `--json`
 - `./sidecar.ts` — file naming, the record shape, reading one back; the main-checkout resolution it
   uses is shared with the sibling tools in `../cli/checkout.ts`

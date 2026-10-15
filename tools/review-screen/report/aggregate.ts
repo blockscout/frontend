@@ -1,5 +1,7 @@
 import type { OriginsRecord, SuspectFateRecord } from '../origins/match';
 import type { SidecarRecord } from '../sidecar';
+import type { CoverageTotals, NearMissRow, SweepRow } from './tuning';
+import { coverageTotals, nearMissRows, sweepRows } from './tuning';
 
 // The pilot table's numbers, from the sidecars alone. A calibration run is left out; a review whose
 // `--origins` has not run yet is listed as pending and counts nowhere, because without fates every
@@ -31,8 +33,17 @@ export interface ReportTotals {
 
 export interface PilotReport {
   readonly rules: ReadonlyArray<RuleRow>;
+  readonly nearMisses: ReadonlyArray<NearMissRow>;
+  readonly sweep: ReadonlyArray<SweepRow>;
+  readonly coverage: CoverageTotals;
   readonly totals: ReportTotals;
   readonly pending: ReadonlyArray<string>;
+}
+
+export interface ReportRules {
+  readonly ids: ReadonlyArray<string>;
+  readonly thresholdOf: (rule: string) => number;
+  readonly sweepThresholds: ReadonlyArray<number>;
 }
 
 interface CountedRecord extends SidecarRecord {
@@ -127,12 +138,16 @@ function totals(counted: ReadonlyArray<Counted>, pending: number): ReportTotals 
   };
 }
 
-export function aggregateReport(sidecars: ReadonlyArray<SidecarFile>, ruleIds: ReadonlyArray<string>): PilotReport {
+export function aggregateReport(sidecars: ReadonlyArray<SidecarFile>, rules: ReportRules): PilotReport {
   const pilot = sidecars.filter((sidecar) => !sidecar.record.calibration);
   const counted = pilot.filter(isCounted);
   const pending = pilot.filter((sidecar) => !isCounted(sidecar)).map((sidecar) => sidecar.file);
+  const records = counted.map((sidecar) => sidecar.record);
   return {
-    rules: ruleRows(counted, ruleIds),
+    rules: ruleRows(counted, rules.ids),
+    nearMisses: nearMissRows(records, rules.ids),
+    sweep: sweepRows(records, rules.ids, rules.sweepThresholds, rules.thresholdOf),
+    coverage: coverageTotals(records),
     totals: totals(counted, pending.length),
     pending,
   };

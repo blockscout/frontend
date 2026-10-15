@@ -47,6 +47,9 @@ Report: places the diff breaks a documented rule — **cite the rule file and th
 baseline, each named and quoted. A documented rule can be a hard breach; a smell is always a judgement call.
 Skip anything the checks already cover.
 
+Add one line to every finding, `rule: <id>`, naming the rubric rule in `tools/review-screen/rubric.ts` it
+corresponds to — the `id` whose `question` the finding answers yes to — or `rule: —` when none does.
+
 ## Correctness axis
 
 Read the touched files **in full**, plus the files the change depends on — a hunk-only read produces exactly
@@ -79,8 +82,9 @@ the axis: return the status line and the sidecar path and stop.
 **Suspects are the whole territory.** A defect you notice beside one belongs to the other axes. For each
 suspect: open the location; read the rule the rubric cites (`cites` on its entry in
 `tools/review-screen/rubric.ts`) or the requirement in the spec; decide. A breach or an unmet requirement
-becomes a finding in the shape above plus one line, `axis: standards | spec`, naming the grid; a spec
-finding with no line writes `location: FR<n>`. Anything else is one row of the drop table, in the shape
+becomes a finding in the shape above plus one line, `axis: standards | spec`, naming the grid, and for a
+standards suspect a second, `rule: <the suspect's rule>`; a spec finding with no line writes
+`location: FR<n>`. Anything else is one row of the drop table, in the shape
 `--origins` reads back unchanged:
 
 ```
@@ -111,12 +115,14 @@ pnpm review:screen --origins <sidecar path> --findings <that file>
 The tables:
 
 ```
-| id | axis | location | sources |
+| id | axis | rule | location | sources | claim |
 | suspect | fate | reason |
 ```
 
-`location` is `<path>:<line>`, `FR<n>` for a requirement finding with no line, or `—`; `sources` lists the
-axes that raised the finding; `suspect` is `<rule> <path>:<line>` or `FR<n>` and `fate` is `dropped`.
+`rule` is the rubric rule id the finding was labelled with, or `—`; `location` is `<path>:<line>`, `FR<n>`
+for a requirement finding with no line, or `—`; `sources` lists the axes that raised the finding; `claim` is
+the first sentence of the finding's claim, with any `|` removed; `suspect` is `<rule> <path>:<line>` or
+`FR<n>` and `fate` is `dropped`.
 Return the tool's JSON verbatim — it matches by window and requirement id with no code in front of it, and
 that is the point: a judgement added here would be one made blind.
 
