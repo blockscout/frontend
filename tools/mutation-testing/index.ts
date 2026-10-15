@@ -202,7 +202,7 @@ async function main(): Promise<void> {
 // run.sh always executes the compiled entry point, so that path is what marks this module as the
 // process entry. The guard exists so index.spec.ts can import parseArgs without kicking off a whole
 // mutation run — under vitest the entry is vitest's own binary.
-const CLI_ENTRY_PATH = 'mutation-testing/dist/mutation-testing/index.js';
+const CLI_ENTRY_PATH = 'mutation-testing/index.js';
 
 function isProcessEntryPoint(): boolean {
   const entry = process.argv[1]?.replace(/\\/g, '/');

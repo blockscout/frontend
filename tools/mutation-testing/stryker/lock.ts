@@ -47,22 +47,34 @@ export function formatStaleMessage(stale: RunLock): string {
   return `› removed a stale lock left by pid ${ stale.pid } (started ${ stale.startedAt }, mutating ${ stale.selection })`;
 }
 
-function readLock(lockFile: string): RunLock | undefined {
+// A missing file reads as empty: neither holds a record, and both are safe to replace.
+function readLockFile(lockFile: string): string {
   try {
-    return parseLock(fs.readFileSync(lockFile, 'utf8'));
+    return fs.readFileSync(lockFile, 'utf8');
   } catch {
-    return undefined;
+    return '';
   }
+}
+
+function readLock(lockFile: string): RunLock | undefined {
+  return parseLock(readLockFile(lockFile));
 }
 
 function errorCode(error: unknown): unknown {
   return (error as { readonly code?: unknown } | null | undefined)?.code;
 }
 
-function removeLockFile(lockFile: string): void {
+function removeFile(file: string): void {
   try {
-    fs.unlinkSync(lockFile);
+    fs.unlinkSync(file);
   } catch { /* Already gone, which is the state being asked for. */ }
+}
+
+// A stale record is removed only while it is still the record that was judged stale: another run may
+// have taken the lock in between, and unlinking that would leave two runs believing they hold it.
+function removeStaleLock(lockFile: string, staleContents: string): void {
+  if (readLockFile(lockFile) !== staleContents) return;
+  removeFile(lockFile);
 }
 
 function isAlive(pid: number): boolean {
@@ -75,38 +87,45 @@ function isAlive(pid: number): boolean {
   }
 }
 
+// The record is written in full to a private file and then hard-linked into place: link() fails
+// with EEXIST when the lock exists, which makes the creation exclusive, and no reader can ever see
+// the lock file half-written — an exclusive open-then-write would expose an empty file in between.
 function tryCreate(lockFile: string, lock: RunLock): boolean {
+  const draft = `${ lockFile }.${ lock.pid }.draft`;
+  fs.writeFileSync(draft, JSON.stringify(lock));
   try {
-    fs.writeFileSync(lockFile, JSON.stringify(lock), { flag: 'wx' });
+    fs.linkSync(draft, lockFile);
     return true;
   } catch (error) {
     if (errorCode(error) === 'EEXIST') return false;
     throw error;
+  } finally {
+    removeFile(draft);
   }
 }
 
 const DEFAULT_DEPS: LockDeps = { lockFile: LOCK_FILE, isProcessAlive: isAlive, now: () => new Date() };
 
-// Creation is exclusive (`wx`), so two runs racing for the file cannot both win; the loser then reads
-// the winner's record. A record whose pid is dead is left over from a run that was killed outright
-// and never reached releaseLock — it is removed and the attempt made once more. A second loss means
-// another run took the file in that gap, and it is the holder now.
+// A record whose pid is dead is left over from a run that was killed outright and never reached
+// releaseLock; it is cleared before the exclusive create. Losing the create means another run took
+// the lock in the gap and holds it now.
 export function acquireLock(selection: string, deps: LockDeps = DEFAULT_DEPS): LockAttempt {
   const lock: RunLock = { pid: process.pid, startedAt: deps.now().toISOString(), selection };
 
-  if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved: undefined };
-
-  const holder = readLock(deps.lockFile);
+  const contents = readLockFile(deps.lockFile);
+  const holder = parseLock(contents);
   if (holder !== undefined && deps.isProcessAlive(holder.pid)) return { outcome: 'held', holder };
 
-  removeLockFile(deps.lockFile);
+  removeStaleLock(deps.lockFile, contents);
   if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved: holder };
 
-  return { outcome: 'held', holder: readLock(deps.lockFile) ?? lock };
+  const winner = readLock(deps.lockFile);
+  if (winner !== undefined) return { outcome: 'held', holder: winner };
+  throw new Error(`${ deps.lockFile } changed underneath this run twice — start the run again.`);
 }
 
 // Only the holder removes its own record: a run that lost the race must not release the winner's.
 export function releaseLock(deps: LockDeps = DEFAULT_DEPS): void {
   if (readLock(deps.lockFile)?.pid !== process.pid) return;
-  removeLockFile(deps.lockFile);
+  removeFile(deps.lockFile);
 }

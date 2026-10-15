@@ -8,8 +8,7 @@
     "isolatedModules": false,
     "noEmit": false,
     "incremental": false,
-    "rootDir": "..",
-    "outDir": "./dist"
+    "rootDir": ".."
   },
   "include": [
     "./index.ts",

@@ -37,17 +37,31 @@ afterEach(() => {
 });
 
 describe('acquireLock', () => {
-  it('creates the lock naming this process and the selection', () => {
+  it('creates the lock naming this process and the selection, and nothing else', () => {
     expect(acquireLock('src/a.ts', deps([]))).toEqual({ outcome: 'acquired', staleLockRemoved: undefined });
     expect(readLockFile()).toEqual({ pid: process.pid, startedAt: NOW.toISOString(), selection: 'src/a.ts' });
+    expect(fs.readdirSync(tempDir)).toEqual([ '.lock' ]);
   });
 
-  // Two fresh runs race for the file: the exclusive create decides it, so the loser must never get to
-  // unlink the record the winner just wrote.
-  it('never removes anything when no lock is there to remove', () => {
-    const unlink = vi.spyOn(fs, 'unlinkSync');
+  // A reader must never see the record half-written, so it is linked into place complete.
+  it('writes the record in one step', () => {
+    const link = vi.spyOn(fs, 'linkSync');
     acquireLock('src/a.ts', deps([]));
-    expect(unlink).not.toHaveBeenCalled();
+    expect(link).toHaveBeenCalledWith(expect.stringContaining(process.pid.toString()), lockFile);
+  });
+
+  // The loser of the exclusive create must not clear the record the winner just wrote.
+  it('reports held when another run wins the create, and leaves its record and no draft behind', () => {
+    const winner: RunLock = { pid: OTHER_PID + 1, startedAt: NOW.toISOString(), selection: 'src/c.ts' };
+    const originalLinkSync = fs.linkSync.bind(fs);
+    vi.spyOn(fs, 'linkSync').mockImplementation((from, to) => {
+      writeLock(winner);
+      originalLinkSync(from, to);
+    });
+
+    expect(acquireLock('src/a.ts', deps([ winner.pid ]))).toEqual({ outcome: 'held', holder: winner });
+    expect(readLockFile()).toEqual(winner);
+    expect(fs.readdirSync(tempDir)).toEqual([ '.lock' ]);
   });
 
   it('refuses while a live run holds the lock, and leaves its record intact', () => {
@@ -71,23 +85,44 @@ describe('acquireLock', () => {
     expect(readLockFile().pid).toBe(process.pid);
   });
 
-  // The loser of the race must not clear a record it did not write.
-  it('reports held when another run takes the file between the stale removal and the retry', () => {
+  // Two runs reclaim the same dead lock: the one that gets there second must not unlink the record the
+  // first has just put in its place.
+  it('leaves a stale lock alone once another run has already replaced it', () => {
     const winner: RunLock = { pid: OTHER_PID + 1, startedAt: NOW.toISOString(), selection: 'src/c.ts' };
     writeLock(OTHER_RUN);
-    const originalUnlinkSync = fs.unlinkSync.bind(fs);
-    vi.spyOn(fs, 'unlinkSync').mockImplementation((target) => {
-      originalUnlinkSync(target);
-      writeLock(winner);
-    });
+    const replacedDuringLivenessCheck: LockDeps = {
+      ...deps([ winner.pid ]),
+      isProcessAlive: (pid) => {
+        writeLock(winner);
+        return pid === winner.pid;
+      },
+    };
 
-    expect(acquireLock('src/a.ts', deps([ winner.pid ]))).toEqual({ outcome: 'held', holder: winner });
+    expect(acquireLock('src/a.ts', replacedDuringLivenessCheck)).toEqual({ outcome: 'held', holder: winner });
     expect(readLockFile()).toEqual(winner);
   });
 
-  it('propagates a failure other than the file already existing', () => {
+  it('never claims a holder it cannot read back', () => {
+    vi.spyOn(fs, 'linkSync').mockImplementation(() => {
+      throw Object.assign(new Error('EEXIST'), { code: 'EEXIST' });
+    });
+
+    expect(() => acquireLock('src/a.ts', deps([]))).toThrow(/changed underneath this run twice/);
+    expect(fs.existsSync(lockFile)).toBe(false);
+  });
+
+  it('propagates a failure to write the record', () => {
     const missingDir = { ...deps([]), lockFile: path.join(tempDir, 'missing', '.lock') };
     expect(() => acquireLock('src/a.ts', missingDir)).toThrow(/ENOENT/);
+  });
+
+  it('propagates a failure to link the record other than the lock already existing', () => {
+    vi.spyOn(fs, 'linkSync').mockImplementation(() => {
+      throw Object.assign(new Error('EACCES'), { code: 'EACCES' });
+    });
+
+    expect(() => acquireLock('src/a.ts', deps([]))).toThrow(/EACCES/);
+    expect(fs.readdirSync(tempDir)).toEqual([]);
   });
 });
 
