@@ -52,6 +52,7 @@ export function getPreliminaryMediaType(url: string): MediaType | undefined {
 }
 
 const NATIVE_IPFS_URI_REGEX = /^ipfs:\/\/(?:ipfs\/)?(.+)$/;
+const GATEWAY_PATH_REGEX = /^\/ipfs\/(?:ipfs\/)?([^/]+)(\/.*)?$/;
 
 function buildIpfsUri(cid: string, path: string, search: string): string {
   return `ipfs://${ cid }${ path === '/' ? '' : path }${ search }`;
@@ -74,14 +75,14 @@ export function getIpfsUri(url: string): string | undefined {
     return;
   }
 
-  const [ , pathNamespace, pathCid, ...pathRest ] = pathname.split('/');
-  if (pathNamespace === 'ipfs' && pathCid) {
-    return buildIpfsUri(pathCid, pathRest.length > 0 ? `/${ pathRest.join('/') }` : '', search);
-  }
-
   const [ subdomainCid, subdomainNamespace, ...gatewayHost ] = hostname.split('.');
   if (subdomainNamespace === 'ipfs' && gatewayHost.length > 0) {
     return buildIpfsUri(subdomainCid, pathname, search);
+  }
+
+  const pathMatch = pathname.match(GATEWAY_PATH_REGEX);
+  if (pathMatch) {
+    return buildIpfsUri(pathMatch[1], pathMatch[2] ?? '', search);
   }
 }
 

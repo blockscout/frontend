@@ -17,6 +17,7 @@ describe('getIpfsUri', () => {
     [ 'https://ipfs.io/ipfs/' + CID + '/', 'ipfs://' + CID ],
     [ 'https://gateway.pinata.cloud/ipfs/' + CID + '/images/1.png?filename=1.png', 'ipfs://' + CID + '/images/1.png?filename=1.png' ],
     [ 'http://localhost:8080/ipfs/' + CID + '/1.png', 'ipfs://' + CID + '/1.png' ],
+    [ 'https://ipfs.io/ipfs/ipfs/' + CID + '/1.png', 'ipfs://' + CID + '/1.png' ],
   ])('converts a path gateway URL: %s', (url, expected) => {
     expect(getIpfsUri(url)).toBe(expected);
   });
@@ -25,6 +26,7 @@ describe('getIpfsUri', () => {
     [ 'https://' + CID + '.ipfs.dweb.link', 'ipfs://' + CID ],
     [ 'https://' + CID + '.ipfs.w3s.link/images/1.png', 'ipfs://' + CID + '/images/1.png' ],
     [ 'https://' + CID + '.ipfs.dweb.link/1.png?v=2', 'ipfs://' + CID + '/1.png?v=2' ],
+    [ 'https://' + CID + '.ipfs.dweb.link/ipfs/1.png', 'ipfs://' + CID + '/ipfs/1.png' ],
   ])('converts a subdomain gateway URL: %s', (url, expected) => {
     expect(getIpfsUri(url)).toBe(expected);
   });
