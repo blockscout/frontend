@@ -23,10 +23,8 @@ export type LockAttempt =
   { readonly outcome: 'held'; readonly holder: RunLock };
 
 function isRunLock(value: unknown): value is RunLock {
-  return typeof value === 'object' && value !== null &&
-    typeof (value as RunLock).pid === 'number' &&
-    typeof (value as RunLock).startedAt === 'string' &&
-    typeof (value as RunLock).selection === 'string';
+  const record = value as Partial<RunLock> | null | undefined;
+  return typeof record?.pid === 'number' && typeof record?.startedAt === 'string' && typeof record?.selection === 'string';
 }
 
 // A lock that does not parse is treated as stale: it was either half-written by a run that died in
@@ -57,8 +55,14 @@ function readLock(lockFile: string): RunLock | undefined {
   }
 }
 
-function errorCode(error: unknown): string | undefined {
-  return typeof error === 'object' && error !== null && 'code' in error && typeof error.code === 'string' ? error.code : undefined;
+function errorCode(error: unknown): unknown {
+  return (error as { readonly code?: unknown } | null | undefined)?.code;
+}
+
+function removeLockFile(lockFile: string): void {
+  try {
+    fs.unlinkSync(lockFile);
+  } catch { /* Already gone, which is the state being asked for. */ }
 }
 
 function isAlive(pid: number): boolean {
@@ -85,20 +89,18 @@ const DEFAULT_DEPS: LockDeps = { lockFile: LOCK_FILE, isProcessAlive: isAlive, n
 
 // Creation is exclusive (`wx`), so two runs racing for the file cannot both win; the loser then reads
 // the winner's record. A record whose pid is dead is left over from a run that was killed outright
-// and never reached releaseLock — it is removed and the attempt made once more.
+// and never reached releaseLock — it is removed and the attempt made once more. A second loss means
+// another run took the file in that gap, and it is the holder now.
 export function acquireLock(selection: string, deps: LockDeps = DEFAULT_DEPS): LockAttempt {
   const lock: RunLock = { pid: process.pid, startedAt: deps.now().toISOString(), selection };
-  let staleLockRemoved: RunLock | undefined;
 
-  for (let attempt = 0; attempt < 2; attempt++) {
-    if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved };
+  if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved: undefined };
 
-    const holder = readLock(deps.lockFile);
-    if (holder !== undefined && deps.isProcessAlive(holder.pid)) return { outcome: 'held', holder };
+  const holder = readLock(deps.lockFile);
+  if (holder !== undefined && deps.isProcessAlive(holder.pid)) return { outcome: 'held', holder };
 
-    staleLockRemoved = holder;
-    fs.rmSync(deps.lockFile, { force: true });
-  }
+  removeLockFile(deps.lockFile);
+  if (tryCreate(deps.lockFile, lock)) return { outcome: 'acquired', staleLockRemoved: holder };
 
   return { outcome: 'held', holder: readLock(deps.lockFile) ?? lock };
 }
@@ -106,5 +108,5 @@ export function acquireLock(selection: string, deps: LockDeps = DEFAULT_DEPS): L
 // Only the holder removes its own record: a run that lost the race must not release the winner's.
 export function releaseLock(deps: LockDeps = DEFAULT_DEPS): void {
   if (readLock(deps.lockFile)?.pid !== process.pid) return;
-  fs.rmSync(deps.lockFile, { force: true });
+  removeLockFile(deps.lockFile);
 }

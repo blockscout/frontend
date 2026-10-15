@@ -42,6 +42,14 @@ describe('acquireLock', () => {
     expect(readLockFile()).toEqual({ pid: process.pid, startedAt: NOW.toISOString(), selection: 'src/a.ts' });
   });
 
+  // Two fresh runs race for the file: the exclusive create decides it, so the loser must never get to
+  // unlink the record the winner just wrote.
+  it('never removes anything when no lock is there to remove', () => {
+    const unlink = vi.spyOn(fs, 'unlinkSync');
+    acquireLock('src/a.ts', deps([]));
+    expect(unlink).not.toHaveBeenCalled();
+  });
+
   it('refuses while a live run holds the lock, and leaves its record intact', () => {
     writeLock(OTHER_RUN);
 
@@ -67,14 +75,19 @@ describe('acquireLock', () => {
   it('reports held when another run takes the file between the stale removal and the retry', () => {
     const winner: RunLock = { pid: OTHER_PID + 1, startedAt: NOW.toISOString(), selection: 'src/c.ts' };
     writeLock(OTHER_RUN);
-    const originalRmSync = fs.rmSync.bind(fs);
-    vi.spyOn(fs, 'rmSync').mockImplementation((target, options) => {
-      originalRmSync(target, options);
+    const originalUnlinkSync = fs.unlinkSync.bind(fs);
+    vi.spyOn(fs, 'unlinkSync').mockImplementation((target) => {
+      originalUnlinkSync(target);
       writeLock(winner);
     });
 
     expect(acquireLock('src/a.ts', deps([ winner.pid ]))).toEqual({ outcome: 'held', holder: winner });
     expect(readLockFile()).toEqual(winner);
+  });
+
+  it('propagates a failure other than the file already existing', () => {
+    const missingDir = { ...deps([]), lockFile: path.join(tempDir, 'missing', '.lock') };
+    expect(() => acquireLock('src/a.ts', missingDir)).toThrow(/ENOENT/);
   });
 });
 
@@ -97,10 +110,19 @@ describe('releaseLock', () => {
 });
 
 describe('parseLock', () => {
-  it('rejects a record missing a field or of the wrong type', () => {
-    expect(parseLock('{"pid":1,"startedAt":"x"}')).toBeUndefined();
+  it('accepts a complete record', () => {
+    expect(parseLock('{"pid":1,"startedAt":"x","selection":"y"}')).toEqual({ pid: 1, startedAt: 'x', selection: 'y' });
+  });
+
+  it('rejects anything that is not an object with the three typed fields', () => {
     expect(parseLock('null')).toBeUndefined();
+    expect(parseLock('42')).toBeUndefined();
+    expect(parseLock('{"startedAt":"x","selection":"y"}')).toBeUndefined();
+    expect(parseLock('{"pid":1,"selection":"y"}')).toBeUndefined();
+    expect(parseLock('{"pid":1,"startedAt":"x"}')).toBeUndefined();
     expect(parseLock('{"pid":"1","startedAt":"x","selection":"y"}')).toBeUndefined();
+    expect(parseLock('{"pid":1,"startedAt":2,"selection":"y"}')).toBeUndefined();
+    expect(parseLock('{"pid":1,"startedAt":"x","selection":3}')).toBeUndefined();
   });
 });
 
