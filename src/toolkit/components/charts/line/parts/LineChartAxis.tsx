@@ -5,17 +5,27 @@ import * as d3 from 'd3';
 import React from 'react';
 
 import { useColorModeValue } from '../../../../chakra/color-mode';
-import { DEFAULT_TICKS_NUM_X } from '../utils/lineChartAxis';
 
-export interface LineChartAxisProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
-  type: 'left' | 'bottom';
+interface LineChartAxisBaseProps extends Omit<React.SVGProps<SVGGElement>, 'scale'> {
   scale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   noAnimation?: boolean;
-  ticks?: number;
-  tickValues?: Array<Date>;
   tickFormatGenerator?: (axis: d3.Axis<d3.NumberValue>) => (domainValue: d3.AxisDomain, index: number) => string;
   anchorEl?: SVGRectElement | null;
 }
+
+interface LineChartAxisLeftProps extends LineChartAxisBaseProps {
+  type: 'left';
+  ticks: number;
+  tickValues?: never;
+}
+
+interface LineChartAxisBottomProps extends LineChartAxisBaseProps {
+  type: 'bottom';
+  ticks?: never;
+  tickValues: Array<Date>;
+}
+
+export type LineChartAxisProps = LineChartAxisLeftProps | LineChartAxisBottomProps;
 
 export const LineChartAxis = React.memo(({ type, scale, ticks, tickValues, tickFormatGenerator, noAnimation, anchorEl, ...props }: LineChartAxisProps) => {
   const ref = React.useRef<SVGGElement>(null);
@@ -27,8 +37,7 @@ export const LineChartAxis = React.memo(({ type, scale, ticks, tickValues, tickF
       return;
     }
 
-    const axisGenerator = type === 'left' ? d3.axisLeft : d3.axisBottom;
-    const axis = tickValues ? axisGenerator(scale).tickValues(tickValues) : axisGenerator(scale).ticks(ticks ?? DEFAULT_TICKS_NUM_X);
+    const axis = type === 'bottom' ? d3.axisBottom(scale).tickValues(tickValues) : d3.axisLeft(scale).ticks(ticks);
 
     if (tickFormatGenerator) {
       axis.tickFormat(tickFormatGenerator(axis));

@@ -80,7 +80,8 @@ export function getTickFormatX(ticks: Array<Date>, resolution?: ChartResolution)
     return d3.utcFormat('%d %b');
   }
 
-  return d3.utcFormat('%H:%M');
+  const span = ticks[ticks.length - 1].getTime() - ticks[0].getTime();
+  return span >= DAY ? d3.utcFormat('%d %b %H:%M') : d3.utcFormat('%H:%M');
 }
 
 function getTickFormatXByResolution(resolution?: ChartResolution): (date: Date) => string {
@@ -94,7 +95,7 @@ function getTickFormatXByResolution(resolution?: ChartResolution): (date: Date) 
   }
 }
 
-const getTickFormatterX = (ticks: Array<Date>, resolution?: ChartResolution) => () => {
+const getTickFormatterX = (ticks: Array<Date>, resolution?: ChartResolution) => (): (d: d3.AxisDomain) => string => {
   const format = getTickFormatX(ticks, resolution);
   return (d: d3.AxisDomain) => format(d as Date);
 };

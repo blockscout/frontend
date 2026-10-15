@@ -18,12 +18,12 @@ function makeData(dates: Array<string>): LineChartData {
   } ];
 }
 
-function makeScale(data: LineChartData) {
+function makeScale(data: LineChartData): d3.ScaleTime<number, number> {
   const dates = data[0].items.map(({ date }) => date);
   return d3.scaleUtc().domain([ dates[0], dates[dates.length - 1] ]);
 }
 
-const toDay = (date: Date) => date.toISOString().slice(0, 10);
+const toDay = (date: Date): string => date.toISOString().slice(0, 10);
 const octoberDays = Array.from({ length: 30 }, (_, i) => `2025-10-${ String(i + 1).padStart(2, '0') }`);
 
 describe('getTickValuesX', () => {
@@ -84,8 +84,13 @@ describe('getTickFormatX', () => {
     expect(labels([ '2025-10-05', '2025-10-12' ])).toEqual([ '05 Oct', '12 Oct' ]);
   });
 
-  it('labels sub-day ticks with time', () => {
+  it('labels sub-day ticks within one day with time only', () => {
     expect(labels([ '2025-10-05T10:00:00Z', '2025-10-05T13:00:00Z' ])).toEqual([ '10:00', '13:00' ]);
+  });
+
+  it('keeps the date on sub-day ticks that span a day or more', () => {
+    expect(labels([ '2025-10-01T00:00:00Z', '2025-10-01T12:00:00Z', '2025-10-02T00:00:00Z' ]))
+      .toEqual([ '01 Oct 00:00', '01 Oct 12:00', '02 Oct 00:00' ]);
   });
 
   it('labels a single tick by resolution', () => {
