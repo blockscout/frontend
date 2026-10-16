@@ -7,6 +7,8 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 
 import appConfig from 'src/config';
 
+import { ctPort } from './playwright/utils/ports';
+
 const isInsideWorktree = __dirname.includes('/.claude/worktrees/');
 
 /**
@@ -63,7 +65,7 @@ const config: PlaywrightTestConfig = defineConfig({
     trace: 'on-first-retry',
 
     /* Port to use for Playwright component endpoint. */
-    ctPort: 3100,
+    ctPort,
 
     headless: true,
 

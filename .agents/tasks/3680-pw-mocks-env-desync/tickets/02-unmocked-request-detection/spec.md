@@ -15,18 +15,18 @@ ticket lands green and a single flagged Docker run produces the audit list ticke
 
 ## Acceptance criteria
 
-- [ ] The runner accepts a strict-mocks flag, documented in its `--help` text, and passes it to Playwright
+- [x] The runner accepts a strict-mocks flag, documented in its `--help` text, and passes it to Playwright
       as an environment variable the shared test setup reads.
-- [ ] Under the flag, the existing catch-all route in the shared test setup records every `localhost`
+- [x] Under the flag, the existing catch-all route in the shared test setup records every `localhost`
       request whose port is neither the CT port nor the socket-server port; non-`localhost` requests are
       still aborted silently.
-- [ ] Both mock fixtures record every matcher URL they register in the test-scoped registry from T01.
-- [ ] An `afterEach` assertion fails the test when the recorded unmocked list is non-empty, formatted as:
+- [x] Both mock fixtures record every matcher URL they register in the test-scoped registry from T01.
+- [x] An `afterEach` assertion fails the test when the recorded unmocked list is non-empty, formatted as:
       each unmocked URL; the registered matchers with the same pathname; `N other matchers registered`.
-- [ ] The diagnostic formatter is a pure function with a Vitest spec covering: no same-pathname matcher,
+- [x] The diagnostic formatter is a pure function with a Vitest spec covering: no same-pathname matcher,
       one query-param drift, several unmocked URLs.
-- [ ] Without the flag, `pnpm test:pw --docker` passes exactly as before this ticket.
-- [ ] A flagged Docker run of the whole suite has been executed and its failing tests, with the unmocked
+- [x] Without the flag, `pnpm test:pw --docker` passes exactly as before this ticket.
+- [x] A flagged Docker run of the whole suite has been executed and its failing tests, with the unmocked
       URLs, are written to this ticket's `notes.md` as the input for T03.
 
 ## Details
@@ -42,7 +42,11 @@ ticket lands green and a single flagged Docker run produces the audit list ticke
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the strict-mocks flag to the runner, its `--help` text and `index.spec.ts`
-- [ ] 2 `[agent]` Record unmocked localhost requests in the catch-all route and registered matchers in both mock fixtures
-- [ ] 3 `[agent]` Write the pure diagnostic formatter with its Vitest spec, and the `afterEach` assertion gated by the flag
-- [ ] 4 `[agent]` Run the whole suite in Docker with and without the flag; write the flagged run's unmocked list to `notes.md`
+- [x] 1 `[agent]` Add the strict-mocks flag to the runner, its `--help` text and `index.spec.ts`
+- [x] 2 `[agent]` Record unmocked localhost requests in the catch-all route and registered matchers in both mock fixtures
+- [x] 3 `[agent]` Write the pure diagnostic formatter with its Vitest spec, and the `afterEach` assertion gated by the flag
+- [x] 4 `[agent]` Run the whole suite in Docker with and without the flag; write the flagged run's unmocked list to `notes.md`
+
+Docker runs on close: without the flag 939 of 959 passed, 17 skipped, no baseline updated; the only
+failures are the pre-existing `Multisend.pw.tsx` timeout noted in T01. With the flag 336 passed and 536
+tests in 183 files failed on the check; the audit is in `notes.md`.
