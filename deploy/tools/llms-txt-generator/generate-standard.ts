@@ -493,5 +493,5 @@ export function generateStandard(): string {
         \`\`\`bash
         curl --request GET --url 'https://chains.blockscout.com/api/chains'
         \`\`\`
-    `.replace('{blank}\n', '');
+    `.replaceAll('{blank}\n', '');
 }

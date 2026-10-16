@@ -29,9 +29,9 @@ runtime image.
 
 Each of runtime tools is built into a small standalone JS bundle so the runtime
 image doesn't need to ship the full source tree or `node_modules`. Only that
-build is per-package: every `deploy/tools/*` package is linted, type-checked,
-unit-tested and complexity-gated from the repo root like `src/`, so a package
-needs no `tsconfig.json` of its own.
+build is per-package: the root ESLint, type-check and complexity gate cover
+`deploy/tools/*` the same way they cover `src/`, so a package needs no
+`tsconfig.json` of its own.
 
 ## Runtime
 
