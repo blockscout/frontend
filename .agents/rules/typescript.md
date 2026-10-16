@@ -397,10 +397,10 @@ Build the type from parts that are all legal instead of restricting a loose type
 Non-empty, via a variadic tuple:
 
 ```ts
-type NonEmptyArray<T> = [T, ...T[]];
+import type { NonEmptyArray } from 'src/shared/types/utils';
 
 // BAD: Array<T> plus a length check every caller must repeat
-function pickWinner(entries: string[]): string {
+function pickWinner(entries: Array<string>): string {
   if (entries.length === 0) throw new Error("no entries");
   return entries[Math.floor(Math.random() * entries.length)];
 }
@@ -411,16 +411,17 @@ function pickWinner(entries: NonEmptyArray<string>): string {
 }
 ```
 
-Where a plain `T[]` arrives, narrow once with a guard. The fact then travels in the type:
+Where a plain `Array<T>` arrives, narrow once with a guard. The fact then travels in the type:
 
 ```ts
-const isNonEmpty = <T>(arr: T[]): arr is NonEmptyArray<T> => arr.length > 0;
+const isNonEmpty = <T>(arr: Array<T>): arr is NonEmptyArray<T> => arr.length > 0;
 ```
 
 Even length, as pairs:
 
 ```ts
-type Pairs<T> = Array<[T, T]>;
+import type { Pairs } from 'src/shared/types/utils';
+const entities: Pairs<string> = [ [ 'foo', 'bar' ] ];
 ```
 
 A time range, as start plus duration:
@@ -429,18 +430,18 @@ A time range, as start plus duration:
 // BAD: a comment holds the invariant
 type TimeRange = { start: Date; end: Date }; // start <= end
 
-// GOOD: a negative range can't be written; derive end when needed
+// GOOD: one field to validate at the boundary instead of a relation between two; derive end when needed
 type TimeRange = { start: Date; durationMs: number };
 ```
 
-Keep `durationMs` a plain number. Pick the representation that makes the bad state un-constructable, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
+`durationMs` still admits a negative number; the gain is that the invariant is a single field checked once where the value is built, not `start <= end` re-checked wherever both are read. Pick the representation that leaves the fewest bad states, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
 
 ## Simplest total type
 
-Don't strengthen everything. Keep `T[]` when every operation on it is total:
+Don't strengthen everything. Keep `Array<T>` when every operation on it is total:
 
 ```ts
-const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
+const sum = (xs: Array<number>) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
 ```
 
 Strengthen when the loose type forces a lie at a use site. The tells are `!`, `arr[0] as T`, and a "should never happen" throw:
@@ -478,33 +479,32 @@ function area(s: Shape): number {
 
 ## Type guards
 
-A guard must actually verify the claim. A lying guard is worse than `as`.
+A guard is for a claim the compiler can't check from the shape alone (see the narrowing hierarchy above; a discriminant needs no guard). It must actually verify the claim. A lying guard is worse than `as`.
 
 ```ts
-function isCircle(s: Shape): s is Shape & { kind: "circle" } {
-  return s.kind === "circle";
-}
-```
+// A string's shape says nothing about its content; the guard checks it.
+const isHex = (s: string): s is `0x${string}` => s.startsWith("0x");
 
-Prefer discriminant narrowing when possible.
+// BAD: claims the full shape, checks one key
+const isUser = (v: unknown): v is User => typeof v === "object" && v !== null && "id" in v;
+```
 
 ## Schema-derived types
 
-When an API response type already defines a shape, derive from the generated types instead of duplicating them. Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
+When an API response type already defines a shape, derive from it instead of duplicating it. Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the exceptions; how to find which is `src/api/CONTEXT.md` ("Where a resource's response types come from"). Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
 
 ```ts
 // BAD. Duplicate shape, drifts when the schema changes.
-type CheckSummary = {
-  totalCount: number;
-  checks: { name: string; status: string }[];
+type BlockTimeStats = {
+  average_block_time?: { value: string; units?: string };
 };
-function renderChecks(s: CheckSummary) {
+function renderBlockTime(s: BlockTimeStats) {
   /* ... */
 }
 
-// GOOD. Derive from the generated schema type.
-import type { ChecksMessage } from "<generated module>";
-function renderChecks(s: Pick<ChecksMessage, "totalCount" | "checks">) {
+// GOOD. Derive from the generated type.
+import type { MainPageStats } from '@blockscout/stats-types';
+function renderBlockTime(s: Pick<MainPageStats, 'average_block_time'>) {
   /* ... */
 }
 ```
