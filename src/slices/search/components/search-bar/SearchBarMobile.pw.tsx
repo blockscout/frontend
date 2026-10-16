@@ -16,9 +16,8 @@ import { test, expect, devices } from 'playwright/lib';
 
 import SearchBarMobile from './SearchBarMobile';
 
-const NO_REDIRECT = { parameter: null, redirect: false, type: null };
 const mockNoRedirect = (mockApiResponse: TestFnArgs['mockApiResponse'], q: string | number) =>
-  mockApiResponse('core:search_check_redirect', NO_REDIRECT, { queryParams: { q } });
+  mockApiResponse('core:search_check_redirect', searchMock.noRedirect, { queryParams: { q } });
 
 // Helper function to open search drawer and wait for input
 const openSearchDrawer = async(page: Page, isHeroBanner = false) => {

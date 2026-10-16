@@ -1,7 +1,8 @@
 import type { Page } from '@playwright/test';
 import React from 'react';
 
-import { indexingStatusFinished } from 'src/slices/home/mocks/indexing-status';
+import * as indexingStatusMock from 'src/slices/chain/indexing-status/mocks';
+import * as chainMock from 'src/slices/chain/mocks';
 import * as searchMock from 'src/slices/search/mocks';
 
 import { metatag1, metatag2, metatag3 } from 'src/features/address-metadata/mocks/search';
@@ -19,13 +20,11 @@ import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
 
-const BACKEND_VERSION = { backend_version: 'v5.2.0-beta.+commit.1ce1a355' };
-
 // The page renders the layout around the results: the footer asks for the backend version and
 // indexing status, and the marketplace feature (on by default in .env.pw) for the dapps list
 const mockPageChrome = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
-  await mockApiResponse('core:homepage_indexing_status', indexingStatusFinished);
-  await mockApiResponse('core:config_backend_version', BACKEND_VERSION);
+  await mockApiResponse('core:homepage_indexing_status', indexingStatusMock.finished);
+  await mockApiResponse('core:config_backend_version', chainMock.backendVersion);
   await mockApiResponse('admin:marketplace_dapps', [], { pathParams: { instanceId: config.apis.admin?.instanceId } });
 };
 

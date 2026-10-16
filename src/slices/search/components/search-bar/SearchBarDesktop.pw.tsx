@@ -15,9 +15,8 @@ import { test, expect } from 'playwright/lib';
 
 import SearchBarDesktop from './SearchBarDesktop';
 
-const NO_REDIRECT = { parameter: null, redirect: false, type: null };
 const mockNoRedirect = (mockApiResponse: TestFnArgs['mockApiResponse'], q: string | number) =>
-  mockApiResponse('core:search_check_redirect', NO_REDIRECT, { queryParams: { q } });
+  mockApiResponse('core:search_check_redirect', searchMock.noRedirect, { queryParams: { q } });
 
 test.beforeEach(async({ mockAssetResponse, mockEnvs, mockTextAd }) => {
   await mockTextAd();
