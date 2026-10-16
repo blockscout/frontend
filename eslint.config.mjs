@@ -189,15 +189,7 @@ export default tseslint.config(
   { files: [ '**/*.{js,mjs,cjs,ts,mts,jsx,tsx}', '**/*.pw.tsx' ] },
 
   { ignores: [
-    // deploy/tools packages other than envs-validator keep their own toolchain and stay outside the root
-    // ESLint and TypeScript projects for now (issue #3675)
-    'deploy/tools/essential-dapps-chains-config-generator/',
-    'deploy/tools/favicon-generator/',
-    'deploy/tools/feature-reporter/',
-    'deploy/tools/llms-txt-generator/',
-    'deploy/tools/multichain-config-generator/',
-    'deploy/tools/sitemap-generator/',
-    'deploy/tools/envs-validator/dist/',
+    'deploy/tools/*/dist/',
     'deploy/tools/envs-validator/public/',
     // generated files that only a nested .gitignore covers; includeIgnoreFile reads the root one alone
     'deploy/tools/envs-validator/index.js',
@@ -715,6 +707,13 @@ export default tseslint.config(
     rules: {
       // for configs allow to consume env variables from process.env directly; the raw browser env map stays off-limits
       'no-restricted-properties': [ 2, WINDOW_ENVS_RESTRICTION ],
+    },
+  },
+  {
+    // the deploy tools are CLIs that run at container startup; console is their output channel
+    files: [ 'deploy/tools/**' ],
+    rules: {
+      'no-console': 'off',
     },
   },
   {

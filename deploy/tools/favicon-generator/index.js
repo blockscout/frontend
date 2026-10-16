@@ -1,9 +1,34 @@
-/* eslint-disable no-console */
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 const { favicons } = require('favicons');
 const fs = require('fs/promises');
 const path = require('path');
 
 generateFavicons();
+
+const isKeptImage = (name) => name === 'apple-touch-icon-180x180.png' || name === 'android-chrome-192x192.png' ||
+  (!name.startsWith('apple-touch-icon') && !name.startsWith('android-chrome'));
+
+async function writeOutput(result, outputDir) {
+  await fs.mkdir(outputDir, { recursive: true });
+
+  for (const image of result.images) {
+    if (isKeptImage(image.name)) {
+      await fs.writeFile(path.join(outputDir, image.name), image.contents);
+    }
+
+    // marketing assets reuse the 192px android icon under a stable name
+    if (image.name === 'android-chrome-192x192.png') {
+      await fs.writeFile(path.join(outputDir, 'logo-icon.png'), image.contents);
+    }
+  }
+
+  for (const file of result.files) {
+    if (file.name !== 'manifest.webmanifest') {
+      await fs.writeFile(path.join(outputDir, file.name), file.contents);
+    }
+  }
+}
 
 async function generateFavicons() {
   console.log('Generating favicons...');
@@ -34,29 +59,7 @@ async function generateFavicons() {
 
     try {
       const result = await favicons(source, configuration);
-
-      const outputDir = path.resolve(process.cwd(), 'output');
-      await fs.mkdir(outputDir, { recursive: true });
-
-      for (const image of result.images) {
-        // keep only necessary files
-        if (image.name === 'apple-touch-icon-180x180.png' || image.name === 'android-chrome-192x192.png' ||
-          (!image.name.startsWith('apple-touch-icon') && !image.name.startsWith('android-chrome'))
-        ) {
-          await fs.writeFile(path.join(outputDir, image.name), image.contents);
-        }
-
-        // copy android-chrome-192x192.png to logo-icon.png for marketing purposes
-        if (image.name === 'android-chrome-192x192.png') {
-          await fs.writeFile(path.join(outputDir, 'logo-icon.png'), image.contents);
-        }
-      }
-
-      for (const file of result.files) {
-        if (file.name !== 'manifest.webmanifest') {
-          await fs.writeFile(path.join(outputDir, file.name), file.contents);
-        }
-      }
+      await writeOutput(result, path.resolve(process.cwd(), 'output'));
 
       console.log('Favicons generated successfully!');
     } catch (faviconError) {
