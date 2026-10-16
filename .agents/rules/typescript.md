@@ -389,3 +389,122 @@ Use `decs.d.ts` exclusively for untyped third-party module declarations. Do not 
 // decs.d.ts
 declare module 'some-untyped-package';
 ```
+
+## Constructive modeling
+
+Build the type from parts that are all legal instead of restricting a loose type with runtime checks.
+
+Non-empty, via a variadic tuple:
+
+```ts
+import type { NonEmptyArray } from 'src/shared/types/utils';
+
+// BAD: Array<T> plus a length check every caller must repeat
+function pickWinner(entries: Array<string>): string {
+  if (entries.length === 0) throw new Error("no entries");
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+
+// GOOD: an empty value of the type can't exist
+function pickWinner(entries: NonEmptyArray<string>): string {
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+```
+
+Where a plain `Array<T>` arrives, narrow once with a guard. The fact then travels in the type:
+
+```ts
+const isNonEmpty = <T>(arr: Array<T>): arr is NonEmptyArray<T> => arr.length > 0;
+```
+
+Even length, as pairs:
+
+```ts
+import type { Pairs } from 'src/shared/types/utils';
+const entities: Pairs<string> = [ [ 'foo', 'bar' ] ];
+```
+
+A time range, as start plus duration:
+
+```ts
+// BAD: a comment holds the invariant
+type TimeRange = { start: Date; end: Date }; // start <= end
+
+// GOOD: one field to validate at the boundary instead of a relation between two; derive end when needed
+type TimeRange = { start: Date; durationMs: number };
+```
+
+`durationMs` still admits a negative number; the gain is that the invariant is a single field checked once where the value is built, not `start <= end` re-checked wherever both are read. Pick the representation that leaves the fewest bad states, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
+
+## Simplest total type
+
+Don't strengthen everything. Keep `Array<T>` when every operation on it is total:
+
+```ts
+const sum = (xs: Array<number>) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
+```
+
+Strengthen when the loose type forces a lie at a use site. The tells are `!`, `arr[0] as T`, and a "should never happen" throw:
+
+```ts
+// BAD: partiality smuggled past the compiler
+function newestSession(sessions: Array<Session>): Session {
+  return sessions.at(0)!;
+}
+
+// GOOD: strengthen the input; the assertion disappears
+function newestSession(sessions: NonEmptyArray<Session>): Session {
+  return sessions[0];
+}
+```
+
+Weakening the result to `Session | undefined` is the other total signature.
+
+## Narrowing hierarchy
+
+From best to last-resort:
+
+1. **Discriminated union switch / if.** Compiler narrows automatically.
+2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
+3. **`typeof` / `instanceof`.** For primitives and class instances.
+4. **User-defined type guard.** When the above aren't enough.
+5. **`as` cast.**.
+
+```ts
+function area(s: Shape): number {
+  if ("radius" in s) return Math.PI * s.radius ** 2; // narrowed to circle
+  return s.width * s.height; // narrowed to rect
+}
+```
+
+## Type guards
+
+A guard is for a claim the compiler can't check from the shape alone (see the narrowing hierarchy above; a discriminant needs no guard). It must actually verify the claim. A lying guard is worse than `as`.
+
+```ts
+// A string's shape says nothing about its content; the guard checks it.
+const isHex = (s: string): s is `0x${string}` => s.startsWith("0x");
+
+// BAD: claims the full shape, checks one key
+const isUser = (v: unknown): v is User => typeof v === "object" && v !== null && "id" in v;
+```
+
+## Schema-derived types
+
+When an API response type already defines a shape, derive from it instead of duplicating it. Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the exceptions; how to find which is `src/api/CONTEXT.md` ("Where a resource's response types come from"). Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
+
+```ts
+// BAD. Duplicate shape, drifts when the schema changes.
+type BlockTimeStats = {
+  average_block_time?: { value: string; units?: string };
+};
+function renderBlockTime(s: BlockTimeStats) {
+  /* ... */
+}
+
+// GOOD. Derive from the generated type.
+import type { MainPageStats } from '@blockscout/stats-types';
+function renderBlockTime(s: Pick<MainPageStats, 'average_block_time'>) {
+  /* ... */
+}
+```

@@ -6,6 +6,9 @@ export type ExcludeUndefined<T> = T extends undefined ? never : T;
 
 export type KeysOfObjectOrNull<T> = keyof ExcludeNull<T>;
 
+export type NonEmptyArray<T> = [T, ...Array<T>];
+export type Pairs<T> = Array<[T, T]>;
+
 /** Combines members of an intersection into a readable type. */
 // https://twitter.com/mattpocockuk/status/1622730173446557697?s=20&t=NdpAcmEFXY01xkqU3KO0Mg
 export type Evaluate<Type> = { [key in keyof Type]: Type[key] } & unknown;
