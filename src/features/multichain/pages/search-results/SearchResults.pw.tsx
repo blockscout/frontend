@@ -2,6 +2,8 @@ import React from 'react';
 
 import type { GetAddressResponse } from '@blockscout/multichain-aggregator-types';
 
+import { indexingStatusFinished } from 'src/slices/home/mocks/indexing-status';
+
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
 import * as searchMock from 'src/features/multichain/mocks/search';
 
@@ -24,6 +26,7 @@ test.beforeEach(async({ mockApiResponse, mockMultichainConfig, mockEnvs, mockAss
   await mockMultichainConfig();
   await mockEnvs(ENVS_MAP.multichain);
   await mockTextAd();
+  await mockApiResponse('core:homepage_indexing_status', indexingStatusFinished);
 
   await mockApiResponse('multichainAggregator:search_addresses', {
     items: [

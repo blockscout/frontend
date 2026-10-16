@@ -84,7 +84,7 @@ test('example', async ({ render }) => {
 
 ## Fixtures
 
-All fixtures are injected via the `test` function. Available fixtures:
+All fixtures are injected via the `test` function. Every `localhost` request the component makes must be answered by one of them: a request that reaches no mock fails the test, and a test that shows a failure state mocks the request with an error status instead of leaving it unmocked. Available fixtures:
 
 ### `mockApiResponse`
 Intercepts Blockscout API calls. Returns the mocked URL. The URL is resolved in the test page with the production URL builder, so it reflects the envs mocked for the test — pass only the path and query params the component itself passes, never env-derived ones. Register it after `mockEnvs`.

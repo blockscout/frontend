@@ -25,13 +25,8 @@ export interface CliOptions {
   diffSelected: boolean;
   docker: boolean;
   dockerDeps: boolean;
-  strictMocks: boolean;
   playwrightArgs: Array<string>;
 }
-
-// Temporary rollout scaffolding: read by playwright/lib.ts, which fails any test that lets a request
-// through to an unmocked localhost port. Removed once the whole suite passes with it on.
-export const STRICT_MOCKS_ENV = 'PW_STRICT_MOCKS';
 
 const USAGE = `Usage:
   test:pw [<playwright args>...]
@@ -53,12 +48,6 @@ const USAGE = `Usage:
   test:pw --docker-deps
       Install the Linux dependencies into node_modules_linux (once, before the first --docker run).
       Takes no other flag or argument.
-
-  test:pw --strict-mocks [...]
-      Fail every test that lets a request through to localhost on a port no mock handles (the CT and
-      socket-server ports excepted). The failure lists each unmocked URL next to the registered
-      matchers sharing its pathname. Opt-in while the suite is being audited; passed to Playwright as
-      ${ STRICT_MOCKS_ENV }=1.
 
   Before every run the tool regenerates ${ ENVS_SCRIPT_FILE } from ${ ENV_FILE } and builds the SVG
   sprite for the ${ SPRITE_APP_ENV } app env. Every run writes playwright-results/report.json next
@@ -87,9 +76,6 @@ const FLAGS: ReadonlyMap<string, FlagSpec<CliOptions>> = new Map<string, FlagSpe
   [ '--docker-deps', { kind: 'switch', apply: (options) => {
     options.dockerDeps = true;
   } } ],
-  [ '--strict-mocks', { kind: 'switch', apply: (options) => {
-    options.strictMocks = true;
-  } } ],
 ]);
 
 export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
@@ -98,7 +84,6 @@ export function parseArgs(argv: ReadonlyArray<string>): CliOptions {
     diffSelected: false,
     docker: false,
     dockerDeps: false,
-    strictMocks: false,
     playwrightArgs: [],
   }, { kind: 'passthrough' });
 
@@ -195,14 +180,13 @@ export function selectionArgs(options: CliOptions, runtime: Runtime): Array<stri
 // file declares.
 export function buildSteps(options: CliOptions, env: ProcessEnv, extraPlaywrightArgs: ReadonlyArray<string>): Array<Step> {
   const spriteEnv = { ...env, NEXT_PUBLIC_APP_ENV: SPRITE_APP_ENV };
-  const strictMocksEnv = options.strictMocks ? { [STRICT_MOCKS_ENV]: '1' } : {};
   return [
     { command: MAKE_ENVS_SCRIPT, args: [ ENVS_SCRIPT_FILE ], env },
     { command: 'pnpm', args: [ 'svg:build-sprite' ], env: spriteEnv },
     {
       command: PLAYWRIGHT_BIN,
       args: [ 'test', '-c', PLAYWRIGHT_CONFIG_FILE, ...options.playwrightArgs, ...extraPlaywrightArgs ],
-      env: { ...spriteEnv, ...strictMocksEnv, NODE_OPTIONS: PLAYWRIGHT_NODE_OPTIONS },
+      env: { ...spriteEnv, NODE_OPTIONS: PLAYWRIGHT_NODE_OPTIONS },
     },
   ];
 }

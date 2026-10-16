@@ -2,4 +2,4 @@
 
 - [x] 01 → `tickets/01-browser-side-mock-urls/`
 - [x] 02 → `tickets/02-unmocked-request-detection/`
-- [ ] 03 → `tickets/03-unmocked-request-failure-default/`
+- [x] 03 → `tickets/03-unmocked-request-failure-default/`

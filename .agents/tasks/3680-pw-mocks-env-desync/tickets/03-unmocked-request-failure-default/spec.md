@@ -17,18 +17,18 @@ explains how to read the new failure.
 
 ## Acceptance criteria
 
-- [ ] `NEXT_PUBLIC_REWARDS_SERVICE_API_HOST` is gone from `playwright/.env.pw`; the tests that render
+- [x] `NEXT_PUBLIC_REWARDS_SERVICE_API_HOST` is gone from `playwright/.env.pw`; the tests that render
       rewards UI enable it through `mockEnvs([ ...ENVS_MAP.rewardsService ])` and mock `rewards:config`
       plus whatever else the provider requests in their state.
-- [ ] The strict-mocks runner flag and its env variable are removed; the `afterEach` assertion runs
+- [x] The strict-mocks runner flag and its env variable are removed; the `afterEach` assertion runs
       unconditionally.
-- [ ] Every test listed in T02's `notes.md` passes under the always-on check; intended failures are
+- [x] Every test listed in T02's `notes.md` passes under the always-on check; intended failures are
       expressed as a mock with an error status, never by leaving the request unmocked.
-- [ ] No fixture, option or tag disables the check for a single test.
-- [ ] `pnpm test:pw --docker` passes for the whole suite; a baseline changes only where a previously
+- [x] No fixture, option or tag disables the check for a single test.
+- [x] `pnpm test:pw --docker` passes for the whole suite; a baseline changes only where a previously
       failing request was silently rendering an empty or error state, and each such change is listed in
       the PR description.
-- [ ] `tools/playwright/CONTEXT.md` has a "Where to look" row for the unmocked-request failure and a
+- [x] `tools/playwright/CONTEXT.md` has a "Where to look" row for the unmocked-request failure and a
       constraint line stating that every `localhost` request must be mocked; `.agents/rules/tests-visual.md`
       says the same in one sentence under Fixtures.
 
@@ -54,8 +54,8 @@ explains how to read the new failure.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Remove the rewards env from `playwright/.env.pw`; mock `rewards:config` and the provider's other requests in the tests that opt in
-- [ ] 2 `[agent]` Mock or explicitly fail every remaining request in T02's audit list
-- [ ] 3 `[agent]` Remove the strict-mocks flag from the runner, its spec, `--help` and the shared test setup
-- [ ] 4 `[agent]` Update `tools/playwright/CONTEXT.md` and `.agents/rules/tests-visual.md`
-- [ ] 5 `[agent]` Run `pnpm test:pw --docker` for the whole suite; record any baseline change for the PR description
+- [x] 1 `[agent]` Remove the rewards env from `playwright/.env.pw`; mock `rewards:config` and the provider's other requests in the tests that opt in
+- [x] 2 `[agent]` Mock or explicitly fail every remaining request in T02's audit list
+- [x] 3 `[agent]` Remove the strict-mocks flag from the runner, its spec, `--help` and the shared test setup
+- [x] 4 `[agent]` Update `tools/playwright/CONTEXT.md` and `.agents/rules/tests-visual.md`
+- [x] 5 `[agent]` Run `pnpm test:pw --docker` for the whole suite; record any baseline change for the PR description

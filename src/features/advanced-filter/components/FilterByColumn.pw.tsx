@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { ColumnsIds } from '../types/client';
 
+import * as statsMock from 'src/slices/chain/stats/mocks';
+
 import { test, expect } from 'playwright/lib';
 
 import FilterByColumn from './FilterByColumn';
@@ -42,8 +44,9 @@ for (const column of columns) {
     await mockApiResponse('core:tokens', {
       items: [],
       next_page_params: null,
-    });
+    }, { queryParams: { limit: '7' } });
     await mockApiResponse('core:advanced_filter_methods', [], { queryParams: { q: '' } });
+    await mockApiResponse('core:stats', statsMock.base);
     await render(
       <FilterByColumn
         filters={ filters }

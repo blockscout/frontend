@@ -39,10 +39,6 @@ export interface Fixtures {
 
 export type TestFnArgs = Fixtures & { page: Page };
 
-// Set by `pnpm test:pw --strict-mocks` (tools/playwright/index.ts) while the suite is audited for
-// requests no mock handles; the check becomes unconditional once the audit is done.
-const isStrictMocks = process.env.PW_STRICT_MOCKS === '1';
-
 const OWN_PORTS: ReadonlySet<string> = new Set([ String(ctPort), String(socketPort) ]);
 
 function isUnmockedLocalhostRequest(url: string): boolean {
@@ -104,8 +100,10 @@ test.beforeEach(async({ page, mockTextAd, mockRegistry }) => {
   await mockTextAd();
 });
 
+// Every localhost request a test lets through must be mocked; a request that reaches the catch-all
+// route fails the test with the URL next to the registered matchers sharing its pathname.
 test.afterEach(async({ mockRegistry }) => {
-  if (!isStrictMocks || mockRegistry.unmockedUrls.length === 0) {
+  if (mockRegistry.unmockedUrls.length === 0) {
     return;
   }
   throw new Error(formatUnmockedRequests(mockRegistry.unmockedUrls, mockRegistry.registrations));

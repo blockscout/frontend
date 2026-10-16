@@ -16,7 +16,7 @@ import {
   SPRITE_APP_ENV,
 } from './config';
 import type { Runtime, Step } from './index';
-import { STRICT_MOCKS_ENV, parseArgs, run } from './index';
+import { parseArgs, run } from './index';
 
 const ENV_FILE_CONTENT = 'NEXT_PUBLIC_FROM_FILE=file\nNEXT_PUBLIC_APP_ENV=testing\n';
 const MERGE_BASE = 'a1b2c3d4';
@@ -84,7 +84,6 @@ describe('parseArgs', () => {
       diffSelected: false,
       docker: false,
       dockerDeps: false,
-      strictMocks: false,
       playwrightArgs: [],
     });
   });
@@ -102,7 +101,6 @@ describe('parseArgs', () => {
       diffSelected: true,
       docker: false,
       dockerDeps: false,
-      strictMocks: false,
       playwrightArgs: [ '--project=default', 'src/a.pw.tsx' ],
     });
   });
@@ -125,10 +123,6 @@ describe('parseArgs', () => {
     expect(parseArgs([ '--docker-deps' ])).toMatchObject({ docker: false, dockerDeps: true });
   });
 
-  it('takes --strict-mocks off the pass-through list', () => {
-    expect(parseArgs([ '--strict-mocks', 'src/a.pw.tsx' ])).toMatchObject({ strictMocks: true, playwrightArgs: [ 'src/a.pw.tsx' ] });
-  });
-
   it('prints the usage text and exits on --help', () => {
     const log = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     vi.spyOn(process, 'exit').mockImplementation((code) => {
@@ -139,7 +133,6 @@ describe('parseArgs', () => {
     expect(log).toHaveBeenCalledWith(expect.stringContaining('Usage:'));
     expect(log).toHaveBeenCalledWith(expect.stringContaining('--changed[=<ref>]'));
     expect(log).toHaveBeenCalledWith(expect.stringContaining('--docker-deps'));
-    expect(log).toHaveBeenCalledWith(expect.stringContaining('--strict-mocks'));
   });
 });
 
@@ -180,27 +173,6 @@ describe('run', () => {
     expect(spriteStep.env.NODE_OPTIONS).toBeUndefined();
   });
 
-  // The flag reaches the shared test setup as an env variable, and only playwright needs it.
-  it('passes --strict-mocks to playwright alone as its env variable', () => {
-    const runtime = recordingRuntime();
-
-    run([ '--strict-mocks' ], runtime);
-
-    const [ envsStep, spriteStep, playwrightStep ] = runtime.steps;
-    expect(playwrightStep.args).not.toContain('--strict-mocks');
-    expect(playwrightStep.env[STRICT_MOCKS_ENV]).toBe('1');
-    expect(envsStep.env[STRICT_MOCKS_ENV]).toBeUndefined();
-    expect(spriteStep.env[STRICT_MOCKS_ENV]).toBeUndefined();
-  });
-
-  it('leaves the strict-mocks env variable unset in a plain run', () => {
-    const runtime = recordingRuntime();
-
-    run([], runtime);
-
-    expect(runtime.steps[2].env[STRICT_MOCKS_ENV]).toBeUndefined();
-  });
-
   it('lets a variable already in the shell win over the env file', () => {
     vi.stubEnv('NEXT_PUBLIC_FROM_FILE', 'shell');
     const runtime = recordingRuntime();
@@ -235,14 +207,14 @@ describe('run --docker', () => {
   it('runs one docker step with the image derived from the installed playwright and the rest of the argv inside', () => {
     const runtime = recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ] });
 
-    const status = run([ '--changed', '--docker', '--strict-mocks', 'src/a.pw.tsx', '--update-snapshots' ], runtime);
+    const status = run([ '--changed', '--docker', 'src/a.pw.tsx', '--update-snapshots' ], runtime);
 
     expect(status).toBe(0);
     expect(runtime.steps).toHaveLength(1);
     const [ step ] = runtime.steps;
     expect(step.command).toBe('docker');
     expect(step.args).toContain(IMAGE);
-    expect(step.args.slice(-5)).toEqual([ 'bash', '--changed', '--strict-mocks', 'src/a.pw.tsx', '--update-snapshots' ]);
+    expect(step.args.slice(-4)).toEqual([ 'bash', '--changed', 'src/a.pw.tsx', '--update-snapshots' ]);
     expect(step.args.join(' ')).toContain(`corepack prepare pnpm@${ PNPM_VERSION }`);
     expect(runtime.baseRefs).toEqual([]);
   });

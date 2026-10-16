@@ -6,6 +6,8 @@ import type { HeroBannerConfig } from 'src/slices/home/types/config';
 import * as profileMock from 'src/features/account/mocks/user-profile';
 import * as rewardsBalanceMock from 'src/features/rewards/mocks/balance';
 import * as dailyRewardMock from 'src/features/rewards/mocks/daily-reward';
+import * as referralsMock from 'src/features/rewards/mocks/referrals';
+import * as rewardsConfigMock from 'src/features/rewards/mocks/rewards-config';
 
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -59,6 +61,8 @@ authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiRes
   await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
   await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
   await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
+  await mockApiResponse('rewards:user_referrals', referralsMock.base);
+  await mockApiResponse('rewards:config', rewardsConfigMock.base);
 
   const component = await render(<HeroBanner/>);
 

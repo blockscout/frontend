@@ -10,9 +10,14 @@ import { domain1 } from 'src/features/name-services/domains/mocks/search';
 import { userOp1 } from 'src/features/user-ops/mocks/search';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
 import SearchBarDesktop from './SearchBarDesktop';
+
+const NO_REDIRECT = { parameter: null, redirect: false, type: null };
+const mockNoRedirect = (mockApiResponse: TestFnArgs['mockApiResponse'], q: string | number) =>
+  mockApiResponse('core:search_check_redirect', NO_REDIRECT, { queryParams: { q } });
 
 test.beforeEach(async({ mockAssetResponse, mockEnvs, mockTextAd }) => {
   await mockTextAd();
@@ -27,6 +32,7 @@ test('search by token name +@dark-mode', async({ render, page, mockApiResponse }
     searchMock.token1,
     searchMock.token2,
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
@@ -40,6 +46,7 @@ test('search by contract name +@dark-mode', async({ render, page, mockApiRespons
     searchMock.contract2,
     searchMock.address2,
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
 
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('o');
@@ -54,6 +61,7 @@ test('search by name homepage +@dark-mode', async({ render, page, mockApiRespons
     searchMock.token2,
     searchMock.contract1,
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
   await render(<SearchBarDesktop isHeroBanner/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
@@ -65,6 +73,7 @@ test('search by tag +@dark-mode', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('core:quick_search', [
     searchMock.label1,
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
@@ -76,6 +85,7 @@ test('search by address hash', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('core:quick_search', [
     searchMock.address1,
   ], { queryParams: { q: searchMock.address1.address_hash } });
+  await mockNoRedirect(mockApiResponse, searchMock.address1.address_hash);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.address1.address_hash);
   await page.waitForResponse(apiUrl);
@@ -89,6 +99,7 @@ test('search by meta tag +@dark-mode', async({ render, page, mockApiResponse }) 
     metatag2,
     metatag3,
   ], { queryParams: { q: 'utko' } });
+  await mockNoRedirect(mockApiResponse, 'utko');
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('utko');
   await page.waitForResponse(apiUrl);
@@ -102,6 +113,7 @@ test('search by block number', async({ render, page, mockApiResponse }) => {
     searchMock.block2,
     searchMock.block3,
   ], { queryParams: { q: searchMock.block1.block_number } });
+  await mockNoRedirect(mockApiResponse, searchMock.block1.block_number);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(String(searchMock.block1.block_number));
   await page.waitForResponse(apiUrl);
@@ -113,6 +125,7 @@ test('search by block hash', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('core:quick_search', [
     searchMock.block1,
   ], { queryParams: { q: searchMock.block1.block_hash } });
+  await mockNoRedirect(mockApiResponse, searchMock.block1.block_hash);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.block1.block_hash);
   await page.waitForResponse(apiUrl);
@@ -124,6 +137,7 @@ test('search by tx hash', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('core:quick_search', [
     searchMock.tx1,
   ], { queryParams: { q: searchMock.tx1.transaction_hash } });
+  await mockNoRedirect(mockApiResponse, searchMock.tx1.transaction_hash);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
@@ -135,6 +149,7 @@ test('search by tac operation hash', async({ render, page, mockApiResponse }) =>
   const apiUrl = await mockApiResponse('core:quick_search', [
     tacOperation1,
   ], { queryParams: { q: tacOperation1.tac_operation.operation_id } });
+  await mockNoRedirect(mockApiResponse, tacOperation1.tac_operation.operation_id);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(tacOperation1.tac_operation.operation_id);
   await page.waitForResponse(apiUrl);
@@ -147,6 +162,7 @@ test('search by blob hash', async({ render, page, mockApiResponse, mockEnvs }) =
   const apiUrl = await mockApiResponse('core:quick_search', [
     blob1,
   ], { queryParams: { q: blob1.blob_hash } });
+  await mockNoRedirect(mockApiResponse, blob1.blob_hash);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(blob1.blob_hash);
   await page.waitForResponse(apiUrl);
@@ -159,6 +175,7 @@ test('search by domain name', async({ render, page, mockApiResponse, mockEnvs })
   const apiUrl = await mockApiResponse('core:quick_search', [
     domain1,
   ], { queryParams: { q: domain1.ens_info.name } });
+  await mockNoRedirect(mockApiResponse, domain1.ens_info.name);
 
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(domain1.ens_info.name);
@@ -172,6 +189,7 @@ test('search by user op hash', async({ render, page, mockApiResponse, mockEnvs }
   const apiUrl = await mockApiResponse('core:quick_search', [
     userOp1,
   ], { queryParams: { q: searchMock.tx1.transaction_hash } });
+  await mockNoRedirect(mockApiResponse, searchMock.tx1.transaction_hash);
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.tx1.transaction_hash);
   await page.waitForResponse(apiUrl);
@@ -186,6 +204,7 @@ test('search with view all link', async({ render, page, mockApiResponse }) => {
     searchMock.contract1,
     ...Array(47).fill(searchMock.contract1),
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
@@ -208,6 +227,7 @@ test('scroll suggest to category', async({ render, page, mockApiResponse }) => {
     searchMock.token2,
     searchMock.contract1,
   ], { queryParams: { q: 'o' } });
+  await mockNoRedirect(mockApiResponse, 'o');
   await render(<SearchBarDesktop/>);
   await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(apiUrl);
@@ -237,6 +257,7 @@ test.describe('with apps', () => {
     const apiUrl = await mockApiResponse('core:quick_search', [
       searchMock.token1,
     ], { queryParams: { q: 'o' } });
+    await mockNoRedirect(mockApiResponse, 'o');
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, appsMock);
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
@@ -256,6 +277,7 @@ test.describe('with apps', () => {
 test.describe('block countdown', () => {
   test('no results', async({ render, page, mockApiResponse }) => {
     const apiUrl = await mockApiResponse('core:quick_search', [], { queryParams: { q: '1234567890' } });
+    await mockNoRedirect(mockApiResponse, '1234567890');
     await render(<SearchBarDesktop/>);
     await page.getByPlaceholder(/search/i).fill('1234567890');
     await page.waitForResponse(apiUrl);
@@ -267,6 +289,7 @@ test.describe('block countdown', () => {
     const apiUrl = await mockApiResponse('core:quick_search', [
       { ...searchMock.token1, name: '1234567890123456789' },
     ], { queryParams: { q: '1234567890' } });
+    await mockNoRedirect(mockApiResponse, '1234567890');
     await render(<SearchBarDesktop/>);
     await page.getByPlaceholder(/search/i).fill('1234567890');
     await page.waitForResponse(apiUrl);

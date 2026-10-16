@@ -3,6 +3,7 @@ import { Box } from '@chakra-ui/react';
 import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressMock from 'src/slices/address/mocks/address';
+import * as statsMock from 'src/slices/chain/stats/mocks';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
 import * as tokenInfo from 'src/slices/token/mocks/info';
 import * as tokenInstance from 'src/slices/token/mocks/instance';
@@ -26,7 +27,7 @@ const nextPageParams = {
   fiat_value: '1',
 };
 
-const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
+const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], mockAssetResponse: TestFnArgs['mockAssetResponse']) => {
   const response20: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d ],
     next_page_params: nextPageParams,
@@ -49,6 +50,8 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse']) 
   };
 
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockAssetResponse(tokenInfo.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_s.jpg');
 
   // data for stats widgets
   await mockApiResponse('core:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
@@ -77,12 +80,12 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse']) 
   await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH } });
 };
 
-test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse }) => {
+test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
     ...ENVS_MAP.additionalTokenTypes,
   ]);
-  await mockAddressTokens(mockApiResponse);
+  await mockAddressTokens(mockApiResponse, mockAssetResponse);
 
   const hooksConfig = {
     router: {
@@ -101,8 +104,8 @@ test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse })
   await expect(component).toHaveScreenshot();
 });
 
-test('collections +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockAddressTokens(mockApiResponse);
+test('collections +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
+  await mockAddressTokens(mockApiResponse, mockAssetResponse);
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
@@ -121,7 +124,7 @@ test('collections +@dark-mode', async({ render, mockApiResponse }) => {
 });
 
 test('nfts +@dark-mode', async({ render, mockAssetResponse, mockApiResponse }) => {
-  await mockAddressTokens(mockApiResponse);
+  await mockAddressTokens(mockApiResponse, mockAssetResponse);
   await mockAssetResponse(tokenInstance.base.image_url as string, './playwright/mocks/image_s.jpg');
 
   const hooksConfig = {
@@ -146,12 +149,12 @@ test('nfts +@dark-mode', async({ render, mockAssetResponse, mockApiResponse }) =
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('fungible tokens', async({ render, mockEnvs, mockApiResponse }) => {
+  test('fungible tokens', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
       ...ENVS_MAP.additionalTokenTypes,
     ]);
-    await mockAddressTokens(mockApiResponse);
+    await mockAddressTokens(mockApiResponse, mockAssetResponse);
 
     const hooksConfig = {
       router: {
@@ -171,7 +174,7 @@ test.describe('mobile', () => {
   });
 
   test('nfts', async({ render, mockAssetResponse, page, mockApiResponse }) => {
-    await mockAddressTokens(mockApiResponse);
+    await mockAddressTokens(mockApiResponse, mockAssetResponse);
     await mockAssetResponse(tokenInstance.base.image_url as string, './playwright/mocks/image_s.jpg');
 
     const hooksConfig = {
@@ -195,8 +198,8 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('collections', async({ render, mockApiResponse }) => {
-    await mockAddressTokens(mockApiResponse);
+  test('collections', async({ render, mockApiResponse, mockAssetResponse }) => {
+    await mockAddressTokens(mockApiResponse, mockAssetResponse);
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
@@ -218,9 +221,9 @@ test.describe('mobile', () => {
 test.describe('update balances via socket', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('base flow', async({ render, page, createSocket, mockApiResponse }) => {
+  test('base flow', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
     test.slow();
-    await mockAddressTokens(mockApiResponse);
+    await mockAddressTokens(mockApiResponse, mockAssetResponse);
 
     const hooksConfig = {
       router: {
@@ -314,13 +317,13 @@ test.describe('update balances via socket', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('custom token ZRC-2', async({ render, page, createSocket, mockApiResponse, mockEnvs }) => {
+  test('custom token ZRC-2', async({ render, page, createSocket, mockApiResponse, mockEnvs, mockAssetResponse }) => {
     test.slow();
 
     await mockEnvs([
       [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ZRC-2","name":"ZRC-2"}]' ],
     ]);
-    await mockAddressTokens(mockApiResponse);
+    await mockAddressTokens(mockApiResponse, mockAssetResponse);
 
     const hooksConfig = {
       router: {

@@ -4,6 +4,8 @@ import React from 'react';
 import * as profileMock from 'src/features/account/mocks/user-profile';
 import * as rewardsBalanceMock from 'src/features/rewards/mocks/balance';
 import * as dailyRewardMock from 'src/features/rewards/mocks/daily-reward';
+import * as referralsMock from 'src/features/rewards/mocks/referrals';
+import * as rewardsConfigMock from 'src/features/rewards/mocks/rewards-config';
 
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -35,6 +37,8 @@ testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs,
   await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
   await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
   await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
+  await mockApiResponse('rewards:user_referrals', referralsMock.base);
+  await mockApiResponse('rewards:config', rewardsConfigMock.base);
 
   const component = await render(<NavigationDesktop/>, { hooksConfig });
   await component.getByText('Blockchain').hover();
