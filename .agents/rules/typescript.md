@@ -389,3 +389,122 @@ Use `decs.d.ts` exclusively for untyped third-party module declarations. Do not 
 // decs.d.ts
 declare module 'some-untyped-package';
 ```
+
+## Constructive modeling
+
+Build the type from parts that are all legal instead of restricting a loose type with runtime checks.
+
+Non-empty, via a variadic tuple:
+
+```ts
+type NonEmptyArray<T> = [T, ...T[]];
+
+// BAD: Array<T> plus a length check every caller must repeat
+function pickWinner(entries: string[]): string {
+  if (entries.length === 0) throw new Error("no entries");
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+
+// GOOD: an empty value of the type can't exist
+function pickWinner(entries: NonEmptyArray<string>): string {
+  return entries[Math.floor(Math.random() * entries.length)];
+}
+```
+
+Where a plain `T[]` arrives, narrow once with a guard. The fact then travels in the type:
+
+```ts
+const isNonEmpty = <T>(arr: T[]): arr is NonEmptyArray<T> => arr.length > 0;
+```
+
+Even length, as pairs:
+
+```ts
+type Pairs<T> = Array<[T, T]>;
+```
+
+A time range, as start plus duration:
+
+```ts
+// BAD: a comment holds the invariant
+type TimeRange = { start: Date; end: Date }; // start <= end
+
+// GOOD: a negative range can't be written; derive end when needed
+type TimeRange = { start: Date; durationMs: number };
+```
+
+Keep `durationMs` a plain number. Pick the representation that makes the bad state un-constructable, then expose the reading you need on top (`pairs.flat()`, a `rangeEnd()` helper).
+
+## Simplest total type
+
+Don't strengthen everything. Keep `T[]` when every operation on it is total:
+
+```ts
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
+```
+
+Strengthen when the loose type forces a lie at a use site. The tells are `!`, `arr[0] as T`, and a "should never happen" throw:
+
+```ts
+// BAD: partiality smuggled past the compiler
+function newestSession(sessions: Array<Session>): Session {
+  return sessions.at(0)!;
+}
+
+// GOOD: strengthen the input; the assertion disappears
+function newestSession(sessions: NonEmptyArray<Session>): Session {
+  return sessions[0];
+}
+```
+
+Weakening the result to `Session | undefined` is the other total signature.
+
+## Narrowing hierarchy
+
+From best to last-resort:
+
+1. **Discriminated union switch / if.** Compiler narrows automatically.
+2. **`in` operator.** `"key" in obj` narrows to variants containing that key.
+3. **`typeof` / `instanceof`.** For primitives and class instances.
+4. **User-defined type guard.** When the above aren't enough.
+5. **`as` cast.**.
+
+```ts
+function area(s: Shape): number {
+  if ("radius" in s) return Math.PI * s.radius ** 2; // narrowed to circle
+  return s.width * s.height; // narrowed to rect
+}
+```
+
+## Type guards
+
+A guard must actually verify the claim. A lying guard is worse than `as`.
+
+```ts
+function isCircle(s: Shape): s is Shape & { kind: "circle" } {
+  return s.kind === "circle";
+}
+```
+
+Prefer discriminant narrowing when possible.
+
+## Schema-derived types
+
+When an API response type already defines a shape, derive from the generated types instead of duplicating them. Reach for `Pick`, `Omit`, `Parameters`, `ReturnType`, `Awaited`, `typeof` before writing a new interface.
+
+```ts
+// BAD. Duplicate shape, drifts when the schema changes.
+type CheckSummary = {
+  totalCount: number;
+  checks: { name: string; status: string }[];
+};
+function renderChecks(s: CheckSummary) {
+  /* ... */
+}
+
+// GOOD. Derive from the generated schema type.
+import type { ChecksMessage } from "<generated module>";
+function renderChecks(s: Pick<ChecksMessage, "totalCount" | "checks">) {
+  /* ... */
+}
+```
