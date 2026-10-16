@@ -91,7 +91,7 @@ Where the table says to run the checks, run them yourself rather than taking "ch
 verifying that claim is most of what a review is worth:
 
 ```bash
-pnpm lint:eslint
+pnpm lint:eslint --changed=<base>
 pnpm lint:tsc
 pnpm lint:cspell
 pnpm test:vitest --changed <base>

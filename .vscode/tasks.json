@@ -49,11 +49,11 @@
             "group": "build",
         },
         {
-            "type": "npm",
-            "script": "lint:eslint:fix",
+            "type": "shell",
+            "command": "pnpm lint:eslint --fix",
             "problemMatcher": [],
             "label": "eslint",
-            "detail": "run eslint",
+            "detail": "run eslint --fix",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",

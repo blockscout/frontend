@@ -199,6 +199,9 @@ export default tseslint.config(
     'deploy/tools/sitemap-generator/',
     'deploy/tools/envs-validator/dist/',
     'deploy/tools/envs-validator/public/',
+    // generated files that only a nested .gitignore covers; includeIgnoreFile reads the root one alone
+    'deploy/tools/envs-validator/index.js',
+    '.design-sync/.cache/',
     'public/',
     '.git/',
     // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap

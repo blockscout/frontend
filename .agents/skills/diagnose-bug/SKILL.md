@@ -138,7 +138,7 @@ Branch off `origin/main`: `issue-<N>` for an issue, otherwise `bug-<kebab-slug>`
 3. **Fix**, watch it pass, then re-run the step 2 loop on the original, un-minimised scenario.
 4. **Cleanup.** `grep -r "DEBUG-" src/` returns nothing; throwaway scripts are gone from the scratchpad
    and the tree; a registry alias added in step 2 stays.
-5. **Verify** per `.agents/rules/code-quality.md`: ESLint on the changed files, `pnpm lint:tsc`,
+5. **Verify** per `.agents/rules/code-quality.md`, linting the changed files with `--fix`; then
    `pnpm test:vitest --changed`, and `pnpm test:pw <file>` only when the regression test is a `*.pw.tsx`.
 6. **Commit**, then follow the `create-pr` skill, Mode C. The Description carries, in this order:
    what was broken, the root cause, the fix, how it was verified (the regression test named, or why
