@@ -10,7 +10,10 @@ alwaysApply: false
 We use ESLint, cSpell, TypeScript to maintain code quality.
 
 ```bash
-pnpm lint:eslint:fix
+pnpm lint:eslint:fix                         # whole repo
+pnpm lint:eslint path/to/file.tsx            # one file or directory
+pnpm lint:eslint --changed                   # this branch vs origin/main, including uncommitted and untracked files
+pnpm lint:eslint --changed=<ref> --fix       # another base; eslint flags pass through
 pnpm lint:tsc
 pnpm lint:cspell
 ```
