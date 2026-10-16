@@ -25,8 +25,9 @@ describe('TxsTable', () => {
     const onSortToggle = vi.fn();
     render(<TxsTable txs={ [ txMock.base ] } sort="default" onSortToggle={ onSortToggle } top={ 0 } showBlockInfo withBlockSort={ false }/>);
 
-    fireEvent.click(screen.getByRole('columnheader', { name: 'Block' }));
+    fireEvent.click(screen.getByText('Block', { selector: 'th' }));
 
+    expect(screen.queryByText('Block', { selector: 'th *' })).toBeNull();
     expect(onSortToggle).not.toHaveBeenCalled();
   });
 });
