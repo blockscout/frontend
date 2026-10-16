@@ -37,6 +37,7 @@ type Props = {
   stickyHeader?: boolean;
   translationQuery?: TxsTranslationQuery;
   resetKey?: string;
+  withBlockSort?: boolean;
 };
 
 const getBaseKey = (item: schemas['Transaction']): string => item.hash;
@@ -54,6 +55,7 @@ const TxsTable = ({
   stickyHeader = true,
   translationQuery,
   resetKey,
+  withBlockSort = true,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading, resetKey });
   const initialList = useInitialList({
@@ -94,7 +96,7 @@ const TxsTable = ({
             <TableColumnHeader width="160px">Type</TableColumnHeader>
             <TableColumnHeader width={ baseWidth }>Method</TableColumnHeader>
             { showBlockInfo && (
-              onSortToggle ? (
+              onSortToggle && withBlockSort ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }
                   sortField="block_number"

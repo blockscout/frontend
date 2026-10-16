@@ -10,7 +10,7 @@ import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import { SORT_OPTIONS } from 'src/slices/tx/hooks/useTxsSort';
+import { SORT_OPTIONS, SORT_OPTIONS_WITHOUT_BLOCK } from 'src/slices/tx/hooks/useTxsSort';
 
 import Pagination from 'src/shared/pagination/Pagination';
 import Sort from 'src/shared/sort/Sort';
@@ -23,13 +23,27 @@ type Props = {
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
   linkSlot?: React.ReactNode;
+  withBlockSort?: boolean;
 };
 
 const collection = createListCollection({
   items: SORT_OPTIONS,
 });
 
-const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
+const collectionWithoutBlock = createListCollection({
+  items: SORT_OPTIONS_WITHOUT_BLOCK,
+});
+
+const TxsHeaderMobile = ({
+  filterComponent,
+  sorting,
+  setSorting,
+  paginationProps,
+  className,
+  showPagination = true,
+  linkSlot,
+  withBlockSort = true,
+}: Props) => {
   const handleSortValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
     setSorting?.(value[0] as TransactionsSortingValue);
   }, [ setSorting ]);
@@ -46,7 +60,7 @@ const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps
           <Sort
             name="transactions_sorting"
             defaultValue={ [ sorting ] }
-            collection={ collection }
+            collection={ withBlockSort ? collection : collectionWithoutBlock }
             onValueChange={ handleSortValueChange }
             isLoading={ paginationProps.isLoading }
           />
