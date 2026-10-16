@@ -903,6 +903,16 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
+  '/test': {
+    metadata: {
+      title: {
+        'default': '%chain_name% grid table test',
+      },
+      description: {
+        'default': DESCRIPTION_DEFAULT,
+      },
+    },
+  },
   '/api/metrics': {
     metadata: {
       title: {
