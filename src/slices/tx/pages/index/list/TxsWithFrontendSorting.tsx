@@ -22,6 +22,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
+  withBlockSort?: boolean;
 };
 
 const TxsWithFrontendSorting = ({
@@ -33,8 +34,9 @@ const TxsWithFrontendSorting = ({
   currentAddress,
   enableTimeIncrement,
   top,
+  withBlockSort,
 }: Props) => {
-  const { data, isError, setSortByValue, sorting } = useTxsSort(query);
+  const { data, isError, setSortByValue, sorting } = useTxsSort(query, withBlockSort);
 
   return (
     <TxsContent
@@ -53,6 +55,7 @@ const TxsWithFrontendSorting = ({
       sort={ sorting }
       pagination={ query.pagination }
       resetKey={ query.queryHash }
+      withBlockSort={ withBlockSort }
     />
   );
 };
