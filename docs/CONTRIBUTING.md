@@ -199,8 +199,7 @@ How a release is cut, put on staging and published, and how a merged PR gets int
 | `pnpm start:docker:local` | start an application from previously built local docker image with user's configuration |
 | `pnpm start:docker:preset <config_preset_name>` | start an application from previously built local docker image with predefined configuration |
 | **Linting and formatting** |
-| `pnpm lint:eslint [--changed[=<ref>]] [<path>...]` | lint project files with ESLint: the whole repo, the given paths, or the files changed vs `<ref>` (default `origin/main`) |
-| `pnpm lint:eslint:fix` | lint project files with ESLint and automatically fix problems |
+| `pnpm lint:eslint [--changed[=<ref>]] [--fix] [<path>...]` | lint project files with ESLint: the whole repo, the given paths, or the files changed vs `<ref>` (default `origin/main`); `--fix` and other eslint flags pass through |
 | `pnpm lint:tsc` | compile project typescript files using TypeScript Compiler |
 | `pnpm svg:format` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
 | `pnpm svg:build-sprite` | build SVG icons sprite |

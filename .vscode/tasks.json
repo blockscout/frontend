@@ -50,10 +50,11 @@
         },
         {
             "type": "npm",
-            "script": "lint:eslint:fix",
+            "script": "lint:eslint",
+            "args": ["--fix"],
             "problemMatcher": [],
             "label": "eslint",
-            "detail": "run eslint",
+            "detail": "run eslint --fix",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
