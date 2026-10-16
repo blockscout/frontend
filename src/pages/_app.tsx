@@ -138,13 +138,8 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   );
 
   const walletBoundary = walletConnectorType === 'dynamic' ? (
-    // The dynamic wallet hooks resolve their heavy connector through a dynamic import and suspend on first
-    // render; the pages-router dynamic() wrapper provides no Suspense boundary of its own, so one is needed
-    // here. A null fallback keeps the pre-connector window blank instead of remounting once it resolves.
     <DynamicProvider>
-      <React.Suspense fallback={ null }>
-        { appTree }
-      </React.Suspense>
+      { appTree }
     </DynamicProvider>
   ) : (
     // reown / fallback: `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on

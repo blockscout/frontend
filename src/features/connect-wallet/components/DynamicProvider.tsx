@@ -16,7 +16,10 @@ import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
 import useGetCsrfToken from 'src/features/account/hooks/useGetCsrfToken';
 import useLogout from 'src/features/account/hooks/useLogout';
+import useAccountDynamic from 'src/features/connect-wallet/hooks/account/useAccountDynamic';
+import useWalletDynamic from 'src/features/connect-wallet/hooks/wallet/useWalletDynamic';
 import { chains } from 'src/features/connect-wallet/utils/chains';
+import { registerDynamicHooks } from 'src/features/connect-wallet/utils/dynamic-hooks';
 import wagmiConfig from 'src/features/connect-wallet/utils/wagmi-config';
 
 import config from 'src/config';
@@ -27,6 +30,8 @@ import { toaster } from 'src/toolkit/chakra/toaster';
 import { castToString } from 'src/toolkit/utils/guards';
 
 const feature = config.features.connectWallet;
+
+registerDynamicHooks({ useWallet: useWalletDynamic, useAccount: useAccountDynamic });
 
 const walletConnectors = [
   EthereumWalletConnectors,
