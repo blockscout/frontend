@@ -20,14 +20,15 @@ describe('isInScope', () => {
     expect(isInScope('tools/scripts/legacy.cjs')).toBe(true);
   });
 
-  it('includes the deploy packages that are under ESLint and the root tsconfig', () => {
+  it('includes the container-startup tools under deploy/tools/', () => {
     expect(isInScope('deploy/tools/envs-validator/index.ts')).toBe(true);
     expect(isInScope('deploy/tools/envs-validator/schemas/features/rollup.ts')).toBe(true);
+    expect(isInScope('deploy/tools/favicon-generator/index.js')).toBe(true);
+    expect(isInScope('deploy/tools/llms-txt-generator/generate-standard.ts')).toBe(true);
   });
 
-  it('excludes the rest of deploy/ — it is outside ESLint and the root tsconfig (issue #3675)', () => {
+  it('excludes the deploy shell scripts', () => {
     expect(isInScope('deploy/scripts/run.ts')).toBe(false);
-    expect(isInScope('deploy/tools/favicon-generator/index.ts')).toBe(false);
   });
 
   it('excludes test support and configuration', () => {

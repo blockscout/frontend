@@ -1,7 +1,45 @@
-/* eslint-disable no-console */
 const path = require('path');
 
 const stripTrailingSlash = (str) => str[str.length - 1] === '/' ? str.slice(0, -1) : str;
+
+const isEnvTrue = (name) => process.env[name] === 'true';
+const isEnvFalse = (name) => process.env[name] === 'false';
+const isEnvSet = (name) => Boolean(process.env[name]);
+
+const isRollup = () => isEnvSet('NEXT_PUBLIC_ROLLUP_TYPE');
+const isMultichain = () => isEnvTrue('NEXT_PUBLIC_MULTICHAIN_ENABLED');
+const hasBeaconDeposits = () => isEnvTrue('NEXT_PUBLIC_HAS_BEACON_CHAIN') && !isEnvTrue('NEXT_PUBLIC_BEACON_CHAIN_WITHDRAWALS_ONLY');
+
+// A route is left out of the sitemap when its predicate holds for the instance's env.
+const HIDDEN_ROUTES = new Map(Object.entries({
+  '/batches': () => !isRollup() && !hasBeaconDeposits(),
+  '/deposits': () => !isRollup() && !hasBeaconDeposits(),
+  '/withdrawals': () => !isRollup() && !isEnvTrue('NEXT_PUBLIC_HAS_BEACON_CHAIN'),
+  '/dispute-games': () => process.env.NEXT_PUBLIC_ROLLUP_TYPE !== 'optimistic',
+  '/blobs': () => !isEnvTrue('NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED'),
+  '/name-services': () => !isEnvSet('NEXT_PUBLIC_NAME_SERVICE_API_HOST') || !isEnvSet('NEXT_PUBLIC_CLUSTERS_API_HOST'),
+  '/ops': () => !isEnvTrue('NEXT_PUBLIC_HAS_USER_OPS'),
+  '/output-roots': () => !isEnvTrue('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED'),
+  '/interop-messages': () => !isEnvTrue('NEXT_PUBLIC_INTEROP_ENABLED'),
+  '/pools': () => !isEnvTrue('NEXT_PUBLIC_DEX_POOLS_ENABLED'),
+  '/advanced-filter': () => isEnvFalse('NEXT_PUBLIC_ADVANCED_FILTER_ENABLED'),
+  '/apps': () => !isEnvTrue('NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+  // on chains served by the Pro API the page only exists when tabs are configured explicitly
+  '/api-docs': () => process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]' ||
+    (isEnvTrue('NEXT_PUBLIC_PRO_API_SUPPORTED') && !isEnvSet('NEXT_PUBLIC_API_DOCS_TABS')),
+  '/gas-tracker': () => isEnvFalse('NEXT_PUBLIC_GAS_TRACKER_ENABLED'),
+  '/stats': () => !isEnvSet('NEXT_PUBLIC_STATS_API_HOST'),
+  '/uptime': () => !isEnvSet('NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS'),
+  '/validators': () => !isEnvSet('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE'),
+  '/epochs': () => !isEnvTrue('NEXT_PUBLIC_CELO_ENABLED'),
+  '/operations': () => !isEnvSet('NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST'),
+  '/public-tags/submit': () => !isEnvSet('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST') || !isEnvSet('NEXT_PUBLIC_METADATA_SERVICE_API_HOST'),
+  '/txn-withdrawals': () => process.env.NEXT_PUBLIC_ROLLUP_TYPE !== 'arbitrum',
+  '/hot-contracts': () => !isEnvTrue('NEXT_PUBLIC_HOT_CONTRACTS_ENABLED'),
+  '/block/countdown': isMultichain,
+  '/contract-verification': isMultichain,
+  '/visualize/sol2uml': isMultichain,
+}));
 
 const fetchResource = async(url, formatter) => {
   console.log('🌀 [next-sitemap] Fetching resource:', url);
@@ -30,12 +68,12 @@ const fetchResource = async(url, formatter) => {
 };
 
 const fetchDapps = async() => {
-  if(process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true'){
+  if (process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true') {
     return;
   }
 
   const formatter = (data) => {
-    if(!Array.isArray(data)){
+    if (!Array.isArray(data)) {
       return [];
     }
 
@@ -55,20 +93,20 @@ const fetchDapps = async() => {
         return 0;
       })
       .slice(0, 50)
-      .map(({ id }) => ({ path: `/apps/${ id }/info` }))
+      .map(({ id }) => ({ path: `/apps/${ id }/info` }));
   };
 
   const configUrl = process.env.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL;
-  if(configUrl){
+  if (configUrl) {
     return fetchResource(configUrl, formatter);
   }
 
   const api = process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST;
   const instanceId = process.env.NEXT_PUBLIC_ADMIN_RS_INSTANCE_ID || process.env.NEXT_PUBLIC_NETWORK_ID;
-  if(api && instanceId){
+  if (api && instanceId) {
     return fetchResource(`${ stripTrailingSlash(api) }/api/v1/chains/${ instanceId }/marketplace/dapps`, formatter);
   }
-}
+};
 
 const siteUrl = [
   process.env.NEXT_PUBLIC_APP_PROTOCOL || 'https',
@@ -112,7 +150,7 @@ const fetchStatsCharts = async() => {
       (section) => (section.charts || []).map(({ id }) => ({ path: `/stats/${ id }` })),
     ),
   );
-}
+};
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
@@ -124,7 +162,7 @@ module.exports = {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/auth/*', '/login', '/chakra', '/sprite', '/account/*'],
+        disallow: [ '/auth/*', '/login', '/chakra', '/sprite', '/account/*' ],
       },
     ],
   },
@@ -138,125 +176,8 @@ module.exports = {
     '/chakra',
   ],
   transform: async({ lastmod, ...config }, path) => {
-    switch (path) {
-      case '/batches':
-      case '/deposits':
-        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE && (process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN !== 'true' || process.env.NEXT_PUBLIC_BEACON_CHAIN_WITHDRAWALS_ONLY === 'true')) {
-          return null;
-        }
-        break;
-      case '/withdrawals':
-        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE && process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN !== 'true') {
-          return null;
-        }
-        break;
-      case '/dispute-games':
-        if (process.env.NEXT_PUBLIC_ROLLUP_TYPE !== 'optimistic') {
-          return null;
-        }
-        break;
-      case '/blobs':
-        if (process.env.NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/name-services':
-        if (!process.env.NEXT_PUBLIC_NAME_SERVICE_API_HOST || !process.env.NEXT_PUBLIC_CLUSTERS_API_HOST) {
-          return null;
-        }
-        break;
-      case '/ops':
-        if (process.env.NEXT_PUBLIC_HAS_USER_OPS !== 'true') {
-          return null;
-        }
-        break;
-      case '/output-roots':
-        if (process.env.NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/interop-messages':
-        if (process.env.NEXT_PUBLIC_INTEROP_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/pools':
-        if (process.env.NEXT_PUBLIC_DEX_POOLS_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/advanced-filter':
-        if (process.env.NEXT_PUBLIC_ADVANCED_FILTER_ENABLED === 'false') {
-          return null;
-        }
-        break;
-      case '/apps':
-        if (process.env.NEXT_PUBLIC_MARKETPLACE_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/api-docs':
-        // on chains served by the Pro API the page only exists when tabs are configured explicitly
-        if (
-          process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]' ||
-          (process.env.NEXT_PUBLIC_PRO_API_SUPPORTED === 'true' && !process.env.NEXT_PUBLIC_API_DOCS_TABS)
-        ) {
-          return null;
-        }
-        break;
-      case '/gas-tracker':
-        if (process.env.NEXT_PUBLIC_GAS_TRACKER_ENABLED === 'false') {
-          return null;
-        }
-        break;
-      case '/stats':
-        if (!process.env.NEXT_PUBLIC_STATS_API_HOST) {
-          return null;
-        }
-        break;
-      case '/uptime':
-        if (!process.env.NEXT_PUBLIC_MEGA_ETH_SOCKET_URL_METRICS) {
-          return null;
-        }
-        break;
-      case '/validators':
-        if (!process.env.NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE) {
-          return null;
-        }
-        break;
-      case '/epochs':
-        if (process.env.NEXT_PUBLIC_CELO_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      case '/operations':
-        if (!process.env.NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST) {
-          return null;
-        }
-        break;
-      case '/public-tags/submit':
-        if (!process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST || !process.env.NEXT_PUBLIC_METADATA_SERVICE_API_HOST) {
-          return null;
-        }
-        break;
-      case '/txn-withdrawals':
-        if (!process.env.NEXT_PUBLIC_ROLLUP_TYPE || process.env.NEXT_PUBLIC_ROLLUP_TYPE !== 'arbitrum') {
-          return null;
-        }
-        break;
-      case '/hot-contracts':
-        if (process.env.NEXT_PUBLIC_HOT_CONTRACTS_ENABLED !== 'true') {
-          return null;
-        }
-        break;
-      // disabled routes for multichain
-      case '/block/countdown':
-      case '/contract-verification':
-      case '/visualize/sol2uml':
-        if (process.env.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true') {
-          return null;
-        }
-        break;
+    if (HIDDEN_ROUTES.get(path)?.()) {
+      return null;
     }
 
     return {
@@ -268,14 +189,14 @@ module.exports = {
     };
   },
   additionalPaths: async(config) => {
-    if(process.env.NEXT_PUBLIC_MULTICHAIN_ENABLED === 'true'){
+    if (isMultichain()) {
       return;
     }
 
     const addresses = fetchResource(
       `${ apiUrl }/addresses`,
       (data) => data.items.map(({ hash }) => ({
-        path: `/address/${ hash }`
+        path: `/address/${ hash }`,
       })),
     );
     const txs = fetchResource(
@@ -294,34 +215,29 @@ module.exports = {
     );
     const tokens = fetchResource(
       `${ apiUrl }/tokens`,
-      (data) => data.items.map(({ address_hash }) => ({
-        path: `/token/${ address_hash }`
+      (data) => data.items.map(({ address_hash: addressHash }) => ({
+        path: `/token/${ addressHash }`,
       })),
     );
-    const contracts = process.env.NEXT_PUBLIC_HOT_CONTRACTS_ENABLED === 'true' ? 
+    const contracts = isEnvTrue('NEXT_PUBLIC_HOT_CONTRACTS_ENABLED') ?
       fetchResource(
         `${ apiUrl }/stats/hot-smart-contracts?scale=30d`,
-        (data) => data.items.map(({ contract_address }) => ({
-          path: `/address/${ contract_address.hash }?tab=contract`
+        (data) => data.items.map(({ contract_address: contractAddress }) => ({
+          path: `/address/${ contractAddress.hash }?tab=contract`,
         })),
-      ) : 
+      ) :
       fetchResource(
         `${ apiUrl }/smart-contracts`,
         (data) => data.items.map(({ address }) => ({
-          path: `/address/${ address.hash }?tab=contract`
+          path: `/address/${ address.hash }?tab=contract`,
         })),
       );
     const dapps = fetchDapps();
     const statsCharts = fetchStatsCharts();
 
-    return Promise.all([
-      ...(await addresses || []),
-      ...(await txs || []),
-      ...(await blocks || []),
-      ...(await tokens || []),
-      ...(await contracts || []),
-      ...(await dapps || []),
-      ...(await statsCharts || []),
-    ].map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
+    const paths = (await Promise.all([ addresses, txs, blocks, tokens, contracts, dapps, statsCharts ]))
+      .flatMap((items) => items || []);
+
+    return Promise.all(paths.map(({ path, lastmod }) => config.transform({ ...config, lastmod }, path)));
   },
 };

@@ -115,6 +115,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
           query={ txsValidatedQuery }
           socketType="txs_validated"
           top={ tabsHeight }
+          withBlockSort={ false }
         /> },
     !chainConfig?.slices.tx.hiddenViews?.pending_txs ? {
       id: getTabId('pending', parentTab),
@@ -135,6 +136,7 @@ const TxsTabs = ({ parentTab, tabsHeight, ...rest }: Props) => {
         <TxsWithFrontendSorting
           query={ txsWithBlobsQuery }
           top={ tabsHeight }
+          withBlockSort={ false }
         />
       ),
     },

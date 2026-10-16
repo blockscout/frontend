@@ -45,6 +45,7 @@ type Props = {
   sort: TransactionsSortingValue;
   stickyHeader?: boolean;
   resetKey?: string;
+  withBlockSort?: boolean;
 };
 
 const TxsContent = ({
@@ -64,6 +65,7 @@ const TxsContent = ({
   sort,
   stickyHeader = true,
   resetKey,
+  withBlockSort,
 }: Props) => {
   const isMobile = useIsMobile();
 
@@ -89,6 +91,7 @@ const TxsContent = ({
         stickyHeader={ !isMobile && stickyHeader }
         translationQuery={ translationQuery }
         resetKey={ resetKey }
+        withBlockSort={ withBlockSort }
       />
     </TableContainerScrollable>
   ) : null;
@@ -101,6 +104,7 @@ const TxsContent = ({
       paginationProps={ pagination }
       showPagination={ pagination.isVisible }
       filterComponent={ filter }
+      withBlockSort={ withBlockSort }
       linkSlot={ currentAddress ? (
         <CsvExport
           type="address_txs"

@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { parentPort, workerData } from 'node:worker_threads';
 
 interface WorkerData {
@@ -22,8 +23,6 @@ async function fetchChainConfig(url: string): Promise<ChainConfig> {
     }
     const config = await response.json();
     return config as ChainConfig;
-  } catch (error) {
-    throw error;
   } finally {
     clearTimeout(timeout);
   }
@@ -39,7 +38,7 @@ async function computeConfig() {
 
     // 2. Set environment variables
     Object.entries(chainConfig.envs).forEach(([ key, value ]) => {
-      // eslint-disable-next-line no-restricted-properties
+
       process.env[key] = value;
     });
 
