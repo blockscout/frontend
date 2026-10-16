@@ -12,7 +12,6 @@
   "devDependencies": {
     "@types/node": "24.13.4",
     "dotenv-cli": "^7.4.4",
-    "typescript": "7.0.2",
     "vite": "6.4.3"
   }
 }

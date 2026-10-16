@@ -1,22 +1,22 @@
-/* eslint-disable no-console */
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { pick, uniq, delay } from 'es-toolkit';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
 import * as viemChains from 'viem/chains';
-import { pick, uniq, delay } from 'es-toolkit';
 
-import { EssentialDappsConfig } from 'src/features/marketplace/types/client';
-import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
+import type { EssentialDappsConfig, EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
+
 import currentChainConfig from 'src/config';
-import appConfig from 'src/config';
-import { EssentialDappsChainConfig } from 'src/features/marketplace/types/client';
+import type appConfig from 'src/config';
+import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
 
 async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId: string | undefined) {
-  
   const controller = new AbortController();
   const timeout = setTimeout(() => {
     controller.abort(`Request to Chainscout API timed out`);
@@ -24,14 +24,14 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
 
   try {
     const response = await fetch(
-      `https://chains.blockscout.com/api/chains?chain_ids=${ [currentChainId, ...externalChainIds].filter(Boolean).join(',') }`,
-      { signal: controller.signal }
+      `https://chains.blockscout.com/api/chains?chain_ids=${ [ currentChainId, ...externalChainIds ].filter(Boolean).join(',') }`,
+      { signal: controller.signal },
     );
     if (!response.ok) {
       throw new Error(`Failed to fetch chains info from Chainscout API`);
     }
-    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
-  
+    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ]; logo: string }>;
+
     return {
       externals: externalChainIds.map((chainId) => ({
         id: chainId,
@@ -43,16 +43,13 @@ async function getChainscoutInfo(externalChainIds: Array<string>, currentChainId
         explorerUrl: chainsInfo[currentChainId]?.explorers[0]?.url,
         logoUrl: chainsInfo[currentChainId]?.logo,
       } : undefined,
-    }
-    
-  } catch (error) {
-    throw error;
+    };
   } finally {
     clearTimeout(timeout);
   }
 }
 
-function trimChainConfig(config: typeof appConfig, logoUrl: string | undefined) {
+function trimChainConfig(config: typeof appConfig) {
   return {
     ...pick(config, [ 'app', 'chain' ]),
     apis: pick(config.apis || {}, [ 'core' ]),
@@ -64,7 +61,7 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
   const worker = new Worker(workerPath, {
     workerData: { url },
-    env: {} // Start with empty environment
+    env: {}, // Start with empty environment
   });
   const controller = new AbortController();
 
@@ -86,10 +83,32 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
   return Promise.race([
     configPromise,
-    delay(30_000, { signal: controller.signal })
+    delay(30_000, { signal: controller.signal }),
   ]).finally(() => {
     worker.terminate();
-  })
+  });
+}
+
+function getEnabledChainIds(featureConfig: EssentialDappsConfig | null, currentChainId: string | undefined): Array<string> {
+  return uniq([
+    ...Object.values(featureConfig?.swap?.chains ?? []),
+    ...Object.values(featureConfig?.revoke?.chains ?? []),
+    ...Object.values(featureConfig?.multisend?.chains ?? []),
+  ].filter((chain) => chain !== currentChainId));
+}
+
+async function fetchChainConfigs(explorerUrls: Array<string>): Promise<Array<typeof appConfig>> {
+  const chainConfigs: Array<typeof appConfig> = [];
+
+  for (const explorerUrl of explorerUrls) {
+    const chainConfig = (await computeChainConfig(explorerUrl)) as typeof appConfig | undefined;
+    if (!chainConfig) {
+      throw new Error(`Failed to fetch chain config for ${ explorerUrl }`);
+    }
+    chainConfigs.push(chainConfig);
+  }
+
+  return chainConfigs;
 }
 
 async function run() {
@@ -102,11 +121,7 @@ async function run() {
     console.log('🌀 Generating essential dapps chains config...');
 
     const featureConfig = parseEnvJson<EssentialDappsConfig>(getEnvValue('NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG'));
-    const enabledChains = uniq([
-      ...Object.values(featureConfig?.swap?.chains ?? []),
-      ...Object.values(featureConfig?.revoke?.chains ?? []),
-      ...Object.values(featureConfig?.multisend?.chains ?? []),
-    ].filter((chain) => chain !== currentChainConfig.chain.id))
+    const enabledChains = getEnabledChainIds(featureConfig, currentChainConfig.chain.id);
 
     if (enabledChains.length === 0) {
       console.log('⚠️  No chains are enabled. Skipping essential dapps chains config generation.\n');
@@ -117,34 +132,26 @@ async function run() {
     const chainsWithoutUrl = chainscoutInfo.externals.filter(({ explorerUrl }) => !explorerUrl);
 
     if (chainsWithoutUrl.length > 0) {
-      console.log(`⚠️  For the following chains explorer url was not found: ${ chainsWithoutUrl.map(({ id }) => id).join(', ') }. Therefore, they will not be enabled.`);
+      const ids = chainsWithoutUrl.map(({ id }) => id).join(', ');
+      console.log(`⚠️  For the following chains explorer url was not found: ${ ids }. Therefore, they will not be enabled.`);
     }
     const explorerUrls = chainscoutInfo.externals.map(({ explorerUrl }) => explorerUrl).filter(Boolean);
     console.log(`ℹ️  For ${ explorerUrls.length } chains explorer url was found in static config. Fetching parameters for each chain...`);
 
-    const chainConfigs: Array<typeof appConfig> = [];
-
-    for (const explorerUrl of explorerUrls) {
-      const chainConfig = (await computeChainConfig(explorerUrl)) as typeof appConfig | undefined;
-      if (!chainConfig) {
-        throw new Error(`Failed to fetch chain config for ${ explorerUrl }`);
-      }
-      chainConfigs.push(chainConfig);
-    }
+    const chainConfigs = await fetchChainConfigs(explorerUrls);
 
     const result = {
       chains: [ currentChainConfig, ...chainConfigs ].map((config) => {
         const chainId = config.chain.id;
-        const chainInfo = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === chainId);
-        const logoUrl = [...chainscoutInfo.externals, chainscoutInfo.current].find((chain) => chain?.id === config.chain.id)?.logoUrl;
+        const chainInfo = [ ...chainscoutInfo.externals, chainscoutInfo.current ].find((chain) => chain?.id === chainId);
         const chainName = (config as { chain: { name: string } })?.chain?.name ?? `Chain ${ chainId }`;
         return {
           id: chainId || '',
           name: chainName,
           logo: chainInfo?.logoUrl,
           explorer_url: chainInfo?.explorerUrl || '',
-          app_config: trimChainConfig(config, logoUrl),
-          contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts
+          app_config: trimChainConfig(config),
+          contracts: Object.values(viemChains).find(({ id }) => id === Number(config.chain.id))?.contracts,
         } satisfies EssentialDappsChainConfig;
       }),
     };

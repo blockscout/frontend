@@ -1,7 +1,10 @@
-import config from 'src/config';
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import config from 'src/config';
 
 import { generateProApi } from './generate-pro-api';
 import { generateStandard } from './generate-standard';
@@ -12,26 +15,26 @@ const outputDir = resolvePath(currentDir, '../../../../public');
 const outputFile = resolvePath(outputDir, 'llms.txt');
 
 function run(): void {
-    try {
-        if (config.features.multichain.isEnabled) {
-            console.log('⏭️ Skipping llms.txt generation for multichain explorer');
-            return;
-        }
-
-        const isInProApi = config.chain.isProApiSupported;
-        const mode = isInProApi ? 'PRO API' : 'standard';
-
-        console.log(`🌀 Generating llms.txt (${ mode } mode)...`);
-
-        const content = isInProApi ? generateProApi() : generateStandard();
-        writeFileSync(outputFile, content);
-
-        console.log('👍 Done!\n');
-    } catch (error) {
-        console.error('🚨 Error generating llms.txt:', error);
-        console.log('\n');
-        process.exit(1);
+  try {
+    if (config.features.multichain.isEnabled) {
+      console.log('⏭️ Skipping llms.txt generation for multichain explorer');
+      return;
     }
+
+    const isInProApi = config.chain.isProApiSupported;
+    const mode = isInProApi ? 'PRO API' : 'standard';
+
+    console.log(`🌀 Generating llms.txt (${ mode } mode)...`);
+
+    const content = isInProApi ? generateProApi() : generateStandard();
+    writeFileSync(outputFile, content);
+
+    console.log('👍 Done!\n');
+  } catch (error) {
+    console.error('🚨 Error generating llms.txt:', error);
+    console.log('\n');
+    process.exit(1);
+  }
 }
 
 run();

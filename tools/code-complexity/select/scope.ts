@@ -1,20 +1,17 @@
 // File-scope resolution. The rule is an allowlist of directories — the app (`src/`), the repo's
-// own tooling (`tools/`) and the deploy packages that are already under ESLint and the root
-// TypeScript project — rather than a prefix test plus exclusions: nothing about tooling code makes
-// complexity or missing tests cheaper there, and `tools/code-complexity` in particular is gated by
-// the very thing it implements.
+// own tooling (`tools/`) and the container-startup tools (`deploy/tools/`) — rather than a prefix
+// test plus exclusions: nothing about tooling code makes complexity or missing tests cheaper there,
+// and `tools/code-complexity` in particular is gated by the very thing it implements.
 //
 // Three categories are deliberately out:
 //
-//  - the rest of `deploy/**` — ESLint ignores those packages and they sit outside the root
-//    TypeScript project. Making this gate their first and only automated check is backwards;
-//    bringing them under ESLint and `tsc` first is issue #3675. A package joins `ROOTS` once it is.
+//  - `deploy/scripts/**` — shell orchestration; the one TypeScript-free corner of deploy/.
 //  - `playwright/**`, `vitest/**`, `*.config.*` — test support and configuration, out on the same
 //    grounds specs are.
 //  - repo-root runtime files (`instrumentation*.ts`, `startup.node.ts`) — measured clean,
 //    and a short allowlist of directories is worth more than covering them.
 
-const ROOTS: ReadonlyArray<string> = [ 'src/', 'tools/', 'deploy/tools/envs-validator/' ];
+const ROOTS: ReadonlyArray<string> = [ 'src/', 'tools/', 'deploy/tools/' ];
 
 const EXTENSIONS: ReadonlyArray<string> = [ '.ts', '.tsx', '.mjs', '.js', '.cjs' ];
 
