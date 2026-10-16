@@ -161,3 +161,5 @@ export const baseResponse: SearchResult = {
   ],
   next_page_params: null,
 };
+
+export const noRedirect = { parameter: null, redirect: false, type: null };

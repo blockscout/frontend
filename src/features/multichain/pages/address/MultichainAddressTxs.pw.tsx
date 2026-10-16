@@ -5,6 +5,7 @@ import React from 'react';
 import * as countersMock from 'src/slices/address/mocks/counters';
 import * as txMock from 'src/slices/tx/mocks/list';
 
+import * as csvExportMock from 'src/features/csv-export/mocks';
 import * as addressMock from 'src/features/multichain/mocks/address';
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
 
@@ -38,6 +39,7 @@ test.describe('local txs', () => {
       countersMock.forContract,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
+    await mockApiResponse('core:config_csv_export', csvExportMock.config, { chainConfig: chainDataMock.chainA });
     await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(

@@ -3,6 +3,7 @@ import React from 'react';
 import * as addressMock from 'src/slices/address/mocks/address';
 
 import * as poolMock from 'src/features/dex-pools/mocks/pool';
+import { POOL } from 'src/features/dex-pools/stubs';
 
 import config from 'src/config';
 
@@ -22,6 +23,8 @@ test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, mockText
   await mockTextAd();
   await mockApiResponse('contractInfo:pool', poolMock.base, { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash: addressHash } });
   await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: poolMock.base.pool_id } });
+  // The page requests the address of the placeholder pool before the pool query resolves
+  await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash: POOL.pool_id } });
   await mockAssetResponse(poolMock.base.quote_token_icon_url as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(poolMock.base.base_token_icon_url as string, './playwright/mocks/image_md.jpg');
   const component = await render(<Pool/>, { hooksConfig });

@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import * as txsStatsMock from 'src/features/chain-stats/mocks/transactions';
 import { zetaChainCCTXList } from 'src/features/chain-variants/zeta-chain/mocks/cctx';
 import { zetaChainCCTXConfig } from 'src/features/chain-variants/zeta-chain/mocks/cctx-config';
 
@@ -11,9 +12,10 @@ import ZetaChainCCTXsTab from './ZetaChainCCTXsTab';
 
 const CCTX_CONFIG_URL = 'http://localhost:3000/zeta-config.json';
 
-test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
+test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.zetaChain);
   await mockConfigResponse('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', CCTX_CONFIG_URL, zetaChainCCTXConfig);
+  await mockApiResponse('stats:pages_transactions', txsStatsMock.base);
   await mockAssetResponse(zetaChainCCTXConfig[1].chain_logo, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(zetaChainCCTXConfig[2].chain_logo, './playwright/mocks/image_svg.svg');
 });

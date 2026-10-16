@@ -37,6 +37,7 @@ const addressMetadataQueryParams = {
 test('with action button +@dark-mode +@mobile', async({ render, mockApiResponse, mockAssetResponse }) => {
   await mockApiResponse('metadata:info', generateAddressMetadataInfo(hash, hiddenProtocolTagWithMeta), { queryParams: addressMetadataQueryParams });
   await mockAssetResponse(hiddenProtocolTagWithMeta.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(
     <TokenPageTitle
