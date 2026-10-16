@@ -55,6 +55,12 @@ disabled *fallback*.
   detect it and turn transparent (render children directly) — without that they
   would wait forever for a readiness signal only the deferred path emits.
   Moving dynamic mode onto the deferred model is a known follow-up.
+  Its hooks reach the synchronous `useWallet` / `useAccount` hubs through
+  `utils/dynamic-hooks.ts`, registered by `DynamicProvider`. Keep them off a
+  static import (the reown bundle grows) and off any post-paint suspend: a
+  suspend into a root boundary after first paint stops every mounted zag
+  presence machine, and a tab switched in that window keeps the old panel
+  visible (#3788).
 
 Before changing anything in the dynamic-mode graph, verify it in a production build (`pnpm prod:preset <alias>`)
 against an instance whose `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER=dynamic`, not just in dev — reshaping it once
