@@ -3,19 +3,21 @@ import React from 'react';
 import * as mocks from 'src/features/account/mocks/verified-addresses';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
 import TokenInfoForm from './TokenInfoForm';
 
-test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
+const mockFormData = async({ mockApiResponse, mockAssetResponse }: Pick<TestFnArgs, 'mockApiResponse' | 'mockAssetResponse'>) => {
   await mockApiResponse('admin:token_info_applications_config', mocks.TOKEN_INFO_FORM_CONFIG, { pathParams: { instanceId: '1' } });
   await mockAssetResponse(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, './playwright/mocks/image_md.jpg');
-});
+};
 
-test('base view +@mobile +@dark-mode', async({ render, mockEnvs }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs([
     ...ENVS_MAP.verifiedAddresses,
   ]);
+  await mockFormData({ mockApiResponse, mockAssetResponse });
   const props = {
     address: mocks.VERIFIED_ADDRESS.ITEM_1.contractAddress,
     tokenName: 'Test Token (TT)',
@@ -26,7 +28,8 @@ test('base view +@mobile +@dark-mode', async({ render, mockEnvs }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('status IN_PROCESS', async({ render }) => {
+test('status IN_PROCESS', async({ render, mockApiResponse, mockAssetResponse }) => {
+  await mockFormData({ mockApiResponse, mockAssetResponse });
   const props = {
     address: mocks.VERIFIED_ADDRESS.ITEM_1.contractAddress,
     tokenName: 'Test Token (TT)',

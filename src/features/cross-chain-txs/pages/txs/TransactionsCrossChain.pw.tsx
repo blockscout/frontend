@@ -2,7 +2,6 @@ import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import { homeChain } from '../../mocks/chains';
 import * as crossChainConfigMock from '../../mocks/config';
 import * as crossChainCountersMock from '../../mocks/counters';
 import * as crossChainTransfersMock from '../../mocks/transfers';
@@ -13,12 +12,11 @@ test.describe('txs', () => {
   test.slow();
 
   test.beforeEach(async({ mockEnvs, mockApiResponse, mockAssetResponse }) => {
-    const queryParams = {
-      home_chain_id: homeChain.id,
-      include_unindexed_chains: false,
-    };
-    await mockEnvs(ENVS_MAP.crossChainTxs);
-    await mockApiResponse('interchainIndexer:messages', crossChainTxMock.listResponse, { queryParams });
+    await mockEnvs([
+      ...ENVS_MAP.crossChainTxs,
+      [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
+    ]);
+    await mockApiResponse('interchainIndexer:messages', crossChainTxMock.listResponse);
     await mockApiResponse('stats:counters', crossChainCountersMock.counters);
 
     await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');

@@ -19,22 +19,27 @@ needs a specific chain. Their screenshots do not change.
 
 ## Acceptance criteria
 
-- [ ] Neither fixture imports `src/api/utils/build-url`, `src/config` or `buildExternalAssetFilePath`
+- [x] Neither fixture imports `src/api/utils/build-url`, `src/config` or `buildExternalAssetFilePath`
       in Node; both resolve the URL through `page.evaluate` against the harness builder and still return
       it as a string.
-- [ ] The harness builder imports the production modules lazily, so loading the test page alone does not
+- [x] The harness builder imports the production modules lazily, so loading the test page alone does not
       evaluate `src/config` before `mockEnvs` has run.
-- [ ] `mockEnvs` after a registered mock in the same test throws; the message names `mockEnvs`, the mock
+- [x] `mockEnvs` after a registered mock in the same test throws; the message names `mockEnvs`, the mock
       fixture, and that env overrides must come first.
-- [ ] The `interchainIndexer` scope filters reach the matcher from production code: a cross-chain-txs test
+- [x] The `interchainIndexer` scope filters reach the matcher from production code: a cross-chain-txs test
       that passes only the component's own params matches the request.
-- [ ] `src/features/cross-chain-txs/mocks/chains.ts` and every hand-written scope-filter `queryParams` in
+- [x] `src/features/cross-chain-txs/mocks/chains.ts` and every hand-written scope-filter `queryParams` in
       the cross-chain-txs and chain-stats visual tests are gone; the affected tests set the network id via
       `mockEnvs` where the mock data requires it.
-- [ ] `pnpm test:pw --docker` passes for the whole suite with no baseline updated.
-- [ ] The `mockEnvs` / `mockApiResponse` / `mockConfigResponse` entries in `.agents/rules/tests-visual.md`
+- [x] `pnpm test:pw --docker` passes for the whole suite with no baseline updated.
+- [x] The `mockEnvs` / `mockApiResponse` / `mockConfigResponse` entries in `.agents/rules/tests-visual.md`
       state the ordering rule and that URLs resolve in the browser; nothing else in the doc restates the
       mechanism.
+
+Docker run on close: 938 of 959 passed, 17 skipped, no baseline updated. `Multisend.pw.tsx` fails whenever
+any test precedes it in the worker, on `origin/main` as well (the catch-all abort never fires for the
+widget's chains request) — pre-existing, not this ticket's. Two screenshot flakes (`Tabs`, `Uptime`) passed
+on rerun.
 
 ## Details
 
@@ -50,8 +55,8 @@ needs a specific chain. Their screenshots do not change.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Expose the lazy URL builder on `window` from the harness entry and type it in `global.d.ts`
-- [ ] 2 `[agent]` Add the test-scoped mock-registry fixture; switch `mockApiResponse` and `mockConfigResponse` to the browser builder; make `mockEnvs` throw after a registration
-- [ ] 3 `[agent]` Revert the PR #3679 workaround in the cross-chain-txs and chain-stats visual tests
-- [ ] 4 `[agent]` Update the fixture entries in `.agents/rules/tests-visual.md`
-- [ ] 5 `[agent]` Run `pnpm test:pw --docker` for the whole suite; fix any test the ordering guard catches
+- [x] 1 `[agent]` Expose the lazy URL builder on `window` from the harness entry and type it in `global.d.ts`
+- [x] 2 `[agent]` Add the test-scoped mock-registry fixture; switch `mockApiResponse` and `mockConfigResponse` to the browser builder; make `mockEnvs` throw after a registration
+- [x] 3 `[agent]` Revert the PR #3679 workaround in the cross-chain-txs and chain-stats visual tests
+- [x] 4 `[agent]` Update the fixture entries in `.agents/rules/tests-visual.md`
+- [x] 5 `[agent]` Run `pnpm test:pw --docker` for the whole suite; fix any test the ordering guard catches

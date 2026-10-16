@@ -9,6 +9,7 @@ import config from 'src/config';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
@@ -27,15 +28,19 @@ const hooksConfig = {
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
+const mockTokenData = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
   await mockApiResponse('core:token', tokenInfo, { pathParams: { hash } });
   await mockApiResponse('core:address', contract, { pathParams: { hash } });
   await mockApiResponse('core:token_counters', tokenCounters, { pathParams: { hash } });
   await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+};
+
+test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
 
-test('base view', async({ render, page, createSocket }) => {
+test('base view', async({ render, page, createSocket, mockApiResponse }) => {
+  await mockTokenData(mockApiResponse);
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
@@ -49,6 +54,7 @@ test('base view', async({ render, page, createSocket }) => {
 
 test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
   test.slow();
+  await mockTokenData(mockApiResponse);
   await mockApiResponse(
     'contractInfo:token_verified_info',
     verifiedAddressesMocks.TOKEN_INFO,
@@ -106,6 +112,7 @@ test('scam token', async({ render, page, createSocket, mockApiResponse, mockEnvs
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
   ]);
+  await mockTokenData(mockApiResponse);
   await mockApiResponse('core:token', { ...tokenInfo, reputation: 'scam' }, { pathParams: { hash } });
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
@@ -121,8 +128,9 @@ test('scam token', async({ render, page, createSocket, mockApiResponse, mockEnvs
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('base view', async({ render, page, createSocket }) => {
+  test('base view', async({ render, page, createSocket, mockApiResponse }) => {
     test.slow();
+    await mockTokenData(mockApiResponse);
     const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
@@ -137,6 +145,7 @@ test.describe('mobile', () => {
 
   test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
     test.slow();
+    await mockTokenData(mockApiResponse);
     await mockApiResponse(
       'contractInfo:token_verified_info',
       verifiedAddressesMocks.TOKEN_INFO,

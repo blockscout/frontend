@@ -74,6 +74,9 @@ test.describe('without custom links', () => {
 
   test('with full info +@mobile', async({ render, page, injectMetaMaskProvider, mockApiResponse, mockEnvs }) => {
     await injectMetaMaskProvider();
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_USERCENTRICS_CONFIG', JSON.stringify({ settingsId: '123' }) ],
+    ]);
     await mockApiResponse('core:homepage_indexing_status', {
       finished_indexing: false,
       finished_indexing_blocks: false,
@@ -81,9 +84,6 @@ test.describe('without custom links', () => {
       indexed_blocks_ratio: 0.1,
     });
     await mockApiResponse('core:config_backend_version', { backend_version: 'v5.2.0-beta.+commit.1ce1a355' });
-    await mockEnvs([
-      [ 'NEXT_PUBLIC_USERCENTRICS_CONFIG', JSON.stringify({ settingsId: '123' }) ],
-    ]);
 
     await render(<Footer/>, undefined, {
       appContext: {

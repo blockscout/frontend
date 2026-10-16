@@ -87,7 +87,7 @@ test('example', async ({ render }) => {
 All fixtures are injected via the `test` function. Available fixtures:
 
 ### `mockApiResponse`
-Intercepts Blockscout API calls. Returns the mocked URL.
+Intercepts Blockscout API calls. Returns the mocked URL. The URL is resolved in the test page with the production URL builder, so it reflects the envs mocked for the test — pass only the path and query params the component itself passes, never env-derived ones. Register it after `mockEnvs`.
 
 ```tsx
 await mockApiResponse('token', tokenMock, {
@@ -99,7 +99,7 @@ await mockApiResponse('token', tokenMock, {
 ```
 
 ### `mockEnvs`
-Sets environment variables for the test (stored in localStorage, read by `getEnvValue`). Use the built-in `ENVS_MAP` for common configs:
+Sets environment variables for the test (stored in localStorage, read by `getEnvValue`). Call it before any `mockApiResponse` or `mockConfigResponse` in the same test: the first mock registration snapshots the app config in the browser, and a later `mockEnvs` throws. Use the built-in `ENVS_MAP` for common configs:
 
 ```tsx
 await mockEnvs([
@@ -126,7 +126,7 @@ await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/duck
 ```
 
 ### `mockConfigResponse`
-Routes an external config asset URL (JSON or image) derived from an env var name:
+Routes an external config asset URL (JSON or image) derived from an env var name. The URL is resolved in the test page, so register it after `mockEnvs`:
 
 ```tsx
 await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://example.com/config.json', content);
@@ -193,6 +193,7 @@ page.getByTestId('tx-hash')
 ## Environment and date
 
 `playwright/lib.ts` runs before every component mount and:
+- Clears `localStorage`, so envs and feature flags from a previous test in the same worker do not leak in.
 - Mocks `next/router.useRouter()` with a configurable router object.
 - Fixes the current date to `2022-11-11T12:00:00Z` via MockDate — all `new Date()` / `Date.now()` calls return this value.
 

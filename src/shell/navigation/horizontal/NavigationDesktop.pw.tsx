@@ -26,15 +26,15 @@ testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs,
     },
   };
 
-  await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
-  await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
-  await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
   await mockEnvs([
     ...ENVS_MAP.userOps,
     ...ENVS_MAP.nameService,
     ...ENVS_MAP.rewardsService,
     [ 'NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES', '["/blocks","/apps"]' ],
   ]);
+  await mockApiResponse('core:user_info', profileMock.withEmailAndWallet);
+  await mockApiResponse('rewards:user_balances', rewardsBalanceMock.base);
+  await mockApiResponse('rewards:user_daily_check', dailyRewardMock.base);
 
   const component = await render(<NavigationDesktop/>, { hooksConfig });
   await component.getByText('Blockchain').hover();

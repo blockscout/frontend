@@ -11,6 +11,7 @@ import * as mockEnvs from './fixtures/mockEnvs';
 import * as mockEssentialDappsChainsConfig from './fixtures/mockEssentialDappsChainsConfig';
 import * as mockFeatures from './fixtures/mockFeatures';
 import * as mockMultichainConfig from './fixtures/mockMultichainConfig';
+import * as mockRegistry from './fixtures/mockRegistry';
 import * as mockRpcResponse from './fixtures/mockRpcResponse';
 import * as mockTextAd from './fixtures/mockTextAd';
 import * as render from './fixtures/render';
@@ -26,6 +27,7 @@ export interface Fixtures {
   mockFeatures: mockFeatures.MockFeaturesFixture;
   mockMultichainConfig: mockMultichainConfig.MockMultichainConfigFixture;
   mockEssentialDappsChainsConfig: mockEssentialDappsChainsConfig.MockEssentialDappsChainsConfigFixture;
+  mockRegistry: mockRegistry.MockRegistryFixture;
   mockRpcResponse: mockRpcResponse.MockRpcResponseFixture;
   createSocket: socketServer.CreateSocketFixture;
   injectMetaMaskProvider: injectMetaMaskProvider.InjectMetaMaskProvider;
@@ -44,6 +46,7 @@ const test = base.extend<Fixtures>({
   mockFeatures: mockFeatures.default,
   mockMultichainConfig: mockMultichainConfig.default,
   mockEssentialDappsChainsConfig: mockEssentialDappsChainsConfig.default,
+  mockRegistry: mockRegistry.default,
   mockRpcResponse: mockRpcResponse.default,
   // FIXME: for some reason Playwright does not intercept requests to text ad provider when running multiple tests in parallel
   // even if we have a global request interceptor (maybe it is related to service worker issue, maybe not)
@@ -54,6 +57,10 @@ const test = base.extend<Fixtures>({
 });
 
 test.beforeEach(async({ page, mockTextAd }) => {
+  // The worker reuses the browser context, and Playwright only resets storage for origins it seeded
+  // itself, so envs and feature flags a previous test wrote to localStorage would leak into this one.
+  await page.evaluate(() => window.localStorage.clear());
+
   // debug
   const isDebug = process.env.PWDEBUG === '1';
 
