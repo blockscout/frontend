@@ -1,10 +1,8 @@
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
-import { homeChain } from './chains';
-
 export const config: Array<ExternalChain> = [
   {
-    id: homeChain.id,
+    id: '43114',
     name: 'C-Chain',
     logo: 'https://c-chain.com/logo.svg',
     explorer_url: 'https://c-chain.com/explorer',

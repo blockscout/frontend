@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { indexingStatus } from 'src/slices/home/mocks/indexing-status';
+import * as indexingStatusMock from 'src/slices/chain/indexing-status/mocks';
 
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -16,7 +16,7 @@ test.skip('base view +@mobile', async({ render, mockEnvs, mockApiResponse }) => 
       'We are currently lacking pictures of <i>ducks</i>. Please <a href="mailto:duck@blockscout.com">send</a> us one.',
     ],
   ]);
-  await mockApiResponse('core:homepage_indexing_status', indexingStatus);
+  await mockApiResponse('core:homepage_indexing_status', indexingStatusMock.blocksInProgress);
   const component = await render(<Layout>Page Content</Layout>);
   await expect(component).toHaveScreenshot();
 });

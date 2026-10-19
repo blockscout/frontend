@@ -3,10 +3,13 @@ import React from 'react';
 
 import * as profileMock from 'src/features/account/mocks/user-profile';
 import * as activityMock from 'src/features/rewards/mocks/activity';
+import * as activityPassMock from 'src/features/rewards/mocks/activity-pass';
 import * as rewardsBalanceMock from 'src/features/rewards/mocks/balance';
 import * as dailyRewardMock from 'src/features/rewards/mocks/daily-reward';
+import * as instancesMock from 'src/features/rewards/mocks/instances';
 import * as referralsMock from 'src/features/rewards/mocks/referrals';
 import * as rewardsConfigMock from 'src/features/rewards/mocks/rewards-config';
+import * as streakBadgesMock from 'src/features/rewards/mocks/streak-badges';
 
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -34,6 +37,11 @@ const testTab = (tab: 'activity' | 'referrals' | 'resources') =>
     await mockApiResponse('rewards:user_referrals', referralsMock.base);
     await mockApiResponse('rewards:config', rewardsConfigMock.base);
     await mockApiResponse('rewards:user_activity', activityMock.base);
+    await mockApiResponse('rewards:user_badges', streakBadgesMock.base);
+    await mockApiResponse('rewards:instances', instancesMock.base);
+    await mockApiResponse('rewards:user_check_activity_pass', activityPassMock.valid, {
+      queryParams: { address: profileMock.withEmailAndWallet.address_hash },
+    });
 
     const component = await render(<RewardsDashboard/>, { hooksConfig: { router: { query: { tab } } } });
 
@@ -49,7 +57,20 @@ testTab('activity');
 testTab('referrals');
 testTab('resources');
 
-testWithAuth('with error', async({ page, render }) => {
+testWithAuth('with error', async({ page, render, mockApiResponse }) => {
+  const failed = { status: 500 };
+  await mockApiResponse('rewards:user_balances', null as never, failed);
+  await mockApiResponse('rewards:user_daily_check', null as never, failed);
+  await mockApiResponse('rewards:user_referrals', null as never, failed);
+  await mockApiResponse('rewards:config', null as never, failed);
+  await mockApiResponse('rewards:user_activity', null as never, failed);
+  await mockApiResponse('rewards:user_badges', null as never, failed);
+  await mockApiResponse('rewards:instances', null as never, failed);
+  await mockApiResponse('rewards:user_check_activity_pass', null as never, {
+    ...failed,
+    queryParams: { address: profileMock.withEmailAndWallet.address_hash },
+  });
+
   const component = await render(<RewardsDashboard/>);
 
   await expect(component).toHaveScreenshot({

@@ -24,12 +24,15 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
       return;
     }
 
+    // Playwright's own `times` counts every invocation, a miss included, so a handler consulted for an
+    // unrelated RPC call would expire before its matching request arrives; count fulfilled matches here.
+    let fulfilledCount = 0;
+
     await page.route(rpcUrl, (route) => {
       const method = route.request().method();
 
-      if (method !== 'POST') {
-        route.continue();
-        return;
+      if (method !== 'POST' || fulfilledCount >= times) {
+        return route.fallback();
       }
 
       const dataJson = route.request().postDataJSON();
@@ -47,24 +50,27 @@ const fixture: TestFixture<MockContractReadResponseFixture, { page: Page }> = as
         value: params?.value,
       };
 
-      if (isEqual(params, callParams) && id !== undefined && json?.method === rpcMethod) {
-
-        const json = {
-          id,
-          jsonrpc: '2.0',
-          result: noResultEncoding ? result : encodeFunctionResult({
-            abi: [ abiItem ],
-            functionName: abiItem.name,
-            result: result as never,
-          }),
-        };
-
-        return route.fulfill({
-          status: 200,
-          json: Array.isArray(dataJson) ? [ json ] : json,
-        });
+      if (!isEqual(params, callParams) || id === undefined || json?.method !== rpcMethod) {
+        return route.fallback();
       }
-    }, { times });
+
+      fulfilledCount++;
+
+      const response = {
+        id,
+        jsonrpc: '2.0',
+        result: noResultEncoding ? result : encodeFunctionResult({
+          abi: [ abiItem ],
+          functionName: abiItem.name,
+          result: result as never,
+        }),
+      };
+
+      return route.fulfill({
+        status: 200,
+        json: Array.isArray(dataJson) ? [ response ] : response,
+      });
+    });
   });
 };
 

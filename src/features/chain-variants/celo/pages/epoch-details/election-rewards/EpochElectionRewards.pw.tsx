@@ -1,5 +1,7 @@
 import React from 'react';
 
+import * as tokenMock from 'src/slices/token/mocks/info';
+
 import * as celoEpochMock from 'src/features/chain-variants/celo/mocks/epoch';
 
 import { test, expect } from 'playwright/lib';
@@ -13,7 +15,8 @@ const hooksConfig = {
   },
 };
 
-test('base view', async({ render, mockApiResponse }) => {
+test('base view', async({ render, mockApiResponse, mockAssetResponse }) => {
+  await mockAssetResponse(tokenMock.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_s.jpg');
   await mockApiResponse(
     'core:epoch_celo_election_rewards',
     celoEpochMock.electionRewardDetails1,

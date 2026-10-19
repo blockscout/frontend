@@ -1,7 +1,7 @@
 import type { GetBridgedTokensResponse, StatsBridgedTokenRow } from '@blockscout/interchain-indexer-types';
 import { TokenInfo_TokenType } from '@blockscout/interchain-indexer-types';
 
-import { chainB, homeChain } from './chains';
+import { chainA, chainB } from 'src/features/multichain/mocks/chains';
 
 export const bridgedTokenErc20 = {
   stats_asset_id: '1',
@@ -13,7 +13,7 @@ export const bridgedTokenErc20 = {
   total_transfers_count: 11814,
   tokens: [
     {
-      chain_id: homeChain.id,
+      chain_id: chainA.id,
       token_address: '0x9c58bacc331c9aa871afd802db6379a98e80cedb',
       name: 'Gnosis Token on xDai',
       symbol: 'GNO',
@@ -43,7 +43,7 @@ export const bridgedTokenNative = {
   total_transfers_count: 2752,
   tokens: [
     {
-      chain_id: homeChain.id,
+      chain_id: chainA.id,
       token_address: undefined,
       name: 'xDai',
       symbol: 'xDAI',

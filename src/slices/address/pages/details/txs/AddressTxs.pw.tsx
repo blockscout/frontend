@@ -4,6 +4,8 @@ import React from 'react';
 
 import * as txMock from 'src/slices/tx/mocks/list';
 
+import * as csvExportMock from 'src/features/csv-export/mocks';
+
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -18,6 +20,10 @@ const hooksConfig = {
   },
 };
 const DEFAULT_PAGINATION = { block_number: 1, index: 1, items_count: 1 };
+
+test.beforeEach(async({ mockApiResponse }) => {
+  await mockApiResponse('core:config_csv_export', csvExportMock.config);
+});
 
 test.describe('base view', () => {
   let component: Locator;

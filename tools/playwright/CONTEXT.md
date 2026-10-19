@@ -12,6 +12,7 @@ The `pnpm test:pw` entry point runs Playwright component tests (`*.pw.tsx`) loca
 | `--changed` ran zero tests. Why? | the bundler's module graph reaches no registered component from the diff — a type-only file, a server-only module, a doc. If the edit does reach the browser some other way, it belongs on the force-full list |
 | Why is selection Playwright's job and not a dependency walk? | `./adr/0001-affected-tests-delegated-to-playwright.md` |
 | Why no dry-run of what `--changed` would select? | `--only-changed --list` lists zero tests in CT mode; see the constraint below and the ADR's consequences |
+| A test failed with "Unmocked localhost requests". What now? | the component requested a URL no mock handles; the rule and how to read the failure are the "Mock flow" section of `../../.agents/rules/tests-visual.md`. The check lives in `../../playwright/lib.ts` |
 
 ## Constraints
 
