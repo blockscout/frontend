@@ -80,6 +80,7 @@ The repo-wide records index:
 
 - `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
 - `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
+- `0004-typescript-7-side-by-side.md` — why `tsc` is TypeScript 7 while the `typescript` package is TypeScript 6, and when to collapse them.
 
 ## Product task workflow
 
