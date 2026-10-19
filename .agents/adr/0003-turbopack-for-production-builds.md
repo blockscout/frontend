@@ -72,6 +72,7 @@ bundles in less than half the wall-clock (the type-check phase is bundler-agnost
   only. The compiler-API path (this flag `false`) checks against `lib/typescript.js`, which the alias
   does provide, so type-checking runs normally. Without it the build aborts claiming `typescript` is
   missing — on **both** bundlers, since the check runs before bundling.
+  *Superseded by [0004](0004-typescript-7-side-by-side.md): the flag is gone, Next's check is off.*
 - **Dev and production are on the same bundler again.** 0001's "a production-only bug can't be caught
   in dev" caveat is lifted for the default path — though the two webpack exceptions (`build:analyze`,
   `--profile`) still exercise a second pipeline.
@@ -96,3 +97,4 @@ bundles in less than half the wall-clock (the type-check phase is bundler-agnost
 - The `useTypeScriptCli: false` workaround exists because Next's CLI type-check path does not
   recognize the `@typescript/typescript6` alias's `bin/tsc6`. If a later Next release accepts the
   native compiler's binary (or the alias ships a `bin/tsc`), the flag can be dropped.
+  *Superseded by [0004](0004-typescript-7-side-by-side.md).*

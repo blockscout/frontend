@@ -19,7 +19,7 @@
     "build": "pnpm lint:tsc && next build",
     "build:next": "./deploy/scripts/download_assets.sh ./public/assets/configs && pnpm svg:build-sprite && ./deploy/scripts/make_envs_script.sh && pnpm build",
     "build:docker": "./tools/scripts/build.docker.sh",
-    "build:analyze": "BUNDLE_ANALYZER=true next build --webpack",
+    "build:analyze": "pnpm lint:tsc && BUNDLE_ANALYZER=true next build --webpack",
     "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend:local",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
