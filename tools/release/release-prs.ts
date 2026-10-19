@@ -46,10 +46,23 @@ export function cherryPickSources(message: string): Array<string> {
   return [ ...message.matchAll(CHERRY_PICK_TRAILER) ].map(([ , sha ]) => sha);
 }
 
+function subject(message: string): string {
+  return message.split('\n', 1)[0];
+}
+
 function subjectPr(message: string): number | undefined {
-  const [ subject ] = message.split('\n', 1);
-  const reference = [ ...subject.matchAll(PR_REFERENCE) ].at(-1);
+  const reference = [ ...subject(message).matchAll(PR_REFERENCE) ].at(-1);
   return reference === undefined ? undefined : Number(reference[1]);
+}
+
+export function prepareCommitMessage(tag: string): string {
+  return `chore: prepare release ${ tag }`;
+}
+
+// The docs commit of a release is made on its branch, so it has no PR to resolve and, until the branch is
+// pushed, is not even known to GitHub. Its subject names the final tag, also when the notes are an alpha's.
+export function isDocsCommit(commit: Commit, tag: string): boolean {
+  return subject(commit.message) === prepareCommitMessage(versionLabel(tag));
 }
 
 // A picked commit is resolved through its source on `main`, never its own subject, which the operator
@@ -74,7 +87,7 @@ export function releasePrs(tag: string, source: ReleaseSource): ReleasePrs {
   const numbers = new Set<number>();
   const unresolved: Array<Commit> = [];
 
-  for (const commit of source.commits(previous, tag)) {
+  for (const commit of source.commits(previous, tag).filter((commit) => !isDocsCommit(commit, tag))) {
     const number = resolvePr(commit, source);
     if (number === undefined) {
       unresolved.push(commit);

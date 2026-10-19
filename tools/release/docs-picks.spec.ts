@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { docsCommits, planDocsPicks, prepareCommitMessage } from './docs-picks';
+import { docsCommits, planDocsPicks } from './docs-picks';
 
 const SHA = {
   docsA: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -11,12 +11,6 @@ const SHA = {
 
 const DOCS_A = { sha: SHA.docsA, message: 'chore: prepare release v2.13.0' };
 const DOCS_B = { sha: SHA.docsB, message: 'chore: prepare release v2.13.0\n\nSecond alpha.' };
-
-describe('prepareCommitMessage', () => {
-  it('names the release', () => {
-    expect(prepareCommitMessage('v2.13.1')).toBe('chore: prepare release v2.13.1');
-  });
-});
 
 describe('docsCommits', () => {
   it('keeps the commits whose subject is the docs commit of the release, in order', () => {

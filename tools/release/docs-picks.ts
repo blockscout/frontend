@@ -1,14 +1,8 @@
 import type { Commit } from './release-prs';
-import { cherryPickSources } from './release-prs';
+import { cherryPickSources, isDocsCommit } from './release-prs';
 
-export function prepareCommitMessage(tag: string): string {
-  return `chore: prepare release ${ tag }`;
-}
-
-// The docs commits of a release are the only commits made on its branch rather than picked from main.
 export function docsCommits(commits: ReadonlyArray<Commit>, tag: string): Array<Commit> {
-  const subject = prepareCommitMessage(tag);
-  return commits.filter(({ message }) => message.split('\n', 1)[0] === subject);
+  return commits.filter((commit) => isDocsCommit(commit, tag));
 }
 
 export interface DocsSkip {
