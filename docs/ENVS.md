@@ -1311,8 +1311,8 @@ To obtain the variable values, please refer to the [reCAPTCHA documentation](htt
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_POSTHOG_API_KEY | `string` | Project API key for [PostHog](https://posthog.com/) product analytics | Required | - | `<your-secret>` | v2.12.1+ |
-| NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES | `string` | JSON-like string with a subset of the [posthog-js config](https://posthog.com/docs/libraries/js/config) merged over the app defaults | - | - | `{"disable_session_recording": false}` | v2.12.1+ |
+| NEXT_PUBLIC_POSTHOG_API_KEY | `string` | Project API key for [PostHog](https://posthog.com/) product analytics | Required | - | `<your-secret>` | v2.12.0+ |
+| NEXT_PUBLIC_POSTHOG_CONFIG_OVERRIDES | `string` | JSON-like string with a subset of the [posthog-js config](https://posthog.com/docs/libraries/js/config) merged over the app defaults | - | - | `{"disable_session_recording": false}` | v2.12.0+ |
 
 &nbsp;
 
