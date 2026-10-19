@@ -46,7 +46,7 @@ for (const column of columns) {
       next_page_params: null,
     }, { queryParams: { limit: '7' } });
     await mockApiResponse('core:advanced_filter_methods', [], { queryParams: { q: '' } });
-    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('core:stats', { ...statsMock.base, coin_image: null });
     await render(
       <FilterByColumn
         filters={ filters }

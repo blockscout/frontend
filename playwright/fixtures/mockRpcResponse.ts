@@ -20,16 +20,14 @@ const fixture: TestFixture<MockRpcResponseFixture, { page: Page }> = async({ pag
       const method = route.request().method();
 
       if (method !== 'POST') {
-        route.continue();
-        return;
+        return route.fallback();
       }
 
       const json = route.request().postDataJSON();
       const id = json?.id;
 
       if (id === undefined) {
-        route.continue();
-        return;
+        return route.fallback();
       }
 
       const rpcMock = rpcMocks.find((mock) => {
@@ -43,30 +41,32 @@ const fixture: TestFixture<MockRpcResponseFixture, { page: Page }> = async({ pag
         return isEqual(json, payload);
       });
 
-      if (rpcMock) {
-        if (rpcMock.status && rpcMock.status !== 200) {
-          return route.fulfill({
-            status: rpcMock.status,
-            json: {
-              id,
-              jsonrpc: '2.0',
-              error: {
-                code: -32000,
-                message: 'Internal error',
-              },
-            },
-          });
-        }
+      if (!rpcMock) {
+        return route.fallback();
+      }
 
+      if (rpcMock.status && rpcMock.status !== 200) {
         return route.fulfill({
-          status: 200,
+          status: rpcMock.status,
           json: {
             id,
             jsonrpc: '2.0',
-            result: rpcMock.ReturnType,
+            error: {
+              code: -32000,
+              message: 'Internal error',
+            },
           },
         });
       }
+
+      return route.fulfill({
+        status: 200,
+        json: {
+          id,
+          jsonrpc: '2.0',
+          result: rpcMock.ReturnType,
+        },
+      });
     });
   });
 };

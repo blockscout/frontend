@@ -41,11 +41,6 @@ export type TestFnArgs = Fixtures & { page: Page };
 
 const OWN_PORTS: ReadonlySet<string> = new Set([ String(ctPort), String(socketPort) ]);
 
-function isUnmockedLocalhostRequest(url: string): boolean {
-  const { hostname, port } = new URL(url);
-  return hostname === 'localhost' && !OWN_PORTS.has(port);
-}
-
 const test = base.extend<Fixtures>({
   render: render.default,
   mockApiResponse: mockApiResponse.default,
@@ -84,15 +79,16 @@ test.beforeEach(async({ page, mockTextAd, mockRegistry }) => {
   // last: a localhost request reaching it on a port other than the CT or socket server is unmocked.
   await page.route('**', (route) => {
     const url = route.request().url();
-    if (!url.startsWith('http://localhost')) {
+    const { hostname, port } = new URL(url);
+    if (hostname !== 'localhost') {
       isDebug && console.info('Aborting request to', url);
       route.abort();
-    } else {
-      if (isUnmockedLocalhostRequest(url)) {
-        mockRegistry.unmockedUrls.push(url);
-      }
-      route.continue();
+      return;
     }
+    if (!OWN_PORTS.has(port)) {
+      mockRegistry.unmockedUrls.push(url);
+    }
+    route.continue();
   });
 
   // with few exceptions:
@@ -100,8 +96,6 @@ test.beforeEach(async({ page, mockTextAd, mockRegistry }) => {
   await mockTextAd();
 });
 
-// Every localhost request a test lets through must be mocked; a request that reaches the catch-all
-// route fails the test with the URL next to the registered matchers sharing its pathname.
 test.afterEach(async({ mockRegistry }) => {
   if (mockRegistry.unmockedUrls.length === 0) {
     return;

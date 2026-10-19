@@ -82,12 +82,20 @@ test('example', async ({ render }) => {
 
 `render` accepts optional second and third arguments to customize `hooksConfig` (mainly used for mocking Next.js router object), `appContext` and `marketplaceContext` props passed to `TestApp`.
 
+## Mock flow
+
+The mock fixtures and the catch-all route in `playwright/lib.ts` form one pipeline; a test is written in this order:
+
+1. **Envs and feature flags first.** `mockEnvs` and `mockFeatures` write to `localStorage`, which the app config in the test page reads once, at its first evaluation.
+2. **Then every request mock.** `mockApiResponse` and `mockConfigResponse` resolve their matcher URL in the test page with the production URL builder, so the matcher reflects the envs mocked in step 1 and the caller passes only the path and query params the component itself passes, never env-derived ones. The first such registration evaluates the app config in the page; a `mockEnvs` after it throws, naming both calls.
+3. **Then `render`.** Every `localhost` request the component makes must be answered by a mock from step 2 (the component-test server and the socket server ports excepted). A request that reaches no mock fails the test with the URL next to the registered matchers sharing its pathname, so a query-param drift shows side by side. There is no per-test opt-out: a test that shows a failure state mocks the request with an error status instead of leaving it unmocked. Requests to hosts other than `localhost` are aborted silently.
+
 ## Fixtures
 
-All fixtures are injected via the `test` function. Every `localhost` request the component makes must be answered by one of them: a request that reaches no mock fails the test, and a test that shows a failure state mocks the request with an error status instead of leaving it unmocked. Available fixtures:
+All fixtures are injected via the `test` function. Available fixtures:
 
 ### `mockApiResponse`
-Intercepts Blockscout API calls. Returns the mocked URL. The URL is resolved in the test page with the production URL builder, so it reflects the envs mocked for the test — pass only the path and query params the component itself passes, never env-derived ones. Register it after `mockEnvs`.
+Intercepts Blockscout API calls. Returns the mocked URL.
 
 ```tsx
 await mockApiResponse('token', tokenMock, {
@@ -99,7 +107,7 @@ await mockApiResponse('token', tokenMock, {
 ```
 
 ### `mockEnvs`
-Sets environment variables for the test (stored in localStorage, read by `getEnvValue`). Call it before any `mockApiResponse` or `mockConfigResponse` in the same test: the first mock registration snapshots the app config in the browser, and a later `mockEnvs` throws. Use the built-in `ENVS_MAP` for common configs:
+Sets environment variables for the test (stored in localStorage, read by `getEnvValue`). Use the built-in `ENVS_MAP` for common configs:
 
 ```tsx
 await mockEnvs([
@@ -126,7 +134,7 @@ await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/duck
 ```
 
 ### `mockConfigResponse`
-Routes an external config asset URL (JSON or image) derived from an env var name. The URL is resolved in the test page, so register it after `mockEnvs`:
+Routes an external config asset URL (JSON or image) derived from an env var name:
 
 ```tsx
 await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://example.com/config.json', content);

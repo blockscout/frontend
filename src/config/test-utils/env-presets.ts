@@ -103,7 +103,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
   ],
   tac: [
-    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3100' ],
+    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3010' ],
     [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonviewer.com' ],
   ],
   celo: [
