@@ -93,12 +93,12 @@ const moduleExports = {
       dynamic: 30,
       'static': 180,
     },
-    // Next 16.3 defaults build-time type-checking to the `tsc` CLI, which requires a
-    // `typescript/bin/tsc` binary. This repo runs the native TypeScript compiler via the
-    // `@typescript/typescript6` alias, which ships `bin/tsc6` only — so the CLI path reports
-    // `typescript` as missing and aborts the build. The compiler-API path checks against
-    // `lib/typescript.js`, which the alias does provide, so type-checking runs normally.
-    useTypeScriptCli: false,
+  },
+
+  // Type-checking is done by `pnpm lint:tsc` (TypeScript 7), not by Next: Next resolves the
+  // `typescript` package, which here is the TS 6 alias — see .agents/adr/0004-typescript-7-side-by-side.md.
+  typescript: {
+    ignoreBuildErrors: true,
   },
 
 

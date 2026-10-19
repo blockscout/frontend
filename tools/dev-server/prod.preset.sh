@@ -71,7 +71,7 @@ if [ "$skip_build" = false ]; then
   prepare_assets "$preset_name"
 
   # build the app
-  run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && next build${build_flags}" || exit 1
+  run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && pnpm lint:tsc && next build${build_flags}" || exit 1
   echo ""
 else
   if [ ! -f ./.env.tmp ]; then
