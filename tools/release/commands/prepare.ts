@@ -1,5 +1,4 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
-import { prepareCommitMessage } from '../docs-picks';
 import {
   createBranchAt,
   fetchBranch,
@@ -19,7 +18,7 @@ import { createDraftPreRelease, listReleases } from '../github';
 import { releaseNotes } from '../notes';
 import { findLinePreRelease } from '../pre-release';
 import type { Commit } from '../release-prs';
-import { cherryPickSources } from '../release-prs';
+import { cherryPickSources, isDocsCommit } from '../release-prs';
 import { releaseSourceAt } from '../release-source';
 import type { ReleaseBase, Version } from '../versions';
 import { formatLine, parseFinalTagOrThrow, releaseBase, releaseBranch } from '../versions';
@@ -75,8 +74,7 @@ function releaseState(version: Version, tag: string, branch: string): 'new' | 'p
 // A minor's cut point on main moves on with every merge, so a resumed branch is recognised by what sits
 // past its fork point instead: nothing but picks and the release's docs commit.
 export function isPicksOnly(commits: ReadonlyArray<Commit>, tag: string): boolean {
-  const docsSubject = prepareCommitMessage(tag);
-  return commits.every(({ message }) => cherryPickSources(message).length > 0 || message.split('\n', 1)[0] === docsSubject);
+  return commits.every((commit) => cherryPickSources(commit.message).length > 0 || isDocsCommit(commit, tag));
 }
 
 interface CutPoint {

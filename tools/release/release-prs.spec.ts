@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Commit, PrResolver, ReleasePullRequest, ReleaseSource } from './release-prs';
-import { isReleasedElsewhere, issuesToLabel, releasePrs, resolvePr } from './release-prs';
+import { isDocsCommit, isReleasedElsewhere, issuesToLabel, prepareCommitMessage, releasePrs, resolvePr } from './release-prs';
 
 const SOURCE_SHA = 'a'.repeat(40);
 
@@ -55,7 +55,29 @@ describe('resolvePr', () => {
   });
 
   it('resolves to nothing when no step finds a PR', () => {
-    expect(resolvePr({ sha: 'b1', message: 'chore: prepare release v2.13.0' }, resolver())).toBeUndefined();
+    expect(resolvePr({ sha: 'b1', message: 'Merge branch main' }, resolver())).toBeUndefined();
+  });
+});
+
+describe('prepareCommitMessage', () => {
+  it('names the release', () => {
+    expect(prepareCommitMessage('v2.13.1')).toBe('chore: prepare release v2.13.1');
+  });
+});
+
+describe('isDocsCommit', () => {
+  it('matches the subject naming the tag', () => {
+    expect(isDocsCommit({ sha: 'c1', message: 'chore: prepare release v2.13.0\n\nSecond alpha.' }, 'v2.13.0')).toBe(true);
+  });
+
+  it('matches the final tag of an alpha', () => {
+    expect(isDocsCommit({ sha: 'c1', message: 'chore: prepare release v2.13.0' }, 'v2.13.0-alpha.2')).toBe(true);
+  });
+
+  it('does not match another release, a body line, or a pick', () => {
+    expect(isDocsCommit({ sha: 'c1', message: 'chore: prepare release v2.12.3' }, 'v2.13.0')).toBe(false);
+    expect(isDocsCommit({ sha: 'c1', message: 'Fix (#1)\n\nchore: prepare release v2.13.0' }, 'v2.13.0')).toBe(false);
+    expect(isDocsCommit({ sha: 'c1', message: `Fix (#1)\n\n(cherry picked from commit ${ SOURCE_SHA })` }, 'v2.13.0')).toBe(false);
   });
 });
 
@@ -114,9 +136,28 @@ describe('releasePrs', () => {
   });
 
   it('reports commits that resolve to no PR', () => {
-    const docsCommit = { sha: 'c1', message: 'chore: prepare release v2.13.0' };
+    const commit = { sha: 'c1', message: 'Merge branch main' };
 
-    expect(releasePrs('v2.13.0', source([ docsCommit ], [])).unresolved).toEqual([ docsCommit ]);
+    expect(releasePrs('v2.13.0', source([ commit ], [])).unresolved).toEqual([ commit ]);
+  });
+
+  it('leaves the docs commit out without asking GitHub, for the final tag and its alpha', () => {
+    const docsCommit = { sha: 'c1', message: 'chore: prepare release v2.13.0' };
+    const asked: Array<string> = [];
+    const spied: ReleaseSource = {
+      ...source([ docsCommit, { sha: 'c2', message: 'Add the badge (#10)' } ], []),
+      associatedPr: (sha) => {
+        asked.push(sha);
+        return undefined;
+      },
+    };
+
+    for (const tag of [ 'v2.13.0', 'v2.13.0-alpha.1' ]) {
+      const result = releasePrs(tag, spied);
+      expect(result.unresolved).toEqual([]);
+      expect(result.prs.map(({ number }) => number)).toEqual([ 10 ]);
+    }
+    expect(asked).toEqual([]);
   });
 });
 

@@ -4,7 +4,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import { ENV_DOCS, replaceUpcoming } from '../check-tag';
-import { prepareCommitMessage } from '../docs-picks';
 import type { FileChange } from '../git';
 import {
   cherryPick,
@@ -29,6 +28,7 @@ import {
 import { listBackportPrs } from '../github';
 import type { BackportPullRequest, PickPlan } from '../picks';
 import { planPicks } from '../picks';
+import { prepareCommitMessage } from '../release-prs';
 import type { StepRunner } from './report';
 import { describeBackportPr, logPickPlan } from './report';
 
