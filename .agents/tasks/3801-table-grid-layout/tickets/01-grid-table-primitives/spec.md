@@ -30,7 +30,8 @@ How to verify: `pnpm dev:preset eth`, open `/design-system`, Table tab, "Grid" s
 - [ ] Grid root is `width: max-content; min-width: 100%`; rows are `display: contents`; the scroll box is
       `overflow: auto` with `contain: inline-size` and takes a max height prop defaulting to `70vh`.
 - [ ] Header cells are sticky to the top of the scroll box, do not wrap, sit on an opaque `bg.primary`
-      underlay beneath `table.header.bg`, and carry no scrolled-state shadow.
+      underlay beneath `table.header.bg`, and show the `action_bar` shadow while the box is scrolled
+      (the same one `TableHeaderSticky` shows), seamless across cells.
 - [ ] Numeric cells use `justify-items: end`; spacing is cell padding, no grid gaps.
 - [ ] The primitives carry table ARIA roles (`table`, `rowgroup`, `row`, `columnheader`, `cell`) so a
       surface's tests can query by role.
@@ -56,6 +57,6 @@ How to verify: `pnpm dev:preset eth`, open `/design-system`, Table tab, "Grid" s
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Grid table primitives in `src/toolkit/chakra/`, styled from the `table` slot recipe, with the template-columns builder and its unit test
-- [ ] 2 `[agent]` App-side viewport-fill scroll box height value under `src/shared/lists/`
-- [ ] 3 `[agent]` "Grid" sample on the design-system Table tab (`src/toolkit/pages/design-system/tabs/Table.tsx`): capped column, numeric column, scrolling rows
+- [x] 1 `[agent]` Grid table primitives in `src/toolkit/chakra/`, styled from the `table` slot recipe, with the template-columns builder and its unit test
+- [x] 2 `[agent]` App-side viewport-fill scroll box height value under `src/shared/lists/`
+- [x] 3 `[agent]` "Grid" sample on the design-system Table tab (`src/toolkit/pages/design-system/tabs/Table.tsx`): capped column, numeric column, scrolling rows

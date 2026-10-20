@@ -88,8 +88,9 @@ Both render the same grid on mobile and desktop; there is no separate mobile lis
 - **Scroll box height is a prop.** The toolkit scroll box takes a max height with a default of `70vh`.
   Surfaces pass a viewport-fill value (`calc(100vh - <offset>)`) built from one app-side constant pair
   covering the top bar and action bar stack, so the value is never baked into the toolkit.
-- **Header behaviour.** Header cells are sticky to the top of the scroll box, do not wrap, and get no
-  scrolled-state shadow. The advanced filter header keeps its filter buttons and time toggle inline;
+- **Header behaviour.** Header cells are sticky to the top of the scroll box, do not wrap, and show the
+  `action_bar` shadow while the box is scrolled, as `TableHeaderSticky` does when stuck. The advanced
+  filter header keeps its filter buttons and time toggle inline;
   the nameless `or_and` column stays center-aligned.
 - **Socket notice.** The token transfers surface renders the socket "new items" notice as a grid
   full-width row spanning every column, a grid counterpart of the existing desktop notice.
