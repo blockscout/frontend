@@ -1,7 +1,4 @@
 {
-  "enabledPlugins": {
-    "figma@claude-plugins-official": false
-  },
   "hooks": {
     "SessionStart": [
       {
@@ -37,5 +34,6 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {}
 }
