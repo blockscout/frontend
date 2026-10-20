@@ -103,18 +103,16 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
     };
   }, [ timeLeft ]);
 
-  if (!config.services.reCaptcha.siteKey) {
-    throw new Error('reCAPTCHA V2 site key is not set');
-  }
+  const isBypassAvailable = bypassOptions !== 'no_bypass' && Boolean(config.services.reCaptcha.siteKey);
 
   const text = (() => {
-    if (timeLeft === undefined && bypassOptions === 'no_bypass') {
+    if (timeLeft === undefined && !isBypassAvailable) {
       return 'Rate limit exceeded.';
     }
 
     const timeLeftText = timeLeft !== undefined ? `wait ${ formatTimeLeft(timeLeft) } ` : '';
-    const bypassText = bypassOptions !== 'no_bypass' ? `verify you${ apos }re human ` : '';
-    const orText = timeLeft !== undefined && bypassOptions !== 'no_bypass' ? 'OR ' : '';
+    const bypassText = isBypassAvailable ? `verify you${ apos }re human ` : '';
+    const orText = timeLeft !== undefined && isBypassAvailable ? 'OR ' : '';
 
     return `Rate limit exceeded. Please ${ timeLeftText }${ orText }${ bypassText }before making another request.`;
   })();
@@ -127,7 +125,7 @@ const AppErrorTooManyRequests = ({ bypassOptions, reset }: Props) => {
         { text }
       </Text>
       <ReCaptcha { ...recaptcha }/>
-      { bypassOptions !== 'no_bypass' && <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>I'm not a robot</Button> }
+      { isBypassAvailable && <Button onClick={ handleSubmit } disabled={ recaptcha.isInitError } mt={ 8 }>I'm not a robot</Button> }
     </>
   );
 };
