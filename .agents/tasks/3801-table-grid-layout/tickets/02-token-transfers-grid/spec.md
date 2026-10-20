@@ -56,8 +56,8 @@ Transfers tab, a transaction Token transfers tab; a multichain preset for the mu
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Replace `width` with an optional max width on `TokenTransferColumn` and `TOKEN_TRANSFER_COLUMNS`
-- [ ] 2 `[agent]` Grid full-width-row variant of `SocketNewItemsNotice`
-- [ ] 3 `[agent]` `TokenTransfersTable` and `TokenTransfersTableItem` on the grid primitives with the viewport-fill height, chain-icon column and socket row; delete the `onlyMobile` branch of `TableContainerScrollable`
-- [ ] 4 `[agent]` Update `TokenTransfersTable.spec.tsx` to role-based queries
-- [ ] 5 `[human]` Regenerate `TokenTransfersTable.pw.tsx` screenshots in Docker and verify the five surfaces
+- [x] 1 `[agent]` Replace `width` with an optional max width on `TokenTransferColumn` and `TOKEN_TRANSFER_COLUMNS`
+- [x] 2 `[agent]` Grid full-width-row variant of `SocketNewItemsNotice`
+- [x] 3 `[agent]` `TokenTransfersTable` and `TokenTransfersTableItem` on the grid primitives with the viewport-fill height, chain-icon column and socket row; delete the `onlyMobile` branch of `TableContainerScrollable`
+- [x] 4 `[agent]` Update `TokenTransfersTable.spec.tsx` to role-based queries
+- [x] 5 `[human]` Regenerate `TokenTransfersTable.pw.tsx` screenshots in Docker and verify the five surfaces

@@ -52,6 +52,12 @@ export default function useLazyRenderedList({
     nodeRef.current = node;
   }, []);
 
+  const scrollContainerNodeRef = React.useRef<Element | null>(null);
+
+  const scrollContainerRef = React.useCallback((node: Element | null) => {
+    scrollContainerNodeRef.current = node;
+  }, []);
+
   const hasMore = renderedItemsNum < itemsNum;
 
   // The reveal is driven by measuring the sentinel on scroll rather than by an IntersectionObserver.
@@ -71,8 +77,11 @@ export default function useLazyRenderedList({
     const reveal = () => {
       frame = null;
       const node = nodeRef.current;
+      // a sentinel inside its own scroll container is reached at that container's bottom edge; when the
+      // container ends below the fold, the viewport edge is never reached by scrolling the container
+      const reachBottom = scrollContainerNodeRef.current?.getBoundingClientRect().bottom ?? window.innerHeight;
 
-      if (!node || node.getBoundingClientRect().top <= window.innerHeight + REVEAL_MARGIN) {
+      if (!node || node.getBoundingClientRect().top <= reachBottom + REVEAL_MARGIN) {
         setRenderedItemsNum((prev) => clamp(prev + step, 0, itemsNum));
       }
     };
@@ -100,5 +109,5 @@ export default function useLazyRenderedList({
     };
   }, [ isEnabled, hasMore, renderedItemsNum, itemsNum, step ]);
 
-  return { cutRef, renderedItemsNum };
+  return { cutRef, scrollContainerRef, renderedItemsNum };
 }

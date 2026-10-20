@@ -8,18 +8,18 @@ import type { ChainConfig } from 'src/slices/token/types/client';
 import { isTokenMultiplierEnabled, UI_MULTIPLIER_TOKEN_TYPE } from 'src/slices/token/utils/ui-multiplier';
 
 export const TOKEN_TRANSFER_COLUMNS: ReadonlyArray<TokenTransferColumn> = [
-  { id: 'in_out', name: 'In / Out', width: '70px' },
-  { id: 'tx_hash', name: 'Txn hash', width: '135px' },
-  { id: 'type', name: 'Token type', width: '95px' },
-  { id: 'transfer_type', name: 'Transfer type', width: '145px' },
-  { id: 'method', name: 'Method', width: '120px' },
-  { id: 'timestamp', name: 'Timestamp', width: '170px' },
-  { id: 'block', name: 'Block', width: '100px' },
-  { id: 'from_to', name: 'From / To', width: '350px' },
-  { id: 'multiplier', name: 'Multiplier', isNumeric: true, width: '90px' },
-  { id: 'amount', name: 'Amount', isNumeric: true, width: '130px' },
-  { id: 'asset', name: 'ID / Asset', width: '240px' },
-  { id: 'value', name: 'Value', isNumeric: true, width: '120px' },
+  { id: 'in_out', name: 'In / Out' },
+  { id: 'tx_hash', name: 'Txn hash' },
+  { id: 'type', name: 'Token type' },
+  { id: 'transfer_type', name: 'Transfer type' },
+  { id: 'method', name: 'Method' },
+  { id: 'timestamp', name: 'Timestamp' },
+  { id: 'block', name: 'Block' },
+  { id: 'from_to', name: 'From / To', maxWidth: '350px' },
+  { id: 'multiplier', name: 'Multiplier', isNumeric: true },
+  { id: 'amount', name: 'Amount', isNumeric: true },
+  { id: 'asset', name: 'ID / Asset', maxWidth: '240px' },
+  { id: 'value', name: 'Value', isNumeric: true },
 ];
 
 const SURFACE_COLUMN_STATES: Readonly<Record<TokenTransferSurface, ColumnStates<Exclude<TokenTransferColumnId, 'multiplier'>>>> = {

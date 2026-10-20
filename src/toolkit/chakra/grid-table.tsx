@@ -47,7 +47,16 @@ export const GridTableScrollBox = React.forwardRef<HTMLDivElement, BoxProps>(
 
     return (
       <GridTableScrolledContext.Provider value={ isScrolled }>
-        <Box ref={ ref } overflow="auto" maxH={ maxH } css={{ contain: 'inline-size' }} onScroll={ handleScroll } { ...rest }>
+        <Box
+          ref={ ref }
+          overflow="auto"
+          maxH={ maxH }
+          mx={{ base: -3, lg: 0 }}
+          px={{ base: 3, lg: 0 }}
+          contain="inline-size"
+          onScroll={ handleScroll }
+          { ...rest }
+        >
           { children }
         </Box>
       </GridTableScrolledContext.Provider>
@@ -134,6 +143,8 @@ export const GridTableCell = ({ columnIndex, ...rest }: GridTableCellProps) => {
       role="cell"
       css={ css }
       display="grid"
+      // the implicit auto track would grow to the content's min-content width and push it past a capped column
+      gridTemplateColumns="minmax(0, 1fr)"
       alignItems="center"
       alignSelf="stretch"
       minW={ 0 }

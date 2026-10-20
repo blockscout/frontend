@@ -7,5 +7,5 @@ what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
 - [x] 01 → `tickets/01-grid-table-primitives/`
-- [ ] 02 → `tickets/02-token-transfers-grid/`
+- [x] 02 → `tickets/02-token-transfers-grid/`
 - [ ] 03 → `tickets/03-advanced-filter-grid/`

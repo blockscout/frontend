@@ -7,7 +7,7 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 
-import { TableCell, TableRow } from 'src/toolkit/chakra/table';
+import { GridTableCell, GridTableRow } from 'src/toolkit/chakra/grid-table';
 
 import type { Props as CellProps } from './TokenTransferCellByColumn';
 import TokenTransferCellByColumn from './TokenTransferCellByColumn';
@@ -18,23 +18,25 @@ interface Props extends Omit<CellProps, 'column' | 'chainConfig'> {
 }
 
 const TokenTransfersTableItem = ({ columns, chainData, ...rest }: Props) => {
+  const columnIndexOffset = chainData ? 1 : 0;
+
   return (
-    <TableRow>
+    <GridTableRow>
       { chainData && (
-        <TableCell>
+        <GridTableCell columnIndex={ 0 }>
           <ChainIcon data={ chainData } isLoading={ rest.isLoading }/>
-        </TableCell>
+        </GridTableCell>
       ) }
-      { columns.map((column) => (
-        <TableCell key={ column.id } isNumeric={ column.isNumeric } verticalAlign="middle">
+      { columns.map((column, index) => (
+        <GridTableCell key={ column.id } columnIndex={ index + columnIndexOffset }>
           <TokenTransferCellByColumn
             column={ column.id }
             chainConfig={ chainData?.app_config }
             { ...rest }
           />
-        </TableCell>
+        </GridTableCell>
       )) }
-    </TableRow>
+    </GridTableRow>
   );
 };
 
