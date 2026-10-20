@@ -14,42 +14,38 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'tx_hash',
     name: 'Tx hash',
-    width: '180px',
   },
   {
     id: 'type',
     name: 'Type',
-    width: '160px',
   },
   {
     id: 'method',
     name: 'Method',
-    width: '160px',
+    maxWidth: '160px',
   },
   {
     id: 'age',
     name: 'Age',
-    width: '190px',
   },
   {
     id: 'from',
     name: 'From',
-    width: '160px',
+    maxWidth: '200px',
   },
   {
     id: 'or_and',
     name: '',
-    width: '65px',
+    maxWidth: '65px',
   },
   {
     id: 'to',
     name: 'To',
-    width: '160px',
+    maxWidth: '200px',
   },
   {
     id: 'multiplier',
     name: 'Multiplier',
-    width: '90px',
     isNumeric: true,
     noFilter: true,
   },
@@ -57,18 +53,16 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
     id: 'amount',
     name: 'Amount',
     isNumeric: true,
-    width: '150px',
   },
   {
     id: 'asset',
     name: 'Asset',
-    width: '120px',
+    maxWidth: '240px',
   },
   {
     id: 'fee',
     name: 'Fee',
     isNumeric: true,
-    width: '120px',
   },
 ] as const;
 

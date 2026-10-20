@@ -116,6 +116,10 @@ export const GridTableColumnHeader = ({ columnIndex, ...rest }: GridTableColumnH
       position="sticky"
       top={ 0 }
       zIndex="docked"
+      display="flex"
+      alignItems="center"
+      alignSelf="stretch"
+      justifyContent={ isNumeric ? 'flex-end' : undefined }
       whiteSpace="nowrap"
       bg="bg.primary"
       bgImage="linear-gradient({colors.table.header.bg}, {colors.table.header.bg})"
@@ -123,7 +127,6 @@ export const GridTableColumnHeader = ({ columnIndex, ...rest }: GridTableColumnH
       clipPath="inset(0 0 -8px 0)"
       transitionProperty="box-shadow"
       transitionDuration="normal"
-      textAlign={ isNumeric ? 'right' : undefined }
       { ...rest }
     />
   );

@@ -8,4 +8,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-grid-table-primitives/`
 - [x] 02 → `tickets/02-token-transfers-grid/`
-- [ ] 03 → `tickets/03-advanced-filter-grid/`
+- [x] 03 → `tickets/03-advanced-filter-grid/`

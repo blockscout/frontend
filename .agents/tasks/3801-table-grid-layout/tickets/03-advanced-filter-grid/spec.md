@@ -50,7 +50,7 @@ How to verify: `pnpm dev:preset eth`, open `/advanced-filter`
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Replace `width` with an optional max width on `TxTableColumn` and `TABLE_COLUMNS`
-- [ ] 2 `[agent]` `AdvancedFilterTable` on the grid primitives: inline filter header, `or_and` centering, chain-icon column, viewport-fill height; drop `TableHeaderSticky` from the page
-- [ ] 3 `[agent]` Update `AdvancedFilter.spec.tsx` to role-based queries
-- [ ] 4 `[human]` Regenerate `AdvancedFilter.pw.tsx` screenshots in Docker and verify caps on the running page
+- [x] 1 `[agent]` Replace `width` with an optional max width on `TxTableColumn` and `TABLE_COLUMNS`
+- [x] 2 `[agent]` `AdvancedFilterTable` on the grid primitives: inline filter header, `or_and` centering, chain-icon column, viewport-fill height; drop `TableHeaderSticky` from the page
+- [x] 3 `[agent]` Update `AdvancedFilter.spec.tsx` to role-based queries
+- [x] 4 `[human]` Regenerate `AdvancedFilter.pw.tsx` screenshots in Docker and verify caps on the running page

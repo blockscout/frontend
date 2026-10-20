@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import {
-  Box,
-  chakra,
-} from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
+import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 import type { TxTableColumn } from '../../types/client';
@@ -15,12 +13,27 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
+import { GRID_TABLE_SCROLL_BOX_HEIGHT } from 'src/shared/lists/grid-table-scroll-box-height';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
-import { TableBody, TableCell, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import type { GridTableColumn } from 'src/toolkit/chakra/grid-table';
+import {
+  GridTableBody,
+  GridTableCell,
+  GridTableColumnHeader,
+  GridTableHeader,
+  GridTableRoot,
+  GridTableRow,
+  GridTableScrollBox,
+} from 'src/toolkit/chakra/grid-table';
 
 import FilterByColumn from '../../components/FilterByColumn';
 import ItemByColumn from '../../components/ItemByColumn';
+
+const CHAIN_COLUMN: GridTableColumn = { id: 'chain' };
+// the grid primitives set their own alignment props, so passing `undefined` for other columns would wipe the numeric one
+const CENTERED_HEADER_PROPS = { justifyContent: 'center' } as const;
+const CENTERED_CELL_PROPS = { justifyItems: 'center' } as const;
 
 type Props = {
   items: Array<schemas['AdvancedFilterItem']>;
@@ -42,90 +55,74 @@ const AdvancedFilterTable = ({
   resetKey,
 }: Props) => {
   const multichainContext = useMultichainContext();
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const chainData = multichainContext?.chain;
+  const { cutRef, scrollContainerRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+
+  const gridColumns = React.useMemo(
+    (): ReadonlyArray<GridTableColumn> => chainData ? [ CHAIN_COLUMN, ...columns ] : columns,
+    [ chainData, columns ],
+  );
+  const columnIndexOffset = chainData ? 1 : 0;
 
   return (
     <AddressHighlightProvider>
-      <Box maxW="100%" display="grid" overflowX="scroll" whiteSpace="nowrap">
-        <TableRoot tableLayout="fixed" minWidth="950px" w="100%">
-          <TableHeaderSticky>
-            <TableRow>
-              { multichainContext?.chain && <TableColumnHeader width="38px"/> }
-              { columns.map(column => {
-                return (
-                  <TableColumnHeader
-                    key={ column.id }
-                    isNumeric={ column.isNumeric }
-                    minW={ column.width }
-                    w={ column.width }
-                    wordBreak="break-word"
-                    whiteSpace="normal"
-                  >
-                    { Boolean(column.name) && (
-                      <chakra.span mr={ column.noFilter ? 0 : 2 } lineHeight="24px" verticalAlign="middle">
-                        { column.id === 'age' ? 'Timestamp' : column.name }
-                      </chakra.span>
-                    ) }
-                    <FilterByColumn
-                      column={ column.id }
-                      columnName={ column.name }
-                      handleFilterChange={ handleFilterChange }
-                      filters={ filters }
-                      searchParams={ searchParams }
-                      isLoading={ isLoading }
-                    />
-                    { column.id === 'age' && <TimeFormatToggle ml={ 1 } verticalAlign="middle"/> }
-                  </TableColumnHeader>
-                );
-              }) }
-            </TableRow>
-          </TableHeaderSticky>
-          <TableBody>
+      <GridTableScrollBox ref={ scrollContainerRef } maxH={ GRID_TABLE_SCROLL_BOX_HEIGHT }>
+        <GridTableRoot columns={ gridColumns }>
+          <GridTableHeader>
+            <GridTableRow>
+              { chainData && <GridTableColumnHeader columnIndex={ 0 }/> }
+              { columns.map((column, index) => (
+                <GridTableColumnHeader
+                  key={ column.id }
+                  columnIndex={ index + columnIndexOffset }
+                  { ...(column.id === 'or_and' ? CENTERED_HEADER_PROPS : {}) }
+                >
+                  { Boolean(column.name) && (
+                    <chakra.span mr={ column.noFilter ? 0 : 2 }>
+                      { column.id === 'age' ? 'Timestamp' : column.name }
+                    </chakra.span>
+                  ) }
+                  <FilterByColumn
+                    column={ column.id }
+                    columnName={ column.name }
+                    handleFilterChange={ handleFilterChange }
+                    filters={ filters }
+                    searchParams={ searchParams }
+                    isLoading={ isLoading }
+                  />
+                  { column.id === 'age' && <TimeFormatToggle ml={ 1 }/> }
+                </GridTableColumnHeader>
+              )) }
+            </GridTableRow>
+          </GridTableHeader>
+          <GridTableBody>
             { items.slice(0, renderedItemsNum).map((item, index) => (
-              <TableRow key={ item.hash + String(index) }>
-                { multichainContext?.chain && (
-                  <TableCell>
-                    <ChainIcon data={ multichainContext.chain } isLoading={ isLoading }/>
-                  </TableCell>
+              <GridTableRow key={ item.hash + String(index) }>
+                { chainData && (
+                  <GridTableCell columnIndex={ 0 }>
+                    <ChainIcon data={ chainData } isLoading={ isLoading }/>
+                  </GridTableCell>
                 ) }
-                { columns.map(column => {
-                  const textAlign = (() => {
-                    if (column.id === 'or_and') {
-                      return 'center';
-                    }
-                    if (column.isNumeric) {
-                      return 'right';
-                    }
-                    return 'start';
-                  })();
-
-                  return (
-                    <TableCell
-                      key={ item.hash + column.id }
-                      isNumeric={ column.isNumeric }
-                      minW={ column.width }
-                      maxW={ column.width }
-                      w={ column.width }
-                      wordBreak="break-word"
-                      whiteSpace="nowrap"
-                      overflow="hidden"
-                      textAlign={ textAlign }
-                    >
-                      <ItemByColumn
-                        item={ item }
-                        column={ column.id }
-                        isLoading={ isLoading }
-                        chainConfig={ multichainContext?.chain?.app_config }
-                      />
-                    </TableCell>
-                  );
-                }) }
-              </TableRow>
+                { columns.map((column, columnIndex) => (
+                  <GridTableCell
+                    key={ column.id }
+                    columnIndex={ columnIndex + columnIndexOffset }
+                    { ...(column.id === 'or_and' ? CENTERED_CELL_PROPS : {}) }
+                  >
+                    <ItemByColumn
+                      item={ item }
+                      column={ column.id }
+                      isLoading={ isLoading }
+                      chainConfig={ chainData?.app_config }
+                    />
+                  </GridTableCell>
+                )) }
+              </GridTableRow>
             )) }
-            <TableRow ref={ cutRef }/>
-          </TableBody>
-        </TableRoot>
-      </Box>
+          </GridTableBody>
+        </GridTableRoot>
+        <div ref={ cutRef }/>
+      </GridTableScrollBox>
     </AddressHighlightProvider>
   );
 };
