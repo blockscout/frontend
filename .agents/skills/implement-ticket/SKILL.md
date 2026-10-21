@@ -70,24 +70,31 @@ acceptance criterion:
   that names the issue spams its timeline). Done.
 - **Any touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when the
   leaves are all `[agent]` but a `(human)` criterion remains, after implementing them and **before**
-  committing. **Stage** the work, print the tree hash of the staged state, and stop:
+  committing. **Stage** the work (`git add -A`) and stop — nothing is committed or stashed. From here the
+  index is the agent's work and the working tree on top of it is the developer's: their fixes stay
+  **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
+  the hand-off and the agent fixes it, run `git status` first and restage **only the paths the agent
+  edited** (`git add <paths>`); every other modified path is a developer fix and stays where it is.
 
-  ```bash
-  git add -A && git write-tree
-  ```
+  Say what the developer does next, keyed to where the run stopped:
 
-  The hash goes in the hand-off text only — nothing is committed or stashed, and `git diff <tree-hash>`
-  later compares that tree to the working tree whatever is staged by then. Say what the developer does
-  next, in three parts: **verify** in the running app against the linked Figma node, at every
-  breakpoint; **fix** by hand, leaving the fixes **unstaged**; then say **"record my corrections"**
-  (Step 6). For a `[human]` leaf they check its box and ask the session to continue — it resumes from
-  the next unchecked leaf (Step 3), never by re-invoking the skill. Once every leaf is complete, the agent or developer checks the box in `progress.md` and commits the entire body of work.
+  - **At a `[human]` leaf** → **verify** in the running app and **fix** by hand, leaving the fixes
+    unstaged; then check the leaf's box and ask the session to continue — it resumes from the next
+    unchecked leaf (Step 3), never by re-invoking the skill.
+  - **At the `(human)` criteria, on a ticket with a style leaf** (one linking a Figma node) → **verify**
+    against the linked node at every breakpoint, **fix** by hand leaving the fixes unstaged, then say
+    **"record my corrections"** (Step 6).
+  - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
+    criteria and ask the session to commit.
+
+  Once every leaf is complete, the agent or developer checks the box in `progress.md` and commits the
+  entire body of work.
 
 ## Step 6 — Record corrections
 
-Entered when the developer says **"record my corrections"** after a style-leaf hand-off. Spawn a
-**subagent** with [`record-corrections.md`](record-corrections.md) as its brief, the tree hash from the
-hand-off and the leaf's Figma node URL; when the leaf had a readout, point it at the node's block and
+Entered when the developer says **"record my corrections"** after a hand-off on a ticket with a style
+leaf. Spawn a **subagent** with [`record-corrections.md`](record-corrections.md) as its brief and the
+leaf's Figma node URL; when the leaf had a readout, point it at the node's block and
 sidecar too. The subagent reads the developer's unstaged fixes back as gap-log lines, confirms the batch
 with the developer and records it; it edits no source file.
 
