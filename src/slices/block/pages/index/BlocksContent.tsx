@@ -13,6 +13,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import BlocksTable from 'src/slices/block/pages/index/BlocksTable';
+import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -20,10 +21,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
-import { route } from 'src/shared/router/routes';
-import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import { Link } from 'src/toolkit/chakra/link';
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const OVERLOAD_COUNT = 75;
@@ -127,11 +125,8 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   ) : null;
 
   const actionBar = isMobile ? (
-    <ActionBar mt={ -6 }>
-      <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
-        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
-        <span>Block countdown</span>
-      </Link>
+    <ActionBar mt={ -6 } alignItems="center" columnGap={ 3 }>
+      <ChainUtilization/>
       <Pagination ml="auto" { ...query.pagination }/>
     </ActionBar>
   ) : null;

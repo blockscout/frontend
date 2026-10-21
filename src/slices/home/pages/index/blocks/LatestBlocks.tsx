@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, Box, Flex, Text, VStack } from '@chakra-ui/react';
-import { upperFirst } from 'es-toolkit';
+import { chakra, Box, Flex, VStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import getChainUtilizationParams from 'src/slices/chain/get-chain-utilization-params';
+import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
+
+import ChainUtilization from 'src/slices/chain/ChainUtilization';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import { useHomeDataContext } from 'src/slices/home/contexts/home-data-context';
 
@@ -17,9 +18,6 @@ import useInitialList from 'src/shared/lists/useInitialList';
 
 import { Heading } from 'src/toolkit/chakra/heading';
 import { Link } from 'src/toolkit/chakra/link';
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { Tooltip } from 'src/toolkit/chakra/tooltip';
-import { nbsp } from 'src/toolkit/utils/htmlEntities';
 
 import LatestBlocksDegraded from './LatestBlocksDegraded';
 import LatestBlocksItem from './LatestBlocksItem';
@@ -33,7 +31,7 @@ const LatestBlocks = () => {
   } else {
     blocksMaxCount = isMobile ? 2 : 3;
   }
-  const { blocksQuery } = useHomeDataContext();
+  const { blocksQuery, blocksSocket } = useHomeDataContext();
   const initialList = useInitialList<schemas['Block']>({
     data: blocksQuery?.data ?? [],
     idFn: (block) => block.height,
@@ -48,9 +46,21 @@ const LatestBlocks = () => {
     }
     if (blocksQuery?.data && blocksQuery.data.length > 0) {
       const dataToShow = blocksQuery.data.slice(0, blocksMaxCount);
+      const hasNewBlocksNotice = Boolean(blocksSocket && (blocksSocket.newBlocksCount > 0 || blocksSocket.showSocketErrorAlert));
 
       return (
         <>
+          { hasNewBlocksNotice && (
+            <SocketNewItemsNotice
+              type="block"
+              url={ route({ pathname: '/blocks' }) }
+              num={ blocksSocket?.newBlocksCount }
+              showErrorAlert={ blocksSocket?.showSocketErrorAlert }
+              isLoading={ blocksQuery.isPlaceholderData }
+              mb={ 2 }
+              borderBottomRadius={ 0 }
+            />
+          ) }
           <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
             { dataToShow.map(((block, index) => (
               <LatestBlocksItem
@@ -70,23 +80,12 @@ const LatestBlocks = () => {
     return <Box textStyle="sm">No latest blocks found.</Box>;
   })();
 
-  const networkUtilization = getChainUtilizationParams(statsQueryResult.data?.network_utilization_percentage ?? 0);
-
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading level="3">Latest blocks</Heading>
-      { typeof statsQueryResult.data?.network_utilization_percentage === 'number' && (
-        <Skeleton loading={ statsQueryResult.isPlaceholderData } mt={ 2 } display="inline-block" textStyle="sm">
-          <Text as="span">
-            Network utilization:{ nbsp }
-          </Text>
-          <Tooltip content={ `${ upperFirst(networkUtilization.load) } load` }>
-            <Text as="span" color={ networkUtilization.color } fontWeight={ 700 }>
-              { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
-            </Text>
-          </Tooltip>
-        </Skeleton>
-      ) }
+      <Flex alignItems="center" justifyContent="space-between" columnGap={ 2 }>
+        <Heading level="3">Latest blocks</Heading>
+        <ChainUtilization/>
+      </Flex>
       { statsQueryResult.data?.celo && (
         <Box whiteSpace="pre-wrap" textStyle="sm" mt={ 2 }>
           <span>Current epoch: </span>
