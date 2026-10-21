@@ -15,12 +15,18 @@ const GridTableContext = React.createContext<ReadonlyArray<GridTableColumn>>(EMP
 
 const GridTableScrolledContext = React.createContext(false);
 
-const useGridTableStyles = () => {
+const useGridTableStyles = (): Record<string, SystemStyleObject> => {
   const recipe = useSlotRecipe({ key: 'table' });
   return React.useMemo(() => recipe({}), [ recipe ]);
 };
 
-const useColumnPosition = (columnIndex: number) => {
+interface ColumnPosition {
+  readonly isFirst: boolean;
+  readonly isLast: boolean;
+  readonly isNumeric: boolean;
+}
+
+const useColumnPosition = (columnIndex: number): ColumnPosition => {
   const columns = React.useContext(GridTableContext);
   return {
     isFirst: columnIndex === 0,
@@ -164,7 +170,7 @@ export const GridTableFullWidthRow = ({ children, ...rest }: BoxProps) => {
 
   return (
     <GridTableRow>
-      <Box role="cell" css={ css } gridColumn="1 / -1" { ...rest }>
+      <Box role="cell" css={ css } gridColumn="1 / -1" p={ 0 } { ...rest }>
         { children }
       </Box>
     </GridTableRow>

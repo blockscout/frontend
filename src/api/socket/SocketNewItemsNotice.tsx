@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { JsxStyleProps } from '@chakra-ui/react';
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
@@ -103,7 +104,7 @@ export default SocketNewItemsNotice;
 // the notice row must span the whole table, so the fallback has to exceed any table's column count
 const FALLBACK_COL_SPAN = 100;
 
-const getTableRowNoticeProps = (isLoading: boolean | undefined) => ({
+const getTableRowNoticeProps = (isLoading: boolean | undefined): JsxStyleProps => ({
   borderRadius: isLoading ? 'sm' : 0,
   h: isLoading ? 5 : 'auto',
   maxW: isLoading ? '215px' : undefined,
@@ -123,7 +124,7 @@ export const Desktop = ({ colSpan = FALLBACK_COL_SPAN, ...props }: Props) => {
 export const Grid = (props: Omit<Props, 'colSpan'>) => {
   return (
     <SocketNewItemsNotice { ...getTableRowNoticeProps(props.isLoading) } { ...props }>
-      { ({ content }) => <GridTableFullWidthRow px={ 0 } py={ 0 } pl={ 0 } pr={ 0 }>{ content }</GridTableFullWidthRow> }
+      { ({ content }) => <GridTableFullWidthRow>{ content }</GridTableFullWidthRow> }
     </SocketNewItemsNotice>
   );
 };

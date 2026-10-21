@@ -13,6 +13,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import { GRID_TABLE_SCROLL_BOX_HEIGHT } from 'src/shared/lists/grid-table-scroll-box-height';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -34,6 +35,8 @@ const CHAIN_COLUMN: GridTableColumn = { id: 'chain' };
 // the grid primitives set their own alignment props, so passing `undefined` for other columns would wipe the numeric one
 const CENTERED_HEADER_PROPS = { justifyContent: 'center' } as const;
 const CENTERED_CELL_PROPS = { justifyItems: 'center' } as const;
+
+const getBaseKey = (item: schemas['AdvancedFilterItem']): string => item.hash;
 
 type Props = {
   items: Array<schemas['AdvancedFilterItem']>;
@@ -57,6 +60,7 @@ const AdvancedFilterTable = ({
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const { cutRef, scrollContainerRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   const gridColumns = React.useMemo(
     (): ReadonlyArray<GridTableColumn> => chainData ? [ CHAIN_COLUMN, ...columns ] : columns,
@@ -97,7 +101,7 @@ const AdvancedFilterTable = ({
           </GridTableHeader>
           <GridTableBody>
             { items.slice(0, renderedItemsNum).map((item, index) => (
-              <GridTableRow key={ item.hash + String(index) }>
+              <GridTableRow key={ keys[index] }>
                 { chainData && (
                   <GridTableCell columnIndex={ 0 }>
                     <ChainIcon data={ chainData } isLoading={ isLoading }/>

@@ -58,6 +58,13 @@ export default function useLazyRenderedList({
     scrollContainerNodeRef.current = node;
   }, []);
 
+  // the box outlives the dataset, so without this a page or filter change opens at the previous offset
+  React.useEffect(() => {
+    if (scrollContainerNodeRef.current) {
+      scrollContainerNodeRef.current.scrollTop = 0;
+    }
+  }, [ resetKey ]);
+
   const hasMore = renderedItemsNum < itemsNum;
 
   // The reveal is driven by measuring the sentinel on scroll rather than by an IntersectionObserver.

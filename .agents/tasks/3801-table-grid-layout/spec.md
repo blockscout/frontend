@@ -30,7 +30,7 @@ established and the implementation decisions below carry the parts that matter.
 
 1. The token transfers table on all five of its surfaces and the advanced filter table render through a
    grid-based table component. Column widths derive from content; the capped columns are From / To and
-   ID / Asset on token transfers, and From, To and Asset on the advanced filter. Long values in a capped
+   ID / Asset on token transfers, and From, To, Method and Asset on the advanced filter. Long values in a capped
    column truncate through the existing entity components.
 2. On a wide viewport the columns share the free width so the table fills its container; on a narrow
    one the table overflows into its own scroll box. The page itself never scrolls horizontally.
@@ -84,7 +84,9 @@ Both render the same grid on mobile and desktop; there is no separate mobile lis
   not cover gaps.
 - **Column caps are surface data.** Each column definition may carry a max width that the surface
   turns into its `fit-content` track. Token transfers: From / To 350px, ID / Asset 240px. Advanced
-  filter: From 200px, To 200px, Asset 240px — the developer verifies these on the running page.
+  filter: From 200px, To 200px, Method 160px, Asset 240px — the developer verifies these on the running
+  page. The nameless `or_and` column is capped at 65px too, not for long values but because an
+  uncapped `auto` track takes an equal share of the free width.
 - **Scroll box height is a prop.** The toolkit scroll box takes a max height with a default of `70vh`.
   Surfaces pass a viewport-fill value (`calc(100vh - <offset>)`) built from one app-side constant pair
   covering the top bar and action bar stack, so the value is never baked into the toolkit.

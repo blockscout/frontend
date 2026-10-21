@@ -40,8 +40,8 @@ const TestList = ({ list, step, resetKey }: Props) => {
   );
 };
 
-const TestListInScrollContainer = ({ list }: Pick<Props, 'list'>) => {
-  const result = useLazyRenderedList({ list, isEnabled: true });
+const TestListInScrollContainer = ({ list, resetKey }: Pick<Props, 'list' | 'resetKey'>) => {
+  const result = useLazyRenderedList({ list, isEnabled: true, resetKey });
   renderedItemsNum = result.renderedItemsNum;
 
   return (
@@ -175,5 +175,16 @@ describe('useLazyRenderedList', () => {
     rerender(<TestList list={ list } resetKey="b"/>);
 
     expect(getRenderedNum()).toBe(20);
+  });
+
+  it('scrolls the scroll container back to the top when the reset key changes', () => {
+    const list = Array.from({ length: 500 }, (_, i) => i);
+    const { rerender } = render(<TestListInScrollContainer list={ list } resetKey="a"/>);
+    const container = screen.getByTestId('scroll-container');
+    container.scrollTop = 800;
+
+    rerender(<TestListInScrollContainer list={ list } resetKey="b"/>);
+
+    expect(container.scrollTop).toBe(0);
   });
 });
