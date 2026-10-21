@@ -78,6 +78,7 @@ acceptance criterion:
   goes into the index **by hand, beside the working tree**, per tracked file the agent edits:
 
   ```bash
+  mkdir -p "$(dirname <scratchpad>/index/<path>)"   # the redirect below creates no parent directories
   git show :<path> > <scratchpad>/index/<path>      # the index copy — the agent's work, no developer hunks
   # … make the same fix in <path> (working tree) and in <scratchpad>/index/<path> …
   git update-index --cacheinfo "$(git ls-files --format='%(objectmode)' <path>),$(git hash-object -w <scratchpad>/index/<path>),<path>"
