@@ -64,10 +64,12 @@ say so explicitly rather than chasing green. Then walk the ticket's **acceptance
 Key the close to whether the ticket has any **human touchpoint** — a `[human]` leaf, or a `(human)`
 acceptance criterion:
 
-- **No touchpoint** → fully autonomous: commit (Step 7). Done.
-- **Any touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when no
-  unchecked `[human]` leaf remains but a `(human)` criterion does, after implementing the leaves and
-  **before** committing. **Stage** the work (`git add -A`) and stop — nothing is committed or stashed. From
+- **No open touchpoint** — no unchecked `[human]` leaf, and no `(human)` criterion the developer has not
+  yet confirmed → commit (Step 7). Done. A ticket with no touchpoint at all lands here on its first run; a
+  ticket whose touchpoints are all `[human]` leaves lands here once the last one is checked.
+- **An open touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when no
+  unchecked `[human]` leaf remains but an unconfirmed `(human)` criterion does, after implementing the
+  leaves and **before** committing. **Stage** the work (`git add -A`) and stop — nothing is committed or stashed. From
   here the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
   **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
   the hand-off and the agent fixes it, the index must still hold only the agent's hunks afterwards:
@@ -76,11 +78,16 @@ acceptance criterion:
   git diff > <scratchpad>/developer.patch           # before editing: the developer's hunks
   # … fix the bug …
   git add <paths the agent edited>                  # stages the developer's hunks in those files too
-  git apply -R --cached <scratchpad>/developer.patch # lift them back out; working tree untouched
+  git apply -R --cached --include=<path> … <scratchpad>/developer.patch  # lift them back out of the index,
+                                                                         # one --include per path just staged
   ```
 
-  Skip the last command when the patch is empty. A modified path the agent did not touch is a developer
-  fix and is never staged.
+  Skip the last command when the patch is empty. The `--include` list matters: `git apply` is
+  all-or-nothing, so a developer hunk in a path that is not in the index makes the whole reverse apply
+  exit 1 and change nothing. It still fails when the agent's fix touched a line next to a developer hunk
+  — then `git restore --staged <path>` for that path, leave the agent's fix unstaged, and name that hunk
+  in the hand-off text so Step 6 skips it. A modified path the agent did not touch is a developer fix and
+  is never staged.
 
   Say what the developer does next, keyed to where the run stopped:
 
@@ -101,9 +108,11 @@ Entered when the developer says **"record my corrections"** after a hand-off on 
 leaf. Spawn a **subagent** with [`record-corrections.md`](record-corrections.md) as its brief and the
 leaf's Figma node URL; when the leaf had a readout, point it at the node's block and
 sidecar too. The subagent reads the developer's unstaged fixes back as gap-log lines, confirms the batch
-with the developer and records it; it edits no source file.
+with the developer and records it; it edits no source file. After the batch, commit (Step 7).
 
 ## Step 7 — Commit
 
-Check the ticket's box in
-`progress.md`, then **commit** the entire body of work.
+Check the ticket's box in `progress.md`, then **commit** the entire body of work — the box tick folded
+into the commit so the worktree is clean after. A plain descriptive subject, the repo's `Co-Authored-By`
+trailer, and **no** `#issue` reference (the PR's `Resolves #N` already links it; a commit that names the
+issue spams its timeline).
