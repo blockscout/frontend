@@ -72,22 +72,21 @@ acceptance criterion:
   leaves and **before** committing. **Stage** the work (`git add -A`) and stop — nothing is committed or stashed. From
   here the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
   **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
-  the hand-off and the agent fixes it, the index must still hold only the agent's hunks afterwards:
+  the hand-off and the agent fixes it, the index must still hold only the agent's hunks afterwards. `git
+  add` cannot do that — it stages the whole file, developer hunks included — and no patch can be relied on
+  to lift them back out, because a fix next to a developer hunk breaks the patch's context. So the fix
+  goes into the index **by hand, beside the working tree**, per tracked file the agent edits:
 
   ```bash
-  git diff > <scratchpad>/developer.patch           # before editing: the developer's hunks
-  # … fix the bug …
-  git add <paths the agent edited>                  # stages the developer's hunks in those files too
-  git apply -R --cached --include=<path> … <scratchpad>/developer.patch  # lift them back out of the index,
-                                                                         # one --include per path just staged
+  git show :<path> > <scratchpad>/index/<path>      # the index copy — the agent's work, no developer hunks
+  # … make the same fix in <path> (working tree) and in <scratchpad>/index/<path> …
+  git update-index --cacheinfo "$(git ls-files --format='%(objectmode)' <path>),$(git hash-object -w <scratchpad>/index/<path>),<path>"
   ```
 
-  Skip the last command when the patch is empty. The `--include` list matters: `git apply` is
-  all-or-nothing, so a developer hunk in a path that is not in the index makes the whole reverse apply
-  exit 1 and change nothing. It still fails when the agent's fix touched a line next to a developer hunk
-  — then `git restore --staged <path>` for that path, leave the agent's fix unstaged, and name that hunk
-  in the hand-off text so Step 6 skips it. A modified path the agent did not touch is a developer fix and
-  is never staged.
+  Nothing is applied, so nothing can fail to apply: the index gains exactly the fix, the developer's
+  hunks stay in the working tree, and `git diff` still reads back only what they changed. A file the agent
+  creates for the fix has no developer hunks and is plain `git add <path>`. A modified path the agent
+  did not touch is a developer fix and is never staged.
 
   Say what the developer does next, keyed to where the run stopped:
 
