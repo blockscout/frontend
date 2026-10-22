@@ -32,9 +32,10 @@ const TAB_LIST_PROPS = {
 interface Props {
   token: schemas['Token'] | undefined;
   isLoading: boolean;
+  tokenId?: string;
 }
 
-const TokenHolders = ({ token, isLoading }: Props) => {
+const TokenHolders = ({ token, isLoading, tokenId }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
@@ -42,7 +43,7 @@ const TokenHolders = ({ token, isLoading }: Props) => {
   const hasBubblemapsTab = config.features.bubblemaps.isEnabled && token?.type === 'ERC-20';
   const isAddressTab = !hasBubblemapsTab || tab === 'holders_address' || tab === 'holders';
 
-  const holdersQuery = useTokenHoldersQuery({ token, tokenId: undefined, enabled: !isLoading && isAddressTab });
+  const holdersQuery = useTokenHoldersQuery({ token, tokenId, enabled: !isLoading && isAddressTab });
 
   const controls = (
     <>
