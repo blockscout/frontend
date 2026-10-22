@@ -86,7 +86,6 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
               address={ block.miner }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
             />
           </>

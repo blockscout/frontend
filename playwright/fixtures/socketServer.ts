@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws';
 
 import type { schemas } from '@blockscout/api-types';
 import type { AddressCoinBalanceSocketMessage, AddressTransactionsSocketMessage, AddressTokensBalancesSocketMessage } from 'src/slices/address/types/api';
-import type { NewBlockSocketResponse } from 'src/slices/block/types/api';
+import type { NewBlockCountSocketResponse, NewBlockSocketResponse } from 'src/slices/block/types/api';
 import type { SmartContractVerificationResponse } from 'src/slices/contract/types/api';
 import type { TokenInstanceMetadataSocketMessage } from 'src/slices/token/types/api';
 
@@ -65,6 +65,7 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'transacti
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: { pending_transaction: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'pending_transaction', payload: AddressTransactionsSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_block', payload: NewBlockSocketResponse): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'new_blocks_count', payload: NewBlockCountSocketResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'verification_result', payload: SmartContractVerificationResponse): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'total_supply', payload: { total_supply: number }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'changed_bytecode', payload: Record<string, never>): void;

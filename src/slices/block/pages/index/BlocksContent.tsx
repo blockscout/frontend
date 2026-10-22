@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { HStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -13,6 +14,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import BlocksTable from 'src/slices/block/pages/index/BlocksTable';
+import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
@@ -127,13 +129,18 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   ) : null;
 
   const actionBar = isMobile ? (
-    <ActionBar mt={ -6 }>
-      <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
-        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
-        <span>Block countdown</span>
-      </Link>
-      <Pagination ml="auto" { ...query.pagination }/>
-    </ActionBar>
+    <>
+      <HStack gap={ 3 } mb={ 6 }>
+        <ChainUtilization/>
+        <Link href={ route({ pathname: '/block/countdown' }, multichainContext) } textStyle="sm">
+          <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
+          <span>Block countdown</span>
+        </Link>
+      </HStack>
+      <ActionBar mt={ -6 }>
+        <Pagination ml="auto" { ...query.pagination }/>
+      </ActionBar>
+    </>
   ) : null;
 
   return (

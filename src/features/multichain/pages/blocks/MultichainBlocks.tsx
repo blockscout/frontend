@@ -9,6 +9,7 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
+import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
@@ -111,6 +112,7 @@ const MultichainBlocks = () => {
 
   const rightSlot = (
     <HStack gap={ 8 } hideBelow="lg">
+      <ChainUtilization label="Utilization (last 50 blocks):" chain={ chain }/>
       <Link href={ route({ pathname: '/block/countdown' }, { chain }) }>
         <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
         <span>Block countdown</span>

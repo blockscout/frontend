@@ -202,6 +202,7 @@
 	| "txn_batches"
 	| "uniswap"
 	| "user_op"
+	| "utilization"
 	| "verification-steps/error"
 	| "verification-steps/finalized"
 	| "verification-steps/unfinalized"

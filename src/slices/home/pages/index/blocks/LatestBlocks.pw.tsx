@@ -92,4 +92,23 @@ test.describe('socket', () => {
     });
     await expect(component).toHaveScreenshot();
   });
+
+  test('new blocks count', async({ render, mockApiResponse, createSocket }) => {
+    await mockApiResponse('core:stats', statsMock.base);
+    await mockApiResponse('core:homepage_blocks', blockMock.baseListResponse.items);
+    const component = await render(
+      <HomeDataContextProvider>
+        <HomeRpcDataContextProvider>
+          <LatestBlocks/>
+        </HomeRpcDataContextProvider>
+      </HomeDataContextProvider>,
+      undefined,
+      { withSocket: true },
+    );
+    const socket = await createSocket();
+    const channel = await socketServer.joinChannel(socket, 'blocks:new_block');
+    socketServer.sendMessage(socket, channel, 'new_blocks_count', { count: 3, type: 'block' });
+    await expect(component.getByText('3 more blocks')).toBeVisible();
+    await expect(component).toHaveScreenshot();
+  });
 });
