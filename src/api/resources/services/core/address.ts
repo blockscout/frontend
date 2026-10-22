@@ -10,7 +10,7 @@ import type {
   AddressTokensFilter,
   AddressNFTTokensFilter,
 } from 'src/slices/address/types/api';
-import type { ZeroValueFilter } from 'src/slices/internal-tx/types/api';
+import type { AddressInternalTxsFilters } from 'src/slices/internal-tx/types/api';
 import type { TransactionsSorting } from 'src/slices/tx/types/api';
 
 export const CORE_API_ADDRESS_RESOURCES = {
@@ -186,7 +186,7 @@ never;
 export type CoreApiAddressPaginationFilters<R extends CoreApiAddressResourceName> =
 R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchFilters :
 R extends 'core:address_txs' ? AddressTxsFilters :
-R extends 'core:address_internal_txs' ? AddressTxsFilters & ZeroValueFilter :
+R extends 'core:address_internal_txs' ? AddressInternalTxsFilters :
 R extends 'core:address_token_transfers' ? AddressTokenTransferFilters :
 R extends 'core:address_tokens' ? AddressTokensFilter :
 R extends 'core:address_nfts' ? AddressNFTTokensFilter :

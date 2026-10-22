@@ -51,10 +51,10 @@ export default function useAddressInternalTxsQuery({ enabled, chain }: Props) {
 
   const filterValue = getFilterValue(query.filters.filter);
 
-  const { onFilterChange: onQueryFilterChange } = query;
+  const { onFilterChange: onQueryFilterChange, filters } = query;
   const onFilterChange = React.useCallback((val: string | Array<string>) => {
-    onQueryFilterChange({ filter: getFilterValue(val) });
-  }, [ onQueryFilterChange ]);
+    onQueryFilterChange({ ...filters, filter: getFilterValue(val) });
+  }, [ onQueryFilterChange, filters ]);
 
   return React.useMemo(() => ({
     hash,

@@ -43,8 +43,8 @@ export default function useInternalTxsQuery({ chain }: Props = {}) {
 
   const searchTerm = getQueryParamString(query.filters.transaction_hash) || undefined;
 
-  const { onFilterChange } = query;
-  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ transaction_hash: value }));
+  const { onFilterChange, filters } = query;
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ ...filters, transaction_hash: value }));
 
   return React.useMemo(() => ({
     query,
