@@ -31,6 +31,9 @@ jobs:
         needs: check_tag
         uses: './.github/workflows/publish-image.yml'
         secrets: inherit
+        permissions:
+            contents: read
+            packages: write
         with:
             platforms: linux/amd64
 
