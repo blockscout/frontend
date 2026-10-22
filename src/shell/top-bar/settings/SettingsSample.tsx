@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { ConditionalValue } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
@@ -8,7 +9,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   isActive: boolean;
-  bg: string;
+  bg: ConditionalValue<string>;
   value: string;
   label: string;
 }
@@ -25,7 +26,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
           boxSize="22px"
           borderRadius="full"
           borderWidth="1px"
-          borderColor={ isActive ? 'selected.control.bg' : bgColor }
+          borderColor={ bgColor }
           position="relative"
           cursor="pointer"
           _before={{
