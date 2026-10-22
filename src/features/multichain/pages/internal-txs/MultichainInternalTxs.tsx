@@ -51,7 +51,7 @@ const MultichainInternalTxs = () => {
       isChecked={ isZeroValueShown }
       onChange={ onZeroValueToggle }
       isLoading={ pagination.isLoading }
-      ml={{ base: 'auto', lg: 6 }}
+      ml={{ base: '0', lg: 6 }}
     />
   );
 

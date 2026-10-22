@@ -34,6 +34,7 @@ const InternalTxsZeroValueSwitch = ({ isChecked, onChange, isLoading, ...rest }:
           defaultChecked={ isChecked }
           onCheckedChange={ handleCheckedChange }
           labelProps={{ textStyle: 'sm' }}
+          direction="rtl"
         >
           <chakra.span hideBelow="lg">Show zero-value txs</chakra.span>
           <chakra.span hideFrom="lg">Zero-value txs</chakra.span>
