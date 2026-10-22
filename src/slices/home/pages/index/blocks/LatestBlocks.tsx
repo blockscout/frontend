@@ -40,27 +40,29 @@ const LatestBlocks = () => {
 
   const statsQueryResult = useStatsQuery();
 
+  const hasNewBlocksNotice = Boolean(blocksSocket && (blocksSocket.newBlocksCount > 0 || blocksSocket.showSocketErrorAlert));
+  const newBlocksNotice = hasNewBlocksNotice && blocksQuery && (
+    <SocketNewItemsNotice
+      type="block"
+      url={ route({ pathname: '/blocks' }) }
+      num={ blocksSocket?.newBlocksCount }
+      showErrorAlert={ blocksSocket?.showSocketErrorAlert }
+      isLoading={ blocksQuery.isPlaceholderData }
+      mb={ 2 }
+      borderBottomRadius={ 0 }
+    />
+  );
+
   const content = (() => {
     if (blocksQuery?.isError) {
       return <LatestBlocksDegraded maxNum={ blocksMaxCount }/>;
     }
     if (blocksQuery?.data && blocksQuery.data.length > 0) {
       const dataToShow = blocksQuery.data.slice(0, blocksMaxCount);
-      const hasNewBlocksNotice = Boolean(blocksSocket && (blocksSocket.newBlocksCount > 0 || blocksSocket.showSocketErrorAlert));
 
       return (
         <>
-          { hasNewBlocksNotice && (
-            <SocketNewItemsNotice
-              type="block"
-              url={ route({ pathname: '/blocks' }) }
-              num={ blocksSocket?.newBlocksCount }
-              showErrorAlert={ blocksSocket?.showSocketErrorAlert }
-              isLoading={ blocksQuery.isPlaceholderData }
-              mb={ 2 }
-              borderBottomRadius={ 0 }
-            />
-          ) }
+          { newBlocksNotice }
           <VStack gap={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
             { dataToShow.map(((block, index) => (
               <LatestBlocksItem
@@ -77,7 +79,12 @@ const LatestBlocks = () => {
         </>
       );
     }
-    return <Box textStyle="sm">No latest blocks found.</Box>;
+    return (
+      <>
+        { newBlocksNotice }
+        <Box textStyle="sm">No latest blocks found.</Box>
+      </>
+    );
   })();
 
   return (

@@ -43,7 +43,7 @@ const ChainUtilization = ({ className, label, chain }: Props) => {
       <Tooltip content={ `Network utilization: ${ upperFirst(load) } load` }>
         <HStack gap={ 1 }>
           { !label && <SpriteIcon name="utilization" boxSize={ 5 } color={ color }/> }
-          <Text as="span" color={ color } fontWeight={ 700 }>
+          <Text as="span" color={ color } fontWeight="bold">
             { value.toFixed(2) }%
           </Text>
         </HStack>
