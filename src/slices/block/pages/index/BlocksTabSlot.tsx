@@ -19,7 +19,7 @@ interface Props {
 
 const BlocksTabSlot = ({ pagination }: Props) => {
   return (
-    <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', md: 'flex' }}>
+    <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', lg: 'flex' }}>
       <ChainUtilization label="Utilization (last 50 blocks):"/>
       <Link href={ route({ pathname: '/block/countdown' }) } textStyle="sm">
         <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>

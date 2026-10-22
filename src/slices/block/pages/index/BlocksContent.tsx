@@ -132,7 +132,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     <>
       <HStack gap={ 3 } mb={ 6 }>
         <ChainUtilization/>
-        <Link href={ route({ pathname: '/block/countdown' }) } textStyle="sm">
+        <Link href={ route({ pathname: '/block/countdown' }, multichainContext) } textStyle="sm">
           <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
           <span>Block countdown</span>
         </Link>
