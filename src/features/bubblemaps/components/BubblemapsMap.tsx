@@ -14,9 +14,10 @@ const MAP_HEIGHT = '700px';
 
 interface Props {
   hash: string;
+  isLoading: boolean;
 }
 
-const BubblemapsMap = ({ hash }: Props) => {
+const BubblemapsMap = ({ hash, isLoading }: Props) => {
   const [ isFrameLoading, setIsFrameLoading ] = React.useState(true);
 
   const handleIframeLoad = React.useCallback(() => {
@@ -41,21 +42,23 @@ const BubblemapsMap = ({ hash }: Props) => {
       borderRadius="base"
       overflow="hidden"
     >
-      { isFrameLoading && (
+      { (isLoading || isFrameLoading) && (
         <Center h="100%">
           <ContentLoader/>
         </Center>
       ) }
-      <chakra.iframe
-        src={ url.toString() }
-        title="Bubblemaps"
-        allow="clipboard-write"
-        w="100%"
-        h="100%"
-        border="none"
-        display={ isFrameLoading ? 'none' : 'block' }
-        onLoad={ handleIframeLoad }
-      />
+      { !isLoading && (
+        <chakra.iframe
+          src={ url.toString() }
+          title="Bubblemaps"
+          allow="clipboard-write"
+          w="100%"
+          h="100%"
+          border="none"
+          display={ isFrameLoading ? 'none' : 'block' }
+          onLoad={ handleIframeLoad }
+        />
+      ) }
     </Box>
   );
 };

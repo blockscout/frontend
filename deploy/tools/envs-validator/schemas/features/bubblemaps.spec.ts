@@ -34,4 +34,14 @@ describe('bubblemapsSchema', () => {
       'NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID can only be used with NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG',
     ]);
   });
+
+  it('rejects an empty partner id', () => {
+    expect(getValidationErrors(bubblemapsSchema, {
+      NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG: 'eth',
+      NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID: '',
+    })).toEqual([
+      'NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID: Invalid length: Expected !0 but received 0',
+      'NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG can only be used with NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID',
+    ]);
+  });
 });

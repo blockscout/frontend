@@ -40,7 +40,7 @@ const TokenHolders = ({ token, isLoading, tokenId }: Props) => {
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
-  const hasBubblemapsTab = config.features.bubblemaps.isEnabled && token?.type === 'ERC-20';
+  const hasBubblemapsTab = config.features.bubblemaps.isEnabled && (isLoading || token?.type === 'ERC-20');
   const isAddressTab = !hasBubblemapsTab || tab === 'holders_address' || tab === 'holders';
 
   const holdersQuery = useTokenHoldersQuery({ token, tokenId, enabled: !isLoading && isAddressTab });
@@ -76,7 +76,7 @@ const TokenHolders = ({ token, isLoading, tokenId }: Props) => {
     hasBubblemapsTab ? {
       id: 'holders_bubblemaps',
       title: 'Bubblemaps',
-      component: token ? <BubblemapsMap hash={ token.address_hash }/> : null,
+      component: token ? <BubblemapsMap key={ token.address_hash } hash={ token.address_hash } isLoading={ isLoading }/> : null,
     } : null,
   ].filter(Boolean);
 
@@ -92,6 +92,7 @@ const TokenHolders = ({ token, isLoading, tokenId }: Props) => {
   return (
     <RoutedTabs
       variant="secondary"
+      isLoading={ isLoading }
       size="sm"
       tabs={ tabs }
       rightSlot={ rightSlot }
