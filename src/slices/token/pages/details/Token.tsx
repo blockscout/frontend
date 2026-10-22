@@ -21,6 +21,7 @@ import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
 import TokenTransfer from 'src/slices/token-transfer/pages/token/TokenTransfer';
 import useTokenQuery from 'src/slices/token/hooks/useTokenQuery';
 import TokenHolders from 'src/slices/token/pages/details/holders/TokenHolders';
+import TokenHoldersTabs, { TOKEN_HOLDERS_TAB_IDS } from 'src/slices/token/pages/details/holders/TokenHoldersTabs';
 import TokenDetails from 'src/slices/token/pages/details/info/TokenDetails';
 import TokenInventory from 'src/slices/token/pages/details/inventory/TokenInventory';
 import TokenMultiplierHistory from 'src/slices/token/pages/details/multiplier-history/TokenMultiplierHistory';
@@ -41,7 +42,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
-export type TokenTabs = 'token_transfers' | 'holders' | 'inventory' | 'multiplier_history';
+export type TokenTabs = 'token_transfers' | 'holders' | 'holders_bubblemaps' | 'inventory' | 'multiplier_history';
 
 const TokenPageContent = () => {
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
@@ -121,6 +122,7 @@ const TokenPageContent = () => {
 
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
   const hasMultiplierHistoryTab = tokenQuery.data?.type === UI_MULTIPLIER_TOKEN_TYPE && isTokenMultiplierEnabled(multichainContext?.chain?.app_config);
+  const hasBubblemapsTab = config.features.bubblemaps.isEnabled && tokenQuery.data?.type === 'ERC-20';
 
   const tokenCountersQuery = useApiQuery('core:token_counters', {
     pathParams: { hash: hashString },
@@ -183,7 +185,13 @@ const TokenPageContent = () => {
       count: transfersCount,
       component: <TokenTransfer token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
     },
-    {
+    hasBubblemapsTab ? {
+      id: 'holders',
+      title: 'Holders',
+      count: holdersCount,
+      component: <TokenHoldersTabs token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
+      subTabs: TOKEN_HOLDERS_TAB_IDS,
+    } : {
       id: 'holders',
       title: 'Holders',
       count: holdersCount,

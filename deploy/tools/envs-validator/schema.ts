@@ -107,6 +107,7 @@ const schema = composeSchemas([
   featuresSchemas.apiDocsSchema,
   featuresSchemas.beaconChainSchema,
   featuresSchemas.bridgedTokensSchema,
+  featuresSchemas.bubblemapsSchema,
   featuresSchemas.crossChainTxsSchema,
   featuresSchemas.defiDropdownSchema,
   featuresSchemas.flashblocksSchema,

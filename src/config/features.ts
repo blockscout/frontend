@@ -10,6 +10,7 @@ export { default as alternativeExplorers } from 'src/features/alternative-explor
 export { default as apiDocs } from 'src/features/api-docs/config';
 export { default as beaconChain } from 'src/features/chain-variants/beacon-chain/config';
 export { default as bridgedTokens } from 'src/features/bridged-tokens/config';
+export { default as bubblemaps } from 'src/features/bubblemaps/config';
 export { default as connectWallet } from 'src/features/connect-wallet/config';
 export { default as celo } from 'src/features/chain-variants/celo/config';
 export { default as crossChainTxs } from 'src/features/cross-chain-txs/config';

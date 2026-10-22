@@ -69,6 +69,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [API documentation](#api-documentation)
   - [Blockchain statistics](#blockchain-statistics)
   - [Bridged tokens](#bridged-tokens)
+  - [Bubblemaps](#bubblemaps)
   - [Chain variants](#chain-variants)
   - [Connect wallet](#connect-wallet)
   - [Cross-chain transactions](#cross-chain-transactions)
@@ -802,6 +803,18 @@ This feature allows users to view tokens that have been bridged from other EVM c
 | short_title | `string` | Bridge short title for displaying in the tags | Required | - | `OMNI` |
 
 &nbsp;
+
+### Bubblemaps
+
+Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-tab of the "Holders" tab on the ERC-20 token page. Both variables are required to enable the feature. The partner ID only works on the domains Bubblemaps whitelisted for it.
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | upcoming |
+| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | upcoming |
+
+&nbsp;
+
 ### Chain variants
 
 #### Beacon chain
