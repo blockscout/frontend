@@ -34,6 +34,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     const concreteTheme = concreteThemes.find((theme) => theme.id === concreteThemeId);
     const varValue = getThemeHexWithOverrides(concreteThemeId);
 
+    // Stryker disable next-line ConditionalExpression,LogicalOperator: the id is one of the offered themes, so neither lookup can miss; the guard narrows types
     if (!concreteTheme || !varValue) {
       return;
     }

@@ -289,6 +289,23 @@ describe('miscSchema', () => {
       })).toEqual([ 'The system color theme requires NEXT_PUBLIC_COLOR_THEMES to list at least one light and one dark theme' ]);
     });
 
+    it('rejects a system default theme when the listed themes are all of one color mode', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
+        NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'system',
+      })).toEqual([
+        'NEXT_PUBLIC_COLOR_THEME_DEFAULT must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES',
+        'The system color theme requires NEXT_PUBLIC_COLOR_THEMES to list at least one light and one dark theme',
+      ]);
+    });
+
+    it('accepts a one-color-mode themes list that does not involve the system theme', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
+        NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dark',
+      })).toEqual([]);
+    });
+
     it('accepts a default theme without a themes list', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dim' })).toEqual([]);
     });

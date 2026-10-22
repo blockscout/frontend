@@ -9,6 +9,11 @@ import withEnvs from 'vitest/utils/mockEnvs';
 
 const COLOR_MODE_COOKIE = 'chakra-ui-color-mode';
 const COLOR_THEME_COOKIE = 'chakra-ui-color-theme';
+const NEXT_THEMES_STORAGE_KEY = 'theme';
+
+function getRootCssVar(name: string): string {
+  return window.document.documentElement.style.getPropertyValue(name);
+}
 
 type ChangeListener = (event: MediaQueryListEvent) => void;
 
@@ -116,6 +121,10 @@ describe('SettingsColorTheme', () => {
     expect(screen.getByText('Auto (System)')).toBeTruthy();
     expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('system');
     expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('dark');
+    expect(window.localStorage.getItem(NEXT_THEMES_STORAGE_KEY)).toBe('system');
+    expect(getRootCssVar('--chakra-colors-black')).toBe('#101112');
+    expect(getRootCssVar('--chakra-colors-theme-bg-primary-_dark')).toBe('#101112');
+    expect(getRootCssVar('--chakra-colors-white')).toBe('');
   });
 
   it('follows the OS color mode live while the system theme is active', async() => {
@@ -123,27 +132,38 @@ describe('SettingsColorTheme', () => {
     const { act } = await renderSettings();
 
     expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('light');
+    expect(getRootCssVar('--chakra-colors-white')).toBe('#FFFFFF');
+    expect(getRootCssVar('--chakra-colors-theme-bg-primary-_light')).toBe('#FFFFFF');
+    expect(getRootCssVar('--chakra-colors-black')).toBe('');
 
     await act(async() => os.switchTo(true));
 
     expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('system');
     expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('dark');
     expect(window.document.documentElement.classList.contains('dark')).toBe(true);
+    expect(getRootCssVar('--chakra-colors-black')).toBe('#101112');
+    expect(getRootCssVar('--chakra-colors-theme-bg-primary-_dark')).toBe('#101112');
   });
 
   it('stops following the OS once a concrete theme is picked', async() => {
-    const os = stubPrefersColorScheme(false);
+    const os = stubPrefersColorScheme(true);
     const { screen, fireEvent, act } = await renderSettings();
 
-    fireEvent.click(getSwatch('dim'));
-    expect(screen.getByText('Dim')).toBeTruthy();
-    expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('dim');
+    expect(window.document.documentElement.classList.contains('dark')).toBe(true);
+
+    fireEvent.click(getSwatch('light'));
+    expect(screen.getByText('Light')).toBeTruthy();
+    expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('light');
+    expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('light');
+    expect(window.localStorage.getItem(NEXT_THEMES_STORAGE_KEY)).toBe('light');
+    expect(window.document.documentElement.classList.contains('dark')).toBe(false);
 
     await act(async() => os.switchTo(false));
+    await act(async() => os.switchTo(true));
 
-    expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('dim');
-    expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('dark');
-    expect(window.document.documentElement.classList.contains('dark')).toBe(true);
+    expect(Cookies.get(COLOR_THEME_COOKIE)).toBe('light');
+    expect(Cookies.get(COLOR_MODE_COOKIE)).toBe('light');
+    expect(window.document.documentElement.classList.contains('dark')).toBe(false);
   });
 
   it('keeps a concrete theme stored in the cookie instead of switching to the system theme', async() => {
