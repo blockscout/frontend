@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, Text } from '@chakra-ui/react';
+import { chakra, HStack, Text } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
@@ -37,14 +37,16 @@ const ChainUtilization = ({ className, label, chain }: Props) => {
       loading={ statsQuery.isPlaceholderData }
       display="inline-flex"
       alignItems="center"
-      columnGap={ 1 }
       textStyle="sm"
     >
-      { label ? <Text as="span">{ label }{ nbsp }</Text> : <SpriteIcon name="utilization" boxSize={ 5 } color={ color }/> }
+      { label && <Text as="span">{ label }{ nbsp }</Text> }
       <Tooltip content={ `Network utilization: ${ upperFirst(load) } load` }>
-        <Text as="span" color={ color } fontWeight={ 700 }>
-          { value.toFixed(2) }%
-        </Text>
+        <HStack gap={ 1 }>
+          { !label && <SpriteIcon name="utilization" boxSize={ 5 } color={ color }/> }
+          <Text as="span" color={ color } fontWeight={ 700 }>
+            { value.toFixed(2) }%
+          </Text>
+        </HStack>
       </Tooltip>
     </Skeleton>
   );
