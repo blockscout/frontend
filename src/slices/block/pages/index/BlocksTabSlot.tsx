@@ -8,7 +8,6 @@ import type { PaginationParams } from 'src/shared/pagination/types';
 
 import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -19,16 +18,14 @@ interface Props {
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
-  const isMobile = useIsMobile();
-
   return (
-    <Flex alignItems="center" columnGap={ 8 } display="flex">
-      { !isMobile && <ChainUtilization label="Utilization (last 50 blocks):"/> }
+    <Flex alignItems="center" columnGap={ 8 } display={{ base: 'none', md: 'flex' }}>
+      <ChainUtilization label="Utilization (last 50 blocks):"/>
       <Link href={ route({ pathname: '/block/countdown' }) } textStyle="sm">
         <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
-        <span>{ isMobile ? 'Countdown' : 'Block countdown' }</span>
+        <span>Block countdown</span>
       </Link>
-      { pagination && !isMobile && <Pagination my={ 1 } { ...pagination }/> }
+      { pagination && <Pagination my={ 1 } { ...pagination }/> }
     </Flex>
   );
 };

@@ -4,6 +4,8 @@ import { chakra, Text } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+
 import getChainUtilizationParams from 'src/slices/chain/get-chain-utilization-params';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
@@ -16,10 +18,11 @@ import { nbsp } from 'src/toolkit/utils/htmlEntities';
 interface Props {
   className?: string;
   label?: string;
+  chain?: ClusterChainConfig;
 }
 
-const ChainUtilization = ({ className, label }: Props) => {
-  const statsQuery = useStatsQuery();
+const ChainUtilization = ({ className, label, chain }: Props) => {
+  const statsQuery = useStatsQuery({ chain });
   const value = statsQuery.data?.network_utilization_percentage;
 
   if (typeof value !== 'number') {
