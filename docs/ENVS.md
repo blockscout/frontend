@@ -806,7 +806,7 @@ This feature allows users to view tokens that have been bridged from other EVM c
 
 ### Bubblemaps
 
-Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-tab of the "Holders" tab on the ERC-20 token page. Both variables are required to enable the feature. The partner ID only works on the domains Bubblemaps whitelisted for it.
+Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-tab of the "Holders" tab on the ERC-20 token page.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |

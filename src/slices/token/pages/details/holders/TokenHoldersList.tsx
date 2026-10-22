@@ -6,7 +6,6 @@ import type { schemas } from '@blockscout/api-types';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import DataList from 'src/shared/lists/DataList';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
@@ -21,9 +20,6 @@ interface Props {
 }
 
 const TokenHoldersList = ({ token, query, actionBar }: Props) => {
-  if (query.isError) {
-    return <ApiFetchAlert/>;
-  }
 
   const items = query.data?.items;
 
@@ -46,6 +42,8 @@ const TokenHoldersList = ({ token, query, actionBar }: Props) => {
       emptyText="There are no holders for this token."
       actionBar={ actionBar }
       isTransitioning={ query.isTransitioning }
+      showActionBarIfEmpty
+      showActionBarIfError
     >
       { content }
     </DataList>
