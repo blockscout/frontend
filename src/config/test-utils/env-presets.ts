@@ -46,6 +46,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   xStarScore: [
     [ 'NEXT_PUBLIC_XSTAR_SCORE_URL', 'https://localhost:3115' ],
   ],
+  bubblemaps: [
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG', 'eth' ],
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID', 'demo' ],
+  ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
   ],
