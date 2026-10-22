@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { ConditionalValue } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
+import type { SampleBg } from './color-theme/config';
+
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   isActive: boolean;
-  bg: ConditionalValue<string>;
+  bg: SampleBg;
   value: string;
   label: string;
 }

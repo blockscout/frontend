@@ -2,17 +2,13 @@
 
 import {
   COLOR_THEMES,
+  coversBothColorModes,
   isConcreteColorTheme,
   isSystemColorTheme,
-  type ColorTheme,
   type ColorThemeId,
 } from 'src/shell/top-bar/settings/color-theme/config';
 
 import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'src/config/utils/envs';
-
-function coversBothColorModes(themes: Array<ColorTheme>): boolean {
-  return themes.some((theme) => theme.colorMode === 'light') && themes.some((theme) => theme.colorMode === 'dark');
-}
 
 const availableColorThemes = (() => {
   const envValue = parseEnvJson<Array<ColorThemeId>>(getEnvValue('NEXT_PUBLIC_COLOR_THEMES'));

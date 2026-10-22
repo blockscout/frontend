@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import React from 'react';
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type * as TestLib from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 const COLOR_MODE_COOKIE = 'chakra-ui-color-mode';
@@ -11,7 +12,11 @@ const COLOR_THEME_COOKIE = 'chakra-ui-color-theme';
 
 type ChangeListener = (event: MediaQueryListEvent) => void;
 
-function stubPrefersColorScheme(prefersDark: boolean) {
+interface PrefersColorSchemeStub {
+  readonly switchTo: (nextPrefersDark: boolean) => void;
+}
+
+function stubPrefersColorScheme(prefersDark: boolean): PrefersColorSchemeStub {
   const listeners = new Set<ChangeListener>();
   let matches = prefersDark;
 
@@ -46,7 +51,13 @@ function stubPrefersColorScheme(prefersDark: boolean) {
 
 let unmountRendered: (() => void) | undefined;
 
-async function renderSettings(envs: Array<[ string, string ]> = []) {
+interface RenderedSettings {
+  readonly screen: typeof TestLib.screen;
+  readonly fireEvent: typeof TestLib.fireEvent;
+  readonly act: typeof TestLib.act;
+}
+
+async function renderSettings(envs: Array<[ string, string ]> = []): Promise<RenderedSettings> {
   return withEnvs(envs, async() => {
     const { render, screen, fireEvent, act } = await import('vitest/lib');
     const { 'default': SettingsColorTheme } = await import('./SettingsColorTheme');

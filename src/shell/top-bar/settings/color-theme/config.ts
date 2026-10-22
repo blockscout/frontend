@@ -12,22 +12,21 @@ export type ColorThemeId = typeof COLOR_THEME_IDS[number];
 export const SYSTEM_COLOR_THEME_ID = 'system' satisfies ColorThemeId;
 export type SystemColorThemeId = typeof SYSTEM_COLOR_THEME_ID;
 
-/** A theme that paints the app with a fixed color mode, as opposed to the one following the OS. */
 export type ConcreteColorThemeId = Exclude<ColorThemeId, SystemColorThemeId>;
 
 export interface ConcreteColorTheme {
-  id: ConcreteColorThemeId;
-  label: string;
-  colorMode: ColorMode;
-  hex: string;
-  sampleBg: SampleBg;
+  readonly id: ConcreteColorThemeId;
+  readonly label: string;
+  readonly colorMode: ColorMode;
+  readonly hex: string;
+  readonly sampleBg: SampleBg;
 }
 
 export interface SystemColorTheme {
-  id: SystemColorThemeId;
-  label: string;
-  colorMode: SystemColorThemeId;
-  sampleBg: SampleBg;
+  readonly id: SystemColorThemeId;
+  readonly label: string;
+  readonly colorMode: SystemColorThemeId;
+  readonly sampleBg: SampleBg;
 }
 
 export type ColorTheme = ConcreteColorTheme | SystemColorTheme;
@@ -80,4 +79,8 @@ export function isSystemColorTheme(theme: ColorTheme): theme is SystemColorTheme
 
 export function isConcreteColorTheme(theme: ColorTheme): theme is ConcreteColorTheme {
   return !isSystemColorTheme(theme);
+}
+
+export function coversBothColorModes(themes: ReadonlyArray<ColorTheme>): boolean {
+  return themes.some((theme) => theme.colorMode === 'light') && themes.some((theme) => theme.colorMode === 'dark');
 }
