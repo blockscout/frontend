@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
+import InternalTxsZeroValueSwitch from 'src/slices/internal-tx/components/InternalTxsZeroValueSwitch';
 import useInternalTxsQuery from 'src/slices/internal-tx/hooks/useInternalTxsQuery';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
@@ -25,7 +26,7 @@ const MultichainInternalTxs = () => {
 
   const { chainValue, chain, onChainValueChange } = useChainValue();
   const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ chain });
-  const { isError, isInitialLoading, data, pagination } = query;
+  const { isError, isInitialLoading, data, pagination, isZeroValueShown, onZeroValueToggle } = query;
 
   const filterInput = (
     <FilterInput
@@ -45,16 +46,27 @@ const MultichainInternalTxs = () => {
     />
   );
 
+  const zeroValueSwitch = (
+    <InternalTxsZeroValueSwitch
+      isChecked={ isZeroValueShown }
+      onChange={ onZeroValueToggle }
+      isLoading={ pagination.isLoading }
+      ml={{ base: '0', lg: 6 }}
+    />
+  );
+
   const actionBar = (
     <>
       { isMobile && (
-        <Box mb={ 6 }>
+        <Flex mb={ 6 } columnGap={ 2 }>
+          { chainSelect }
           { filterInput }
-        </Box>
+        </Flex>
       ) }
       <ActionBar mt={ -6 } justifyContent="flex-start">
-        { chainSelect }
+        { !isMobile && chainSelect }
         { !isMobile && filterInput }
+        { zeroValueSwitch }
         <Pagination ml="auto" { ...pagination }/>
       </ActionBar>
     </>

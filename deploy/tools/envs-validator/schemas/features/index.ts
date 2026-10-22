@@ -6,6 +6,7 @@ export * from './ads';
 export * from './apiDocs';
 export * from './beaconChain';
 export * from './bridgedToken';
+export * from './bubblemaps';
 export * from './crossChainTxs';
 export * from './defiDropdown';
 export * from './flashblocks';

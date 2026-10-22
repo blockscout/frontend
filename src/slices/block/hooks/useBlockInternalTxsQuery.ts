@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { useInternalTxsPaginatedQuery } from 'src/slices/internal-tx/hooks/useInternalTxsPaginatedQuery';
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
 import type config from 'src/config';
-import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import type { BlockQuery } from './useBlockQuery';
@@ -16,7 +16,7 @@ interface Params {
 }
 
 export default function useBlockInternalTxsQuery({ heightOrHash, blockQuery, tab, chainConfig }: Params) {
-  const apiQuery = useApiPaginatedQuery({
+  const apiQuery = useInternalTxsPaginatedQuery({
     resourceName: 'core:block_internal_txs',
     pathParams: { height_or_hash: heightOrHash },
     options: {

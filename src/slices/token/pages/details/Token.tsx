@@ -20,7 +20,7 @@ import Contract from 'src/slices/contract/pages/details/Contract';
 import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
 import TokenTransfer from 'src/slices/token-transfer/pages/token/TokenTransfer';
 import useTokenQuery from 'src/slices/token/hooks/useTokenQuery';
-import TokenHolders from 'src/slices/token/pages/details/holders/TokenHolders';
+import TokenHolders, { TOKEN_HOLDERS_TAB_IDS } from 'src/slices/token/pages/details/holders/TokenHolders';
 import TokenDetails from 'src/slices/token/pages/details/info/TokenDetails';
 import TokenInventory from 'src/slices/token/pages/details/inventory/TokenInventory';
 import TokenMultiplierHistory from 'src/slices/token/pages/details/multiplier-history/TokenMultiplierHistory';
@@ -41,7 +41,7 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
-export type TokenTabs = 'token_transfers' | 'holders' | 'inventory' | 'multiplier_history';
+export type TokenTabs = 'token_transfers' | 'holders' | 'holders_bubblemaps' | 'inventory' | 'multiplier_history';
 
 const TokenPageContent = () => {
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
@@ -188,6 +188,7 @@ const TokenPageContent = () => {
       title: 'Holders',
       count: holdersCount,
       component: <TokenHolders token={ tokenQuery.data } isLoading={ isMainDataLoading }/>,
+      subTabs: TOKEN_HOLDERS_TAB_IDS,
     },
     hasMultiplierHistoryTab ? {
       id: 'multiplier_history',
