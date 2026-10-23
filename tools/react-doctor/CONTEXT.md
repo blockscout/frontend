@@ -28,5 +28,8 @@ backlog is not gated; a full scan (`pnpm lint:react-doctor`) lists it.
   each run, so the root `pnpm install` never pulls it.
 - **Keep the version exact and bump it by hand**: edit `package.json`, run `pnpm install` in this
   directory, then run a full scan and compare the findings before committing.
+- **The root `react-doctor` package script is the mute switch for the agent install hint.** Without a
+  script by that name, a scan run from an agent session ends with "React Doctor is not installed in
+  this project", and the agent reports the gate as not run. Keep the alias beside `lint:react-doctor`.
 - **Nothing leaves the machine.** The config and `run.sh` switch off the score API, telemetry, share
   links and the Socket.dev supply-chain scan. Keep them off.

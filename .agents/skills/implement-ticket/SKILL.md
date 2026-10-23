@@ -56,8 +56,12 @@ desktop layout adapted the way neighbouring views do. An item that is still with
 
 Run every code-quality check the repo defines (per `.agents/rules/code-quality.md`) plus the relevant unit 
 tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-page` skill documents — 
-say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each
- agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
+say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
+agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
+For any leaf that changes what renders open the ticket's **How to verify** route on the dev server (`pnpm dev:preset <alias>`) through the
+Playwright MCP, at a desktop and a mobile width, and check the rendered result against the mockup and the
+acceptance criteria before the hand-off. What to probe follows from the leaf; done when every defect you
+find is fixed or named in the hand-off.
 
 ## Step 5 — Close
 
