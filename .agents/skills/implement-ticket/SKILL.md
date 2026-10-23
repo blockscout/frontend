@@ -58,10 +58,10 @@ Run every code-quality check the repo defines (per `.agents/rules/code-quality.m
 tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-page` skill documents — 
 say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
 agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
-For any leaf that changes what renders open the ticket's **How to verify** route on the dev server (`pnpm dev:preset <alias>`) through the
-Playwright MCP, at a desktop and a mobile width, and check the rendered result against the mockup and the
-acceptance criteria before the hand-off. What to probe follows from the leaf; done when every defect you
-find is fixed or named in the hand-off.
+When the ticket carries a **How to verify** line, open its route on the dev server (`pnpm dev:preset <alias>`)
+through the Playwright MCP, at a desktop and a mobile width, and look at what you built. A defect you can see
+is yours to fix before the hand-off; what to probe follows from the leaf. The `(human)` criteria stay the
+developer's — this pass is your own check, not their sign-off.
 
 ## Step 5 — Close
 
