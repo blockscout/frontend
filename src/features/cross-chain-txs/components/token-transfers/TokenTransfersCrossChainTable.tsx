@@ -28,19 +28,18 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, r
 
   return (
     <AddressHighlightProvider>
-      <TableRoot tableLayout="auto" minW="1000px">
+      <TableRoot tableLayout="auto" minW="1100px">
         <TableHeaderSticky top={ top }>
           <TableRow>
-            <TableColumnHeader w={ currentAddress ? '86px' : '42px' }/>
+            <TableColumnHeader w={ currentAddress ? '60px' : '42px' }/>
             <TableColumnHeader>Source token</TableColumnHeader>
             <TableColumnHeader>Target token</TableColumnHeader>
             <TableColumnHeader>Source tx</TableColumnHeader>
             <TableColumnHeader>Dest tx</TableColumnHeader>
             <TableColumnHeader>Protocol</TableColumnHeader>
-            <TableColumnHeader>Message</TableColumnHeader>
             <TableColumnHeader>
               <Flex alignItems="center" flexWrap="nowrap">
-                Timestamp
+                Message
                 <TimeFormatToggle/>
               </Flex>
             </TableColumnHeader>

@@ -32,11 +32,10 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
       <TableRoot tableLayout="auto" minW="1200px">
         <TableHeaderComponent top={ stickyHeader ? top : undefined }>
           <TableRow>
-            <TableColumnHeader w={ currentAddress ? '86px' : '42px' }/>
-            <TableColumnHeader>Message</TableColumnHeader>
+            <TableColumnHeader w={ currentAddress ? '60px' : '42px' }/>
             <TableColumnHeader>
               <Flex alignItems="center" flexWrap="nowrap">
-                Timestamp
+                Message
                 <TimeFormatToggle/>
               </Flex>
             </TableColumnHeader>

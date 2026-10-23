@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, HStack, VStack } from '@chakra-ui/react';
+import { chakra, VStack } from '@chakra-ui/react';
 import { route } from 'nextjs-routes';
 import React from 'react';
 
@@ -54,8 +54,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
   return (
     <TableRow>
       <TableCell w="42px">
-        <HStack gap={ 1 }>
-          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+        <VStack alignItems="start" gap={ 1.5 }>
           { currentAddress && (
             <CrossChainFromToTagTx
               data={ data }
@@ -63,22 +62,22 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
               isLoading={ isLoading }
             />
           ) }
-        </HStack>
+          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
+        </VStack>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } bridgeId={ bridgeId } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+        <VStack alignItems="start">
+          <CrossChainMessageEntity id={ data.message_id } bridgeId={ bridgeId } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+          <TimeWithTooltip
+            timestamp={ data.send_timestamp || data.receive_timestamp }
+            isLoading={ isLoading }
+            enableIncrement
+            color="text.secondary"
+            whiteSpace="nowrap"
+          />
+        </VStack>
       </TableCell>
-      <TableCell>
-        <TimeWithTooltip
-          timestamp={ data.send_timestamp || data.receive_timestamp }
-          isLoading={ isLoading }
-          enableIncrement
-          color="text.secondary"
-          lineHeight="24px"
-          whiteSpace="nowrap"
-        />
-      </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="130px">
         { data.sender ? (
           <AddressEntityInterchain
             chain={ data.source_chain }
@@ -155,7 +154,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           </Skeleton>
         ) }
       </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         <VStack alignItems="start">
           { hasTransfers && (
             <>
@@ -202,7 +201,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           ) }
         </VStack>
       </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         { hasTransfers && (
           <VStack alignItems="start">
             {
@@ -232,7 +231,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           </VStack>
         ) }
       </TableCell>
-      <TableCell>
+      <TableCell maxW="120px">
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id } lineHeight="24px"/>
       </TableCell>
     </TableRow>

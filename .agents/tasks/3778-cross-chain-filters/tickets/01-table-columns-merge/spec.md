@@ -38,7 +38,7 @@ How to verify: `pnpm dev:preset gnosis`, open `/token-transfers?tab=token_transf
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Merge Message + Timestamp into one column and widen token cells on both tables, to the
+- [x] 1 `[agent]` Merge Message + Timestamp into one column and widen token cells on both tables, to the
       mockup — [Figma](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9120-115382)
-- [ ] 2 `[human]` Regenerate the Playwright baselines of `TokenTransfersCrossChain.pw.tsx` and
+- [x] 2 `[human]` Regenerate the Playwright baselines of `TokenTransfersCrossChain.pw.tsx` and
       `TransactionsCrossChain.pw.tsx` with `pnpm test:pw --docker <file> --update-snapshots` once the look is approved

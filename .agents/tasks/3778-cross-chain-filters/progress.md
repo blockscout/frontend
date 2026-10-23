@@ -6,7 +6,7 @@ LANDED: its commit exists, `Blocked by` edges read it to release dependents, and
 what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement-ticket` checks the box at
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
-- [ ] 01 → `tickets/01-table-columns-merge/`
+- [x] 01 → `tickets/01-table-columns-merge/`
 - [ ] 02 → `tickets/02-column-filter-primitives-and-tags-row/`
 - [ ] 03 → `tickets/03-filter-params-and-bridges-resource/`
 - [ ] 04 → `tickets/04-token-transfers-filters/`
