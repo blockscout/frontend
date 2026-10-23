@@ -41,12 +41,20 @@ at the same time.
    home-page latest list stays filter-less.
 7. With an active filter and no rows, the list shows the active-filters empty state instead of the plain
    empty text.
-8. Token-transfers table: the Message and Timestamp columns are merged into one column (message id on the
+8. Whenever any filter is active, a non-sticky row above the table lists the active filters as closable
+   tags (one tag per filter, multiple values joined; closing a tag clears that filter) followed by a
+   "Reset all" control that clears every filter. The row is the reset affordance when the table header
+   is out of view (empty state, or scrolled past).
+9. The advanced-filter page's existing tags row is restyled to the same mockup: the "Filtered by:" title
+   is dropped, the reset control sits right after the tags and reads "Reset all", and the tag close icon is
+   14px inside the unchanged 20px click area. Its non-closable "Chain" tag and the default "Type / Age"
+   placeholder tags stay.
+10. Token-transfers table: the Message and Timestamp columns are merged into one column (message id on the
    first line, time below); the Source token and Target token cells get more width. The transactions table
    gets the same Message + Timestamp merge.
-9. Mobile layout is unchanged — the filters are desktop only in this task.
-10. No regression in search (`q`), scope filters, pagination or the Protocol column on any affected
-    surface.
+11. Mobile layout is unchanged — the filters are desktop only in this task.
+12. No regression in search (`q`), scope filters, pagination or the Protocol column on any affected
+    surface, and none on the advanced-filter page beyond the restyled row.
 
 ## Data & API
 
@@ -84,6 +92,13 @@ https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explor
   dropped; the Protocol popover is a checkbox group, not an input; the chain selector is multi-select.
 - The remaining popovers in the section (Status/Address, Source token, Message/time) are out of scope.
 - The transactions table has no mockup; it mirrors the token-transfers filters on the same column names.
+- Empty state with active filters + the active-filter tags row:
+  https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9136-48611
+  (tags row node `9138-91679`). The empty-state illustration and copy are the existing generic
+  active-filters empty state. The tags in the mockup are illustrative; the real ones are Source chain,
+  Destination chain, Protocol.
+- The same tags-row mockup is the target for the advanced-filter page's row (currently "Filtered by:"
+  title + right-aligned "Reset filters").
 
 Placement and behaviour: filter trigger icon in the column header, popover with title + Reset link +
 Filter button — match `FilterByColumn` / `TableColumnFilterWrapper` / `TableColumnFilter` from the
@@ -102,12 +117,18 @@ all-option; protocol popover body matches `TypeFilter`.
   with the feature config's bridge ids and `enabled`.
 - **The filter components live in the cross-chain-txs feature** and are shared by both tables; the table
   header takes an "is filterable" switch so the home-page latest list renders no triggers.
+- **The active-filter tags row is one shared filters component** (tags + "Reset all"), consumed by the
+  advanced-filter page and by both cross-chain tables; the advanced-filter page's inline row is replaced by
+  it. It renders only when at least one filter is active and is not sticky.
+- **Close-icon sizing is scoped to the tag's `filter` variant**: the close trigger keeps its 20px box
+  and gains 4px padding so the icon renders at 14px; other tag variants are untouched.
 - **Column changes**: merged Message/Timestamp cell follows the Source tx / chain-label two-line pattern;
   token cells get a larger `maxW` (set to 200px, to be verified visually by the developer).
 
 ## Out of scope
 
 - Mobile filter UI (separate task, mirroring the advanced-filters mobile approach).
+- Any other change to the advanced-filter page beyond its tags row.
 - Filters on token columns, a tx-hash input, status / date / amount / address / message filters — none
   exist in the API.
 - A mockup for the transactions table; mirrored from the token-transfers one.
