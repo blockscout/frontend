@@ -36,6 +36,7 @@ export * from '../../chakra/slider';
 export * from '../../chakra/status';
 export * from '../../chakra/switch';
 export * from '../../chakra/table';
+export * from '../../chakra/grid-table';
 export * from '../../chakra/tabs';
 export * from '../../chakra/tag';
 export * from '../../chakra/textarea';

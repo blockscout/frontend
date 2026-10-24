@@ -9,7 +9,7 @@ import { SocketProvider } from 'src/api/socket/context';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, cleanup, act, waitFor } from 'vitest/lib';
+import { render, screen, cleanup, act, waitFor, within } from 'vitest/lib';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
 
@@ -50,7 +50,8 @@ async function renderTab(query: Record<string, string>, overloadCount?: number) 
 }
 
 function getRows() {
-  return document.querySelectorAll('tbody tr');
+  const [ , body ] = screen.getAllByRole('rowgroup');
+  return within(body).queryAllByRole('row');
 }
 
 function sendTransfers(transfers: Array<schemas['TokenTransfer']>) {

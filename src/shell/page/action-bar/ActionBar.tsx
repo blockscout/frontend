@@ -36,7 +36,7 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
       top={ 0 }
       transitionProperty="top,box-shadow,background-color,color"
       transitionDuration="normal"
-      zIndex={{ base: 'sticky2', lg: 'docked' }}
+      zIndex={{ base: 'sticky2', lg: 'sticky' }}
       boxShadow={{
         base: isSticky ? 'md' : 'none',
         lg: isSticky && showShadow ? 'action_bar' : 'none',

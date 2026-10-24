@@ -123,7 +123,7 @@ const AdaptiveTabsList = (props: Props) => {
           position: 'sticky',
           boxShadow: { base: isSticky ? 'md' : 'none', lg: 'none' },
           top: 0,
-          zIndex: { base: 'sticky2', lg: 'docked' },
+          zIndex: { base: 'sticky2', lg: 'sticky' },
         } : { })
       }
       {

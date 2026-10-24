@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
+import { cleanup, fireEvent, render, screen, waitFor, within } from 'vitest/lib';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
 
 import * as advancedFilterMock from '../../mocks';
@@ -30,13 +30,18 @@ afterEach(() => {
   window.localStorage.clear();
 });
 
+function getBodyRows() {
+  const [ , body ] = screen.getAllByRole('rowgroup');
+  return within(body).queryAllByRole('row');
+}
+
 async function renderPage() {
   render(<AdvancedFilter/>);
-  await waitFor(() => expect(document.querySelectorAll('tbody tr').length).toBeGreaterThan(0));
+  await waitFor(() => expect(getBodyRows().length).toBeGreaterThan(0));
 }
 
 function getHeaderNames() {
-  return Array.from(document.querySelectorAll('thead th')).map((header) => header.textContent);
+  return screen.getAllByRole('columnheader').map((header) => header.textContent);
 }
 
 describe('advanced filter page, column settings', () => {

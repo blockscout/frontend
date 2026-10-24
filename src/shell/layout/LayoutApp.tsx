@@ -9,8 +9,8 @@ import HeaderMobile from 'src/shell/header/HeaderMobile';
 import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 
 import * as Layout from './components';
+import { TOP_BAR_HEIGHT } from './utils';
 
-const TOP_BAR_HEIGHT = 36;
 const HEADER_HEIGHT_MOBILE = 56;
 
 const LayoutApp = ({ children }: Props) => {

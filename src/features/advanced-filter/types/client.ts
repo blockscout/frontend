@@ -5,7 +5,7 @@ export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_an
 export type TxTableColumn = {
   id: ColumnsIds;
   name: string;
-  width: string;
+  maxWidth?: string;
   isNumeric?: boolean;
   noFilter?: boolean;
 };

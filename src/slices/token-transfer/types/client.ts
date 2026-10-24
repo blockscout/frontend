@@ -20,5 +20,5 @@ export interface TokenTransferColumn {
   readonly id: TokenTransferColumnId;
   readonly name: string;
   readonly isNumeric?: boolean;
-  readonly width: string;
+  readonly maxWidth?: string;
 }
