@@ -7,7 +7,7 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 
 import { Field } from 'src/toolkit/chakra/field';
 import { Input } from 'src/toolkit/chakra/input';
@@ -166,7 +166,7 @@ const AddressFilter = ({ type, value = [], handleFilterChange }: Props) => {
   const isTouched = !isEqual(currentValue.filter(i => i.address).map(addressFilterToKey).sort(), value.map(addressFilterToKey).sort());
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title={ type === 'from' ? 'From address' : 'To address' }
       isFilled={ Boolean(currentValue[0].address) }
       isTouched={ isTouched && !hasErrors }
@@ -190,7 +190,7 @@ const AddressFilter = ({ type, value = [], handleFilterChange }: Props) => {
           />
         )) }
       </VStack>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

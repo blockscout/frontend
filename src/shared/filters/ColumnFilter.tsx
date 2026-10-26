@@ -6,18 +6,19 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
+import type { PopoverContentProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 
 interface Props {
   columnName: string;
   isLoading?: boolean;
   selected?: boolean;
-  className?: string;
+  contentProps?: PopoverContentProps;
   children: React.ReactNode;
   value?: string;
 }
 
-const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, selected, value }: Props) => {
+const ColumnFilter = ({ columnName, contentProps, children, isLoading, selected, value }: Props) => {
   return (
     <PopoverRoot>
       <PopoverTrigger>
@@ -40,8 +41,8 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
           { Boolean(value) && <chakra.span>{ value }</chakra.span> }
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={ className }>
-        <PopoverBody display="flex" flexDir="column" rowGap={ 3 }>
+      <PopoverContent { ...contentProps }>
+        <PopoverBody>
           { children }
         </PopoverBody>
       </PopoverContent>
@@ -49,4 +50,4 @@ const TableColumnFilterWrapper = ({ columnName, className, children, isLoading, 
   );
 };
 
-export default chakra(TableColumnFilterWrapper);
+export default ColumnFilter;

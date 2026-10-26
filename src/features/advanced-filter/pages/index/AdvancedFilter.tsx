@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import {
-  Flex,
-  HStack,
-  Text,
-} from '@chakra-ui/react';
 import { omit } from 'es-toolkit';
 import React from 'react';
 
@@ -22,6 +17,7 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
+import FilterTagsRow from 'src/shared/filters/FilterTagsRow';
 import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import type { TableColumnsAnalytics } from 'src/shared/lists/columns/usePersistedColumns';
 import { usePersistedColumns } from 'src/shared/lists/columns/usePersistedColumns';
@@ -34,9 +30,7 @@ import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-que
 import getFilterValuesFromQuery from 'src/shared/router/get-filter-values-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'src/shared/router/get-values-array-from-query';
-import SpriteIcon from 'src/sprite/SpriteIcon';
 
-import { Link } from 'src/toolkit/chakra/link';
 import { Tag } from 'src/toolkit/chakra/tag';
 
 import { ADVANCED_FILTER_ITEM } from '../../stubs';
@@ -134,7 +128,7 @@ const AdvancedFilter = () => {
     pendingFilters.current[field] = val;
   }, [ onFilterChange ]);
 
-  const onClearFilter = React.useCallback((key: keyof AdvancedFilterParams) => () => {
+  const handleClearFilter = React.useCallback((key: keyof AdvancedFilterParams) => {
     if (key === 'methods') {
       handleFilterChange('methods_names', undefined);
     }
@@ -216,27 +210,17 @@ const AdvancedFilter = () => {
         title="Advanced filter"
         withTextAd
       />
-      <Flex mb={ 4 } justifyContent="space-between" alignItems="start">
-        <Text fontSize="lg" mr={ 3 } lineHeight="24px" w="100px">Filtered by:</Text>
-        { filterTags.length !== 0 && (
-          <Link onClick={ clearAllFilters } display="flex" alignItems="center" justifyContent="end" gap={ 2 } fontSize="sm" w="150px">
-            <SpriteIcon name="repeat" boxSize={ 5 }/>
-            Reset filters
-          </Link>
-        ) }
-      </Flex>
-      <HStack gap={ 2 } flexWrap="wrap" mb={ 6 }>
-        { multichainContext?.chain && (
+      <FilterTagsRow
+        mb={ 6 }
+        tags={ filterTags }
+        onClear={ handleClearFilter }
+        onClearAll={ clearAllFilters }
+        leadingTags={ multichainContext?.chain && (
           <Tag variant="filter" label="Chain">
             { multichainContext.chain.app_config.chain.name }
           </Tag>
         ) }
-        { filterTags.map(t => (
-          <Tag key={ t.name } variant="filter" onClose={ onClearFilter(t.key) } closable label={ t.name }>
-            { t.value }
-          </Tag>
-        )) }
-        { filterTags.length === 0 && (
+        placeholderTags={ (
           <>
             <Tag variant="filter" label="Type">
               All
@@ -246,7 +230,7 @@ const AdvancedFilter = () => {
             </Tag>
           </>
         ) }
-      </HStack>
+      />
       <DataList
         isError={ isError }
         itemsNum={ data?.items.length }

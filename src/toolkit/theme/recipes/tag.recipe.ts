@@ -123,6 +123,9 @@ export const recipe = defineSlotRecipe({
         root: {
           bgColor: 'tag.root.filter.bg',
         },
+        closeTrigger: {
+          '--close-button-icon-size': '12px',
+        },
       },
       select: {
         root: {

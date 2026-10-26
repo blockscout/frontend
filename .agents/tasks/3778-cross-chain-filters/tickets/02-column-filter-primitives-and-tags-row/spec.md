@@ -58,8 +58,8 @@ How to verify: `pnpm dev:preset eth`, open `/advanced-filter`, set and clear a f
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rename and reshape the two primitives (`ColumnFilter` with `contentProps`,
+- [x] 1 `[agent]` Rename and reshape the two primitives (`ColumnFilter` with `contentProps`,
       `ColumnFilterContent` owning the column layout) and update every consumer; run `FilterByColumn.pw.tsx`
-- [ ] 2 `[agent]` Build the shared tags-row component, scope the 14px close icon to the `filter` tag variant,
+- [x] 2 `[agent]` Build the shared tags-row component, scope the 14px close icon to the `filter` tag variant,
       swap the advanced-filter page onto the row — [Figma](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9138-91679)
-- [ ] 3 `[human]` Regenerate affected Playwright baselines with `--docker` once the row is approved
+- [x] 3 `[human]` Regenerate affected Playwright baselines with `--docker` once the row is approved

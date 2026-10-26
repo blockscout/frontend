@@ -8,7 +8,7 @@ import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 
@@ -55,7 +55,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
   }, [ multichainContext?.chain?.app_config ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Transaction type"
       isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }
       isTouched={ !isEqual(currentValue.slice().sort(), value.slice().sort()) }
@@ -75,7 +75,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
           )) }
         </CheckboxGroup>
       </Flex>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

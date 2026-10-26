@@ -5,7 +5,7 @@ import React from 'react';
 
 import type { ZetaChainCCTXFilterParams, StatusReducedFilters } from 'src/features/chain-variants/zeta-chain/types/client';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 
 import { Radio, RadioGroup } from 'src/toolkit/chakra/radio';
 
@@ -70,7 +70,7 @@ const ZetaChainStatusFilter = ({ value = [], handleFilterChange, onClose }: Prop
   }, [ handleStatusChange ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Status"
       isFilled={ currentValue !== 'all' }
       isTouched={ isTouched }
@@ -87,7 +87,7 @@ const ZetaChainStatusFilter = ({ value = [], handleFilterChange, onClose }: Prop
           )) }
         </RadioGroup>
       </Flex>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

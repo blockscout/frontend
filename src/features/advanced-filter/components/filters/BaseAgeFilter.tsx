@@ -8,7 +8,7 @@ import React from 'react';
 import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from '../../types/api';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import TagGroupSelect from 'src/shared/tags/select/TagGroupSelect';
 
 import { Input } from 'src/toolkit/chakra/input';
@@ -149,7 +149,7 @@ function BaseAgeFilter<T>({
   }, [ currentValue, value, dateConverter ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Set last duration"
       isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }
       isTouched={ isTouched }
@@ -181,7 +181,7 @@ function BaseAgeFilter<T>({
           max={ dayjs().format('YYYY-MM-DD') }
         />
       </Flex>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 }
 

@@ -9,7 +9,7 @@ import type { schemas } from '@blockscout/api-types';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import useDebounce from 'src/shared/hooks/useDebounce';
 
 import { Badge } from 'src/toolkit/chakra/badge';
@@ -74,7 +74,7 @@ const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Method"
       isFilled={ Boolean(currentValue.length) }
       isTouched={ !isEqual(currentValue.map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
@@ -116,7 +116,7 @@ const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
           </CheckboxGroup>
         </Flex>
       ) }
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

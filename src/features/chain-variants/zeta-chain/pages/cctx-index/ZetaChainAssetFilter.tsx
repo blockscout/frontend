@@ -15,7 +15,7 @@ import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
 import config from 'src/config';
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import useDebounce from 'src/shared/hooks/useDebounce';
 
 import { PopoverCloseTriggerWrapper } from 'src/toolkit/chakra/popover';
@@ -127,7 +127,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
   }, [ handleFilterChange ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Asset"
       isFilled={ Boolean(currentValue) }
       isTouched={ !isEqual(currentValue, value) }
@@ -219,7 +219,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
           )) }
         </Flex>
       ) }
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

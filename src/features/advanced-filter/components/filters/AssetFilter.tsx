@@ -12,7 +12,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import useDebounce from 'src/shared/hooks/useDebounce';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
@@ -94,7 +94,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Asset"
       isFilled={ Boolean(currentValue.length) }
       isTouched={ !isEqual(currentValue.map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
@@ -165,7 +165,7 @@ const AssetFilter = ({ value = [], handleFilterChange }: Props) => {
           </CheckboxGroup>
         </Flex>
       ) }
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

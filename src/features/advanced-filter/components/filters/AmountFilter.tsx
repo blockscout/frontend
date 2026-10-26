@@ -7,7 +7,7 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import TagGroupSelect from 'src/shared/tags/select/TagGroupSelect';
 
 import { Input } from 'src/toolkit/chakra/input';
@@ -77,7 +77,7 @@ const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
   }, [ handleFilterChange ]);
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title="Amount"
       isFilled={ Boolean(currentValue.from || currentValue.to) }
       isTouched={ !isEqual(currentValue, value) }
@@ -99,7 +99,7 @@ const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
         <Text mx={ 3 }>{ ndash }</Text>
         <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="sm"/>
       </Flex>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 

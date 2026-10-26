@@ -1,10 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import {
-  chakra,
-  Flex,
-  Text,
-} from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -20,12 +16,13 @@ type Props = {
   children: React.ReactNode;
 };
 
-const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, children }: Props) => {
-  const onFilterClick = React.useCallback(() => {
+const ColumnFilterContent = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, children }: Props) => {
+  const handleFilterClick = React.useCallback(() => {
     onFilter();
   }, [ onFilter ]);
+
   return (
-    <>
+    <Flex flexDir="column" rowGap={ 3 }>
       <Flex alignItems="center" justifyContent="space-between" columnGap={ 6 }>
         <Text color="text.secondary" fontWeight="600">{ title }</Text>
         { hasReset && (
@@ -43,14 +40,14 @@ const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onR
       <PopoverCloseTriggerWrapper>
         <Button
           disabled={ !isTouched }
-          onClick={ onFilterClick }
+          onClick={ handleFilterClick }
           w="fit-content"
         >
           Filter
         </Button>
       </PopoverCloseTriggerWrapper>
-    </>
+    </Flex>
   );
 };
 
-export default chakra(TableColumnFilter);
+export default ColumnFilterContent;

@@ -11,7 +11,7 @@ import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/use
 
 import type { Props as ChainSelectBaseProps } from 'src/shared/external-chains/ChainSelect';
 import ChainSelectBase from 'src/shared/external-chains/ChainSelect';
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 
 import { Input } from 'src/toolkit/chakra/input';
 import { InputGroup } from 'src/toolkit/chakra/input-group';
@@ -165,7 +165,7 @@ const ZetaChainAddressFilter = ({
   ) || !isEqual(currentChainValue.slice().sort(), chainValue.slice().sort());
 
   return (
-    <TableColumnFilter
+    <ColumnFilterContent
       title={ title }
       isFilled={ isFilled }
       isTouched={ isTouched }
@@ -194,7 +194,7 @@ const ZetaChainAddressFilter = ({
           )) }
         </VStack>
       </VStack>
-    </TableColumnFilter>
+    </ColumnFilterContent>
   );
 };
 
