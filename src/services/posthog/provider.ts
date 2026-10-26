@@ -49,9 +49,13 @@ export const posthogProvider: AnalyticsProvider = {
   register: (superProps) => {
     sdk?.register(superProps);
   },
-  identify: (distinctId) => {
+  identify: (distinctId, profile) => {
     if (distinctId) {
-      sdk?.identify(distinctId);
+      sdk?.identify(distinctId, profile?.set, profile?.setOnce);
+      return;
+    }
+    if (profile?.set || profile?.setOnce) {
+      sdk?.setPersonProperties(profile.set, profile.setOnce);
     }
   },
   peopleSet: (props) => {
