@@ -41,6 +41,6 @@ Cross-chain tab; `pnpm dev:preset multichain` for the multichain address page an
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the filterable header switch to `TransactionsCrossChainTable` and thread filters,
+- [x] 1 `[agent]` Add the filterable header switch to `TransactionsCrossChainTable` and thread filters,
       `onFilterChange`, `hasActiveFilters` and the tags row through the three transactions surfaces
-- [ ] 2 `[human]` Regenerate affected Playwright baselines with `--docker` if any changed
+- [x] 2 `[human]` Regenerate affected Playwright baselines with `--docker` if any changed

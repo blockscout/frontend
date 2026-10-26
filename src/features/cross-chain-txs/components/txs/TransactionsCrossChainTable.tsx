@@ -4,6 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
+import type { CrossChainFilters } from 'src/features/cross-chain-txs/types/api';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -12,6 +13,9 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
+import type { CrossChainFilterColumn } from '../filters/CrossChainFilterByColumn';
+import CrossChainFilterByColumn from '../filters/CrossChainFilterByColumn';
+import type { CrossChainFilterChangeHandler } from '../filters/utils';
 import TransactionsCrossChainTableItem from './TransactionsCrossChainTableItem';
 
 interface Props {
@@ -21,11 +25,21 @@ interface Props {
   stickyHeader?: boolean;
   currentAddress?: string;
   resetKey?: string;
+  filters?: CrossChainFilters;
+  onFilterChange?: CrossChainFilterChangeHandler;
 }
 
-const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, currentAddress, resetKey }: Props) => {
+const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, currentAddress, resetKey, filters, onFilterChange }: Props) => {
   const TableHeaderComponent = stickyHeader ? TableHeaderSticky : TableHeader;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
+  const renderFilter = (column: CrossChainFilterColumn) => {
+    if (!filters || !onFilterChange) {
+      return null;
+    }
+
+    return <CrossChainFilterByColumn column={ column } filters={ filters } onFilterChange={ onFilterChange } isLoading={ isLoading }/>;
+  };
 
   return (
     <AddressHighlightProvider>
@@ -40,12 +54,27 @@ const TransactionsCrossChainTable = ({ data, isLoading, top, stickyHeader, curre
               </Flex>
             </TableColumnHeader>
             <TableColumnHeader>Msg sender</TableColumnHeader>
-            <TableColumnHeader>Source tx</TableColumnHeader>
-            <TableColumnHeader>Dest tx</TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Source tx
+                { renderFilter('source') }
+              </Flex>
+            </TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Dest tx
+                { renderFilter('destination') }
+              </Flex>
+            </TableColumnHeader>
             <TableColumnHeader>Transf</TableColumnHeader>
             <TableColumnHeader>Sender</TableColumnHeader>
             <TableColumnHeader>Recipient</TableColumnHeader>
-            <TableColumnHeader>Protocol</TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Protocol
+                { renderFilter('protocol') }
+              </Flex>
+            </TableColumnHeader>
           </TableRow>
         </TableHeaderComponent>
         <TableBody>
