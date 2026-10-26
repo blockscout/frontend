@@ -91,7 +91,7 @@ const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
         { methodsQuery.isError && <span>Something went wrong. Please try again.</span> }
         { Boolean(searchTerm) && methodsQuery.data?.length === 0 && <span>No results found.</span> }
         { methods.length > 0 && (
-          <Flex display="flex" flexDir="column" maxH="250px" overflowY="scroll" _empty={{ display: 'none' }}>
+          <Flex display="flex" flexDir="column" maxH="250px" overflowY="scroll">
             <CheckboxGroup
               value={ currentValue.length ? currentValue.map(i => i.method_id) : [ ] }
               orientation="vertical"
@@ -102,8 +102,9 @@ const MethodFilter = ({ value = [], handleFilterChange }: Props) => {
                   value={ method.method_id }
                   data-id={ method.method_id }
                   onChange={ handleChange }
+                  labelProps={{ w: '100%', minW: '0' }}
                 >
-                  <Flex justifyContent="space-between" alignItems="center" id={ method.method_id }>
+                  <Flex justifyContent="space-between" alignItems="center" id={ method.method_id } w="100%">
                     <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ method.name || method.method_id }</chakra.span>
                     <Badge colorPalette="gray" truncated ml="auto">
                       { method.method_id }
