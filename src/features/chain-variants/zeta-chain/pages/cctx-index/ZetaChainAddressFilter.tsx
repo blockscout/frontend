@@ -12,6 +12,7 @@ import useZetaChainConfig from 'src/features/chain-variants/zeta-chain/hooks/use
 import type { Props as ChainSelectBaseProps } from 'src/shared/external-chains/ChainSelect';
 import ChainSelectBase from 'src/shared/external-chains/ChainSelect';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Input } from 'src/toolkit/chakra/input';
 import { InputGroup } from 'src/toolkit/chakra/input-group';
@@ -91,6 +92,7 @@ const ChainSelect = ({ chainsConfig, value, onValueChange, ...props }: ChainSele
       }}
       contentProps={{
         zIndex: 'modal2',
+        pt: 0,
       }}
     />
   );
@@ -166,14 +168,10 @@ const ZetaChainAddressFilter = ({
 
   return (
     <ColumnFilterContent
-      title={ title }
-      isFilled={ isFilled }
       isTouched={ isTouched }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <VStack gap={ 3 } align="stretch">
+      <ColumnFilterContentSection title={ title } isFilled={ isFilled } onReset={ onReset }>
         <ChainSelect
           value={ currentChainValue }
           onValueChange={ handleChainChange }
@@ -193,7 +191,7 @@ const ZetaChainAddressFilter = ({
             />
           )) }
         </VStack>
-      </VStack>
+      </ColumnFilterContentSection>
     </ColumnFilterContent>
   );
 };

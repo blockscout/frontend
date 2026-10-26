@@ -8,6 +8,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -64,22 +65,20 @@ const ProtocolFilter = ({ value, handleFilterChange }: Props) => {
 
   return (
     <ColumnFilterContent
-      title="Protocol"
-      isFilled={ !isEqual(currentValue, [ RESET_VALUE ]) }
       isTouched={ !isEqual(currentValue.slice().sort(), toCheckboxValue(value).slice().sort()) }
       onFilter={ handleFilter }
-      onReset={ handleReset }
-      hasReset
     >
-      <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
-        <Checkbox value={ RESET_VALUE }>All</Checkbox>
-        { bridgesQuery.isPending && <Skeleton loading h={ 5 } w="120px"/> }
-        { options.map((option) => (
-          <Checkbox key={ option.id } value={ option.id }>
-            { option.name }
-          </Checkbox>
-        )) }
-      </CheckboxGroup>
+      <ColumnFilterContentSection title="Protocol" onReset={ handleReset } isFilled={ !isEqual(currentValue, [ RESET_VALUE ]) }>
+        <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
+          <Checkbox value={ RESET_VALUE }>All</Checkbox>
+          { bridgesQuery.isPending && <Skeleton loading h={ 5 } w="120px"/> }
+          { options.map((option) => (
+            <Checkbox key={ option.id } value={ option.id }>
+              { option.name }
+            </Checkbox>
+          )) }
+        </CheckboxGroup>
+      </ColumnFilterContentSection>
     </ColumnFilterContent>
   );
 };

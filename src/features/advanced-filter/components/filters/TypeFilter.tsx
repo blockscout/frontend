@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex } from '@chakra-ui/react';
 import { isEqual, without } from 'es-toolkit';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 
@@ -56,14 +56,10 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
 
   return (
     <ColumnFilterContent
-      title="Transaction type"
-      isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }
       isTouched={ !isEqual(currentValue.slice().sort(), value.slice().sort()) }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <Flex display="flex" flexDir="column" rowGap={ 3 }>
+      <ColumnFilterContentSection title="Transaction type" onReset={ onReset } isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }>
         <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
           { advancedFilterTypes.map(type => (
             <Checkbox
@@ -74,7 +70,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
             </Checkbox>
           )) }
         </CheckboxGroup>
-      </Flex>
+      </ColumnFilterContentSection>
     </ColumnFilterContent>
   );
 };

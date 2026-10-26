@@ -16,6 +16,7 @@ import { toTokenModel } from 'src/slices/token/utils/model';
 
 import config from 'src/config';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 import useDebounce from 'src/shared/hooks/useDebounce';
 
 import { PopoverCloseTriggerWrapper } from 'src/toolkit/chakra/popover';
@@ -128,37 +129,66 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
 
   return (
     <ColumnFilterContent
-      title="Asset"
-      isFilled={ Boolean(currentValue) }
       isTouched={ !isEqual(currentValue, value) }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <FilterInput
-        placeholder="Search by token name or symbol"
-        initialValue={ searchTerm }
-        onChange={ onSearchChange }
-        loading={ tokensQuery.isLoading }
-      />
-      { !searchTerm && currentValue && (
-        <Flex key={ currentValue.address_hash } alignItems="center">
-          <Flex alignItems="center" gap={ 2 } flexGrow={ 1 }>
-            { currentValue.symbol === 'ZETA' ? (
-              <NativeTokenIcon boxSize={ 5 } mr={ 2 }/>
-            ) : (
-              <TokenEntity.Icon token={ currentValue }/>
-            ) }
-            <TokenEntity.Content token={ currentValue } onlySymbol/>
+      <ColumnFilterContentSection title="Asset" isFilled={ Boolean(currentValue) } onReset={ onReset }>
+        <FilterInput
+          placeholder="Search by token name or symbol"
+          initialValue={ searchTerm }
+          onChange={ onSearchChange }
+          loading={ tokensQuery.isLoading }
+        />
+        { !searchTerm && currentValue && (
+          <Flex key={ currentValue.address_hash } alignItems="center">
+            <Flex alignItems="center" gap={ 2 } flexGrow={ 1 }>
+              { currentValue.symbol === 'ZETA' ? (
+                <NativeTokenIcon boxSize={ 5 } mr={ 2 }/>
+              ) : (
+                <TokenEntity.Icon token={ currentValue }/>
+              ) }
+              <TokenEntity.Content token={ currentValue } onlySymbol/>
+            </Flex>
+            <ClearButton onClick={ handleRemove }/>
           </Flex>
-          <ClearButton onClick={ handleRemove }/>
-        </Flex>
-      ) }
-      { tokensQuery.isLoading && <Spinner display="block" mt={ 3 }/> }
+        ) }
+        { tokensQuery.isLoading && <Spinner display="block"/> }
+        { searchTerm && tokensQuery.data && !filteredTokens.length && <Text>No tokens found</Text> }
+        { searchTerm && tokensQuery.data && Boolean(filteredTokens.length) && (
+          <Flex display="flex" flexDir="column" rowGap={ 2 } maxH="250px" overflowY="scroll" ml="-4px">
+            { filteredTokens.map(token => (
+              <PopoverCloseTriggerWrapper key={ token.zrc20_contract_address }>
+                <Flex
+                  alignItems="center"
+                  p={ 2 }
+                  borderRadius="md"
+                  cursor="pointer"
+                  _hover={{ bg: 'selected.control.bg' }}
+                  onClick={ onTokenClick(token) }
+                >
+                  { /* FIXME: I'd use TokenEntity here, but it prevents onTokenClick callback from being called */ }
+                  <TokenEntity.Icon token={ toTokenModel({
+                    address_hash: token.zrc20_contract_address,
+                    symbol: token.symbol,
+                    name: token.name,
+                    decimals: token.decimals.toString(),
+                    total_supply: null,
+                    icon_url: token.icon_url,
+                    type: 'ERC-20',
+                    holders_count: null,
+                    exchange_rate: null,
+                    circulating_market_cap: null,
+                  }) }/>
+                  { token.symbol || token.name || token.zrc20_contract_address }
+                </Flex>
+              </PopoverCloseTriggerWrapper>
+            )) }
+          </Flex>
+        ) }
+      </ColumnFilterContentSection>
       { tokensQuery.data && !searchTerm && (
-        <>
-          <Text color="text.secondary" fontWeight="600" mt={ 3 }>Popular</Text>
-          <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mb={ 2 }>
+        <ColumnFilterContentSection title="Popular">
+          <Flex flexWrap="wrap" gap={ 2 }>
             { [ ZETA_NATIVE_TOKEN, ...filteredTokens.map(token => toTokenModel({
               address_hash: token.zrc20_contract_address,
               symbol: token.symbol,
@@ -185,39 +215,7 @@ const ZetaChainAssetFilter = ({ value = null, handleFilterChange }: Props) => {
               </PopoverCloseTriggerWrapper>
             )) }
           </Flex>
-        </>
-      ) }
-      { searchTerm && tokensQuery.data && !filteredTokens.length && <Text>No tokens found</Text> }
-      { searchTerm && tokensQuery.data && Boolean(filteredTokens.length) && (
-        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 } ml="-4px">
-          { filteredTokens.map(token => (
-            <PopoverCloseTriggerWrapper key={ token.zrc20_contract_address }>
-              <Flex
-                alignItems="center"
-                p={ 2 }
-                borderRadius="md"
-                cursor="pointer"
-                _hover={{ bg: 'gray.50' }}
-                onClick={ onTokenClick(token) }
-              >
-                { /* FIXME: I'd use TokenEntity here, but it prevents onTokenClick callback from being called */ }
-                <TokenEntity.Icon token={ toTokenModel({
-                  address_hash: token.zrc20_contract_address,
-                  symbol: token.symbol,
-                  name: token.name,
-                  decimals: token.decimals.toString(),
-                  total_supply: null,
-                  icon_url: token.icon_url,
-                  type: 'ERC-20',
-                  holders_count: null,
-                  exchange_rate: null,
-                  circulating_market_cap: null,
-                }) }/>
-                { token.symbol || token.name || token.zrc20_contract_address }
-              </Flex>
-            </PopoverCloseTriggerWrapper>
-          )) }
-        </Flex>
+        </ColumnFilterContentSection>
       ) }
     </ColumnFilterContent>
   );

@@ -7,6 +7,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ChainSelect, { ALL_OPTION, isAllOption } from 'src/shared/external-chains/ChainSelect';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
 
@@ -59,22 +60,20 @@ const ChainFilter = ({ direction, value, handleFilterChange }: Props) => {
 
   return (
     <ColumnFilterContent
-      title={ title }
-      isFilled={ !isAllOption(currentValue) }
       isTouched={ !isEqual(currentValue.slice().sort(), toSelectValue(value).slice().sort()) }
       onFilter={ handleFilter }
-      onReset={ handleReset }
-      hasReset
     >
-      <ChainSelect
-        value={ currentValue }
-        onValueChange={ handleValueChange }
-        chainsConfig={ chainsConfig }
-        loading={ chainsQuery.isPending }
-        withAllOption
-        multiple
-        w="100%"
-      />
+      <ColumnFilterContentSection title={ title } onReset={ handleReset } isFilled={ !isAllOption(currentValue) }>
+        <ChainSelect
+          value={ currentValue }
+          onValueChange={ handleValueChange }
+          chainsConfig={ chainsConfig }
+          loading={ chainsQuery.isPending }
+          withAllOption
+          multiple
+          w="100%"
+        />
+      </ColumnFilterContentSection>
     </ColumnFilterContent>
   );
 };

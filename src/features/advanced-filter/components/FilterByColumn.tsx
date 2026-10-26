@@ -50,7 +50,6 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
           columnName="Method"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) }
-          contentProps={{ w: '350px' }}
         >
           <MethodFilter { ...commonProps } value={ value }/>
         </ColumnFilter>
@@ -63,7 +62,6 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
           columnName="Age"
           isLoading={ isLoading }
           selected={ Boolean(value.from || value.to || value.age) }
-          contentProps={{ w: '382px' }}
         >
           <AgeFilter { ...commonProps } value={ value }/>
         </ColumnFilter>
@@ -122,7 +120,6 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
           columnName="Amount"
           isLoading={ isLoading }
           selected={ Boolean(value.from || value.to) }
-          contentProps={{ w: '382px' }}
         >
           <AmountFilter { ...commonProps } value={ value }/>
         </ColumnFilter>
@@ -149,7 +146,6 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
           columnName="Asset"
           isLoading={ isLoading }
           selected={ Boolean(value.length) }
-          contentProps={{ w: '382px' }}
         >
           <AssetFilter { ...commonProps } value={ value }/>
         </ColumnFilter>

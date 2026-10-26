@@ -33,7 +33,6 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           columnName="Source tx"
           isLoading={ isLoading }
           selected={ Boolean(filters.src_chain_ids) }
-          contentProps={{ w: '382px' }}
           rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
           <ChainFilter key={ filters.src_chain_ids } direction="source" value={ filters.src_chain_ids } handleFilterChange={ handleFilterChange }/>
@@ -46,7 +45,6 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           columnName="Destination tx"
           isLoading={ isLoading }
           selected={ Boolean(filters.dst_chain_ids) }
-          contentProps={{ w: '382px' }}
           rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
           <ChainFilter key={ filters.dst_chain_ids } direction="destination" value={ filters.dst_chain_ids } handleFilterChange={ handleFilterChange }/>
@@ -59,7 +57,6 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           columnName="Protocol"
           isLoading={ isLoading }
           selected={ Boolean(filters.bridge_ids) }
-          contentProps={{ w: '382px' }}
           rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
           <ProtocolFilter key={ filters.bridge_ids } value={ filters.bridge_ids } handleFilterChange={ handleFilterChange }/>

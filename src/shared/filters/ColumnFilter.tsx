@@ -42,7 +42,7 @@ const ColumnFilter = ({ columnName, contentProps, rootProps, children, isLoading
           { Boolean(value) && <chakra.span>{ value }</chakra.span> }
         </Button>
       </PopoverTrigger>
-      <PopoverContent { ...contentProps }>
+      <PopoverContent w="382px" { ...contentProps }>
         <PopoverBody>
           { children }
         </PopoverBody>

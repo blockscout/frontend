@@ -9,6 +9,7 @@ import { ADVANCED_FILTER_AGES, type AdvancedFilterAge } from '../../types/api';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 import TagGroupSelect from 'src/shared/tags/select/TagGroupSelect';
 
 import { Input } from 'src/toolkit/chakra/input';
@@ -150,37 +151,37 @@ function BaseAgeFilter<T>({
 
   return (
     <ColumnFilterContent
-      title="Set last duration"
-      isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }
       isTouched={ isTouched }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <Flex gap={ 3 }>
-        <PopoverCloseTriggerWrapper>
-          <TagGroupSelect<AdvancedFilterAge>
-            items={ ADVANCED_FILTER_AGES.map(val => ({ id: val, title: val })) }
-            onChange={ onPresetChange }
-            value={ currentValue.age || undefined }
+      <ColumnFilterContentSection title="Set last duration" onReset={ onReset } isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }>
+        <Flex gap={ 3 }>
+          <PopoverCloseTriggerWrapper>
+            <TagGroupSelect<AdvancedFilterAge>
+              items={ ADVANCED_FILTER_AGES.map(val => ({ id: val, title: val })) }
+              onChange={ onPresetChange }
+              value={ currentValue.age || undefined }
+            />
+          </PopoverCloseTriggerWrapper>
+        </Flex>
+      </ColumnFilterContentSection>
+      <ColumnFilterContentSection title="Date range">
+        <Flex>
+          <DateInput
+            value={ currentValue.age ? '' : currentValue.from }
+            onChange={ handleFromChange }
+            placeholder="From"
+            max={ dayjs().format('YYYY-MM-DD') }
           />
-        </PopoverCloseTriggerWrapper>
-      </Flex>
-      <Flex mt={ 3 }>
-        <DateInput
-          value={ currentValue.age ? '' : currentValue.from }
-          onChange={ handleFromChange }
-          placeholder="From"
-          max={ dayjs().format('YYYY-MM-DD') }
-        />
-        <Text mx={ 3 }>{ ndash }</Text>
-        <DateInput
-          value={ currentValue.age ? '' : currentValue.to }
-          onChange={ handleToChange }
-          placeholder="To"
-          max={ dayjs().format('YYYY-MM-DD') }
-        />
-      </Flex>
+          <Text mx={ 3 }>{ ndash }</Text>
+          <DateInput
+            value={ currentValue.age ? '' : currentValue.to }
+            onChange={ handleToChange }
+            placeholder="To"
+            max={ dayjs().format('YYYY-MM-DD') }
+          />
+        </Flex>
+      </ColumnFilterContentSection>
     </ColumnFilterContent>
   );
 }
