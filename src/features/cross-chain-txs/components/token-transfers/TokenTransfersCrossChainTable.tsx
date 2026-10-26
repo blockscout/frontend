@@ -4,6 +4,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
+import type { CrossChainFilters } from 'src/features/cross-chain-txs/types/api';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
@@ -12,6 +13,9 @@ import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
+import type { CrossChainFilterColumn } from '../filters/CrossChainFilterByColumn';
+import CrossChainFilterByColumn from '../filters/CrossChainFilterByColumn';
+import type { CrossChainFilterChangeHandler } from '../filters/utils';
 import TokenTransfersCrossChainTableItem from './TokenTransfersCrossChainTableItem';
 import { getItemKey } from './utils';
 
@@ -21,10 +25,20 @@ interface Props {
   top?: number;
   currentAddress?: string;
   resetKey?: string;
+  filters?: CrossChainFilters;
+  onFilterChange?: CrossChainFilterChangeHandler;
 }
 
-const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, resetKey }: Props) => {
+const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, resetKey, filters, onFilterChange }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+
+  const renderFilter = (column: CrossChainFilterColumn) => {
+    if (!filters || !onFilterChange) {
+      return null;
+    }
+
+    return <CrossChainFilterByColumn column={ column } filters={ filters } onFilterChange={ onFilterChange } isLoading={ isLoading }/>;
+  };
 
   return (
     <AddressHighlightProvider>
@@ -34,9 +48,24 @@ const TokenTransfersCrossChainTable = ({ data, isLoading, top, currentAddress, r
             <TableColumnHeader w={ currentAddress ? '60px' : '42px' }/>
             <TableColumnHeader>Source token</TableColumnHeader>
             <TableColumnHeader>Target token</TableColumnHeader>
-            <TableColumnHeader>Source tx</TableColumnHeader>
-            <TableColumnHeader>Dest tx</TableColumnHeader>
-            <TableColumnHeader>Protocol</TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Source tx
+                { renderFilter('source') }
+              </Flex>
+            </TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Dest tx
+                { renderFilter('destination') }
+              </Flex>
+            </TableColumnHeader>
+            <TableColumnHeader>
+              <Flex alignItems="center" columnGap={ 1 }>
+                Protocol
+                { renderFilter('protocol') }
+              </Flex>
+            </TableColumnHeader>
             <TableColumnHeader>
               <Flex alignItems="center" flexWrap="nowrap">
                 Message

@@ -203,22 +203,23 @@ const MultichainAddressTokenTransfers = ({ addressData, isLoading }: Props) => {
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain',
       component: config.features.crossChainTxs.isEnabled ? (
-        <>
-          { isMobile && !isLocalTab && transfersQueryCrossChain.pagination.isVisible && (
+        <TokenTransfersCrossChainContent
+          items={ transfersQueryCrossChain.data?.items }
+          isLoading={ transfersQueryCrossChain.isInitialLoading }
+          isTransitioning={ transfersQueryCrossChain.isTransitioning }
+          isError={ transfersQueryCrossChain.isError }
+          pagination={ transfersQueryCrossChain.pagination }
+          tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          currentAddress={ hash }
+          resetKey={ transfersQueryCrossChain.queryHash }
+          filters={ transfersQueryCrossChain.filters }
+          onFilterChange={ transfersQueryCrossChain.onFilterChange }
+          actionBar={ isMobile && !isLocalTab && transfersQueryCrossChain.pagination.isVisible && (
             <ActionBar>
               <Pagination ml="auto" { ...transfersQueryCrossChain.pagination }/>
             </ActionBar>
           ) }
-          <TokenTransfersCrossChainContent
-            items={ transfersQueryCrossChain.data?.items }
-            isLoading={ transfersQueryCrossChain.isInitialLoading }
-            isTransitioning={ transfersQueryCrossChain.isTransitioning }
-            isError={ transfersQueryCrossChain.isError }
-            pagination={ transfersQueryCrossChain.pagination }
-            tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
-            currentAddress={ hash }
-          />
-        </>
+        />
       ) : <EmptyState type="coming_soon"/>,
     },
     {

@@ -13,7 +13,7 @@ import { useCrossChainCountersQuery } from '../../hooks/useCrossChainCountersQue
 import { INTERCHAIN_TRANSFER } from '../../stubs/messages';
 
 const TokenTransfersCrossChain = () => {
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash, filters, onFilterChange } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:transfers',
     options: {
       placeholderData: generateListStub<'interchainIndexer:transfers'>(INTERCHAIN_TRANSFER, 50, { next_page_params: { page_token: 'token' } }),
@@ -40,6 +40,8 @@ const TokenTransfersCrossChain = () => {
       itemsNum={ data?.items.length }
       actionBar={ actionBar }
       resetKey={ queryHash }
+      filters={ filters }
+      onFilterChange={ onFilterChange }
     />
   );
 };

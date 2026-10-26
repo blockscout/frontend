@@ -91,23 +91,23 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain transfers',
       component: (
-        <>
-          { isMobile && crossChainQuery.pagination.isVisible && (
+        <TokenTransfersCrossChainContent
+          items={ crossChainQuery.data?.items }
+          isLoading={ crossChainQuery.isInitialLoading }
+          isTransitioning={ crossChainQuery.isTransitioning }
+          isError={ crossChainQuery.isError }
+          pagination={ crossChainQuery.pagination }
+          tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          currentAddress={ hash }
+          resetKey={ crossChainQuery.queryHash }
+          filters={ crossChainQuery.filters }
+          onFilterChange={ crossChainQuery.onFilterChange }
+          actionBar={ isMobile && crossChainQuery.pagination.isVisible && (
             <ActionBar>
               <Pagination ml="auto" { ...crossChainQuery.pagination }/>
             </ActionBar>
           ) }
-          <TokenTransfersCrossChainContent
-            items={ crossChainQuery.data?.items }
-            isLoading={ crossChainQuery.isInitialLoading }
-            isTransitioning={ crossChainQuery.isTransitioning }
-            isError={ crossChainQuery.isError }
-            pagination={ crossChainQuery.pagination }
-            tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
-            currentAddress={ hash }
-            resetKey={ crossChainQuery.queryHash }
-          />
-        </>
+        />
       ),
     },
   ].filter(Boolean);

@@ -66,13 +66,13 @@ page Token transfers → Cross-chain tab; a tx with cross-chain transfers → it
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Build the chain filter, the protocol filter and the column switch in
+- [x] 1 `[agent]` Build the chain filter, the protocol filter and the column switch in
       `cross-chain-txs/components/filters/`, with their unit tests
-- [ ] 2 `[agent]` Add the filterable header switch to `TokenTransfersCrossChainTable`; thread filters,
+- [x] 2 `[agent]` Add the filterable header switch to `TokenTransfersCrossChainTable`; thread filters,
       `onFilterChange`, `hasActiveFilters` and the tags row through every token-transfers surface
-- [ ] 3 `[agent]` Style the popovers and the tags row to the mockup —
+- [x] 3 `[agent]` Style the popovers and the tags row to the mockup —
       [Source tx](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9120-120563) ·
       [Dest tx](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9120-120521) ·
       [Protocol](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9120-120033) ·
       [Empty state + tags](https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explorer?node-id=9136-48611)
-- [ ] 4 `[human]` Regenerate affected Playwright baselines with `--docker` once the look is approved
+- [x] 4 `[human]` Regenerate affected Playwright baselines with `--docker` once the look is approved
