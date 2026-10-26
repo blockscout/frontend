@@ -32,6 +32,16 @@ export function getTagLinkParams(
   }
 }
 
+export function hasTagTooltip(data: MetadataTag): boolean {
+  return Boolean(
+    data.meta?.tooltipIcon ||
+    data.meta?.tooltipTitle ||
+    data.meta?.tooltipDescription ||
+    data.meta?.tooltipUrl ||
+    data.meta?.tooltipAttribution,
+  );
+}
+
 export function getTagName(data: MetadataTag, addressHash?: string) {
   if (data.tagType === 'name' && data.meta?.cexDeposit === 'true' && addressHash) {
     return `${ data.name } (${ addressHash.slice(0, 2 + 5) })`;
