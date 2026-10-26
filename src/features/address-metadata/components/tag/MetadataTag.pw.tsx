@@ -43,6 +43,15 @@ test('tag with link and long name +@dark-mode', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('truncated tag with tooltip shows one tooltip on hover', async({ render, page, mockAssetResponse }) => {
+  await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipIcon as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipAttributionIcon as string, './playwright/mocks/image_md.jpg');
+  const component = await render(<MetadataTag data={ addressMetadataMock.tagWithTooltip } maxW="80px"/>);
+  await component.getByText('BlockscoutHeroes').hover();
+  await expect(page.getByText('Blockscout team member')).toBeVisible();
+  await expect(page.getByRole('tooltip')).toHaveCount(1);
+});
+
 test('tag with tooltip +@dark-mode', async({ render, page, mockAssetResponse }) => {
   await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipIcon as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(addressMetadataMock.tagWithTooltip.meta?.tooltipAttributionIcon as string, './playwright/mocks/image_md.jpg');
