@@ -8,6 +8,6 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-table-columns-merge/`
 - [x] 02 → `tickets/02-column-filter-primitives-and-tags-row/`
-- [ ] 03 → `tickets/03-filter-params-and-bridges-resource/`
+- [x] 03 → `tickets/03-filter-params-and-bridges-resource/`
 - [ ] 04 → `tickets/04-token-transfers-filters/`
 - [ ] 05 → `tickets/05-transactions-filters/`

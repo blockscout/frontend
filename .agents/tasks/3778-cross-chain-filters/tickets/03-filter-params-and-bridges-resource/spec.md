@@ -49,7 +49,7 @@ How to verify: `pnpm dev:preset gnosis`, open the deep link above and inspect th
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Declare `interchainIndexer:bridges` and its payload branch; add a bridges mock — skill: `add-api-resource`
-- [ ] 2 `[agent]` Extend `CrossChainFilters`, the `filterFields` of the five list resources and the missing
+- [x] 1 `[agent]` Declare `interchainIndexer:bridges` and its payload branch; add a bridges mock — skill: `add-api-resource`
+- [x] 2 `[agent]` Extend `CrossChainFilters`, the `filterFields` of the five list resources and the missing
       `PaginationFilters` branches
-- [ ] 3 `[agent]` Make the `bridge_ids` scope resolver yield to a user value; extend `scope-filters.spec.ts`
+- [x] 3 `[agent]` Make the `bridge_ids` scope resolver yield to a user value; extend `scope-filters.spec.ts`

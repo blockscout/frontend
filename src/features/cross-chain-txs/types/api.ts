@@ -4,6 +4,9 @@ import type * as interchainIndexer from '@blockscout/interchain-indexer-types';
 
 export interface CrossChainFilters {
   q?: string;
+  src_chain_ids?: string;
+  dst_chain_ids?: string;
+  bridge_ids?: string;
 }
 
 export interface CrossChainChainsStatsSorting {

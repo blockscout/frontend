@@ -23,7 +23,7 @@ export default function buildUrl<R extends ResourceName>(
   const basePath = api.basePath ?? '';
   const path = !noProxy && isNeedProxy() ? '/node-api/proxy' + basePath + resource.path : basePath + resource.path;
   const url = new URL(compile(path)(pathParams), baseUrl);
-  const params = { ...queryParams, ...resolveScopeFilters(apiName, resource.scopeFilters, chain) };
+  const params = { ...queryParams, ...resolveScopeFilters(apiName, resource.scopeFilters, chain, queryParams) };
 
   Object.entries(params).forEach(([ key, value ]) => {
     // there are some pagination params that can be null or false for the next page
