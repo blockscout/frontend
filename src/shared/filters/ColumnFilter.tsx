@@ -6,7 +6,7 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
-import type { PopoverContentProps } from 'src/toolkit/chakra/popover';
+import type { PopoverContentProps, PopoverRootProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 
 interface Props {
@@ -14,13 +14,14 @@ interface Props {
   isLoading?: boolean;
   selected?: boolean;
   contentProps?: PopoverContentProps;
+  rootProps?: Omit<PopoverRootProps, 'children'>;
   children: React.ReactNode;
   value?: string;
 }
 
-const ColumnFilter = ({ columnName, contentProps, children, isLoading, selected, value }: Props) => {
+const ColumnFilter = ({ columnName, contentProps, rootProps, children, isLoading, selected, value }: Props) => {
   return (
-    <PopoverRoot>
+    <PopoverRoot { ...rootProps }>
       <PopoverTrigger>
         <Button
           display="inline-flex"

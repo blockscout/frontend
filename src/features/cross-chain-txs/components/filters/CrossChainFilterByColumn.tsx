@@ -12,6 +12,8 @@ import type { CrossChainColumnFilterField, CrossChainFilterChangeHandler } from 
 
 export type CrossChainFilterColumn = 'source' | 'destination' | 'protocol';
 
+const KEEP_DRAFT_ON_CLOSE = { unmountOnExit: false } as const;
+
 interface Props {
   column: CrossChainFilterColumn;
   filters: CrossChainFilters;
@@ -32,8 +34,9 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           isLoading={ isLoading }
           selected={ Boolean(filters.src_chain_ids) }
           contentProps={{ w: '382px' }}
+          rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
-          <ChainFilter direction="source" value={ filters.src_chain_ids } handleFilterChange={ handleFilterChange }/>
+          <ChainFilter key={ filters.src_chain_ids } direction="source" value={ filters.src_chain_ids } handleFilterChange={ handleFilterChange }/>
         </ColumnFilter>
       );
     }
@@ -44,8 +47,9 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           isLoading={ isLoading }
           selected={ Boolean(filters.dst_chain_ids) }
           contentProps={{ w: '382px' }}
+          rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
-          <ChainFilter direction="destination" value={ filters.dst_chain_ids } handleFilterChange={ handleFilterChange }/>
+          <ChainFilter key={ filters.dst_chain_ids } direction="destination" value={ filters.dst_chain_ids } handleFilterChange={ handleFilterChange }/>
         </ColumnFilter>
       );
     }
@@ -56,8 +60,9 @@ const CrossChainFilterByColumn = ({ column, filters, onFilterChange, isLoading }
           isLoading={ isLoading }
           selected={ Boolean(filters.bridge_ids) }
           contentProps={{ w: '382px' }}
+          rootProps={ KEEP_DRAFT_ON_CLOSE }
         >
-          <ProtocolFilter value={ filters.bridge_ids } handleFilterChange={ handleFilterChange }/>
+          <ProtocolFilter key={ filters.bridge_ids } value={ filters.bridge_ids } handleFilterChange={ handleFilterChange }/>
         </ColumnFilter>
       );
     }
