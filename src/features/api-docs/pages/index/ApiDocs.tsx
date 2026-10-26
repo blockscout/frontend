@@ -19,6 +19,8 @@ import RpcApi from './RpcApi';
 
 const feature = getFeaturePayload(config.features.apiDocs);
 
+const isTabAvailable = (id: string): boolean => id !== 'graphql_api' || Boolean(config.apis.core);
+
 const ApiDocs = () => {
 
   const tabs: Array<TabItemRegular> = [
@@ -26,7 +28,7 @@ const ApiDocs = () => {
     { id: 'eth_rpc_api', title: 'ETH RPC API', component: <EthRpcApi/> },
     { id: 'rpc_api', title: 'RPC API endpoints', component: <RpcApi/> },
     { id: 'graphql_api', title: 'GraphQL API', component: <GraphQL/> },
-  ].filter(({ id }) => feature?.mode === 'internal' && feature.tabs.includes(id));
+  ].filter(({ id }) => feature?.mode === 'internal' && feature.tabs.includes(id) && isTabAvailable(id));
 
   return (
     <>
