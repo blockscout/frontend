@@ -13,7 +13,8 @@ bridge, always rendered), presses Filter, and the list reloads from page 1 with 
 non-sticky row above the table lists the active filters as closable tags with "Reset all"; with no rows the
 active-filters empty state shows instead of the plain empty text. This works on every token-transfers
 surface: the index page, the address Token transfers cross-chain tab (single-chain and multichain) and the
-tx-details cross-chain transfers tab. Filters are desktop only; mobile is unchanged.
+tx-details cross-chain transfers tab. The filters render at every breakpoint, mobile included; there is no
+separate mobile mockup, and on mobile the tags row sits above the pagination action bar.
 
 The filter components live in `src/features/cross-chain-txs/components/filters/` and serve both tables
 (ticket 05 reuses them on the transactions table): one chain filter with a direction prop (source /

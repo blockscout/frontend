@@ -52,7 +52,8 @@ at the same time.
 10. Token-transfers table: the Message and Timestamp columns are merged into one column (message id on the
    first line, time below); the Source token and Target token cells get more width. The transactions table
    gets the same Message + Timestamp merge.
-11. Mobile layout is unchanged — the filters are desktop only in this task.
+11. The filters, the tags row and the empty state look and behave the same at every breakpoint; there is
+    no separate mobile mockup. On mobile the tags row sits above the pagination action bar.
 12. No regression in search (`q`), scope filters, pagination or the Protocol column on any affected
     surface, and none on the advanced-filter page beyond the restyled row.
 
@@ -127,7 +128,6 @@ all-option; protocol popover body matches `TypeFilter`.
 
 ## Out of scope
 
-- Mobile filter UI (separate task, mirroring the advanced-filters mobile approach).
 - Any other change to the advanced-filter page beyond its tags row.
 - Filters on token columns, a tx-hash input, status / date / amount / address / message filters — none
   exist in the API.
