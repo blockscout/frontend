@@ -47,8 +47,8 @@ Follow the `check-github-cli` skill, then gather the targets once:
 - Open PRs: `gh pr list --repo blockscout/frontend --state open --limit 100 --json number,title,headRefName`.
 - Checkouts: `git worktree list`, with the branch each path has checked out.
 
-A list that fails or comes back empty stops the run: say so and end, because every topic would read as
-"no issue" and step 5 would file duplicates.
+A command that fails, or an issue list that comes back empty, stops the run: say so and end, because
+every topic would read as "no issue" and step 5 would file duplicates. An empty PR list is a real zero.
 
 Match each kept topic to one issue by meaning, or to none. The matched issue's PR, if any, is the one
 whose head branch is `issue-<n>`; classify on it:
