@@ -60,6 +60,14 @@ describe('base handler', () => {
     expect(result).toMatchObject({ props: { uuid: expect.stringMatching(UUID_PATTERN) } });
   });
 
+  it('omits the Secure flag when the app is served over http', async() => {
+    const { context, setHeader } = makeContext();
+
+    await runBase([ [ 'NEXT_PUBLIC_APP_PROTOCOL', 'http' ] ], context);
+
+    expect(setHeader.mock.calls[0][1]).toMatch(/^uuid=[0-9a-f-]{36}; Path=\/; Max-Age=31536000$/);
+  });
+
   it('keeps the uuid of a returning visitor and sets no cookie', async() => {
     const { context, setHeader } = makeContext({ cookie: 'uuid=existing-uuid; foo=bar' });
 
