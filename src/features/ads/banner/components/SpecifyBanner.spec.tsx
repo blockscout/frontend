@@ -16,12 +16,15 @@ interface Deferred {
 
 const serves: Array<Deferred> = [];
 const identityListeners: Array<() => void> = [];
+const identified: Array<unknown> = [];
 
 vi.mock('@specify-sh/publisher-sdk', () => ({
   ImageFormat: { LONG_BANNER: 'LONG_BANNER', SHORT_BANNER: 'SHORT_BANNER' },
   'default': class Specify {
     setCookieConsent() {}
-    identify() {}
+    identify(address: unknown) {
+      identified.push(address);
+    }
     onIdentityChange(listener: () => void) {
       identityListeners.push(listener);
       return () => {};
@@ -65,9 +68,26 @@ describe('SpecifyBanner', () => {
   beforeEach(() => {
     serves.length = 0;
     identityListeners.length = 0;
+    identified.length = 0;
   });
 
   afterEach(cleanup);
+
+  it('registers the connected wallet with Specify', async() => {
+    render(<SpecifyBanner address="0x1111111111111111111111111111111111111111" isLoading={ false } onEmpty={ vi.fn() } format="desktop"/>);
+
+    await resolveServe(0, null);
+
+    expect(identified).toEqual([ '0x1111111111111111111111111111111111111111' ]);
+  });
+
+  it('registers nothing without a wallet', async() => {
+    render(<SpecifyBanner address={ undefined } isLoading={ false } onEmpty={ vi.fn() } format="desktop"/>);
+
+    await resolveServe(0, null);
+
+    expect(identified).toEqual([]);
+  });
 
   it('shows the served ad', async() => {
     const onEmpty = vi.fn();
