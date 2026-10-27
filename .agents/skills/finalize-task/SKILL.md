@@ -15,13 +15,16 @@ ticket — is in [`../../tasks/concepts.md`](../../tasks/concepts.md).
 ## Step 1 — Prune
 
 Confirm the task is done: every box in `progress.md` is checked. If any is unchecked, stop and report which
-ticket is unfinished — there is nothing to land yet.
+ticket is unfinished — there is nothing to land yet. An `inbox.md` with a section whose status is `pending`
+is a stop as well: context the task never absorbed cannot land. Tell the developer to run
+`process-task-inbox`.
 
 Then delete the disposable files, keeping only `spec.md` in the task folder:
 
 - `tickets/` — the whole directory, review files included.
 - `progress.md`.
 - `questions.md`.
+- `inbox.md`, if any outer-loop context was debriefed into the task.
 - `design-readout.md`, if a design readout was written.
 - `review.md` / `review-<tag>.md`, if a task-level review ran in `md` mode.
 
