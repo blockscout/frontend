@@ -13,6 +13,7 @@ export interface FilterTag<TKey extends string> {
   readonly key: TKey;
   readonly name: string;
   readonly value: string;
+  readonly isLoading?: boolean;
 }
 
 interface Props<TKey extends string> extends FlexProps {
@@ -38,7 +39,7 @@ const FilterTagsRow = <TKey extends string>({ tags, onClear, onClearAll, leading
       <Flex alignItems="center" flexWrap="wrap" gap={ 2 } minW={ 0 }>
         { leadingTags }
         { tags.map((tag) => (
-          <Tag key={ tag.key } variant="filter" label={ tag.name } onClose={ handleClear(tag.key) } closable>
+          <Tag key={ tag.key } variant="filter" label={ tag.name } onClose={ handleClear(tag.key) } closable loading={ tag.isLoading }>
             { tag.value }
           </Tag>
         )) }

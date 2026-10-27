@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { Spinner } from '@chakra-ui/react';
 import { isEqual, without } from 'es-toolkit';
 import React from 'react';
 
@@ -11,7 +12,6 @@ import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 import type { CrossChainColumnFilterField } from './utils';
 import { getProtocolOptions, joinFilterValue, splitFilterValue } from './utils';
@@ -71,7 +71,7 @@ const ProtocolFilter = ({ value, handleFilterChange }: Props) => {
       <ColumnFilterContentSection title="Protocol" onReset={ handleReset } isFilled={ !isEqual(currentValue, [ RESET_VALUE ]) }>
         <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
           <Checkbox value={ RESET_VALUE }>All</Checkbox>
-          { bridgesQuery.isPending && <Skeleton loading h={ 5 } w="120px"/> }
+          { bridgesQuery.isPending && <Spinner size="md"/> }
           { options.map((option) => (
             <Checkbox key={ option.id } value={ option.id }>
               { option.name }

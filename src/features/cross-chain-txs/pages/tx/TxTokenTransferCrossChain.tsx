@@ -18,9 +18,10 @@ interface Props {
   crossChainQuery: ApiPaginatedQueryResult<'interchainIndexer:tx_transfers'>;
   isLoading?: boolean;
   tableTop?: number;
+  actionBar?: React.ReactNode;
 }
 
-const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop }: Props) => {
+const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop, actionBar }: Props) => {
   const content = crossChainQuery.data?.items ? (
     <TableContainerScrollable>
       <TokenTransfersCrossChainTable
@@ -36,8 +37,9 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
 
   return (
     <>
-      <CrossChainFilterTags filters={ crossChainQuery.filters } onFilterChange={ crossChainQuery.onFilterChange } mb={ 3 }/>
+      <CrossChainFilterTags filters={ crossChainQuery.filters } onFilterChange={ crossChainQuery.onFilterChange } mb={ actionBar ? 6 : 3 }/>
       <DataList
+        actionBar={ actionBar }
         isError={ txQuery.isError || crossChainQuery.isError }
         itemsNum={ crossChainQuery.data?.items.length }
         emptyText="There are no cross-chain token transfers."

@@ -77,9 +77,9 @@ describe('getCrossChainFilterTags', () => {
     );
 
     expect(tags).toEqual([
-      { key: 'src_chain_ids', name: 'Source chain', value: 'C-Chain, Numine' },
-      { key: 'dst_chain_ids', name: 'Destination chain', value: 'Duck chain' },
-      { key: 'bridge_ids', name: 'Protocol', value: 'AMB/Omnibridge, xDai Bridge' },
+      { key: 'src_chain_ids', name: 'Source chain', value: 'C-Chain, Numine', isLoading: false },
+      { key: 'dst_chain_ids', name: 'Destination chain', value: 'Duck chain', isLoading: false },
+      { key: 'bridge_ids', name: 'Protocol', value: 'AMB/Omnibridge, xDai Bridge', isLoading: false },
     ]);
   });
 
@@ -87,8 +87,23 @@ describe('getCrossChainFilterTags', () => {
     const tags = getCrossChainFilterTags({ src_chain_ids: '7', bridge_ids: '42' }, undefined, undefined);
 
     expect(tags).toEqual([
-      { key: 'src_chain_ids', name: 'Source chain', value: 'Chain 7' },
-      { key: 'bridge_ids', name: 'Protocol', value: 'Bridge 42' },
+      { key: 'src_chain_ids', name: 'Source chain', value: 'Chain 7', isLoading: false },
+      { key: 'bridge_ids', name: 'Protocol', value: 'Bridge 42', isLoading: false },
+    ]);
+  });
+
+  it('marks only the tags whose directory is still pending as loading', () => {
+    const tags = getCrossChainFilterTags(
+      { src_chain_ids: '7', dst_chain_ids: '4444', bridge_ids: '1' },
+      undefined,
+      BRIDGES,
+      { chains: true, bridges: false },
+    );
+
+    expect(tags.map((tag) => [ tag.key, tag.isLoading ])).toEqual([
+      [ 'src_chain_ids', true ],
+      [ 'dst_chain_ids', true ],
+      [ 'bridge_ids', false ],
     ]);
   });
 });

@@ -7,7 +7,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
 import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
@@ -105,6 +105,11 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           crossChainQuery={ crossChainQuery }
           isLoading={ isTabsLoading }
           tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          actionBar={ isMobile && crossChainQuery.pagination.isVisible && (
+            <ActionBar>
+              <Pagination ml="auto" { ...crossChainQuery.pagination }/>
+            </ActionBar>
+          ) }
         />
       ),
     },
@@ -167,6 +172,10 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           <Pagination ml="auto" { ...localQuery.pagination }/>
         </>
       );
+    }
+
+    if (isMobile) {
+      return null;
     }
 
     return (

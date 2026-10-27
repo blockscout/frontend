@@ -11,6 +11,11 @@ export type CrossChainColumnFilterField = typeof COLUMN_FILTER_FIELDS[number];
 
 export type CrossChainFilterChangeHandler = (filters: CrossChainFilters) => void;
 
+export interface FilterDirectoriesPending {
+  readonly chains: boolean;
+  readonly bridges: boolean;
+}
+
 export interface ProtocolOption {
   readonly id: string;
   readonly name: string;
@@ -71,6 +76,7 @@ export function getCrossChainFilterTags(
   filters: CrossChainFilters | undefined,
   chains: Array<ChainInfo> | undefined,
   bridges: Array<Bridge> | undefined,
+  pending: FilterDirectoriesPending = { chains: false, bridges: false },
 ): Array<FilterTag<CrossChainColumnFilterField>> {
   return COLUMN_FILTER_FIELDS.flatMap((field) => {
     const ids = splitFilterValue(filters?.[field]);
@@ -79,10 +85,12 @@ export function getCrossChainFilterTags(
       return [];
     }
 
-    const names = field === 'bridge_ids' ?
+    const isBridgeField = field === 'bridge_ids';
+    const names = isBridgeField ?
       ids.map((id) => getBridgeName(id, bridges)) :
       ids.map((id) => getChainName(id, chains));
+    const isLoading = isBridgeField ? pending.bridges : pending.chains;
 
-    return [ { key: field, name: COLUMN_FILTER_NAMES[field], value: names.join(', ') } ];
+    return [ { key: field, name: COLUMN_FILTER_NAMES[field], value: names.join(', '), isLoading } ];
   });
 }

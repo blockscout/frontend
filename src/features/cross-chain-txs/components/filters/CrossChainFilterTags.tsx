@@ -24,8 +24,13 @@ const CrossChainFilterTags = ({ filters, onFilterChange, ...rest }: Props) => {
   const bridgesQuery = useApiQuery('interchainIndexer:bridges', { queryOptions: { enabled: isActive, refetchOnMount: false } });
 
   const tags = React.useMemo(
-    () => getCrossChainFilterTags(filters, chainsQuery.data?.items, bridgesQuery.data?.items),
-    [ filters, chainsQuery.data?.items, bridgesQuery.data?.items ],
+    () => getCrossChainFilterTags(
+      filters,
+      chainsQuery.data?.items,
+      bridgesQuery.data?.items,
+      { chains: chainsQuery.isPending, bridges: bridgesQuery.isPending },
+    ),
+    [ filters, chainsQuery.data?.items, bridgesQuery.data?.items, chainsQuery.isPending, bridgesQuery.isPending ],
   );
 
   const handleClear = React.useCallback((field: CrossChainColumnFilterField) => {
@@ -36,7 +41,7 @@ const CrossChainFilterTags = ({ filters, onFilterChange, ...rest }: Props) => {
     onFilterChange({ q: filters.q });
   }, [ filters.q, onFilterChange ]);
 
-  if (!isActive || chainsQuery.isPending || bridgesQuery.isPending) {
+  if (!isActive) {
     return null;
   }
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex, Spinner, chakra } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
@@ -11,7 +11,6 @@ import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
-import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import type { CrossChainColumnFilterField } from './utils';
@@ -62,7 +61,7 @@ const ChainFilter = ({ direction, value, handleFilterChange }: Props) => {
             placeholder="Find by chain name or chain ID"
           />
         ) }
-        { chainsQuery.isPending && <Skeleton loading h={ 5 } w="120px"/> }
+        { chainsQuery.isPending && <Spinner size="md"/> }
         { chainsQuery.isError && <span>Something went wrong. Please try again.</span> }
         { chains && visibleChains.length === 0 && <span>No results found.</span> }
         { visibleChains.length > 0 && (
