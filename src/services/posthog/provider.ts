@@ -49,6 +49,7 @@ export const posthogProvider: AnalyticsProvider = {
   register: (superProps) => {
     sdk?.register(superProps);
   },
+  // every `setPersonProperties` call is its own `$set` event, so profile props travel inside `identify`
   identify: (distinctId, profile) => {
     if (distinctId) {
       sdk?.identify(distinctId, profile?.set, profile?.setOnce);

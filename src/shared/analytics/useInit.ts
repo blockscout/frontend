@@ -38,10 +38,8 @@ function setupProvider(provider: AnalyticsProvider, { isAuth, uuid }: UserIdenti
     'User id': uuid,
     ...(multichainFeature.isEnabled ? { 'Cluster name': multichainFeature.cluster } : {}),
   });
-  // profile props go with the identify call, not as separate writes: PostHog emits one `$set` event
-  // per `setPersonProperties` call, and two of them per page load doubled the event volume.
-  // They also belong before the queue flush — a buffered `reset` (logout during the deferral window)
-  // must not leave them on the anonymous post-reset profile
+  // profile writes belong before the queue flush — a buffered `reset` (logout during
+  // the deferral window) must not leave them on the anonymous post-reset profile
   provider.identify(uuid, {
     set: {
       'Device Type': capitalize(deviceType),

@@ -60,8 +60,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
   if (!uuid && appProfile !== 'private') {
     uuid = crypto.randomUUID();
-    // long-lived so that a returning browser keeps its analytics identity instead of becoming a new person
-    // on every browser session (a session cookie re-identified and merged a fresh person per visit)
+    // long-lived so that a returning browser keeps its analytics identity across browser sessions
     res.setHeader(
       'Set-Cookie',
       `${ cookies.NAMES.UUID }=${ uuid }; Path=/; Max-Age=${ UUID_COOKIE_MAX_AGE_SEC }${ config.app.protocol === 'https' ? '; Secure' : '' }`,
