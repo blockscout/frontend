@@ -22,7 +22,9 @@ checked out.
 
 Resolve the task folder from the branch (`issue-<number>`) and read the main `spec.md`, the target ticket's
 `tickets/NN-<slug>/spec.md`, `progress.md`, `questions.md`, and `.agents/delegation.md`. If ticket `NN` has
-only a `brief.md`, it isn't scoped — tell the developer to scope it with a `to-tickets` run, and stop.
+only a `brief.md`, it isn't scoped — tell the developer to scope it with a `to-tickets` run, and stop. An
+`inbox.md` with a section whose status is `pending` is a stop too: tell the developer to run
+`process-task-inbox` first.
 
 ## Step 2 — Check runnable
 
@@ -73,7 +75,8 @@ acceptance criterion:
   ticket whose touchpoints are all `[human]` leaves lands here once the last one is checked.
 - **An open touchpoint** → stop and hand off. Stop at the first **unchecked** `[human]` leaf; or, when no
   unchecked `[human]` leaf remains but an unconfirmed `(human)` criterion does, after implementing the
-  leaves and **before** committing. **Stage** the work (`git add -A`) and stop — nothing is committed or stashed. From
+  leaves and **before** committing. **Stage** the work (`git add -A`, then `git reset -- '*/inbox.md'`:
+  an `inbox.md` that appeared mid-run belongs to `process-task-inbox`, not to the ticket) and stop — nothing is committed or stashed. From
   here the index is the agent's work and the working tree on top of it is the developer's: their fixes stay
   **unstaged**, so `git diff` reads back exactly what they changed. When the developer reports a bug during
   the hand-off and the agent fixes it, the index must still hold only the agent's hunks afterwards. `git
@@ -117,6 +120,7 @@ with the developer and records it; it edits no source file. After the batch, com
 ## Step 7 — Commit
 
 Check the ticket's box in `progress.md`, then **commit** the entire body of work — the box tick folded
-into the commit so the worktree is clean after. A plain descriptive subject, the repo's `Co-Authored-By`
+into the commit so the worktree is clean after, except an `inbox.md` written mid-run, which stays
+uncommitted for `process-task-inbox`. A plain descriptive subject, the repo's `Co-Authored-By`
 trailer, and **no** `#issue` reference (the PR's `Resolves #N` already links it; a commit that names the
 issue spams its timeline).

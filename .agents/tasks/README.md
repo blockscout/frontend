@@ -35,6 +35,10 @@ Each step names the skill that runs it; the session model — what runs where, a
 4. **Answers** — when colleagues reply, read the threads and fold each decision into `questions.md`. When an
    answer changes the work, realise it through `to-tickets` — a new sibling ticket, or an edit to the
    affected ticket if it isn't implemented yet, retargeting `Blocked by` edges.
+   - **Outer-loop context** — a decision made where no session was listening (the weekly, a thread, a
+     document) lands in the task's `inbox.md` as a pending section; `debrief-meeting` writes the weekly's.
+     `process-task-inbox` folds each pending section into questions, spec and tickets. The three
+     implementing skills below refuse to start while a section is pending.
 5. **Implement** — run `implement-ticket <NN>` repeatedly, **one ticket per run**.
 6. **Land** — `finalize-task` prunes `tickets/` and any
    `md`-files except the `spec.md`, then hands off to `create-pr` to push, write the real description, and flip
