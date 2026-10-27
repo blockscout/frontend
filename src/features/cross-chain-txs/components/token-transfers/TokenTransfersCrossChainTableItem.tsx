@@ -40,6 +40,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
     <TableRow>
       <TableCell>
         <VStack alignItems="start" gap={ 1.5 }>
+          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
           { currentAddress && (
             <CrossChainFromToTag
               currentAddress={ currentAddress }
@@ -48,7 +49,6 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
               isLoading={ isLoading }
             />
           ) }
-          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
         </VStack>
       </TableCell>
       <TableCell maxW="200px">

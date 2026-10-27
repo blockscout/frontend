@@ -55,6 +55,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
     <TableRow>
       <TableCell w="42px">
         <VStack alignItems="start" gap={ 1.5 }>
+          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
           { currentAddress && (
             <CrossChainFromToTagTx
               data={ data }
@@ -62,7 +63,6 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
               isLoading={ isLoading }
             />
           ) }
-          <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
         </VStack>
       </TableCell>
       <TableCell>
