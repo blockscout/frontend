@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import type { SpecifyAd } from '@specify-sh/sdk';
-import Specify, { ImageFormat } from '@specify-sh/sdk';
+import type { SpecifyAd } from '@specify-sh/publisher-sdk';
+import { ImageFormat } from '@specify-sh/publisher-sdk';
 import React from 'react';
 
 import type { BannerProps } from '../types/client';
@@ -17,8 +17,7 @@ import {
   MOBILE_BANNER_WIDTH,
   MOBILE_BANNER_HEIGHT,
 } from '../utils/consts';
-
-const PUBLISHER_KEY = 'spk_uq51124ciii28vt00f8za4m5hibpuh';
+import { getSpecifyClient } from '../utils/specify-client';
 
 type Props = BannerProps & {
   address: `0x${ string }` | undefined;
@@ -33,46 +32,57 @@ const SpecifyBanner = ({ className, format = 'responsive', address, onEmpty, isL
   const [ isFetching, setIsFetching ] = React.useState(true);
 
   React.useEffect(() => {
+    if (address) {
+      getSpecifyClient().identify(address);
+    }
+  }, [ address ]);
+
+  React.useEffect(() => {
     if (isLoading) {
       return;
     }
 
     let isStale = false;
-    const specify = new Specify({
-      publisherKey: PUBLISHER_KEY,
-      cacheMostRecentAddress: true,
-    });
-    const fetchContent = async() => {
+    let isFilled = false;
+    let inFlightCount = 0;
+    const specify = getSpecifyClient();
+
+    const serveAd = async() => {
+      inFlightCount++;
       try {
-        const content = await specify.serve(
-          address ? [ address as `0x${ string }` ] : null,
-          { imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER },
-        );
+        const content = await specify.serve(null, {
+          imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER,
+        });
         if (isStale) {
           return;
         }
-        if (content?.imageUrl) {
+        if (!isFilled && content?.imageUrl) {
+          isFilled = true;
           setAd(content);
-        } else {
-          onEmpty();
+          setIsFetching(false);
         }
-      } catch (error) {
-        if (!isStale) {
+      } catch {} finally {
+        inFlightCount--;
+        if (!isStale && !isFilled && inFlightCount === 0) {
           onEmpty();
-        }
-      } finally {
-        if (!isStale) {
           setIsFetching(false);
         }
       }
     };
 
-    fetchContent();
+    const unsubscribe = specify.onIdentityChange(() => {
+      if (!isStale && !isFilled) {
+        serveAd();
+      }
+    });
+
+    serveAd();
 
     return () => {
       isStale = true;
+      unsubscribe();
     };
-  }, [ address, isMobile, onEmpty, isLoading ]);
+  }, [ isMobile, onEmpty, isLoading ]);
 
   const handleClick = React.useCallback(() => {
     window.open(ad?.ctaUrl, '_blank', 'noopener,noreferrer');
@@ -94,7 +104,7 @@ const SpecifyBanner = ({ className, format = 'responsive', address, onEmpty, isL
     );
   }
 
-  if (!ad) return null;
+  if (!ad?.imageUrl) return null;
 
   return (
     <Image

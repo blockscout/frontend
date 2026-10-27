@@ -41,7 +41,7 @@ allowBuilds:
   '@ipshipyard/node-datachannel': true
   '@reown/appkit': false
   '@scarf/scarf': false
-  '@specify-sh/sdk': false
+  '@specify-sh/publisher-sdk': false
   '@tree-sitter-grammars/tree-sitter-yaml': false
   bigint-buffer: false
   bufferutil: false
