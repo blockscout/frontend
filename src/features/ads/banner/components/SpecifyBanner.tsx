@@ -44,28 +44,27 @@ const SpecifyBanner = ({ className, format = 'responsive', address, onEmpty, isL
 
     let isStale = false;
     let isFilled = false;
+    let inFlightCount = 0;
     const specify = getSpecifyClient();
 
     const serveAd = async() => {
+      inFlightCount++;
       try {
         const content = await specify.serve(null, {
           imageFormat: isMobile ? ImageFormat.SHORT_BANNER : ImageFormat.LONG_BANNER,
         });
-        if (isStale || isFilled) {
+        if (isStale) {
           return;
         }
-        if (content?.imageUrl) {
+        if (!isFilled && content?.imageUrl) {
           isFilled = true;
           setAd(content);
-        } else {
-          onEmpty();
+          setIsFetching(false);
         }
-      } catch (error) {
-        if (!isStale) {
+      } catch {} finally {
+        inFlightCount--;
+        if (!isStale && !isFilled && inFlightCount === 0) {
           onEmpty();
-        }
-      } finally {
-        if (!isStale) {
           setIsFetching(false);
         }
       }
