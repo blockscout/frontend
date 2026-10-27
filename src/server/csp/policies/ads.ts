@@ -78,7 +78,10 @@ const getProviderDescriptor = (provider: AdsProviders, nonce?: string): CspDev.D
     case 'specify':
       return {
         'connect-src': [
-          'app.specify.sh',
+          'spfsrv.com',
+        ],
+        'img-src': [
+          'content.specify.sh',
         ],
       };
     default:

@@ -102,7 +102,7 @@
     "@reown/appkit-adapter-wagmi": "1.7.20",
     "@scure/base": "1.1.9",
     "@slise/embed-react": "^2.2.0",
-    "@specify-sh/sdk": "0.4.2",
+    "@specify-sh/publisher-sdk": "1.2.0",
     "@tanstack/react-query": "5.55.4",
     "@tanstack/react-query-devtools": "5.55.4",
     "@types/d3-selection": "3.0.11",

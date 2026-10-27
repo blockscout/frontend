@@ -9,17 +9,32 @@ const GOOGLE_AD_MANAGER_HOSTS = [
   'https://ep2.adtrafficquality.google',
 ];
 
-async function getPolicy(provider: string) {
+async function getPolicy(provider: string, isSpecifyEnabled = false) {
   return withEnvs(
     [
       [ 'NEXT_PUBLIC_AD_BANNER_PROVIDER', provider ],
       [ 'NEXT_PUBLIC_AD_TEXT_PROVIDER', 'none' ],
+      [ 'NEXT_PUBLIC_AD_BANNER_ENABLE_SPECIFY', String(isSpecifyEnabled) ],
     ],
     async() => (await import('./ads')).ads(false),
   );
 }
 
 describe('ads policy', () => {
+  it('lets the Specify SDK request ads and load their images', async() => {
+    const policy = await getPolicy('slise', true);
+
+    expect(policy['connect-src']).toContain('spfsrv.com');
+    expect(policy['img-src']).toContain('content.specify.sh');
+  });
+
+  it('does not open the Specify hosts when Specify is disabled', async() => {
+    const policy = await getPolicy('slise');
+
+    expect(policy['connect-src']).not.toContain('spfsrv.com');
+    expect(policy['img-src'] ?? []).not.toContain('content.specify.sh');
+  });
+
   it('lets Sevio fill a zone through Google Ad Manager', async() => {
     const policy = await getPolicy('sevio');
 
