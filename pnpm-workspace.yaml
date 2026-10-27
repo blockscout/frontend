@@ -72,9 +72,6 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
-  # remove after 2026-10-27 ~07:20 UTC
-  - '@specify-sh/publisher-sdk@1.2.0'
-  - '@specify-sh/core@0.2.0'
 
 patchedDependencies:
   '@lifi/widget-light@4.3.2': patches/@lifi__widget-light@4.3.2.patch
