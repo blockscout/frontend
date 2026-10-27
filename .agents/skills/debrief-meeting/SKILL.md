@@ -64,16 +64,20 @@ and excluded otherwise. A topic that only matches a PR with no issue is excluded
 
 ## 4. The plan
 
-Show one table, one row per kept topic: topic, decision, target (issue link or `new issue` or `excluded`),
-action (`inbox` / `comment` / `edit body` / `create issue` / `skip: no worktree`), and the text that will be
-written. Below it, the Slack message drafted from [`slack-template.md`](slack-template.md), in full, and the
-excluded topics on one line each with their product.
+Show one table, rows numbered from 1, one row per kept topic: number, topic, decision, target (issue link
+or `new issue` or `excluded`), action (`inbox` / `comment` / `edit body` / `create issue` / `skip: no
+worktree`), and the text that will be written. For a `create issue` row the text is the issue title and
+the two or three sentences its Description will open with. Below the table, the excluded topics on one
+line each with their product, and the action points the Slack summary will carry, numbered on from the
+table.
 
-Wait for the developer. They edit rows, flip `comment` to `edit body`, drop candidates, rewrite the Slack
-text. **This is the run's one gate**: the approval covers every write in step 5, the Slack send included.
-The repo rule of drafting a Slack message for approval before sending is met here, by the draft in the plan.
+Wait for the developer. They answer by row number: edit a row, flip `comment` to `edit body`, drop a
+candidate, rescue an excluded topic. **This is the run's one gate**: the approval covers every write in
+step 5, issue creation and the Slack send included. The Slack message is composed from the approved rows
+through a fixed template, so it is sent without a draft round; this sentence is the explicit exception the
+Slack rule in `AGENTS.md` asks a skill to name.
 
-**Done when:** the developer has approved the table and the Slack draft.
+**Done when:** the developer has approved every row.
 
 ## 5. Execute
 
@@ -86,12 +90,13 @@ In this order, so the Slack message can link what the earlier writes produced:
    --body-file <path>` for an approved body edit. English, the Public-safe rule from the `create-issue`
    skill in force: nobody named, no recording link, no dates or client names. Open with "Decisions from the
    team sync on <date>:" followed by the decisions as bullets.
-3. **New issues.** Run the `create-issue` skill once per candidate, in sequence, with this conversation as
-   the source and the candidate as the one topic. The plan already picked the topic, so its topic round is
-   answered.
-4. **Slack.** Fill the approved draft's placeholders with the links from 2 and 3, resolve names to IDs
-   through `.agents/TEAM.md`, and send it to the frontend channel with `slack_send_message`. Language and
-   link rules are in `.agents/slack-message.md`.
+3. **New issues.** Run the `create-issue` skill once per approved `create issue` row, in sequence, with
+   this conversation as the source and the row as the one topic. The row's title and opening sentences are
+   the issue's; the skill writes the rest of the body and creates the issue without another confirmation,
+   as its own steps say.
+4. **Slack.** Compose the message from [`slack-template.md`](slack-template.md) out of the approved rows,
+   with the links from 2 and 3 and names resolved to IDs through `.agents/TEAM.md`, and send it to the
+   frontend channel with `slack_send_message`. Language and link rules are in `.agents/slack-message.md`.
 
 **Done when:** every row of the plan has its write made, or a named failure.
 
