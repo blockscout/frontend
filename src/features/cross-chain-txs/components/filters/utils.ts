@@ -5,7 +5,7 @@ import type { CrossChainFilters } from 'src/features/cross-chain-txs/types/api';
 
 import type { FilterTag } from 'src/shared/filters/FilterTagsRow';
 
-export const COLUMN_FILTER_FIELDS = [ 'src_chain_ids', 'dst_chain_ids', 'bridge_ids' ] as const;
+const COLUMN_FILTER_FIELDS = [ 'src_chain_ids', 'dst_chain_ids', 'bridge_ids' ] as const;
 
 export type CrossChainColumnFilterField = typeof COLUMN_FILTER_FIELDS[number];
 
@@ -59,11 +59,11 @@ export function filterChainOptions(chains: Array<ChainInfo> | undefined, searchT
   return chains.filter((chain) => chain.name.toLowerCase().includes(term) || chain.id.toLowerCase().includes(term));
 }
 
-export function getChainName(chainId: string, chains: Array<ChainInfo> | undefined): string {
+function getChainName(chainId: string, chains: Array<ChainInfo> | undefined): string {
   return chains?.find((chain) => chain.id === chainId)?.name || `Chain ${ chainId }`;
 }
 
-export function getBridgeName(bridgeId: string, bridges: Array<Bridge> | undefined): string {
+function getBridgeName(bridgeId: string, bridges: Array<Bridge> | undefined): string {
   return bridges?.find((bridge) => String(bridge.id) === bridgeId)?.name || `Bridge ${ bridgeId }`;
 }
 

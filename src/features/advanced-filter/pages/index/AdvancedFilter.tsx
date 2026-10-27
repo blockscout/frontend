@@ -161,12 +161,11 @@ const AdvancedFilter = () => {
     () => columns.map((id) => TABLE_COLUMNS.find((column) => column.id === id)).filter((column) => column !== undefined),
     [ columns ],
   );
+  const filterTags = React.useMemo(() => getFilterTags(filters, chainConfig), [ filters, chainConfig ]);
 
   if (isLoading) {
     return null;
   }
-
-  const filterTags = getFilterTags(filters, chainConfig);
 
   const content = data?.items ? (
     <AdvancedFilterTable

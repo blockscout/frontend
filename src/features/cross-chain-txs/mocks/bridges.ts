@@ -1,4 +1,4 @@
-import type { Bridge, GetBridgesResponse } from '@blockscout/interchain-indexer-types';
+import type { Bridge } from '@blockscout/interchain-indexer-types';
 
 export const bridgeAmb = {
   id: 1,
@@ -29,7 +29,3 @@ export const bridgeXdai = {
   docs_url: 'https://docs.gnosischain.com/bridges/About%20Token%20Bridges/xdai-bridge',
   indexed_chain_ids: [ '1', '100' ],
 } satisfies Bridge;
-
-export const listResponse = {
-  items: [ bridgeAmb, bridgeAvalanche, bridgeXdai ],
-} satisfies GetBridgesResponse;
