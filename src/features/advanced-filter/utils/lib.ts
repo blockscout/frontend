@@ -13,12 +13,8 @@ import { shortenString } from 'src/toolkit/utils/texts';
 
 import { FILTER_PARAM_NAMES } from './consts';
 
-export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'], withAll = false) => {
+export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config']) => {
   return [
-    ...(withAll ? [ {
-      id: 'all',
-      name: 'All',
-    } ] : []),
     {
       id: 'coin_transfer',
       name: 'Coin Transfer',

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Spinner } from '@chakra-ui/react';
-import { isEqual, without } from 'es-toolkit';
+import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,8 +16,6 @@ import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 import type { CrossChainColumnFilterField } from './utils';
 import { getProtocolOptions, joinFilterValue, splitFilterValue } from './utils';
 
-const RESET_VALUE = 'all';
-
 const FILTER_FIELD: CrossChainColumnFilterField = 'bridge_ids';
 
 const CONFIGURED_BRIDGE_IDS: Array<number> = getFeaturePayload(config.features.crossChainTxs)?.bridgeIds ?? [];
@@ -27,13 +25,8 @@ interface Props {
   handleFilterChange: (field: CrossChainColumnFilterField, value: string | undefined) => void;
 }
 
-function toCheckboxValue(value: string | undefined): Array<string> {
-  const ids = splitFilterValue(value);
-  return ids.length > 0 ? ids : [ RESET_VALUE ];
-}
-
 const ProtocolFilter = ({ value, handleFilterChange }: Props) => {
-  const [ currentValue, setCurrentValue ] = React.useState<Array<string>>(() => toCheckboxValue(value));
+  const [ currentValue, setCurrentValue ] = React.useState<Array<string>>(() => splitFilterValue(value));
 
   const bridgesQuery = useApiQuery('interchainIndexer:bridges', { queryOptions: { refetchOnMount: false } });
 
@@ -42,35 +35,19 @@ const ProtocolFilter = ({ value, handleFilterChange }: Props) => {
     [ bridgesQuery.data?.items ],
   );
 
-  const handleChange = React.useCallback((value: Array<string>) => {
-    setCurrentValue((prev) => {
-      if (value.length === 0) {
-        return [ RESET_VALUE ];
-      }
-
-      const added = value.filter((item) => !prev.includes(item));
-      if (added.includes(RESET_VALUE)) {
-        return [ RESET_VALUE ];
-      }
-
-      return without(value, RESET_VALUE);
-    });
-  }, []);
-
-  const handleReset = React.useCallback(() => setCurrentValue([ RESET_VALUE ]), []);
+  const handleReset = React.useCallback(() => setCurrentValue([]), []);
 
   const handleFilter = React.useCallback(() => {
-    handleFilterChange(FILTER_FIELD, joinFilterValue(without(currentValue, RESET_VALUE)));
+    handleFilterChange(FILTER_FIELD, joinFilterValue(currentValue));
   }, [ handleFilterChange, currentValue ]);
 
   return (
     <ColumnFilterContent
-      isTouched={ !isEqual(currentValue.slice().sort(), toCheckboxValue(value).slice().sort()) }
+      isTouched={ !isEqual(currentValue.slice().sort(), splitFilterValue(value).sort()) }
       onFilter={ handleFilter }
     >
-      <ColumnFilterContentSection title="Protocol" onReset={ handleReset } isFilled={ !isEqual(currentValue, [ RESET_VALUE ]) }>
-        <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
-          <Checkbox value={ RESET_VALUE }>All</Checkbox>
+      <ColumnFilterContentSection title="Protocol" onReset={ handleReset } isFilled={ currentValue.length > 0 }>
+        <CheckboxGroup value={ currentValue } onValueChange={ setCurrentValue } orientation="vertical">
           { bridgesQuery.isPending && <Spinner size="md"/> }
           { options.map((option) => (
             <Checkbox key={ option.id } value={ option.id }>

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { isEqual, without } from 'es-toolkit';
+import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { AdvancedFilterParams, AdvancedFilterType } from '../../types/api';
@@ -14,44 +14,32 @@ import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
 
 import { getAdvancedFilterTypes } from '../../utils/lib';
 
-const RESET_VALUE = 'all';
-
 const FILTER_PARAM = 'transaction_types';
 
+const NO_TYPES: Array<AdvancedFilterType> = [];
+
 type Props = {
-  value?: Array<AdvancedFilterType | typeof RESET_VALUE>;
+  value?: Array<AdvancedFilterType>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value: Array<AdvancedFilterType>) => void;
 };
 
-const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
-  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType | typeof RESET_VALUE>>([ ...value ]);
+const TypeFilter = ({ value = NO_TYPES, handleFilterChange }: Props) => {
+  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>([ ...value ]);
 
   const multichainContext = useMultichainContext();
 
   const handleChange = React.useCallback((value: Array<string>) => {
-    setCurrentValue((prev) => {
-      if (value.length === 0) {
-        return [ RESET_VALUE ];
-      }
-
-      const diff = value.filter(item => !prev.includes(item));
-      if (diff.includes(RESET_VALUE)) {
-        return [ RESET_VALUE ];
-      }
-
-      return without(value as Array<AdvancedFilterType>, RESET_VALUE);
-    });
+    setCurrentValue(value as Array<AdvancedFilterType>);
   }, []);
 
-  const onReset = React.useCallback(() => setCurrentValue([ RESET_VALUE ]), []);
+  const onReset = React.useCallback(() => setCurrentValue([]), []);
 
   const onFilter = React.useCallback(() => {
-    const value: Array<AdvancedFilterType> = currentValue.filter(item => item !== RESET_VALUE) as Array<AdvancedFilterType>;
-    handleFilterChange(FILTER_PARAM, value);
+    handleFilterChange(FILTER_PARAM, currentValue);
   }, [ handleFilterChange, currentValue ]);
 
   const advancedFilterTypes = React.useMemo(() => {
-    return getAdvancedFilterTypes(multichainContext?.chain?.app_config, true);
+    return getAdvancedFilterTypes(multichainContext?.chain?.app_config);
   }, [ multichainContext?.chain?.app_config ]);
 
   return (
@@ -59,7 +47,7 @@ const TypeFilter = ({ value = [ RESET_VALUE ], handleFilterChange }: Props) => {
       isTouched={ !isEqual(currentValue.slice().sort(), value.slice().sort()) }
       onFilter={ onFilter }
     >
-      <ColumnFilterContentSection title="Transaction type" onReset={ onReset } isFilled={ !(currentValue.length === 1 && currentValue[0] === RESET_VALUE) }>
+      <ColumnFilterContentSection title="Transaction type" onReset={ onReset } isFilled={ currentValue.length > 0 }>
         <CheckboxGroup value={ currentValue } onValueChange={ handleChange } orientation="vertical">
           { advancedFilterTypes.map(type => (
             <Checkbox
