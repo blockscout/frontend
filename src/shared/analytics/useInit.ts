@@ -38,15 +38,16 @@ function setupProvider(provider: AnalyticsProvider, { isAuth, uuid }: UserIdenti
     'User id': uuid,
     ...(multichainFeature.isEnabled ? { 'Cluster name': multichainFeature.cluster } : {}),
   });
-  provider.identify(uuid);
   // profile writes belong before the queue flush — a buffered `reset` (logout during
   // the deferral window) must not leave them on the anonymous post-reset profile
-  provider.peopleSet({
-    'Device Type': capitalize(deviceType),
-    ...(isAuth ? { 'With Account': true } : {}),
-  });
-  provider.peopleSetOnce({
-    'First Time Join': dayjs().toISOString(),
+  provider.identify(uuid, {
+    set: {
+      'Device Type': capitalize(deviceType),
+      ...(isAuth ? { 'With Account': true } : {}),
+    },
+    setOnce: {
+      'First Time Join': dayjs().toISOString(),
+    },
   });
 }
 

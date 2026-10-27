@@ -121,6 +121,24 @@ describe('posthog provider', () => {
     provider.identify('user-uuid');
 
     expect(sdk.identify).toHaveBeenCalledTimes(1);
-    expect(sdk.identify).toHaveBeenCalledWith('user-uuid');
+    expect(sdk.identify).toHaveBeenCalledWith('user-uuid', undefined, undefined);
+  });
+
+  it('should pass profile props into the identify call instead of separate person-property writes', async() => {
+    const provider = await initProvider([ [ 'NEXT_PUBLIC_POSTHOG_API_KEY', API_KEY ] ]);
+
+    provider.identify('user-uuid', { set: { 'Device Type': 'Desktop' }, setOnce: { 'First Time Join': '2026-01-01T00:00:00.000Z' } });
+
+    expect(sdk.identify).toHaveBeenCalledWith('user-uuid', { 'Device Type': 'Desktop' }, { 'First Time Join': '2026-01-01T00:00:00.000Z' });
+    expect(sdk.setPersonProperties).not.toHaveBeenCalled();
+  });
+
+  it('should fall back to a person-property write when there is no distinct id but there are profile props', async() => {
+    const provider = await initProvider([ [ 'NEXT_PUBLIC_POSTHOG_API_KEY', API_KEY ] ]);
+
+    provider.identify(undefined, { set: { 'Device Type': 'Desktop' } });
+
+    expect(sdk.identify).not.toHaveBeenCalled();
+    expect(sdk.setPersonProperties).toHaveBeenCalledWith({ 'Device Type': 'Desktop' }, undefined);
   });
 });

@@ -4,6 +4,8 @@ import withEnvs from 'vitest/utils/mockEnvs';
 const sdk = vi.hoisted(() => ({
   init: vi.fn(),
   track: vi.fn(),
+  identify: vi.fn(),
+  people: { set: vi.fn(), set_once: vi.fn() },
 }));
 vi.mock('mixpanel-browser', () => ({ 'default': sdk }));
 
@@ -64,5 +66,25 @@ describe('mixpanel provider', () => {
     provider.track('Account access', { Action: 'Logged out' }, { sendImmediately: true });
 
     expect(sdk.track).toHaveBeenCalledWith('Account access', { Action: 'Logged out' }, { send_immediately: true });
+  });
+
+  it('should write profile props passed with identify through the people set and set-once slots', async() => {
+    const provider = await initProvider([ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', PROJECT_TOKEN ] ]);
+
+    provider.identify('user-uuid', { set: { 'Device Type': 'Desktop' }, setOnce: { 'First Time Join': '2026-01-01T00:00:00.000Z' } });
+
+    expect(sdk.identify).toHaveBeenCalledWith('user-uuid');
+    expect(sdk.people.set).toHaveBeenCalledWith({ 'Device Type': 'Desktop' });
+    expect(sdk.people.set_once).toHaveBeenCalledWith({ 'First Time Join': '2026-01-01T00:00:00.000Z' });
+  });
+
+  it('should not touch the people profile when identify carries no profile props', async() => {
+    const provider = await initProvider([ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', PROJECT_TOKEN ] ]);
+
+    provider.identify('user-uuid');
+
+    expect(sdk.identify).toHaveBeenCalledWith('user-uuid');
+    expect(sdk.people.set).not.toHaveBeenCalled();
+    expect(sdk.people.set_once).not.toHaveBeenCalled();
   });
 });

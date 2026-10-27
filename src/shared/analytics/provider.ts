@@ -13,11 +13,16 @@ export interface TrackOptions {
   readonly sendImmediately?: boolean;
 }
 
+export interface UserProfileUpdate {
+  readonly set?: AnalyticsProperties;
+  readonly setOnce?: AnalyticsProperties;
+}
+
 export interface AnalyticsProvider {
   init(options: ProviderInitOptions): Promise<void>;
   track(event: string, properties: AnalyticsProperties | undefined, options: TrackOptions): void;
   register(superProps: AnalyticsProperties): void;
-  identify(distinctId: string | undefined): void;
+  identify(distinctId: string | undefined, profile?: UserProfileUpdate): void;
   peopleSet(props: AnalyticsProperties): void;
   peopleSetOnce(props: AnalyticsProperties): void;
   reset(): void;
