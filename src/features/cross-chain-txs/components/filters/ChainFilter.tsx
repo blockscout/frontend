@@ -1,24 +1,27 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import { Flex, chakra } from '@chakra-ui/react';
 import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
-import ChainSelect, { ALL_OPTION, isAllOption } from 'src/shared/external-chains/ChainSelect';
+import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
 import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
-import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
+import { Checkbox, CheckboxGroup } from 'src/toolkit/chakra/checkbox';
+import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import type { CrossChainColumnFilterField } from './utils';
-import { joinFilterValue, splitFilterValue } from './utils';
+import { filterChainOptions, joinFilterValue, splitFilterValue } from './utils';
 
-const ALL_VALUE = [ ALL_OPTION.value ];
+export const SEARCH_THRESHOLD = 10;
 
 const DIRECTIONS = {
-  source: { field: 'src_chain_ids', title: 'Source tx' },
-  destination: { field: 'dst_chain_ids', title: 'Destination tx' },
+  source: { field: 'src_chain_ids', title: 'Source tx chains' },
+  destination: { field: 'dst_chain_ids', title: 'Destination tx chains' },
 } as const satisfies Record<string, { field: CrossChainColumnFilterField; title: string }>;
 
 export type ChainFilterDirection = keyof typeof DIRECTIONS;
@@ -29,50 +32,55 @@ interface Props {
   handleFilterChange: (field: CrossChainColumnFilterField, value: string | undefined) => void;
 }
 
-function toSelectValue(value: string | undefined): Array<string> {
-  const ids = splitFilterValue(value);
-  return ids.length > 0 ? ids : ALL_VALUE;
-}
-
 const ChainFilter = ({ direction, value, handleFilterChange }: Props) => {
   const { field, title } = DIRECTIONS[direction];
-  const [ currentValue, setCurrentValue ] = React.useState<Array<string>>(() => toSelectValue(value));
+  const [ currentValue, setCurrentValue ] = React.useState<Array<string>>(() => splitFilterValue(value));
+  const [ searchTerm, setSearchTerm ] = React.useState('');
 
   const chainsQuery = useApiQuery('interchainIndexer:chains', { queryOptions: { refetchOnMount: false } });
 
-  const chainsConfig = React.useMemo(() => {
-    return chainsQuery.data?.items.map((chain) => ({
-      id: chain.id,
-      name: chain.name,
-      logo: chain.logo,
-    })) ?? [];
-  }, [ chainsQuery.data?.items ]);
+  const chains = chainsQuery.data?.items;
+  const hasSearch = (chains?.length ?? 0) >= SEARCH_THRESHOLD;
+  const visibleChains = React.useMemo(() => filterChainOptions(chains, searchTerm), [ chains, searchTerm ]);
 
-  const handleValueChange: OnValueChangeHandler = React.useCallback(({ value }) => {
-    setCurrentValue(value);
-  }, []);
-
-  const handleReset = React.useCallback(() => setCurrentValue(ALL_VALUE), []);
+  const handleReset = React.useCallback(() => setCurrentValue([]), []);
 
   const handleFilter = React.useCallback(() => {
-    handleFilterChange(field, isAllOption(currentValue) ? undefined : joinFilterValue(currentValue));
+    handleFilterChange(field, joinFilterValue(currentValue));
   }, [ handleFilterChange, field, currentValue ]);
 
   return (
     <ColumnFilterContent
-      isTouched={ !isEqual(currentValue.slice().sort(), toSelectValue(value).slice().sort()) }
+      isTouched={ !isEqual(currentValue.slice().sort(), splitFilterValue(value).sort()) }
       onFilter={ handleFilter }
     >
-      <ColumnFilterContentSection title={ title } onReset={ handleReset } isFilled={ !isAllOption(currentValue) }>
-        <ChainSelect
-          value={ currentValue }
-          onValueChange={ handleValueChange }
-          chainsConfig={ chainsConfig }
-          loading={ chainsQuery.isPending }
-          withAllOption
-          multiple
-          w="100%"
-        />
+      <ColumnFilterContentSection title={ title } onReset={ handleReset } isFilled={ currentValue.length > 0 }>
+        { hasSearch && (
+          <FilterInput
+            size="sm"
+            onChange={ setSearchTerm }
+            placeholder="Find by chain name or chain ID"
+          />
+        ) }
+        { chainsQuery.isPending && <Skeleton loading h={ 5 } w="120px"/> }
+        { chainsQuery.isError && <span>Something went wrong. Please try again.</span> }
+        { chains && visibleChains.length === 0 && <span>No results found.</span> }
+        { visibleChains.length > 0 && (
+          <Flex flexDir="column" maxH="250px" overflowY="auto">
+            <CheckboxGroup value={ currentValue } onValueChange={ setCurrentValue } orientation="vertical">
+              { visibleChains.map((chain) => (
+                <Checkbox key={ chain.id } value={ chain.id } labelProps={{ minW: 0 }}>
+                  <Flex alignItems="center" columnGap={ 2 } minW={ 0 }>
+                    <ChainIcon data={ chain } alt={ `${ chain.name } logo` } noTooltip flexShrink={ 0 }/>
+                    <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+                      { chain.name || `Chain ${ chain.id }` }
+                    </chakra.span>
+                  </Flex>
+                </Checkbox>
+              )) }
+            </CheckboxGroup>
+          </Flex>
+        ) }
       </ColumnFilterContentSection>
     </ColumnFilterContent>
   );

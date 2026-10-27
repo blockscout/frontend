@@ -16,6 +16,8 @@ export interface ProtocolOption {
   readonly name: string;
 }
 
+const EMPTY_CHAINS: Array<ChainInfo> = [];
+
 const COLUMN_FILTER_NAMES: Record<CrossChainColumnFilterField, string> = {
   src_chain_ids: 'Source chain',
   dst_chain_ids: 'Destination chain',
@@ -42,6 +44,19 @@ export function getProtocolOptions(bridges: Array<Bridge> | undefined, configure
   return bridges
     .filter((bridge) => bridge.enabled && configuredBridgeIds.includes(bridge.id))
     .map((bridge) => ({ id: String(bridge.id), name: bridge.name }));
+}
+
+export function filterChainOptions(chains: Array<ChainInfo> | undefined, searchTerm: string): Array<ChainInfo> {
+  if (!chains) {
+    return EMPTY_CHAINS;
+  }
+
+  const term = searchTerm.trim().toLowerCase();
+  if (!term) {
+    return chains;
+  }
+
+  return chains.filter((chain) => chain.name.toLowerCase().includes(term) || chain.id.toLowerCase().includes(term));
 }
 
 export function getChainName(chainId: string, chains: Array<ChainInfo> | undefined): string {

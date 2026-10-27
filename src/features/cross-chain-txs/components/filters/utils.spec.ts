@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { bridgeAmb, bridgeAvalanche, bridgeXdai } from '../../mocks/bridges';
 import { config as chains } from '../../mocks/config';
-import { getCrossChainFilterTags, getProtocolOptions, hasActiveColumnFilters, joinFilterValue, splitFilterValue } from './utils';
+import { filterChainOptions, getCrossChainFilterTags, getProtocolOptions, hasActiveColumnFilters, joinFilterValue, splitFilterValue } from './utils';
 
 const BRIDGES = [ bridgeAmb, bridgeAvalanche, bridgeXdai ];
 
@@ -36,6 +36,23 @@ describe('splitFilterValue / joinFilterValue', () => {
     expect(splitFilterValue(undefined)).toEqual([]);
     expect(splitFilterValue('')).toEqual([]);
     expect(joinFilterValue([])).toBeUndefined();
+  });
+});
+
+describe('filterChainOptions', () => {
+  it('returns every chain when the search term is blank', () => {
+    expect(filterChainOptions(chains, '')).toBe(chains);
+    expect(filterChainOptions(chains, '   ')).toBe(chains);
+  });
+
+  it('matches by chain name or chain id, case-insensitively', () => {
+    expect(filterChainOptions(chains, 'c-CHAIN').map((chain) => chain.id)).toEqual([ '43114' ]);
+    expect(filterChainOptions(chains, '4311').map((chain) => chain.id)).toEqual([ '43114' ]);
+    expect(filterChainOptions(chains, 'no such chain')).toEqual([]);
+  });
+
+  it('returns no chains before the list is loaded', () => {
+    expect(filterChainOptions(undefined, 'c')).toEqual([]);
   });
 });
 

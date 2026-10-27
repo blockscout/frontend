@@ -24,8 +24,10 @@ at the same time.
 1. The cross-chain transactions table and the cross-chain token-transfers table each expose three column
    filters: **Source tx** (source chain), **Dest tx** (destination chain), **Protocol** (bridge). No
    other column has a filter.
-2. Chain filters are multi-select with an "All chains" option; the selection maps to the comma-separated
-   `src_chain_ids` / `dst_chain_ids` params. Chain options come from the indexer's chain directory, so
+2. Chain filters are a checkbox group (one checkbox per chain, logo + name) with no "All" entry — an
+   empty selection means no filter. A search field (by chain name or chain ID) appears only when there
+   are 10 or more chains. The selection maps to the comma-separated `src_chain_ids` / `dst_chain_ids`
+   params. Chain options come from the indexer's chain directory, so
    the filters work on a single-chain explorer with no multichain configuration.
 3. The protocol filter is a checkbox group ("All" + one checkbox per bridge) over the bridges the
    deployment is configured for; it is always rendered, even with a single bridge. The selection maps to
@@ -89,8 +91,10 @@ https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explor
 - Table: node `9120-115382`.
 - Source tx chain popover: node `9120-120563`; Destination tx popover: node `9120-120521`; Protocol
   popover: node `9120-120033`.
-- Deviations agreed with the designer, not yet in Figma: the tx-hash input inside the chain popovers is
-  dropped; the Protocol popover is a checkbox group, not an input; the chain selector is multi-select.
+- The Source tx popover (`9120-120563`) is the reference for both chain popovers: a checkbox list
+  with chain logos and a search field. The Destination tx node still shows the earlier select-based
+  layout and is superseded. Deviations agreed with the designer, not yet in Figma: the Protocol
+  popover is a checkbox group, not an input.
 - The remaining popovers in the section (Status/Address, Source token, Message/time) are out of scope.
 - The transactions table has no mockup; it mirrors the token-transfers filters on the same column names.
 - Empty state with active filters + the active-filter tags row:
@@ -103,8 +107,8 @@ https://www.figma.com/design/GHtMTzWKQGAcVyGdrKuQjD/Blockscout-Multichain-explor
 
 Placement and behaviour: filter trigger icon in the column header, popover with title + Reset link +
 Filter button — match `FilterByColumn` / `TableColumnFilterWrapper` / `TableColumnFilter` from the
-advanced-filters feature. Chain popover body is the shared `ChainSelect` in `multiple` mode with the
-all-option; protocol popover body matches `TypeFilter`.
+advanced-filters feature. Chain popover body is a `CheckboxGroup` with an optional `FilterInput`
+above it, matching `MethodFilter`; protocol popover body matches `TypeFilter`.
 
 ## Implementation decisions
 
