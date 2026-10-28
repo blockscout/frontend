@@ -23,20 +23,20 @@ read; `browser_network_requests` must show the `eth_call` POST going only to the
 `browser_console_messages` must show no CSP `connect-src` violation. Clear the cookie, reload, repeat: the
 request goes to the configured RPC.
 
-- [ ] Two new cookie names in `cookies.NAMES`: the custom RPC URL and an "in use" flag (FR8: disconnecting
+- [x] Two new cookie names in `cookies.NAMES`: the custom RPC URL and an "in use" flag (FR8: disconnecting
       keeps the URL, drops the flag); neither is in `PRIVATE_MODE_DISALLOWED`.
-- [ ] One helper (in `src/features/connect-wallet/utils/`) returns the effective RPC URL list for the current
+- [x] One helper (in `src/features/connect-wallet/utils/`) returns the effective RPC URL list for the current
       chain: `[ customUrl ]` when the URL cookie holds a valid `https:` URL **and** the flag is on, otherwise the configured
       `config.chain.rpcUrls` (plus the core-API `eth-rpc` fallback where `wagmi-config.ts` adds it today).
-- [ ] `wagmi-config.ts` (own chain only, not multichain / essential-dapp / parent chains) and
+- [x] `wagmi-config.ts` (own chain only, not multichain / essential-dapp / parent chains) and
       `public-client.ts` build their transports from the helper; `isPublicClientAvailable` honours it; the
       chain object's `rpcUrls` stays as configured (wallet "add chain" unchanged).
-- [ ] `csp.get()` appends the cookie's URL origin to `connect-src` per request when the cookie parses as an
+- [x] `csp.get()` appends the cookie's URL origin to `connect-src` per request when the cookie parses as an
       `https:` URL and the flag is on; anything else is ignored. Cached policies stay cached — the per-request append must not
       regenerate the policy.
-- [ ] Unit tests: helper (cookie set / unset / invalid / flag off), CSP append (valid / invalid / absent cookie / flag off),
+- [x] Unit tests: helper (cookie set / unset / invalid / flag off), CSP append (valid / invalid / absent cookie / flag off),
       public-client transport selection.
-- [ ] Browser check per "How to verify" passes: with the cookie set, a contract read hits only the custom URL
+- [x] Browser check per "How to verify" passes: with the cookie set, a contract read hits only the custom URL
       and is not blocked by CSP; with it cleared, the configured RPC is used.
 
 ## Details
@@ -53,6 +53,6 @@ None — no project scaffold skill runs in this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Cookie names + RPC-URL resolution helper with unit tests
-- [ ] 2 `[agent]` Wire `wagmi-config.ts` and `public-client.ts` to the helper, with unit tests
-- [ ] 3 `[agent]` Per-request `connect-src` append in `src/server/csp/index.ts`, with unit tests
+- [x] 1 `[agent]` Cookie names + RPC-URL resolution helper with unit tests
+- [x] 2 `[agent]` Wire `wagmi-config.ts` and `public-client.ts` to the helper, with unit tests
+- [x] 3 `[agent]` Per-request `connect-src` append in `src/server/csp/index.ts`, with unit tests

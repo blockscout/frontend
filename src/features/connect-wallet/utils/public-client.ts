@@ -3,11 +3,13 @@
 import type { PublicClient } from 'viem';
 
 import { currentChain } from './chains';
+import { getRpcUrls } from './rpc-urls';
+
+const rpcUrl: string | undefined = getRpcUrls().filter(Boolean)[0];
 
 // Whether an RPC public client can be built for the current chain. Computed without importing
 // viem, so consumers can gate `enabled`/render synchronously while the client itself loads lazily.
-export const isPublicClientAvailable =
-  !currentChain || currentChain.rpcUrls.default.http.filter(Boolean).length > 0;
+export const isPublicClientAvailable = !currentChain || Boolean(rpcUrl);
 
 let publicClientPromise: Promise<PublicClient | undefined> | undefined;
 
@@ -24,7 +26,7 @@ export function getPublicClient(): Promise<PublicClient | undefined> {
       const { createPublicClient, http } = await import('viem');
       return createPublicClient({
         chain: currentChain,
-        transport: http(),
+        transport: http(rpcUrl),
         batch: {
           multicall: true,
         },

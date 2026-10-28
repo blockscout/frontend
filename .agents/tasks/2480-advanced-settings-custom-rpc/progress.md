@@ -7,6 +7,6 @@ what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
 - [x] 01 → `tickets/01-settings-modal-and-popover/`
-- [ ] 02 → `tickets/02-custom-rpc-transport-and-csp/`
+- [x] 02 → `tickets/02-custom-rpc-transport-and-csp/`
 - [ ] 03 → `tickets/03-rpc-node-tab/`
 - [ ] 04 → `tickets/04-contract-rpc-alert/`
