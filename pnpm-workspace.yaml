@@ -4,6 +4,7 @@ injectWorkspacePackages: true
 
 packages:
   - 'src/toolkit/package'
+  - 'deploy/tools/assets-downloader'
   - 'deploy/tools/envs-validator'
   - 'deploy/tools/feature-reporter'
   - 'deploy/tools/favicon-generator'

@@ -166,6 +166,7 @@ the feature/option being enabled.
 
 ## Step 5 — Only if the variable holds an asset URL (image or JSON config)
 
-Append the variable name to the `ASSETS_ENVS` array in
-`deploy/scripts/download_assets.sh`. The container entrypoint downloads the
-asset into the image at startup so the browser serves it same-origin.
+Add the variable to `ASSET_ENVS` in `deploy/tools/assets-downloader/assets.ts`
+with the content kind the app expects (JSON array, JSON object or image). The
+container entrypoint downloads the asset at startup, checks the content against
+that kind, and saves it so the browser serves it same-origin.

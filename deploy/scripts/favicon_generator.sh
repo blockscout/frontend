@@ -1,7 +1,11 @@
 #!/bin/bash
 
-master_url="${FAVICON_MASTER_URL:-$NEXT_PUBLIC_NETWORK_ICON}"
-export MASTER_URL="$master_url"
+if [ -n "$FAVICON_MASTER_URL" ]; then
+    export MASTER_URL="$FAVICON_MASTER_URL"
+else
+    # The downloader has already fetched and checked NEXT_PUBLIC_NETWORK_ICON; reuse that copy instead of fetching the URL again.
+    export MASTER_FILE="$(ls "$(pwd)"/public/assets/configs/network_icon "$(pwd)"/public/assets/configs/network_icon.* 2>/dev/null | head -n 1)"
+fi
 
 cd ./deploy/tools/favicon-generator
 node "$(pwd)/index.js"
