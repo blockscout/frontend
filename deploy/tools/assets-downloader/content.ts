@@ -29,10 +29,34 @@ const startsWith = (buffer: Buffer, signature: Buffer | string, offset = 0): boo
   return buffer.subarray(offset, offset + expected.length).equals(expected);
 };
 
+const SVG_PREAMBLE = /^(?:\s|<\?xml[\s\S]*?\?>|<!--[\s\S]*?-->|<!DOCTYPE[\s\S]*?>)*/i;
+const SVG_ROOT_TAG = /^<svg[\s>/]/i;
+
 const isSvg = (buffer: Buffer): boolean => {
-  const head = buffer.subarray(0, SVG_SNIFF_LENGTH).toString('utf8').replace(/^\ufeff/, '').trimStart();
-  return head.startsWith('<svg') || (head.startsWith('<?xml') && head.includes('<svg'));
+  const head = buffer.subarray(0, SVG_SNIFF_LENGTH).toString('utf8').replace(SVG_PREAMBLE, '');
+  return SVG_ROOT_TAG.test(head);
 };
+
+const AVIF_BRANDS: ReadonlySet<string> = new Set([ 'avif', 'avis' ]);
+const FTYP_BOX_TYPE_OFFSET = 4;
+const FTYP_MAJOR_BRAND_OFFSET = 8;
+const FTYP_COMPATIBLE_BRANDS_OFFSET = 16;
+const BRAND_LENGTH = 4;
+
+const ftypBrands = (buffer: Buffer): Array<string> => {
+  if (!startsWith(buffer, 'ftyp', FTYP_BOX_TYPE_OFFSET)) {
+    return [];
+  }
+  const boxEnd = Math.min(buffer.length, buffer.readUInt32BE(0) || buffer.length);
+  const brand = (offset: number) => buffer.subarray(offset, offset + BRAND_LENGTH).toString('latin1');
+  const brands = [ brand(FTYP_MAJOR_BRAND_OFFSET) ];
+  for (let offset = FTYP_COMPATIBLE_BRANDS_OFFSET; offset + BRAND_LENGTH <= boxEnd; offset += BRAND_LENGTH) {
+    brands.push(brand(offset));
+  }
+  return brands;
+};
+
+const isAvif = (buffer: Buffer): boolean => ftypBrands(buffer).some((brand) => AVIF_BRANDS.has(brand));
 
 export function detectImageType(buffer: Buffer): ImageType | undefined {
   if (startsWith(buffer, PNG_SIGNATURE)) {
@@ -47,7 +71,7 @@ export function detectImageType(buffer: Buffer): ImageType | undefined {
   if (startsWith(buffer, 'RIFF') && startsWith(buffer, 'WEBP', 8)) {
     return 'webp';
   }
-  if (startsWith(buffer, 'ftypavif', 4)) {
+  if (isAvif(buffer)) {
     return 'avif';
   }
   if (startsWith(buffer, ICO_SIGNATURE)) {

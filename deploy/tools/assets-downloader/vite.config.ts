@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: (format, entryName) => `${ entryName }.js`,
     },
     rollupOptions: {
-      external: [ 'node:url', 'node:path', 'node:fs', 'node:fs/promises', 'node:timers/promises' ],
+      external: [ 'node:url', 'node:path', 'node:fs/promises', 'node:timers/promises' ],
       output: {
         dir: 'dist',
         entryFileNames: '[name].js',
@@ -23,7 +23,6 @@ export default defineConfig({
   resolve: {
     alias: {
       src: resolve(__dirname, '../../../src'),
-      'public': resolve(__dirname, '../../../public'),
     },
   },
 });

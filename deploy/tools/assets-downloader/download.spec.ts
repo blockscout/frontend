@@ -21,12 +21,15 @@ let sourceDir: string;
 
 const fetchWith = (responder: Responder): typeof globalThis.fetch => {
   const attempts = new Map<string, number>();
-  return async(input) => {
+  const fetchDouble: typeof globalThis.fetch = async(input, init) => {
     const url = input instanceof URL ? input.href : String(input);
     const attempt = (attempts.get(url) ?? 0) + 1;
     attempts.set(url, attempt);
-    return responder(url, attempt);
+    const response = responder(url, attempt);
+    const location = response.headers.get('location');
+    return location !== null && init?.redirect !== 'manual' ? fetchDouble(location, init) : response;
   };
+  return fetchDouble;
 };
 
 const routes = (table: ReadonlyArray<[ string, () => Response ]> = []): typeof globalThis.fetch => fetchWith((url) => {
@@ -144,6 +147,7 @@ describe('downloadAssets', () => {
   it('does not follow redirects', async() => {
     const fetch = routes([
       [ 'https://example.com/logo.svg', () => new Response(null, { status: 302, headers: { location: 'http://10.43.0.1/' } }) ],
+      [ 'http://10.43.0.1/', () => new Response(SVG) ],
     ]);
 
     const result = await run({ NEXT_PUBLIC_NETWORK_LOGO: 'https://example.com/logo.svg' }, fetch);

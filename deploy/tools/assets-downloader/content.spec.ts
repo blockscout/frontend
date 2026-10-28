@@ -8,10 +8,21 @@ const PNG = Buffer.from([ 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 
 const JPEG = Buffer.from([ 0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10 ]);
 const GIF = Buffer.from('GIF89a\x01\x00\x01\x00', 'latin1');
 const WEBP = Buffer.concat([ Buffer.from('RIFF'), Buffer.from([ 0x24, 0, 0, 0 ]), Buffer.from('WEBP'), Buffer.from('VP8 ') ]);
-const AVIF = Buffer.concat([ Buffer.from([ 0, 0, 0, 0x1c ]), Buffer.from('ftypavif'), Buffer.from('mif1') ]);
+const ftyp = (majorBrand: string, ...compatibleBrands: Array<string>) => Buffer.concat([
+  Buffer.from([ 0, 0, 0, 16 + compatibleBrands.length * 4 ]),
+  Buffer.from(`ftyp${ majorBrand }`),
+  Buffer.alloc(4),
+  ...compatibleBrands.map((brand) => Buffer.from(brand)),
+]);
+const AVIF = ftyp('avif', 'mif1');
+const AVIF_MIF1_MAJOR = ftyp('mif1', 'avif', 'miaf');
+const AVIF_SEQUENCE = ftyp('msf1', 'avis', 'miaf');
 const ICO = Buffer.from([ 0x00, 0x00, 0x01, 0x00, 0x01, 0x00 ]);
 const SVG = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"></svg>');
 const SVG_WITH_PROLOGUE = Buffer.from('﻿<?xml version="1.0" encoding="UTF-8"?>\n<!-- logo -->\n<svg xmlns="http://www.w3.org/2000/svg"/>');
+const SVG_WITH_LEADING_COMMENT = Buffer.from('<!-- logo -->\n<svg xmlns="http://www.w3.org/2000/svg"/>');
+const SVG_WITH_DOCTYPE = Buffer.from('<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n<svg/>');
+const SVG_UPPERCASE = Buffer.from('<SVG xmlns="http://www.w3.org/2000/svg"></SVG>');
 
 describe('detectImageType', () => {
   it.each([
@@ -21,9 +32,14 @@ describe('detectImageType', () => {
     [ 'gif', Buffer.from('GIF87a\x01\x00\x01\x00', 'latin1') ],
     [ 'webp', WEBP ],
     [ 'avif', AVIF ],
+    [ 'avif', AVIF_MIF1_MAJOR ],
+    [ 'avif', AVIF_SEQUENCE ],
     [ 'ico', ICO ],
     [ 'svg', SVG ],
     [ 'svg', SVG_WITH_PROLOGUE ],
+    [ 'svg', SVG_WITH_LEADING_COMMENT ],
+    [ 'svg', SVG_WITH_DOCTYPE ],
+    [ 'svg', SVG_UPPERCASE ],
   ])('detects %s', (type, buffer) => {
     expect(detectImageType(buffer)).toBe(type);
   });
@@ -32,6 +48,9 @@ describe('detectImageType', () => {
     [ 'JSON', Buffer.from('{"type":"shamir","sealed":false}') ],
     [ 'HTML', Buffer.from('<!DOCTYPE html><html><body>Moved</body></html>') ],
     [ 'XML without svg', Buffer.from('<?xml version="1.0"?><root/>') ],
+    [ 'XML whose svg element is not the root', Buffer.from('<root><svg/></root>') ],
+    [ 'element whose name merely starts with svg', Buffer.from('<svgfoo/>') ],
+    [ 'HEIC (ftyp without an AVIF brand)', ftyp('heic', 'mif1', 'heic') ],
     [ 'plain text', Buffer.from('root:x:0:0:root:/root:/bin/sh') ],
     [ 'RIFF container that is not WEBP', Buffer.concat([ Buffer.from('RIFF'), Buffer.from([ 0x24, 0, 0, 0 ]), Buffer.from('WAVE') ]) ],
     [ 'empty', Buffer.alloc(0) ],

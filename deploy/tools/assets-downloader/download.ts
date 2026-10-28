@@ -5,7 +5,7 @@ import { basename, extname, join } from 'node:path';
 import { setTimeout as sleep } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 
-import { buildExternalAssetFilePath, replaceQuotes } from 'src/config/utils/envs';
+import { buildExternalAssetFilePath } from 'src/config/utils/envs';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 
@@ -115,7 +115,7 @@ function readContent(source: AssetSource, value: string, options: DownloadOption
 const fileExtensionOf = (fileName: string): string | undefined => extname(fileName).slice(1) || undefined;
 
 async function processAsset(asset: AssetEnv, value: string, options: DownloadOptions): Promise<ReadResult> {
-  const normalizedValue = replaceQuotes(value) as string;
+  const normalizedValue = value.replaceAll('\'', '"');
   const source = resolveSource(normalizedValue);
   const assetPath = buildExternalAssetFilePath(asset.envName, normalizedValue);
   if (assetPath === undefined) {

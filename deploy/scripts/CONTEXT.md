@@ -50,9 +50,8 @@ time.
    env vars (network logo, marketplace config JSON, featured-networks list, etc.) into
    `public/assets/configs/<downloaded>/` so the app serves them same-origin and does not depend on 3rd-party
    infrastructure. A file is written only after its content passed the check for what the
-   variable is documented to hold (a JSON array/object, an image of the URL's extension); a
-   rejected or unreachable asset stops the container. This step is not covered by
-   `SKIP_ENVS_VALIDATION`. Redirects are not followed.
+   variable is documented to hold; a rejected or unreachable asset stops the container. This
+   step is not covered by `SKIP_ENVS_VALIDATION`.
 3. **`validate_envs.sh`** → `envs-validator` — fail-fast check that the
    container's env vars conform to the schema. Skippable via
    `SKIP_ENVS_VALIDATION=true`.

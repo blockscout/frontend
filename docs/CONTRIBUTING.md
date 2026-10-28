@@ -105,7 +105,7 @@ These are the steps that you have to follow to make everything work:
 5. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/review-2/values.yaml.gotmpl` - review development environment (second instance)
-6. If your variable is meant to receive a link to some external resource (image or JSON-config file), add it to `ASSET_ENVS` in `deploy/tools/assets-downloader/assets.ts` with the content kind the app expects (JSON array/object or image); the container only saves an asset whose content matches
+6. If your variable is meant to receive a link to some external resource (image, JSON-config file or HTML snippet), register it in `ASSET_ENVS` in `deploy/tools/assets-downloader/assets.ts`; Step 5 of `.agents/skills/add-env-var/SKILL.md` describes the registration
 7. Add a validation rule for the new variable to the schemas in `deploy/tools/envs-validator` and cover it in the sibling `*.spec.ts` file; `deploy/tools/envs-validator/CONTEXT.md` describes where the rule goes and how the specs are written
 8. Run `pnpm test:vitest deploy/tools/envs-validator` to see the validation result
 9. Don't forget to mention in the PR notes that new ENV variable was added  
