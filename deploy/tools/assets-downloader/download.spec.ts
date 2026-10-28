@@ -144,9 +144,9 @@ describe('downloadAssets', () => {
     expect(result.lines).toContain('   [-] NEXT_PUBLIC_FEATURED_NETWORKS: value is neither a URL nor a JSON document');
   });
 
-  it('does not follow redirects', async() => {
+  it.each([ 300, 302, 399 ])('does not follow a redirect (HTTP %i)', async(status) => {
     const fetch = routes([
-      [ 'https://example.com/logo.svg', () => new Response(null, { status: 302, headers: { location: 'http://10.43.0.1/' } }) ],
+      [ 'https://example.com/logo.svg', () => new Response(null, { status, headers: { location: 'http://10.43.0.1/' } }) ],
       [ 'http://10.43.0.1/', () => new Response(SVG) ],
     ]);
 
@@ -154,7 +154,7 @@ describe('downloadAssets', () => {
 
     expect(result.failed).toEqual([ 'NEXT_PUBLIC_NETWORK_LOGO' ]);
     expect(result.lines).toContain(
-      '   [-] NEXT_PUBLIC_NETWORK_LOGO: unable to read from https://example.com/logo.svg: redirect (HTTP 302) to "http://10.43.0.1/" is not followed',
+      `   [-] NEXT_PUBLIC_NETWORK_LOGO: unable to read from https://example.com/logo.svg: redirect (HTTP ${ status }) to "http://10.43.0.1/" is not followed`,
     );
   });
 

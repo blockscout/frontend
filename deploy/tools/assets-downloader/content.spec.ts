@@ -15,8 +15,10 @@ const ftyp = (majorBrand: string, ...compatibleBrands: Array<string>) => Buffer.
   ...compatibleBrands.map((brand) => Buffer.from(brand)),
 ]);
 const AVIF = ftyp('avif', 'mif1');
-const AVIF_MIF1_MAJOR = ftyp('mif1', 'avif', 'miaf');
+const AVIF_MIF1_MAJOR = ftyp('mif1', 'miaf', 'avif');
 const AVIF_SEQUENCE = ftyp('msf1', 'avis', 'miaf');
+const AVIF_UNSIZED_FTYP_BOX = Buffer.concat([ Buffer.alloc(4), Buffer.from('ftyp'), Buffer.from('mif1'), Buffer.alloc(4), Buffer.from('avif') ]);
+const HEIC_FOLLOWED_BY_AVIF_BYTES = Buffer.concat([ ftyp('heic', 'mif1'), Buffer.from('avif') ]);
 const ICO = Buffer.from([ 0x00, 0x00, 0x01, 0x00, 0x01, 0x00 ]);
 const SVG = Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"></svg>');
 const SVG_WITH_PROLOGUE = Buffer.from('﻿<?xml version="1.0" encoding="UTF-8"?>\n<!-- logo -->\n<svg xmlns="http://www.w3.org/2000/svg"/>');
@@ -34,6 +36,7 @@ describe('detectImageType', () => {
     [ 'avif', AVIF ],
     [ 'avif', AVIF_MIF1_MAJOR ],
     [ 'avif', AVIF_SEQUENCE ],
+    [ 'avif', AVIF_UNSIZED_FTYP_BOX ],
     [ 'ico', ICO ],
     [ 'svg', SVG ],
     [ 'svg', SVG_WITH_PROLOGUE ],
@@ -51,6 +54,7 @@ describe('detectImageType', () => {
     [ 'XML whose svg element is not the root', Buffer.from('<root><svg/></root>') ],
     [ 'element whose name merely starts with svg', Buffer.from('<svgfoo/>') ],
     [ 'HEIC (ftyp without an AVIF brand)', ftyp('heic', 'mif1', 'heic') ],
+    [ 'HEIC whose next box happens to start with avif', HEIC_FOLLOWED_BY_AVIF_BYTES ],
     [ 'plain text', Buffer.from('root:x:0:0:root:/root:/bin/sh') ],
     [ 'RIFF container that is not WEBP', Buffer.concat([ Buffer.from('RIFF'), Buffer.from([ 0x24, 0, 0, 0 ]), Buffer.from('WAVE') ]) ],
     [ 'empty', Buffer.alloc(0) ],

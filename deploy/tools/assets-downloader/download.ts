@@ -78,6 +78,7 @@ async function fetchOnce(url: URL, fetch: typeof globalThis.fetch): Promise<Buff
 async function fetchWithRetries(url: URL, options: DownloadOptions): Promise<ReadResult> {
   let lastError: unknown;
   for (let attempt = 0; attempt <= RETRY_ATTEMPTS; attempt++) {
+    // Stryker disable next-line ConditionalExpression,EqualityOperator: only skips the delay before attempt 0; with retryDelay 0 an extra sleep is unobservable
     if (attempt > 0) {
       await sleep(options.retryDelay);
     }

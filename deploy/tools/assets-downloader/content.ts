@@ -19,13 +19,13 @@ const IMAGE_TYPE_BY_EXTENSION: Readonly<Record<string, ImageType>> = {
 
 const SUPPORTED_IMAGES = 'svg, png, jpg, jpeg, gif, webp, ico, avif';
 
-const PNG_SIGNATURE = Buffer.from([ 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a ]);
-const JPEG_SIGNATURE = Buffer.from([ 0xff, 0xd8, 0xff ]);
-const ICO_SIGNATURE = Buffer.from([ 0x00, 0x00, 0x01, 0x00 ]);
+const PNG_SIGNATURE = '\x89PNG\r\n\x1a\n';
+const JPEG_SIGNATURE = '\xff\xd8\xff';
+const ICO_SIGNATURE = '\x00\x00\x01\x00';
 const SVG_SNIFF_LENGTH = 1024;
 
-const startsWith = (buffer: Buffer, signature: Buffer | string, offset = 0): boolean => {
-  const expected = typeof signature === 'string' ? Buffer.from(signature, 'latin1') : signature;
+const startsWith = (buffer: Buffer, signature: string, offset = 0): boolean => {
+  const expected = Buffer.from(signature, 'latin1');
   return buffer.subarray(offset, offset + expected.length).equals(expected);
 };
 
