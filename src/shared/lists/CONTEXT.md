@@ -13,3 +13,6 @@ Helpers shared by the data lists (tables and their mobile counterparts) that are
 - **A base key must not include the loading state or the array index.** Placeholder rows share a base
   key and the ordinal already tells them apart; an index suffix re-introduces the instability under socket
   prepends that the ordinal exists to avoid.
+- **A list that scrolls inside its own box hands the box to `useLazyRenderedList`'s `scrollContainerRef`.**
+  Without it the sentinel is measured against the viewport, so when the box ends below the fold the
+  list stalls at its first window until the page itself is scrolled.

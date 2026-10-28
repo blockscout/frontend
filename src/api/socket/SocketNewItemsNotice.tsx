@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { JsxStyleProps } from '@chakra-ui/react';
 import { Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'src/config';
 
 import { Alert } from 'src/toolkit/chakra/alert';
+import { GridTableFullWidthRow } from 'src/toolkit/chakra/grid-table';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
@@ -102,18 +104,27 @@ export default SocketNewItemsNotice;
 // the notice row must span the whole table, so the fallback has to exceed any table's column count
 const FALLBACK_COL_SPAN = 100;
 
+const getTableRowNoticeProps = (isLoading: boolean | undefined): JsxStyleProps => ({
+  borderRadius: isLoading ? 'sm' : 0,
+  h: isLoading ? 5 : 'auto',
+  maxW: isLoading ? '215px' : undefined,
+  w: '100%',
+  mx: isLoading ? 4 : 0,
+  my: isLoading ? '6px' : 0,
+});
+
 export const Desktop = ({ colSpan = FALLBACK_COL_SPAN, ...props }: Props) => {
   return (
-    <SocketNewItemsNotice
-      borderRadius={ props.isLoading ? 'sm' : 0 }
-      h={ props.isLoading ? 5 : 'auto' }
-      maxW={ props.isLoading ? '215px' : undefined }
-      w="100%"
-      mx={ props.isLoading ? 4 : 0 }
-      my={ props.isLoading ? '6px' : 0 }
-      { ...props }
-    >
+    <SocketNewItemsNotice { ...getTableRowNoticeProps(props.isLoading) } { ...props }>
       { ({ content }) => <TableRow><TableCell colSpan={ colSpan } p={ 0 } _first={{ p: 0 }} _last={{ p: 0 }}>{ content }</TableCell></TableRow> }
+    </SocketNewItemsNotice>
+  );
+};
+
+export const Grid = (props: Omit<Props, 'colSpan'>) => {
+  return (
+    <SocketNewItemsNotice { ...getTableRowNoticeProps(props.isLoading) } { ...props }>
+      { ({ content }) => <GridTableFullWidthRow>{ content }</GridTableFullWidthRow> }
     </SocketNewItemsNotice>
   );
 };

@@ -22,15 +22,20 @@ const ALL_COLUMNS = [ 'in_out', 'tx_hash', 'type', 'transfer_type', 'method', 't
 // field as non-null, so the mock has to be cast.
 const WITHOUT_TOKEN = { ...erc20, token: null } as unknown as schemas['TokenTransfer'];
 
-const getHeaders = (container: HTMLElement) => Array.from(container.querySelectorAll('thead th')).map((th) => th.textContent);
+const getHeaders = () => screen.getAllByRole('columnheader').map((header) => header.textContent);
+const getBodyRows = () => {
+  const [ , body ] = screen.getAllByRole('rowgroup');
+  return within(body).queryAllByRole('row');
+};
+const getCells = (row: HTMLElement) => within(row).getAllByRole('cell');
 
 describe('TokenTransfersTable', () => {
   afterEach(cleanup);
 
   it('renders every item of a batch transfer', () => {
-    const { container } = render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ BATCH_PAGE }/>);
+    render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ BATCH_PAGE }/>);
 
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(BATCH_PAGE.length);
+    expect(getBodyRows()).toHaveLength(BATCH_PAGE.length);
   });
 
   it('drops all rows of the previous page when the next page arrives', () => {
@@ -38,36 +43,36 @@ describe('TokenTransfersTable', () => {
 
     rerender(<TokenTransfersTable columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
 
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(NEXT_PAGE.length);
+    expect(getBodyRows()).toHaveLength(NEXT_PAGE.length);
     expect(container.textContent).not.toContain(erc1155A.transaction_hash?.slice(0, 10));
   });
 
   it('renders every column of the vocabulary in order', () => {
-    const { container } = render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
+    render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual(
+    expect(getHeaders()).toEqual(
       [ 'In / Out', 'Txn hash', 'Token type', 'Transfer type', 'Method', 'Timestamp', 'Block', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
-    expect(container.querySelectorAll('tbody tr:first-child td')).toHaveLength(ALL_COLUMNS.length);
+    expect(getCells(getBodyRows()[0])).toHaveLength(ALL_COLUMNS.length);
   });
 
   it('renders the columns in the order they are passed in', () => {
-    const { container } = render(<TokenTransfersTable columns={ [ 'value', 'tx_hash', 'type' ] } items={ NEXT_PAGE }/>);
+    render(<TokenTransfersTable columns={ [ 'value', 'tx_hash', 'type' ] } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Value', 'Txn hash', 'Token type' ]);
-    const [ , txHashCell ] = Array.from(container.querySelectorAll('tbody tr:first-child td'));
+    expect(getHeaders()).toEqual([ 'Value', 'Txn hash', 'Token type' ]);
+    const [ , txHashCell ] = getCells(getBodyRows()[0]);
     expect(txHashCell.textContent).toContain(erc20.transaction_hash?.slice(0, 4));
   });
 
   it('renders every column it is given, multiplier included', () => {
-    const { container } = render(<TokenTransfersTable columns={ [ 'tx_hash', 'multiplier', 'amount' ] } items={ NEXT_PAGE }/>);
+    render(<TokenTransfersTable columns={ [ 'tx_hash', 'multiplier', 'amount' ] } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Multiplier', 'Amount' ]);
+    expect(getHeaders()).toEqual([ 'Txn hash', 'Multiplier', 'Amount' ]);
   });
 
   it('puts the time format toggle in the timestamp header', () => {
-    const { container } = render(<TokenTransfersTable columns={ [ 'tx_hash', 'timestamp' ] } items={ NEXT_PAGE }/>);
-    const [ txHashHeader, timestampHeader ] = Array.from(container.querySelectorAll('thead th')) as Array<HTMLElement>;
+    render(<TokenTransfersTable columns={ [ 'tx_hash', 'timestamp' ] } items={ NEXT_PAGE }/>);
+    const [ txHashHeader, timestampHeader ] = screen.getAllByRole('columnheader');
 
     expect(within(timestampHeader).getByRole('button', { name: 'Toggle time format' })).toBeDefined();
     expect(within(txHashHeader).queryByRole('button')).toBeNull();
@@ -80,26 +85,26 @@ describe('TokenTransfersTable', () => {
   });
 
   it('renders a row without a token instead of crashing', () => {
-    const { container } = render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ [ WITHOUT_TOKEN ] }/>);
+    render(<TokenTransfersTable columns={ ALL_COLUMNS } items={ [ WITHOUT_TOKEN ] }/>);
 
-    expect(container.querySelectorAll('tbody tr')).toHaveLength(1);
-    expect(container.querySelectorAll('tbody tr td')).toHaveLength(ALL_COLUMNS.length);
+    expect(getBodyRows()).toHaveLength(1);
+    expect(getCells(getBodyRows()[0])).toHaveLength(ALL_COLUMNS.length);
   });
 
   it('renders the address surface defaults, In / Out first', () => {
     const columns = getDefaultColumnIds(TOKEN_TRANSFER_COLUMNS, getSurfaceColumnStates('address', {}));
-    const { container } = render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE } baseAddress={ erc20.to.hash }/>);
+    render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE } baseAddress={ erc20.to.hash }/>);
 
-    expect(getHeaders(container)).toEqual(
+    expect(getHeaders()).toEqual(
       [ 'In / Out', 'Txn hash', 'Token type', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ],
     );
-    expect(container.querySelector('tbody tr:first-child td')?.textContent).toBe('In');
+    expect(getCells(getBodyRows()[0])[0].textContent).toBe('In');
   });
 
   it('renders the token surface defaults', () => {
     const columns = getDefaultColumnIds(TOKEN_TRANSFER_COLUMNS, getSurfaceColumnStates('token', {}));
-    const { container } = render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE }/>);
+    render(<TokenTransfersTable columns={ columns } items={ NEXT_PAGE }/>);
 
-    expect(getHeaders(container)).toEqual([ 'Txn hash', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
+    expect(getHeaders()).toEqual([ 'Txn hash', 'Timestamp', 'From / To', 'Amount', 'ID / Asset', 'Value' ]);
   });
 });

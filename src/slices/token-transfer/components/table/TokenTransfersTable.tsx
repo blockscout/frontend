@@ -13,13 +13,24 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+import { GRID_TABLE_SCROLL_BOX_HEIGHT } from 'src/shared/lists/grid-table-scroll-box-height';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
-import { TableBody, TableColumnHeader, TableContainerScrollable, TableHeader, TableRoot, TableRow } from 'src/toolkit/chakra/table';
+import type { GridTableColumn } from 'src/toolkit/chakra/grid-table';
+import {
+  GridTableBody,
+  GridTableColumnHeader,
+  GridTableHeader,
+  GridTableRoot,
+  GridTableRow,
+  GridTableScrollBox,
+} from 'src/toolkit/chakra/grid-table';
 
 import { TOKEN_TRANSFER_COLUMNS } from '../../utils/columns';
 import { getTokenTransferKey } from '../../utils/get-token-transfer-key';
 import TokenTransfersTableItem from './TokenTransfersTableItem';
+
+const CHAIN_COLUMN: GridTableColumn = { id: 'chain' };
 
 interface Props {
   readonly columns: ReadonlyArray<TokenTransferColumnId>;
@@ -51,7 +62,7 @@ const TokenTransfersTable = ({
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
 
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const { cutRef, scrollContainerRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   const getBaseKey = React.useCallback((item: schemas['TokenTransfer']) => getTokenTransferKey(item, chainData?.id), [ chainData?.id ]);
   const keys = useUniqueKeys(items, getBaseKey);
@@ -62,26 +73,30 @@ const TokenTransfersTable = ({
     [ columns ],
   );
 
+  const gridColumns = React.useMemo(
+    (): ReadonlyArray<GridTableColumn> => chainData ? [ CHAIN_COLUMN, ...visibleColumns ] : visibleColumns,
+    [ chainData, visibleColumns ],
+  );
+  const columnIndexOffset = chainData ? 1 : 0;
+
   return (
     <AddressHighlightProvider>
-      <TableContainerScrollable onlyMobile={ false }>
-
-        <TableRoot minW={{ lg: '700px' }}>
-          <TableHeader>
-            <TableRow>
-              { chainData && <TableColumnHeader width="38px"/> }
-              { visibleColumns.map((column) => (
-                <TableColumnHeader key={ column.id } isNumeric={ column.isNumeric } whiteSpace="nowrap" w={ column.width }>
+      <GridTableScrollBox ref={ scrollContainerRef } maxH={ GRID_TABLE_SCROLL_BOX_HEIGHT }>
+        <GridTableRoot columns={ gridColumns }>
+          <GridTableHeader>
+            <GridTableRow>
+              { chainData && <GridTableColumnHeader columnIndex={ 0 }/> }
+              { visibleColumns.map((column, index) => (
+                <GridTableColumnHeader key={ column.id } columnIndex={ index + columnIndexOffset }>
                   { column.name }
                   { column.id === 'timestamp' && <TimeFormatToggle/> }
-                </TableColumnHeader>
+                </GridTableColumnHeader>
               )) }
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+            </GridTableRow>
+          </GridTableHeader>
+          <GridTableBody>
             { showSocketInfo && (
-              <SocketNewItemsNotice.Desktop
-                colSpan={ visibleColumns.length + (chainData ? 1 : 0) }
+              <SocketNewItemsNotice.Grid
                 showErrorAlert={ showSocketErrorAlert }
                 num={ socketInfoNum }
                 type="token_transfer"
@@ -101,10 +116,10 @@ const TokenTransfersTable = ({
                 enableTimeIncrement={ enableTimeIncrement }
               />
             )) }
-          </TableBody>
-        </TableRoot>
+          </GridTableBody>
+        </GridTableRoot>
         <div ref={ cutRef }/>
-      </TableContainerScrollable>
+      </GridTableScrollBox>
     </AddressHighlightProvider>
   );
 };

@@ -5,14 +5,13 @@ import React from 'react';
 
 import config from 'src/config';
 
-import { CONTENT_MAX_WIDTH } from '../utils';
+import { CONTENT_MAX_WIDTH, TOP_BAR_HEIGHT } from '../utils';
 
 interface Props {
   children: React.ReactNode;
   className?: string;
 }
 
-const TOP_BAR_HEIGHT = 36;
 const HORIZONTAL_NAV_BAR_HEIGHT = config.shell.navigation.layout === 'horizontal' ? 49 : 0;
 
 const MainArea = ({ children, className }: Props) => {

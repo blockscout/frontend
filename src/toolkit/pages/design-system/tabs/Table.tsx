@@ -6,6 +6,17 @@ import React from 'react';
 import getNextSortValue from 'src/shared/sort/get-next-sort-value';
 import { collator } from 'src/shared/texts/collator';
 
+import type { GridTableColumn } from 'src/toolkit/chakra/grid-table';
+import {
+  GridTableBody,
+  GridTableCell,
+  GridTableColumnHeader,
+  GridTableFullWidthRow,
+  GridTableHeader,
+  GridTableRoot,
+  GridTableRow,
+  GridTableScrollBox,
+} from 'src/toolkit/chakra/grid-table';
 import { TableColumnHeader, TableHeaderSticky, TableRoot, TableRow, TableCell, TableBody, TableColumnHeaderSortable } from 'src/toolkit/chakra/table';
 
 import { Section, Container, SectionHeader, SamplesStack, Sample } from '../parts';
@@ -19,6 +30,28 @@ const ITEMS = [
 ];
 
 type Item = typeof ITEMS[number];
+
+interface GridColumn extends GridTableColumn {
+  readonly name: string;
+}
+
+const GRID_COLUMNS: ReadonlyArray<GridColumn> = [
+  { id: 'name', name: 'Product' },
+  { id: 'description', name: 'Description', maxWidth: '240px' },
+  { id: 'category', name: 'Category' },
+  { id: 'price', name: 'Price', isNumeric: true },
+];
+
+const GRID_ROWS_NUM = 30;
+
+const GRID_ITEMS = Array.from({ length: GRID_ROWS_NUM }, (_, index) => {
+  const item = ITEMS[index % ITEMS.length];
+  return {
+    ...item,
+    id: index + 1,
+    description: `${ item.name } in the ${ item.category } category, with a description long enough to truncate in a capped column`,
+  };
+});
 
 type SortField = 'category' | 'price';
 type SortValue = 'category-asc' | 'category-desc' | 'price-asc' | 'price-desc' | 'default';
@@ -89,6 +122,37 @@ const TableShowcase = () => {
                 )) }
               </TableBody>
             </TableRoot>
+          </Sample>
+        </SamplesStack>
+      </Section>
+      <Section>
+        <SectionHeader>Grid</SectionHeader>
+        <SamplesStack>
+          <Sample label="grid" justifySelf="stretch" w="500px">
+            <GridTableScrollBox maxH="400px" w="100%">
+              <GridTableRoot columns={ GRID_COLUMNS }>
+                <GridTableHeader>
+                  <GridTableRow>
+                    { GRID_COLUMNS.map((column, index) => (
+                      <GridTableColumnHeader key={ column.id } columnIndex={ index }>{ column.name }</GridTableColumnHeader>
+                    )) }
+                  </GridTableRow>
+                </GridTableHeader>
+                <GridTableBody>
+                  <GridTableFullWidthRow>Full-width row spanning every column</GridTableFullWidthRow>
+                  { GRID_ITEMS.map((item) => (
+                    <GridTableRow key={ item.id }>
+                      <GridTableCell columnIndex={ 0 }>{ item.name }</GridTableCell>
+                      <GridTableCell columnIndex={ 1 }>
+                        <Box truncate>{ item.description }</Box>
+                      </GridTableCell>
+                      <GridTableCell columnIndex={ 2 }>{ item.category }</GridTableCell>
+                      <GridTableCell columnIndex={ 3 }>{ item.price }</GridTableCell>
+                    </GridTableRow>
+                  )) }
+                </GridTableBody>
+              </GridTableRoot>
+            </GridTableScrollBox>
             <Box h="1000px"/>
           </Sample>
         </SamplesStack>
