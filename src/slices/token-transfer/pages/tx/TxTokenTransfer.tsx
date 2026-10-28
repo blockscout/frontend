@@ -7,7 +7,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
 import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
@@ -17,6 +17,7 @@ import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
+import { hasActiveColumnFilters } from 'src/features/cross-chain-txs/components/filters/utils';
 import useTxCrossChainTransfersQuery from 'src/features/cross-chain-txs/hooks/useTxCrossChainTransfersQuery';
 import TxTokenTransferCrossChain from 'src/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -73,7 +74,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
 
   const hasCrossChainTab =
     chainConfig.features.crossChainTxs.isEnabled &&
-    Boolean(!crossChainQuery.isPlaceholderData && crossChainQuery.data?.items.length) &&
+    (Boolean(!crossChainQuery.isPlaceholderData && crossChainQuery.data?.items.length) || hasActiveColumnFilters(crossChainQuery.filters)) &&
     !noCrossChain;
   const isLocalTab = tab === 'token_transfers' || (tab !== 'token_transfers_cross_chain' && !hasCrossChainTab);
   const isTabsLoading = useIsInitialLoading(
@@ -104,6 +105,11 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           crossChainQuery={ crossChainQuery }
           isLoading={ isTabsLoading }
           tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          actionBar={ isMobile && crossChainQuery.pagination.isVisible && (
+            <ActionBar>
+              <Pagination ml="auto" { ...crossChainQuery.pagination }/>
+            </ActionBar>
+          ) }
         />
       ),
     },
@@ -166,6 +172,10 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           <Pagination ml="auto" { ...localQuery.pagination }/>
         </>
       );
+    }
+
+    if (isMobile) {
+      return null;
     }
 
     return (

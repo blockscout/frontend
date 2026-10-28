@@ -7,9 +7,12 @@ import config from 'src/config';
 
 const crossChainTxsFeature = config.features.crossChainTxs;
 
+type QueryParams = Record<string, unknown>;
+
 interface ScopeFilterContext {
   readonly declaredFilters: ReadonlyArray<string>;
-  readonly chain?: ExternalChainExtended;
+  readonly chain: ExternalChainExtended | undefined;
+  readonly queryParams: QueryParams;
 }
 
 type ScopeFilterResolver = (context: ScopeFilterContext) => string | undefined;
@@ -18,8 +21,17 @@ const resolveFocalChainId: ScopeFilterResolver = ({ chain }) => {
   return config.features.multichain.isEnabled ? chain?.id : config.chain.id;
 };
 
+const hasUserBridgeIds = (queryParams: QueryParams): boolean => {
+  const value = queryParams.bridge_ids;
+  return value !== undefined && value !== '';
+};
+
 const resolveBridgeIds: ScopeFilterResolver = (context) => {
   if (crossChainTxsFeature.isEnabled) {
+    if (hasUserBridgeIds(context.queryParams)) {
+      return;
+    }
+
     const hasFocalChain = context.declaredFilters.includes('home_chain_id') && Boolean(resolveFocalChainId(context));
 
     if (hasFocalChain || crossChainTxsFeature.bridgeIds.length === 0) {
@@ -46,15 +58,17 @@ export const SCOPE_FILTER_RESOLVERS: Partial<Record<ApiName, Record<string, Scop
 
 const NO_SCOPE_FILTERS: ReadonlyArray<string> = [];
 const NO_RESOLVERS: Record<string, ScopeFilterResolver> = {};
+const NO_QUERY_PARAMS: QueryParams = {};
 
 export function resolveScopeFilters(
   apiName: ApiName,
   scopeFilters: ReadonlyArray<string> | undefined,
-  chain?: ExternalChainExtended,
+  chain: ExternalChainExtended | undefined,
+  queryParams: QueryParams | undefined,
 ): Record<string, string> {
   const resolvers = SCOPE_FILTER_RESOLVERS[apiName] ?? NO_RESOLVERS;
   const declaredFilters = scopeFilters ?? NO_SCOPE_FILTERS;
-  const context: ScopeFilterContext = { declaredFilters, chain };
+  const context: ScopeFilterContext = { declaredFilters, chain, queryParams: queryParams ?? NO_QUERY_PARAMS };
 
   const entries = declaredFilters
     .map((name) => [ name, resolvers[name]?.(context) ] as const)

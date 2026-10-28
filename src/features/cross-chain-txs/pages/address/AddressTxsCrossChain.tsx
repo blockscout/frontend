@@ -13,20 +13,20 @@ import type { Props } from '../../components/txs/TransactionsCrossChainContent';
 const AddressTxsCrossChain = ({ pagination, isLoading, ...rest }: Props) => {
   const isMobile = useIsMobile();
 
+  const actionBar = isMobile && pagination?.isVisible && (
+    <ActionBar>
+      <Pagination { ...pagination } ml="auto"/>
+    </ActionBar>
+  );
+
   return (
-    <>
-      { isMobile && (
-        <ActionBar>
-          { pagination?.isVisible && <Pagination { ...pagination } ml="auto"/> }
-        </ActionBar>
-      ) }
-      <TransactionsCrossChainContent
-        pagination={ pagination }
-        isLoading={ isLoading }
-        stickyHeader={ !isMobile }
-        { ...rest }
-      />
-    </>
+    <TransactionsCrossChainContent
+      pagination={ pagination }
+      isLoading={ isLoading }
+      stickyHeader={ !isMobile }
+      actionBar={ actionBar }
+      { ...rest }
+    />
   );
 };
 

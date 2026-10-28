@@ -9,13 +9,16 @@ import type {
 } from 'src/features/cross-chain-txs/types/api';
 
 export const INTERCHAIN_INDEXER_API_RESOURCES = {
+  bridges: {
+    path: '/api/v1/interchain/bridges',
+  },
   chains: {
     path: '/api/v1/interchain/chains',
     scopeFilters: [ 'bridge_ids', 'include_unindexed_chains' ],
   },
   messages: {
     path: '/api/v1/interchain/messages',
-    filterFields: [ 'q' as const ],
+    filterFields: [ 'q' as const, 'src_chain_ids' as const, 'dst_chain_ids' as const, 'bridge_ids' as const ],
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
@@ -33,25 +36,27 @@ export const INTERCHAIN_INDEXER_API_RESOURCES = {
   address_messages: {
     path: '/api/v1/interchain/messages\\:byAddress/:hash',
     pathParams: [ 'hash' as const ],
+    filterFields: [ 'q' as const, 'src_chain_ids' as const, 'dst_chain_ids' as const, 'bridge_ids' as const ],
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   transfers: {
     path: '/api/v1/interchain/transfers',
-    filterFields: [ 'q' as const ],
+    filterFields: [ 'q' as const, 'src_chain_ids' as const, 'dst_chain_ids' as const, 'bridge_ids' as const ],
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   tx_transfers: {
     path: '/api/v1/interchain/transfers\\:byTx/:hash',
     pathParams: [ 'hash' as const ],
-    filterFields: [ 'q' as const ],
+    filterFields: [ 'q' as const, 'src_chain_ids' as const, 'dst_chain_ids' as const, 'bridge_ids' as const ],
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
   address_transfers: {
     path: '/api/v1/interchain/transfers\\:byAddress/:hash',
     pathParams: [ 'hash' as const ],
+    filterFields: [ 'q' as const, 'src_chain_ids' as const, 'dst_chain_ids' as const, 'bridge_ids' as const ],
     scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
     paginated: true,
   },
@@ -83,6 +88,7 @@ export type InterchainIndexerApiResourceName = `interchainIndexer:${ keyof typeo
 
 /* eslint-disable @stylistic/indent */
 export type InterchainIndexerApiResourcePayload<R extends InterchainIndexerApiResourceName> =
+R extends 'interchainIndexer:bridges' ? interchainIndexer.GetBridgesResponse :
 R extends 'interchainIndexer:chains' ? interchainIndexer.GetChainsResponse :
 R extends 'interchainIndexer:messages' ? interchainIndexer.GetMessagesResponse :
 R extends 'interchainIndexer:message' ? interchainIndexer.InterchainMessage :
@@ -101,7 +107,10 @@ never;
 /* eslint-disable @stylistic/indent */
 export type InterchainIndexerApiPaginationFilters<R extends InterchainIndexerApiResourceName> =
 R extends 'interchainIndexer:messages' ? CrossChainFilters :
+R extends 'interchainIndexer:address_messages' ? CrossChainFilters :
 R extends 'interchainIndexer:transfers' ? CrossChainFilters :
+R extends 'interchainIndexer:tx_transfers' ? CrossChainFilters :
+R extends 'interchainIndexer:address_transfers' ? CrossChainFilters :
 R extends 'interchainIndexer:stats_chains' ? CrossChainFilters :
 R extends 'interchainIndexer:bridged_tokens' ? CrossChainFilters :
 never;
