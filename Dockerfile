@@ -72,6 +72,9 @@ RUN pnpm run build
 RUN cd ./deploy/tools/feature-reporter && pnpm run build
 
 
+### ASSETS DOWNLOADER
+RUN cd ./deploy/tools/assets-downloader && pnpm run build
+
 ### ENV VARIABLES CHECKER
 RUN cd ./deploy/tools/envs-validator && pnpm run build
 
@@ -122,6 +125,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
 # Copy tools
+COPY --from=builder /app/deploy/tools/assets-downloader/dist/index.js ./assets-downloader/index.js
 COPY --from=builder /app/deploy/tools/envs-validator/dist/index.js ./envs-validator/index.js
 COPY --from=builder /app/deploy/tools/feature-reporter/dist/index.js ./feature-reporter.js
 COPY --from=builder /app/deploy/tools/multichain-config-generator/dist ./deploy/tools/multichain-config-generator/dist

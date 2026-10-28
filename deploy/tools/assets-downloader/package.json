@@ -1,0 +1,15 @@
+{
+  "name": "assets-downloader",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "vite build --logLevel error",
+    "download": "node ./dist/index.js"
+  },
+  "devDependencies": {
+    "@types/node": "24.13.4",
+    "vite": "6.4.3"
+  }
+}

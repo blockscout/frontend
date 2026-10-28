@@ -732,6 +732,15 @@ importers:
         specifier: 8.21.0
         version: 8.21.0(bufferutil@4.1.0)(utf-8-validate@6.0.6)
 
+  deploy/tools/assets-downloader:
+    devDependencies:
+      '@types/node':
+        specifier: 24.13.4
+        version: 24.13.4
+      vite:
+        specifier: 6.4.3
+        version: 6.4.3(@types/node@24.13.4)(terser@5.48.0)(yaml@2.9.0)
+
   deploy/tools/envs-validator:
     devDependencies:
       valibot:

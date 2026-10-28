@@ -46,7 +46,7 @@ export const buildExternalAssetFilePath = (name: string, value: string) => {
     return parseEnvJson(value) ? `/assets/configs/${ fileName }.json` : undefined;
   }
 
-  // Must mirror get_target_filename() in deploy/scripts/download_assets.sh: a URL whose path has no
+  // deploy/tools/assets-downloader saves the file under this same name; a URL whose path has no
   // file extension (e.g. Cloudflare Images "…/<id>/public") is saved under the bare file name.
   const fileExtension = url.pathname.match(regexp.FILE_EXTENSION)?.[1]?.toLowerCase();
   return fileExtension ? `/assets/configs/${ fileName }.${ fileExtension }` : `/assets/configs/${ fileName }`;

@@ -46,15 +46,17 @@ time.
    write it to a temp file, and export it into the environment. `--omit-local-envs`
    drops the local APP_* keys so the deployment's own values survive; the committed
    `.env.extra` is then layered on top.
-2. **`download_assets.sh`** — fetches the external assets referenced by env
-   vars (network logo, marketplace config JSON, featured-networks list,
-   etc.) into `public/assets/configs/<downloaded>/` so the app serves them same-origin
-   and not depend on 3rd-party insfrastructure.
+2. **`download_assets.sh`** → `assets-downloader` — fetches the external assets referenced by
+   env vars (network logo, marketplace config JSON, featured-networks list, etc.) into
+   `public/assets/configs/<downloaded>/` so the app serves them same-origin and does not depend on 3rd-party
+   infrastructure. A file is written only after its content passed the check for what the
+   variable is documented to hold; a rejected or unreachable asset stops the container. This
+   step is not covered by `SKIP_ENVS_VALIDATION`.
 3. **`validate_envs.sh`** → `envs-validator` — fail-fast check that the
    container's env vars conform to the schema. Skippable via
    `SKIP_ENVS_VALIDATION=true`.
 4. **`favicon_generator.sh`** → `favicon-generator` — regenerates favicons
-   from the (possibly just-downloaded) network icon.
+   from the network icon saved by step 2 (or from `FAVICON_MASTER_URL`, fetched directly).
 5. **`og_image_generator.js`** — renders the Open Graph preview image used
    for link unfurls.
 6. **`export_pro_api_flag.sh`** — auto-detects whether the configured chain
