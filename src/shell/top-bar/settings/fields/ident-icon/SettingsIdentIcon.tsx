@@ -1,16 +1,26 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SettingsControlVariant } from '../../types';
+
 import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import * as cookies from 'src/shared/storage/cookies';
 
-import SettingsSample from '../SettingsSample';
+import SettingsSample from '../../parts/SettingsSample';
+import SettingsSampleValue from '../../parts/SettingsSampleValue';
+import SettingsSectionTitle from '../../parts/SettingsSectionTitle';
 import { IDENTICONS } from './utils';
 
-const SettingsIdentIcon = () => {
+interface Props {
+  variant?: SettingsControlVariant;
+}
+
+const SettingsIdentIcon = ({ variant = 'popover' }: Props) => {
   const [ activeId, setActiveId ] = React.useState<string>();
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
@@ -31,12 +41,13 @@ const SettingsIdentIcon = () => {
   }, []);
 
   const activeIdenticon = IDENTICONS.find((identicon) => identicon.id === activeId);
+  const showSectionTitle = !isMobile || variant === 'popover';
 
   return (
     <div>
-      <Box fontWeight={ 600 }>Address settings</Box>
-      <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeIdenticon?.label }</Box>
-      <Flex>
+      { showSectionTitle && <SettingsSectionTitle variant={ variant } title="Address identicon"/> }
+      <SettingsSampleValue variant={ variant } value={ activeIdenticon?.label } prefix={ showSectionTitle ? undefined : 'Address identicon: ' }/>
+      <Flex gap={ variant === 'modal' ? 2 : 0 }>
         { IDENTICONS.map((identicon) => (
           <SettingsSample
             key={ identicon.id }

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { COLOR_THEMES, type ColorTheme, type ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
+import { COLOR_THEMES, type ColorTheme, type ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
 import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 

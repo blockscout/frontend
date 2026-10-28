@@ -36,6 +36,7 @@ const SettingsPoorReputationTokens = () => {
       justifyContent="space-between"
       w="100%"
       minH="34px"
+      overflow="hidden"
     >
       Hide poor reputation tokens
     </Switch>

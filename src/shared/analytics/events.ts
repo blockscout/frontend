@@ -3,7 +3,7 @@
 import type { WalletType } from 'src/features/web3-wallet/types/config';
 import type { TokenTransferSurface } from 'src/slices/token-transfer/types/client';
 
-import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
+import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
 import type { AppActionSource } from 'src/features/address-metadata/utils/build-app-action-url';
 

@@ -4,7 +4,7 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
-import type { TimeFormat } from 'src/shell/top-bar/settings/time-format/utils';
+import type { TimeFormat } from 'src/shell/top-bar/settings/fields/time-format/utils';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
 import useTimeAgoIncrement from 'src/shared/date-and-time/useTimeAgoIncrement';

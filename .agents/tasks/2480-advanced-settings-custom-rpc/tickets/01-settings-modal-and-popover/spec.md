@@ -15,8 +15,9 @@ same tab entries render as stacked sections (icon + heading + content) in tab or
 scrolls to that section. Scam tokens holds the "Hide scam
 tokens" / "Hide poor reputation tokens" switches with their current cookie-and-reload behaviour; Appearance
 holds the theme picker, the identicon picker and, next to the identicon, the address-format picker when the
-chain has more than one format; Time format holds the "Local time" switch and a new relative / absolute
-selector driving the existing `timeFormat` cookie. Each tab hides when every control in it is hidden. The
+chain has more than one format; Time format holds the "Local time" switch (the relative / absolute selector
+from FR5 was dropped as out of scope during implementation; the table-header toggle stays the only way to
+switch it). Each tab hides when every control in it is hidden. The
 open state lives app-wide, keyed by target tab, so the contract-page alert (T04) can open the modal on a given
 tab later without touching the popover. FR1–5, FR15.
 
@@ -35,10 +36,9 @@ How to verify: `pnpm dev:preset eth`, open `/`, click the gear
       of tabs anywhere.
 - [ ] Scam tokens tab is hidden when `hideScamTokensEnabled` is off; the address-format picker is hidden with
       fewer than two formats; a tab with no visible control is not listed.
-- [ ] Time format tab: the relative / absolute selector reads and writes `timeFormat` through
-      `useSettingsContext`, and the Local time switch keeps its behaviour; the CSV export dialog's use of
+- [ ] Time format tab: the Local time switch keeps its behaviour; the CSV export dialog's use of
       `SettingsLocalTime` is unaffected.
-- [ ] Unit tests cover the tab-visibility gating and the time-format selector state.
+- [ ] Unit tests cover the tab-visibility gating.
 - [ ] `(human)` Modal and popover behave on desktop and mobile (bottom sheet, tab switching, close).
 - [ ] `(human)` Settings popover matches the mockup at every breakpoint.
 - [ ] `(human)` Settings modal frame and tab list match the desktop mockup; the stacked-sections sheet
@@ -65,11 +65,11 @@ None — no project scaffold skill runs in this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Regenerate the sprite so `palette` is a typed icon name; commit `public/icons/name.d.ts`
-- [ ] 2 `[agent]` Settings-modal open-state context + modal shell with vertical tab list and tab registry (Scam tokens, Appearance, Time format), adaptive dialog
-- [ ] 3 `[agent]` Move the four controls into their tabs, add the relative / absolute selector, trim the popover to theme + identicon + link; unit tests
-- [ ] 4 `[agent]` Style the settings popover to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=19733-225343)
-- [ ] 5 `[agent]` Style the modal frame and tab list to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24385-88460) · [mobile sheet](https://www.figma.com/design/OjqHcLt95E6kq5ElO79EKT/%F0%9F%93%B1-Blockscout-mobile-version?node-id=425-66888)
-- [ ] 6 `[agent]` Style the Scam tokens tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24385-88369) · [switch states](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24377-85724)
-- [ ] 7 `[agent]` Style the Appearance tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24441-95923)
-- [ ] 8 `[agent]` Style the Time format tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=31413-5354)
+- [x] 1 `[agent]` Regenerate the sprite so `palette` is a typed icon name; commit `public/icons/name.d.ts`
+- [x] 2 `[agent]` Settings-modal open-state context + modal shell with vertical tab list and tab registry (Scam tokens, Appearance, Time format), adaptive dialog
+- [x] 3 `[agent]` Move the four controls into their tabs, trim the popover to theme + identicon + link; unit tests
+- [x] 4 `[agent]` Style the settings popover to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=19733-225343)
+- [x] 5 `[agent]` Style the modal frame and tab list to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24385-88460) · [mobile sheet](https://www.figma.com/design/OjqHcLt95E6kq5ElO79EKT/%F0%9F%93%B1-Blockscout-mobile-version?node-id=425-66888)
+- [x] 6 `[agent]` Style the Scam tokens tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24385-88369) · [switch states](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24377-85724)
+- [x] 7 `[agent]` Style the Appearance tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=24441-95923)
+- [x] 8 `[agent]` Style the Time format tab to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/BS_2.0-Components?node-id=31413-5354)

@@ -1,15 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex, Separator } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SettingsControlVariant } from '../../types';
+
 import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import * as cookies from 'src/shared/storage/cookies';
 
 import type { ColorMode } from 'src/toolkit/chakra/color-mode';
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
-import SettingsSample from '../SettingsSample';
+import { useSettingsContext } from '../../context';
+import SettingsSample from '../../parts/SettingsSample';
+import SettingsSampleValue from '../../parts/SettingsSampleValue';
+import SettingsSectionTitle from '../../parts/SettingsSectionTitle';
 import type { ColorThemeId } from './config';
 import { getInitialColorTheme, getThemeHexWithOverrides } from './utils';
 
@@ -19,12 +25,16 @@ const availableThemes = config.shell.topBar.colorTheme.themes;
 
 interface Props {
   onSelect?: () => void;
+  variant?: SettingsControlVariant;
 }
 
-const SettingsColorTheme = ({ onSelect }: Props) => {
+const SettingsColorTheme = ({ onSelect, variant = 'popover' }: Props) => {
   const { setColorMode } = useColorMode();
+  const settingsContext = useSettingsContext();
+  const isMobile = useIsMobile();
 
-  const [ activeThemeId, setActiveThemeId ] = React.useState<ColorThemeId>();
+  const activeThemeId = settingsContext?.colorTheme;
+  const setActiveThemeId = settingsContext?.setColorTheme;
 
   const setTheme = React.useCallback((themeId: ColorThemeId) => {
     const nextTheme = availableThemes.find((theme) => theme.id === themeId);
@@ -44,7 +54,8 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     cookies.set(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
     cookies.set(cookies.NAMES.COLOR_THEME, themeId);
     window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
-  }, [ setColorMode ]);
+    setActiveThemeId?.(themeId);
+  }, [ setColorMode, setActiveThemeId ]);
 
   React.useEffect(() => {
     const nextColorTheme = getInitialColorTheme({
@@ -54,7 +65,6 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     });
 
     setTheme(nextColorTheme);
-    setActiveThemeId(nextColorTheme);
   // should run only on mount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -69,7 +79,6 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     }
 
     setTheme(themeId);
-    setActiveThemeId(themeId);
     onSelect?.();
   }, [ setTheme, onSelect ]);
 
@@ -79,28 +88,27 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     return null;
   }
 
+  const showSectionTitle = !isMobile || variant === 'popover';
+
   return (
-    <>
-      <div>
-        <Box fontWeight={ 600 }>Color theme</Box>
-        <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
-        <Flex>
-          { availableThemes.map((theme) => {
-            return (
-              <SettingsSample
-                key={ theme.label }
-                label={ theme.label }
-                value={ theme.id }
-                bg={ theme.sampleBg }
-                isActive={ theme.id === activeThemeId }
-                onClick={ handleSelect }
-              />
-            );
-          }) }
-        </Flex>
-      </div>
-      <Separator my={ 3 }/>
-    </>
+    <div>
+      { showSectionTitle && <SettingsSectionTitle variant={ variant } title="Color theme"/> }
+      <SettingsSampleValue variant={ variant } value={ activeTheme?.label } prefix={ showSectionTitle ? undefined : 'Color theme: ' }/>
+      <Flex gap={ variant === 'modal' ? 2 : 0 }>
+        { availableThemes.map((theme) => {
+          return (
+            <SettingsSample
+              key={ theme.label }
+              label={ theme.label }
+              value={ theme.id }
+              bg={ theme.sampleBg }
+              isActive={ theme.id === activeThemeId }
+              onClick={ handleSelect }
+            />
+          );
+        }) }
+      </Flex>
+    </div>
   );
 };
 

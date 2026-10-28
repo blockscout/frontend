@@ -21,6 +21,7 @@ import getSocketUrl from 'src/api/socket/get-socket-url';
 import { AppContextProvider } from 'src/shell/app/context';
 import Layout from 'src/shell/layout/Layout';
 import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
+import { SettingsModalContextProvider } from 'src/shell/top-bar/settings/modal/context';
 
 import { Web3Provider } from 'src/features/connect-wallet/context';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
@@ -124,9 +125,11 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
           <RewardsProvider>
             <MarketplaceContextProvider>
               <SettingsContextProvider>
-                <CsvExportContextProvider>
-                  { content }
-                </CsvExportContextProvider>
+                <SettingsModalContextProvider>
+                  <CsvExportContextProvider>
+                    { content }
+                  </CsvExportContextProvider>
+                </SettingsModalContextProvider>
               </SettingsContextProvider>
             </MarketplaceContextProvider>
           </RewardsProvider>

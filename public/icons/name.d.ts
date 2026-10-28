@@ -149,6 +149,7 @@
 	| "nft_shield"
 	| "open-link"
 	| "operation"
+	| "palette"
 	| "payment_link"
 	| "pie_chart"
 	| "plus"
