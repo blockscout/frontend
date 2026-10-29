@@ -36,7 +36,6 @@ const SettingsScamTokens = () => {
       justifyContent="space-between"
       w="100%"
       minH="32px"
-      overflow="hidden"
     >
       Hide scam tokens
     </Switch>

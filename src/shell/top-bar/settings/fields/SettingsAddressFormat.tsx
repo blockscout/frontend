@@ -38,7 +38,6 @@ const SettingsAddressFormat = ({ variant, ...rest }: Props) => {
         justifyContent="space-between"
         w="100%"
         minH="32px"
-        overflow="hidden"
         { ...rest }
       >
         Show { config.slices.address.hashFormat.bech32Prefix }{ BECH_32_SEPARATOR } format
