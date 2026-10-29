@@ -67,8 +67,8 @@ export const COLOR_THEMES: Array<ColorTheme> = [
     label: 'Auto (System)',
     colorMode: SYSTEM_COLOR_THEME_ID,
     sampleBg: {
-      _light: `linear-gradient(90deg, transparent 50%, {colors.blackAlpha.50} 50%), ${ DARK_SAMPLE_BG } left / 50% 100% no-repeat`,
-      _dark: `linear-gradient(90deg, transparent 50%, {colors.whiteAlpha.900} 50%), ${ DARK_SAMPLE_BG } left / 50% 100% no-repeat`,
+      _light: `linear-gradient(90deg, transparent 10.5px, {colors.blackAlpha.50} 10.5px), ${ DARK_SAMPLE_BG } left / 10.5px 100% no-repeat`,
+      _dark: `linear-gradient(90deg, transparent 10.5px, {colors.whiteAlpha.900} 10.5px), ${ DARK_SAMPLE_BG } left / 10.5px 100% no-repeat`,
     },
   },
 ];
