@@ -18,15 +18,28 @@ async function visibleTabIds(envs: Array<[ string, string ]>): Promise<Array<str
 
 describe('getVisibleSettingsModalTabs', () => {
   it('hides the Scam tokens tab when neither the scam toggle nor multichain is enabled', async() => {
-    expect(await visibleTabIds([])).toEqual([ 'appearance', 'time-format' ]);
+    expect(await visibleTabIds([])).toEqual([ 'rpc-node', 'appearance', 'time-format' ]);
   });
 
   it('lists the Scam tokens tab first when the scam toggle is enabled', async() => {
     expect(await visibleTabIds([ [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ] ]))
-      .toEqual([ 'scam-tokens', 'appearance', 'time-format' ]);
+      .toEqual([ 'scam-tokens', 'rpc-node', 'appearance', 'time-format' ]);
   });
 
   it('keeps the Scam tokens tab for the poor-reputation switch on multichain instances', async() => {
     expect(await visibleTabIds(ENVS_MAP.multichain)).toContain('scam-tokens');
+  });
+
+  it('hides the RPC node tab on multichain instances', async() => {
+    expect(await visibleTabIds(ENVS_MAP.multichain)).not.toContain('rpc-node');
+  });
+
+  it('hides the RPC node tab when no RPC URL is configured', async() => {
+    expect(await visibleTabIds([ [ 'NEXT_PUBLIC_NETWORK_RPC_URL', '' ] ])).not.toContain('rpc-node');
+  });
+
+  it('links the RPC node tab to the link icon', async() => {
+    const { SETTINGS_MODAL_TABS } = await loadRegistry([]);
+    expect(SETTINGS_MODAL_TABS.find((tab) => tab.id === 'rpc-node')?.icon).toBe('link');
   });
 });

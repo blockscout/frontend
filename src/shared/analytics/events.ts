@@ -32,6 +32,7 @@ export enum EventTypes {
   APP_FEEDBACK = 'App feedback',
   ADDRESS_WIDGET = 'Address widget',
   TABLE_COLUMNS = 'Table columns',
+  RPC_NODE = 'RPC node',
 }
 
 /* eslint-disable  @stylistic/indent */
@@ -193,6 +194,9 @@ Type extends EventTypes.TABLE_COLUMNS ? ({
 }) & {
   Column: string;
   State: 'On' | 'Off' | 'Reset' | 'Moved up' | 'Moved down';
+} :
+Type extends EventTypes.RPC_NODE ? {
+  Action: 'Set' | 'Reset' | 'Connect' | 'Disconnect';
 } :
 undefined;
 /* eslint-enable  @stylistic/indent */

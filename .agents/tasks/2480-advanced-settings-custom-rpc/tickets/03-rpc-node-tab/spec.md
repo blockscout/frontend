@@ -29,22 +29,22 @@ one Mixpanel event. FR6–9, FR13, FR14.
 
 How to verify: `pnpm dev:preset eth`, gear → Advanced settings → RPC node
 
-- [ ] Tab registered in the modal with icon `link`; hidden when `config.features.multichain.isEnabled` or
+- [x] Tab registered in the modal with icon `link`; hidden when `config.features.multichain.isEnabled` or
       `config.chain.rpcUrls` is empty.
-- [ ] Validation: `https:` URL or empty; "Invalid format" message and disabled Save otherwise; Save disabled
+- [x] Validation: `https:` URL or empty; "Invalid format" message and disabled Save otherwise; Save disabled
       when the value equals the saved value.
-- [ ] Save sets the URL cookie and the in-use flag (from T02) and reloads; empty value removes both and
+- [x] Save sets the URL cookie and the in-use flag (from T02) and reloads; empty value removes both and
       reloads; no post-save verification.
-- [ ] Plug button: toggles the in-use flag and reloads; disabled while the field holds an unsaved value;
+- [x] Plug button: toggles the in-use flag and reloads; disabled while the field holds an unsaved value;
       not rendered when no URL is saved (row is field + Save).
-- [ ] Shared ping query (in the settings feature module, importable by T04's consumers) POSTs `eth_chainId`
+- [x] Shared ping query (in the settings feature module, importable by T04's consumers) POSTs `eth_chainId`
       with a short timeout to the saved custom URL while in use, returns
       `connected | wrong-chain | unknown-chain | unreachable` plus the reported chain id; the tab refetches it
       on show; never pings an unsaved typed value or the configured node.
-- [ ] One pure mapping from ping outcome + in-use state to tag label / tag colour / plug icon + colour / alert
+- [x] One pure mapping from ping outcome + in-use state to tag label / tag colour / plug icon + colour / alert
       status + copy; the tab renders from it, T04's indicator and pill reuse it.
-- [ ] One new `EventTypes` entry for the RPC setting with a `set | reset | connect | disconnect` payload.
-- [ ] Unit tests: validation, Save-enabled logic, ping-outcome mapping (all four outcomes × in use / not),
+- [x] One new `EventTypes` entry for the RPC setting with a `set | reset | connect | disconnect` payload.
+- [x] Unit tests: validation, Save-enabled logic, ping-outcome mapping (all four outcomes × in use / not),
       visibility gate.
 - [ ] `(human)` Save / reset / invalid / connect / disconnect / unreachable / wrong-chain flows behave as
       described on the running app.
@@ -72,6 +72,6 @@ None — no project scaffold skill runs in this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Shared ping query + outcome mapping + URL validation + Mixpanel event type, with unit tests
-- [ ] 2 `[agent]` RPC node tab content (field, Save, plug button, status line, alert, gate) registered in the modal
-- [ ] 3 `[agent]` Style the RPC node tab to mockup, all states — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=24378-86455)
+- [x] 1 `[agent]` Shared ping query + outcome mapping + URL validation + Mixpanel event type, with unit tests
+- [x] 2 `[agent]` RPC node tab content (field, Save, plug button, status line, alert, gate) registered in the modal
+- [x] 3 `[agent]` Style the RPC node tab to mockup, all states — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=24378-86455)
