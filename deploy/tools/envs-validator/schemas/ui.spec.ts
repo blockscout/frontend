@@ -262,14 +262,48 @@ describe('miscSchema', () => {
   describe('color themes', () => {
     it('rejects an unknown theme id', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'sepia' ]) })).toEqual([
-        picklistMessage('NEXT_PUBLIC_COLOR_THEMES.0', [ 'light', 'dim', 'midnight', 'dark' ], 'sepia'),
+        picklistMessage('NEXT_PUBLIC_COLOR_THEMES.0', [ 'light', 'dim', 'midnight', 'dark', 'system' ], 'sepia'),
       ]);
     });
 
     it('rejects an unknown default theme', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'sepia' })).toEqual([
-        picklistMessage('NEXT_PUBLIC_COLOR_THEME_DEFAULT', [ 'light', 'dim', 'midnight', 'dark' ], 'sepia'),
+        picklistMessage('NEXT_PUBLIC_COLOR_THEME_DEFAULT', [ 'light', 'dim', 'midnight', 'dark', 'system' ], 'sepia'),
       ]);
+    });
+
+    it('accepts the system theme when the listed themes cover both color modes', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'light', 'midnight', 'system' ]),
+        NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'system',
+      })).toEqual([]);
+    });
+
+    it('accepts the system default theme without a themes list', () => {
+      expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'system' })).toEqual([]);
+    });
+
+    it('rejects the system theme when the listed themes are all of one color mode', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark', 'system' ]),
+      })).toEqual([ 'The system color theme requires NEXT_PUBLIC_COLOR_THEMES to list at least one light and one dark theme' ]);
+    });
+
+    it('rejects a system default theme when the listed themes are all of one color mode', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
+        NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'system',
+      })).toEqual([
+        'NEXT_PUBLIC_COLOR_THEME_DEFAULT must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES',
+        'The system color theme requires NEXT_PUBLIC_COLOR_THEMES to list at least one light and one dark theme',
+      ]);
+    });
+
+    it('accepts a one-color-mode themes list that does not involve the system theme', () => {
+      expect(getValidationErrors(miscSchema, {
+        NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'dim', 'dark' ]),
+        NEXT_PUBLIC_COLOR_THEME_DEFAULT: 'dark',
+      })).toEqual([]);
     });
 
     it('accepts a default theme without a themes list', () => {

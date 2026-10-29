@@ -17,11 +17,29 @@ function getThemeIds(config: typeof topBarConfig): Array<string> {
 const ALL_THEME_IDS = COLOR_THEMES.map((theme) => theme.id);
 
 describe('color themes', () => {
-  it('offers every theme when NEXT_PUBLIC_COLOR_THEMES is not set', async() => {
+  it('offers every theme, the system one included, when NEXT_PUBLIC_COLOR_THEMES is not set', async() => {
     const config = await loadConfig([]);
 
     expect(getThemeIds(config)).toEqual(ALL_THEME_IDS);
-    expect(config.colorTheme.default).toBeUndefined();
+    expect(config.colorTheme.default?.id).toBe('system');
+  });
+
+  it('offers the system theme only when it is listed next to a light and a dark theme', async() => {
+    const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark","system"]' ] ]);
+
+    expect(getThemeIds(config)).toEqual([ 'light', 'dark', 'system' ]);
+  });
+
+  it('hides the system theme when the listed themes are all of one color mode', async() => {
+    const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["dim","dark","system"]' ] ]);
+
+    expect(getThemeIds(config)).toEqual([ 'dim', 'dark' ]);
+  });
+
+  it('offers every theme when the system theme is the only one listed', async() => {
+    const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["system"]' ] ]);
+
+    expect(getThemeIds(config)).toEqual(ALL_THEME_IDS);
   });
 
   it('offers only the configured themes', async() => {
@@ -46,7 +64,7 @@ describe('color themes', () => {
     const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["sepia"]' ] ]);
 
     expect(getThemeIds(config)).toEqual(ALL_THEME_IDS);
-    expect(config.colorTheme.default).toBeUndefined();
+    expect(config.colorTheme.default?.id).toBe('system');
   });
 });
 
@@ -87,16 +105,31 @@ describe('default color theme', () => {
     expect(config.colorTheme.default?.id).toBe('midnight');
   });
 
-  it('stays undefined when the available themes cover both color modes', async() => {
+  it('is the system theme when the configured default is system', async() => {
+    const config = await loadConfig([
+      [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark","system"]' ],
+      [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'system' ],
+    ]);
+
+    expect(config.colorTheme.default?.id).toBe('system');
+  });
+
+  it('is the system theme when the available themes cover both color modes and no default is configured', async() => {
+    const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark","system"]' ] ]);
+
+    expect(config.colorTheme.default?.id).toBe('system');
+  });
+
+  it('stays undefined when the available themes cover both color modes but leave the system theme out', async() => {
     const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark"]' ] ]);
 
     expect(config.colorTheme.default).toBeUndefined();
   });
 
-  it('stays undefined when every theme is listed explicitly', async() => {
+  it('stays undefined when every concrete theme is listed explicitly', async() => {
     const config = await loadConfig([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dim","midnight","dark"]' ] ]);
 
-    expect(getThemeIds(config)).toEqual(ALL_THEME_IDS);
+    expect(getThemeIds(config)).toEqual([ 'light', 'dim', 'midnight', 'dark' ]);
     expect(config.colorTheme.default).toBeUndefined();
   });
 });
