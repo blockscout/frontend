@@ -49,11 +49,11 @@ export interface SavedRpcNode {
   readonly isInUse: boolean;
 }
 
-export function getSavedRpcNode(): SavedRpcNode {
-  const url = cookies.get(cookies.NAMES.CUSTOM_RPC_URL);
+export function getSavedRpcNode(serverCookies?: string): SavedRpcNode {
+  const url = cookies.get(cookies.NAMES.CUSTOM_RPC_URL, serverCookies);
   return {
     url: url || undefined,
-    isInUse: Boolean(url) && cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE) === CUSTOM_RPC_IN_USE_VALUE,
+    isInUse: Boolean(url) && cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE, serverCookies) === CUSTOM_RPC_IN_USE_VALUE,
   };
 }
 

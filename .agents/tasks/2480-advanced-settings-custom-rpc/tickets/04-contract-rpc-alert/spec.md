@@ -24,18 +24,18 @@ FR16, FR17.
 
 How to verify: `pnpm dev:preset eth`, a verified contract's Read tab, with the custom RPC cookie pointing at a dead `https://` host
 
-- [ ] A classifier walks the viem error cause chain and returns "not responding" for `HttpRequestError`,
+- [x] A classifier walks the viem error cause chain and returns "not responding" for `HttpRequestError`,
       `TimeoutError`, `LimitExceededRpcError`, `InternalRpcError`; everything else falls through.
-- [ ] `ContractMethodResultPublicClient` renders the alert for classified errors, choosing the copy by whether
+- [x] `ContractMethodResultPublicClient` renders the alert for classified errors, choosing the copy by whether
       the custom RPC cookie is set; the link calls the settings-modal context with the RPC tab as target.
-- [ ] Unclassified errors (reverts, ABI errors) render exactly as before.
-- [ ] Unit tests for the classifier and the copy selection.
-- [ ] Top-bar indicator in `TopBar.tsx`'s icon group before `CsvExportDownloads`, rendered only while the custom
+- [x] Unclassified errors (reverts, ABI errors) render exactly as before.
+- [x] Unit tests for the classifier and the copy selection.
+- [x] Top-bar indicator in `TopBar.tsx`'s icon group before `CsvExportDownloads`, rendered only while the custom
       URL is in use (cookie + flag); colour / tooltip from T03's outcome mapping; click opens the modal on the
       RPC tab through the context. Shown on mobile too.
-- [ ] "Custom RPC" pill in `ContractMethodsAlerts` before `ConnectWalletAlert`, same gate, same mapping, same
+- [x] "Custom RPC" pill in `ContractMethodsAlerts` before `ConnectWalletAlert`, same gate, same mapping, same
       click; it uses the toolkit `Alert` like its neighbour and does not depend on `connectWallet` being enabled.
-- [ ] The ping runs once per page load while the custom URL is in use (query mounted by the indicator), and the
+- [x] The ping runs once per page load while the custom URL is in use (query mounted by the indicator), and the
       RPC tab's refetch updates the indicators without a reload.
 - [ ] `(human)` The alert appears for a dead node, the link opens the modal on the RPC tab without a reload,
       and a revert still shows the viem short message.
@@ -61,8 +61,8 @@ None — no project scaffold skill runs in this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Error classifier with unit tests
-- [ ] 2 `[agent]` Alert rendering + modal link in `ContractMethodResultPublicClient`
-- [ ] 3 `[agent]` Top-bar custom-RPC indicator (gate, tooltip, click) and contract "Custom RPC" pill, wired to T03's query and mapping
-- [ ] 4 `[agent]` Style the top-bar indicator to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34246-7308)
-- [ ] 5 `[agent]` Style the contract "Custom RPC" pill to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34259-25460)
+- [x] 1 `[agent]` Error classifier with unit tests
+- [x] 2 `[agent]` Alert rendering + modal link in `ContractMethodResultPublicClient`
+- [x] 3 `[agent]` Top-bar custom-RPC indicator (gate, tooltip, click) and contract "Custom RPC" pill, wired to T03's query and mapping
+- [x] 4 `[agent]` Style the top-bar indicator to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34246-7308)
+- [x] 5 `[agent]` Style the contract "Custom RPC" pill to mockup — [Figma](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34259-25460)
