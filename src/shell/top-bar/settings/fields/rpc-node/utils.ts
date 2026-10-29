@@ -26,6 +26,7 @@ export interface RpcNodeStatus {
   readonly alert: { readonly status: AlertProps['status']; readonly text: string } | undefined;
 }
 
+// Stryker disable next-line ArithmeticOperator: evaluated at module load, before runtime mutant activation, so the timeout assertion cannot see it
 const PING_TIMEOUT = 5 * SECOND;
 
 const HEX_CHAIN_ID_REGEXP = /^0x[0-9a-f]+$/i;

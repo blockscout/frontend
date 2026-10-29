@@ -10,7 +10,15 @@ import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 
 import SettingsRpcNode from './SettingsRpcNode';
 
+const analyticsMock = vi.hoisted(() => ({
+  logEvent: vi.fn(),
+  EventTypes: { RPC_NODE: 'RPC node' },
+}));
+
+vi.mock('src/shared/analytics', () => analyticsMock);
+
 const CUSTOM_URL = 'https://rpc.example.com/eth';
+const IMMEDIATE = { sendImmediately: true };
 
 function typeUrl(value: string): void {
   const input = screen.getByRole('textbox');
@@ -42,6 +50,7 @@ describe('SettingsRpcNode', () => {
     cleanup();
     vi.unstubAllGlobals();
     reload.mockReset();
+    analyticsMock.logEvent.mockReset();
     Cookies.remove(cookies.NAMES.CUSTOM_RPC_URL);
     Cookies.remove(cookies.NAMES.CUSTOM_RPC_IN_USE);
   });
@@ -49,7 +58,9 @@ describe('SettingsRpcNode', () => {
   it('with no saved URL shows an empty field, no plug and no status', () => {
     render(<SettingsRpcNode/>);
 
-    expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe('');
+    const input = screen.getByRole('textbox') as HTMLInputElement;
+    expect(input.value).toBe('');
+    expect(input.getAttribute('spellcheck')).toBe('false');
     expect(button('Save').disabled).toBe(true);
     expect(screen.queryByRole('button', { name: /RPC node$/ })).toBeNull();
     expect(screen.queryByText(/Using/)).toBeNull();
@@ -76,6 +87,7 @@ describe('SettingsRpcNode', () => {
     await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
+    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Set' }, IMMEDIATE);
   });
 
   it('clearing the field and saving forgets the node and reloads', async() => {
@@ -90,6 +102,7 @@ describe('SettingsRpcNode', () => {
     await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBeUndefined();
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
+    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Reset' }, IMMEDIATE);
   });
 
   it('pings the saved node in use and shows the outcome', async() => {
@@ -131,6 +144,7 @@ describe('SettingsRpcNode', () => {
 
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
+    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Disconnect' }, IMMEDIATE);
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
@@ -146,6 +160,7 @@ describe('SettingsRpcNode', () => {
     fireEvent.click(button('Connect custom RPC node'));
 
     expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
+    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Connect' }, IMMEDIATE);
     expect(reload).toHaveBeenCalledTimes(1);
   });
 

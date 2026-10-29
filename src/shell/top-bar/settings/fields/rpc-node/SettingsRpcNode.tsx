@@ -28,6 +28,7 @@ interface FormFields {
 }
 
 const URL_RULES = { validate: { https: validateRpcUrl } };
+// Stryker disable next-line BooleanLiteral: evaluated at module load, before runtime mutant activation, so the spellcheck assertion cannot see it
 const INPUT_PROPS = { 'aria-label': 'RPC node URL', spellCheck: false, bgColor: 'dialog.bg' };
 
 const SettingsRpcNode = () => {

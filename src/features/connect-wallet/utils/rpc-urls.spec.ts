@@ -4,6 +4,7 @@
 import * as cookies from 'src/shared/storage/cookies';
 
 import { afterEach, describe, expect, it } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 import { getCustomRpcUrl, getRpcUrls, resolveCustomRpcUrl } from './rpc-urls';
 
@@ -87,5 +88,14 @@ describe('getRpcUrls', () => {
 
   it('appends the core API eth-rpc fallback to the configured URLs when asked', () => {
     expect(getRpcUrls({ withCoreApiFallback: true })).toEqual([ CONFIGURED_RPC_URL, CORE_API_ETH_RPC_URL ]);
+  });
+
+  it('keeps the core API base path in the fallback URL', async() => {
+    const urls = await withEnvs([ [ 'NEXT_PUBLIC_API_BASE_PATH', '/poa/core' ] ], async() => {
+      const { getRpcUrls } = await import('./rpc-urls');
+      return getRpcUrls({ withCoreApiFallback: true });
+    });
+
+    expect(urls).toEqual([ CONFIGURED_RPC_URL, 'https://localhost:3003/poa/core/api/eth-rpc' ]);
   });
 });

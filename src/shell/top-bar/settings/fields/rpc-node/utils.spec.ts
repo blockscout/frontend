@@ -2,7 +2,7 @@
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import { getRpcNodeStatus, pingRpcNode, validateRpcUrl } from './utils';
@@ -28,7 +28,12 @@ describe('pingRpcNode', () => {
     fetchMock.resetMocks();
   });
 
-  it('posts eth_chainId and reports connected when the chain id matches', async() => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('posts eth_chainId with a 5s timeout and reports connected when the chain id matches', async() => {
+    const timeoutSpy = vi.spyOn(AbortSignal, 'timeout');
     fetchMock.mockResponseOnce(JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0x1' }));
 
     expect(await pingRpcNode(url)).toEqual({ outcome: 'connected', chainId: '0x1' });
@@ -37,6 +42,8 @@ describe('pingRpcNode', () => {
     expect(requestUrl).toBe(url);
     expect(init?.method).toBe('POST');
     expect(JSON.parse(String(init?.body))).toMatchObject({ method: 'eth_chainId' });
+    expect(timeoutSpy).toHaveBeenCalledWith(5_000);
+    expect(init?.signal).toBe(timeoutSpy.mock.results[0].value);
   });
 
   it('reports wrong-chain with the reported id when another chain answers', async() => {
@@ -52,12 +59,24 @@ describe('pingRpcNode', () => {
     fetchMock.mockResponseOnce(JSON.stringify({ result: 'mainnet' }));
     expect(await pingRpcNode(url)).toEqual({ outcome: 'unknown-chain', chainId: undefined });
 
+    fetchMock.mockResponseOnce(JSON.stringify({ result: [ '0x1' ] }));
+    expect(await pingRpcNode(url)).toEqual({ outcome: 'unknown-chain', chainId: undefined });
+
+    fetchMock.mockResponseOnce(JSON.stringify('0x1'));
+    expect(await pingRpcNode(url)).toEqual({ outcome: 'unknown-chain', chainId: undefined });
+
+    fetchMock.mockResponseOnce(JSON.stringify(null));
+    expect(await pingRpcNode(url)).toEqual({ outcome: 'unknown-chain', chainId: undefined });
+
     fetchMock.mockResponseOnce('<html/>');
     expect(await pingRpcNode(url)).toEqual({ outcome: 'unreachable', chainId: undefined });
   });
 
   it('reports unreachable on an HTTP error or a network failure', async() => {
     fetchMock.mockResponseOnce('', { status: 503 });
+    expect(await pingRpcNode(url)).toEqual({ outcome: 'unreachable', chainId: undefined });
+
+    fetchMock.mockResponseOnce(JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0x1' }), { status: 500 });
     expect(await pingRpcNode(url)).toEqual({ outcome: 'unreachable', chainId: undefined });
 
     fetchMock.mockRejectOnce(new TypeError('Failed to fetch'));
