@@ -10,4 +10,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 02 → `tickets/02-custom-rpc-transport-and-csp/`
 - [x] 03 → `tickets/03-rpc-node-tab/`
 - [x] 04 → `tickets/04-contract-rpc-alert/`
-- [ ] 05 → `tickets/05-two-tab-settings-modal/`
+- [x] 05 → `tickets/05-two-tab-settings-modal/`

@@ -63,6 +63,6 @@ None — no project scaffold skill runs in this ticket.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Collapse the registry to General + Custom RPC, drop the stacked-sections layout, one tabs component for both breakpoints; update unit tests
-- [ ] 2 `[agent]` Restore `clock-light.svg`, drop `palette.svg`, regenerate the sprite and `name.d.ts`
-- [ ] 3 `[agent]` Style the General tab and modal frame to mockup — [Figma desktop](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34294-12488) · [Figma mobile](https://www.figma.com/design/OjqHcLt95E6kq5ElO79EKT/%F0%9F%93%B1-Blockscout-mobile-version?node-id=456-47003)
+- [x] 1 `[agent]` Collapse the registry to General + Custom RPC, drop the stacked-sections layout, one tabs component for both breakpoints; update unit tests
+- [x] 2 `[agent]` Restore `clock-light.svg`, drop `palette.svg`, regenerate the sprite and `name.d.ts`
+- [x] 3 `[agent]` Style the General tab and modal frame to mockup — [Figma desktop](https://www.figma.com/design/4In0X8UADoZaTfZ34HaZ3K/Blockscout-design-system?node-id=34294-12488) · [Figma mobile](https://www.figma.com/design/OjqHcLt95E6kq5ElO79EKT/%F0%9F%93%B1-Blockscout-mobile-version?node-id=456-47003)

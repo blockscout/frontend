@@ -1,17 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SettingsControlVariant } from '../../types';
 
 import config from 'src/config';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import * as cookies from 'src/shared/storage/cookies';
 
 import SettingsSample from '../../parts/SettingsSample';
-import SettingsSampleValue from '../../parts/SettingsSampleValue';
-import SettingsSectionTitle from '../../parts/SettingsSectionTitle';
+import SettingsSamplesRow from '../../parts/SettingsSamplesRow';
 import { IDENTICONS } from './utils';
 
 interface Props {
@@ -20,7 +17,6 @@ interface Props {
 
 const SettingsIdentIcon = ({ variant = 'popover' }: Props) => {
   const [ activeId, setActiveId ] = React.useState<string>();
-  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     const initialId = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.slices.address.identiconType;
@@ -41,25 +37,19 @@ const SettingsIdentIcon = ({ variant = 'popover' }: Props) => {
   }, []);
 
   const activeIdenticon = IDENTICONS.find((identicon) => identicon.id === activeId);
-  const showSectionTitle = !isMobile || variant === 'popover';
-
   return (
-    <div>
-      { showSectionTitle && <SettingsSectionTitle variant={ variant } title="Address identicon"/> }
-      <SettingsSampleValue variant={ variant } value={ activeIdenticon?.label } prefix={ showSectionTitle ? undefined : 'Address identicon: ' }/>
-      <Flex gap={ variant === 'modal' ? 2 : 0 }>
-        { IDENTICONS.map((identicon) => (
-          <SettingsSample
-            key={ identicon.id }
-            label={ identicon.label }
-            value={ identicon.id }
-            bg={ identicon.sampleBg }
-            isActive={ identicon.id === activeId }
-            onClick={ handleSelect }
-          />
-        )) }
-      </Flex>
-    </div>
+    <SettingsSamplesRow variant={ variant } title="Address identicon" mobileTitle="Identicon" value={ activeIdenticon?.label }>
+      { IDENTICONS.map((identicon) => (
+        <SettingsSample
+          key={ identicon.id }
+          label={ identicon.label }
+          value={ identicon.id }
+          bg={ identicon.sampleBg }
+          isActive={ identicon.id === activeId }
+          onClick={ handleSelect }
+        />
+      )) }
+    </SettingsSamplesRow>
   );
 };
 

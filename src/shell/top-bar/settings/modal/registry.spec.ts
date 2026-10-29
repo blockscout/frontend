@@ -16,30 +16,26 @@ async function visibleTabIds(envs: Array<[ string, string ]>): Promise<Array<str
   return getVisibleSettingsModalTabs().map((tab) => tab.id);
 }
 
-describe('getVisibleSettingsModalTabs', () => {
-  it('hides the Scam tokens tab when neither the scam toggle nor multichain is enabled', async() => {
-    expect(await visibleTabIds([])).toEqual([ 'rpc-node', 'appearance', 'time-format' ]);
-  });
-
-  it('lists the Scam tokens tab first when the scam toggle is enabled', async() => {
-    expect(await visibleTabIds([ [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ] ]))
-      .toEqual([ 'scam-tokens', 'rpc-node', 'appearance', 'time-format' ]);
-  });
-
-  it('keeps the Scam tokens tab for the poor-reputation switch on multichain instances', async() => {
-    expect(await visibleTabIds(ENVS_MAP.multichain)).toContain('scam-tokens');
-  });
-
-  it('hides the RPC node tab on multichain instances', async() => {
-    expect(await visibleTabIds(ENVS_MAP.multichain)).not.toContain('rpc-node');
-  });
-
-  it('hides the RPC node tab when no RPC URL is configured', async() => {
-    expect(await visibleTabIds([ [ 'NEXT_PUBLIC_NETWORK_RPC_URL', '' ] ])).not.toContain('rpc-node');
-  });
-
-  it('links the RPC node tab to the link icon', async() => {
+describe('SETTINGS_MODAL_TABS', () => {
+  it('holds exactly the General and Custom RPC tabs', async() => {
     const { SETTINGS_MODAL_TABS } = await loadRegistry([]);
-    expect(SETTINGS_MODAL_TABS.find((tab) => tab.id === 'rpc-node')?.icon).toBe('link');
+    expect(SETTINGS_MODAL_TABS.map((tab) => [ tab.id, tab.title, tab.icon ])).toEqual([
+      [ 'general', 'General', 'gear' ],
+      [ 'rpc-node', 'Custom RPC', 'link' ],
+    ]);
+  });
+});
+
+describe('getVisibleSettingsModalTabs', () => {
+  it('lists General first and Custom RPC second when an RPC URL is configured', async() => {
+    expect(await visibleTabIds([])).toEqual([ 'general', 'rpc-node' ]);
+  });
+
+  it('keeps General and hides Custom RPC on multichain instances', async() => {
+    expect(await visibleTabIds(ENVS_MAP.multichain)).toEqual([ 'general' ]);
+  });
+
+  it('keeps General and hides Custom RPC when no RPC URL is configured', async() => {
+    expect(await visibleTabIds([ [ 'NEXT_PUBLIC_NETWORK_RPC_URL', '' ] ])).toEqual([ 'general' ]);
   });
 });

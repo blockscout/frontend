@@ -2,16 +2,13 @@
 
 import type React from 'react';
 
-import config from 'src/config';
 import type { IconName } from 'src/sprite/SpriteIcon';
 
 import { isRpcNodeSettingAvailable } from '../fields/rpc-node/utils';
-import SettingsModalAppearanceTab from './tabs/SettingsModalAppearanceTab';
+import SettingsModalGeneralTab from './tabs/SettingsModalGeneralTab';
 import SettingsModalRpcNodeTab from './tabs/SettingsModalRpcNodeTab';
-import SettingsModalScamTokensTab from './tabs/SettingsModalScamTokensTab';
-import SettingsModalTimeFormatTab from './tabs/SettingsModalTimeFormatTab';
 
-export type SettingsModalTabId = 'scam-tokens' | 'rpc-node' | 'appearance' | 'time-format';
+export type SettingsModalTabId = 'general' | 'rpc-node';
 
 export interface SettingsModalTab {
   readonly id: SettingsModalTabId;
@@ -23,32 +20,18 @@ export interface SettingsModalTab {
 
 export const SETTINGS_MODAL_TABS: ReadonlyArray<SettingsModalTab> = [
   {
-    id: 'scam-tokens',
-    title: 'Scam tokens',
-    icon: 'status/warning',
-    Content: SettingsModalScamTokensTab,
-    isVisible: () => config.slices.token.hideScamTokensEnabled || config.features.multichain.isEnabled,
+    id: 'general',
+    title: 'General',
+    icon: 'gear',
+    Content: SettingsModalGeneralTab,
+    isVisible: () => true,
   },
   {
     id: 'rpc-node',
-    title: 'RPC node',
+    title: 'Custom RPC',
     icon: 'link',
     Content: SettingsModalRpcNodeTab,
     isVisible: isRpcNodeSettingAvailable,
-  },
-  {
-    id: 'appearance',
-    title: 'Appearance',
-    icon: 'palette',
-    Content: SettingsModalAppearanceTab,
-    isVisible: () => true,
-  },
-  {
-    id: 'time-format',
-    title: 'Time format',
-    icon: 'clock-light',
-    Content: SettingsModalTimeFormatTab,
-    isVisible: () => true,
   },
 ];
 

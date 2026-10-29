@@ -7,7 +7,6 @@ import type { SettingsControlVariant } from '../types';
 import { BECH_32_SEPARATOR } from 'src/slices/address/utils/bech32';
 
 import config from 'src/config';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 
 import type { SwitchProps } from 'src/toolkit/chakra/switch';
 import { Switch } from 'src/toolkit/chakra/switch';
@@ -21,18 +20,16 @@ interface Props extends Omit<SwitchProps, 'variant'> {
 
 const SettingsAddressFormat = ({ variant, ...rest }: Props) => {
   const settingsContext = useSettingsContext();
-  const isMobile = useIsMobile();
 
   if (!settingsContext || config.slices.address.hashFormat.availableFormats.length < 2) {
     return null;
   }
 
   const { addressFormat, toggleAddressFormat } = settingsContext;
-  const showSectionTitle = !isMobile || variant === 'popover';
 
   return (
     <div>
-      { showSectionTitle && <SettingsSectionTitle variant={ variant } title="Address format"/> }
+      { variant === 'popover' && <SettingsSectionTitle variant={ variant } title="Address format"/> }
       <Switch
         id="address-format"
         defaultChecked={ addressFormat === 'bech32' }
@@ -40,7 +37,7 @@ const SettingsAddressFormat = ({ variant, ...rest }: Props) => {
         direction="rtl"
         justifyContent="space-between"
         w="100%"
-        minH="34px"
+        minH="32px"
         overflow="hidden"
         { ...rest }
       >

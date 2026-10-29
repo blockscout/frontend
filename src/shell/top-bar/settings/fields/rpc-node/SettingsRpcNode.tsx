@@ -106,7 +106,7 @@ const SettingsRpcNode = () => {
             ) }
           </HStack>
           { status && (
-            <>
+            <VStack gap={ 2 } alignItems="stretch">
               <HStack gap={ 1 }>
                 <Badge colorPalette={ status.tag.colorPalette } loading={ isStatusPending }>{ status.tag.label }</Badge>
                 <Skeleton loading={ isStatusPending } textStyle="sm" color="text.secondary">{ status.nodeText }</Skeleton>
@@ -114,7 +114,7 @@ const SettingsRpcNode = () => {
               { !isStatusPending && status.alert && (
                 <Alert status={ status.alert.status } textStyle="sm">{ status.alert.text }</Alert>
               ) }
-            </>
+            </VStack>
           ) }
         </VStack>
       </chakra.form>

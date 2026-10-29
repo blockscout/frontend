@@ -2,13 +2,10 @@
 
 import React from 'react';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
-
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
 
 import type { SettingsModalTabId } from './registry';
 import { getVisibleSettingsModalTabs } from './registry';
-import SettingsModalSections from './SettingsModalSections';
 import SettingsModalTabs from './SettingsModalTabs';
 
 interface Props {
@@ -17,7 +14,6 @@ interface Props {
 }
 
 const SettingsModal = ({ targetTab, onClose }: Props) => {
-  const isMobile = useIsMobile();
   const tabs = React.useMemo(() => getVisibleSettingsModalTabs(), []);
 
   const handleOpenChange = React.useCallback(({ open }: { open: boolean }) => {
@@ -31,9 +27,7 @@ const SettingsModal = ({ targetTab, onClose }: Props) => {
       <DialogContent h={{ lg: '560px' }}>
         <DialogHeader mb={{ base: 3, lg: 6 }}>Advanced site settings</DialogHeader>
         <DialogBody>
-          { isMobile ?
-            <SettingsModalSections tabs={ tabs } targetTab={ targetTab }/> :
-            <SettingsModalTabs tabs={ tabs } targetTab={ targetTab }/> }
+          <SettingsModalTabs tabs={ tabs } targetTab={ targetTab }/>
         </DialogBody>
       </DialogContent>
     </DialogRoot>

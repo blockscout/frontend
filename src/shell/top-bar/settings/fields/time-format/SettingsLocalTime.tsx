@@ -24,7 +24,7 @@ const SettingsLocalTime = (props: SwitchProps) => {
       direction="rtl"
       justifyContent="space-between"
       w="100%"
-      minH="34px"
+      minH="32px"
       { ...props }
     >
       Local time format

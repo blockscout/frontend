@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SettingsControlVariant } from '../../types';
 
 import config from 'src/config';
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import * as cookies from 'src/shared/storage/cookies';
 
 import type { ColorMode } from 'src/toolkit/chakra/color-mode';
@@ -14,8 +12,7 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
 import { useSettingsContext } from '../../context';
 import SettingsSample from '../../parts/SettingsSample';
-import SettingsSampleValue from '../../parts/SettingsSampleValue';
-import SettingsSectionTitle from '../../parts/SettingsSectionTitle';
+import SettingsSamplesRow from '../../parts/SettingsSamplesRow';
 import type { ColorThemeId } from './config';
 import { getInitialColorTheme, getThemeHexWithOverrides } from './utils';
 
@@ -31,7 +28,6 @@ interface Props {
 const SettingsColorTheme = ({ onSelect, variant = 'popover' }: Props) => {
   const { setColorMode } = useColorMode();
   const settingsContext = useSettingsContext();
-  const isMobile = useIsMobile();
 
   const activeThemeId = settingsContext?.colorTheme;
   const setActiveThemeId = settingsContext?.setColorTheme;
@@ -88,27 +84,21 @@ const SettingsColorTheme = ({ onSelect, variant = 'popover' }: Props) => {
     return null;
   }
 
-  const showSectionTitle = !isMobile || variant === 'popover';
-
   return (
-    <div>
-      { showSectionTitle && <SettingsSectionTitle variant={ variant } title="Color theme"/> }
-      <SettingsSampleValue variant={ variant } value={ activeTheme?.label } prefix={ showSectionTitle ? undefined : 'Color theme: ' }/>
-      <Flex gap={ variant === 'modal' ? 2 : 0 }>
-        { availableThemes.map((theme) => {
-          return (
-            <SettingsSample
-              key={ theme.label }
-              label={ theme.label }
-              value={ theme.id }
-              bg={ theme.sampleBg }
-              isActive={ theme.id === activeThemeId }
-              onClick={ handleSelect }
-            />
-          );
-        }) }
-      </Flex>
-    </div>
+    <SettingsSamplesRow variant={ variant } title="Color theme" mobileTitle="Theme" value={ activeTheme?.label }>
+      { availableThemes.map((theme) => {
+        return (
+          <SettingsSample
+            key={ theme.label }
+            label={ theme.label }
+            value={ theme.id }
+            bg={ theme.sampleBg }
+            isActive={ theme.id === activeThemeId }
+            onClick={ handleSelect }
+          />
+        );
+      }) }
+    </SettingsSamplesRow>
   );
 };
 
