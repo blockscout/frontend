@@ -40,8 +40,8 @@ reviewer" and takes `--reviewer <name>` defaulting to `cursor`, plus an optional
   branch pushed and a terminal report saying why. The loop never ends with an unanswered `needs-human`.
 - [ ] The guard in `review-changes` ("another tag present → ask for a tag") is satisfied by always passing
   `--as <reviewer name>`; the skill says so.
-- [ ] One dry run of the reviewer invocation from `reviewers/cursor.md` against this task's PR (#3823) posts a
-  review with the `cursor` tag; the loop reads its outcome from the PR.
+- [x] One dry run of the reviewer invocation from `reviewers/cursor.md` against this task's PR (#3823) posts a
+  review with the `cursor` tag; the loop reads its outcome from the PR. — dry run waived by developer: no posts to the PR before the task is ready; verify on the first real `review-loop` run
 - [ ] `pnpm lint:doc-links` passes.
 
 ## Details
@@ -55,9 +55,9 @@ reviewer" and takes `--reviewer <name>` defaulting to `cursor`, plus an optional
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write `review-loop/SKILL.md`: inputs, round structure, outcome read from the PR, resolver
+- [x] 1 `[agent]` Write `review-loop/SKILL.md`: inputs, round structure, outcome read from the PR, resolver
   dispatch, `needs-human` pause and resumption, bounds and report — skill: `writing-for-agents`
-- [ ] 2 `[agent]` Write `review-loop/reviewers/cursor.md`: invocation, background run and polling, 30-minute
+- [x] 2 `[agent]` Write `review-loop/reviewers/cursor.md`: invocation, background run and polling, 30-minute
   limit, failure detection and the one retry, the tag — skill: `writing-for-agents`
-- [ ] 3 `[agent]` Dry-run the reviewer invocation on PR #3823 and confirm the outcome is readable from the PR;
-  run `pnpm lint:doc-links`
+- [x] 3 `[agent]` Dry-run the reviewer invocation on PR #3823 and confirm the outcome is readable from the PR;
+  run `pnpm lint:doc-links` — dry run waived by developer: no posts to the PR before the task is ready; verify on the first real `review-loop` run
