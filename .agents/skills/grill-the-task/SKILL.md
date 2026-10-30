@@ -72,6 +72,14 @@ of them, and marching through all six regardless is how a five-minute task turns
    tracking (page views are auto-wired); UTM query params on any hardcoded links to Blockscout or partner
    products.
 
+**The demo question is asked on every task**, because `none` is a decision and the land step reads it:
+which preset(s) the demo deploys on. What an answer may hold — the preset list, the two-entry cap and the
+`(review-2)` mark — is [`../deploy-demo/demo-entries.md`](../deploy-demo/demo-entries.md); offer those
+options and recommend one from the task: a chain-type feature → that chain's preset; multichain →
+`multichain`; generic UI → `staging`; nothing to deploy (agent instructions, tooling, CI) → `none`. A
+specced task records the answer in the spec header's `Demo` row (`to-spec`); a small task keeps it in
+session for `create-pr` Mode C's deploy offer.
+
 Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it.
 Neither is human verification: which acceptance criteria are `(human)` follows the standing rule in "The
 ticket model" in `.agents/tasks/concepts.md`. Only ask when one sits genuinely on the line.

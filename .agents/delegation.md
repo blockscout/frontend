@@ -18,11 +18,17 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 - Final markup and styling to the mockup, which should **always** be verified by the developer.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`) and Playwright test **scaffolds** (`*.pw.tsx` files, fixtures, mock data).
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
+- Resolving agent-review findings and pushing the fixes, within the review loop's rules (`resolve-review
+  --auto`): fix / reject / defer per its verdict rules, and stop on anything that needs a human.
+- Fixing a red CI run inside the review loop (`.agents/skills/review-loop/ci-fixes.md`), including updating a Playwright
+  baseline when the diff is explained by a spec requirement the commit cites; any other visual diff, and
+  any fix that changes behaviour or restructures beyond the finding, stops for a human.
 - Design readouts from Figma nodes (`design-readout` skill) — recognition only, never implementation.
 
 ## Humans only, for now
 
 - Visual polish of any kind, and any visual asset the readout did not recognize and the spec does not name.
-- Generating and eyeballing Playwright screenshot baselines — and only **once the component matches the
-  mockup**, because a baseline of placeholder presentation is worse than no baseline at all.
+- Generating and eyeballing Playwright screenshot baselines, beyond the cited-requirement case above — and
+  only **once the component matches the mockup**, because a baseline of placeholder presentation is worse
+  than no baseline at all.
 - Design sign-off.

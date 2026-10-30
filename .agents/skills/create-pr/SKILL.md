@@ -80,6 +80,10 @@ description is a placeholder pointing at the plan:
 3. **Create**: `gh pr create --title "..." --body-file ...` (add `--draft` only if the user asked for it).
 4. **Labels** — see "Labels" below, including the check.
 5. Link the created PR in the output.
+6. **Offer the demo** when grilling in this session settled demo presets (the `grill-the-task` demo
+   question; a small task holds the answer in session, not in a spec). Offer the runs
+   [`../deploy-demo/demo-entries.md`](../deploy-demo/demo-entries.md) gives for that answer. An answer of
+   `none`, or a session that never grilled, gets no offer.
 
 ## Labels (all modes)
 
@@ -121,4 +125,5 @@ fails a non-draft PR whose labels break the category rule. Apply with `gh pr edi
   - **Good:** "Introduced a new option, `"fee reception"`, for the `NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE` variable."
 - **Minimum API version:** fill the **Minimum API version** section from the spec header's **Minimum API
   version** row — it may list several services for a multi-service raise (e.g. "Core API v11.2.4+, Admin RS
-  microservice v2.1+"). Mode C or an empty row → infer from the diff or write "None".
+  microservice v2.1+"). Mode C, or a spec header without that row (the header drops empty rows) → infer
+  from the diff or write "None".

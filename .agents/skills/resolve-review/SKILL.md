@@ -3,7 +3,7 @@ name: resolve-review
 description: >-
   Close out review findings — adjudicate each one, fix what deserves fixing, then reply on the PR threads or
   in the task's review file.
-argument-hint: pr|md [<PR url | comment url | review file path>] [--scope branch|uncommitted] [--ticket <NN>]
+argument-hint: pr|md [<PR url | comment url | review file path>] [--auto] [--scope branch|uncommitted] [--ticket <NN>]
 disable-model-invocation: true
 ---
 
@@ -15,7 +15,8 @@ Work through a change's review findings and close them out. The hard part is not
 rather than by trusting how confidently it was worded.
 
 In the product-task workflow this runs at **land**, against the whole-task PR, and mid-ticket against the
-review file `review-changes` wrote for uncommitted work.
+review file `review-changes` wrote for uncommitted work. The `review-loop` skill dispatches it per round
+with `--auto`, as a fresh subagent.
 
 ## Inputs
 
@@ -26,24 +27,36 @@ replied to.
 | --- | --- | --- | --- |
 | `output` *(positional)* | `pr` · `md` | **required** | where the findings live |
 | `target` *(positional)* | PR url, comment url, or review-file path | the current branch's PR / its review file | scopes the run |
+| `--auto` | flag | off | autonomous gating: no Gate 1, no Gate 2, the run commits and pushes (or leaves the push to a caller that says it pushes); the only stop is `needs-human`. `pr` only |
 | `--scope` | `branch` · `uncommitted` | `branch` | which review file: the task's, or the in-flight ticket's. `md` only |
 | `--ticket <NN>` | ticket number | inferred | `--scope uncommitted` only |
 
 ```
 /resolve-review pr                      every open finding on the current branch's PR
+/resolve-review pr --auto               the same, unattended — one round of the review loop
 /resolve-review pr <comment url>        that single comment, scoping the whole run to it
 /resolve-review md                      the task-level review file
 /resolve-review md --scope uncommitted  the in-flight ticket's review file
 /resolve-review md <path>               that review file — one reviewer's, where several ran
 ```
 
-Contradictory inputs stop the run: `--scope` or `--ticket` with `pr`, or `--ticket` with `--scope branch`.
+Contradictory inputs stop the run: `--scope` or `--ticket` with `pr`, `--ticket` with `--scope branch`, or
+`--auto` with `md`.
 
 `--scope` and `--ticket` are `review-changes`' own, and the file resolves off them exactly as it does there
 ([`../review-changes/output-md.md`](../review-changes/output-md.md)) — `branch` is the task-level
 `review.md`, `uncommitted` the ticket's. An explicit `target` path settles the file outright and makes both
 redundant. Several review files side by side means several reviewers ran: resolve them in one pass, and
 where two raise the same defect, fix once and reply on both.
+
+### Auto mode
+
+`--auto` is a gating policy, not a second procedure. Steps 1–3, 5 and 7 run unchanged; the two gates switch
+off, and the **In auto mode** sentences below say what replaces the developer's judgement at each: the two
+verdict rules, and the commit at step 6. Where the interactive run
+would have stopped for the developer, the auto run stops only on `needs-human` — and then **before any
+edit**, returning as [Returning on `needs-human`](#returning-on-needs-human) specifies, so the caller can put
+the questions to the developer and resume the same run.
 
 ## Verdicts, by source
 
@@ -71,12 +84,17 @@ finding is silently promoted to human, whose comments may never be rejected.
   the thread unresolved** and let the human decide whether they still insist. A human comment is never
   rejected — they may be wrong, but that call is theirs, not yours.
 
-Two further rules on verdicts:
+Two further rules on verdicts, each with its auto-mode form:
 
 - **No repeat rejection.** A finding you rejected once, where the reviewer came back and disagreed, may not
   be rejected again on the same grounds. Fix it, reject it on genuinely **new** grounds (once), or mark it
-  `needs-human`.
-- **Nits are `deferred`**, not fixed. The developer may promote one at Gate 1.
+  `needs-human`. **In auto mode** the reviewer's second dispute on the same finding turns it `needs-human`
+  outright: a rejection, a disputed rejection, a rejection on new grounds, a second dispute — and the
+  question goes to the developer. There is never a third rejection.
+- **Nits are `deferred`**, not fixed. The developer may promote one at Gate 1. **In auto mode** a nit is
+  fixed when its fix stays within 5 lines in one file, adds no test and creates no file, and always when the
+  nit concerns comments, docs or tests; any other nit is `deferred` and stays an open thread for the
+  developer.
 
 ## 1. Scope
 
@@ -121,7 +139,8 @@ The heart of the skill. Reason hard here; do not rush toward the gate.
 - **Give the reviewer no deference.** A plausible-sounding finding is not automatically correct; a review
   agent or a bot can contradict the author's intent or argue from the wrong docs.
 - **When a verdict turns on design intent you cannot settle from the code and the spec, mark it
-  `needs-human`.** Do not guess.
+  `needs-human`.** Do not guess. A finding the reviewer already marked `🙋 needs human` is `needs-human`
+  from the start.
 
 For each finding record the verdict, the reasoning, and the proposed action — the fix sketch, or the reply
 text for a `reject` or an `answered`.
@@ -130,12 +149,18 @@ text for a `reject` or an `answered`.
 
 ## 4. Gate 1 — confirm
 
-**A hard stop.** Present a table — finding (id, `file:line` + short quote), source, verdict, reasoning,
-proposed action — and list the `needs-human` items as questions. Then **stop and wait**. Edit no code until
-the developer confirms; they may re-categorise anything or answer the open questions. This is the cheapest
-steering point in the whole process, which is why it comes before any edit.
+**A hard stop.** Present the verdict table (shape below) and list the `needs-human` items as questions.
+Then **stop and wait**. Edit no code until the developer confirms; they may re-categorise anything or answer
+the open questions. This is the cheapest steering point in the whole process, which is why it comes before
+any edit.
 
-**Done when**: the developer has confirmed.
+The verdict table, one row per finding: finding (id, `file:line` + short quote), source, verdict, reasoning,
+proposed action.
+
+**In auto mode** there is no confirmation. With no `needs-human` finding, go straight to step 5. With one or
+more, this is where the run stops: [Returning on `needs-human`](#returning-on-needs-human).
+
+**Done when**: the developer has confirmed — or, in auto mode, the table holds no `needs-human` row.
 
 ## 5. Fix
 
@@ -151,6 +176,30 @@ findings untouched.
 anything is pushed or replied to. In `pr` mode the developer commits and pushes the fixes — the reviewer's
 next follow-up round reads them from the PR. In `md` mode the fixes stay uncommitted, which is what the
 reviewer's follow-up round reads.
+
+**In auto mode** there is no approval: commit the fixes yourself — one commit, a plain descriptive subject,
+the repo's `Co-Authored-By` trailer, no `#issue` reference — and `git push`. When the caller's brief says it
+pushes itself, commit and leave the push to it: the `review-loop` skill pushes once per round after its CI
+wait, and the reviewer's follow-up round reads the PR from that push.
+
+## Returning on `needs-human`
+
+The auto run's one stop, and the contract the `review-loop` skill reads. It happens at step 4, **before any
+edit**: the working tree is as the run found it, nothing is committed, replied to or resolved.
+
+Return one block the caller can present verbatim:
+
+1. The full verdict table from step 4 — **every** finding, not only the `needs-human` rows — so the
+   developer sees what the run will do once resumed.
+2. The questions, one per `needs-human` finding, each naming its finding id and stating what the code and
+   the spec could not settle.
+
+Then stop. Nothing else is in the block: the caller presents it, collects the developer's answers, and
+**resumes the same run with the answers** — the same agent, with its table and reasoning still in context,
+not a fresh dispatch. In Claude Code that is a `SendMessage` to this subagent. On resumption, re-adjudicate
+each `needs-human` finding against its answer (`fix`, `reject` or `answered`, per the source's row in the
+verdicts table), add the ones ruled `fix` to the fix set, and continue at step 5. The reply at step 7 cites
+the developer's answer as the reasoning.
 
 ## 7. Close out
 
