@@ -40,8 +40,8 @@ is `needs-human`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Extend `review-loop/SKILL.md`: CI wait, CI-fix dispatch, one push per round, the
+- [x] 1 `[agent]` Extend `review-loop/SKILL.md`: CI wait, CI-fix dispatch, one push per round, the
   cleared-and-green terminal condition and the post-clear bound — skill: `writing-for-agents`
-- [ ] 2 `[agent]` Write `review-loop/ci-fixes.md`: Playwright and other-gate procedures with their
+- [x] 2 `[agent]` Write `review-loop/ci-fixes.md`: Playwright and other-gate procedures with their
   `needs-human` escapes — skill: `writing-for-agents`
-- [ ] 3 `[agent]` Extend `.agents/delegation.md` with the baseline line; run `pnpm lint:doc-links`
+- [x] 3 `[agent]` Extend `.agents/delegation.md` with the baseline line; run `pnpm lint:doc-links`

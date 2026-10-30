@@ -27,7 +27,7 @@ replied to.
 | --- | --- | --- | --- |
 | `output` *(positional)* | `pr` · `md` | **required** | where the findings live |
 | `target` *(positional)* | PR url, comment url, or review-file path | the current branch's PR / its review file | scopes the run |
-| `--auto` | flag | off | autonomous gating: no Gate 1, no Gate 2, the run commits and pushes; the only stop is `needs-human`. `pr` only |
+| `--auto` | flag | off | autonomous gating: no Gate 1, no Gate 2, the run commits and pushes (or leaves the push to a caller that says it pushes); the only stop is `needs-human`. `pr` only |
 | `--scope` | `branch` · `uncommitted` | `branch` | which review file: the task's, or the in-flight ticket's. `md` only |
 | `--ticket <NN>` | ticket number | inferred | `--scope uncommitted` only |
 
@@ -178,8 +178,9 @@ next follow-up round reads them from the PR. In `md` mode the fixes stay uncommi
 reviewer's follow-up round reads.
 
 **In auto mode** there is no approval: commit the fixes yourself — one commit, a plain descriptive subject,
-the repo's `Co-Authored-By` trailer, no `#issue` reference — and `git push`. The `review-loop` skill reads
-the pushed state; the reviewer's follow-up round reads the PR.
+the repo's `Co-Authored-By` trailer, no `#issue` reference — and `git push`. When the caller's brief says it
+pushes itself, commit and leave the push to it: the `review-loop` skill pushes once per round after its CI
+wait, and the reviewer's follow-up round reads the PR from that push.
 
 ## Returning on `needs-human`
 

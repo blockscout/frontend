@@ -8,6 +8,6 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-resolve-review-auto/`
 - [x] 02 → `tickets/02-review-loop-core/`
-- [ ] 03 → `tickets/03-review-loop-ci/`
+- [x] 03 → `tickets/03-review-loop-ci/`
 - [ ] 04 → `tickets/04-demo-presets/`
 - [ ] 05 → `tickets/05-finalize-task-orchestration/`

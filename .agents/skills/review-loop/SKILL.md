@@ -1,18 +1,21 @@
 ---
 name: review-loop
 description: >-
-  Run the review loop on an open PR — a headless reviewer round, an autonomous resolver, repeated until the
-  review is cleared; pauses only on a `needs-human` finding.
+  Run the review loop on an open PR — a headless reviewer round, an autonomous resolver, a CI wait and fix,
+  repeated until the review is cleared and CI is green; pauses only on a `needs-human` finding.
 argument-hint: "[<PR url>] [--reviewer <name>] [--model <id>]"
 disable-model-invocation: true
 ---
 
 # Review loop
 
-Close the loop between `review-changes` and `resolve-review` on one PR. Each **round**: the reviewer
-reviews the PR from its own CLI, the orchestrator reads the outcome from the PR, and while the outcome is
-`blocked` a fresh resolver fixes and pushes. The loop ends `cleared`, or stops with a report. The one
-decision it never makes alone is a `needs-human` finding: that pauses the round for the developer.
+Close the loop between `review-changes`, `resolve-review` and CI on one PR. Each **round**: the reviewer
+reviews the PR from its own CLI, and the orchestrator reads the outcome from the PR. While the outcome is
+`blocked` a fresh resolver fixes. The round then waits for the Checks run on the branch, fixes it when red,
+and pushes everything **once**. The loop ends **cleared and green**: the review outcome is `cleared` and the
+Checks run for the current `HEAD` is green. Otherwise it stops with a report. The one decision it never
+makes alone is a `needs-human` finding, from the review or from a CI fix: that pauses the round for the
+developer.
 
 In the product-task workflow `finalize-task` hands off here after the PR is flipped to ready. The skill
 also runs by hand on any open PR; `create-pr` never offers it.
@@ -64,28 +67,32 @@ Rounds are numbered from 1. Each round:
    status line, in the shape [`../review-changes/output-pr.md`](../review-changes/output-pr.md) gives:
    `✅ **Cleared**` or `🛑 **Blocked**`, and the `🙋 <n> needs human` count when present. A review newer
    than the round's start with that footer is the round's outcome; none means the reviewer did not run.
-3. **`cleared`** → the loop ends. Go to step 4.
-4. **`blocked`** → dispatch the resolver (step 3). When it returns with its fixes pushed, the round is over
-   and the next round starts at 1.
+3. **`blocked`** → dispatch the resolver (step 3). It returns with the review fixes **committed, not
+   pushed**. Then wait for CI and fix a red run (step 4), **push once**, and start the next round at 1.
+4. **`cleared`** → no resolver. Wait for CI (step 4): green ends the loop at step 5; red enters the
+   post-clear CI-fix cycles step 4 describes, which end the loop without another review round.
 
-A CI wait and CI fix step belongs after the resolver returns, before the next round; T03 of the review-loop
-task adds it, and the terminal condition becomes "cleared and green".
+**One push per round.** The review fixes and the CI fix are separate commits — the history shows which
+change came from which source — and they leave in one `git push` after the CI wait. Nothing is pushed
+between the resolver's return and that push.
 
 **Bounds.** Three review rounds. A third round that still reads `blocked` ends the loop with a report. The
 reviewer's own stops — a transport failure that survived its retry, a timeout — end the loop too.
 
-**Done when**: the outcome is `cleared`, or a bound or a reviewer stop has been hit.
+**Done when**: the outcome is `cleared` and the current `HEAD` is green, or a bound or a reviewer stop has
+been hit.
 
 ## 3. Dispatch the resolver
 
 Spawn **one fresh** `general-purpose` subagent per round — fresh, so it adjudicates against the code rather
 than defending what it wrote. Its brief: read [`../resolve-review/SKILL.md`](../resolve-review/SKILL.md)
-and run it as `resolve-review pr --auto <PR url>`, in this tree, reporting back when the fixes are pushed
-or with the `needs-human` block. Wait for it; edit nothing while it works.
+and run it as `resolve-review pr --auto <PR url>`, in this tree, **committing but not pushing** — the loop
+pushes once per round after its CI wait — and reporting back with the commit or with the `needs-human`
+block. Wait for it; edit nothing while it works.
 
 The resolver returns one of two ways:
 
-- **Fixes pushed.** Its report carries the verdict counts and the push. The round is over.
+- **Fixes committed.** Its report carries the verdict counts and the commit sha. Continue at step 4.
 - **`needs-human`.** It stopped before any edit and returned the block that
   [`../resolve-review/SKILL.md`](../resolve-review/SKILL.md) → "Returning on `needs-human`" specifies — the
   full verdict table and one question per `needs-human` finding. Then:
@@ -95,19 +102,56 @@ The resolver returns one of two ways:
      waiting.
   4. **Resume the same resolver with the answers** — the same agent, its table and reasoning still in
      context, not a fresh dispatch. In Claude Code that is a `SendMessage` to the subagent. It folds the
-     answers into its fix set and proceeds; the round continues at "Fixes pushed".
+     answers into its fix set and proceeds; the round continues at "Fixes committed".
 
 The loop never ends with an unanswered `needs-human` finding: a bound or a stop is reported only once the
-pending answers are in and the resolver has pushed.
+pending answers are in and the fixes are pushed.
 
-**Done when**: the resolver has reported its fixes pushed.
+**Done when**: the resolver has reported its review fixes committed.
 
-## 4. Report
+## 4. Wait for CI, fix a red run
+
+The run to watch is the **Checks** workflow run for the PR's pushed head — `headRefOid`, which is the last
+pushed commit, not the local `HEAD` once the resolver has committed. Find it by head SHA, never by "latest
+on the branch": the workflow has no `cancel-in-progress`, so every push leaves its own run going and the
+newest one may belong to an older commit.
+
+```bash
+gh run list --workflow=checks.yml --commit <headRefOid> --json databaseId,status,conclusion,url
+gh run watch <databaseId> --exit-status          # blocks until the run completes
+```
+
+- **No run for that SHA** → the workflow's `paths-ignore` skipped the push (agent docs, `docs/`, deploy
+  values): the newest completed Checks run on the branch stands in for it. None on the branch at all counts
+  as green.
+- **Pending** (`queued`, `in_progress`) → watch it to completion. Edit nothing while waiting.
+- **Green** (`success`) → in a `blocked` round, push and start the next round; after `cleared`, the loop
+  ends at step 5.
+- **Red** (`failure`, `timed_out`, `cancelled`) → a CI fix:
+  1. **Resume the round's resolver** with [`ci-fixes.md`](ci-fixes.md) as its brief, the run url and the
+     PR url — the same agent, so one agent holds both fix sets. After `cleared` no resolver exists for the
+     round: spawn a fresh `general-purpose` subagent with the same brief.
+  2. It returns with the CI fix in its **own commit**, separate from the review fixes, or with a
+     `needs-human` block in the shape `ci-fixes.md` gives. A `needs-human` here pauses exactly as in step 3:
+     print verbatim, `PushNotification`, wait, resume the same agent with the answers.
+  3. **Push once.** In a `blocked` round that push carries the review fixes and the CI fix, and the next
+     round starts. After `cleared` it carries the CI fix alone, and the loop waits for the run on the new
+     `headRefOid`: green ends the loop, red starts another CI-fix cycle.
+
+**Post-clear bound.** Two CI-fix cycles after `cleared`. A second cycle that still ends red stops the loop
+with a report, the fixes pushed. No review round follows a post-clear CI fix: a follow-up review over a
+baseline update or an added assertion would be arbitration with nothing to arbitrate.
+
+**Done when**: the round's push is out and the next round can start, or the loop has ended cleared and
+green, or the post-clear bound has been hit.
+
+## 5. Report
 
 Before anything is said, confirm the PR is in a **consistent pushed state**: a clean tree and `HEAD` equal
 to the PR's `headRefOid`. A stop that leaves local commits behind pushes them first.
 
-Then report in the terminal: the PR url, the outcome (`cleared`, or why the loop stopped — rounds
-exhausted, reviewer failure after its retry, timeout), the number of rounds run, the counts from the last
-resolver report, and anything left open — `deferred` nits and `answered` human threads stay as open
-threads for the developer. Leave the PR's threads as the reviewer and the resolver left them.
+Then report in the terminal: the PR url, the outcome (`cleared` and green, or why the loop stopped — rounds
+exhausted, post-clear CI-fix cycles exhausted, reviewer failure after its retry, timeout), the number of
+rounds run and of post-clear CI-fix cycles, the Checks run url for the final `HEAD` and its conclusion, the
+counts from the last resolver report, and anything left open — `deferred` nits and `answered` human threads
+stay as open threads for the developer. Leave the PR's threads as the reviewer and the resolver left them.
