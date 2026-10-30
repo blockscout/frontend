@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
-import type { schemas } from '@blockscout/api-types';
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+
+import { TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG } from 'src/features/token-action-button/utils/is-token-action-button-hidden';
 
 export const nameTag: AddressMetadataTagApi = {
   slug: 'quack-quack',
@@ -146,18 +147,12 @@ export const hiddenProtocolTagWithMeta: AddressMetadataTagApi = {
 };
 
 export const tokenActionButtonHiddenServiceTag: AddressMetadataTagApi = {
-  slug: 'token_action_button_hidden',
+  slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG,
   name: 'Token action button hidden',
   tagType: 'service',
   ordinal: 0,
   meta: null,
 };
-
-// the core API schema enumerates only the tag types it knew at generation time, while the service tags the metadata service
-// returns are proxied through it untouched
-export function toCoreMetadataTag(tag: AddressMetadataTagApi): schemas['MetadataTag'] {
-  return tag as schemas['MetadataTag'];
-}
 
 export function generateAddressMetadataInfo(addressHash: string, tag: AddressMetadataTagApi): AddressMetadataInfo {
   return {

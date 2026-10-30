@@ -2,6 +2,8 @@
 
 import type { GetServerSidePropsContext } from 'next';
 
+import { TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG } from 'src/features/token-action-button/utils/is-token-action-button-hidden';
+
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { describe, expect, it } from 'vitest';
@@ -71,7 +73,7 @@ describe('accountsLabelSearch guard', () => {
   });
 
   it('returns 404 for the service tag type', async() => {
-    expect(await runAccountsLabelSearchGuard(makeContext({ slug: 'token_action_button_hidden', tagType: 'service' }))).toEqual({ notFound: true });
+    expect(await runAccountsLabelSearchGuard(makeContext({ slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG, tagType: 'service' }))).toEqual({ notFound: true });
   });
 
   it('returns 404 without a tag type', async() => {

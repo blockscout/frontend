@@ -7,7 +7,7 @@ import * as decodedInputDataMock from 'src/slices/log/mocks/decoded-input';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 
 import { publicTag, privateTag, watchlistName } from 'src/features/account/mocks/address-tags';
-import { protocolTag, toCoreMetadataTag } from 'src/features/address-metadata/mocks/tags';
+import { protocolTag } from 'src/features/address-metadata/mocks/tags';
 
 export const base: schemas['TransactionResponse'] = {
   base_fee_per_gas: '10000000000',
@@ -107,7 +107,7 @@ export const withProtocolTag: schemas['TransactionResponse'] = {
   to: toAddressModel({
     ...base.to,
     metadata: {
-      tags: [ toCoreMetadataTag(protocolTag) ],
+      tags: [ protocolTag ],
     },
     private_tags: [],
     watchlist_names: [],

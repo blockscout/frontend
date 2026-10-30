@@ -2,18 +2,18 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { isTokenActionButtonHidden } from './is-token-action-button-hidden';
+import { isTokenActionButtonHidden, TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG } from './is-token-action-button-hidden';
 
 describe('isTokenActionButtonHidden', () => {
   it('is true when the address carries the service tag with the blacklist slug', () => {
     expect(isTokenActionButtonHidden([
       { slug: 'uniswap', tagType: 'protocol' },
-      { slug: 'token_action_button_hidden', tagType: 'service' },
+      { slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG, tagType: 'service' },
     ])).toBe(true);
   });
 
   it('is false for the blacklist slug under another tag type', () => {
-    expect(isTokenActionButtonHidden([ { slug: 'token_action_button_hidden', tagType: 'generic' } ])).toBe(false);
+    expect(isTokenActionButtonHidden([ { slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG, tagType: 'generic' } ])).toBe(false);
   });
 
   it('is false for another service tag', () => {

@@ -1220,7 +1220,7 @@ Solidity-to-UML smart contract visualizer.
 
 ### Token action button
 
-An action button on the ERC-20 token page, leading to an external site. On desktop it is right-aligned in the token title row; on mobile it takes a dedicated row below the token tags. The button is hidden on tokens whose address carries the `token_action_button_hidden` tag of the `service` type in the metadata service. In a multichain cluster the variable is cluster-level: one button, shown on the token pages of every chain in the cluster.
+An action button on the ERC-20 token page, leading to an external site. The button is hidden on tokens whose address carries the `token-action-button-hidden` tag of the `service` type in the metadata service.
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
