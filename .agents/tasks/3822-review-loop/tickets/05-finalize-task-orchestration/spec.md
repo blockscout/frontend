@@ -18,17 +18,17 @@ land step.
 
 ## Acceptance criteria
 
-- [ ] `finalize-task` lists the five steps in order and hands off to `review-loop` and `deploy-demo` (with
+- [x] `finalize-task` lists the five steps in order and hands off to `review-loop` and `deploy-demo` (with
   T04's explicit inputs) rather than inlining them.
-- [ ] Demo slot and build rules as above, including the `(review-2)` mark, `none`, and "loop stopped short →
+- [x] Demo slot and build rules as above, including the `(review-2)` mark, `none`, and "loop stopped short →
   no deploy".
-- [ ] Final report content and the push notification are specified; no demo comment on the PR.
-- [ ] `.agents/tasks/README.md` step 6 describes prune → ready → review loop → demos → report, linking the
+- [x] Final report content and the push notification are specified; no demo comment on the PR.
+- [x] `.agents/tasks/README.md` step 6 describes prune → ready → review loop → demos → report, linking the
   skills.
-- [ ] `pnpm lint:doc-links` passes.
+- [x] `pnpm lint:doc-links` passes.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Extend `finalize-task/SKILL.md`: loop handoff, demo deploys, final report — skill:
+- [x] 1 `[agent]` Extend `finalize-task/SKILL.md`: loop handoff, demo deploys, final report — skill:
   `writing-for-agents`
-- [ ] 2 `[agent]` Update `.agents/tasks/README.md` step 6; run `pnpm lint:doc-links`
+- [x] 2 `[agent]` Update `.agents/tasks/README.md` step 6; run `pnpm lint:doc-links`
