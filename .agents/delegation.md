@@ -18,6 +18,8 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 - Final markup and styling to the mockup, which should **always** be verified by the developer.
 - Unit tests (`*.spec.ts` / `*.spec.tsx`) and Playwright test **scaffolds** (`*.pw.tsx` files, fixtures, mock data).
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
+- Resolving agent-review findings and pushing the fixes, within the review loop's rules (`resolve-review
+  --auto`): fix / reject / defer per its verdict rules, and stop on anything that needs a human.
 - Design readouts from Figma nodes (`design-readout` skill) — recognition only, never implementation.
 
 ## Humans only, for now

@@ -44,6 +44,6 @@ round, so its return shape on `needs-human` is the contract the loop reads.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add `--auto` to `resolve-review`: Inputs row, argument hint, gate changes, nit and
+- [x] 1 `[agent]` Add `--auto` to `resolve-review`: Inputs row, argument hint, gate changes, nit and
   rejection rules, the `needs-human` return and resumption — skill: `writing-for-agents`
-- [ ] 2 `[agent]` Extend `.agents/delegation.md` with the resolver line; run `pnpm lint:doc-links`
+- [x] 2 `[agent]` Extend `.agents/delegation.md` with the resolver line; run `pnpm lint:doc-links`
