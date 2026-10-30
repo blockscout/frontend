@@ -14,7 +14,7 @@ import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
 import TransactionsCrossChainStats from './TransactionsCrossChainStats';
 
 const TransactionsCrossChain = () => {
-  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash, filters, onFilterChange } = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:messages',
     options: {
       placeholderData: generateListStub<'interchainIndexer:messages'>(INTERCHAIN_MESSAGE, 50, { next_page_params: { page_token: 'token' } }),
@@ -42,6 +42,8 @@ const TransactionsCrossChain = () => {
         isError={ isError }
         actionBar={ actionBar }
         resetKey={ queryHash }
+        filters={ filters }
+        onFilterChange={ onFilterChange }
       />
     </>
   );

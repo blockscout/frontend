@@ -134,7 +134,7 @@ set only in per-instance files, or nowhere.
 Check each and clean up if the variable/feature touched it:
 
 - CSP allowance under `src/server/csp/policies/`.
-- `ASSETS_ENVS` array in `deploy/scripts/download_assets.sh` (asset-URL vars).
+- `ASSET_ENVS` in `deploy/tools/assets-downloader/assets.ts` (asset-URL vars).
 - `deploy/tools/sitemap-generator/next-sitemap.config.js`.
 - `deploy/tools/llms-txt-generator/` generators.
 - `public/icons/name.d.ts` (if a feature-only icon is gone).

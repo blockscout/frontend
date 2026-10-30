@@ -117,5 +117,6 @@ pnpm exec dotenv -e /path/to/instance.env -- pnpm run validate
 
 `collect_envs.sh` writes `.env.registry` and `.env` next to the bundle; both are git-ignored.
 Without the `download_assets.sh` step the CLI stops with `Unable to read file` (e.g. `featured_networks.json`) on a
-fresh checkout; re-run it when the instance env changes. A failed download (e.g. a dead logo URL) makes the script 
-exit 1 after saving the rest; validate only needs the JSON configs, so it still runs unless one of those failed.
+fresh checkout; re-run it when the instance env changes. The script builds `deploy/tools/assets-downloader` on first
+use. A failed or rejected download (e.g. a dead logo URL) makes it exit 1 after saving the rest; validate only needs
+the JSON configs, so it still runs unless one of those failed.

@@ -12,13 +12,14 @@ import type * as metadata from 'src/shell/metadata';
 import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
 
-import { SECOND } from 'src/toolkit/utils/consts';
+import { SECOND, YEAR } from 'src/toolkit/utils/consts';
 
 import { isLikelyHumanBrowser, isKnownBotRequest } from '../utils/checkRealBrowser';
 
 const adBannerFeature = config.features.adsBanner;
 
 const PAGEVIEW_PING_TIMEOUT = 2 * SECOND;
+const UUID_COOKIE_MAX_AGE_SEC = YEAR / SECOND;
 
 export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
@@ -59,7 +60,11 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   let uuid = cookies.getFromCookieString(req.headers.cookie || '', cookies.NAMES.UUID);
   if (!uuid && appProfile !== 'private') {
     uuid = crypto.randomUUID();
-    res.setHeader('Set-Cookie', `${ cookies.NAMES.UUID }=${ uuid }; Path=/${ config.app.protocol === 'https' ? '; Secure' : '' }`);
+    // long-lived so that a returning browser keeps its analytics identity across browser sessions
+    res.setHeader(
+      'Set-Cookie',
+      `${ cookies.NAMES.UUID }=${ uuid }; Path=/; Max-Age=${ UUID_COOKIE_MAX_AGE_SEC }${ config.app.protocol === 'https' ? '; Secure' : '' }`,
+    );
   }
 
   const isTrackingDisabled = process.env.DISABLE_TRACKING === 'true' || appProfile === 'private';

@@ -82,10 +82,51 @@ describe('getInitialColorTheme', () => {
     expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('dim');
   });
 
-  it('follows the OS preference when no default is configured and there are no cookies', async() => {
+  it('is the system theme when no default is configured and there are no cookies', async() => {
     const { getInitialColorTheme } = await loadUtils([]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('system');
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('system');
+  });
+
+  it('keeps the system theme from the cookie', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'system', prefersDark: false })).toBe('system');
+  });
+
+  it('follows the OS preference when the offered themes leave the system theme out and there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark"]' ] ]);
 
     expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('dark');
     expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('light');
+  });
+
+  it('derives a concrete theme from the cookie color mode when the system theme is no longer offered', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark"]' ] ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'system', prefersDark: false })).toBe('dark');
+  });
+});
+
+describe('resolveColorTheme', () => {
+  it('resolves the system theme to the darkest offered theme of the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([]);
+
+    expect(resolveColorTheme('system', true)).toBe('dark');
+    expect(resolveColorTheme('system', false)).toBe('light');
+  });
+
+  it('resolves the system theme to the darkest available theme of the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","midnight","system"]' ] ]);
+
+    expect(resolveColorTheme('system', true)).toBe('midnight');
+  });
+
+  it('leaves a concrete theme alone whatever the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([]);
+
+    expect(resolveColorTheme('dim', false)).toBe('dim');
+    expect(resolveColorTheme('light', true)).toBe('light');
   });
 });

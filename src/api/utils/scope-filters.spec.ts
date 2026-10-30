@@ -110,6 +110,34 @@ describe('scope filter derivation', () => {
     );
   });
 
+  test('a user bridge_ids value replaces the deployment bridges', async() => {
+    const url = await buildUrlWithEnvs(MULTICHAIN_ENVS, 'interchainIndexer:messages', {
+      queryParams: { bridge_ids: '3' },
+    });
+
+    expect(url).toBe(`${ INTERCHAIN_HOST }/api/v1/interchain/messages?bridge_ids=3&include_unindexed_chains=false`);
+  });
+
+  test('an empty user bridge_ids falls back to the deployment bridges', async() => {
+    const url = await buildUrlWithEnvs(MULTICHAIN_ENVS, 'interchainIndexer:messages', {
+      queryParams: { bridge_ids: '' },
+    });
+
+    expect(url).toBe(
+      `${ INTERCHAIN_HOST }/api/v1/interchain/messages?bridge_ids=${ BRIDGE_IDS_ENCODED }&include_unindexed_chains=false`,
+    );
+  });
+
+  test('user chain filters pass through untouched next to the profile', async() => {
+    const url = await buildUrlWithEnvs(CROSS_CHAIN_ENVS, 'interchainIndexer:transfers', {
+      queryParams: { src_chain_ids: '100', dst_chain_ids: '1' },
+    });
+
+    expect(url).toBe(
+      `${ INTERCHAIN_HOST }/api/v1/interchain/transfers?src_chain_ids=100&dst_chain_ids=1&home_chain_id=1&include_unindexed_chains=false`,
+    );
+  });
+
   test('a resource declaring bridge_ids only never sends home_chain_id', async() => {
     const url = await buildUrlWithEnvs(CROSS_CHAIN_ENVS, 'interchainIndexer:chains');
 
@@ -121,8 +149,9 @@ describe('scope filter derivation', () => {
 
 const INTERCHAIN_RESOURCES = Object.entries(RESOURCES.interchainIndexer) as Array<[ string, ApiResource ]>;
 
-// message details deliberately takes no profile, so a link to it resolves even for a row the lists hide
-const UNSCOPED_BY_DESIGN = [ 'message' ];
+// message details deliberately takes no profile, so a link to it resolves even for a row the lists hide;
+// the bridges directory is narrowed to the deployment scope client-side, where bridge names are needed
+const UNSCOPED_BY_DESIGN = [ 'message', 'bridges' ];
 
 const KNOWN_SCOPE_FILTERS = Object.keys(SCOPE_FILTER_RESOLVERS.interchainIndexer ?? {});
 

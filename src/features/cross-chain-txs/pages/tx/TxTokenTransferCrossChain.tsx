@@ -9,6 +9,8 @@ import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPagina
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
+import CrossChainFilterTags from '../../components/filters/CrossChainFilterTags';
+import { hasActiveColumnFilters } from '../../components/filters/utils';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
 
 interface Props {
@@ -16,9 +18,10 @@ interface Props {
   crossChainQuery: ApiPaginatedQueryResult<'interchainIndexer:tx_transfers'>;
   isLoading?: boolean;
   tableTop?: number;
+  actionBar?: React.ReactNode;
 }
 
-const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop }: Props) => {
+const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop, actionBar }: Props) => {
   const content = crossChainQuery.data?.items ? (
     <TableContainerScrollable>
       <TokenTransfersCrossChainTable
@@ -26,22 +29,29 @@ const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableT
         isLoading={ isLoading || crossChainQuery.isInitialLoading }
         top={ tableTop }
         resetKey={ crossChainQuery.queryHash }
+        filters={ crossChainQuery.filters }
+        onFilterChange={ crossChainQuery.onFilterChange }
       />
     </TableContainerScrollable>
   ) : null;
 
   return (
-    <DataList
-      isError={ txQuery.isError || crossChainQuery.isError }
-      itemsNum={ crossChainQuery.data?.items.length }
-      emptyText="There are no cross-chain token transfers."
-      emptyStateProps={{
-        term: 'token transfer',
-      }}
-      isTransitioning={ crossChainQuery.isTransitioning }
-    >
-      { content }
-    </DataList>
+    <>
+      <CrossChainFilterTags filters={ crossChainQuery.filters } onFilterChange={ crossChainQuery.onFilterChange } mb={ actionBar ? 6 : 3 }/>
+      <DataList
+        actionBar={ actionBar }
+        isError={ txQuery.isError || crossChainQuery.isError }
+        itemsNum={ crossChainQuery.data?.items.length }
+        emptyText="There are no cross-chain token transfers."
+        emptyStateProps={{
+          term: 'token transfer',
+        }}
+        hasActiveFilters={ hasActiveColumnFilters(crossChainQuery.filters) }
+        isTransitioning={ crossChainQuery.isTransitioning }
+      >
+        { content }
+      </DataList>
+    </>
   );
 };
 

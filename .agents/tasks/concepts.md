@@ -18,6 +18,10 @@ this file carries the meaning they act on. Layout and file ownership live in
 - **Questions** — every open question the task raised, each with a stable id (`Q01`), its owner, Slack
   permalink, status, and answer once it lands; `questions.md`. A ticket that a question gates names that id
   in its `Blocked by`.
+- **Inbox** — decisions about the task made in the **outer loop**: the part of the work no session sees,
+  where the team meets, chats and writes docs. Each source is one section of `inbox.md`, `pending` until
+  `process-task-inbox` folds it into the questions, the spec and the tickets. A pending section blocks
+  `to-tickets`, `implement-ticket` and `finalize-task`: the task does not move on context it has not read.
 - **Brief** — the marker of a **deferred** ticket: a ticket folder with a `brief.md` and no `spec.md`,
   because the ticket can't be scoped until something happens first (a prototype, a spike, an answer nobody
   has yet).
@@ -95,7 +99,7 @@ Three rules keep the artifacts a *final statement of intent*, never a log of how
 
 `to-spec` runs **once** per task; there is no update or merge mode. The spec body — Functional Requirements,
 Data & API, UI inventory — is **immutable**. The mutable artifacts are `progress.md` checkboxes,
-`questions.md`, and — each until it freezes — the ticket specs, their leaf checkboxes included. A rare
+`questions.md`, `inbox.md`, and — each until it freezes — the ticket specs, their leaf checkboxes included. A rare
 genuine requirement change is a plain in-place edit: no superseding history, no
 changelog. The spec is always the *final* statement, never a record of iterations.
 
@@ -118,7 +122,7 @@ as a whole.
 
 ### Disposability and pruning
 
-At land, `finalize-task` prunes `tickets/`, `progress.md`, `questions.md` and any review file — **only
+At land, `finalize-task` prunes `tickets/`, `progress.md`, `questions.md`, `inbox.md` and any review file — **only
 `spec.md` survives** in the tree. The decomposition is preserved in git history (one commit per ticket), so
 nothing is lost: precedent to browse is the accumulated specs; decomposition precedent is git history.
 Pruning runs **before** the whole-task `review-changes` pass, which reads the spec and the diff and posts to

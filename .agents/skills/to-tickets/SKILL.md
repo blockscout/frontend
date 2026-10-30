@@ -20,7 +20,8 @@ and note it, rather than guessing.
 ## Step 1 — Load
 
 Resolve the task folder from the issue number or the branch (`issue-<number>`), and read its `spec.md`, 
-`questions.md` and `.agents/delegation.md`.
+`questions.md` and `.agents/delegation.md`. An `inbox.md` with a section whose status is `pending` is a
+stop: tell the developer to run `process-task-inbox` first, and end.
 
 ## Step 2 — Explore the codebase (optional)
 

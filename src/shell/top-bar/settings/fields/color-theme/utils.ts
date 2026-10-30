@@ -4,8 +4,8 @@ import config from 'src/config';
 
 import type { ColorMode } from 'src/toolkit/chakra/color-mode';
 
-import type { ColorThemeId } from './config';
-import { COLOR_THEMES } from './config';
+import type { ColorThemeId, ConcreteColorThemeId } from './config';
+import { COLOR_THEMES, SYSTEM_COLOR_THEME_ID, isConcreteColorTheme } from './config';
 
 const getNestedValue = (obj: Record<string, unknown>, property: string) => {
   const keys = property.split('.');
@@ -23,8 +23,8 @@ const getNestedValue = (obj: Record<string, unknown>, property: string) => {
   }
 };
 
-export function getThemeHexWithOverrides(colorThemeId: ColorThemeId) {
-  const defaultHex = COLOR_THEMES.find((theme) => theme.id === colorThemeId)?.hex;
+export function getThemeHexWithOverrides(colorThemeId: ConcreteColorThemeId): string | undefined {
+  const defaultHex = COLOR_THEMES.filter(isConcreteColorTheme).find((theme) => theme.id === colorThemeId)?.hex;
 
   if (!defaultHex) {
     return;
@@ -48,11 +48,19 @@ export function isColorThemeAvailable(colorThemeId: string): colorThemeId is Col
   return config.shell.topBar.colorTheme.themes.some((theme) => theme.id === colorThemeId);
 }
 
-export function getDefaultColorTheme(colorMode: ColorMode): ColorThemeId {
-  const themes = config.shell.topBar.colorTheme.themes;
+export function getDefaultColorTheme(colorMode: ColorMode): ConcreteColorThemeId {
+  const themes = config.shell.topBar.colorTheme.themes.filter(isConcreteColorTheme);
   const colorTheme = themes.filter((theme) => theme.colorMode === colorMode).slice(-1)[0];
 
   return (colorTheme ?? themes[0]).id;
+}
+
+export function resolveColorTheme(colorThemeId: ColorThemeId, prefersDark: boolean): ConcreteColorThemeId {
+  if (colorThemeId === SYSTEM_COLOR_THEME_ID) {
+    return getDefaultColorTheme(prefersDark ? 'dark' : 'light');
+  }
+
+  return colorThemeId;
 }
 
 interface InitialColorThemeParams {

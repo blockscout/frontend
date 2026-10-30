@@ -9,15 +9,12 @@ import { getTokenTypes } from 'src/slices/token/utils/token-types';
 import dayjs from 'src/shared/date-and-time/dayjs';
 
 import { HOUR, DAY, MONTH } from 'src/toolkit/utils/consts';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import { FILTER_PARAM_NAMES } from './consts';
 
-export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config'], withAll = false) => {
+export const getAdvancedFilterTypes = (chainConfig?: Array<ClusterChainConfig['app_config']> | ClusterChainConfig['app_config']) => {
   return [
-    ...(withAll ? [ {
-      id: 'all',
-      name: 'All',
-    } ] : []),
     {
       id: 'coin_transfer',
       name: 'Coin Transfer',
@@ -61,7 +58,7 @@ function getFilterValueWithNames(values?: Array<string>, names?: Array<string>) 
   } else if (Array.isArray(names) && Array.isArray(values)) {
     return names.map((n, i) => n ? n : values[i]).join(', ');
   } else {
-    return names;
+    return names.join(', ');
   }
 }
 
@@ -105,6 +102,13 @@ export function getFilterTags(filters: AdvancedFilterParams, chainConfig?: Clust
       }
       case 'age_to': {
         valueStr = dayjs(filtersToShow.age_to).format('YYYY-MM-DD');
+        break;
+      }
+      case 'from_address_hashes_to_include':
+      case 'from_address_hashes_to_exclude':
+      case 'to_address_hashes_to_include':
+      case 'to_address_hashes_to_exclude': {
+        valueStr = castArray(value).map((hash) => shortenString(hash)).join(', ');
         break;
       }
       default: {

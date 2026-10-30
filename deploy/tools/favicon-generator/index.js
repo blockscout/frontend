@@ -30,17 +30,25 @@ async function writeOutput(result, outputDir) {
   }
 }
 
+async function readMasterImage() {
+  const masterFile = process.env.MASTER_FILE;
+  if (masterFile) {
+    return fs.readFile(masterFile);
+  }
+
+  const masterUrl = process.env.MASTER_URL;
+  if (!masterUrl) {
+    throw new Error('FAVICON_MASTER_URL or NEXT_PUBLIC_NETWORK_ICON must be set');
+  }
+
+  const response = await fetch(masterUrl);
+  return Buffer.from(await response.arrayBuffer());
+}
+
 async function generateFavicons() {
   console.log('Generating favicons...');
-  const masterUrl = process.env.MASTER_URL;
   try {
-    if (!masterUrl) {
-      throw new Error('FAVICON_MASTER_URL or NEXT_PUBLIC_NETWORK_ICON must be set');
-    }
-
-    const response = await fetch(masterUrl);
-    const buffer = await response.arrayBuffer();
-    const source = Buffer.from(buffer);
+    const source = await readMasterImage();
 
     const configuration = {
       path: '/output',

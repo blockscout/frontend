@@ -171,22 +171,23 @@ const MultichainAddressTxs = ({ addressData, isLoading }: Props) => {
       id: 'txs_cross_chain',
       title: 'Cross-chain',
       component: config.features.crossChainTxs.isEnabled ? (
-        <>
-          { isMobile && !isLocalTab && txsQueryCrossChain.pagination.isVisible && (
+        <TransactionsCrossChainContent
+          items={ txsQueryCrossChain.data?.items }
+          pagination={ txsQueryCrossChain.pagination }
+          isLoading={ txsQueryCrossChain.isInitialLoading }
+          isTransitioning={ txsQueryCrossChain.isTransitioning }
+          isError={ txsQueryCrossChain.isError }
+          stickyHeader
+          currentAddress={ hash }
+          resetKey={ txsQueryCrossChain.queryHash }
+          filters={ txsQueryCrossChain.filters }
+          onFilterChange={ txsQueryCrossChain.onFilterChange }
+          actionBar={ isMobile && !isLocalTab && txsQueryCrossChain.pagination.isVisible && (
             <ActionBar>
               <Pagination ml="auto" { ...txsQueryCrossChain.pagination }/>
             </ActionBar>
           ) }
-          <TransactionsCrossChainContent
-            items={ txsQueryCrossChain.data?.items }
-            pagination={ txsQueryCrossChain.pagination }
-            isLoading={ txsQueryCrossChain.isInitialLoading }
-            isTransitioning={ txsQueryCrossChain.isTransitioning }
-            isError={ txsQueryCrossChain.isError }
-            stickyHeader
-            currentAddress={ hash }
-          />
-        </>
+        />
       ) : <EmptyState type="coming_soon"/>,
     },
     {

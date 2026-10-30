@@ -7,7 +7,8 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Field } from 'src/toolkit/chakra/field';
 import { Input } from 'src/toolkit/chakra/input';
@@ -166,31 +167,33 @@ const AddressFilter = ({ type, value = [], handleFilterChange }: Props) => {
   const isTouched = !isEqual(currentValue.filter(i => i.address).map(addressFilterToKey).sort(), value.map(addressFilterToKey).sort());
 
   return (
-    <TableColumnFilter
-      title={ type === 'from' ? 'From address' : 'To address' }
-      isFilled={ Boolean(currentValue[0].address) }
+    <ColumnFilterContent
       isTouched={ isTouched && !hasErrors }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <VStack gap={ 2 }>
-        { currentValue.map((item, index) => (
-          <AddressFilterInput
-            key={ index }
-            address={ item.address }
-            mode={ item.mode }
-            isLast={ index === currentValue.length - 1 }
-            onModeChange={ handleModeSelectChange(index) }
-            onChange={ handleAddressChange(index) }
-            onBlur={ handleAddressBlur(index) }
-            onClear={ handleAddressClear(index) }
-            onAddFieldClick={ onAddFieldClick }
-            isInvalid={ Boolean(touched[index]) && Boolean(item.address) && !ADDRESS_REGEXP.test(item.address) }
-          />
-        )) }
-      </VStack>
-    </TableColumnFilter>
+      <ColumnFilterContentSection
+        title={ type === 'from' ? 'From address' : 'To address' }
+        isFilled={ Boolean(currentValue[0].address) }
+        onReset={ onReset }
+      >
+        <VStack gap={ 2 }>
+          { currentValue.map((item, index) => (
+            <AddressFilterInput
+              key={ index }
+              address={ item.address }
+              mode={ item.mode }
+              isLast={ index === currentValue.length - 1 }
+              onModeChange={ handleModeSelectChange(index) }
+              onChange={ handleAddressChange(index) }
+              onBlur={ handleAddressBlur(index) }
+              onClear={ handleAddressClear(index) }
+              onAddFieldClick={ onAddFieldClick }
+              isInvalid={ Boolean(touched[index]) && Boolean(item.address) && !ADDRESS_REGEXP.test(item.address) }
+            />
+          )) }
+        </VStack>
+      </ColumnFilterContentSection>
+    </ColumnFilterContent>
   );
 };
 

@@ -17,7 +17,7 @@ import type { NftMarketplaceItem } from 'src/slices/token/types/client';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'src/slices/tx/types/config';
 
 import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
-import { COLOR_THEME_IDS } from 'src/shell/top-bar/settings/fields/color-theme/config';
+import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorModes } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
 import * as regexp from 'src/toolkit/utils/regexp';
 
@@ -180,6 +180,19 @@ export const miscSchema = v.pipe(
       return !defaultTheme || !themes?.length || themes.includes(defaultTheme);
     },
     'NEXT_PUBLIC_COLOR_THEME_DEFAULT must be one of the themes listed in NEXT_PUBLIC_COLOR_THEMES',
+  ),
+  companionRule(
+    [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'NEXT_PUBLIC_COLOR_THEMES' ],
+    (input) => {
+      const defaultTheme = input.NEXT_PUBLIC_COLOR_THEME_DEFAULT as ColorThemeId | undefined;
+      const themes = input.NEXT_PUBLIC_COLOR_THEMES as Array<ColorThemeId> | undefined;
+      const usesSystemTheme = defaultTheme === SYSTEM_COLOR_THEME_ID || Boolean(themes?.includes(SYSTEM_COLOR_THEME_ID));
+      if (!usesSystemTheme || !themes?.length) {
+        return true;
+      }
+      return coversBothColorModes(COLOR_THEMES.filter((theme) => themes.includes(theme.id)));
+    },
+    'The system color theme requires NEXT_PUBLIC_COLOR_THEMES to list at least one light and one dark theme',
   ),
 );
 

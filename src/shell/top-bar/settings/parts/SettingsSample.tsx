@@ -5,10 +5,12 @@ import React from 'react';
 
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
+import type { SampleBg } from '../fields/color-theme/config';
+
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
   isActive: boolean;
-  bg: string;
+  bg: SampleBg;
   value: string;
   label: string;
 }
@@ -25,7 +27,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
           boxSize="22px"
           borderRadius="full"
           borderWidth="1px"
-          borderColor={ isActive ? 'selected.control.bg' : bgColor }
+          borderColor={ bgColor }
           position="relative"
           cursor="pointer"
           _before={{

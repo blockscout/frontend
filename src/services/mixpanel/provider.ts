@@ -35,8 +35,14 @@ export const mixpanelProvider: AnalyticsProvider = {
   register: (superProps) => {
     sdk?.register(superProps);
   },
-  identify: (distinctId) => {
+  identify: (distinctId, profile) => {
     sdk?.identify(distinctId);
+    if (profile?.set) {
+      sdk?.people.set(profile.set);
+    }
+    if (profile?.setOnce) {
+      sdk?.people.set_once(profile.setOnce);
+    }
   },
   peopleSet: (props) => {
     sdk?.people.set(props);

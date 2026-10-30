@@ -25,7 +25,7 @@ test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
 
-test('base view +@dark-mode', async({ render, mockApiResponse }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:blocks', baseListResponse, { queryParams: { type: 'block' } });
   await mockApiResponse('core:stats', statsMock.base);
 
@@ -50,6 +50,7 @@ test('hidden fields and views', async({ render, mockApiResponse, mockEnvs }) => 
 
 test('new item from socket', async({ render, mockApiResponse, createSocket }) => {
   await mockApiResponse('core:blocks', baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 
@@ -69,6 +70,7 @@ test('new item from socket', async({ render, mockApiResponse, createSocket }) =>
 
 test('socket error', async({ render, mockApiResponse, createSocket }) => {
   await mockApiResponse('core:blocks', baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('core:stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 

@@ -150,8 +150,8 @@ const config: PlaywrightTestConfig = defineConfig({
           { find: /^@helia\/http$/, replacement: './playwright/mocks/modules/@helia/http.js' },
           { find: /^helia$/, replacement: './playwright/mocks/modules/helia.js' },
 
-          // Mock for @specify-sh/sdk to avoid build issues in tests
-          { find: '@specify-sh/sdk', replacement: './playwright/mocks/modules/@specify-sh/sdk.js' },
+          // Mock for @specify-sh/publisher-sdk to avoid build issues in tests
+          { find: '@specify-sh/publisher-sdk', replacement: './playwright/mocks/modules/@specify-sh/publisher-sdk.js' },
         ],
       },
       define: {

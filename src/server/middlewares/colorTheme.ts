@@ -2,6 +2,7 @@
 
 import type { NextRequest, NextResponse } from 'next/server';
 
+import { isConcreteColorTheme } from 'src/shell/top-bar/settings/fields/color-theme/config';
 import { getDefaultColorTheme, isColorThemeAvailable } from 'src/shell/top-bar/settings/fields/color-theme/utils';
 
 import appConfig from 'src/config';
@@ -33,6 +34,9 @@ export default function colorThemeMiddleware(req: NextRequest, res: NextResponse
     return;
   }
 
-  res.cookies.set(cookiesLib.NAMES.COLOR_MODE, nextTheme.colorMode, cookiesLib.getDefaultAttributes());
+  // the server cannot see the OS color scheme, so a system theme leaves the color mode to the client
+  if (isConcreteColorTheme(nextTheme)) {
+    res.cookies.set(cookiesLib.NAMES.COLOR_MODE, nextTheme.colorMode, cookiesLib.getDefaultAttributes());
+  }
   res.cookies.set(cookiesLib.NAMES.COLOR_THEME, nextTheme.id, cookiesLib.getDefaultAttributes());
 }

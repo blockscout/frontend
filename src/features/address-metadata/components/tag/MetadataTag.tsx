@@ -15,7 +15,7 @@ import { Tag } from 'src/toolkit/chakra/tag';
 
 import MetadataTagIcon from './MetadataTagIcon';
 import MetadataTagTooltip from './MetadataTagTooltip';
-import { getTagName, getTagLinkParams } from './utils';
+import { getTagName, getTagLinkParams, hasTagTooltip } from './utils';
 
 interface Props extends HTMLChakraProps<'span'> {
   data: TMetadataTag;
@@ -70,7 +70,8 @@ const MetadataTag = ({ data, addressHash, isLoading, noLink, noColors, ...rest }
           bg={ !noColors ? data.meta?.bgColor : undefined }
           color={ !noColors ? data.meta?.textColor : undefined }
           startElement={ <MetadataTagIcon data={ data } noColors={ noColors }/> }
-          truncated
+          // the tag tooltip and the overflow tooltip would open together on hover
+          truncated={ !hasTagTooltip(data) }
           endElement={ linkParams?.type === 'external' ? <LinkExternalIcon color={ iconColor }/> : null }
           endElementProps={ linkParams?.type === 'external' ? { ml: -1 } : undefined }
           _hover={ hasLink ? { opacity: 0.76 } : undefined }
