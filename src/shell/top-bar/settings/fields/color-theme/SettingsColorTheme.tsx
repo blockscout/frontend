@@ -88,6 +88,7 @@ const SettingsColorTheme = ({ onSelect, variant = 'popover' }: Props) => {
 
     const themeId = event.currentTarget.getAttribute('data-value') as ColorThemeId | null;
 
+    // Stryker disable next-line ConditionalExpression: every sample renders its data-value, so the guard only narrows the nullable attribute type
     if (!themeId) {
       return;
     }
