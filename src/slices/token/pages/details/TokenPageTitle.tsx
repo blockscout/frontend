@@ -27,6 +27,8 @@ import useAddressMetadataInfoQuery from 'src/features/address-metadata/hooks/use
 import { getAppActionData } from 'src/features/address-metadata/utils/get-app-action-data';
 import AlternativeExplorers from 'src/features/alternative-explorers/components/AlternativeExplorers';
 import { useMultichainContext } from 'src/features/multichain/context';
+import TokenActionButton from 'src/features/token-action-button/components/TokenActionButton';
+import { isTokenActionButtonHidden } from 'src/features/token-action-button/utils/is-token-action-button-hidden';
 import TokenVerifiedInfo from 'src/features/verified-tokens/pages/token/TokenVerifiedInfo';
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -52,6 +54,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
   const addressMetadataTags = addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags;
   const appActionData = getAppActionData(addressMetadataTags);
+
+  const isMetadataPending = config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending;
+  const hasTokenActionButton = config.features.tokenActionButton.isEnabled &&
+    tokenQuery.data?.type === 'ERC-20' &&
+    !isMetadataPending &&
+    !isTokenActionButtonHidden(addressMetadataTags);
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
@@ -122,7 +130,14 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
           addressHash={ addressQuery.data?.hash }
           flexGrow={ 1 }
         />
-        { appActionData && (
+        { hasTokenActionButton && (
+          <TokenActionButton
+            tokenHash={ hash }
+            tokenType={ tokenQuery.data?.type }
+            isLoading={ tokenQuery.isPlaceholderData }
+          />
+        ) }
+        { !hasTokenActionButton && appActionData && (
           <AppActionButton
             data={ appActionData }
             addressHash={ hash }

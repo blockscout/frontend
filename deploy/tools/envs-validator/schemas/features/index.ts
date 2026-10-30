@@ -17,5 +17,6 @@ export * from './multichainButton';
 export * from './nameServices';
 export * from './rollup';
 export * from './tac';
+export * from './tokenActionButton';
 export * from './userOps';
 export * from './zetaChain';

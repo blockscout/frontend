@@ -7,7 +7,7 @@ import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 import { describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-import type { blocks } from './guards';
+import type { accountsLabelSearch, blocks } from './guards';
 
 function makeContext(query: Record<string, string | Array<string>>): GetServerSidePropsContext {
   // the guard reads only `query`, so the rest of the context can stay absent
@@ -54,5 +54,27 @@ describe('blocks guard', () => {
     expect(await runBlocksGuard(ENVS_MAP.flashblocks, makeContext({ tab: 'flashblocks', page: '2' }))).toEqual({
       redirect: { destination: '/blocks?tab=subblocks&page=2', permanent: false },
     });
+  });
+});
+
+async function runAccountsLabelSearchGuard(context: GetServerSidePropsContext): ReturnType<ReturnType<typeof accountsLabelSearch>> {
+  return withEnvs([ [ 'NEXT_PUBLIC_METADATA_SERVICE_API_HOST', 'https://example.com' ] ], async() => {
+    const guards = await import('./guards');
+    const config = (await import('src/config')).default;
+    return guards.accountsLabelSearch(config)(context);
+  });
+}
+
+describe('accountsLabelSearch guard', () => {
+  it('lets a public tag type through', async() => {
+    expect(await runAccountsLabelSearchGuard(makeContext({ slug: 'uniswap', tagType: 'protocol' }))).toBeUndefined();
+  });
+
+  it('returns 404 for the service tag type', async() => {
+    expect(await runAccountsLabelSearchGuard(makeContext({ slug: 'token_action_button_hidden', tagType: 'service' }))).toEqual({ notFound: true });
+  });
+
+  it('returns 404 without a tag type', async() => {
+    expect(await runAccountsLabelSearchGuard(makeContext({ slug: 'uniswap' }))).toEqual({ notFound: true });
   });
 });
