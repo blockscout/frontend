@@ -57,6 +57,7 @@ const schema = composeSchemas([
   featuresSchemas.crossChainTxsSchema,
   featuresSchemas.defiDropdownSchema,
   featuresSchemas.multichainButtonSchema,
+  featuresSchemas.tokenActionButtonSchema,
   featuresSchemas.userOpsSchema,
   servicesSchema,
 ]);

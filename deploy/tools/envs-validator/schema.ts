@@ -118,6 +118,7 @@ const schema = composeSchemas([
   featuresSchemas.nameServicesSchema,
   featuresSchemas.rollupSchema,
   featuresSchemas.tacSchema,
+  featuresSchemas.tokenActionButtonSchema,
   featuresSchemas.userOpsSchema,
   featuresSchemas.zetaChainSchema,
   servicesSchema,

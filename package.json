@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@blockscout/admin-rs-types": "1.5.1",
-    "@blockscout/api-types": "12.0.3",
+    "@blockscout/api-types": "0.0.1-beta.e1f332f",
     "@blockscout/bens-types": "1.7.1",
     "@blockscout/contracts-info-types": "1.5.3",
     "@blockscout/interchain-indexer-types": "1.11.0",

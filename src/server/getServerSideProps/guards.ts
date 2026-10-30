@@ -8,6 +8,8 @@ import type { RollupType } from 'src/features/rollup/common/types/config';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
 
+import { SERVICE_TAG_TYPE } from 'src/features/address-metadata/utils/is-hidden-tag';
+
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 
@@ -124,7 +126,7 @@ export const accounts: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const accountsLabelSearch: Guard = (chainConfig: typeof config) => async(context) => {
-  if (!chainConfig.features.addressMetadata.isEnabled || !context.query.tagType) {
+  if (!chainConfig.features.addressMetadata.isEnabled || !context.query.tagType || context.query.tagType === SERVICE_TAG_TYPE) {
     return {
       notFound: true,
     };

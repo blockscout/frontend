@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
 
+import { TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG } from 'src/features/token-action-button/utils/is-token-action-button-hidden';
+
 export const nameTag: AddressMetadataTagApi = {
   slug: 'quack-quack',
   name: 'Quack quack',
@@ -142,6 +144,14 @@ export const hiddenProtocolTagWithMeta: AddressMetadataTagApi = {
     textColor: '#FFFFFF',
     hidden: 'true',
   },
+};
+
+export const tokenActionButtonHiddenServiceTag: AddressMetadataTagApi = {
+  slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG,
+  name: 'Token action button hidden',
+  tagType: 'service',
+  ordinal: 0,
+  meta: null,
 };
 
 export function generateAddressMetadataInfo(addressHash: string, tag: AddressMetadataTagApi): AddressMetadataInfo {
