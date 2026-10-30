@@ -69,15 +69,22 @@ Only after a loop that ended cleared and green. Read the `Demo` row from `spec.m
   states ([`../create-pr/SKILL.md`](../create-pr/SKILL.md)): the first entry takes the `review` slot with an
   image build, the second takes `review-2` with `build_image=false`, and a `(review-2)` mark on a single
   entry selects that slot. Wait for the first run to complete before triggering the second — the second
-  reuses the image the first built, and `deploy-demo` aborts on a run already in progress. **A first run
-  that fails built no image**, so do not trigger the `build_image=false` run: report the failed run and
-  name the entries that did not deploy.
+  reuses the image the first built, and `deploy-demo` aborts on a run already in progress.
+
+A failed first run is two different things, and the workflow's jobs tell them apart (`gh run view <run id>
+--json jobs`, in `.github/workflows/deploy-review.yml`): the `Publish Docker image` job builds the image,
+the `Deploy frontend` job deploys it and runs only after a successful or skipped build.
+
+- **`Publish Docker image` failed** → no image exists, so do not trigger the `build_image=false` run:
+  report the failed run and name both entries as not deployed.
+- **Image published, `Deploy frontend` failed** → the image is there. Report the failed deploy and trigger
+  the second entry as planned; it deploys from that image.
 
 Collect each run's deployment URL from `deploy-demo`'s output for the report. Post **no** demo comment on
 the PR: GitHub's deployment entry already links it.
 
-**Done when**: every entry has a successful run and a URL, or the row said `none`, or the image build
-failed and the report names the entries that did not deploy.
+**Done when**: every entry has a successful run and a URL, or the row said `none`, or the report names
+each entry that did not deploy and its failed run.
 
 ## Step 5 — Report
 

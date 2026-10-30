@@ -71,8 +71,11 @@ Rounds are numbered from 1. Each round:
    pushed**. Then wait for CI and fix a red run (step 4), **push once**, and start the next round at 1.
 4. **`cleared`** → with a `🙋 <n> needs human` count above zero, dispatch the resolver first (step 3): a
    `needs-human` nit pauses the round exactly as a blocker would, and the resolver's fixes are committed
-   before the CI wait. Otherwise no resolver. Then wait for CI (step 4): green ends the loop at step 5; red
-   enters the post-clear CI-fix cycles step 4 describes. Neither path runs another review round.
+   before the CI wait. Otherwise no resolver. Then wait for CI (step 4). Green with nothing committed
+   locally ends the loop at step 5. Green with the resolver's fixes still local is **not** the end: the
+   round pushes them — its one push — and waits for the run on the new `headRefOid`; that run's conclusion
+   is the one that ends the loop or opens a CI-fix cycle. Red enters the post-clear CI-fix cycles step 4
+   describes. Neither path runs another review round.
 
 **One push per round.** The review fixes and the CI fix are separate commits — the history shows which
 change came from which source — and they leave in one `git push` after the CI wait. Nothing is pushed
@@ -132,8 +135,11 @@ gh run watch <databaseId> --exit-status          # blocks until the run complete
   deploy values): the newest completed Checks run on the branch stands in for it, and **its** conclusion is
   the one read below. No completed run on the branch at all counts as green.
 - **Pending** (`queued`, `in_progress`) → watch it to completion. Edit nothing while waiting.
-- **Green** (`success`) → in a `blocked` round, push and start the next round; after `cleared`, the loop
-  ends at step 5.
+- **Green** (`success`) → in a `blocked` round, push and start the next round. After `cleared`, the loop
+  ends at step 5 **only when `HEAD` equals `headRefOid`** — the green run is for the code on the PR. With
+  the round's resolver fixes still local (a `cleared` round with `needs-human` findings), push them and
+  watch the run for the new `headRefOid` from the top of this step; a green run on the pre-fix SHA says
+  nothing about the fixes.
 - **Red** (`failure`, `timed_out`, `cancelled`) → a CI fix:
   1. **Resume the round's resolver** with [`ci-fixes.md`](ci-fixes.md) as its brief, the run url and the
      PR url — the same agent, so one agent holds both fix sets. After `cleared` no resolver exists for the
@@ -148,8 +154,9 @@ gh run watch <databaseId> --exit-status          # blocks until the run complete
      - a job the developer **left red** (no commit) → the loop stops: push what is committed (step 5) and
        name the job in the report. No further CI-fix cycle opens on it.
   3. **Push once.** In a `blocked` round that push carries the review fixes and the CI fix, and the next
-     round starts. After `cleared` it carries the CI fix alone, and the loop waits for the run on the new
-     `headRefOid`: green ends the loop, red starts another CI-fix cycle.
+     round starts. After `cleared` it carries the CI fix and any review fixes the round's resolver left
+     local, and the loop waits for the run on the new `headRefOid`: green ends the loop, red starts another
+     CI-fix cycle.
 
 **Post-clear bound.** Two CI-fix cycles after `cleared`. A second cycle that still ends red stops the loop
 with a report, the fixes pushed. No review round follows a post-clear CI fix: a follow-up review over a
