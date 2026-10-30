@@ -31,6 +31,13 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMe
 
   await component.getByLabel('User settings').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
+
+  await page.getByText('Advanced settings').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page).toHaveScreenshot();
+
+  await page.getByRole('tab', { name: 'Custom RPC' }).click();
+  await expect(page).toHaveScreenshot();
 });
 
 test('default view +@mobile -@default', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
@@ -40,6 +47,13 @@ test('default view +@mobile -@default', async({ render, mockApiResponse, page, i
 
   await component.getByLabel('User settings').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
+
+  await page.getByText('Advanced settings').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page).toHaveScreenshot();
+
+  await page.getByRole('tab', { name: 'Custom RPC' }).click();
+  await expect(page).toHaveScreenshot();
 });
 
 test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {

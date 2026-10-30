@@ -12,6 +12,7 @@ import { SocketProvider } from 'src/api/socket/context';
 
 import { AppContextProvider } from 'src/shell/app/context';
 import { SettingsContextProvider } from 'src/shell/top-bar/settings/context';
+import { SettingsModalContextProvider } from 'src/shell/top-bar/settings/modal/context';
 
 import { currentChain } from 'src/features/connect-wallet/utils/chains';
 import { CsvExportContextProvider } from 'src/features/csv-export/utils/context';
@@ -90,22 +91,24 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
           <AppContextProvider pageProps={ pageProps }>
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <SettingsContextProvider>
-                <GrowthBookProvider>
-                  <WagmiProvider config={ wagmiConfig! }>
-                    <RewardsContextProvider>
-                      <CsvExportContextProvider>
-                        { /*
-                          The mount locator resolves to the only child of #root, or to #root when there are several.
-                          Without the wrapper, a component whose first render is null leaves the color mode script
-                          as the only child, and the screenshot waits for that hidden script to become visible.
-                        */ }
-                        <Box display="contents">
-                          { children }
-                        </Box>
-                      </CsvExportContextProvider>
-                    </RewardsContextProvider>
-                  </WagmiProvider>
-                </GrowthBookProvider>
+                <SettingsModalContextProvider>
+                  <GrowthBookProvider>
+                    <WagmiProvider config={ wagmiConfig! }>
+                      <RewardsContextProvider>
+                        <CsvExportContextProvider>
+                          { /*
+                            The mount locator resolves to the only child of #root, or to #root when there are several.
+                            Without the wrapper, a component whose first render is null leaves the color mode script
+                            as the only child, and the screenshot waits for that hidden script to become visible.
+                          */ }
+                          <Box display="contents">
+                            { children }
+                          </Box>
+                        </CsvExportContextProvider>
+                      </RewardsContextProvider>
+                    </WagmiProvider>
+                  </GrowthBookProvider>
+                </SettingsModalContextProvider>
               </SettingsContextProvider>
             </MarketplaceContext.Provider>
           </AppContextProvider>

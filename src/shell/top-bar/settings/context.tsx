@@ -8,7 +8,8 @@ import { useAppContext } from 'src/shell/app/context';
 
 import * as cookies from 'src/shared/storage/cookies';
 
-import type { TimeFormat } from './time-format/utils';
+import type { ColorThemeId } from './fields/color-theme/config';
+import type { TimeFormat } from './fields/time-format/utils';
 
 interface SettingsProviderProps {
   children: React.ReactNode;
@@ -21,6 +22,8 @@ interface TSettingsContext {
   toggleTimeFormat: () => void;
   isLocalTime: boolean;
   toggleIsLocalTime: () => void;
+  colorTheme: ColorThemeId | undefined;
+  setColorTheme: (value: ColorThemeId) => void;
 }
 
 export const SettingsContext = React.createContext<TSettingsContext | null>(null);
@@ -40,6 +43,8 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
   const [ isLocalTime, setIsLocalTime ] = React.useState<boolean>(
     (cookies.get(cookies.NAMES.LOCAL_TIME, appCookies) ?? 'true') === 'true',
   );
+
+  const [ colorTheme, setColorTheme ] = React.useState<ColorThemeId>();
 
   const toggleAddressFormat = React.useCallback(() => {
     const nextValue = addressFormat === 'base16' ? 'bech32' : 'base16';
@@ -67,8 +72,10 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
       toggleTimeFormat,
       isLocalTime,
       toggleIsLocalTime,
+      colorTheme,
+      setColorTheme,
     };
-  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat, isLocalTime, toggleIsLocalTime ]);
+  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat, isLocalTime, toggleIsLocalTime, colorTheme ]);
 
   return (
     <SettingsContext.Provider value={ value }>

@@ -4,6 +4,10 @@ import type { NextRequest } from 'next/server';
 
 import { getPrimerScriptCspHashes } from 'src/server/primedRequests';
 
+import { resolveCustomRpcUrl } from 'src/features/connect-wallet/utils/rpc-urls';
+
+import * as cookies from 'src/shared/storage/cookies';
+
 import generateCspPolicy from './generateCspPolicy';
 import generateNftHtmlEmbedCspPolicy from './generateNftHtmlEmbedCspPolicy';
 
@@ -38,8 +42,24 @@ async function initializeCspPolicies() {
   }
 }
 
+function getCustomRpcOrigin(req: NextRequest | undefined): string | undefined {
+  const url = resolveCustomRpcUrl(
+    req?.cookies.get(cookies.NAMES.CUSTOM_RPC_URL)?.value,
+    req?.cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)?.value,
+  );
+
+  return url ? new URL(url).origin : undefined;
+}
+
+// the cached policies are shared by every request; the user's own RPC node is spliced in per request
+function withCustomRpcOrigin(policy: string, origin: string | undefined): string {
+  return origin ? policy.replace('connect-src ', `connect-src ${ origin } `) : policy;
+}
+
 export async function get(req?: NextRequest, nonce?: string): Promise<string> {
   await initializeCspPolicies();
+
+  const customRpcOrigin = getCustomRpcOrigin(req);
 
   // Get appProfile from request (header, query param, or cookie)
   const appProfile = req ? (
@@ -60,8 +80,8 @@ export async function get(req?: NextRequest, nonce?: string): Promise<string> {
 
   if (nonce) {
     const template = isPrivateMode ? cspPolicyTemplates?.private : cspPolicyTemplates?.default;
-    return template?.replaceAll(CSP_NONCE_PLACEHOLDER, nonce) || '';
+    return withCustomRpcOrigin(template?.replaceAll(CSP_NONCE_PLACEHOLDER, nonce) || '', customRpcOrigin);
   }
 
-  return isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '';
+  return withCustomRpcOrigin(isPrivateMode ? cspPolicies?.private || '' : cspPolicies?.default || '', customRpcOrigin);
 }

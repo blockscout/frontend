@@ -6,20 +6,19 @@ import React from 'react';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';
+import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
-import SettingsColorTheme from './color-theme/SettingsColorTheme';
-import SettingsIdentIcon from './ident-icon/SettingsIdentIcon';
-import SettingsAddressFormat from './SettingsAddressFormat';
-import SettingsPoorReputationTokens from './SettingsPoorReputationTokens';
-import SettingsScamTokens from './SettingsScamTokens';
-import SettingsLocalTime from './time-format/SettingsLocalTime';
+import SettingsColorTheme from './fields/color-theme/SettingsColorTheme';
+import SettingsIdentIcon from './fields/ident-icon/SettingsIdentIcon';
+import { useSettingsModalContext } from './modal/context';
 
 const Settings = () => {
   const popover = useDisclosure();
   const tooltip = useDisclosure();
+  const settingsModal = useSettingsModalContext();
 
   const handlePopoverOpenChange = React.useCallback(({ open }: { open: boolean }) => {
     open && tooltip.onClose();
@@ -31,6 +30,11 @@ const Settings = () => {
       tooltip.onOpenChange({ open });
     }
   }, [ popover, tooltip ]);
+
+  const handleAdvancedSettingsClick = React.useCallback(() => {
+    popover.onClose();
+    settingsModal?.open();
+  }, [ popover, settingsModal ]);
 
   return (
     <PopoverRoot
@@ -66,14 +70,20 @@ const Settings = () => {
       </Tooltip>
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody>
-          <SettingsColorTheme onSelect={ popover.onClose }/>
-          <SettingsIdentIcon/>
-          <SettingsAddressFormat/>
-          <Separator my={ 3 }/>
-          <VStack gap={ 1 }>
-            <SettingsScamTokens/>
-            <SettingsPoorReputationTokens/>
-            <SettingsLocalTime/>
+          <VStack gap={ 3 } alignItems="stretch" separator={ <Separator my={ 3 }/> }>
+            <SettingsColorTheme onSelect={ popover.onClose }/>
+            <SettingsIdentIcon/>
+            <Link
+              display="flex"
+              alignItems="center"
+              gap={ 2 }
+              minH="32px"
+              textStyle="sm"
+              onClick={ handleAdvancedSettingsClick }
+            >
+              <SpriteIcon name="gear" boxSize={ 5 }/>
+              Advanced settings
+            </Link>
           </VStack>
         </PopoverBody>
       </PopoverContent>
