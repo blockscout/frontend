@@ -62,8 +62,8 @@ Rounds are numbered from 1. Each round:
    points at, and an edit under it is a finding against code that does not exist. The file says what counts
    as a transport failure (one retry) and what counts as a review that ran (no retry).
 2. **Read the outcome from the PR**, never from the CLI's text — it can be truncated and the PR is the
-   record. Among the PR-level reviews (`gh api repos/{owner}/{repo}/pulls/{N}/reviews`, in
-   `gh-commands.md`), take the latest whose body ends in the footer `— Reviewed by <name> …` and read its
+   record. Among the PR-level reviews (`gh api repos/{owner}/{repo}/pulls/{N}/reviews --paginate`, in
+   `gh-commands.md` — a PR past its first 30 reviews returns none of the newest ones without the flag), take the latest whose body ends in the footer `— Reviewed by <name> …` and read its
    status line, in the shape [`../review-changes/output-pr.md`](../review-changes/output-pr.md) gives:
    `✅ **Cleared**` or `🛑 **Blocked**`, and the `🙋 <n> needs human` count when present. A review newer
    than the round's start with that footer is the round's outcome; none means the reviewer did not run.
