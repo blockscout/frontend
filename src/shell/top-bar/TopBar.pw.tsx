@@ -37,7 +37,6 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMe
   await expect(page).toHaveScreenshot();
 
   await page.getByRole('tab', { name: 'Custom RPC' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText(/we recommend using an rpc/i);
   await expect(page).toHaveScreenshot();
 });
 
@@ -54,7 +53,6 @@ test('default view +@mobile -@default', async({ render, mockApiResponse, page, i
   await expect(page).toHaveScreenshot();
 
   await page.getByRole('tab', { name: 'Custom RPC' }).click();
-  await expect(page.getByRole('tabpanel')).toContainText(/we recommend using an rpc/i);
   await expect(page).toHaveScreenshot();
 });
 

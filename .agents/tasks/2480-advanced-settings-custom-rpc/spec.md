@@ -132,9 +132,12 @@ Entry points: the popover link; the contract-page alert link, the top-bar indica
 "Custom RPC" pill (all three open the modal directly on the RPC tab).
 
 Copy (agreed with the designer, may be shortened but must keep the message):
-- RPC tab description: "We recommend using an RPC that matches your selected network to ensure accurate
-  data. Enter the node URL and click Save to update. Leave blank to use the default RPC node." (the
-  former separate "leave empty" helper is folded into it)
+- RPC tab description: "Requests made directly from your browser, such as contract reads and writes, go
+  through a public RPC node. Use your own node if the default one is slow, rate-limited, or you want to
+  keep requests private. Indexed data such as blocks, transactions and balances still comes from the
+  Blockscout API. HTTPS only. Clear the field and save to go back to the default." (the former
+  separate "leave empty" helper is folded into it; rewritten after review to explain what the node is
+  used for, replacing the designer's original "match your selected network" wording)
 - RPC status line: tag "Connected" / "Not responding" / "Disconnected", then "Using the default node" /
   "Using your custom node"
 - RPC alerts: wrong chain — "This RPC belongs to a different network. Make sure you're using the correct

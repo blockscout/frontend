@@ -45,7 +45,7 @@ const SettingsModalTabs = ({ tabs, targetTab }: Props) => {
     <TabsRoot defaultValue={ defaultTab?.id } orientation="vertical" variant="solid" size="md" gap={ 8 } h="100%">
       <TabsList w="180px" gap={ 1 } flexShrink={ 0 }>
         { tabs.map((tab) => (
-          <TabsTrigger key={ tab.id } value={ tab.id } justifyContent="flex-start" fontWeight="medium" px={ 3 }>
+          <TabsTrigger key={ tab.id } value={ tab.id } justifyContent="flex-start" fontWeight="medium" px={ 3 } textStyle="sm" gap={ 2 }>
             <SpriteIcon name={ tab.icon } boxSize={ 5 }/>
             { tab.title }
           </TabsTrigger>
