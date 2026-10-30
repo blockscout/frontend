@@ -40,13 +40,12 @@ Each step names the skill that runs it; the session model — what runs where, a
      `process-task-inbox` folds each pending section into questions, spec and tickets. The three
      implementing skills below refuse to start while a section is pending.
 5. **Implement** — run `implement-ticket <NN>` repeatedly, **one ticket per run**.
-6. **Land** — [`finalize-task`](../skills/finalize-task/SKILL.md) runs five handoffs in order: it prunes
-   the task folder down to `spec.md`; [`create-pr`](../skills/create-pr/SKILL.md) pushes, writes the real
-   description and flips the draft to ready (which starts CI); [`review-loop`](../skills/review-loop/SKILL.md)
-   reviews, resolves and fixes CI round by round until the review is cleared and CI is green, pausing only
-   on a `needs-human` finding; [`deploy-demo`](../skills/deploy-demo/SKILL.md) deploys the spec header's
-   `Demo` entries, only after a cleared-and-green loop; and a final report lists the PR, the review
-   outcome, the CI status, the demo URLs and anything left open.
+6. **Land** — [`finalize-task`](../skills/finalize-task/SKILL.md) runs five handoffs in order: 
+  - it prunes the task folder down to `spec.md`; 
+  - [`create-pr`](../skills/create-pr/SKILL.md) pushes, writes the real description and flips the draft to ready; 
+  - [`review-loop`](../skills/review-loop/SKILL.md) reviews, resolves and fixes CI round by round until the review 
+  is cleared and CI is green, pausing only on a `needs-human` finding; 
+  - [`deploy-demo`](../skills/deploy-demo/SKILL.md) deploys the spec header's `Demo` entries.
 
 ## Supporting files
 
