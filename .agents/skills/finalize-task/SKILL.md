@@ -72,13 +72,15 @@ Only after a loop that ended cleared and green. Read the `Demo` row from `spec.m
   reuses the image the first built, and `deploy-demo` aborts on a run already in progress.
 
 A failed first run is two different things, and the workflow's jobs tell them apart (`gh run view <run id>
---json jobs`, in `.github/workflows/deploy-review.yml`): the `Publish Docker image` job builds the image,
-the `Deploy frontend` job deploys it and runs only after a successful or skipped build.
+--json jobs`). In `.github/workflows/deploy-review.yml` the `Publish Docker image` job builds the image and
+the `Deploy frontend` job deploys it, running only after a successful or skipped build. Both call reusable
+workflows, so the rows `--json jobs` returns are named `<caller> / <callee>` when the job ran, and by the
+bare caller name only when it was `skipped`:
 
-- **`Publish Docker image` failed** → no image exists, so do not trigger the `build_image=false` run:
-  report the failed run and name both entries as not deployed.
-- **Image published, `Deploy frontend` failed** → the image is there. Report the failed deploy and trigger
-  the second entry as planned; it deploys from that image.
+- **`Publish Docker image / Run` failed** (and `Deploy frontend` is `skipped`) → no image exists, so do not
+  trigger the `build_image=false` run: report the failed run and name both entries as not deployed.
+- **`Publish Docker image / Run` succeeded, `Deploy frontend / Deploy` failed** → the image is there. Report
+  the failed deploy and trigger the second entry as planned; it deploys from that image.
 
 Collect each run's deployment URL from `deploy-demo`'s output for the report. Post **no** demo comment on
 the PR: GitHub's deployment entry already links it.
