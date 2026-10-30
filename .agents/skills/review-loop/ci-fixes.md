@@ -8,12 +8,15 @@ it cannot settle that way as `needs-human`.
 ## 1. Read the run
 
 ```bash
-gh run view <run id> --json jobs --jq '.jobs[] | select(.conclusion != "success") | {name, conclusion, url}'
+gh run view <run id> --json jobs \
+  --jq '.jobs[] | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "cancelled") | {name, conclusion, url}'
 gh run view <run id> --log-failed
 ```
 
-The failing job's name says which gate it is; the gate's own doc says how to read its output and what the
-valid fixes are. Read it before touching code.
+Only those three conclusions are failures. A `skipped` job is not one: `Unit tests`, `Mutation testing gate`
+and `Playwright tests` `needs` `Code quality`, so they skip whenever it fails and have no log to read. The
+failing job's name says which gate it is; the gate's own doc says how to read its output and what the valid
+fixes are. Read it before touching code.
 
 | Failing job | Gate | How to read a failure |
 | --- | --- | --- |

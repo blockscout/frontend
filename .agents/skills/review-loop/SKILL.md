@@ -69,15 +69,20 @@ Rounds are numbered from 1. Each round:
    than the round's start with that footer is the round's outcome; none means the reviewer did not run.
 3. **`blocked`** → dispatch the resolver (step 3). It returns with the review fixes **committed, not
    pushed**. Then wait for CI and fix a red run (step 4), **push once**, and start the next round at 1.
-4. **`cleared`** → no resolver. Wait for CI (step 4): green ends the loop at step 5; red enters the
-   post-clear CI-fix cycles step 4 describes, which end the loop without another review round.
+4. **`cleared`** → with a `🙋 <n> needs human` count above zero, dispatch the resolver first (step 3): a
+   `needs-human` nit pauses the round exactly as a blocker would, and the resolver's fixes are committed
+   before the CI wait. Otherwise no resolver. Then wait for CI (step 4): green ends the loop at step 5; red
+   enters the post-clear CI-fix cycles step 4 describes. Neither path runs another review round.
 
 **One push per round.** The review fixes and the CI fix are separate commits — the history shows which
 change came from which source — and they leave in one `git push` after the CI wait. Nothing is pushed
 between the resolver's return and that push.
 
-**Bounds.** Three review rounds. A third round that still reads `blocked` ends the loop with a report. The
-reviewer's own stops — a transport failure that survived its retry, a timeout — end the loop too.
+**Bounds.** Three review rounds. A third round that still reads `blocked` is resolved like the others —
+resolver, `needs-human` pause, CI wait, one push — and then the loop ends with a report instead of a fourth
+review; the report says the round-3 fixes landed unverified by the reviewer. The reviewer's own stops — a
+transport failure that survived its retry, a timeout, an agent that finished without posting — end the loop
+too.
 
 **Done when**: the outcome is `cleared` and the current `HEAD` is green, or a bound or a reviewer stop has
 been hit.
@@ -121,9 +126,11 @@ gh run list --workflow=checks.yml --commit <headRefOid> --json databaseId,status
 gh run watch <databaseId> --exit-status          # blocks until the run completes
 ```
 
-- **No run for that SHA** → the workflow's `paths-ignore` skipped the push (agent docs, `docs/`, deploy
-  values): the newest completed Checks run on the branch stands in for it. None on the branch at all counts
-  as green.
+- **No run for that SHA** → a run takes a few seconds to register after a push, so an empty list is not yet
+  an answer: poll the same command every 15 seconds for up to 2 minutes. A run that appears is the run to
+  watch. Still none after the window → the workflow's `paths-ignore` skipped the push (agent docs, `docs/`,
+  deploy values): the newest completed Checks run on the branch stands in for it, and **its** conclusion is
+  the one read below. No completed run on the branch at all counts as green.
 - **Pending** (`queued`, `in_progress`) → watch it to completion. Edit nothing while waiting.
 - **Green** (`success`) → in a `blocked` round, push and start the next round; after `cleared`, the loop
   ends at step 5.
@@ -131,9 +138,15 @@ gh run watch <databaseId> --exit-status          # blocks until the run complete
   1. **Resume the round's resolver** with [`ci-fixes.md`](ci-fixes.md) as its brief, the run url and the
      PR url — the same agent, so one agent holds both fix sets. After `cleared` no resolver exists for the
      round: spawn a fresh `general-purpose` subagent with the same brief.
-  2. It returns with the CI fix in its **own commit**, separate from the review fixes, or with a
-     `needs-human` block in the shape `ci-fixes.md` gives. A `needs-human` here pauses exactly as in step 3:
-     print verbatim, `PushNotification`, wait, resume the same agent with the answers.
+  2. It returns one of four ways, all in the shapes `ci-fixes.md` gives:
+     - the CI fix in its **own commit**, separate from the review fixes → continue to the push;
+     - a `needs-human` block → pause exactly as in step 3: print verbatim, `PushNotification`, wait, resume
+       the same agent with the answers;
+     - an **infrastructure rerun** (`gh run rerun --failed`, no commit) → the SHA is unchanged, so watch that
+       same run id again (`gh run watch`) and read its new conclusion; red again is the next CI-fix cycle,
+       not a repeat of this one;
+     - a job the developer **left red** (no commit) → the loop stops: push what is committed (step 5) and
+       name the job in the report. No further CI-fix cycle opens on it.
   3. **Push once.** In a `blocked` round that push carries the review fixes and the CI fix, and the next
      round starts. After `cleared` it carries the CI fix alone, and the loop waits for the run on the new
      `headRefOid`: green ends the loop, red starts another CI-fix cycle.

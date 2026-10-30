@@ -69,12 +69,15 @@ Only after a loop that ended cleared and green. Read the `Demo` row from `spec.m
   states ([`../create-pr/SKILL.md`](../create-pr/SKILL.md)): the first entry takes the `review` slot with an
   image build, the second takes `review-2` with `build_image=false`, and a `(review-2)` mark on a single
   entry selects that slot. Wait for the first run to complete before triggering the second — the second
-  reuses the image the first built, and `deploy-demo` aborts on a run already in progress.
+  reuses the image the first built, and `deploy-demo` aborts on a run already in progress. **A first run
+  that fails built no image**, so do not trigger the `build_image=false` run: report the failed run and
+  name the entries that did not deploy.
 
 Collect each run's deployment URL from `deploy-demo`'s output for the report. Post **no** demo comment on
 the PR: GitHub's deployment entry already links it.
 
-**Done when**: every entry has a completed run and a URL, or the row said `none`.
+**Done when**: every entry has a successful run and a URL, or the row said `none`, or the image build
+failed and the report names the entries that did not deploy.
 
 ## Step 5 — Report
 

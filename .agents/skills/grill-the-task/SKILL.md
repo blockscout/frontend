@@ -75,7 +75,8 @@ of them, and marching through all six regardless is how a five-minute task turns
 **The demo question is asked on every task**, because `none` is a decision and the land step reads it:
 which preset(s) the demo deploys on. Offer the `envs_preset` options of
 `.github/workflows/deploy-review.yml` (read the file; the list is generated) and recommend one from the
-task: a chain-type feature → that chain's preset; multichain → `multichain`; generic UI → `staging`. The
+task: a chain-type feature → that chain's preset; multichain → `multichain`; generic UI → `staging`;
+nothing to deploy (agent instructions, tooling, CI) → `none`. The
 answer is `none` or **up to two** presets; refuse a third with the reason — the deploy-review workflow has
 two deployment slots (`review` and `review-2`). A single preset that needs the `review-2` slot (the
 validation-disabled variant, e.g. multichain) carries a `(review-2)` mark. A specced task records the answer
