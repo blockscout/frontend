@@ -3,35 +3,18 @@
 The brief for the agent that fixes a red Checks run inside a `review-loop` round: the round's resolver,
 resumed, or a fresh subagent after `cleared`. It is given the run url and the PR url. Its job is to make
 that run's failures pass on the next push without changing what the PR builds, and to hand back anything
-it cannot settle that way as `needs-human`.
+it cannot settle that way as `needs-human`. What makes this different from fixing CI by hand is that
+nobody is watching: the rules below are the judgement a developer would apply at the keyboard.
 
 ## 1. Read the run
 
-```bash
-gh run view <run id> --json jobs \
-  --jq '.jobs[] | select(.conclusion == "failure" or .conclusion == "timed_out" or .conclusion == "cancelled") | {name, conclusion, url}'
-gh run view <run id> --log-failed
-```
+Read the failed jobs and their logs; the failing job's name says which gate it is, and the gate's own doc
+(`.agents/rules/*.md`, `tools/*/CONTEXT.md`) says how to read its output and what the valid fixes are.
+Read it before touching code. Reproduce each failure locally with the command that doc gives before
+fixing it: a fix for a failure you cannot reproduce is a guess.
 
-Only those three conclusions are failures. A `skipped` job is not one: `Unit tests`, `Mutation testing gate`
-and `Playwright tests` `needs` `Code quality`, so they skip whenever it fails and have no log to read. The
-failing job's name says which gate it is; the gate's own doc says how to read its output and what the valid
-fixes are. Read it before touching code.
-
-| Failing job | Gate | How to read a failure |
-| --- | --- | --- |
-| `Code quality` | ESLint, `tsc`, cSpell, licenses, doc links, preset lists, envs-validator build | the step's log; `.agents/rules/code-quality.md` for the commands |
-| `Toolkit build check` | the `@blockscout/ui-toolkit` package build | the step's log; `src/toolkit/CONTEXT.md` |
-| `Unit tests` → `Run Vitest` | Vitest | the failing spec in the log; `.agents/rules/tests-unit.md` |
-| `Unit tests` → `Cognitive complexity & CRAP gate` | COG / CRAP | `tools/code-complexity/CONTEXT.md` |
-| `Unit tests` → `React Doctor gate` | React Doctor | `tools/react-doctor/CONTEXT.md` |
-| `Mutation testing gate` | mutation testing | `tools/mutation-testing/CONTEXT.md` |
-| `Playwright tests / <project>` | visual tests | step 3 below; `.agents/rules/tests-visual.md`, `tools/playwright/CONTEXT.md` |
-
-Reproduce each failure locally with the command the gate's doc gives, on the files the log names, before
-fixing it: a fix for a failure you cannot reproduce is a guess. A job that failed on infrastructure (a
-runner lost, an install timeout, a download that never arrived) is **not a finding**: rerun it with
-`gh run rerun <run id> --failed` and report that instead of a commit.
+A job that failed on infrastructure (a runner lost, an install timeout, a download that never arrived) is
+**not a finding**: rerun it with `gh run rerun <run id> --failed` and report that instead of a commit.
 
 **Done when**: every failing job is listed with its gate, the failure reproduced, and a proposed fix — or
 a `needs-human` reason.
@@ -50,29 +33,23 @@ The gates' own docs name the same line for their domain: the mutation-testing do
 reason to restructure working code", the complexity doc's "raising the cap is not the fix". When the only
 fix you can see crosses it, the question goes to the developer.
 
-## 3. Playwright failures
+## 3. Playwright screenshot mismatches
 
-Separate the failure kinds first; only a **screenshot mismatch** has a baseline question.
+Every other Playwright failure — an unmocked request, a timeout, an assertion on text or a role, a failed
+mount — is a plain fix under the escape above. A **screenshot mismatch** has a baseline question:
 
-- **Not a mismatch** — an unmocked request, a timeout, an assertion on text or a role, a failed mount: a
-  plain fix under the escape above. The "Mock flow" section of `.agents/rules/tests-visual.md` reads the
-  unmocked-request failure.
-- **A screenshot mismatch** — the test's screenshot differs from its committed baseline:
-  1. **Reproduce in Docker**, the only run whose pixels match CI:
-     `pnpm test:pw --docker path/to/Component.pw.tsx`. Then open `playwright-results/report.json` for the
-     failed test and its diff image path, and **view the diff image** (the `Read` tool renders images) —
-     the expected, actual and diff files sit together. The CI html report (the "Playwright report" link in
-     the `Generate Playwright report` job summary) shows the same three images.
-  2. **Decide what the diff is.** Match the changed region to the PR's diff and to the task spec's
-     Functional Requirements (`.agents/tasks/<issue>-<slug>/spec.md`; on a non-task PR, the PR body).
-     - The diff **is** a requirement — the spec asks for this change, and the pixels show it and nothing
-       else → **update the baseline**: `pnpm test:pw --docker path/to/Component.pw.tsx --update-snapshots`,
-       and nothing else in that commit. The commit message **cites the requirement** by number and phrase,
-       e.g. `Update Holders baseline for FR3 (balance column shows USD value)`. A baseline from a plain
-       local run is never committed (`.agents/rules/tests-visual.md`).
-     - Anything else — a diff the spec does not ask for, a diff larger than the requirement, a change you
-       can explain only as "it moved", a baseline for presentation the spec does not name → **`needs-human`**.
-       The question names the test, the image paths and what the spec does and does not say.
+1. **Reproduce in Docker**, the only run whose pixels match CI (`.agents/rules/tests-visual.md` has the
+   command), and **view the diff image** — the expected, actual and diff files sit together, and the
+   `Read` tool renders images.
+2. **Decide what the diff is.** Match the changed region to the PR's diff and to the task spec's
+   Functional Requirements (`.agents/tasks/<issue>-<slug>/spec.md`; on a non-task PR, the PR body).
+   - The diff **is** a requirement — the spec asks for this change, and the pixels show it and nothing
+     else → **update the baseline** from the Docker run, and nothing else in that commit. The commit
+     message **cites the requirement** by number and phrase, e.g. `Update Holders baseline for FR3
+     (balance column shows USD value)`. A baseline from a plain local run is never committed.
+   - Anything else — a diff the spec does not ask for, a diff larger than the requirement, a change you
+     can explain only as "it moved", a baseline for presentation the spec does not name → **`needs-human`**.
+     The question names the test, the image paths and what the spec does and does not say.
 
 ## 4. Commit
 

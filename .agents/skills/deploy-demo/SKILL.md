@@ -1,6 +1,7 @@
 ---
 name: deploy-demo
 description: Create a GitHub deployment for the current branch using the deploy-review workflow
+argument-hint: "[--preset <envs_preset>] [--variant review|review-2] [--no-build]"
 disable-model-invocation: true
 ---
 # Deploy demo
@@ -13,25 +14,33 @@ This workflow uses `gh` to trigger and monitor the deployment workflow. **Follow
 
 Create a GitHub deployment for the current branch using `.github/workflows/deploy-review.yml` (workflow name: "Deploy review environment").
 
+One run deploys one demo. Deploying the one or two entries a task's `Demo` row lists — slots, image reuse,
+sequencing, how a failed run is read — is [`demo-entries.md`](demo-entries.md), which `finalize-task` and
+`create-pr` follow.
+
 ## Inputs
 
-The skill runs two ways: from a developer's prose, inferring the workflow inputs in step 3, or from a
-caller (`finalize-task`, `create-pr` Mode C) that passes them explicitly. An explicit input **bypasses the
-inference** for that flag and is validated exactly as an inferred value is — against the option list in
-the workflow file, abort on a value it does not list.
+Nothing here is inferred from prose. Every input maps to a `workflow_dispatch` input of the workflow file,
+which is the single source of truth for valid values — never hardcode them in this skill. A value the
+workflow does not list stops the run with the valid options shown.
 
 | Input | Values | Default | Workflow flag |
 | --- | --- | --- | --- |
-| `preset` | an `envs_preset` option of the workflow | the workflow default | `-f envs_preset=<preset>` |
-| `variant` | a `variant` option of the workflow (`review`, `review-2`) | `review` | `-f variant=<variant>` |
-| `build_image` | `true` / `false` | `true` | `-f build_image=false` when `false` |
+| `--preset <p>` | an `on.workflow_dispatch.inputs.envs_preset.options` entry | the workflow default | `-f envs_preset=<p>` |
+| `--variant <v>` | an `on.workflow_dispatch.inputs.variant.options` entry | `review` | `-f variant=<v>` |
+| `--no-build` | flag | off (builds a fresh image) | `-f build_image=false` |
 
 ```
-/deploy-demo                                              infer everything from the prompt
-/deploy-demo preset=base                                  explicit preset, default slot, fresh build
-/deploy-demo preset=multichain variant=review-2 build_image=false
-                                                          second slot, reusing the branch's image
+/deploy-demo                                      workflow defaults: fresh build, default preset, review slot
+/deploy-demo --preset base                        base preset, review slot, fresh build
+/deploy-demo --preset multichain --variant review-2 --no-build
+                                                  second slot, reusing the branch's image
 ```
+
+`--no-build` needs an image for this branch from a prior successful build. The image tag is
+`review-<branch-slug>`, preset- and variant-agnostic: re-pointing a demo to another preset, or deploying
+the other variant, reuses it. Only the namespace and hostname (`<variant>-<branch-slug>`) differ per
+variant, so the two demos coexist. If unsure whether an image exists, build.
 
 ## Steps
 
@@ -50,32 +59,16 @@ _Note:_ In the command output, format all URLs as clickable Markdown links: `[Li
   - `gh run list --workflow=deploy-review.yml --branch <BRANCH> --status queued`
 - If any run is returned, **abort the command** and tell the user a deployment is already running for this branch (include a link to the run).
 
-### 3. Resolve the workflow inputs (all optional)
+### 3. Validate the inputs
 
-**Always read `.github/workflows/deploy-review.yml` as the single source of truth for valid option values — never hardcode them in this skill.** An input passed explicitly (see Inputs) is taken as given and only validated; the inference below covers the inputs the caller left out. The workflow has three `workflow_dispatch` inputs:
-
-**a. `envs_preset`** — which chain's config the demo fetches at startup.
-- Allowed values: `on.workflow_dispatch.inputs.envs_preset.options`.
-- Infer from the prompt: "deploy a demo for base" / "with base preset" → `base`; "spin up a demo using staging" → `staging`.
-- If no preset is mentioned: skip the flag (workflow default).
-- Validate against the options list; if invalid, show the valid options and **abort**.
-
-**b. `variant`** — which demo flavor (`on.workflow_dispatch.inputs.variant.options`, e.g. `review` / `review-2`). `review-2` disables ENVs validation (used for multichain).
-- Pass `-f variant=review-2` only if the user clearly asks for it ("review-2", "validation-disabled / multichain variant", "second demo"). Otherwise skip (default `review`).
-- Validate against the options list; if invalid, **abort**.
-
-**c. `build_image`** — whether to build & publish a fresh image (default `true`).
-- The image is preset-agnostic, so **re-pointing an existing demo to a different chain does not need a rebuild**. If the user asks to *redeploy / re-point / switch an existing demo to another preset* ("redeploy it for celo", "switch the demo to base without rebuilding", "re-point to gnosis"), pass `-f build_image=false` — this skips the multi-minute image build and just re-runs the deploy (~1–2 min), changing `ENVS_PRESET` so the pods roll.
-- For a first/normal deploy, skip the flag (default `true`, builds fresh).
-- **Caveat:** `build_image=false` only works if an image for this branch already exists (a prior successful build). If unsure, prefer building. The image tag is `review-<branch-slug>` — **variant-independent** (the image is both preset- and variant-agnostic). So an image built under either variant can be reused by the other: e.g. after a `review` build you can deploy `review-2` with `build_image=false`. Only the namespace/hostname (`<variant>-<branch-slug>`) differ per variant, so the two demos coexist.
+Read `.github/workflows/deploy-review.yml` and check each given `--preset` and `--variant` against its
+options list. An invalid value: show the valid options and **abort**. An input not given passes no flag,
+so the workflow default applies.
 
 ### 4. Trigger the workflow and capture the run ID
 
-- Run the workflow from the current branch (from step 1/2), passing only the flags resolved in step 3:
+- Run the workflow from the current branch (from step 1/2), passing only the flags for the inputs given:
   - `gh workflow run deploy-review.yml --ref <BRANCH> [-f envs_preset=<PRESET>] [-f variant=<VARIANT>] [-f build_image=false]`
-  - Examples:
-    - First deploy for base: `gh workflow run deploy-review.yml --ref <BRANCH> -f envs_preset=base`
-    - Re-point existing demo to celo (no rebuild): `gh workflow run deploy-review.yml --ref <BRANCH> -f build_image=false -f envs_preset=celo`
 - The CLI does not print the new run ID. To get it: wait a few seconds, then list the latest run for this workflow and branch: `gh run list --workflow=deploy-review.yml --branch <BRANCH> --limit 1`. Use that run’s ID for the next steps.
 
 ### 5. Monitor the workflow until it completes

@@ -81,10 +81,9 @@ description is a placeholder pointing at the plan:
 4. **Labels** — see "Labels" below, including the check.
 5. Link the created PR in the output.
 6. **Offer the demo** when grilling in this session settled demo presets (the `grill-the-task` demo
-   question; a small task holds the answer in session, not in a spec). Offer one `deploy-demo` run per
-   preset with explicit inputs: the first preset in the `review` slot with an image build, the second in
-   `review-2` reusing it (`build_image=false`); a single preset marked `(review-2)` takes that slot. An
-   answer of `none`, or a session that never grilled, gets no offer.
+   question; a small task holds the answer in session, not in a spec). Offer the runs
+   [`../deploy-demo/demo-entries.md`](../deploy-demo/demo-entries.md) gives for that answer. An answer of
+   `none`, or a session that never grilled, gets no offer.
 
 ## Labels (all modes)
 

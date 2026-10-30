@@ -9,7 +9,7 @@
 | Backend | <name> |
 | Minimum API version | <API version(s) this task requires, e.g. "Core API v11.2.4+"; list several for a multi-service raise> |
 | Slack channel | <#feature-channel, when the task has one> |
-| Demo | <`<preset> · <preset>`, `<preset> (review-2)` or `none`, from grilling> |
+| Demo | <from grilling; shape in `.agents/skills/deploy-demo/demo-entries.md`> |
 
 <!-- Header is static identity — no status row: task status is derived from `progress.md` (see
 `.agents/tasks/structure.md`). Drop a row that has nothing to say (no designer, no API raise, no feature

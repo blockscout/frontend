@@ -31,11 +31,9 @@ Slack thread, the code, the PR) rather than copying it.
 
 **The header holds only rows with something to say.** Drop a row the grilling left empty (no designer, no
 API raise, no feature channel) rather than filling it with `—`; `create-pr` and `finalize-task` read an
-absent row as "none". The `Demo` row is always present, written from the grilling's demo answer as
-`| Demo | <preset> · <preset> |`, `| Demo | <preset> (review-2) |` or `| Demo | none |`. Two entries are
-**positional**: `finalize-task` and `create-pr` deploy the first on the `review` slot and the second on
-`review-2` (the validation-disabled slot), so write the preset that needs validation off — `multichain` —
-second. The `(review-2)` mark exists only for a **single** entry that needs that slot; never mark one of two.
+absent row as "none". The `Demo` row is always present, written from the grilling's demo answer in the
+shape [`../deploy-demo/demo-entries.md`](../deploy-demo/demo-entries.md) gives — the entries are
+positional, so its order rule applies.
 
 **Show the user the files and get their confirmation of the content — this is the run's one gate.**
 

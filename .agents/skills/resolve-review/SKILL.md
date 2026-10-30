@@ -43,6 +43,12 @@ replied to.
 Contradictory inputs stop the run: `--scope` or `--ticket` with `pr`, `--ticket` with `--scope branch`, or
 `--auto` with `md`.
 
+`--scope` and `--ticket` are `review-changes`' own, and the file resolves off them exactly as it does there
+([`../review-changes/output-md.md`](../review-changes/output-md.md)) — `branch` is the task-level
+`review.md`, `uncommitted` the ticket's. An explicit `target` path settles the file outright and makes both
+redundant. Several review files side by side means several reviewers ran: resolve them in one pass, and
+where two raise the same defect, fix once and reply on both.
+
 ### Auto mode
 
 `--auto` is a gating policy, not a second procedure. Steps 1–3, 5 and 7 run unchanged; the two gates switch
@@ -51,12 +57,6 @@ verdict rules, and the commit at step 6. Where the interactive run
 would have stopped for the developer, the auto run stops only on `needs-human` — and then **before any
 edit**, returning as [Returning on `needs-human`](#returning-on-needs-human) specifies, so the caller can put
 the questions to the developer and resume the same run.
-
-`--scope` and `--ticket` are `review-changes`' own, and the file resolves off them exactly as it does there
-([`../review-changes/output-md.md`](../review-changes/output-md.md)) — `branch` is the task-level
-`review.md`, `uncommitted` the ticket's. An explicit `target` path settles the file outright and makes both
-redundant. Several review files side by side means several reviewers ran: resolve them in one pass, and
-where two raise the same defect, fix once and reply on both.
 
 ## Verdicts, by source
 
