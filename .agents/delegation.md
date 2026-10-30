@@ -20,7 +20,7 @@ agent-friendly, loosen the boundary here via a normal PR — don't renegotiate i
 - Glossary and docs updates, demo deploys (`deploy-demo` skill).
 - Resolving agent-review findings and pushing the fixes, within the review loop's rules (`resolve-review
   --auto`): fix / reject / defer per its verdict rules, and stop on anything that needs a human.
-- Fixing a red CI run inside the review loop (`review-loop/ci-fixes.md`), including updating a Playwright
+- Fixing a red CI run inside the review loop (`.agents/skills/review-loop/ci-fixes.md`), including updating a Playwright
   baseline when the diff is explained by a spec requirement the commit cites; any other visual diff, and
   any fix that changes behaviour or restructures beyond the finding, stops for a human.
 - Design readouts from Figma nodes (`design-readout` skill) — recognition only, never implementation.

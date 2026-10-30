@@ -13,6 +13,26 @@ This workflow uses `gh` to trigger and monitor the deployment workflow. **Follow
 
 Create a GitHub deployment for the current branch using `.github/workflows/deploy-review.yml` (workflow name: "Deploy review environment").
 
+## Inputs
+
+The skill runs two ways: from a developer's prose, inferring the workflow inputs in step 3, or from a
+caller (`finalize-task`, `create-pr` Mode C) that passes them explicitly. An explicit input **bypasses the
+inference** for that flag and is validated exactly as an inferred value is — against the option list in
+the workflow file, abort on a value it does not list.
+
+| Input | Values | Default | Workflow flag |
+| --- | --- | --- | --- |
+| `preset` | an `envs_preset` option of the workflow | the workflow default | `-f envs_preset=<preset>` |
+| `variant` | a `variant` option of the workflow (`review`, `review-2`) | `review` | `-f variant=<variant>` |
+| `build_image` | `true` / `false` | `true` | `-f build_image=false` when `false` |
+
+```
+/deploy-demo                                              infer everything from the prompt
+/deploy-demo preset=base                                  explicit preset, default slot, fresh build
+/deploy-demo preset=multichain variant=review-2 build_image=false
+                                                          second slot, reusing the branch's image
+```
+
 ## Steps
 
 _Note:_ In the command output, format all URLs as clickable Markdown links: `[Link Text](URL)`.
@@ -32,7 +52,7 @@ _Note:_ In the command output, format all URLs as clickable Markdown links: `[Li
 
 ### 3. Resolve the workflow inputs (all optional)
 
-**Always read `.github/workflows/deploy-review.yml` as the single source of truth for valid option values — never hardcode them in this skill.** The workflow has three `workflow_dispatch` inputs:
+**Always read `.github/workflows/deploy-review.yml` as the single source of truth for valid option values — never hardcode them in this skill.** An input passed explicitly (see Inputs) is taken as given and only validated; the inference below covers the inputs the caller left out. The workflow has three `workflow_dispatch` inputs:
 
 **a. `envs_preset`** — which chain's config the demo fetches at startup.
 - Allowed values: `on.workflow_dispatch.inputs.envs_preset.options`.

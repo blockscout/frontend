@@ -72,6 +72,16 @@ of them, and marching through all six regardless is how a five-minute task turns
    tracking (page views are auto-wired); UTM query params on any hardcoded links to Blockscout or partner
    products.
 
+**The demo question is asked on every task**, because `none` is a decision and the land step reads it:
+which preset(s) the demo deploys on. Offer the `envs_preset` options of
+`.github/workflows/deploy-review.yml` (read the file; the list is generated) and recommend one from the
+task: a chain-type feature → that chain's preset; multichain → `multichain`; generic UI → `staging`. The
+answer is `none` or **up to two** presets; refuse a third with the reason — the deploy-review workflow has
+two deployment slots (`review` and `review-2`). A single preset that needs the `review-2` slot (the
+validation-disabled variant, e.g. multichain) carries a `(review-2)` mark. A specced task records the answer
+in the spec header's `Demo` row (`to-spec`); a small task keeps it in session for `create-pr` Mode C's
+deploy offer.
+
 Testing is **not** an interview domain — the capability boundary in `.agents/delegation.md` settles it.
 Neither is human verification: which acceptance criteria are `(human)` follows the standing rule in "The
 ticket model" in `.agents/tasks/concepts.md`. Only ask when one sits genuinely on the line.
