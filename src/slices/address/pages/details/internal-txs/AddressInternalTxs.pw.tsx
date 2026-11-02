@@ -18,7 +18,10 @@ const hooksConfig = {
 
 test('base view', async({ render, mockApiResponse }) => {
   test.slow();
-  await mockApiResponse('core:address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:address_internal_txs', internalTxsMock.baseResponse, {
+    pathParams: { hash: ADDRESS_HASH },
+    queryParams: { include_zero_value: false },
+  });
   await mockApiResponse('core:config_csv_export', csvExportMock.config);
   const component = await render(
     <Box pt={ 6 }>
