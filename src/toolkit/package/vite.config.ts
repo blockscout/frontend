@@ -3,12 +3,10 @@ import { resolve } from 'path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import svgr from 'vite-plugin-svgr';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   plugins: [
     react(),
-    tsconfigPaths({ ignoreConfigErrors: true }),
     svgr({
       include: '**/*.svg',
       exclude: '',
@@ -57,6 +55,7 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    tsconfigPaths: true,
     alias: {
       src: resolve(__dirname, '../../../src'),
     },
@@ -68,7 +67,7 @@ export default defineConfig({
       fileName: 'index',
     },
     outDir: './dist',
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         'react',
         'react-dom',
@@ -92,7 +91,6 @@ export default defineConfig({
         preserveModules: false,
         preserveModulesRoot: '..',
         exports: 'named',
-        interop: 'auto',
       },
     },
   },
