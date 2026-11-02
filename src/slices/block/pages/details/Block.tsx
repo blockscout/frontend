@@ -19,7 +19,6 @@ import useBlockTxsQuery from 'src/slices/block/hooks/useBlockTxsQuery';
 import BlockDetails from 'src/slices/block/pages/details/BlockDetails';
 import BlockInternalTxs from 'src/slices/block/pages/details/BlockInternalTxs';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
-import InternalTxsZeroValueSwitch from 'src/slices/internal-tx/components/InternalTxsZeroValueSwitch';
 import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFrontendSorting';
 
 import TextAd from 'src/features/ads/text/components/TextAd';
@@ -154,7 +153,7 @@ const BlockPageContent = () => {
     hasPagination,
   ]);
 
-  let pagination: PaginationParams | undefined;
+  let pagination;
   if (tab === 'txs') {
     pagination = blockTxsQuery.pagination;
   } else if (tab === 'withdrawals') {
@@ -164,20 +163,6 @@ const BlockPageContent = () => {
   } else if (tab === 'internal_txs') {
     pagination = blockInternalTxsQuery.pagination;
   }
-
-  const isInternalTxsTab = tab === 'internal_txs';
-  const tabsRightSlot = !isMobile && (hasPagination || isInternalTxsTab) ? (
-    <Flex alignItems="center" columnGap={ 6 }>
-      { isInternalTxsTab && (
-        <InternalTxsZeroValueSwitch
-          isChecked={ blockInternalTxsQuery.isZeroValueShown }
-          onChange={ blockInternalTxsQuery.onZeroValueToggle }
-          isLoading={ blockInternalTxsQuery.pagination.isLoading }
-        />
-      ) }
-      { pagination && <Pagination { ...pagination }/> }
-    </Flex>
-  ) : null;
 
   throwOnAbsentParamError(heightOrHash);
 
@@ -247,7 +232,7 @@ const BlockPageContent = () => {
         tabs={ tabs }
         isLoading={ blockQuery.isPlaceholderData }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ tabsRightSlot }
+        rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
         stickyEnabled={ hasPagination }
       />
     </>

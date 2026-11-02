@@ -1,16 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
-import InternalTxsZeroValueSwitch from 'src/slices/internal-tx/components/InternalTxsZeroValueSwitch';
 
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
@@ -26,10 +23,9 @@ type Props = {
 };
 const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const isMounted = useIsMounted();
-  const isMobile = useIsMobile();
 
   const { hash, query, filterValue, onFilterChange } = useAddressInternalTxsQuery({ enabled: isQueryEnabled });
-  const { data, isInitialLoading, isTransitioning, isError, pagination, isZeroValueShown, onZeroValueToggle } = query;
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = query;
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -41,8 +37,8 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
     </TableContainerScrollable>
   ) : null ;
 
-  const controls = (
-    <>
+  const actionBar = (
+    <ActionBar mt={ -6 } justifyContent="left">
       <AddressTxsFilter
         initialValue={ filterValue }
         onFilterChange={ onFilterChange }
@@ -60,25 +56,8 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
         loadingInitial={ pagination.isLoading }
         ml={{ base: 2, lg: 3 }}
       />
-      <InternalTxsZeroValueSwitch
-        isChecked={ isZeroValueShown }
-        onChange={ onZeroValueToggle }
-        isLoading={ pagination.isLoading }
-        ml={{ base: 'auto', lg: 6 }}
-      />
-    </>
-  );
-
-  const actionBar = (
-    <>
-      { isMobile && <Flex mb={ 6 } alignItems="center">{ controls }</Flex> }
-      { (!isMobile || pagination.isVisible) && (
-        <ActionBar mt={ -6 } justifyContent="left">
-          { !isMobile && controls }
-          <Pagination ml="auto" { ...pagination }/>
-        </ActionBar>
-      ) }
-    </>
+      <Pagination ml="auto" { ...pagination }/>
+    </ActionBar>
   );
 
   return (
@@ -92,7 +71,6 @@ const AddressInternalTxs = ({ shouldRender = true, isQueryEnabled = true }: Prop
       }}
       emptyText="There are no internal transactions for this address."
       actionBar={ actionBar }
-      showActionBarIfEmpty
     >
       { content }
     </DataList>
