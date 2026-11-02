@@ -69,7 +69,7 @@ const ContractVerificationSolidityHardhat = ({ config: formConfig }: { config: S
           </Link>
           { config.chain.isProApiSupported && (
             <Box mt={ 1 }>
-              <span>Get your Pro API key in the </span>
+              <span>Get your Blockscout API key in the </span>
               <Link href="https://dev.blockscout.com/?utm_source=blockscout&utm_medium=contract_verification" external>
                 Blockscout Dev Portal
               </Link>
