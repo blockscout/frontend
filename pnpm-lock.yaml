@@ -178,7 +178,6 @@ overrides:
 
 patchedDependencies:
   '@lifi/widget-light@4.3.2': 8ee9f6665560f5ce16422afed5a38522d274ad98ca518fe83619f682b53ed378
-  '@stryker-mutator/vitest-runner@10.0.0': 6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159
 
 importers:
 
@@ -543,14 +542,14 @@ importers:
         specifier: 1.62.1
         version: 1.62.1
       '@stryker-mutator/api':
-        specifier: 10.0.0
-        version: 10.0.0
+        specifier: 10.1.1
+        version: 10.1.1
       '@stryker-mutator/core':
-        specifier: 10.0.0
-        version: 10.0.0(@types/node@24.13.4)
+        specifier: 10.1.1
+        version: 10.1.1(@types/node@24.13.4)
       '@stryker-mutator/vitest-runner':
-        specifier: 10.0.0
-        version: 10.0.0(patch_hash=6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159)(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)
+        specifier: 10.1.1
+        version: 10.1.1(@stryker-mutator/core@10.1.1(@types/node@24.13.4))(vitest@5.0.0)
       '@stylistic/eslint-plugin':
         specifier: 5.2.3
         version: 5.2.3(eslint@9.39.2(supports-color@10.2.2))
@@ -6135,27 +6134,27 @@ packages:
       react:
         optional: true
 
-  '@stryker-mutator/api@10.0.0':
-    resolution: {integrity: sha512-ZtAJ0ZT3MVRCWJTBE2h90XB/6E+4lifHYtcTyNG6nU2nLekPgTo4gD5esjX6Okxo1b/JB4jJzyxYB54fwKAoJw==}
+  '@stryker-mutator/api@10.1.1':
+    resolution: {integrity: sha512-3s/ECsrD1Tf1WEB7amBk0HxjN7zgkabKvmqnI2C831rTNszJ6o2HoV9PVxtElDEWxb2+t4iavK5x25G+DTUOUA==}
     engines: {node: '>=22.0.0'}
 
-  '@stryker-mutator/core@10.0.0':
-    resolution: {integrity: sha512-ZvMsRyaXQQ5e6Thcid9pkuODv6Fn9E3nrBQJUap+hcJuGJ4unm26afo3m6YKSjn8kinyxJ/3TXf0cTWRDaTxVw==}
+  '@stryker-mutator/core@10.1.1':
+    resolution: {integrity: sha512-4xJAOCw9utJMLyrTk9gINi434tBxnyuwt8lU/InyoKagKd2/zh/2ui7ncWoD0qZeJrxClYzblg8iUh5ewBAB3Q==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  '@stryker-mutator/instrumenter@10.0.0':
-    resolution: {integrity: sha512-B7Wmn1KlEWyFeOz6D6oGvQGRfi5Xw3VemG6dEKvFQp4qLvxD9Mf4kcZghfxffgnYwXd3bFgqXsJ+ZGlhdfIOrQ==}
+  '@stryker-mutator/instrumenter@10.1.1':
+    resolution: {integrity: sha512-Vyude2i8LhDciLV1q6J55KtdA7gZpRuMfZcBcmWV6hLHAvWocoPKnCKc5BlZt1mwGWkX3Olc0457I7Ue6F1WEg==}
     engines: {node: '>=22.0.0'}
 
-  '@stryker-mutator/util@10.0.0':
-    resolution: {integrity: sha512-LzOpHiJaCp2ABQgnPMlrQQcsK43bd5Vo/2FGL78aN62yDoeRQ+4j3tzeuXxK5OAHdC3fUz6TDoy4IsoAuLAd3w==}
+  '@stryker-mutator/util@10.1.1':
+    resolution: {integrity: sha512-Z0zDzsmhoSykE1gT3DvD1knFxySgNMfBlpSSs1j87kWvjEMfeMqfLOk0bqEPRg/rTFIUNSEXLZapxePUhZmfZA==}
 
-  '@stryker-mutator/vitest-runner@10.0.0':
-    resolution: {integrity: sha512-SHK2/vfvRUpiz7jXPnQMBnr6zLdm69DK03Mo5mPhaZWcRSygrKUqYsPqWsXsK+5ySHzlMTfCyFK5NQ/X9sJFFw==}
+  '@stryker-mutator/vitest-runner@10.1.1':
+    resolution: {integrity: sha512-w/OmNt1vHD4Yeacy8Rxhl2Ue/9l662iyOW8XxM4rc9huixF6IySHW3cvhTs8JnMvG9tG7vS7ZZ52wUXx7xy1IQ==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
-      '@stryker-mutator/core': 10.0.0
+      '@stryker-mutator/core': 10.1.1
       vitest: '>=2.0.0'
 
   '@stylistic/eslint-plugin@5.2.3':
@@ -22838,19 +22837,19 @@ snapshots:
     optionalDependencies:
       react: 19.1.4
 
-  '@stryker-mutator/api@10.0.0':
+  '@stryker-mutator/api@10.1.1':
     dependencies:
       mutation-testing-metrics: 3.8.4
       mutation-testing-report-schema: 3.8.4
       tslib: 2.8.1
       typed-inject: 5.0.0
 
-  '@stryker-mutator/core@10.0.0(@types/node@24.13.4)':
+  '@stryker-mutator/core@10.1.1(@types/node@24.13.4)':
     dependencies:
       '@inquirer/prompts': 8.6.0(@types/node@24.13.4)
-      '@stryker-mutator/api': 10.0.0
-      '@stryker-mutator/instrumenter': 10.0.0
-      '@stryker-mutator/util': 10.0.0
+      '@stryker-mutator/api': 10.1.1
+      '@stryker-mutator/instrumenter': 10.1.1
+      '@stryker-mutator/util': 10.1.1
       ajv: 8.20.0
       chalk: 5.6.2
       commander: 14.0.3
@@ -22876,7 +22875,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@stryker-mutator/instrumenter@10.0.0':
+  '@stryker-mutator/instrumenter@10.1.1':
     dependencies:
       '@babel/core': 8.0.1
       '@babel/generator': 8.0.0
@@ -22886,20 +22885,20 @@ snapshots:
       '@babel/preset-react': 8.0.1(@babel/core@8.0.1)
       '@babel/preset-typescript': 8.0.1(@babel/core@8.0.1)
       '@babel/traverse': 8.0.4
-      '@stryker-mutator/api': 10.0.0
-      '@stryker-mutator/util': 10.0.0
+      '@stryker-mutator/api': 10.1.1
+      '@stryker-mutator/util': 10.1.1
       angular-html-parser: 10.11.0
       semver: 7.8.5
       tslib: 2.8.1
       weapon-regex: 2.0.4
 
-  '@stryker-mutator/util@10.0.0': {}
+  '@stryker-mutator/util@10.1.1': {}
 
-  '@stryker-mutator/vitest-runner@10.0.0(patch_hash=6ec965dcc2376b60fb1c0062fd95899901410eefe7508e286c1b1b0ff7c01159)(@stryker-mutator/core@10.0.0(@types/node@24.13.4))(vitest@5.0.0)':
+  '@stryker-mutator/vitest-runner@10.1.1(@stryker-mutator/core@10.1.1(@types/node@24.13.4))(vitest@5.0.0)':
     dependencies:
-      '@stryker-mutator/api': 10.0.0
-      '@stryker-mutator/core': 10.0.0(@types/node@24.13.4)
-      '@stryker-mutator/util': 10.0.0
+      '@stryker-mutator/api': 10.1.1
+      '@stryker-mutator/core': 10.1.1(@types/node@24.13.4)
+      '@stryker-mutator/util': 10.1.1
       semver: 7.8.5
       tslib: 2.8.1
       vitest: 5.0.0(@opentelemetry/api@1.9.1)(@types/node@24.13.4)(@vitest/coverage-v8@5.0.0)(jsdom@27.3.0(bufferutil@4.1.0)(supports-color@10.2.2)(utf-8-validate@6.0.6))(vite@8.3.5(@types/node@24.13.4)(esbuild@0.28.1)(terser@5.48.0)(yaml@2.9.0))
