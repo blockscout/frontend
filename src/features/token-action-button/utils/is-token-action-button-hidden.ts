@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AddressMetadataTagType } from 'src/features/address-metadata/types/api';
+
 import { SERVICE_TAG_TYPE } from 'src/features/address-metadata/utils/is-hidden-tag';
 
 export const TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG = 'token-action-button-hidden';
 
 interface TagCandidate {
   readonly slug: string;
-  readonly tagType: string;
+  readonly tagType: AddressMetadataTagType;
 }
 
 export function isTokenActionButtonHidden(tags: ReadonlyArray<TagCandidate> | undefined): boolean {

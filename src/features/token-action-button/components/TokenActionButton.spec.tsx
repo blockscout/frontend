@@ -41,7 +41,7 @@ const envsWithMalformedUrl: Array<[ string, string ]> = [
 it('renders nothing when the button is not configured', async() => {
   const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
-  render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+  render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
   expect(screen.queryByText(BUTTON_TEXT)).toBeNull();
 });
@@ -50,29 +50,9 @@ it('renders nothing when the configured url is malformed', async() => {
   await withEnvs(envsWithMalformedUrl, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
     expect(screen.queryByText(BUTTON_TEXT)).toBeNull();
-  });
-});
-
-it('renders nothing for a token that is not ERC-20', async() => {
-  await withEnvs(envs, async() => {
-    const { 'default': TokenActionButton } = await import('./TokenActionButton');
-
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-721"/>);
-
-    expect(screen.queryByText(BUTTON_TEXT)).toBeNull();
-  });
-});
-
-it('renders while the token type is still unknown', async() => {
-  await withEnvs(envs, async() => {
-    const { 'default': TokenActionButton } = await import('./TokenActionButton');
-
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType={ undefined } isLoading/>);
-
-    expect(screen.queryByText(BUTTON_TEXT)).not.toBeNull();
   });
 });
 
@@ -80,7 +60,7 @@ it('opens the configured url in a new tab, with utm params appended', async() =>
   await withEnvs(envs, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
     const link = screen.getByRole('link', { name: BUTTON_TEXT });
     expect(link.getAttribute('href')).toBe(`${ CONFIGURED_URL }?utm_source=blockscout&utm_medium=token`);
@@ -92,7 +72,7 @@ it('substitutes every {hash} placeholder with the lowercased token hash', async(
   await withEnvs(envsWithPlaceholder, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
     const link = screen.getByRole('link', { name: BUTTON_TEXT });
     expect(link.getAttribute('href'))
@@ -104,7 +84,7 @@ it('logs an action button event with the destination url', async() => {
   await withEnvs(envs, async() => {
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
-    render(<TokenActionButton tokenHash={ TOKEN_HASH } tokenType="ERC-20"/>);
+    render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
     fireEvent.click(screen.getByRole('button', { name: BUTTON_TEXT }));
 

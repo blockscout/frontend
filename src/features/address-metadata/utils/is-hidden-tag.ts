@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export const SERVICE_TAG_TYPE = 'service';
+import type { MetadataTagType } from 'src/features/address-metadata/components/tag/types';
+import type { AddressMetadataTagType } from 'src/features/address-metadata/types/api';
+
+export const SERVICE_TAG_TYPE = 'service' satisfies AddressMetadataTagType;
 
 interface TagWithMeta {
-  readonly tagType?: string;
+  readonly tagType?: MetadataTagType;
   readonly meta?: { readonly hidden?: unknown } | null;
 }
 

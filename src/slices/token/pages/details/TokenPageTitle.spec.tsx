@@ -33,8 +33,8 @@ const tokenQuery = { data: tokenInfo } as UseQueryResult<schemas['Token'], Resou
 const verifiedInfoQuery = { data: {} } as UseQueryResult<contractsInfo.TokenInfo, ResourceError<unknown>>;
 const addressQuery = {} as UseQueryResult<schemas['Address'], ResourceError<unknown>>;
 
-function mockMetadata(tags: Array<AddressMetadataTagApi>): void {
-  const info: AddressMetadataInfo = {
+function metadataInfo(tags: Array<AddressMetadataTagApi>): AddressMetadataInfo {
+  return {
     addresses: {
       [ tokenInfo.address_hash.toLowerCase() ]: {
         tags: tags.map((tag) => ({ ...tag, meta: tag.meta ? JSON.stringify(tag.meta) : null })),
@@ -42,8 +42,11 @@ function mockMetadata(tags: Array<AddressMetadataTagApi>): void {
       },
     },
   };
+}
+
+function mockMetadata(tags: Array<AddressMetadataTagApi>): void {
   fetchMock.mockResponse((request) => request.url.includes('/metadata') ?
-    { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(info) } :
+    { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(metadataInfo(tags)) } :
     { status: 404, body: '{}' },
   );
 }
@@ -61,19 +64,18 @@ async function renderTitle(): Promise<void> {
   await waitFor(() => expect(fetchMock.mock.calls.length).toBeGreaterThan(0));
 }
 
-async function renderTitleOnChainWithoutMetadata(): Promise<void> {
+type AppConfig = ClusterChainConfig['app_config'];
+
+async function renderTitleOnChain(getAppConfig: (rootConfig: AppConfig) => AppConfig): Promise<void> {
   const { 'default': TokenPageTitle } = await import('./TokenPageTitle');
   const { MultichainContext } = await import('src/features/multichain/context');
   const { 'default': config } = await import('src/config');
 
   const chain: ClusterChainConfig = {
     id: config.chain.id ?? '1',
-    name: 'Chain without metadata',
-    slug: 'chain-without-metadata',
-    app_config: {
-      ...config,
-      features: { ...config.features, addressMetadata: { title: config.features.addressMetadata.title, isEnabled: false } },
-    },
+    name: 'Cluster chain',
+    slug: 'cluster-chain',
+    app_config: getAppConfig(config),
   };
 
   render(
@@ -87,6 +89,29 @@ async function renderTitleOnChainWithoutMetadata(): Promise<void> {
     </MultichainContext.Provider>,
   );
 }
+
+const withChainMetadataOff = (rootConfig: AppConfig): AppConfig => ({
+  ...rootConfig,
+  features: {
+    ...rootConfig.features,
+    addressMetadata: { title: rootConfig.features.addressMetadata.title, isEnabled: false },
+  },
+});
+
+const withChainMetadataOn = (rootConfig: AppConfig): AppConfig => ({
+  ...rootConfig,
+  chain: { ...rootConfig.chain, id: rootConfig.chain.id || '1' },
+  apis: { ...rootConfig.apis, metadata: { endpoint: 'https://localhost:3007' } },
+  features: {
+    ...rootConfig.features,
+    addressMetadata: {
+      title: rootConfig.features.addressMetadata.title,
+      isEnabled: true,
+      isTagsUpdateEnabled: false,
+      isTagSubmitionEnabled: false,
+    },
+  },
+});
 
 beforeEach(() => {
   fetchMock.resetMocks();
@@ -140,7 +165,28 @@ describe('token action button', () => {
 
   it('shows the configured button on a cluster chain whose metadata service is off', async() => {
     await withEnvs(envs, async() => {
-      await renderTitleOnChainWithoutMetadata();
+      await renderTitleOnChain(withChainMetadataOff);
+
+      expect(await screen.findByText(ENV_BUTTON_TEXT)).toBeTruthy();
+    });
+  });
+
+  it('waits for the metadata of a cluster chain whose metadata service is on while the root one is off', async() => {
+    await withEnvs(ENVS_MAP.tokenActionButton, async() => {
+      let respondWithMetadata: ((body: string) => void) | undefined;
+      fetchMock.mockResponse((request) => request.url.includes('/metadata') ?
+        new Promise<string>((resolve) => {
+          respondWithMetadata = resolve;
+        }) :
+        { status: 404, body: '{}' },
+      );
+
+      await renderTitleOnChain(withChainMetadataOn);
+      await waitFor(() => expect(respondWithMetadata).toBeDefined());
+
+      expect(screen.queryByText(ENV_BUTTON_TEXT)).toBeNull();
+
+      respondWithMetadata?.(JSON.stringify(metadataInfo([ protocolTag ])));
 
       expect(await screen.findByText(ENV_BUTTON_TEXT)).toBeTruthy();
     });

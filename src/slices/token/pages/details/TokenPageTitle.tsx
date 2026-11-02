@@ -132,7 +132,6 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
         { hasTokenActionButton && (
           <TokenActionButton
             tokenHash={ hash }
-            tokenType={ tokenQuery.data?.type }
             isLoading={ tokenQuery.isPlaceholderData }
           />
         ) }

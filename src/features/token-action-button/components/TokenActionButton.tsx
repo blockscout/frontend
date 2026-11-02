@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { buildUrl } from 'src/features/token-action-button/utils/build-url';
+import { buildTokenActionUrl } from 'src/features/token-action-button/utils/build-url';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
@@ -17,12 +17,11 @@ const button = getFeaturePayload(config.features.tokenActionButton)?.button;
 
 interface Props {
   tokenHash: string;
-  tokenType: string | undefined | null;
   isLoading?: boolean;
 }
 
-const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
-  const href = button ? buildUrl(button.url, tokenHash) : undefined;
+const TokenActionButton = ({ tokenHash, isLoading }: Props) => {
+  const href = button ? buildTokenActionUrl(button.url, tokenHash) : undefined;
 
   const handleClick = React.useCallback(() => {
     // Stryker disable next-line ConditionalExpression: always true here (no href, no button); it narrows href for analytics
@@ -37,10 +36,6 @@ const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
   );
 
   if (!button || !href) {
-    return null;
-  }
-
-  if (!isLoading && tokenType !== 'ERC-20') {
     return null;
   }
 

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import type { AddressMetadataTagType } from 'src/features/address-metadata/types/api';
+
 import { isHiddenTag } from './is-hidden-tag';
 
 interface ProtocolTagCandidate {
-  readonly tagType: string;
+  readonly tagType: AddressMetadataTagType;
   readonly meta?: { readonly hidden?: unknown } | null;
 }
 
