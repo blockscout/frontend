@@ -51,11 +51,11 @@ function mockMetadata(tags: Array<AddressMetadataTagApi>): void {
   );
 }
 
-async function renderTitle(): Promise<void> {
+async function renderTitle(query = tokenQuery): Promise<void> {
   const { 'default': TokenPageTitle } = await import('./TokenPageTitle');
   render(
     <TokenPageTitle
-      tokenQuery={ tokenQuery }
+      tokenQuery={ query }
       addressQuery={ addressQuery }
       verifiedInfoQuery={ verifiedInfoQuery }
       hash={ tokenInfo.address_hash }
@@ -129,6 +129,17 @@ describe('token action button', () => {
 
       expect(await screen.findByText(ENV_BUTTON_TEXT)).toBeTruthy();
       expect(screen.getByText(protocolTag.name)).toBeTruthy();
+    });
+  });
+
+  it('hides the configured button on a non-ERC-20 token', async() => {
+    await withEnvs(envs, async() => {
+      mockMetadata([ protocolTag ]);
+      const erc721Query = { data: { ...tokenInfo, type: 'ERC-721' } } as UseQueryResult<schemas['Token'], ResourceError<unknown>>;
+      await renderTitle(erc721Query);
+
+      expect(await screen.findByText(protocolTag.name)).toBeTruthy();
+      expect(screen.queryByText(ENV_BUTTON_TEXT)).toBeNull();
     });
   });
 
