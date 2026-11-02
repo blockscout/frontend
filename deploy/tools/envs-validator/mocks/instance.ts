@@ -4,6 +4,7 @@ import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-sta
 import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
 import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
+import type { TokenActionButtonConfig } from 'src/features/token-action-button/types/config';
 import type { HeroBannerConfig } from 'src/slices/home/types/config';
 
 import { toEnvValue } from '../test-utils';
@@ -31,6 +32,13 @@ const multichainHeroBanner: HeroBannerConfig = {
     border_width: [ '0px' ],
     border_color: { _focus: [ 'deeppink' ] },
   },
+};
+
+const tokenActionButton: TokenActionButtonConfig = {
+  text: 'Buy on Example Portal',
+  url: 'https://portal.example.com/swap?chainId=1&token={hash}',
+  logo: [ 'https://example.com/logo-light.svg', 'https://example.com/logo-dark.svg' ],
+  colors: { _default: { bg: [ 'rgb(134, 86, 239)' ], text: [ 'white' ] } },
 };
 
 const multichainBalanceProviders: Array<MultichainProviderConfig> = [
@@ -157,6 +165,7 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue(deFiDropdownItems),
   NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: toEnvValue(deFiDropdownButtonText),
   NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue(multichainBalanceProviders),
+  NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG: toEnvValue(tokenActionButton),
   NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: toEnvValue(gasRefuelProvider),
   NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: 'https://example.com',
   NEXT_PUBLIC_ADDRESS_3RD_PARTY_WIDGETS: toEnvValue(Object.keys(address3rdPartyWidgetsConfig)),
@@ -184,6 +193,7 @@ export const multichainConfig: Record<string, string> = {
   NEXT_PUBLIC_FOOTER_LINKS: JSON.stringify(footerLinks),
   NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: toEnvValue(multichainHeroBanner),
   NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue(multichainBalanceProviders),
+  NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG: toEnvValue(tokenActionButton),
   NEXT_PUBLIC_NETWORK_ICON: 'http://example.com',
   NEXT_PUBLIC_NETWORK_ICON_DARK: 'http://example.com',
   NEXT_PUBLIC_NETWORK_LOGO: 'http://example.com',

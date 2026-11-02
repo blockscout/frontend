@@ -12,6 +12,7 @@ import { generateAddressMetadataInfo, hiddenProtocolTagWithMeta } from 'src/feat
 
 import config from 'src/config';
 
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 
 import TokenPageTitle from './TokenPageTitle';
@@ -52,5 +53,26 @@ test('with action button +@dark-mode +@mobile', async({ render, mockApiResponse,
     `https://portal.duck.io/swap?chainId=${ config.chain.id }&token=${ hash.toLowerCase() }&utm_source=blockscout&utm_medium=token`,
   );
   await expect(component.getByText('Buy on Duck portal', { exact: true })).toHaveCount(1);
+  await expect(component).toHaveScreenshot();
+});
+
+test('with env action button +@dark-mode +@mobile', async({ render, mockApiResponse, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.tokenActionButton);
+  await mockApiResponse('metadata:info', generateAddressMetadataInfo(hash, hiddenProtocolTagWithMeta), { queryParams: addressMetadataQueryParams });
+  await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
+
+  const component = await render(
+    <TokenPageTitle
+      tokenQuery={ tokenQuery }
+      hash={ hash }
+      addressQuery={ addressQuery }
+      verifiedInfoQuery={ verifiedInfoQuery }
+    />);
+
+  await expect(component.getByRole('link', { name: /Buy on Duck Portal/ })).toHaveAttribute(
+    'href',
+    `https://portal.duck.io/swap?chainId=1&token=${ hash.toLowerCase() }&utm_source=blockscout&utm_medium=token`,
+  );
+  await expect(component.getByText('Buy on Duck portal', { exact: true })).toHaveCount(0);
   await expect(component).toHaveScreenshot();
 });

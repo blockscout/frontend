@@ -9,7 +9,7 @@ export interface AddressMetadataInfo {
   }>;
 }
 
-export type AddressMetadataTagType = 'name' | 'generic' | 'classifier' | 'information' | 'note' | 'protocol';
+export type AddressMetadataTagType = 'name' | 'generic' | 'classifier' | 'information' | 'note' | 'protocol' | 'service';
 
 // Response model from Metadata microservice API
 export interface AddressMetadataTag {
