@@ -1,9 +1,8 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
-import type { Plugin } from 'esbuild';
+import path from 'node:path';
 import svgr from 'vite-plugin-svgr';
-import tsconfigPaths from 'vite-tsconfig-paths';
 
 import appConfig from 'src/config';
 
@@ -71,7 +70,6 @@ const config: PlaywrightTestConfig = defineConfig({
 
     ctViteConfig: {
       plugins: [
-        tsconfigPaths({ loose: true, ignoreConfigErrors: true }),
         react(),
         svgr({
           include: '**/*.svg',
@@ -95,13 +93,13 @@ const config: PlaywrightTestConfig = defineConfig({
             },
           },
         }),
-      ] as unknown as Array<Plugin>,
+      ],
       build: {
         // it actually frees some memory that vite needs a lot
         // https://github.com/storybookjs/builder-vite/issues/409#issuecomment-1152848986
         sourcemap: false,
         minify: false,
-        rollupOptions: {
+        rolldownOptions: {
           output: {
             // Ensure __envs exists in every chunk so code (e.g. next/router, configs/app) that
             // runs before index.ts/envs.js doesn't throw. Real envs are set when envs.js runs.
@@ -118,6 +116,7 @@ const config: PlaywrightTestConfig = defineConfig({
         },
       },
       resolve: {
+        tsconfigPaths: true,
         alias: [
           // There is an issue with building these package using vite that I cannot resolve
           // The solution described here - https://github.com/vitejs/vite/issues/9703#issuecomment-1216662109
@@ -125,6 +124,10 @@ const config: PlaywrightTestConfig = defineConfig({
           // so for now we just mock these modules in tests
           { find: '@metamask/post-message-stream', replacement: './playwright/mocks/modules/@metamask/post-message-stream.js' },
           { find: '@metamask/providers', replacement: './playwright/mocks/modules/@metamask/providers.js' },
+
+          // Rolldown forbids assigning to an imported binding, so useRouter is swapped by aliasing the module.
+          // The path is absolute so that playwright/index.ts and the app share one instance of the mock.
+          { find: /^next\/router$/, replacement: path.resolve(__dirname, 'playwright/mocks/modules/next/router.ts') },
 
           // Mock for growthbook to test feature flags
           { find: 'src/services/growthbook/useFeatureValue', replacement: './playwright/mocks/client/services/growthbook/useFeatureValue.js' },
