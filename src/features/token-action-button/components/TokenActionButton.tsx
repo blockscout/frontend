@@ -25,6 +25,7 @@ const TokenActionButton = ({ tokenHash, tokenType, isLoading }: Props) => {
   const href = button ? buildUrl(button.url, tokenHash) : undefined;
 
   const handleClick = React.useCallback(() => {
+    // Stryker disable next-line ConditionalExpression: always true here (no href, no button); it narrows href for analytics
     if (href) {
       analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: href, Source: 'Token' });
     }
