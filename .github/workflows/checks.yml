@@ -238,7 +238,7 @@ jobs:
       (needs.pw_changes.result == 'skipped' || (needs.pw_changes.result == 'success' && needs.pw_changes.outputs.has_changes == 'true'))
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.57.0-noble
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
 
     strategy:
       fail-fast: false
