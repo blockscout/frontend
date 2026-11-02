@@ -7,6 +7,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type * as contractsInfo from '@blockscout/contracts-info-types';
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import type { ResourceError } from 'src/api/resources';
 
@@ -60,6 +61,33 @@ async function renderTitle(): Promise<void> {
   await waitFor(() => expect(fetchMock.mock.calls.length).toBeGreaterThan(0));
 }
 
+async function renderTitleOnChainWithoutMetadata(): Promise<void> {
+  const { 'default': TokenPageTitle } = await import('./TokenPageTitle');
+  const { MultichainContext } = await import('src/features/multichain/context');
+  const { 'default': config } = await import('src/config');
+
+  const chain: ClusterChainConfig = {
+    id: config.chain.id ?? '1',
+    name: 'Chain without metadata',
+    slug: 'chain-without-metadata',
+    app_config: {
+      ...config,
+      features: { ...config.features, addressMetadata: { title: config.features.addressMetadata.title, isEnabled: false } },
+    },
+  };
+
+  render(
+    <MultichainContext.Provider value={{ chain }}>
+      <TokenPageTitle
+        tokenQuery={ tokenQuery }
+        addressQuery={ addressQuery }
+        verifiedInfoQuery={ verifiedInfoQuery }
+        hash={ tokenInfo.address_hash }
+      />
+    </MultichainContext.Provider>,
+  );
+}
+
 beforeEach(() => {
   fetchMock.resetMocks();
 });
@@ -107,6 +135,14 @@ describe('token action button', () => {
 
       expect(await screen.findByText(METADATA_BUTTON_TEXT)).toBeTruthy();
       expect(screen.queryByText(ENV_BUTTON_TEXT)).toBeNull();
+    });
+  });
+
+  it('shows the configured button on a cluster chain whose metadata service is off', async() => {
+    await withEnvs(envs, async() => {
+      await renderTitleOnChainWithoutMetadata();
+
+      expect(await screen.findByText(ENV_BUTTON_TEXT)).toBeTruthy();
     });
   });
 });

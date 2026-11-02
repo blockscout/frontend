@@ -55,10 +55,9 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, verifiedInfoQuery, hash }: P
   const addressMetadataTags = addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags;
   const appActionData = getAppActionData(addressMetadataTags);
 
-  const isMetadataPending = config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending;
   const hasTokenActionButton = config.features.tokenActionButton.isEnabled &&
     tokenQuery.data?.type === 'ERC-20' &&
-    !isMetadataPending &&
+    !addressMetadataQuery.isLoading &&
     !isTokenActionButtonHidden(addressMetadataTags);
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
