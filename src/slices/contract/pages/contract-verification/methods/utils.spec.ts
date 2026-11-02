@@ -7,7 +7,7 @@ import withEnvs from 'vitest/utils/mockEnvs';
 
 const NO_RPC_URL: Array<[ string, string ]> = [ [ 'NEXT_PUBLIC_NETWORK_RPC_URL', '' ] ];
 
-describe('on a chain without Pro API support', () => {
+describe('on a chain without Blockscout API support', () => {
   it('points Hardhat at the instance API and asks for no key', async() => {
     const { getHardhatVerificationParams } = await import('./utils');
 
@@ -48,37 +48,37 @@ describe('on a chain without Pro API support', () => {
   });
 });
 
-describe('on a chain with Pro API support', () => {
-  it('points Hardhat at the Pro API and asks for a key', async() => {
+describe('on a chain with Blockscout API support', () => {
+  it('points Hardhat at the Blockscout API and asks for a key', async() => {
     await withEnvs(ENVS_MAP.proApi, async() => {
       const { getHardhatVerificationParams } = await import('./utils');
 
       expect(getHardhatVerificationParams()).toEqual({
         rpcUrl: 'https://localhost:1111',
-        apiKey: '{PRO_API_KEY}',
+        apiKey: '{BLOCKSCOUT_API_KEY}',
         apiUrl: 'https://api.blockscout.com/1/api',
       });
     });
   });
 
-  it('points Foundry at the Pro API and passes a key', async() => {
+  it('points Foundry at the Blockscout API and passes a key', async() => {
     await withEnvs(ENVS_MAP.proApi, async() => {
       const { getFoundryVerificationParams } = await import('./utils');
 
       expect(getFoundryVerificationParams()).toEqual({
         rpcUrl: 'https://localhost:1111',
-        apiKey: '{PRO_API_KEY}',
+        apiKey: '{BLOCKSCOUT_API_KEY}',
         verifierUrl: 'https://api.blockscout.com/v2/api?chain_id=1',
       });
     });
   });
 
-  it('falls back to the Pro API json-rpc endpoint when the chain has no RPC url', async() => {
+  it('falls back to the Blockscout API json-rpc endpoint when the chain has no RPC url', async() => {
     await withEnvs([ ...ENVS_MAP.proApi, ...NO_RPC_URL ], async() => {
       const { getHardhatVerificationParams, getFoundryVerificationParams } = await import('./utils');
 
-      expect(getHardhatVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={PRO_API_KEY}');
-      expect(getFoundryVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={PRO_API_KEY}');
+      expect(getHardhatVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={BLOCKSCOUT_API_KEY}');
+      expect(getFoundryVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={BLOCKSCOUT_API_KEY}');
     });
   });
 });

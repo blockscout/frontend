@@ -16,10 +16,10 @@ import type { Feature } from 'src/config/utils/features';
 const title = 'My account';
 
 const API_KEYS_ALERT_MESSAGE_DEFAULT = '<b>Deprecation Notice:</b> Chain-specific API keys are deprecated.<br>' +
-  'Please migrate to the <a href="https://dev.blockscout.com/?utm_source=blockscout_account" target="_blank">Blockscout PRO API</a> ' +
+  'Please migrate to the <a href="https://dev.blockscout.com/?utm_source=blockscout_account" target="_blank">Blockscout API</a> ' +
   'for multichain access.';
 
-// Chains served by the Pro API get the deprecation notice out of the box; an explicitly
+// Chains served by the Blockscout API get the deprecation notice out of the box; an explicitly
 // empty value is how an instance opts out of it.
 const apiKeysAlertMessage = getEnvValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE') ??
   (chain.isProApiSupported ? API_KEYS_ALERT_MESSAGE_DEFAULT : undefined);
