@@ -27,8 +27,15 @@ Derive the task folder from the issue: `.agents/tasks/<issue-number>-<slug>/` (l
 
 
 Keep the spec an **index of decisions**, not a worklog — what to build and why, pointing at detail (its
-Slack thread, the code, the PR) rather than copying it. **Show the user the files and get their
-confirmation of the content — this is the run's one gate.**
+Slack thread, the code, the PR) rather than copying it.
+
+**The header holds only rows with something to say.** Drop a row the grilling left empty (no designer, no
+API raise, no feature channel) rather than filling it with `—`; `create-pr` and `finalize-task` read an
+absent row as "none". The `Demo` row is always present, written from the grilling's demo answer in the
+shape [`../deploy-demo/demo-entries.md`](../deploy-demo/demo-entries.md) gives — the entries are
+positional, so its order rule applies.
+
+**Show the user the files and get their confirmation of the content — this is the run's one gate.**
 
 ## Step 2 — Branch and draft PR
 
