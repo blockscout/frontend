@@ -55,7 +55,7 @@ describe('on a chain with Blockscout API support', () => {
 
       expect(getHardhatVerificationParams()).toEqual({
         rpcUrl: 'https://localhost:1111',
-        apiKey: '{PRO_API_KEY}',
+        apiKey: '{BLOCKSCOUT_API_KEY}',
         apiUrl: 'https://api.blockscout.com/1/api',
       });
     });
@@ -67,7 +67,7 @@ describe('on a chain with Blockscout API support', () => {
 
       expect(getFoundryVerificationParams()).toEqual({
         rpcUrl: 'https://localhost:1111',
-        apiKey: '{PRO_API_KEY}',
+        apiKey: '{BLOCKSCOUT_API_KEY}',
         verifierUrl: 'https://api.blockscout.com/v2/api?chain_id=1',
       });
     });
@@ -77,8 +77,8 @@ describe('on a chain with Blockscout API support', () => {
     await withEnvs([ ...ENVS_MAP.proApi, ...NO_RPC_URL ], async() => {
       const { getHardhatVerificationParams, getFoundryVerificationParams } = await import('./utils');
 
-      expect(getHardhatVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={PRO_API_KEY}');
-      expect(getFoundryVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={PRO_API_KEY}');
+      expect(getHardhatVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={BLOCKSCOUT_API_KEY}');
+      expect(getFoundryVerificationParams().rpcUrl).toBe('https://api.blockscout.com/1/json-rpc?apikey={BLOCKSCOUT_API_KEY}');
     });
   });
 });
