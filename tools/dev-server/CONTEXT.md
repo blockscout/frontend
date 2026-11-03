@@ -1,6 +1,7 @@
 # Dev server — context
 
-How the local dev server **and** the demo (review) deploy get their `NEXT_PUBLIC_*`
+Everything that runs the app **on this machine** — the dev server, a local production build, the
+locally built docker image — and how it **and** the demo (review) deploy get their `NEXT_PUBLIC_*`
 env vars. The model: instead of committing a per-instance preset file for every chain,
 we **fetch a live instance's public config over HTTP at startup** and write it to a
 throwaway `.env.tmp`. This directory owns the registry, the fetch logic, and the run
@@ -32,7 +33,10 @@ its name.
 | `dev.preset.sh` | `pnpm dev:preset <alias> [--port <number>]` — fetch + run `next dev`. |
 | `dev.local.sh` | `pnpm dev:local [--port <number>]` — run against a local backend using `.env.localhost` (no fetch). Skips the multichain config: a local backend serves a single chain. |
 | `prod.preset.sh` | `pnpm prod:preset <alias> [--port <number>] [--skip-build]` — fetch + `next build` + `next start` (production build, e.g. for performance measurements); `--skip-build` restarts from the existing `.next` output. `--profile` builds the React-profileable variant (see `tools/profiling/CONTEXT.md`). |
-| `run_steps.sh` | Sourced by all three run scripts: env layering (`build_port_args`, `build_env_args`), asset regeneration (`prepare_assets`), and the launch wrapper (`run_with_envs`). What stays in a run script is its argument parsing and the command it finally runs. |
+| `docker.build.sh` | `pnpm build:docker` — build the production image locally as `blockscout-frontend:local`. |
+| `docker.preset.sh` | `pnpm start:docker:preset <alias>` — fetch + run that image; the docker counterpart of `dev.preset.sh`. |
+| `docker.local.sh` | `pnpm start:docker:local` — run that image against a local backend using `.env.localhost`; the docker counterpart of `dev.local.sh`. |
+| `run_steps.sh` | Sourced by every entry point: env layering (`build_port_args`, `build_env_args`, `build_docker_env_args`), asset cleanup / regeneration (`clean_assets`, `prepare_assets`), and the launch wrapper (`run_with_envs`). What stays in an entry point is its argument parsing and the command it finally runs. |
 | `.env.localhost` | Committed base config for local-backend dev. |
 | `sync-presets/` | Regenerates / checks the alias dropdowns from `registry.json`; `run.sh` is its compile-on-run wrapper. |
 | `fetch.js`, `sync-presets/dist/`, `tsconfig.tsbuildinfo` | Build artifacts — git-ignored, regenerated on run. |
@@ -79,8 +83,12 @@ lives here):
 
 ## Env layering (highest → lowest priority)
 
-- `dev:preset` / `prod:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
-- `dev:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+- `dev:preset` / `prod:preset` / `start:docker:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
+- `dev:local` / `start:docker:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+
+The docker entries take no `--port` flag and pass the same files as `docker run --env-file`s, whose
+precedence is the **reverse** of dotenv-cli's (last file wins) — `build_docker_env_args` lists them
+lowest-priority-first for that reason.
 
 The `--port` flag sets `NEXT_PUBLIC_APP_PORT` via dotenv-cli's `-v` (applied AFTER all `-e`
 files, so it beats every env file). It overrides the env var rather than just `next dev -p`
@@ -120,6 +128,6 @@ render it into the container's `frontend.env.ENVS_PRESET`, so it arrives as a ru
 3. Commit. CI runs `pnpm presets:lint` (in `checks.yml`) and **fails the PR if the dropdowns drift**
    from the registry.
 
-Other consumers (`tools/scripts/{sitemap,og-image}-generator.dev.sh`, the essential-dapps /
-feature-reporter / llms-txt generators, `docker.preset.sh`) all fetch via `fetch.sh <alias>` and
-run against the resulting `.env.tmp`.
+Other consumers (the `dev.sh` / `pnpm dev` of each `deploy/tools/*` generator that needs an instance
+config, `docker.preset.sh`) all fetch via `fetch.sh <alias>` and run against the resulting
+`.env.tmp`, written to the caller's cwd.

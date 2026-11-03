@@ -31,13 +31,14 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 
 ## Running locally
 
-Three ways to start the dev server:
+Two ways to start the dev server:
 
 - `pnpm dev:preset <alias>` (e.g. `eth`) — the quickest way to a running app. Fetches a live instance's config over HTTP at startup, so it needs outbound internet. Aliases are defined in `tools/dev-server/registry.json`; how the fetch and env layering work is documented in `tools/dev-server/CONTEXT.md`.
-- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`.
-- `pnpm dev` — plain Next.js dev; needs a hand-written `.env.local` with the instance config.
+- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`. A hand-written instance config goes in `.env.local`, which wins over it.
 
-Both `dev:preset` and `dev:local` accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+Both accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+
+`tools/dev-server/` also holds the local production build (`pnpm prod:preset`) and the local docker image (`pnpm build:docker`, `pnpm start:docker:*`) — everything that runs the app on this machine.
 
 Gotchas:
 
