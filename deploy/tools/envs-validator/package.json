@@ -8,7 +8,7 @@
     "validate": "node ./dist/index.js"
   },
   "devDependencies": {
-    "vite": "6.4.3",
+    "vite": "8.3.5",
     "valibot": "1.2.0"
   }
 }

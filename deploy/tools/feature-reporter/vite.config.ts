@@ -10,7 +10,7 @@ export default defineConfig({
       formats: [ 'es' ],
       fileName: (format, entryName) => `${ entryName }.js`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [ 'node:worker_threads', 'node:url', 'node:path', 'node:fs' ],
       output: {
         dir: 'dist',

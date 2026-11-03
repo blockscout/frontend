@@ -58,18 +58,18 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 
 To develop locally, follow one of the two paths outlined below:
 
-A. Custom configuration:
-
-1. Create `.env.local` file in the root folder and include all required environment variables from the [list](./ENVS.md)
-2. Optionally, clone `.env.example` and name it `.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets you need.
-3. Use `pnpm dev` command to start the Dev Server.
-4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
-
-B. Pre-defined configuration (fetched from a live instance):
+A. Pre-defined configuration (fetched from a live instance):
 
 1. Optionally, clone `.env.example` file into `.env.secrets` (repo root). Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets you need. (Most public keys already come from the fetched instance config.)
 2. Choose an instance alias from `tools/dev-server/registry.json` (for example, `eth` or `base`).
-3. Start your local Dev Server using the `pnpm dev:preset <alias>` command — it fetches that instance's config from `<url>/node-api/config` at startup and writes it to `.env.tmp`. To run against a local backend instead, use `pnpm dev:local`.
+3. Start your local Dev Server using the `pnpm dev:preset <alias>` command — it fetches that instance's config from `<url>/node-api/config` at startup and writes it to `.env.tmp`.
+4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
+B. Local backend or custom configuration:
+
+1. Optionally, clone `.env.example` and name it `.env.secrets`, as above.
+2. To run against a locally running Blockscout backend, nothing else is needed — the committed `tools/dev-server/.env.localhost` is the base config. For a custom configuration, create `.env.local` in the root folder with the environment variables from the [list](./ENVS.md); it overrides `.env.localhost`.
+3. Start your local Dev Server using the `pnpm dev:local` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 To add or override an ENV for your branch (e.g. a new variable not yet on the instance), put it in the committed `.env.extra` file — it is layered over the fetched config for both the dev server and the review deploy. Personal, local-only overrides go in `.env.local` (git-ignored).
@@ -193,10 +193,11 @@ How a release is cut, put on staging and published, and how a merged PR gets int
 | Command | Description |
 | --- | --- |
 | **Running and building** |
-| `pnpm dev` | run local Dev Server with user's configuration |
 | `pnpm dev:preset <config_preset_name>` | run local Dev Server with predefined configuration |
+| `pnpm dev:local` | run local Dev Server against a local backend / user's configuration |
+| `pnpm prod:preset <config_preset_name>` | production build + start with predefined configuration |
 | `pnpm build:docker` | build a docker image locally |
-| `pnpm start:docker:local` | start an application from previously built local docker image with user's configuration |
+| `pnpm start:docker:local` | start an application from previously built local docker image against a local backend / user's configuration |
 | `pnpm start:docker:preset <config_preset_name>` | start an application from previously built local docker image with predefined configuration |
 | **Linting and formatting** |
 | `pnpm lint:eslint [--changed[=<ref>]] [--fix] [<path>...]` | lint project files with ESLint: the whole repo, the given paths, or the files changed vs `<ref>` (default `origin/main`); `--fix` and other eslint flags pass through |

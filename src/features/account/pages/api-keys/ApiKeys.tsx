@@ -69,8 +69,7 @@ const ApiKeysPage: React.FC = () => {
 
   const description = config.chain.isProApiSupported ? (
     <AccountPageDescription>
-      Blockscout APIs require a key. Create a <Link href="https://dev.blockscout.com" external noIcon>
-        free PRO API key</Link> to access all multichain endpoints.
+      Create a <Link href="https://dev.blockscout.com" external noIcon>free Blockscout API key</Link> to access all multichain endpoints.
     </AccountPageDescription>
   ) : (
     <AccountPageDescription>

@@ -24,7 +24,7 @@ const HIDDEN_ROUTES = new Map(Object.entries({
   '/pools': () => !isEnvTrue('NEXT_PUBLIC_DEX_POOLS_ENABLED'),
   '/advanced-filter': () => isEnvFalse('NEXT_PUBLIC_ADVANCED_FILTER_ENABLED'),
   '/apps': () => !isEnvTrue('NEXT_PUBLIC_MARKETPLACE_ENABLED'),
-  // on chains served by the Pro API the page only exists when tabs are configured explicitly
+  // on chains served by the Blockscout API the page only exists when tabs are configured explicitly
   '/api-docs': () => process.env.NEXT_PUBLIC_API_DOCS_TABS === '[]' ||
     (isEnvTrue('NEXT_PUBLIC_PRO_API_SUPPORTED') && !isEnvSet('NEXT_PUBLIC_API_DOCS_TABS')),
   '/gas-tracker': () => isEnvFalse('NEXT_PUBLIC_GAS_TRACKER_ENABLED'),

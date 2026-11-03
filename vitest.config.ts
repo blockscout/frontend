@@ -1,5 +1,3 @@
-import tsconfigPaths from 'vite-tsconfig-paths';
-
 import { defineConfig } from 'vitest/config';
 
 // the Next.js build turns .svg imports into React components via @svgr/webpack;
@@ -16,11 +14,11 @@ const svgStub = {
 
 export default defineConfig({
   plugins: [
-    tsconfigPaths({
-      ignoreConfigErrors: true,
-    }),
     svgStub,
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     globalSetup: [ './vitest/global-setup.ts' ],
     setupFiles: [ './vitest/setup.ts' ],

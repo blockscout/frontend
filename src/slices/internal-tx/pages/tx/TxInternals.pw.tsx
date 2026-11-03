@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as internalTxsMock from 'src/slices/internal-tx/mocks';
@@ -17,17 +16,12 @@ const hooksConfig = {
 };
 
 test('base view', async({ render, mockApiResponse }) => {
-  await mockApiResponse('core:tx_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: TX_HASH }, queryParams: { include_zero_value: false } });
+  await mockApiResponse('core:tx_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: TX_HASH } });
   const txQuery = {
     data: txMock.base,
     isPlaceholderData: false,
     isError: false,
   } as TxQuery;
-  const component = await render(
-    <Box pt={ 6 }>
-      <TxInternals txQuery={ txQuery }/>
-    </Box>,
-    { hooksConfig },
-  );
+  const component = await render(<TxInternals txQuery={ txQuery }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

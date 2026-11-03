@@ -3,7 +3,7 @@
 import config from 'src/config';
 
 const PRO_API_URL = 'https://api.blockscout.com';
-const PRO_API_KEY_PLACEHOLDER = '{PRO_API_KEY}';
+const PRO_API_KEY_PLACEHOLDER = '{BLOCKSCOUT_API_KEY}';
 
 function getCoreApiEndpoint() {
   return config.apis.core ? `${ config.apis.core.endpoint }${ config.apis.core.basePath ?? '' }` : '';

@@ -22,7 +22,7 @@ function run(): void {
     }
 
     const isInProApi = config.chain.isProApiSupported;
-    const mode = isInProApi ? 'PRO API' : 'standard';
+    const mode = isInProApi ? 'Blockscout API' : 'standard';
 
     console.log(`🌀 Generating llms.txt (${ mode } mode)...`);
 

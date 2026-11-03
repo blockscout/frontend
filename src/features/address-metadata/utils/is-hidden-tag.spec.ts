@@ -17,4 +17,10 @@ describe('isHiddenTag', () => {
     expect(isHiddenTag({ meta: null })).toBe(false);
     expect(isHiddenTag({ meta: {} })).toBe(false);
   });
+
+  it('is true for every tag of the service type, whatever its meta', () => {
+    expect(isHiddenTag({ tagType: 'service' })).toBe(true);
+    expect(isHiddenTag({ tagType: 'service', meta: { hidden: 'false' } })).toBe(true);
+    expect(isHiddenTag({ tagType: 'protocol', meta: null })).toBe(false);
+  });
 });

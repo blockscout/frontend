@@ -109,7 +109,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Usercentrics CMP](#usercentrics-cmp)
 - [Misc](#misc)
   - [Design system](#design-system)
-  - [Pro API support](#pro-api-support)
+  - [Blockscout API support](#blockscout-api-support)
 
 &nbsp;
 
@@ -615,7 +615,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
 | NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
-| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout Pro API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
 | NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code. Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
 **Dependencies**
@@ -750,7 +750,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout Pro API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
+| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
 | NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API documentation page. Could be a regular string or HTML code. Deprecated — no longer has any effect and will be removed in the next release. | - | - | `Hello world! 🤪` | v2.7.0+ |
 
 **Dependencies**
@@ -1218,6 +1218,27 @@ Solidity-to-UML smart contract visualizer.
 
 &nbsp;
 
+### Token action button
+
+An action button on the ERC-20 token page, leading to an external site. The button is hidden on tokens whose address carries the `token-action-button-hidden` tag of the `service` type in the metadata service.
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
+
+#### Token action button configuration properties
+
+_Note_ Here, some values are arrays of up to two strings. The first string represents the value for the light color mode, and the second string represents the value for the dark color mode. If the array contains only one string, it will be used for both color modes.
+
+| Variable | Type | Description | Compulsoriness | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| text | `string` | Text on the button | Required | - | `Buy on Example Portal` |
+| url | `string` | Link the button leads to. May contain the `{hash}` placeholder, which is replaced with the lowercased address hash of the token being viewed. It opens in a new tab, so the button gets a "leave site" icon, and `utm_source` / `utm_medium` params are appended automatically. | Required | - | `https://portal.example.com/swap?chainId=1&token={hash}` |
+| logo | `[string, string]` | Urls of the logo displayed before the button text. The recommended image size is 20x20 pixels (1:1 aspect ratio). | - | - | `['https://example.com/logo-light.svg','https://example.com/logo-dark.svg']` |
+| colors | `{'_default': {'bg'?: [string, string], 'text'?: [string, string]}}` | Button colors per state. Only the `_default` state is configurable; on hover the button dims. | - | `{'_default':{'bg':['button.solid.bg'],'text':['button.solid.text']}}` | `{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}` |
+
+&nbsp;
+
 ### Transaction interpretation
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
@@ -1374,8 +1395,8 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 &nbsp;
 
-### Pro API support
+### Blockscout API support
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |
+| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |

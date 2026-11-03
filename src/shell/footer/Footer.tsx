@@ -56,8 +56,8 @@ const Footer = () => {
     {
       icon: 'brands/pro_api' as const,
       iconSize: '20px',
-      text: 'PRO API',
-      url: 'https://dev.blockscout.com',
+      text: 'Blockscout API',
+      url: 'https://dev.blockscout.com/?utm_source=blockscout&utm_medium=footer',
     },
     {
       icon: 'brands/autoscout' as const,

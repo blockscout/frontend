@@ -10,7 +10,7 @@ export default defineConfig({
       formats: [ 'es' ],
       fileName: (format, entryName) => `${ entryName }.js`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [ 'node:url', 'node:path', 'node:fs/promises', 'node:timers/promises' ],
       output: {
         dir: 'dist',
