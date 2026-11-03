@@ -1,6 +1,6 @@
 # Progress — Revise the link-entity foundation
 
-- [ ] 01 → `tickets/01-before-profile/`
+- [x] 01 → `tickets/01-before-profile/`
 - [ ] 02 → `tickets/02-href-resolver/`
 - [ ] 03 → `tickets/03-foundation-tx-block/`
 - [ ] 04 → `tickets/04-template-entities/`

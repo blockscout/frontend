@@ -16,11 +16,11 @@ export, so it lands before ticket 03 may start.
 
 How to verify: `pnpm prod:preset eth --profile`, open the two URLs under Details
 
-- [ ] Two React DevTools Profiler exports exist in `.ai/tmp/` (git-ignored), one per scenario, named so
+- [x] Two React DevTools Profiler exports exist in `.ai/tmp/` (git-ignored), one per scenario, named so
       the scenario and "before" are obvious.
-- [ ] `notes.md` in this ticket folder holds the `pnpm profile:analyze` per-component table of each export
+- [x] `notes.md` in this ticket folder holds the `pnpm profile:analyze` per-component table of each export
       and the commit SHA the build was made from.
-- [ ] `(human)` Each recording covers the second (real-data) commit of the page, not only the skeleton
+- [x] `(human)` Each recording covers the second (real-data) commit of the page, not only the skeleton
       commit, and the row count on screen is 50.
 
 ## Details
@@ -35,6 +35,6 @@ Open them on the local prod server (same path and query, `localhost` host). Proc
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Build and serve the profiling build: `pnpm prod:preset eth --profile`; record the SHA
-- [ ] 2 `[human]` Record both scenarios in React DevTools Profiler and export to `.ai/tmp/`
-- [ ] 3 `[agent]` Run `pnpm profile:analyze` on each export and write `notes.md`
+- [x] 1 `[agent]` Build and serve the profiling build: `pnpm prod:preset eth --profile`; record the SHA
+- [x] 2 `[human]` Record both scenarios in React DevTools Profiler and export to `.ai/tmp/`
+- [x] 3 `[agent]` Run `pnpm profile:analyze` on each export and write `notes.md`
