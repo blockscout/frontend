@@ -23,7 +23,7 @@ const SettingsModal = ({ targetTab, onClose }: Props) => {
   }, [ onClose ]);
 
   return (
-    <DialogRoot open onOpenChange={ handleOpenChange } adaptive size="md">
+    <DialogRoot open onOpenChange={ handleOpenChange } size={{ lgDown: 'full', lg: 'md' }}>
       <DialogContent h={{ lg: '560px' }}>
         <DialogHeader mb={{ base: 3, lg: 6 }}>Advanced site settings</DialogHeader>
         <DialogBody>
