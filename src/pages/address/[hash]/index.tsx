@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSideProps, NextPage } from 'next';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
@@ -16,6 +15,7 @@ import MultichainAddress from 'src/features/multichain/pages/address/MultichainA
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Route } from 'src/shared/router/routes';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Query } from 'nextjs-routes';
-
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Query } from 'src/shared/router/routes';
 
 export default function getSortParamsFromQuery<T>(query: Query, sortOptions: Record<string, Array<string | undefined>>) {
   if (!query.sort || !query.order) {

@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextRouter } from 'next/router';
-
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
+import type { Router } from 'src/shared/router/useRouter';
 
-export function getAppUrl(url: string | undefined, router: NextRouter) {
+export function getAppUrl(url: string | undefined, router: Router) {
   if (!url) {
     return;
   }

@@ -2,7 +2,6 @@
 
 import { Grid } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
@@ -18,6 +17,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 

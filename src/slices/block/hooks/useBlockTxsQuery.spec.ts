@@ -2,12 +2,10 @@
 
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, wrapper, act, cleanup } from 'vitest/lib';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { renderHook, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 
 import type { BlockQuery } from './useBlockQuery';
 import useBlockTxsQuery from './useBlockTxsQuery';
@@ -29,7 +27,10 @@ describe('useBlockTxsQuery', () => {
   it('serves the API transactions with pagination once the block is loaded', async() => {
     fetchMock.mockResponse(JSON.stringify(RESPONSE), RESPONSE_INIT);
 
-    const { result } = renderHook(() => useBlockTxsQuery({ heightOrHash: BLOCK_HEIGHT, blockQuery: loadedBlockQuery, tab: 'txs' }), { wrapper });
+    const { result } = renderHook(
+      () => useBlockTxsQuery({ heightOrHash: BLOCK_HEIGHT, blockQuery: loadedBlockQuery, tab: 'txs' }),
+      { wrapper: routerStandIn.appWrapper },
+    );
     await waitForApiResponse();
 
     expect(result.current.data).toEqual(RESPONSE);
@@ -41,7 +42,10 @@ describe('useBlockTxsQuery', () => {
   });
 
   it('does not request anything while another tab is active', async() => {
-    const { result } = renderHook(() => useBlockTxsQuery({ heightOrHash: BLOCK_HEIGHT, blockQuery: loadedBlockQuery, tab: 'index' }), { wrapper });
+    const { result } = renderHook(
+      () => useBlockTxsQuery({ heightOrHash: BLOCK_HEIGHT, blockQuery: loadedBlockQuery, tab: 'index' }),
+      { wrapper: routerStandIn.appWrapper },
+    );
     await waitForApiResponse();
 
     expect(fetchMock.mock.calls).toHaveLength(0);

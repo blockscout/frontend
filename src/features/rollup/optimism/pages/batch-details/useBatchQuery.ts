@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
-
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import { L2_TXN_BATCH } from 'src/features/rollup/optimism/stubs';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 export default function useBatchQuery() {
   const router = useRouter();

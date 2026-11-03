@@ -20,7 +20,6 @@ test('details tab', async({ render, mockTextAd, mockApiResponse, mockAssetRespon
     { hooksConfig: {
       router: {
         query: { name: ensDomainMock.ensDomainA.name },
-        isReady: true,
       },
     } },
   );
@@ -48,7 +47,6 @@ test('history tab', async({ render, mockTextAd, mockApiResponse, mockAssetRespon
     { hooksConfig: {
       router: {
         query: { name: ensDomainMock.ensDomainA.name, tab: 'history' },
-        isReady: true,
       },
     } },
   );

@@ -35,6 +35,7 @@
     "../components",
     "../utils",
     "../hooks",
+    "../router",
     "../../../global.d.ts",
     "../../../decs.d.ts",
     "../../../reset.d.ts",

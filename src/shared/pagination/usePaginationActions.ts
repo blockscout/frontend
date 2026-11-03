@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { omit } from 'es-toolkit';
-import type { NextRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { animateScroll } from 'react-scroll';
 
@@ -11,9 +9,12 @@ import type { NextPageParams } from './types';
 import type { PaginatedResourceName, PaginationFilters, PaginationSorting } from 'src/api/resources';
 import { SORTING_FIELDS } from 'src/api/resources';
 
+import { useRouter } from 'src/shared/router/useRouter';
+import type { Router } from 'src/shared/router/useRouter';
+
 import { getFilterFields, PAGE_FIELDS } from './usePaginationParams';
 
-type Query = NextRouter['query'];
+type Query = Router['query'];
 
 export interface PaginationActionsParams<Resource extends PaginatedResourceName> {
   readonly resourceName: Resource;
@@ -34,7 +35,7 @@ export interface PaginationActions<Resource extends PaginatedResourceName> {
 }
 
 interface LatestInputs<Resource extends PaginatedResourceName> extends PaginationActionsParams<Resource> {
-  readonly router: NextRouter;
+  readonly router: Router;
 }
 
 type PageCursors = Record<number, NextPageParams>;
@@ -72,7 +73,7 @@ export function usePaginationActions<Resource extends PaginatedResourceName>(par
   const navigate = React.useCallback((query: Query) => {
     const { router, scrollRef, noScroll } = latest.current;
     scrollListToTop(scrollRef, noScroll);
-    router.push({ pathname: router.pathname, query }, undefined, { shallow: true });
+    router.push({ pathname: router.pathname, query }, { shallow: true });
   }, []);
 
   const goToFirstPage = React.useCallback((query: Query) => {

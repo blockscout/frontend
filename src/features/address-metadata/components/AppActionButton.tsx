@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { AppActionSource } from 'src/features/address-metadata/utils/build-app-action-url';
@@ -11,6 +10,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';

@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as bens from '@blockscout/bens-types';
@@ -17,6 +16,7 @@ import NameDomainExpiryStatus from 'src/features/name-services/domains/component
 import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
+import { route } from 'src/shared/router/routes';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

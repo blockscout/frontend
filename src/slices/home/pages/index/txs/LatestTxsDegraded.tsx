@@ -2,7 +2,6 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -15,6 +14,7 @@ import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/publi
 
 import config from 'src/config';
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';

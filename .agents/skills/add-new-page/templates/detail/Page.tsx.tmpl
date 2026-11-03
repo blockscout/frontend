@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
@@ -8,6 +7,7 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import __PageName__Details from 'src/__area__/__featureName__/pages/details/__PageName__Details';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 const __PageName__ = () => {
   const router = useRouter();

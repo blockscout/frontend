@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props as ChartWidgetContainerProps } from 'src/features/chain-stats/components/ChartWidgetContainer';
 import { getChartUrl } from 'src/features/chain-stats/utils/chart';
 import { useMultichainContext } from 'src/features/multichain/context';
+
+import { route } from 'src/shared/router/routes';
 
 import { SankeyChartWidget } from 'src/toolkit/components/charts/sankey/SankeyChartWidget';
 

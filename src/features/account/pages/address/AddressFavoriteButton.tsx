@@ -2,7 +2,6 @@
 
 import { chakra } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
@@ -15,6 +14,7 @@ import DeleteAddressModal from 'src/features/account/pages/watchlist/DeleteAddre
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
 import usePreventFocusAfterModalClosing from 'src/shared/hooks/usePreventFocusAfterModalClosing';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Text, Flex, Box } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import xss from 'xss';
 
@@ -29,6 +28,7 @@ import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEnt
 import * as analytics from 'src/shared/analytics';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import Time from 'src/shared/date-and-time/Time';
+import { route } from 'src/shared/router/routes';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

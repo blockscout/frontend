@@ -66,13 +66,11 @@ test.describe('directories', () => {
     directories: {
       router: {
         query: { tab: 'directories', view: 'directory' },
-        isReady: true,
       },
     },
     leaderboard: {
       router: {
         query: { tab: 'directories', view: 'leaderboard' },
-        isReady: true,
       },
     },
   };

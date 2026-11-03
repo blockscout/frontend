@@ -48,6 +48,29 @@ const spdxLicenseRule = {
   },
 };
 
+/*
+ * The router facade (src/shared/router) is the only consumer of the framework's routing primitives; everything
+ * else goes through it so a router change touches the adapter, not the app.
+ */
+const ROUTER_FRAMEWORK_MODULES = [
+  { name: 'next/router', message: 'Please use useRouter() from "src/shared/router/useRouter" instead' },
+  { name: 'next/navigation', message: 'Please use usePathname() from "src/shared/router/usePathname" instead' },
+  { name: 'next/link', message: 'Please use the Link component from "src/toolkit/chakra/link" instead' },
+  {
+    name: 'nextjs-routes',
+    message: 'Please import route() and the Route / Query / DynamicRoute types from "src/shared/router/routes" instead',
+  },
+];
+const ROUTER_FRAMEWORK_MODULE_NAMES = ROUTER_FRAMEWORK_MODULES.map((module) => module.name);
+
+const ROUTER_FRAMEWORK_ALLOWED_FILES = [
+  'src/shared/router/NextRouterProvider.tsx',
+  'src/shared/router/routes.ts',
+  'src/toolkit/router/**',
+  'vitest/**',
+  'playwright/**',
+];
+
 const RESTRICTED_MODULES = {
   paths: [
     { name: 'dayjs', message: 'Please use src/shared/date-and-time/dayjs.ts instead of directly importing dayjs' },
@@ -76,11 +99,7 @@ const RESTRICTED_MODULES = {
       ],
       message: 'Please use corresponding component or hook from "src/toolkit" instead',
     },
-    {
-      name: 'next/link',
-      importNames: [ 'default' ],
-      message: 'Please use toolkit/chakra/link component instead',
-    },
+    ...ROUTER_FRAMEWORK_MODULES,
   ],
   patterns: [
     { group: [ 'src/sprite/icons/*' ] },
@@ -741,8 +760,17 @@ export default tseslint.config(
       'src/toolkit/package/**',
     ],
     rules: {
-      // for toolkit components allow to import @chakra-ui/react directly
-      'no-restricted-imports': 'off',
+      // toolkit components import @chakra-ui/react directly; the package stays framework-neutral, so only the router ban applies
+      'no-restricted-imports': [ 'error', { paths: ROUTER_FRAMEWORK_MODULES } ],
+    },
+  },
+  {
+    files: ROUTER_FRAMEWORK_ALLOWED_FILES,
+    rules: {
+      'no-restricted-imports': [ 'error', {
+        paths: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.paths.filter((path) => !ROUTER_FRAMEWORK_MODULE_NAMES.includes(path.name)),
+        patterns: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.patterns,
+      } ],
     },
   },
 

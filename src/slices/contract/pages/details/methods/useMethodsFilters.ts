@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { pickBy } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MethodType, SmartContractMethod } from './types';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import type { CONTRACT_MAIN_TAB_IDS } from '../../../utils/tabs';
 import { TYPE_FILTER_OPTIONS, isReadMethod, isWriteMethod } from './utils';
@@ -66,11 +66,7 @@ export default function useMethodsFilters({ abi }: Params) {
     }
 
     const queryForPathname = pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
-    router.push(
-      { pathname: router.pathname, query: { ...queryForPathname, tab: nextTab } },
-      undefined,
-      { shallow: true },
-    );
+    router.push({ pathname: router.pathname, query: { ...queryForPathname, tab: nextTab } }, { shallow: true });
 
   }, [ router ]);
 

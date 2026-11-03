@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, createListCollection, Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -9,6 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import LinkNewTab from 'src/shared/links/LinkNewTab';
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Select } from 'src/toolkit/chakra/select';

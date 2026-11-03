@@ -37,6 +37,13 @@ const renderCell = (item: schemas['TokenTransfer'], column: Props['column'], pro
   return screen.getByTestId(CELL_TEST_ID);
 };
 
+const renderErc8056Cell = (column: Props['column']) => withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
+  const { render: renderFresh } = await import('vitest/lib');
+  const { 'default': Cell } = await import('./TokenTransferCellByColumn');
+  renderFresh(<div data-testid={ CELL_TEST_ID }><Cell { ...DEFAULT_PROPS } item={ erc8056 } column={ column }/></div>);
+  return screen.getByTestId(CELL_TEST_ID).textContent;
+});
+
 const getInstanceLink = () => screen.queryAllByRole('link').find((link) => link.getAttribute('href')?.includes('/instance/'));
 
 const SELF_TRANSFER = { ...erc20, to: { ...erc20.to, hash: erc20.from.hash } };
@@ -156,11 +163,7 @@ describe('TokenTransferCellByColumn', () => {
     });
 
     it('scales the amount by the token multiplier without tagging it', async() => {
-      const text = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
-        const { 'default': Cell } = await import('./TokenTransferCellByColumn');
-        render(<div data-testid={ CELL_TEST_ID }><Cell { ...DEFAULT_PROPS } item={ erc8056 } column="amount"/></div>);
-        return screen.getByTestId(CELL_TEST_ID).textContent;
-      });
+      const text = await renderErc8056Cell('amount');
 
       expect(text).toBe('0.05334886');
     });
@@ -168,11 +171,7 @@ describe('TokenTransferCellByColumn', () => {
 
   describe('multiplier', () => {
     it('shows the factor in force when an ERC-8056 transfer happened', async() => {
-      const text = await withEnvs(ENVS_MAP.additionalTokenTypes, async() => {
-        const { 'default': Cell } = await import('./TokenTransferCellByColumn');
-        render(<div data-testid={ CELL_TEST_ID }><Cell { ...DEFAULT_PROPS } item={ erc8056 } column="multiplier"/></div>);
-        return screen.getByTestId(CELL_TEST_ID).textContent;
-      });
+      const text = await renderErc8056Cell('multiplier');
 
       expect(text).toBe('1.69x');
     });

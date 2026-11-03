@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { kebabCase, upperFirst } from 'es-toolkit';
-import type { Route } from 'nextjs-routes';
 
 import type { ApiData, Metadata, OgTemplateValue, TemplateValue } from './types';
 import type { RouteParams } from 'src/server/types';
@@ -9,6 +8,7 @@ import type { RouteParams } from 'src/server/types';
 import { currencyUnits } from 'src/slices/chain/units';
 
 import config from 'src/config';
+import type { Route } from 'src/shared/router/routes';
 
 import { castToString } from 'src/toolkit/utils/guards';
 import { shortenString } from 'src/toolkit/utils/texts';

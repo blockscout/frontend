@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 
 import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 
 import removeQueryParam from 'src/shared/router/remove-query-param';
 import updateQueryParam from 'src/shared/router/update-query-param';
+import { useRouter } from 'src/shared/router/useRouter';
 
 export default function useAutoConnectWallet() {
   const router = useRouter();

@@ -3,7 +3,6 @@
 import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { groupBy, mapValues } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -23,6 +22,7 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';

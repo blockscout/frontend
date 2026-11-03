@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
 import { getDefaultColorTheme } from 'src/shell/top-bar/settings/fields/color-theme/utils';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { usePathname } from 'src/shared/router/usePathname';
+import { useRouter } from 'src/shared/router/useRouter';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
@@ -44,7 +44,7 @@ export default function useLogPageView(isInitialized: boolean) {
     // these are only deps that should trigger the effect
     // in some scenarios page type is not changing (e.g navigation from one address page to another),
     // but we still want to log page view
-    // so we use pathname from 'next/navigation' instead of router.pathname from 'next/router' as deps
+    // so we use the navigation pathname instead of router.pathname as deps
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isInitialized, page, pathname, tab, colorMode ]);
 }
