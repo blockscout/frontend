@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { type ButtonProps } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Screen } from 'src/features/account/components/auth-modal/types';
@@ -12,6 +11,7 @@ import useAccount from 'src/features/connect-wallet/hooks/useAccount';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';

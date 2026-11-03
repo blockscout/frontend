@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, VStack } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
@@ -14,6 +13,7 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

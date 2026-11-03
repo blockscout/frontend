@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TxsSocketType } from '../types/socket';
@@ -10,6 +9,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 function getSocketParams(type: TxsSocketType, page: string) {
 

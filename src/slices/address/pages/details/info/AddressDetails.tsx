@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -26,6 +25,7 @@ import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSpon
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';

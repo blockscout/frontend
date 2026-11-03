@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { capitalize, omit } from 'es-toolkit/compat';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Direction } from '@blockscout/zetachain-cctx-types';
@@ -23,6 +22,7 @@ import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getValuesArrayFromQuery from 'src/shared/router/get-values-array-from-query';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 

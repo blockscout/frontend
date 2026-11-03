@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex, GridItem } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
@@ -10,6 +9,7 @@ import AddressEntityInterchain from 'src/slices/address/components/entity/Addres
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+import { route } from 'src/shared/router/routes';
 import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

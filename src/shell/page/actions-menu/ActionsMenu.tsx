@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from './types';
@@ -10,6 +9,7 @@ import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import * as analytics from 'src/shared/analytics';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';

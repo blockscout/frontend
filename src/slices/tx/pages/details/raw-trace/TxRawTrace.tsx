@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -18,6 +17,7 @@ import { TX_RAW_TRACE } from 'src/slices/tx/stubs/tx';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import RawDataSnippet from 'src/shared/data/RawDataSnippet';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 interface Props {
   txQuery: TxQuery;

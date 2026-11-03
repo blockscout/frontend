@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SmartContractVerificationMethodApi } from 'src/slices/contract/types/api';
@@ -17,6 +16,7 @@ import type { SmartContractVerificationMethod } from 'src/slices/contract/pages/
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 
@@ -39,7 +39,7 @@ const ContractVerificationForAddress = () => {
 
   React.useEffect(() => {
     if (method && hash) {
-      router.replace({ pathname: '/address/[hash]/contract-verification', query: { hash } }, undefined, { scroll: false, shallow: true });
+      router.replace({ pathname: '/address/[hash]/contract-verification', query: { hash } }, { scroll: false, shallow: true });
     }
   // onMount only
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +49,7 @@ const ContractVerificationForAddress = () => {
 
   React.useEffect(() => {
     if (isVerifiedContract) {
-      router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, undefined, { scroll: false, shallow: true });
+      router.push({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }, { scroll: false, shallow: true });
     }
   }, [ hash, isVerifiedContract, router ]);
 

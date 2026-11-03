@@ -90,7 +90,6 @@ test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, m
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
-      isReady: true,
     },
   };
 
@@ -109,7 +108,6 @@ test('collections +@dark-mode', async({ render, mockApiResponse, mockAssetRespon
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
-      isReady: true,
     },
   };
 
@@ -130,7 +128,6 @@ test('nfts +@dark-mode', async({ render, mockAssetResponse, mockApiResponse }) =
   const hooksConfig = {
     router: {
       query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
-      isReady: true,
     },
   };
 
@@ -159,7 +156,6 @@ test.describe('mobile', () => {
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
-        isReady: true,
       },
     };
 
@@ -180,7 +176,6 @@ test.describe('mobile', () => {
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
-        isReady: true,
       },
     };
 
@@ -203,7 +198,6 @@ test.describe('mobile', () => {
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
-        isReady: true,
       },
     };
 
@@ -228,7 +222,6 @@ test.describe('update balances via socket', () => {
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
-        isReady: true,
       },
     };
 
@@ -328,7 +321,6 @@ test.describe('update balances via socket', () => {
     const hooksConfig = {
       router: {
         query: { hash: ADDRESS_HASH, tab: 'tokens_erc20' },
-        isReady: true,
       },
     };
 

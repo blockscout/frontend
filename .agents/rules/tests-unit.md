@@ -135,7 +135,7 @@ pnpm test:vitest --changed origin/main   # tests related to this branch vs origi
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.spec.tsx`) is the one exception, since the adapter is what wraps that module.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -145,6 +145,8 @@ const { result } = renderHook(() => useMyHook(), { wrapper });
 ```
 
 ## Utilities
+
+**`vitest/utils/mockRouter.ts`** and **`vitest/utils/routerStandIn.ts`** — router values for the toolkit router provider: `buildRouterMock` is frozen (`push` / `replace` are spies, `query` never changes), `routerStandIn` is live (consumers re-render on `push` / `replace`). Their header comments say when each applies and how to install it.
 
 **`vitest/utils/flushPromises.ts`** — call after an action that triggers async effects (e.g. a state update followed by a data fetch) to flush all pending microtasks before asserting:
 
@@ -203,6 +205,8 @@ await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
 ```
 
 `src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+
+The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.spec.ts`, `DeFiDropdown.spec.tsx`).
 
 ## Primed-requests drift tests (`*.primed.spec.tsx`)
 

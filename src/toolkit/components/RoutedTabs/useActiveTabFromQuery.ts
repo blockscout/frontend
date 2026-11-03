@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
-
 import type { TabItem } from '../AdaptiveTabs/types';
 
+import { useRouter } from '../../router/context';
 import { castToString } from '../../utils/guards';
 
 export default function useActiveTabFromQuery(tabs: Array<TabItem>, defaultTabId?: string) {

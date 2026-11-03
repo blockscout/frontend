@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Spinner, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps } from 'src/shared/entities/utils';
+import { route } from 'src/shared/router/routes';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
 

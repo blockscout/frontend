@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -10,6 +9,7 @@ import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
+import { route } from 'src/shared/router/routes';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';

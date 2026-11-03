@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type * as contractsInfo from '@blockscout/contracts-info-types';
@@ -12,6 +11,7 @@ import { getPoolTitle } from 'src/features/dex-pools/utils/get-pool-title';
 
 import * as EntityBase from 'src/shared/entities/components';
 import { distributeEntityProps } from 'src/shared/entities/utils';
+import { route } from 'src/shared/router/routes';
 
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 

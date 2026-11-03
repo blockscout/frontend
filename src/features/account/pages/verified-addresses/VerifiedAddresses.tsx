@@ -2,7 +2,6 @@
 
 import { List, chakra } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type * as adminRs from '@blockscout/admin-rs-types';
@@ -25,6 +24,7 @@ import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import { collator } from 'src/shared/texts/collator';
 
 import { Button } from 'src/toolkit/chakra/button';

@@ -13,7 +13,6 @@ import UserOp from './UserOp';
 const hooksConfig = {
   router: {
     query: { hash: userOpData.hash },
-    isReady: true,
   },
 };
 

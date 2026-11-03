@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NavItemInternal, NavItem, NavGroupItem } from './types';
@@ -9,6 +8,7 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { rightLineArrow } from 'src/toolkit/utils/htmlEntities';
 

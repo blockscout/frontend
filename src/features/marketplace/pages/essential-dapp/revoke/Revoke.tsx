@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import type { PublicClient } from 'viem';
@@ -18,6 +17,7 @@ import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { EmptyState } from 'src/toolkit/chakra/empty-state';

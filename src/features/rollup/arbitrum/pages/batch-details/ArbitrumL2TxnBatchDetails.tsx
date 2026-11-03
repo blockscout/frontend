@@ -2,8 +2,6 @@
 
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -20,6 +18,8 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
@@ -48,7 +48,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.number + increment);
 
-    router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
+    router.push({ pathname: '/batches/[number]', query: { number: nextId } });
   }, [ data, router ]);
 
   if (isError) {

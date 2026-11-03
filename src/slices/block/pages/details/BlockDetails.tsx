@@ -3,7 +3,6 @@
 import { GridItem, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
@@ -35,6 +34,7 @@ import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestam
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route, routeParams } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';

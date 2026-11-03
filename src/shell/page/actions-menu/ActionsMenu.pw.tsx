@@ -26,7 +26,6 @@ test.describe('with multiple items', () => {
     router: {
       query: { hash: HASH },
       pathname: '/token/[hash]',
-      isReady: true,
     },
   };
 
@@ -80,7 +79,6 @@ test.describe('with one item', () => {
     router: {
       query: { hash: HASH },
       pathname: '/tx/[hash]',
-      isReady: true,
     },
   };
 

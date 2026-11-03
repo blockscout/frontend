@@ -2,7 +2,6 @@
 
 import { chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -18,6 +17,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import { useRouter } from 'src/shared/router/useRouter';
 import AssetValue from 'src/shared/values/entity/AssetValue';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -48,7 +48,6 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
       chainSlug ?
         { pathname: '/chain/[chain_slug_or_id]/token/[hash]', query: { hash: hash || '', tab, chain_slug_or_id: chainSlug } } :
         { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
-      undefined,
       { shallow: true },
     );
   }, [ chainSlug, hash, router ]);

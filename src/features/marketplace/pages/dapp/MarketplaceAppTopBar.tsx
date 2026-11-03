@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
@@ -16,6 +15,7 @@ import RewardsButton from 'src/features/rewards/components/RewardsButton';
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { BackToButton } from 'src/toolkit/components/buttons/BackToButton';

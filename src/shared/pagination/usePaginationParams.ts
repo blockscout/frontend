@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NextPageParams } from './types';
@@ -11,8 +9,10 @@ import { SORTING_FIELDS } from 'src/api/resources';
 import { getResource } from 'src/api/utils/get-resource';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
+import type { Router } from 'src/shared/router/useRouter';
 
-type Query = NextRouter['query'];
+type Query = Router['query'];
 type QueryValue = string | Array<string>;
 
 export interface PaginationUrlParams<Resource extends PaginatedResourceName> {

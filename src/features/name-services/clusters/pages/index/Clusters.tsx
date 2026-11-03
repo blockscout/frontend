@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -23,6 +22,7 @@ import type { ViewMode } from 'src/features/name-services/clusters/utils/page-ut
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
