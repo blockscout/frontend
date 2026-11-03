@@ -10,4 +10,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 02 → `tickets/02-route-import-surface/`
 - [x] 03 → `tickets/03-router-facade-codemod/`
 - [x] 04 → `tickets/04-test-router-injection/`
-- [ ] 05 → `tickets/05-docs/`
+- [x] 05 → `tickets/05-docs/`

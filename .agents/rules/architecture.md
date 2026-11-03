@@ -16,6 +16,7 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16 — **Pages Router only** (not App Router) |
+| Routing | `src/shared/router/` — the framework-neutral facade (`useRouter`, `usePathname`, `route()` and the `Route` types) over a toolkit-owned router context (`src/toolkit/router/`); the Next.js adapter in `src/shared/router/` is the one module that imports the framework's routing primitives |
 | UI | React 19 |
 | Component library | Chakra UI v3 (see `.agents/rules/design-system.md`) |
 | Server state | React Query 5 |
@@ -84,6 +85,7 @@ Both slices and features share the same internal shape: `pages/`, `components/`,
 - **Cross-domain type imports** go through `<slice|feature>/types/api.ts`, never deeper internal paths.
 - **Compose at the page level** when optional feature UI plugs into a core slice — the slice page renders the feature's component, not the other way around. Avoids cycles and keeps the feature opt-in.
 - **No files directly at the root of `src/shared/`** — only subfolders grouped by purpose.
+- **Routing goes through the facade.** `useRouter` / `usePathname` from `src/shared/router/`, `route()` and the `Route` types from `src/shared/router/routes`, `Link` from `src/toolkit/chakra/link`. ESLint bans the framework's routing modules everywhere else (`eslint.config.mjs`, `ROUTER_FRAMEWORK_MODULES`), so a router change touches the adapter, not the app.
 
 ## Data flow
 
