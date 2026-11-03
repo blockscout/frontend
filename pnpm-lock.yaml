@@ -805,11 +805,21 @@ importers:
         specifier: 8.3.5
         version: 8.3.5(@types/node@24.13.4)(esbuild@0.28.1)(terser@5.48.0)(yaml@2.9.0)
 
+  deploy/tools/og-image-generator:
+    devDependencies:
+      dotenv-cli:
+        specifier: 10.0.0
+        version: 10.0.0
+
   deploy/tools/sitemap-generator:
     dependencies:
       next-sitemap:
         specifier: 4.2.3
         version: 4.2.3(next@16.4.3(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@24.13.4)(babel-plugin-macros@3.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4))
+    devDependencies:
+      dotenv-cli:
+        specifier: 10.0.0
+        version: 10.0.0
 
   src/toolkit/package:
     dependencies:
