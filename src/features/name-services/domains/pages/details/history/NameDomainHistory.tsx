@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { createListCollection } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -16,6 +15,7 @@ import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import Sort from 'src/shared/sort/Sort';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';

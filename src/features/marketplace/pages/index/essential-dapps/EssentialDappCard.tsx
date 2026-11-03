@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
+
+import { route } from 'src/shared/router/routes';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { MarketplaceCategory } from 'src/features/marketplace/types/client';
@@ -8,6 +7,7 @@ import { MarketplaceCategory } from 'src/features/marketplace/types/client';
 import * as analytics from 'src/shared/analytics';
 import useDebounce from 'src/shared/hooks/useDebounce';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import useFavoriteApps from './useFavoriteApps';
 import useMarketplaceApps from './useMarketplaceApps';
@@ -88,11 +88,7 @@ export default function useMarketplace() {
       analytics.logEvent(analytics.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
     }
 
-    router.replace(
-      { pathname: '/apps', query: newQuery },
-      undefined,
-      { shallow: true },
-    );
+    router.replace({ pathname: '/apps', query: newQuery }, { shallow: true });
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps

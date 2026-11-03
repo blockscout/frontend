@@ -2,7 +2,6 @@
 
 import { useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 import { useToggle } from '@uidotdev/usehooks';
-import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback, useState } from 'react';
 
 import type * as rewards from '@blockscout/points-types';
@@ -21,6 +20,7 @@ import getErrorMessage from 'src/shared/errors/get-error-message';
 import getErrorObjPayload from 'src/shared/errors/get-error-obj-payload';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
+import { useRouter } from 'src/shared/router/useRouter';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { toaster } from 'src/toolkit/chakra/toaster';

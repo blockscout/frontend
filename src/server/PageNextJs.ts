@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
@@ -12,6 +11,7 @@ import useNotifyOnNavigation from 'src/features/metasuites/hooks/useNotifyOnNavi
 import useUpdateUsercentricsConsent from 'src/services/usercentrics/useUpdateUsercentricsConsent';
 import * as analytics from 'src/shared/analytics';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import type { Route } from 'src/shared/router/routes';
 
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;

@@ -2,12 +2,10 @@
 
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, wrapper, act, cleanup } from 'vitest/lib';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { renderHook, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 
 import useBlockWithdrawalsQuery from './useBlockWithdrawalsQuery';
 
@@ -26,7 +24,7 @@ describe('useBlockWithdrawalsQuery', () => {
   it('stays on the placeholder without requests when the beacon chain feature is off', async() => {
     const { result } = renderHook(
       () => useBlockWithdrawalsQuery({ heightOrHash: BLOCK_HEIGHT, blockQuery: loadedBlockQuery, tab: 'withdrawals' }),
-      { wrapper },
+      { wrapper: routerStandIn.appWrapper },
     );
     await act(flushPromises);
 

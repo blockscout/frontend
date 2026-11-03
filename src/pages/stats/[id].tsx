@@ -2,7 +2,6 @@
 
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
@@ -16,6 +15,7 @@ import { MultichainProvider } from 'src/features/multichain/context';
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Route } from 'src/shared/router/routes';
 
 const ChainStatsDetails = dynamic(() => import('src/features/chain-stats/pages/details/ChainStatsDetails'), { ssr: false });
 

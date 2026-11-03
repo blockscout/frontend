@@ -3,13 +3,14 @@ import './index.css';
 import '../src/server/global.css';
 import { beforeMount } from '@playwright/experimental-ct-react/hooks';
 import MockDate from 'mockdate';
-import type { NextRouter } from 'next/router';
 
-import { setRouterMock } from './mocks/modules/next/router';
+import type { Router } from 'src/toolkit/router/types';
+
 import type { MockUrlBuilder } from './utils/mock-url-builder';
+import { setRouterOverrides } from './utils/router';
 
-beforeMount(async({ hooksConfig }: { hooksConfig?: { router?: Partial<NextRouter> } }) => {
-  setRouterMock(hooksConfig?.router);
+beforeMount(async({ hooksConfig }: { hooksConfig?: { router?: Partial<Router> } }) => {
+  setRouterOverrides(hooksConfig?.router);
 
   // set current date
   MockDate.set('2022-11-11T12:00:00Z');

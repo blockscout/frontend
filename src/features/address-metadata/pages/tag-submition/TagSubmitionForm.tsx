@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Grid, GridItem } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -18,6 +17,7 @@ import useReCaptcha from 'src/services/re-captcha/useReCaptcha';
 import getErrorObj from 'src/shared/errors/get-error-obj';
 import getErrorObjPayload from 'src/shared/errors/get-error-obj-payload';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Heading } from 'src/toolkit/chakra/heading';
@@ -55,7 +55,7 @@ const TagSubmitionForm = ({ config, userInfo, onSubmitResult }: Props) => {
       router.query.companyName ||
       router.query.companyWebsite
     ) {
-      router.replace({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
+      router.replace({ pathname: '/public-tags/submit' }, { shallow: true });
     }
   }, [ router ]);
 

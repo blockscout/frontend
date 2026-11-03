@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, Box, Flex, Separator } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -9,6 +8,7 @@ import useProfileQuery from 'src/features/account/hooks/useProfileQuery';
 import useWallet from 'src/features/connect-wallet/hooks/useWallet';
 import { useRewardsContext } from 'src/features/rewards/context';
 
+import { useRouter } from 'src/shared/router/useRouter';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { Alert } from 'src/toolkit/chakra/alert';
@@ -70,7 +70,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
           goNext(isRefCodeUsed, reward);
         } else {
           closeModal();
-          router.push({ pathname: '/account/merits' }, undefined, { shallow: true });
+          router.push({ pathname: '/account/merits' }, { shallow: true });
         }
       }
     } catch (error) {}

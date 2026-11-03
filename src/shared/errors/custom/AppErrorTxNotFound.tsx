@@ -2,11 +2,11 @@
 
 /* eslint-disable max-len */
 import { Box, Flex, List, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import Puzzle15 from 'src/features/easter-eggs/components/puzzle-15/Puzzle15';
 
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

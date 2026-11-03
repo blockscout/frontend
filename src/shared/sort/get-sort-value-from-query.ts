@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Query } from 'nextjs-routes';
+import type { Query } from 'src/shared/router/routes';
 
 import type { SelectOption } from 'src/toolkit/chakra/select';
 

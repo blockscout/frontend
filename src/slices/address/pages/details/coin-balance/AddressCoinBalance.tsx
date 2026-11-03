@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { operations } from '@blockscout/api-types';
@@ -18,6 +17,7 @@ import useIsMounted from 'src/shared/hooks/useIsMounted';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import AddressCoinBalanceChart from './AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './AddressCoinBalanceHistory';

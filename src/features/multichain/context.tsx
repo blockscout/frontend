@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
@@ -8,6 +7,7 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import multichainConfig from 'src/features/multichain/chains-config';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import getChainIdFromSlugOrId from './utils/get-chain-id-from-slug-or-id';
 

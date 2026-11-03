@@ -9,6 +9,8 @@ import config from 'src/config';
 
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
+export type { Route, Query, DynamicRoute } from 'nextjs-routes';
+
 export interface RouteParams {
   external?: boolean;
   chain?: ExternalChain & { slug?: string };

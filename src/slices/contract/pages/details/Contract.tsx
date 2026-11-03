@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -18,6 +17,7 @@ import { CONTRACT_TAB_IDS } from 'src/slices/contract/utils/tabs';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import delay from 'src/shared/utils/delay';
 
 import type { Props as RoutedTabsProps } from 'src/toolkit/components/AdaptiveTabs/AdaptiveTabs';

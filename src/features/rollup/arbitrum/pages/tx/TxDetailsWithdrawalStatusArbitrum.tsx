@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -12,6 +11,7 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

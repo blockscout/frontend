@@ -20,7 +20,6 @@ test('base view +@dark-mode +@mobile', async({ render, mockTextAd, mockApiRespon
     { hooksConfig: {
       router: {
         query: { id: tacOperationMock.tacOperation.operation_id },
-        isReady: true,
       },
     } },
   );
@@ -46,7 +45,6 @@ test('pending operation', async({ render, mockTextAd, mockApiResponse, mockEnvs 
     { hooksConfig: {
       router: {
         query: { id: tacOperationMock.tacOperation.operation_id },
-        isReady: true,
       },
     } },
   );

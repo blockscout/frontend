@@ -20,7 +20,6 @@ const hash = tokenInfo.address_hash;
 const hooksConfig = {
   router: {
     query: { hash },
-    isReady: true,
   },
 };
 

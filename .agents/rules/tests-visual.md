@@ -80,7 +80,7 @@ test('example', async ({ render }) => {
 });
 ```
 
-`render` accepts optional second and third arguments to customize `hooksConfig` (mainly used for mocking Next.js router object), `appContext` and `marketplaceContext` props passed to `TestApp`.
+`render` accepts optional second and third arguments to customize `hooksConfig` (its `router` field is typed by `AppHooksConfig` in `playwright/fixtures/render.tsx`: the serializable `query`, `pathname` and `asPath`, which `TestApp` merges over an empty default and feeds to the toolkit router provider), `appContext` and `marketplaceContext` props passed to `TestApp`.
 
 ## Mock flow
 
@@ -202,8 +202,9 @@ page.getByTestId('tx-hash')
 
 `playwright/lib.ts` runs before every component mount and:
 - Clears `localStorage`, so envs and feature flags from a previous test in the same worker do not leak in.
-- Mocks `next/router.useRouter()` with a configurable router object.
 - Fixes the current date to `2022-11-11T12:00:00Z` via MockDate — all `new Date()` / `Date.now()` calls return this value.
+
+The router is not mocked at the module level: `TestApp` mounts the toolkit router provider with `hooksConfig.router` layered over an empty default, and the component reaches it through the `src/shared/router` facade hooks (see Component mounting). `hooksConfig` is serialized on its way into the page, so only `query`, `pathname` and `asPath` can be set there (`AppHooksConfig` in `playwright/fixtures/render.tsx`); `push` and `replace` stay the defaults, which resolve `true` without navigating.
 
 ## Mock data
 

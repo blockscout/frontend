@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 
 const rollupFeature = config.features.rollup;
 

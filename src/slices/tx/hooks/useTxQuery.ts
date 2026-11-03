@@ -2,7 +2,6 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
 
@@ -23,6 +22,7 @@ import { formatTxDetailsRpcData } from 'src/slices/tx/utils/format-rpc-data';
 import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import delay from 'src/shared/utils/delay';
 
 import { SECOND } from 'src/toolkit/utils/consts';

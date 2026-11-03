@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Separator } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -10,6 +9,7 @@ import TransactionsCrossChainContent from 'src/features/cross-chain-txs/componen
 import { INTERCHAIN_MESSAGE } from 'src/features/cross-chain-txs/stubs/messages';
 
 import { generateListStub } from 'src/shared/pagination/utils';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

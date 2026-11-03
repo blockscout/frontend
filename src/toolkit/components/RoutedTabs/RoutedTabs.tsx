@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { pickBy } from 'es-toolkit';
-import { useRouter } from 'next/router';
+import { omit, pickBy } from 'es-toolkit';
 import React from 'react';
 
+import { useRouter } from '../../router/context';
 import type { Props as AdaptiveTabsProps } from '../AdaptiveTabs/AdaptiveTabs';
 import AdaptiveTabs from '../AdaptiveTabs/AdaptiveTabs';
 import { getTabValue } from '../AdaptiveTabs/utils';
@@ -35,11 +35,7 @@ const RoutedTabs = (props: RoutedTabsProps) => {
 
       return router.pathname.includes(`[${ key }]`);
     });
-    router.push(
-      { pathname: router.pathname, query: { ...queryForPathname, tab: value } },
-      undefined,
-      { shallow: true },
-    );
+    router.push({ pathname: router.pathname, query: { ...queryForPathname, tab: value } }, { shallow: true });
 
     onValueChange?.({ value });
   }, [ tabs, router, onValueChange, preservedParams ]);
@@ -47,15 +43,7 @@ const RoutedTabs = (props: RoutedTabsProps) => {
   React.useEffect(() => {
     if (router.query.scroll_to_tabs) {
       tabsRef?.current?.scrollIntoView(true);
-      delete router.query.scroll_to_tabs;
-      router.push(
-        {
-          pathname: router.pathname,
-          query: router.query,
-        },
-        undefined,
-        { shallow: true },
-      );
+      router.push({ pathname: router.pathname, query: omit(router.query, [ 'scroll_to_tabs' ]) }, { shallow: true });
     }
   // replicate componentDidMount
   // eslint-disable-next-line react-hooks/exhaustive-deps
