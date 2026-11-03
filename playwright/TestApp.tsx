@@ -19,6 +19,7 @@ import { MarketplaceContext } from 'src/features/marketplace/context';
 import { RewardsContextProvider } from 'src/features/rewards/context';
 
 import config from 'src/config';
+import NextRouterProvider from 'src/shared/router/NextRouterProvider';
 import SpriteInjector from 'src/sprite/SpriteInjector';
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
@@ -83,35 +84,37 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
   const pageProps = { ...defaultAppContext.pageProps, ...appContext?.pageProps };
 
   return (
-    <ChakraProvider>
-      <SpriteInjector/>
-      <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
-          <AppContextProvider pageProps={ pageProps }>
-            <MarketplaceContext.Provider value={ marketplaceContext }>
-              <SettingsContextProvider>
-                <GrowthBookProvider>
-                  <WagmiProvider config={ wagmiConfig! }>
-                    <RewardsContextProvider>
-                      <CsvExportContextProvider>
-                        { /*
-                          The mount locator resolves to the only child of #root, or to #root when there are several.
-                          Without the wrapper, a component whose first render is null leaves the color mode script
-                          as the only child, and the screenshot waits for that hidden script to become visible.
-                        */ }
-                        <Box display="contents">
-                          { children }
-                        </Box>
-                      </CsvExportContextProvider>
-                    </RewardsContextProvider>
-                  </WagmiProvider>
-                </GrowthBookProvider>
-              </SettingsContextProvider>
-            </MarketplaceContext.Provider>
-          </AppContextProvider>
-        </SocketProvider>
-      </QueryClientProvider>
-    </ChakraProvider>
+    <NextRouterProvider>
+      <ChakraProvider>
+        <SpriteInjector/>
+        <QueryClientProvider client={ queryClient }>
+          <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
+            <AppContextProvider pageProps={ pageProps }>
+              <MarketplaceContext.Provider value={ marketplaceContext }>
+                <SettingsContextProvider>
+                  <GrowthBookProvider>
+                    <WagmiProvider config={ wagmiConfig! }>
+                      <RewardsContextProvider>
+                        <CsvExportContextProvider>
+                          { /*
+                            The mount locator resolves to the only child of #root, or to #root when there are several.
+                            Without the wrapper, a component whose first render is null leaves the color mode script
+                            as the only child, and the screenshot waits for that hidden script to become visible.
+                          */ }
+                          <Box display="contents">
+                            { children }
+                          </Box>
+                        </CsvExportContextProvider>
+                      </RewardsContextProvider>
+                    </WagmiProvider>
+                  </GrowthBookProvider>
+                </SettingsContextProvider>
+              </MarketplaceContext.Provider>
+            </AppContextProvider>
+          </SocketProvider>
+        </QueryClientProvider>
+      </ChakraProvider>
+    </NextRouterProvider>
   );
 };
 

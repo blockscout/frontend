@@ -17,6 +17,8 @@ import { CsvExportContextProvider } from 'src/features/csv-export/utils/context'
 import { MarketplaceContext } from 'src/features/marketplace/context';
 import { RewardsContextProvider } from 'src/features/rewards/context';
 
+import NextRouterProvider from 'src/shared/router/NextRouterProvider';
+
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
 
 import 'src/shared/i18n/set-locale';
@@ -67,27 +69,29 @@ const TestApp = ({ children, socketUrl }: TestAppProps) => {
   }));
 
   return (
-    <ChakraProvider>
-      <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ socketUrl }>
-          <AppContextProvider pageProps={ PAGE_PROPS }>
-            <MarketplaceContext.Provider value={ marketplaceContext }>
-              <SettingsContextProvider>
-                <GrowthBookProvider>
-                  <WagmiProvider config={ wagmiConfig }>
-                    <RewardsContextProvider>
-                      <CsvExportContextProvider>
-                        { children }
-                      </CsvExportContextProvider>
-                    </RewardsContextProvider>
-                  </WagmiProvider>
-                </GrowthBookProvider>
-              </SettingsContextProvider>
-            </MarketplaceContext.Provider>
-          </AppContextProvider>
-        </SocketProvider>
-      </QueryClientProvider>
-    </ChakraProvider>
+    <NextRouterProvider>
+      <ChakraProvider>
+        <QueryClientProvider client={ queryClient }>
+          <SocketProvider url={ socketUrl }>
+            <AppContextProvider pageProps={ PAGE_PROPS }>
+              <MarketplaceContext.Provider value={ marketplaceContext }>
+                <SettingsContextProvider>
+                  <GrowthBookProvider>
+                    <WagmiProvider config={ wagmiConfig }>
+                      <RewardsContextProvider>
+                        <CsvExportContextProvider>
+                          { children }
+                        </CsvExportContextProvider>
+                      </RewardsContextProvider>
+                    </WagmiProvider>
+                  </GrowthBookProvider>
+                </SettingsContextProvider>
+              </MarketplaceContext.Provider>
+            </AppContextProvider>
+          </SocketProvider>
+        </QueryClientProvider>
+      </ChakraProvider>
+    </NextRouterProvider>
   );
 };
 

@@ -840,9 +840,6 @@ importers:
       es-toolkit:
         specifier: '>=1.39.10'
         version: 1.39.10
-      next:
-        specifier: '>=16.2.6'
-        version: 16.4.3(@babel/core@8.0.1)(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@24.13.4)(babel-plugin-macros@3.1.0)(react-dom@19.1.4(react@19.1.4))(react@19.1.4)
       next-themes:
         specifier: '>=0.4.4'
         version: 0.4.4(react-dom@19.1.4(react@19.1.4))(react@19.1.4)

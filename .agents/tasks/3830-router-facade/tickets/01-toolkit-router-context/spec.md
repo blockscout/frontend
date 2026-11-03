@@ -75,12 +75,12 @@ first.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Create `src/toolkit/router/` — types, context, `RouterProvider`, defaults, `useRouter` /
+- [x] 1 `[agent]` Create `src/toolkit/router/` — types, context, `RouterProvider`, defaults, `useRouter` /
       `useLink` hooks; export from `src/toolkit/package/src/index.ts`
-- [ ] 2 `[agent]` Port `Link` / `LinkOverlay` (`src/toolkit/chakra/link.tsx`), `RoutedTabs` and
+- [x] 2 `[agent]` Port `Link` / `LinkOverlay` (`src/toolkit/chakra/link.tsx`), `RoutedTabs` and
       `useActiveTabFromQuery` to the context; drop `next` from the toolkit peer deps; toolkit typecheck + build
-- [ ] 3 `[agent]` Write the Next adapter module in `src/shared/router/` and mount it in `_app.tsx`,
+- [x] 3 `[agent]` Write the Next adapter module in `src/shared/router/` and mount it in `_app.tsx`,
       `vitest/lib.tsx`, `playwright/TestApp.tsx`
-- [ ] 4 `[agent]` Link-adapter Vitest spec (provider vs. no-provider rendering, prop forwarding)
-- [ ] 5 `[agent]` Toolkit README "Routing" section
-- [ ] 6 `[agent]` Run tsc, eslint, vitest, the affected Playwright suites; browser smoke on `dev:preset eth`
+- [x] 4 `[agent]` Link-adapter Vitest spec (provider vs. no-provider rendering, prop forwarding)
+- [x] 5 `[agent]` Toolkit README "Routing" section
+- [x] 6 `[agent]` Run tsc, eslint, vitest, the affected Playwright suites; browser smoke on `dev:preset eth`
