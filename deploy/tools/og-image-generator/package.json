@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate": "node --no-warnings index.js",
     "dev": "./dev.sh"
   },
   "devDependencies": {

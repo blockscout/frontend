@@ -83,12 +83,14 @@ lives here):
 
 ## Env layering (highest → lowest priority)
 
-- `dev:preset` / `prod:preset` / `start:docker:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
-- `dev:local` / `start:docker:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+- `dev:preset` / `prod:preset`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (fetched instance)
+- `dev:local`: `--port` flag → `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost`
+- `start:docker:preset`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.tmp` (no `--port` flag)
+- `start:docker:local`: `.env.local` → `.env.extra` → `.env.secrets` → `.env.localhost` (no `--port` flag)
 
-The docker entries take no `--port` flag and pass the same files as `docker run --env-file`s, whose
-precedence is the **reverse** of dotenv-cli's (last file wins) — `build_docker_env_args` lists them
-lowest-priority-first for that reason.
+The docker entries pass the same files as `docker run --env-file`s, whose precedence is the **reverse**
+of dotenv-cli's (last file wins) — `build_docker_env_args` lists them lowest-priority-first for that
+reason.
 
 The `--port` flag sets `NEXT_PUBLIC_APP_PORT` via dotenv-cli's `-v` (applied AFTER all `-e`
 files, so it beats every env file). It overrides the env var rather than just `next dev -p`
