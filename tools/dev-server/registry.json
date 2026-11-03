@@ -10,6 +10,7 @@
   "eth": "https://eth.blockscout.com",
   "eth_sepolia": "https://eth-sepolia.blockscout.com",
   "filecoin": "https://filecoin.blockscout.com",
+  "fuse": "https://explorer.fuse.io",
   "gnosis": "https://gnosis.blockscout.com",
   "gnosis_chiado": "https://gnosis-chiado.blockscout.com",
   "hpp": "https://explorer.hpp.io",

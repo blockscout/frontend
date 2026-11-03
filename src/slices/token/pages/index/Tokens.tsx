@@ -7,7 +7,7 @@ import React from 'react';
 import type { TokenType } from 'src/slices/token/types/api';
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
-import ActionBar from 'src/shell/page/action-bar/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
@@ -28,23 +28,8 @@ import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import Sort from 'src/shared/sort/Sort';
 
-import type { SlotProps } from 'src/toolkit/components/AdaptiveTabs/AdaptiveTabsList';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
-
-const TAB_LIST_PROPS = {
-  marginBottom: 0,
-  pt: 6,
-  pb: 6,
-  marginTop: -5,
-  alignItems: 'center',
-};
-const TABS_HEIGHT = 88;
-
-const TABS_RIGHT_SLOT_PROPS: SlotProps = {
-  ml: 8,
-  widthAllocation: 'available',
-};
 
 const bridgedTokensFeature = config.features.bridgedTokens;
 const crossChainTxsFeature = config.features.crossChainTxs;
@@ -66,8 +51,6 @@ const Tokens = () => {
   const bridgedTokensQueryCrossChain = useBridgedTokensQueryCrossChain({
     enabled: tab === 'bridged' && crossChainTxsFeature.isEnabled,
   });
-
-  const hasMultipleTabs = bridgedTokensFeature.isEnabled || crossChainTxsFeature.isEnabled;
 
   const pagination = (() => {
     if (tab === 'bridged') {
@@ -193,10 +176,6 @@ const Tokens = () => {
       );
     }
 
-    if (hasMultipleTabs) {
-      return null;
-    }
-
     return (
       <ActionBar>
         <HStack gap={ 3 }>
@@ -206,21 +185,6 @@ const Tokens = () => {
         <Pagination { ...pagination } ml="auto"/>
       </ActionBar>
     );
-  })();
-
-  const tabsRightSlot = (() => {
-    if (hasMultipleTabs && !isMobile) {
-      return (
-        <HStack justifyContent="space-between">
-          <HStack gap={ 3 }>
-            { filter }
-            { searchInput }
-          </HStack>
-          <Pagination { ...pagination }/>
-        </HStack>
-      );
-    }
-    return null;
   })();
 
   const description = (() => {
@@ -233,7 +197,7 @@ const Tokens = () => {
     });
 
     return (
-      <Box fontSize="sm" mb={ 4 } mt={ 1 } whiteSpace="pre-wrap" flexWrap="wrap">
+      <Box fontSize="sm" mb={ 6 } whiteSpace="pre-wrap" flexWrap="wrap">
         List of the tokens bridged through { bridgesListText } extensions
       </Box>
     );
@@ -250,7 +214,6 @@ const Tokens = () => {
           onSortChange={ allTokensQuery.onSortChange }
           actionBar={ actionBar }
           hasActiveFilters={ Boolean(allTokensQuery.searchTerm || allTokensQuery.tokenTypes) }
-          tableTop={ hasMultipleTabs ? TABS_HEIGHT : undefined }
         />
       ),
     },
@@ -258,15 +221,16 @@ const Tokens = () => {
       id: 'bridged',
       title: 'Bridged',
       component: (
-        <TokensList
-          query={ bridgedTokensQuery.query }
-          sort={ bridgedTokensQuery.sort }
-          onSortChange={ bridgedTokensQuery.onSortChange }
-          actionBar={ actionBar }
-          hasActiveFilters={ Boolean(bridgedTokensQuery.searchTerm || bridgedTokensQuery.bridgeChains) }
-          description={ description }
-          tableTop={ TABS_HEIGHT }
-        />
+        <>
+          { description }
+          <TokensList
+            query={ bridgedTokensQuery.query }
+            sort={ bridgedTokensQuery.sort }
+            onSortChange={ bridgedTokensQuery.onSortChange }
+            actionBar={ actionBar }
+            hasActiveFilters={ Boolean(bridgedTokensQuery.searchTerm || bridgedTokensQuery.bridgeChains) }
+          />
+        </>
       ),
     } : undefined,
     crossChainTxsFeature.isEnabled ? {
@@ -279,7 +243,7 @@ const Tokens = () => {
           onSortChange={ bridgedTokensQueryCrossChain.onSortChange }
           actionBar={ actionBar }
           hasActiveFilters={ Boolean(bridgedTokensQueryCrossChain.searchTerm) }
-          tableTop={ TABS_HEIGHT }
+          tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
         />
       ),
     } : undefined,
@@ -291,13 +255,7 @@ const Tokens = () => {
         title="Tokens"
         withTextAd
       />
-      <RoutedTabs
-        tabs={ tabs }
-        listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ tabsRightSlot }
-        rightSlotProps={ tabsRightSlot ? TABS_RIGHT_SLOT_PROPS : undefined }
-        stickyEnabled={ !isMobile }
-      />
+      <RoutedTabs tabs={ tabs }/>
     </>
   );
 };
