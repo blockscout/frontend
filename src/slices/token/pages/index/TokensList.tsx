@@ -20,10 +20,9 @@ interface Props {
   actionBar?: React.ReactNode;
   hasActiveFilters: boolean;
   description?: React.ReactNode;
-  tableTop?: number;
 }
 
-const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters, tableTop }: Props) => {
+const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters }: Props) => {
 
   const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
@@ -41,7 +40,6 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
           isLoading={ isInitialLoading }
           setSorting={ onSortChange }
           sorting={ sort }
-          top={ tableTop }
           resetKey={ query.queryHash }
         />
       </TableContainerScrollable>
