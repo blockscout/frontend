@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 
-import { cleanup, renderHook } from '@testing-library/react';
 import React from 'react';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, renderHook } from 'vitest/lib';
 
 import NextRouterProvider from './NextRouterProvider';
 import { usePathname } from './usePathname';

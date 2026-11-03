@@ -80,7 +80,7 @@ test('example', async ({ render }) => {
 });
 ```
 
-`render` accepts optional second and third arguments to customize `hooksConfig` (its `router` field is a `Partial<Router>` of the toolkit router type; `TestApp` merges it over an empty default router field by field and feeds the result to the toolkit router provider), `appContext` and `marketplaceContext` props passed to `TestApp`.
+`render` accepts optional second and third arguments to customize `hooksConfig` (its `router` field is typed by `AppHooksConfig` in `playwright/fixtures/render.tsx`: the serializable `query`, `pathname` and `asPath`, which `TestApp` merges over an empty default and feeds to the toolkit router provider), `appContext` and `marketplaceContext` props passed to `TestApp`.
 
 ## Mock flow
 
@@ -204,7 +204,7 @@ page.getByTestId('tx-hash')
 - Clears `localStorage`, so envs and feature flags from a previous test in the same worker do not leak in.
 - Fixes the current date to `2022-11-11T12:00:00Z` via MockDate — all `new Date()` / `Date.now()` calls return this value.
 
-The router is not mocked at the module level: `TestApp` mounts the toolkit router provider with `hooksConfig.router` layered over an empty default, and the component reaches it through the `src/shared/router` facade hooks (see Component mounting). Only `query`, `pathname`, `asPath`, `push` and `replace` exist on it; a component that needs a specific route sets those fields.
+The router is not mocked at the module level: `TestApp` mounts the toolkit router provider with `hooksConfig.router` layered over an empty default, and the component reaches it through the `src/shared/router` facade hooks (see Component mounting). `hooksConfig` is serialized on its way into the page, so only `query`, `pathname` and `asPath` can be set there (`AppHooksConfig` in `playwright/fixtures/render.tsx`); `push` and `replace` stay the defaults, which resolve `true` without navigating.
 
 ## Mock data
 

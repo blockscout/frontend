@@ -16,7 +16,7 @@ Blockscout frontend — a blockchain explorer UI. Distributed as a Docker image;
 | Layer | Technology |
 |---|---|
 | Framework | Next.js 16 — **Pages Router only** (not App Router) |
-| Routing | `src/shared/router/` — the framework-neutral facade (`useRouter`, `usePathname`, `route()` and the `Route` types) over a toolkit-owned router context (`src/toolkit/router/`); the Next.js adapter in `src/shared/router/` is the one module that imports the framework's routing primitives |
+| Routing | `src/shared/router/` — the framework-neutral facade (`useRouter`, `usePathname`, `route()` and the `Route` types) over a toolkit-owned router context (`src/toolkit/router/`) |
 | UI | React 19 |
 | Component library | Chakra UI v3 (see `.agents/rules/design-system.md`) |
 | Server state | React Query 5 |

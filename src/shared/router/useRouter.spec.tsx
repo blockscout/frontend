@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 
-import { cleanup, renderHook } from '@testing-library/react';
 import React from 'react';
 
 import type { RouterContextValue } from 'src/toolkit/router/types';
@@ -9,6 +8,7 @@ import { RouterProvider } from 'src/toolkit/router/context';
 import { DefaultLink } from 'src/toolkit/router/defaults';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, renderHook } from 'vitest/lib';
 
 import { usePathname } from './usePathname';
 import { useRouter } from './useRouter';

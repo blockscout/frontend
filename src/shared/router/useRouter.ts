@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NavigateOptions, Query, Router as ToolkitRouter } from 'src/toolkit/router/types';
+import type { NavigateOptions, Router as ToolkitRouter } from 'src/toolkit/router/types';
 
 import { useRouter as useToolkitRouter } from 'src/toolkit/router/context';
 
 import type { Route } from './routes';
 
-export type { NavigateOptions, Query };
+export type { NavigateOptions };
 
 // Mirrors the `next/router` augmentation in `nextjs-routes.d.ts`: a typed route, a route-less `{ query }`
 // patch on the current page, or a plain href.

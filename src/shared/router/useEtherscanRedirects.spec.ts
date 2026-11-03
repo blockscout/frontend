@@ -45,10 +45,12 @@ describe('useEtherscanRedirects', () => {
     expect(routerStandIn.replace).toHaveBeenCalledWith({ pathname: '/stats', hash: 'contracts' });
   });
 
-  it('leaves an anchor it does not know alone', () => {
-    mountAt('/tx/[hash]', '#something-else');
-    mountAt('/stats', '#eventlog', {});
-    mountAt('/blocks', '#eventlog', {});
+  it.each([
+    [ '/tx/[hash]', '#something-else', { hash: HASH } ],
+    [ '/stats', '#eventlog', {} ],
+    [ '/blocks', '#eventlog', {} ],
+  ])('leaves an anchor it does not know alone (%s %s)', (pathname, segmentHash, query) => {
+    mountAt(pathname, segmentHash, query);
 
     expect(routerStandIn.replace).not.toHaveBeenCalled();
   });

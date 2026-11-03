@@ -14,7 +14,7 @@ import { Link } from '../chakra/link';
 import { Provider as ChakraProvider } from '../chakra/provider';
 import { RoutedTabs } from '../components/RoutedTabs/index';
 import { RouterProvider } from './context';
-import { defaultRouter, defaultRouterContextValue } from './defaults';
+import { defaultRouterContextValue } from './defaults';
 import { formatUrl } from './format-url';
 
 const renderInChakra = (ui: React.ReactElement) => render(<ChakraProvider>{ ui }</ChakraProvider>);
@@ -71,13 +71,14 @@ describe('toolkit router context', () => {
       expect(screen.getByRole('link', { name: 'Txs' }).getAttribute('href')).toBe('/txs?tab=internal&ids=1&ids=2#top');
     });
 
-    it('RoutedTabs mounts over the no-op router', async() => {
+    it('RoutedTabs mounts over the no-op router and a tab click leaves the URL-driven tab in place', () => {
       renderInChakra(<RoutedTabs tabs={ TABS }/>);
 
-      expect(screen.getByRole('tab', { name: 'First' })).toBeDefined();
-      expect(screen.getByRole('tab', { name: 'Second' })).toBeDefined();
-      await expect(defaultRouter.push('/anywhere')).resolves.toBe(false);
-      await expect(defaultRouter.replace('/anywhere')).resolves.toBe(false);
+      fireEvent.click(screen.getByRole('tab', { name: 'Second' }));
+
+      expect(screen.getByRole('tab', { name: 'First' }).getAttribute('aria-selected')).toBe('true');
+      expect(screen.getByRole('tab', { name: 'Second' }).getAttribute('aria-selected')).toBe('false');
+      expect(screen.getByText('first content')).toBeDefined();
     });
   });
 

@@ -9,6 +9,11 @@ import { vi } from 'vitest';
 // (`<TestApp router={ buildRouterMock('/tx/[hash]', '/tx/0xabc') }>`), or a `Partial<Router>` with just
 // the fields the component reads; the primed drift tests (checkPrimedRequests.tsx) do the former.
 //
+// The provider only reaches a component from the same module graph. `withEnvs` (mockEnvs.ts) calls
+// `vi.resetModules()`, so a component imported inside its callback holds a fresh router context that a
+// statically imported `render` / `wrapper` never feeds: the component sees the no-provider default
+// (`pathname: ''`, no-op `push`). Import `vitest/lib` (or routerStandIn.ts) inside the callback too.
+//
 // `query` never changes after a `push`/`replace` — the calls are `vi.fn` spies to assert on. A hook
 // that must observe the URL it pushed uses the live stand-in in routerStandIn.ts instead.
 

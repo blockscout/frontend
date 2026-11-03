@@ -142,7 +142,11 @@ function useRouter(): Router {
 
 export function RouterStandInProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const value = React.useMemo((): RouterContextValue => ({ Link: DefaultLink, router, pathname: router.pathname }), [ router ]);
+  const value = React.useMemo((): RouterContextValue => ({
+    Link: DefaultLink,
+    router,
+    pathname: new URL(router.asPath, 'http://localhost').pathname,
+  }), [ router ]);
 
   return React.createElement(RouterProvider, { value, children });
 }

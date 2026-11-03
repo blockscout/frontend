@@ -97,7 +97,7 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
 
   const [ routerContext ] = React.useState((): RouterContextValue => {
     const router = { ...DEFAULT_ROUTER, ...getRouterOverrides() };
-    return { Link: NextLink, router, pathname: router.pathname };
+    return { Link: NextLink, router, pathname: new URL(router.asPath, 'http://localhost').pathname };
   });
 
   return (
