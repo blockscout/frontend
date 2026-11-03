@@ -93,6 +93,11 @@ const moduleExports = {
       dynamic: 30,
       'static': 180,
     },
+    // Next 16.4 turned the Turbopack shared runtime on by default. In production it replaces the per-route
+    // runtime chunk with an inline bootstrap <script> that carries neither a nonce nor a hash, so the strict
+    // script-src in src/server/csp blocks it and the page never hydrates. Keep the per-route chunk instead.
+    // Upstream: https://github.com/vercel/next.js/pull/100102 (app router only), https://github.com/vercel/next.js/pull/97574
+    turbopackSharedRuntime: false,
   },
 
   // Type-checking is done by `pnpm lint:tsc` (TypeScript 7), not by Next: Next resolves the
