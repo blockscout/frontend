@@ -197,7 +197,7 @@ const Tokens = () => {
     });
 
     return (
-      <Box fontSize="sm" mb={ 4 } mt={ 1 } whiteSpace="pre-wrap" flexWrap="wrap">
+      <Box fontSize="sm" mb={ 6 } whiteSpace="pre-wrap" flexWrap="wrap">
         List of the tokens bridged through { bridgesListText } extensions
       </Box>
     );
@@ -221,14 +221,16 @@ const Tokens = () => {
       id: 'bridged',
       title: 'Bridged',
       component: (
-        <TokensList
-          query={ bridgedTokensQuery.query }
-          sort={ bridgedTokensQuery.sort }
-          onSortChange={ bridgedTokensQuery.onSortChange }
-          actionBar={ actionBar }
-          hasActiveFilters={ Boolean(bridgedTokensQuery.searchTerm || bridgedTokensQuery.bridgeChains) }
-          description={ description }
-        />
+        <>
+          { description }
+          <TokensList
+            query={ bridgedTokensQuery.query }
+            sort={ bridgedTokensQuery.sort }
+            onSortChange={ bridgedTokensQuery.onSortChange }
+            actionBar={ actionBar }
+            hasActiveFilters={ Boolean(bridgedTokensQuery.searchTerm || bridgedTokensQuery.bridgeChains) }
+          />
+        </>
       ),
     } : undefined,
     crossChainTxsFeature.isEnabled ? {
