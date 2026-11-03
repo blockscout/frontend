@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -11,6 +10,7 @@ import NativeTokenIcon from 'src/slices/token/components/icon/TokenIconNative';
 
 import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import { useRouter } from 'src/shared/router/useRouter';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

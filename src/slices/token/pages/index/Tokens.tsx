@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
@@ -26,6 +25,7 @@ import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import Sort from 'src/shared/sort/Sort';
 
 import type { SlotProps } from 'src/toolkit/components/AdaptiveTabs/AdaptiveTabsList';

@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import { useCallback } from 'react';
+
+import { useRouter } from 'src/shared/router/useRouter';
 
 export function useQueryParams() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export function useQueryParams() {
     });
 
     const routerFn = replace ? router.replace : router.push;
-    routerFn({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
+    routerFn({ pathname: router.pathname, query: newQuery }, { shallow: true });
   }, [ router ]);
 
   return { updateQuery };

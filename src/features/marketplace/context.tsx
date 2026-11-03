@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -18,20 +17,7 @@ export const MarketplaceContext = createContext<TMarketplaceContext>({
 });
 
 export function MarketplaceContextProvider({ children }: Props) {
-  const router = useRouter();
   const [ isAutoConnectDisabled, setIsAutoConnectDisabled ] = useState(false);
-
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setIsAutoConnectDisabled(false);
-    };
-
-    router.events.on('routeChangeStart', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
-    };
-  }, [ router.events ]);
 
   const value = useMemo(() => ({
     isAutoConnectDisabled,

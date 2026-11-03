@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useClickAway } from '@uidotdev/usehooks';
-import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -13,6 +12,7 @@ import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import { route } from 'src/shared/router/routes';
 import type { Route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverFooter, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
@@ -48,7 +48,7 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
-      router.push(resultRoute, undefined, { shallow: true });
+      router.push(resultRoute, { shallow: true });
     }
   }, [ searchTerm, router ]);
 

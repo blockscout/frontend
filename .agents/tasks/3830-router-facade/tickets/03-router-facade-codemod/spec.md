@@ -88,13 +88,13 @@ override for the exempt paths that removes those entries (keep the rest of the l
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Facade `useRouter.ts` / `usePathname.ts` in `src/shared/router/` with the typed `Route`
+- [x] 1 `[agent]` Facade `useRouter.ts` / `usePathname.ts` in `src/shared/router/` with the typed `Route`
       narrowing; migrate the four router helpers
-- [ ] 2 `[agent]` Marketplace flag reset in `MarketplaceApp`; `MarketplaceContextProvider` and `AdbutlerBanner`
+- [x] 2 `[agent]` Marketplace flag reset in `MarketplaceApp`; `MarketplaceContextProvider` and `AdbutlerBanner`
       drop their router imports
-- [ ] 3 `[agent]` `ast-grep --rewrite` the `next/router` / `next/navigation` importers, the `as` argument, the
+- [x] 3 `[agent]` `ast-grep --rewrite` the `next/router` / `next/navigation` importers, the `as` argument, the
       generic; `eslint --fix`; `tsc`
-- [ ] 4 `[agent]` `routerStandIn` as provider value + `wrapper`; migrate its spec and the 13 specs
-- [ ] 5 `[agent]` Facade specs (query parsing, delegation + options mapping, defaults)
-- [ ] 6 `[agent]` Lint ban + exemptions; remove `eslint-config-next`
-- [ ] 7 `[agent]` Run the gates; browser smoke on `dev:preset eth`
+- [x] 4 `[agent]` `routerStandIn` as provider value + `wrapper`; migrate its spec and the 13 specs
+- [x] 5 `[agent]` Facade specs (query parsing, delegation + options mapping, defaults)
+- [x] 6 `[agent]` Lint ban + exemptions; remove `eslint-config-next`
+- [x] 7 `[agent]` Run the gates; browser smoke on `dev:preset eth`

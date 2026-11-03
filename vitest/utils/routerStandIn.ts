@@ -1,9 +1,14 @@
-import type { NextRouter } from 'next/router';
 import React from 'react';
 
-import { vi } from 'vitest';
+import type { Router, RouterContextValue } from 'src/toolkit/router/types';
 
-// A live next/router stand-in for Vitest.
+import { RouterProvider } from 'src/toolkit/router/context';
+import { DefaultLink } from 'src/toolkit/router/defaults';
+
+import { vi } from 'vitest';
+import { wrapper as TestApp } from 'vitest/lib';
+
+// A live router stand-in for Vitest, installed through the toolkit router provider.
 //
 // `buildRouterMock` (mockRouter.ts) freezes `query`, so a hook under test never sees the URL it
 // pushed. This one holds `pathname` and `query` in a store: every `useRouter` consumer re-renders
@@ -11,17 +16,20 @@ import { vi } from 'vitest';
 // same ordering the real pages router gives `.then` callbacks — so a spec can count requests and
 // renders per user action, not just check the final state.
 //
-// Install from the spec, not globally:
+// Install from the spec with the `wrapper`; it is the innermost provider, so it wins over the Next
+// adapter that `vitest/lib`'s TestApp mounts when the two are nested:
 //
-//   vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 //   import { routerStandIn } from 'vitest/utils/routerStandIn';
 //
 //   beforeEach(() => routerStandIn.reset({ pathname: '/blocks', query: {} }));
 //   afterEach(cleanup);   // RTL does not auto-unmount without vitest globals; stale consumers would re-render on reset
+//   renderHook(() => useMyHook(), { wrapper: routerStandIn.wrapper });
+//   renderHook(() => useMyQuery(), { wrapper: routerStandIn.appWrapper });   // inside the TestApp stack
+//   render(<RouterStandInProvider><MyPage/></RouterStandInProvider>);          // inside vitest/lib's render()
 //   act(() => routerStandIn.setQuery({ tab: 'txs' }));   // external URL change (tab switch, back button)
 //   expect(routerStandIn.query).toEqual({ page: '2' });
 
-type Query = NextRouter['query'];
+type Query = Router['query'];
 
 interface RouterLocation {
   readonly pathname: string;
@@ -116,7 +124,7 @@ function toAsPath({ pathname, query }: RouterLocation): string {
 const push = vi.fn((url: UrlInput) => transition(url));
 const replace = vi.fn((url: UrlInput) => transition(url));
 
-function useRouter(): NextRouter {
+function useRouter(): Router {
   const current = React.useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   React.useLayoutEffect(() => {
@@ -125,24 +133,22 @@ function useRouter(): NextRouter {
 
   return React.useMemo(() => ({
     pathname: current.pathname,
-    route: current.pathname,
     query: current.query,
     asPath: toAsPath(current),
-    basePath: '',
-    isReady: true,
-    isFallback: false,
-    isPreview: false,
-    isLocaleDomain: false,
     push,
     replace,
-    prefetch: () => Promise.resolve(),
-    back: () => {},
-    forward: () => {},
-    reload: () => {},
-    beforePopState: () => {},
-    events: { on: () => {}, off: () => {}, emit: () => {} },
-    // the augmented `NextRouter` is a union over every route pattern; a stand-in cannot satisfy it statically
-  }) as unknown as NextRouter, [ current ]);
+  }), [ current ]);
+}
+
+export function RouterStandInProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const value = React.useMemo((): RouterContextValue => ({ Link: DefaultLink, router, pathname: router.pathname }), [ router ]);
+
+  return React.createElement(RouterProvider, { value, children });
+}
+
+function RouterStandInAppProvider({ children }: { children: React.ReactNode }) {
+  return React.createElement(TestApp, { children: React.createElement(RouterStandInProvider, { children }) });
 }
 
 export const routerStandIn = {
@@ -167,9 +173,6 @@ export const routerStandIn = {
     commit({ ...INITIAL_LOCATION, ...location });
   },
   useRouter,
-};
-
-export const nextRouterModule = {
-  useRouter,
-  'default': routerStandIn,
+  wrapper: RouterStandInProvider,
+  appWrapper: RouterStandInAppProvider,
 };

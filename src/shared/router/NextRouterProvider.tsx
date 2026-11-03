@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-/* eslint-disable no-restricted-imports -- the one module where the Next.js router primitives are allowed: it adapts them to the toolkit router context */
 import NextJsLink from 'next/link';
 import type { LinkProps as NextJsLinkProps } from 'next/link';
 import { usePathname } from 'next/navigation';

@@ -11,9 +11,8 @@ import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, act, waitFor } from 'vitest/lib';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
+import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
 
 import AddressTokenTransfers from './AddressTokenTransfers';
@@ -41,9 +40,11 @@ afterEach(cleanup);
 async function renderTab(query: Record<string, string>, overloadCount?: number) {
   routerStandIn.reset({ pathname: '/address/[hash]', query: { hash: CURRENT_ADDRESS, tab: 'token_transfers', ...query } });
   render(
-    <SocketProvider url={ MOCK_SOCKET_URL }>
-      <AddressTokenTransfers overloadCount={ overloadCount }/>
-    </SocketProvider>,
+    <RouterStandInProvider>
+      <SocketProvider url={ MOCK_SOCKET_URL }>
+        <AddressTokenTransfers overloadCount={ overloadCount }/>
+      </SocketProvider>
+    </RouterStandInProvider>,
   );
   // the listed transfer plus the socket notice row
   await waitFor(() => expect(getRows()).toHaveLength(2));

@@ -2,7 +2,6 @@
 
 import { chakra, Flex } from '@chakra-ui/react';
 import { capitalize } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
@@ -39,6 +38,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { routeParams } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
@@ -169,7 +169,7 @@ const BlockPageContent = () => {
   if (blockQuery.isError) {
     if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x') && blockQuery.isFutureBlock) {
       const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } }, multichainContext);
-      router.push(url, undefined, { shallow: true });
+      router.push(url, { shallow: true });
       return null;
     } else {
       throwOnResourceLoadError(blockQuery);

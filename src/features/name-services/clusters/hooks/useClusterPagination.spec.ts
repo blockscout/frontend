@@ -1,23 +1,18 @@
 // @vitest-environment jsdom
 
-import { useRouter } from 'next/router';
-
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
 
 import type { Mock } from 'vitest';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, act } from 'vitest/lib';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { renderHook, act, cleanup } from 'vitest/lib';
+import { routerStandIn } from 'vitest/utils/routerStandIn';
 
 import { useClusterPagination } from './useClusterPagination';
 
-vi.mock('next/router', () => ({
-  useRouter: vi.fn(),
-}));
 vi.mock('src/shared/router/useQueryParams');
 vi.mock('src/shared/router/get-query-param-string');
 
-const mockUseRouter = useRouter as Mock<typeof useRouter>;
 const mockUseQueryParams = useQueryParams as Mock<typeof useQueryParams>;
 const mockGetQueryParamString = getQueryParamString as Mock<typeof getQueryParamString>;
 
@@ -26,19 +21,19 @@ describe('useClusterPagination', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockUseRouter.mockReturnValue({
-      query: {},
-    } as unknown as ReturnType<typeof useRouter>);
+    routerStandIn.reset({ pathname: '/name-domains', query: {} });
     mockUseQueryParams.mockReturnValue({
       updateQuery: mockUpdateQuery,
     });
   });
 
+  afterEach(cleanup);
+
   describe('page calculation', () => {
     it('should default to page 1 when no page param', () => {
       mockGetQueryParamString.mockReturnValue('');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.page).toBe(1);
       expect(result.current.pagination.page).toBe(1);
@@ -47,7 +42,7 @@ describe('useClusterPagination', () => {
     it('should parse page from query param', () => {
       mockGetQueryParamString.mockReturnValue('3');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.page).toBe(3);
       expect(result.current.pagination.page).toBe(3);
@@ -56,7 +51,7 @@ describe('useClusterPagination', () => {
     it('should handle invalid page param gracefully', () => {
       mockGetQueryParamString.mockReturnValue('invalid');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.page).toBeNaN();
     });
@@ -68,7 +63,7 @@ describe('useClusterPagination', () => {
     });
 
     it('should increment page on next click', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       act(() => {
         result.current.pagination.onNextPageClick();
@@ -78,7 +73,7 @@ describe('useClusterPagination', () => {
     });
 
     it('should decrement page on prev click', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       act(() => {
         result.current.pagination.onPrevPageClick();
@@ -89,7 +84,7 @@ describe('useClusterPagination', () => {
 
     it('should handle prev click from page 3', () => {
       mockGetQueryParamString.mockReturnValue('3');
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       act(() => {
         result.current.pagination.onPrevPageClick();
@@ -99,7 +94,7 @@ describe('useClusterPagination', () => {
     });
 
     it('should reset page to undefined', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       act(() => {
         result.current.pagination.resetPage();
@@ -113,7 +108,7 @@ describe('useClusterPagination', () => {
     it('should set hasPages true when page > 1', () => {
       mockGetQueryParamString.mockReturnValue('2');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.pagination.hasPages).toBe(true);
     });
@@ -121,7 +116,7 @@ describe('useClusterPagination', () => {
     it('should set hasPages false when page = 1', () => {
       mockGetQueryParamString.mockReturnValue('1');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.pagination.hasPages).toBe(false);
     });
@@ -129,7 +124,7 @@ describe('useClusterPagination', () => {
     it('should set canGoBackwards true when page > 1', () => {
       mockGetQueryParamString.mockReturnValue('2');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.pagination.canGoBackwards).toBe(true);
     });
@@ -137,7 +132,7 @@ describe('useClusterPagination', () => {
     it('should set canGoBackwards false when page = 1', () => {
       mockGetQueryParamString.mockReturnValue('1');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.pagination.canGoBackwards).toBe(false);
     });
@@ -171,7 +166,7 @@ describe('useClusterPagination', () => {
     it('should be visible when hasNextPage is true', () => {
       mockGetQueryParamString.mockReturnValue('1');
 
-      const { result } = renderHook(() => useClusterPagination(true, false));
+      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.pagination.isVisible).toBe(true);
     });
@@ -189,7 +184,7 @@ describe('useClusterPagination', () => {
     it('should not recreate functions when dependencies do not change', () => {
       mockGetQueryParamString.mockReturnValue('2');
 
-      const { result, rerender } = renderHook(() => useClusterPagination(true, false));
+      const { result, rerender } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
 
       const firstOnNext = result.current.pagination.onNextPageClick;
       const firstOnPrev = result.current.pagination.onPrevPageClick;

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import React from 'react';
+
+import type { Router } from 'src/shared/router/useRouter';
+import { useRouter } from 'src/shared/router/useRouter';
 
 interface Props {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ interface Props {
 }
 
 interface PropsWithRouter extends Props {
-  router: NextRouter;
+  router: Router;
 }
 
 interface State {

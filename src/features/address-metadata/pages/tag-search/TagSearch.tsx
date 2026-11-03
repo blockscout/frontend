@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MetadataTag as TMetadataTag, MetadataTagType } from '../../components/tag/types';
@@ -16,6 +15,7 @@ import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWith
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';

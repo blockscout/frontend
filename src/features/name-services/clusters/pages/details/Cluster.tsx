@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -11,6 +10,7 @@ import TextAd from 'src/features/ads/text/components/TextAd';
 import ClusterDetails from 'src/features/name-services/clusters/pages/details/ClusterDetails';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 const Cluster = () => {
   const router = useRouter();

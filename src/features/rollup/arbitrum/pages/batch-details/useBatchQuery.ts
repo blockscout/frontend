@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
-
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { ARBITRUM_L2_TXN_BATCH, ARBITRUM_L2_TXN_BATCH_CELESTIA } from '../../stubs';
 

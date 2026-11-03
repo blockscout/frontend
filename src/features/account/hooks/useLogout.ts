@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
@@ -13,6 +12,7 @@ import { useRewardsContext } from 'src/features/rewards/context';
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
 import type { Route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { toaster } from 'src/toolkit/chakra/toaster';
@@ -51,7 +51,7 @@ export default function useLogout() {
         PROTECTED_ROUTES.includes(router.pathname) ||
           (router.pathname === '/txs' && router.query.tab === 'watchlist')
       ) {
-        await router.push({ pathname: '/' }, undefined, { shallow: true });
+        await router.push({ pathname: '/' }, { shallow: true });
       }
 
       queryClient.resetQueries({

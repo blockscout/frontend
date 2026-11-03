@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { StatsIntervalIds } from '../../types/client';
@@ -23,6 +22,7 @@ import { ALL_OPTION, isAllOption } from 'src/shared/external-chains/ChainSelect'
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import type { OnValueChangeHandler } from 'src/toolkit/chakra/select';
 
