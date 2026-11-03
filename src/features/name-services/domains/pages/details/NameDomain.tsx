@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
@@ -22,6 +21,7 @@ import { ENS_DOMAIN } from 'src/features/name-services/domains/stubs';
 import config from 'src/config';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';

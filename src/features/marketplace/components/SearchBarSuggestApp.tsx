@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import SearchBarSuggestItemLink from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestItemLink';
 
+import { route } from 'src/shared/router/routes';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

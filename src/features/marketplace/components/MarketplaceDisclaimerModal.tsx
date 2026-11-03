@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogFooter, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';

@@ -81,6 +81,10 @@ const RESTRICTED_MODULES = {
       importNames: [ 'default' ],
       message: 'Please use toolkit/chakra/link component instead',
     },
+    {
+      name: 'nextjs-routes',
+      message: 'Please import route() and the Route / Query / DynamicRoute types from "src/shared/router/routes" instead',
+    },
   ],
   patterns: [
     { group: [ 'src/sprite/icons/*' ] },
@@ -743,6 +747,16 @@ export default tseslint.config(
     rules: {
       // for toolkit components allow to import @chakra-ui/react directly
       'no-restricted-imports': 'off',
+    },
+  },
+  {
+    // the route() wrapper is the single import surface for nextjs-routes
+    files: [ 'src/shared/router/routes.ts' ],
+    rules: {
+      'no-restricted-imports': [ 'error', {
+        paths: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.paths.filter((path) => path.name !== 'nextjs-routes'),
+        patterns: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.patterns,
+      } ],
     },
   },
 

@@ -2,12 +2,12 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import type { DynamicRoute } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 
 import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
+import type { DynamicRoute } from 'src/shared/router/routes';
+import { route } from 'src/shared/router/routes';
 
 import type { MediaType, Size, TransportType } from './utils';
 import { getIpfsUri, getPreliminaryMediaType } from './utils';

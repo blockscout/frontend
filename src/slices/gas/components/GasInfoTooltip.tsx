@@ -5,7 +5,6 @@ import {
   Flex,
   Grid,
 } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -13,6 +12,7 @@ import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import type { TooltipProps } from 'src/toolkit/chakra/tooltip';

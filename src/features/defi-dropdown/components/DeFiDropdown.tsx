@@ -2,11 +2,11 @@
 
 import { Box, Flex, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

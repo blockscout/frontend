@@ -2,12 +2,13 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { range } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { SmartContractMethod } from './types';
 
 import Web3Boundary from 'src/features/connect-wallet/components/Web3Boundary';
+
+import { route } from 'src/shared/router/routes';
 
 import { AccordionRoot } from 'src/toolkit/chakra/accordion';
 import { Link } from 'src/toolkit/chakra/link';

@@ -3,7 +3,6 @@
 import { Box, Flex, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 // import { AnimatePresence } from 'framer-motion';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { operations } from '@blockscout/api-types';
@@ -17,6 +16,7 @@ import LatestBlocksFallback from 'src/slices/home/pages/index/blocks/LatestBlock
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useInitialList from 'src/shared/lists/useInitialList';
+import { route } from 'src/shared/router/routes';
 
 import { Heading } from 'src/toolkit/chakra/heading';
 import { Link } from 'src/toolkit/chakra/link';

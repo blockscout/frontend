@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import AdBanner from 'src/features/ads/banner/components/AdBanner';
@@ -11,6 +10,7 @@ import getErrorCauseStatusCode from 'src/shared/errors/get-error-cause-status-co
 import getErrorObjStatusCode from 'src/shared/errors/get-error-obj-status-code';
 import getErrorProp from 'src/shared/errors/get-error-prop';
 import getResourceErrorPayload from 'src/shared/errors/get-resource-error-payload';
+import { route } from 'src/shared/router/routes';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';

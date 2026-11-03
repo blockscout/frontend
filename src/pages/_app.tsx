@@ -6,7 +6,6 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
@@ -34,6 +33,7 @@ import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import AppErrorGlobalContainer from 'src/shared/errors/AppErrorGlobalContainer';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import NextRouterProvider from 'src/shared/router/NextRouterProvider';
+import type { Route } from 'src/shared/router/routes';
 import { FallbackProvider } from 'src/shared/utils/fallback-provider';
 import SpriteInjector from 'src/sprite/SpriteInjector';
 

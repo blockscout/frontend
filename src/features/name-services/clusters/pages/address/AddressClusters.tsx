@@ -2,7 +2,6 @@
 
 import { Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { ClustersByAddressResponse } from 'src/features/name-services/clusters/types/api';
@@ -19,6 +18,7 @@ import {
   hasMoreClusters,
 } from 'src/features/name-services/clusters/utils/clusters-utils';
 
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

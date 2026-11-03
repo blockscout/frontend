@@ -2,8 +2,6 @@
 
 import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -11,6 +9,8 @@ import useQuickSearchQuery from 'src/slices/search/hooks/useQuickSearchQuery';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 
 import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
+import type { Route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

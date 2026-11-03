@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import type { AbiParameter } from 'viem';
 
+import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Link } from 'src/toolkit/chakra/link';

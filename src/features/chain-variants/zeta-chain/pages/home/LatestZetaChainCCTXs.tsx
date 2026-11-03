@@ -2,7 +2,6 @@
 
 import { Box, Flex, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import { Direction } from '@blockscout/zetachain-cctx-types';
@@ -21,6 +20,7 @@ import { ZETA_CHAIN_CCTX_LIST_ITEM } from 'src/features/chain-variants/zeta-chai
 
 import useInitialList from 'src/shared/lists/useInitialList';
 import { generateListStub } from 'src/shared/pagination/utils';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';

@@ -2,14 +2,13 @@
 
 /* eslint-disable max-len */
 
-import type { Route } from 'nextjs-routes';
-
 import type { OgTemplateValue, TemplateValue } from '../types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
+import type { Route } from 'src/shared/router/routes';
 
 const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase();
 

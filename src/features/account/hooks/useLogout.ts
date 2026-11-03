@@ -2,7 +2,6 @@
 
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
@@ -13,6 +12,7 @@ import { useRewardsContext } from 'src/features/rewards/context';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import type { Route } from 'src/shared/router/routes';
 import * as cookies from 'src/shared/storage/cookies';
 
 import { toaster } from 'src/toolkit/chakra/toaster';

@@ -2,8 +2,6 @@
 
 import { useClickAway } from '@uidotdev/usehooks';
 import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -13,6 +11,8 @@ import useSearchWithClusters from 'src/features/name-services/clusters/hooks/use
 
 import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
+import type { Route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverFooter, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';

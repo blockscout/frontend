@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -9,6 +8,7 @@ import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
 import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Heading } from 'src/toolkit/chakra/heading';
