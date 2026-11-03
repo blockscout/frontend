@@ -16,7 +16,6 @@ const embeddedApp = { ...appsMock[0], external: false };
 const hooksConfig = {
   router: {
     query: { id: embeddedApp.id },
-    isReady: true,
   },
 };
 

@@ -18,22 +18,22 @@ go; `hooksConfig.router` is kept as the test-facing API (retyped to the facade's
 
 ## Acceptance criteria
 
-- [ ] `grep -rn "next/router" vitest playwright playwright-ct.config.ts` matches nothing; the Playwright
+- [x] `grep -rn "next/router" vitest playwright playwright-ct.config.ts` matches nothing; the Playwright
       module mock file is deleted.
-- [ ] `vitest/lib.tsx` `TestApp` accepts `router?: Partial<Router>` (facade type) merged over
+- [x] `vitest/lib.tsx` `TestApp` accepts `router?: Partial<Router>` (facade type) merged over
       `buildRouterMock('/', '/')`; `checkPrimedRequests` builds the page router via `buildRouterMock(page, url)`
       and passes it as the prop; `mockNextRouter` is gone; `vi.doUnmock('next/router')` is gone.
-- [ ] `playwright/index.ts` `beforeMount` types `hooksConfig.router` as `Partial<Router>` and stores it;
+- [x] `playwright/index.ts` `beforeMount` types `hooksConfig.router` as `Partial<Router>` and stores it;
       `playwright/TestApp.tsx` reads it and mounts the provider; the default router matches today's
       `DEFAULT_ROUTER` plus `asPath: ''`.
-- [ ] The 63 `*.pw.tsx` files type-check against the facade `Router`; no `isReady` key remains in any
+- [x] The 63 `*.pw.tsx` files type-check against the facade `Router`; no `isReady` key remains in any
       `hooksConfig.router`.
-- [ ] Header comments of `vitest/utils/mockRouter.ts` and `vitest/utils/routerStandIn.ts` describe the
+- [x] Header comments of `vitest/utils/mockRouter.ts` and `vitest/utils/routerStandIn.ts` describe the
       provider-based install (no `vi.mock` instructions left).
-- [ ] `pnpm test:vitest` passes, including every `*.primed.spec.tsx`.
-- [ ] Full `pnpm test:pw` run (forced full — the CT config changed) is green with zero screenshot diffs; no
+- [x] `pnpm test:vitest` passes, including every `*.primed.spec.tsx`.
+- [x] Full `pnpm test:pw` run (forced full — the CT config changed) is green with zero screenshot diffs; no
       baseline file is modified or added in the diff.
-- [ ] `pnpm lint:tsc`, `pnpm lint:eslint` pass.
+- [x] `pnpm lint:tsc`, `pnpm lint:eslint` pass.
 
 ## Details
 
@@ -51,9 +51,9 @@ are lint-exempt for the `next/*` bans, but the adapter import keeps them from ne
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Vitest: drop the global mock, `TestApp` `router` prop over `buildRouterMock`,
+- [x] 1 `[agent]` Vitest: drop the global mock, `TestApp` `router` prop over `buildRouterMock`,
       `checkPrimedRequests` via the prop; delete `mockNextRouter`; rewrite the two header comments
-- [ ] 2 `[agent]` Playwright: remove the alias and module mock; override store + `TestApp` provider;
+- [x] 2 `[agent]` Playwright: remove the alias and module mock; override store + `TestApp` provider;
       retype `hooksConfig.router`
-- [ ] 3 `[agent]` Codemod the 63 `*.pw.tsx` files (type import, drop `isReady`)
-- [ ] 4 `[agent]` Run tsc, eslint, vitest, full `pnpm test:pw`; confirm zero baseline changes
+- [x] 3 `[agent]` Codemod the 63 `*.pw.tsx` files (type import, drop `isReady`)
+- [x] 4 `[agent]` Run tsc, eslint, vitest, full `pnpm test:pw`; confirm zero baseline changes

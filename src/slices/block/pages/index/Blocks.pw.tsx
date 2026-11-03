@@ -13,7 +13,6 @@ import Blocks from './Blocks';
 const hooksConfig = {
   router: {
     query: { tab: 'blocks' },
-    isReady: true,
   },
 };
 

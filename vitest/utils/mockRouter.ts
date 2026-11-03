@@ -1,17 +1,23 @@
+import type { Router } from 'src/toolkit/router/types';
+
 import { vi } from 'vitest';
 
-// next/router mocking for Vitest.
+// A frozen router value for Vitest, installed through the toolkit router provider.
 //
-// Default: vitest/setup.ts registers a home-page mock via `vi.mock` so TestApp mounts
-// without each suite wiring the router. Suites that need a specific route/query should
-// override with their own top-level `vi.mock('next/router', …)` (see useApiPaginatedQuery.spec).
+// Default: `vitest/lib`'s TestApp mounts the provider with `buildRouterMock('/', '/')`, so a suite
+// mounts without wiring the router. Suites that need a specific route/query pass the `router` prop
+// (`<TestApp router={ buildRouterMock('/tx/[hash]', '/tx/0xabc') }>`), or a `Partial<Router>` with just
+// the fields the component reads; the primed drift tests (checkPrimedRequests.tsx) do the former.
 //
-// Primed drift tests: `mockNextRouter` uses `vi.doMock`, which applies only to modules
-// imported AFTER the call — pair it with `resetModules` + dynamic imports
-// (checkPrimedRequests.tsx), and clean up with `vi.doUnmock('next/router')`.
-// `buildRouterMock` is the shared shape used by both paths.
+// `query` never changes after a `push`/`replace` — the calls are `vi.fn` spies to assert on. A hook
+// that must observe the URL it pushed uses the live stand-in in routerStandIn.ts instead.
 
-export function buildRouterMock(page: string, url: string) {
+export interface RouterMock extends Router {
+  push: ReturnType<typeof vi.fn<Router['push']>>;
+  replace: ReturnType<typeof vi.fn<Router['replace']>>;
+}
+
+export function buildRouterMock(page: string, url: string): RouterMock {
   const { pathname, searchParams } = new URL(url, 'http://localhost');
 
   const query: Record<string, string> = Object.fromEntries(searchParams.entries());
@@ -26,25 +32,8 @@ export function buildRouterMock(page: string, url: string) {
   return {
     query,
     pathname: page,
-    route: page,
     asPath: url,
-    basePath: '',
-    isReady: true,
-    push: vi.fn(() => Promise.resolve(true)),
-    replace: vi.fn(() => Promise.resolve(true)),
-    prefetch: vi.fn(() => Promise.resolve()),
-    back: vi.fn(),
-    events: { on: vi.fn(), off: vi.fn(), emit: vi.fn() },
+    push: vi.fn<Router['push']>(() => Promise.resolve(true)),
+    replace: vi.fn<Router['replace']>(() => Promise.resolve(true)),
   };
-}
-
-export function mockNextRouter(page: string, url: string) {
-  const router = buildRouterMock(page, url);
-
-  vi.doMock('next/router', () => ({
-    useRouter: () => router,
-    'default': router,
-  }));
-
-  return router;
 }

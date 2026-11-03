@@ -6,6 +6,8 @@ import { http } from 'viem';
 import { WagmiProvider, createConfig, mock } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
+import type { Router, RouterContextValue } from 'src/toolkit/router/types';
+
 import type { Props as PageProps } from 'src/server/getServerSideProps/handlers';
 
 import { SocketProvider } from 'src/api/socket/context';
@@ -19,11 +21,13 @@ import { MarketplaceContext } from 'src/features/marketplace/context';
 import { RewardsContextProvider } from 'src/features/rewards/context';
 
 import config from 'src/config';
-import NextRouterProvider from 'src/shared/router/NextRouterProvider';
+import { NextLink } from 'src/shared/router/NextRouterProvider';
 import SpriteInjector from 'src/sprite/SpriteInjector';
 
 import { Provider as ChakraProvider } from 'src/toolkit/chakra/provider';
+import { RouterProvider } from 'src/toolkit/router/context';
 
+import { getRouterOverrides } from './utils/router';
 import { port as socketPort } from './utils/socket';
 
 export type Props = {
@@ -57,6 +61,14 @@ const defaultMarketplaceContext = {
   setIsAutoConnectDisabled: () => {},
 };
 
+const DEFAULT_ROUTER: Router = {
+  query: {},
+  pathname: '',
+  asPath: '',
+  push: () => Promise.resolve(true),
+  replace: () => Promise.resolve(true),
+};
+
 const wagmiConfig = createConfig({
   chains: [ currentChain ?? mainnet ],
   connectors: [
@@ -83,8 +95,13 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
 
   const pageProps = { ...defaultAppContext.pageProps, ...appContext?.pageProps };
 
+  const [ routerContext ] = React.useState((): RouterContextValue => {
+    const router = { ...DEFAULT_ROUTER, ...getRouterOverrides() };
+    return { Link: NextLink, router, pathname: router.pathname };
+  });
+
   return (
-    <NextRouterProvider>
+    <RouterProvider value={ routerContext }>
       <ChakraProvider>
         <SpriteInjector/>
         <QueryClientProvider client={ queryClient }>
@@ -114,7 +131,7 @@ const TestApp = ({ children, withSocket, appContext, marketplaceContext = defaul
           </SocketProvider>
         </QueryClientProvider>
       </ChakraProvider>
-    </NextRouterProvider>
+    </RouterProvider>
   );
 };
 

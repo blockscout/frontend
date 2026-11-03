@@ -16,8 +16,8 @@ import { wrapper as TestApp } from 'vitest/lib';
 // same ordering the real pages router gives `.then` callbacks — so a spec can count requests and
 // renders per user action, not just check the final state.
 //
-// Install from the spec with the `wrapper`; it is the innermost provider, so it wins over the Next
-// adapter that `vitest/lib`'s TestApp mounts when the two are nested:
+// Install from the spec with the `wrapper`; it is the innermost provider, so it wins over the frozen
+// `buildRouterMock` value that `vitest/lib`'s TestApp mounts when the two are nested:
 //
 //   import { routerStandIn } from 'vitest/utils/routerStandIn';
 //
