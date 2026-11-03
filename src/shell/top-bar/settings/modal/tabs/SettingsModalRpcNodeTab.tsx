@@ -8,10 +8,8 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SettingsRpcNode from '../../fields/rpc-node/SettingsRpcNode';
 import SettingsSectionTitle from '../../parts/SettingsSectionTitle';
 
-const DESCRIPTION = 'Requests made directly from your browser, such as contract reads and writes, go through a public RPC node. ' +
-  'Use your own node if the default one is slow, rate-limited, or you want to keep requests private. ' +
-  'Indexed data such as blocks, transactions and balances still comes from the Blockscout API. ' +
-  'HTTPS only. Clear the field and save to go back to the default.';
+// eslint-disable-next-line max-len
+const DESCRIPTION = 'Contract reads and writes made from your browser go through a default public RPC node. Add your own node url if the default is slow, rate-limited, or you want more privacy. Blocks, transactions, balances, and other indexed data still come from the Blockscout API. HTTPS only. To go back to the default, clear the field and save.';
 
 const SettingsModalRpcNodeTab = () => {
   const isMobile = useIsMobile();
