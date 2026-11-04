@@ -17,17 +17,17 @@ ticket 08.
 
 ## Acceptance criteria
 
-- [ ] `AddressEntity.pw.tsx` (all cases, hover and bech32 included), `AddressEntityZetaChain.pw.tsx` and
+- [x] `AddressEntity.pw.tsx` (all cases, hover and bech32 included), `AddressEntityZetaChain.pw.tsx` and
       `AddressEntityInterop.pw.tsx` pass with no baseline change.
-- [ ] `<AddressEntity address="0x…"/>` renders the same as `<AddressEntity address={{ hash: '0x…' }}/>`
+- [x] `<AddressEntity address="0x…"/>` renders the same as `<AddressEntity address={{ hash: '0x…' }}/>`
       (unit spec); `AddressStringOrParam` still compiles as a caller of it.
-- [ ] `AddressEntityWithTokenFilter` passes the advanced-filter link through a `Content` option; the
+- [x] `AddressEntityWithTokenFilter` passes the advanced-filter link through a `Content` option; the
       tooltip is interactive and opens even when the value is not truncated, as today.
-- [ ] `hintPostfix` and `icon.size` are honoured through the new icon options with no call-site change
+- [x] `hintPostfix` and `icon.size` are honoured through the new icon options with no call-site change
       (`AddressEntityTacTon`, the revoke page).
-- [ ] The Address block of `SearchResultTableItem` composes `Container` + `Icon` + `Link` + `Content` +
+- [x] The Address block of `SearchResultTableItem` composes `Container` + `Icon` + `Link` + `Content` +
       `Copy` with the address supplied once at the root, and renders as before.
-- [ ] No `chakra()` remains in `AddressEntity.tsx`, `AddressEntityContentProxy.tsx` or
+- [x] No `chakra()` remains in `AddressEntity.tsx`, `AddressEntityContentProxy.tsx` or
       `AddressEntityWithTokenFilter.tsx`; the complexity gate passes for every changed file.
 
 ## Details
@@ -39,6 +39,6 @@ they are in `AddressEntity.Icon` today; the shield and its hint now come from th
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rebuild `AddressEntity`, `AddressEntityContentProxy`, `AddressEntityWithTokenFilter` on the primitives; string address accepted; `contentProps` gone
-- [ ] 2 `[agent]` Recompose the Address block of `SearchResultTableItem` on the root-data contract
-- [ ] 3 `[agent]` Unit specs (string address, token-filter tooltip, caller-wins flags); run the three Playwright suites in Docker
+- [x] 1 `[agent]` Rebuild `AddressEntity`, `AddressEntityContentProxy`, `AddressEntityWithTokenFilter` on the primitives; string address accepted; `contentProps` gone
+- [x] 2 `[agent]` Recompose the Address block of `SearchResultTableItem` on the root-data contract
+- [x] 3 `[agent]` Unit specs (string address, token-filter tooltip, caller-wins flags); run the three Playwright suites in Docker
