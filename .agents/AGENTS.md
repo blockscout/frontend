@@ -94,8 +94,9 @@ implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent
 Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
 rules contract, the per-file symlink Cursor needs, and how references here are checked.
 
-## Reaching people & channels on Slack
+## Slack: messages, people and channels
 
-To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
-before sending anything — unless the skill you are running names an explicit exception. Before composing
-any Slack message, read `./slack-message.md` (language, addressing, links, content, attribution).
+Text that will be read on Slack, whether you send it, draft it or return it for another agent
+to post: read `./slack-message.md` first (language, addressing, links, content, attribution).
+Slack IDs come from `./TEAM.md`. Draft and get approval before sending anything, unless the
+skill you are running names an explicit exception.
