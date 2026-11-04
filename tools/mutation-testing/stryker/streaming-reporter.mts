@@ -41,11 +41,11 @@ class StreamingReporter implements Reporter {
     this.write(formatStreamRecord({ kind: 'plan', mutants: mutantPlans.length }));
   }
 
-  public onMutantTested({ fileName, id, mutatorName, status, location }: Readonly<MutantResult>): void {
+  public onMutantTested({ fileName, id, mutatorName, status, location, coveredBy }: Readonly<MutantResult>): void {
     this.write(formatStreamRecord({
       kind: 'mutant',
       file: toReportFileName(fileName),
-      mutant: { id, mutatorName, status, location },
+      mutant: { id, mutatorName, status, location, coveredBy },
     }));
   }
 }
