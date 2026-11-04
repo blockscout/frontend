@@ -1,5 +1,5 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
-import { createTag, fetchBranch, hasRemoteRef, push, pushBranch, REMOTE } from '../git';
+import { createTag, fetchBranch, hasRemoteRef, push, pushBranch, REMOTE, remoteBranch, resolveCommit } from '../git';
 import { fetchPrLabels, listReleases, updateRelease } from '../github';
 import { releaseNotes } from '../notes';
 import { findReleasePreRelease } from '../pre-release';
@@ -49,7 +49,7 @@ export function alphaCommand(args: ReadonlyArray<string>): number {
   const view = checkoutBranch(steps, branch, dryRun);
   updateReleaseBranch(steps, view, releaseTag);
   const head = view.head();
-  const notes = releaseNotes(tag, releaseSourceAt(head), readNotesTemplate());
+  const notes = releaseNotes(tag, releaseSourceAt(head, resolveCommit(remoteBranch(branch))), readNotesTemplate());
   logReleaseNotes(tag, notes);
 
   const { failures } = checkTag(tag, { readDoc: view.readDoc, releaseBodies: () => [ notes.markdown ], prLabels: fetchPrLabels });

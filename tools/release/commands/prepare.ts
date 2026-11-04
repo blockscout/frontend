@@ -101,14 +101,25 @@ function cutPoint(base: ReleaseBase, branch: string, tag: string): CutPoint {
   return { sha: fork, resumed: true };
 }
 
-function cutReleaseBranch(steps: StepRunner, base: ReleaseBase, branch: string, tag: string, dryRun: boolean): BranchView {
+// `pushedHead` is the newest commit of the branch that origin already has: its head once pushed, else the
+// cut point, which is on main or is the released tag.
+interface ReleaseCheckout {
+  readonly view: BranchView;
+  readonly pushedHead: string;
+}
+
+function cutReleaseBranch(steps: StepRunner, base: ReleaseBase, branch: string, tag: string, dryRun: boolean): ReleaseCheckout {
   const start = baseRef(base);
   const { sha, resumed } = cutPoint(base, branch, tag);
   if (!dryRun) {
     assertCheckoutReady();
   }
   steps.run(cutStepTitle(branch, start, sha, resumed), () => resumed ? switchBranch(branch) : createBranchAt(branch, start));
-  return dryRun ? refView(resumed ? branch : start) : checkoutView();
+  return { view: dryRun ? refView(resumed ? branch : start) : checkoutView(), pushedHead: sha };
+}
+
+function checkoutPushedBranch(steps: StepRunner, branch: string, dryRun: boolean): ReleaseCheckout {
+  return { view: checkoutBranch(steps, branch, dryRun), pushedHead: resolveCommit(remoteBranch(branch)) };
 }
 
 export function prepareCommand(args: ReadonlyArray<string>): number {
@@ -120,9 +131,11 @@ export function prepareCommand(args: ReadonlyArray<string>): number {
   const base = releaseBase(version, listTags());
 
   const steps = stepRunner(dryRun);
-  const view = state === 'pushed' ? checkoutBranch(steps, branch, dryRun) : cutReleaseBranch(steps, base, branch, tag, dryRun);
+  const { view, pushedHead } = state === 'pushed' ?
+    checkoutPushedBranch(steps, branch, dryRun) :
+    cutReleaseBranch(steps, base, branch, tag, dryRun);
   updateReleaseBranch(steps, view, tag);
-  const notes = releaseNotes(tag, releaseSourceAt(view.head()), readNotesTemplate());
+  const notes = releaseNotes(tag, releaseSourceAt(view.head(), pushedHead), readNotesTemplate());
   logReleaseNotes(tag, notes);
 
   steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
