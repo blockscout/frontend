@@ -24,7 +24,7 @@ https://review-foo.k8s-dev.blockscout.com
 Посмотри, пожалуйста.
 ```
 
-Slack also links a dotted word that ends in a TLD: `selected.control.bg` posts as a link. Rephrase the word, or keep it in backticks, which Slack leaves as text.
+Slack also links a dotted word that ends in a TLD, backticks included: `selected.control.bg` posts as a link. Rephrase the word.
 
 ## Content
 
