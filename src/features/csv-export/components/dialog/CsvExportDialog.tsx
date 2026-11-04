@@ -8,7 +8,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import type { FormFields } from './types';
 
 import { useSettingsContext } from 'src/shell/top-bar/settings/context';
-import SettingsLocalTime from 'src/shell/top-bar/settings/time-format/SettingsLocalTime';
+import SettingsLocalTime from 'src/shell/top-bar/settings/fields/time-format/SettingsLocalTime';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';

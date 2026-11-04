@@ -16,8 +16,8 @@ import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from 'src/slices/home/type
 import type { NftMarketplaceItem } from 'src/slices/token/types/client';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'src/slices/tx/types/config';
 
-import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
-import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorModes } from 'src/shell/top-bar/settings/color-theme/config';
+import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
+import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorModes } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
 import * as regexp from 'src/toolkit/utils/regexp';
 

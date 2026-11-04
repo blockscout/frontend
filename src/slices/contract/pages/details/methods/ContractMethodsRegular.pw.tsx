@@ -1,8 +1,11 @@
+import type { Page } from '@playwright/test';
 import React from 'react';
 import type { Abi, AbiFunction } from 'viem';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as methodsMock from 'src/slices/contract/mocks/methods';
+
+import config from 'src/config';
 
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
@@ -10,6 +13,10 @@ import * as pwConfig from 'playwright/utils/config';
 import ContractMethodsRegular from './ContractMethodsRegular';
 
 const addressHash = addressParamMock.hash;
+
+async function mockRpcNodeDown(page: Page): Promise<void> {
+  await page.route(config.chain.rpcUrls[0], (route) => route.fulfill({ status: 503 }));
+}
 
 test('can read method', async({ render, mockContractReadResponse }) => {
   const hooksConfig = {
@@ -64,17 +71,18 @@ test('can simulate method', async({ render, mockContractReadResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('all methods +@dark-mode', async({ render }) => {
+test('all methods +@dark-mode', async({ render, page }) => {
   const hooksConfig = {
     router: {
       query: { hash: addressHash, tab: 'read_write_contract' },
     },
   };
 
+  await mockRpcNodeDown(page);
   const abi: Abi = [ ...methodsMock.read, ...methodsMock.write ] as Abi;
   const component = await render(<ContractMethodsRegular abi={ abi }/>, { hooksConfig });
   await component.getByText(/expand all/i).click();
-  await expect(component.getByText('HTTP request failed')).toBeVisible();
+  await expect(component.getByText('The RPC node is not responding')).toBeVisible();
 
   await expect(component).toHaveScreenshot();
 });
@@ -82,7 +90,7 @@ test('all methods +@dark-mode', async({ render }) => {
 test.describe('all methods', () => {
   test.use({ viewport: pwConfig.viewport.mobile });
 
-  test('mobile', async({ render }) => {
+  test('mobile', async({ render, page }) => {
     test.slow();
 
     const hooksConfig = {
@@ -91,10 +99,11 @@ test.describe('all methods', () => {
       },
     };
 
+    await mockRpcNodeDown(page);
     const abi: Abi = [ ...methodsMock.read, ...methodsMock.write ] as Abi;
     const component = await render(<ContractMethodsRegular abi={ abi }/>, { hooksConfig });
     await component.getByText(/expand all/i).click();
-    // await expect(component.getByText('HTTP request failed')).toBeVisible();
+    await expect(component.getByText('The RPC node is not responding')).toBeVisible();
 
     await expect(component).toHaveScreenshot();
   });

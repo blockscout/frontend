@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import type { ColorThemeId } from 'src/shell/top-bar/settings/color-theme/config';
-import { getDefaultColorTheme } from 'src/shell/top-bar/settings/color-theme/utils';
+import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
+import { getDefaultColorTheme } from 'src/shell/top-bar/settings/fields/color-theme/utils';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { usePathname } from 'src/shared/router/usePathname';

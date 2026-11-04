@@ -130,3 +130,57 @@ describe('resolveColorTheme', () => {
     expect(resolveColorTheme('light', true)).toBe('light');
   });
 });
+
+describe('getThemeHexWithOverrides', () => {
+  const OVERRIDES = [
+    'NEXT_PUBLIC_COLOR_THEME_OVERRIDES',
+    '{"bg":{"primary":{"_light":{"value":"#f0f0f0"},"_dark":{"value":"#101010"}}}}',
+  ] satisfies [ string, string ];
+
+  it('returns the theme hex when no overrides are configured', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+
+  it('takes the overridden background for the light and dark themes', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([ OVERRIDES ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#f0f0f0');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101010');
+  });
+
+  it('leaves the other themes alone even when overrides are configured', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([ OVERRIDES ]);
+
+    expect(getThemeHexWithOverrides('dim')).toBe('#232B37');
+    expect(getThemeHexWithOverrides('midnight')).toBe('#1B2E48');
+  });
+
+  it('falls back to the theme hex when the override value is missing or not a string', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_light":{"value":1},"_dark":{"color":"#000"}}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+
+  it('takes a leaf string reached before the end of the override path', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_dark":"#000"}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('dark')).toBe('#000');
+  });
+
+  it('falls back to the theme hex when an intermediate override node is an array or null', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_light":[],"_dark":null}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+});

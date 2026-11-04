@@ -6,7 +6,7 @@ import {
   isConcreteColorTheme,
   isSystemColorTheme,
   type ColorThemeId,
-} from 'src/shell/top-bar/settings/color-theme/config';
+} from 'src/shell/top-bar/settings/fields/color-theme/config';
 
 import { getExternalAssetFilePath, getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 

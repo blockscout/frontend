@@ -1,15 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
+
+import type { SettingsControlVariant } from '../../types';
 
 import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
 
-import SettingsSample from '../SettingsSample';
+import SettingsSample from '../../parts/SettingsSample';
+import SettingsSamplesRow from '../../parts/SettingsSamplesRow';
 import { IDENTICONS } from './utils';
 
-const SettingsIdentIcon = () => {
+interface Props {
+  variant?: SettingsControlVariant;
+}
+
+const SettingsIdentIcon = ({ variant = 'popover' }: Props) => {
   const [ activeId, setActiveId ] = React.useState<string>();
 
   React.useEffect(() => {
@@ -31,24 +37,19 @@ const SettingsIdentIcon = () => {
   }, []);
 
   const activeIdenticon = IDENTICONS.find((identicon) => identicon.id === activeId);
-
   return (
-    <div>
-      <Box fontWeight={ 600 }>Address settings</Box>
-      <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeIdenticon?.label }</Box>
-      <Flex>
-        { IDENTICONS.map((identicon) => (
-          <SettingsSample
-            key={ identicon.id }
-            label={ identicon.label }
-            value={ identicon.id }
-            bg={ identicon.sampleBg }
-            isActive={ identicon.id === activeId }
-            onClick={ handleSelect }
-          />
-        )) }
-      </Flex>
-    </div>
+    <SettingsSamplesRow variant={ variant } title="Address identicon" mobileTitle="Identicon" value={ activeIdenticon?.label }>
+      { IDENTICONS.map((identicon) => (
+        <SettingsSample
+          key={ identicon.id }
+          label={ identicon.label }
+          value={ identicon.id }
+          bg={ identicon.sampleBg }
+          isActive={ identicon.id === activeId }
+          onClick={ handleSelect }
+        />
+      )) }
+    </SettingsSamplesRow>
   );
 };
 

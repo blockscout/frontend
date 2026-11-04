@@ -9,37 +9,37 @@ import * as cookies from 'src/shared/storage/cookies';
 
 import { Switch } from 'src/toolkit/chakra/switch';
 
-const SettingsScamTokens = () => {
+const SettingsPoorReputationTokens = () => {
   const { cookies: appCookies } = useAppContext();
 
-  const initialValue = cookies.get(cookies.NAMES.SHOW_SCAM_TOKENS, appCookies);
+  const initialValue = cookies.get(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS, appCookies);
 
   const [ isChecked, setIsChecked ] = React.useState(initialValue !== 'true');
 
   const handleChange = React.useCallback(() => {
+    setIsChecked(prev => !prev);
     const nextValue = !isChecked;
-    cookies.set(cookies.NAMES.SHOW_SCAM_TOKENS, nextValue ? 'false' : 'true');
-    setIsChecked(nextValue);
+    cookies.set(cookies.NAMES.SHOW_POOR_REPUTATION_TOKENS, nextValue ? 'false' : 'true');
     window.location.reload();
   }, [ isChecked ]);
 
-  if (!config.slices.token.hideScamTokensEnabled) {
+  if (!config.features.multichain.isEnabled) {
     return null;
   }
 
   return (
     <Switch
-      id="scam-tokens"
+      id="poor-reputation-tokens"
       checked={ isChecked }
       onChange={ handleChange }
       direction="rtl"
       justifyContent="space-between"
       w="100%"
-      minH="34px"
+      minH="32px"
     >
-      Hide scam tokens
+      Hide poor reputation tokens
     </Switch>
   );
 };
 
-export default React.memo(SettingsScamTokens);
+export default React.memo(SettingsPoorReputationTokens);
