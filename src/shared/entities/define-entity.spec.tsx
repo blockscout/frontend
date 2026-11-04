@@ -104,6 +104,33 @@ describe('defineEntity', () => {
     });
   });
 
+  describe('icon defaults', () => {
+    const SquareIconEntity = defineEntity<{ hash: string }>({
+      name: 'SquareIconEntity',
+      data: keysOf<{ hash: string }>()([ 'hash' ]),
+      route: ({ hash }) => ({ pathname: '/tx/[hash]', query: { hash } }),
+      hintPrefix: 'Test on ',
+      icon: 'block',
+      text: ({ hash }) => hash,
+      copyText: ({ hash }) => hash,
+      defaults: { icon: { borderRadius: 'none' } },
+    });
+
+    const getIconCss = () => getCssText(document.querySelector('svg') as Element);
+
+    it('reach an icon part rendered without a root, as in the search bar suggestions', () => {
+      render(<SquareIconEntity.Icon hash={ HASH }/>);
+
+      expect(getIconCss()).toContain('border-radius:var(--chakra-radii-none)');
+    });
+
+    it('give way to the icon part\'s own value', () => {
+      render(<SquareIconEntity.Icon hash={ HASH } borderRadius="full"/>);
+
+      expect(getIconCss()).toContain('border-radius:var(--chakra-radii-full)');
+    });
+  });
+
   describe('caller flags win over the factory defaults', () => {
     const Entity = defineEntity<{ hash: string }>({
       name: 'TestEntity',
@@ -130,6 +157,18 @@ describe('defineEntity', () => {
 
       expect(screen.queryByText(HASH)).toBeNull();
       expect(screen.getByText(HASH.slice(0, 4), { exact: false })).toBeTruthy();
+    });
+
+    it('truncation with a symbol count', () => {
+      render(<Entity hash={ HASH } truncation={{ type: 'constant', maxSymbols: 6 }}/>);
+
+      expect(screen.getByText(`${ HASH.slice(0, 4) }...${ HASH.slice(-2) }`)).toBeTruthy();
+    });
+
+    it('constant_long keeps its fixed symbol count', () => {
+      render(<Entity hash={ HASH } truncation="constant_long"/>);
+
+      expect(screen.getByText(`${ HASH.slice(0, 12) }...${ HASH.slice(-4) }`)).toBeTruthy();
     });
 
     it('noIcon', () => {

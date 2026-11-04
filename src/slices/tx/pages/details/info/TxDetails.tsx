@@ -20,6 +20,7 @@ import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import { currencyUnits } from 'src/slices/chain/units';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import getConfirmationDuration from 'src/slices/tx/utils/get-confirmation-duration';
 
@@ -34,8 +35,8 @@ import TxDetailsInterop from 'src/features/op-interop/pages/tx/TxDetailsInterop'
 import TxDetailsWithdrawalStatusArbitrum from 'src/features/rollup/arbitrum/pages/tx/TxDetailsWithdrawalStatusArbitrum';
 import * as arbitrum from 'src/features/rollup/arbitrum/utils/batch-verification';
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import TxDetailsWithdrawalStatusOptimistic from 'src/features/rollup/optimism/pages/tx/TxDetailsWithdrawalStatusOptimistic';
 import TxInfoScrollFees from 'src/features/rollup/scroll/pages/tx/TxInfoScrollFees';
 import ZkSyncL2TxnBatchHashesInfo from 'src/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
@@ -401,7 +402,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                 Commitment tx
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isLoading }/>
+                <TxEntity hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isLoading } chain={ parentChain }/>
                 { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
               </DetailedInfo.ItemValue>
             </>
@@ -415,7 +416,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
                 Confirmation tx
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading }/>
+                <TxEntity hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading } chain={ parentChain }/>
                 { data.arbitrum?.commitment_transaction?.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
               </DetailedInfo.ItemValue>
             </>

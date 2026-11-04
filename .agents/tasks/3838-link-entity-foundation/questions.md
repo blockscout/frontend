@@ -16,3 +16,4 @@ Decisions the developer made in the `to-tickets` session; no outside owner, no t
 | Q04 | `AddressEntityInterchain` survives as the carrier of the `currentAddress` → `noLink` rule; not shifted to call sites. | resolved |
 | Q05 | Collapsed `truncation`: the string union plus `{ type: 'dynamic'; tailLength }` and `{ type: 'constant'; maxSymbols }`. | resolved |
 | Q06 | `defineEntity.icon` may return an icon name or a React element (TacOperation pending spinner). | resolved |
+| Q07 | `TxEntityInterchain` survives (ticket 09): it carries the unlinkable-chain rule — an unknown `source_chain` / `destination_chain` renders unlinked, where a plain `TxEntity` would link to the current chain. Kept beside its Address and Token siblings, not pushed onto the 10 cross-chain call sites. | resolved |

@@ -132,7 +132,7 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     const root = useEntityRoot<TData>();
     const [ override, own ] = splitByKeys<TData, object>(props, dataKeys);
     const data = mergeEntityData(root?.data, override);
-    const icon = mergeIconOptions(root?.options.icon, own);
+    const icon = mergeIconOptions(root?.options.icon ?? definition.defaults?.icon, own);
     const chain = icon.chain ?? root?.options.chain;
     const link = usePartLink(root, data, override, { chain, shield: icon.shield === false ? false : undefined });
 

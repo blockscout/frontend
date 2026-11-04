@@ -18,6 +18,7 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import type { TruncateTooltipConfig } from 'src/toolkit/components/truncation/Truncate';
 
+import { toTruncationSpec } from './entity-props';
 import type { EntityIconExtras, EntityOptions, Variant } from './root';
 import { useEntityOptions } from './root';
 import { useSplitCssProps } from './split-css-props';
@@ -199,7 +200,7 @@ const IconShield = (props: IconShieldProps) => {
 
 export interface ContentBaseProps extends
   JsxStyleProps,
-  Pick<EntityOptions, 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols' | 'noLink'> {
+  Pick<EntityOptions, 'isLoading' | 'truncation' | 'noTooltip' | 'variant' | 'noLink'> {
   className?: string;
   asProp?: React.ElementType;
   text: string;
@@ -218,8 +219,6 @@ const Content = (props: ContentBaseProps) => {
     asProp,
     text,
     truncation = options.truncation ?? 'dynamic',
-    truncationMaxSymbols = options.truncationMaxSymbols,
-    tailLength = options.tailLength,
     variant = options.variant,
     noTooltip = options.noTooltip,
     tooltipInteractive,
@@ -228,6 +227,7 @@ const Content = (props: ContentBaseProps) => {
   } = rest;
 
   const styles = { ...getVariantPreset(variant).content, ...css };
+  const { type: truncationType, tailLength, maxSymbols } = toTruncationSpec(truncation);
 
   const tooltip = React.useMemo((): false | TruncateTooltipConfig => {
     if (noTooltip) {
@@ -244,7 +244,7 @@ const Content = (props: ContentBaseProps) => {
     return { content, interactive: tooltipInteractive, always: Boolean(tooltipContentAfter) };
   }, [ noTooltip, tooltipContentAfter, text, tooltipInteractive ]);
 
-  if (truncation === 'tail') {
+  if (truncationType === 'tail') {
     return (
       <Truncate
         value={ text }
@@ -258,14 +258,14 @@ const Content = (props: ContentBaseProps) => {
   }
 
   const children = (() => {
-    switch (truncation) {
+    switch (truncationType) {
       case 'constant_long':
         return (
           <Truncate
             value={ text }
             as={ asProp }
             type="middle-static"
-            maxSymbols={ truncationMaxSymbols ?? CONSTANT_LONG_MAX_SYMBOLS }
+            maxSymbols={ CONSTANT_LONG_MAX_SYMBOLS }
             tooltip={ tooltip }
           />
         );
@@ -275,7 +275,7 @@ const Content = (props: ContentBaseProps) => {
             value={ text }
             as={ asProp }
             type="middle-static"
-            maxSymbols={ truncationMaxSymbols }
+            maxSymbols={ maxSymbols }
             tooltip={ tooltip }
           />
         );

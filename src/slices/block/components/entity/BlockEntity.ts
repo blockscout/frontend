@@ -26,7 +26,7 @@ const BlockEntity = defineEntity<BlockEntityData>({
   hint: (data) => isPendingUpdate(data) ? PENDING_UPDATE_HINT : undefined,
   text: (data) => String(data.number),
   copyText: false,
-  defaults: { tailLength: 2 },
+  defaults: { truncation: { type: 'dynamic', tailLength: 2 } },
 });
 
 export default BlockEntity.Entity;

@@ -10,7 +10,17 @@ import type { LinkProps } from 'src/toolkit/chakra/link';
 
 import type { EntityChain, EntityLinkResolution } from './resolve-entity-link';
 
-export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
+export type TruncationType = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
+export type Truncation =
+  TruncationType |
+  { readonly type: 'dynamic'; readonly tailLength: number } |
+  { readonly type: 'constant'; readonly maxSymbols: number };
+export interface TruncationSpec {
+  readonly type: TruncationType;
+  readonly tailLength?: number;
+  readonly maxSymbols?: number;
+}
+
 export type Variant = 'content' | 'heading' | 'subheading';
 
 export type IconShieldSource = ImageProps | SpriteIconProps;
@@ -40,13 +50,11 @@ export interface EntityOptions {
   noLink?: boolean;
   noTooltip?: boolean;
   truncation?: Truncation;
-  tailLength?: number;
-  truncationMaxSymbols?: number;
 }
 
 export interface EntityDefaults extends Pick<
   EntityOptions,
-  'truncation' | 'tailLength' | 'truncationMaxSymbols' | 'noIcon' | 'noCopy' | 'noLink' | 'noTooltip'
+  'truncation' | 'noIcon' | 'noCopy' | 'noLink' | 'noTooltip'
 > {
   icon?: Pick<EntityIconOptions, 'borderRadius'>;
 }

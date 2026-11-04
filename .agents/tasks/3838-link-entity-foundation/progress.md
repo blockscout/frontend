@@ -8,5 +8,5 @@
 - [x] 06 → `tickets/06-token-nft-pool/`
 - [x] 07 → `tickets/07-ens-clusters/`
 - [x] 08 → `tickets/08-wrappers-to-aliases/`
-- [ ] 09 → `tickets/09-final-codemod/`
+- [x] 09 → `tickets/09-final-codemod/`
 - [ ] 10 → `tickets/10-after-profile/`

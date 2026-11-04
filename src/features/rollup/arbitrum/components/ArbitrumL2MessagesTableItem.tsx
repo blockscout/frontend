@@ -6,10 +6,10 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -39,11 +39,12 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
       { direction === 'to-rollup' && (
         <TableCell verticalAlign="middle">
           { item.origination_transaction_block_number ? (
-            <BlockEntityL1
+            <BlockEntity
               number={ item.origination_transaction_block_number }
               isLoading={ isLoading }
               fontWeight={ 600 }
               noIcon
+              chain={ parentChain }
             />
           ) : <chakra.span color="text.secondary">N/A</chakra.span> }
         </TableCell>
@@ -91,12 +92,13 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { l1TxHash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ l1TxHash }
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) : (
           <chakra.span color="text.secondary">

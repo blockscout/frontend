@@ -3,7 +3,7 @@
 import { isUndefined, omitBy } from 'es-toolkit';
 
 import type { IconBaseProps } from './components';
-import type { EntityDefaults, EntityIconOptions, EntityOptions } from './root';
+import type { EntityDefaults, EntityIconOptions, EntityOptions, Truncation, TruncationSpec } from './root';
 
 // A key list the compiler checks for completeness: a missing key of `T` turns the result into `{ missingKeys }`,
 // which no `ReadonlyArray<keyof T>` accepts. Strings and arrays are outside the mutation gate's scope, unlike a `Record<keyof T, true>`.
@@ -15,7 +15,7 @@ export function keysOf<T>(): <const K extends ReadonlyArray<keyof T>>(keys: K) =
 
 export const ENTITY_OPTION_KEY_LIST = keysOf<EntityOptions>()([
   'href', 'icon', 'link', 'query', 'onClick', 'chain', 'isLoading', 'variant',
-  'noIcon', 'noCopy', 'noLink', 'noTooltip', 'truncation', 'tailLength', 'truncationMaxSymbols',
+  'noIcon', 'noCopy', 'noLink', 'noTooltip', 'truncation',
 ]);
 
 // Splits `props` into the keys listed (defined values only) and everything else.
@@ -62,4 +62,8 @@ export function mergeEntityData<TData extends object>(rootData: TData | undefine
   // A part composed without a root (an icon alone, a link in a hand-built row) sees only its own override,
   // so an entity definition's functions must tolerate partial data; the resolver guards the hash it reads.
   return { ...rootData, ...override } as TData;
+}
+
+export function toTruncationSpec(truncation: Truncation): TruncationSpec {
+  return typeof truncation === 'string' ? { type: truncation } : truncation;
 }

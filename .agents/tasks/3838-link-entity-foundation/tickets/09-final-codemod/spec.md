@@ -15,17 +15,17 @@ files a codemod touched.
 
 ## Acceptance criteria
 
-- [ ] `TxEntityL1`, `BlockEntityL1`, `AddressEntityL1`, `TokenEntityL1`, `BlobEntityL1`,
-      `TxEntityInterchain`, `AddressStringOrParam` no longer exist; every former call site passes
-      `chain=` (parent chain via the ticket 02 mapper) or the plain entity.
-- [ ] `tailLength` and `truncationMaxSymbols` are gone from the entity props and from the three call sites;
+- [x] `TxEntityL1`, `BlockEntityL1`, `AddressEntityL1`, `TokenEntityL1`, `BlobEntityL1`,
+      `AddressStringOrParam` no longer exist; every former call site passes `chain=` (parent chain via
+      the ticket 02 mapper) or the plain entity. `TxEntityInterchain` stays (Q07).
+- [x] `tailLength` and `truncationMaxSymbols` are gone from the entity props and from the three call sites;
       `truncation` accepts the collapsed shape under Details.
-- [ ] `target` and `contentProps` appear nowhere in the family or its call sites.
-- [ ] Every codemod is kept as a script in the session scratchpad and its `ast-grep` pattern and rewrite
+- [x] `target` and `contentProps` appear nowhere in the family or its call sites.
+- [x] Every codemod is kept as a script in the session scratchpad and its `ast-grep` pattern and rewrite
       are quoted in `notes.md`, so the diff is reproducible.
-- [ ] Lint, type-check and the whole Playwright suite pass; baselines changed only in test files the
+- [x] Lint, type-check and the whole Playwright suite pass; baselines changed only in test files the
       codemod edited.
-- [ ] `(human)` Each regenerated baseline is eyeballed against its previous image and is pixel-identical
+- [x] `(human)` Each regenerated baseline is eyeballed against its previous image and is pixel-identical
       (a changed import must not change the picture).
 
 ## Details
@@ -40,8 +40,8 @@ Rollup parent chain at the call sites: import the mapped chain from the rollup f
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Codemod wrapper imports → entity + `chain=`; delete the alias files
-- [ ] 2 `[agent]` Codemod `AddressStringOrParam` → `AddressEntity`
-- [ ] 3 `[agent]` Collapse `truncation`; remove `tailLength` / `truncationMaxSymbols`; purge `target` / `contentProps`
-- [ ] 4 `[agent]` Regenerate the touched baselines in Docker; lint, tsc, full `pnpm test:pw`
-- [ ] 5 `[human]` Eyeball the regenerated baselines
+- [x] 1 `[agent]` Codemod wrapper imports → entity + `chain=`; delete the alias files
+- [x] 2 `[agent]` Codemod `AddressStringOrParam` → `AddressEntity`
+- [x] 3 `[agent]` Collapse `truncation`; remove `tailLength` / `truncationMaxSymbols`; purge `target` / `contentProps`
+- [x] 4 `[agent]` Regenerate the touched baselines in Docker; lint, tsc, full `pnpm test:pw`
+- [x] 5 `[human]` Eyeball the regenerated baselines

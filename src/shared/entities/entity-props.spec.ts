@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { ENTITY_OPTION_KEY_LIST, keysOf, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys } from './entity-props';
+import { ENTITY_OPTION_KEY_LIST, keysOf, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys, toTruncationSpec } from './entity-props';
 
 interface Data {
   hash: string;
@@ -105,7 +105,21 @@ describe('ENTITY_OPTION_KEY_LIST', () => {
   it('lists every public option once', () => {
     expect([ ...ENTITY_OPTION_KEY_LIST ].sort()).toEqual([
       'chain', 'href', 'icon', 'isLoading', 'link', 'noCopy', 'noIcon', 'noLink', 'noTooltip',
-      'onClick', 'query', 'tailLength', 'truncation', 'truncationMaxSymbols', 'variant',
+      'onClick', 'query', 'truncation', 'variant',
     ]);
+  });
+});
+
+describe('toTruncationSpec', () => {
+  it('reads a shorthand string as a type with no tail length or symbol count', () => {
+    expect(toTruncationSpec('tail')).toEqual({ type: 'tail' });
+  });
+
+  it('keeps the tail length of the dynamic form', () => {
+    expect(toTruncationSpec({ type: 'dynamic', tailLength: 2 })).toEqual({ type: 'dynamic', tailLength: 2 });
+  });
+
+  it('keeps the symbol count of the constant form', () => {
+    expect(toTruncationSpec({ type: 'constant', maxSymbols: 6 })).toEqual({ type: 'constant', maxSymbols: 6 });
   });
 });

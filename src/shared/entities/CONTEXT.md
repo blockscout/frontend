@@ -39,6 +39,7 @@ assembles the template entities from a definition.
   `text` may run on an object missing some fields. The resolver already guards the hash it substitutes.
 - **A definition's `data` key list is checked for completeness by the compiler**, not at runtime. A key
   left out of it is treated as an option and never reaches the data, silently.
-- **The public prop surface is frozen until the final codemod ticket of #3838**: `truncation`,
-  `tailLength` and `truncationMaxSymbols` collapse into one value there, and the thin `Interchain` /
-  `L1` / `L2` wrappers become `chain=` at the call sites.
+- **A parent-chain or external link is `chain=` at the call site, never a new wrapper.** The rollup parent
+  chain is exported from `src/features/rollup/common/utils/`. The `Interchain` wrappers that remain exist
+  because a chain the app cannot link to, an unknown one included, must render unlinked, while a `chain` of
+  `undefined` means the current chain.

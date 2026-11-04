@@ -5,10 +5,10 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -30,11 +30,12 @@ const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
     <TableRow>
       <TableCell verticalAlign="middle">
         { item.origination_transaction_block_number ? (
-          <BlockEntityL1
+          <BlockEntity
             number={ item.origination_transaction_block_number }
             isLoading={ isLoading }
             fontWeight={ 600 }
             noIcon
+            chain={ parentChain }
           />
         ) : '-' }
       </TableCell>
@@ -45,12 +46,13 @@ const ScrollL2DepositsTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.origination_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.origination_transaction_hash }
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) : '-' }
       </TableCell>

@@ -7,7 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import dayjs from 'src/shared/date-and-time/dayjs';
@@ -65,12 +65,13 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.l1_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.l1_transaction_hash }
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) :
           'N/A'
