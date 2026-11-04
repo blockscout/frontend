@@ -60,6 +60,12 @@ describe('defineEntity', () => {
       expect(screen.getByText('Pending')).toBeTruthy();
     });
 
+    it('forwards the link target', () => {
+      render(<TxEntity hash={ HASH } link={{ target: '_blank' }}/>);
+
+      expect(getLink().getAttribute('target')).toBe('_blank');
+    });
+
     it('lets an explicit href win over the resolved one', () => {
       render(<TxEntity hash={ HASH } href="/custom"/>);
 

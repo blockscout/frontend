@@ -66,6 +66,8 @@ const Link = (props: LinkBaseProps) => {
     variant,
     noIcon,
     iconColor,
+    target,
+    rel,
   } = rest;
 
   if (noLink) {
@@ -86,6 +88,8 @@ const Link = (props: LinkBaseProps) => {
       variant={ variant }
       noIcon={ noIcon }
       iconColor={ iconColor }
+      { ...(target !== undefined && { target }) }
+      { ...(rel !== undefined && { rel }) }
     >
       { children }
     </LinkToolkit>
