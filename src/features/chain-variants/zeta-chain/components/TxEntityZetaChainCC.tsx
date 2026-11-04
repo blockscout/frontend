@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -13,4 +12,4 @@ const TxEntityZetaChainCC = (props: TxEntity.EntityProps) => {
   return <TxEntity.default { ...props } icon={{ name: 'interop' }} href={ props.href ?? defaultHref }/>;
 };
 
-export default chakra(TxEntityZetaChainCC);
+export default TxEntityZetaChainCC;

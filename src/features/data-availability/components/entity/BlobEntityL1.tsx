@@ -2,21 +2,17 @@
 
 import React from 'react';
 
-import { parentChainAsEntityChain } from 'src/features/rollup/common/utils/parent-chain-entity';
-
-import config from 'src/config';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import type { EntityProps } from './BlobEntity';
 import BlobEntity from './BlobEntity';
 
-const rollupFeature = config.features.rollup;
-
 const BlobEntityL1 = (props: EntityProps) => {
-  if (!rollupFeature.isEnabled) {
+  if (!parentChain) {
     return null;
   }
 
-  return <BlobEntity { ...props } chain={ parentChainAsEntityChain(rollupFeature.parentChain) }/>;
+  return <BlobEntity { ...props } chain={ parentChain }/>;
 };
 
 export default BlobEntityL1;

@@ -11,7 +11,6 @@ assembles the template entities from a definition.
 | Where does a `chain=` prop turn into an href, a shield and a hint? | `resolve-entity-link.ts`; the rollup parent chain is mapped onto its input in `src/features/rollup/common/utils/` |
 | Which props does every entity accept, and which of them may a definition default? | `root.ts` (`EntityOptions`, `EntityDefaults`) |
 | What do the three `variant` values change? | `variants.ts`: icon size and margin, shield offset, content text style; nothing else |
-| How does an entity still on the prop-bag model distribute its props? | `distributeEntityProps` in `utils.ts`; it is the pre-factory path and goes with the last migration |
 
 ## The contract
 
@@ -41,6 +40,5 @@ assembles the template entities from a definition.
 - **A definition's `data` key list is checked for completeness by the compiler**, not at runtime. A key
   left out of it is treated as an option and never reaches the data, silently.
 - **The public prop surface is frozen until the final codemod ticket of #3838**: `truncation`,
-  `tailLength` and `truncationMaxSymbols` collapse into one value there, and the thin `External` /
-  `Interchain` / `L1` / `L2` wrappers become `chain=` at the call sites. Until then, those wrappers and the
-  prop-bag entities compile against `EntityBaseProps` in `components.tsx`.
+  `tailLength` and `truncationMaxSymbols` collapse into one value there, and the thin `Interchain` /
+  `L1` / `L2` wrappers become `chain=` at the call sites.

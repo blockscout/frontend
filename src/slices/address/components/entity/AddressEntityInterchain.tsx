@@ -1,34 +1,25 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
-import multichainConfig from 'src/features/multichain/chains-config';
-
-import config from 'src/config';
+import { isClusterChain, isCurrentChain, isLinkableChain } from 'src/shared/entities/interchain';
 
 import type { EntityProps } from './AddressEntity';
 import AddressEntity from './AddressEntity';
-import AddressEntityExternal from './AddressEntityExternal';
 
-interface Props extends EntityProps, JsxStyleProps {
+interface Props extends Omit<EntityProps, 'chain'> {
   chain: ExternalChain | undefined;
   currentAddress?: string;
 }
 
-const AddressEntityInterchain = ({ chain, currentAddress, ...props }: Props) => {
+const AddressEntityInterchain = ({ currentAddress, ...props }: Props) => {
+  const isLocalChain = isCurrentChain(props.chain) || isClusterChain(props.chain);
+  const isCurrentAddress = isLocalChain && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
+  const noLink = props.noLink || isCurrentAddress || (!props.href && !isLinkableChain(props.chain)) || undefined;
 
-  const isCurrentChain = chain?.id === config.chain.id;
-  const isMultichainAddress = multichainConfig()?.chains.some(({ id }) => id === chain?.id);
-  const isCurrentAddress = (isCurrentChain || isMultichainAddress) && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
-
-  if (isCurrentChain || isMultichainAddress) {
-    return <AddressEntity { ...props } chain={ isMultichainAddress ? undefined : chain } noLink={ isCurrentAddress }/>;
-  }
-
-  return <AddressEntityExternal { ...props } chain={ chain }/>;
+  return <AddressEntity { ...props } noLink={ noLink }/>;
 };
 
 export default React.memo(AddressEntityInterchain);

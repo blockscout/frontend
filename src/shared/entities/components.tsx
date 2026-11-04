@@ -25,14 +25,6 @@ import { getVariantPreset } from './variants';
 
 export type { Truncation, Variant, EntityIconOptions as EntityIconProps } from './root';
 
-export interface EntityBaseProps extends EntityOptions {
-  className?: string;
-  contentProps?: {
-    tooltipInteractive?: boolean;
-    tooltipContentAfter?: React.ReactNode;
-  };
-}
-
 export interface ContainerBaseProps extends Omit<HTMLChakraProps<'div'>, 'onClick'> {}
 
 const Container = (props: ContainerBaseProps) => {

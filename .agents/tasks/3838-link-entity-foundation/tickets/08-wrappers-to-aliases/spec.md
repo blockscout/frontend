@@ -17,18 +17,18 @@ the family has one href rule and no `chakra()` anywhere.
 
 ## Acceptance criteria
 
-- [ ] Every entity Playwright suite in the family passes with no baseline change; the page suites that
+- [x] Every entity Playwright suite in the family passes with no baseline change; the page suites that
       embed L1 entities (rollup deposits / withdrawals / batches) pass unchanged.
-- [ ] `TxEntityL1`, `BlockEntityL1`, `AddressEntityL1`, `TokenEntityL1`, `BlobEntityL1` are
+- [x] `TxEntityL1`, `BlockEntityL1`, `AddressEntityL1`, `TokenEntityL1`, `BlobEntityL1` are
       `<XEntity chain={ parentChain }/>` aliases over the ticket 02 mapper and render link-only (no
       shield, no chain hint) as today.
-- [ ] `AddressEntityInterchain` keeps `currentAddress` → `noLink` and is otherwise `chain=`;
+- [x] `AddressEntityInterchain` keeps `currentAddress` → `noLink` and is otherwise `chain=`;
       `TokenEntityInterchain` keeps the shield-only-when-multichain rule; `TxEntityInterchain` is a pure
       alias. `*EntityExternal` files are gone.
-- [ ] `AddressEntityInterop.pw.tsx` and `TxEntityInterop.pw.tsx` pass unchanged after recomposition.
-- [ ] `grep -rn "chakra(" src --include='*Entity*.tsx'` returns nothing; `distributeEntityProps`,
+- [x] `AddressEntityInterop.pw.tsx` and `TxEntityInterop.pw.tsx` pass unchanged after recomposition.
+- [x] `grep -rn "chakra(" src --include='*Entity*.tsx'` returns nothing; `distributeEntityProps`,
       `getIconProps`, `getContentProps` no longer exist.
-- [ ] The complexity gate passes for every changed file.
+- [x] The complexity gate passes for every changed file.
 
 ## Details
 
@@ -39,6 +39,6 @@ is either a pure alias (deleted in ticket 09) or an icon/route override.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Fold `External` into `Interchain`; rewrite the `L1` wrappers over the parent-chain mapper; drop `chakra()` from every remaining wrapper
-- [ ] 2 `[agent]` Recompose `AddressEntityInterop` and `TxEntityInterop` on the root-data contract
-- [ ] 3 `[agent]` Delete the legacy utilities; run the full entity Playwright set and the affected page suites in Docker
+- [x] 1 `[agent]` Fold `External` into `Interchain`; rewrite the `L1` wrappers over the parent-chain mapper; drop `chakra()` from every remaining wrapper
+- [x] 2 `[agent]` Recompose `AddressEntityInterop` and `TxEntityInterop` on the root-data contract
+- [x] 3 `[agent]` Delete the legacy utilities; run the full entity Playwright set and the affected page suites in Docker

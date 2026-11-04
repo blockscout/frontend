@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -34,4 +33,4 @@ const TokenEntityWithAddressFilter = (props: Props) => {
   );
 };
 
-export default chakra(TokenEntityWithAddressFilter);
+export default TokenEntityWithAddressFilter;

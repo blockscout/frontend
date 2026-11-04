@@ -1,31 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
-import config from 'src/config';
-import { route } from 'src/shared/router/routes';
-
-const rollupFeature = config.features.rollup;
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 const AddressEntityL1 = (props: AddressEntity.EntityProps) => {
-  if (!rollupFeature.isEnabled) {
+  if (!parentChain) {
     return null;
   }
 
-  const defaultHref = rollupFeature.parentChain.baseUrl + route({
-    pathname: '/address/[hash]',
-    query: {
-      ...props.query,
-      hash: props.address.hash,
-    },
-  });
-
-  return (
-    <AddressEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>
-  );
+  return <AddressEntity.default { ...props } chain={ parentChain }/>;
 };
 
-export default chakra(AddressEntityL1);
+export default AddressEntityL1;
