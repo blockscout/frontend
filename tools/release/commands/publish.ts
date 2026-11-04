@@ -181,7 +181,7 @@ export function publishCommand(args: ReadonlyArray<string>): number {
     assertTagIsNew(tag);
   }
 
-  const notes = releaseNotes(tag, releaseSourceAt(head), readNotesTemplate());
+  const notes = releaseNotes(tag, releaseSourceAt(head, head), readNotesTemplate());
   logReleaseNotes(tag, notes);
   const release: Release = { tag, version, branch, head, notes };
   if (state === 'new' && !checkRelease(release)) {
