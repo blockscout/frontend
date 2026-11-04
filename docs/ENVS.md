@@ -425,7 +425,7 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
-| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | upcoming |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | v2.13.0+ |
 | NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 #### Block fields list
@@ -810,8 +810,8 @@ Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | upcoming |
-| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | upcoming |
+| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | v2.13.0+ |
+| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | v2.13.0+ |
 
 &nbsp;
 
@@ -1224,7 +1224,7 @@ An action button on the ERC-20 token page, leading to an external site. The butt
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
+| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | v2.13.0+ |
 
 #### Token action button configuration properties
 
