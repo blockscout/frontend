@@ -8,6 +8,7 @@ import type { AddressFormat } from 'src/slices/address/types/config';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
 
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 import type { EntityChain } from 'src/shared/entities/resolve-entity-link';
 
 import { afterEach, describe, expect, it } from 'vitest';
@@ -27,11 +28,6 @@ const externalChain: EntityChain = {
   explorer_url: 'https://basescan.org',
   route_templates: { address: '/account/{hash}' },
 };
-
-const BECH32_ENVS: Array<[ string, string ]> = [
-  [ 'NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT', '["bech32","base16"]' ],
-  [ 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX', 'tom' ],
-];
 
 const getLink = () => screen.getByRole('link');
 const queryCopy = () => screen.queryByRole('button', { name: 'copy' });
@@ -70,7 +66,7 @@ describe('AddressEntity', () => {
 
     describe('with the bech32 address format', () => {
       const renderBech32 = async(build: (parts: typeof AddressEntityParts) => React.ReactElement, addressFormat: AddressFormat = 'bech32') => {
-        await withEnvs(BECH32_ENVS, async() => {
+        await withEnvs(ENVS_MAP.addressBech32Format, async() => {
           const { render } = await import('vitest/lib');
           const { SettingsContext } = await import('src/shell/top-bar/settings/context');
           const element = build(await import('./AddressEntity'));
