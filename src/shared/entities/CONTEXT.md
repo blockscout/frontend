@@ -1,0 +1,43 @@
+# Entities — context
+
+The shared base of the entity links (`TxEntity`, `BlockEntity`, `AddressEntity`, …): a root context that
+holds an entity's data and resolved link, the parts that read from it, and the `defineEntity` factory that
+assembles the template entities from a definition.
+
+## Where to look
+
+| Question | Answer |
+| --- | --- |
+| Where does a `chain=` prop turn into an href, a shield and a hint? | `resolve-entity-link.ts`; the rollup parent chain is mapped onto its input in `src/features/rollup/common/utils/` |
+| Which props does every entity accept, and which of them may a definition default? | `root.ts` (`EntityOptions`, `EntityDefaults`) |
+| What do the three `variant` values change? | `variants.ts`: icon size and margin, shield offset, content text style; nothing else |
+| How does an entity still on the prop-bag model distribute its props? | `distributeEntityProps` in `utils.ts`; it is the pre-factory path and goes with the last migration |
+
+## The contract
+
+- **Data lives at the root, once.** `Root` (and `Container`, which is `Root` plus the flex wrapper) takes
+  the entity data and the public options; `Icon`, `Link`, `Content` and `Copy` read both from the context
+  and take only their own options. A part may be given data fields of its own; they override the root's
+  field by field, and a part without a root works from them alone.
+- **A caller's option always wins over a definition's `defaults`.** Only a defined value counts as the
+  caller's, so `truncation={ undefined }` keeps the default instead of unsetting it.
+- **One chain rule.** No `chain` links to the current chain, or to the multichain context's chain inside a
+  multichain view; a chain from the multichain config links to its chain-scoped page; any other chain links
+  to its explorer and shows its shield and hint. The resolver is the only place this rule lives; a part
+  with its own `chain` resolves again for itself.
+- **Style props reach the DOM at every level.** Each part splits its style props off once and spreads
+  them onto its own root element, after the part's defaults, so a caller's value wins.
+
+## What an editor here must keep true
+
+- **No `chakra()` factory on an entity, a part or a wrapper.** Each level resolves styles once with
+  `splitCssProps`; a `chakra()` layer adds a second pass per element on list pages with hundreds of entities.
+- **Definition functions must tolerate partial data.** A part composed without a root (an icon alone in the
+  search bar, a link in a hand-built row) gets only its own override, so `route`, `icon`, `hint` and
+  `text` may run on an object missing some fields. The resolver already guards the hash it substitutes.
+- **A definition's `data` key list is checked for completeness by the compiler**, not at runtime. A key
+  left out of it is treated as an option and never reaches the data, silently.
+- **The public prop surface is frozen until the final codemod ticket of #3838**: `truncation`,
+  `tailLength` and `truncationMaxSymbols` collapse into one value there, and the thin `External` /
+  `Interchain` / `L1` / `L2` wrappers become `chain=` at the call sites. Until then, those wrappers and the
+  prop-bag entities compile against `EntityBaseProps` in `components.tsx`.

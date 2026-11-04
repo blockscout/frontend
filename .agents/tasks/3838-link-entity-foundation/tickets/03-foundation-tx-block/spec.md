@@ -18,21 +18,21 @@ family still runs on `distributeEntityProps` until its own ticket.
 
 ## Acceptance criteria
 
-- [ ] `TxEntity.pw.tsx` and `BlockEntity.pw.tsx` pass with no baseline change (`pnpm test:pw --docker`).
-- [ ] `TxEntityL1`, `TxEntityInterchain`, `TxEntityExternal`, `BlockEntityL1`, `BlockEntityL2`,
+- [x] `TxEntity.pw.tsx` and `BlockEntity.pw.tsx` pass with no baseline change (`pnpm test:pw --docker`).
+- [x] `TxEntityL1`, `TxEntityInterchain`, `TxEntityExternal`, `BlockEntityL1`, `BlockEntityL2`,
       `BatchEntityL2`, `TxEntityTon`, `TxEntityZetaChain*`, `TxEntityInterop` and the Tx/Block blocks of
       `SearchResultTableItem` compile and render unchanged with no edit.
-- [ ] No `chakra()` and no `React.memo(chakra(...))` remains in `src/shared/entities`, `TxEntity.tsx` or
+- [x] No `chakra()` and no `React.memo(chakra(...))` remains in `src/shared/entities`, `TxEntity.tsx` or
       `BlockEntity.tsx`; style props on the entity and on each exported part reach the DOM (a unit spec
       renders `className` and a margin prop on each part and asserts them).
-- [ ] A caller's `truncation`, `noIcon`, `noCopy`, `noLink`, `noTooltip` win over the factory `defaults`
+- [x] A caller's `truncation`, `noIcon`, `noCopy`, `noLink`, `noTooltip` win over the factory `defaults`
       (unit spec per flag through the public component).
-- [ ] The link href comes from the ticket 02 resolver: inside a multichain context the Tx link is the
+- [x] The link href comes from the ticket 02 resolver: inside a multichain context the Tx link is the
       chain-scoped route, outside it the current chain, with `chain=` the chain's page or explorer URL
       (unit spec).
-- [ ] `defineEntity` unit specs pass the mutation gate; every behaviour function in the base passes the
+- [x] `defineEntity` unit specs pass the mutation gate; every behaviour function in the base passes the
       complexity gate.
-- [ ] `src/shared/entities/CONTEXT.md` exists and states the contract — parts, root data, defaults, the
+- [x] `src/shared/entities/CONTEXT.md` exists and states the contract — parts, root data, defaults, the
       chain rule — per `.agents/rules/docs.md`, and is listed in `.agents/AGENTS.md`.
 
 ## Details
@@ -53,7 +53,7 @@ blocks of `SearchResultTableItem` until ticket 08 recomposes them.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rebuild `src/shared/entities` — Root context, parts with `splitCssProps`, variant presets, `defineEntity`; keep `distributeEntityProps` exported for the entities not yet migrated
-- [ ] 2 `[agent]` Migrate `TxEntity` and `BlockEntity` onto the factory; run their Playwright suites in Docker
-- [ ] 3 `[agent]` Unit specs — factory defaults, caller-wins flags, style-prop pass-through, href resolution; mutation and complexity gates
-- [ ] 4 `[agent]` Write `src/shared/entities/CONTEXT.md` and register it in `.agents/AGENTS.md`
+- [x] 1 `[agent]` Rebuild `src/shared/entities` — Root context, parts with `splitCssProps`, variant presets, `defineEntity`; keep `distributeEntityProps` exported for the entities not yet migrated
+- [x] 2 `[agent]` Migrate `TxEntity` and `BlockEntity` onto the factory; run their Playwright suites in Docker
+- [x] 3 `[agent]` Unit specs — factory defaults, caller-wins flags, style-prop pass-through, href resolution; mutation and complexity gates
+- [x] 4 `[agent]` Write `src/shared/entities/CONTEXT.md` and register it in `.agents/AGENTS.md`

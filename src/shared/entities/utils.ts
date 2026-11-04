@@ -3,37 +3,20 @@
 import type { TMultichainContext } from 'src/features/multichain/context';
 
 import type { IconBaseProps, EntityBaseProps } from './components';
+import type { Variant } from './root';
+import { getVariantPreset } from './variants';
 
 export function getIconProps(props: IconBaseProps, withShield: boolean = false) {
-  const variant = props.variant ?? 'content';
+  const preset = getVariantPreset(props.variant).icon;
 
-  switch (variant) {
-    case 'content':
-    case 'subheading': {
-      return {
-        boxSize: props.boxSize ?? '20px', // for tables, lists, regular content and page subheadings
-        marginRight: withShield ? props.marginRightShield ?? '18px' : props.marginRight ?? props.mr ?? '8px',
-      };
-    }
-    case 'heading': {
-      return {
-        boxSize: props.boxSize ?? '30px', // for page headings
-        marginRight: withShield ? props.marginRightShield ?? '14px' : props.marginRight ?? props.mr ?? '8px',
-      };
-    }
-  }
+  return {
+    boxSize: props.boxSize ?? preset.boxSize,
+    marginRight: withShield ? props.marginRightShield ?? preset.marginRightShield : props.marginRight ?? props.mr ?? preset.marginRight,
+  };
 }
 
-export function getContentProps(variant: EntityBaseProps['variant'] = 'content') {
-  switch (variant) {
-    // currently, there could be only icon in the heading variant
-    // and for the content variant, fontStyle is set in the consumer component
-    case 'subheading': {
-      return {
-        textStyle: { base: 'heading.sm', lg: 'heading.md' },
-      };
-    }
-  }
+export function getContentProps(variant: Variant | undefined) {
+  return getVariantPreset(variant).content;
 }
 
 export function distributeEntityProps<Props extends EntityBaseProps>(props: Props, multichainContext?: TMultichainContext | null) {
