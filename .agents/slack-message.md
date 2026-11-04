@@ -24,7 +24,7 @@ https://review-foo.k8s-dev.blockscout.com
 Посмотри, пожалуйста.
 ```
 
-Slack also links a dotted word that ends in a TLD: `selected.control.bg` posts as a link to `selected.control.bg`.
+Slack also links a dotted word that ends in a TLD: `selected.control.bg` posts as a link. Rephrase the word, or keep it in backticks, which Slack leaves as text.
 
 ## Content
 
@@ -34,7 +34,7 @@ Write for a reader who has never opened the repo: a designer, a PM, a backend en
 
 - **The first sentence answers the question.** Address whoever asked. Mention someone else only when they must act.
 - **The reader's vocabulary.** A word stays when the reader sees, types or clicks it: a status the admin panel shows, a contrast ratio, an env name the reader configures, an element on the page. A word that describes how the code works goes: a token, a CSS property, a file path, a line number, a function, a request method, a service name. Say what it does on screen instead.
-- **Four sentences, prose.** The answer, the cause, what happens next, one line of evidence. No section labels. A reply that needs more carries the rest in an artifact and links it.
+- **Four sentences, prose.** The answer, the cause, what happens next, one line of evidence. The ask, when the reader has to choose, is a further sentence. No section labels. A reply that needs more carries the rest in an artifact and links it.
 - **Evidence the reader can check.** "Открыл Plume в теме dim и замерил ссылку: 2.87:1", not pixel values or a test file name.
 - **Detail lives in the artifact.** A PR, an issue or a comment carries the tokens, paths and the hypotheses ruled out; the message links it. Without an artifact the detail stays in the chat or the Honk terminal summary. File an issue only when a person asks for one.
 - **Links, never bare numbers.** A PR or issue the reader will open is a link: `<https://github.com/blockscout/frontend/pull/3644|#3644>`. History is prose with no number: "после недавней смены цвета заливки".
@@ -49,7 +49,7 @@ BAD — the developer's report pasted into Slack
 `src/toolkit/theme/recipes/button.recipe.ts`, `tabs.recipe.ts`.
 *Как проверил:* в Playwright-тесте снял пиксели выбранной кнопки. Рамка 227, заливка 241.
 
-GOOD — the same finding for the designer who reported it
+GOOD — the same finding for the designer who reported it: four sentences, then the ask
 Ты права, дело в прозрачности: рамка и заливка выбранного таба одного полупрозрачного
 цвета, а заливка рисуется и под рамкой, поэтому там цвет ложится дважды и рамка выходит
 темнее. Стало заметно после недавней смены цвета заливки на полупрозрачный. Проверил на

@@ -158,16 +158,19 @@ reporter for: exact URL and instance, browser, a screenshot or recording with ti
 console output, wallet or account state.
 
 The **reply** is the report rewritten for the reporter per `.agents/slack-message.md` → Content: the
-answer first, in the reader's vocabulary, four sentences, the ask last. **Needs human fix** ends with
-the decision and its options, put to the team whose "Own:" line in `.agents/TEAM.md` covers it. The
-hypotheses ruled out, the tokens and the paths stay in the report, the PR or the issue comment.
+answer first, in the reader's vocabulary, four sentences, then the ask. **Needs human fix** ends with
+the ask. A decision goes with its options to the team whose "Own:" line in `.agents/TEAM.md` covers
+it. A bad pick names the pick for the Frontend team, which cuts the release. **Cannot reproduce** asks
+for the artifacts by what the reporter does to get each: a HAR is the network log saved from the
+browser's Network tab. The hypotheses ruled out, the tokens and the paths stay in the report, the PR or
+the issue comment.
 
 Then post back to the source, without asking — the named exception to `AGENTS.md`'s
 approve-before-sending rule.
 
 | Source | Fix PR | Already fixed | Not a frontend bug | Needs human fix | Cannot reproduce |
 | --- | --- | --- | --- | --- | --- |
-| Slack thread | two lines: outcome and PR link | the reply | the reply | the reply | the artifact request |
+| Slack thread | two lines: outcome and PR link | the reply | the reply | the reply | the reply |
 | GitHub issue | nothing — the PR's `Resolves #N` links it | the report as a comment, close | the report as a comment, close | the report as a comment | the artifact request as a comment, label `need info` |
 | Conversation | the report only | | | | |
 
@@ -181,5 +184,5 @@ no statuses of its own; the shared three with their triggers here:
 | Status | When | Resumed? |
 | --- | --- | --- |
 | `done` | the outcome is Fix PR, Already fixed, Not a frontend bug or Needs human fix, and the step 9 table's text is posted where it names a post; the message is the report | no |
-| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, also posted where the step 9 table names a post | yes, with the artifacts |
+| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, and the step 9 table's text is posted where it names a post | yes, with the artifacts |
 | `needs_approval` | the push, the PR creation, a label, an issue comment or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |
