@@ -38,8 +38,9 @@ export type EntityCopyProps<TData extends object> = Omit<CopyBaseProps, 'text'> 
 export interface EntityDefinition<TData extends object> {
   readonly name: string;
   readonly data: ReadonlyArray<keyof TData>;
-  readonly route: (data: TData) => Route;
+  readonly route: (data: TData) => Route | undefined;
   readonly routeTemplate?: ExternalRouteTemplateKey;
+  readonly singleChain?: true;
   readonly hintPrefix: string;
   readonly icon: IconName | ((data: TData) => IconName | React.ReactElement);
   readonly hint?: (data: TData) => string | undefined;
@@ -80,7 +81,7 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     return resolveEntityLink({
       route: definition.route(data),
       chain: inputs.chain,
-      contextChain: multichainContext?.chain,
+      contextChain: definition.singleChain ? undefined : multichainContext?.chain,
       hintPrefix: definition.hintPrefix,
       routeTemplate: definition.routeTemplate,
       shield: inputs.shield,

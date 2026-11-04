@@ -49,7 +49,13 @@ export function mergeIconOptions(rootIcon: EntityIconOptions | undefined, own: o
 }
 
 export function resolveEntityOptions(defaults: EntityDefaults | undefined, options: EntityOptions): EntityOptions {
-  return { ...defaults, ...omitBy(options, isUndefined) };
+  const resolved: EntityOptions = { ...defaults, ...omitBy(options, isUndefined) };
+
+  if (defaults?.icon && options.icon) {
+    resolved.icon = { ...(defaults.icon as object), ...(options.icon as object) } as EntityIconOptions;
+  }
+
+  return resolved;
 }
 
 export function mergeEntityData<TData extends object>(rootData: TData | undefined, override: Partial<TData> | undefined): TData {

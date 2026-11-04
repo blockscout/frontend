@@ -12,6 +12,7 @@ import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, screen } from 'vitest/lib';
+import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import { defineEntity } from './define-entity';
@@ -27,16 +28,6 @@ const externalChain: EntityChain = {
   explorer_url: 'https://basescan.org',
   route_templates: { tx: '/transaction/{hash}' },
 };
-
-// Chakra emits one class per style object; the rule text for an element's classes is the only place a margin lands in jsdom.
-function getCssText(element: Element): string {
-  const classes = Array.from(element.classList).filter((name) => name.startsWith('css-'));
-  const sheets = Array.from(document.querySelectorAll('style')).map((style) => style.textContent ?? '').join('\n');
-  return classes.map((name) => {
-    const start = sheets.indexOf(`.${ name }{`);
-    return start === -1 ? '' : sheets.slice(start, sheets.indexOf('}', start) + 1);
-  }).join('\n');
-}
 
 const getLink = () => screen.getByRole('link');
 const queryCopy = () => screen.queryByRole('button', { name: 'copy' });

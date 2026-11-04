@@ -192,4 +192,19 @@ describe('resolveEntityLink', () => {
       });
     });
   });
+
+  describe('without a route', () => {
+    it('yields no href but still the shield and hint of the chain', async() => {
+      expect(await resolve(txParams({ route: undefined, chain: externalChain }))).toEqual({
+        href: undefined,
+        isExternal: true,
+        shield: { src: externalChain.logo },
+        hint: 'Transaction on Base (Chain ID: 8453)',
+      });
+    });
+
+    it('yields no href on the current chain either', async() => {
+      expect((await resolve(txParams({ route: undefined }))).href).toBeUndefined();
+    });
+  });
 });

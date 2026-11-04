@@ -3,7 +3,7 @@
 - [x] 01 → `tickets/01-before-profile/`
 - [x] 02 → `tickets/02-href-resolver/`
 - [x] 03 → `tickets/03-foundation-tx-block/`
-- [ ] 04 → `tickets/04-template-entities/`
+- [x] 04 → `tickets/04-template-entities/`
 - [ ] 05 → `tickets/05-address-entity/`
 - [ ] 06 → `tickets/06-token-nft-pool/`
 - [ ] 07 → `tickets/07-ens-clusters/`

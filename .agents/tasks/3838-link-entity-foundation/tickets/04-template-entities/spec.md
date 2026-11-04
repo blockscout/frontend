@@ -15,18 +15,18 @@ search-results composition keep working with no edit.
 
 ## Acceptance criteria
 
-- [ ] `UserOpEntity.pw.tsx` passes with no baseline change; `CrossChainMessageEntity.spec.tsx` passes.
-- [ ] Defaults are declared, not inferred: Epoch `noCopy` default on, CrossChainMessage `noIcon` default
+- [x] `UserOpEntity.pw.tsx` passes with no baseline change; `CrossChainMessageEntity.spec.tsx` passes.
+- [x] Defaults are declared, not inferred: Epoch `noCopy` default on, CrossChainMessage `noIcon` default
       on and `truncation` default `constant`, Flashblock `truncation` default `none`, Blob icon radius —
       and a caller's explicit value wins in every case (unit spec per default through the public component).
-- [ ] CrossChainMessage with no `bridgeId` renders without a link, as today.
-- [ ] TacOperation in `pending` status renders the spinner in place of the icon (the factory `icon` option
+- [x] CrossChainMessage with no `bridgeId` renders without a link, as today.
+- [x] TacOperation in `pending` status renders the spinner in place of the icon (the factory `icon` option
       returns a React element here).
-- [ ] UserOp, Blob and Flashblock links are chain-aware inside a multichain context via the resolver;
+- [x] UserOp, Blob and Flashblock links are chain-aware inside a multichain context via the resolver;
       Epoch, Validator, TacOperation and CrossChainMessage keep their current-chain routes.
-- [ ] No `chakra()` remains in any of the seven files or in `BlobEntityL1`; `BlobEntityL1` and the
+- [x] No `chakra()` remains in any of the seven files or in `BlobEntityL1`; `BlobEntityL1` and the
       `SearchResultTableItem` blocks for Blob, UserOp and TacOperation compile unchanged.
-- [ ] The complexity gate passes for every changed file.
+- [x] The complexity gate passes for every changed file.
 
 ## Details
 
@@ -38,5 +38,5 @@ scoping — record that as a per-entity option, not as a resolver special case.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Declare UserOp, Blob, Epoch, Validator, TacOperation, Flashblock, CrossChainMessage with `defineEntity`; drop `chakra()` in `BlobEntityL1`
-- [ ] 2 `[agent]` Unit specs for each declared default and the pending-spinner case; run `UserOpEntity.pw.tsx` in Docker
+- [x] 1 `[agent]` Declare UserOp, Blob, Epoch, Validator, TacOperation, Flashblock, CrossChainMessage with `defineEntity`; drop `chakra()` in `BlobEntityL1`
+- [x] 2 `[agent]` Unit specs for each declared default and the pending-spinner case; run `UserOpEntity.pw.tsx` in Docker

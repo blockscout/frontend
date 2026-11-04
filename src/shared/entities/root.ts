@@ -44,10 +44,12 @@ export interface EntityOptions {
   truncationMaxSymbols?: number;
 }
 
-export type EntityDefaults = Pick<
+export interface EntityDefaults extends Pick<
   EntityOptions,
   'truncation' | 'tailLength' | 'truncationMaxSymbols' | 'noIcon' | 'noCopy' | 'noLink' | 'noTooltip'
->;
+> {
+  icon?: Pick<EntityIconOptions, 'borderRadius'>;
+}
 
 export interface EntityRootValue<TData = unknown> {
   readonly data: TData | undefined;

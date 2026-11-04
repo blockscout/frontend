@@ -21,7 +21,7 @@ export interface EntityChain extends ExternalChain {
 export type EntityChainShield = { readonly src: string } | { readonly name: 'networks/icon-placeholder' };
 
 export interface EntityLinkParams {
-  readonly route: Route;
+  readonly route: Route | undefined;
   readonly chain: EntityChain | undefined;
   readonly contextChain: ClusterChainConfig | undefined;
   readonly hintPrefix: string;
@@ -84,7 +84,11 @@ const resolveExternalHref = (route: Route, chain: ExternalChain, templateKey: Ex
   return toAbsoluteUrl(stripTrailingSlash(chain.explorer_url), path);
 };
 
-const resolveHref = (route: Route, target: ResolvedTarget, templateKey: ExternalRouteTemplateKey | undefined): string | undefined => {
+const resolveHref = (route: Route | undefined, target: ResolvedTarget, templateKey: ExternalRouteTemplateKey | undefined): string | undefined => {
+  if (!route) {
+    return;
+  }
+
   switch (target.kind) {
     case 'context':
     case 'cluster':

@@ -64,6 +64,17 @@ describe('resolveEntityOptions', () => {
   it('works without defaults', () => {
     expect(resolveEntityOptions(undefined, { noLink: true })).toEqual({ noLink: true });
   });
+
+  it('merges the icon defaults under the caller icon bag', () => {
+    expect(resolveEntityOptions({ icon: { borderRadius: 'none' } }, { icon: { name: 'blob' } }))
+      .toEqual({ icon: { borderRadius: 'none', name: 'blob' } });
+    expect(resolveEntityOptions({ icon: { borderRadius: 'none' } }, { icon: { borderRadius: 'md' } }))
+      .toEqual({ icon: { borderRadius: 'md' } });
+  });
+
+  it('keeps the icon defaults when the caller passes no icon bag', () => {
+    expect(resolveEntityOptions({ icon: { borderRadius: 'none' } }, { isLoading: true })).toEqual({ icon: { borderRadius: 'none' }, isLoading: true });
+  });
 });
 
 describe('mergeEntityData', () => {

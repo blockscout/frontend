@@ -1,96 +1,33 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Spinner, chakra } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps } from 'src/shared/entities/utils';
-import { route } from 'src/shared/router/routes';
+import type { EntityComponentProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf } from 'src/shared/entities/entity-props';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'id'>;
-
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/operation/[id]', query: { id: props.id } });
-
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
-});
-
-type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'status'>;
-
-const Icon = (props: IconProps) => {
-  switch (props.status) {
-    case tac.V2OperationStatus.pending: {
-      return <Spinner size="md" marginRight={ props.marginRight ?? '8px' }/>;
-    }
-    default: {
-      return (
-        <EntityBase.Icon
-          { ...props }
-          name={ 'name' in props ? props.name : 'operation' }
-          borderRadius="none"
-        />
-      );
-    }
-  }
-};
-
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'id'>;
-
-const Content = chakra((props: ContentProps) => {
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ props.id }
-    />
-  );
-});
-
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'id'>;
-
-const Copy = ({ id, ...props }: CopyProps) => {
-  return (
-    <EntityBase.Copy
-      { ...props }
-      text={ id }
-    />
-  );
-};
-
-const Container = EntityBase.Container;
-
-export interface EntityProps extends EntityBase.EntityBaseProps {
+export interface TacOperationEntityData {
   id: string;
   status: tac.V2OperationStatus | undefined;
 }
 
-const TacOperationEntity = (props: EntityProps) => {
-  const partsProps = distributeEntityProps(props);
-  const content = <Content { ...partsProps.content }/>;
+export type EntityProps = EntityComponentProps<TacOperationEntityData>;
 
-  return (
-    <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
-      <Copy { ...partsProps.copy }/>
-    </Container>
-  );
-};
+const TacOperationEntity = defineEntity<TacOperationEntityData>({
+  name: 'TacOperationEntity',
+  data: keysOf<TacOperationEntityData>()([ 'id', 'status' ]),
+  singleChain: true,
+  route: ({ id }) => ({ pathname: '/operation/[id]', query: { id } }),
+  hintPrefix: 'Operation on ',
+  icon: (data) => data.status === tac.V2OperationStatus.pending ? <Spinner size="md" marginRight="8px"/> : 'operation',
+  text: (data) => data.id,
+  copyText: (data) => data.id,
+  defaults: { icon: { borderRadius: 'none' } },
+});
 
-export default React.memo(chakra(TacOperationEntity));
+export default TacOperationEntity.Entity;
 
-export {
-  Container,
-  Link,
-  Icon,
-  Content,
-  Copy,
-};
+export const { Root, Container, Link, Icon, Content, Copy } = TacOperationEntity;

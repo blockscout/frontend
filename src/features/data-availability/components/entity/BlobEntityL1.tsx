@@ -1,28 +1,22 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'src/config';
-import { route } from 'src/shared/router/routes';
+import { parentChainAsEntityChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
-import * as BlobEntity from './BlobEntity';
+import config from 'src/config';
+
+import type { EntityProps } from './BlobEntity';
+import BlobEntity from './BlobEntity';
 
 const rollupFeature = config.features.rollup;
 
-const BlobEntityL1 = (props: BlobEntity.EntityProps) => {
+const BlobEntityL1 = (props: EntityProps) => {
   if (!rollupFeature.isEnabled) {
     return null;
   }
 
-  const defaultHref = rollupFeature.parentChain.baseUrl + route({
-    pathname: '/blobs/[hash]',
-    query: { hash: props.hash },
-  });
-
-  return (
-    <BlobEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>
-  );
+  return <BlobEntity { ...props } chain={ parentChainAsEntityChain(rollupFeature.parentChain) }/>;
 };
 
-export default chakra(BlobEntityL1);
+export default BlobEntityL1;

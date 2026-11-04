@@ -20,11 +20,14 @@ assembles the template entities from a definition.
   and take only their own options. A part may be given data fields of its own; they override the root's
   field by field, and a part without a root works from them alone.
 - **A caller's option always wins over a definition's `defaults`.** Only a defined value counts as the
-  caller's, so `truncation={ undefined }` keeps the default instead of unsetting it.
+  caller's, so `truncation={ undefined }` keeps the default instead of unsetting it. The `icon` default is
+  the one exception to whole-value replacement: it merges under the caller's `icon` bag key by key.
 - **One chain rule.** No `chain` links to the current chain, or to the multichain context's chain inside a
   multichain view; a chain from the multichain config links to its chain-scoped page; any other chain links
   to its explorer and shows its shield and hint. The resolver is the only place this rule lives; a part
-  with its own `chain` resolves again for itself.
+  with its own `chain` resolves again for itself. An entity of a feature that exists on one chain only
+  (Epoch, Validator, TacOperation, CrossChainMessage) declares `singleChain` and so ignores the multichain
+  context; that is a definition option, never a resolver branch.
 - **Style props reach the DOM at every level.** Each part splits its style props off once and spreads
   them onto its own root element, after the part's defaults, so a caller's value wins.
 
