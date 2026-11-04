@@ -4,9 +4,12 @@ import { Box, chakra, Flex, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'src/config';
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
-import { route } from 'src/shared/router/routes';
+import type { EntityComponentProps, EntityIconProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf, mergeEntityData, mergeIconOptions, splitByKeys } from 'src/shared/entities/entity-props';
+import { useEntityOptions, useEntityRoot } from 'src/shared/entities/root';
+import { useSplitCssProps } from 'src/shared/entities/split-css-props';
+import { getVariantPreset } from 'src/shared/entities/variants';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Image } from 'src/toolkit/chakra/image';
@@ -17,32 +20,96 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 const nameServicesFeature = config.features.nameServices;
 const clustersFeature = nameServicesFeature.isEnabled && nameServicesFeature.clusters.isEnabled ? nameServicesFeature.clusters : undefined;
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'clusterName'>;
+export interface ClustersEntityData {
+  clusterName: string;
+}
 
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/name-services/clusters/[name]', query: { name: encodeURIComponent(props.clusterName) } });
+export type EntityProps = EntityComponentProps<ClustersEntityData>;
+export type IconProps = EntityIconProps<ClustersEntityData>;
 
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
+const DATA_KEYS = keysOf<ClustersEntityData>()([ 'clusterName' ]);
+
+const getDisplayName = ({ clusterName }: ClustersEntityData): string => {
+  if (!clusterName) {
+    return '';
+  }
+
+  return clusterName.includes('/') ? clusterName : `${ clusterName }/`;
+};
+
+const ClustersEntityBase = defineEntity<ClustersEntityData>({
+  name: 'ClustersEntity',
+  data: DATA_KEYS,
+  route: ({ clusterName }) => clusterName ?
+    { pathname: '/name-services/clusters/[name]', query: { name: encodeURIComponent(clusterName) } } :
+    undefined,
+  singleChain: true,
+  hintPrefix: 'Cluster on ',
+  icon: 'clusters',
+  text: getDisplayName,
+  copyText: ({ clusterName }) => clusterName,
+  defaults: { truncation: 'tail' },
 });
 
-type IconProps = EntityBase.IconBaseProps & Pick<EntityProps, 'clusterName'>;
+const { Root, Container, Link, Content, Copy } = ClustersEntityBase;
+
+const tooltipContent = (
+  <>
+    <Flex alignItems="center" textStyle="md">
+      <Box
+        display="inline-flex"
+        alignItems="center"
+        justifyContent="center"
+        boxSize={ 5 }
+        backgroundColor="clusters"
+        borderRadius="sm"
+        mr={ 2 }
+      >
+        <SpriteIcon name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
+      </Box>
+      <div>
+        <span>Clusters</span>
+        <chakra.span color="text.secondary" whiteSpace="pre"> - Universal name service</chakra.span>
+      </div>
+    </Flex>
+    <Text>
+      Clusters provides unified naming across multiple blockchains including EVM, Solana, Bitcoin, and more.
+      Manage all your wallet addresses under one human-readable name.
+    </Text>
+    <LinkToolkit
+      href="https://clusters.xyz"
+      display="inline-flex"
+      alignItems="center"
+      external
+    >
+      <SpriteIcon name="link" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
+      <span>Learn more about Clusters</span>
+    </LinkToolkit>
+  </>
+);
 
 const Icon = (props: IconProps) => {
-  if (props.noIcon) {
+  const root = useEntityRoot<ClustersEntityData>();
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const [ override, own ] = splitByKeys<ClustersEntityData, Pick<IconProps, 'isLoading' | 'noIcon' | 'variant' | 'className'>>(rest, DATA_KEYS);
+  const { clusterName } = mergeEntityData(root?.data, override);
+  const icon = mergeIconOptions(options.icon, own);
+  const { isLoading = options.isLoading, noIcon = options.noIcon, variant = options.variant } = icon;
+
+  if (noIcon) {
     return null;
   }
 
-  const styles = getIconProps(props, Boolean(props.shield));
+  const preset = getVariantPreset(variant).icon;
+  const layout = {
+    boxSize: icon.boxSize ?? preset.boxSize,
+    marginRight: icon.marginRight ?? icon.mr ?? preset.marginRight,
+    ...css,
+  };
 
-  if (props.isLoading) {
-    return <Skeleton loading boxSize={ styles.boxSize } borderRadius="base" mr={ 2 }/>;
+  if (isLoading) {
+    return <Skeleton loading borderRadius="base" { ...layout }/>;
   }
 
   const fallbackElement = (
@@ -50,12 +117,11 @@ const Icon = (props: IconProps) => {
       display="inline-flex"
       alignItems="center"
       justifyContent="center"
-      width={ styles.boxSize }
-      height={ styles.boxSize }
+      className={ own.className }
       backgroundColor="clusters"
       borderRadius="base"
-      mr={ 2 }
       flexShrink={ 0 }
+      { ...layout }
     >
       <SpriteIcon
         name="clusters"
@@ -65,54 +131,6 @@ const Icon = (props: IconProps) => {
         style={{ filter: 'brightness(0) invert(1)' }}
       />
     </Box>
-  );
-
-  const profileImageElement = (
-    <Image
-      width={ styles.boxSize }
-      height={ styles.boxSize }
-      borderRadius="base"
-      mr={ 2 }
-      flexShrink={ 0 }
-      src={ `${ clustersFeature?.cdnUrl || '' }/profile-image/${ props.clusterName }` }
-      alt={ `${ props.clusterName } profile` }
-      fallback={ fallbackElement }
-    />
-  );
-
-  const tooltipContent = (
-    <>
-      <Flex alignItems="center" textStyle="md">
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          justifyContent="center"
-          boxSize={ 5 }
-          backgroundColor="clusters"
-          borderRadius="sm"
-          mr={ 2 }
-        >
-          <SpriteIcon name="clusters" boxSize={ 4 } color="white" style={{ filter: 'brightness(0) invert(1)' }}/>
-        </Box>
-        <div>
-          <span>Clusters</span>
-          <chakra.span color="text.secondary" whiteSpace="pre"> - Universal name service</chakra.span>
-        </div>
-      </Flex>
-      <Text>
-        Clusters provides unified naming across multiple blockchains including EVM, Solana, Bitcoin, and more.
-        Manage all your wallet addresses under one human-readable name.
-      </Text>
-      <LinkToolkit
-        href="https://clusters.xyz"
-        display="inline-flex"
-        alignItems="center"
-        external
-      >
-        <SpriteIcon name="link" boxSize={ 5 } color="text.secondary" mr={ 2 }/>
-        <span>Learn more about Clusters</span>
-      </LinkToolkit>
-    </>
   );
 
   return (
@@ -133,59 +151,36 @@ const Icon = (props: IconProps) => {
       }}
       interactive
     >
-      { profileImageElement }
+      <Image
+        className={ own.className }
+        borderRadius="base"
+        flexShrink={ 0 }
+        { ...layout }
+        src={ `${ clustersFeature?.cdnUrl || '' }/profile-image/${ clusterName }` }
+        alt={ `${ clusterName } profile` }
+        fallback={ fallbackElement }
+      />
     </Tooltip>
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'clusterName'>;
-
-const Content = chakra((props: ContentProps) => {
-  const shouldShowTrailingSlash = !props.clusterName.includes('/');
-  const displayName = shouldShowTrailingSlash ? `${ props.clusterName }/` : props.clusterName;
-
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ displayName }
-      truncation="tail"
-    />
-  );
-});
-
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'clusterName'>;
-
-const Copy = (props: CopyProps) => {
-  return (
-    <EntityBase.Copy
-      { ...props }
-      text={ props.clusterName }
-    />
-  );
-};
-
-const Container = EntityBase.Container;
-
-export interface EntityProps extends EntityBase.EntityBaseProps {
-  clusterName: string;
-}
-
 const ClustersEntity = (props: EntityProps) => {
-  const partsProps = distributeEntityProps(props);
-  const content = <Content { ...partsProps.content }/>;
-
   return (
-    <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
-      <Copy { ...partsProps.copy }/>
+    <Container { ...props }>
+      <Icon/>
+      <Link><Content/></Link>
+      <Copy/>
     </Container>
   );
 };
 
-export default React.memo(chakra(ClustersEntity));
+Icon.displayName = 'ClustersEntity.Icon';
+ClustersEntity.displayName = 'ClustersEntity';
+
+export default React.memo(ClustersEntity);
 
 export {
+  Root,
   Container,
   Link,
   Icon,

@@ -5,9 +5,12 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
-import { route } from 'src/shared/router/routes';
+import type { EntityComponentProps, EntityIconProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf, mergeEntityData, mergeIconOptions, splitByKeys } from 'src/shared/entities/entity-props';
+import { useEntityOptions, useEntityRoot } from 'src/shared/entities/root';
+import { useSplitCssProps } from 'src/shared/entities/split-css-props';
+import { getVariantPreset } from 'src/shared/entities/variants';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Image } from 'src/toolkit/chakra/image';
@@ -16,147 +19,7 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { makePrettyLink } from 'src/toolkit/utils/url';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'domain' | 'protocol'>;
-
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({
-    pathname: '/name-services/domains/[name]',
-    query: { name: props.domain, protocol_id: props.protocol?.id },
-  });
-
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
-});
-
-type IconProps = Pick<EntityProps, 'protocol' | 'protocolDapp'> & EntityBase.IconBaseProps;
-
-const Icon = (props: IconProps) => {
-  const icon = <EntityBase.Icon { ...props } name={ 'name' in props ? props.name : 'ENS' }/>;
-
-  if (props.protocol) {
-    const styles = getIconProps(props);
-    const dappLink = makePrettyLink(props.protocolDapp?.url);
-
-    if (props.isLoading) {
-      return <Skeleton loading boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
-    }
-
-    const content = (
-      <>
-        <Flex alignItems="center" textStyle="md">
-          <Image
-            src={ props.protocol.icon_url }
-            boxSize={ 5 }
-            borderRadius="sm"
-            mr={ 2 }
-            alt={ `${ props.protocol.title } protocol icon` }
-            fallback={ icon }
-          />
-          <div>
-            <span>{ props.protocol.short_name }</span>
-            <chakra.span color="text.secondary" whiteSpace="pre"> { props.protocol.tld_list.map((tld) => `.${ tld }`).join((' ')) }</chakra.span>
-          </div>
-        </Flex>
-        <Text>{ props.protocol.description }</Text>
-        { (props.protocol.docs_url || dappLink) && (
-          <Flex columnGap={ 3 } alignItems="center" flexWrap="wrap" w="100%">
-            { props.protocol.docs_url && (
-              <LinkToolkit
-                href={ props.protocol.docs_url }
-                display="inline-flex"
-                alignItems="center"
-                external
-                flexBasis="calc((100% - 12px) / 2)"
-                flexGrow={ 1 }
-              >
-                <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
-                <span>Documentation</span>
-              </LinkToolkit>
-            ) }
-            { dappLink && (
-              <LinkToolkit
-                href={ dappLink.href }
-                display="inline-flex"
-                alignItems="center"
-                external
-                flexBasis="calc((100% - 12px) / 2)"
-                flexGrow={ 1 }
-              >
-                { props.protocolDapp?.logo &&
-                  <Image src={ props.protocolDapp.logo } boxSize={ 5 } mr={ 2 } borderRadius="sm" alt={ `${ props.protocol.title } protocol dapp logo` }/> }
-                <span>{ dappLink.domain }</span>
-              </LinkToolkit>
-            ) }
-          </Flex>
-        ) }
-      </>
-    );
-
-    return (
-      <Tooltip
-        content={ content }
-        variant="popover"
-        positioning={{
-          placement: 'bottom-start',
-        }}
-        contentProps={{
-          maxW: { base: '100vw', lg: '440px' },
-          minW: '250px',
-          w: 'fit-content',
-          display: 'flex',
-          flexDir: 'column',
-          rowGap: 3,
-          alignItems: 'flex-start',
-        }}
-        interactive
-      >
-        <Image
-          { ...styles }
-          src={ props.protocol.icon_url }
-          borderRadius="sm"
-          flexShrink={ 0 }
-          alt={ `${ props.protocol.title } protocol icon` }
-          fallback={ icon }
-        />
-      </Tooltip>
-    );
-  }
-
-  return icon;
-};
-
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'domain'>;
-
-const Content = chakra((props: ContentProps) => {
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ props.domain }
-      truncation="tail"
-    />
-  );
-});
-
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'domain'>;
-
-const Copy = (props: CopyProps) => {
-  return (
-    <EntityBase.Copy
-      { ...props }
-      text={ props.domain }
-    />
-  );
-};
-
-const Container = EntityBase.Container;
-
-export interface EntityProps extends EntityBase.EntityBaseProps {
+export interface EnsEntityData {
   domain: string;
   protocol?: bens.ProtocolInfo | null;
   protocolDapp?: {
@@ -165,22 +28,165 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   };
 }
 
-const EnsEntity = (props: EntityProps) => {
-  const partsProps = distributeEntityProps(props);
-  const content = <Content { ...partsProps.content }/>;
+export type EntityProps = EntityComponentProps<EnsEntityData>;
+export type IconProps = EntityIconProps<EnsEntityData>;
+
+const DATA_KEYS = keysOf<EnsEntityData>()([ 'domain', 'protocol', 'protocolDapp' ]);
+
+const EnsEntityBase = defineEntity<EnsEntityData>({
+  name: 'EnsEntity',
+  data: DATA_KEYS,
+  route: ({ domain, protocol }) => ({ pathname: '/name-services/domains/[name]', query: { name: domain, protocol_id: protocol?.id } }),
+  singleChain: true,
+  hintPrefix: 'Domain on ',
+  icon: 'ENS',
+  text: ({ domain }) => domain,
+  copyText: ({ domain }) => domain,
+  defaults: { truncation: 'tail' },
+});
+
+const { Root, Container, Link, Content, Copy } = EnsEntityBase;
+
+interface ProtocolPopoverProps {
+  protocol: bens.ProtocolInfo;
+  protocolDapp: EnsEntityData['protocolDapp'];
+  fallback: React.ReactElement;
+}
+
+const ProtocolPopoverContent = ({ protocol, protocolDapp, fallback }: ProtocolPopoverProps) => {
+  const dappLink = makePrettyLink(protocolDapp?.url);
 
   return (
-    <Container { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
-      <Copy { ...partsProps.copy }/>
+    <>
+      <Flex alignItems="center" textStyle="md">
+        <Image
+          src={ protocol.icon_url }
+          boxSize={ 5 }
+          borderRadius="sm"
+          mr={ 2 }
+          alt={ `${ protocol.title } protocol icon` }
+          fallback={ fallback }
+        />
+        <div>
+          <span>{ protocol.short_name }</span>
+          <chakra.span color="text.secondary" whiteSpace="pre"> { protocol.tld_list.map((tld) => `.${ tld }`).join((' ')) }</chakra.span>
+        </div>
+      </Flex>
+      <Text>{ protocol.description }</Text>
+      { (protocol.docs_url || dappLink) && (
+        <Flex columnGap={ 3 } alignItems="center" flexWrap="wrap" w="100%">
+          { protocol.docs_url && (
+            <LinkToolkit
+              href={ protocol.docs_url }
+              display="inline-flex"
+              alignItems="center"
+              external
+              flexBasis="calc((100% - 12px) / 2)"
+              flexGrow={ 1 }
+            >
+              <SpriteIcon name="docs" boxSize={ 5 } color="icon.primary" mr={ 2 }/>
+              <span>Documentation</span>
+            </LinkToolkit>
+          ) }
+          { dappLink && (
+            <LinkToolkit
+              href={ dappLink.href }
+              display="inline-flex"
+              alignItems="center"
+              external
+              flexBasis="calc((100% - 12px) / 2)"
+              flexGrow={ 1 }
+            >
+              { protocolDapp?.logo &&
+                <Image src={ protocolDapp.logo } boxSize={ 5 } mr={ 2 } borderRadius="sm" alt={ `${ protocol.title } protocol dapp logo` }/> }
+              <span>{ dappLink.domain }</span>
+            </LinkToolkit>
+          ) }
+        </Flex>
+      ) }
+    </>
+  );
+};
+
+const Icon = (props: IconProps) => {
+  const root = useEntityRoot<EnsEntityData>();
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const [ override, own ] = splitByKeys<EnsEntityData, Pick<IconProps, 'isLoading' | 'noIcon' | 'variant' | 'className'>>(rest, DATA_KEYS);
+  const { protocol, protocolDapp } = mergeEntityData(root?.data, override);
+  const icon = mergeIconOptions(options.icon, own);
+  const { isLoading = options.isLoading, noIcon = options.noIcon, variant = options.variant } = icon;
+
+  if (!protocol) {
+    return <EnsEntityBase.Icon { ...props }/>;
+  }
+
+  if (noIcon) {
+    return null;
+  }
+
+  const preset = getVariantPreset(variant).icon;
+  const layout = {
+    boxSize: icon.boxSize ?? preset.boxSize,
+    marginRight: icon.marginRight ?? icon.mr ?? preset.marginRight,
+    ...css,
+  };
+
+  if (isLoading) {
+    return <Skeleton loading borderRadius="sm" { ...layout }/>;
+  }
+
+  const fallback = <EnsEntityBase.Icon { ...props }/>;
+
+  return (
+    <Tooltip
+      content={ <ProtocolPopoverContent protocol={ protocol } protocolDapp={ protocolDapp } fallback={ fallback }/> }
+      variant="popover"
+      positioning={{
+        placement: 'bottom-start',
+      }}
+      contentProps={{
+        maxW: { base: '100vw', lg: '440px' },
+        minW: '250px',
+        w: 'fit-content',
+        display: 'flex',
+        flexDir: 'column',
+        rowGap: 3,
+        alignItems: 'flex-start',
+      }}
+      interactive
+    >
+      <Image
+        className={ own.className }
+        borderRadius="sm"
+        flexShrink={ 0 }
+        { ...layout }
+        src={ protocol.icon_url }
+        alt={ `${ protocol.title } protocol icon` }
+        fallback={ fallback }
+      />
+    </Tooltip>
+  );
+};
+
+const EnsEntity = (props: EntityProps) => {
+  return (
+    <Container { ...props }>
+      <Icon/>
+      <Link><Content/></Link>
+      <Copy/>
     </Container>
   );
 };
 
-export default React.memo(chakra(EnsEntity));
+ProtocolPopoverContent.displayName = 'EnsEntity.ProtocolPopoverContent';
+Icon.displayName = 'EnsEntity.Icon';
+EnsEntity.displayName = 'EnsEntity';
+
+export default React.memo(EnsEntity);
 
 export {
+  Root,
   Container,
   Link,
   Icon,

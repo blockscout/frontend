@@ -6,7 +6,7 @@
 - [x] 04 → `tickets/04-template-entities/`
 - [x] 05 → `tickets/05-address-entity/`
 - [x] 06 → `tickets/06-token-nft-pool/`
-- [ ] 07 → `tickets/07-ens-clusters/`
+- [x] 07 → `tickets/07-ens-clusters/`
 - [ ] 08 → `tickets/08-wrappers-to-aliases/`
 - [ ] 09 → `tickets/09-final-codemod/`
 - [ ] 10 → `tickets/10-after-profile/`

@@ -13,11 +13,11 @@ stay current-chain. The Ens block of `SearchResultTableItem` keeps working.
 
 ## Acceptance criteria
 
-- [ ] `EnsEntity.pw.tsx` and `ClustersEntity.pw.tsx` pass with no baseline change.
-- [ ] `truncation` defaults to `tail` for both and a caller's `truncation` wins (unit spec).
-- [ ] No `chakra()` remains in either file; the complexity gate passes for every changed file.
+- [x] `EnsEntity.pw.tsx` and `ClustersEntity.pw.tsx` pass with no baseline change.
+- [x] `truncation` defaults to `tail` for both and a caller's `truncation` wins (unit spec).
+- [x] No `chakra()` remains in either file; the complexity gate passes for every changed file.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rebuild `EnsEntity` and `ClustersEntity` on the primitives
-- [ ] 2 `[agent]` Unit specs for the defaults; run both Playwright suites in Docker
+- [x] 1 `[agent]` Rebuild `EnsEntity` and `ClustersEntity` on the primitives
+- [x] 2 `[agent]` Unit specs for the defaults; run both Playwright suites in Docker
