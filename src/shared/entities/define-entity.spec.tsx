@@ -80,6 +80,23 @@ describe('defineEntity', () => {
       expect(document.querySelector('use')).toBeNull();
     });
 
+    it('renders an image from the props returned by the icon function', () => {
+      const Entity = defineEntity<{ hash: string }>({
+        name: 'ImageIconEntity',
+        data: keysOf<{ hash: string }>()([ 'hash' ]),
+        route: ({ hash }) => ({ pathname: '/tx/[hash]', query: { hash } }),
+        hintPrefix: 'Test on ',
+        icon: () => ({ src: 'https://example.com/logo.png', alt: 'logo' }),
+        text: ({ hash }) => hash,
+        copyText: false,
+      }).Entity;
+
+      render(<Entity hash={ HASH }/>);
+
+      expect(document.querySelector('img[alt="logo"]')?.getAttribute('src')).toBe('https://example.com/logo.png');
+      expect(document.querySelector('use')).toBeNull();
+    });
+
     it('lets the icon bag override the icon name and the hint', () => {
       render(<TxEntity hash={ HASH } icon={{ name: 'block' }}/>);
 

@@ -8,6 +8,8 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import type { Route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
 
+import type { ImageProps } from 'src/toolkit/chakra/image';
+
 import type { ContainerBaseProps, ContentBaseProps, CopyBaseProps, IconBaseProps, LinkBaseProps } from './components';
 import {
   Container as ContainerBase,
@@ -42,7 +44,7 @@ export interface EntityDefinition<TData extends object> {
   readonly routeTemplate?: ExternalRouteTemplateKey;
   readonly singleChain?: true;
   readonly hintPrefix: string;
-  readonly icon: IconName | ((data: TData) => IconName | React.ReactElement);
+  readonly icon: IconName | ((data: TData) => IconName | React.ReactElement | ImageProps);
   readonly hint?: (data: TData) => string | undefined;
   readonly text: (data: TData) => string;
   readonly copyText: ((data: TData) => string) | false;
@@ -59,11 +61,16 @@ export interface EntityComponents<TData extends object> {
   readonly Copy: React.FC<EntityCopyProps<TData>>;
 }
 
-type IconSource = { name: IconName } | { children: React.ReactElement };
+type IconSource = { name: IconName } | { children: React.ReactElement } | ImageProps;
 
 export function resolveIconSource<TData extends object>(icon: EntityDefinition<TData>['icon'], data: TData): IconSource {
   const value = typeof icon === 'function' ? icon(data) : icon;
-  return typeof value === 'string' ? { name: value } : { children: value };
+
+  if (typeof value === 'string') {
+    return { name: value };
+  }
+
+  return React.isValidElement(value) ? { children: value } : value;
 }
 
 interface LinkInputs {

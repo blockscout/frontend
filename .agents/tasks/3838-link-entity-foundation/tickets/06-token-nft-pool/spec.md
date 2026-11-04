@@ -15,13 +15,13 @@ pool's two-token icon stay as custom `Icon` parts. Token wrappers (`Interchain`,
 
 ## Acceptance criteria
 
-- [ ] `TokenEntity.pw.tsx`, `NftEntity.pw.tsx` and `PoolEntity.pw.tsx` pass with no baseline change.
-- [ ] `truncation` defaults to `tail` for all three and a caller's `truncation` wins (unit spec).
-- [ ] The Token block of `SearchResultTableItem` (`TokenEntity.Icon`, `TokenEntity.Reputation`) renders
+- [x] `TokenEntity.pw.tsx`, `NftEntity.pw.tsx` and `PoolEntity.pw.tsx` pass with no baseline change.
+- [x] `truncation` defaults to `tail` for all three and a caller's `truncation` wins (unit spec).
+- [x] The Token block of `SearchResultTableItem` (`TokenEntity.Icon`, `TokenEntity.Reputation`) renders
       as before.
-- [ ] Token links are chain-aware inside a multichain context via the resolver; `PoolEntity` keeps its
+- [x] Token links are chain-aware inside a multichain context via the resolver; `PoolEntity` keeps its
       current-chain route.
-- [ ] No `chakra()` remains in the three entity files; the complexity gate passes for every changed file.
+- [x] No `chakra()` remains in the three entity files; the complexity gate passes for every changed file.
 
 ## Details
 
@@ -31,5 +31,5 @@ keeps as the one surviving token wrapper; this ticket must not move it into the 
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rebuild `TokenEntity`, `NftEntity`, `PoolEntity` on the primitives with declared tail defaults
-- [ ] 2 `[agent]` Unit specs for the defaults and caller-wins; run the three Playwright suites in Docker
+- [x] 1 `[agent]` Rebuild `TokenEntity`, `NftEntity`, `PoolEntity` on the primitives with declared tail defaults
+- [x] 2 `[agent]` Unit specs for the defaults and caller-wins; run the three Playwright suites in Docker
