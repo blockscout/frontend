@@ -13,7 +13,8 @@
 Turbopack.** This reverses [0001](0001-webpack-for-production-builds.md), which forced
 `next build --webpack` because Turbopack miscompiles the Dynamic-labs SDK.
 
-Two things stay on webpack, because they depend on the webpack pipeline specifically:
+Two things stayed on webpack, because they depended on the webpack pipeline specifically (one has
+since moved — see the table):
 
 | Entry point | Bundler | Why |
 | --- | --- | --- |
@@ -21,10 +22,10 @@ Two things stay on webpack, because they depend on the webpack pipeline specific
 | `pnpm prod:preset <alias>` | Turbopack | matches the image |
 | `pnpm dev`, `pnpm dev:preset`, `pnpm dev:local` | Turbopack | default |
 | `pnpm build:analyze` | webpack | `@next/bundle-analyzer` is a webpack plugin |
-| `pnpm prod:preset <alias> --profile` | webpack | `--profile`'s `react-dom/profiling` alias is guaranteed on webpack, undocumented on Turbopack (see `tools/profiling/CONTEXT.md`) |
+| `pnpm prod:preset <alias> --profile` | Turbopack | was webpack while `--profile`'s `react-dom/profiling` alias was undocumented on Turbopack; Next 16.4 honours it, and the webpack build stopped compiling (see `tools/profiling/CONTEXT.md`) |
 
 `next.config.js` keeps both the `turbopack` and `webpack()` sections — the webpack section is still
-live for the two exceptions above, and the two must stay in sync.
+live for `build:analyze`, and the two must stay in sync.
 
 ## Why
 
@@ -74,8 +75,8 @@ bundles in less than half the wall-clock (the type-check phase is bundler-agnost
   missing — on **both** bundlers, since the check runs before bundling.
   *Superseded by [0004](0004-typescript-7-side-by-side.md): the flag is gone, Next's check is off.*
 - **Dev and production are on the same bundler again.** 0001's "a production-only bug can't be caught
-  in dev" caveat is lifted for the default path — though the two webpack exceptions (`build:analyze`,
-  `--profile`) still exercise a second pipeline.
+  in dev" caveat is lifted for the default path — though the webpack exception (`build:analyze`; `--profile`
+  was one until Next 16.4) still exercises a second pipeline.
 - **The `@react-native-async-storage/async-storage` fallback** that 0001 added to `resolve.fallback`
   only applies to the webpack section. Turbopack silently tolerates that optional import, so no
   Turbopack-side equivalent is needed.
