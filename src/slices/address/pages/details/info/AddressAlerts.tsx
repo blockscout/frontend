@@ -11,13 +11,14 @@ import { Alert } from 'src/toolkit/chakra/alert';
 interface Props {
   tags: Array<AddressMetadataTagFormatted> | undefined;
   isScamToken?: boolean;
+  isScamAddress?: boolean;
   className?: string;
 }
 
-const AddressAlerts = ({ tags, isScamToken, className }: Props) => {
+const AddressAlerts = ({ tags, isScamToken, isScamAddress, className }: Props) => {
   const noteTags = tags?.filter(({ tagType }) => tagType === 'note').filter(({ meta }) => meta?.data);
 
-  if (!noteTags?.length && !isScamToken) {
+  if (!noteTags?.length && !isScamToken && !isScamAddress) {
     return null;
   }
 
@@ -26,6 +27,11 @@ const AddressAlerts = ({ tags, isScamToken, className }: Props) => {
       { isScamToken && (
         <Alert status="error">
           This token has been flagged as a potential scam.
+        </Alert>
+      ) }
+      { isScamAddress && (
+        <Alert status="error">
+          This address has been flagged as a potential scam.
         </Alert>
       ) }
       { noteTags?.map((noteTag) => (
