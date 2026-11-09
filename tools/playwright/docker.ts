@@ -69,7 +69,7 @@ function linuxModulesMount(cwd: string): string {
 function gitCommonDirMount(cwd: string, gitCommonDir: string | null): Array<string> {
   if (gitCommonDir === null) return [];
   const relative = path.relative(cwd, gitCommonDir);
-  const isUnderCwd = relative !== '' && !relative.startsWith('..') && !path.isAbsolute(relative);
+  const isUnderCwd = !relative.startsWith('..') && !path.isAbsolute(relative);
   return isUnderCwd ? [] : [ `${ gitCommonDir }:${ gitCommonDir }:ro` ];
 }
 
