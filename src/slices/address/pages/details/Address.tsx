@@ -475,8 +475,10 @@ const AddressPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
-      { !addressMetadataQuery.isPending &&
-        <AddressAlerts tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }/> }
+      <AddressAlerts
+        tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags }
+        isScamAddress={ addressQuery.data?.is_scam }
+      />
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <RoutedTabs tabs={ tabs } isLoading={ isTabsLoading }/>
     </>

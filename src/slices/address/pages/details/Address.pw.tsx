@@ -72,11 +72,20 @@ test('degradation view', async({ render, page, mockRpcResponse, mockApiResponse 
   await mockApiResponse('core:stats', null as never, { status: 500 });
   await mockApiResponse('metadata:info', null as never, { queryParams: addressMetadataQueryParams, status: 500 });
   await mockApiResponse('bens:addresses_lookup', null as never, { queryParams: ensLookupQueryParams, status: 500 });
-  await mockRpcResponse([ {
-    Method: 'eth_getBalance',
-    Parameters: [ addressParamMock.hash, 'latest' ],
-    ReturnType: numberToHex(1234567890123456),
-  } ]);
+  await mockRpcResponse([
+    {
+      Method: 'eth_getBalance',
+      Parameters: [ addressParamMock.hash, 'latest' ],
+      ReturnType: numberToHex(1234567890123456),
+    },
+    // the node is down for the tx count too, which keeps the row in its loading state like the balance-only run
+    {
+      Method: 'eth_getTransactionCount',
+      Parameters: [ addressParamMock.hash, 'latest' ],
+      ReturnType: numberToHex(0),
+      status: 500,
+    },
+  ]);
 
   const component = await render(<Address/>, { hooksConfig });
   await page.waitForResponse(config.chain.rpcUrls[0]);
