@@ -23,7 +23,7 @@ import { findDisallowedHtml } from 'src/shared/texts/sanitize-html';
 
 import * as regexp from 'src/toolkit/utils/regexp';
 
-import { companionRule, envBoolean, envJson, envUrl, requiredIf, requires } from '../utils';
+import { companionRule, disallowedHtmlMessage, envBoolean, envJson, envUrl, requiredIf, requires } from '../utils';
 
 const requiredString = () => v.pipe(v.string(), v.nonEmpty());
 const requiredUrl = () => v.pipe(v.string(), v.nonEmpty(), v.url());
@@ -161,18 +161,27 @@ const fontFamilySchema = v.object({
   url: requiredUrl(),
 });
 
-// The alert is rendered as HTML on the app's origin and the app strips what is listed here; the operator is told
-// at startup instead of finding a quietly reduced banner.
-const toMessages = (value: unknown): Array<string> => (Array.isArray(value) ? value : [ value ]).filter((item) => typeof item === 'string');
+const parseJsonArray = (value: string): Array<unknown> | undefined => {
+  try {
+    const parsed: unknown = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
+// The app parses the value as set before the quote-rewritten one (src/shell/header/config.ts): an apostrophe in an
+// item breaks the rewritten JSON, and the check has to see the same items the app will render.
+const toMessages = (value: unknown): Array<string> => {
+  const items = typeof value === 'string' ? parseJsonArray(value) ?? [ value ] : value;
+  return (Array.isArray(items) ? items : [ items ]).filter((item): item is string => typeof item === 'string');
+};
 
 const maintenanceAlertSchema = v.pipe(
   v.union([ envJson(v.array(v.string())), v.string() ]),
   v.check(
     (value) => toMessages(value).every((message) => findDisallowedHtml(message).length === 0),
-    (issue) => {
-      const disallowed = new Set(toMessages(issue.input).flatMap(findDisallowedHtml));
-      return `HTML contains elements that are not allowed in the alert: ${ Array.from(disallowed).join(', ') }`;
-    },
+    (issue) => disallowedHtmlMessage(toMessages(issue.input)),
   ),
 );
 

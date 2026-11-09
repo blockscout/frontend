@@ -3,6 +3,7 @@
 import * as v from 'valibot';
 
 import { replaceQuotes } from 'src/config/utils/envs';
+import { findDisallowedHtml } from 'src/shared/texts/sanitize-html';
 
 export const protocols = [ 'http', 'https' ] as const;
 
@@ -40,6 +41,18 @@ export const envUrl = (): v.GenericSchema<string, string> => v.pipe(
 );
 
 export const envRequiredString = (): v.GenericSchema<string, string> => v.pipe(v.string(), v.nonEmpty());
+
+export const disallowedHtmlMessage = (values: Array<string>): string => {
+  const disallowed = new Set(values.flatMap(findDisallowedHtml));
+  return `HTML contains elements that are not allowed: ${ Array.from(disallowed).join(', ') }`;
+};
+
+// The value is rendered as HTML on the app's origin and the app strips what the sanitizer rejects; the operator
+// is told at startup instead of finding quietly reduced markup.
+export const envHtml = (): v.GenericSchema<string, string> => v.pipe(
+  v.string(),
+  v.check((value) => findDisallowedHtml(value).length === 0, (issue) => disallowedHtmlMessage([ issue.input ])),
+);
 
 export const envJson = <TSchema extends v.GenericSchema>(schema: TSchema): v.GenericSchema<string, v.InferOutput<TSchema>> => v.pipe(
   v.string(),

@@ -12,7 +12,6 @@ const ALLOWED_TAGS: IWhiteList = {
   a: [ 'href', 'target', 'title', 'rel' ],
 };
 
-// Tags whose text content is dropped along with the tag; every other disallowed tag keeps its text.
 const TAGS_STRIPPED_WITH_CONTENT = [ 'script', 'style', 'iframe', 'object', 'embed', 'noscript', 'template', 'svg', 'math' ];
 
 const sanitizer = new FilterXSS({
@@ -25,7 +24,6 @@ export function sanitizeHtml(html: string): string {
   return sanitizer.process(html);
 }
 
-// Lists what sanitizeHtml would remove, in the operator's terms: `<iframe>`, `onclick attribute on <img>`.
 export function findDisallowedHtml(html: string): Array<string> {
   const found = new Set<string>();
 

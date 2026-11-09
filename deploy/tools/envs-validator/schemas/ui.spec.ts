@@ -263,7 +263,7 @@ describe('miscSchema', () => {
     expect(getValidationErrors(miscSchema, {
       NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: '<div style="position:fixed">Hello <iframe srcdoc="<script></script>"></iframe></div>',
     })).toEqual([
-      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed in the alert: style attribute on <div>, <iframe>',
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: style attribute on <div>, <iframe>',
     ]);
   });
 
@@ -271,7 +271,15 @@ describe('miscSchema', () => {
     expect(getValidationErrors(miscSchema, {
       NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: `['Plain','<a href="https://example.com" onclick="steal()">Hello</a>']`,
     })).toEqual([
-      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed in the alert: onclick attribute on <a>',
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: onclick attribute on <a>',
+    ]);
+  });
+
+  it('checks the items of a double-quoted array whose apostrophe breaks the quote-rewritten JSON', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`["It's down", "\u003ciframe srcdoc='https://evil.example'\u003e\u003c/iframe\u003e"]`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: <iframe>',
     ]);
   });
 

@@ -5,6 +5,7 @@ import React from 'react';
 
 import type { Fields } from './types';
 
+import { sanitizeHtml } from 'src/shared/texts/sanitize-html';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { BoxHtml } from 'src/toolkit/chakra/box';
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
+
+  const safeHtml = React.useMemo(() => sanitizeHtml(html), [ html ]);
 
   const rules = React.useMemo(() => ({
     validate: {
@@ -45,7 +48,7 @@ const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
         </Flex>
         <List.Root as="ol" listStyleType="decimal" gap={ 6 } mt={ 6 } pl={ 5 }>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
-            <BoxHtml html={ html }/>
+            <BoxHtml html={ safeHtml }/>
           </List.Item>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
             Once payment is completed, enter the <chakra.span fontWeight={ 600 }>transaction hash</chakra.span>
