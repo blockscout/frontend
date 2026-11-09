@@ -81,7 +81,7 @@ const Footer = () => {
       icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.gg/3yAWj8TXV2',
     },
     {
       icon: 'brands/blockscout' as const,

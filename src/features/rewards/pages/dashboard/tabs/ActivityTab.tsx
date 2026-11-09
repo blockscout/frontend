@@ -360,7 +360,7 @@ export default function ActivityTab() {
             <Text textStyle="xs" color="text.secondary" fontWeight="500">
               Metrics are not updated in real time. Please allow up to one hour for your Performance Rank and earned Merits to reflect recent activity.
               If you experience any issues, feel free to reach out on{ ' ' }
-              <Link external href="https://discord.gg/blockscout">
+              <Link external href="https://discord.gg/3yAWj8TXV2">
                 Discord
               </Link>
             </Text>
