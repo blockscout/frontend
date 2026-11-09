@@ -36,6 +36,11 @@ import TxTokenTransferLocal from './TxTokenTransferLocal';
 
 const NO_TYPES: Array<TokenType> = [];
 
+const LOCAL_TAB_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  widthAllocation: 'available' as const,
+};
+
 interface Props {
   txQuery: TxQuery;
   tokenTransferFilter?: (data: schemas['TokenTransfer']) => boolean;
@@ -122,12 +127,10 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
 
   const rightSlotProps = React.useMemo(() => {
     if (tabs.length === 1) {
-      return { ml: 0 };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 0 };
     }
     if (isLocalTab) {
-      return {
-        ml: 6,
-      };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 6 };
     }
   }, [ isLocalTab, tabs.length ]);
 
