@@ -321,7 +321,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code. If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. In this case, please ensure that you properly escape the values of HTML attributes or other special symbols (for example, `<a href=\\"https://example.com\\">Link!</a>`). | - | - | `Hello world! 🤪` | v1.13.0+ |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code. If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. In this case, the array must be valid JSON with double-quoted items; put HTML attribute values in single quotes or escape their double quotes (for example, `["Hello", "<a href='https://example.com'>Link!</a>"]`). | - | - | `Hello world! 🤪` | v1.13.0+ |
 
 &nbsp;
 

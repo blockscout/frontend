@@ -5,7 +5,9 @@ import * as regexp from 'src/toolkit/utils/regexp';
 
 export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\'', '"');
 
-export const getEnvValue = (envName: string) => {
+type EnvRead = { readonly value: string | undefined; readonly isFromTestStorage: boolean };
+
+const readEnv = (envName: string): EnvRead => {
   // eslint-disable-next-line no-restricted-properties
   const envs = (isBrowser() ? window.__envs : process.env) ?? {};
 
@@ -13,12 +15,19 @@ export const getEnvValue = (envName: string) => {
     const storageValue = localStorage.getItem(envName);
 
     if (typeof storageValue === 'string') {
-      return storageValue;
+      return { value: storageValue, isFromTestStorage: true };
     }
   }
 
-  return replaceQuotes(envs[envName]);
+  return { value: envs[envName], isFromTestStorage: false };
 };
+
+export const getEnvValue = (envName: string): string | undefined => {
+  const { value, isFromTestStorage } = readEnv(envName);
+  return isFromTestStorage ? value : replaceQuotes(value);
+};
+
+export const getRawEnvValue = (envName: string): string | undefined => readEnv(envName).value;
 
 export const parseEnvJson = <DataType>(env: string | undefined): DataType | null => {
   try {
