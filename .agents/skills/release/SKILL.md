@@ -41,15 +41,19 @@ The CLI pushes; the agent never pushes a release branch, a tag or `main` by hand
 
 Run `pnpm release prepare vX.Y.Z`. When it exits, hand off; the next phase is the operator's to invoke:
 
-- The draft pre-release URL from the command's output, to review and edit the notes on GitHub.
+- The draft pre-release URL from the command's output, to review the notes on GitHub. A wrong line is
+  fixed at its source — the merged PR's title, category labels or body — which the next phase regenerates
+  the notes from. An edit made on the release page is overwritten by the next `alpha`.
 - The docs diff: `git diff <start>..HEAD -- docs/`, `<start>` being the cut point the command printed
   (`origin/main` for a minor, the previous final tag for a patch).
 - The PRs the command skipped, from its report, in case one was expected in the release.
 
 ## `alpha vX.Y.Z-alpha.N`
 
-Before running, the operator has reviewed the draft release and the docs diff of `prepare` (or of the
-previous alpha). Run `pnpm release alpha vX.Y.Z-alpha.N` in the background. When it exits:
+Before running, the operator has reviewed the pre-release notes and the docs diff of `prepare` (or of the
+previous alpha). The first alpha publishes the pre-release, so from then on its page is public and its
+notes are no longer a draft to review. Run `pnpm release alpha vX.Y.Z-alpha.N` in the background. When it
+exits:
 
 - **Tag check failed** — nothing was tagged or pushed. Report the failures; they are the operator's to fix
   on `main` (a PR with the `backport` label, picked by the next run) or on the release branch (docs only).

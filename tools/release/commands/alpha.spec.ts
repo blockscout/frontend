@@ -1,6 +1,36 @@
 import { describe, expect, it } from 'vitest';
 
-import { parseAlphaArgs } from './alpha';
+import { alphaState, parseAlphaArgs } from './alpha';
+
+const HEAD = '0123456789abcdef0123456789abcdef01234567';
+const OTHER = 'fedcba9876543210fedcba9876543210fedcba98';
+
+function preRelease(tagName: string) {
+  return { id: 1, tagName, draft: false, prerelease: true, url: `https://github.com/blockscout/frontend/releases/tag/${ tagName }` };
+}
+
+describe('alphaState', () => {
+  it('is new when the tag is not on origin', () => {
+    expect(alphaState('v2.13.0-alpha.2', 'release/v2.13.0', undefined, HEAD, preRelease('v2.13.0-alpha.1'))).toBe('new');
+  });
+
+  it('resumes a tag at the branch head that the pre-release points at', () => {
+    expect(alphaState('v2.13.0-alpha.2', 'release/v2.13.0', HEAD, HEAD, preRelease('v2.13.0-alpha.2'))).toBe('published');
+  });
+
+  it('refuses a tag on origin that is not the branch head', () => {
+    expect(() => alphaState('v2.13.0-alpha.2', 'release/v2.13.0', OTHER, HEAD, preRelease('v2.13.0-alpha.1'))).toThrow(
+      'v2.13.0-alpha.2 is on origin at fedcba9876, not at the head of release/v2.13.0 (0123456789)',
+    );
+  });
+
+  it('refuses a tag at the branch head that the pre-release does not point at', () => {
+    expect(() => alphaState('v2.13.0-alpha.2', 'release/v2.13.0', HEAD, HEAD, preRelease('v2.13.0-alpha.1'))).toThrow(
+      'v2.13.0-alpha.2 is on origin at the head of release/v2.13.0, but the pre-release still points at v2.13.0-alpha.1 ' +
+      '(https://github.com/blockscout/frontend/releases/tag/v2.13.0-alpha.1); re-point it to v2.13.0-alpha.2 by hand, or delete the tag from origin and re-run',
+    );
+  });
+});
 
 describe('parseAlphaArgs', () => {
   it('reads the alpha tag and its version', () => {

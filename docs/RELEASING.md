@@ -41,7 +41,8 @@ stateDiagram-v2
     note right of OnStaging
         each prepare and alpha picks the
         merged backport PRs, then releases
-        "upcoming" in the ENV docs
+        "upcoming" in the ENV docs;
+        the first alpha publishes the pre-release
     end note
     note right of Released
         final tag, release marked latest,
@@ -54,8 +55,10 @@ squash commit, except the docs commits `prepare` and `alpha` make, which `publis
 same way. This is what lets the notes and the labels tell a backport from new work: a branch commit is
 resolved to its PR through its `(cherry picked from commit …)` trailer, then the `(#N)` in its subject.
 
-Each release keeps one GitHub pre-release from `prepare` to `publish`, re-pointed to every alpha. A line
-cannot have two open at once: publish the current one before preparing the next patch.
+Each release keeps one GitHub pre-release from `prepare` to `publish`, re-pointed to every alpha: a draft
+until the first alpha publishes it, so that the staging roll-up request can link to it. A line cannot have
+two open at once: publish the current one before preparing the next patch. Its notes are regenerated from
+the PRs at every phase; a wrong line is fixed on the PR (title, labels, body), not on the release page.
 
 A tag is refused, by the CLI before pushing and by CI before the image is built, when `docs/ENVS.md` or
 `docs/DEPRECATED_ENVS.md` still says `upcoming`, or when its notes list a PR another release already shipped.
