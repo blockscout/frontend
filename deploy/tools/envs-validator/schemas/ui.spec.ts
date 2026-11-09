@@ -259,6 +259,22 @@ describe('miscSchema', () => {
     })).toEqual([]);
   });
 
+  it('rejects a maintenance alert message with a frame or an inline style', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: '<div style="position:fixed">Hello <iframe srcdoc="<script></script>"></iframe></div>',
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed in the alert: style attribute on <div>, <iframe>',
+    ]);
+  });
+
+  it('rejects an array of maintenance alert messages when one item has an event handler', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: `['Plain','<a href="https://example.com" onclick="steal()">Hello</a>']`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed in the alert: onclick attribute on <a>',
+    ]);
+  });
+
   describe('color themes', () => {
     it('rejects an unknown theme id', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'sepia' ]) })).toEqual([

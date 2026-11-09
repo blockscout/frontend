@@ -19,6 +19,8 @@ import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'src/slice
 import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
 import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorModes } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
+import { findDisallowedHtml } from 'src/shared/texts/sanitize-html';
+
 import * as regexp from 'src/toolkit/utils/regexp';
 
 import { companionRule, envBoolean, envJson, envUrl, requiredIf, requires } from '../utils';
@@ -159,12 +161,27 @@ const fontFamilySchema = v.object({
   url: requiredUrl(),
 });
 
+// The alert is rendered as HTML on the app's origin and the app strips what is listed here; the operator is told
+// at startup instead of finding a quietly reduced banner.
+const toMessages = (value: unknown): Array<string> => (Array.isArray(value) ? value : [ value ]).filter((item) => typeof item === 'string');
+
+const maintenanceAlertSchema = v.pipe(
+  v.union([ envJson(v.array(v.string())), v.string() ]),
+  v.check(
+    (value) => toMessages(value).every((message) => findDisallowedHtml(message).length === 0),
+    (issue) => {
+      const disallowed = new Set(toMessages(issue.input).flatMap(findDisallowedHtml));
+      return `HTML contains elements that are not allowed in the alert: ${ Array.from(disallowed).join(', ') }`;
+    },
+  ),
+);
+
 export const miscSchema = v.pipe(
   v.object({
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: v.optional(envBoolean()),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: v.optional(envBoolean()),
     NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE: v.optional(envBoolean()),
-    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: v.optional(v.union([ envJson(v.array(v.string())), v.string() ])),
+    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: v.optional(maintenanceAlertSchema),
     NEXT_PUBLIC_COLOR_THEMES: v.optional(envJson(v.array(v.picklist(COLOR_THEME_IDS)))),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: v.optional(v.picklist(COLOR_THEME_IDS)),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: v.optional(envJson(v.record(v.string(), v.unknown()))),
