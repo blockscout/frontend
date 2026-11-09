@@ -4,16 +4,21 @@ import React from 'react';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-describe('Blocks page on mobile', () => {
+describe('Blocks page with the Forked and Uncles views hidden', () => {
   beforeEach(() => {
     fetchMock.resetMocks();
     fetchMock.mockResponse(JSON.stringify({ items: [], next_page_params: null }));
   });
 
-  it('renders no tabs bar when the Forked and Uncles views are hidden', async() => {
+  afterEach(async() => {
+    const { cleanup } = await import('vitest/lib');
+    cleanup();
+  });
+
+  it('renders no tabs bar on mobile', async() => {
     await withEnvs(ENVS_MAP.blockHiddenViews, async() => {
       const { render, screen } = await import('vitest/lib');
       const { 'default': Blocks } = await import('./Blocks');
@@ -25,14 +30,26 @@ describe('Blocks page on mobile', () => {
     });
   });
 
-  it('renders the tabs bar when only one view is hidden', async() => {
-    await withEnvs([ [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS', '["uncles"]' ] ], async() => {
-      const { render, screen } = await import('vitest/lib');
-      const { 'default': Blocks } = await import('./Blocks');
+  it('keeps the tabs bar on desktop', async() => {
+    const mobileMatchMedia = window.matchMedia;
+    // jsdom's matchMedia stub matches nothing, which lands on the mobile breakpoint
+    window.matchMedia = ((query: string) => ({
+      ...mobileMatchMedia(query),
+      matches: query.includes('min-width'),
+    })) as typeof window.matchMedia;
 
-      render(<Blocks/>);
+    try {
+      await withEnvs(ENVS_MAP.blockHiddenViews, async() => {
+        const { render, screen } = await import('vitest/lib');
+        const { 'default': Blocks } = await import('./Blocks');
 
-      expect(await screen.findByRole('tab', { name: 'Forked' })).toBeTruthy();
-    });
+        render(<Blocks/>);
+
+        expect(await screen.findByRole('heading', { name: 'Blocks' })).toBeTruthy();
+        expect(screen.getByRole('tablist')).toBeTruthy();
+      });
+    } finally {
+      window.matchMedia = mobileMatchMedia;
+    }
   });
 });
