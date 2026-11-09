@@ -22,7 +22,7 @@ const readEnv = (envName: string): EnvRead => {
   return { value: envs[envName], isFromTestStorage: false };
 };
 
-export const getEnvValue = (envName: string) => {
+export const getEnvValue = (envName: string): string | undefined => {
   const { value, isFromTestStorage } = readEnv(envName);
   return isFromTestStorage ? value : replaceQuotes(value);
 };
