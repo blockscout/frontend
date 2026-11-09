@@ -39,6 +39,7 @@
     "**",
     "!/src/**",
     "!/tools/**",
+    "!/deploy/scripts/make_envs_script.sh",
     "!/deploy/tools/assets-downloader/**",
     "!/deploy/tools/envs-validator/**",
     "!/.agents/**",

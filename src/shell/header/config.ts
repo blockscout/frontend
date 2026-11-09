@@ -19,10 +19,6 @@ const maintenanceAlertMessage = (() => {
     return envValue;
   }
 
-  if (messages.length < 2) {
-    return messages[0];
-  }
-
   const index = Math.floor(Math.random() * messages.length);
 
   return messages[index];

@@ -48,6 +48,15 @@ const ITEMS_SINGLE_QUOTED_HREF = [
 describe('maintenance alert', () => {
   afterEach(() => {
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it('shows the item Math.random lands on', async() => {
+    vi.spyOn(Math, 'random').mockReturnValue(0.99);
+    expect(await resolveMessage(JSON.stringify(ITEMS_SINGLE_QUOTED_HREF), 'server')).toBe(ITEMS_SINGLE_QUOTED_HREF[1]);
+
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    expect(await resolveMessage(JSON.stringify(ITEMS_SINGLE_QUOTED_HREF), 'server')).toBe(ITEMS_SINGLE_QUOTED_HREF[0]);
   });
 
   it.each(SIDES)('shows a single HTML message as set on the %s', async(side) => {
