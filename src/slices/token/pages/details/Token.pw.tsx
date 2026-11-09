@@ -23,6 +23,12 @@ const hooksConfig = {
   },
 };
 
+const addressMetadataQueryParams = {
+  addresses: [ hash ],
+  chainId: config.chain.id,
+  tagsLimit: '20',
+};
+
 // FIXME
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
@@ -40,6 +46,14 @@ test.beforeEach(async({ mockTextAd }) => {
 
 test('base view', async({ render, page, createSocket, mockApiResponse }) => {
   await mockTokenData(mockApiResponse);
+  // the optional services are down, so the page shows neither tags, verified info nor the token icon
+  await mockApiResponse('metadata:info', null as never, { queryParams: addressMetadataQueryParams, status: 500 });
+  await mockApiResponse(
+    'contractInfo:token_verified_info',
+    null as never,
+    { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash }, status: 500 },
+  );
+  await page.route(tokenInfo.icon_url as string, (route) => route.fulfill({ status: 404 }));
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();

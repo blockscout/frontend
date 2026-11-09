@@ -16,6 +16,9 @@ import { buildRouterMock } from 'vitest/utils/mockRouter';
 const SCAM_ALERT_TEXT = 'This address has been flagged as a potential scam.';
 const ADDRESS_PATH = `/api/v2/addresses/${ addressParamMock.hash }`;
 
+// every test re-imports the whole address page (withEnvs resets modules), which took >5s on a CI runner
+const TEST_TIMEOUT = 20_000;
+
 const scamAddress: schemas['AddressResponse'] = { ...addressMock.eoa, is_scam: true };
 
 const metadataEnvs: Array<[ string, string ]> = [
@@ -62,7 +65,7 @@ afterEach(() => {
 });
 
 describe('address scam flag', () => {
-  it('warns that the address is flagged as a scam', async() => {
+  it('warns that the address is flagged as a scam', { timeout: TEST_TIMEOUT }, async() => {
     await withEnvs([], async() => {
       mockAddress(scamAddress);
       await renderAddressPage();
@@ -71,7 +74,7 @@ describe('address scam flag', () => {
     });
   });
 
-  it('warns that the address is flagged as a scam when the metadata service is on', async() => {
+  it('warns that the address is flagged as a scam when the metadata service is on', { timeout: TEST_TIMEOUT }, async() => {
     await withEnvs(metadataEnvs, async() => {
       mockAddress(scamAddress);
       await renderAddressPage();
@@ -80,7 +83,7 @@ describe('address scam flag', () => {
     });
   });
 
-  it('shows no scam warning for an address that is not flagged', async() => {
+  it('shows no scam warning for an address that is not flagged', { timeout: TEST_TIMEOUT }, async() => {
     await withEnvs([], async() => {
       mockAddress(addressMock.eoa);
       await renderAddressPage();
