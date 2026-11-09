@@ -16,6 +16,7 @@ const TAGS_STRIPPED_WITH_CONTENT = [ 'script', 'style', 'iframe', 'object', 'emb
 
 const sanitizer = new FilterXSS({
   whiteList: ALLOWED_TAGS,
+  // Stryker disable next-line BooleanLiteral: evaluated at module load, before runtime mutant activation, so the frame and form assertions cannot see it
   stripIgnoreTag: true,
   stripIgnoreTagBody: TAGS_STRIPPED_WITH_CONTENT,
 });

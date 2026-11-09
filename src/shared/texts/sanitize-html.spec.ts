@@ -51,11 +51,20 @@ describe('findDisallowedHtml', () => {
     expect(findDisallowedHtml('<IFRAME/src=https://evil.example></IFRAME><iframe></iframe>')).toEqual([ '<iframe>' ]);
   });
 
+  it('names an unclosed disallowed tag and ignores a stray closing one', () => {
+    expect(findDisallowedHtml('<iframe src="https://evil.example">')).toEqual([ '<iframe>' ]);
+    expect(findDisallowedHtml('Hello</iframe>')).toEqual([]);
+  });
+
   it('names disallowed attributes with their tag', () => {
     expect(findDisallowedHtml(OVERLAY)).toEqual([ 'style attribute on <div>', 'onclick attribute on <a>' ]);
   });
 
   it('names an attribute whose value is rejected', () => {
     expect(findDisallowedHtml('<a href="javascript:alert(1)">x</a>')).toEqual([ 'href attribute value on <a>' ]);
+  });
+
+  it('reports nothing for an attribute that is already empty', () => {
+    expect(findDisallowedHtml('<a href="">x</a><img src=" " alt="">')).toEqual([]);
   });
 });

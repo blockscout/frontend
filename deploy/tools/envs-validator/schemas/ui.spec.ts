@@ -275,6 +275,14 @@ describe('miscSchema', () => {
     ]);
   });
 
+  it('rejects an item of a single-quoted array whose attributes escape their double quotes', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`['Plain','<a href=\"https://example.com\" onclick=\"steal()\">Hello</a>']`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: onclick attribute on <a>',
+    ]);
+  });
+
   it('checks the items of a double-quoted array whose apostrophe breaks the quote-rewritten JSON', () => {
     expect(getValidationErrors(miscSchema, {
       NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`["It's down", "\u003ciframe srcdoc='https://evil.example'\u003e\u003c/iframe\u003e"]`,

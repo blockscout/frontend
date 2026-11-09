@@ -172,9 +172,10 @@ const parseJsonArray = (value: string): Array<unknown> | undefined => {
 
 // The app parses the value as set before the quote-rewritten one (src/shell/header/config.ts): an apostrophe in an
 // item breaks the rewritten JSON, and the check has to see the same items the app will render.
-const toMessages = (value: unknown): Array<string> => {
-  const items = typeof value === 'string' ? parseJsonArray(value) ?? [ value ] : value;
-  return (Array.isArray(items) ? items : [ items ]).filter((item): item is string => typeof item === 'string');
+const toMessages = (value: string | Array<string>): Array<string> => {
+  const items: Array<unknown> = typeof value === 'string' ? parseJsonArray(value) ?? [ value ] : value;
+  // Stryker disable next-line ConditionalExpression: narrows JSON.parse's unknown items; a non-string item has no markup to check either way
+  return items.filter((item): item is string => typeof item === 'string');
 };
 
 const maintenanceAlertSchema = v.pipe(
