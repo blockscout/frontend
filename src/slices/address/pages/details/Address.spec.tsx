@@ -16,13 +16,13 @@ import { buildRouterMock } from 'vitest/utils/mockRouter';
 const SCAM_ALERT_TEXT = 'This address has been flagged as a potential scam.';
 const ADDRESS_PATH = `/api/v2/addresses/${ addressParamMock.hash }`;
 
-const scamAddress: schemas['AddressResponse'] = { ...addressMock.eoa, is_scam: true, reputation: 'scam' };
+const scamAddress: schemas['AddressResponse'] = { ...addressMock.eoa, is_scam: true };
 
 const metadataEnvs: Array<[ string, string ]> = [
   [ 'NEXT_PUBLIC_METADATA_SERVICE_API_HOST', 'https://localhost:3007' ],
 ];
 
-function jsonResponse(body: unknown) {
+function jsonResponse(body: unknown): { headers: Record<string, string>; body: string } {
   return { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
 }
 
@@ -85,7 +85,10 @@ describe('address scam flag', () => {
       mockAddress(addressMock.eoa);
       await renderAddressPage();
 
-      expect(await screen.findByText(addressParamMock.hash)).toBeTruthy();
+      // the hash is on screen from the first render (inside the loading skeleton), so it does not
+      // prove the address query settled; the title does — the placeholder is a contract,
+      // so the page reads "Contract details" until the EOA response replaces it
+      expect(await screen.findByText('Address details')).toBeTruthy();
       expect(screen.queryByText(SCAM_ALERT_TEXT)).toBeNull();
     });
   });
