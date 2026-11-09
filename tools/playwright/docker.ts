@@ -61,13 +61,31 @@ function linuxModulesMount(cwd: string): string {
   return `${ path.join(cwd, LINUX_MODULES_DIR) }:${ path.posix.join(CONTAINER_WORKDIR, 'node_modules') }`;
 }
 
+// A linked worktree's .git is a file naming an absolute gitdir under the main repository, which the cwd
+// mount does not cover; git inside the container then finds no repository and --only-changed cannot
+// resolve its base. Mounting the common dir at its own path keeps the file's pointer and the relative
+// `commondir` inside it valid. Read-only: the container only reads history, and the main checkout's
+// own .git already arrives through the cwd mount.
+function gitCommonDirMount(cwd: string, gitCommonDir: string | null): Array<string> {
+  if (gitCommonDir === null) return [];
+  const relative = path.relative(cwd, gitCommonDir);
+  const isUnderCwd = relative !== '' && !relative.startsWith('..') && !path.isAbsolute(relative);
+  return isUnderCwd ? [] : [ `${ gitCommonDir }:${ gitCommonDir }:ro` ];
+}
+
 // The inner command is `bash -c '<script>' bash <args...>`: the args reach the script as "$@", so a
 // test title with spaces or a shell metacharacter never goes through a second round of quoting.
-export function buildDockerCommand(args: ReadonlyArray<string>, options: DockerOptions, cwd: string = process.cwd()): DockerCommand {
+export function buildDockerCommand(
+  args: ReadonlyArray<string>,
+  options: DockerOptions,
+  gitCommonDir: string | null,
+  cwd: string = process.cwd(),
+): DockerCommand {
   const script = `${ pnpmSetup(options.pnpm) } && ${ INNER_TEST_ENV } pnpm test:pw "$@"`;
+  const mounts = [ linuxModulesMount(cwd), ...gitCommonDirMount(cwd, gitCommonDir) ];
   return {
     command: 'docker',
-    args: [ ...dockerRunArgs(options, cwd, [ linuxModulesMount(cwd) ]), 'bash', '-c', script, 'bash', ...args ],
+    args: [ ...dockerRunArgs(options, cwd, mounts), 'bash', '-c', script, 'bash', ...args ],
   };
 }
 
