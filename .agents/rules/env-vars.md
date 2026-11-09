@@ -43,7 +43,7 @@ For mid-sized structured config — anything with two or more fields, or a small
 
 Read with `parseEnvJson<T>(getEnvValue('NEXT_PUBLIC_…'))`. It returns `null` on parse failure, so always provide a fallback. The operator-facing JSON syntax uses single quotes (e.g. `'[{"id":1}]'`) so the value can be pasted into a shell or `.env` file without escaping.
 
-`getEnvValue` rewrites every `'` in the value to `"`, which breaks JSON whose *content* carries quotes — HTML attributes, an apostrophe in a sentence. A config that accepts such content parses `getRawEnvValue('NEXT_PUBLIC_…')` (the value as the operator set it) first and falls back to the rewritten value, so both quoting styles keep working; `src/shell/header/config.ts` is the precedent.
+`getEnvValue` rewrites every `'` in the value to `"`, which breaks JSON whose *content* carries quotes — HTML attributes, an apostrophe in a sentence. A config that accepts such content parses `getRawEnvValue('NEXT_PUBLIC_…')` (the value as the operator set it) first and falls back to the rewritten value, so both quoting styles keep working.
 
 ### 3. Links to JSON config files
 
