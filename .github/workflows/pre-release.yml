@@ -20,9 +20,8 @@ jobs:
         uses: './.github/workflows/check-tag.yml'
         with:
             tag: ${{ github.ref_name }}
-        # The line's pre-release is still a draft at an alpha, and only push access lists drafts.
         permissions:
-            contents: write
+            contents: read
             issues: read
             pull-requests: read
 
