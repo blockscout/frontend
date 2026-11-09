@@ -101,7 +101,7 @@ const BlocksPageContent = () => {
       <RoutedTabs
         tabs={ tabs }
         listProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ <BlocksTabSlot pagination={ pagination }/> }
+        rightSlot={ isMobile ? undefined : <BlocksTabSlot pagination={ pagination }/> }
         stickyEnabled={ !isMobile && !isFlashblocksTab }
       />
     </>
