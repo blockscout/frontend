@@ -38,6 +38,18 @@ const mockTokenData = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
   await mockApiResponse('core:address', contract, { pathParams: { hash } });
   await mockApiResponse('core:token_counters', tokenCounters, { pathParams: { hash } });
   await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  // the metadata service is down, so the page shows no tags
+  await mockApiResponse('metadata:info', null as never, { queryParams: addressMetadataQueryParams, status: 500 });
+};
+
+// the other optional services are down too, so the page shows neither verified info nor the token icon
+const mockOptionalServicesDown = async(mockApiResponse: TestFnArgs['mockApiResponse'], page: TestFnArgs['page']) => {
+  await mockApiResponse(
+    'contractInfo:token_verified_info',
+    null as never,
+    { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash }, status: 500 },
+  );
+  await page.route(tokenInfo.icon_url as string, (route) => route.fulfill({ status: 404 }));
 };
 
 test.beforeEach(async({ mockTextAd }) => {
@@ -46,14 +58,7 @@ test.beforeEach(async({ mockTextAd }) => {
 
 test('base view', async({ render, page, createSocket, mockApiResponse }) => {
   await mockTokenData(mockApiResponse);
-  // the optional services are down, so the page shows neither tags, verified info nor the token icon
-  await mockApiResponse('metadata:info', null as never, { queryParams: addressMetadataQueryParams, status: 500 });
-  await mockApiResponse(
-    'contractInfo:token_verified_info',
-    null as never,
-    { pathParams: { instanceId: config.apis.contractInfo?.instanceId, hash }, status: 500 },
-  );
-  await page.route(tokenInfo.icon_url as string, (route) => route.fulfill({ status: 404 }));
+  await mockOptionalServicesDown(mockApiResponse, page);
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
@@ -103,6 +108,7 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   await mockApiResponse('core:address', contract, { pathParams: { hash } });
   await mockApiResponse('core:token_counters', tokenCounters, { pathParams: { hash } });
   await mockApiResponse('core:token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockApiResponse('metadata:info', null as never, { queryParams: { ...addressMetadataQueryParams, addresses: [ hash ] }, status: 500 });
   await mockApiResponse(
     'contractInfo:token_verified_info',
     verifiedAddressesMocks.TOKEN_INFO,
@@ -126,6 +132,7 @@ test('scam token', async({ render, page, createSocket, mockApiResponse, mockEnvs
     [ 'NEXT_PUBLIC_VIEWS_TOKEN_SCAM_TOGGLE_ENABLED', 'true' ],
   ]);
   await mockTokenData(mockApiResponse);
+  await mockOptionalServicesDown(mockApiResponse, page);
   await mockApiResponse('core:token', { ...tokenInfo, reputation: 'scam' }, { pathParams: { hash } });
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
@@ -144,6 +151,7 @@ test.describe('mobile', () => {
   test('base view', async({ render, page, createSocket, mockApiResponse }) => {
     test.slow();
     await mockTokenData(mockApiResponse);
+    await mockOptionalServicesDown(mockApiResponse, page);
     const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
