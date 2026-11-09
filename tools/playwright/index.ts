@@ -1,7 +1,8 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to drive playwright and print to stdout */
-import { spawnSync } from 'child_process';
+import { execFileSync, spawnSync } from 'child_process';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import path from 'path';
 
 import type { FlagSpec } from '../cli/flags';
 import { parseArgs as parseFlags } from '../cli/flags';
@@ -43,7 +44,8 @@ const USAGE = `Usage:
   test:pw --docker [...]
       Run the same command inside the Playwright image matching the installed @playwright/test, with
       the Linux node_modules_linux mounted over node_modules — how CI-matching screenshots are made
-      on a Mac. Docker gets a terminal only when stdin is one.
+      on a Mac. From a linked git worktree the main repository's .git is mounted too, read-only, so
+      --changed resolves its base inside the container. Docker gets a terminal only when stdin is one.
 
   test:pw --docker-deps
       Install the Linux dependencies into node_modules_linux (once, before the first --docker run).
@@ -110,7 +112,19 @@ export interface Runtime {
   readonly readFile: (file: string) => string;
   readonly fileExists: (file: string) => boolean;
   readonly changes: (baseRef: string) => BranchChanges;
+  readonly gitCommonDir: () => string | null;
   readonly isTTY: boolean;
+}
+
+// git prints the common dir relative to cwd for the main checkout (`.git`) and absolute for a linked
+// worktree; outside a repository there is nothing to mount.
+function resolveGitCommonDir(cwd: string): string | null {
+  try {
+    const out = execFileSync('git', [ 'rev-parse', '--git-common-dir' ], { cwd, encoding: 'utf8', stdio: 'pipe' });
+    return path.resolve(cwd, out.trim());
+  } catch {
+    return null;
+  }
 }
 
 const DEFAULT_RUNTIME: Runtime = {
@@ -125,6 +139,7 @@ const DEFAULT_RUNTIME: Runtime = {
     const baseCommit = resolveBaseCommit(baseRef, process.cwd());
     return { baseCommit, changedFiles: getChangedFiles(baseCommit, process.cwd()) };
   },
+  gitCommonDir: () => resolveGitCommonDir(process.cwd()),
   isTTY: process.stdin.isTTY === true,
 };
 
@@ -152,7 +167,8 @@ function runInDocker(argv: ReadonlyArray<string>, options: CliOptions, runtime: 
     console.error('Linux dependencies are missing. Install them with: pnpm test:pw --docker-deps');
     return 1;
   }
-  return runtime.spawn({ ...buildDockerCommand(argv.filter((arg) => arg !== DOCKER_FLAG), dockerOptions), env });
+  const innerArgs = argv.filter((arg) => arg !== DOCKER_FLAG);
+  return runtime.spawn({ ...buildDockerCommand(innerArgs, dockerOptions, runtime.gitCommonDir()), env });
 }
 
 // A variable already in the shell wins over the file's value, as it did under dotenv-cli.
