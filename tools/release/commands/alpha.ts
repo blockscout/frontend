@@ -37,18 +37,24 @@ export function parseAlphaArgs(args: ReadonlyArray<string>): AlphaArgs {
 }
 
 // The tag on origin is where an earlier run got to: the publish that creates the tag went through and the
-// run stopped at the push or the watch, and the re-run does not tag or publish again. A tag elsewhere
-// than the head is not this alpha, and a tag the pre-release does not point at was not made by the publish.
-export function alphaState(tag: string, branch: string, taggedSha: string | undefined, head: string, preRelease: GithubRelease): 'new' | 'published' {
+// run stopped at the push or the watch, and the re-run does not tag or publish again. It is judged against
+// the branch on origin, before the checkout: a "backport" PR merged since is the next alpha's, not this one's.
+// A tag elsewhere than that head is not this alpha, and a tag the pre-release does not point at, or points
+// at while still a draft, was not made by the publish.
+export function alphaState(tag: string, branch: string, taggedSha: string | undefined, pushedHead: string, preRelease: GithubRelease): 'new' | 'published' {
   if (taggedSha === undefined) {
     return 'new';
   }
-  if (taggedSha !== head) {
-    throw new Error(`${ tag } is on ${ REMOTE } at ${ taggedSha.slice(0, 10) }, not at the head of ${ branch } (${ head.slice(0, 10) })`);
+  if (taggedSha !== pushedHead) {
+    throw new Error(`${ tag } is on ${ REMOTE } at ${ taggedSha.slice(0, 10) }, not at the head of ${ remoteBranch(branch) } (${ pushedHead.slice(0, 10) })`);
   }
   if (preRelease.tagName !== tag) {
-    throw new Error(`${ tag } is on ${ REMOTE } at the head of ${ branch }, but the pre-release still points at ${ preRelease.tagName } ` +
+    throw new Error(`${ tag } is on ${ REMOTE } at the head of ${ remoteBranch(branch) }, but the pre-release still points at ${ preRelease.tagName } ` +
       `(${ preRelease.url }); re-point it to ${ tag } by hand, or delete the tag from ${ REMOTE } and re-run`);
+  }
+  if (preRelease.draft) {
+    throw new Error(`${ tag } is on ${ REMOTE } at the head of ${ remoteBranch(branch) } and the pre-release points at it, but is still a draft ` +
+      `(${ preRelease.url }); publish it by hand, or delete the tag from ${ REMOTE } and re-run`);
   }
   return 'published';
 }
@@ -82,6 +88,11 @@ function alphaSteps(steps: StepRunner, { tag, branch, head, notes, preRelease }:
   steps.run(`Push ${ tag } to ${ REMOTE }, a no-op once the publish created it`, () => push(`refs/tags/${ tag }`));
 }
 
+function watchAlphaRun(steps: StepRunner, tag: string): void {
+  steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'push'));
+  steps.finish();
+}
+
 export function alphaCommand(args: ReadonlyArray<string>): number {
   const { tag, version, dryRun } = parseAlphaArgs(args);
   const releaseTag = formatVersion(version);
@@ -92,32 +103,33 @@ export function alphaCommand(args: ReadonlyArray<string>): number {
   }
   fetchBranch(branch);
   fetchBranch('main');
-  const isTagPushed = hasRemoteRef(`refs/tags/${ tag }`);
-  if (!isTagPushed) {
+  const pushedHead = resolveCommit(remoteBranch(branch));
+  const preRelease = findReleasePreRelease(listReleases(), version);
+  const state = alphaState(tag, branch, hasRemoteRef(`refs/tags/${ tag }`) ? resolveCommit(tag) : undefined, pushedHead, preRelease);
+  if (state === 'new') {
     assertTagIsNew(tag);
   }
-  const preRelease = findReleasePreRelease(listReleases(), version);
 
   const steps = stepRunner(dryRun);
+  if (state === 'published') {
+    console.error(`${ tag } is already on ${ REMOTE } at the head of ${ remoteBranch(branch) } and the pre-release points at it; ` +
+      `resuming with the ${ WORKFLOW } run.`);
+    console.log(preRelease.url);
+    watchAlphaRun(steps, tag);
+    return 0;
+  }
+
   const view = checkoutBranch(steps, branch, dryRun);
   updateReleaseBranch(steps, view, releaseTag);
   const head = view.head();
-  const state = alphaState(tag, branch, isTagPushed ? resolveCommit(tag) : undefined, head, preRelease);
-  const notes = releaseNotes(tag, releaseSourceAt(head, resolveCommit(remoteBranch(branch))), readNotesTemplate());
+  const notes = releaseNotes(tag, releaseSourceAt(head, pushedHead), readNotesTemplate());
   logReleaseNotes(tag, notes);
   const alpha: Alpha = { tag, branch, head, notes, preRelease };
-
-  if (state === 'new') {
-    if (!checkAlpha(alpha, view)) {
-      return 1;
-    }
-    alphaSteps(steps, alpha);
-  } else {
-    console.error(`${ tag } is already on ${ REMOTE } at the head of ${ branch } and the pre-release points at it; resuming with the ${ WORKFLOW } run.`);
-    console.log(preRelease.url);
+  if (!checkAlpha(alpha, view)) {
+    return 1;
   }
-  steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'push'));
-  steps.finish();
+  alphaSteps(steps, alpha);
+  watchAlphaRun(steps, tag);
 
   if (dryRun) {
     console.log(notes.markdown);

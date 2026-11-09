@@ -43,7 +43,7 @@ Run `pnpm release prepare vX.Y.Z`. When it exits, hand off; the next phase is th
 
 - The draft pre-release URL from the command's output, to review the notes on GitHub. A wrong line is
   fixed at its source — the merged PR's title, category labels or body — which the next phase regenerates
-  the notes from. An edit made on the release page is overwritten by the next `alpha`.
+  the notes from. An edit made on the release page is overwritten by the next phase.
 - The docs diff: `git diff <start>..HEAD -- docs/`, `<start>` being the cut point the command printed
   (`origin/main` for a minor, the previous final tag for a patch).
 - The PRs the command skipped, from its report, in case one was expected in the release.
