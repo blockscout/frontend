@@ -138,20 +138,16 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
         return (
           <>
             <TableCell colSpan={ (addressName || data.type === 'metadata_tag') ? 1 : 3 } verticalAlign="middle">
-              <AddressEntity.Container>
-                <AddressEntity.Icon address={ address }/>
-                <AddressEntity.Link
-                  address={ address }
-                  onClick={ handleLinkClick }
-                >
+              <AddressEntity.Container address={ address }>
+                <AddressEntity.Icon/>
+                <AddressEntity.Link onClick={ handleLinkClick }>
                   <AddressEntity.Content
                     asProp={ shouldHighlightHash ? 'mark' : 'span' }
-                    address={{ ...address, hash }}
                     textStyle="sm"
                     fontWeight={ 700 }
                   />
                 </AddressEntity.Link>
-                <AddressEntity.Copy address={{ ...address, hash }}/>
+                <AddressEntity.Copy/>
               </AddressEntity.Container>
             </TableCell>
             { addressName && (

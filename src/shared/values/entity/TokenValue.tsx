@@ -8,7 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import type { EntityProps as TokenEntityProps } from 'src/slices/token/components/entity/TokenEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
-import TokenEntityL1 from 'src/features/rollup/common/components/TokenEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import type { Props as AssetValueProps } from './AssetValue';
 import AssetValue from './AssetValue';
@@ -20,10 +20,8 @@ interface Props extends Omit<AssetValueProps, 'asset'> {
 }
 
 const TokenValue = ({ token, tokenEntityProps, layer, ...rest }: Props) => {
-  const TokenComponent = layer === 'L1' ? TokenEntityL1 : TokenEntity;
-
   const asset = (
-    <TokenComponent
+    <TokenEntity
       token={ token }
       noCopy
       onlySymbol
@@ -32,6 +30,7 @@ const TokenValue = ({ token, tokenEntityProps, layer, ...rest }: Props) => {
       ml={ 2 }
       icon={{ marginRight: 1 }}
       { ...tokenEntityProps }
+      chain={ layer === 'L1' ? parentChain : tokenEntityProps?.chain }
     />
   );
   return (

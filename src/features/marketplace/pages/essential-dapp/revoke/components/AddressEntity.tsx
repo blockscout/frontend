@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import { mainnet } from 'viem/chains';
 import { useEnsName } from 'wagmi';
 
@@ -16,4 +15,4 @@ function AddressEntity({ address, ...props }: EntityProps) {
   return <AddressEntityBase address={{ ...address, name: ensQuery.data }} { ...props }/>;
 }
 
-export default chakra(AddressEntity);
+export default AddressEntity;

@@ -12,8 +12,8 @@
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
-#   --profile     Build a React-profileable production bundle (`next build --webpack --profile`).
-#                 Why profiling stays on webpack, and what it's good for: tools/profiling/CONTEXT.md.
+#   --profile     Build a React-profileable production bundle (`next build --profile`).
+#                 What it's good for: tools/profiling/CONTEXT.md.
 
 source ./tools/dev-server/run_steps.sh
 
@@ -58,7 +58,7 @@ cmd="pnpm prod:preset $preset_name"
 build_flags=""
 if [ "$profile" = true ]; then
   cmd="$cmd --profile"
-  build_flags=" --webpack --profile"
+  build_flags=" --profile"
 fi
 
 build_port_args "$port" "$usage"

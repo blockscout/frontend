@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { BoxProps } from '@chakra-ui/react';
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenType } from '../../types/api';
@@ -9,103 +8,69 @@ import type { schemas } from '@blockscout/api-types';
 
 import TokenIconPlaceholder from 'src/slices/token/components/icon/TokenIconPlaceholder';
 
-import { useMultichainContext } from 'src/features/multichain/context';
-
 import config from 'src/config';
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
-import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
-import { route } from 'src/shared/router/routes';
+import type { EntityComponentProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf } from 'src/shared/entities/entity-props';
+import { useEntityRoot } from 'src/shared/entities/root';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'token'>;
-
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route(
-    { pathname: '/token/[hash]', query: { ...props.query, hash: props.token.address_hash } },
-    { chain: props.chain, external: props.external },
-  );
-
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
-});
-
-type IconProps = Pick<EntityProps, 'token' | 'className'> & EntityBase.IconBaseProps;
-
-const Icon = (props: IconProps) => {
-  if (props.noIcon) {
-    return null;
-  }
-
-  const styles = {
-    ...getIconProps(props, Boolean(props.shield ?? props.chain)),
-    borderRadius: props.token.type === 'ERC-20' ? 'full' : 'base',
+export interface TokenEntityData {
+  token: Pick<schemas['Token'], 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'reputation'> & {
+    type: TokenType | null;
   };
+  noSymbol?: boolean;
+  jointSymbol?: boolean;
+  onlySymbol?: boolean;
+}
 
-  const shield = (() => {
-    if ('shield' in props) {
-      return props.shield;
-    }
+export type EntityProps = EntityComponentProps<TokenEntityData>;
 
-    if (props.chain) {
-      return props.chain.logo ? { src: props.chain.logo } : { name: 'networks/icon-placeholder' as const };
-    }
-  })();
+const UNNAMED_TOKEN = 'Unnamed token';
 
-  return (
-    <EntityBase.Icon
-      { ...styles }
-      className={ props.className }
-      src={ props.token.icon_url ?? undefined }
-      alt={ `${ props.token.name || 'token' } logo` }
-      fallback={ <TokenIconPlaceholder/> }
-      shield={ shield }
-      hint={ props.chain && props.shield !== false ? getChainTooltipText(props.chain, 'Token on ') : undefined }
-      { ...props }
-    />
-  );
+const getTokenText = ({ token, jointSymbol, onlySymbol }: TokenEntityData): string => {
+  return [
+    !onlySymbol && (token?.name ?? UNNAMED_TOKEN),
+    onlySymbol && (token?.symbol ?? token?.name ?? UNNAMED_TOKEN),
+    token?.symbol && jointSymbol && !onlySymbol && `(${ token.symbol })`,
+  ].filter(Boolean).join(' ');
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'token' | 'jointSymbol' | 'onlySymbol'>;
-
-const Content = chakra((props: ContentProps) => {
-  const nameString = [
-    !props.onlySymbol && (props.token.name ?? 'Unnamed token'),
-    props.onlySymbol && (props.token.symbol ?? props.token.name ?? 'Unnamed token'),
-    props.token.symbol && props.jointSymbol && !props.onlySymbol && `(${ props.token.symbol })`,
-  ].filter(Boolean).join(' ');
-
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ nameString }
-      truncation="tail"
-    />
-  );
+const TokenEntityBase = defineEntity<TokenEntityData>({
+  name: 'TokenEntity',
+  data: keysOf<TokenEntityData>()([ 'token', 'noSymbol', 'jointSymbol', 'onlySymbol' ]),
+  route: ({ token }) => token ? { pathname: '/token/[hash]', query: { hash: token.address_hash } } : undefined,
+  routeTemplate: 'token',
+  hintPrefix: 'Token on ',
+  icon: ({ token }) => ({
+    src: token?.icon_url ?? undefined,
+    alt: `${ token?.name || 'token' } logo`,
+    fallback: <TokenIconPlaceholder/>,
+    borderRadius: token?.type === 'ERC-20' ? 'full' : 'base',
+  }),
+  text: getTokenText,
+  copyText: ({ token }) => token?.address_hash ?? '',
+  defaults: { truncation: 'tail' },
 });
 
-type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol' | 'onlySymbol'>;
+const { Root, Container, Icon, Link, Content, Copy } = TokenEntityBase;
 
-const Symbol = (props: SymbolProps) => {
-  const symbol = props.token.symbol;
+const Symbol = () => {
+  const root = useEntityRoot<TokenEntityData>();
+  const data = root?.data;
+  const symbol = data?.token.symbol;
 
-  if (!symbol || props.noSymbol || props.jointSymbol || props.onlySymbol) {
+  if (!symbol || data.noSymbol || data.jointSymbol || data.onlySymbol) {
     return null;
   }
 
   return (
     <Skeleton
-      loading={ props.isLoading }
+      loading={ root?.options.isLoading }
       display="inline-flex"
       alignItems="center"
       maxW="20%"
@@ -118,19 +83,6 @@ const Symbol = (props: SymbolProps) => {
     </Skeleton>
   );
 };
-
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'token'>;
-
-const Copy = (props: CopyProps) => {
-  return (
-    <EntityBase.Copy
-      { ...props }
-      text={ props.token.address_hash }
-    />
-  );
-};
-
-const Container = EntityBase.Container;
 
 interface ReputationProps extends BoxProps {
   value: schemas['Token']['reputation'];
@@ -148,35 +100,26 @@ const Reputation = ({ value, ...rest }: ReputationProps) => {
   return null;
 };
 
-export interface EntityProps extends EntityBase.EntityBaseProps {
-  token: Pick<schemas['Token'], 'address_hash' | 'icon_url' | 'name' | 'symbol' | 'reputation'> & {
-    type: TokenType | null;
-  };
-  noSymbol?: boolean;
-  jointSymbol?: boolean;
-  onlySymbol?: boolean;
-}
-
 const TokenEntity = (props: EntityProps) => {
-  const multichainContext = useMultichainContext();
-  const partsProps = distributeEntityProps(props, multichainContext);
-
-  const content = <Content { ...partsProps.content }/>;
-
   return (
-    <Container w="100%" { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
-      <Symbol { ...partsProps.symbol }/>
-      <Copy { ...partsProps.copy }/>
+    <Container w="100%" { ...props }>
+      <Icon/>
+      <Link><Content/></Link>
+      <Symbol/>
+      <Copy/>
       <Reputation value={ props.token.reputation }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(TokenEntity));
+Symbol.displayName = 'TokenEntity.Symbol';
+Reputation.displayName = 'TokenEntity.Reputation';
+TokenEntity.displayName = 'TokenEntity';
+
+export default React.memo(TokenEntity);
 
 export {
+  Root,
   Container,
   Link,
   Icon,

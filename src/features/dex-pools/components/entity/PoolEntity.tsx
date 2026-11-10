@@ -1,117 +1,121 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex, chakra } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type * as contractsInfo from '@blockscout/contracts-info-types';
 
+import type { TokenEntityData } from 'src/slices/token/components/entity/TokenEntity';
 import * as TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import { getPoolTitle } from 'src/features/dex-pools/utils/get-pool-title';
 
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps } from 'src/shared/entities/utils';
-import { route } from 'src/shared/router/routes';
+import type { EntityComponentProps, EntityIconProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf, mergeEntityData, splitByKeys } from 'src/shared/entities/entity-props';
+import { useEntityOptions, useEntityRoot } from 'src/shared/entities/root';
+import { useSplitCssProps } from 'src/shared/entities/split-css-props';
 
-import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+export interface PoolEntityData {
+  pool: contractsInfo.Pool;
+}
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'pool'>;
+export type EntityProps = EntityComponentProps<PoolEntityData>;
+export type IconProps = EntityIconProps<PoolEntityData>;
 
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/pools/[hash]', query: { hash: props.pool.pool_id } });
+const DATA_KEYS = keysOf<PoolEntityData>()([ 'pool' ]);
 
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
+const PoolEntityBase = defineEntity<PoolEntityData>({
+  name: 'PoolEntity',
+  data: DATA_KEYS,
+  route: ({ pool }) => pool ? { pathname: '/pools/[hash]', query: { hash: pool.pool_id } } : undefined,
+  singleChain: true,
+  hintPrefix: 'Pool on ',
+  icon: 'tokens',
+  text: ({ pool }) => pool ? getPoolTitle(pool) : '',
+  copyText: false,
+  defaults: { truncation: 'tail' },
 });
 
-type IconProps = Pick<EntityProps, 'pool' | 'className'> & EntityBase.IconBaseProps;
+const { Root, Container, Link, Content } = PoolEntityBase;
 
-const Icon = (props: IconProps) => {
-  const borderColor = { _light: 'whiteAlpha.800', _dark: 'blackAlpha.800' };
+const toToken = (iconUrl: string | undefined, symbol: string, addressHash: string): TokenEntityData['token'] => ({
+  icon_url: iconUrl ?? null,
+  symbol,
+  address_hash: addressHash,
+  name: '',
+  type: 'ERC-20',
+  reputation: null,
+});
+
+const TOKEN_ICON_BORDER_COLOR = { _light: 'whiteAlpha.800', _dark: 'blackAlpha.800' };
+
+interface TokenIconFrameProps extends Pick<IconProps, 'isLoading' | 'variant'> {
+  token: TokenEntityData['token'];
+  isQuote?: boolean;
+}
+
+const TokenIconFrame = ({ token, isLoading, variant, isQuote }: TokenIconFrameProps) => {
   return (
-    <Flex>
-      <Flex
-        bgColor="bg.primary"
-        borderRadius="full"
-        border="1px solid"
-        borderColor={ borderColor }
-      >
-        <TokenEntity.Icon
-          marginRight={ 0 }
-          variant={ props.variant }
-          token={{
-            icon_url: props.pool.base_token_icon_url ?? null,
-            symbol: props.pool.base_token_symbol,
-            address_hash: props.pool.base_token_address,
-            name: '',
-            type: 'ERC-20',
-            reputation: null,
-          }}
-          isLoading={ props.isLoading }
-        />
-      </Flex>
-      <Flex
-        transform="translateX(-8px)"
-        bgColor="bg.primary"
-        borderRadius="full"
-        border="1px solid"
-        borderColor={ borderColor }
-      >
-        <TokenEntity.Icon
-          marginRight={ 0 }
-          variant={ props.variant }
-          token={{
-            icon_url: props.pool.quote_token_icon_url ?? null,
-            symbol: props.pool.quote_token_symbol,
-            address_hash: props.pool.quote_token_address,
-            name: '',
-            type: 'ERC-20',
-            reputation: null,
-          }}
-          isLoading={ props.isLoading }
-        />
-      </Flex>
+    <Flex
+      transform={ isQuote ? 'translateX(-8px)' : undefined }
+      bgColor="bg.primary"
+      borderRadius="full"
+      border="1px solid"
+      borderColor={ TOKEN_ICON_BORDER_COLOR }
+    >
+      <TokenEntity.Root token={ token }>
+        <TokenEntity.Icon marginRight={ 0 } variant={ variant } isLoading={ isLoading }/>
+      </TokenEntity.Root>
     </Flex>
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'pool'>;
+const Icon = (props: IconProps) => {
+  const root = useEntityRoot<PoolEntityData>();
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const [ override, own ] = splitByKeys<PoolEntityData, Pick<IconProps, 'isLoading' | 'noIcon' | 'variant' | 'className'>>(rest, DATA_KEYS);
+  const { pool } = mergeEntityData(root?.data, override);
+  const { isLoading = options.isLoading, noIcon = options.noIcon, variant = options.variant, className } = own;
 
-const Content = chakra((props: ContentProps) => {
-  const nameString = getPoolTitle(props.pool);
+  if (noIcon || !pool) {
+    return null;
+  }
 
   return (
-    <Truncate value={ nameString } type="end" loading={ props.isLoading }/>
+    <Box display="flex" className={ className } { ...css }>
+      <TokenIconFrame
+        token={ toToken(pool.base_token_icon_url, pool.base_token_symbol, pool.base_token_address) }
+        isLoading={ isLoading }
+        variant={ variant }
+      />
+      <TokenIconFrame
+        token={ toToken(pool.quote_token_icon_url, pool.quote_token_symbol, pool.quote_token_address) }
+        isLoading={ isLoading }
+        variant={ variant }
+        isQuote
+      />
+    </Box>
   );
-});
-
-const Container = EntityBase.Container;
-
-export interface EntityProps extends EntityBase.EntityBaseProps {
-  pool: contractsInfo.Pool;
-}
+};
 
 const PoolEntity = (props: EntityProps) => {
-  const partsProps = distributeEntityProps(props);
-  const content = <Content { ...partsProps.content }/>;
-
   return (
-    <Container w="100%" { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+    <Container w="100%" { ...props }>
+      <Icon/>
+      <Link><Content/></Link>
     </Container>
   );
 };
 
-export default React.memo(chakra(PoolEntity));
+Icon.displayName = 'PoolEntity.Icon';
+PoolEntity.displayName = 'PoolEntity';
+
+export default React.memo(PoolEntity);
 
 export {
+  Root,
   Container,
   Link,
   Icon,

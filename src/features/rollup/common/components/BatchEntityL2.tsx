@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as BlockEntity from 'src/slices/block/components/entity/BlockEntity';
@@ -26,4 +25,4 @@ const BatchEntityL2 = (props: BlockEntity.EntityProps) => {
   );
 };
 
-export default chakra(BatchEntityL2);
+export default BatchEntityL2;

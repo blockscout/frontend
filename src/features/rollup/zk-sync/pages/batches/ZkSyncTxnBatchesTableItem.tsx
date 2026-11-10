@@ -5,8 +5,10 @@ import React from 'react';
 
 import type { ZkSyncBatchesItem } from 'src/features/rollup/zk-sync/types/api';
 
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import ZkSyncL2TxnBatchStatus from 'src/features/rollup/zk-sync/components/ZkSyncL2TxnBatchStatus';
 
 import config from 'src/config';
@@ -59,25 +61,27 @@ const ZkSyncTxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.commit_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.commit_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) : <Text>Pending</Text> }
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.prove_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.prove_transaction_hash }
             textStyle="sm"
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) : <Text>Pending</Text> }
       </TableCell>

@@ -5,11 +5,11 @@ import React from 'react';
 
 import SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
@@ -42,34 +42,38 @@ interface ItemProps {
 
 const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   const l1BlockLink = item.l1BlockNumber ? (
-    <BlockEntityL1
+    <BlockEntity
       number={ item.l1BlockNumber }
       isLoading={ isLoading }
       fontWeight={ 700 }
+      chain={ parentChain }
     />
   ) : (
-    <BlockEntityL1
+    <BlockEntity
       number="TBD"
       isLoading={ isLoading }
       fontWeight={ 700 }
       noLink
+      chain={ parentChain }
     />
   );
 
   const l1TxLink = item.l1TxHash ? (
-    <TxEntityL1
+    <TxEntity
       isLoading={ isLoading }
       hash={ item.l1TxHash }
       truncation="dynamic"
       noCopy
+      chain={ parentChain }
     />
   ) : (
-    <TxEntityL1
+    <TxEntity
       isLoading={ isLoading }
       hash="To be determined"
       truncation="none"
       noLink
       noCopy
+      chain={ parentChain }
     />
   );
 
