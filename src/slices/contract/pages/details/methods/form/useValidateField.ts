@@ -12,6 +12,66 @@ interface Params {
   isOptional: boolean;
 }
 
+type FieldValue = string | boolean;
+
+type ValidationResult = true | string;
+
+function validateAddress(value: FieldValue): ValidationResult {
+  if (typeof value !== 'string' || !isAddress(value)) {
+    return 'Invalid address format';
+  }
+
+  // all lowercase addresses are valid
+  const isInLowerCase = value === value.toLowerCase();
+  if (isInLowerCase) {
+    return true;
+  }
+
+  // check if address checksum is valid
+  return getAddress(value) === value ? true : 'Invalid address checksum';
+}
+
+function parseBigInt(value: FieldValue): bigint | null {
+  try {
+    return BigInt(value);
+  } catch (error) {
+    return null;
+  }
+}
+
+function getIntRangeError({ isUnsigned, power }: MatchInt): string {
+  const lowerBoundary = isUnsigned ? '0' : `-1 * 2 ^ ${ Number(power) - 1 }`;
+  const upperBoundary = isUnsigned ? `2 ^ ${ power } - 1` : `2 ^ ${ Number(power) - 1 } - 1`;
+  return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
+}
+
+function validateInt(value: FieldValue, argTypeMatchInt: MatchInt): ValidationResult {
+  const valueBi = parseBigInt(value);
+
+  if (typeof value !== 'string' || valueBi === null) {
+    return 'Invalid integer format';
+  }
+
+  if (valueBi > argTypeMatchInt.max || valueBi < argTypeMatchInt.min) {
+    return getIntRangeError(argTypeMatchInt);
+  }
+
+  return true;
+}
+
+function validateBytes(value: FieldValue, length: string | undefined): ValidationResult {
+  if (!isHex(value)) {
+    return 'Invalid bytes format';
+  }
+
+  if (!length) {
+    return true;
+  }
+
+  const valueLengthInBytes = value.replace('0x', '').length / 2;
+  return valueLengthInBytes !== Number(length) ? `Value should be ${ length } bytes in length` : true;
+}
+
 export default function useValidateField({ isOptional, argType, argTypeMatchInt }: Params) {
 
   const bytesMatch = React.useMemo(() => {
@@ -20,67 +80,25 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
 
   // some values are formatted before they are sent to the validator
   // see ./useFormatFieldValue.tsx hook
-  return React.useCallback((value: string | boolean | undefined) => {
+  return React.useCallback((value: FieldValue | undefined): ValidationResult => {
     if (value === undefined || value === '') {
       return isOptional ? true : 'Field is required';
     }
 
     if (argType === 'address') {
-      if (typeof value !== 'string' || !isAddress(value)) {
-        return 'Invalid address format';
-      }
-
-      // all lowercase addresses are valid
-      const isInLowerCase = value === value.toLowerCase();
-      if (isInLowerCase) {
-        return true;
-      }
-
-      // check if address checksum is valid
-      return getAddress(value) === value ? true : 'Invalid address checksum';
+      return validateAddress(value);
     }
 
     if (argTypeMatchInt) {
-      const valueBi = (() => {
-        try {
-          return BigInt(value);
-        } catch (error) {
-          return null;
-        }
-      })();
-
-      if (typeof value !== 'string' || valueBi === null) {
-        return 'Invalid integer format';
-      }
-
-      if (valueBi > argTypeMatchInt.max || valueBi < argTypeMatchInt.min) {
-        const lowerBoundary = argTypeMatchInt.isUnsigned ? '0' : `-1 * 2 ^ ${ Number(argTypeMatchInt.power) - 1 }`;
-        const upperBoundary = argTypeMatchInt.isUnsigned ? `2 ^ ${ argTypeMatchInt.power } - 1` : `2 ^ ${ Number(argTypeMatchInt.power) - 1 } - 1`;
-        return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
-      }
-
-      return true;
+      return validateInt(value, argTypeMatchInt);
     }
 
-    if (argType === 'bool') {
-      if (typeof value !== 'boolean') {
-        return 'Invalid boolean format. Allowed values: true, false';
-      }
+    if (argType === 'bool' && typeof value !== 'boolean') {
+      return 'Invalid boolean format. Allowed values: true, false';
     }
 
     if (bytesMatch) {
-      const [ , length ] = bytesMatch;
-
-      if (!isHex(value)) {
-        return 'Invalid bytes format';
-      }
-
-      if (length) {
-        const valueLengthInBytes = value.replace('0x', '').length / 2;
-        return valueLengthInBytes !== Number(length) ? `Value should be ${ length } bytes in length` : true;
-      }
-
-      return true;
+      return validateBytes(value, bytesMatch[1]);
     }
 
     return true;
