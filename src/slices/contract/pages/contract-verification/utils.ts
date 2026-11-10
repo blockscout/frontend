@@ -174,10 +174,12 @@ function setRustVerifierDefaults(defaultValues: FormFields, method: SmartContrac
     return;
   }
 
+  // Stryker disable next-line ConditionalExpression: both methods that reach here define the field, the guard only narrows the FormFields union
   if ('name' in defaultValues) {
     defaultValues.name = undefined;
   }
 
+  // Stryker disable next-line ConditionalExpression: both methods that reach here define the field, the guard only narrows the FormFields union
   if ('autodetect_constructor_args' in defaultValues) {
     defaultValues.autodetect_constructor_args = false;
   }

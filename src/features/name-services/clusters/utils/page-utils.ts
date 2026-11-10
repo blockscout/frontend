@@ -153,7 +153,12 @@ export function calculateHasNextPage(
 
   const total = getDirectoryTotal(data);
 
-  return total !== undefined && (page * limit) < total;
+  // Stryker disable next-line ConditionalExpression: a comparison with undefined is always false, the guard only narrows the type
+  if (total === undefined) {
+    return false;
+  }
+
+  return (page * limit) < total;
 }
 
 export function isValidViewMode(value: string): value is ViewMode {

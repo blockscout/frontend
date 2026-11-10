@@ -16,7 +16,7 @@ export default function getFullPathOfImportedFile(baseFilePath: string, imported
 
 // how remappings work - https://docs.soliditylang.org/en/v0.8.13/path-resolution.html#import-remapping
 function applyCompilerRemappings(baseFilePath: string, importedFilePath: string, compilerRemappings: Array<string> | undefined): string {
-  if (!compilerRemappings || compilerRemappings.length === 0) {
+  if (!compilerRemappings) {
     return importedFilePath;
   }
 

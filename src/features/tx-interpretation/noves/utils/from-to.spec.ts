@@ -1,3 +1,5 @@
+import { omit } from 'es-toolkit';
+
 import type { NovesResponseData, NovesSentReceived } from 'src/features/tx-interpretation/noves/types/api';
 
 import * as transactionMock from 'src/features/tx-interpretation/noves/mocks';
@@ -156,6 +158,13 @@ describe('getFromTo', () => {
 
     it('reports the address itself if it matches neither raw side', () => {
       expect(getFromTo(buildTx({}), CURRENT)).toEqual({ text: 'Sent to', address: CURRENT });
+    });
+
+    it('falls back to the raw data if the response has no transfer lists', () => {
+      const tx = buildTx({ fromAddress: '0xAAA' });
+      const withoutTransferLists = { ...tx, classificationData: omit(tx.classificationData, [ 'sent', 'received' ]) } as NovesResponseData;
+
+      expect(getFromTo(withoutTransferLists, CURRENT)).toEqual({ text: 'Sent to', address: RAW_TO });
     });
   });
 });

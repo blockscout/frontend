@@ -55,10 +55,6 @@ const getFromToByTransfers = (
     return receivedFound[0] ? receivedFrom(receivedFound[0]) : undefined;
   }
 
-  if (!receivedFound[0]) {
-    return sentTo(sentFound[0]);
-  }
-
   const byRawParticipant = sentFound.length === receivedFound.length ? getFromToByRawParticipant(raw, currentAddress) : undefined;
   if (byRawParticipant) {
     return byRawParticipant;
