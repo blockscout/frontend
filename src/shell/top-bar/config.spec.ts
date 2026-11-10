@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type topBarConfig from './config';
-import { COLOR_THEMES } from './settings/color-theme/config';
+import { COLOR_THEMES } from './settings/fields/color-theme/config';
 
 async function loadConfig(envs: Array<[ string, string ]>): Promise<typeof topBarConfig> {
   return withEnvs(envs, async() => (await import('./config')).default);

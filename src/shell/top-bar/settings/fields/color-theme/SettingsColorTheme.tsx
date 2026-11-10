@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex, Separator } from '@chakra-ui/react';
 import React from 'react';
+
+import type { SettingsControlVariant } from '../../types';
 
 import config from 'src/config';
 import * as cookies from 'src/shared/storage/cookies';
@@ -9,7 +10,9 @@ import * as cookies from 'src/shared/storage/cookies';
 import type { ColorMode } from 'src/toolkit/chakra/color-mode';
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
-import SettingsSample from '../SettingsSample';
+import { useSettingsContext } from '../../context';
+import SettingsSample from '../../parts/SettingsSample';
+import SettingsSamplesRow from '../../parts/SettingsSamplesRow';
 import type { ColorThemeId } from './config';
 import { SYSTEM_COLOR_THEME_ID, isConcreteColorTheme } from './config';
 import { getInitialColorTheme, getThemeHexWithOverrides, resolveColorTheme } from './utils';
@@ -22,12 +25,15 @@ const concreteThemes = availableThemes.filter(isConcreteColorTheme);
 
 interface Props {
   onSelect?: () => void;
+  variant?: SettingsControlVariant;
 }
 
-const SettingsColorTheme = ({ onSelect }: Props) => {
+const SettingsColorTheme = ({ onSelect, variant = 'popover' }: Props) => {
   const { setColorMode } = useColorMode();
+  const settingsContext = useSettingsContext();
 
-  const [ activeThemeId, setActiveThemeId ] = React.useState<ColorThemeId>();
+  const activeThemeId = settingsContext?.colorTheme;
+  const setActiveThemeId = settingsContext?.setColorTheme;
 
   const applyTheme = React.useCallback((themeId: ColorThemeId, prefersDark: boolean) => {
     const concreteThemeId = resolveColorTheme(themeId, prefersDark);
@@ -60,7 +66,7 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
     });
 
     applyTheme(nextColorTheme, prefersDark);
-    setActiveThemeId(nextColorTheme);
+    setActiveThemeId?.(nextColorTheme);
   // should run only on mount
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ ]);
@@ -82,14 +88,15 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
 
     const themeId = event.currentTarget.getAttribute('data-value') as ColorThemeId | null;
 
+    // Stryker disable next-line ConditionalExpression: every sample renders its data-value, so the guard only narrows the nullable attribute type
     if (!themeId) {
       return;
     }
 
     applyTheme(themeId, window.matchMedia(PREFERS_DARK_QUERY).matches);
-    setActiveThemeId(themeId);
+    setActiveThemeId?.(themeId);
     onSelect?.();
-  }, [ applyTheme, onSelect ]);
+  }, [ applyTheme, setActiveThemeId, onSelect ]);
 
   const activeTheme = availableThemes.find((theme) => theme.id === activeThemeId);
 
@@ -98,27 +105,20 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   }
 
   return (
-    <>
-      <div>
-        <Box fontWeight={ 600 }>Color theme</Box>
-        <Box color="text.secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
-        <Flex>
-          { availableThemes.map((theme) => {
-            return (
-              <SettingsSample
-                key={ theme.label }
-                label={ theme.label }
-                value={ theme.id }
-                bg={ theme.sampleBg }
-                isActive={ theme.id === activeThemeId }
-                onClick={ handleSelect }
-              />
-            );
-          }) }
-        </Flex>
-      </div>
-      <Separator my={ 3 }/>
-    </>
+    <SettingsSamplesRow variant={ variant } title="Color theme" mobileTitle="Theme" value={ activeTheme?.label }>
+      { availableThemes.map((theme) => {
+        return (
+          <SettingsSample
+            key={ theme.label }
+            label={ theme.label }
+            value={ theme.id }
+            bg={ theme.sampleBg }
+            isActive={ theme.id === activeThemeId }
+            onClick={ handleSelect }
+          />
+        );
+      }) }
+    </SettingsSamplesRow>
   );
 };
 

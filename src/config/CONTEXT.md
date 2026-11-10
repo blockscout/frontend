@@ -18,7 +18,7 @@ violation fails before review.
 2. **Only `src/config` is imported.** App code reads `config.<section>.<name>` (the sections:
    `.agents/rules/env-vars.md`). It never imports the module itself.
 3. **Only config modules read envs.** `src/config/utils/envs.ts` is importable from a `config.ts` or
-   `src/config/**`, nowhere else, and the raw `window.__envs` map is read by `getEnvValue` only. A value
+   `src/config/**`, nowhere else, and the raw `window.__envs` map is read inside that file only. A value
    read elsewhere is untyped, unvalidated and invisible to the aggregator. It can also differ between the
    browser and Node. A util that called `getEnvValue` directly read one value in the browser and another
    under Node, and broke an unrelated test suite in a way that showed up only as a visual diff.

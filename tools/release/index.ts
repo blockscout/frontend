@@ -13,8 +13,8 @@ const USAGE = `Usage: pnpm release <subcommand> [args]
 
   prepare <vX.Y.Z>    cut release/vX.Y.Z (from main, or from vX.Y.Z-1 for a patch), pick the "backport" PRs
                       onto it and create the draft pre-release
-  alpha <tag>         pick the "backport" PRs onto release/vX.Y.Z, tag its head as the alpha, re-point the
-                      pre-release to it and watch its CI run
+  alpha <tag>         pick the "backport" PRs onto release/vX.Y.Z, tag its head as the alpha, publish the
+                      pre-release re-pointed to it and watch its CI run
   publish <vX.Y.Z>    tag the latest alpha as the final release marked latest, return the docs commits to
                       main and watch its CI run
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels

@@ -5,7 +5,7 @@ import React from 'react';
 
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-import type { SampleBg } from './color-theme/config';
+import type { SampleBg } from '../fields/color-theme/config';
 
 interface Props {
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;

@@ -43,6 +43,8 @@ For mid-sized structured config — anything with two or more fields, or a small
 
 Read with `parseEnvJson<T>(getEnvValue('NEXT_PUBLIC_…'))`. It returns `null` on parse failure, so always provide a fallback. The operator-facing JSON syntax uses single quotes (e.g. `'[{"id":1}]'`) so the value can be pasted into a shell or `.env` file without escaping.
 
+`getEnvValue` rewrites every `'` in the value to `"`, which breaks JSON whose *content* carries quotes — HTML attributes, an apostrophe in a sentence. A variable that accepts HTML is read with `getEnvHtmlValue`, and a JSON list of HTML strings with `parseEnvHtmlList(getRawEnvValue('NEXT_PUBLIC_…'))`, which parses the value as set first and falls back to the rewritten one so both quoting styles keep working. Rendering such a value goes through `sanitizeHtml` (`src/shared/texts/sanitize-html.ts`) on the call site.
+
 ### 3. Links to JSON config files
 
 For large configs (marketplace apps, featured-networks list, footer links, etc.) where the payload is too big to embed in an env var and benefits from being fetched and cached separately. The env var itself only carries the URL; the JSON content is loaded **asynchronously** in the browser and is **not** validated at container startup.

@@ -107,3 +107,32 @@ describe('header banner link tracking', () => {
     expect(sdk.track).not.toHaveBeenCalled();
   });
 });
+
+describe('header banner markup', () => {
+  it('renders the banner text and links without frames, inline styles or event handlers', async() => {
+    await withEnvs([
+      [ 'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE', [
+        '<div style="position:fixed;inset:0">Wallet verification required ',
+        '<a href="https://example.com" onclick="steal()">Connect</a>',
+        '<iframe srcdoc="<script src=/assets/configs/network_logo.js></script>"></iframe></div>',
+      ].join('') ],
+      [ 'NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS', 'true' ],
+    ], async() => {
+      const { render, screen } = await import('vitest/lib');
+      const { 'default': HeaderAlert } = await import('./HeaderAlert');
+
+      const view = render(<HeaderAlert/>);
+      try {
+        const link = screen.getByRole('link', { name: 'Connect' });
+        const text = screen.getByText('Wallet verification required');
+
+        expect(link.getAttribute('href')).toBe('https://example.com');
+        expect(link.hasAttribute('onclick')).toBe(false);
+        expect(text.hasAttribute('style')).toBe(false);
+        expect(view.container.querySelector('iframe')).toBeNull();
+      } finally {
+        view.unmount();
+      }
+    });
+  });
+});

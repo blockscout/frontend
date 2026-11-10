@@ -12,9 +12,6 @@ const getNestedValue = (obj: Record<string, unknown>, property: string) => {
   let current = obj;
   for (const key of keys) {
     const value = current[key];
-    if (value === undefined) {
-      return undefined;
-    }
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       current = value as Record<string, unknown>;
     } else {
@@ -26,6 +23,7 @@ const getNestedValue = (obj: Record<string, unknown>, property: string) => {
 export function getThemeHexWithOverrides(colorThemeId: ConcreteColorThemeId): string | undefined {
   const defaultHex = COLOR_THEMES.filter(isConcreteColorTheme).find((theme) => theme.id === colorThemeId)?.hex;
 
+  // Stryker disable next-line ConditionalExpression: the id is a concrete theme id, so the lookup cannot miss; the guard narrows the type
   if (!defaultHex) {
     return;
   }
