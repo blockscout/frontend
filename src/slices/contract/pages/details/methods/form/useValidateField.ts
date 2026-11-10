@@ -17,7 +17,7 @@ type FieldValue = string | boolean;
 type ValidationResult = true | string;
 
 function validateAddress(value: FieldValue): ValidationResult {
-  if (typeof value !== 'string' || !isAddress(value)) {
+  if (typeof value !== 'string' || !isAddress(value, { strict: false })) {
     return 'Invalid address format';
   }
 

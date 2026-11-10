@@ -10,7 +10,7 @@ import { matchInt } from './utils';
 
 const CHECKSUM_ADDRESS = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045';
 
-function getValidator(argType: string, isOptional = false) {
+function getValidator(argType: string, isOptional = false): ReturnType<typeof useValidateField> {
   const { result } = renderHook(() => useValidateField({ argType, argTypeMatchInt: matchInt(argType), isOptional }));
   return result.current;
 }
@@ -40,7 +40,7 @@ describe('useValidateField', () => {
     });
 
     it('rejects a mixed-case address with a wrong checksum', () => {
-      expect(getValidator('address')(CHECKSUM_ADDRESS.replace('0xd8dA', '0xD8dA'))).toBe('Invalid address format');
+      expect(getValidator('address')(CHECKSUM_ADDRESS.replace('0xd8dA', '0xD8dA'))).toBe('Invalid address checksum');
     });
 
     it('rejects a string that is not an address', () => {
