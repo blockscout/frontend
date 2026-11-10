@@ -67,21 +67,41 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     }
   }, [ application?.id ]);
 
+  const expeditedReviewHtml = getFeaturePayload(config.features.account)?.verifiedAddresses?.expeditedReviewHtml;
+  const isInProcess = application?.status === adminRs.TokenInfoSubmissionStatus.IN_PROCESS;
+  // An application under review is read-only, except that the payment tx hash can be set once (the API rejects a change).
+  const canUpdatePaymentTx = Boolean(isInProcess && expeditedReviewHtml && application && !application.paymentTx);
+
   const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
     try {
-      const submission = prepareRequestBody(data);
-      const isNewApplication = !application?.id || [
-        adminRs.TokenInfoSubmissionStatus.REJECTED,
-        adminRs.TokenInfoSubmissionStatus.APPROVED,
-      ].includes(application.status);
+      const result = await (async() => {
+        if (canUpdatePaymentTx && application?.id) {
+          return apiFetch<'admin:token_info_application_payment_tx', adminRs.TokenInfoSubmission, { message: string }>(
+            'admin:token_info_application_payment_tx',
+            {
+              pathParams: { instanceId: config.apis.admin?.instanceId, id: application.id },
+              fetchParams: {
+                method: 'PATCH',
+                body: { paymentTx: data.payment_tx },
+              },
+            },
+          );
+        }
 
-      const result = await apiFetch<'admin:token_info_applications', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_applications', {
-        pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
-        fetchParams: {
-          method: isNewApplication ? 'POST' : 'PUT',
-          body: { submission },
-        },
-      });
+        const submission = prepareRequestBody(data);
+        const isNewApplication = !application?.id || [
+          adminRs.TokenInfoSubmissionStatus.REJECTED,
+          adminRs.TokenInfoSubmissionStatus.APPROVED,
+        ].includes(application.status);
+
+        return apiFetch<'admin:token_info_applications', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_applications', {
+          pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
+          fetchParams: {
+            method: isNewApplication ? 'POST' : 'PUT',
+            body: { submission },
+          },
+        });
+      })();
 
       if ('id' in result) {
         onSubmit(result);
@@ -99,7 +119,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         description: (error as ResourceError<{ message: string }>)?.payload?.message || 'Something went wrong. Try again later.',
       });
     }
-  }, [ apiFetch, application?.id, application?.status, onSubmit ]);
+  }, [ apiFetch, application?.id, application?.status, canUpdatePaymentTx, onSubmit ]);
 
   useUpdateEffect(() => {
     if (formState.submitCount > 0 && !formState.isValid) {
@@ -124,10 +144,9 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   }
 
   const fieldProps = {
-    readOnly: application?.status === 'IN_PROCESS',
+    readOnly: isInProcess,
   };
-
-  const expeditedReviewHtml = getFeaturePayload(config.features.account)?.verifiedAddresses?.expeditedReviewHtml;
+  const submitButtonText = canUpdatePaymentTx ? 'Update request' : 'Send request';
 
   return (
     <FormProvider { ...formApi }>
@@ -197,17 +216,21 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           </GridItem>
 
           { expeditedReviewHtml && (
-            <TokenInfoExpeditedReview html={ expeditedReviewHtml } readOnly={ fieldProps.readOnly }/>
+            <TokenInfoExpeditedReview
+              html={ expeditedReviewHtml }
+              readOnly={ fieldProps.readOnly && !canUpdatePaymentTx }
+              required={ canUpdatePaymentTx }
+            />
           ) }
         </Grid>
         <Button
           type="submit"
           mt={ 8 }
           loading={ formState.isSubmitting }
-          loadingText="Send request"
-          disabled={ application?.status === 'IN_PROCESS' }
+          loadingText={ submitButtonText }
+          disabled={ isInProcess && !canUpdatePaymentTx }
         >
-          Send request
+          { submitButtonText }
         </Button>
       </form>
     </FormProvider>
