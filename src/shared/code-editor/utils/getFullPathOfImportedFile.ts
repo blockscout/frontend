@@ -6,50 +6,57 @@ import { stripLeadingSlash, stripTrailingSlash } from 'src/toolkit/utils/url';
 
 export default function getFullPathOfImportedFile(baseFilePath: string, importedFilePath: string, compilerRemappings?: Array<string>) {
   if (importedFilePath[0] !== '.') {
-    let result = importedFilePath;
-
-    // how remappings work - https://docs.soliditylang.org/en/v0.8.13/path-resolution.html#import-remapping
-    if (compilerRemappings && compilerRemappings.length > 0) {
-      const remappings = formatCompilerRemappings(compilerRemappings);
-
-      const { prefix, target } = remappings.find(({ context, prefix }) => {
-        if (context) {
-          const contextPart = '/' + stripLeadingSlash(stripTrailingSlash(context));
-          return baseFilePath.startsWith(contextPart + '/') && importedFilePath.startsWith(prefix);
-        }
-
-        return importedFilePath.startsWith(prefix);
-      }) || {};
-
-      if (prefix && target) {
-        result = importedFilePath.replace(prefix, target);
-      }
-    }
+    const result = applyCompilerRemappings(baseFilePath, importedFilePath, compilerRemappings);
 
     return result[0] === '/' ? result : '/' + result;
   }
 
-  const baseFileChunks = stripLeadingSlash(baseFilePath).split('/');
-  const importedFileChunks = importedFilePath.split('/');
+  return resolveRelativeImportPath(baseFilePath, importedFilePath);
+}
 
-  const result: Array<string> = baseFileChunks.slice(0, -1);
+// how remappings work - https://docs.soliditylang.org/en/v0.8.13/path-resolution.html#import-remapping
+function applyCompilerRemappings(baseFilePath: string, importedFilePath: string, compilerRemappings: Array<string> | undefined): string {
+  if (!compilerRemappings || compilerRemappings.length === 0) {
+    return importedFilePath;
+  }
 
-  for (let index = 0; index < importedFileChunks.length; index++) {
-    const element = importedFileChunks[index];
+  const remapping = formatCompilerRemappings(compilerRemappings)
+    .find((remapping) => isRemappingApplicable(remapping, baseFilePath, importedFilePath));
 
+  if (!remapping?.prefix || !remapping.target) {
+    return importedFilePath;
+  }
+
+  return importedFilePath.replace(remapping.prefix, remapping.target);
+}
+
+function isRemappingApplicable({ context, prefix }: Remapping, baseFilePath: string, importedFilePath: string): boolean {
+  if (context) {
+    const contextPart = '/' + stripLeadingSlash(stripTrailingSlash(context));
+    return baseFilePath.startsWith(contextPart + '/') && importedFilePath.startsWith(prefix);
+  }
+
+  return importedFilePath.startsWith(prefix);
+}
+
+function resolveRelativeImportPath(baseFilePath: string, importedFilePath: string): string | undefined {
+  const result: Array<string> = stripLeadingSlash(baseFilePath).split('/').slice(0, -1);
+
+  for (const element of importedFilePath.split('/')) {
     if (element === '.') {
       continue;
     }
 
-    if (element === '..') {
-      if (result.length === 0) {
-        break;
-      }
-      result.pop();
+    if (element !== '..') {
+      result.push(element);
       continue;
     }
 
-    result.push(element);
+    if (result.length === 0) {
+      break;
+    }
+
+    result.pop();
   }
 
   if (result.length === 0) {
