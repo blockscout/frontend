@@ -10,7 +10,7 @@ Decisions the developer made in the `to-tickets` session; no outside owner, no t
 
 | Id | Decision | Status |
 | --- | --- | --- |
-| Q01 | Profile scenarios: `eth` preset, the two URLs in ticket 01 Details; a human records them in React DevTools. | resolved |
+| Q01 | Profile scenarios: `eth` preset, the two URLs in ticket 01 Details; a human records them in React DevTools. Re-resolved in ticket 10: `eth` was unavailable (DB outage) when the after profile was due, so both sides were re-recorded on the `robinhood` preset, URLs in `tickets/10-after-profile/notes.md`. | resolved |
 | Q02 | Parent-chain `chain=` maps to a shield-less chain so L1 entities stay link-only (FR1 wins over FR5's shield for the parent chain). | resolved |
 | Q03 | `TokenEntityExternal`'s shield-only-when-multichain quirk is preserved; it lives in the surviving `TokenEntityInterchain`. | resolved |
 | Q04 | `AddressEntityInterchain` survives as the carrier of the `currentAddress` → `noLink` rule; not shifted to call sites. | resolved |

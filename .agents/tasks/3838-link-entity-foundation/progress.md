@@ -9,4 +9,4 @@
 - [x] 07 → `tickets/07-ens-clusters/`
 - [x] 08 → `tickets/08-wrappers-to-aliases/`
 - [x] 09 → `tickets/09-final-codemod/`
-- [ ] 10 → `tickets/10-after-profile/`
+- [x] 10 → `tickets/10-after-profile/`

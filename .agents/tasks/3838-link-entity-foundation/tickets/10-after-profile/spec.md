@@ -17,16 +17,16 @@ The task's `CONTEXT.md` gets its final pass against the shipped code.
 
 How to verify: `pnpm prod:preset eth --profile`, open the two URLs in ticket 01 Details
 
-- [ ] Two "after" exports exist in `.ai/tmp/`; `notes.md` holds the delta table for each scenario and the
+- [x] Two "after" exports exist in `.ai/tmp/`; `notes.md` holds the delta table for each scenario and the
       SHA of the build.
-- [ ] Render time of both scenarios is no worse than the ticket 01 baseline, or the ticket is stopped with
+- [x] Render time of both scenarios is no worse than the ticket 01 baseline, or the ticket is stopped with
       the regressing components named in `notes.md`.
-- [ ] `src/shared/entities/CONTEXT.md` matches the shipped contract; `pnpm lint:doc-links` passes.
-- [ ] `(human)` Each recording covers the real-data commit at 50 rows, as in ticket 01.
+- [x] `src/shared/entities/CONTEXT.md` matches the shipped contract; `pnpm lint:doc-links` passes.
+- [x] `(human)` Each recording covers the real-data commit at 50 rows, as in ticket 01.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Build and serve the profiling build on the finished branch; record the SHA
-- [ ] 2 `[human]` Record both scenarios and export to `.ai/tmp/`
-- [ ] 3 `[agent]` Run the before/after comparison; write the verdict in `notes.md`
-- [ ] 4 `[agent]` Final pass over `src/shared/entities/CONTEXT.md`
+- [x] 1 `[agent]` Build and serve the profiling build on the finished branch; record the SHA
+- [x] 2 `[human]` Record both scenarios and export to `.ai/tmp/`
+- [x] 3 `[agent]` Run the before/after comparison; write the verdict in `notes.md`
+- [x] 4 `[agent]` Final pass over `src/shared/entities/CONTEXT.md`

@@ -23,10 +23,11 @@ assembles the template entities from a definition.
   the one exception to whole-value replacement: it merges under the caller's `icon` bag key by key.
 - **One chain rule.** No `chain` links to the current chain, or to the multichain context's chain inside a
   multichain view; a chain from the multichain config links to its chain-scoped page; any other chain links
-  to its explorer and shows its shield and hint. The resolver is the only place this rule lives; a part
-  with its own `chain` resolves again for itself. An entity of a feature that exists on one chain only
-  (Epoch, Validator, TacOperation, CrossChainMessage) declares `singleChain` and so ignores the multichain
-  context; that is a definition option, never a resolver branch.
+  to its explorer and shows its shield and hint, unless it is flagged `linkOnly`, which keeps the explorer
+  link and drops the shield and hint (the rollup parent chain is one). The resolver is the only place this
+  rule lives; a part with its own `chain` resolves again for itself. An entity of a feature that exists on
+  one chain only declares `singleChain` and so ignores the multichain context; that is a definition option,
+  never a resolver branch.
 - **Style props reach the DOM at every level.** Each part splits its style props off once and spreads
   them onto its own root element, after the part's defaults, so a caller's value wins.
 
@@ -37,7 +38,8 @@ assembles the template entities from a definition.
 - **Definition functions must tolerate partial data.** A part composed without a root (an icon alone in the
   search bar, a link in a hand-built row) gets only its own override, so `route`, `icon`, `hint` and
   `text` may run on an object missing some fields. The resolver already guards the hash it substitutes.
-- **A definition's `data` key list is checked for completeness by the compiler**, not at runtime. A key
+- **A definition's `data` key list is checked for completeness by the compiler**, not at runtime, and only
+  when it is written with `keysOf` from `entity-props.ts`; a plain array passes the type unchecked. A key
   left out of it is treated as an option and never reaches the data, silently.
 - **A parent-chain or external link is `chain=` at the call site, never a new wrapper.** The rollup parent
   chain is exported from `src/features/rollup/common/utils/`. The `Interchain` wrappers that remain exist

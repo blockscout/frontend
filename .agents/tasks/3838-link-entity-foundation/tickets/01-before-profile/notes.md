@@ -143,3 +143,9 @@ rank | component | total ms | % of self | instances | avg ms
   40 | PopoverClassNameContext.Provider (Context)   |      0.0 |    0.0% |      2 |   0.000
 top-40 account for 56.7ms of 56.7ms self time; 68 component types
 ```
+
+## Superseded for the FR7 comparison
+
+`eth` was down when the after profile was due, so ticket 10 re-recorded the baseline on the `robinhood`
+preset from this same SHA and compared against that; see `../10-after-profile/notes.md`. The tables above
+stay as the `eth` reference.
