@@ -17,6 +17,7 @@ type FieldValue = string | boolean;
 type ValidationResult = true | string;
 
 function validateAddress(value: FieldValue): ValidationResult {
+  // Stryker disable next-line ConditionalExpression: the typeof check only narrows the type, isAddress already returns false for a boolean
   if (typeof value !== 'string' || !isAddress(value, { strict: false })) {
     return 'Invalid address format';
   }

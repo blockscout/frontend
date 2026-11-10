@@ -5,7 +5,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup } from 'vitest/lib';
 
 import { Skeleton } from './skeleton';
@@ -138,6 +138,30 @@ describe('Skeleton', () => {
       expect(window.getComputedStyle(screen.getByTestId('with-css')).color).toBe('rgb(255, 0, 0)');
     });
 
+    it('hands the css prop to the child unchanged when only one side has it', () => {
+      const CssProbe = ({ css, ...rest }: { css?: unknown; 'data-testid': string }) => (
+        <span { ...rest } data-css={ JSON.stringify(css) }/>
+      );
+
+      render(
+        <>
+          <Skeleton loading={ false } asChild css={{ color: 'blue' }}>
+            <CssProbe data-testid="own-css"/>
+          </Skeleton>
+          <Skeleton loading={ false } asChild>
+            <CssProbe data-testid="child-css" css={{ color: 'red' }}/>
+          </Skeleton>
+          <Skeleton loading={ false } asChild>
+            <CssProbe data-testid="no-css"/>
+          </Skeleton>
+        </>,
+      );
+
+      expect(screen.getByTestId('own-css').getAttribute('data-css')).toBe('{"color":"blue"}');
+      expect(screen.getByTestId('child-css').getAttribute('data-css')).toBe('{"color":"red"}');
+      expect(screen.getByTestId('no-css').hasAttribute('data-css')).toBe(false);
+    });
+
     it('passes the element to both its own ref and the child ref', () => {
       const ref = React.createRef<HTMLDivElement>();
       const childRef = React.createRef<HTMLSpanElement>();
@@ -172,6 +196,21 @@ describe('Skeleton', () => {
       );
 
       expect(childRef.current).toBe(screen.getByTestId('child'));
+    });
+
+    it('does not detach the child ref on re-render when it has no ref of its own', () => {
+      const childRef = vi.fn();
+      const renderTree = (): React.ReactElement => (
+        <Skeleton loading={ false } asChild>
+          <span ref={ childRef }>content</span>
+        </Skeleton>
+      );
+
+      const { rerender } = render(renderTree());
+      childRef.mockClear();
+      rerender(renderTree());
+
+      expect(childRef).not.toHaveBeenCalled();
     });
   });
 });
