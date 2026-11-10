@@ -12,9 +12,9 @@ each label maps to is in [RELEASING.md](./RELEASING.md#release-notes-sections), 
 
 | Label | On | Meaning |
 | --- | --- | --- |
-| `feature` | both | New substantial feature. |
-| `enhancement` | both | Improvement of an existing feature, or a small new one. |
+| `feature` | both | New feature, or a rework of an existing one, that is large and visible to most users of an instance. |
 | `client feature` | both | Feature requested by, and specific to, a client chain. |
+| `enhancement` | both | Small addition or improvement to an existing feature: limited in size, or visible to only a part of an instance's users. |
 | `bug` | both | Something isn't working. |
 | `performance` | both | Performance improvement. |
 | `design` | both | UI and UX changes. |

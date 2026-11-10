@@ -83,11 +83,12 @@ The section a PR lands in comes from its category label. The source of truth is
 
 | Section | Labels |
 | --- | --- |
-| New Features | `feature`, `enhancement`, `client feature` |
+| New Features | `feature`, `client feature` |
+| Enhancements | `enhancement` |
 | Bug Fixes | `bug` |
+| Design Updates | `design` |
 | Performance Improvements | `performance` |
 | Dependencies Updates | `dependencies` |
-| Design Updates | `design` |
 | DX & Tooling | `refactoring`, `tech`, `devops` |
 | Other Changes | `chore` |
 

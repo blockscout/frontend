@@ -7,11 +7,12 @@ export interface Category {
 }
 
 export const CATEGORIES: ReadonlyArray<Category> = [
-  { section: 'New Features', labels: [ 'feature', 'enhancement', 'client feature' ] },
+  { section: 'New Features', labels: [ 'feature', 'client feature' ] },
+  { section: 'Enhancements', labels: [ 'enhancement' ] },
   { section: 'Bug Fixes', labels: [ 'bug' ] },
+  { section: 'Design Updates', labels: [ 'design' ] },
   { section: 'Performance Improvements', labels: [ 'performance' ] },
   { section: 'Dependencies Updates', labels: [ 'dependencies' ] },
-  { section: 'Design Updates', labels: [ 'design' ] },
   { section: 'DX & Tooling', labels: [ 'refactoring', 'tech', 'devops' ] },
   { section: 'Other Changes', labels: [ 'chore' ] },
 ];
