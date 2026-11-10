@@ -268,6 +268,31 @@ describe('pageUtils', () => {
       expect(result).toBe(true);
     });
 
+    it('should return false for cluster_name type on the last page', () => {
+      expect(calculateHasNextPage(mockDirectoryData, 0, 0, true, 'cluster_name', 2, false, 50)).toBe(false);
+    });
+
+    it.each([
+      [ 'null', null ],
+      [ 'a non-object', 'data' ],
+      [ 'no result', {} ],
+      [ 'an empty result', { result: null } ],
+      [ 'a non-object result', { result: 'data' } ],
+      [ 'no result data', { result: {} } ],
+      [ 'empty result data', { result: { data: null } } ],
+      [ 'non-object result data', { result: { data: 'data' } } ],
+      [ 'no total', { result: { data: {} } } ],
+      [ 'a non-numeric total', { result: { data: { total: '100' } } } ],
+    ])('should return false for cluster_name type when the response is %s', (_, data) => {
+      expect(calculateHasNextPage(data, 0, 0, true, 'cluster_name', 1, false, 50)).toBe(false);
+    });
+
+    it('should use a page size of 50 by default', () => {
+      expect(calculateHasNextPage({}, 50, 0, false, 'cluster_name', 1, false)).toBe(true);
+      expect(calculateHasNextPage({}, 0, 51, true, 'address', 1, false)).toBe(true);
+      expect(calculateHasNextPage({}, 0, 50, true, 'address', 1, false)).toBe(false);
+    });
+
     it('should return true for leaderboard with full page', () => {
       const result = calculateHasNextPage(
         {},

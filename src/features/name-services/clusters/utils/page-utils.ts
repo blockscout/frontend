@@ -116,6 +116,19 @@ export function applyDirectoryPagination(
   return fullDirectoryData;
 }
 
+function getDirectoryTotal(data: unknown): number | undefined {
+  const apiData = data &&
+    typeof data === 'object' &&
+    'result' in data &&
+    data.result &&
+    typeof data.result === 'object' &&
+    'data' in data.result ? data.result.data : null;
+
+  if (apiData && typeof apiData === 'object' && 'total' in apiData && typeof apiData.total === 'number') {
+    return apiData.total;
+  }
+}
+
 export function calculateHasNextPage(
   data: unknown,
   leaderboardDataLength: number,
@@ -126,24 +139,21 @@ export function calculateHasNextPage(
   hasSearchTerm: boolean,
   limit = 50,
 ): boolean {
-  if (showDirectoryView) {
-    if (inputType === 'address') {
-      return page * limit < fullDirectoryDataLength;
-    } else {
-      if (hasSearchTerm) return false;
-      const apiData = data &&
-        typeof data === 'object' &&
-        'result' in data &&
-        data.result &&
-        typeof data.result === 'object' &&
-        'data' in data.result ? data.result.data : null;
-      if (apiData && typeof apiData === 'object' && 'total' in apiData && typeof apiData.total === 'number') {
-        return (page * limit) < apiData.total;
-      }
-      return false;
-    }
+  if (!showDirectoryView) {
+    return leaderboardDataLength === limit;
   }
-  return leaderboardDataLength === limit;
+
+  if (inputType === 'address') {
+    return page * limit < fullDirectoryDataLength;
+  }
+
+  if (hasSearchTerm) {
+    return false;
+  }
+
+  const total = getDirectoryTotal(data);
+
+  return total !== undefined && (page * limit) < total;
 }
 
 export function isValidViewMode(value: string): value is ViewMode {
