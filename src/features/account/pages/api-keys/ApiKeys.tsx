@@ -15,6 +15,7 @@ import { API_KEY } from 'src/features/account/stubs';
 
 import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
+import { sanitizeHtml } from 'src/shared/texts/sanitize-html';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { BoxHtml } from 'src/toolkit/chakra/box';
@@ -32,6 +33,7 @@ import DeleteApiKeyModal from './DeleteApiKeyModal';
 const DATA_LIMIT = 3;
 
 const feature = config.features.account;
+const alertHtml = feature.isEnabled ? sanitizeHtml(feature.apiKeys.alertMessage || '') : '';
 
 const ApiKeysPage: React.FC = () => {
   const apiKeyModalProps = useDisclosure();
@@ -97,9 +99,9 @@ const ApiKeysPage: React.FC = () => {
 
     const canAdd = !isPlaceholderData ? (data?.length || 0) < DATA_LIMIT : true;
 
-    const alert = feature.isEnabled && feature.apiKeys.alertMessage ? (
+    const alert = alertHtml ? (
       <Alert status="warning" mb={ 6 }>
-        <BoxHtml html={ feature.apiKeys.alertMessage }/>
+        <BoxHtml html={ alertHtml }/>
       </Alert>
     ) : null;
 
