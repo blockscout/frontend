@@ -8,11 +8,12 @@ import IndexingStatusBlocks from 'src/slices/chain/indexing-status/IndexingStatu
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { sanitizeHtml } from 'src/shared/texts/sanitize-html';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { BoxHtml } from 'src/toolkit/chakra/box';
 
-const maintenanceAlertHtml = config.shell.header.maintenanceAlert.message || '';
+const maintenanceAlertHtml = sanitizeHtml(config.shell.header.maintenanceAlert.message || '');
 
 const handleLinkClick = (event: React.MouseEvent<HTMLDivElement>): void => {
   if (event.button > 1 || !(event.target instanceof Element)) {

@@ -259,6 +259,44 @@ describe('miscSchema', () => {
     })).toEqual([]);
   });
 
+  it('rejects a maintenance alert message with a frame or an inline style', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: '<div style="position:fixed">Hello <iframe srcdoc="<script></script>"></iframe></div>',
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: style attribute on <div>, <iframe>',
+    ]);
+  });
+
+  it('rejects an array of maintenance alert messages when one item has an event handler', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: `['Plain','<a href="https://example.com" onclick="steal()">Hello</a>']`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: onclick attribute on <a>',
+    ]);
+  });
+
+  it('rejects an item of a single-quoted array whose attributes escape their double quotes', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`['Plain','<a href=\"https://example.com\" onclick=\"steal()\">Hello</a>']`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: onclick attribute on <a>',
+    ]);
+  });
+
+  it('accepts a single-quoted attribute value that holds a double quote, as the app renders it', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: `Pay <a href="https://example.com" title='x" onclick="steal()'>here</a>`,
+    })).toEqual([]);
+  });
+
+  it('checks the items of a double-quoted array whose apostrophe breaks the quote-rewritten JSON', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`["It's down", "\u003ciframe srcdoc='https://evil.example'\u003e\u003c/iframe\u003e"]`,
+    })).toEqual([
+      'NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: HTML contains elements that are not allowed: <iframe>',
+    ]);
+  });
+
   describe('color themes', () => {
     it('rejects an unknown theme id', () => {
       expect(getValidationErrors(miscSchema, { NEXT_PUBLIC_COLOR_THEMES: toEnvValue([ 'sepia' ]) })).toEqual([
