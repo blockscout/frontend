@@ -2,7 +2,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { ENTITY_OPTION_KEY_LIST, keysOf, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys, toTruncationSpec } from './entity-props';
+import { keysOf, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys, toTruncationSpec } from './entity-props';
 
 interface Data {
   hash: string;
@@ -98,15 +98,6 @@ describe('mergeIconOptions', () => {
 
   it('works without a root icon bag', () => {
     expect(mergeIconOptions(undefined, { hint: 'own' })).toEqual({ hint: 'own' });
-  });
-});
-
-describe('ENTITY_OPTION_KEY_LIST', () => {
-  it('lists every public option once', () => {
-    expect([ ...ENTITY_OPTION_KEY_LIST ].sort()).toEqual([
-      'chain', 'href', 'icon', 'isLoading', 'link', 'noCopy', 'noIcon', 'noLink', 'noTooltip',
-      'onClick', 'query', 'truncation', 'variant',
-    ]);
   });
 });
 

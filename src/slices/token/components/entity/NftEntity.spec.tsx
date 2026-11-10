@@ -100,4 +100,14 @@ describe('NftEntity', () => {
     expect(getCssText(container.querySelector('.part-container') as Element)).toContain('margin-left');
     expect(getCssText(container.querySelector('.part-icon') as Element)).toContain('margin-left');
   });
+
+  it('applies style props on the instance media', () => {
+    const { container } = render(
+      <NftEntityParts.Container hash={ HASH } id={ ID } instance={ tokenInstanceMock.base }>
+        <NftEntityParts.Icon className="part-icon" mr="5px"/>
+      </NftEntityParts.Container>,
+    );
+
+    expect(getCssText(container.querySelector('.part-icon') as Element)).toContain('margin-right:5px');
+  });
 });

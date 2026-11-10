@@ -11,7 +11,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen } from 'vitest/lib';
+import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
 
@@ -31,6 +31,15 @@ const externalChain: EntityChain = {
 
 const getLink = () => screen.getByRole('link');
 const queryCopy = () => screen.queryByRole('button', { name: 'copy' });
+const getTruncatedText = () => screen.getByText(HASH.slice(0, 4), { exact: false });
+
+// jsdom does not preserve :hover when the lazy tooltip remounts its trigger, so the trigger is entered twice.
+const openTooltip = async(getTrigger: () => Element) => {
+  const initialTrigger = getTrigger();
+  fireEvent.pointerEnter(initialTrigger, { pointerType: 'mouse' });
+  await waitFor(() => expect(initialTrigger.isConnected).toBe(false));
+  fireEvent.pointerEnter(getTrigger(), { pointerType: 'mouse' });
+};
 
 describe('defineEntity', () => {
   afterEach(cleanup);
@@ -97,10 +106,18 @@ describe('defineEntity', () => {
       expect(document.querySelector('use')).toBeNull();
     });
 
-    it('lets the icon bag override the icon name and the hint', () => {
+    it('lets the icon bag override the icon name', () => {
       render(<TxEntity hash={ HASH } icon={{ name: 'block' }}/>);
 
       expect(document.querySelector('use')?.getAttribute('href')).toBe('#block');
+    });
+
+    it('shows the hint from the icon bag', async() => {
+      render(<TxEntity hash={ HASH } icon={{ hint: 'Custom hint' }}/>);
+
+      await openTooltip(() => document.querySelector('svg')?.parentElement as Element);
+
+      expect(await screen.findByText('Custom hint')).toBeTruthy();
     });
   });
 
@@ -189,10 +206,19 @@ describe('defineEntity', () => {
       expect(getLink()).toHaveProperty('href', `http://localhost:3000/tx/${ HASH }`);
     });
 
-    it('noTooltip', () => {
-      render(<Entity hash={ HASH } noTooltip={ false } noCopy={ false }/>);
+    it('noTooltip', async() => {
+      const withDefault = render(<Entity hash={ HASH } truncation="constant"/>);
+      const text = getTruncatedText();
+      fireEvent.pointerEnter(text, { pointerType: 'mouse' });
+      expect(text.isConnected).toBe(true);
+      expect(screen.queryByText(HASH)).toBeNull();
+      withDefault.unmount();
 
-      expect(queryCopy()).not.toBeNull();
+      render(<Entity hash={ HASH } truncation="constant" noTooltip={ false }/>);
+
+      await openTooltip(getTruncatedText);
+
+      expect(await screen.findByText(HASH)).toBeTruthy();
     });
   });
 

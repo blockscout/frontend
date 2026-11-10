@@ -14,6 +14,7 @@ import { getCssText } from 'vitest/utils/cssText';
 import EnsEntity, * as EnsEntityParts from './EnsEntity';
 
 const DOMAIN = 'kitty.kitty.kitty.cat.eth';
+const CONSTANT_TRUNCATION_HEAD = 4;
 const protocol = domainMock.protocolA;
 
 const getLink = () => screen.getByRole('link');
@@ -49,7 +50,7 @@ describe('EnsEntity', () => {
     render(<EnsEntity domain={ DOMAIN } truncation="constant"/>);
 
     expect(screen.queryByText(DOMAIN)).toBeNull();
-    expect(screen.getByText(DOMAIN.slice(0, 4), { exact: false })).toBeTruthy();
+    expect(screen.getByText(DOMAIN.slice(0, CONSTANT_TRUNCATION_HEAD), { exact: false })).toBeTruthy();
   });
 
   it('draws the protocol icon in place of the ENS icon', () => {

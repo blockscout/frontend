@@ -15,6 +15,7 @@ import PoolEntity, * as PoolEntityParts from './PoolEntity';
 
 const pool = poolMock.base;
 const TITLE = 'USDT / WETH (0.03%)';
+const CONSTANT_TRUNCATION_HEAD = 4;
 
 const getLink = () => screen.getByRole('link');
 const getLogos = () => Array.from(document.querySelectorAll('img')).map((img) => img.getAttribute('src'));
@@ -40,7 +41,7 @@ describe('PoolEntity', () => {
     render(<PoolEntity pool={ pool } truncation="constant"/>);
 
     expect(screen.queryByText(TITLE)).toBeNull();
-    expect(screen.getByText(TITLE.slice(0, 4), { exact: false })).toBeTruthy();
+    expect(screen.getByText(TITLE.slice(0, CONSTANT_TRUNCATION_HEAD), { exact: false })).toBeTruthy();
   });
 
   it('shows the placeholders when the tokens have no logos', () => {

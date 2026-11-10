@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex, VStack } from '@chakra-ui/react';
+import { Box, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -220,22 +220,23 @@ const getContractIcon = (address: AddressProp, isSafeAddress: boolean | undefine
   };
 };
 
-const getIdenticonHint = (address: AddressProp, icon: IconBaseProps, chainPostfix: string): string | undefined => {
+const getIdenticonHint = (address: AddressProp, ownHint: string | undefined, chainPostfix: string): string | undefined => {
   if (isDelegated(address)) {
     return (address.is_verified ? 'EOA + verified code' : 'EOA + code') + chainPostfix;
   }
 
-  if (icon.chain) {
+  if (chainPostfix) {
     return 'Address' + chainPostfix;
   }
 
-  return icon.hint;
+  return ownHint;
 };
 
 const Icon = (props: IconProps) => {
   const options = useEntityOptions();
   const [ data, own ] = usePartData<object>(props);
   const icon = mergeIconOptions(options.icon, own);
+  const [ css, rest ] = useSplitCssProps(icon);
   const chain = icon.chain ?? options.chain;
   const link = usePartLink(data, { chain, shield: icon.shield === false ? false : undefined });
   const {
@@ -252,9 +253,11 @@ const Icon = (props: IconProps) => {
   const chainPostfix = icon.hintPostfix ?? link.hint ?? '';
   const tooltipInteractive = data.highlight ? true : icon.tooltipInteractive;
   const layout = getIconLayout({ ...icon, variant }, Boolean(shield));
+  const { mr, marginRight, boxSize, ...ownCss } = css;
+  const { className } = rest;
 
   if (isLoading) {
-    return <Skeleton { ...layout } loading borderRadius="full" flexShrink={ 0 }/>;
+    return <Skeleton { ...layout } loading borderRadius="full" flexShrink={ 0 } { ...ownCss } className={ className }/>;
   }
 
   if ('src' in icon || 'name' in icon) {
@@ -273,7 +276,7 @@ const Icon = (props: IconProps) => {
     );
   }
 
-  const hint = getIdenticonHint(data.address, { ...icon, chain }, chainPostfix);
+  const hint = getIdenticonHint(data.address, icon.hint, chainPostfix);
 
   return (
     <Tooltip
@@ -282,7 +285,7 @@ const Icon = (props: IconProps) => {
       interactive={ tooltipInteractive }
       positioning={ shield ? { offset: { mainAxis: 8 } } : undefined }
     >
-      <Flex marginRight={ layout.marginRight } position="relative">
+      <Box display="flex" marginRight={ layout.marginRight } position="relative" { ...ownCss } className={ className }>
         <AddressIdenticon
           size={ icon.size ?? (variant === 'heading' ? HEADING_IDENTICON_SIZE : REGULAR_IDENTICON_SIZE) }
           hash={ getDisplayedAddress(data.address) }
@@ -294,7 +297,7 @@ const Icon = (props: IconProps) => {
           />
         ) }
         { isDelegated(data.address) && <AddressIconDelegated isVerified={ Boolean(data.address.is_verified) }/> }
-      </Flex>
+      </Box>
     </Tooltip>
   );
 };

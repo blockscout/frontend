@@ -53,7 +53,7 @@ const TokenEntityBase = defineEntity<TokenEntityData>({
     borderRadius: token?.type === 'ERC-20' ? 'full' : 'base',
   }),
   text: getTokenText,
-  copyText: ({ token }) => token.address_hash,
+  copyText: ({ token }) => token?.address_hash ?? '',
   defaults: { truncation: 'tail' },
 });
 

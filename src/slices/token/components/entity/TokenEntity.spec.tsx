@@ -18,6 +18,7 @@ import TokenEntity, * as TokenEntityParts from './TokenEntity';
 
 const token = tokenMock.tokenInfo;
 const HASH = token.address_hash;
+const CONSTANT_TRUNCATION_HEAD = 4;
 
 const externalChain: EntityChain = {
   id: '8453',
@@ -57,7 +58,7 @@ describe('TokenEntity', () => {
       render(<TokenEntity token={{ ...token, name }} truncation="constant"/>);
 
       expect(screen.queryByText(name)).toBeNull();
-      expect(screen.getByText(name.slice(0, 4), { exact: false })).toBeTruthy();
+      expect(screen.getByText(name.slice(0, CONSTANT_TRUNCATION_HEAD), { exact: false })).toBeTruthy();
     });
 
     it('rounds the logo of an ERC-20 token and squares the others', () => {

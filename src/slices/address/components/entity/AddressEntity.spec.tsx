@@ -77,6 +77,8 @@ describe('AddressEntity', () => {
             toggleTimeFormat: () => {},
             isLocalTime: true,
             toggleIsLocalTime: () => {},
+            colorTheme: undefined,
+            setColorTheme: () => {},
           };
 
           render(<SettingsContext.Provider value={ settings }>{ element }</SettingsContext.Provider>);
@@ -315,6 +317,16 @@ describe('AddressEntity', () => {
       expect(await screen.findByText('Address on Base (Chain ID: 8453)')).toBeTruthy();
     });
 
+    it('leaves the identicon without a hint for a link-only chain, as the rollup parent chain is', () => {
+      render(<AddressEntity address={ HASH } chain={{ ...externalChain, linkOnly: true }}/>);
+      const identiconFrame = queryIdenticon()?.parentElement?.parentElement as Element;
+
+      fireEvent.pointerEnter(identiconFrame, { pointerType: 'mouse' });
+
+      expect(identiconFrame.isConnected).toBe(true);
+      expect(screen.queryByText(/^Address/)).toBeNull();
+    });
+
     it('sizes the identicon from the icon options', () => {
       const { container } = render(<AddressEntity address={ HASH } icon={{ size: 30 }}/>);
 
@@ -413,6 +425,26 @@ describe('AddressEntity', () => {
       });
 
       expect(withMargin).toEqual(parts);
+    });
+
+    it('on the identicon', () => {
+      const { container } = render(
+        <AddressEntityParts.Container address={ HASH }>
+          <AddressEntityParts.Icon className="part-icon" ml={ 2 }/>
+        </AddressEntityParts.Container>,
+      );
+
+      expect(getCssText(container.querySelector('.part-icon') as Element)).toContain('margin-left');
+    });
+
+    it('on the loading skeleton of the icon', () => {
+      const { container } = render(
+        <AddressEntityParts.Container address={ HASH } isLoading>
+          <AddressEntityParts.Icon className="part-icon" ml={ 2 }/>
+        </AddressEntityParts.Container>,
+      );
+
+      expect(getCssText(container.querySelector('.part-icon') as Element)).toContain('margin-left');
     });
 
     it('on the content of a named address', () => {

@@ -13,6 +13,7 @@ import { getCssText } from 'vitest/utils/cssText';
 import ClustersEntity, * as ClustersEntityParts from './ClustersEntity';
 
 const NAME = 'this-is-a-very-long-cluster-name';
+const CONSTANT_TRUNCATION_HEAD = 4;
 
 const getLink = () => screen.getByRole('link');
 const queryCopy = () => screen.queryByRole('button', { name: 'copy' });
@@ -47,7 +48,7 @@ describe('ClustersEntity', () => {
     render(<ClustersEntity clusterName={ NAME } truncation="constant"/>);
 
     expect(screen.queryByText(`${ NAME }/`)).toBeNull();
-    expect(screen.getByText(NAME.slice(0, 4), { exact: false })).toBeTruthy();
+    expect(screen.getByText(NAME.slice(0, CONSTANT_TRUNCATION_HEAD), { exact: false })).toBeTruthy();
   });
 
   it('sizes the profile image by the variant', () => {

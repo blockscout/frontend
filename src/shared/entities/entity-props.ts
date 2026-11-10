@@ -59,8 +59,6 @@ export function resolveEntityOptions(defaults: EntityDefaults | undefined, optio
 }
 
 export function mergeEntityData<TData extends object>(rootData: TData | undefined, override: Partial<TData> | undefined): TData {
-  // A part composed without a root (an icon alone, a link in a hand-built row) sees only its own override,
-  // so an entity definition's functions must tolerate partial data; the resolver guards the hash it reads.
   return { ...rootData, ...override } as TData;
 }
 

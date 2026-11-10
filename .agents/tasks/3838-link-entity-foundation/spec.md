@@ -45,9 +45,12 @@ No visual change is intended anywhere.
 3. Style props passed to an entity or to any of its exported parts (`Icon`, `Link`, `Content`,
    `Copy`, `Container`) are applied, never dropped.
 4. Inside a multichain view, every entity's link leads to the chain-specific page; outside it, every
-   entity's link is the current chain's page unless a `chain` prop says otherwise.
+   entity's link is the current chain's page unless a `chain` prop says otherwise. The address entity
+   is the exception: a multichain deployment has no per-chain address page, only the aggregated one,
+   so its link stays chain-less and a cluster chain gives it neither link nor shield.
 5. Passing a `chain` is the only thing a caller needs to do to get an external-explorer or
-   parent-chain link, with the chain shield and hint that go with it.
+   parent-chain link. A foreign chain brings the chain shield and hint that go with it; the rollup
+   parent chain is link-only (explorer link, no shield, no hint).
 6. The sub-part composition used today (`AddressEntity.Container` + `Icon` + `Link` + `Content` +
    `Copy`, as in the search results table) keeps working, with data supplied once at the root.
 7. Render time of the txs list and a token's transfers list at 50 rows is no worse after the task
@@ -91,10 +94,12 @@ embed them.
 - **Prop surface.** `target` and `contentProps` are removed from the base (the token-filter
   tooltip-after becomes a `Content` prop). `truncation`, `tailLength` and `truncationMaxSymbols`
   collapse into one `truncation` value, done last with an `ast-grep` codemod. The `noX` booleans stay.
-- **Thin wrappers.** `Interchain`, `External`, `L1`/`L2` wrappers survive the entity migration as
-  one-line aliases so no call site moves, then are deleted with call sites codemodded to `chain=`.
-  `AddressStringOrParam` folds into `AddressEntity` accepting a string. Tac and Zeta wrappers stay:
-  they carry foreign URL templates and feature gating.
+- **Thin wrappers.** `External` and `L1`/`L2` wrappers survive the entity migration as one-line
+  aliases so no call site moves, then are deleted with call sites codemodded to `chain=`. The
+  `Interchain` wrappers stay: a chain the app cannot link to, an unknown one included, must render
+  unlinked, while a `chain` of `undefined` means the current chain, so their `noLink` rule has no
+  `chain=` equivalent. `AddressStringOrParam` folds into `AddressEntity` accepting a string. Tac and
+  Zeta wrappers stay: they carry foreign URL templates and feature gating.
 - **Performance is measured, not assumed.** A before profile is recorded before any foundation
   change and an after profile at the end, on the txs list and a token's transfers list at 50 rows;
   the after must not be worse. Further perf work (memo discipline at call sites, Tooltip cost) is

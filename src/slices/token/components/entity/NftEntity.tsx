@@ -9,6 +9,7 @@ import type { EntityComponentProps, EntityIconProps } from 'src/shared/entities/
 import { defineEntity } from 'src/shared/entities/define-entity';
 import { keysOf, mergeEntityData, mergeIconOptions, splitByKeys } from 'src/shared/entities/entity-props';
 import { useEntityOptions, useEntityRoot } from 'src/shared/entities/root';
+import { useSplitCssProps } from 'src/shared/entities/split-css-props';
 import { getVariantPreset } from 'src/shared/entities/variants';
 
 import NftMedia from '../nft-media/NftMedia';
@@ -46,6 +47,7 @@ const Icon = (props: IconProps) => {
   const [ override, own ] = splitByKeys<NftEntityData, object>(props, DATA_KEYS);
   const data = mergeEntityData(root?.data, override);
   const icon: IconBaseProps = mergeIconOptions(options.icon, own);
+  const [ css, rest ] = useSplitCssProps(icon);
   const { isLoading = options.isLoading, noIcon = options.noIcon } = icon;
 
   if (noIcon) {
@@ -57,18 +59,21 @@ const Icon = (props: IconProps) => {
   }
 
   const variant = icon.variant ?? options.variant ?? 'heading';
+  const { mr, marginRight, boxSize, ...mediaCss } = css;
 
   return (
     <NftMedia
       data={ data.instance }
       addressHash={ data.hash }
       isLoading={ isLoading }
-      boxSize={ icon.boxSize ?? getVariantPreset(variant).icon.boxSize }
+      boxSize={ boxSize ?? getVariantPreset(variant).icon.boxSize }
       size="sm"
       allowedTypes={ ICON_MEDIA_TYPES }
       borderRadius="sm"
       flexShrink={ 0 }
-      marginRight={ 2 }
+      marginRight={ marginRight ?? mr ?? 2 }
+      { ...mediaCss }
+      className={ rest.className }
       fallback={ <NftEntityBase.Icon { ...props } variant={ variant } marginRight={ 0 }/> }
     />
   );

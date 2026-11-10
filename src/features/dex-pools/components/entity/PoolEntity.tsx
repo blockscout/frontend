@@ -64,7 +64,9 @@ const TokenIconFrame = ({ token, isLoading, variant, isQuote }: TokenIconFramePr
       border="1px solid"
       borderColor={ TOKEN_ICON_BORDER_COLOR }
     >
-      <TokenEntity.Icon marginRight={ 0 } variant={ variant } token={ token } isLoading={ isLoading }/>
+      <TokenEntity.Root token={ token }>
+        <TokenEntity.Icon marginRight={ 0 } variant={ variant } isLoading={ isLoading }/>
+      </TokenEntity.Root>
     </Flex>
   );
 };

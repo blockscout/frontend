@@ -14,12 +14,18 @@ interface Props extends Omit<EntityProps, 'chain'> {
   currentAddress?: string;
 }
 
-const AddressEntityInterchain = ({ currentAddress, ...props }: Props) => {
-  const isLocalChain = isCurrentChain(props.chain) || isClusterChain(props.chain);
-  const isCurrentAddress = isLocalChain && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
-  const noLink = props.noLink || isCurrentAddress || (!props.href && !isLinkableChain(props.chain)) || undefined;
+// A multichain deployment has no per-chain address page, only the aggregated one, so a cluster chain
+// gets neither the chain-scoped link nor the shield and hint.
+export const toAddressChain = (chain: ExternalChain | undefined): ExternalChain | undefined => {
+  return isClusterChain(chain) ? undefined : chain;
+};
 
-  return <AddressEntity { ...props } noLink={ noLink }/>;
+const AddressEntityInterchain = ({ currentAddress, chain, ...props }: Props) => {
+  const isLocalChain = isCurrentChain(chain) || isClusterChain(chain);
+  const isCurrentAddress = isLocalChain && currentAddress?.toLowerCase() === props.address.hash.toLowerCase();
+  const noLink = props.noLink || isCurrentAddress || (!props.href && !isLinkableChain(chain)) || undefined;
+
+  return <AddressEntity { ...props } chain={ toAddressChain(chain) } noLink={ noLink }/>;
 };
 
 export default React.memo(AddressEntityInterchain);
