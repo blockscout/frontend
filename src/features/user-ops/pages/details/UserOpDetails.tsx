@@ -10,7 +10,6 @@ import type { schemas } from '@blockscout/api-types';
 import type { ResourceError } from 'src/api/resources';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
-import AddressStringOrParam from 'src/slices/address/components/entity/AddressStringOrParam';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -82,7 +81,7 @@ const UserOpDetails = ({ query }: Props) => {
         Sender
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <AddressStringOrParam address={ data.sender } isLoading={ isLoading }/>
+        <AddressEntity address={ data.sender } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       { data.execute_target && (
@@ -219,7 +218,7 @@ const UserOpDetails = ({ query }: Props) => {
         Entry point
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <AddressStringOrParam address={ data.entry_point } isLoading={ isLoading }/>
+        <AddressEntity address={ data.entry_point } isLoading={ isLoading }/>
       </DetailedInfo.ItemValue>
 
       { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isLoading }/> }
@@ -287,7 +286,7 @@ const UserOpDetails = ({ query }: Props) => {
               Aggregator
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <AddressStringOrParam address={ data.aggregator }/>
+              <AddressEntity address={ data.aggregator }/>
             </DetailedInfo.ItemValue>
           </>
         ) }
@@ -311,7 +310,7 @@ const UserOpDetails = ({ query }: Props) => {
           Bundler
         </DetailedInfo.ItemLabel>
         <DetailedInfo.ItemValue>
-          <AddressStringOrParam address={ data.bundler }/>
+          <AddressEntity address={ data.bundler }/>
         </DetailedInfo.ItemValue>
 
         { data.factory && (
@@ -322,7 +321,7 @@ const UserOpDetails = ({ query }: Props) => {
               Factory
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <AddressStringOrParam address={ data.factory }/>
+              <AddressEntity address={ data.factory }/>
             </DetailedInfo.ItemValue>
           </>
         ) }
@@ -335,7 +334,7 @@ const UserOpDetails = ({ query }: Props) => {
               Paymaster
             </DetailedInfo.ItemLabel>
             <DetailedInfo.ItemValue>
-              <AddressStringOrParam address={ data.paymaster }/>
+              <AddressEntity address={ data.paymaster }/>
             </DetailedInfo.ItemValue>
           </>
         ) }

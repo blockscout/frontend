@@ -8,9 +8,11 @@ import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import PrevNext from 'src/shared/buttons/PrevNext';
@@ -135,11 +137,12 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
             { layerLabels.parent } transaction hash
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <TxEntityL1
+            <TxEntity
               isLoading={ isPlaceholderData }
               hash={ data.commitment_transaction.hash }
               maxW="100%"
               noCopy
+              chain={ parentChain }
             />
           </DetailedInfo.ItemValue>
         </>
@@ -154,9 +157,10 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
             { layerLabels.parent } block
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <BlockEntityL1
+            <BlockEntity
               isLoading={ isPlaceholderData }
               number={ data.commitment_transaction.block_number }
+              chain={ parentChain }
             />
           </DetailedInfo.ItemValue>
         </>

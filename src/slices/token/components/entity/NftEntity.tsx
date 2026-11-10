@@ -1,123 +1,103 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import { useMultichainContext } from 'src/features/multichain/context';
-
-import * as EntityBase from 'src/shared/entities/components';
-import { distributeEntityProps, getIconProps } from 'src/shared/entities/utils';
-import { route } from 'src/shared/router/routes';
+import type { IconBaseProps } from 'src/shared/entities/components';
+import type { EntityComponentProps, EntityIconProps } from 'src/shared/entities/define-entity';
+import { defineEntity } from 'src/shared/entities/define-entity';
+import { keysOf, mergeEntityData, mergeIconOptions, splitByKeys } from 'src/shared/entities/entity-props';
+import { useEntityOptions, useEntityRoot } from 'src/shared/entities/root';
+import { useSplitCssProps } from 'src/shared/entities/split-css-props';
+import { getVariantPreset } from 'src/shared/entities/variants';
 
 import NftMedia from '../nft-media/NftMedia';
 
-const Container = EntityBase.Container;
-
-type IconProps = EntityBase.IconBaseProps & {
-  instance?: schemas['TokenInstance'] | null;
-  hash: string;
-};
-
-const ICON_MEDIA_TYPES = [ 'image' as const ];
-
-const Icon = (props: IconProps) => {
-  if (props.noIcon) {
-    return null;
-  }
-
-  if (props.instance) {
-    const styles = getIconProps({ ...props, variant: props.variant ?? 'heading' });
-    const fallback = (
-      <EntityBase.Icon
-        { ...props }
-        variant={ props.variant ?? 'heading' }
-        name={ 'name' in props ? props.name : 'nft_shield' }
-        marginRight={ 0 }
-      />
-    );
-
-    return (
-      <NftMedia
-        data={ props.instance }
-        addressHash={ props.hash }
-        isLoading={ props.isLoading }
-        boxSize={ styles.boxSize }
-        size="sm"
-        allowedTypes={ ICON_MEDIA_TYPES }
-        borderRadius="sm"
-        flexShrink={ 0 }
-        marginRight={ 2 }
-        fallback={ fallback }
-      />
-    );
-  }
-
-  return (
-    <EntityBase.Icon
-      { ...props }
-      variant="heading"
-      name={ 'name' in props ? props.name : 'nft_shield' }
-    />
-  );
-};
-
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'id'>;
-
-const Link = chakra((props: LinkProps) => {
-  const defaultHref = route(
-    { pathname: '/token/[hash]/instance/[id]', query: { hash: props.hash, id: props.id } },
-    { chain: props.chain, external: props.external },
-  );
-
-  return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
-      { props.children }
-    </EntityBase.Link>
-  );
-});
-
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'id'>;
-
-const Content = chakra((props: ContentProps) => {
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ props.id }
-      truncation="tail"
-    />
-  );
-});
-
-export interface EntityProps extends EntityBase.EntityBaseProps {
+export interface NftEntityData {
   hash: string;
   id: string;
   instance?: schemas['TokenInstance'] | null;
 }
 
-const NftEntity = (props: EntityProps) => {
-  const multichainContext = useMultichainContext();
-  const partsProps = distributeEntityProps(props, multichainContext);
+export type EntityProps = EntityComponentProps<NftEntityData>;
+export type IconProps = EntityIconProps<NftEntityData>;
 
-  const content = <Content { ...partsProps.content }/>;
+const DATA_KEYS = keysOf<NftEntityData>()([ 'hash', 'id', 'instance' ]);
+
+const NftEntityBase = defineEntity<NftEntityData>({
+  name: 'NftEntity',
+  data: DATA_KEYS,
+  route: ({ hash, id }) => ({ pathname: '/token/[hash]/instance/[id]', query: { hash, id } }),
+  hintPrefix: 'NFT on ',
+  icon: 'nft_shield',
+  text: ({ id }) => id,
+  // Stryker disable next-line BooleanLiteral: `true` is not a `copyText` value; the compiler rejects it, and the literal is read once at module load
+  copyText: false,
+  defaults: { truncation: 'tail' },
+});
+
+const { Root, Container, Link, Content, Copy } = NftEntityBase;
+
+const ICON_MEDIA_TYPES = [ 'image' as const ];
+
+const Icon = (props: IconProps) => {
+  const root = useEntityRoot<NftEntityData>();
+  const options = useEntityOptions();
+  const [ override, own ] = splitByKeys<NftEntityData, object>(props, DATA_KEYS);
+  const data = mergeEntityData(root?.data, override);
+  const icon: IconBaseProps = mergeIconOptions(options.icon, own);
+  const [ css, rest ] = useSplitCssProps(icon);
+  const { isLoading = options.isLoading, noIcon = options.noIcon } = icon;
+
+  if (noIcon) {
+    return null;
+  }
+
+  if (!data.instance) {
+    return <NftEntityBase.Icon { ...props } variant="heading"/>;
+  }
+
+  const variant = icon.variant ?? options.variant ?? 'heading';
+  const { mr, marginRight, boxSize, ...mediaCss } = css;
 
   return (
-    <Container w="100%" { ...partsProps.container }>
-      <Icon { ...partsProps.icon }/>
-      { props.noLink ? content : <Link { ...partsProps.link }>{ content }</Link> }
+    <NftMedia
+      data={ data.instance }
+      addressHash={ data.hash }
+      isLoading={ isLoading }
+      boxSize={ boxSize ?? getVariantPreset(variant).icon.boxSize }
+      size="sm"
+      allowedTypes={ ICON_MEDIA_TYPES }
+      borderRadius="sm"
+      flexShrink={ 0 }
+      marginRight={ marginRight ?? mr ?? 2 }
+      { ...mediaCss }
+      className={ rest.className }
+      fallback={ <NftEntityBase.Icon { ...props } variant={ variant } marginRight={ 0 }/> }
+    />
+  );
+};
+
+const NftEntity = (props: EntityProps) => {
+  return (
+    <Container w="100%" { ...props }>
+      <Icon/>
+      <Link><Content/></Link>
     </Container>
   );
 };
 
-export default React.memo(chakra(NftEntity));
+Icon.displayName = 'NftEntity.Icon';
+NftEntity.displayName = 'NftEntity';
+
+export default React.memo(NftEntity);
 
 export {
+  Root,
   Container,
   Link,
   Icon,
   Content,
+  Copy,
 };

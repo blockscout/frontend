@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
@@ -22,4 +21,4 @@ const TxEntityTon = (props: TxEntity.EntityProps) => {
   return <TxEntity.default { ...props } hash={ formattedHash } href={ props.href ?? defaultHref } icon={{ name: 'brands/ton' }} link={{ external: true }}/>;
 };
 
-export default chakra(TxEntityTon);
+export default TxEntityTon;

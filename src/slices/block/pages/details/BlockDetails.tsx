@@ -8,10 +8,12 @@ import React from 'react';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'src/slices/block/utils/get-block-reward';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
 import GasUsed from 'src/slices/gas/components/GasUsed';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import BlockDetailsBaseFeeCelo from 'src/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
 import BlockDetailsZilliqaQuorumCertificate from 'src/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
@@ -19,9 +21,8 @@ import BlockDetailsBlobInfo from 'src/features/data-availability/pages/block/Blo
 import { useMultichainContext } from 'src/features/multichain/context';
 import * as arbitrum from 'src/features/rollup/arbitrum/utils/batch-verification';
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import OptimisticL2TxnBatchDA from 'src/features/rollup/optimism/components/TxnBatchDA';
 import ZkSyncL2TxnBatchHashesInfo from 'src/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
 import { formatZkSyncL2TxnBatchStatus } from 'src/features/rollup/zk-sync/utils/format-txn-batch-status';
@@ -187,7 +188,7 @@ const BlockDetails = ({ query }: Props) => {
             { layerLabels.parent } block height
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
-            <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_number }/>
+            <BlockEntity isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_number } chain={ parentChain }/>
           </DetailedInfo.ItemValue>
         </>
       ) }
@@ -362,7 +363,7 @@ const BlockDetails = ({ query }: Props) => {
                 Commitment tx
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData }/>
+                <TxEntity hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData } chain={ parentChain }/>
                 { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
               </DetailedInfo.ItemValue>
             </>
@@ -376,7 +377,7 @@ const BlockDetails = ({ query }: Props) => {
                 Confirmation tx
               </DetailedInfo.ItemLabel>
               <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData }/>
+                <TxEntity hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData } chain={ parentChain }/>
                 { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
               </DetailedInfo.ItemValue>
             </>
