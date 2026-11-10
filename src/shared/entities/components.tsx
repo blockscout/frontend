@@ -41,7 +41,7 @@ const Container = (props: ContainerBaseProps) => {
 
 export interface LinkBaseProps extends
   Omit<LinkToolkitProps, 'onClick' | 'loading'>,
-  Pick<EntityOptions, 'isLoading' | 'noLink' | 'query' | 'chain' | 'onClick'> {
+  Pick<EntityOptions, 'isLoading' | 'noLink' | 'chain' | 'onClick'> {
   children: React.ReactNode;
 }
 

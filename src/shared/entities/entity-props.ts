@@ -58,6 +58,10 @@ export function resolveEntityOptions(defaults: EntityDefaults | undefined, optio
   return resolved;
 }
 
+export function toShieldInput(icon: { shield?: unknown } | undefined): false | undefined {
+  return icon?.shield === false ? false : undefined;
+}
+
 export function mergeEntityData<TData extends object>(rootData: TData | undefined, override: Partial<TData> | undefined): TData {
   return { ...rootData, ...override } as TData;
 }

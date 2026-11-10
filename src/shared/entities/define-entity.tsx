@@ -18,7 +18,7 @@ import {
   Icon as IconBase,
   Link as LinkBase,
 } from './components';
-import { ENTITY_OPTION_KEY_LIST, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys } from './entity-props';
+import { ENTITY_OPTION_KEY_LIST, mergeEntityData, mergeIconOptions, resolveEntityOptions, splitByKeys, toShieldInput } from './entity-props';
 import type { EntityChain, EntityLinkResolution, ExternalRouteTemplateKey } from './resolve-entity-link';
 import { resolveEntityLink } from './resolve-entity-link';
 import type { EntityDefaults, EntityOptions, EntityRootValue } from './root';
@@ -76,6 +76,7 @@ export function resolveIconSource<TData extends object>(icon: EntityDefinition<T
 interface LinkInputs {
   readonly chain: EntityChain | undefined;
   readonly shield: false | undefined;
+  readonly query: EntityOptions['query'];
 }
 
 export function defineEntity<TData extends object>(definition: EntityDefinition<TData>): EntityComponents<TData> {
@@ -87,6 +88,7 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
 
     return resolveEntityLink({
       route: definition.route(data),
+      query: inputs.query,
       chain: inputs.chain,
       contextChain: definition.singleChain ? undefined : multichainContext?.chain,
       hintPrefix: definition.hintPrefix,
@@ -95,11 +97,12 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     });
   };
 
-  // A part with its own data or chain cannot reuse the root's resolution.
+  // A part with its own data, chain or shield cannot reuse the root's resolution.
   const usePartLink = (root: EntityRootValue<TData> | null, data: TData, override: Partial<TData> | undefined, inputs: LinkInputs) => {
     const resolution = useLinkResolution(data, inputs);
     // Stryker disable next-line ConditionalExpression: reusing the root's resolution only saves work; recomputing it yields the same value
-    const reusesRoot = root?.link !== undefined && override === undefined && inputs.chain === root.options.chain;
+    const reusesRoot = root?.link !== undefined && override === undefined &&
+      inputs.chain === root.options.chain && inputs.shield === toShieldInput(root.options.icon);
 
     return reusesRoot ? root.link : resolution;
   };
@@ -109,7 +112,8 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     const options = resolveEntityOptions(definition.defaults, rest);
     const link = useLinkResolution(mergeEntityData(undefined, data), {
       chain: options.chain,
-      shield: options.icon?.shield === false ? false : undefined,
+      shield: toShieldInput(options.icon),
+      query: options.query,
     });
 
     const value: EntityRootValue<TData> = { data: data as TData | undefined, options, link: data ? link : undefined };
@@ -134,7 +138,7 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     const data = mergeEntityData(root?.data, override);
     const icon = mergeIconOptions(root?.options.icon ?? definition.defaults?.icon, own);
     const chain = icon.chain ?? root?.options.chain;
-    const link = usePartLink(root, data, override, { chain, shield: icon.shield === false ? false : undefined });
+    const link = usePartLink(root, data, override, { chain, shield: toShieldInput(icon), query: root?.options.query });
 
     return (
       <IconBase
@@ -152,7 +156,7 @@ export function defineEntity<TData extends object>(definition: EntityDefinition<
     const data = mergeEntityData(root?.data, override);
     const options = root?.options;
     const chain = own.chain ?? options?.chain;
-    const link = usePartLink(root, data, override, { chain, shield: undefined });
+    const link = usePartLink(root, data, override, { chain, shield: toShieldInput(options?.icon), query: options?.query });
     const href = own.href ?? options?.href ?? link.href;
 
     return (

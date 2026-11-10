@@ -22,6 +22,7 @@ export type EntityChainShield = { readonly src: string } | { readonly name: 'net
 
 export interface EntityLinkParams {
   readonly route: Route | undefined;
+  readonly query: Record<string, string> | undefined;
   readonly chain: EntityChain | undefined;
   readonly contextChain: ClusterChainConfig | undefined;
   readonly hintPrefix: string;
@@ -62,6 +63,15 @@ const resolveTarget = (chain: EntityChain | undefined, contextChain: ClusterChai
   }
 
   return { kind: 'external', chain };
+};
+
+const withQuery = (route: Route | undefined, query: Record<string, string> | undefined): Route | undefined => {
+  if (!route || !query) {
+    return route;
+  }
+
+  // The spread loses the pathname-to-query pairing of the union; the route's own keys win, so the pairing holds.
+  return { ...route, query: { ...query, ...route.query } } as Route;
 };
 
 const toAbsoluteUrl = (base: string, path: string): string | undefined => {
@@ -118,7 +128,7 @@ export const resolveEntityLink = (params: EntityLinkParams): EntityLinkResolutio
   const shieldChain = resolveShieldChain(target, params.shield);
 
   return {
-    href: resolveHref(params.route, target, params.routeTemplate),
+    href: resolveHref(withQuery(params.route, params.query), target, params.routeTemplate),
     isExternal: target.kind === 'external' || target.kind === 'link-only',
     shield: shieldChain ? toShield(shieldChain) : undefined,
     hint: shieldChain ? getChainTooltipText(shieldChain, params.hintPrefix) : undefined,

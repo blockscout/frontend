@@ -14,7 +14,7 @@ import getAddressName from 'src/slices/address/utils/get-address-name';
 import type { ContainerBaseProps, ContentBaseProps, CopyBaseProps, IconBaseProps, LinkBaseProps } from 'src/shared/entities/components';
 import * as EntityBase from 'src/shared/entities/components';
 import type { EntityStyleProps } from 'src/shared/entities/define-entity';
-import { ENTITY_OPTION_KEY_LIST, keysOf, mergeIconOptions, resolveEntityOptions, splitByKeys } from 'src/shared/entities/entity-props';
+import { ENTITY_OPTION_KEY_LIST, keysOf, mergeIconOptions, resolveEntityOptions, splitByKeys, toShieldInput } from 'src/shared/entities/entity-props';
 import { isClusterChain } from 'src/shared/entities/interchain';
 import type { EntityChain, EntityLinkResolution } from 'src/shared/entities/resolve-entity-link';
 import { resolveEntityLink } from 'src/shared/entities/resolve-entity-link';
@@ -98,7 +98,8 @@ const toAddressChain = (chain: EntityChain | undefined): EntityChain | undefined
 
 const useAddressLink = (address: AddressProp | undefined, query: EntityOptions['query'], inputs: LinkInputs): EntityLinkResolution => {
   return resolveEntityLink({
-    route: address ? { pathname: '/address/[hash]', query: { ...query, hash: address.hash } } : undefined,
+    route: address ? { pathname: '/address/[hash]', query: { hash: address.hash } } : undefined,
+    query,
     chain: toAddressChain(inputs.chain),
     contextChain: undefined,
     hintPrefix: CHAIN_HINT_PREFIX,
@@ -122,7 +123,7 @@ const Root = ({ children, ...props }: RootProps) => {
   const altHash = useAltHash(address, input?.noAltHash);
   const link = useAddressLink(address, options.query, {
     chain: options.chain,
-    shield: options.icon?.shield === false ? false : undefined,
+    shield: toShieldInput(options.icon),
   });
 
   const value: EntityRootValue<AddressRootData> = {
@@ -156,7 +157,7 @@ const usePartLink = (data: AddressPartData, inputs: LinkInputs): EntityLinkResol
   const resolution = useAddressLink(data.address, options.query, inputs);
 
   // Stryker disable next-line ConditionalExpression,EqualityOperator,LogicalOperator: reusing the root's resolution only saves work; recomputing it is equal
-  return data.rootLink && inputs.chain === options.chain ? data.rootLink : resolution;
+  return data.rootLink && inputs.chain === options.chain && inputs.shield === toShieldInput(options.icon) ? data.rootLink : resolution;
 };
 
 const ContainerBox = (props: ContainerBaseProps) => {
@@ -245,7 +246,7 @@ const Icon = (props: IconProps) => {
   const icon = mergeIconOptions(options.icon, own);
   const [ css, rest ] = useSplitCssProps(icon);
   const chain = icon.chain ?? options.chain;
-  const link = usePartLink(data, { chain, shield: icon.shield === false ? false : undefined });
+  const link = usePartLink(data, { chain, shield: toShieldInput(icon) });
   const {
     isLoading = options.isLoading,
     noIcon = options.noIcon,
@@ -313,7 +314,7 @@ const Link = (props: LinkProps) => {
   const options = useEntityOptions();
   const [ data, own ] = usePartData<LinkBaseProps>(props);
   const chain = own.chain ?? options.chain;
-  const link = usePartLink(data, { chain, shield: undefined });
+  const link = usePartLink(data, { chain, shield: toShieldInput(options.icon) });
   const href = own.href ?? options.href ?? link.href;
 
   return (

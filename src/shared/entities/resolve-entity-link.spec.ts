@@ -40,6 +40,7 @@ async function resolve(params: EntityLinkParams, envs?: Array<[ string, string ]
 
 const txParams = (overrides: Partial<EntityLinkParams>): EntityLinkParams => ({
   route: txRoute,
+  query: undefined,
   chain: undefined,
   contextChain: undefined,
   hintPrefix: 'Transaction on ',
@@ -193,6 +194,20 @@ describe('resolveEntityLink', () => {
     });
   });
 
+  describe('with a query option', () => {
+    it('merges it into the route', async() => {
+      expect((await resolve(txParams({ query: { tab: 'logs' } }))).href).toBe(`/tx/${ HASH }?tab=logs`);
+    });
+
+    it('lets the route\'s own keys win over it', async() => {
+      expect((await resolve(txParams({ query: { hash: '0x1234', tab: 'logs' } }))).href).toBe(`/tx/${ HASH }?tab=logs`);
+    });
+
+    it('keeps the explorer template path, which has no query', async() => {
+      expect((await resolve(txParams({ query: { tab: 'logs' }, chain: externalChain }))).href).toBe(`https://basescan.org/transaction/${ HASH }`);
+    });
+  });
+
   describe('without a route', () => {
     it('yields no href but still the shield and hint of the chain', async() => {
       expect(await resolve(txParams({ route: undefined, chain: externalChain }))).toEqual({
@@ -203,8 +218,8 @@ describe('resolveEntityLink', () => {
       });
     });
 
-    it('yields no href on the current chain either', async() => {
-      expect((await resolve(txParams({ route: undefined }))).href).toBeUndefined();
+    it('yields no href on the current chain either, whatever the query option', async() => {
+      expect((await resolve(txParams({ route: undefined, query: { tab: 'logs' } }))).href).toBeUndefined();
     });
   });
 });

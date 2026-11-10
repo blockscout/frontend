@@ -11,7 +11,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
+import { act, cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
 
@@ -39,6 +39,14 @@ const openTooltip = async(getTrigger: () => Element) => {
   fireEvent.pointerEnter(initialTrigger, { pointerType: 'mouse' });
   await waitFor(() => expect(initialTrigger.isConnected).toBe(false));
   fireEvent.pointerEnter(getTrigger(), { pointerType: 'mouse' });
+};
+
+// A lazy tooltip mounts (and swaps its trigger) on a zero timeout after the pointer enters; an element
+// with no tooltip around it stays in place once that timeout has run.
+const enterWithoutTooltip = async(trigger: Element) => {
+  fireEvent.pointerEnter(trigger, { pointerType: 'mouse' });
+  await act(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
+  expect(trigger.isConnected).toBe(true);
 };
 
 describe('defineEntity', () => {
@@ -298,6 +306,19 @@ describe('defineEntity', () => {
 
       expect(document.querySelector('img')?.getAttribute('src')).toBe(externalChain.logo);
     });
+
+    it('lets an icon part drop both the shield and the hint of the container chain', async() => {
+      render(
+        <TxEntityParts.Container hash={ HASH } chain={ externalChain }>
+          <TxEntityParts.Icon shield={ false }/>
+        </TxEntityParts.Container>,
+      );
+
+      await enterWithoutTooltip(document.querySelector('svg')?.parentElement as Element);
+
+      expect(document.querySelector('img')).toBeNull();
+      expect(screen.queryByText(/on Base/)).toBeNull();
+    });
   });
 
   describe('link resolution', () => {
@@ -305,6 +326,12 @@ describe('defineEntity', () => {
       render(<TxEntity hash={ HASH }/>);
 
       expect(getLink()).toHaveProperty('href', `http://localhost:3000/tx/${ HASH }`);
+    });
+
+    it('merges the query option into the link', () => {
+      render(<TxEntity hash={ HASH } query={{ tab: 'logs' }}/>);
+
+      expect(getLink()).toHaveProperty('href', `http://localhost:3000/tx/${ HASH }?tab=logs`);
     });
 
     it('links to the chain-scoped route inside a multichain context', () => {

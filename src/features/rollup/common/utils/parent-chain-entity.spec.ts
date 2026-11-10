@@ -38,6 +38,7 @@ describe('parentChainAsEntityChain', () => {
 
       expect(resolveEntityLink({
         route: { pathname: '/address/[hash]', query: { hash: HASH, tab: 'txs' } },
+        query: undefined,
         chain: parentChainAsEntityChain(rollupFeature.parentChain),
         contextChain: undefined,
         hintPrefix: ' on ',

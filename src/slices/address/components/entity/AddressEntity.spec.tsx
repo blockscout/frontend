@@ -14,7 +14,7 @@ import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 import type { EntityChain } from 'src/shared/entities/resolve-entity-link';
 
 import { afterEach, describe, expect, it } from 'vitest';
-import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
+import { act, cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
 
@@ -47,6 +47,14 @@ const openTooltip = async(getTrigger: () => Element) => {
   fireEvent.pointerEnter(initialTrigger, { pointerType: 'mouse' });
   await waitFor(() => expect(initialTrigger.isConnected).toBe(false));
   fireEvent.pointerEnter(getTrigger(), { pointerType: 'mouse' });
+};
+
+// A lazy tooltip mounts (and swaps its trigger) on a zero timeout after the pointer enters; an element
+// with no tooltip around it stays in place once that timeout has run.
+const enterWithoutTooltip = async(trigger: Element) => {
+  fireEvent.pointerEnter(trigger, { pointerType: 'mouse' });
+  await act(() => new Promise<void>((resolve) => setTimeout(resolve, 0)));
+  expect(trigger.isConnected).toBe(true);
 };
 
 describe('AddressEntity', () => {
@@ -319,13 +327,24 @@ describe('AddressEntity', () => {
       expect(await screen.findByText('Address on Base (Chain ID: 8453)')).toBeTruthy();
     });
 
-    it('leaves the identicon without a hint for a link-only chain, as the rollup parent chain is', () => {
+    it('leaves the identicon without a hint for a link-only chain, as the rollup parent chain is', async() => {
       render(<AddressEntity address={ HASH } chain={{ ...externalChain, linkOnly: true }}/>);
-      const identiconFrame = queryIdenticon()?.parentElement?.parentElement as Element;
 
-      fireEvent.pointerEnter(identiconFrame, { pointerType: 'mouse' });
+      await enterWithoutTooltip(queryIdenticon()?.parentElement?.parentElement as Element);
 
-      expect(identiconFrame.isConnected).toBe(true);
+      expect(screen.queryByText(/^Address/)).toBeNull();
+    });
+
+    it('lets the icon part drop both the shield and the hint of the container chain', async() => {
+      render(
+        <AddressEntityParts.Container address={ HASH } chain={ externalChain }>
+          <AddressEntityParts.Icon shield={ false }/>
+        </AddressEntityParts.Container>,
+      );
+
+      await enterWithoutTooltip(queryIdenticon()?.parentElement?.parentElement as Element);
+
+      expect(queryShield()).toBeNull();
       expect(screen.queryByText(/^Address/)).toBeNull();
     });
 
