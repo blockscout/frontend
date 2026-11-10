@@ -283,6 +283,12 @@ describe('miscSchema', () => {
     ]);
   });
 
+  it('accepts a single-quoted attribute value that holds a double quote, as the app renders it', () => {
+    expect(getValidationErrors(miscSchema, {
+      NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: `Pay <a href="https://example.com" title='x" onclick="steal()'>here</a>`,
+    })).toEqual([]);
+  });
+
   it('checks the items of a double-quoted array whose apostrophe breaks the quote-rewritten JSON', () => {
     expect(getValidationErrors(miscSchema, {
       NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: String.raw`["It's down", "\u003ciframe srcdoc='https://evil.example'\u003e\u003c/iframe\u003e"]`,

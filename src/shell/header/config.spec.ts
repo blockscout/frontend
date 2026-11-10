@@ -59,6 +59,10 @@ describe('maintenance alert', () => {
     expect(await resolveMessage(JSON.stringify(ITEMS_SINGLE_QUOTED_HREF), 'server')).toBe(ITEMS_SINGLE_QUOTED_HREF[0]);
   });
 
+  it('shows nothing when the variable is unset', async() => {
+    expect(await resolveMessage('', 'server')).toBe('');
+  });
+
   it.each(SIDES)('shows a single HTML message as set on the %s', async(side) => {
     expect(await resolveMessage(`Keeper. <a href="${ LINK }">Download now</a>`, side)).toBe(`Keeper. <a href="${ LINK }">Download now</a>`);
   });

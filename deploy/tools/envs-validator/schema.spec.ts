@@ -110,6 +110,13 @@ describe('single-chain schema', () => {
       })).toEqual([]);
     });
 
+    it('accepts a single-quoted attribute value that holds a double quote, as the app renders it', () => {
+      expect(getValidationErrors(schema, {
+        ...REQUIRED,
+        NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: `Pay <a href="https://example.com" title='x" onclick="steal()'>here</a>`,
+      })).toEqual([]);
+    });
+
     it('rejects a frame or an event handler', () => {
       expect(getValidationErrors(schema, {
         ...REQUIRED,

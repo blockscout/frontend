@@ -19,11 +19,9 @@ import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'src/slice
 import type { ColorThemeId } from 'src/shell/top-bar/settings/fields/color-theme/config';
 import { COLOR_THEME_IDS, COLOR_THEMES, SYSTEM_COLOR_THEME_ID, coversBothColorModes } from 'src/shell/top-bar/settings/fields/color-theme/config';
 
-import { findDisallowedHtml } from 'src/shared/texts/sanitize-html';
-
 import * as regexp from 'src/toolkit/utils/regexp';
 
-import { companionRule, disallowedHtmlMessage, envBoolean, envJson, envUrl, requiredIf, requires } from '../utils';
+import { companionRule, envBoolean, envHtmlList, envJson, envUrl, requiredIf, requires } from '../utils';
 
 const requiredString = () => v.pipe(v.string(), v.nonEmpty());
 const requiredUrl = () => v.pipe(v.string(), v.nonEmpty(), v.url());
@@ -161,37 +159,12 @@ const fontFamilySchema = v.object({
   url: requiredUrl(),
 });
 
-const parseJsonArray = (value: string): Array<unknown> | undefined => {
-  try {
-    const parsed: unknown = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : undefined;
-  } catch {
-    return undefined;
-  }
-};
-
-// The app parses the value as set before the quote-rewritten one (src/shell/header/config.ts): an apostrophe in an
-// item breaks the rewritten JSON, and the check has to see the same items the app will render.
-const toMessages = (value: string | Array<string>): Array<string> => {
-  const items: Array<unknown> = typeof value === 'string' ? parseJsonArray(value) ?? [ value ] : value;
-  // Stryker disable next-line ConditionalExpression: narrows JSON.parse's unknown items; a non-string item has no markup to check either way
-  return items.filter((item): item is string => typeof item === 'string');
-};
-
-const maintenanceAlertSchema = v.pipe(
-  v.union([ envJson(v.array(v.string())), v.string() ]),
-  v.check(
-    (value) => toMessages(value).every((message) => findDisallowedHtml(message).length === 0),
-    (issue) => disallowedHtmlMessage(toMessages(issue.input)),
-  ),
-);
-
 export const miscSchema = v.pipe(
   v.object({
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: v.optional(envBoolean()),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: v.optional(envBoolean()),
     NEXT_PUBLIC_HIDE_NATIVE_COIN_PRICE: v.optional(envBoolean()),
-    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: v.optional(maintenanceAlertSchema),
+    NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: v.optional(envHtmlList()),
     NEXT_PUBLIC_COLOR_THEMES: v.optional(envJson(v.array(v.picklist(COLOR_THEME_IDS)))),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: v.optional(v.picklist(COLOR_THEME_IDS)),
     NEXT_PUBLIC_COLOR_THEME_OVERRIDES: v.optional(envJson(v.record(v.string(), v.unknown()))),

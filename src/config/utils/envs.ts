@@ -37,6 +37,22 @@ export const parseEnvJson = <DataType>(env: string | undefined): DataType | null
   }
 };
 
+// HTML is rendered as set: the quote rewrite of getEnvValue would turn an apostrophe or a single-quoted
+// attribute value into a double quote.
+export const getEnvHtmlValue = (envName: string): string | undefined => getRawEnvValue(envName);
+
+// A JSON list of HTML items is parsed as set first, since the quote rewrite breaks an item with an apostrophe
+// or a single-quoted attribute; the rewritten form keeps the `['a','b']` syntax working. Anything else is one item.
+export const parseEnvHtmlList = (value: string | undefined): Array<string> => {
+  if (!value) {
+    return [];
+  }
+
+  const parsed = parseEnvJson<unknown>(value) ?? parseEnvJson<unknown>(replaceQuotes(value));
+
+  return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === 'string') : [ value ];
+};
+
 export const getExternalAssetFilePath = (envName: string) => {
   const parsedValue = getEnvValue(envName);
 
