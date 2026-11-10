@@ -8,6 +8,8 @@ import type { AddressFormat } from 'src/slices/address/types/config';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as implementationsMock from 'src/slices/address/mocks/implementations';
 
+import * as clusterChains from 'src/features/multichain/mocks/chains';
+
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 import type { EntityChain } from 'src/shared/entities/resolve-entity-link';
 
@@ -397,6 +399,38 @@ describe('AddressEntity', () => {
       render(<AddressEntity address={ HASH } chain={ externalChain } icon={{ shield: false }}/>);
 
       expect(queryShield()).toBeNull();
+    });
+
+    describe('inside a multichain deployment', () => {
+      const renderInCluster = async(build: (parts: typeof AddressEntityParts) => React.ReactElement) => {
+        await withEnvs(ENVS_MAP.multichain, async() => {
+          window.__multichainConfig = { chains: [ clusterChains.chainA, clusterChains.chainB ] };
+          const { render } = await import('vitest/lib');
+
+          render(build(await import('./AddressEntity')));
+        });
+      };
+
+      it('links a cluster chain to the aggregated address page without a shield', async() => {
+        await renderInCluster(({ 'default': Entity }) => <Entity address={ HASH } chain={{ id: clusterChains.chainA.id, name: 'OP' }}/>);
+
+        expect(getLink()).toHaveProperty('href', `http://localhost:3000/address/${ HASH }`);
+        expect(queryShield()).toBeNull();
+      });
+
+      it('keeps the explorer link of a link-only chain whose id is in the cluster', async() => {
+        await renderInCluster(({ 'default': Entity }) => <Entity address={ HASH } chain={{ ...externalChain, id: clusterChains.chainA.id, linkOnly: true }}/>);
+
+        expect(getLink()).toHaveProperty('href', `https://basescan.org/account/${ HASH }`);
+        expect(queryShield()).toBeNull();
+      });
+
+      it('links a foreign chain to its explorer with its shield', async() => {
+        await renderInCluster(({ 'default': Entity }) => <Entity address={ HASH } chain={ externalChain }/>);
+
+        expect(getLink()).toHaveProperty('href', `https://basescan.org/account/${ HASH }`);
+        expect(queryShield()?.getAttribute('src')).toBe(externalChain.logo);
+      });
     });
   });
 

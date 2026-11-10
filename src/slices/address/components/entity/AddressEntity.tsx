@@ -15,6 +15,7 @@ import type { ContainerBaseProps, ContentBaseProps, CopyBaseProps, IconBaseProps
 import * as EntityBase from 'src/shared/entities/components';
 import type { EntityStyleProps } from 'src/shared/entities/define-entity';
 import { ENTITY_OPTION_KEY_LIST, keysOf, mergeIconOptions, resolveEntityOptions, splitByKeys } from 'src/shared/entities/entity-props';
+import { isClusterChain } from 'src/shared/entities/interchain';
 import type { EntityChain, EntityLinkResolution } from 'src/shared/entities/resolve-entity-link';
 import { resolveEntityLink } from 'src/shared/entities/resolve-entity-link';
 import type { EntityOptions, EntityRootValue } from 'src/shared/entities/root';
@@ -89,10 +90,16 @@ interface LinkInputs {
   readonly shield: false | undefined;
 }
 
+// A multichain deployment has no per-chain address page, only the aggregated one, so a cluster chain
+// gets neither the chain-scoped link nor the shield and hint; a link-only chain keeps its explorer link.
+const toAddressChain = (chain: EntityChain | undefined): EntityChain | undefined => {
+  return chain && !chain.linkOnly && isClusterChain(chain) ? undefined : chain;
+};
+
 const useAddressLink = (address: AddressProp | undefined, query: EntityOptions['query'], inputs: LinkInputs): EntityLinkResolution => {
   return resolveEntityLink({
     route: address ? { pathname: '/address/[hash]', query: { ...query, hash: address.hash } } : undefined,
-    chain: inputs.chain,
+    chain: toAddressChain(inputs.chain),
     contextChain: undefined,
     hintPrefix: CHAIN_HINT_PREFIX,
     routeTemplate: 'address',

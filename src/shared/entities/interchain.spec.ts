@@ -17,8 +17,7 @@ async function load(envs?: Array<[ string, string ]>) {
     window.__multichainConfig = envs ? { chains: [ clusterChains.chainA, clusterChains.chainB ] } : undefined;
     const interchain = await import('./interchain');
     const { toTokenChain } = await import('src/slices/token/components/entity/TokenEntityInterchain');
-    const { toAddressChain } = await import('src/slices/address/components/entity/AddressEntityInterchain');
-    return { ...interchain, toTokenChain, toAddressChain };
+    return { ...interchain, toTokenChain };
   });
 }
 
@@ -51,24 +50,6 @@ describe('isClusterChain', () => {
 
     expect(isClusterChain({ id: clusterChains.chainA.id, name: 'OP' })).toBe(true);
     expect(isClusterChain(externalChain)).toBe(false);
-  });
-});
-
-describe('toAddressChain', () => {
-  it('keeps every chain outside a multichain deployment', async() => {
-    const { toAddressChain } = await load();
-
-    expect(toAddressChain(undefined)).toBeUndefined();
-    expect(toAddressChain(currentChain)).toBe(currentChain);
-    expect(toAddressChain(externalChain)).toBe(externalChain);
-  });
-
-  it('inside a multichain deployment drops a cluster chain and keeps a foreign one', async() => {
-    const { toAddressChain } = await load(ENVS_MAP.multichain);
-    const clusterChain = { id: clusterChains.chainA.id, name: 'OP' };
-
-    expect(toAddressChain(clusterChain)).toBeUndefined();
-    expect(toAddressChain(externalChain)).toBe(externalChain);
   });
 });
 
