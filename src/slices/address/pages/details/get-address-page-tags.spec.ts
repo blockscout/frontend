@@ -82,7 +82,13 @@ describe('getAddressPageTags', () => {
 
   it('marks a celo account with its own colors', async() => {
     const addressData: schemas['AddressResponse'] = { ...addressMock.validator, celo: { account: CELO_ACCOUNT } };
-    expect(await getTagSlugs([], { addressData })).toEqual([ 'celo-account', 'eoa' ]);
+    const tags = await withEnvs([], async() => {
+      const { getAddressPageTags } = await import('./get-address-page-tags');
+      return getAddressPageTags({ ...DEFAULT_PARAMS, addressData });
+    });
+
+    expect(tags.map((tag) => tag.slug)).toEqual([ 'celo-account', 'eoa' ]);
+    expect(tags[0]).toMatchObject({ meta: { bgColor: 'yellow.200', textColor: 'black' } });
   });
 
   it('puts the safe tag last', async() => {

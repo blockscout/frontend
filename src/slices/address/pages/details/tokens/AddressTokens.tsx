@@ -45,7 +45,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const { query: fungibleTokensQuery, tokenTypes: fungibleTokenTypes, onTokenTypesChange: handleFungibleTokenTypesChange } = useAddressFungibleTokensQuery({
     addressHash: hash,
     scrollRef,
-    enabled: isQueryEnabled && (tab === 'tokens' || tab === 'tokens_erc20'),
+    enabled: isQueryEnabled && !isNftTab(tab),
   });
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
