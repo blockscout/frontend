@@ -5,6 +5,7 @@ import * as blockMock from 'src/slices/block/mocks/details';
 
 import { rootstock } from 'src/features/chain-variants/rootstock/mocks/block';
 import { withBlobTxs } from 'src/features/data-availability/mocks/block';
+import { arbitrum } from 'src/features/rollup/arbitrum/mocks/block';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
@@ -49,6 +50,23 @@ test('with blob txs', async({ render, page, mockEnvs }) => {
   ]);
   const query = {
     data: withBlobTxs,
+    isPending: false,
+  } as BlockQuery;
+
+  const component = await render(<BlockDetails query={ query }/>, { hooksConfig });
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('arbitrum rollup block with withdrawals', async({ render, page, mockEnvs }) => {
+  await mockEnvs([
+    ...ENVS_MAP.arbitrumRollup,
+    [ 'NEXT_PUBLIC_HAS_BEACON_CHAIN', 'true' ],
+  ]);
+  const query = {
+    data: arbitrum,
     isPending: false,
   } as BlockQuery;
 
