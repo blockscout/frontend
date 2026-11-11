@@ -1,10 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-# the devkit submodule is read-only here: shared files change in their own repository
-if [ -e devkit/.git ] && [ -n "$(git -C devkit status --porcelain)" ]; then
+# the devkit submodule is read-only here: shared files change in their own repository.
+# git hands a hook its own index and git dir through the environment; they must not leak into the
+# submodule's git, which would read the wrong index and report nothing.
+devkit_changes() {
+    (unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX; git -C devkit status --porcelain)
+}
+if [ -e devkit/.git ] && [ -n "$(devkit_changes)" ]; then
     echo "✋ devkit/ has local changes. It is read-only in this repository:"
-    git -C devkit status --short | sed 's/^/     /'
+    devkit_changes | sed 's/^/     /'
     echo "   Make the change in blockscout/frontend-devkit, or discard it with: git -C devkit checkout -- . && git -C devkit clean -fd"
     exit 1
 fi
