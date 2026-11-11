@@ -1,6 +1,9 @@
+import type { SearchResultItem } from 'src/slices/search/types/client';
+
 import * as searchMock from 'src/slices/search/mocks';
 
 import { tacOperation1 } from 'src/features/chain-variants/tac/mocks/search';
+import { zetaChainCCTXItem } from 'src/features/chain-variants/zeta-chain/mocks/cctx';
 import { blob1 } from 'src/features/data-availability/mocks/search';
 import { domain1 } from 'src/features/name-services/domains/mocks/search';
 import { userOp1 } from 'src/features/user-ops/mocks/search';
@@ -75,7 +78,7 @@ describe('isDisplayableResultItem', () => {
   });
 
   it('hides a type the results table does not render', async() => {
-    const cctx = { type: 'zetaChainCCTX', cctx: {} } as unknown as Parameters<typeof Utils.isDisplayableResultItem>[0];
+    const cctx = { type: 'zetaChainCCTX', cctx: zetaChainCCTXItem } satisfies SearchResultItem;
     expect(await withUtils(NO_FEATURES, ({ isDisplayableResultItem }) => isDisplayableResultItem(cctx))).toBe(false);
   });
 });
