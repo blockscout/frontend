@@ -10,8 +10,8 @@ import useNavLinkStyleProps from '../useNavLinkStyleProps';
 
 type Props = {
   banner: Extract<NavigationPromoBannerConfig, { text: string }>;
-  isCollapsed?: boolean;
-  isHorizontalNavigation?: boolean;
+  isCollapsed: boolean | undefined;
+  isHorizontalNavigation: boolean | undefined;
 };
 
 const NavigationPromoBannerText = ({ banner, isCollapsed, isHorizontalNavigation }: Props) => {

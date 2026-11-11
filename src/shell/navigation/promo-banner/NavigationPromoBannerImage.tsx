@@ -8,8 +8,8 @@ import { Image } from 'src/toolkit/chakra/image';
 
 type Props = {
   banner: Exclude<NavigationPromoBannerConfig, { text: string }>;
-  isCollapsed?: boolean;
-  isHorizontalNavigation?: boolean;
+  isCollapsed: boolean | undefined;
+  isHorizontalNavigation: boolean | undefined;
 };
 
 const NavigationPromoBannerImage = ({ banner, isCollapsed, isHorizontalNavigation }: Props) => {
