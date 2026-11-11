@@ -182,14 +182,14 @@ describe('getTxsStatsWidgets', () => {
       });
     });
 
-    it('ignores the microservice counters', () => {
+    it('takes the values from the API stats but still labels the widgets with any microservice titles', () => {
       const widgets = getTxsStatsWidgets({ ...API_PARAMS, rollupType: 'arbitrum', microserviceStats: MICROSERVICE_STATS });
 
-      expect(widgets.map(({ id, value }) => [ id, value ])).toEqual([
-        [ 'newTxns', '992,890' ],
-        [ 'pendingTxns', '4,200' ],
-        [ 'txnsFee', '22.18' ],
-        [ 'averageTxnFee', '0.04' ],
+      expect(widgets.map(({ id, label, value }) => [ id, label, value ])).toEqual([
+        [ 'newTxns', 'New transactions', '992,890' ],
+        [ 'pendingTxns', 'Queued transactions', '4,200' ],
+        [ 'txnsFee', 'Fees paid', '22.18' ],
+        [ 'averageTxnFee', 'Average fee', '0.04' ],
       ]);
     });
 

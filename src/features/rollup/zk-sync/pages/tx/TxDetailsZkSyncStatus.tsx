@@ -12,6 +12,8 @@ import config from 'src/config';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 
+const ZKSYNC_L2_TX_STATUS_STEPS = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
+
 interface Props {
   data: Pick<schemas['TransactionResponse'], 'zksync'>;
   isLoading: boolean;
@@ -32,7 +34,7 @@ const TxDetailsZkSyncStatus = ({ data, isLoading }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         <VerificationSteps
-          steps={ ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus) }
+          steps={ ZKSYNC_L2_TX_STATUS_STEPS }
           currentStep={ formatZkSyncL2TxnBatchStatus(data.zksync.status) }
           isLoading={ isLoading }
         />
