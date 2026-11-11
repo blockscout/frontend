@@ -1,0 +1,3 @@
+#!/bin/sh
+# Keep the devkit submodule at the commit this checkout records.
+git submodule update --init --quiet devkit

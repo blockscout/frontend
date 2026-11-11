@@ -1,0 +1,3 @@
+[submodule "devkit"]
+	path = devkit
+	url = https://github.com/blockscout/frontend-devkit.git
