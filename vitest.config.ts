@@ -12,7 +12,6 @@ const svgStub = {
   },
 };
 
-// specs that need a module registry of their own: the ones that mock modules or re-evaluate them
 const ISOLATED_SPECS = [ '**/*.isolated.spec.ts', '**/*.isolated.spec.tsx', '**/*.primed.spec.tsx' ];
 
 export default defineConfig({
@@ -29,7 +28,8 @@ export default defineConfig({
     // not see an edited entry; its spec is what keeps the committed set green
     forceRerunTriggers: [ 'tools/design-readout/calibration/**' ],
     // specs in the shared project run in one module registry and one global scope per worker, so
-    // whatever a spec stubs or spies on is undone before the next test rather than left to the spec
+    // whatever a spec stubs or spies on is undone before every test rather than left to the spec;
+    // vitest/setup.ts undoes it after every test too, which is what covers the last test of a file
     restoreMocks: true,
     unstubGlobals: true,
     unstubEnvs: true,

@@ -202,8 +202,14 @@ const SHARED_SPEC_RESTRICTED_SYNTAX = [
     message: 'Mocking a module or resetting the module registry' + ISOLATED_SPEC_MESSAGE,
   },
   {
-    selector: 'ImportDeclaration[source.value=/(^|\\/)(mockEnvs|mockSocket|checkPrimedRequests)$/]',
+    selector: ':matches(ImportDeclaration, ImportExpression)[source.value=/(^|\\/)(mockEnvs|mockSocket|checkPrimedRequests)$/]',
     message: 'This helper re-evaluates or mocks modules, so a spec using it' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: 'CallExpression[callee.object.name=\'Object\'][callee.property.name=\'assign\']' +
+      '[arguments.0.object.name=\'process\'][arguments.0.property.name=\'env\']',
+    message: 'Overriding env variables only works before the app config is first evaluated, so a spec doing it' + ISOLATED_SPEC_MESSAGE +
+      ' Prefer `withEnvs` from vitest/utils/mockEnvs.',
   },
   {
     selector: ':matches(AssignmentExpression > MemberExpression.left, UnaryExpression[operator=\'delete\'] > MemberExpression.argument)' +

@@ -137,7 +137,7 @@ Evaluating the app's module graph once per spec file is the largest single cost 
 
 ESLint fails the first three in a spec that is not named `*.isolated.spec.ts(x)`; the fourth is on you. In a shared spec a module mock is silently not applied whenever an earlier spec in the same worker already imported the module, so the failure shows up in some file orders only.
 
-A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by the config and `vitest/setup.ts`, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file lasts for the first test only. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
+A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by `vitest/setup.ts`, and spies and stubs again before every test by the config, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file is gone before the first test starts and reaches none of them. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
 
 Before pushing a change to shared specs or to the test setup, run the suite in random file order: `pnpm test:vitest --sequence.shuffle.files` (CI always does). To replay a failing order, pass the printed seed: `--sequence.seed <seed>`.
 
@@ -150,7 +150,7 @@ pnpm test:vitest --project shared        # one project only
 `vitest/setup.ts` runs before each test file and provides:
 - **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
 - **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
-- **Cleanup** — after every test, real timers are restored and `fetchMock` is reset.
+- **Cleanup** — after every test, real timers are restored, `fetchMock` is reset, and spies, `vi.stubGlobal` and `vi.stubEnv` are undone.
 - **Viewport** — jsdom has no `matchMedia`, so a stub answers `min-width` / `max-width` queries against a simulated viewport width. The default is the `lg` breakpoint: components render their **desktop** variant (`useIsMobile()` is `false`) unless a test asks otherwise — see `mockViewport` below.
 
 `vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.

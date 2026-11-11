@@ -17,11 +17,16 @@ Object.defineProperty(globalThis, '__envs', {
 
 // A spec in the shared project hands its worker on to the next spec file, so nothing a test set up
 // may outlive it: fake timers would freeze the next file, and a queued fetch response would answer
-// a request it was never meant for. Spies and global stubs are undone by the config
-// (restoreMocks / unstubGlobals / unstubEnvs in vitest.config.ts).
+// a request it was never meant for. Spies and stubs are undone here as well as by the config
+// (restoreMocks / unstubGlobals / unstubEnvs in vitest.config.ts): Vitest applies those flags before
+// a test starts, not after it ends, so on their own they leave the last test of a file in place
+// while the next file is evaluated and runs its `beforeAll`.
 afterEach(() => {
   vi.useRealTimers();
   fetchMocker.resetMocks();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 // The color-mode provider (next-themes) re-enables css transitions from a 1ms timeout that touches
