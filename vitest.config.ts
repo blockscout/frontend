@@ -32,6 +32,8 @@ export default defineConfig({
       '**/node_modules/**',
       '**/node_modules_linux/**',
       '.claude/worktrees/**',
+      // the shared devkit submodule runs its specs in its own repository
+      'devkit/**',
       'tools/mutation-testing/.stryker-tmp/**',
     ],
   },

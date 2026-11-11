@@ -217,6 +217,8 @@ export default tseslint.config(
     '.git/',
     // agent worktrees are full checkouts of the repo; linting them doubles the work and can exhaust the heap
     '.claude/worktrees/',
+    // the shared devkit submodule is linted in its own repository
+    'devkit/',
     'next.config.js',
     'tools/code-complexity/dist/',
     'tools/review-screen/dist/',

@@ -38,6 +38,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          # shared skills, rules and tools live in the devkit submodule
+          submodules: true
 
       - name: Install pnpm
         uses: pnpm/action-setup@v6

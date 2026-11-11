@@ -64,7 +64,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
 - `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
-- `tools/doc-links/` — the doc-link checker.
+- `devkit/tools/doc-links/` — the doc-link checker (shared, read-only here).
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.

@@ -1,6 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+# the devkit submodule is read-only here: shared files change in their own repository
+if [ -e devkit/.git ] && [ -n "$(git -C devkit status --porcelain)" ]; then
+    echo "✋ devkit/ has local changes. It is read-only in this repository:"
+    git -C devkit status --short | sed 's/^/     /'
+    echo "   Make the change in blockscout/frontend-devkit, or discard it with: git -C devkit checkout -- . && git -C devkit clean -fd"
+    exit 1
+fi
+
 # lint js/ts files
 echo 🧿 Running file linter...
 npx lint-staged
