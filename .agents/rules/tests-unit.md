@@ -108,7 +108,7 @@ Don't mock:
 
 ## File naming and location
 
-Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test.
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. A spec that needs its own module registry is named `*.isolated.spec.ts(x)` — see "Isolation" below.
 
 ```bash
 pnpm test:vitest                         # entire suite
@@ -119,11 +119,38 @@ pnpm test:vitest --changed origin/main   # tests related to this branch vs origi
 
 `--changed` uses git, then the Vitest module graph, so editing a source file still runs the spec that imports it. Untracked files are invisible until `git add`. If nothing matches, the command fails unless you add `--passWithNoTests` (CI does this on PRs). Fetch `origin/main` first if that ref is missing locally.
 
+## Isolation
+
+The suite runs as two Vitest projects, and the **file name** decides which one a spec belongs to:
+
+| Project | Files | Module registry |
+| --- | --- | --- |
+| `shared` | `*.spec.ts(x)` — the default | one per worker, shared by every spec file that worker runs |
+| `isolated` | `*.isolated.spec.ts(x)`, `*.primed.spec.tsx` | a fresh one per spec file |
+
+Evaluating the app's module graph once per spec file is the largest single cost of a run, so a spec is `shared` unless it needs a registry of its own. It does when it:
+
+- mocks a module — `vi.mock`, `vi.doMock`, or the `mockSocket` helper;
+- re-evaluates modules — `vi.resetModules`, `withEnvs`, `checkPrimedRequests`;
+- sets `process.env` by hand before importing the code under test;
+- asserts on module-level state that must start fresh (a singleton, a registry, a lazy-load cache).
+
+ESLint fails the first three in a spec that is not named `*.isolated.spec.ts(x)`; the fourth is on you. In a shared spec a module mock is silently not applied whenever an earlier spec in the same worker already imported the module, so the failure shows up in some file orders only.
+
+A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by the config and `vitest/setup.ts`, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file lasts for the first test only. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
+
+Before pushing a change to shared specs or to the test setup, run the suite in random file order: `pnpm test:vitest --sequence.shuffle.files` (CI always does). To replay a failing order, pass the printed seed: `--sequence.seed <seed>`.
+
+```bash
+pnpm test:vitest --project shared        # one project only
+```
+
 ## Setup
 
 `vitest/setup.ts` runs before each test file and provides:
 - **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
 - **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
+- **Cleanup** — after every test, real timers are restored and `fetchMock` is reset.
 
 `vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.
 
@@ -135,7 +162,7 @@ pnpm test:vitest --changed origin/main   # tests related to this branch vs origi
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.spec.tsx`) is the one exception, since the adapter is what wraps that module.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.isolated.spec.tsx`) is the one exception, since the adapter is what wraps that module.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -169,9 +196,9 @@ render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
 await flushPromises();
 ```
 
-It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
+It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports, in an `*.isolated.spec` file. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
 
-A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.spec.tsx`):
+A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.isolated.spec.tsx`):
 
 ```tsx
 vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
@@ -188,7 +215,7 @@ act(() => sendSocketMessage('addresses:0x…', 'token_transfer', { token_transfe
 fetchMock.mockResponseOnce(JSON.stringify({ data: 'value' }));
 ```
 
-Reset mocks between tests using `beforeEach` / `afterEach` if needed.
+Responses are reset after every test, so queue them in the test or in `beforeEach`.
 
 ## Overriding environment variables
 
@@ -204,9 +231,9 @@ await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
 });
 ```
 
-`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — the spec is an `*.isolated.spec` file, and everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
 
-The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.spec.ts`, `DeFiDropdown.spec.tsx`).
+The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.isolated.spec.ts`, `DeFiDropdown.isolated.spec.tsx`).
 
 ## Primed-requests drift tests (`*.primed.spec.tsx`)
 

@@ -168,12 +168,12 @@ const APP_CONFIG_ELEMENTS = [
   { type: 'app-config-envs', pattern: 'src/config/utils/envs.ts', mode: 'full' },
   { type: 'app-config-root', pattern: 'src/config/**', mode: 'full' },
   { type: 'app-config-module', pattern: APP_CONFIG_MODULE_GLOBS.map((glob) => glob.replace('**/config.ts', '**/!(types|mocks)/config.ts')), mode: 'full' },
-  { type: 'app-config-spec', pattern: 'src/**/config.spec.ts', mode: 'full' },
+  { type: 'app-config-spec', pattern: 'src/**/config.isolated.spec.ts', mode: 'full' },
 ];
 
 const APP_CONFIG_IMPORT_MESSAGE =
   'Read app config through the root aggregator: `import config from \'src/config\'`. ' +
-  'Only another config.ts, src/config/** or a config.spec.ts may import a config module directly.';
+  'Only another config.ts, src/config/** or a config.isolated.spec.ts may import a config module directly.';
 
 const APP_CONFIG_ENVS_MESSAGE =
   'Env values are read only in config modules. Move the getEnvValue / parseEnvJson / getExternalAssetFilePath call into the owning config.ts ' +
@@ -189,6 +189,29 @@ const WINDOW_ENVS_RESTRICTION = {
   property: '__envs',
   message: APP_CONFIG_ENVS_MESSAGE,
 };
+
+// Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
+// puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
+// Everything below needs a registry of its own, so it is only allowed in an isolated spec.
+const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
+const ISOLATED_SPEC_MESSAGE =
+  ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in .agents/rules/tests-unit.md.';
+const SHARED_SPEC_RESTRICTED_SYNTAX = [
+  {
+    selector: 'CallExpression[callee.object.name=\'vi\'][callee.property.name=/^(mock|doMock|unmock|doUnmock|resetModules)$/]',
+    message: 'Mocking a module or resetting the module registry' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: 'ImportDeclaration[source.value=/(^|\\/)(mockEnvs|mockSocket|checkPrimedRequests)$/]',
+    message: 'This helper re-evaluates or mocks modules, so a spec using it' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: ':matches(AssignmentExpression > MemberExpression.left, UnaryExpression[operator=\'delete\'] > MemberExpression.argument)' +
+      '[object.object.name=\'process\'][object.property.name=\'env\']',
+    message: 'Overriding an env variable only works before the app config is first evaluated, so a spec doing it' + ISOLATED_SPEC_MESSAGE +
+      ' Prefer `withEnvs` from vitest/utils/mockEnvs.',
+  },
+];
 
 const RESTRICTED_SYNTAX = [
   {
@@ -771,6 +794,14 @@ export default tseslint.config(
         paths: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.paths.filter((path) => !ROUTER_FRAMEWORK_MODULE_NAMES.includes(path.name)),
         patterns: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.patterns,
       } ],
+    },
+  },
+
+  {
+    files: [ '**/*.spec.{ts,tsx}' ],
+    ignores: ISOLATED_SPEC_GLOBS,
+    rules: {
+      'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX, ...SHARED_SPEC_RESTRICTED_SYNTAX ],
     },
   },
 
