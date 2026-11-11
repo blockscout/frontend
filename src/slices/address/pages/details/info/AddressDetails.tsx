@@ -1,40 +1,36 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { AddressCountersQuery } from 'src/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'src/slices/address/hooks/useAddressQuery';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import getChainValidationActionText from 'src/slices/chain/verification-type/utils/get-chain-validation-action-text';
 import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get-chain-validator-title';
-import ContractCreationStatus from 'src/slices/contract/components/ContractCreationStatus';
-import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
 import Address3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/Address3rdPartyWidgets';
 import useAddress3rdPartyWidgets from 'src/features/address-3rd-party-widgets/pages/address/useAddress3rdPartyWidgets';
 import AddressCeloAccount from 'src/features/chain-variants/celo/pages/address/AddressCeloAccount';
-import FilecoinActorTag from 'src/features/chain-variants/filecoin/pages/address/FilecoinActorTag';
+import AddressDetailsFilecoin from 'src/features/chain-variants/filecoin/pages/address/AddressDetailsFilecoin';
 
 import config from 'src/config';
 import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
 import ApiDegradationAlert from 'src/shared/api-degradation/ApiDegradationAlert';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoSponsoredItem from 'src/shared/detailed-info/DetailedInfoSponsoredItem';
-import isCustomAppError from 'src/shared/errors/is-custom-app-error';
-import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
-import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';
-import AddressCounterItem from './AddressCounterItem';
+import AddressCreator from './AddressCreator';
+import AddressDetailsCounterRow from './AddressDetailsCounterRow';
 import AddressImplementations from './AddressImplementations';
 import AddressNameInfo from './AddressNameInfo';
 import AddressNetWorth from './AddressNetWorth';
 import TokenSelect from './token-select/TokenSelect';
+import useAddressDetailsData from './useAddressDetailsData';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -50,46 +46,17 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
   const addressType = addressQuery.data?.is_contract && addressQuery.data?.proxy_type !== 'eip7702' ? 'contract' : 'eoa';
   const address3rdPartyWidgets = useAddress3rdPartyWidgets(addressType, addressQuery.isPlaceholderData);
 
-  const error404Data = React.useMemo(() => ({
-    hash: addressHash || '',
-    is_contract: false,
-    implementations: null,
-    token: null,
-    watchlist_address_id: null,
-    watchlist_names: null,
-    creation_transaction_hash: null,
-    block_number_balance_updated_at: null,
-    name: null,
-    exchange_rate: null,
-    coin_balance: null,
-    has_tokens: true,
-    has_token_transfers: true,
-    has_validated_blocks: false,
-    filecoin: undefined,
-    celo: undefined,
-    creator_filecoin_robust_address: null,
-    creator_address_hash: null,
-  }), [ addressHash ]);
+  const detailsData = useAddressDetailsData({ addressQuery, addressHash });
 
-  // error handling (except 404 codes)
-  if (addressQuery.isError) {
-    if (isCustomAppError(addressQuery.error)) {
-      const is404Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
-      if (!is404Error) {
-        throwOnResourceLoadError(addressQuery);
-      }
-    } else {
-      return <ApiFetchAlert/>;
-    }
+  if (detailsData.status === 'fetch_error') {
+    return <ApiFetchAlert/>;
   }
 
-  const data = addressQuery.isError ? error404Data : addressQuery.data;
-
-  if (!data) {
+  if (detailsData.status === 'empty') {
     return null;
   }
 
-  const creatorAddressHash = data.creator_address_hash;
+  const { data } = detailsData;
 
   return (
     <>
@@ -102,75 +69,11 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
 
         <AddressAlternativeFormat isLoading={ isLoading } addressHash={ addressHash }/>
 
-        { data.filecoin?.id && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Short identifier of an address that may change with chain state updates"
-            >
-              ID
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <Text>{ data.filecoin.id }</Text>
-              <CopyToClipboard text={ data.filecoin.id }/>
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
-
-        { data.filecoin?.actor_type && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Identifies the purpose and behavior of the address on the Filecoin network"
-            >
-              Actor
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <FilecoinActorTag actorType={ data.filecoin.actor_type }/>
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
-
-        { (data.filecoin?.actor_type === 'evm' || data.filecoin?.actor_type === 'ethaccount') && data?.filecoin?.robust && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="0x-style address to which the Filecoin address is assigned by the Ethereum Address Manager"
-            >
-              Ethereum Address
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue flexWrap="nowrap">
-              <AddressEntity
-                address={{ hash: data.hash }}
-                noIcon
-                noLink
-              />
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
+        <AddressDetailsFilecoin data={ data }/>
 
         <AddressNameInfo data={ data } isLoading={ isLoading }/>
 
-        { data.is_contract && data.creation_transaction_hash && (creatorAddressHash) && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Transaction and address of creation"
-              isLoading={ isLoading }
-            >
-              Creator
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <AddressEntity
-                address={{
-                  hash: creatorAddressHash,
-                  filecoin: data.creator_filecoin_robust_address ? { robust: data.creator_filecoin_robust_address, actor_type: null, id: null } : undefined,
-                }}
-                truncation="constant"
-                noIcon
-              />
-              <Text whiteSpace="pre"> at txn </Text>
-              <TxEntity hash={ data.creation_transaction_hash } truncation="constant" noIcon/>
-              { data.creation_status && <ContractCreationStatus status={ data.creation_status } ml={{ base: 0, lg: 2 }}/> }
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
+        <AddressCreator data={ data } isLoading={ isLoading }/>
         { !isLoading && data.is_contract && data.implementations && data.implementations?.length > 0 && (
           <AddressImplementations
             data={ data.implementations }
@@ -208,92 +111,51 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         )
         }
 
-        <DetailedInfo.ItemLabel
+        <AddressDetailsCounterRow
+          prop="transactions_count"
+          label="Transactions"
           hint="Number of transactions related to this address"
-          isLoading={ isLoading || countersQuery.isPlaceholderData }
-        >
-          Transactions
-        </DetailedInfo.ItemLabel>
-        <DetailedInfo.ItemValue>
-          { addressQuery.data ? (
-            <AddressCounterItem
-              prop="transactions_count"
-              query={ countersQuery }
-              address={ data.hash }
-              isAddressQueryLoading={ addressQuery.isPlaceholderData }
-              isDegradedData={ addressQuery.isDegradedData }
-            />
-          ) :
-            0 }
-        </DetailedInfo.ItemValue>
+          addressQuery={ addressQuery }
+          countersQuery={ countersQuery }
+          addressHash={ data.hash }
+          isLoading={ isLoading }
+        />
 
         { data.has_token_transfers && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Number of transfers to/from this address"
-              isLoading={ isLoading || countersQuery.isPlaceholderData }
-            >
-              Transfers
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { addressQuery.data ? (
-                <AddressCounterItem
-                  prop="token_transfers_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
-                />
-              ) :
-                0 }
-            </DetailedInfo.ItemValue>
-          </>
+          <AddressDetailsCounterRow
+            prop="token_transfers_count"
+            label="Transfers"
+            hint="Number of transfers to/from this address"
+            addressQuery={ addressQuery }
+            countersQuery={ countersQuery }
+            addressHash={ data.hash }
+            isLoading={ isLoading }
+          />
         ) }
 
         { countersQuery.data?.gas_usage_count && Number(countersQuery.data.gas_usage_count) > 0 && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Gas used by the address"
-              isLoading={ isLoading || countersQuery.isPlaceholderData }
-            >
-              Gas used
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue multiRow>
-              { addressQuery.data ? (
-                <AddressCounterItem
-                  prop="gas_usage_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
-                />
-              ) :
-                0 }
-            </DetailedInfo.ItemValue>
-          </>
+          <AddressDetailsCounterRow
+            prop="gas_usage_count"
+            label="Gas used"
+            hint="Gas used by the address"
+            addressQuery={ addressQuery }
+            countersQuery={ countersQuery }
+            addressHash={ data.hash }
+            isLoading={ isLoading }
+            multiRow
+          />
         ) }
 
         { data.has_validated_blocks && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint={ `Number of blocks ${ getChainValidationActionText() } by this ${ getChainValidatorTitle() }` }
-              isLoading={ isLoading || countersQuery.isPlaceholderData }
-            >
-              { `Blocks ${ getChainValidationActionText() }` }
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { addressQuery.data ? (
-                <AddressCounterItem
-                  prop="validations_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
-                />
-              ) :
-                0 }
-            </DetailedInfo.ItemValue>
-          </>
+          <AddressDetailsCounterRow
+            prop="validations_count"
+            label={ `Blocks ${ getChainValidationActionText() }` }
+            hint={ `Number of blocks ${ getChainValidationActionText() } by this ${ getChainValidatorTitle() }` }
+            addressQuery={ addressQuery }
+            countersQuery={ countersQuery }
+            addressHash={ data.hash }
+            isLoading={ isLoading }
+          />
         ) }
 
         { data.block_number_balance_updated_at !== null && (
