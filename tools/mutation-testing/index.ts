@@ -49,8 +49,8 @@ const USAGE = `Usage:
       Wall-clock bound on the run (default ${ DEFAULT_BUDGET_MS / MINUTE_MS }). At expiry the run is
       stopped and everything tested so far is reported, marked as truncated.
 
-  A file is mutated only when a vitest spec sits beside it (X.spec.ts / X.spec.tsx next to X.ts /
-  X.tsx) — an untested file would otherwise produce a run of unkillable mutants. In every mode, the
+  A file is mutated only when a vitest spec sits beside it (X.spec.ts / X.spec.tsx, or the X.isolated.spec form, next to
+  X.ts / X.tsx) — an untested file would otherwise produce a run of unkillable mutants. In every mode, the
   lines inside a jsx render body are left alone. When the selection comes out empty the run says why
   and exits 0 without starting Stryker.`;
 
