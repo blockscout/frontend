@@ -6,8 +6,10 @@ import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as addressCountersMock from 'src/slices/address/mocks/counters';
 import * as addressTabCountersMock from 'src/slices/address/mocks/tab-counters';
 import * as statsMock from 'src/slices/chain/stats/mocks';
+import { tokenInfo } from 'src/slices/token/mocks/info';
 
 import { generateAddressMetadataInfo, nameTag } from 'src/features/address-metadata/mocks/tags';
+import * as solidityscanReportMock from 'src/features/solidity-scan/mocks';
 
 import config from 'src/config';
 
@@ -61,6 +63,31 @@ test.describe('fetched bytecode', () => {
     const request = await page.waitForRequest(addressApiUrl);
 
     expect(request).toBeTruthy();
+  });
+});
+
+test('verified proxy contract with token', async({ render, page, mockEnvs, mockApiResponse }) => {
+  const address = { ...addressMock.contract, token: tokenInfo };
+
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED', 'true' ],
+  ]);
+  await mockApiResponse('core:address', address, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('core:address_counters', addressCountersMock.forContract, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('core:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('core:stats', statsMock.base);
+  await mockApiResponse('core:contract_solidity_scan_report', solidityscanReportMock.solidityscanReportGreat, { pathParams: { hash: addressParamMock.hash } });
+  await mockApiResponse('metadata:info', generateAddressMetadataInfo(addressParamMock.hash, nameTag), { queryParams: addressMetadataQueryParams });
+  await mockApiResponse('metadata:address_submit', null as never);
+  await mockApiResponse('bens:addresses_lookup', { items: [], next_page_params: undefined }, { queryParams: ensLookupQueryParams });
+
+  const component = await render(<Address/>, { hooksConfig });
+  await expect(component.getByLabel('SolidityScan score')).toBeVisible();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
