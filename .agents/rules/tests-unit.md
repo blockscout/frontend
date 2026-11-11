@@ -163,7 +163,7 @@ pnpm test:vitest --project shared        # one project only
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.isolated.spec.tsx`) is the one exception, since the adapter is what wraps that module.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.isolated.spec.tsx`) is the one exception, since the adapter is what wraps that module.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
