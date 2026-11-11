@@ -4,7 +4,7 @@ Every boundary below is intentional, so nobody has to rediscover it by trial and
 
 ## Only files with a co-located Vitest spec
 
-A file is mutated only when `X.spec.ts` or `X.spec.tsx` sits beside `X.ts` or `X.tsx`.
+A file is mutated only when `X.spec.ts` or `X.spec.tsx` sits beside `X.ts` or `X.tsx`; the `X.isolated.spec` form counts too.
 
 The question is: “Would a bug here be caught?” A file untouched by unit tests would produce only mutants nothing could kill, drowning meaningful findings in duplicates. The CRAP gate already reports that condition: an untested `behavior` function has 0% coverage and fails the PR.
 

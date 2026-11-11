@@ -28,7 +28,7 @@ violation fails before review.
 - **Config-to-config imports.** A config module may import another config module directly, for example a
   feature gated on whether another one is enabled. The aggregator cannot be used from inside a module it
   aggregates.
-- **A `config.spec.ts`** imports the module under test directly and dynamically, under `withEnvs`, because
+- **A `config.isolated.spec.ts`** imports the module under test directly and dynamically, under `withEnvs`, because
   the config is a frozen module-level singleton. The exemption is by file name, not by neighbourhood.
 - **Type-only imports** of a config module carry no runtime payload and pass.
 - **Companions.** `<feature>/types/config.ts` and `<feature>/mocks/config.ts` are not config modules and
