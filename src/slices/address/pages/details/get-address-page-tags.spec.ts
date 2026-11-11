@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
+import type { MetadataTag } from 'src/features/address-metadata/components/tag/types';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 
@@ -89,15 +90,40 @@ describe('getAddressPageTags', () => {
     expect(slugs).toEqual([ 'some-public-tag', 'watchlist-name', 'proxy', 'my-private-tag', 'safe' ]);
   });
 
-  it('attaches the FHE explanation to a public fhe tag', async() => {
-    const fheTag: schemas['Tag'] = { label: 'FHE', display_name: 'FHE', address_hash: addressMock.token.hash };
-    const addressData: schemas['AddressResponse'] = { ...addressMock.token, public_tags: [ fheTag ] };
-    const tags = await withEnvs([], async() => {
-      const { getAddressPageTags } = await import('./get-address-page-tags');
-      return getAddressPageTags({ ...DEFAULT_PARAMS, addressData });
+  describe('public tags', () => {
+    async function getPublicTag(publicTag: schemas['Tag']): Promise<MetadataTag | undefined> {
+      const addressData: schemas['AddressResponse'] = { ...addressMock.token, public_tags: [ publicTag ] };
+      const tags = await withEnvs([], async() => {
+        const { getAddressPageTags } = await import('./get-address-page-tags');
+        return getAddressPageTags({ ...DEFAULT_PARAMS, addressData });
+      });
+
+      return tags.find((tag) => tag.slug === publicTag.label);
+    }
+
+    const FHE_TOOLTIP = { meta: { tooltipDescription: expect.stringContaining('Fully Homomorphic Encryption') } };
+
+    it('attaches the FHE explanation to a public fhe tag', async() => {
+      expect(await getPublicTag({ label: 'FHE', display_name: 'FHE', address_hash: addressMock.token.hash })).toMatchObject(FHE_TOOLTIP);
     });
 
-    expect(tags.find((tag) => tag.slug === 'FHE')).toMatchObject({ meta: { tooltipDescription: expect.stringContaining('Fully Homomorphic Encryption') } });
+    it('recognizes the fhe tag by its label alone, whatever the case', async() => {
+      expect(await getPublicTag({ label: 'fhe', display_name: 'Encrypted', address_hash: addressMock.token.hash })).toMatchObject(FHE_TOOLTIP);
+    });
+
+    it('recognizes the fhe tag by its display name alone, whatever the case', async() => {
+      expect(await getPublicTag({ label: 'encrypted', display_name: 'Fhe', address_hash: addressMock.token.hash })).toMatchObject(FHE_TOOLTIP);
+    });
+
+    it('leaves any other public tag without a tooltip', async() => {
+      expect(await getPublicTag({ label: 'exchange', display_name: 'Exchange', address_hash: addressMock.token.hash })).toEqual({
+        slug: 'exchange',
+        name: 'Exchange',
+        tagType: 'custom',
+        ordinal: -1,
+        meta: undefined,
+      });
+    });
   });
 
   it('adds the smart contract wallet tag only when user ops are on', async() => {

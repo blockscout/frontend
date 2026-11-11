@@ -37,10 +37,40 @@ describe('useAddressDetailsData', () => {
   });
 
   it('builds a placeholder address for an unknown hash', () => {
-    const result = getData(errorQuery(404));
-
-    expect(result.status).toBe('ready');
-    expect(result).toMatchObject({ data: { hash: ADDRESS_HASH, is_contract: false, has_tokens: true, has_token_transfers: true } });
+    expect(getData(errorQuery(404))).toEqual({
+      status: 'ready',
+      data: {
+        hash: ADDRESS_HASH,
+        is_contract: false,
+        implementations: [],
+        token: null,
+        watchlist_address_id: null,
+        watchlist_names: [],
+        creation_transaction_hash: null,
+        block_number_balance_updated_at: null,
+        name: null,
+        exchange_rate: null,
+        coin_balance: null,
+        has_tokens: true,
+        has_token_transfers: true,
+        has_validated_blocks: false,
+        filecoin: undefined,
+        celo: undefined,
+        creator_filecoin_robust_address: null,
+        creator_address_hash: null,
+        creation_status: null,
+        ens_domain_name: null,
+        has_beacon_chain_withdrawals: false,
+        has_logs: false,
+        is_scam: false,
+        is_verified: false,
+        metadata: null,
+        proxy_type: null,
+        reputation: 'ok',
+        private_tags: [],
+        public_tags: [],
+      },
+    });
   });
 
   it('reports a fetch error for a server failure', () => {

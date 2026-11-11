@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import type { ResourceError } from 'src/api/resources';
+
 import type { AddressQuery } from 'src/slices/address/hooks/useAddressQuery';
 
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
@@ -19,9 +21,7 @@ interface Params {
   addressHash: string;
 }
 
-const isNotFoundError = (addressQuery: AddressQuery): boolean => {
-  return addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
-};
+const isNotFoundError = (error: ResourceError<{ status: number }>): boolean => error.status === 404;
 
 export default function useAddressDetailsData({ addressQuery, addressHash }: Params): AddressDetailsData {
   const error404Data = React.useMemo<schemas['AddressResponse']>(() => ({
@@ -61,7 +61,7 @@ export default function useAddressDetailsData({ addressQuery, addressHash }: Par
       return { status: 'fetch_error' };
     }
 
-    if (!isNotFoundError(addressQuery)) {
+    if (!isNotFoundError(addressQuery.error)) {
       throwOnResourceLoadError(addressQuery);
     }
 
