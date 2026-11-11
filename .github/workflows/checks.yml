@@ -42,6 +42,16 @@ jobs:
           # shared skills, rules and tools live in the devkit submodule
           submodules: true
 
+      # A pointer to a branch commit works until that branch is squash-merged and deleted; only a
+      # commit on the devkit's main branch is safe to depend on.
+      - name: Check the devkit pointer is on its main branch
+        run: |
+          git -C devkit fetch --quiet origin main
+          git -C devkit merge-base --is-ancestor HEAD FETCH_HEAD || {
+            echo "::error::devkit points at $(git -C devkit rev-parse --short HEAD), which is not on blockscout/frontend-devkit main"
+            exit 1
+          }
+
       - name: Install pnpm
         uses: pnpm/action-setup@v6
         with:
