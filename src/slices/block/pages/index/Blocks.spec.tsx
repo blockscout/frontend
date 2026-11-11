@@ -6,6 +6,7 @@ import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
+import { mockViewport } from 'vitest/utils/mockViewport';
 
 // every test re-imports the whole blocks page (withEnvs resets modules), which took >5s on a CI runner
 const TEST_TIMEOUT = 20_000;
@@ -22,6 +23,8 @@ describe('Blocks page with the Forked and Uncles views hidden', () => {
   });
 
   it('renders no tabs bar on mobile', { timeout: TEST_TIMEOUT }, async() => {
+    mockViewport('base');
+
     await withEnvs(ENVS_MAP.blockHiddenViews, async() => {
       const { render, screen } = await import('vitest/lib');
       const { 'default': Blocks } = await import('./Blocks');
@@ -34,25 +37,14 @@ describe('Blocks page with the Forked and Uncles views hidden', () => {
   });
 
   it('keeps the tabs bar on desktop', { timeout: TEST_TIMEOUT }, async() => {
-    const mobileMatchMedia = window.matchMedia;
-    // jsdom's matchMedia stub matches nothing, which lands on the mobile breakpoint
-    window.matchMedia = ((query: string) => ({
-      ...mobileMatchMedia(query),
-      matches: query.includes('min-width'),
-    })) as typeof window.matchMedia;
+    await withEnvs(ENVS_MAP.blockHiddenViews, async() => {
+      const { render, screen } = await import('vitest/lib');
+      const { 'default': Blocks } = await import('./Blocks');
 
-    try {
-      await withEnvs(ENVS_MAP.blockHiddenViews, async() => {
-        const { render, screen } = await import('vitest/lib');
-        const { 'default': Blocks } = await import('./Blocks');
+      render(<Blocks/>);
 
-        render(<Blocks/>);
-
-        expect(await screen.findByRole('heading', { name: 'Blocks' })).toBeTruthy();
-        expect(screen.getByRole('tablist')).toBeTruthy();
-      });
-    } finally {
-      window.matchMedia = mobileMatchMedia;
-    }
+      expect(await screen.findByRole('heading', { name: 'Blocks' })).toBeTruthy();
+      expect(screen.getByRole('tablist')).toBeTruthy();
+    });
   });
 });
