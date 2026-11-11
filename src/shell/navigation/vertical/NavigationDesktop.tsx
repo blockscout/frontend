@@ -17,7 +17,8 @@ import * as cookies from 'src/shared/storage/cookies';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
-import useNavItems, { isGroupItem } from '../useNavItems';
+import useNavItems from '../useNavItems';
+import { isGroupItem } from '../utils';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

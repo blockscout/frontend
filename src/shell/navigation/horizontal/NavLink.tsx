@@ -11,8 +11,7 @@ import { Link } from 'src/toolkit/chakra/link';
 
 import LightningLabel from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import { isInternalItem } from '../useNavItems';
-import { checkRouteHighlight } from '../utils';
+import { checkRouteHighlight, isInternalItem } from '../utils';
 
 interface Props {
   className?: string;

@@ -13,9 +13,8 @@ import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import { isInternalItem } from '../useNavItems';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../utils';
+import { checkRouteHighlight, isInternalItem } from '../utils';
 
 type Props = {
   item: NavItem;
