@@ -4,7 +4,6 @@ import { Box, chakra } from '@chakra-ui/react';
 import type { FormEvent } from 'react';
 import React from 'react';
 
-import { SEARCH_RESULT_TYPES } from '../../utils/result-types';
 import type { SearchResultItem } from 'src/slices/search/types/client';
 
 import HeaderAlert from 'src/shell/header/HeaderAlert';
@@ -18,6 +17,7 @@ import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 import SearchBarSuggestBlockCountdown from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'src/slices/search/hooks/useSearchQuery';
 import type { SearchResultAppItem } from 'src/slices/search/utils/search-categories';
+import { buildFutureBlockItem, getRedirectRoute, isDisplayableResultItem } from 'src/slices/search/utils/search-results';
 
 import ExternalSearchItem from 'src/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'src/features/marketplace/hooks/useMarketplaceApps';
@@ -38,7 +38,7 @@ import * as regexp from 'src/toolkit/utils/regexp';
 import SearchResultsInput from './SearchResultsInput';
 import SearchResultsTable from './SearchResultsTable';
 
-const nameServicesFeature = config.features.nameServices;
+const EMPTY_ITEMS: Array<SearchResultItem> = [];
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
@@ -72,43 +72,10 @@ const SearchResultsPageContent = () => {
       return;
     }
 
-    if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
-      switch (redirectCheckQuery.data.type) {
-        case 'block': {
-          router.replace({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'address': {
-          router.replace({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'transaction': {
-          router.replace({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'user_operation': {
-          if (config.features.userOps.isEnabled) {
-            router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-        case 'blob': {
-          if (config.features.dataAvailability.isEnabled) {
-            router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-        case 'ens_domain': {
-          const feature = config.features.nameServices;
-          if (feature.isEnabled && feature.ens.isEnabled) {
-            router.replace({ pathname: '/name-services/domains/[name]', query: { name: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-      }
+    const redirectRoute = getRedirectRoute(redirectCheckQuery.data);
+    if (redirectRoute) {
+      router.replace(redirectRoute);
+      return;
     }
 
     if (!redirectCheckQuery.isPending) {
@@ -124,38 +91,15 @@ const SearchResultsPageContent = () => {
   const isLoading = marketplaceApps.isPlaceholderData || isInitialLoading;
 
   const displayedItems: Array<SearchResultItem | SearchResultAppItem> = React.useMemo(() => {
-    const apiData = (data?.items || []).filter((item) => {
-      if (!SEARCH_RESULT_TYPES.includes(item.type)) {
-        return false;
-      }
-      if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
-        return false;
-      }
-      if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
-        return false;
-      }
-      if ((!nameServicesFeature.isEnabled || !nameServicesFeature.ens.isEnabled) && item.type === 'ens_domain') {
-        return false;
-      }
-      if (!config.features.tac.isEnabled && item.type === 'tac_operation') {
-        return false;
-      }
-      return true;
-    });
+    const apiData = (data?.items ?? EMPTY_ITEMS).filter(isDisplayableResultItem);
 
-    const futureBlockItem = !isInitialLoading &&
-      pagination.page === 1 &&
-      !data?.next_page_params &&
-      apiData.length > 0 &&
-      !apiData.some(({ type }) => type === 'block') &&
-      regexp.BLOCK_HEIGHT.test(appliedSearchTerm) ?
-      {
-        type: 'block' as const,
-        block_type: 'block' as const,
-        block_number: appliedSearchTerm,
-        block_hash: '',
-        timestamp: undefined,
-      } : undefined;
+    const futureBlockItem = buildFutureBlockItem({
+      searchTerm: appliedSearchTerm,
+      items: apiData,
+      isFirstPage: pagination.page === 1,
+      isLastPage: !data?.next_page_params,
+      isLoading: isInitialLoading,
+    });
 
     return [
       ...(pagination.page === 1 && !isLoading ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
