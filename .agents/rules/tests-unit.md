@@ -151,6 +151,7 @@ pnpm test:vitest --project shared        # one project only
 - **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
 - **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
 - **Cleanup** — after every test, real timers are restored and `fetchMock` is reset.
+- **Viewport** — jsdom has no `matchMedia`, so a stub answers `min-width` / `max-width` queries against a simulated viewport width. The default is the `lg` breakpoint: components render their **desktop** variant (`useIsMobile()` is `false`) unless a test asks otherwise — see `mockViewport` below.
 
 `vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.
 
@@ -184,6 +185,20 @@ await userEvent.click(button);
 await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
+
+**`vitest/utils/mockViewport.ts`** — switches a test to another breakpoint. Call it **before** rendering. The default `lg` is restored after every test. Use `base` for the mobile layout:
+
+```tsx
+import { mockViewport } from 'vitest/utils/mockViewport';
+
+it('renders no tabs bar on mobile', () => {
+  mockViewport('base');
+  render(<Blocks/>);
+  // …
+});
+```
+
+Never replace `window.matchMedia` by hand to change the breakpoint. A spec that needs a non-width query (`prefers-color-scheme`, say) still installs its own stub — the shared one matches width queries only.
 
 **`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join, or that react to live socket messages. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
 

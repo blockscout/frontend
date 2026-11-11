@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import { afterAll, afterEach, vi } from 'vitest';
 import createFetchMock from 'vitest-fetch-mock';
 
+import { matchesViewport, resetViewport } from './utils/mockViewport';
+
 const envs = dotenv.config({ path: './vitest/.env.vitest', quiet: true });
 
 const fetchMocker = createFetchMock(vi);
@@ -40,11 +42,16 @@ vi.mock('use-font-face-observer', () => ({
 
 // browser APIs that jsdom does not implement but app components rely on
 if (typeof window !== 'undefined') {
+  resetViewport();
+  afterEach(resetViewport);
+
   if (!window.matchMedia) {
     Object.defineProperty(window, 'matchMedia', {
       writable: true,
       value: (query: string) => ({
-        matches: false,
+        get matches() {
+          return matchesViewport(query);
+        },
         media: query,
         onchange: null,
         addListener: () => {},
