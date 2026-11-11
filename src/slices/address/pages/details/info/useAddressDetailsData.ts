@@ -27,10 +27,10 @@ export default function useAddressDetailsData({ addressQuery, addressHash }: Par
   const error404Data = React.useMemo<schemas['AddressResponse']>(() => ({
     hash: addressHash || '',
     is_contract: false,
-    implementations: null,
+    implementations: [],
     token: null,
     watchlist_address_id: null,
-    watchlist_names: null,
+    watchlist_names: [],
     creation_transaction_hash: null,
     block_number_balance_updated_at: null,
     name: null,
@@ -43,6 +43,17 @@ export default function useAddressDetailsData({ addressQuery, addressHash }: Par
     celo: undefined,
     creator_filecoin_robust_address: null,
     creator_address_hash: null,
+    creation_status: null,
+    ens_domain_name: null,
+    has_beacon_chain_withdrawals: false,
+    has_logs: false,
+    is_scam: false,
+    is_verified: false,
+    metadata: null,
+    proxy_type: null,
+    reputation: 'ok',
+    private_tags: [],
+    public_tags: [],
   }), [ addressHash ]);
 
   if (addressQuery.isError) {
