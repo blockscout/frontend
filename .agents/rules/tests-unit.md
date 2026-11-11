@@ -159,7 +159,7 @@ await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
 
-**`vitest/utils/mockViewport.ts`** — switches a test to another breakpoint. The argument is a theme breakpoint alias (`base`, `sm`, `lg`, `xl`, …; `src/toolkit/theme/foundations/breakpoints.ts`) and the viewport becomes that breakpoint's minimum width. Call it **before** rendering; the default `lg` is restored after every test, so there is nothing to clean up. Use `base` or `sm` for the mobile layout:
+**`vitest/utils/mockViewport.ts`** — switches a test to another breakpoint. Call it **before** rendering. The default `lg` is restored after every test. Use `base` for the mobile layout:
 
 ```tsx
 import { mockViewport } from 'vitest/utils/mockViewport';
