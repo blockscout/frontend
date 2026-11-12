@@ -131,7 +131,7 @@ reverted afterwards.
 | Total | 322 files, 3530 tests | 322 files, 3523 tests |
 | Local, three shuffled full runs | 77.75s, 79.41s, 75.53s; mean 77.56s (load 6–28) | 119.07s, 86.57s, 87.26s; mean 97.63s (load 6–23) |
 | Local, eight interleaved pairs, same load | mean 103.07s (86.74–124.12s) | mean 101.74s (86.57–119.50s) |
-| CI unit job, full-suite dispatch | 152.86s ([run 43040334627](https://github.com/blockscout/frontend/actions/runs/43040334627/job/130592378557): `d2096e9d0`, single project before the split, 322 files, 3530 tests) | **pending** |
+| CI unit job, full-suite dispatch | 152.86s ([run 43040334627](https://github.com/blockscout/frontend/actions/runs/43040334627/job/130592378557): `d2096e9d0`, single project before the split, 322 files, 3530 tests) | 181.54s, 173.76s, 103.62s; mean 152.97s ([43223679383](https://github.com/blockscout/frontend/actions/runs/43223679383), [43223693147](https://github.com/blockscout/frontend/actions/runs/43223693147), [43223706885](https://github.com/blockscout/frontend/actions/runs/43223706885): `b6cf32764`, 322 files, 3523 tests) |
 
 **The local durations do not resolve a difference.** Other sessions kept the machine loaded all afternoon, and the
 same tree took 50s to 119s across today's runs. The "three runs" row is the baseline's method, but its two columns
@@ -152,10 +152,12 @@ One more pair ran with the JSON reporter on, to split the run by project. It is 
 | `isolated` phase: wall / summed file time | 57.4s / 187.2s | 19.3s / 66.9s |
 | Summed file time, both projects | 258.7s | 158.1s |
 
-The CI cell is pending. The branch's commits are not pushed yet, and no workflow was dispatched from the session. To fill
-it: push `issue-3876`, dispatch the Checks workflow on it by hand (drafts skip it), and take the Vitest duration of
-the `Run Vitest` step from three runs, as for the baseline. A dedicated runner is also the measurement this local
-load could not give.
+**CI does not show a speedup either.** "Before" is the run the developer picked, the latest full-suite dispatch: one
+run, on the config before the split, without `--sequence.shuffle.files`. "After" is three Checks dispatches on this
+branch, started within ten seconds of each other on the same runner image (`ubuntu-26.04`, 20261101.186.1). The
+three runs spread from 104s to 182s on one commit, so a 152.86s baseline is inside the noise and the mean is level
+with it. Neither environment resolves the wall-time change. The summed per-file time above is the only sign of
+saved work.
 
 ### One timeout outside the twenty
 
