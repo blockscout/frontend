@@ -54,7 +54,9 @@ seen not to reach the app config, and the cause was unknown.
    the CI unit job is green.
 10. `--changed` runs, coverage collection, the CRAP gate and the mutation-testing gate keep working for
     specs of both projects.
-11. No file under `src/` other than a spec changes.
+11. No file under `src/` other than a spec changes. One exception, approved by the developer in review:
+    `useClustersData` no longer looks up cluster details for the placeholder rows of a pending address
+    search, a wasted request the rewritten spec exposed.
 12. The pull request reports the before and after share of isolated specs and the suite run time, local
     and CI.
 
