@@ -16,8 +16,8 @@
 - Resolved when: Figma has a frame for the `Call` card and one for the "Sent {value} {native coin}" card,
   or the reply says to derive both from an existing card and names which.
 - Slack: https://blockscout.slack.com/archives/D03PDKKMLQH/p1794470729609139
-- Answer: `Call` card per Figma node `6297-3202`; the "Sent" card uses the Transfer template without a
-  token icon; an unnamed method shows as the API returns it (2026-11-12)
+- Answer: `Call` card per Figma node `6297-3202`; the native-coin fallback is the transfer view with the
+  coin's icon, per node `6297-3859`; an unnamed method shows as the API returns it (2026-11-12)
 
 ### Q03 — What do the Date and Time rows show for a pending transaction?
 
