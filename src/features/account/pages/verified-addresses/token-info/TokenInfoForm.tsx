@@ -36,6 +36,8 @@ import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 import TokenInfoFormStatusText from './TokenInfoFormStatusText';
 import { getFormDefaultValues, prepareRequestBody } from './utils';
 
+type SubmitResult = adminRs.TokenInfoSubmission | ResourceError<{ message: string }>;
+
 interface Props {
   address: string;
   tokenName: string;
@@ -58,7 +60,8 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     mode: 'onBlur',
     defaultValues: getFormDefaultValues(address, tokenName, application),
   });
-  const { handleSubmit, formState } = formApi;
+  const { handleSubmit, formState, trigger, getValues } = formApi;
+  const [ isPaymentTxSubmitting, setIsPaymentTxSubmitting ] = React.useState(false);
 
   React.useEffect(() => {
     if (!application?.id && !openEventSent.current) {
@@ -72,54 +75,66 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   // An application under review is read-only, except that the payment tx hash can be set once (the API rejects a change).
   const canUpdatePaymentTx = Boolean(isInProcess && expeditedReviewHtml && application && !application.paymentTx);
 
-  const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
+  const handleSubmitResult = React.useCallback(async(request: Promise<SubmitResult>): Promise<boolean> => {
     try {
-      const result = await (async() => {
-        if (canUpdatePaymentTx && application?.id) {
-          return apiFetch<'admin:token_info_application_payment_tx', adminRs.TokenInfoSubmission, { message: string }>(
-            'admin:token_info_application_payment_tx',
-            {
-              pathParams: { instanceId: config.apis.admin?.instanceId, id: application.id },
-              fetchParams: {
-                method: 'PATCH',
-                body: { paymentTx: data.payment_tx },
-              },
-            },
-          );
-        }
-
-        const submission = prepareRequestBody(data);
-        const isNewApplication = !application?.id || [
-          adminRs.TokenInfoSubmissionStatus.REJECTED,
-          adminRs.TokenInfoSubmissionStatus.APPROVED,
-        ].includes(application.status);
-
-        return apiFetch<'admin:token_info_applications', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_applications', {
-          pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
-          fetchParams: {
-            method: isNewApplication ? 'POST' : 'PUT',
-            body: { submission },
-          },
-        });
-      })();
-
-      if ('id' in result) {
-        onSubmit(result);
-
-        if (!application?.id) {
-          analytics.logEvent(analytics.EventTypes.VERIFY_TOKEN, { Action: 'Submit' });
-        }
-
-      } else {
+      const result = await request;
+      if (!('id' in result)) {
         throw result;
       }
+      onSubmit(result);
+      return true;
     } catch (error) {
       toaster.error({
         title: 'Error',
         description: (error as ResourceError<{ message: string }>)?.payload?.message || 'Something went wrong. Try again later.',
       });
+      return false;
     }
-  }, [ apiFetch, application?.id, application?.status, canUpdatePaymentTx, onSubmit ]);
+  }, [ onSubmit ]);
+
+  const onFormSubmit: SubmitHandler<Fields> = React.useCallback(async(data) => {
+    const submission = prepareRequestBody(data);
+    const isNewApplication = !application?.id || [
+      adminRs.TokenInfoSubmissionStatus.REJECTED,
+      adminRs.TokenInfoSubmissionStatus.APPROVED,
+    ].includes(application.status);
+
+    const isSubmitted = await handleSubmitResult(
+      apiFetch<'admin:token_info_applications', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_applications', {
+        pathParams: { instanceId: config.apis.admin?.instanceId, id: !isNewApplication ? application.id : undefined },
+        fetchParams: {
+          method: isNewApplication ? 'POST' : 'PUT',
+          body: { submission },
+        },
+      }),
+    );
+
+    if (isSubmitted && !application?.id) {
+      analytics.logEvent(analytics.EventTypes.VERIFY_TOKEN, { Action: 'Submit' });
+    }
+  }, [ apiFetch, application?.id, application?.status, handleSubmitResult ]);
+
+  // Bypasses handleSubmit on purpose: it validates every registered field, and a read-only field
+  // (e.g. a stored icon that no longer loads) would block the one field the user can still edit.
+  const handlePaymentTxSubmit = React.useCallback(async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!application?.id || !await trigger('payment_tx')) {
+      return;
+    }
+
+    setIsPaymentTxSubmitting(true);
+    await handleSubmitResult(
+      apiFetch<'admin:token_info_application_payment_tx', adminRs.TokenInfoSubmission, { message: string }>('admin:token_info_application_payment_tx', {
+        pathParams: { instanceId: config.apis.admin?.instanceId, id: application.id },
+        fetchParams: {
+          method: 'PATCH',
+          body: { paymentTx: getValues('payment_tx') },
+        },
+      }),
+    );
+    setIsPaymentTxSubmitting(false);
+  }, [ apiFetch, application?.id, getValues, handleSubmitResult, trigger ]);
 
   useUpdateEffect(() => {
     if (formState.submitCount > 0 && !formState.isValid) {
@@ -150,7 +165,12 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
 
   return (
     <FormProvider { ...formApi }>
-      <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
+      <form
+        noValidate
+        onSubmit={ canUpdatePaymentTx ? handlePaymentTxSubmit : handleSubmit(onFormSubmit) }
+        autoComplete="off"
+        ref={ containerRef }
+      >
         <TokenInfoFormStatusText application={ application }/>
         <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
@@ -226,7 +246,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         <Button
           type="submit"
           mt={ 8 }
-          loading={ formState.isSubmitting }
+          loading={ formState.isSubmitting || isPaymentTxSubmitting }
           loadingText={ submitButtonText }
           disabled={ isInProcess && !canUpdatePaymentTx }
         >
