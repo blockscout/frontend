@@ -55,8 +55,8 @@ Notes for the implementer:
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rewrite the `useAddressClusters` spec
-- [ ] 2 `[agent]` Rewrite the `useClustersData` spec
-- [ ] 3 `[agent]` Rewrite the `useClusterPagination` spec
-- [ ] 4 `[agent]` Rewrite the `useSearchWithClusters` spec
-- [ ] 5 `[agent]` Verify: lint, complexity and mutation gates, five shuffled full runs; list any spec that stays isolated in `notes.md`
+- [x] 1 `[agent]` Rewrite the `useAddressClusters` spec
+- [x] 2 `[agent]` Rewrite the `useClustersData` spec
+- [x] 3 `[agent]` Rewrite the `useClusterPagination` spec
+- [x] 4 `[agent]` Rewrite the `useSearchWithClusters` spec
+- [x] 5 `[agent]` Verify: lint, complexity and mutation gates, five shuffled full runs; list any spec that stays isolated in `notes.md`
