@@ -168,12 +168,12 @@ const APP_CONFIG_ELEMENTS = [
   { type: 'app-config-envs', pattern: 'src/config/utils/envs.ts', mode: 'full' },
   { type: 'app-config-root', pattern: 'src/config/**', mode: 'full' },
   { type: 'app-config-module', pattern: APP_CONFIG_MODULE_GLOBS.map((glob) => glob.replace('**/config.ts', '**/!(types|mocks)/config.ts')), mode: 'full' },
-  { type: 'app-config-spec', pattern: 'src/**/config.isolated.spec.ts', mode: 'full' },
+  { type: 'app-config-spec', pattern: 'src/**/config.spec.ts', mode: 'full' },
 ];
 
 const APP_CONFIG_IMPORT_MESSAGE =
   'Read app config through the root aggregator: `import config from \'src/config\'`. ' +
-  'Only another config.ts, src/config/** or a config.isolated.spec.ts may import a config module directly.';
+  'Only another config.ts, src/config/** or a config.spec.ts may import a config module directly.';
 
 const APP_CONFIG_ENVS_MESSAGE =
   'Env values are read only in config modules. Move the getEnvValue / parseEnvJson / getExternalAssetFilePath call into the owning config.ts ' +
@@ -192,30 +192,32 @@ const WINDOW_ENVS_RESTRICTION = {
 
 // Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
 // puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
-// Everything below needs a registry of its own, so it is only allowed in an isolated spec.
+// Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
+// is not on the list: it resets the registry around its callback and restores the envs it set.
 const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
 const ISOLATED_SPEC_MESSAGE =
   ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in .agents/rules/tests-unit.md.';
+const HAND_SET_ENV_MESSAGE =
+  'An env variable changed by hand is ignored once an earlier spec in the worker has evaluated the app config, and leaks into every spec after it.' +
+  ' Override envs with `withEnvs` from vitest/utils/mockEnvs — see "Overriding environment variables" in .agents/rules/tests-unit.md.';
 const SHARED_SPEC_RESTRICTED_SYNTAX = [
   {
     selector: 'CallExpression[callee.object.name=\'vi\'][callee.property.name=/^(mock|doMock|unmock|doUnmock|resetModules)$/]',
     message: 'Mocking a module or resetting the module registry' + ISOLATED_SPEC_MESSAGE,
   },
   {
-    selector: ':matches(ImportDeclaration, ImportExpression)[source.value=/(^|\\/)(mockEnvs|mockSocket|checkPrimedRequests)$/]',
+    selector: ':matches(ImportDeclaration, ImportExpression)[source.value=/(^|\\/)(mockSocket|checkPrimedRequests)$/]',
     message: 'This helper re-evaluates or mocks modules, so a spec using it' + ISOLATED_SPEC_MESSAGE,
   },
   {
     selector: 'CallExpression[callee.object.name=\'Object\'][callee.property.name=\'assign\']' +
       '[arguments.0.object.name=\'process\'][arguments.0.property.name=\'env\']',
-    message: 'Overriding env variables only works before the app config is first evaluated, so a spec doing it' + ISOLATED_SPEC_MESSAGE +
-      ' Prefer `withEnvs` from vitest/utils/mockEnvs.',
+    message: HAND_SET_ENV_MESSAGE,
   },
   {
     selector: ':matches(AssignmentExpression > MemberExpression.left, UnaryExpression[operator=\'delete\'] > MemberExpression.argument)' +
       '[object.object.name=\'process\'][object.property.name=\'env\']',
-    message: 'Overriding an env variable only works before the app config is first evaluated, so a spec doing it' + ISOLATED_SPEC_MESSAGE +
-      ' Prefer `withEnvs` from vitest/utils/mockEnvs.',
+    message: HAND_SET_ENV_MESSAGE,
   },
 ];
 

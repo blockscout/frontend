@@ -56,10 +56,10 @@ unexplained failure the research left open (parent spec → "One unexplained fai
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Record the baseline in `notes.md`
-- [ ] 2 `[agent]` Relax the shared-spec lint rule to accept the env-override helper
-- [ ] 3 `[agent]` Convert the two hand-set `process.env` CSP specs to `withEnvs`
-- [ ] 4 `[agent]` Rename every spec the relaxed rule no longer flags; move the config-spec exemption to the new name
-- [ ] 5 `[agent]` Pin the unexplained failure; set the `shared` timeout only if it is the cause
-- [ ] 6 `[agent]` Update the unit-test rules and the app-config context doc
-- [ ] 7 `[agent]` Verify: lint, five shuffled full runs, CRAP and mutation gates on a renamed spec
+- [x] 1 `[agent]` Record the baseline in `notes.md`
+- [x] 2 `[agent]` Relax the shared-spec lint rule to accept the env-override helper
+- [x] 3 `[agent]` Convert the two hand-set `process.env` CSP specs to `withEnvs`
+- [x] 4 `[agent]` Rename every spec the relaxed rule no longer flags; move the config-spec exemption to the new name
+- [x] 5 `[agent]` Pin the unexplained failure; set the `shared` timeout only if it is the cause
+- [x] 6 `[agent]` Update the unit-test rules and the app-config context doc
+- [x] 7 `[agent]` Verify: lint, five shuffled full runs, CRAP and mutation gates on a renamed spec

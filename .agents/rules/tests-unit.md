@@ -130,12 +130,17 @@ The suite runs as two Vitest projects, and the **file name** decides which one a
 
 Evaluating the app's module graph once per spec file is the largest single cost of a run, so a spec is `shared` unless it needs a registry of its own. It does when it:
 
-- mocks a module — `vi.mock`, `vi.doMock`, or the `mockSocket` helper;
-- re-evaluates modules — `vi.resetModules`, `withEnvs`, `checkPrimedRequests`;
-- sets `process.env` by hand before importing the code under test;
-- asserts on module-level state that must start fresh (a singleton, a registry, a lazy-load cache).
+- mocks a module — `vi.mock`, `vi.doMock`, `vi.unmock`, or the `mockSocket` helper;
+- resets the module registry itself — `vi.resetModules`, `checkPrimedRequests`;
+- asserts on module-level state that must start fresh (a singleton, a registry, a lazy-load cache), unless every test imports a fresh copy inside `withEnvs`.
 
-ESLint fails the first three in a spec that is not named `*.isolated.spec.ts(x)`; the fourth is on you. In a shared spec a module mock is silently not applied whenever an earlier spec in the same worker already imported the module, so the failure shows up in some file orders only.
+ESLint fails the first two in a spec that is not named `*.isolated.spec.ts(x)`; the third is on you.
+
+What breaks in a shared worker, and what does not:
+
+- **A module mock** is silently not applied whenever an earlier spec in the same worker already imported the module, and it can reach a later spec that imports the module for real. Either way the failure shows up in some file orders only.
+- **A hand-set `process.env`** is ignored once an earlier spec in the worker has evaluated the app config, and then leaks into every spec after it. No spec sets one, and ESLint fails it in a shared spec: override envs with `withEnvs` (below).
+- **`withEnvs` is safe.** It resets the registry before and after its callback and restores the envs it set, so it leaves nothing behind. A spec that uses it is a plain `*.spec.ts(x)`.
 
 A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by `vitest/setup.ts`, and spies and stubs again before every test by the config, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file is gone before the first test starts and reaches none of them. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
 
@@ -246,9 +251,9 @@ await withEnvs(ENVS_MAP.arbitrumRollup, async () => {
 });
 ```
 
-`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — the spec is an `*.isolated.spec` file, and everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
+`src/config` is a module-level singleton, so `withEnvs` calls `vi.resetModules()` — everything that reads config must be imported **dynamically inside the callback**, not statically at the top of the spec. Curated env bundles live in `src/config/test-utils/env-presets.ts` and are shared with the Playwright suite.
 
-The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.isolated.spec.ts`, `DeFiDropdown.isolated.spec.tsx`).
+The reset also splits React contexts: a component imported inside the callback holds a fresh toolkit router context, which a statically imported `render` / `wrapper` from `vitest/lib` does not feed — the component silently gets the no-provider default (`pathname: ''`, no-op `push`), and a `routerStandIn` imported statically is never read. When the rendered tree reads the router (`useRouter`, `usePathname`, a non-external `Link`), import `vitest/lib` or `vitest/utils/routerStandIn` inside the callback as well (see `useBridgedTokensQuery.spec.ts`, `DeFiDropdown.spec.tsx`).
 
 ## Primed-requests drift tests (`*.primed.spec.tsx`)
 
