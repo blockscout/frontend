@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 // @vitest-environment jsdom
 
+import mixpanel from 'mixpanel-browser';
 import React from 'react';
 
 import * as adminRs from '@blockscout/admin-rs-types';
@@ -13,13 +14,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, screen, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-const logEventMock = vi.hoisted(() => vi.fn());
-
-vi.mock('src/shared/analytics', async(importOriginal) => ({
-  ...await importOriginal<object>(),
-  logEvent: logEventMock,
-}));
-
 const PAYMENT_TX = '0x' + 'a'.repeat(64);
 const APPLICATIONS_URL = 'https://localhost:3006/api/v1/chains/1/token-info-submissions';
 const PAYMENT_TX_URL = `${ APPLICATIONS_URL }/2/payment-tx`;
@@ -31,7 +25,10 @@ function jsonResponse(body: unknown, status = 200): { status: number; headers: R
 }
 
 async function renderForm(application: adminRs.TokenInfoSubmission | undefined, onSubmit = vi.fn()): Promise<ReturnType<typeof vi.fn>> {
-  await withEnvs(ENVS_MAP.verifiedAddresses, async() => {
+  await withEnvs([ ...ENVS_MAP.verifiedAddresses, [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ] ], async() => {
+    const { init } = await import('src/shared/analytics/queue');
+    const { getEnabledProviders } = await import('src/shared/analytics/providers');
+    await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
     const { render } = await import('vitest/lib');
     const { Toaster } = await import('src/toolkit/chakra/toaster');
     const { 'default': TokenInfoForm } = await import('./TokenInfoForm');
@@ -79,10 +76,12 @@ function fillRequiredFields(): void {
   }
 }
 
-afterEach(() => {
-  cleanup();
-  logEventMock.mockClear();
+beforeEach(() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
 });
+
+afterEach(cleanup);
 
 describe('TokenInfoForm, application IN_PROCESS', () => {
   beforeEach(() => {
@@ -209,8 +208,8 @@ describe('TokenInfoForm, new application', () => {
     const onSubmit = await renderForm(undefined);
 
     expect(submitButton().textContent).toBe('Send request');
-    expect(logEventMock).toHaveBeenCalledWith('Verify token', { Action: 'Form opened' });
-    expect(logEventMock).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' });
+    expect(mixpanel.track).toHaveBeenCalledWith('Verify token', { Action: 'Form opened' }, undefined);
+    expect(mixpanel.track).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' }, undefined);
 
     fillRequiredFields();
     fireEvent.click(submitButton());
@@ -218,7 +217,7 @@ describe('TokenInfoForm, new application', () => {
     await waitFor(() => expect(onSubmit).toHaveBeenCalledWith(mocks.TOKEN_INFO_APPLICATION.IN_PROCESS));
     const [ request ] = requestsTo(APPLICATIONS_URL);
     expect(request.method).toBe('POST');
-    expect(logEventMock).toHaveBeenCalledWith('Verify token', { Action: 'Submit' });
+    expect(mixpanel.track).toHaveBeenCalledWith('Verify token', { Action: 'Submit' }, undefined);
   });
 
   it('shows the API error and does not log the submit event when the application is rejected', async() => {
@@ -235,7 +234,7 @@ describe('TokenInfoForm, new application', () => {
 
     await screen.findByText('Address is not verified');
     expect(onSubmit).not.toHaveBeenCalled();
-    expect(logEventMock).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' });
+    expect(mixpanel.track).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' }, undefined);
   });
 });
 
@@ -265,6 +264,6 @@ describe('TokenInfoForm, application UPDATE_REQUIRED', () => {
     const [ request ] = requestsTo(`${ APPLICATIONS_URL }/${ application.id }`);
     expect(request.method).toBe('PUT');
     expect(requestsTo(APPLICATIONS_URL)).toHaveLength(0);
-    expect(logEventMock).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' });
+    expect(mixpanel.track).not.toHaveBeenCalledWith('Verify token', { Action: 'Submit' }, undefined);
   });
 });
