@@ -8,13 +8,11 @@ import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import { chainA } from 'src/features/multichain/mocks/chains';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, renderHook } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { SurfaceColumnStatesParams } from '../utils/columns';
-
-vi.mock('mixpanel-browser', () => ({ 'default': { init: vi.fn(), track: vi.fn() } }));
 
 const withMixpanel = (run: () => Promise<void>) => withEnvs([ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ] ], run);
 
@@ -42,10 +40,14 @@ const renderColumnsHook = async(surface: TokenTransferSurface, params: SurfaceCo
   return renderHook((props: SurfaceColumnStatesParams) => useTokenTransferColumns(surface, props), { initialProps: params });
 };
 
+beforeEach(() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
+});
+
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
-  vi.clearAllMocks();
 });
 
 describe('useTokenTransferColumns', () => {

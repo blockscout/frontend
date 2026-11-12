@@ -52,8 +52,8 @@ Notes for the implementer:
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Prove the spy on one spec per boundary; record the outcome in `notes.md`
-- [ ] 2 `[agent]` Convert the remaining `mixpanel-browser` specs and the `posthog-js` spec
-- [ ] 3 `[agent]` Convert the remaining `react-scroll` spec
-- [ ] 4 `[agent]` Convert the remaining analytics-logger spec
-- [ ] 5 `[agent]` Verify: lint, five shuffled full runs; list any spec that stays isolated in `notes.md`
+- [x] 1 `[agent]` Prove the spy on one spec per boundary; record the outcome in `notes.md`
+- [x] 2 `[agent]` Convert the remaining `mixpanel-browser` specs and the `posthog-js` spec
+- [x] 3 `[agent]` Convert the remaining `react-scroll` spec
+- [x] 4 `[agent]` Convert the remaining analytics-logger spec
+- [x] 5 `[agent]` Verify: lint, five shuffled full runs; list any spec that stays isolated in `notes.md`

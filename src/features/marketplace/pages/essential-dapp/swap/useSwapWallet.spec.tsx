@@ -14,8 +14,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, render, renderHook, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-vi.mock('mixpanel-browser', () => ({ 'default': { init: vi.fn(), track: vi.fn() } }));
-
 const ACCOUNT = '0x1111111111111111111111111111111111111111';
 const OTHER_ACCOUNT = '0x2222222222222222222222222222222222222222';
 const TX_HASH = `0x${ 'ab'.repeat(32) }`;
@@ -130,6 +128,8 @@ const WalletProvider = ({ children }: React.PropsWithChildren) => (
 );
 
 beforeEach(async() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
   walletConfig = createWalletConfig();
   queryClient = new QueryClient({ defaultOptions: { queries: { retry: false }, mutations: { retry: false } } });
   rejectTransaction = false;
@@ -170,7 +170,6 @@ afterEach(() => {
   cleanup();
   queryClient.clear();
   document.cookie = 'rewards_api_token=; Max-Age=0; path=/';
-  vi.clearAllMocks();
   vi.restoreAllMocks();
 });
 

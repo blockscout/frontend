@@ -1,24 +1,19 @@
 // @vitest-environment jsdom
 
 import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import React from 'react';
 
 import * as cookies from 'src/shared/storage/cookies';
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 import SettingsRpcNode from './SettingsRpcNode';
 
-const analyticsMock = vi.hoisted(() => ({
-  logEvent: vi.fn(),
-  EventTypes: { RPC_NODE: 'RPC node' },
-}));
-
-vi.mock('src/shared/analytics', () => analyticsMock);
-
 const CUSTOM_URL = 'https://rpc.example.com/eth';
-const IMMEDIATE = { sendImmediately: true };
+const IMMEDIATE = { send_immediately: true };
 
 function typeUrl(value: string): void {
   const input = screen.getByRole('textbox');
@@ -37,10 +32,25 @@ function setSavedNode(url: string, isInUse: boolean): void {
   }
 }
 
+async function renderWithAnalytics(run: () => Promise<void>): Promise<void> {
+  await withEnvs([ [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ] ], async() => {
+    const { init } = await import('src/shared/analytics/queue');
+    const { getEnabledProviders } = await import('src/shared/analytics/providers');
+    await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
+    const { render } = await import('vitest/lib');
+    const { 'default': SettingsRpcNode } = await import('./SettingsRpcNode');
+
+    render(<SettingsRpcNode/>);
+    await run();
+  });
+}
+
 describe('SettingsRpcNode', () => {
   const reload = vi.fn();
 
   beforeEach(() => {
+    vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+    vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
     vi.stubGlobal('location', { ...window.location, reload });
     fetchMock.resetMocks();
     fetchMock.mockResponse(JSON.stringify({ jsonrpc: '2.0', id: 1, result: '0x1' }));
@@ -50,7 +60,6 @@ describe('SettingsRpcNode', () => {
     cleanup();
     vi.unstubAllGlobals();
     reload.mockReset();
-    analyticsMock.logEvent.mockReset();
     Cookies.remove(cookies.NAMES.CUSTOM_RPC_URL);
     Cookies.remove(cookies.NAMES.CUSTOM_RPC_IN_USE);
   });
@@ -78,31 +87,32 @@ describe('SettingsRpcNode', () => {
   });
 
   it('saves a valid URL as the node in use and reloads', async() => {
-    render(<SettingsRpcNode/>);
+    await renderWithAnalytics(async() => {
+      typeUrl(CUSTOM_URL);
+      await waitFor(() => expect(button('Save').disabled).toBe(false));
+      fireEvent.click(button('Save'));
 
-    typeUrl(CUSTOM_URL);
-    await waitFor(() => expect(button('Save').disabled).toBe(false));
-    fireEvent.click(button('Save'));
-
-    await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
-    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Set' }, IMMEDIATE);
+      await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
+      expect(mixpanel.track).toHaveBeenCalledWith('RPC node', { Action: 'Set' }, IMMEDIATE);
+    });
   });
 
   it('clearing the field and saving forgets the node and reloads', async() => {
     setSavedNode(CUSTOM_URL, true);
-    render(<SettingsRpcNode/>);
 
-    expect(button('Save').disabled).toBe(true);
-    typeUrl('');
-    await waitFor(() => expect(button('Save').disabled).toBe(false));
-    fireEvent.click(button('Save'));
+    await renderWithAnalytics(async() => {
+      expect(button('Save').disabled).toBe(true);
+      typeUrl('');
+      await waitFor(() => expect(button('Save').disabled).toBe(false));
+      fireEvent.click(button('Save'));
 
-    await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBeUndefined();
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
-    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Reset' }, IMMEDIATE);
+      await waitFor(() => expect(reload).toHaveBeenCalledTimes(1));
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBeUndefined();
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
+      expect(mixpanel.track).toHaveBeenCalledWith('RPC node', { Action: 'Reset' }, IMMEDIATE);
+    });
   });
 
   it('pings the saved node in use and shows the outcome', async() => {
@@ -137,31 +147,33 @@ describe('SettingsRpcNode', () => {
 
   it('disconnects a node in use without forgetting the URL', async() => {
     setSavedNode(CUSTOM_URL, true);
-    render(<SettingsRpcNode/>);
 
-    await waitFor(() => expect(screen.getByText('Connected')).toBeTruthy());
-    fireEvent.click(button('Disconnect custom RPC node'));
+    await renderWithAnalytics(async() => {
+      await waitFor(() => expect(screen.getByText('Connected')).toBeTruthy());
+      fireEvent.click(button('Disconnect custom RPC node'));
 
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
-    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Disconnect' }, IMMEDIATE);
-    expect(reload).toHaveBeenCalledTimes(1);
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_URL)).toBe(CUSTOM_URL);
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBeUndefined();
+      expect(mixpanel.track).toHaveBeenCalledWith('RPC node', { Action: 'Disconnect' }, IMMEDIATE);
+      expect(reload).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('shows a saved but unused node as disconnected without pinging it, and reconnects on click', async() => {
     setSavedNode(CUSTOM_URL, false);
-    render(<SettingsRpcNode/>);
 
-    expect(screen.getByText('Disconnected')).toBeTruthy();
-    expect(screen.getByText('Using the default node')).toBeTruthy();
-    expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe(CUSTOM_URL);
-    expect(fetchMock).not.toHaveBeenCalled();
+    await renderWithAnalytics(async() => {
+      expect(screen.getByText('Disconnected')).toBeTruthy();
+      expect(screen.getByText('Using the default node')).toBeTruthy();
+      expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe(CUSTOM_URL);
+      expect(fetchMock).not.toHaveBeenCalled();
 
-    fireEvent.click(button('Connect custom RPC node'));
+      fireEvent.click(button('Connect custom RPC node'));
 
-    expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
-    expect(analyticsMock.logEvent).toHaveBeenCalledWith('RPC node', { Action: 'Connect' }, IMMEDIATE);
-    expect(reload).toHaveBeenCalledTimes(1);
+      expect(Cookies.get(cookies.NAMES.CUSTOM_RPC_IN_USE)).toBe('true');
+      expect(mixpanel.track).toHaveBeenCalledWith('RPC node', { Action: 'Connect' }, IMMEDIATE);
+      expect(reload).toHaveBeenCalledTimes(1);
+    });
   });
 
   it('disables the plug while the field holds an unsaved value', async() => {
