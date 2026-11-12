@@ -1,22 +1,18 @@
 // @vitest-environment jsdom
 
 import React from 'react';
+import { animateScroll } from 'react-scroll';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import { chainA } from 'src/features/multichain/mocks/chains';
 
+import type { MockInstance } from 'vitest';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, render, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
 import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
-
-const { mockScrollToTop } = vi.hoisted(() => ({
-  mockScrollToTop: vi.fn(),
-}));
-
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: mockScrollToTop } }));
 
 import type { Params, ApiPaginatedQueryResult } from './useApiPaginatedQuery';
 import useApiPaginatedQuery from './useApiPaginatedQuery';
@@ -77,9 +73,11 @@ const params: Params<'core:address_txs'> = {
   pathParams: { hash: addressParamMock.hash },
 };
 
+let scrollToTop: MockInstance<typeof animateScroll.scrollToTop>;
+
 beforeEach(() => {
   fetchMock.resetMocks();
-  mockScrollToTop.mockClear();
+  scrollToTop = vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/blocks' });
 });
 
@@ -159,8 +157,8 @@ describe('if there are multiple pages', () => {
         page: '2',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(1);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(1);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 2 to page 3', async() => {
@@ -190,8 +188,8 @@ describe('if there are multiple pages', () => {
         page: '3',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(2);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 3 to page 2', async() => {
@@ -226,8 +224,8 @@ describe('if there are multiple pages', () => {
         page: '2',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(3);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(3);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 2 to page 1', async() => {
@@ -264,8 +262,8 @@ describe('if there are multiple pages', () => {
       expect(routerStandIn.push).toHaveBeenCalledTimes(4);
       expect(routerStandIn.query).toEqual({});
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(4);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(4);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
   });
 
@@ -306,8 +304,8 @@ describe('if there are multiple pages', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(3);
     expect(routerStandIn.query).toEqual({});
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(3);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(3);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('when navigates between pages can scroll to custom element', async() => {
@@ -419,8 +417,8 @@ describe('queries with filters', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(2);
     expect(routerStandIn.query).toEqual({ filter: 'from', foo: 'bar', sort: 'val-desc' });
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(2);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('saves filter params in query when navigating between pages', async() => {
@@ -480,8 +478,8 @@ describe('queries with sorting', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(2);
     expect(routerStandIn.query).toEqual({ filter: 'from', foo: 'bar', sort: 'val-desc' });
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(2);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('saves sorting params in query when navigating between pages', async() => {

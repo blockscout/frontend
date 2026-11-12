@@ -5,7 +5,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 const currentChain: ExternalChain = { id: '1', name: 'Ethereum' };
@@ -14,7 +14,7 @@ const explorerlessChain: ExternalChain = { id: '420', name: 'Unknown chain' };
 
 async function load(envs?: Array<[ string, string ]>) {
   return withEnvs(envs, async() => {
-    window.__multichainConfig = envs ? { chains: [ clusterChains.chainA, clusterChains.chainB ] } : undefined;
+    vi.stubGlobal('__multichainConfig', envs ? { chains: [ clusterChains.chainA, clusterChains.chainB ] } : undefined);
     const interchain = await import('./interchain');
     const { toTokenChain } = await import('src/slices/token/components/entity/TokenEntityInterchain');
     return { ...interchain, toTokenChain };
