@@ -78,6 +78,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   const handleSubmitResult = React.useCallback(async(request: Promise<SubmitResult>): Promise<boolean> => {
     try {
       const result = await request;
+      // Stryker disable next-line ConditionalExpression: useFetch rejects on a non-ok response, so this only narrows the Success | ResourceError type
       if (!('id' in result)) {
         throw result;
       }
