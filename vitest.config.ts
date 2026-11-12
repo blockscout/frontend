@@ -63,8 +63,9 @@ export default defineConfig({
           // after `shared`, not alongside it: started together the two projects each fill the
           // machine with workers, and the page-mounting specs here then run into their timeouts
           sequence: { groupOrder: 1 },
-          // a test here usually re-evaluates the app's module graph inside its own body (`withEnvs`),
-          // and with every such spec in one project they all compete for the machine at once
+          // a test here often re-evaluates modules inside its own body after a registry reset
+          // (`vi.resetModules`, `withEnvs`), and with every such spec in one project they all compete
+          // for the machine at once
           testTimeout: 15_000,
           include: ISOLATED_SPECS,
         },

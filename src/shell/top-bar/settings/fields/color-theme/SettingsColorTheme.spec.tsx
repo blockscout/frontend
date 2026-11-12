@@ -3,7 +3,7 @@
 import Cookies from 'js-cookie';
 import React from 'react';
 
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type * as TestLib from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
@@ -33,7 +33,7 @@ function stubPrefersColorScheme(prefersDark: boolean): PrefersColorSchemeStub {
   };
 
   // jsdom has no matchMedia; the stub is typed loosely because MediaQueryList's overloads are not worth reproducing
-  window.matchMedia = ((media: string) => ({
+  vi.stubGlobal('matchMedia', ((media: string) => ({
     get matches() {
       return matches;
     },
@@ -44,7 +44,7 @@ function stubPrefersColorScheme(prefersDark: boolean): PrefersColorSchemeStub {
     addEventListener: (_: string, listener: ChangeListener) => subscribe(listener),
     removeEventListener: (_: string, listener: ChangeListener) => unsubscribe(listener),
     dispatchEvent: () => false,
-  })) as unknown as typeof window.matchMedia;
+  })) as unknown as typeof window.matchMedia);
 
   return {
     switchTo(nextPrefersDark: boolean) {

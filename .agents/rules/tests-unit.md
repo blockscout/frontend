@@ -142,6 +142,8 @@ What breaks in a shared worker, and what does not:
 - **A hand-set `process.env`** is ignored once an earlier spec in the worker has evaluated the app config, and then leaks into every spec after it. No spec sets one, and ESLint fails it in a shared spec: override envs with `withEnvs` (below).
 - **`withEnvs` is safe.** It resets the registry before and after its callback and restores the envs it set, so it leaves nothing behind. A spec that uses it is a plain `*.spec.ts(x)`.
 
+A third-party SDK needs no module mock to be observed. Spy on a method of its real export in `beforeEach`, with an implementation that does nothing (`src/services/mixpanel/provider.spec.ts`, `src/shared/pagination/usePaginationActions.spec.ts`). Node, not Vitest, loads the package, so `withEnvs` does not re-evaluate it and the spy also reaches code imported inside the callback. Observe the app's analytics event logger the same way, at the SDK it calls (`TokenActionButton.spec.tsx`).
+
 A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by `vitest/setup.ts`, and spies and stubs again before every test by the config, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file is gone before the first test starts and reaches none of them. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
 
 Before pushing a change to shared specs or to the test setup, run the suite in random file order: `pnpm test:vitest --sequence.shuffle.files` (CI always does). To replay a failing order, pass the printed seed: `--sequence.seed <seed>`.
@@ -149,6 +151,26 @@ Before pushing a change to shared specs or to the test setup, run the suite in r
 ```bash
 pnpm test:vitest --project shared        # one project only
 ```
+
+### What stays isolated, and why
+
+Every spec in the `isolated` project fits a row here. A new isolated spec fits a row or adds one, with its reason.
+
+| Boundary or category | Specs | Reason |
+| --- | --- | --- |
+| Wallet stack: `wagmi`, `viem`, Reown AppKit, and the wallet feature's own modules mocked beside them | the isolated specs under `src/features/connect-wallet/`, and `useRevoke.isolated.spec.ts` | Real collaborators mean a real wallet runtime in jsdom |
+| `rollbar` | `queue.isolated.spec.ts` | The SDK is a constructor the code under test instantiates. The spec resets the registry around the module-level queue it feeds |
+| `next/script` | `AdbutlerBanner.isolated.spec.tsx` | It is a component rendered as JSX, so there is no method call to spy on. Replacing it needs a source change |
+| Specify publisher SDK | `SpecifyBanner.isolated.spec.tsx` | The SDK is a class instantiated inside the feature's client factory. Observing it means replacing the constructor |
+| `phoenix`, through `mockSocket` | `AddressTokenTransfers.isolated.spec.tsx` | The transport is replaced as a module by design |
+| `next/router`, `next/navigation` | `NextRouterProvider.isolated.spec.tsx` | The router adapter's own spec. The adapter is what wraps those modules |
+| Module singleton | `metrics.isolated.spec.ts` | A second, fresh instance of the module is the behaviour under test |
+| Primed-requests drift specs | every `*.primed.spec.tsx` | The harness resets the registry and mocks the socket transport |
+
+Two of these specs also mock something a shared spec drives for real. Rewriting that mock would not move them, because their row keeps them isolated:
+
+- `src/services/rollbar/queue.isolated.spec.ts` mocks the app config and the Rollbar client config. A shared spec would set the token with `withEnvs`.
+- `src/features/connect-wallet/hooks/wallet/useWalletReown.isolated.spec.ts` mocks the analytics event logger. A shared spec would spy on the SDK the logger calls.
 
 ## Setup
 
@@ -203,7 +225,7 @@ it('renders no tabs bar on mobile', () => {
 });
 ```
 
-Never replace `window.matchMedia` by hand to change the breakpoint. A spec that needs a non-width query (`prefers-color-scheme`, say) still installs its own stub — the shared one matches width queries only.
+Never replace `window.matchMedia` by hand to change the breakpoint. A spec that needs a non-width query (`prefers-color-scheme`, say) still installs its own stub — the shared one matches width queries only. Install it with `vi.stubGlobal('matchMedia', …)`: a stub assigned by hand outlives its spec file and answers the width queries of every later spec in the worker.
 
 **`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join, or that react to live socket messages. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
 

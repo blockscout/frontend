@@ -45,8 +45,8 @@ shape, and the task's before and after numbers are recorded for the pull request
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the "what stays isolated" table and the individual fallbacks into the unit-test rules
-- [ ] 2 `[agent]` Check every isolated spec against the table and the lint rule
-- [ ] 3 `[agent]` Run twenty shuffled full runs; record the seeds
-- [ ] 4 `[agent]` Check `--changed` with coverage, the CRAP gate and the mutation-testing gate
-- [ ] 5 `[agent]` Measure "after" and write the before/after table to `notes.md`
+- [x] 1 `[agent]` Write the "what stays isolated" table and the individual fallbacks into the unit-test rules
+- [x] 2 `[agent]` Check every isolated spec against the table and the lint rule
+- [x] 3 `[agent]` Run twenty shuffled full runs; record the seeds
+- [x] 4 `[agent]` Check `--changed` with coverage, the CRAP gate and the mutation-testing gate
+- [x] 5 `[agent]` Measure "after" and write the before/after table to `notes.md`
