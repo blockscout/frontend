@@ -11,6 +11,9 @@ const BROWSER_USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Appl
 const CRAWLER_USER_AGENT =
   'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 Chrome/130.0.0.0 Mobile Safari/537.36 ' +
   '(compatible; Googlebot/2.1; +http://www.google.com/bot.html)';
+const SLACK_APP_USER_AGENT =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Slack/4.41.105 Chrome/130.0.0.0 ' +
+  'Electron/33.2.0 Safari/537.36 Sonic Slack_SSB/4.41.105';
 
 const BROWSER_HEADERS = {
   'user-agent': BROWSER_USER_AGENT,
@@ -96,6 +99,14 @@ describe('base handler', () => {
 
   it('skips the pageview ping for a crawler', async() => {
     const { context } = makeContext({ cookie: 'uuid=existing-uuid', headers: { ...BROWSER_HEADERS, 'user-agent': CRAWLER_USER_AGENT } });
+
+    await runBase([], context);
+
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('skips the pageview ping for a known bot that otherwise looks like a real browser', async() => {
+    const { context } = makeContext({ cookie: 'uuid=existing-uuid', headers: { ...BROWSER_HEADERS, 'user-agent': SLACK_APP_USER_AGENT } });
 
     await runBase([], context);
 

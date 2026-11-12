@@ -94,7 +94,7 @@ theory is the test timeout: `withEnvs` re-evaluates the app's module graph insid
 `shared` project has the 5s default and the `isolated` one has 15s.
 
 Pin the cause before changing anything for it. If it is the timeout, raise the `shared` project's test
-timeout to 10s; no per-test overrides. If it is something else, it is a finding for the developer, not a
+timeout to 15s; no per-test overrides. If it is something else, it is a finding for the developer, not a
 reason to raise the timeout anyway.
 
 ### Moving specs

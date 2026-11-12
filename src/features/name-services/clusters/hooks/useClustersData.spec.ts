@@ -147,7 +147,7 @@ describe('useClustersData', () => {
       leaderboard: () => ok(LEADERBOARD_RESPONSE),
       directory: () => ok(DIRECTORY_RESPONSE),
       byAddress: () => ok(BY_ADDRESS_RESPONSE),
-      details: () => ok(DETAILS_RESPONSE),
+      details: ({ id }) => id === 'cluster-1' ? ok(DETAILS_RESPONSE) : 'pending',
     });
   });
 
@@ -255,7 +255,7 @@ describe('useClustersData', () => {
         isClusterDetailsLoading: false,
       });
       expect(requests('byAddress')).toEqual([ { address: ADDRESS } ]);
-      expect(requests('details')).toContainEqual({ id: 'cluster-1' });
+      expect(requests('details')).toEqual([ { id: 'cluster-1' } ]);
       expect(requests('directory')).toEqual([]);
       expect(requests('leaderboard')).toEqual([]);
     });
