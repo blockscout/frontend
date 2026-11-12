@@ -1,200 +1,161 @@
 // @vitest-environment jsdom
 
-import getQueryParamString from 'src/shared/router/get-query-param-string';
-import { useQueryParams } from 'src/shared/router/useQueryParams';
-
-import type { Mock } from 'vitest';
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
 
 import { useClusterPagination } from './useClusterPagination';
 
-vi.mock('src/shared/router/useQueryParams');
-vi.mock('src/shared/router/get-query-param-string');
+const PATHNAME = '/name-services';
 
-const mockUseQueryParams = useQueryParams as Mock<typeof useQueryParams>;
-const mockGetQueryParamString = getQueryParamString as Mock<typeof getQueryParamString>;
+function renderPagination(hasNextPage = true, isLoading = false) {
+  return renderHook(() => useClusterPagination(hasNextPage, isLoading), { wrapper: routerStandIn.wrapper });
+}
 
 describe('useClusterPagination', () => {
-  const mockUpdateQuery = vi.fn();
-
   beforeEach(() => {
-    vi.clearAllMocks();
-    routerStandIn.reset({ pathname: '/name-domains', query: {} });
-    mockUseQueryParams.mockReturnValue({
-      updateQuery: mockUpdateQuery,
-    });
+    routerStandIn.reset({ pathname: PATHNAME, query: {} });
   });
 
   afterEach(cleanup);
 
   describe('page calculation', () => {
-    it('should default to page 1 when no page param', () => {
-      mockGetQueryParamString.mockReturnValue('');
-
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+    it('is on the first page when the URL has no page', () => {
+      const { result } = renderPagination();
 
       expect(result.current.page).toBe(1);
       expect(result.current.pagination.page).toBe(1);
     });
 
-    it('should parse page from query param', () => {
-      mockGetQueryParamString.mockReturnValue('3');
+    it('reads the page from the URL', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '3' } });
 
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result } = renderPagination();
 
       expect(result.current.page).toBe(3);
       expect(result.current.pagination.page).toBe(3);
     });
 
-    it('should handle invalid page param gracefully', () => {
-      mockGetQueryParamString.mockReturnValue('invalid');
+    it('yields no page number for a page that is not a number', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: 'invalid' } });
 
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result } = renderPagination();
 
       expect(result.current.page).toBeNaN();
     });
   });
 
-  describe('navigation functions', () => {
+  describe('navigation', () => {
     beforeEach(() => {
-      mockGetQueryParamString.mockReturnValue('2');
+      routerStandIn.reset({ pathname: PATHNAME, query: { tab: 'directories', page: '2' } });
     });
 
-    it('should increment page on next click', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+    it('moves to the next page and keeps the rest of the URL', async() => {
+      const { result } = renderPagination();
 
-      act(() => {
-        result.current.pagination.onNextPageClick();
-      });
+      await act(async() => result.current.pagination.onNextPageClick());
 
-      expect(mockUpdateQuery).toHaveBeenCalledWith({ page: '3' });
+      expect(routerStandIn.pathname).toBe(PATHNAME);
+      expect(routerStandIn.query).toEqual({ tab: 'directories', page: '3' });
+      expect(result.current.page).toBe(3);
     });
 
-    it('should decrement page on prev click', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+    it('drops the page from the URL when going back to the first page', async() => {
+      const { result } = renderPagination();
 
-      act(() => {
-        result.current.pagination.onPrevPageClick();
-      });
+      await act(async() => result.current.pagination.onPrevPageClick());
 
-      expect(mockUpdateQuery).toHaveBeenCalledWith({ page: undefined });
+      expect(routerStandIn.query).toEqual({ tab: 'directories' });
+      expect(result.current.page).toBe(1);
     });
 
-    it('should handle prev click from page 3', () => {
-      mockGetQueryParamString.mockReturnValue('3');
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+    it('moves to the previous page from page 3', async() => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '3' } });
+      const { result } = renderPagination();
 
-      act(() => {
-        result.current.pagination.onPrevPageClick();
-      });
+      await act(async() => result.current.pagination.onPrevPageClick());
 
-      expect(mockUpdateQuery).toHaveBeenCalledWith({ page: '2' });
+      expect(routerStandIn.query).toEqual({ page: '2' });
+      expect(result.current.page).toBe(2);
     });
 
-    it('should reset page to undefined', () => {
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+    it('resets to the first page', async() => {
+      const { result } = renderPagination();
 
-      act(() => {
-        result.current.pagination.resetPage();
-      });
+      await act(async() => result.current.pagination.resetPage());
 
-      expect(mockUpdateQuery).toHaveBeenCalledWith({ page: undefined });
+      expect(routerStandIn.query).toEqual({ tab: 'directories' });
+      expect(result.current.page).toBe(1);
     });
   });
 
   describe('pagination state', () => {
-    it('should set hasPages true when page > 1', () => {
-      mockGetQueryParamString.mockReturnValue('2');
+    it('has pages behind it and can go back past the first page', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '2' } });
 
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result } = renderPagination();
 
       expect(result.current.pagination.hasPages).toBe(true);
-    });
-
-    it('should set hasPages false when page = 1', () => {
-      mockGetQueryParamString.mockReturnValue('1');
-
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
-
-      expect(result.current.pagination.hasPages).toBe(false);
-    });
-
-    it('should set canGoBackwards true when page > 1', () => {
-      mockGetQueryParamString.mockReturnValue('2');
-
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
-
       expect(result.current.pagination.canGoBackwards).toBe(true);
     });
 
-    it('should set canGoBackwards false when page = 1', () => {
-      mockGetQueryParamString.mockReturnValue('1');
+    it('has no pages behind it and cannot go back on the first page', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '1' } });
 
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result } = renderPagination();
 
+      expect(result.current.pagination.hasPages).toBe(false);
       expect(result.current.pagination.canGoBackwards).toBe(false);
     });
 
-    it('should pass through hasNextPage prop', () => {
-      mockGetQueryParamString.mockReturnValue('1');
-
-      const { result } = renderHook(() => useClusterPagination(false, false));
+    it('passes the next-page flag through', () => {
+      const { result } = renderPagination(false, false);
 
       expect(result.current.pagination.hasNextPage).toBe(false);
     });
 
-    it('should pass through isLoading prop', () => {
-      mockGetQueryParamString.mockReturnValue('1');
-
-      const { result } = renderHook(() => useClusterPagination(true, true));
+    it('passes the loading flag through', () => {
+      const { result } = renderPagination(true, true);
 
       expect(result.current.pagination.isLoading).toBe(true);
     });
   });
 
   describe('pagination visibility', () => {
-    it('should be visible when page > 1', () => {
-      mockGetQueryParamString.mockReturnValue('2');
+    it('is visible past the first page', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '2' } });
 
-      const { result } = renderHook(() => useClusterPagination(false, false));
-
-      expect(result.current.pagination.isVisible).toBe(true);
-    });
-
-    it('should be visible when hasNextPage is true', () => {
-      mockGetQueryParamString.mockReturnValue('1');
-
-      const { result } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result } = renderPagination(false, false);
 
       expect(result.current.pagination.isVisible).toBe(true);
     });
 
-    it('should not be visible when page = 1 and no next page', () => {
-      mockGetQueryParamString.mockReturnValue('1');
+    it('is visible on the first page when there is a next page', () => {
+      const { result } = renderPagination(true, false);
 
-      const { result } = renderHook(() => useClusterPagination(false, false));
+      expect(result.current.pagination.isVisible).toBe(true);
+    });
+
+    it('is hidden on the first page when there is no next page', () => {
+      const { result } = renderPagination(false, false);
 
       expect(result.current.pagination.isVisible).toBe(false);
     });
   });
 
-  describe('function stability', () => {
-    it('should not recreate functions when dependencies do not change', () => {
-      mockGetQueryParamString.mockReturnValue('2');
+  describe('handler stability', () => {
+    it('keeps the same handlers across renders while the page does not change', () => {
+      routerStandIn.reset({ pathname: PATHNAME, query: { page: '2' } });
 
-      const { result, rerender } = renderHook(() => useClusterPagination(true, false), { wrapper: routerStandIn.wrapper });
+      const { result, rerender } = renderPagination();
 
-      const firstOnNext = result.current.pagination.onNextPageClick;
-      const firstOnPrev = result.current.pagination.onPrevPageClick;
-      const firstReset = result.current.pagination.resetPage;
+      const { onNextPageClick, onPrevPageClick, resetPage } = result.current.pagination;
 
       rerender();
 
-      expect(result.current.pagination.onNextPageClick).toBe(firstOnNext);
-      expect(result.current.pagination.onPrevPageClick).toBe(firstOnPrev);
-      expect(result.current.pagination.resetPage).toBe(firstReset);
+      expect(result.current.pagination.onNextPageClick).toBe(onNextPageClick);
+      expect(result.current.pagination.onPrevPageClick).toBe(onPrevPageClick);
+      expect(result.current.pagination.resetPage).toBe(resetPage);
     });
   });
 });

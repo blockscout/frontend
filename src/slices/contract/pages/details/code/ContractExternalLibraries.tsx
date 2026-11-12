@@ -34,7 +34,7 @@ const Item = (data: SmartContractExternalLibrary) => {
         query={{ tab: 'contract' }}
         fontSize="sm"
         fontWeight="500"
-        target="_blank"
+        link={{ target: '_blank' }}
       />
     </Flex>
   );

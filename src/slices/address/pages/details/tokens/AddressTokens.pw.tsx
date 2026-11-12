@@ -51,6 +51,7 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], 
 
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
   await mockApiResponse('core:stats', statsMock.base);
+  await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(tokenInfo.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_s.jpg');
 
   // data for stats widgets

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainInfo } from 'src/features/op-interop/types/api';
 
 import * as TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import { distributeEntityProps } from 'src/shared/entities/utils';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -45,59 +44,61 @@ const IconStub = ({ isLoading }: { isLoading?: boolean }) => {
   );
 };
 
-const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
-  const partsProps = distributeEntityProps(props);
+interface ChainIconProps {
+  chain: ChainInfo | null | undefined;
+  isLoading?: boolean;
+}
 
+const ChainIcon = ({ chain, isLoading }: ChainIconProps) => {
+  if (!chain) {
+    return <IconStub/>;
+  }
+
+  return (
+    <Tooltip content={ `${ chain.chain_name ? chain.chain_name : 'External chain' } (chain id ${ chain.chain_id })` }>
+      <Box>
+        { chain.chain_logo ? (
+          <Image
+            src={ chain.chain_logo }
+            alt={ chain.chain_name || 'external chain logo' }
+            width="20px"
+            height="20px"
+            mr={ 2 }
+            borderRadius="base"
+          />
+        ) : (
+          <IconStub isLoading={ isLoading }/>
+        ) }
+      </Box>
+    </Tooltip>
+  );
+};
+
+const TxEntityInterop = ({ chain, hash, ...props }: Props) => {
   const href = (chain?.instance_url && hash) ? stripTrailingSlash(chain.instance_url) + route({
     pathname: '/tx/[hash]',
     query: {
       ...props.query,
       hash: hash,
     },
-  }) : null;
+  }) : undefined;
 
   return (
-    <TxEntity.Container { ...partsProps.container }>
-      { chain && !props.noIcon && (
-        <Tooltip content={ `${ chain.chain_name ? chain.chain_name : 'External chain' } (chain id ${ chain.chain_id })` }>
-          <Box>
-            { chain.chain_logo ? (
-              <Image
-                src={ chain.chain_logo }
-                alt={ chain.chain_name || 'external chain logo' }
-                width="20px"
-                height="20px"
-                mr={ 2 }
-                borderRadius="base"
-              />
-            ) : (
-              <IconStub isLoading={ props.isLoading }/>
-            ) }
-          </Box>
-        </Tooltip>
+    <TxEntity.Container { ...props } hash={ hash ?? undefined }>
+      { !props.noIcon && <ChainIcon chain={ chain } isLoading={ props.isLoading }/> }
+      { hash && href && (
+        <TxEntity.Link href={ href } external>
+          <TxEntity.Content/>
+        </TxEntity.Link>
       ) }
-      { !chain && !props.noIcon && (
-        <IconStub/>
+      { hash && !href && (
+        <Box overflow="hidden">
+          <TxEntity.Content/>
+        </Box>
       ) }
-      { hash && (
-        <>
-          { href ? (
-            <TxEntity.Link { ...partsProps.link } hash={ hash } href={ href } external>
-              <TxEntity.Content { ...partsProps.content } hash={ hash }/>
-            </TxEntity.Link>
-          ) : (
-            <Box overflow="hidden">
-              <TxEntity.Content { ...partsProps.content } hash={ hash }/>
-            </Box>
-          ) }
-          <TxEntity.Copy { ...partsProps.copy } hash={ hash } noCopy/>
-        </>
-      ) }
-      { !hash && (
-        'N/A'
-      ) }
+      { !hash && 'N/A' }
     </TxEntity.Container>
   );
 };
 
-export default chakra(TxEntityInterop);
+export default TxEntityInterop;

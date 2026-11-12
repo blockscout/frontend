@@ -37,3 +37,14 @@ export const base: stats.TransactionsPageStats = {
     units: 'ETH',
   },
 };
+
+export const withOpStackOperationalTxns: stats.TransactionsPageStats = {
+  ...base,
+  op_stack_operational_transactions_24h: {
+    id: 'opStackTxns24h',
+    value: '1050000',
+    title: 'OP Stack operational transactions',
+    description: 'OP Stack operational transactions over the last 24 hours',
+    units: '',
+  },
+};

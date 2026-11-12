@@ -1,4 +1,5 @@
 import type { ApiResource } from '../resources/types';
+import type { ApiName } from '../types';
 import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 // eslint-disable-next-line boundaries/element-types -- the spec needs a real multichain fixture; the api → features ban targets runtime code
@@ -6,7 +7,7 @@ import { chainA } from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { describe, expect, test, vi } from 'vitest';
+import { describe, expect, test } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { ResourceName } from '../resources';
@@ -210,55 +211,27 @@ describe('every declared scope filter reaches the URL of every registered resour
   });
 });
 
+// no registered resource declares a filter like these (the registry checks above forbid it), so the
+// declared list a resource would carry goes to the resolver directly
 describe('a declared scope filter with no resolver for its own service', () => {
-  const FIXTURE_RESOURCE_NAME = 'scope_filter_fixture';
   const MISSPELLED_FILTER = 'bridge_id';
 
-  const FIXTURE_RESOURCES = {
-    interchainIndexer: {
-      path: '/api/v1/interchain/fixture',
-      scopeFilters: [ 'home_chain_id', MISSPELLED_FILTER ],
-    },
-    core: {
-      path: '/api/v2/fixture',
-      scopeFilters: [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ],
-    },
-  } satisfies Record<string, ApiResource>;
-
-  type FixtureApiName = keyof typeof FIXTURE_RESOURCES;
-
-  function buildUrlForFixtureResource(envs: Array<[ string, string ]>, apiName: FixtureApiName) {
+  function resolveWithEnvs(envs: Array<[ string, string ]>, apiName: ApiName, scopeFilters: Array<string>) {
     return withEnvs(envs, async() => {
-      vi.doMock('../resources', async() => {
-        const actual = await vi.importActual<{ RESOURCES: typeof RESOURCES }>('../resources');
-
-        return {
-          ...actual,
-          RESOURCES: {
-            ...actual.RESOURCES,
-            [apiName]: { ...actual.RESOURCES[apiName], [FIXTURE_RESOURCE_NAME]: FIXTURE_RESOURCES[apiName] },
-          },
-        };
-      });
-
-      try {
-        const buildUrl = await importBuildUrl();
-        return buildUrl(`${ apiName }:${ FIXTURE_RESOURCE_NAME }` as ResourceName);
-      } finally {
-        vi.doUnmock('../resources');
-      }
+      const { resolveScopeFilters } = await import('./scope-filters');
+      return resolveScopeFilters(apiName, scopeFilters, undefined, undefined);
     });
   }
 
-  test('is left out of the query string instead of failing the request', async() => {
-    const url = await buildUrlForFixtureResource(CROSS_CHAIN_ENVS, 'interchainIndexer');
+  test('is left out instead of failing the request', async() => {
+    const filters = await resolveWithEnvs(CROSS_CHAIN_ENVS, 'interchainIndexer', [ 'home_chain_id', MISSPELLED_FILTER ]);
 
-    expect(url).toBe(`${ INTERCHAIN_HOST }/api/v1/interchain/fixture?home_chain_id=${ DEPLOYMENT_CHAIN_ID }`);
+    expect(filters).toEqual({ home_chain_id: DEPLOYMENT_CHAIN_ID });
   });
 
   test('does not inherit the interchain resolver of the same name', async() => {
-    const url = await buildUrlForFixtureResource(CROSS_CHAIN_ENVS, 'core');
+    const filters = await resolveWithEnvs(CROSS_CHAIN_ENVS, 'core', [ 'home_chain_id', 'bridge_ids', 'include_unindexed_chains' ]);
 
-    expect(Object.fromEntries(new URL(url).searchParams)).toEqual({});
+    expect(filters).toEqual({});
   });
 });

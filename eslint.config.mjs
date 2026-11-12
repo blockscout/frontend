@@ -190,6 +190,37 @@ const WINDOW_ENVS_RESTRICTION = {
   message: APP_CONFIG_ENVS_MESSAGE,
 };
 
+// Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
+// puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
+// Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
+// is not on the list: it resets the registry around its callback and restores the envs it set.
+const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
+const ISOLATED_SPEC_MESSAGE =
+  ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in .agents/rules/tests-unit.md.';
+const HAND_SET_ENV_MESSAGE =
+  'An env variable changed by hand is ignored once an earlier spec in the worker has evaluated the app config, and leaks into every spec after it.' +
+  ' Override envs with `withEnvs` from vitest/utils/mockEnvs — see "Overriding environment variables" in .agents/rules/tests-unit.md.';
+const SHARED_SPEC_RESTRICTED_SYNTAX = [
+  {
+    selector: 'CallExpression[callee.object.name=\'vi\'][callee.property.name=/^(mock|doMock|unmock|doUnmock|resetModules)$/]',
+    message: 'Mocking a module or resetting the module registry' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: ':matches(ImportDeclaration, ImportExpression)[source.value=/(^|\\/)(mockSocket|checkPrimedRequests)$/]',
+    message: 'This helper re-evaluates or mocks modules, so a spec using it' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: 'CallExpression[callee.object.name=\'Object\'][callee.property.name=\'assign\']' +
+      '[arguments.0.object.name=\'process\'][arguments.0.property.name=\'env\']',
+    message: HAND_SET_ENV_MESSAGE,
+  },
+  {
+    selector: ':matches(AssignmentExpression > MemberExpression.left, UnaryExpression[operator=\'delete\'] > MemberExpression.argument)' +
+      '[object.object.name=\'process\'][object.property.name=\'env\']',
+    message: HAND_SET_ENV_MESSAGE,
+  },
+];
+
 const RESTRICTED_SYNTAX = [
   {
     selector: 'CallExpression[callee.property.name=\'localeCompare\']',
@@ -771,6 +802,14 @@ export default tseslint.config(
         paths: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.paths.filter((path) => !ROUTER_FRAMEWORK_MODULE_NAMES.includes(path.name)),
         patterns: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.patterns,
       } ],
+    },
+  },
+
+  {
+    files: [ '**/*.spec.{ts,tsx}' ],
+    ignores: ISOLATED_SPEC_GLOBS,
+    rules: {
+      'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX, ...SHARED_SPEC_RESTRICTED_SYNTAX ],
     },
   },
 

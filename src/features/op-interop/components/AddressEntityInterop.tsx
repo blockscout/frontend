@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ChainInfo } from 'src/features/op-interop/types/api';
 
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
-import { distributeEntityProps } from 'src/shared/entities/utils';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
 interface Props extends Omit<AddressEntity.EntityProps, 'chain'> {
   chain: ChainInfo | null;
@@ -43,60 +43,65 @@ const IconStub = () => {
   );
 };
 
-const AddressEntityInterop = ({ chain, ...props }: Props) => {
-  const partsProps = distributeEntityProps(props);
+interface ChainBadgeProps {
+  chain: ChainInfo | null;
+}
 
-  const href = chain?.instance_url ? chain.instance_url.replace(/\/$/, '') + route({
+const ChainBadge = ({ chain }: ChainBadgeProps) => {
+  if (!chain?.chain_logo) {
+    return <IconStub/>;
+  }
+
+  return (
+    <Image
+      position="absolute"
+      bottom="-3px"
+      right="4px"
+      src={ chain.chain_logo }
+      alt={ chain.chain_name || 'external chain logo' }
+      fallback={ <IconStub/> }
+      width="14px"
+      height="14px"
+      borderRadius="base"
+    />
+  );
+};
+
+const AddressEntityInterop = ({ chain, ...props }: Props) => {
+  const href = chain?.instance_url ? stripTrailingSlash(chain.instance_url) + route({
     pathname: '/address/[hash]',
     query: {
       ...props.query,
       hash: props.address.hash,
     },
-  }) : null;
+  }) : undefined;
 
   const addressIcon = (
     <Box position="relative">
-      <AddressEntity.Icon { ...partsProps.icon }/>
-      { !props.isLoading && (
-        chain?.chain_logo ? (
-          <Image
-            position="absolute"
-            bottom="-3px"
-            right="4px"
-            src={ chain.chain_logo }
-            alt={ chain.chain_name || 'external chain logo' }
-            fallback={ <IconStub/> }
-            width="14px"
-            height="14px"
-            borderRadius="base"
-          />
-        ) : (
-          <IconStub/>
-        )
-      ) }
+      <AddressEntity.Icon/>
+      { !props.isLoading && <ChainBadge chain={ chain }/> }
     </Box>
   );
 
   return (
-    <AddressEntity.Container className={ props.className }>
-      { chain && (
+    <AddressEntity.Container { ...props }>
+      { chain ? (
         <Tooltip content={ `Address on ${ chain.chain_name ? chain.chain_name : 'external chain' } (chain id ${ chain.chain_id })` }>
           { addressIcon }
         </Tooltip>
-      ) }
-      { !chain && addressIcon }
+      ) : addressIcon }
       { href ? (
-        <AddressEntity.Link { ...partsProps.link } href={ href } external>
-          <AddressEntity.Content { ...partsProps.content }/>
+        <AddressEntity.Link href={ href } external>
+          <AddressEntity.Content/>
         </AddressEntity.Link>
       ) : (
         <Box overflow="hidden">
-          <AddressEntity.Content { ...partsProps.content }/>
+          <AddressEntity.Content/>
         </Box>
       ) }
-      <AddressEntity.Copy { ...partsProps.copy }/>
+      <AddressEntity.Copy/>
     </AddressEntity.Container>
   );
 };
 
-export default chakra(AddressEntityInterop);
+export default AddressEntityInterop;

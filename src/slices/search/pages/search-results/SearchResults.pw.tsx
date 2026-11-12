@@ -7,6 +7,8 @@ import * as searchMock from 'src/slices/search/mocks';
 
 import { metatag1, metatag2, metatag3 } from 'src/features/address-metadata/mocks/search';
 import { tacOperation1 } from 'src/features/chain-variants/tac/mocks/search';
+import { zetaChainCCTXItem, zetaChainCCTXList } from 'src/features/chain-variants/zeta-chain/mocks/cctx';
+import { zetaChainCCTXConfig } from 'src/features/chain-variants/zeta-chain/mocks/cctx-config';
 import { blob1 } from 'src/features/data-availability/mocks/search';
 import { apps as appsMock } from 'src/features/marketplace/mocks/dapps';
 import { domain1 } from 'src/features/name-services/domains/mocks/search';
@@ -189,6 +191,28 @@ test('search by tac operation hash', async({ render, mockApiResponse, mockEnvs, 
     next_page_params: null,
   };
   await mockApiResponse('core:search', data, { queryParams: { q: tacOperation1.tac_operation.operation_id } });
+  await mockPageChrome(mockApiResponse);
+  const component = await render(<SearchResults/>, { hooksConfig });
+  await resetScroll(page);
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test('search by zetachain cctx hash', async({ render, mockApiResponse, mockConfigResponse, mockEnvs, page }) => {
+  const ZETA_CHAIN_CONFIG_URL = 'http://localhost:3000/zeta-config.json';
+  await mockEnvs(ENVS_MAP.zetaChain);
+  const hooksConfig = {
+    router: {
+      query: { q: zetaChainCCTXItem.index },
+    },
+  };
+  await mockConfigResponse('NEXT_PUBLIC_ZETACHAIN_SERVICE_CHAINS_CONFIG_URL', ZETA_CHAIN_CONFIG_URL, zetaChainCCTXConfig);
+  await mockApiResponse('core:search', { items: [], next_page_params: null }, { queryParams: { q: zetaChainCCTXItem.index } });
+  await mockApiResponse(
+    'zetachain:transactions',
+    zetaChainCCTXList,
+    { queryParams: { hash: zetaChainCCTXItem.index, limit: 50, offset: 0, direction: 'DESC' } },
+  );
   await mockPageChrome(mockApiResponse);
   const component = await render(<SearchResults/>, { hooksConfig });
   await resetScroll(page);

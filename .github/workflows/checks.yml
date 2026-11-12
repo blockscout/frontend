@@ -149,8 +149,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Spec files run in random order, so a spec that leans on state another one left behind fails
+      # here rather than in whichever order a later change happens to produce. The run prints its
+      # seed; `--sequence.seed <seed>` replays the order locally.
       - name: Run Vitest
-        run: pnpm test:vitest ${{ github.event_name == 'pull_request' && '--changed=origin/main --coverage --coverage.provider=v8 --coverage.reporter=json' || '' }} --passWithNoTests
+        run: pnpm test:vitest --sequence.shuffle.files ${{ github.event_name == 'pull_request' && '--changed=origin/main --coverage --coverage.provider=v8 --coverage.reporter=json' || '' }} --passWithNoTests
 
       - name: Cognitive complexity & CRAP gate
         if: ${{ github.event_name == 'pull_request' }}

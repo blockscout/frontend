@@ -30,7 +30,7 @@ silent so the score table is what you see.
 ## Which files trigger a vitest run (generation scope)
 
 Separately from per-function scoring, a *file* needs vitest coverage generated for it when it is a
-**JSX-less logic file** *or* a **JSX file with a co-located vitest spec** (`Component.spec.tsx` next
+**JSX-less logic file** *or* a **JSX file with a co-located vitest spec** (`Component.spec.tsx` or `Component.isolated.spec.tsx` next
 to `Component.tsx`; Playwright `*.pw.tsx` does not count). This only decides whether
 `vitest related`/`--changed` pulls the file in. A `behavior` function in a JSX file outside that set
 is absent from the report and scores 0% without triggering a run.

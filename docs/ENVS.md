@@ -21,6 +21,11 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 ### Note about escaping variables values
 All json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+### HTML values
+A variable whose description says it accepts HTML code is rendered as HTML on the app's own origin, so its markup is limited to text formatting, links and images. `<script>`, `<iframe>`, `<form>`, `<svg>`, `<object>`, inline `style` attributes, `on*` event handlers and `javascript:` links are rejected at startup, with a message naming what was found, and stripped from the rendered markup.
+
+The value is used as set: apostrophes and single-quoted attribute values stay as they are (unlike json-like values, no quote rewriting happens). A variable typed `Array<string>` takes a JSON list of such strings. Double-quote its items and put HTML attribute values in single quotes or escape their double quotes, for example `["Hello", "<a href='https://example.com'>Link!</a>"]`; the single-quoted form `['Hello', '<b>World</b>']` also works as long as no item itself contains a single quote.
+
 &nbsp;
 
 ## Table of contents
@@ -321,7 +326,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code. If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. In this case, the array must be valid JSON with double-quoted items; put HTML attribute values in single quotes or escape their double quotes (for example, `["Hello", "<a href='https://example.com'>Link!</a>"]`). | - | - | `Hello world! 🤪` | v1.13.0+ |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code (see [HTML values](#html-values)). If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. | - | - | `Hello world! 🤪` | v1.13.0+ |
 
 &nbsp;
 
@@ -615,8 +620,8 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
 | NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
 | NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
-| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
-| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code. Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
+| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code (see [HTML values](#html-values)). On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code (see [HTML values](#html-values)). Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
 **Dependencies**
 

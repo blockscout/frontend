@@ -11,12 +11,10 @@ import { TXS_STATS, TXS_STATS_MICROSERVICE } from 'src/slices/tx/stubs/tx';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
-import getStatsLabelFromTitle from 'src/shared/stats/get-stats-label-from-title';
 import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
-import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
-import { thinsp } from 'src/toolkit/utils/htmlEntities';
+import { getTxsStatsWidgets } from './get-txs-stats-widgets';
 
 interface Props extends BoxProps {}
 
@@ -26,8 +24,6 @@ const TxsStats = (props: Props) => {
   const chainConfig = multichainContext?.chain.app_config || config;
   const isStatsFeatureEnabled = chainConfig.features.stats.isEnabled;
   const rollupFeature = chainConfig.features.rollup;
-  const isOptimisticRollup = rollupFeature.isEnabled && rollupFeature.type === 'optimistic';
-  const isArbitrumRollup = rollupFeature.isEnabled && rollupFeature.type === 'arbitrum';
 
   const txsStatsQuery = useApiQuery('stats:pages_transactions', {
     queryOptions: {
@@ -45,112 +41,36 @@ const TxsStats = (props: Props) => {
 
   const statsQuery = useStatsQuery();
 
-  if ((isStatsFeatureEnabled && !txsStatsQuery.data) || (!isStatsFeatureEnabled && !txsStatsApiQuery.data)) {
+  const activeQuery = isStatsFeatureEnabled ? txsStatsQuery : txsStatsApiQuery;
+
+  if (!activeQuery.data) {
     return null;
   }
 
-  const isLoading = isStatsFeatureEnabled ? txsStatsQuery.isPlaceholderData : txsStatsApiQuery.isPlaceholderData;
-
-  const txCount24h = isStatsFeatureEnabled ? txsStatsQuery.data?.transactions_24h?.value : txsStatsApiQuery.data?.transactions_count_24h;
-  const operationalTxns24hArbitrum = isArbitrumRollup && isStatsFeatureEnabled ? txsStatsQuery.data?.operational_transactions_24h?.value : null;
-  const operationalTxns24hOptimistic = isOptimisticRollup && isStatsFeatureEnabled ? txsStatsQuery.data?.op_stack_operational_transactions_24h?.value : null;
-
-  const pendingTxns = isStatsFeatureEnabled ? txsStatsQuery.data?.pending_transactions_30m?.value : txsStatsApiQuery.data?.pending_transactions_count;
-
-  // in microservice data, fee values are already divided by 10^decimals
-  const txFeeSum24h = isStatsFeatureEnabled ?
-    Number(txsStatsQuery.data?.transactions_fee_24h?.value) :
-    Number(txsStatsApiQuery.data?.transaction_fees_sum_24h) / (10 ** chainConfig.chain.currency.decimals);
-
-  const avgFee = isStatsFeatureEnabled ? txsStatsQuery.data?.average_transactions_fee_24h?.value : txsStatsApiQuery.data?.transaction_fees_avg_24h;
-
-  const txFeeAvg = avgFee ? calculateUsdValue({
-    amount: avgFee,
-    exchangeRate: statsQuery.data?.coin_price,
-    // in microservice data, fee values are already divided by 10^decimals
-    decimals: isStatsFeatureEnabled ? '0' : String(chainConfig.chain.currency.decimals),
-  }) : null;
+  const widgets = getTxsStatsWidgets({
+    isStatsFeatureEnabled,
+    rollupType: rollupFeature.isEnabled ? rollupFeature.type : undefined,
+    currency: chainConfig.chain.currency,
+    chainId: multichainContext?.chain.id,
+    microserviceStats: txsStatsQuery.data,
+    apiStats: txsStatsApiQuery.data,
+    coinPrice: statsQuery.data?.coin_price,
+  });
 
   return (
     <StatsContainer mb={ 6 } { ...props } >
-      { txCount24h && (
+      { widgets.map((widget) => (
         <StatsWidget
-          label={ txsStatsQuery.data?.transactions_24h?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.transactions_24h?.title) :
-            'Transactions' }
-          value={ Number(txCount24h).toLocaleString() }
-          period="24h"
-          isLoading={ isLoading }
-          href={
-            chainConfig.features.stats.isEnabled ?
-              { pathname: '/stats/[id]', query: { id: 'newTxns', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
-              undefined
-          }
+          key={ widget.id }
+          label={ widget.label }
+          value={ widget.value }
+          valuePrefix={ widget.valuePrefix }
+          valuePostfix={ widget.valuePostfix }
+          period={ widget.period }
+          isLoading={ activeQuery.isPlaceholderData }
+          href={ widget.href }
         />
-      ) }
-      { operationalTxns24hArbitrum && (
-        <StatsWidget
-          label={ txsStatsQuery.data?.operational_transactions_24h?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.operational_transactions_24h?.title) :
-            'Daily op txns' }
-          value={ Number(operationalTxns24hArbitrum).toLocaleString() }
-          period="24h"
-          isLoading={ isLoading }
-        />
-      ) }
-      { operationalTxns24hOptimistic && (
-        <StatsWidget
-          label={ txsStatsQuery.data?.op_stack_operational_transactions_24h?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.op_stack_operational_transactions_24h?.title) :
-            'Daily op txns' }
-          value={ Number(operationalTxns24hOptimistic).toLocaleString() }
-          period="24h"
-          isLoading={ isLoading }
-        />
-      ) }
-      { pendingTxns && (
-        <StatsWidget
-          label={ txsStatsQuery.data?.pending_transactions_30m?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.pending_transactions_30m?.title) :
-            'Pending transactions' }
-          value={ Number(pendingTxns).toLocaleString() }
-          period={ isStatsFeatureEnabled ? '30min' : '1h' }
-          isLoading={ isLoading }
-        />
-      ) }
-      { !Object.is(txFeeSum24h, NaN) && (
-        <StatsWidget
-          label={ txsStatsQuery.data?.transactions_fee_24h?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.transactions_fee_24h?.title) :
-            'Transactions fees' }
-          value={ txFeeSum24h.toLocaleString(undefined, { maximumFractionDigits: 2 }) }
-          valuePostfix={ thinsp + chainConfig.chain.currency.symbol }
-          period="24h"
-          isLoading={ isLoading }
-          href={
-            chainConfig.features.stats.isEnabled ?
-              { pathname: '/stats/[id]', query: { id: 'txnsFee', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
-              undefined
-          }
-        />
-      ) }
-      { txFeeAvg && (
-        <StatsWidget
-          label={ txsStatsQuery.data?.average_transactions_fee_24h?.title ?
-            getStatsLabelFromTitle(txsStatsQuery.data?.average_transactions_fee_24h?.title) :
-            'Avg. transaction fee' }
-          value={ txFeeAvg.usdStr ? txFeeAvg.usdStr : txFeeAvg.valueStr }
-          valuePrefix={ txFeeAvg.usdStr ? '$' : undefined }
-          valuePostfix={ txFeeAvg.usdStr ? undefined : thinsp + chainConfig.chain.currency.symbol }
-          period="24h"
-          isLoading={ isLoading }
-          href={
-            chainConfig.features.stats.isEnabled ?
-              { pathname: '/stats/[id]', query: { id: 'averageTxnFee', ...(multichainContext?.chain.id ? { chain_id: multichainContext.chain.id } : {}) } } :
-              undefined
-          }
-        />
-      ) }
+      )) }
     </StatsContainer>
   );
 };

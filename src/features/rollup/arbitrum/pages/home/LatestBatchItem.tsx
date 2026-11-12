@@ -33,7 +33,7 @@ const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading, animat
         <BatchEntityL2
           isLoading={ isLoading }
           number={ number }
-          tailLength={ 2 }
+          truncation={{ type: 'dynamic', tailLength: 2 }}
           textStyle="md"
           fontWeight={ 500 }
           mr="auto"

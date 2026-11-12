@@ -5,8 +5,6 @@ import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
 import React from 'react';
 
-import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'src/features/rollup/zk-sync/types/api';
-
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import type { BlockQuery } from 'src/slices/block/hooks/useBlockQuery';
 import getBlockReward from 'src/slices/block/utils/get-block-reward';
@@ -14,32 +12,30 @@ import getChainValidatorTitle from 'src/slices/chain/verification-type/utils/get
 import GasUsed from 'src/slices/gas/components/GasUsed';
 
 import BlockDetailsBaseFeeCelo from 'src/features/chain-variants/celo/pages/block/BlockDetailsBaseFeeCelo';
-import BlockDetailsZilliqaQuorumCertificate from 'src/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificate';
+import BlockDetailsMergedMiningRootstock from 'src/features/chain-variants/rootstock/pages/block/BlockDetailsMergedMiningRootstock';
+import BlockDetailsZilliqaQuorumCertificates from 'src/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaQuorumCertificates';
+import BlockDetailsZilliqaView from 'src/features/chain-variants/zilliqa/pages/block/BlockDetailsZilliqaView';
 import BlockDetailsBlobInfo from 'src/features/data-availability/pages/block/BlockDetailsBlobInfo';
 import { useMultichainContext } from 'src/features/multichain/context';
-import * as arbitrum from 'src/features/rollup/arbitrum/utils/batch-verification';
-import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
-import { layerLabels } from 'src/features/rollup/common/utils/layer';
-import OptimisticL2TxnBatchDA from 'src/features/rollup/optimism/components/TxnBatchDA';
-import ZkSyncL2TxnBatchHashesInfo from 'src/features/rollup/zk-sync/pages/batch-details/ZkSyncL2TxnBatchHashesInfo';
-import { formatZkSyncL2TxnBatchStatus } from 'src/features/rollup/zk-sync/utils/format-txn-batch-status';
+import BlockDetailsArbitrumBatch from 'src/features/rollup/arbitrum/pages/block/BlockDetailsArbitrumBatch';
+import BlockDetailsArbitrumL1Txs from 'src/features/rollup/arbitrum/pages/block/BlockDetailsArbitrumL1Txs';
+import BlockDetailsArbitrumSendInfo from 'src/features/rollup/arbitrum/pages/block/BlockDetailsArbitrumSendInfo';
+import BlockDetailsArbitrumStatus from 'src/features/rollup/arbitrum/pages/block/BlockDetailsArbitrumStatus';
+import BlockDetailsOptimismBatch from 'src/features/rollup/optimism/pages/block/BlockDetailsOptimismBatch';
+import BlockDetailsZkSyncBatch from 'src/features/rollup/zk-sync/pages/block/BlockDetailsZkSyncBatch';
+import BlockDetailsZkSyncBatchHashes from 'src/features/rollup/zk-sync/pages/block/BlockDetailsZkSyncBatchHashes';
+import BlockDetailsZkSyncStatus from 'src/features/rollup/zk-sync/pages/block/BlockDetailsZkSyncStatus';
 
 import config from 'src/config';
 import PrevNext from 'src/shared/buttons/PrevNext';
-import RawDataSnippet from 'src/shared/data/RawDataSnippet';
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
-import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route, routeParams } from 'src/shared/router/routes';
 import { useRouter } from 'src/shared/router/useRouter';
-import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
-import { WEI } from 'src/shared/values/entity/utils';
 import Utilization from 'src/shared/values/utilization/Utilization';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -49,15 +45,12 @@ import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { ZERO } from 'src/toolkit/utils/consts';
-import { space } from 'src/toolkit/utils/htmlEntities';
 
-const zkSyncVerificationSteps = ZKSYNC_L2_TX_BATCH_STATUSES.map(formatZkSyncL2TxnBatchStatus);
+import BlockDetailsReward from './BlockDetailsReward';
 
 interface Props {
   query: BlockQuery;
 }
-
-const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
   const router = useRouter();
@@ -81,43 +74,10 @@ const BlockDetails = ({ query }: Props) => {
     return null;
   }
 
-  const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
+  const reward = getBlockReward(data);
+  const { burntFees, txFees } = reward;
 
   const validatorTitle = getChainValidatorTitle();
-
-  const rewardBreakDown = (() => {
-    if (rollupFeature.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
-      return null;
-    }
-
-    if (isPlaceholderData) {
-      return <Skeleton loading w="525px" h="20px"/>;
-    }
-
-    return (
-      <Text color="text.secondary" whiteSpace="break-spaces">
-        <Tooltip content="Static block reward">
-          <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
-        </Tooltip>
-        { !txFees.isEqualTo(ZERO) && (
-          <>
-            { space }+{ space }
-            <Tooltip content="Txn fees">
-              <span>{ txFees.dividedBy(WEI).toFixed() }</span>
-            </Tooltip>
-          </>
-        ) }
-        { !burntFees.isEqualTo(ZERO) && (
-          <>
-            { space }-{ space }
-            <Tooltip content="Burnt fees">
-              <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
-            </Tooltip>
-          </>
-        ) }
-      </Text>
-    );
-  })();
 
   const txsNum = (() => {
     const blockTxsNum = (
@@ -178,57 +138,8 @@ const BlockDetails = ({ query }: Props) => {
         />
       </DetailedInfo.ItemValue>
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && typeof data.arbitrum?.l1_block_number === 'number' && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint={ `The most recent ${ layerLabels.parent } block height as of this ${ layerLabels.current } block` }
-            isLoading={ isPlaceholderData }
-          >
-            { layerLabels.parent } block height
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_number }/>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && !config.slices.block.hiddenFields?.batch && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Batch number"
-            isLoading={ isPlaceholderData }
-          >
-            Batch
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { data.arbitrum.batch_number ?
-              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.arbitrum.batch_number }/> :
-              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-
-      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.optimism && !config.slices.block.hiddenFields?.batch && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Batch number"
-            isLoading={ isPlaceholderData }
-          >
-            Batch
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 3 }>
-            { data.optimism.number ?
-              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.number }/> :
-              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
-            { data.optimism.batch_data_container && (
-              <OptimisticL2TxnBatchDA
-                container={ data.optimism.batch_data_container }
-                isLoading={ isPlaceholderData }
-              />
-            ) }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      <BlockDetailsArbitrumBatch data={ data } isLoading={ isPlaceholderData }/>
+      <BlockDetailsOptimismBatch data={ data } isLoading={ isPlaceholderData }/>
 
       { typeof data.size === 'number' && (
         <>
@@ -286,50 +197,9 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.slices.block.hiddenFields?.batch && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Batch number"
-            isLoading={ isPlaceholderData }
-          >
-            Batch
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { data.zksync.batch_number ?
-              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.zksync.batch_number }/> :
-              <Skeleton loading={ isPlaceholderData }>Pending</Skeleton> }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
-      { !config.slices.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
-        ((rollupFeature.type === 'zkSync' && data.zksync) || (rollupFeature.type === 'arbitrum' && data.arbitrum)) &&
-      (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="Status is the short interpretation of the batch lifecycle"
-            isLoading={ isPlaceholderData }
-          >
-            Status
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            { rollupFeature.type === 'zkSync' && data.zksync && (
-              <VerificationSteps
-                steps={ zkSyncVerificationSteps }
-                currentStep={ formatZkSyncL2TxnBatchStatus(data.zksync.status) }
-                isLoading={ isPlaceholderData }
-              />
-            ) }
-            { rollupFeature.type === 'arbitrum' && data.arbitrum && (
-              <VerificationSteps
-                steps={ arbitrum.verificationSteps }
-                currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
-                currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
-                isLoading={ isPlaceholderData }
-              />
-            ) }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      <BlockDetailsZkSyncBatch data={ data } isLoading={ isPlaceholderData }/>
+      <BlockDetailsZkSyncStatus data={ data } isLoading={ isPlaceholderData }/>
+      <BlockDetailsArbitrumStatus data={ data } isLoading={ isPlaceholderData }/>
 
       { !config.slices.block.hiddenFields?.miner && (
         <>
@@ -348,59 +218,9 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' &&
-        (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
-      (
-        <>
-          <DetailedInfo.ItemDivider/>
-          { data.arbitrum?.commitment_transaction.hash && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint={ `${ layerLabels.parent } transaction containing this batch commitment` }
-                isLoading={ isPlaceholderData }
-              >
-                Commitment tx
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
-          { data.arbitrum?.confirmation_transaction.hash && (
-            <>
-              <DetailedInfo.ItemLabel
-                hint={ `${ layerLabels.parent } transaction containing confirmation of this batch` }
-                isLoading={ isPlaceholderData }
-              >
-                Confirmation tx
-              </DetailedInfo.ItemLabel>
-              <DetailedInfo.ItemValue>
-                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData }/>
-                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
-              </DetailedInfo.ItemValue>
-            </>
-          ) }
-        </>
-      ) }
+      <BlockDetailsArbitrumL1Txs data={ data } isLoading={ isPlaceholderData }/>
 
-      { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.slices.block.hiddenFields?.total_reward && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint={
-              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' }
-          on top of the fees paid for all transactions in the block`
-            }
-            isLoading={ isPlaceholderData }
-          >
-            Block reward
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue columnGap={ 1 } multiRow>
-            <NativeCoinValue amount={ totalReward.toString() } accuracy={ 0 } loading={ isPlaceholderData }/>
-            { rewardBreakDown }
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      <BlockDetailsReward reward={ reward } validatorTitle={ validatorTitle } isLoading={ isPlaceholderData }/>
 
       { data.rewards
         ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
@@ -419,21 +239,7 @@ const BlockDetails = ({ query }: Props) => {
         ))
       }
 
-      { typeof data.zilliqa?.view === 'number' && (
-        <>
-          <DetailedInfo.ItemLabel
-            hint="The iteration of the consensus round in which the block was proposed"
-            isLoading={ isPlaceholderData }
-          >
-            View
-          </DetailedInfo.ItemLabel>
-          <DetailedInfo.ItemValue>
-            <Skeleton loading={ isPlaceholderData }>
-              { data.zilliqa.view }
-            </Skeleton>
-          </DetailedInfo.ItemValue>
-        </>
-      ) }
+      <BlockDetailsZilliqaView data={ data } isLoading={ isPlaceholderData }/>
 
       <DetailedInfo.ItemDivider/>
 
@@ -550,84 +356,11 @@ const BlockDetails = ({ query }: Props) => {
       <CollapsibleDetails loading={ isPlaceholderData } mt={ 6 } gridColumn={{ base: undefined, lg: '1 / 3' }}>
         <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
-              <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
+        <BlockDetailsZkSyncBatchHashes data={ data } isLoading={ isPlaceholderData }/>
 
         { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
-        { data.bitcoin_merged_mining_header && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Merged-mining field: Bitcoin header"
-            >
-              Bitcoin merged mining header
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue
-              flexWrap="nowrap"
-              alignSelf="flex-start"
-            >
-              <Box whiteSpace="nowrap" overflow="hidden">
-                <Truncate value={ data.bitcoin_merged_mining_header }/>
-              </Box>
-              <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
-
-        { data.bitcoin_merged_mining_coinbase_transaction && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Merged-mining field: Coinbase transaction"
-            >
-              Bitcoin merged mining coinbase transaction
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <RawDataSnippet
-                data={ data.bitcoin_merged_mining_coinbase_transaction }
-                isLoading={ isPlaceholderData }
-                showCopy={ false }
-                textareaMaxHeight="100px"
-              />
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
-
-        { data.bitcoin_merged_mining_merkle_proof && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Merged-mining field: Merkle proof"
-            >
-              Bitcoin merged mining Merkle proof
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              <RawDataSnippet
-                data={ data.bitcoin_merged_mining_merkle_proof }
-                isLoading={ isPlaceholderData }
-                showCopy={ false }
-                textareaMaxHeight="100px"
-              />
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
-
-        { data.hash_for_merged_mining && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint="Merged-mining field: Rootstock block header hash"
-            >
-              Hash for merged mining
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue
-              flexWrap="nowrap"
-              alignSelf="flex-start"
-            >
-              <Box whiteSpace="nowrap" overflow="hidden">
-                <Truncate value={ data.hash_for_merged_mining }/>
-              </Box>
-              <CopyToClipboard text={ data.hash_for_merged_mining }/>
-            </DetailedInfo.ItemValue>
-          </>
-        ) }
+        <BlockDetailsMergedMiningRootstock data={ data } isLoading={ isPlaceholderData }/>
 
         { data.difficulty && (
           <>
@@ -692,43 +425,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && typeof data.arbitrum.send_count === 'number' && (
-          <>
-            <DetailedInfo.ItemLabel
-              hint={ `The cumulative number of ${ layerLabels.current } to ${ layerLabels.parent } transactions as of this block` }
-              isLoading={ isPlaceholderData }
-            >
-              Send count
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { data.arbitrum.send_count.toLocaleString() }
-            </DetailedInfo.ItemValue>
-
-            <DetailedInfo.ItemLabel
-              hint={ `The root of the Merkle accumulator representing all ${ layerLabels.current } to ${ layerLabels.parent } transactions as of this block` }
-              isLoading={ isPlaceholderData }
-            >
-              Send root
-            </DetailedInfo.ItemLabel>
-            <DetailedInfo.ItemValue>
-              { data.arbitrum.send_root }
-            </DetailedInfo.ItemValue>
-
-            { data.arbitrum.delayed_messages !== undefined && (
-              <>
-                <DetailedInfo.ItemLabel
-                  hint={ `The number of delayed ${ layerLabels.parent } to ${ layerLabels.current } messages read as of this block` }
-                  isLoading={ isPlaceholderData }
-                >
-                  Delayed messages
-                </DetailedInfo.ItemLabel>
-                <DetailedInfo.ItemValue>
-                  { data.arbitrum.delayed_messages.toLocaleString() }
-                </DetailedInfo.ItemValue>
-              </>
-            ) }
-          </>
-        ) }
+        <BlockDetailsArbitrumSendInfo data={ data } isLoading={ isPlaceholderData }/>
 
         { !config.slices.block.hiddenFields?.nonce && (
           <>
@@ -743,18 +440,7 @@ const BlockDetails = ({ query }: Props) => {
           </>
         ) }
 
-        { data.zilliqa && (data.zilliqa?.quorum_certificate || data.zilliqa?.aggregate_quorum_certificate) && (
-          <>
-            <DetailedInfo.ItemDivider/>
-            { data.zilliqa?.quorum_certificate && <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/> }
-            { data.zilliqa?.aggregate_quorum_certificate && (
-              <>
-                <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>
-                <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.aggregate_quorum_certificate }/>
-              </>
-            ) }
-          </>
-        ) }
+        <BlockDetailsZilliqaQuorumCertificates data={ data }/>
       </CollapsibleDetails>
 
     </DetailedInfo.Container>

@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Flex } from '@chakra-ui/react';
-import type { IconProps } from '@chakra-ui/react';
+import type { HTMLChakraProps, JsxStyleProps } from '@chakra-ui/react';
+import { Box, chakra } from '@chakra-ui/react';
 import React from 'react';
-
-import type { ExternalChain } from 'src/shared/external-chains/types';
 
 import type { Props as CopyToClipboardProps } from 'src/shared/texts/CopyToClipboard';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -13,141 +11,139 @@ import type { Props as SpriteIconProps } from 'src/sprite/SpriteIcon';
 
 import type { ImageProps } from 'src/toolkit/chakra/image';
 import { Image } from 'src/toolkit/chakra/image';
-import type { LinkProps } from 'src/toolkit/chakra/link';
+import type { LinkProps as LinkToolkitProps } from 'src/toolkit/chakra/link';
 import { Link as LinkToolkit } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import type { TruncateTooltipConfig } from 'src/toolkit/components/truncation/Truncate';
 
-import { getContentProps, getIconProps } from './utils';
+import { toTruncationSpec } from './entity-props';
+import type { EntityIconExtras, EntityOptions, Variant } from './root';
+import { useEntityOptions } from './root';
+import { useSplitCssProps } from './split-css-props';
+import { getVariantPreset } from './variants';
 
-export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
-export type Variant = 'content' | 'heading' | 'subheading';
+export type { Truncation, Variant, EntityIconOptions as EntityIconProps } from './root';
 
-export interface EntityBaseProps {
-  className?: string;
-  href?: string;
-  icon?: EntityIconProps;
-  link?: LinkProps;
-  isLoading?: boolean;
-  noTooltip?: boolean;
-  noCopy?: boolean;
-  noIcon?: boolean;
-  noLink?: boolean;
-  onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
-  query?: Record<string, string>;
-  tailLength?: number;
-  target?: React.HTMLAttributeAnchorTarget;
-  truncation?: Truncation;
-  truncationMaxSymbols?: number;
-  variant?: Variant;
-  chain?: ExternalChain;
-  contentProps?: {
-    tooltipInteractive?: boolean;
-    tooltipContentAfter?: React.ReactNode;
-  };
-}
+export interface ContainerBaseProps extends Omit<HTMLChakraProps<'div'>, 'onClick'> {}
 
-export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
-  children: React.ReactNode;
-  onMouseEnter?: (event: React.MouseEvent) => void;
-  onMouseLeave?: (event: React.MouseEvent) => void;
-}
-
-const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
+const Container = (props: ContainerBaseProps) => {
   return (
-    <Flex
-      className={ className }
+    <Box
+      display="flex"
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
       { ...props }
-    >
-      { children }
-    </Flex>
+    />
   );
-});
+};
 
-export interface LinkBaseProps extends Pick<EntityBaseProps, 'className' | 'onClick' | 'isLoading' | 'href' | 'noLink' | 'query' | 'chain'> {
+export interface LinkBaseProps extends
+  Omit<LinkToolkitProps, 'onClick' | 'loading'>,
+  Pick<EntityOptions, 'isLoading' | 'noLink' | 'chain' | 'onClick'> {
   children: React.ReactNode;
-  variant?: LinkProps['variant'];
-  noIcon?: LinkProps['noIcon'];
-  external?: LinkProps['external'];
 }
 
-const Link = chakra(({ isLoading, children, external, onClick, href, noLink, variant, noIcon }: LinkBaseProps) => {
-  const styles = {
-    display: 'inline-flex',
-    alignItems: 'center',
-    minWidth: 0, // for content truncation - https://css-tricks.com/flexbox-truncated-text/
-  };
+const Link = (props: LinkBaseProps) => {
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const {
+    isLoading = options.isLoading,
+    noLink = options.noLink,
+    children,
+    className,
+    href,
+    external,
+    onClick,
+    variant,
+    noIcon,
+    iconColor,
+    target,
+    rel,
+  } = rest;
 
   if (noLink) {
-    return null;
+    return children;
   }
 
   return (
     <LinkToolkit
-      { ...styles }
+      display="inline-flex"
+      alignItems="center"
+      minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+      { ...css }
+      className={ className }
       href={ href }
       loading={ isLoading }
       external={ external }
       onClick={ onClick }
       variant={ variant }
       noIcon={ noIcon }
+      iconColor={ iconColor }
+      { ...(target !== undefined && { target }) }
+      { ...(rel !== undefined && { rel }) }
     >
       { children }
     </LinkToolkit>
   );
-});
-
-type EntityIconProps = (ImageProps | SpriteIconProps) & Pick<IconProps, 'color' | 'borderRadius' | 'marginRight' | 'boxSize'> & {
-  shield?: IconShieldProps | false;
-  hint?: string;
-  hintPostfix?: string;
-  tooltipInteractive?: boolean;
-  size?: number; // for AddressIdenticon in address entity
-  marginRightShield?: string;
 };
 
-export type IconBaseProps = Pick<EntityBaseProps, 'isLoading' | 'noIcon' | 'variant' | 'chain'> & EntityIconProps;
+export interface IconElementProps extends HTMLChakraProps<'div'> {
+  children: React.ReactElement;
+}
+
+export type IconBaseProps =
+  Pick<EntityOptions, 'isLoading' | 'noIcon' | 'variant' | 'chain'> &
+  EntityIconExtras &
+  (ImageProps | SpriteIconProps | IconElementProps);
 
 const Icon = (props: IconBaseProps) => {
-  const { isLoading, noIcon, variant, color, borderRadius, marginRight, boxSize, shield, hint, tooltipInteractive, ...rest } = props;
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const {
+    isLoading = options.isLoading,
+    noIcon = options.noIcon,
+    variant = options.variant,
+    shield,
+    hint,
+    hintPostfix,
+    tooltipInteractive,
+    size,
+    marginRightShield,
+    chain,
+    ...element
+  } = rest;
 
   if (noIcon) {
     return null;
   }
 
-  const styles = getIconProps(props, Boolean(shield));
+  const preset = getVariantPreset(variant);
+  const { mr, marginRight, ...iconCss } = css;
+
+  const layout = {
+    marginRight: shield ? marginRightShield ?? preset.icon.marginRightShield : marginRight ?? mr ?? preset.icon.marginRight,
+    boxSize: preset.icon.boxSize,
+    borderRadius: 'base',
+    flexShrink: 0,
+    minW: 0,
+  };
 
   const iconElement = (() => {
-    const commonProps = {
-      marginRight: styles.marginRight,
-      boxSize: boxSize ?? styles.boxSize,
-      borderRadius: borderRadius ?? 'base',
-      flexShrink: 0,
-      minW: 0,
-    };
-
     if (isLoading) {
-      return <Skeleton loading { ...commonProps }/>;
+      return <Skeleton loading { ...layout } { ...iconCss }/>;
     }
 
-    if ('src' in props) {
-      return <Image { ...commonProps } { ...rest }/>;
+    if ('src' in element) {
+      return <Image { ...layout } { ...iconCss } { ...element }/>;
     }
 
-    const svgProps = rest as SpriteIconProps;
+    if ('name' in element) {
+      return <SpriteIcon display="block" color="icon.primary" { ...layout } { ...iconCss } { ...element }/>;
+    }
 
-    return (
-      <SpriteIcon
-        display="block"
-        color={ color ?? 'icon.primary' }
-        { ...commonProps }
-        { ...svgProps }
-      />
-    );
+    return element.children;
   })();
 
   const content = (
@@ -175,12 +171,13 @@ const Icon = (props: IconBaseProps) => {
 type IconShieldProps = (ImageProps | SpriteIconProps) & { isLoading?: boolean; variant?: Variant };
 
 const IconShield = (props: IconShieldProps) => {
-  const { variant, ...rest } = props;
+  const options = useEntityOptions();
+  const { variant = options.variant, ...rest } = props;
+  const preset = getVariantPreset(variant);
 
   const styles = {
     position: 'absolute',
-    top: variant === 'heading' ? '14px' : '6px',
-    left: variant === 'heading' ? '18px' : '12px',
+    ...preset.shield,
     boxSize: '18px',
     borderRadius: 'full',
     borderWidth: '1px',
@@ -201,31 +198,36 @@ const IconShield = (props: IconShieldProps) => {
   return <SpriteIcon { ...styles } { ...svgProps }/>;
 };
 
-export interface ContentBaseProps extends Pick<
-  EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength' | 'noTooltip' | 'variant' | 'truncationMaxSymbols' | 'noLink'
-> {
+export interface ContentBaseProps extends
+  JsxStyleProps,
+  Pick<EntityOptions, 'isLoading' | 'truncation' | 'noTooltip' | 'variant' | 'noLink'> {
+  className?: string;
   asProp?: React.ElementType;
   text: string;
   tooltipInteractive?: boolean;
   tooltipContentAfter?: React.ReactNode;
 }
 
-const Content = chakra(({
-  className,
-  isLoading,
-  asProp,
-  text,
-  truncation = 'dynamic',
-  truncationMaxSymbols,
-  tailLength,
-  variant,
-  noTooltip,
-  tooltipInteractive,
-  tooltipContentAfter,
-  noLink,
-}: ContentBaseProps) => {
-  const CONSTANT_LONG_MAX_SYMBOLS = 16;
-  const styles = getContentProps(variant);
+const CONSTANT_LONG_MAX_SYMBOLS = 16;
+
+const Content = (props: ContentBaseProps) => {
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const {
+    className,
+    isLoading = options.isLoading,
+    asProp,
+    text,
+    truncation = options.truncation ?? 'dynamic',
+    variant = options.variant,
+    noTooltip = options.noTooltip,
+    tooltipInteractive,
+    tooltipContentAfter,
+    noLink = options.noLink,
+  } = rest;
+
+  const styles = { ...getVariantPreset(variant).content, ...css };
+  const { type: truncationType, tailLength, maxSymbols } = toTruncationSpec(truncation);
 
   const tooltip = React.useMemo((): false | TruncateTooltipConfig => {
     if (noTooltip) {
@@ -242,7 +244,7 @@ const Content = chakra(({
     return { content, interactive: tooltipInteractive, always: Boolean(tooltipContentAfter) };
   }, [ noTooltip, tooltipContentAfter, text, tooltipInteractive ]);
 
-  if (truncation === 'tail') {
+  if (truncationType === 'tail') {
     return (
       <Truncate
         value={ text }
@@ -256,14 +258,14 @@ const Content = chakra(({
   }
 
   const children = (() => {
-    switch (truncation) {
+    switch (truncationType) {
       case 'constant_long':
         return (
           <Truncate
             value={ text }
             as={ asProp }
             type="middle-static"
-            maxSymbols={ truncationMaxSymbols ?? CONSTANT_LONG_MAX_SYMBOLS }
+            maxSymbols={ CONSTANT_LONG_MAX_SYMBOLS }
             tooltip={ tooltip }
           />
         );
@@ -273,7 +275,7 @@ const Content = chakra(({
             value={ text }
             as={ asProp }
             type="middle-static"
-            maxSymbols={ truncationMaxSymbols }
+            maxSymbols={ maxSymbols }
             tooltip={ tooltip }
           />
         );
@@ -304,19 +306,41 @@ const Content = chakra(({
       { children }
     </Skeleton>
   );
-});
+};
 
-export type CopyBaseProps =
-  Pick<CopyToClipboardProps, 'isLoading' | 'text' | 'tooltipInteractive'> &
-  Pick<EntityBaseProps, 'noCopy' | 'noTooltip'>
-;
+export interface CopyBaseProps extends
+  JsxStyleProps,
+  Pick<CopyToClipboardProps, 'text' | 'tooltipInteractive'>,
+  Pick<EntityOptions, 'isLoading' | 'noCopy' | 'noTooltip'> {
+  className?: string;
+}
 
-const Copy = ({ noCopy, ...props }: CopyBaseProps) => {
+const Copy = (props: CopyBaseProps) => {
+  const options = useEntityOptions();
+  const [ css, rest ] = useSplitCssProps(props);
+  const {
+    text,
+    className,
+    tooltipInteractive,
+    isLoading = options.isLoading,
+    noCopy = options.noCopy,
+    noTooltip = options.noTooltip,
+  } = rest;
+
   if (noCopy) {
     return null;
   }
 
-  return <CopyToClipboard { ...props }/>;
+  return (
+    <CopyToClipboard
+      text={ text }
+      className={ className }
+      isLoading={ isLoading }
+      noTooltip={ noTooltip }
+      tooltipInteractive={ tooltipInteractive }
+      { ...css }
+    />
+  );
 };
 
 export {

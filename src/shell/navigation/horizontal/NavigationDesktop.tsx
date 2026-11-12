@@ -16,7 +16,8 @@ import RollupStageBadge from 'src/features/rollup/common/components/RollupStageB
 import config from 'src/config';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
-import useNavItems, { isGroupItem } from '../useNavItems';
+import useNavItems from '../useNavItems';
+import { isGroupItem } from '../utils';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

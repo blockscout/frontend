@@ -108,7 +108,7 @@ Don't mock:
 
 ## File naming and location
 
-Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test.
+Test files must be named `*.spec.ts` or `*.spec.tsx` and placed alongside the code they test. A spec that needs its own module registry is named `*.isolated.spec.ts(x)` — see "Isolation" below.
 
 ```bash
 pnpm test:vitest                         # entire suite
@@ -119,11 +119,66 @@ pnpm test:vitest --changed origin/main   # tests related to this branch vs origi
 
 `--changed` uses git, then the Vitest module graph, so editing a source file still runs the spec that imports it. Untracked files are invisible until `git add`. If nothing matches, the command fails unless you add `--passWithNoTests` (CI does this on PRs). Fetch `origin/main` first if that ref is missing locally.
 
+## Isolation
+
+The suite runs as two Vitest projects, and the **file name** decides which one a spec belongs to:
+
+| Project | Files | Module registry |
+| --- | --- | --- |
+| `shared` | `*.spec.ts(x)` — the default | one per worker, shared by every spec file that worker runs |
+| `isolated` | `*.isolated.spec.ts(x)`, `*.primed.spec.tsx` | a fresh one per spec file |
+
+Evaluating the app's module graph once per spec file is the largest single cost of a run, so a spec is `shared` unless it needs a registry of its own. It does when it:
+
+- mocks a module — `vi.mock`, `vi.doMock`, `vi.unmock`, or the `mockSocket` helper;
+- resets the module registry itself — `vi.resetModules`, `checkPrimedRequests`;
+- asserts on module-level state that must start fresh (a singleton, a registry, a lazy-load cache), unless every test imports a fresh copy inside `withEnvs`.
+
+ESLint fails the first two in a spec that is not named `*.isolated.spec.ts(x)`; the third is on you.
+
+What breaks in a shared worker, and what does not:
+
+- **A module mock** is silently not applied whenever an earlier spec in the same worker already imported the module, and it can reach a later spec that imports the module for real. Either way the failure shows up in some file orders only.
+- **A hand-set `process.env`** is ignored once an earlier spec in the worker has evaluated the app config, and then leaks into every spec after it. No spec sets one, and ESLint fails it in a shared spec: override envs with `withEnvs` (below).
+- **`withEnvs` is safe.** It resets the registry before and after its callback and restores the envs it set, so it leaves nothing behind. A spec that uses it is a plain `*.spec.ts(x)`.
+
+A third-party SDK needs no module mock to be observed. Spy on a method of its real export in `beforeEach`, with an implementation that does nothing (`src/services/mixpanel/provider.spec.ts`, `src/shared/pagination/usePaginationActions.spec.ts`). Node, not Vitest, loads the package, so `withEnvs` does not re-evaluate it and the spy also reaches code imported inside the callback. Observe the app's analytics event logger the same way, at the SDK it calls (`TokenActionButton.spec.tsx`).
+
+A shared spec leaves nothing behind for the next file. Spies, `vi.stubGlobal` / `vi.stubEnv`, fake timers and `fetchMock` responses are undone after every test by `vitest/setup.ts`, and spies and stubs again before every test by the config, so set them up in `beforeEach` or in the test — one installed in `beforeAll` or at the top of the file is gone before the first test starts and reaches none of them. Anything else a test changes on `window`, `document` or `globalThis` it restores itself.
+
+Before pushing a change to shared specs or to the test setup, run the suite in random file order: `pnpm test:vitest --sequence.shuffle.files` (CI always does). To replay a failing order, pass the printed seed: `--sequence.seed <seed>`.
+
+```bash
+pnpm test:vitest --project shared        # one project only
+```
+
+### What stays isolated, and why
+
+Every spec in the `isolated` project fits a row here. A new isolated spec fits a row or adds one, with its reason.
+
+| Boundary or category | Specs | Reason |
+| --- | --- | --- |
+| Wallet stack: `wagmi`, `viem`, Reown AppKit, and the wallet feature's own modules mocked beside them | the isolated specs under `src/features/connect-wallet/`, and `useRevoke.isolated.spec.ts` | Real collaborators mean a real wallet runtime in jsdom |
+| `rollbar` | `queue.isolated.spec.ts` | The SDK is a constructor the code under test instantiates. The spec resets the registry around the module-level queue it feeds |
+| `next/script` | `AdbutlerBanner.isolated.spec.tsx` | It is a component rendered as JSX, so there is no method call to spy on. Replacing it needs a source change |
+| Specify publisher SDK | `SpecifyBanner.isolated.spec.tsx` | The SDK is a class instantiated inside the feature's client factory. Observing it means replacing the constructor |
+| `phoenix`, through `mockSocket` | `AddressTokenTransfers.isolated.spec.tsx` | The transport is replaced as a module by design |
+| `next/router`, `next/navigation` | `NextRouterProvider.isolated.spec.tsx` | The router adapter's own spec. The adapter is what wraps those modules |
+| Module singleton | `metrics.isolated.spec.ts` | A second, fresh instance of the module is the behaviour under test |
+| Primed-requests drift specs | every `*.primed.spec.tsx` | The harness resets the registry and mocks the socket transport |
+
+Two of these specs also mock something a shared spec drives for real. Rewriting that mock would not move them, because their row keeps them isolated:
+
+- `src/services/rollbar/queue.isolated.spec.ts` mocks the app config and the Rollbar client config. A shared spec would set the token with `withEnvs`.
+- `src/features/connect-wallet/hooks/wallet/useWalletReown.isolated.spec.ts` mocks the analytics event logger. A shared spec would spy on the SDK the logger calls.
+
 ## Setup
 
 `vitest/setup.ts` runs before each test file and provides:
 - **Environment variables** — loaded from `.env.vitest` via dotenv; accessible as `window.__envs` in test code.
 - **Fetch mocking** — `vitest-fetch-mock` is initialized globally; all `fetch` calls are interceptable.
+- **Cleanup** — after every test, real timers are restored, `fetchMock` is reset, and spies, `vi.stubGlobal` and `vi.stubEnv` are undone.
+- **Viewport** — jsdom has no `matchMedia`, so a stub answers `min-width` / `max-width` queries against a simulated viewport width. The default is the `lg` breakpoint: components render their **desktop** variant (`useIsMobile()` is `false`) unless a test asks otherwise — see `mockViewport` below.
 
 `vitest/global-setup.ts` runs once before the entire test suite and loads `.env.vitest`.
 
@@ -135,7 +190,7 @@ pnpm test:vitest --changed origin/main   # tests related to this branch vs origi
 import { render, screen } from 'vitest/lib';
 ```
 
-`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack (mirroring `playwright/TestApp.tsx`): Chakra, `QueryClientProvider` (no retry, no window-focus refetch), Socket (inert by default — see below), `AppContextProvider`, Marketplace, Settings, GrowthBook, Wagmi (mock connector), Rewards, and CsvExport — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.spec.tsx`) is the one exception, since the adapter is what wraps that module.
+`vitest/lib.tsx` re-exports everything from `@testing-library/react` and replaces `render` with a custom version that wraps the component in the full app provider stack — heavy enough to mount whole page slices in jsdom. The stack also mounts the toolkit router provider with a frozen home-page router; `TestApp`'s `router` prop (a `Partial<Router>` of the toolkit router type) overrides it field by field, so a spec never mocks the framework router module — the adapter's own spec (`src/shared/router/NextRouterProvider.isolated.spec.tsx`) is the one exception, since the adapter is what wraps that module.
 
 The `wrapper` export is also available if you need to pass it separately to RTL hooks:
 
@@ -158,6 +213,20 @@ await flushPromises();
 expect(screen.getByText('Loaded')).toBeInTheDocument();
 ```
 
+**`vitest/utils/mockViewport.ts`** — switches a test to another breakpoint. Call it **before** rendering. The default `lg` is restored after every test. Use `base` for the mobile layout:
+
+```tsx
+import { mockViewport } from 'vitest/utils/mockViewport';
+
+it('renders no tabs bar on mobile', () => {
+  mockViewport('base');
+  render(<Blocks/>);
+  // …
+});
+```
+
+Never replace `window.matchMedia` by hand to change the breakpoint. A spec that needs a non-width query (`prefers-color-scheme`, say) still installs its own stub — the shared one matches width queries only. Install it with `vi.stubGlobal('matchMedia', …)`: a stub assigned by hand outlives its spec file and answers the width queries of every later spec in the worker.
+
 **`vitest/utils/mockSocket.ts`** — a fake Phoenix transport whose channels join immediately, for components that keep a query disabled until `useSocketChannel` reports a join, or that react to live socket messages. Only the `phoenix` `Socket` is replaced; `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real:
 
 ```tsx
@@ -169,9 +238,9 @@ render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
 await flushPromises();
 ```
 
-It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
+It uses `vi.doMock`, so it only affects modules imported **after** the call — pair it with `vi.resetModules()` and dynamic imports, in an `*.isolated.spec` file. Pass `socketUrl` explicitly too: without a url the provider creates no socket at all.
 
-A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.spec.tsx`):
+A spec that imports the component statically installs it with a top-level `vi.mock` instead, and delivers server events with `sendSocketMessage`, which throws if nothing subscribes to that topic and event (see `AddressTokenTransfers.isolated.spec.tsx`):
 
 ```tsx
 vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
@@ -188,7 +257,7 @@ act(() => sendSocketMessage('addresses:0x…', 'token_transfer', { token_transfe
 fetchMock.mockResponseOnce(JSON.stringify({ data: 'value' }));
 ```
 
-Reset mocks between tests using `beforeEach` / `afterEach` if needed.
+Responses are reset after every test, so queue them in the test or in `beforeEach`.
 
 ## Overriding environment variables
 

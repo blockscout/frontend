@@ -72,6 +72,15 @@ describe('accountSchema', () => {
     ]);
   });
 
+  it('rejects the expedited review HTML with a frame or an inline style', () => {
+    expect(getValidationErrors(accountSchema, {
+      ...SUPPORTED,
+      NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML: '<div style="position:fixed">Pay <iframe srcdoc="<script></script>"></iframe></div>',
+    })).toEqual([
+      'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML: HTML contains elements that are not allowed: style attribute on <div>, <iframe>',
+    ]);
+  });
+
   it('rejects the expedited review HTML when the account is not supported', () => {
     expect(getValidationErrors(accountSchema, { NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML: '<p>Contact us</p>' })).toEqual([
       'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML can only be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is set to \'true\'',

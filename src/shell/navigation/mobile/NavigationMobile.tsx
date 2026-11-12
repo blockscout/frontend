@@ -11,7 +11,8 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 
 import NavigationPromoBanner from '../promo-banner/NavigationPromoBanner';
-import useNavItems, { isGroupItem } from '../useNavItems';
+import useNavItems from '../useNavItems';
+import { isGroupItem } from '../utils';
 import NavLink from '../vertical/NavLink';
 import NavLinkGroup from './NavLinkGroup';
 

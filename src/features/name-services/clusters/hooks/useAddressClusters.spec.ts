@@ -1,90 +1,92 @@
 // @vitest-environment jsdom
 
-import type appConfig from 'src/config';
+import type { ClustersByAddressResponse } from 'src/features/name-services/clusters/types/api';
 
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook } from 'vitest/lib';
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { act, cleanup, renderHook, waitFor, wrapper } from 'vitest/lib';
+import flushPromises from 'vitest/utils/flushPromises';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 import { useAddressClusters } from './useAddressClusters';
 
-const { mockUseApiQuery } = vi.hoisted(() => ({
-  mockUseApiQuery: vi.fn(),
-}));
+const ADDRESS = '0x1234567890123456789012345678901234567890';
+const BY_ADDRESS_PROCEDURE = '/v1/trpc/names.getNamesByOwnerAddress';
 
-vi.mock('src/api/hooks/useApiQuery', () => ({
-  'default': mockUseApiQuery,
-}));
+// .env.vitest turns the clusters feature on; an empty host turns it off again
+const NO_CLUSTERS_ENVS: Array<[ string, string ]> = [ [ 'NEXT_PUBLIC_CLUSTERS_API_HOST', '' ] ];
 
-vi.mock('src/config', async(importOriginal) => {
-  const original = await importOriginal<{ 'default': typeof appConfig }>();
-
-  return {
-    'default': {
-      ...original.default,
-      features: {
-        ...original.default.features,
-        nameServices: {
-          isEnabled: true,
-          ens: { isEnabled: true },
-          clusters: { isEnabled: true },
-        },
+const CLUSTERS_RESPONSE: ClustersByAddressResponse = {
+  result: {
+    data: [
+      {
+        name: 'example/',
+        owner: ADDRESS,
+        totalWeiAmount: '1000000000000000000',
+        createdAt: '2024-01-01T00:00:00Z',
+        updatedAt: '2024-01-02T00:00:00Z',
+        updatedBy: ADDRESS,
+        isTestnet: false,
+        clusterId: 'cluster-1',
+        expiresAt: null,
       },
-    },
-  };
+    ],
+  },
+};
+
+function requestedAddresses(): Array<unknown> {
+  return fetchMock.mock.calls
+    .map(([ input ]) => new URL(String(input)))
+    .filter((url) => url.pathname.endsWith(BY_ADDRESS_PROCEDURE))
+    .map((url) => JSON.parse(url.searchParams.get('input') ?? 'null'));
+}
+
+beforeEach(() => {
+  fetchMock.mockResponse(JSON.stringify(CLUSTERS_RESPONSE), { headers: { 'Content-Type': 'application/json' } });
 });
 
+afterEach(cleanup);
+
 describe('useAddressClusters', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-    mockUseApiQuery.mockReturnValue({ data: null, isLoading: false });
+  it('fetches the clusters owned by the address', async() => {
+    const { result } = renderHook(() => useAddressClusters(ADDRESS), { wrapper });
+
+    await waitFor(() => expect(result.current.data).toEqual(CLUSTERS_RESPONSE));
+    expect(requestedAddresses()).toEqual([ { address: ADDRESS } ]);
   });
 
-  it('should call API with correct parameters', () => {
-    const addressHash = '0x1234567890123456789012345678901234567890';
+  it('makes no request without an address', async() => {
+    const { result } = renderHook(() => useAddressClusters(''), { wrapper });
+    await act(flushPromises);
 
-    renderHook(() => useAddressClusters(addressHash));
-
-    expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
-      queryParams: {
-        input: JSON.stringify({
-          address: addressHash,
-        }),
-      },
-      queryOptions: {
-        enabled: true,
-      },
-    });
+    expect(requestedAddresses()).toEqual([]);
+    expect(result.current.data).toBeUndefined();
   });
 
-  it('should be disabled when addressHash is empty', () => {
-    renderHook(() => useAddressClusters(''));
+  it('makes no request when the caller disables it', async() => {
+    const { result } = renderHook(() => useAddressClusters(ADDRESS, false), { wrapper });
+    await act(flushPromises);
 
-    expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
-      queryParams: {
-        input: JSON.stringify({
-          address: '',
-        }),
-      },
-      queryOptions: {
-        enabled: false,
-      },
-    });
+    expect(requestedAddresses()).toEqual([]);
+    expect(result.current.data).toBeUndefined();
   });
 
-  it('should handle isEnabled parameter', () => {
-    const addressHash = '0x1234567890123456789012345678901234567890';
+  it.each([
+    [ 'no name service at all', NO_CLUSTERS_ENVS ],
+    [ 'ENS but no clusters', [ ...ENVS_MAP.nameService, ...NO_CLUSTERS_ENVS ] ],
+  ])('makes no request on an instance with %s', async(_, envs) => {
+    await withEnvs(envs, async() => {
+      const [ lib, { useAddressClusters: useAddressClustersWithEnvs } ] = await Promise.all([
+        import('vitest/lib'),
+        import('./useAddressClusters'),
+      ]);
 
-    renderHook(() => useAddressClusters(addressHash, false));
+      const { result } = lib.renderHook(() => useAddressClustersWithEnvs(ADDRESS), { wrapper: lib.wrapper });
+      await lib.act(flushPromises);
 
-    expect(mockUseApiQuery).toHaveBeenCalledWith('clusters:get_clusters_by_address', {
-      queryParams: {
-        input: JSON.stringify({
-          address: addressHash,
-        }),
-      },
-      queryOptions: {
-        enabled: false,
-      },
+      expect(requestedAddresses()).toEqual([]);
+      expect(result.current.data).toBeUndefined();
     });
   });
 });

@@ -1,25 +1,21 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 // @vitest-environment jsdom
 
+import mixpanel from 'mixpanel-browser';
 import React from 'react';
 
 import { EventTypes } from 'src/shared/analytics';
 
-import { afterEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
-const logEventMock = vi.hoisted(() => vi.fn());
-
-vi.mock('src/shared/analytics', async(importOriginal) => ({
-  ...await importOriginal<object>(),
-  logEvent: logEventMock,
-}));
-
-afterEach(() => {
-  cleanup();
-  logEventMock.mockClear();
+beforeEach(() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
 });
+
+afterEach(cleanup);
 
 const BUTTON_TEXT = 'Buy on Example Portal';
 const CONFIGURED_URL = 'https://portal.example.com/swap';
@@ -81,17 +77,20 @@ it('substitutes every {hash} placeholder with the lowercased token hash', async(
 });
 
 it('logs an action button event with the destination url', async() => {
-  await withEnvs(envs, async() => {
+  await withEnvs([ ...envs, [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ] ], async() => {
+    const { init } = await import('src/shared/analytics/queue');
+    const { getEnabledProviders } = await import('src/shared/analytics/providers');
+    await init(getEnabledProviders().map((provider) => ({ provider, options: { debug: false } })), () => {});
     const { 'default': TokenActionButton } = await import('./TokenActionButton');
 
     render(<TokenActionButton tokenHash={ TOKEN_HASH }/>);
 
     fireEvent.click(screen.getByRole('button', { name: BUTTON_TEXT }));
 
-    expect(logEventMock).toHaveBeenCalledWith(EventTypes.PAGE_WIDGET, {
+    expect(mixpanel.track).toHaveBeenCalledWith(EventTypes.PAGE_WIDGET, {
       Type: 'Action button',
       Info: `${ CONFIGURED_URL }?utm_source=blockscout&utm_medium=token`,
       Source: 'Token',
-    });
+    }, undefined);
   });
 });

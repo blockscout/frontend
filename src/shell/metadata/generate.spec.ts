@@ -1,7 +1,8 @@
 import { hash as addressHash } from 'src/slices/address/mocks/address-param';
 import { base as transaction } from 'src/slices/tx/mocks/details';
 
-import { it, describe, expect, vi, afterEach } from 'vitest';
+import { it, describe, expect } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 import generate from './generate';
 
@@ -60,77 +61,41 @@ describe('stats details route', () => {
 });
 
 describe('og template layer', () => {
-  // No route declares OG templates yet, so the layer is exercised against a stand-in template map.
-  const TEMPLATE_MAP_MOCK = {
-    '/txs': {
-      metadata: {
-        title: { 'default': '%chain_name% transactions' },
-        description: { 'default': 'Browse %chain_name% transactions.' },
-      },
-      og: { image: 'https://example.com/og_image.png' },
-    },
-    '/tx/[hash]': {
-      metadata: {
-        title: { 'default': '%chain_name% transaction %hash%' },
-        description: { 'default': 'Detailed transaction info.' },
-      },
-      og: {
-        title: { 'default': '%chain_name% transaction %hash_short%' },
-        description: { 'default': 'Success · Swap · Jul 28, 2026 10:00 UTC' },
-      },
-    },
-    '/address/[hash]': {
-      metadata: {
-        title: { 'default': '%chain_name% address %hash%' },
-        description: { 'default': 'Address details.' },
-      },
-      og: {
-        description: {
-          'default': 'Address details on %chain_name%.',
-          enhanced: '%domain_name% on %chain_name%.',
-        },
-      },
-    },
-  };
+  it('falls back to the page title and description when the route declares no og templates', () => {
+    const result = generate({ pathname: '/txs/kettle/[hash]', query: { hash: transaction.hash } });
 
-  async function importGenerateWithMockedTemplates() {
-    vi.resetModules();
-    vi.doMock('./templates', () => ({ TEMPLATE_MAP: TEMPLATE_MAP_MOCK }));
-    return (await import('./generate')).default;
-  }
-
-  afterEach(() => {
-    vi.doUnmock('./templates');
-    vi.resetModules();
+    expect(result.opengraph).toEqual({ title: result.title, description: result.description, imageUrl: undefined });
   });
 
-  it('falls back to the page title and description when the route declares no og templates', async() => {
-    const generateMocked = await importGenerateWithMockedTemplates();
-    const result = generateMocked({ pathname: '/txs' });
+  it('takes the og description and image the route declares, and falls back to the page title', async() => {
+    const result = await withEnvs([ [ 'NEXT_PUBLIC_OG_DESCRIPTION', 'The duck chain explorer.' ] ], async() => {
+      const { 'default': generateWithEnvs } = await import('./generate');
+      return generateWithEnvs({ pathname: '/txs' });
+    });
 
-    expect(result.opengraph.title).toBe(result.title);
-    expect(result.opengraph.description).toBe(result.description);
-    expect(result.opengraph.imageUrl).toBe('https://example.com/og_image.png');
+    expect(result.opengraph).toEqual({
+      title: 'Blockscout transactions - Blockscout explorer | Blockscout',
+      description: 'The duck chain explorer.',
+      imageUrl: 'http://localhost:3000/static/og_image.png',
+    });
+    expect(result.description).toBe('Browse Blockscout transactions. Track transaction status, fees, and details in real time.');
   });
 
-  it('compiles the og title with the title postfix and the og description independently', async() => {
-    const generateMocked = await importGenerateWithMockedTemplates();
-    const result = generateMocked({ pathname: '/tx/[hash]', query: { hash: transaction.hash } });
+  it('picks the enhanced og description only when all its params are present', () => {
+    const complete = generate({ pathname: '/tx/[hash]', query: { hash: transaction.hash } }, {
+      tx_status: 'Success',
+      tx_action: 'Swap',
+      tx_timestamp: 'Jul 28, 2026 10:00 UTC',
+    });
+    expect(complete.opengraph.description).toBe('Success · Swap · Jul 28, 2026 10:00 UTC');
 
-    expect(result.opengraph.title).toBe('Blockscout transaction 0x62...3193 | Blockscout');
-    expect(result.opengraph.description).toBe('Success · Swap · Jul 28, 2026 10:00 UTC');
-    expect(result.opengraph.imageUrl).toBeUndefined();
-    expect(result.title).toBe(`Blockscout transaction ${ transaction.hash } | Blockscout`);
-    expect(result.description).toBe('Detailed transaction info.');
-  });
-
-  it('picks the enhanced og description only when all its params are present', async() => {
-    const generateMocked = await importGenerateWithMockedTemplates();
-
-    const withData = generateMocked({ pathname: '/address/[hash]', query: { hash: addressHash } }, { domain_name: 'duck.eth' });
-    expect(withData.opengraph.description).toBe('duck.eth on Blockscout.');
-
-    const withoutData = generateMocked({ pathname: '/address/[hash]', query: { hash: addressHash } });
-    expect(withoutData.opengraph.description).toBe('Address details on Blockscout.');
+    const partial = generate({ pathname: '/tx/[hash]', query: { hash: transaction.hash } }, {
+      tx_status: 'Success',
+      tx_action: '',
+      tx_timestamp: 'Jul 28, 2026 10:00 UTC',
+    });
+    expect(partial.opengraph.description).toBe(
+      'Blockscout detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+    );
   });
 });

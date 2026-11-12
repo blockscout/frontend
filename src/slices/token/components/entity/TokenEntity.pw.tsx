@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import type { Page } from '@playwright/test';
 import React from 'react';
 
 import TokenEntity, { Icon } from 'src/slices/token/components/entity/TokenEntity';
@@ -6,6 +7,7 @@ import * as tokenMock from 'src/slices/token/mocks/info';
 
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
 
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { stableHover } from 'playwright/helpers/stableHover';
 import { test, expect } from 'playwright/lib';
 
@@ -13,9 +15,13 @@ const variants = [ 'subheading', 'content' ] as const;
 
 test.use({ viewport: { width: 300, height: 100 } });
 
+// The token mock points its logo at the app origin; the placeholder is the expected rendering.
+const mockMissingTokenLogo = (page: Page) => page.route(tokenMock.tokenInfo.icon_url as string, (route) => route.fulfill({ status: 404 }));
+
 test.describe('variant', () => {
   variants.forEach((variant) => {
-    test(`${ variant }`, async({ render }) => {
+    test(`${ variant }`, async({ render, page }) => {
+      await mockMissingTokenLogo(page);
       const component = await render(
         <TokenEntity
           token={ tokenMock.tokenInfo }
@@ -26,9 +32,11 @@ test.describe('variant', () => {
       await expect(component).toHaveScreenshot();
     });
 
-    test(`${ variant } with chain data`, async({ render, mockAssetResponse }) => {
+    test(`${ variant } with chain data`, async({ render, mockAssetResponse, mockEnvs, mockMultichainConfig }) => {
       const LOGO_URL = 'https://example.com/logo.png';
       const chainLogoUrl = chainDataMock.chainA.logo;
+      await mockEnvs(ENVS_MAP.multichain);
+      await mockMultichainConfig();
       await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
       await mockAssetResponse(chainLogoUrl as string, './playwright/mocks/image_svg.svg');
 
@@ -135,7 +143,8 @@ test('loading', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('customization', async({ render }) => {
+test('customization', async({ render, page }) => {
+  await mockMissingTokenLogo(page);
   const component = await render(
     <Box
       borderWidth="1px"

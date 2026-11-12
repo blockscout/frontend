@@ -1,28 +1,25 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, HStack } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
-
-import type { PaginationParams } from 'src/shared/pagination/types';
 
 import AddressTokenBalances from 'src/slices/token/pages/address/AddressTokenBalances';
 import AddressFungibleTokens from 'src/slices/token/pages/address/fungible/AddressFungibleTokens';
-import AddressFungibleTokensFilter from 'src/slices/token/pages/address/fungible/AddressFungibleTokensFilter';
-import AddressNftDisplayTypeRadio from 'src/slices/token/pages/address/nfts/AddressNftDisplayTypeRadio';
 import AddressNfts from 'src/slices/token/pages/address/nfts/AddressNfts';
 import AddressNftsCollections from 'src/slices/token/pages/address/nfts/AddressNftsCollections';
-import AddressNftTypeFilter from 'src/slices/token/pages/address/nfts/AddressNftTypeFilter';
 import useAddressFungibleTokensQuery from 'src/slices/token/pages/address/useAddressFungibleTokensQuery';
 import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuery';
 import { FUNGIBLE_TOKEN_TYPES } from 'src/slices/token/pages/address/utils';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
-import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
+
+import { getAddressTokensPagination, getAddressTokensRightSlotProps, isNftTab, NFT_TAB_ID } from './address-tokens-layout';
+import AddressTokensRightSlot from './AddressTokensRightSlot';
 
 const TAB_LIST_PROPS = {
   mb: 0,
@@ -37,7 +34,7 @@ interface Props {
 
 const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
+  const isMobile = Boolean(useIsMobile());
   const isMounted = useIsMounted();
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -48,12 +45,12 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   const { query: fungibleTokensQuery, tokenTypes: fungibleTokenTypes, onTokenTypesChange: handleFungibleTokenTypesChange } = useAddressFungibleTokensQuery({
     addressHash: hash,
     scrollRef,
-    enabled: isQueryEnabled && (tab === 'tokens' || tab === 'tokens_erc20'),
+    enabled: isQueryEnabled && !isNftTab(tab),
   });
 
   const { nftsQuery, collectionsQuery, displayType: nftDisplayType, tokenTypes: nftTokenTypes, onDisplayTypeChange, onTokenTypesChange } = useAddressNftQuery({
     scrollRef,
-    enabled: isQueryEnabled && tab === 'tokens_nfts',
+    enabled: isQueryEnabled && tab === NFT_TAB_ID,
     addressHash: hash,
   });
 
@@ -81,7 +78,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       ),
     },
     {
-      id: 'tokens_nfts',
+      id: NFT_TAB_ID,
       title: 'NFTs',
       component: nftDisplayType === 'list' ?
         <AddressNfts tokensQuery={ nftsQuery } tokenTypes={ nftTokenTypes } onTokenTypesChange={ onTokenTypesChange }/> :
@@ -89,32 +86,34 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
     },
   ];
 
-  let pagination: PaginationParams | undefined;
-
-  if (tab === 'tokens_nfts') {
-    pagination = nftDisplayType === 'list' ? nftsQuery.pagination : collectionsQuery.pagination;
-  } else {
-    pagination = fungibleTokensQuery.pagination;
-  }
+  const pagination = getAddressTokensPagination({
+    tab,
+    nftDisplayType,
+    fungiblePagination: fungibleTokensQuery.pagination,
+    nftsPagination: nftsQuery.pagination,
+    collectionsPagination: collectionsQuery.pagination,
+  });
 
   const hasNftData =
     Boolean(!nftsQuery.isInitialLoading && nftsQuery.data?.items.length) ||
     Boolean(!collectionsQuery.isInitialLoading && collectionsQuery.data?.items.length);
 
-  const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
-  const hasFungibleTokenFilter = !isNftTab && (!isMobile || !pagination.isVisible) && FUNGIBLE_TOKEN_TYPES.length > 1;
+  const hasFungibleTokenFilter = !isNftTab(tab) && (!isMobile || !pagination.isVisible) && FUNGIBLE_TOKEN_TYPES.length > 1;
 
   const rightSlot = (
-    <>
-      <HStack gap={ 3 }>
-        { isNftTab && (hasNftData || hasActiveFilters) &&
-          <AddressNftDisplayTypeRadio value={ nftDisplayType } onChange={ onDisplayTypeChange }/> }
-        { isNftTab && (hasNftData || hasActiveFilters) && !(isMobile && pagination.isVisible) &&
-          <AddressNftTypeFilter value={ nftTokenTypes } onChange={ onTokenTypesChange }/> }
-        { hasFungibleTokenFilter && <AddressFungibleTokensFilter value={ fungibleTokenTypes } onChange={ handleFungibleTokenTypesChange }/> }
-      </HStack>
-      { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
-    </>
+    <AddressTokensRightSlot
+      isNftTab={ isNftTab(tab) }
+      isMobile={ isMobile }
+      pagination={ pagination }
+      hasNftControls={ hasNftData || hasActiveFilters }
+      nftDisplayType={ nftDisplayType }
+      onNftDisplayTypeChange={ onDisplayTypeChange }
+      nftTokenTypes={ nftTokenTypes }
+      onNftTokenTypesChange={ onTokenTypesChange }
+      hasFungibleTokenFilter={ hasFungibleTokenFilter }
+      fungibleTokenTypes={ fungibleTokenTypes }
+      onFungibleTokenTypesChange={ handleFungibleTokenTypesChange }
+    />
   );
 
   return (
@@ -128,16 +127,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         size="sm"
         listProps={ TAB_LIST_PROPS }
         rightSlot={ rightSlot }
-        rightSlotProps={
-          ((tab === 'tokens_nfts' && !isMobile) || hasFungibleTokenFilter) ?
-            {
-              display: 'flex',
-              justifyContent: 'space-between',
-              ml: hasFungibleTokenFilter && isMobile ? 'auto' : 8,
-              widthAllocation: hasFungibleTokenFilter && isMobile ? 'fixed' : 'available',
-            } :
-            {}
-        }
+        rightSlotProps={ getAddressTokensRightSlotProps({ tab, isMobile, hasFungibleTokenFilter }) }
         stickyEnabled
       />
     </>

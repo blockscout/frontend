@@ -65,7 +65,7 @@ const EpochPageContent = () => {
     }
 
     const isTruncated = isMobile && Boolean(epochQuery.data.end_block_number);
-    const truncationProps = isTruncated ? { truncation: 'constant' as const, truncationMaxSymbols: 6 } : undefined;
+    const truncationProps = isTruncated ? { truncation: { type: 'constant' as const, maxSymbols: 6 } } : undefined;
 
     return (
       <HStack textStyle={{ base: 'heading.sm', lg: 'heading.md' }} flexWrap="wrap">

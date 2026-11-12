@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NovesResponseData, NovesSentReceived } from 'src/features/tx-interpretation/noves/types/api';
+import type { NovesRawTransactionData, NovesResponseData, NovesSentReceived } from 'src/features/tx-interpretation/noves/types/api';
 
 import type { NovesFlowViewItem } from 'src/features/tx-interpretation/noves/utils/generateFlowViewData';
 
@@ -10,53 +10,60 @@ export interface FromToData {
   name?: string | null;
 }
 
-export const getFromTo = (txData: NovesResponseData, currentAddress: string): FromToData => {
-  const raw = txData.rawTransactionData;
-  const sent = txData.classificationData.sent;
-  let sentFound: Array<NovesSentReceived> = [];
-  if (sent && sent[0]) {
-    sentFound = sent
-      .filter((sent) => sent.from.address.toLocaleLowerCase() === currentAddress)
-      .filter((sent) => sent.to.address);
+const findSentByAddress = (sent: Array<NovesSentReceived> | undefined, currentAddress: string): Array<NovesSentReceived> => {
+  if (!sent?.[0]) {
+    return [];
   }
 
-  const received = txData.classificationData.received;
-  let receivedFound: Array<NovesSentReceived> = [];
-  if (received && received[0]) {
-    receivedFound = received
-      .filter((received) => received.to.address?.toLocaleLowerCase() === currentAddress)
-      .filter((received) => received.from.address);
+  return sent
+    .filter((sent) => sent.from.address.toLocaleLowerCase() === currentAddress)
+    .filter((sent) => sent.to.address);
+};
+
+const findReceivedByAddress = (received: Array<NovesSentReceived> | undefined, currentAddress: string): Array<NovesSentReceived> => {
+  if (!received?.[0]) {
+    return [];
   }
 
-  if (sentFound[0] && receivedFound[0]) {
-    if (sentFound.length === receivedFound.length) {
-      if (raw.toAddress.toLocaleLowerCase() === currentAddress) {
-        return { text: 'Received from', address: raw.fromAddress };
-      }
+  return received
+    .filter((received) => received.to.address?.toLocaleLowerCase() === currentAddress)
+    .filter((received) => received.from.address);
+};
 
-      if (raw.fromAddress.toLocaleLowerCase() === currentAddress) {
-        return { text: 'Sent to', address: raw.toAddress };
-      }
-    }
-    if (sentFound.length > receivedFound.length) {
-      // already filtered if null
+// already filtered if null
+const sentTo = (sent: NovesSentReceived): FromToData => ({ text: 'Sent to', address: sent.to.address! });
 
-      return { text: 'Sent to', address: sentFound[0].to.address! } ;
-    } else {
-      return { text: 'Received from', address: receivedFound[0].from.address } ;
-    }
+const receivedFrom = (received: NovesSentReceived): FromToData => ({ text: 'Received from', address: received.from.address });
+
+const getFromToByRawParticipant = (raw: NovesRawTransactionData, currentAddress: string): FromToData | undefined => {
+  if (raw.toAddress.toLocaleLowerCase() === currentAddress) {
+    return { text: 'Received from', address: raw.fromAddress };
   }
 
-  if (sent && sentFound[0]) {
-    // already filtered if null
+  if (raw.fromAddress.toLocaleLowerCase() === currentAddress) {
+    return { text: 'Sent to', address: raw.toAddress };
+  }
+};
 
-    return { text: 'Sent to', address: sentFound[0].to.address! } ;
+const getFromToByTransfers = (
+  sentFound: Array<NovesSentReceived>,
+  receivedFound: Array<NovesSentReceived>,
+  raw: NovesRawTransactionData,
+  currentAddress: string,
+): FromToData | undefined => {
+  if (!sentFound[0]) {
+    return receivedFound[0] ? receivedFrom(receivedFound[0]) : undefined;
   }
 
-  if (received && receivedFound[0]) {
-    return { text: 'Received from', address: receivedFound[0].from.address };
+  const byRawParticipant = sentFound.length === receivedFound.length ? getFromToByRawParticipant(raw, currentAddress) : undefined;
+  if (byRawParticipant) {
+    return byRawParticipant;
   }
 
+  return sentFound.length > receivedFound.length ? sentTo(sentFound[0]) : receivedFrom(receivedFound[0]);
+};
+
+const getFromToByRawData = (raw: NovesRawTransactionData, currentAddress: string): FromToData => {
   if (raw.toAddress && raw.toAddress.toLocaleLowerCase() === currentAddress) {
     return { text: 'Received from', address: raw.fromAddress };
   }
@@ -74,6 +81,14 @@ export const getFromTo = (txData: NovesResponseData, currentAddress: string): Fr
   }
 
   return { text: 'Sent to', address: currentAddress };
+};
+
+export const getFromTo = (txData: NovesResponseData, currentAddress: string): FromToData => {
+  const raw = txData.rawTransactionData;
+  const sentFound = findSentByAddress(txData.classificationData.sent, currentAddress);
+  const receivedFound = findReceivedByAddress(txData.classificationData.received, currentAddress);
+
+  return getFromToByTransfers(sentFound, receivedFound, raw, currentAddress) ?? getFromToByRawData(raw, currentAddress);
 };
 
 export const getFromToValue = (txData: NovesResponseData, currentAddress: string) => {

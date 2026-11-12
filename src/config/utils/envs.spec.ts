@@ -2,7 +2,37 @@
 
 import { describe, expect, it } from 'vitest';
 
-import { buildExternalAssetFilePath } from './envs';
+import { buildExternalAssetFilePath, parseEnvHtmlList } from './envs';
+
+describe('parseEnvHtmlList', () => {
+  it('returns no items for an unset or empty value', () => {
+    expect(parseEnvHtmlList(undefined)).toEqual([]);
+    expect(parseEnvHtmlList('')).toEqual([]);
+  });
+
+  it('treats a plain string as one item, quotes as set', () => {
+    expect(parseEnvHtmlList(`Don't <a href='https://example.com'>miss</a>`)).toEqual([ `Don't <a href='https://example.com'>miss</a>` ]);
+  });
+
+  it('parses a double-quoted list as set, keeping apostrophes and single-quoted attributes', () => {
+    expect(parseEnvHtmlList(`["It's down", "<a href='https://example.com'>Link</a>"]`)).toEqual([
+      `It's down`,
+      `<a href='https://example.com'>Link</a>`,
+    ]);
+  });
+
+  it('parses a single-quoted list through the quote rewrite', () => {
+    expect(parseEnvHtmlList(`['Hello', '<b>World</b>']`)).toEqual([ 'Hello', '<b>World</b>' ]);
+  });
+
+  it('keeps only the string items of a list', () => {
+    expect(parseEnvHtmlList('["Hello", 1, null]')).toEqual([ 'Hello' ]);
+  });
+
+  it('treats JSON that is not a list as one item', () => {
+    expect(parseEnvHtmlList('"Hello"')).toEqual([ '"Hello"' ]);
+  });
+});
 
 describe('buildExternalAssetFilePath', () => {
   it('derives the file name from the env name and the extension from the URL path', () => {

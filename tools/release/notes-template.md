@@ -7,17 +7,20 @@ the notes when any of its placeholders comes out empty. Placeholders: {{tag}}, {
 ## 🚀 New Features
 {{prs:New Features}}
 
+## 💎 Enhancements
+{{prs:Enhancements}}
+
 ## 🐛 Bug Fixes
 {{prs:Bug Fixes}}
+
+## 🎨 Design Updates
+{{prs:Design Updates}}
 
 ## ⚡ Performance Improvements
 {{prs:Performance Improvements}}
 
 ## 📦 Dependencies Updates
 {{prs:Dependencies Updates}}
-
-## 🎨 Design Updates
-{{prs:Design Updates}}
 
 ## 🛠️ DX & Tooling
 {{prs:DX & Tooling}}

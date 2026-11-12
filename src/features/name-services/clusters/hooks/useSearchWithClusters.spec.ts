@@ -1,641 +1,286 @@
 // @vitest-environment jsdom
 
-import type { UseQueryResult } from '@tanstack/react-query';
-import { useQuery } from '@tanstack/react-query';
+import type { ClusterByNameResponse, SearchResultCluster } from 'src/features/name-services/clusters/types/api';
+import type { QuickSearchResult } from 'src/slices/search/types/api';
 
-import useApiFetch from 'src/api/hooks/useApiFetch';
+import { address1, noRedirect } from 'src/slices/search/mocks';
 
-import useQuickSearchQuery from 'src/slices/search/hooks/useQuickSearchQuery';
+import { SECOND } from 'src/toolkit/utils/consts';
 
-import type appConfig from 'src/config';
-
-import type { Mock } from 'vitest';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook } from 'vitest/lib';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { act, cleanup, renderHook, waitFor, wrapper } from 'vitest/lib';
 
 import useSearchWithClusters from './useSearchWithClusters';
 
-vi.mock('@tanstack/react-query', () => ({
-  useQuery: vi.fn(),
-}));
+const SEARCH_DEBOUNCE = 0.3 * SECOND;
+const OWNER = '0x1234567890123456789012345678901234567890';
 
-const mockUseQuery = useQuery as Mock<typeof useQuery>;
+const QUICK_SEARCH_PATH = '/api/v2/search/quick';
+const CHECK_REDIRECT_PATH = '/api/v2/search/check-redirect';
+const CLUSTER_BY_NAME_PATH = '/v1/trpc/names.get';
 
-type MockQuickSearchQuery = ReturnType<typeof useQuickSearchQuery>;
-type MockApiQuery = ReturnType<typeof useApiFetch>;
+type Reply = { readonly status: number; readonly body: unknown } | 'pending';
+type Replies = Readonly<Record<string, (url: URL) => Reply>>;
 
-vi.mock('src/api/hooks/useApiFetch', () => ({
-  'default': vi.fn(),
-}));
-const mockUseApiFetch = useApiFetch as Mock<typeof useApiFetch>;
-vi.mock('src/slices/search/hooks/useQuickSearchQuery');
-vi.mock('src/shared/hooks/useDebounce', () => ({
-  'default': (value: unknown) => value,
-}));
+const QUICK_SEARCH_RESPONSE: QuickSearchResult = [ address1 ];
 
-const mockUseQuickSearchQuery = useQuickSearchQuery as Mock<typeof useQuickSearchQuery>;
-
-const defaultUseQueryResult: Partial<UseQueryResult> = {
-  data: [],
-  isError: false,
-  isLoading: false,
-  isFetching: false,
-  error: null,
-  isPending: false,
-  isLoadingError: false,
-  isRefetchError: false,
-  isSuccess: true,
-  isStale: false,
-  status: 'success',
-  fetchStatus: 'idle',
-  refetch: vi.fn(),
-  failureCount: 0,
-  failureReason: null,
-  errorUpdateCount: 0,
-  isFetched: true,
-  isFetchedAfterMount: true,
-  isPlaceholderData: false,
-  isRefetching: false,
-  isInitialLoading: false,
-  dataUpdatedAt: Date.now(),
-  errorUpdatedAt: 0,
-  isPaused: false,
+const CLUSTER_RESPONSE: ClusterByNameResponse = {
+  result: {
+    data: {
+      name: 'test-cluster',
+      owner: OWNER,
+      clusterId: 'cluster-123',
+      backingWei: '1000000000000000000',
+      expiresAt: '2025-01-01T00:00:00Z',
+      createdAt: '2024-01-01T00:00:00Z',
+      updatedAt: '2024-01-02T00:00:00Z',
+      updatedBy: OWNER,
+      isTestnet: false,
+    },
+  },
 };
 
-vi.mock('src/config', async(importOriginal) => {
-  const original = await importOriginal<{ 'default': typeof appConfig }>();
+const CLUSTER_RESULT: SearchResultCluster = {
+  type: 'cluster',
+  name: 'test-cluster',
+  address_hash: OWNER,
+  is_smart_contract_verified: false,
+  is_smart_contract_address: false,
+  cluster_info: {
+    cluster_id: 'cluster-123',
+    name: 'test-cluster',
+    owner: OWNER,
+    created_at: '2024-01-01T00:00:00Z',
+    expires_at: '2025-01-01T00:00:00Z',
+    total_wei_amount: '1000000000000000000',
+    is_testnet: false,
+  },
+};
 
-  return {
-    'default': {
-      ...original.default,
-      features: {
-        ...original.default.features,
-        nameServices: {
-          isEnabled: true,
-          ens: { isEnabled: true },
-          clusters: { isEnabled: true },
-        },
-      },
-    },
-  };
-});
+const DEFAULT_REPLIES: Replies = {
+  [QUICK_SEARCH_PATH]: () => ok(QUICK_SEARCH_RESPONSE),
+  [CHECK_REDIRECT_PATH]: () => ok(noRedirect),
+  [CLUSTER_BY_NAME_PATH]: () => ok(CLUSTER_RESPONSE),
+};
+
+function ok(body: unknown): Reply {
+  return { status: 200, body };
+}
+
+function serveApis(replies: Replies): void {
+  fetchMock.mockResponse((request) => {
+    const url = new URL(request.url);
+    const reply = Object.entries(replies).find(([ path ]) => url.pathname.endsWith(path))?.[1](url);
+
+    if (reply === 'pending') {
+      return new Promise(() => {});
+    }
+
+    if (!reply) {
+      return { status: 404, body: '{}' };
+    }
+
+    return { status: reply.status, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(reply.body) };
+  });
+}
+
+function requestedUrls(path: string): Array<URL> {
+  return fetchMock.mock.calls
+    .map(([ input ]) => new URL(String(input)))
+    .filter((url) => url.pathname.endsWith(path));
+}
+
+function requestedClusterLookups(): Array<unknown> {
+  return requestedUrls(CLUSTER_BY_NAME_PATH).map((url): unknown => JSON.parse(url.searchParams.get('input') ?? '{}'));
+}
+
+function requestedQuickSearchTerms(): Array<string | null> {
+  return requestedUrls(QUICK_SEARCH_PATH).map((url) => url.searchParams.get('q'));
+}
+
+type HookResult = { readonly current: ReturnType<typeof useSearchWithClusters> };
+
+function renderSearch() {
+  return renderHook(() => useSearchWithClusters(), { wrapper });
+}
+
+async function search(result: HookResult, term: string): Promise<void> {
+  act(() => result.current.handleSearchTermChange(term));
+  await act(() => vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE));
+}
 
 describe('useSearchWithClusters', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-
-    mockUseQuickSearchQuery.mockReturnValue({
-      searchTerm: '',
-      debouncedSearchTerm: '',
-      handleSearchTermChange: vi.fn(),
-      query: {
-        data: [],
-        isError: false,
-        isLoading: false,
-      },
-      redirectCheckQuery: {
-        data: null,
-        isError: false,
-        isLoading: false,
-      },
-    } as unknown as MockQuickSearchQuery);
-
-    mockUseApiFetch.mockReturnValue({
-      data: null,
-      isError: false,
-      isLoading: false,
-    } as unknown as MockApiQuery);
-
-    mockUseQuery.mockReturnValue({
-      ...defaultUseQueryResult,
-    } as UseQueryResult);
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    serveApis(DEFAULT_REPLIES);
   });
 
-  describe('cluster search pattern matching', () => {
-    it('should detect cluster search with trailing slash', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test-cluster/',
-        debouncedSearchTerm: 'test-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+  afterEach(cleanup);
 
-      renderHook(() => useSearchWithClusters());
+  describe('cluster search', () => {
+    it.each([
+      [ 'test-cluster/', 'test-cluster' ],
+      [ 'campnetwork/lol', 'campnetwork/lol' ],
+      [ 'campnetwork/lol/', 'campnetwork/lol' ],
+      [ '  my-cluster/  ', 'my-cluster' ],
+      [ '  spaced/cluster/  ', 'spaced/cluster' ],
+      [ 'test-cluster-123/', 'test-cluster-123' ],
+      [ 'my_cluster_123/', 'my_cluster_123' ],
+      [ 'ClusterWithCaps/', 'ClusterWithCaps' ],
+      [ 'org/team/project', 'org/team/project' ],
+      [ 'path/to/cluster/', 'path/to/cluster' ],
+    ])('looks up "%s" as the cluster "%s"', async(term, clusterName) => {
+      const { result } = renderSearch();
 
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'test-cluster' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
+      await search(result, term);
+
+      await waitFor(() => expect(requestedClusterLookups()).toEqual([ { name: clusterName } ]));
     });
 
-    it('should detect cluster search with slash in middle (no trailing slash)', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'campnetwork/lol',
-        debouncedSearchTerm: 'campnetwork/lol',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('returns the cluster as a search result in place of the quick search results', async() => {
+      const { result } = renderSearch();
 
-      renderHook(() => useSearchWithClusters());
+      await search(result, 'test-cluster/');
 
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
+      await waitFor(() => expect(result.current.query.data).toEqual([ CLUSTER_RESULT ]));
     });
 
-    it('should not detect cluster search without any slash', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test-cluster',
-        debouncedSearchTerm: 'test-cluster',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
-        queryFn: expect.any(Function),
-        enabled: false,
-        select: expect.any(Function),
+    it('falls back to the cluster name for a cluster without an id and leaves the missing details empty', async() => {
+      serveApis({
+        ...DEFAULT_REPLIES,
+        [CLUSTER_BY_NAME_PATH]: () => ok({ result: { data: { name: 'simple-cluster', owner: OWNER } } }),
       });
-    });
+      const { result } = renderSearch();
 
-    it('should handle cluster search with whitespace and trailing slash', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: '  my-cluster/  ',
-        debouncedSearchTerm: '  my-cluster/  ',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+      await search(result, 'simple-cluster/');
 
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'my-cluster' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-    });
-
-    it('should handle complex cluster names with hyphens and numbers', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test-cluster-123/',
-        debouncedSearchTerm: 'test-cluster-123/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'test-cluster-123' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-    });
-
-    it('should extract cluster name correctly from various formats', () => {
-      const testCases = [
-        { input: 'simple/', expected: 'simple' },
-        { input: 'cluster-name/', expected: 'cluster-name' },
-        { input: 'my_cluster_123/', expected: 'my_cluster_123' },
-        { input: 'ClusterWithCaps/', expected: 'ClusterWithCaps' },
-        { input: 'campnetwork/lol', expected: 'campnetwork/lol' },
-        { input: 'path/to/cluster/', expected: 'path/to/cluster' },
-        { input: '  spaced/cluster/  ', expected: 'spaced/cluster' },
-      ];
-
-      testCases.forEach(({ input, expected }) => {
-        mockUseQuickSearchQuery.mockReturnValue({
-          searchTerm: input,
-          debouncedSearchTerm: input,
-          handleSearchTermChange: vi.fn(),
-          query: { data: [], isError: false, isLoading: false },
-          redirectCheckQuery: { data: null, isError: false, isLoading: false },
-        } as unknown as MockQuickSearchQuery);
-
-        renderHook(() => useSearchWithClusters());
-
-        expect(mockUseQuery).toHaveBeenCalledWith({
-          queryKey: [ 'clusters:get_cluster_by_name', { input: expected } ],
-          queryFn: expect.any(Function),
-          enabled: true,
-          select: expect.any(Function),
-        });
-
-        vi.clearAllMocks();
-      });
-    });
-
-    it('should detect cluster search with multiple slashes', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'org/team/project',
-        debouncedSearchTerm: 'org/team/project',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'org/team/project' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-    });
-
-    it('should handle the reported issue: campnetwork/lol with and without trailing slash', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'campnetwork/lol/',
-        debouncedSearchTerm: 'campnetwork/lol/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-
-      vi.clearAllMocks();
-
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'campnetwork/lol',
-        debouncedSearchTerm: 'campnetwork/lol',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'campnetwork/lol' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-    });
-  });
-
-  describe('data transformation', () => {
-    it('should transform cluster API response to search result format', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test-cluster/',
-        debouncedSearchTerm: 'test-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      const transformedData = [
-        {
-          type: 'cluster',
-          name: 'test-cluster',
-          address_hash: '0x1234567890123456789012345678901234567890',
-          is_smart_contract_verified: false,
-          is_smart_contract_address: false,
-          cluster_info: {
-            cluster_id: 'cluster-123',
-            name: 'test-cluster',
-            owner: '0x1234567890123456789012345678901234567890',
-            created_at: '2024-01-01T00:00:00Z',
-            expires_at: '2025-01-01T00:00:00Z',
-            total_wei_amount: '1000000000000000000',
-            is_testnet: false,
-          },
-        },
-      ];
-
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        data: transformedData,
-      } as UseQueryResult);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toEqual(transformedData);
-    });
-
-    it('should handle cluster data without optional fields', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'simple-cluster/',
-        debouncedSearchTerm: 'simple-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      const transformedData = [
-        {
-          type: 'cluster',
+      await waitFor(() => expect(result.current.query.data).toEqual([ {
+        type: 'cluster',
+        name: 'simple-cluster',
+        address_hash: OWNER,
+        is_smart_contract_verified: false,
+        is_smart_contract_address: false,
+        cluster_info: {
+          cluster_id: 'simple-cluster',
           name: 'simple-cluster',
-          address_hash: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef',
-          is_smart_contract_verified: false,
-          is_smart_contract_address: false,
-          cluster_info: {
-            cluster_id: 'simple-cluster',
-            name: 'simple-cluster',
-            owner: '0xabcdefabcdefabcdefabcdefabcdefabcdefabcdef',
-            created_at: undefined,
-            expires_at: undefined,
-            total_wei_amount: undefined,
-            is_testnet: undefined,
-          },
+          owner: OWNER,
+          created_at: undefined,
+          expires_at: undefined,
+          total_wei_amount: undefined,
+          is_testnet: undefined,
         },
-      ];
-
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        data: transformedData,
-      } as UseQueryResult);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toEqual(transformedData);
+      } ]));
     });
 
-    it('should use clusterId as fallback when present', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test/',
-        debouncedSearchTerm: 'test/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('returns no results when the clusters API fails', async() => {
+      serveApis({ ...DEFAULT_REPLIES, [CLUSTER_BY_NAME_PATH]: () => ({ status: 500, body: {} }) });
+      const { result } = renderSearch();
 
-      const transformedData = [
-        {
-          type: 'cluster',
-          name: 'test',
-          address_hash: '0x123',
-          is_smart_contract_verified: false,
-          is_smart_contract_address: false,
-          cluster_info: {
-            cluster_id: 'test',
-            name: 'test',
-            owner: '0x123',
-            created_at: undefined,
-            expires_at: undefined,
-            total_wei_amount: undefined,
-            is_testnet: undefined,
-          },
-        },
-      ];
+      await search(result, 'nonexistent-cluster/');
 
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        data: transformedData,
-      } as UseQueryResult);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toBeDefined();
-      expect(result.current.query.data).toHaveLength(1);
-      const clusterResult = result.current.query.data![0] as unknown as Record<string, unknown>;
-      expect((clusterResult.cluster_info as Record<string, unknown>).cluster_id).toBe('test');
-    });
-
-    it('should return empty results when cluster API returns error', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'nonexistent-cluster/',
-        debouncedSearchTerm: 'nonexistent-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        data: [],
-        isError: true,
-        error: new Error('API Error'),
-        isSuccess: false,
-        status: 'error',
-        failureCount: 1,
-      } as unknown as UseQueryResult);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
+      await waitFor(() => expect(result.current.query.isSuccess).toBe(true));
       expect(result.current.query.data).toEqual([]);
-      expect(result.current.query.isError).toBe(true);
+      expect(result.current.query.isError).toBe(false);
     });
 
-    it('should return empty results when cluster API returns no data', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'empty-cluster/',
-        debouncedSearchTerm: 'empty-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('returns no results when the clusters API knows no such cluster', async() => {
+      serveApis({ ...DEFAULT_REPLIES, [CLUSTER_BY_NAME_PATH]: () => ok({ result: { data: null } }) });
+      const { result } = renderSearch();
 
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        data: [],
-      } as UseQueryResult);
+      await search(result, 'empty-cluster/');
 
-      const { result } = renderHook(() => useSearchWithClusters());
-
+      await waitFor(() => expect(result.current.query.isSuccess).toBe(true));
       expect(result.current.query.data).toEqual([]);
+    });
+
+    it('is loading until the cluster arrives', async() => {
+      serveApis({ ...DEFAULT_REPLIES, [CLUSTER_BY_NAME_PATH]: () => 'pending' });
+      const { result } = renderSearch();
+
+      await search(result, 'loading-cluster/');
+
+      await waitFor(() => expect(requestedClusterLookups()).toEqual([ { name: 'loading-cluster' } ]));
+      expect(result.current.query.isLoading).toBe(true);
+    });
+
+    it('looks up nothing for a lone slash', async() => {
+      const { result } = renderSearch();
+
+      await search(result, '/');
+
+      await waitFor(() => expect(requestedQuickSearchTerms()).toEqual([ '/' ]));
+      expect(requestedClusterLookups()).toEqual([]);
     });
   });
 
-  describe('fallback to regular search', () => {
-    it('should return regular search results for non-cluster queries', () => {
-      const regularSearchData = [
-        { type: 'address', address_hash: '0x123', is_smart_contract_verified: true, is_smart_contract_address: true },
-      ];
+  describe('regular search', () => {
+    it('returns the quick search results for a term without a slash', async() => {
+      const { result } = renderSearch();
 
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: '0x123456',
-        debouncedSearchTerm: '0x123456',
-        handleSearchTermChange: vi.fn(),
-        query: {
-          data: regularSearchData,
-          isError: false,
-          isLoading: false,
-        },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+      await search(result, 'test-cluster');
 
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.data).toEqual(regularSearchData);
+      await waitFor(() => expect(result.current.query.data).toEqual(QUICK_SEARCH_RESPONSE));
+      expect(requestedQuickSearchTerms()).toEqual([ 'test-cluster' ]);
+      expect(requestedClusterLookups()).toEqual([]);
     });
 
-    it('should preserve regular search query properties', () => {
-      const mockQuickSearchQuery = {
-        searchTerm: 'regular search',
-        debouncedSearchTerm: 'regular search',
-        handleSearchTermChange: vi.fn(),
-        query: {
-          data: [],
-          isError: false,
-          isLoading: true,
-          isFetching: true,
-        },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      };
+    it('is loading until the quick search results arrive', async() => {
+      serveApis({ ...DEFAULT_REPLIES, [QUICK_SEARCH_PATH]: () => 'pending' });
+      const { result } = renderSearch();
 
-      mockUseQuickSearchQuery.mockReturnValue(mockQuickSearchQuery as unknown as MockQuickSearchQuery);
+      await search(result, 'regular search');
 
-      const { result } = renderHook(() => useSearchWithClusters());
-
+      await waitFor(() => expect(requestedQuickSearchTerms()).toEqual([ 'regular search' ]));
       expect(result.current.query.isLoading).toBe(true);
       expect(result.current.query.isFetching).toBe(true);
-      expect(result.current.searchTerm).toBe('regular search');
-      expect(result.current.debouncedSearchTerm).toBe('regular search');
     });
 
-    it('should preserve error states from regular search', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'error-search',
-        debouncedSearchTerm: 'error-search',
-        handleSearchTermChange: vi.fn(),
-        query: {
-          data: [],
-          isError: true,
-          error: 'Network error',
-          isLoading: false,
-        },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('reports a failed quick search', async() => {
+      serveApis({ ...DEFAULT_REPLIES, [QUICK_SEARCH_PATH]: () => ({ status: 500, body: { message: 'Network error' } }) });
+      const { result } = renderSearch();
 
-      const { result } = renderHook(() => useSearchWithClusters());
+      await search(result, 'error-search');
 
-      expect(result.current.query.isError).toBe(true);
-      expect(result.current.query.error).toBe('Network error');
+      await waitFor(() => expect(result.current.query.isError).toBe(true));
+      expect(result.current.query.error).toMatchObject({ status: 500, payload: { message: 'Network error' } });
+    });
+
+    it('passes the redirect check through', async() => {
+      const redirect = { parameter: OWNER, redirect: true, type: 'address' };
+      serveApis({ ...DEFAULT_REPLIES, [CHECK_REDIRECT_PATH]: () => ok(redirect) });
+      const { result } = renderSearch();
+
+      await search(result, OWNER);
+
+      await waitFor(() => expect(result.current.redirectCheckQuery.data).toEqual(redirect));
     });
   });
 
-  describe('integration behavior', () => {
-    it('should enable cluster API query only for valid cluster searches', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: '',
-        debouncedSearchTerm: '',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+  describe('debouncing', () => {
+    it('makes no request before anything is typed', async() => {
+      renderSearch();
 
-      renderHook(() => useSearchWithClusters());
+      await act(() => vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE));
 
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
-        queryFn: expect.any(Function),
-        enabled: false,
-        select: expect.any(Function),
-      });
+      expect(fetchMock.mock.calls).toEqual([]);
     });
 
-    it('should not query cluster API when cluster name is empty', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: '/',
-        debouncedSearchTerm: '/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('searches only the term typed last within the debounce delay', async() => {
+      const { result } = renderSearch();
 
-      renderHook(() => useSearchWithClusters());
+      act(() => result.current.handleSearchTermChange('original-term/'));
+      act(() => result.current.handleSearchTermChange('final-cluster/'));
+      await act(() => vi.advanceTimersByTimeAsync(SEARCH_DEBOUNCE));
 
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: '' } ],
-        queryFn: expect.any(Function),
-        enabled: false,
-        select: expect.any(Function),
-      });
+      await waitFor(() => expect(requestedClusterLookups()).toEqual([ { name: 'final-cluster' } ]));
+      expect(requestedQuickSearchTerms()).toEqual([ 'final-cluster/' ]);
     });
 
-    it('should return proper hook interface', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'test',
-        debouncedSearchTerm: 'test-debounced',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: 'redirect-data', isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
+    it('shows the typed term straight away while the search still runs on the previous one', async() => {
+      const { result } = renderSearch();
 
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current).toHaveProperty('searchTerm', 'test');
-      expect(result.current).toHaveProperty('debouncedSearchTerm', 'test-debounced');
-      expect(result.current).toHaveProperty('handleSearchTermChange');
-      expect(result.current).toHaveProperty('query');
-      expect(result.current.redirectCheckQuery).toEqual({ data: 'redirect-data', isError: false, isLoading: false });
-    });
-
-    it('should handle loading states correctly', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'loading-cluster/',
-        debouncedSearchTerm: 'loading-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      mockUseQuery.mockReturnValue({
-        ...defaultUseQueryResult,
-        isLoading: true,
-      } as unknown as UseQueryResult);
-
-      const { result } = renderHook(() => useSearchWithClusters());
-
-      expect(result.current.query.isLoading).toBe(true);
-    });
-  });
-
-  describe('debouncing integration', () => {
-    it('should use debounced search term for cluster detection', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'original-term/',
-        debouncedSearchTerm: 'final-cluster/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      renderHook(() => useSearchWithClusters());
-
-      expect(mockUseQuery).toHaveBeenCalledWith({
-        queryKey: [ 'clusters:get_cluster_by_name', { input: 'final-cluster' } ],
-        queryFn: expect.any(Function),
-        enabled: true,
-        select: expect.any(Function),
-      });
-    });
-
-    it('should pass through original search term for display', () => {
-      mockUseQuickSearchQuery.mockReturnValue({
-        searchTerm: 'original-term',
-        debouncedSearchTerm: 'debounced/',
-        handleSearchTermChange: vi.fn(),
-        query: { data: [], isError: false, isLoading: false },
-        redirectCheckQuery: { data: null, isError: false, isLoading: false },
-      } as unknown as MockQuickSearchQuery);
-
-      const { result } = renderHook(() => useSearchWithClusters());
+      await search(result, 'debounced/');
+      act(() => result.current.handleSearchTermChange('original-term'));
 
       expect(result.current.searchTerm).toBe('original-term');
       expect(result.current.debouncedSearchTerm).toBe('debounced/');

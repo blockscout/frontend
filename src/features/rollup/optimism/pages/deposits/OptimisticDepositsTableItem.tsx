@@ -5,11 +5,11 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import AddressEntityL1 from 'src/features/rollup/common/components/AddressEntityL1';
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -30,11 +30,12 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
   return (
     <TableRow>
       <TableCell verticalAlign="middle">
-        <BlockEntityL1
+        <BlockEntity
           number={ item.l1_block_number }
           isLoading={ isLoading }
           fontWeight={ 600 }
           noIcon
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -54,20 +55,22 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TxEntityL1
+        <TxEntity
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
           truncation="constant_long"
           noIcon
           noCopy
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <AddressEntityL1
+        <AddressEntity
           address={{ hash: item.l1_transaction_origin, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: [] }}
           isLoading={ isLoading }
           truncation="constant"
           noCopy
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>

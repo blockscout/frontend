@@ -3,16 +3,16 @@
 import type { NextRequest } from 'next/server';
 
 import { describe, expect, it } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 const NONCE = 'aabbccddeeff00112233445566778899';
 
-// the nonce only lands in the policy when an ads provider that needs it is configured;
-// the app config is frozen on first import, so it has to be set before anything pulls it in
-process.env.NEXT_PUBLIC_AD_BANNER_PROVIDER = 'sevio';
-
-const csp = await import('./index');
-const generateCspPolicy = (await import('./generateCspPolicy')).default;
-const primerScriptHashes = await (await import('src/server/primedRequests')).getPrimerScriptCspHashes();
+// the nonce only lands in the policy when an ads provider that needs it is configured
+const { csp, generateCspPolicy, primerScriptHashes } = await withEnvs([ [ 'NEXT_PUBLIC_AD_BANNER_PROVIDER', 'sevio' ] ], async() => ({
+  csp: await import('./index'),
+  generateCspPolicy: (await import('./generateCspPolicy')).default,
+  primerScriptHashes: await (await import('src/server/primedRequests')).getPrimerScriptCspHashes(),
+}));
 
 interface RequestOptions {
   pathname?: string;
