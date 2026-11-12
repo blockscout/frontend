@@ -131,7 +131,7 @@ reverted afterwards.
 | Total | 322 files, 3530 tests | 322 files, 3523 tests |
 | Local, three shuffled full runs | 77.75s, 79.41s, 75.53s; mean 77.56s (load 6–28) | 119.07s, 86.57s, 87.26s; mean 97.63s (load 6–23) |
 | Local, eight interleaved pairs, same load | mean 103.07s (86.74–124.12s) | mean 101.74s (86.57–119.50s) |
-| CI unit job, full-suite dispatch | 129.42s, 100.85s, 140.86s; mean 123.71s (#3880 branch, 319 files) | **pending** |
+| CI unit job, full-suite dispatch | 152.86s ([run 43040334627](https://github.com/blockscout/frontend/actions/runs/43040334627/job/130592378557): `d2096e9d0`, single project before the split, 322 files, 3530 tests) | **pending** |
 
 **The local durations do not resolve a difference.** Other sessions kept the machine loaded all afternoon, and the
 same tree took 50s to 119s across today's runs. The "three runs" row is the baseline's method, but its two columns
@@ -163,5 +163,5 @@ One of the interleaved "after" runs (pair 6, seed 1794479482213) failed: the fir
 spec timed out at the `shared` project's 10s (10.8s) at load 20. It is the test and the cause ticket 01 pinned, its
 first `withEnvs` call re-evaluating the app's module graph inside the test body. The seed's replay passed, that test
 taking 3.8s, so it is not an order dependence. It is 1 of 30 full runs of this tree today: the twenty, the eight
-timing runs, the split run and the replay. The parent spec rules out a per-test override;
-whether 10s is still the right project timeout on a machine this loaded is the developer's call.
+timing runs, the split run and the replay. The parent spec rules out a per-test override, so the developer raised the
+`shared` project's timeout to 15s, the same as the `isolated` project's.

@@ -3,7 +3,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { EntityChain, EntityLinkParams } from './resolve-entity-link';
@@ -32,7 +32,7 @@ const externalChainWithoutTemplates: EntityChain = { id: '8453', name: 'Base', e
 
 async function resolve(params: EntityLinkParams, envs?: Array<[ string, string ]>) {
   return withEnvs(envs, async() => {
-    window.__multichainConfig = envs ? { chains: [ clusterChains.chainA, clusterChains.chainB ] } : undefined;
+    vi.stubGlobal('__multichainConfig', envs ? { chains: [ clusterChains.chainA, clusterChains.chainB ] } : undefined);
     const { resolveEntityLink } = await import('./resolve-entity-link');
     return resolveEntityLink(params);
   });

@@ -51,8 +51,8 @@ export default defineConfig({
           isolate: false,
           sequence: { groupOrder: 0 },
           // the first `withEnvs` test of a spec re-evaluates the app's module graph inside its own body,
-          // and on a loaded machine that alone ran past the 5s default
-          testTimeout: 10_000,
+          // and on a loaded machine that alone ran past 10s
+          testTimeout: 15_000,
           include: [ '**/*.spec.ts', '**/*.spec.tsx' ],
           exclude: ISOLATED_SPECS,
         },

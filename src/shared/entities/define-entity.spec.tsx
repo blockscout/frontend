@@ -10,7 +10,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
@@ -363,7 +363,7 @@ describe('defineEntity', () => {
 
     it('links to the page of a chain from the multichain config', async() => {
       await withEnvs(ENVS_MAP.multichain, async() => {
-        window.__multichainConfig = { chains: [ clusterChains.chainA, clusterChains.chainB ] };
+        vi.stubGlobal('__multichainConfig', { chains: [ clusterChains.chainA, clusterChains.chainB ] });
         const { render, screen } = await import('vitest/lib');
         const { 'default': Entity } = await import('src/slices/tx/components/entity/TxEntity');
 
@@ -372,7 +372,6 @@ describe('defineEntity', () => {
         expect(screen.getByRole('link')).toHaveProperty('href', `http://localhost:3000/chain/op-testnet/tx/${ HASH }`);
         expect(document.querySelector('img')?.getAttribute('src')).toBe(clusterChains.chainB.logo);
       });
-      window.__multichainConfig = undefined;
     });
   });
 });

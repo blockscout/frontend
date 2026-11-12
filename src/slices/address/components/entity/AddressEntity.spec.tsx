@@ -13,7 +13,7 @@ import * as clusterChains from 'src/features/multichain/mocks/chains';
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 import type { EntityChain } from 'src/shared/entities/resolve-entity-link';
 
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
 import { getCssText } from 'vitest/utils/cssText';
 import withEnvs from 'vitest/utils/mockEnvs';
@@ -423,7 +423,7 @@ describe('AddressEntity', () => {
     describe('inside a multichain deployment', () => {
       const renderInCluster = async(build: (parts: typeof AddressEntityParts) => React.ReactElement) => {
         await withEnvs(ENVS_MAP.multichain, async() => {
-          window.__multichainConfig = { chains: [ clusterChains.chainA, clusterChains.chainB ] };
+          vi.stubGlobal('__multichainConfig', { chains: [ clusterChains.chainA, clusterChains.chainB ] });
           const { render } = await import('vitest/lib');
 
           render(build(await import('./AddressEntity')));
