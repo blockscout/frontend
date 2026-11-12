@@ -9,5 +9,5 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 01 → `tickets/01-env-specs-to-shared/`
 - [x] 02 → `tickets/02-spy-third-party-boundaries/`
 - [x] 03 → `tickets/03-clusters-hooks-real-collaborators/`
-- [ ] 04 → `tickets/04-server-multichain-real-collaborators/`
+- [x] 04 → `tickets/04-server-multichain-real-collaborators/`
 - [ ] 05 → `tickets/05-document-and-verify/`

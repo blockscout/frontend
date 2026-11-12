@@ -1,26 +1,41 @@
 // @vitest-environment jsdom
 
+import { animateScroll } from 'react-scroll';
+
 import { chainA, chainB } from 'src/features/multichain/mocks/chains';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
+import type { MockInstance } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-const { mockScrollToTop } = vi.hoisted(() => ({
-  mockScrollToTop: vi.fn(),
-}));
-
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: mockScrollToTop } }));
-vi.mock('src/features/multichain/chains-config', () => ({
-  'default': () => ({ chains: [ chainA, chainB ] }),
-}));
-
-import { useChainValue } from './useChainValue';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 const ENCODED_CURSOR = encodeURIComponent(JSON.stringify({ block_number: 11, index: 12, items_count: 13 }));
 
+// the hook reads the multichain chains only with the feature on, and the router stand-in has to come from the
+// same module graph as the hook, or the hook reads a router context nobody provides
+function loadModules() {
+  return withEnvs(ENVS_MAP.multichain, async() => {
+    const [ { routerStandIn }, { useChainValue } ] = await Promise.all([
+      import('vitest/utils/routerStandIn'),
+      import('./useChainValue'),
+    ]);
+    return { routerStandIn, useChainValue };
+  });
+}
+
+let routerStandIn: Awaited<ReturnType<typeof loadModules>>['routerStandIn'];
+let useChainValue: Awaited<ReturnType<typeof loadModules>>['useChainValue'];
+let scrollToTop: MockInstance<typeof animateScroll.scrollToTop>;
+
+beforeAll(async() => {
+  ({ routerStandIn, useChainValue } = await loadModules());
+});
+
 beforeEach(() => {
-  mockScrollToTop.mockClear();
+  vi.stubGlobal('__multichainConfig', { chains: [ chainA, chainB ] });
+  scrollToTop = vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/address/[hash]', query: { hash: '0x1' } });
 });
 
@@ -102,7 +117,7 @@ describe('useChainValue', () => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+      expect(scrollToTop).toHaveBeenCalledTimes(1);
     });
 
     it('does not scroll when already on the first page', async() => {
@@ -112,7 +127,7 @@ describe('useChainValue', () => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
-      expect(mockScrollToTop).not.toHaveBeenCalled();
+      expect(scrollToTop).not.toHaveBeenCalled();
     });
 
     it('scrolls to the given element instead of the window', async() => {
@@ -126,7 +141,7 @@ describe('useChainValue', () => {
       });
 
       expect(scrollIntoView).toHaveBeenCalledTimes(1);
-      expect(mockScrollToTop).not.toHaveBeenCalled();
+      expect(scrollToTop).not.toHaveBeenCalled();
     });
   });
 

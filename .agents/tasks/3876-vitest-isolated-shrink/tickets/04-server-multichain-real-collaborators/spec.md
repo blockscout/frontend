@@ -57,8 +57,8 @@ Notes for the implementer:
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rewrite the `getAllowedApiOrigins` and reCAPTCHA policy specs over the real chains configs
-- [ ] 2 `[agent]` Rewrite the `useChainValue` spec
-- [ ] 3 `[agent]` Rewrite the `getServerSideProps` handlers spec over the real request check
-- [ ] 4 `[agent]` Rewrite the scope-filters and metadata-generator specs, or record why they stay isolated
-- [ ] 5 `[agent]` Verify: lint, complexity and mutation gates, five shuffled full runs; list any spec that stays isolated in `notes.md`
+- [x] 1 `[agent]` Rewrite the `getAllowedApiOrigins` and reCAPTCHA policy specs over the real chains configs
+- [x] 2 `[agent]` Rewrite the `useChainValue` spec
+- [x] 3 `[agent]` Rewrite the `getServerSideProps` handlers spec over the real request check
+- [x] 4 `[agent]` Rewrite the scope-filters and metadata-generator specs, or record why they stay isolated
+- [x] 5 `[agent]` Verify: lint, complexity and mutation gates, five shuffled full runs; list any spec that stays isolated in `notes.md`
