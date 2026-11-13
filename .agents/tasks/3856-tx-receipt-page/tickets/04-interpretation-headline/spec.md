@@ -31,7 +31,7 @@ transfer, the swap with a market, the withdraw, the user-operations bundle, and 
 
 - [ ] The interpretation query is enabled only for provider `blockscout`; it is not the `noves` resource
 - [ ] Unit tests cover the headline choice: `Transfer` with amount and token, `Transfer` with the native coin, `Transfer` missing the amount (→ sentence), a sentence with an action type, a sentence without one, an empty summaries list and a failed request (→ fallback)
-- [ ] The sentence is rendered through the shared template pipeline and the no-link variable renderer from ticket 01; no anchor in the block
+- [ ] The sentence is rendered through the shared template pipeline from ticket 01 with the receipt's own variable renderer (its own entity props and text style; the market through the shared market component in no-link mode); no anchor in the block
 - [ ] Only the first summary is used
 - [ ] `TxReceipt.pw.tsx` sits next to the page and covers the card's mutually exclusive looks, each case naming the layout it protects; no case for loading or the redirect
 - [ ] `(human)` The API-sentence cards match the mockup at every breakpoint

@@ -45,6 +45,7 @@ export type TxQuery = UseQueryResult<schemas['TransactionResponse'], TxError> & 
 interface Params {
   hash?: string;
   isEnabled?: boolean;
+  isRpcFallbackEnabled?: boolean;
 }
 
 export default function useTxQuery(params?: Params): TxQuery {
@@ -85,7 +86,8 @@ export default function useTxQuery(params?: Params): TxQuery {
 
   // the API could not serve the transaction (anything but a malformed hash), so the RPC node is asked instead;
   // a 404 is included on purpose: a slow indexer may not have caught a fresh transaction yet
-  const isRpcFallbackNeeded = isPublicClientAvailable && ((isError && apiQuery.error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
+  const isRpcFallbackAllowed = params?.isRpcFallbackEnabled !== false && isPublicClientAvailable;
+  const isRpcFallbackNeeded = isRpcFallbackAllowed && ((isError && apiQuery.error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const rpcQuery = useQuery<RpcResponseType, unknown, schemas['TransactionResponse'] | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],

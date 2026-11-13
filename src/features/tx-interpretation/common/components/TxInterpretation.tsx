@@ -6,45 +6,23 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
-import type {
-  TxInterpretationSummary,
-  TxInterpretationVariable,
-  TxInterpretationVariableString,
-} from 'src/features/tx-interpretation/common/types/api';
+import type { TxInterpretationSummary } from 'src/features/tx-interpretation/common/types/api';
 
-import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import { currencyUnits } from 'src/slices/chain/units';
-import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
-import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
-
-import config from 'src/config';
-import * as analytics from 'src/shared/analytics';
-import dayjs from 'src/shared/date-and-time/dayjs';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
-import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Badge } from 'src/toolkit/chakra/badge';
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Image } from 'src/toolkit/chakra/image';
-import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
-import { SECOND } from 'src/toolkit/utils/consts';
 
-import formatCurrencyValue from '../utils/format-currency-value';
-import {
-  extractVariables,
-  getStringChunks,
-  fillStringVariables,
-  checkSummary,
-  NATIVE_COIN_SYMBOL_VAR_NAME,
-  WEI_VAR_NAME,
-} from '../utils/utils';
-
-const nameServicesFeature = config.features.nameServices;
+import { parseSummaryTemplate, NATIVE_COIN_SYMBOL_VAR_NAME, WEI_VAR_NAME } from '../utils/utils';
+import type { NonStringTxInterpretationVariable } from './TxInterpretationElementByType';
+import TxInterpretationElementByType from './TxInterpretationElementByType';
 
 interface Props extends BoxProps {
   summary?: TxInterpretationSummary;
@@ -55,149 +33,20 @@ interface Props extends BoxProps {
   chainData?: ClusterChainConfig;
 };
 
-type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
-
-const TxInterpretationElementByType = (
-  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, schemas['Address']> },
-) => {
-  const onAddressClick = React.useCallback(() => {
-    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
-  }, []);
-
-  const onTokenClick = React.useCallback(() => {
-    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Token click' });
-  }, []);
-
-  const onDomainClick = React.useCallback(() => {
-    analytics.logEvent(analytics.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Domain click' });
-  }, []);
-
-  if (!variable) {
-    return null;
-  }
-
-  const { type, value } = variable;
-  switch (type) {
-    case 'address': {
-      return (
-        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
-          <AddressEntity
-            address={ addressDataMap?.[value.hash] || value }
-            icon={{ marginRight: 1 }}
-            truncation="constant"
-            onClick={ onAddressClick }
-            whiteSpace="initial"
-          />
-        </chakra.span>
-      );
-    }
-    case 'token':
-      return (
-        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
-          <TokenEntity
-            token={ value }
-            icon={{ marginRight: 1 }}
-            onlySymbol
-            noCopy
-            width="fit-content"
-            _notFirst={{ marginLeft: 1 }}
-            mr={ 2 }
-            whiteSpace="initial"
-            onClick={ onTokenClick }
-          />
-        </chakra.span>
-      );
-    case 'domain': {
-      if (nameServicesFeature.isEnabled && nameServicesFeature.ens.isEnabled) {
-        return (
-          <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
-            <EnsEntity
-              domain={ value }
-              icon={{ marginRight: 1 }}
-              width="fit-content"
-              _notFirst={{ marginLeft: 1 }}
-              whiteSpace="initial"
-              onClick={ onDomainClick }
-            />
-          </chakra.span>
-        );
-      }
-      return <chakra.span color="text.secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
-    }
-    case 'currency': {
-      return <chakra.span>{ formatCurrencyValue(value) + ' ' }</chakra.span>;
-    }
-    case 'timestamp': {
-      return <chakra.span color="text.secondary" whiteSpace="pre">{ dayjs(Number(value) * SECOND).format('MMM DD YYYY') }</chakra.span>;
-    }
-    case 'external_link': {
-      return <Link external href={ value.link }>{ value.name }</Link>;
-    }
-    case 'method': {
-      return (
-        <Badge
-          colorPalette={ value === 'Multicall' ? 'teal' : 'gray' }
-          truncated
-          ml={ 1 }
-          mr={ 2 }
-          verticalAlign="text-top"
-        >
-          { value }
-        </Badge>
-      );
-    }
-    case 'dexTag': {
-      const icon = value.app_icon || value.icon;
-      const name = (() => {
-        if (value.app_id && config.features.marketplace.isEnabled) {
-          return (
-            <Link
-              href={ route({ pathname: '/apps/[id]', query: { id: value.app_id } }) }
-            >
-              { value.name }
-            </Link>
-          );
-        }
-        if (value.url) {
-          return (
-            <Link external href={ value.url }>
-              { value.name }
-            </Link>
-          );
-        }
-        return value.name;
-      })();
-
-      return (
-        <chakra.span display="inline-flex" alignItems="center" verticalAlign="top" _notFirst={{ marginLeft: 1 }} gap={ 1 } mr={ 2 }>
-          { icon && <Image src={ icon } alt={ value.name } width={ 5 } height={ 5 }/> }
-          { name }
-        </chakra.span>
-      );
-    }
-    case 'link': {
-      return <Link external href={ value.url }>{ value.name }</Link>;
-    }
-  }
-};
-
 const TxInterpretation = ({ summary, isLoading, addressDataMap, className, chainData, isNoves, ...rest }: Props) => {
   const novesLogoUrl = useColorModeValue('/static/noves-logo.svg', '/static/noves-logo-dark.svg');
   if (!summary) {
     return null;
   }
 
-  const template = summary.summary_template;
-  const variables = summary.summary_template_variables;
+  const parts = parseSummaryTemplate(summary);
 
-  if (!checkSummary(template, variables)) {
+  if (!parts) {
     return null;
   }
 
-  const intermediateResult = fillStringVariables(template, variables);
-
-  const variablesNames = extractVariables(intermediateResult);
-  const chunks = getStringChunks(intermediateResult);
+  const variables = summary.summary_template_variables;
+  const { chunks, variablesNames } = parts;
 
   const tooltipContent = 'Transaction summary' + (chainData ? `\n${ getChainTooltipText(chainData) }` : '');
 

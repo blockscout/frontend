@@ -1,6 +1,31 @@
 import { it, expect } from 'vitest';
 
-import { extractVariables, getStringChunks, checkSummary } from './utils';
+import { extractVariables, getStringChunks, checkSummary, parseSummaryTemplate } from './utils';
+
+it('parses a summary into text chunks and the variables between them, with string variables inlined', () => {
+  const result = parseSummaryTemplate({
+    summary_template: '{action_type} {amount} {native} to {to_address}',
+    summary_template_variables: {
+      action_type: { type: 'string', value: 'Transfer' },
+      amount: { type: 'currency', value: '100' },
+      to_address: { type: 'domain', value: 'duck.eth' },
+    },
+  });
+
+  expect(result).toEqual({
+    chunks: [ 'Transfer ', ' ', ' to ', '' ],
+    variablesNames: [ 'amount', 'native', 'to_address' ],
+  });
+});
+
+it('parses no summary whose template names a variable it does not carry', () => {
+  const result = parseSummaryTemplate({
+    summary_template: '{action_type} {amount}',
+    summary_template_variables: { action_type: { type: 'string', value: 'Transfer' } },
+  });
+
+  expect(result).toBeNull();
+});
 
 const template = '{action_type} {source_amount} {native} into {destination_amount} {destination_token}';
 
