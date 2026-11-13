@@ -39,8 +39,8 @@ explorer lead to it, and exist partly to measure whether users open it at all.
 - FR7. When the chain's interpretation provider is `blockscout` and it returns a summary for the
   transaction, the summary block shows the full interpretation sentence, with no part of the template
   dropped. A sentence that starts with an action type shows it on a line of its own, with the rest wrapping
-  below. A sentence without an action type simply wraps. The whole sentence is one text style: neither
-  the action type nor the connecting words are set apart.
+  below. A sentence without an action type simply wraps. The action type and the connecting words are
+  smaller and lighter than the values.
   Tokens, addresses and the market in the sentence show their icons.
 - FR8. A transfer is the exception to FR7: an interpretation whose action type is `Transfer` and which
   carries an amount and a token or the native coin gets a dedicated view, not the API sentence. It shows
@@ -146,8 +146,6 @@ Deviations from the mockups, each deliberate:
 - The `Receipt` link in the dropdown is drawn gray because it is the secondary link variant, not because
   it is disabled.
 - The mockup time reads `+4:00 UTC`; the real format is the user's setting (FR5).
-- In the API-sentence cards the action type and the connecting words are drawn lighter than the values.
-  That is a slip in the mockup: the sentence is one text style (FR7).
 
 Not in the mockups:
 

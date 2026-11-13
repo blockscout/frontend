@@ -2,29 +2,12 @@
 
 import BigNumber from 'bignumber.js';
 
+import type { CallSummary, TransferSummary } from './types';
 import type { schemas } from '@blockscout/api-types';
 
-type Address = schemas['Address'];
+export type FallbackSummaryTx = Pick<schemas['TransactionResponse'], 'from' | 'to' | 'created_contract' | 'method' | 'value'>;
 
-interface CallFallbackSummary {
-  readonly type: 'call';
-  readonly method: string;
-  readonly from: Address;
-  readonly to: Address;
-}
-
-interface TransferFallbackSummary {
-  readonly type: 'transfer';
-  readonly amount: string;
-  readonly from: Address;
-  readonly to: Address | null;
-}
-
-export type FallbackSummary = CallFallbackSummary | TransferFallbackSummary;
-
-type FallbackSummaryTx = Pick<schemas['TransactionResponse'], 'from' | 'to' | 'created_contract' | 'method' | 'value'>;
-
-export const getFallbackSummary = (tx: FallbackSummaryTx, nativeCoinDecimals: number): FallbackSummary => {
+export const getFallbackSummary = (tx: FallbackSummaryTx, nativeCoinDecimals: number): CallSummary | TransferSummary => {
   if (tx.to?.is_contract) {
     return {
       type: 'call',
@@ -37,6 +20,7 @@ export const getFallbackSummary = (tx: FallbackSummaryTx, nativeCoinDecimals: nu
   return {
     type: 'transfer',
     amount: BigNumber(tx.value).shiftedBy(-nativeCoinDecimals).toFixed(),
+    asset: { type: 'native' },
     from: tx.from,
     to: tx.to ?? tx.created_contract,
   };

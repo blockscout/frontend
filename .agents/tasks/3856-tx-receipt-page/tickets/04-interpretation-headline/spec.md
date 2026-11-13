@@ -15,8 +15,8 @@ receipt's summary block shows the first summary instead of the fallback:
   template string is ignored; the recipient appears only in the parties row, joined by `to`;
 - any other summary shows the full API sentence, no part of the template dropped. A sentence that starts
   with an action type shows it on a line of its own and the rest wraps below, centred; a sentence without
-  one simply wraps. The whole sentence is one text style. Tokens, addresses and the market show their
-  icons; nothing is a link.
+  one simply wraps. Its words are smaller and lighter than its values. Tokens, addresses and the market
+  show their icons; nothing is a link.
 
 With provider `noves` or `none`, an empty or failed interpretation response, or a pending or failed
 transaction, the fallback of ticket 03 stays. The provider setting is read through the multichain context
@@ -49,15 +49,13 @@ transfer, the swap with a market, the withdraw, the user-operations bundle, and 
   `TxInterpretationElementByType`: no wrapper span around an entity, no margin on an entity, a badge or the
   market, no space appended to a value. The gaps between words and values are the template's own spaces,
   in one place. The transaction page's renderer is not touched.
-- Mockup deviation: the action type and the connecting words are drawn lighter than the values; the
-  sentence is one text style (FR7).
 - The action type is a free string, and not every sentence has one — see "Data & API" in the spec for the
   shapes seen.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Wire `core:tx_interpretation`; headline selection and the transfer-variables mapping, with unit tests
-- [ ] 2 `[agent]` Scaffold the sentence view on the shared interpretation parts
-- [ ] 3 `[agent]` Style the API-sentence cards to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6299-3955) · [readout](../../design-readout.md#cards-that-follow-the-api-sentence--62993955)
-- [ ] 4 `[agent]` Scaffold `TxReceipt.pw.tsx` with its mocks, no baselines
-- [ ] 5 `[human]` Generate and eyeball the receipt baselines (`pnpm test:pw --docker … --update-snapshots`)
+- [x] 1 `[agent]` Wire `core:tx_interpretation`; headline selection and the transfer-variables mapping, with unit tests
+- [x] 2 `[agent]` Scaffold the sentence view on the shared interpretation parts
+- [x] 3 `[agent]` Style the API-sentence cards to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6299-3955) · [readout](../../design-readout.md#cards-that-follow-the-api-sentence--62993955)
+- [x] 4 `[agent]` Scaffold `TxReceipt.pw.tsx` with its mocks, no baselines
+- [x] 5 `[human]` Generate and eyeball the receipt baselines (`pnpm test:pw --docker … --update-snapshots`)

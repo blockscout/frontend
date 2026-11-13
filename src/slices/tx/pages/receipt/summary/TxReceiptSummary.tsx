@@ -3,29 +3,34 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { TxInterpretationSummary } from 'src/features/tx-interpretation/common/types/api';
 
 import config from 'src/config';
 
-import { getFallbackSummary } from './get-fallback-summary';
+import { getReceiptSummary } from './get-receipt-summary';
 import TxReceiptCallView from './TxReceiptCallView';
-import type { TxReceiptTransferAsset } from './TxReceiptTransferView';
+import TxReceiptSentenceView from './TxReceiptSentenceView';
 import TxReceiptTransferView from './TxReceiptTransferView';
-
-const NATIVE_COIN: TxReceiptTransferAsset = { type: 'native' };
 
 interface Props {
   readonly data: schemas['TransactionResponse'];
+  readonly interpretations: ReadonlyArray<TxInterpretationSummary> | undefined;
   readonly isLoading: boolean;
 }
 
-const TxReceiptSummary = ({ data, isLoading }: Props) => {
-  const summary = getFallbackSummary(data, config.chain.currency.decimals);
+const TxReceiptSummary = ({ data, interpretations, isLoading }: Props) => {
+  const summary = React.useMemo(
+    () => getReceiptSummary(data, interpretations, config.chain.currency.decimals),
+    [ data, interpretations ],
+  );
 
   switch (summary.type) {
     case 'call':
       return <TxReceiptCallView method={ summary.method } from={ summary.from } to={ summary.to } isLoading={ isLoading }/>;
     case 'transfer':
-      return <TxReceiptTransferView amount={ summary.amount } asset={ NATIVE_COIN } from={ summary.from } to={ summary.to } isLoading={ isLoading }/>;
+      return <TxReceiptTransferView amount={ summary.amount } asset={ summary.asset } from={ summary.from } to={ summary.to } isLoading={ isLoading }/>;
+    case 'sentence':
+      return <TxReceiptSentenceView summary={ summary } isLoading={ isLoading }/>;
   }
 };
 

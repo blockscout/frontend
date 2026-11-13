@@ -45,6 +45,7 @@ describe('getFallbackSummary', () => {
     expect(getFallbackSummary(tx({ value: '1500000000000000000' }), 18)).toEqual({
       type: 'transfer',
       amount: '1.5',
+      asset: { type: 'native' },
       from: SENDER,
       to: RECIPIENT,
     });

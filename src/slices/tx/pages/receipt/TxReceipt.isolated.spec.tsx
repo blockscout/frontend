@@ -3,10 +3,13 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 
 import { SocketProvider } from 'src/api/socket/context';
 
 import * as txMock from 'src/slices/tx/mocks/details';
+
+import * as interpretationMock from 'src/features/tx-interpretation/blockscout/mocks';
 
 import { EventTypes } from 'src/shared/analytics';
 
@@ -15,7 +18,8 @@ import { nbsp } from 'src/toolkit/utils/htmlEntities';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, act, waitFor, fireEvent, within } from 'vitest/lib';
-import { mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
+import withEnvs from 'vitest/utils/mockEnvs';
+import { apiRequests, mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
 import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
@@ -32,6 +36,7 @@ import TxReceipt from './TxReceipt';
 
 const HASH = txMock.base.hash;
 const TX_URL_PART = `/transactions/${ HASH }`;
+const INTERPRETATION_URL_PART = `/transactions/${ HASH }/summary`;
 const RECEIPT_URL = `http://localhost:3000/tx/${ HASH }/receipt`;
 
 // the backend waits for the block before the transaction is re-read, and the hook mirrors that delay
@@ -208,6 +213,169 @@ describe('transaction receipt summary without an interpretation', () => {
     await waitForLoaded();
 
     expect(screen.getByRole('region', { name: 'Transaction summary' }).querySelector('a')).toBeNull();
+  });
+});
+
+describe('transaction receipt summary from an interpretation', () => {
+  type InterpretationResponse = { body: TxInterpretationResponse } | { status: number } | { pending: Promise<TxInterpretationResponse> };
+
+  function deferInterpretation() {
+    let resolve: (body: TxInterpretationResponse) => void = () => {};
+    const pending = new Promise<TxInterpretationResponse>((fulfil) => {
+      resolve = fulfil;
+    });
+    return { pending, resolve };
+  }
+
+  function respondWithInterpretation(interpretation: InterpretationResponse) {
+    if ('pending' in interpretation) {
+      return interpretation.pending.then((body) => ({ body: JSON.stringify(body) }));
+    }
+    return 'body' in interpretation ? { body: JSON.stringify(interpretation.body) } : { status: interpretation.status, body: '{}' };
+  }
+
+  function mockTxAndInterpretation(getTx: () => schemas['TransactionResponse'], interpretation: InterpretationResponse) {
+    mockApiAndRpc({
+      api: (url) => {
+        if (url.includes(INTERPRETATION_URL_PART)) {
+          return respondWithInterpretation(interpretation);
+        }
+        return url.includes(TX_URL_PART) ? { body: JSON.stringify(getTx()) } : { status: 404, body: '{}' };
+      },
+    });
+  }
+
+  // the config is re-read per provider, so the tree and everything that reads the router come in after the envs
+  async function mountReceiptWithEnvs() {
+    const { render: renderWithEnvs } = await import('vitest/lib');
+    const { routerStandIn: router, RouterStandInProvider: RouterProvider } = await import('vitest/utils/routerStandIn');
+    const { SocketProvider: Socket } = await import('src/api/socket/context');
+    const { 'default': Receipt } = await import('./TxReceipt');
+
+    router.reset({ pathname: '/tx/[hash]/receipt', query: { hash: HASH } });
+    renderWithEnvs(
+      <RouterProvider>
+        <Socket url={ MOCK_SOCKET_URL }>
+          <Receipt/>
+        </Socket>
+      </RouterProvider>,
+    );
+  }
+
+  async function renderReceiptWithEnvs() {
+    await mountReceiptWithEnvs();
+    await waitForLoaded();
+  }
+
+  const withProvider = (provider: string, run: () => Promise<void>) => {
+    return withEnvs([ [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', provider ] ], run);
+  };
+
+  function getSummary() {
+    return within(screen.getByRole('region', { name: 'Transaction summary' }));
+  }
+
+  function interpretationRequests() {
+    return apiRequests().filter((url) => url.includes('/summary') || url.includes('/noves'));
+  }
+
+  it('shows the interpretation sentence with its action type on a line of its own, linking nothing', async() => {
+    await withProvider('blockscout', async() => {
+      mockTxAndInterpretation(() => txMock.base, { body: interpretationMock.swapOnMarket });
+      await renderReceiptWithEnvs();
+
+      const summary = getSummary();
+      await waitFor(() => expect(summary.getByRole('heading').textContent).toBe('Swap'));
+      expect(summary.getByText(/for/).textContent).toMatch(/^813\.62\s?ARIA for 0\.036\s?USDC on Uniswap V3 by ArianeeStore$/);
+      expect(screen.getByRole('region', { name: 'Transaction summary' }).querySelector('a')).toBeNull();
+    });
+  });
+
+  it('shows a sentence without an action type as one sentence, with no heading', async() => {
+    await withProvider('blockscout', async() => {
+      mockTxAndInterpretation(() => txMock.base, { body: interpretationMock.withdrawWithoutActionType });
+      await renderReceiptWithEnvs();
+
+      await waitFor(() => expect(getSummary().getByText(/Initiated Withdraw of/)).toBeTruthy());
+      expect(getSummary().queryByRole('heading')).toBeNull();
+    });
+  });
+
+  it('shows the transfer view for a token transfer, the recipient only in the parties row', async() => {
+    await withProvider('blockscout', async() => {
+      mockTxAndInterpretation(() => txMock.base, { body: interpretationMock.txInterpretation });
+      await renderReceiptWithEnvs();
+
+      const summary = getSummary();
+      await waitFor(() => expect(summary.getByText('DUCK')).toBeTruthy());
+      expect(summary.getByRole('heading').textContent).toBe('Transfer');
+      expect(summary.getByText('100')).toBeTruthy();
+      expect(summary.getByText('to')).toBeTruthy();
+    });
+  });
+
+  it.each([
+    [ 'an empty summaries list', { body: { data: { summaries: [] } } } ],
+    [ 'a failed request', { status: 500 } ],
+  ])('falls back on %s', async(_, interpretation: InterpretationResponse) => {
+    await withProvider('blockscout', async() => {
+      mockTxAndInterpretation(() => txMock.withRawRevertReason, interpretation);
+      await renderReceiptWithEnvs();
+      await act(() => vi.advanceTimersByTimeAsync(10 * SECOND));
+
+      await waitFor(() => expect(getSummary().getByRole('heading').textContent).toBe('Call'));
+      expect(interpretationRequests()).not.toEqual([]);
+    });
+  });
+
+  it.each([ 'noves', 'none' ])('asks for no interpretation with the %s provider', async(provider) => {
+    await withProvider(provider, async() => {
+      mockTxAndInterpretation(() => txMock.base, { body: interpretationMock.swapOnMarket });
+      await renderReceiptWithEnvs();
+
+      expect(getSummary().getByRole('heading').textContent).toBe('Transfer');
+      expect(interpretationRequests()).toEqual([]);
+    });
+  });
+
+  it('keeps the whole card in its first placeholder until the interpretation arrives', async() => {
+    await withProvider('blockscout', async() => {
+      const interpretation = deferInterpretation();
+      mockTxAndInterpretation(() => txMock.base, interpretation);
+      await mountReceiptWithEnvs();
+
+      await waitFor(() => expect(interpretationRequests()).not.toEqual([]));
+      expect(document.querySelector('dd[data-loading]')).not.toBeNull();
+
+      interpretation.resolve(interpretationMock.swapOnMarket);
+      await waitForLoaded();
+      expect(getSummary().getByRole('heading').textContent).toBe('Swap');
+      expect(getRowValue('Date')).toBe('Oct 10 2022');
+    });
+  });
+
+  it('asks for the interpretation of a pending transaction once it settles, keeping the card on screen meanwhile', async() => {
+    await withProvider('blockscout', async() => {
+      let tx = txMock.pending;
+      const interpretation = deferInterpretation();
+      mockTxAndInterpretation(() => tx, interpretation);
+      await renderReceiptWithEnvs();
+
+      expect(getSummary().getByRole('heading').textContent).toBe('Transfer');
+      expect(interpretationRequests()).toEqual([]);
+
+      tx = txMock.base;
+      await waitFor(() => sendSocketMessage(`transactions:${ HASH }`, 'collated', {}));
+      await act(() => vi.advanceTimersByTimeAsync(STATUS_UPDATE_DELAY));
+
+      await waitFor(() => expect(interpretationRequests()).not.toEqual([]));
+      expect(document.querySelector('dd[data-loading]')).toBeNull();
+      expect(getRowValue('Date')).toBe('Oct 10 2022');
+      expect(getSummary().getByRole('heading').textContent).toBe('Transfer');
+
+      interpretation.resolve(interpretationMock.swapOnMarket);
+      await waitFor(() => expect(getSummary().getByRole('heading').textContent).toBe('Swap'));
+    });
   });
 });
 

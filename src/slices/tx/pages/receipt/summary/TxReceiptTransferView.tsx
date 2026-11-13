@@ -3,6 +3,7 @@
 import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TransferAsset } from './types';
 import type { schemas } from '@blockscout/api-types';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
@@ -16,13 +17,9 @@ import { formatTransferAmount } from './format-transfer-amount';
 import TxReceiptParties from './TxReceiptParties';
 import TxReceiptSummaryPanel from './TxReceiptSummaryPanel';
 
-export type TxReceiptTransferAsset =
-  { readonly type: 'native' } |
-  { readonly type: 'token'; readonly token: schemas['Token'] };
-
 const TOKEN_ICON = { marginRight: 1 };
 
-const TxReceiptTransferAssetView = ({ asset }: { readonly asset: TxReceiptTransferAsset }) => {
+const TxReceiptTransferAssetView = ({ asset }: { readonly asset: TransferAsset }) => {
   switch (asset.type) {
     case 'native':
       return (
@@ -38,7 +35,7 @@ const TxReceiptTransferAssetView = ({ asset }: { readonly asset: TxReceiptTransf
 
 interface Props {
   readonly amount: string;
-  readonly asset: TxReceiptTransferAsset;
+  readonly asset: TransferAsset;
   readonly from: schemas['Address'];
   readonly to: schemas['Address'] | null;
   readonly isLoading: boolean;
