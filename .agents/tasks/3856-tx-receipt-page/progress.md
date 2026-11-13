@@ -7,4 +7,3 @@
 - [ ] 05 → `tickets/05-multichain-receipt/`
 - [ ] 06 → `tickets/06-entry-points/`
 - [ ] 07 → `tickets/07-social-preview/`
-- [ ] 08 → `tickets/08-interpretation-spacing/`

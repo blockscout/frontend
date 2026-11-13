@@ -45,6 +45,10 @@ transfer, the swap with a market, the withdraw, the user-operations bundle, and 
   address (failed status rides on one of them, not a case of its own). One packed case carries `+@mobile`
   and `+@dark-mode`. Mocks go in the slice's and the interpretation feature's existing mocks.
 
+- The receipt's variable renderer owns its spacing and copies none from the transaction page's
+  `TxInterpretationElementByType`: no wrapper span around an entity, no margin on an entity, a badge or the
+  market, no space appended to a value. The gaps between words and values are the template's own spaces,
+  in one place. The transaction page's renderer is not touched.
 - Mockup deviation: the action type and the connecting words are drawn lighter than the values; the
   sentence is one text style (FR7).
 - The action type is a free string, and not every sentence has one — see "Data & API" in the spec for the
