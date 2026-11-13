@@ -16,6 +16,13 @@ import TxSubHeading from './TxSubHeading';
 
 const hash = '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193';
 
+const hooksConfig = {
+  router: {
+    pathname: '/tx/[hash]',
+    query: { hash },
+  },
+};
+
 const txQuery = {
   data: txMock.base,
   isPlaceholderData: false,
@@ -31,7 +38,12 @@ const addressMetadataQueryParams = {
 };
 
 test('no interpretation +@mobile', async({ render }) => {
-  const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
+  const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>, { hooksConfig });
+  await expect(component).toHaveScreenshot();
+});
+
+test('transaction with a tag', async({ render }) => {
+  const component = await render(<TxSubHeading hash={ hash } hasTag txQuery={ txQuery }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 
@@ -42,28 +54,28 @@ test.describe('blockscout provider', () => {
 
   test('with interpretation +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
     await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
   test('with interpretation and recipient name +@mobile', async({ render, mockApiResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientName } as TxQuery;
     await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
   test('with interpretation and recipient ENS domain +@mobile', async({ render, mockApiResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientEns } as TxQuery;
     await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
   test('with interpretation and recipient name tag +@mobile', async({ render, mockApiResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientNameTag } as TxQuery;
     await mockApiResponse('core:tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
@@ -73,7 +85,7 @@ test.describe('blockscout provider', () => {
       { data: { summaries: [ ...txInterpretation.data.summaries, ...txInterpretation.data.summaries ] } },
       { pathParams: { hash } },
     );
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
@@ -83,7 +95,7 @@ test.describe('blockscout provider', () => {
     await mockApiResponse('metadata:info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockApiResponse('core:tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
 
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 
@@ -94,7 +106,7 @@ test.describe('blockscout provider', () => {
       isError: false,
     } as TxQuery;
     await mockApiResponse('core:tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txPendingQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txPendingQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 });
@@ -106,7 +118,7 @@ test.describe('noves provider', () => {
 
   test('with interpretation +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
     await mockApiResponse('core:noves_transaction', novesTransaction, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
 });

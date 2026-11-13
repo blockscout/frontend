@@ -42,8 +42,8 @@ home page's latest transactions (dropdown), and a transaction page with and with
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Style the `Receipt` link in the "Additional info" dropdown to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6267-4403) · [readout](../../design-readout.md#entry-point-additional-info-popup--62674403)
-- [ ] 2 `[agent]` Style the `Receipt` button on the transaction details page to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6267-4363) · [readout](../../design-readout.md#entry-point-transaction-details-page--62674363)
-- [ ] 3 `[agent]` Click analytics for both entry points
-- [ ] 4 `[agent]` Extend `TxAdditionalInfo.pw.tsx` and `TxSubHeading.pw.tsx` where a case is missing; list the suites affected (`pnpm test:pw --changed`)
-- [ ] 5 `[human]` Regenerate and eyeball the affected baselines (`pnpm test:pw --docker … --update-snapshots`)
+- [x] 1 `[agent]` Style the `Receipt` link in the "Additional info" dropdown to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6267-4403) · [readout](../../design-readout.md#entry-point-additional-info-popup--62674403)
+- [x] 2 `[agent]` Style the `Receipt` button on the transaction details page to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6267-4363) · [readout](../../design-readout.md#entry-point-transaction-details-page--62674363)
+- [x] 3 `[agent]` Click analytics for both entry points
+- [x] 4 `[agent]` Extend `TxAdditionalInfo.pw.tsx` and `TxSubHeading.pw.tsx` where a case is missing; list the suites affected (`pnpm test:pw --changed`)
+- [x] 5 `[human]` Regenerate and eyeball the affected baselines (`pnpm test:pw --docker … --update-snapshots`)

@@ -20,9 +20,14 @@ import { NOVES_TRANSLATE } from 'src/features/tx-interpretation/noves/stubs';
 import { createNovesSummaryObject } from 'src/features/tx-interpretation/noves/utils/createNovesSummaryObject';
 
 import config from 'src/config';
+import * as analytics from 'src/shared/analytics';
 import { TX_ACTIONS_BLOCK_ID } from 'src/shared/detailed-info/DetailedInfoActionsWrapper';
+import { route } from 'src/shared/router/routes';
+import SpriteIcon from 'src/sprite/SpriteIcon';
 
+import { IconButton } from 'src/toolkit/chakra/icon-button';
 import { Link } from 'src/toolkit/chakra/link';
+import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 type Props = {
   hash: string;
@@ -52,6 +57,10 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       placeholderData: NOVES_TRANSLATE,
     },
   });
+
+  const handleReceiptClick = React.useCallback(() => {
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: analytics.PAGE_TYPE_DICT['/tx/[hash]'] });
+  }, []);
 
   const hasNovesInterpretation = isNovesInterpretation &&
     (novesInterpretationQuery.isPlaceholderData || Boolean(novesInterpretationQuery.data?.classificationData.description));
@@ -149,10 +158,24 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         alignItems="center"
         justifyContent={{ base: 'start', lg: 'space-between' }}
         flexGrow={ 1 }
-        gap={ 3 }
+        gap={ 2 }
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <ActionsMenu isLoading={ isLoading }/> }
+        <Tooltip content="Receipt" disableOnMobile>
+          <IconButton
+            asChild
+            aria-label="Receipt"
+            variant="icon_background"
+            boxSize={ 8 }
+            loadingSkeleton={ isLoading }
+            onClick={ handleReceiptClick }
+          >
+            <Link href={ route({ pathname: '/tx/[hash]/receipt', query: { hash } }, multichainContext) } target="_blank">
+              <SpriteIcon name="receipt" boxSize={ 5 }/>
+            </Link>
+          </IconButton>
+        </Tooltip>
         <AlternativeExplorers type="tx" pathParam={ hash } ml="auto"/>
       </Flex>
     </Box>
