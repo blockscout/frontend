@@ -18,7 +18,7 @@ const TxReceipt = dynamic(() => import('src/slices/tx/pages/receipt/TxReceipt'),
 
 const Page: NextPageWithLayout<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
-    <PageNextJs pathname={ pathname } query={ props.query }>
+    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <TxReceipt/>
     </PageNextJs>
   );
@@ -34,4 +34,4 @@ Page.getLayout = function getLayout(page: React.ReactElement) {
 
 export default Page;
 
-export { tx as getServerSideProps } from 'src/server/getServerSideProps/main';
+export { getServerSideProps } from 'src/server/getServerSideProps/routes/tx/hash';

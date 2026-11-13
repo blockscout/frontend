@@ -6,4 +6,4 @@
 - [x] 04 → `tickets/04-interpretation-headline/`
 - [x] 05 → `tickets/05-multichain-receipt/`
 - [x] 06 → `tickets/06-entry-points/`
-- [ ] 07 → `tickets/07-social-preview/`
+- [x] 07 → `tickets/07-social-preview/`

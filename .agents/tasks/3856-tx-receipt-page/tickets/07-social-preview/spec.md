@@ -27,5 +27,5 @@ Covers FR18.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Share the transaction preview fetching between the two routes
-- [ ] 2 `[agent]` Receipt `og` metadata, with unit tests
+- [x] 1 `[agent]` Share the transaction preview fetching between the two routes
+- [x] 2 `[agent]` Receipt `og` metadata, with unit tests
