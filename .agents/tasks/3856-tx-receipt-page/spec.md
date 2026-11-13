@@ -110,6 +110,7 @@ Sample transactions for testing, all on Ethereum mainnet (the `eth` demo):
 | Swap with a market → API sentence with an action type (FR7) | https://eth.blockscout.com/tx/0x1ebed606c37e4874eda13461ab38e440d889f49b47137a300c1da9828629b965 |
 | Withdraw → API sentence without an action type (FR7) | https://eth.blockscout.com/tx/0x73f0479cdf7cffaa76ce9b3310d0001bc09b8588952e677193c438537128d8fd |
 | User operations bundle → API sentence without an action type (FR7) | https://eth.blockscout.com/tx/0x3d8c62ce714d904102d08c44cae3cb24eb37da0fb18b4fa66b350fd9842a96a7 |
+| Contract creation → API sentence with an action type (FR7) | https://eth.blockscout.com/tx/0x9d894233af8de75105437bd40ef0c3d23894990bbd8f0d3259350424060581c9 |
 | Uninterpreted contract call, method is a selector → `Call` fallback (FR9) | https://eth.blockscout.com/tx/0x24d84c4e9cef2f6de892665425756eddbf05656c921f9aae27749176bebba4bd |
 | Uninterpreted, not a contract call, zero value → native-coin transfer fallback (FR9) | https://eth.blockscout.com/tx/0xa45d213907d22c906b8d9920438c39a65d9b6a4b6ee20f10176b583f93bfea19 |
 | Failed contract call with a method name → Failed status, `Call` fallback (FR9) | https://eth.blockscout.com/tx/0x36ffe4fbf94d4a62bef8fa0d2eecaaab78863e552a0d847ca8996e7b4b6894a5 |

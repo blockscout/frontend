@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -9,6 +9,7 @@ import NetworkLogoImage from 'src/slices/chain/logo/NetworkLogoImage';
 
 import config from 'src/config';
 
+import TxReceiptSummary from './summary/TxReceiptSummary';
 import TxReceiptActions from './TxReceiptActions';
 import TxReceiptDetails from './TxReceiptDetails';
 import TxReceiptStatus from './TxReceiptStatus';
@@ -38,7 +39,7 @@ const TxReceiptCard = ({ hash, data, isLoading }: Props) => {
         <TxReceiptStatus status={ data.status } isLoading={ isLoading }/>
       </Flex>
       <Flex flexDir="column" gap={ 6 }>
-        <Box minH="149px" borderRadius="md" bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}/>
+        <TxReceiptSummary data={ data } isLoading={ isLoading }/>
         <TxReceiptDetails data={ data } isLoading={ isLoading }/>
       </Flex>
       <TxReceiptActions hash={ hash }/>

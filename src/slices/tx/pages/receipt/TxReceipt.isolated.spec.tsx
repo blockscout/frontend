@@ -14,7 +14,7 @@ import { SECOND } from 'src/toolkit/utils/consts';
 import { nbsp } from 'src/toolkit/utils/htmlEntities';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { render, screen, cleanup, act, waitFor, fireEvent } from 'vitest/lib';
+import { render, screen, cleanup, act, waitFor, fireEvent, within } from 'vitest/lib';
 import { mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
 import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
@@ -73,8 +73,9 @@ function getRowValue(label: string) {
   return screen.getByText(label, { selector: 'dt' }).nextElementSibling?.textContent;
 }
 
+// an identicon keeps its own skeleton until the image loads, which never happens in jsdom
 async function waitForLoaded() {
-  await waitFor(() => expect(document.querySelector('[data-loading]')).toBeNull());
+  await waitFor(() => expect(document.querySelector('dd[data-loading]')).toBeNull());
 }
 
 describe('transaction receipt', () => {
@@ -139,6 +140,74 @@ describe('transaction receipt', () => {
     await waitForLoaded();
 
     expect(getRowValue('Tx fee')).not.toContain('$');
+  });
+});
+
+describe('transaction receipt summary without an interpretation', () => {
+  function getSummary() {
+    return within(screen.getByRole('region', { name: 'Transaction summary' }));
+  }
+
+  it('shows a call to a contract with its method, the parties joined by "interacted with"', async() => {
+    mockTx(() => txMock.withRawRevertReason);
+    renderReceipt();
+    await waitForLoaded();
+
+    const summary = getSummary();
+    expect(summary.getByRole('heading').textContent).toBe('Call');
+    expect(summary.getByText('updateSmartAsset')).toBeTruthy();
+    expect(summary.getByText('interacted with')).toBeTruthy();
+    expect(summary.getByText('Bad guy')).toBeTruthy();
+  });
+
+  it('marks the called contract with the contract icon', async() => {
+    mockTx(() => txMock.withRawRevertReason);
+    renderReceipt();
+    await waitForLoaded();
+
+    const icons = [ ...screen.getByRole('region', { name: 'Transaction summary' }).querySelectorAll('use') ].map((use) => use.getAttribute('href'));
+    expect(icons.some((href) => href?.endsWith('#contracts/verified'))).toBe(true);
+  });
+
+  it('describes a contract call without a method', async() => {
+    mockTx(() => ({ ...txMock.withRawRevertReason, method: null }));
+    renderReceipt();
+    await waitForLoaded();
+
+    expect(getSummary().getByText('Executed a contract call')).toBeTruthy();
+  });
+
+  it('shows the native coin transfer of a transaction to a non-contract, the parties joined by "to"', async() => {
+    mockTx(() => txMock.base);
+    renderReceipt();
+    await waitForLoaded();
+
+    const summary = getSummary();
+    expect(summary.getByRole('heading').textContent).toBe('Transfer');
+    expect(summary.getByText('42')).toBeTruthy();
+    expect(summary.getByText('ETH')).toBeTruthy();
+    expect(summary.getByText('to')).toBeTruthy();
+  });
+
+  it('shows a transfer of zero for a pending transaction', async() => {
+    mockTx(() => txMock.pending);
+    renderReceipt();
+    await waitForLoaded();
+
+    const summary = getSummary();
+    expect(summary.getByRole('heading').textContent).toBe('Transfer');
+    expect(summary.getByText('0')).toBeTruthy();
+  });
+
+  it.each([
+    [ 'call', txMock.withRawRevertReason ],
+    [ 'transfer', txMock.base ],
+  ])('links nothing in the %s summary', async(_, tx) => {
+    mockTx(() => tx);
+    renderReceipt();
+    await waitForLoaded();
+
+    expect(screen.getByRole('region', { name: 'Transaction summary' }).querySelector('a')).toBeNull();
   });
 });
 

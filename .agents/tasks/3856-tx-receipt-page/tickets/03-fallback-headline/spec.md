@@ -44,7 +44,7 @@ contract call, the failed call with a method name, the zero-value non-call, a fr
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold the summary panel, the parties row, the transfer view and the `Call` view; fallback selection with unit tests
-- [ ] 2 `[agent]` Style the `Call` fallback card to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6297-3202) · [readout](../../design-readout.md#card-call-fallback-pending--62973202)
-- [ ] 3 `[agent]` Style the transfer view to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6297-3859) · [readout](../../design-readout.md#card-transfer-view-token-transfer-and-pending-native-coin-fallback--62973859)
-- [ ] 4 `[agent]` Style the parties row's address-icon variants to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6282-3275) · [readout](../../design-readout.md#status-and-address-icon-showcase--62823275)
+- [x] 1 `[agent]` Scaffold the summary panel, the parties row, the transfer view and the `Call` view; fallback selection with unit tests
+- [x] 2 `[agent]` Style the `Call` fallback card to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6297-3202) · [readout](../../design-readout.md#card-call-fallback-pending--62973202)
+- [x] 3 `[agent]` Style the transfer view to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6297-3859) · [readout](../../design-readout.md#card-transfer-view-token-transfer-and-pending-native-coin-fallback--62973859)
+- [x] 4 `[agent]` Style the parties row's address-icon variants to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6282-3275) · [readout](../../design-readout.md#status-and-address-icon-showcase--62823275)
