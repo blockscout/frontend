@@ -44,7 +44,8 @@ describe('Time', () => {
   describe('with the UTC setting', () => {
     it.each([
       [ 'date_only', 'Nov 04 2026' ],
-      [ 'time_only', `22:51:55 (+00:00${ nbsp }UTC)` ],
+      [ 'time_only', '22:51:55' ],
+      [ 'utc_offset', `(+00:00${ nbsp }UTC)` ],
       [ 'lll_s', 'Nov 4, 2026 22:51:55' ],
       [ undefined, 'Nov 4, 2026 22:51' ],
       [ 'DD MMM, HH:mm:ss', '04 Nov, 22:51:55' ],
@@ -58,7 +59,8 @@ describe('Time', () => {
   describe('with the local-time setting', () => {
     it.each([
       [ 'date_only', 'Nov 05 2026' ],
-      [ 'time_only', `02:51:55 (+04:00${ nbsp }UTC)` ],
+      [ 'time_only', '02:51:55' ],
+      [ 'utc_offset', `(+04:00${ nbsp }UTC)` ],
       [ 'lll_s', 'Nov 5, 2026 2:51:55' ],
       [ undefined, 'Nov 5, 2026 2:51' ],
       [ 'DD MMM, HH:mm:ss', '05 Nov, 02:51:55' ],

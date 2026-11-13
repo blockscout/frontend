@@ -7,10 +7,11 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 
 import config from 'src/config';
+import type { Props as AssetValueProps } from 'src/shared/values/entity/AssetValue';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
-interface Props extends BoxProps {
+interface Props extends BoxProps, Pick<AssetValueProps, 'usdColor'> {
   loading?: boolean;
   tx: Partial<Pick<schemas['TransactionResponse'], 'fee' | 'celo' | 'stability_fee' | 'exchange_rate' | 'historic_exchange_rate'>>;
   hasExchangeRateToggle?: boolean;

@@ -1,7 +1,7 @@
 # Progress — Transaction receipt page
 
 - [x] 01 → `tickets/01-prefactor-shared-parts/`
-- [ ] 02 → `tickets/02-receipt-page-single-chain/`
+- [x] 02 → `tickets/02-receipt-page-single-chain/`
 - [ ] 03 → `tickets/03-fallback-headline/`
 - [ ] 04 → `tickets/04-interpretation-headline/`
 - [ ] 05 → `tickets/05-multichain-receipt/`
