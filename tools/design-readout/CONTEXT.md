@@ -36,8 +36,7 @@ means a rule change moved a cell, and the entry is updated in the same change.
 ## What an editor here must keep true
 
 - **A failed fetch is a failed run.** No token, a rejected token, a node not in the file: exit
-  non-zero, one line on stderr, nothing on stdout. The opposite of `tools/review-screen/`, whose
-  failures still produce output; do not copy that rule over.
+  non-zero, one line on stderr, nothing on stdout.
 - **The token variable is named in `./config.ts` only.** An agent told the variable's name will try
   to set it.
 - **Scoping is a pure function of the REST payload.** `./extract/scope.ts` takes the document and nothing
