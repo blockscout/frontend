@@ -27,6 +27,11 @@ current with `frontend`'s, so ticket 10 can delete `frontend`'s copy without los
 
 ## Details
 
+- **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
+  `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
+  are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
+  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
+  the `progress.md` tick are the only changes committed in `frontend`.
 - pnpm prepares a git dependency with npm when the package has a `package-lock.json`; keep or drop the
   lockfile deliberately and note which in the tool's `CONTEXT.md`.
 - The tool has no runtime dependencies; keep it that way (the parent spec excludes tools that have them).

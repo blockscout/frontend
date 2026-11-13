@@ -16,6 +16,9 @@ skills the child has (requirement 11) — unless the probe below makes links unn
   notes.
 - Planned shape if the probe fails again: committed symlinks from home's skills directory, prefixed with
   the child's name, read from the children list, plus the link check.
+- Until this ticket lands, a session started at the home root cannot invoke `frontend`'s task-pipeline
+  skills, so every ticket is run from a session started inside the nested `frontend` clone with the home
+  root added. Scope this one early.
 - Frontmatter skill names must stay unique across home and children.
 
 ## Blocking unknowns

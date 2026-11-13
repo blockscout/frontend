@@ -40,6 +40,11 @@ Cleanup of worktrees is ticket 04.
 
 ## Details
 
+- **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
+  `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
+  are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
+  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
+  the `progress.md` tick are the only changes committed in `frontend`.
 - Start from the probed creation script in `.ai/handoffs/2026-11-13-home-repo-probes.md` (main
   developer's notes); its reading of the gitignore file is replaced by the children list.
 - The dependency-install hook is `frontend`'s `worktree-deps.sh`, adapted to a child sitting inside a

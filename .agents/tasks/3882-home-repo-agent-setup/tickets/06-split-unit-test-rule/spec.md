@@ -26,6 +26,11 @@ ticket 08.
 
 ## Details
 
+- **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
+  `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
+  are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
+  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
+  the `progress.md` tick are the only changes committed in `frontend`.
 - Where a section mixes both (a general principle illustrated with a local utility), the principle goes
   to home with a neutral example and the local utility stays in the local half.
 - If no existing `CONTEXT.md` in `frontend` owns the local test setup, `notes.md` names where a new one

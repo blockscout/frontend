@@ -28,6 +28,11 @@ The review trio is ticket 07, the unit-test rule ticket 06, and the frozen copie
 
 ## Details
 
+- **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
+  `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
+  are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
+  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
+  the `progress.md` tick are the only changes committed in `frontend`.
 - The prototype already holds older copies of `update-glossary`, `adr` and `docs`; overwrite them from
   `frontend`, then apply the home wording.
 - In a home session the frozen rule in `frontend` loads alongside the home original. This double load is

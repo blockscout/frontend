@@ -29,6 +29,11 @@ Anything unproven is reported, never deleted.
 
 ## Details
 
+- **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
+  `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
+  are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
+  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
+  the `progress.md` tick are the only changes committed in `frontend`.
 - The removal hook never fired in the headless probe, and its input field name in the probed script is a
   guess. Probe it in an interactive session first and record the input shape in `notes.md`.
 - The removal hook covers only an interactive exit, leaving a worktree mid-session and deleting a
