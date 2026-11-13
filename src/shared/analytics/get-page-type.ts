@@ -82,6 +82,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/chain/[chain_slug_or_id]/token/[hash]': 'Chain token details',
   '/chain/[chain_slug_or_id]/token/[hash]/instance/[id]': 'Chain token NFT instance',
   '/chain/[chain_slug_or_id]/tx/[hash]': 'Chain transaction details',
+  '/chain/[chain_slug_or_id]/tx/[hash]/receipt': 'Chain transaction receipt',
   '/chain/[chain_slug_or_id]/visualize/sol2uml': 'Chain Solidity UML diagram',
   '/ecosystems': 'Ecosystems',
 

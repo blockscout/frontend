@@ -6,7 +6,10 @@ import React from 'react';
 import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 import { TX } from 'src/slices/tx/stubs/tx';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { routeParams } from 'src/shared/router/routes';
 import { useRouter } from 'src/shared/router/useRouter';
 
 import { copy } from 'src/toolkit/utils/htmlEntities';
@@ -16,6 +19,7 @@ import TxReceiptCard from './TxReceiptCard';
 const TxReceipt = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
+  const multichainContext = useMultichainContext();
 
   const txQuery = useTxQuery({ hash, isRpcFallbackEnabled: false });
 
@@ -25,9 +29,9 @@ const TxReceipt = () => {
   React.useEffect(() => {
     if (txQuery.isError && !isRedirectingRef.current) {
       isRedirectingRef.current = true;
-      router.replace({ pathname: '/tx/[hash]', query: { hash } });
+      router.replace(routeParams({ pathname: '/tx/[hash]', query: { hash } }, multichainContext));
     }
-  }, [ txQuery.isError, hash, router ]);
+  }, [ txQuery.isError, hash, router, multichainContext ]);
 
   return (
     <Flex

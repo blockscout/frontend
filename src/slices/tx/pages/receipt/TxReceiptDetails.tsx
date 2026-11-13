@@ -8,10 +8,10 @@ import type { schemas } from '@blockscout/api-types';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import TxFee from 'src/slices/tx/components/TxFee';
 
-import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
 
 import TxReceiptRow from './TxReceiptRow';
+import { useTxReceiptChainConfig } from './useTxReceiptChainConfig';
 
 interface RowValueProps {
   readonly data: schemas['TransactionResponse'];
@@ -51,7 +51,7 @@ const FeeValue = ({ data }: RowValueProps) => {
 };
 
 const ChainValue = () => {
-  return config.chain.name;
+  return useTxReceiptChainConfig().name;
 };
 
 const HashValue = ({ data }: RowValueProps) => {

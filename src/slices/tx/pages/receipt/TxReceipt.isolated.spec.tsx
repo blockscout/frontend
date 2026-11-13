@@ -3,12 +3,15 @@
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
 
 import { SocketProvider } from 'src/api/socket/context';
 
 import * as txMock from 'src/slices/tx/mocks/details';
 
+import { MultichainContext } from 'src/features/multichain/context';
+import { chainA } from 'src/features/multichain/mocks/chains';
 import * as interpretationMock from 'src/features/tx-interpretation/blockscout/mocks';
 
 import { EventTypes } from 'src/shared/analytics';
@@ -425,5 +428,98 @@ describe('transaction receipt actions', () => {
     expect(writeTextMock).toHaveBeenCalledWith(RECEIPT_URL);
     expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Copy link', Source: 'Transaction receipt' });
     await waitFor(() => expect(screen.getByRole('button', { name: 'copy' }).querySelector('use')?.getAttribute('href')).toMatch(/#check$/));
+  });
+});
+
+describe('transaction receipt in multichain mode', () => {
+  const ROUTED_CHAIN_LOGO = '/assets/configs/network_logo.svg';
+
+  function buildRoutedChain(logo: ClusterChainConfig['app_config']['chain']['logo']): ClusterChainConfig {
+    return {
+      ...chainA,
+      app_config: {
+        ...chainA.app_config,
+        chain: {
+          ...chainA.app_config.chain,
+          name: 'Routed chain',
+          logo,
+          currency: { ...chainA.app_config.chain.currency, symbol: 'xDAI' },
+        },
+      },
+    };
+  }
+
+  function renderMultichainReceipt(chain = buildRoutedChain({ 'default': ROUTED_CHAIN_LOGO, dark: undefined })) {
+    routerStandIn.reset({ pathname: '/chain/[chain_slug_or_id]/tx/[hash]/receipt', query: { chain_slug_or_id: chain.slug, hash: HASH } });
+    return render(
+      <RouterStandInProvider>
+        <MultichainContext.Provider value={{ chain }}>
+          <SocketProvider url={ MOCK_SOCKET_URL }>
+            <TxReceipt/>
+          </SocketProvider>
+        </MultichainContext.Provider>
+      </RouterStandInProvider>,
+    );
+  }
+
+  it('shows the routed chain\'s logo from its own explorer, its name and native coin', async() => {
+    mockTx(() => txMock.base);
+    renderMultichainReceipt();
+    await waitForLoaded();
+
+    expect(screen.getByAltText('Routed chain network logo').getAttribute('src')).toBe(`https://op-mainnet.com${ ROUTED_CHAIN_LOGO }`);
+    expect(getRowValue('Chain')).toBe('Routed chain');
+    expect(within(screen.getByRole('region', { name: 'Transaction summary' })).getByText('xDAI')).toBeTruthy();
+  });
+
+  it('shows the logo placeholder when the routed chain has no logo', async() => {
+    mockTx(() => txMock.base);
+    renderMultichainReceipt(buildRoutedChain({ 'default': undefined, dark: undefined }));
+    await waitForLoaded();
+
+    expect(screen.getByLabelText('Network logo placeholder')).toBeTruthy();
+  });
+
+  it('asks the routed chain\'s API for the transaction', async() => {
+    mockTx(() => txMock.base);
+    renderMultichainReceipt();
+    await waitForLoaded();
+
+    expect(apiRequests()).toContain(`${ chainA.app_config.apis.core?.endpoint }/api/v2/transactions/${ HASH }`);
+  });
+
+  it('turns a pending transaction into its final status when the block is collated', async() => {
+    let tx = txMock.pending;
+    mockTx(() => tx);
+    renderMultichainReceipt();
+    await waitForLoaded();
+
+    tx = txMock.base;
+    await waitFor(() => sendSocketMessage(`transactions:${ HASH }`, 'collated', {}));
+    await act(() => vi.advanceTimersByTimeAsync(STATUS_UPDATE_DELAY));
+
+    expect(await screen.findByText('Success')).toBeTruthy();
+    expect(getRowValue('Date')).toBe('Oct 10 2022');
+  });
+
+  it('links the transaction details and copies the receipt link on the same chain', async() => {
+    mockTx(() => txMock.base);
+    const { container } = renderMultichainReceipt();
+    await waitForLoaded();
+
+    expect(container.querySelector('a')?.getAttribute('href')).toBe(`/chain/${ chainA.slug }/tx/${ HASH }`);
+
+    fireEvent.click(screen.getByRole('button', { name: 'copy' }));
+    expect(writeTextMock).toHaveBeenCalledWith(`http://localhost:3000/chain/${ chainA.slug }/tx/${ HASH }/receipt`);
+  });
+
+  it('redirects to the transaction page of the same chain on a failed request', async() => {
+    mockApiAndRpc({ api: () => ({ status: 404, body: '{}' }) });
+    renderMultichainReceipt();
+
+    await act(() => vi.advanceTimersByTimeAsync(10 * SECOND));
+
+    await waitFor(() => expect(routerStandIn.pathname).toBe('/chain/[chain_slug_or_id]/tx/[hash]'));
+    expect(routerStandIn.query).toEqual({ chain_slug_or_id: chainA.slug, hash: HASH });
   });
 });

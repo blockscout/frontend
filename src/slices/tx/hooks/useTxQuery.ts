@@ -20,6 +20,7 @@ import { TX } from 'src/slices/tx/stubs/tx';
 import { formatTxDetailsRpcData } from 'src/slices/tx/utils/format-rpc-data';
 
 import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
@@ -54,6 +55,7 @@ export default function useTxQuery(params?: Params): TxQuery {
 
   const router = useRouter();
   const queryClient = useQueryClient();
+  const chainId = useMultichainContext()?.chain.id;
 
   const hash = params?.hash ?? getQueryParamString(router.query.hash);
 
@@ -138,9 +140,9 @@ export default function useTxQuery(params?: Params): TxQuery {
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     await delay(5 * SECOND);
     queryClient.invalidateQueries({
-      queryKey: getResourceKey('core:tx', { pathParams: { hash } }),
+      queryKey: getResourceKey('core:tx', { pathParams: { hash }, chainId }),
     });
-  }, [ queryClient, hash ]);
+  }, [ queryClient, hash, chainId ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketStatus('close');

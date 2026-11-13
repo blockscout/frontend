@@ -31,6 +31,8 @@ const OG_ROOT_PAGE = {
 
 const TX_DESCRIPTION = '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.';
 
+const MULTICHAIN_TX_DESCRIPTION = 'View transaction %hash% details across supported chains.';
+
 const DESCRIPTION_DEFAULT = 'Scan %chain_explorer_title% with Blockscout. Search transactions, verify smart contracts, analyze addresses, and access blockchain data through explorer APIs.';
 
 export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
@@ -857,7 +859,17 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transaction %hash% details',
       },
       description: {
-        'default': 'View transaction %hash% details across supported chains.',
+        'default': MULTICHAIN_TX_DESCRIPTION,
+      },
+    },
+  },
+  '/chain/[chain_slug_or_id]/tx/[hash]/receipt': {
+    metadata: {
+      title: {
+        'default': '%chain_name% transaction receipt %hash%',
+      },
+      description: {
+        'default': MULTICHAIN_TX_DESCRIPTION,
       },
     },
   },

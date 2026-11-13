@@ -8,13 +8,12 @@ import type { schemas } from '@blockscout/api-types';
 import NetworkLogoImage from 'src/slices/chain/logo/NetworkLogoImage';
 import { TX } from 'src/slices/tx/stubs/tx';
 
-import config from 'src/config';
-
 import TxReceiptSummary from './summary/TxReceiptSummary';
 import { useTxReceiptInterpretation } from './summary/useTxReceiptInterpretation';
 import TxReceiptActions from './TxReceiptActions';
 import TxReceiptDetails from './TxReceiptDetails';
 import TxReceiptStatus from './TxReceiptStatus';
+import { useTxReceiptChainConfig } from './useTxReceiptChainConfig';
 
 // the skeletons are wider than most settled cards, so a loading card keeps its narrowest width instead of following them
 const NARROW_CARD_WIDTH = '360px';
@@ -27,6 +26,7 @@ interface Props {
 
 const TxReceiptCard = ({ hash, data, isLoading: isTxLoading }: Props) => {
   const interpretation = useTxReceiptInterpretation({ hash, status: data.status, isTxLoading });
+  const chainConfig = useTxReceiptChainConfig();
 
   // the first load shows one unchanging placeholder until the headline is in; a later headline fetch,
   // once a pending transaction settles, keeps the card as it is
@@ -51,7 +51,7 @@ const TxReceiptCard = ({ hash, data, isLoading: isTxLoading }: Props) => {
       boxShadow="size.xl"
     >
       <Flex alignItems="center" justifyContent="space-between" columnGap={ 3 }>
-        <NetworkLogoImage chainConfig={ config.chain }/>
+        <NetworkLogoImage chainConfig={ chainConfig }/>
         <TxReceiptStatus status={ shownData.status } isLoading={ isLoading }/>
       </Flex>
       <Flex flexDir="column" gap={ 6 }>

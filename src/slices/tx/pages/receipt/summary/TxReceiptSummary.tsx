@@ -5,8 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { TxInterpretationSummary } from 'src/features/tx-interpretation/common/types/api';
 
-import config from 'src/config';
-
+import { useTxReceiptChainConfig } from '../useTxReceiptChainConfig';
 import { getReceiptSummary } from './get-receipt-summary';
 import TxReceiptCallView from './TxReceiptCallView';
 import TxReceiptSentenceView from './TxReceiptSentenceView';
@@ -19,9 +18,10 @@ interface Props {
 }
 
 const TxReceiptSummary = ({ data, interpretations, isLoading }: Props) => {
+  const { decimals } = useTxReceiptChainConfig().currency;
   const summary = React.useMemo(
-    () => getReceiptSummary(data, interpretations, config.chain.currency.decimals),
-    [ data, interpretations ],
+    () => getReceiptSummary(data, interpretations, decimals),
+    [ data, interpretations, decimals ],
   );
 
   switch (summary.type) {

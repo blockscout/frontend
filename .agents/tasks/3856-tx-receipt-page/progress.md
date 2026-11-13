@@ -4,6 +4,6 @@
 - [x] 02 → `tickets/02-receipt-page-single-chain/`
 - [x] 03 → `tickets/03-fallback-headline/`
 - [x] 04 → `tickets/04-interpretation-headline/`
-- [ ] 05 → `tickets/05-multichain-receipt/`
+- [x] 05 → `tickets/05-multichain-receipt/`
 - [ ] 06 → `tickets/06-entry-points/`
 - [ ] 07 → `tickets/07-social-preview/`

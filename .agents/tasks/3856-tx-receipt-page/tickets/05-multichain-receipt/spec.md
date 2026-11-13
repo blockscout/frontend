@@ -44,5 +44,5 @@ fresh pending transaction on two different chains
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Scaffold the multichain receipt route with its providers — skill: `add-new-page`
-- [ ] 2 `[agent]` Per-chain logo, chain name, same-chain links and redirect in the card, with unit tests
+- [x] 1 `[agent]` Scaffold the multichain receipt route with its providers — skill: `add-new-page`
+- [x] 2 `[agent]` Per-chain logo, chain name, same-chain links and redirect in the card, with unit tests

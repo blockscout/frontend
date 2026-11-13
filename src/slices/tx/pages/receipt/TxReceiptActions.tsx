@@ -3,6 +3,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import * as analytics from 'src/shared/analytics';
 import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
@@ -17,6 +19,8 @@ interface Props {
 }
 
 const TxReceiptActions = ({ hash }: Props) => {
+  const multichainContext = useMultichainContext();
+
   const handleDetailsClick = React.useCallback(() => {
     analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Transaction details', Source: ANALYTICS_SOURCE });
   }, []);
@@ -28,7 +32,7 @@ const TxReceiptActions = ({ hash }: Props) => {
   return (
     <Flex columnGap={ 2 }>
       <Link
-        href={ route({ pathname: '/tx/[hash]', query: { hash } }) }
+        href={ route({ pathname: '/tx/[hash]', query: { hash } }, multichainContext) }
         target="_blank"
         onClick={ handleDetailsClick }
         flexGrow={ 1 }
@@ -37,7 +41,7 @@ const TxReceiptActions = ({ hash }: Props) => {
         <Button variant="subtle" size="md" w="100%">Transaction details</Button>
       </Link>
       <CopyToClipboard
-        text={ route({ pathname: '/tx/[hash]/receipt', query: { hash } }, { absolute: true }) }
+        text={ route({ pathname: '/tx/[hash]/receipt', query: { hash } }, { chain: multichainContext?.chain, absolute: true }) }
         type="link"
         variant="subtle"
         size="md"
