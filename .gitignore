@@ -79,9 +79,6 @@ npm-debug.log*
 # compiled Playwright runner
 /tools/playwright/dist/
 
-# compiled review-screen CLI
-/tools/review-screen/dist/
-
 # compiled design-readout CLI
 /tools/design-readout/dist/
 
