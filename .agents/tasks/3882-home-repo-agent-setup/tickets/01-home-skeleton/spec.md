@@ -51,9 +51,9 @@ Child skills are not part of this ticket (ticket 02), nor are hooks (tickets 03,
 
 ## Leaf worklist
 
-- [ ] 1 `[human]` Rename `blockscout/frontend-devkit` to `blockscout/frontend-home`
-- [ ] 2 `[human]` Clone home into a fresh directory, clone `frontend` inside it, check out `issue-3882` there
-- [ ] 3 `[agent]` Restructure to `.agents/` with provider symlinks and root instructions; drop the two Honk-owned skills
-- [ ] 4 `[agent]` Children list, bootstrap script, ignore files and their consistency check
-- [ ] 5 `[agent]` Active-child section in home's instructions
-- [ ] 6 `[agent]` Verify the bootstrap script, and loading and search from a headless home session
+- [x] 1 `[human]` Rename `blockscout/frontend-devkit` to `blockscout/frontend-home`
+- [x] 2 `[human]` Clone home into a fresh directory, clone `frontend` inside it, check out `issue-3882` there
+- [x] 3 `[agent]` Restructure to `.agents/` with provider symlinks and root instructions; drop the two Honk-owned skills
+- [x] 4 `[agent]` Children list, bootstrap script, ignore files and their consistency check
+- [x] 5 `[agent]` Active-child section in home's instructions
+- [x] 6 `[agent]` Verify the bootstrap script, and loading and search from a headless home session

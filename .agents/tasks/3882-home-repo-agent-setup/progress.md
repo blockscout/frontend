@@ -1,6 +1,6 @@
 # Progress — Share the agent setup through a home repo, phase 1
 
-- [ ] 01 → `tickets/01-home-skeleton/`
+- [x] 01 → `tickets/01-home-skeleton/`
 - [ ] 02 → `tickets/02-child-skills-in-home-sessions/`
 - [ ] 03 → `tickets/03-worktree-creation-and-session-hooks/`
 - [ ] 04 → `tickets/04-worktree-cleanup/`
