@@ -19,9 +19,10 @@ const DOCS_URL = 'https://docs.blockscout.com/using-blockscout/token-info#expedi
 interface Props {
   html: string;
   readOnly?: boolean;
+  required?: boolean;
 }
 
-const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
+const TokenInfoExpeditedReview = ({ html, readOnly, required }: Props) => {
 
   const safeHtml = React.useMemo(() => sanitizeHtml(html), [ html ]);
 
@@ -52,7 +53,14 @@ const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
           </List.Item>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
             Once payment is completed, enter the <chakra.span fontWeight={ 600 }>transaction hash</chakra.span>
-            <FormFieldText<Fields, 'payment_tx'> name="payment_tx" placeholder="Payment transaction hash" readOnly={ readOnly } mt={ 2 } rules={ rules }/>
+            <FormFieldText<Fields, 'payment_tx'>
+              name="payment_tx"
+              placeholder="Payment transaction hash"
+              readOnly={ readOnly }
+              required={ required }
+              mt={ 2 }
+              rules={ rules }
+            />
           </List.Item>
         </List.Root>
       </Box>

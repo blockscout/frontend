@@ -16,6 +16,10 @@ export const ADMIN_API_RESOURCES = {
     path: '/api/v1/chains/:instanceId/token-info-submissions{/:id}',
     pathParams: [ 'instanceId' as const, 'id' as const ],
   },
+  token_info_application_payment_tx: {
+    path: '/api/v1/chains/:instanceId/token-info-submissions/:id/payment-tx',
+    pathParams: [ 'instanceId' as const, 'id' as const ],
+  },
   marketplace_dapps: {
     path: '/api/v1/chains/:instanceId/marketplace/dapps',
     pathParams: [ 'instanceId' as const ],
@@ -36,6 +40,7 @@ export type AdminApiResourceName = `admin:${ keyof typeof ADMIN_API_RESOURCES }`
 export type AdminApiResourcePayload<R extends AdminApiResourceName> =
 R extends 'admin:token_info_applications_config' ? adminRs.ListTokenInfoSubmissionSelectorsResponse :
 R extends 'admin:token_info_applications' ? adminRs.ListTokenInfoSubmissionsResponse :
+R extends 'admin:token_info_application_payment_tx' ? adminRs.TokenInfoSubmission :
 R extends 'admin:marketplace_dapps' ? Array<adminRs.MarketplaceDapp> :
 R extends 'admin:marketplace_dapp' ? adminRs.MarketplaceDapp :
 never;

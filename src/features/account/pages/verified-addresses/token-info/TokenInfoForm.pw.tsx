@@ -39,3 +39,18 @@ test('status IN_PROCESS', async({ render, mockApiResponse, mockAssetResponse }) 
   const component = await render(<TokenInfoForm { ...props }/>);
   await expect(component).toHaveScreenshot();
 });
+
+test('status IN_PROCESS with expedited review', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+  await mockEnvs([
+    ...ENVS_MAP.verifiedAddresses,
+  ]);
+  await mockFormData({ mockApiResponse, mockAssetResponse });
+  const props = {
+    address: mocks.VERIFIED_ADDRESS.ITEM_1.contractAddress,
+    tokenName: 'Test Token (TT)',
+    application: mocks.TOKEN_INFO_APPLICATION.IN_PROCESS,
+    onSubmit: () => {},
+  };
+  const component = await render(<TokenInfoForm { ...props }/>);
+  await expect(component).toHaveScreenshot();
+});
