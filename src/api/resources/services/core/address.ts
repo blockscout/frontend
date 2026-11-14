@@ -10,6 +10,7 @@ import type {
   AddressTokensFilter,
   AddressNFTTokensFilter,
 } from 'src/slices/address/types/api';
+import type { AddressInternalTxsFilters } from 'src/slices/internal-tx/types/api';
 import type { TransactionsSorting } from 'src/slices/tx/types/api';
 
 export const CORE_API_ADDRESS_RESOURCES = {
@@ -47,7 +48,7 @@ export const CORE_API_ADDRESS_RESOURCES = {
   address_internal_txs: {
     path: '/api/v2/addresses/:hash/internal-transactions',
     pathParams: [ 'hash' as const ],
-    filterFields: [ 'filter' as const ],
+    filterFields: [ 'filter' as const, 'include_zero_value' as const ],
     paginated: true,
   },
   address_token_transfers: {
@@ -184,7 +185,8 @@ never;
 /* eslint-disable @stylistic/indent */
 export type CoreApiAddressPaginationFilters<R extends CoreApiAddressResourceName> =
 R extends 'core:addresses_metadata_search' ? AddressesMetadataSearchFilters :
-R extends 'core:address_txs' | 'core:address_internal_txs' ? AddressTxsFilters :
+R extends 'core:address_txs' ? AddressTxsFilters :
+R extends 'core:address_internal_txs' ? AddressInternalTxsFilters :
 R extends 'core:address_token_transfers' ? AddressTokenTransferFilters :
 R extends 'core:address_tokens' ? AddressTokensFilter :
 R extends 'core:address_nfts' ? AddressNFTTokensFilter :

@@ -3,7 +3,7 @@
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
 import type { TxInterpretationResponse } from 'src/features/tx-interpretation/common/types/api';
-import type { InternalTransactionFilters } from 'src/slices/internal-tx/types/api';
+import type { InternalTransactionFilters, ZeroValueFilter } from 'src/slices/internal-tx/types/api';
 import type { TokenTransferFilters } from 'src/slices/token-transfer/types/api';
 import type { TxsFilters } from 'src/slices/tx/types/api';
 
@@ -38,7 +38,7 @@ export const CORE_API_TX_RESOURCES = {
   tx_internal_txs: {
     path: '/api/v2/transactions/:hash/internal-transactions',
     pathParams: [ 'hash' as const ],
-    filterFields: [ ],
+    filterFields: [ 'include_zero_value' as const ],
     paginated: true,
   },
   tx_logs: {
@@ -83,7 +83,7 @@ export const CORE_API_TX_RESOURCES = {
   internal_txs: {
     path: '/api/v2/internal-transactions',
     paginated: true,
-    filterFields: [ 'transaction_hash' as const ],
+    filterFields: [ 'transaction_hash' as const, 'include_zero_value' as const ],
   },
 } satisfies Record<string, ApiResource>;
 
@@ -114,6 +114,7 @@ never;
 export type CoreApiTxPaginationFilters<R extends CoreApiTxResourceName> =
 R extends 'core:txs' ? TxsFilters :
 R extends 'core:tx_token_transfers' ? TokenTransferFilters :
+R extends 'core:tx_internal_txs' ? ZeroValueFilter :
 R extends 'core:internal_txs' ? InternalTransactionFilters :
 never;
 /* eslint-enable @stylistic/indent */
