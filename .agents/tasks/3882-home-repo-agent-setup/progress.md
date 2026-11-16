@@ -5,7 +5,7 @@
 - [x] 03 → `tickets/03-worktree-creation-and-session-hooks/`
 - [x] 04 → `tickets/04-worktree-cleanup/`
 - [x] 05 → `tickets/05-move-general-skills-and-rules/`
-- [ ] 06 → `tickets/06-split-unit-test-rule/`
+- [x] 06 → `tickets/06-split-unit-test-rule/`
 - [ ] 07 → `tickets/07-review-trio-from-home/`
 - [ ] 08 → `tickets/08-frozen-copies-in-frontend/`
 - [ ] 09 → `tickets/09-package-doc-links/`

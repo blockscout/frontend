@@ -39,5 +39,5 @@ ticket 08.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Decide the cut section by section and record it in `notes.md`
-- [ ] 2 `[agent]` Write the home rule and verify it loads on a child spec file
+- [x] 1 `[agent]` Decide the cut section by section and record it in `notes.md`
+- [x] 2 `[agent]` Write the home rule and verify it loads on a child spec file
