@@ -8,6 +8,9 @@ alwaysApply: false
 ---
 # Documenting the code
 
+> **Frozen copy.** This rule has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/rules/docs.md`. Edit it there, not here: see [Frozen copies](../README.md#frozen-copies).
+
 The code is the only source of truth for what it does. A doc that restates it is a second source that
 nobody executes, so it drifts within weeks and then the reader has to guess which one is lying. Write
 only what the code cannot say.

@@ -36,5 +36,5 @@ behaviour, and the Honk playbooks run unchanged.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Frozen marker on the five skills and two rules; README note
-- [ ] 2 `[agent]` Move the local half of the unit-test rule to its `CONTEXT.md` and freeze the general half
+- [x] 1 `[agent]` Frozen marker on the five skills and two rules; README note
+- [x] 2 `[agent]` Move the local half of the unit-test rule to its `CONTEXT.md` and freeze the general half

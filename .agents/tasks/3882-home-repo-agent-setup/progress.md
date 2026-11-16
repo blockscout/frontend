@@ -7,7 +7,7 @@
 - [x] 05 → `tickets/05-move-general-skills-and-rules/`
 - [x] 06 → `tickets/06-split-unit-test-rule/`
 - [x] 07 → `tickets/07-review-trio-from-home/`
-- [ ] 08 → `tickets/08-frozen-copies-in-frontend/`
+- [x] 08 → `tickets/08-frozen-copies-in-frontend/`
 - [ ] 09 → `tickets/09-package-doc-links/`
 - [ ] 10 → `tickets/10-consume-doc-links-by-pin/`
 - [ ] 11 → `tickets/11-adr-setup-housekeeping/`
