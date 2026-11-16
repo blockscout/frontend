@@ -11,3 +11,4 @@
 - [ ] 09 → `tickets/09-package-doc-links/`
 - [ ] 10 → `tickets/10-consume-doc-links-by-pin/`
 - [ ] 11 → `tickets/11-adr-setup-housekeeping/`
+- [ ] 12 → `tickets/12-shape-vitest-context/`
