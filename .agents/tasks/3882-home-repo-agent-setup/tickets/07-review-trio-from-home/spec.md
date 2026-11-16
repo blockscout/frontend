@@ -50,7 +50,7 @@ request and follow it to its report.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Bring the trio and the agent definition to home; add the child parameter throughout
-- [ ] 2 `[agent]` Cursor reviewer launch from the home worktree root, with the fallback if needed
-- [ ] 3 `[human]` Pick an open `frontend` pull request and start the loop from home
-- [ ] 4 `[agent]` Fix what the real loop surfaces
+- [x] 1 `[agent]` Bring the trio and the agent definition to home; add the child parameter throughout
+- [x] 2 `[agent]` Cursor reviewer launch from the home worktree root, with the fallback if needed
+- [x] 3 `[human]` Pick an open `frontend` pull request and start the loop from home
+- [x] 4 `[agent]` Fix what the real loop surfaces
