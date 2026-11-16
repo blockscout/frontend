@@ -41,6 +41,9 @@ request and follow it to its report.
 - These three are the exception to the active-child convention because they launch other processes; the
   other moved skills take no parameter.
 - The frozen copies in `frontend` keep working without a parameter for sessions started there (ticket 08).
+- If ticket 02 has landed, home's skills directory holds a symlink for each of the three names. Moving a
+  skill to home means replacing its link with the real directory and running the link script, so
+  `pnpm lint:skill-links` passes.
 - Problems found during the real loop are fixed in this ticket; anything that is not a skill-text change
   is recorded in `notes.md`.
 
