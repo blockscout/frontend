@@ -17,15 +17,15 @@ command.
 How to verify: `pnpm install`, `pnpm lint:doc-links`; then run the bump script against a newer home
 commit and repeat.
 
-- [ ] `tools/doc-links/` is removed; its `CONTEXT.md` content that is about `frontend`'s use of the tool
+- [x] `tools/doc-links/` is removed; its `CONTEXT.md` content that is about `frontend`'s use of the tool
   (configuration, what a failure means here) survives in a `frontend` document, the rest lives in home.
-- [ ] Home is a dev dependency pinned by commit, and the workspace build allowlist carries the package
+- [x] Home is a dev dependency pinned by commit, and the workspace build allowlist carries the package
   with that exact commit.
-- [ ] A bump script changes both places together and reinstalls; it is the one documented way to bump.
-- [ ] `pnpm lint:doc-links` runs the installed command and passes locally.
-- [ ] The Checks workflow's doc-links step passes on the pull request.
-- [ ] Every reference to `tools/doc-links` in the instruction set, docs and configs is updated.
-- [ ] `(human)` The new dependency, its build allowlist entry and the install-time cost in CI are
+- [x] A bump script changes both places together and reinstalls; it is the one documented way to bump.
+- [x] `pnpm lint:doc-links` runs the installed command and passes locally.
+- [x] The Checks workflow's doc-links step passes on the pull request.
+- [x] Every reference to `tools/doc-links` in the instruction set, docs and configs is updated.
+- [x] `(human)` The new dependency, its build allowlist entry and the install-time cost in CI are
   acceptable.
 
 ## Details
@@ -40,4 +40,4 @@ commit and repeat.
 
 - [x] 1 `[agent]` Add the pinned dependency, allowlist entry and bump script; point `lint:doc-links` at the installed command
 - [x] 2 `[agent]` Remove `tools/doc-links/`, move its `frontend`-specific context, update references
-- [ ] 3 `[agent]` Confirm the Checks workflow is green on the pull request and record install time
+- [x] 3 `[agent]` Confirm the Checks workflow is green on the pull request and record install time
