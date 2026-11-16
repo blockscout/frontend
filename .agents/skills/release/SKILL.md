@@ -59,10 +59,10 @@ exits:
   on `main` (a PR with the `backport` label, picked by the next run) or on the release branch (docs only).
 - **CI run failed** — report the failing job with the run URL and stop. No Slack message.
 - **Passed** — request the staging roll-up in Slack, from `./slack-message-template.md` in this directory:
-  the alpha tag, the pre-release URL from the command's output, and the breaking-ENV list derived per the
+  the alpha tag, the pre-release URL from the command's output, the breaking-ENV list derived per the
   template's rule from the "Changes in ENV variables" section of the notes (`pnpm release notes
-  vX.Y.Z-alpha.N`, or the release page). **Draft first**, show the rendered message and send only once the
-  operator approves it.
+  vX.Y.Z-alpha.N`, or the release page), and the PRs the alpha adds to the previous one (`pnpm release prs
+  vX.Y.Z-alpha.N`). **Draft first**, show the rendered message and send only once the operator approves it.
 
 ## `publish vX.Y.Z`
 

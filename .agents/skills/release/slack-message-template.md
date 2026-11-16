@@ -14,20 +14,28 @@ channel and group ID, so a moved channel or renamed group is fixed in one place.
 
 ## Placeholders
 
-| Placeholder              | Meaning                                                                 |
-| ------------------------ | ----------------------------------------------------------------------- |
-| `<alpha-tag>`            | The pre-release tag, e.g. `v1.3.0-alpha.1`.                             |
-| `<breaking-env-changes>` | Bulleted list of breaking ENV changes, or the single line `Отсутствуют.`        |
-| `<release-url>`          | Link to the published GitHub pre-release.                              |
-| `<qa-group-mention>`     | QA team group mention token `<!subteam^<group-id>>`, built from `.agents/TEAM.md`. |
+| Placeholder                        | Meaning                                                                 |
+| ---------------------------------- | ----------------------------------------------------------------------- |
+| `<alpha-tag>`                      | The pre-release tag, e.g. `v1.3.0-alpha.1`.                             |
+| `<previous-alpha-tag>`             | The alpha `pnpm release prs <alpha-tag>` reports comparing with.        |
+| `<breaking-env-changes>`           | Bulleted list of breaking ENV changes, or the single line `Отсутствуют.`        |
+| `<new-breaking-env-changes>`       | The same, for the PRs `pnpm release prs <alpha-tag>` lists.             |
+| `<announced-breaking-env-changes>` | The same, for the release's other PRs: announced with an earlier alpha. |
+| `<changes>`                        | One `• <pr-url\|#N> <one-liner>` per PR `pnpm release prs <alpha-tag>` lists, in its order, the one-liner the PR title in Russian; or `Отсутствуют.` |
+| `<release-url>`                    | Link to the published GitHub pre-release.                              |
+| `<qa-group-mention>`               | QA team group mention token `<!subteam^<group-id>>`, built from `.agents/TEAM.md`. |
+
+Which template applies is what `pnpm release prs <alpha-tag>` says: when no alpha precedes the tag, the first
+alpha's; otherwise a later alpha's.
 
 The input is the "Changes in ENV variables" section of the release notes (`pnpm release notes <alpha-tag>`),
-one entry per PR as its author wrote it. A change is **breaking** if a deployment must change its config
-to keep working: a **removed** variable, a **renamed** variable, or a change to a **required**/default value
-or **allowed value set**. New optional variables are *not* breaking. When in doubt, list it
-and mark it `(возможно, ломающее)` — better to over-report than to miss one.
+one entry per PR as its author wrote it; for a later alpha, the new ones are those `pnpm release prs
+<alpha-tag>` nests under its PRs. A change is **breaking** if a deployment must change its config to keep
+working: a **removed** variable, a **renamed** variable, or a change to a **required**/default value or
+**allowed value set**. New optional variables are *not* breaking. When in doubt, list it and mark it
+`(возможно, ломающее)` — better to over-report than to miss one.
 
-## Template
+## Template — the first alpha
 
 ```
 📦 Пре-релиз фронтенда *`<alpha-tag>`* готов для стейджинга.
@@ -69,6 +77,51 @@ cc <qa-group-mention>
 *Ломающие изменения ENV:* Отсутствуют.
 
 Содержание релиза: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha.1
+
+cc <qa-group-mention>
+```
+
+## Template — a later alpha
+
+```
+📦 Пре-релиз фронтенда *`<alpha-tag>`* готов для стейджинга.
+
+Раскатите, пожалуйста, этот тег на стейджинг-инстансы.
+
+*Ломающие изменения ENV с `<previous-alpha-tag>`:*
+<new-breaking-env-changes>
+
+*Объявлены ранее:*
+<announced-breaking-env-changes>
+
+*Изменения относительно `<previous-alpha-tag>`:*
+<changes>
+
+Содержание релиза: <release-url>
+
+cc <qa-group-mention>
+```
+
+An empty list goes on its heading's line, as in the first alpha's example without breaking changes.
+
+### Example — a later alpha
+
+```
+📦 Пре-релиз фронтенда *`v1.3.0-alpha.2`* готов для стейджинга.
+
+Раскатите, пожалуйста, этот тег на стейджинг-инстансы.
+
+*Ломающие изменения ENV с `v1.3.0-alpha.1`:*
+• `NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE`: разрешено только безопасное подмножество HTML.
+
+*Объявлены ранее:*
+• Удалена `NEXT_PUBLIC_FOO` — фича X теперь читает `NEXT_PUBLIC_BAR`.
+
+*Изменения относительно `v1.3.0-alpha.1`:*
+• <https://github.com/blockscout/frontend/pull/3845|#3845> Предупреждение о скаме на странице адреса
+• <https://github.com/blockscout/frontend/pull/3859|#3859> Алерт в шапке принимает только безопасный HTML
+
+Содержание релиза: https://github.com/blockscout/frontend/releases/tag/v1.3.0-alpha.2
 
 cc <qa-group-mention>
 ```

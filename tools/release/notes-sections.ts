@@ -45,11 +45,16 @@ function nestedChanges(section: string): Array<string> {
   return LIST_ITEM.test(section) ? lines : [ `  - ${ lines[0].trim() }`, ...lines.slice(1) ];
 }
 
+export function nestedEnvChanges(body: string): Array<string> {
+  const section = filledSection(body, ENV_HEADING);
+  return section === undefined ? [] : nestedChanges(section);
+}
+
 export function envChanges(prs: ReadonlyArray<ReleasePullRequest>): string {
   return prs
     .flatMap(({ number, body }) => {
-      const section = filledSection(body, ENV_HEADING);
-      return section === undefined ? [] : [ `- #${ number }`, ...nestedChanges(section) ];
+      const changes = nestedEnvChanges(body);
+      return changes.length === 0 ? [] : [ `- #${ number }`, ...changes ];
     })
     .join('\n');
 }

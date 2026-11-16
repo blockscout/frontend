@@ -107,13 +107,27 @@ export function latestFinalTag(line: Line, tags: ReadonlyArray<string>): string 
   return latest === undefined ? undefined : formatVersion(latest);
 }
 
-export function latestAlphaTag(version: Version, tags: ReadonlyArray<string>): string | undefined {
-  const final = formatVersion(version);
-  const numbers = tags
+function alphaNumbers(final: string, tags: ReadonlyArray<string>): Array<number> {
+  return tags
     .map((tag) => ALPHA_TAG.exec(tag))
     .filter((match): match is RegExpExecArray => match !== null && match[1] === final)
     .map((match) => Number(match[2]));
+}
+
+function highestAlphaTag(final: string, numbers: ReadonlyArray<number>): string | undefined {
   return numbers.length === 0 ? undefined : `${ final }-alpha.${ Math.max(...numbers) }`;
+}
+
+export function latestAlphaTag(version: Version, tags: ReadonlyArray<string>): string | undefined {
+  const final = formatVersion(version);
+  return highestAlphaTag(final, alphaNumbers(final, tags));
+}
+
+// The highest number below, not N - 1: an alpha number is the operator's to pick, so the line may skip one.
+export function previousAlphaTag(tag: string, tags: ReadonlyArray<string>): string | undefined {
+  const final = formatVersion(parseAlphaTagOrThrow(tag));
+  const number = Number(tag.slice(tag.lastIndexOf('.') + 1));
+  return highestAlphaTag(final, alphaNumbers(final, tags).filter((earlier) => earlier < number));
 }
 
 export type ReleaseBase =
