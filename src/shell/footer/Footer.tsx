@@ -24,9 +24,9 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { copy } from 'src/toolkit/utils/htmlEntities';
 
 import FooterCookieSettings from './FooterCookieSettings';
+import FooterCopyright from './FooterCopyright';
 import FooterLinkItem from './FooterLinkItem';
 import { getApiVersionUrl } from './get-api-version-url';
 
@@ -172,9 +172,7 @@ const Footer = () => {
               <CopyToClipboard text={ onionDomain } tooltipContent="Copy .onion address to clipboard" ml={ 1 }/>
             </HStack>
           ) }
-          <Text>
-            Copyright { copy } Blockscout Limited 2023-{ (new Date()).getFullYear() }
-          </Text>
+          <FooterCopyright/>
         </VStack>
       </Box>
     );

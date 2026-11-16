@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
+
+import FooterCopyright from 'src/shell/footer/FooterCopyright';
 
 import useTxQuery from 'src/slices/tx/hooks/useTxQuery';
 import { TX } from 'src/slices/tx/stubs/tx';
@@ -11,8 +13,6 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { routeParams } from 'src/shared/router/routes';
 import { useRouter } from 'src/shared/router/useRouter';
-
-import { copy } from 'src/toolkit/utils/htmlEntities';
 
 import TxReceiptCard from './TxReceiptCard';
 
@@ -49,9 +49,7 @@ const TxReceipt = () => {
         data={ txQuery.data ?? TX }
         isLoading={ txQuery.isPlaceholderData || txQuery.isError }
       />
-      <Text textStyle="xs" color="text.secondary" textAlign="center">
-        Copyright { copy } Blockscout Limited 2023-{ (new Date()).getFullYear() }
-      </Text>
+      <FooterCopyright textStyle="xs" color="text.secondary" textAlign="center"/>
     </Flex>
   );
 };
