@@ -174,7 +174,6 @@ const TokenDetails = ({ data, counters, isLoading, isLoadingCounters, address3rd
               amount={ circulatingSupply }
               asset={ <chakra.span maxW="50%" overflow="hidden" textOverflow="ellipsis"> { symbol }</chakra.span> }
               accuracy={ 3 }
-              decimals={ decimals ?? '0' }
               loading={ isLoading }
               w="100%"
             />
