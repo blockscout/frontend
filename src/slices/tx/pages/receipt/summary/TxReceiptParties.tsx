@@ -49,7 +49,7 @@ interface Props {
 
 const TxReceiptParties = ({ from, to, connector, isLoading }: Props) => {
   return (
-    <Flex alignItems="center" justifyContent="center" flexWrap="wrap" columnGap={ 2 } rowGap={ 1 } textStyle="sm">
+    <Flex alignItems="center" justifyContent="center" flexWrap="wrap" gap={ 2 } textStyle="sm">
       <TxReceiptParty address={ from } isLoading={ isLoading }/>
       { to && (
         <>

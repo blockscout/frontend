@@ -44,7 +44,7 @@ const TxReceiptCard = ({ hash, data, isLoading: isTxLoading }: Props) => {
       gap={ 8 }
       w={{ base: '100%', lg: isLoading ? NARROW_CARD_WIDTH : 'fit-content' }}
       minW={{ lg: NARROW_CARD_WIDTH }}
-      maxW="456px"
+      maxW="500px"
       p={{ base: 6, lg: 8 }}
       bgColor="bg.primary"
       borderRadius="md"

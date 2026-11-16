@@ -38,7 +38,7 @@ const TxReceiptActions = ({ hash }: Props) => {
         flexGrow={ 1 }
         asChild
       >
-        <Button variant="subtle" size="md" w="100%">Transaction details</Button>
+        <Button variant="subtle" size="md" w="100%" textStyle="sm">Transaction details</Button>
       </Link>
       <CopyToClipboard
         text={ route({ pathname: '/tx/[hash]/receipt', query: { hash } }, { chain: multichainContext?.chain, absolute: true }) }
