@@ -59,6 +59,10 @@ export function fetchBranch(branch: string): void {
   git([ 'fetch', '--quiet', '--tags', REMOTE, branch ]);
 }
 
+export function fetchTags(): void {
+  git([ 'fetch', '--quiet', '--tags', REMOTE ]);
+}
+
 export function remoteBranch(branch: string): string {
   return `${ REMOTE }/${ branch }`;
 }

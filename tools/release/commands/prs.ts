@@ -1,7 +1,7 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
 import type { FlagSpec } from '../../cli/flags';
 import { parseArgs } from '../../cli/flags';
-import { fetchBranch, hasLocalRef, listTags } from '../git';
+import { fetchTags, hasLocalRef, listTags } from '../git';
 import { nestedEnvChanges } from '../notes-sections';
 import type { ReleasePullRequest } from '../release-prs';
 import { rangePrs } from '../release-prs';
@@ -80,7 +80,8 @@ export function prsCommand(args: ReadonlyArray<string>): number {
   const prsArgs = parsePrsArgs(args);
   const { tag } = prsArgs;
   // The tag list decides between the tag and the branch, so it is origin's, not what this checkout last fetched.
-  fetchBranch(releaseBranch(parseAlphaTagOrThrow(tag)));
+  // Tags only: the range never reads origin's release branch, which may not be there to fetch.
+  fetchTags();
   const range = prsRange(prsArgs, listTags(), (branch) => hasLocalRef(`refs/heads/${ branch }`));
   if (range === undefined) {
     console.error(`No alpha of ${ versionLabel(tag) } precedes ${ tag }; nothing to compare it with`);
