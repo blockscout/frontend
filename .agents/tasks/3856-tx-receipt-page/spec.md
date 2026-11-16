@@ -41,7 +41,8 @@ explorer lead to it, and exist partly to measure whether users open it at all.
   dropped. A sentence that starts with an action type shows it on a line of its own, with the rest wrapping
   below. A sentence without an action type simply wraps. The action type and the connecting words are
   smaller and lighter than the values.
-  Tokens, addresses and the market in the sentence show their icons.
+  Tokens, addresses and the market in the sentence show their icons. The parties row joins the
+  transaction's parties with `interacted with`, or with `created` when the transaction creates a contract.
 - FR8. A transfer is the exception to FR7: an interpretation whose action type is `Transfer` and which
   carries an amount and a token or the native coin gets a dedicated view, not the API sentence. It shows
   `Transfer`, then the amount with the token's icon and symbol; the recipient appears only in the parties
