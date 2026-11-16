@@ -40,5 +40,5 @@ The review trio is ticket 07, the unit-test rule ticket 06, and the frozen copie
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Bring the two skills and two rules to home from `frontend`'s current versions
-- [ ] 2 `[agent]` Reword for the home layout and the active child; make home's own documents pass
+- [x] 1 `[agent]` Bring the two skills and two rules to home from `frontend`'s current versions
+- [x] 2 `[agent]` Reword for the home layout and the active child; make home's own documents pass
