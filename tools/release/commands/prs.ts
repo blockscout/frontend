@@ -1,19 +1,19 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
 import type { FlagSpec } from '../../cli/flags';
 import { parseArgs } from '../../cli/flags';
-import { listTags } from '../git';
+import { fetchBranch, hasLocalRef, listTags } from '../git';
 import { nestedEnvChanges } from '../notes-sections';
 import type { ReleasePullRequest } from '../release-prs';
 import { rangePrs } from '../release-prs';
 import { RELEASE_SOURCE } from '../release-source';
-import { parseAlphaTagOrThrow, parseTagOrThrow, previousAlphaTag, releaseBranch, versionLabel } from '../versions';
+import { laterAlphaTag, parseAlphaTagOrThrow, parseTagOrThrow, previousAlphaTag, releaseBranch, versionLabel } from '../versions';
 import { describePr, logExclusions, logList } from './report';
 
 const USAGE = `Usage: pnpm release prs <vX.Y.Z-alpha.N> [--since <tag>]
 
   prints the PRs the alpha adds to --since, by default the previous alpha of its release, one per line with
   its "Environment variables" section nested under it, and nothing for the first alpha; an alpha not tagged
-  yet is read up to its release branch`;
+  yet is read up to its local release branch`;
 
 export interface PrsArgs {
   readonly tag: string;
@@ -48,13 +48,26 @@ export interface PrsRange {
   readonly to: string;
 }
 
-// An alpha not tagged yet is where the alpha phase leaves its picks before tagging: the release branch.
-export function prsRange({ tag, since }: PrsArgs, tags: ReadonlyArray<string>): PrsRange | undefined {
+// An alpha not tagged yet is where the alpha phase leaves its picks before tagging: the local release branch.
+// Past a later alpha, the number was skipped rather than not tagged yet, and the branch holds that alpha too.
+function untaggedAlphaEnd(tag: string, tags: ReadonlyArray<string>, hasLocalBranch: (branch: string) => boolean): string {
+  const branch = releaseBranch(parseAlphaTagOrThrow(tag));
+  const later = laterAlphaTag(tag, tags);
+  if (later !== undefined) {
+    throw new Error(`${ tag } is not tagged, but the later ${ later } is, so ${ branch } holds more than it; name a tagged alpha or the next one`);
+  }
+  if (!hasLocalBranch(branch)) {
+    throw new Error(`${ tag } is not tagged, and there is no local ${ branch } to read its picks from`);
+  }
+  return branch;
+}
+
+export function prsRange({ tag, since }: PrsArgs, tags: ReadonlyArray<string>, hasLocalBranch: (branch: string) => boolean): PrsRange | undefined {
   const from = since ?? previousAlphaTag(tag, tags);
   if (from === undefined) {
     return undefined;
   }
-  return { from, to: tags.includes(tag) ? tag : releaseBranch(parseAlphaTagOrThrow(tag)) };
+  return { from, to: tags.includes(tag) ? tag : untaggedAlphaEnd(tag, tags, hasLocalBranch) };
 }
 
 export function prList(prs: ReadonlyArray<ReleasePullRequest>): string {
@@ -66,7 +79,9 @@ export function prList(prs: ReadonlyArray<ReleasePullRequest>): string {
 export function prsCommand(args: ReadonlyArray<string>): number {
   const prsArgs = parsePrsArgs(args);
   const { tag } = prsArgs;
-  const range = prsRange(prsArgs, listTags());
+  // The tag list decides between the tag and the branch, so it is origin's, not what this checkout last fetched.
+  fetchBranch(releaseBranch(parseAlphaTagOrThrow(tag)));
+  const range = prsRange(prsArgs, listTags(), (branch) => hasLocalRef(`refs/heads/${ branch }`));
   if (range === undefined) {
     console.error(`No alpha of ${ versionLabel(tag) } precedes ${ tag }; nothing to compare it with`);
     return 0;

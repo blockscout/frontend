@@ -123,11 +123,21 @@ export function latestAlphaTag(version: Version, tags: ReadonlyArray<string>): s
   return highestAlphaTag(final, alphaNumbers(final, tags));
 }
 
+function alphaNumber(tag: string): number {
+  return Number(tag.slice(tag.lastIndexOf('.') + 1));
+}
+
 // The highest number below, not N - 1: an alpha number is the operator's to pick, so the line may skip one.
 export function previousAlphaTag(tag: string, tags: ReadonlyArray<string>): string | undefined {
   const final = formatVersion(parseAlphaTagOrThrow(tag));
-  const number = Number(tag.slice(tag.lastIndexOf('.') + 1));
+  const number = alphaNumber(tag);
   return highestAlphaTag(final, alphaNumbers(final, tags).filter((earlier) => earlier < number));
+}
+
+export function laterAlphaTag(tag: string, tags: ReadonlyArray<string>): string | undefined {
+  const final = formatVersion(parseAlphaTagOrThrow(tag));
+  const number = alphaNumber(tag);
+  return highestAlphaTag(final, alphaNumbers(final, tags).filter((later) => later > number));
 }
 
 export type ReleaseBase =
