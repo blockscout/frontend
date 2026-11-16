@@ -31,7 +31,14 @@ const getTransferAsset = ({ summary_template: template, summary_template_variabl
   return null;
 };
 
-const getTransferSummary = (summary: TxInterpretationSummary, sender: schemas['Address']): TransferSummary | null => {
+// the transaction's own parties carry the names, tags and domains the interpretation leaves out
+const withTxPartyData = (address: schemas['Address'], tx: FallbackSummaryTx): schemas['Address'] => {
+  const parties = [ tx.from, tx.to, tx.created_contract ].filter((party): party is schemas['Address'] => Boolean(party));
+
+  return parties.find((party) => party.hash.toLowerCase() === address.hash.toLowerCase()) ?? address;
+};
+
+const getTransferSummary = (summary: TxInterpretationSummary, tx: FallbackSummaryTx): TransferSummary | null => {
   const { amount, to_address: recipient } = summary.summary_template_variables;
   const asset = getTransferAsset(summary);
 
@@ -43,22 +50,14 @@ const getTransferSummary = (summary: TxInterpretationSummary, sender: schemas['A
     type: 'transfer',
     amount: amount.value,
     asset,
-    from: sender,
-    to: recipient?.type === 'address' ? recipient.value : null,
+    from: tx.from,
+    to: recipient?.type === 'address' ? withTxPartyData(recipient.value, tx) : null,
   };
 };
 
-// the transaction's own parties carry the names, tags and domains the interpretation leaves out
 const withTxParties = (variables: Record<string, TxInterpretationVariable>, tx: FallbackSummaryTx): Record<string, TxInterpretationVariable> => {
-  const parties = [ tx.from, tx.to, tx.created_contract ].filter((address): address is schemas['Address'] => Boolean(address));
-
   return mapValues(variables, (variable): TxInterpretationVariable => {
-    if (variable.type !== 'address') {
-      return variable;
-    }
-
-    const party = parties.find((address) => address.hash.toLowerCase() === variable.value.hash.toLowerCase());
-    return party ? { type: 'address', value: party } : variable;
+    return variable.type === 'address' ? { type: 'address', value: withTxPartyData(variable.value, tx) } : variable;
   });
 };
 
@@ -91,7 +90,7 @@ export const getReceiptSummary = (
   nativeCoinDecimals: number,
 ): ReceiptSummary => {
   const interpretation = interpretations?.[0];
-  const interpretationSummary = interpretation && (getTransferSummary(interpretation, tx.from) ?? getSentenceSummary(interpretation, tx));
+  const interpretationSummary = interpretation && (getTransferSummary(interpretation, tx) ?? getSentenceSummary(interpretation, tx));
 
   return interpretationSummary || getFallbackSummary(tx, nativeCoinDecimals);
 };

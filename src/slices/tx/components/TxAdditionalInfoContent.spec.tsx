@@ -8,16 +8,10 @@ import { MultichainContext } from 'src/features/multichain/context';
 import { chainA } from 'src/features/multichain/mocks/chains';
 
 import { EventTypes } from 'src/shared/analytics';
+import * as analyticsQueue from 'src/shared/analytics/queue';
 
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, fireEvent } from 'vitest/lib';
-
-const logEventMock = vi.hoisted(() => vi.fn());
-
-vi.mock('src/shared/analytics', async(importOriginal) => ({
-  ...await importOriginal<object>(),
-  logEvent: logEventMock,
-}));
 
 import TxAdditionalInfoContent from './TxAdditionalInfoContent';
 
@@ -25,7 +19,6 @@ const HASH = txMock.base.hash;
 
 afterEach(() => {
   cleanup();
-  logEventMock.mockClear();
 });
 
 describe('receipt entry point in the "Additional info" dropdown', () => {
@@ -50,8 +43,9 @@ describe('receipt entry point in the "Additional info" dropdown', () => {
   it('reports the click with the dropdown as its source', () => {
     render(<TxAdditionalInfoContent tx={ txMock.base }/>);
 
+    const track = vi.spyOn(analyticsQueue, 'track');
     fireEvent.click(screen.getByRole('link', { name: 'Receipt' }));
 
-    expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Additional info' });
+    expect(track).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Additional info' }, undefined);
   });
 });

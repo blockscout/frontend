@@ -15,6 +15,7 @@ import { chainA } from 'src/features/multichain/mocks/chains';
 import * as interpretationMock from 'src/features/tx-interpretation/blockscout/mocks';
 
 import { EventTypes } from 'src/shared/analytics';
+import * as analyticsQueue from 'src/shared/analytics/queue';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 import { nbsp } from 'src/toolkit/utils/htmlEntities';
@@ -25,13 +26,6 @@ import withEnvs from 'vitest/utils/mockEnvs';
 import { apiRequests, mockApiAndRpc, rpcRequests } from 'vitest/utils/mockJsonRpc';
 import { MOCK_SOCKET_URL, sendSocketMessage } from 'vitest/utils/mockSocket';
 import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
-
-const logEventMock = vi.hoisted(() => vi.fn());
-
-vi.mock('src/shared/analytics', async(importOriginal) => ({
-  ...await importOriginal<object>(),
-  logEvent: logEventMock,
-}));
 
 vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
 
@@ -57,7 +51,6 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.useRealTimers();
-  logEventMock.mockClear();
   writeTextMock.mockReset();
   Reflect.deleteProperty(navigator, 'clipboard');
 });
@@ -413,9 +406,10 @@ describe('transaction receipt actions', () => {
     renderReceipt();
     await waitForLoaded();
 
+    const track = vi.spyOn(analyticsQueue, 'track');
     fireEvent.click(screen.getByText('Transaction details'));
 
-    expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Transaction details', Source: 'Transaction receipt' });
+    expect(track).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Transaction details', Source: 'Transaction receipt' }, undefined);
   });
 
   it('copies the receipt link, turns into a check mark and reports the click', async() => {
@@ -423,10 +417,11 @@ describe('transaction receipt actions', () => {
     renderReceipt();
     await waitForLoaded();
 
+    const track = vi.spyOn(analyticsQueue, 'track');
     fireEvent.click(screen.getByRole('button', { name: 'copy' }));
 
     expect(writeTextMock).toHaveBeenCalledWith(RECEIPT_URL);
-    expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Copy link', Source: 'Transaction receipt' });
+    expect(track).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Copy link', Source: 'Transaction receipt' }, undefined);
     await waitFor(() => expect(screen.getByRole('button', { name: 'copy' }).querySelector('use')?.getAttribute('href')).toMatch(/#check$/));
   });
 });
@@ -434,7 +429,7 @@ describe('transaction receipt actions', () => {
 describe('transaction receipt in multichain mode', () => {
   const ROUTED_CHAIN_LOGO = '/assets/configs/network_logo.svg';
 
-  function buildRoutedChain(logo: ClusterChainConfig['app_config']['chain']['logo']): ClusterChainConfig {
+  function buildRoutedChain(logo: ClusterChainConfig['app_config']['chain']['logo'], decimals = 18): ClusterChainConfig {
     return {
       ...chainA,
       app_config: {
@@ -443,7 +438,7 @@ describe('transaction receipt in multichain mode', () => {
           ...chainA.app_config.chain,
           name: 'Routed chain',
           logo,
-          currency: { ...chainA.app_config.chain.currency, symbol: 'xDAI' },
+          currency: { ...chainA.app_config.chain.currency, symbol: 'xDAI', weiName: 'grain', decimals },
         },
       },
     };
@@ -470,6 +465,47 @@ describe('transaction receipt in multichain mode', () => {
     expect(screen.getByAltText('Routed chain network logo').getAttribute('src')).toBe(`https://op-mainnet.com${ ROUTED_CHAIN_LOGO }`);
     expect(getRowValue('Chain')).toBe('Routed chain');
     expect(within(screen.getByRole('region', { name: 'Transaction summary' })).getByText('xDAI')).toBeTruthy();
+  });
+
+  it('shows the fee in the routed chain\'s native coin', async() => {
+    mockTx(() => txMock.base);
+    renderMultichainReceipt();
+    await waitForLoaded();
+
+    expect(getRowValue('Tx fee')).toMatch(/^0\.007143168\s*xDAI/);
+  });
+
+  it('scales the fee by the decimals of the routed chain\'s native coin', async() => {
+    mockTx(() => txMock.base);
+    renderMultichainReceipt(buildRoutedChain({ 'default': ROUTED_CHAIN_LOGO, dark: undefined }, 12));
+    await waitForLoaded();
+
+    expect(getRowValue('Tx fee')).toMatch(/^7,143\.168\s*xDAI/);
+  });
+
+  it('names the routed chain\'s native coin and its smallest unit in an interpretation sentence', async() => {
+    const chain = buildRoutedChain({ 'default': ROUTED_CHAIN_LOGO, dark: undefined });
+    const summary = {
+      summary_template: '{action_type} {amount} {native} for {gas} {wei}',
+      summary_template_variables: {
+        action_type: { type: 'string' as const, value: 'Wrap' },
+        amount: { type: 'currency' as const, value: '5' },
+        gas: { type: 'currency' as const, value: '21000' },
+      },
+    };
+    mockApiAndRpc({
+      api: (url) => url.includes(INTERPRETATION_URL_PART) ?
+        { body: JSON.stringify({ data: { summaries: [ summary ] } }) } :
+        { body: JSON.stringify(txMock.base) },
+    });
+    const txInterpretation = { title: 'Transaction interpretation', isEnabled: true, provider: 'blockscout' as const };
+    const features = { ...chain.app_config.features, txInterpretation };
+    renderMultichainReceipt({ ...chain, app_config: { ...chain.app_config, features } });
+    await waitForLoaded();
+
+    const sentence = within(screen.getByRole('region', { name: 'Transaction summary' }));
+    await waitFor(() => expect(sentence.getByText('xDAI')).toBeTruthy());
+    expect(sentence.getByText('grain')).toBeTruthy();
   });
 
   it('shows the logo placeholder when the routed chain has no logo', async() => {

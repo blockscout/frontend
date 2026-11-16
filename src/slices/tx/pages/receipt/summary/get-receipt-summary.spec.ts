@@ -58,6 +58,19 @@ describe('getReceiptSummary', () => {
     });
   });
 
+  it('shows a transfer recipient that is a party of the transaction with the transaction\'s data', () => {
+    const recipient = { ...addressMock.contract, hash: RECIPIENT.hash.toLowerCase() };
+
+    expect(getReceiptSummary({ ...TX, to: recipient }, interpretationMock.nativeCoinTransfer.data.summaries, 18)).toMatchObject({
+      type: 'transfer',
+      to: recipient,
+    });
+    expect(getReceiptSummary({ ...CREATION_TX, created_contract: recipient }, interpretationMock.nativeCoinTransfer.data.summaries, 18)).toMatchObject({
+      type: 'transfer',
+      to: recipient,
+    });
+  });
+
   it('shows a transfer without a recipient when the interpretation names none', () => {
     const { to_address: _, ...variables } = TOKEN_TRANSFER.summary_template_variables;
     const summary = { summary_template: '{action_type} {amount} {token}', summary_template_variables: variables };

@@ -47,7 +47,9 @@ const TimeValue = ({ data }: RowValueProps) => {
 };
 
 const FeeValue = ({ data }: RowValueProps) => {
-  return <TxFee tx={ data } accuracy={ 0 } noTooltip usdColor="icon.secondary" justifyContent="flex-end"/>;
+  const { currency } = useTxReceiptChainConfig();
+
+  return <TxFee tx={ data } nativeCoin={ currency } accuracy={ 0 } noTooltip usdColor="icon.secondary" justifyContent="flex-end"/>;
 };
 
 const ChainValue = () => {

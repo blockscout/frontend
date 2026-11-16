@@ -9,16 +9,10 @@ import { MultichainContext } from 'src/features/multichain/context';
 import { chainA } from 'src/features/multichain/mocks/chains';
 
 import { EventTypes } from 'src/shared/analytics';
+import * as analyticsQueue from 'src/shared/analytics/queue';
 
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, fireEvent } from 'vitest/lib';
-
-const logEventMock = vi.hoisted(() => vi.fn());
-
-vi.mock('src/shared/analytics', async(importOriginal) => ({
-  ...await importOriginal<object>(),
-  logEvent: logEventMock,
-}));
 
 import TxSubHeading from './TxSubHeading';
 
@@ -32,7 +26,6 @@ const txQuery = {
 
 afterEach(() => {
   cleanup();
-  logEventMock.mockClear();
 });
 
 describe('receipt entry point on the transaction page', () => {
@@ -57,8 +50,9 @@ describe('receipt entry point on the transaction page', () => {
   it('reports the click with the transaction page as its source', () => {
     render(<TxSubHeading hash={ HASH } hasTag={ false } txQuery={ txQuery }/>);
 
+    const track = vi.spyOn(analyticsQueue, 'track');
     fireEvent.click(screen.getByRole('link', { name: 'Receipt' }));
 
-    expect(logEventMock).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Transaction details' });
+    expect(track).toHaveBeenCalledWith(EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Transaction details' }, undefined);
   });
 });
