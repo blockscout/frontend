@@ -3,10 +3,12 @@ import { describe, expect, it } from 'vitest';
 import {
   isVersionLabel,
   latestAlphaTag,
+  laterAlphaTag,
   latestFinalTag,
   parseAlphaTagOrThrow,
   parseFinalTagOrThrow,
   parseTag,
+  previousAlphaTag,
   previousTag,
   releaseBase,
   releaseBranch,
@@ -163,6 +165,41 @@ describe('latestAlphaTag', () => {
   it('ignores an unnumbered pre-release and the alphas of other versions', () => {
     expect(latestAlphaTag(parseFinalTagOrThrow('v2.12.0'), TAGS)).toBe('v2.12.0-alpha.1');
     expect(latestAlphaTag(parseFinalTagOrThrow('v2.11.0'), TAGS)).toBeUndefined();
+  });
+});
+
+describe('previousAlphaTag', () => {
+  it('is the highest-numbered alpha of the version below the tag, skipped numbers included', () => {
+    const tags = [ 'v2.13.0-alpha.1', 'v2.13.0-alpha.3', 'v2.13.0-alpha.5', 'v2.13.0-alpha.10' ];
+
+    expect(previousAlphaTag('v2.13.0-alpha.5', tags)).toBe('v2.13.0-alpha.3');
+    expect(previousAlphaTag('v2.13.0-alpha.11', tags)).toBe('v2.13.0-alpha.10');
+  });
+
+  it('is nothing for the first alpha, ignoring an unnumbered pre-release and the alphas of other versions', () => {
+    expect(previousAlphaTag('v2.12.0-alpha.1', TAGS)).toBeUndefined();
+    expect(previousAlphaTag('v2.11.0-alpha.1', TAGS)).toBeUndefined();
+    expect(previousAlphaTag('v2.13.1-alpha.2', [ 'v2.13.0-alpha.1', 'v2.13.1' ])).toBeUndefined();
+  });
+
+  it('rejects a tag that is not an alpha', () => {
+    expect(() => previousAlphaTag('v2.13.0', TAGS)).toThrow('Not an alpha tag: "v2.13.0"');
+  });
+});
+
+describe('laterAlphaTag', () => {
+  it('is the highest-numbered alpha of the version above the tag, skipped numbers included', () => {
+    const tags = [ 'v2.13.0-alpha.1', 'v2.13.0-alpha.3', 'v2.13.0-alpha.5', 'v2.13.0-alpha.10' ];
+
+    expect(laterAlphaTag('v2.13.0-alpha.2', tags)).toBe('v2.13.0-alpha.10');
+  });
+
+  it('is nothing for the latest alpha, ignoring the alphas of other versions', () => {
+    expect(laterAlphaTag('v2.13.0-alpha.3', [ 'v2.13.0-alpha.1', 'v2.13.0-alpha.3', 'v2.13.1-alpha.4', 'v2.14.0-alpha.5' ])).toBeUndefined();
+  });
+
+  it('rejects a tag that is not an alpha', () => {
+    expect(() => laterAlphaTag('v2.13.0', TAGS)).toThrow('Not an alpha tag: "v2.13.0"');
   });
 });
 

@@ -75,7 +75,7 @@ test.describe('directories', () => {
     },
   };
 
-  test.beforeEach(async({ mockEnvs, mockTextAd, mockApiResponse, mockAssetResponse }) => {
+  test.beforeEach(async({ page, mockEnvs, mockTextAd, mockApiResponse, mockAssetResponse }) => {
     await mockEnvs([
       ...ENVS_MAP.clusters,
       [ 'NEXT_PUBLIC_CLUSTERS_CDN_URL', CDN_URL ],
@@ -84,6 +84,11 @@ test.describe('directories', () => {
     await mockAssetResponse(`${ CDN_URL }/profile-image/campnetwork/lol`, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(`${ CDN_URL }/profile-image/duck/quack`, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(`${ CDN_URL }/profile-image/test/cluster`, './playwright/mocks/image_s.jpg');
+    const mockMissingProfileImage = (name: string) => page.route(`${ CDN_URL }/profile-image/${ name }`, (route) => route.fulfill({ status: 404 }));
+    await mockMissingProfileImage('this-is-a-very-long-cluster-name-that-should-test-truncation/subdomain');
+    await mockMissingProfileImage('ethereum/foundation');
+    await mockMissingProfileImage('defi/protocol');
+    await mockMissingProfileImage('gaming/world');
     await mockApiResponse('clusters:get_directory', clustersDirectoryMock, {
       queryParams: {
         input: JSON.stringify({

@@ -47,9 +47,6 @@ Report: places the diff breaks a documented rule — **cite the rule file and th
 baseline, each named and quoted. A documented rule can be a hard breach; a smell is always a judgement call.
 Skip anything the checks already cover.
 
-Add one line to every finding, `rule: <id>`, naming the rubric rule in `tools/review-screen/rubric.ts` it
-corresponds to — the `id` whose `question` the finding answers yes to — or `rule: —` when none does.
-
 ## Correctness axis
 
 Read the touched files **in full**, plus the files the change depends on — a hunk-only read produces exactly
@@ -59,72 +56,6 @@ the shallow findings that make developers stop trusting review. Report:
 - places where the types claim something the runtime does not; 
 - tests that assert the framework or the mock rather than real behaviour (per the "What a good test is"
 section of `.agents/rules/tests-unit.md`).
-
-## Jev axis
-
-A screen, then verdicts. `pnpm review:screen` scores every rubric rule against every touched file with
-Jev, a typed-judgment model, and prints the cells over threshold as **suspects** — a probability each,
-never a claim. It has read no rule; you decide. Given a findings table instead of a change, you are the
-second dispatch: skip to **Origins**.
-
-Run it on the ground the orchestrator pinned, never re-derived:
-
-```bash
-pnpm review:screen --scope <branch|uncommitted> --base <base ref> [--spec <path>] [--ticket <NN>]
-```
-
-`pr` output is `--scope branch`. `--spec` goes exactly when a spec resolved, `--ticket` when the run has
-one. The JSON on stdout carries `status` (`ok` · `skipped` · `failed`) with a `reason`, the `sidecar` path,
-and two suspect lists: `standards` (a rubric rule, a file, a line, a score) and `spec` (an `FR<n>`, its
-best-scoring file, no line, a score). A `skipped` or `failed` status, or no suspect in either list, ends
-the axis: return the status line and the sidecar path and stop.
-
-**Suspects are the whole territory.** A defect you notice beside one belongs to the other axes. For each
-suspect: open the location; read the rule the rubric cites (`cites` on its entry in
-`tools/review-screen/rubric.ts`) or the requirement in the spec; decide. A breach or an unmet requirement
-becomes a finding in the shape above plus one line, `axis: standards | spec`, naming the grid, and for a
-standards suspect a second, `rule: <the suspect's rule>`; a spec finding with no line writes
-`location: FR<n>`. Anything else is one row of the drop table, in the shape
-`--origins` reads back unchanged:
-
-```
-| suspect | fate | reason |
-| --- | --- | --- |
-| <rule> <path>:<line> | dropped | <one line> |
-| FR<n> | dropped | <one line> |
-```
-
-The reasons that recur: the flagged line is unchanged context; the rule's `not_for` covers it; the
-requirement lives outside the diff (docs, a later ticket, code the change removes); the Out of bounds list
-names it.
-
-Return, in this order: `status: <status> — <reason>` and `sidecar: <path>`, the findings, the drop table.
-**Every suspect appears exactly once**, as a finding or a drop — the later `--origins` step matches them
-mechanically and records an unreported one as dropped for no reason. The per-finding cap applies.
-
-### Origins
-
-After publishing, a fresh dispatch gets the sidecar path, the final findings table and the drop table.
-Write both, as given, to one file beside the sidecar — the sidecar's name with `.findings.md` in place of
-`.json`, so it lands in the same git-ignored folder — and run:
-
-```bash
-pnpm review:screen --origins <sidecar path> --findings <that file>
-```
-
-The tables:
-
-```
-| id | axis | rule | location | sources | claim |
-| suspect | fate | reason |
-```
-
-`rule` is the rubric rule id the finding was labelled with, or `—`; `location` is `<path>:<line>`, `FR<n>`
-for a requirement finding with no line, or `—`; `sources` lists the axes that raised the finding; `claim` is
-the first sentence of the finding's claim, with any `|` removed; `suspect` is `<rule> <path>:<line>` or
-`FR<n>` and `fate` is `dropped`.
-Return the tool's JSON verbatim — it matches by window and requirement id with no code in front of it, and
-that is the point: a judgement added here would be one made blind.
 
 ## Out of bounds
 

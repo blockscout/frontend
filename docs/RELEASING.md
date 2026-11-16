@@ -18,6 +18,7 @@ the notes and the backports depend on.
 | resume after a pick stopped on a conflict | resolve, `git cherry-pick --continue`, re-run the same command |
 | see what a phase would do | the same command with `--dry-run` |
 | preview the notes of a tag | `pnpm release notes <tag>` |
+| see what an alpha adds to the previous one | `pnpm release prs vX.Y.Z-alpha.N` |
 | know what a release shipped, or which release shipped a PR | the `vX.Y.Z` label on the PR: `is:pr label:vX.Y.Z` |
 | check my PR before CI does | `pnpm release check-pr <number>` |
 

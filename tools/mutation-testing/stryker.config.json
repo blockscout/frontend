@@ -42,7 +42,6 @@
     "!/deploy/scripts/make_envs_script.sh",
     "!/deploy/tools/assets-downloader/**",
     "!/deploy/tools/envs-validator/**",
-    "!/.agents/**",
     "!/docs/BUILD-TIME_ENVS.md",
     "!/docs/DEPRECATED_ENVS.md",
     "!/docs/ENVS.md",

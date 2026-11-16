@@ -7,6 +7,7 @@ import { checkTagCommand } from './commands/check-tag';
 import { labelCommand } from './commands/label';
 import { notesCommand } from './commands/notes';
 import { prepareCommand } from './commands/prepare';
+import { prsCommand } from './commands/prs';
 import { publishCommand } from './commands/publish';
 
 const USAGE = `Usage: pnpm release <subcommand> [args]
@@ -20,7 +21,8 @@ const USAGE = `Usage: pnpm release <subcommand> [args]
   check-pr <number>   check a PR's body against docs/PULL_REQUEST_TEMPLATE.md and its category labels
   check-tag <tag>     check that a tag ships no "upcoming" ENV docs and no PR another release shipped
   label <tag>         label the PRs a tag shipped and their issues, or remove a label everywhere
-  notes <tag>         print the release notes of a tag`;
+  notes <tag>         print the release notes of a tag
+  prs <alpha-tag>     print the PRs an alpha adds to the previous alpha of its release`;
 
 type Command = (args: ReadonlyArray<string>) => number;
 
@@ -32,6 +34,7 @@ const COMMANDS: ReadonlyMap<string, Command> = new Map<string, Command>([
   [ 'check-tag', checkTagCommand ],
   [ 'label', labelCommand ],
   [ 'notes', notesCommand ],
+  [ 'prs', prsCommand ],
 ]);
 
 interface Options {
