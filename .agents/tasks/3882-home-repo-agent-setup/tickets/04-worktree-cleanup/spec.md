@@ -43,6 +43,6 @@ Anything unproven is reported, never deleted.
 
 ## Leaf worklist
 
-- [ ] 1 `[human]` Exit an interactive home worktree session with a logging removal hook installed, so the hook input is captured
-- [ ] 2 `[agent]` Removal hook from the captured input shape
-- [ ] 3 `[agent]` Prune hook adapted to two-branch task worktrees, with its scripted test, wired into home's session start
+- [x] 1 `[human]` Exit an interactive home worktree session with a logging removal hook installed, so the hook input is captured
+- [x] 2 `[agent]` Removal hook from the captured input shape
+- [x] 3 `[agent]` Prune hook adapted to two-branch task worktrees, with its scripted test, wired into home's session start

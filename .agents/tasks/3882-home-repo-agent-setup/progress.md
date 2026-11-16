@@ -3,7 +3,7 @@
 - [x] 01 → `tickets/01-home-skeleton/`
 - [x] 02 → `tickets/02-child-skills-in-home-sessions/`
 - [x] 03 → `tickets/03-worktree-creation-and-session-hooks/`
-- [ ] 04 → `tickets/04-worktree-cleanup/`
+- [x] 04 → `tickets/04-worktree-cleanup/`
 - [x] 05 → `tickets/05-move-general-skills-and-rules/`
 - [ ] 06 → `tickets/06-split-unit-test-rule/`
 - [ ] 07 → `tickets/07-review-trio-from-home/`
