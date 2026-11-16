@@ -19,23 +19,23 @@ Cleanup of worktrees is ticket 04.
 
 ## Acceptance criteria
 
-- [ ] A name of the form `<child>-<rest>` creates a task worktree containing only that child, on a new
+- [x] A name of the form `<child>-<rest>` creates a task worktree containing only that child, on a new
   branch `<rest>` cut from the child's remote main branch.
-- [ ] When several child names prefix the worktree name, the longest wins.
-- [ ] Any other name mirrors every child present in the directory the session runs in, each from that
+- [x] When several child names prefix the worktree name, the longest wins.
+- [x] Any other name mirrors every child present in the directory the session runs in, each from that
   copy's `HEAD`.
-- [ ] Starting a session with the name of an existing task worktree reopens it instead of failing.
-- [ ] The hook reads children from the committed children list, clears inherited git environment
+- [x] Starting a session with the name of an existing task worktree reopens it instead of failing.
+- [x] The hook reads children from the committed children list, clears inherited git environment
   variables before calling git in another repository, and prints a normalised absolute path.
-- [ ] A new task worktree's child contains the files the child lists for copying into worktrees.
-- [ ] All three entry points produce the same result; a subagent started inside a task worktree gets the
+- [x] A new task worktree's child contains the files the child lists for copying into worktrees.
+- [x] All three entry points produce the same result; a subagent started inside a task worktree gets the
   same children as its parent session.
-- [ ] In a task worktree, the first command that needs dependencies installs them in the child.
-- [ ] A session start at home fetches every child.
-- [ ] A worktree-isolated subagent's start context names the active child's always-loaded instructions
+- [x] In a task worktree, the first command that needs dependencies installs them in the child.
+- [x] A session start at home fetches every child.
+- [x] A worktree-isolated subagent's start context names the active child's always-loaded instructions
   file to read.
-- [ ] Home has the Playwright MCP configuration `frontend` has.
-- [ ] The creation logic's branches (prefix, longest prefix, mirror, reopen) are covered by a scripted
+- [x] Home has the Playwright MCP configuration `frontend` has.
+- [x] The creation logic's branches (prefix, longest prefix, mirror, reopen) are covered by a scripted
   test against scratch repositories.
 
 ## Details
@@ -56,7 +56,7 @@ Cleanup of worktrees is ticket 04.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Probe reopening an existing task worktree and the subagent-start hook; record in `notes.md`
-- [ ] 2 `[agent]` Worktree-creation hook with worktree-include copy, and its scripted test
-- [ ] 3 `[agent]` Home settings: creation hook, fetch per child, adapted dependency-install hook, subagent-start pointer, Playwright MCP
-- [ ] 4 `[agent]` Verify the three entry points and the dependency install in the real home clone
+- [x] 1 `[agent]` Probe reopening an existing task worktree and the subagent-start hook; record in `notes.md`
+- [x] 2 `[agent]` Worktree-creation hook with worktree-include copy, and its scripted test
+- [x] 3 `[agent]` Home settings: creation hook, fetch per child, adapted dependency-install hook, subagent-start pointer, Playwright MCP
+- [x] 4 `[agent]` Verify the three entry points and the dependency install in the real home clone
