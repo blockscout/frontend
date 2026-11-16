@@ -38,6 +38,6 @@ commit and repeat.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the pinned dependency, allowlist entry and bump script; point `lint:doc-links` at the installed command
-- [ ] 2 `[agent]` Remove `tools/doc-links/`, move its `frontend`-specific context, update references
+- [x] 1 `[agent]` Add the pinned dependency, allowlist entry and bump script; point `lint:doc-links` at the installed command
+- [x] 2 `[agent]` Remove `tools/doc-links/`, move its `frontend`-specific context, update references
 - [ ] 3 `[agent]` Confirm the Checks workflow is green on the pull request and record install time

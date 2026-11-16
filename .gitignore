@@ -61,9 +61,6 @@ npm-debug.log*
 # compiled code-complexity gate
 /tools/code-complexity/dist/
 
-# compiled doc-link checker
-/tools/doc-links/dist/
-
 # react-doctor standalone install (not part of the root workspace)
 /tools/react-doctor/node_modules/
 
