@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Commit, PrResolver, ReleasePullRequest, ReleaseSource } from './release-prs';
-import { isDocsCommit, isReleasedElsewhere, issuesToLabel, prepareCommitMessage, releasePrs, resolvePr } from './release-prs';
+import { isDocsCommit, isReleasedElsewhere, issuesToLabel, prepareCommitMessage, rangePrs, releasePrs, resolvePr } from './release-prs';
 
 const SOURCE_SHA = 'a'.repeat(40);
 
@@ -158,6 +158,31 @@ describe('releasePrs', () => {
       expect(result.prs.map(({ number }) => number)).toEqual([ 10 ]);
     }
     expect(asked).toEqual([]);
+  });
+});
+
+describe('rangePrs', () => {
+  const pickedSha = 'b'.repeat(40);
+  const commits: Record<string, ReadonlyArray<Commit>> = {
+    'v2.13.0-alpha.1..release/v2.13.0': [
+      { sha: 'c1', message: `Fix the badge (#11)\n\n(cherry picked from commit ${ pickedSha })` },
+      { sha: 'c2', message: 'chore: prepare release v2.13.0' },
+      { sha: 'c3', message: `Bump viem (#12)\n\n(cherry picked from commit ${ SOURCE_SHA })` },
+    ],
+  };
+  const source: ReleaseSource = {
+    ...resolver({ [pickedSha]: 'Fix the badge (#11)', [SOURCE_SHA]: 'Bump viem (#12)' }),
+    tags: () => [],
+    commits: (from, to) => commits[`${ from }..${ to }`] ?? [],
+    pullRequest: (number) => pr(number, number === 12 ? [ 'v2.12.1' ] : []),
+  };
+
+  it('resolves the picks between the two refs to their PRs, without the docs commit and the PRs of another release', () => {
+    const result = rangePrs('v2.13.0-alpha.2', 'v2.13.0-alpha.1', 'release/v2.13.0', source);
+
+    expect(result.prs.map(({ number }) => number)).toEqual([ 11 ]);
+    expect(result.skipped.map(({ number }) => number)).toEqual([ 12 ]);
+    expect(result.unresolved).toEqual([]);
   });
 });
 
