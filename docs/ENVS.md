@@ -618,8 +618,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
-| NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
+| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0` | Auth provider that enables basic user authentication. | - | `auth0` | `auth0` | v2.7.0+ |
 | NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code (see [HTML values](#html-values)). On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
 | NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code (see [HTML values](#html-values)). Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
@@ -627,7 +626,7 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 
 | Variable | Compulsoriness |
 | --- | --- |
-| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required when `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER` is `auth0` |
+| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required |
 | [NEXT_PUBLIC_CONTRACT_INFO_API_HOST](#contract-info-api) | Required for the address verification flow |
 | [NEXT_PUBLIC_ADMIN_SERVICE_API_HOST](#admin-service-api) | Required for the address verification flow |
 

@@ -45,9 +45,9 @@ describe('Web3Boundary', () => {
     vi.restoreAllMocks();
   });
 
-  it('is transparent when a WagmiProvider already sits above it (dynamic mode): renders children, never loads', async() => {
-    // dynamic mode wraps the whole app in a root WagmiProvider and never mounts Web3Provider, so
-    // useIsWeb3Ready is permanently false — the boundary must still render children, not the fallback
+  it('is transparent when a WagmiProvider already sits above it: renders children, never loads', async() => {
+    // with an ancestor WagmiProvider and no Web3Provider, useIsWeb3Ready is permanently false — the
+    // boundary must still render children, not the fallback
     providerMock.isReady = false;
     const { WagmiContext } = await import('wagmi');
 

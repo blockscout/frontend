@@ -190,21 +190,6 @@ describe('connect-wallet runtime', () => {
     });
   });
 
-  describe('dynamic mode', () => {
-    it('exposes config + actions without building AppKit (DynamicProvider owns the provider)', async() => {
-      state.connectWallet = { isEnabled: true, connectorType: 'dynamic' };
-      const { getWeb3Runtime } = await importRuntime();
-      const runtime = await getWeb3Runtime();
-
-      expect(runtime.isReady).toBe(true);
-      expect(runtime.config).toBe(wagmiConfigMock.config);
-      expect(appKitMock.createAppKit).not.toHaveBeenCalled();
-      // actions stay bound to the config for the shared signing consumers (rewards, sign-in, verification)
-      await runtime.signMessage({ message: 'hi' });
-      expect(actionsMock.signMessage).toHaveBeenCalledWith(wagmiConfigMock.config, { message: 'hi' });
-    });
-  });
-
   describe('load-failure degradation', () => {
     it('resolves to a disabled runtime whose actions reject', async() => {
       wagmiConfigMock.shouldThrow = true;

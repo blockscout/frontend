@@ -45,13 +45,6 @@ const RewardsContextProvider = dynamic(() => import('src/features/rewards/contex
 const RewardsLoginModal = dynamic(() => import('src/features/rewards/components/login/RewardsLoginModal'), { ssr: false });
 const RewardsActivityTracker = dynamic(() => import('src/features/rewards/components/RewardsActivityTracker'), { ssr: false });
 
-// Dynamic connector mode still needs one root provider — its @dynamic-labs stack is not island-friendly
-// (tracked follow-up) — and `ssr: false` keeps that stack out of the server render. reown/fallback never
-// mount it, so this chunk stays out of their bundles.
-const DynamicProvider = dynamic(() => import('src/features/connect-wallet/components/DynamicProvider'), { ssr: false });
-const connectWalletFeature = config.features.connectWallet;
-const walletConnectorType = connectWalletFeature.isEnabled ? connectWalletFeature.connectorType : undefined;
-
 import 'src/shared/i18n/set-locale';
 // import 'focus-visible/dist/focus-visible';
 import 'src/server/global.css';
@@ -141,15 +134,10 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
     </AppContextProvider>
   );
 
-  const walletBoundary = walletConnectorType === 'dynamic' ? (
-    <DynamicProvider>
-      { appTree }
-    </DynamicProvider>
-  ) : (
-    // reown / fallback: `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on
-    // the critical path) and swaps in a native `<WagmiProvider>` once the runtime loads — eagerly for a
-    // returning user, or on the first wallet interaction / wallet route. It also owns the eager-load and
-    // AppKit theme-sync that used to live in `Web3Boot`.
+  // `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on the critical path)
+  // and swaps in a native `<WagmiProvider>` once the runtime loads — eagerly for a returning user, or on
+  // the first wallet interaction / wallet route. It also owns the eager-load and AppKit theme-sync.
+  const walletBoundary = (
     <Web3Provider>
       { isShellMounted ? appTree : null }
     </Web3Provider>

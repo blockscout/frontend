@@ -45,7 +45,6 @@ allowBuilds:
   '@scarf/scarf': false
   '@specify-sh/publisher-sdk': false
   '@tree-sitter-grammars/tree-sitter-yaml': false
-  bigint-buffer: false
   bufferutil: false
   core-js: false
   core-js-pure: false
