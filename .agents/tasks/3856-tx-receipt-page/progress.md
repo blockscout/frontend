@@ -7,4 +7,4 @@
 - [x] 05 → `tickets/05-multichain-receipt/`
 - [x] 06 → `tickets/06-entry-points/`
 - [x] 07 → `tickets/07-social-preview/`
-- [ ] 08 → `tickets/08-contract-creation-parties/`
+- [x] 08 → `tickets/08-contract-creation-parties/`

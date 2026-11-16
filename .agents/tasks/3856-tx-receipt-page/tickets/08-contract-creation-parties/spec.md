@@ -37,4 +37,4 @@ How to verify: `pnpm dev:preset eth`, open the receipt of the spec's "Contract c
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Choose the sentence view's connector in the summary selection and pass it to the parties row, with unit tests
+- [x] 1 `[agent]` Choose the sentence view's connector in the summary selection and pass it to the parties row, with unit tests

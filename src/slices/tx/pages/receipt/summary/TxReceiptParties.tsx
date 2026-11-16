@@ -3,6 +3,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SentenceConnector } from './types';
 import type { schemas } from '@blockscout/api-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -43,7 +44,7 @@ const TxReceiptParty = ({ address, isLoading }: PartyProps) => {
 interface Props {
   readonly from: schemas['Address'];
   readonly to: schemas['Address'] | null;
-  readonly connector: 'to' | 'interacted with';
+  readonly connector: 'to' | SentenceConnector;
   readonly isLoading: boolean;
 }
 

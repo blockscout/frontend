@@ -17,12 +17,12 @@ interface Props {
 }
 
 const TxReceiptSentenceView = ({ summary, isLoading }: Props) => {
-  const { actionType, template: { chunks, variablesNames }, variables, from, to } = summary;
+  const { actionType, template: { chunks, variablesNames }, variables, from, to, connector } = summary;
 
   return (
     <TxReceiptSummaryPanel
       action={ null }
-      parties={ <TxReceiptParties from={ from } to={ to } connector="interacted with" isLoading={ isLoading }/> }
+      parties={ <TxReceiptParties from={ from } to={ to } connector={ connector } isLoading={ isLoading }/> }
       isLoading={ isLoading }
     >
       <Skeleton loading={ isLoading } color="text.secondary" overflowWrap="anywhere">

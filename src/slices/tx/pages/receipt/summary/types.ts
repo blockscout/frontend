@@ -26,6 +26,8 @@ export interface TransferSummary {
   readonly to: Address | null;
 }
 
+export type SentenceConnector = 'interacted with' | 'created';
+
 export interface SentenceSummary {
   readonly type: 'sentence';
   readonly actionType: string | null;
@@ -33,6 +35,7 @@ export interface SentenceSummary {
   readonly variables: Record<string, TxInterpretationVariable>;
   readonly from: Address;
   readonly to: Address | null;
+  readonly connector: SentenceConnector;
 }
 
 export type ReceiptSummary = CallSummary | TransferSummary | SentenceSummary;

@@ -22,6 +22,8 @@ const TX = {
   value: '0',
 };
 
+const CREATION_TX = { ...TX, to: null, created_contract: CONTRACT, method: null };
+
 const TOKEN_TRANSFER: TxInterpretationSummary = {
   summary_template: '{action_type} {amount} {token} to {to_address}',
   summary_template_variables: {
@@ -92,6 +94,7 @@ describe('getReceiptSummary', () => {
       variables: SWAP.summary_template_variables,
       from: SENDER,
       to: CONTRACT,
+      connector: 'interacted with',
     });
   });
 
@@ -151,12 +154,40 @@ describe('getReceiptSummary', () => {
     });
   });
 
-  it('joins the parties of a sentence as the sender and the transaction recipient', () => {
-    expect(getReceiptSummary(TX, [ SWAP ], 18)).toMatchObject({ from: SENDER, to: CONTRACT });
+  it('joins the parties of a sentence as the sender and the transaction recipient, with "interacted with"', () => {
+    expect(getReceiptSummary(TX, [ SWAP ], 18)).toMatchObject({ from: SENDER, to: CONTRACT, connector: 'interacted with' });
   });
 
-  it('joins the parties of a contract creation sentence as the sender and the created contract', () => {
-    expect(getReceiptSummary({ ...TX, to: null, created_contract: CONTRACT }, [ SWAP ], 18)).toMatchObject({ from: SENDER, to: CONTRACT });
+  it('joins the parties of a contract creation sentence as the sender and the created contract, with "created"', () => {
+    expect(getReceiptSummary(CREATION_TX, [ SWAP ], 18)).toMatchObject({ from: SENDER, to: CONTRACT, connector: 'created' });
+  });
+
+  it('chooses the connector of a contract creation sentence whatever its action type', () => {
+    expect(getReceiptSummary(CREATION_TX, [ WITHDRAW ], 18)).toMatchObject({ type: 'sentence', actionType: null, connector: 'created' });
+  });
+
+  it('keeps a sentence of a transaction without a second party on "interacted with"', () => {
+    expect(getReceiptSummary({ ...TX, to: null }, [ SWAP ], 18)).toMatchObject({ type: 'sentence', to: null, connector: 'interacted with' });
+  });
+
+  it('gives a contract creation routed into the transfer view no connector of its own', () => {
+    expect(getReceiptSummary(CREATION_TX, [ TOKEN_TRANSFER ], 18)).toEqual({
+      type: 'transfer',
+      amount: '134.168381',
+      asset: { type: 'token', token: tokenInfo },
+      from: SENDER,
+      to: RECIPIENT,
+    });
+  });
+
+  it('gives a contract creation that falls back no connector of its own', () => {
+    expect(getReceiptSummary(CREATION_TX, [], 18)).toEqual({
+      type: 'transfer',
+      amount: '0',
+      asset: { type: 'native' },
+      from: SENDER,
+      to: CONTRACT,
+    });
   });
 
   it('uses the first summary only', () => {

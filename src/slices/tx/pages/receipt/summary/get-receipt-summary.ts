@@ -81,6 +81,7 @@ const getSentenceSummary = (summary: TxInterpretationSummary, tx: FallbackSummar
     variables: withTxParties(summary.summary_template_variables, tx),
     from: tx.from,
     to: tx.to ?? tx.created_contract,
+    connector: !tx.to && tx.created_contract ? 'created' : 'interacted with',
   };
 };
 
