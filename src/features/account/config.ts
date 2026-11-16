@@ -27,9 +27,6 @@ const apiKeysAlertMessage = getEnvHtmlValue('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE'
 const config: Feature<{
   isEnabled: true;
   authProvider: AuthProvider;
-  dynamic?: {
-    environmentId: string;
-  };
   apiKeys: {
     alertMessage: string | undefined;
   };
@@ -41,11 +38,10 @@ const config: Feature<{
 
   if (
     !app.isPrivateMode &&
-    getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true'
+    getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' &&
+    services.reCaptcha.siteKey
   ) {
-    const authProvider = getEnvValue('NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER');
-    const dynamicEnvironmentId = getEnvValue('NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID');
-    const addressVerificationEnabled = !app.isPrivateMode && verifiedTokens.isEnabled && apis.admin !== undefined;
+    const addressVerificationEnabled = verifiedTokens.isEnabled && apis.admin !== undefined;
 
     const expeditedReviewHtml = getEnvHtmlValue('NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML');
     const verifiedAddresses = addressVerificationEnabled ? {
@@ -53,32 +49,15 @@ const config: Feature<{
       expeditedReviewHtml,
     } : undefined;
 
-    if (authProvider === 'dynamic' && dynamicEnvironmentId) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        authProvider: 'dynamic',
-        dynamic: {
-          environmentId: dynamicEnvironmentId,
-        },
-        apiKeys: {
-          alertMessage: apiKeysAlertMessage,
-        },
-        verifiedAddresses,
-      });
-    }
-
-    if (services.reCaptcha.siteKey) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        authProvider: 'auth0',
-        apiKeys: {
-          alertMessage: apiKeysAlertMessage,
-        },
-        verifiedAddresses,
-      });
-    }
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      authProvider: 'auth0',
+      apiKeys: {
+        alertMessage: apiKeysAlertMessage,
+      },
+      verifiedAddresses,
+    });
   }
 
   return Object.freeze({

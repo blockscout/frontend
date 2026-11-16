@@ -1,14 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { type ButtonProps } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 
 import UserProfileAuth0 from 'src/features/account/components/user-profile/auth0/UserProfileDesktop';
 import UserWalletDesktop from 'src/features/account/components/user-profile/wallet/UserWalletDesktop';
 
 import config from 'src/config';
-
-const UserProfileDynamic = dynamic(() => import('src/features/account/components/user-profile/dynamic/UserProfile'), { ssr: false });
 
 interface Props {
   buttonSize?: ButtonProps['size'];
@@ -16,16 +13,8 @@ interface Props {
 }
 
 const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
-  const accountFeature = config.features.account;
-  if (accountFeature.isEnabled) {
-    switch (accountFeature.authProvider) {
-      case 'auth0':
-        return <UserProfileAuth0 buttonSize={ buttonSize } buttonVariant={ buttonVariant }/>;
-      case 'dynamic':
-        return <UserProfileDynamic buttonSize={ buttonSize } buttonVariant={ buttonVariant }/>;
-      default:
-        return null;
-    }
+  if (config.features.account.isEnabled) {
+    return <UserProfileAuth0 buttonSize={ buttonSize } buttonVariant={ buttonVariant }/>;
   }
   if (config.features.connectWallet.isEnabled) {
     return <UserWalletDesktop buttonSize={ buttonSize } buttonVariant={ buttonVariant }/>;

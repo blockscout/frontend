@@ -53,7 +53,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against valibot schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
-- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
 - `src/shared/entities/` — the entity-link base: the root context and parts, the `defineEntity` contract, the chain rule, and what a definition must tolerate.
 - `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.

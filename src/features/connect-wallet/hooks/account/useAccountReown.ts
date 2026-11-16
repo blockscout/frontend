@@ -10,7 +10,7 @@ import { useWeb3Account } from 'src/features/connect-wallet/utils/bridge';
 // (header button, ad banner, ENS lookup) no longer pull the wagmi/appkit chunks onto the critical path.
 //
 // The Bridge only tracks address + status; `chain`/`chainId`/`connector`/`addresses` are not needed by
-// any boot consumer, so they are filled with the same defaults the fallback/dynamic account hooks use.
+// any boot consumer, so they are filled with the same defaults the fallback account hook uses.
 // The status mapping mirrors wagmi's own `getAccount`: a returning user's persisted address surfaces as
 // `reconnecting` (address visible, no "Connect" flash) until the provider confirms or clears it.
 export default function useAccountReown(): UseAccountReturnType {
