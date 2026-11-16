@@ -160,7 +160,10 @@ None. No application code changes.
 - Renaming the repository, closing the prototype pull request and deleting the prototype branch in
   the second consumer are done by the developer by hand.
 - Work lands in two repositories. This spec and its tickets live here; each ticket names its target
-  repository, and home pull requests link back to the issue.
+  repository. Home has one pull request for the whole task, as `frontend` does: blockscout/frontend-home#5,
+  on the branch `worktree-creation-and-session-hooks`, which links back to the issue. Every home ticket
+  commits there. Tickets 01, 02, 03 and 05 first opened a stacked pull request each (#2 to #5); the stack
+  was collapsed into #5 and the others closed.
 
 ## Out of scope
 

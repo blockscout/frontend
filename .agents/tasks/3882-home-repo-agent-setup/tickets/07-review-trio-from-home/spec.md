@@ -36,8 +36,9 @@ request and follow it to its report.
 - **Where this lands.** Run the session inside the `frontend` clone nested in the home clone, on
   `issue-3882`, with the home root (`..`) added to the session: `implement-ticket` and these ticket files
   are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
-  committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
-  the `progress.md` tick are the only changes committed in `frontend`.
+  committed in home on `worktree-creation-and-session-hooks`, the one branch every home ticket shares, and
+  pushed to its pull request (blockscout/frontend-home#5). No ticket opens a branch or a pull request of
+  its own. The leaf boxes and the `progress.md` tick are the only changes committed in `frontend`.
 - These three are the exception to the active-child convention because they launch other processes; the
   other moved skills take no parameter.
 - The frozen copies in `frontend` keep working without a parameter for sessions started there (ticket 08).
