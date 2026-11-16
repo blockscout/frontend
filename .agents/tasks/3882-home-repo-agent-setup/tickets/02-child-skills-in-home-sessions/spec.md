@@ -21,24 +21,24 @@ not a bar.
 
 How to verify: start `claude` at the home root and type `/implement-ticket`.
 
-- [ ] Home's skills directory holds one symlink per child skill, named as the skill with no prefix, with
+- [x] Home's skills directory holds one symlink per child skill, named as the skill with no prefix, with
   a relative target into the child's skills directory.
-- [ ] A child skill whose name home owns as a real directory has no link; home's copy is the one that
+- [x] A child skill whose name home owns as a real directory has no link; home's copy is the one that
   loads.
-- [ ] One script writes the links from the children list and each child's skills. Run with nothing to
+- [x] One script writes the links from the children list and each child's skills. Run with nothing to
   change, it changes nothing.
 - [ ] `pnpm lint:skill-links` fails, naming the entry, on each of: a child skill with no link, a link
   with no target, a link for a name home owns, a link whose target is not the expected relative path.
-- [ ] The Checks workflow runs the check after the children are cloned.
-- [ ] In a headless session at the home root, the first turn's listing has every linked skill; a
+- [x] The Checks workflow runs the check after the children are cloned.
+- [x] In a headless session at the home root, the first turn's listing has every linked skill; a
   model-invocable one (`add-env-var`) loads through the skill tool from the child; a user-only one
   (`implement-ticket`) is listed as a command; `update-glossary` loads from home.
-- [ ] The same holds in a task worktree, with the loaded skill's base directory inside the worktree's
+- [x] The same holds in a task worktree, with the loaded skill's base directory inside the worktree's
   child, and a worktree-isolated subagent started there loads a child skill.
-- [ ] A session in a home clone with no child starts without a skill error and lists home's own skills.
-- [ ] Home's instructions and its instruction-set README say that a symlinked skill belongs to the child
+- [x] A session in a home clone with no child starts without a skill error and lists home's own skills.
+- [x] Home's instructions and its instruction-set README say that a symlinked skill belongs to the child
   it points into, and is edited and committed there.
-- [ ] `(human)` In an interactive session at the home root, typing `/implement-ticket` runs the skill.
+- [x] `(human)` In an interactive session at the home root, typing `/implement-ticket` runs the skill.
 
 ## Details
 
@@ -74,7 +74,7 @@ How to verify: start `claude` at the home root and type `/implement-ticket`.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` The link script with its check mode, the `lint:skill-links` command and the CI step
-- [ ] 2 `[agent]` Write and commit the links; the ownership sentence in home's instructions and README
-- [ ] 3 `[agent]` Verify headless: home root, a hand-made task worktree, an isolated subagent, a child-less clone
-- [ ] 4 `[human]` Type `/implement-ticket` in an interactive session at the home root
+- [x] 1 `[agent]` The link script with its check mode, the `lint:skill-links` command and the CI step
+- [x] 2 `[agent]` Write and commit the links; the ownership sentence in home's instructions and README
+- [x] 3 `[agent]` Verify headless: home root, a hand-made task worktree, an isolated subagent, a child-less clone
+- [x] 4 `[human]` Type `/implement-ticket` in an interactive session at the home root
