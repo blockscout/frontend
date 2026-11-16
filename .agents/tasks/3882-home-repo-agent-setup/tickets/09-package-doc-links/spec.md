@@ -32,8 +32,10 @@ current with `frontend`'s, so ticket 10 can delete `frontend`'s copy without los
   are there, and a session started at the home root cannot invoke it until ticket 02 lands. The work is
   committed in home, on a branch of its own with a pull request that links the issue. The leaf boxes and
   the `progress.md` tick are the only changes committed in `frontend`.
-- pnpm prepares a git dependency with npm when the package has a `package-lock.json`; keep or drop the
-  lockfile deliberately and note which in the tool's `CONTEXT.md`.
+- Home uses pnpm with a committed `pnpm-lock.yaml`, as `frontend` does. pnpm picks the package manager
+  for a git dependency's `prepare` from the package's lockfile: the earlier probe saw npm run it because of
+  a `package-lock.json`, so with pnpm's lockfile the build should run under pnpm. Confirm that in the
+  scratch consumer and note it in the tool's `CONTEXT.md`.
 - The tool has no runtime dependencies; keep it that way (the parent spec excludes tools that have them).
 - Findings from the earlier delivery probe are in `.ai/handoffs/2026-11-13-home-repo-probes.md` (main
   developer's notes).
