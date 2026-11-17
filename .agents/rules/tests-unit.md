@@ -12,10 +12,11 @@ alwaysApply: false
 > [Frozen copies](../README.md#frozen-copies).
 
 The unit-test runner here is Vitest, and a test that renders in a browser is a Playwright one. The local
-setup is in `vitest/CONTEXT.md`: file naming and the `pnpm test:vitest` commands, which specs are isolated
-and why, what the setup files provide, rendering components, the helpers under `vitest/utils/`, mocking
-fetch, overriding environment variables, and the primed-requests drift tests. Read it before writing or
-changing a spec. It is edited here.
+setup is in `vitest/CONTEXT.md`: which specs are isolated and why, what breaks in a shared worker,
+overriding environment variables, the conventions no linter checks, and where each part of the setup is
+described. Rendering (`render`), mocking fetch (`fetchMock`) and each helper under `vitest/utils/`
+(`withEnvs`, `mockSocket` and the rest) are described in the header comment of their file; the doc says
+which. Read it before writing or changing a spec. It is edited here.
 
 ## Purpose
 

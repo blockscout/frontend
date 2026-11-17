@@ -9,6 +9,11 @@ import { vi } from 'vitest';
 //
 // Env bundles for common feature setups live in `src/config/test-utils/env-presets.ts`
 // (shared with the Playwright suite).
+//
+//   await withEnvs(ENVS_MAP.arbitrumRollup, async() => {
+//     const { default: config } = await import('src/config');
+//     // …
+//   });
 export default async function withEnvs<T>(
   envs: Array<[ string, string ]> | undefined,
   run: () => Promise<T>,

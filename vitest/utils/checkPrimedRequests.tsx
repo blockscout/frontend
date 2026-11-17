@@ -14,8 +14,8 @@ import { mockSocket, MOCK_SOCKET_URL } from './mockSocket';
 // Drift check for the early-fetch primer (src/server/primedRequests): asserts that every
 // request the primer would fire for a page is also fired — with byte-identical URL and
 // headers — by the real page component on its first render. Used by the colocated
-// `<Component>.primed.spec.tsx` files; see the "Primed-requests drift tests" section of the
-// unit-testing rules.
+// `<Component>.primed.spec.tsx` files; what they guarantee and why is in
+// src/server/primedRequests/CONTEXT.md.
 //
 // Mechanics: the REAL inline script runs first (fetchMock records its requests and keeps
 // them pending), the primed map is snapshotted and cleared (so the component cannot consume

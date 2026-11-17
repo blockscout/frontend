@@ -191,7 +191,7 @@ const WINDOW_ENVS_RESTRICTION = {
 };
 
 // Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
-// puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
+// puts it in the `isolated` one — see vitest.config.ts and vitest/CONTEXT.md -> "Isolation".
 // Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
 // is not on the list: it resets the registry around its callback and restores the envs it set.
 const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];

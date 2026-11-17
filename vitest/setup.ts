@@ -5,6 +5,14 @@ import createFetchMock from 'vitest-fetch-mock';
 
 import { matchesViewport, resetViewport } from './utils/mockViewport';
 
+// Runs before every spec file, in both projects. What a spec has without setting it up:
+// - the envs of `.env.vitest` as the global `__envs`, where the app config reads them;
+// - the global `fetchMock` of vitest-fetch-mock, which intercepts every `fetch` call:
+//   `fetchMock.mockResponseOnce(JSON.stringify({ … }))` before the code under test runs;
+// - under jsdom, a desktop viewport (mockViewport.ts switches it) and the browser APIs jsdom lacks;
+// - nothing from the test before it. A response, spy, stub or fake timer is therefore set up in the
+//   test or in `beforeEach`: one from `beforeAll` or the top of the file is gone before the first test.
+
 const envs = dotenv.config({ path: './vitest/.env.vitest', quiet: true });
 
 const fetchMocker = createFetchMock(vi);

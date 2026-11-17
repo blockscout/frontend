@@ -17,23 +17,23 @@ unit-test setup; a reader who opens a helper learns from its header how and when
 
 ## Acceptance criteria
 
-- [ ] Every line of `vitest/CONTEXT.md` passes the drop test of `.agents/rules/docs.md`, and every gotcha
+- [x] Every line of `vitest/CONTEXT.md` passes the drop test of `.agents/rules/docs.md`, and every gotcha
   in it passes that rule's gotcha test.
-- [ ] Nothing a reader could learn from `vitest/CONTEXT.md` before this ticket is lost: each removed fact
+- [x] Nothing a reader could learn from `vitest/CONTEXT.md` before this ticket is lost: each removed fact
   is in the header comment of the file it describes, in a spec whose title names it, or already one lookup
   away (`package.json` scripts, the runner's `--help`, the setup file itself). `notes.md` in this folder
   lists each removed part and where it now lives.
-- [ ] The header comments added or extended follow the comment rules of `.agents/rules/code-quality.md`,
+- [x] The header comments added or extended follow the comment rules of `.agents/rules/code-quality.md`,
   in the form the helpers that already have one use (`vitest/utils/mockRouter.ts`,
   `vitest/utils/mockEnvs.ts`).
-- [ ] What only a doc can state is kept: which project a spec belongs to and what breaks in a shared
+- [x] What only a doc can state is kept: which project a spec belongs to and what breaks in a shared
   worker, the table of what stays isolated and why, and the split of React contexts under `withEnvs`.
-- [ ] The pointer paragraph in `.agents/rules/tests-unit.md` and the `vitest/` line in the per-directory
+- [x] The pointer paragraph in `.agents/rules/tests-unit.md` and the `vitest/` line in the per-directory
   list of `.agents/AGENTS.md` still describe what the file holds. The frozen general half of the rule is
   not touched.
-- [ ] No source change beyond comments: `pnpm test:vitest` passes with the same specs as before.
-- [ ] No skill with a `Run by Honk` section, and no skill those call, is changed.
-- [ ] `pnpm lint:doc-links`, `pnpm lint:eslint` and `pnpm lint:tsc` pass.
+- [x] No source change beyond comments: `pnpm test:vitest` passes with the same specs as before.
+- [x] No skill with a `Run by Honk` section, and no skill those call, is changed.
+- [x] `pnpm lint:doc-links`, `pnpm lint:eslint` and `pnpm lint:tsc` pass.
 
 ## Details
 
@@ -57,5 +57,5 @@ unit-test setup; a reader who opens a helper learns from its header how and when
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Take helper usage and setup facts to header comments; record each move in `notes.md`
-- [ ] 2 `[agent]` Cut and reshape `vitest/CONTEXT.md` to the `docs` rule; update the rule's pointer and the `AGENTS.md` line
+- [x] 1 `[agent]` Take helper usage and setup facts to header comments; record each move in `notes.md`
+- [x] 2 `[agent]` Cut and reshape `vitest/CONTEXT.md` to the `docs` rule; update the rule's pointer and the `AGENTS.md` line
