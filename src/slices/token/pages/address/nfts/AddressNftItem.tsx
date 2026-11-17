@@ -46,6 +46,7 @@ const AddressNftItem = ({ isLoading, withTokenLink, chain, instance, token }: Pr
           <NftMedia
             mb="18px"
             data={ instance }
+            addressHash={ token.address_hash }
             size="md"
             isLoading={ isLoading }
             autoplayVideo={ false }
