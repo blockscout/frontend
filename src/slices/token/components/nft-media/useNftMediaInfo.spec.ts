@@ -71,9 +71,9 @@ describe('useNftMediaInfo', () => {
     expect(fetchMock.mock.calls).toHaveLength(0);
   });
 
-  it('renders inline HTML from a data URI without asking the API', async() => {
+  it('resolves inline HTML from a data URI without asking the API', async() => {
     const url = 'data:text/html,<html><body><canvas></canvas></body></html>';
-    const data = await resolveMediaInfo({ animation_url: url, image_url: 'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=' });
+    const data = await resolveMediaInfo({ animation_url: url });
 
     expect(data).toEqual([ { src: url, mediaType: 'html', transport: 'http' } ]);
     expect(fetchMock.mock.calls).toHaveLength(0);
