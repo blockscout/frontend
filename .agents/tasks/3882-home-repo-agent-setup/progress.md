@@ -10,5 +10,5 @@
 - [x] 08 → `tickets/08-frozen-copies-in-frontend/`
 - [x] 09 → `tickets/09-package-doc-links/`
 - [x] 10 → `tickets/10-consume-doc-links-by-pin/`
-- [ ] 11 → `tickets/11-adr-setup-housekeeping/`
+- [x] 11 → `tickets/11-adr-setup-housekeeping/`
 - [ ] 12 → `tickets/12-shape-vitest-context/`

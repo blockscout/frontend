@@ -14,16 +14,16 @@ issue and the prototype's leftovers say the same thing the repositories now do.
 
 ## Acceptance criteria
 
-- [ ] An ADR in home, following home's `adr` rule, records the decision: the submodule design and why it
+- [x] An ADR in home, following home's `adr` rule, records the decision: the submodule design and why it
   was dropped, the home repo pattern, and the costs accepted for phase 1 (frozen copies, the double rule
   load, duplicated settings).
-- [ ] Home's setup section takes a machine with nothing to a working layout: clone, bootstrap, what the
+- [x] Home's setup section takes a machine with nothing to a working layout: clone, bootstrap, what the
   hooks do, how to start a task worktree by name, how worktrees are cleaned up, and how child skills
   reach a home session (as ticket 02 settled it).
-- [ ] The setup section is checked by following it into a fresh directory.
-- [ ] The issue body describes the home repo design, with the prototype's result kept as a short
+- [x] The setup section is checked by following it into a fresh directory.
+- [x] The issue body describes the home repo design, with the prototype's result kept as a short
   superseded note.
-- [ ] Pull request #3883 is closed unmerged, and the prototype branch in the second consumer is deleted.
+- [x] Pull request #3883 is closed unmerged, and the prototype branch in the second consumer is deleted.
 
 ## Details
 
@@ -40,7 +40,7 @@ issue and the prototype's leftovers say the same thing the repositories now do.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the ADR
-- [ ] 2 `[agent]` Write the setup section and verify it in a fresh directory
-- [ ] 3 `[agent]` Rewrite the issue body
-- [ ] 4 `[human]` Close #3883 unmerged; delete the prototype branch in the second consumer
+- [x] 1 `[agent]` Write the ADR
+- [x] 2 `[agent]` Write the setup section and verify it in a fresh directory
+- [x] 3 `[agent]` Rewrite the issue body
+- [x] 4 `[human]` Close #3883 unmerged; delete the prototype branch in the second consumer
