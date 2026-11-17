@@ -26,6 +26,7 @@ import AddressAlternativeFormat from './AddressAlternativeFormat';
 import AddressBalance from './AddressBalance';
 import AddressCreator from './AddressCreator';
 import AddressDetailsCounterRow from './AddressDetailsCounterRow';
+import AddressFundedBy from './AddressFundedBy';
 import AddressImplementations from './AddressImplementations';
 import AddressNameInfo from './AddressNameInfo';
 import AddressNetWorth from './AddressNetWorth';
@@ -74,6 +75,11 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         <AddressNameInfo data={ data } isLoading={ isLoading }/>
 
         <AddressCreator data={ data } isLoading={ isLoading }/>
+        <AddressFundedBy
+          addressHash={ data.hash }
+          isAddressLoading={ Boolean(isLoading) }
+          isEnabled={ !isLoading && Boolean(addressQuery.data) && !addressQuery.isDegradedData && !data.is_contract }
+        />
         { !isLoading && data.is_contract && data.implementations && data.implementations?.length > 0 && (
           <AddressImplementations
             data={ data.implementations }

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { ResourcePayload } from 'src/api/resources';
+
 import type { AddressCountersQuery } from 'src/slices/address/hooks/useAddressCountersQuery';
 import type { AddressQuery } from 'src/slices/address/hooks/useAddressQuery';
 import * as addressMock from 'src/slices/address/mocks/address';
@@ -7,6 +9,7 @@ import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as countersMock from 'src/slices/address/mocks/counters';
 import * as statsMock from 'src/slices/chain/stats/mocks';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
+import * as txMock from 'src/slices/tx/mocks/list';
 
 import * as widgetsMock from 'src/features/address-3rd-party-widgets/mocks';
 
@@ -23,6 +26,14 @@ const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },
   },
+};
+
+const mockFundingTxs = async(mockApiResponse: TestFnArgs['mockApiResponse'], items: ResourcePayload<'core:address_txs'>['items']) => {
+  await mockApiResponse(
+    'core:address_txs',
+    { items, next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { filter: 'to', sort: 'block_number', order: 'asc' } },
+  );
 };
 
 const mockStats = async(mockApiResponse: TestFnArgs['mockApiResponse'], mockAssetResponse: TestFnArgs['mockAssetResponse']) => {
@@ -92,6 +103,7 @@ test.describe('mobile', () => {
   test('validator', async({ render, page, mockApiResponse, mockAssetResponse }) => {
     await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
     await mockStats(mockApiResponse, mockAssetResponse);
+    await mockFundingTxs(mockApiResponse, [ txMock.base ]);
 
     const component = await render(
       <AddressDetails
@@ -110,6 +122,7 @@ test.describe('mobile', () => {
   test('filecoin', async({ render, mockApiResponse, mockAssetResponse, page }) => {
     await mockApiResponse('core:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
     await mockStats(mockApiResponse, mockAssetResponse);
+    await mockFundingTxs(mockApiResponse, []);
 
     const component = await render(
       <AddressDetails
@@ -172,6 +185,7 @@ test.fixme('token', async({ render, mockApiResponse, mockAssetResponse, injectMe
 test('validator', async({ render, mockApiResponse, mockAssetResponse, page }) => {
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
   await mockStats(mockApiResponse, mockAssetResponse);
+  await mockFundingTxs(mockApiResponse, [ txMock.base ]);
 
   const component = await render(
     <AddressDetails
@@ -190,6 +204,7 @@ test('validator', async({ render, mockApiResponse, mockAssetResponse, page }) =>
 test('filecoin', async({ render, mockApiResponse, mockAssetResponse, page }) => {
   await mockApiResponse('core:address', addressMock.filecoin, { pathParams: { hash: ADDRESS_HASH } });
   await mockStats(mockApiResponse, mockAssetResponse);
+  await mockFundingTxs(mockApiResponse, []);
 
   const component = await render(
     <AddressDetails
