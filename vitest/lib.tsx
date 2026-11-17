@@ -33,7 +33,6 @@ import 'src/shared/i18n/set-locale';
 //
 //   import { render, renderHook, screen, wrapper } from 'vitest/lib';
 //
-//   render(<MyComponent/>);
 //   renderHook(() => useMyHook(), { wrapper });
 
 const PAGE_PROPS = {
