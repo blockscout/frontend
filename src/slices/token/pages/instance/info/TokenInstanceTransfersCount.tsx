@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

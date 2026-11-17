@@ -21,6 +21,11 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 ### Note about escaping variables values
 All json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+### HTML values
+A variable whose description says it accepts HTML code is rendered as HTML on the app's own origin, so its markup is limited to text formatting, links and images. `<script>`, `<iframe>`, `<form>`, `<svg>`, `<object>`, inline `style` attributes, `on*` event handlers and `javascript:` links are rejected at startup, with a message naming what was found, and stripped from the rendered markup.
+
+The value is used as set: apostrophes and single-quoted attribute values stay as they are (unlike json-like values, no quote rewriting happens). A variable typed `Array<string>` takes a JSON list of such strings. Double-quote its items and put HTML attribute values in single quotes or escape their double quotes, for example `["Hello", "<a href='https://example.com'>Link!</a>"]`; the single-quoted form `['Hello', '<b>World</b>']` also works as long as no item itself contains a single quote.
+
 &nbsp;
 
 ## Table of contents
@@ -109,7 +114,7 @@ All json-like values should be single-quoted. If it contains a hash (`#`) or a d
   - [Usercentrics CMP](#usercentrics-cmp)
 - [Misc](#misc)
   - [Design system](#design-system)
-  - [Pro API support](#pro-api-support)
+  - [Blockscout API support](#blockscout-api-support)
 
 &nbsp;
 
@@ -321,7 +326,7 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code. If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. In this case, please ensure that you properly escape the values of HTML attributes or other special symbols (for example, `<a href=\\"https://example.com\\">Link!</a>`). | - | - | `Hello world! 🤪` | v1.13.0+ |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string \| Array<string>` | Used to display custom announcements or alerts in the site's header, this feature can handle a single instance or an array of regular strings or HTML code (see [HTML values](#html-values)). If an array of instances is provided, the banners will rotate randomly each time the user reloads the page. | - | - | `Hello world! 🤪` | v1.13.0+ |
 
 &nbsp;
 
@@ -425,7 +430,7 @@ Meta tags, Open Graph, and SEO.
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS | `Array<BlockFieldId>` | Array of the block fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["burnt_fees","total_reward"]'` | v1.10.0+ |
-| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | upcoming |
+| NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS | `Array<BlockViewId>` | Block views that should be hidden. See below the list of the possible id values. | - | - | `'["reorgs","uncles"]'` | v2.13.0+ |
 | NEXT_PUBLIC_VIEWS_BLOCK_PENDING_UPDATE_ALERT_ENABLED | `boolean` | The flag enables indication of the incomplete data for the block in the list and detailed views of the re-indexing block and its transactions. *Feature is enabled by default; pass `false` to disable it.* | - | `true` | `false` | v2.4.0+ |
 
 #### Block fields list
@@ -613,16 +618,15 @@ _Note_ Some properties can hold an array of up to two strings. The first string 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0 \| dynamic` | Auth provider that enables basic user authentication. | - | `auth0` | `dynamic` | v2.7.0+ |
-| NEXT_PUBLIC_ACCOUNT_DYNAMIC_ENVIRONMENT_ID | `string` | Environment ID of the Dynamic project. | Required, if provider is `dynamic` | - | `<your-secret>` | v2.7.0+ |
-| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code. On chains supported by the Blockscout Pro API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
-| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code. Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
+| NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER | `auth0` | Auth provider that enables basic user authentication. | - | `auth0` | `auth0` | v2.7.0+ |
+| NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API keys page. Could be a regular string or HTML code (see [HTML values](#html-values)). On chains supported by the Blockscout API the page shows a built-in deprecation notice by default; this variable overrides it, and an empty value hides it. | - | - | `Hello world! 🤪` | v2.7.0+ |
+| NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML | `string` | Payment instructions shown in the "Need a faster review?" block of the token info application form, as a regular string or HTML code (see [HTML values](#html-values)). Setting it enables the block; leaving it empty hides it. Only applies when the address verification workflow is enabled. | - | - | `Send <b>99 USDC</b> to <code>0x123…</code>` | v2.11.0+ |
 
 **Dependencies**
 
 | Variable | Compulsoriness |
 | --- | --- |
-| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required when `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER` is `auth0` |
+| [NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY](#google-recaptcha) | Required |
 | [NEXT_PUBLIC_CONTRACT_INFO_API_HOST](#contract-info-api) | Required for the address verification flow |
 | [NEXT_PUBLIC_ADMIN_SERVICE_API_HOST](#admin-service-api) | Required for the address verification flow |
 
@@ -750,7 +754,7 @@ This feature is **enabled by default**. To switch it off pass `NEXT_PUBLIC_ADVAN
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout Pro API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
+| NEXT_PUBLIC_API_DOCS_TABS | `Array<TabId>` | Controls which tabs appear on the API documentation page. Possible values for `TabId` are `rest_api`, `eth_rpc_api`, `rpc_api`, and `graphql_api`. **Note** that this variable has a default value, so the feature is enabled by default. Pass an empty array to disable it. On chains supported by the Blockscout API the page is not rendered unless this variable is set, and the "API" navigation item links to the Blockscout developer portal instead. | - | `['rest_api','eth_rpc_api','rpc_api','graphql_api']` | `[]` | v2.3.x+ |
 | NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE | `string` | Used for displaying custom alerts on the API documentation page. Could be a regular string or HTML code. Deprecated — no longer has any effect and will be removed in the next release. | - | - | `Hello world! 🤪` | v2.7.0+ |
 
 **Dependencies**
@@ -810,8 +814,8 @@ Embeds the [Bubblemaps](https://bubblemaps.io) holder map as a "Bubblemaps" sub-
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | upcoming |
-| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | upcoming |
+| NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG | `string` | Bubblemaps chain identifier of the network, see the [supported chains](https://docs.bubblemaps.io/iframe/quickstart) | Required | - | `eth` | v2.13.0+ |
+| NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID | `string` | Bubblemaps partner ID issued for the explorer's domains | Required | - | `demo` | v2.13.0+ |
 
 &nbsp;
 
@@ -1224,7 +1228,7 @@ An action button on the ERC-20 token page, leading to an external site. The butt
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | upcoming |
+| NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG | `TokenActionButtonConfig`, see details [below](#token-action-button-configuration-properties) | Configuration of the button. The button is shown only when this variable is set. | - | - | `{'text':'Buy on Example Portal','url':'https://portal.example.com/swap?chainId=1&token={hash}','logo':['https://example.com/logo.svg'],'colors':{'_default':{'bg':['rgb(134, 86, 239)'],'text':['white']}}}` | v2.13.0+ |
 
 #### Token action button configuration properties
 
@@ -1395,8 +1399,8 @@ Integrates [Usercentrics](https://usercentrics.com/) as the Consent Management P
 
 &nbsp;
 
-### Pro API support
+### Blockscout API support
 
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout Pro API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |
+| NEXT_PUBLIC_PRO_API_SUPPORTED | `boolean` | Indicates whether the current chain is supported by Blockscout API. **This variable is automatically set during container startup**; manual configuration is typically not needed. | - | - | `true` | v2.9.0+ |

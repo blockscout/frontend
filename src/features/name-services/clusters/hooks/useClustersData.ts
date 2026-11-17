@@ -102,6 +102,7 @@ export function useClustersData(debouncedSearchTerm: string, viewMode: string, p
       enabled: (
         showDirectoryView &&
         inputType === 'address' &&
+        !addressQuery.isPlaceholderData &&
         Boolean((addressQuery.data?.result?.data?.[0] as ClustersByAddressObject & { clusterId?: string })?.clusterId)
       ),
     },

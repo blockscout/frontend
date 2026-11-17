@@ -1,0 +1,186 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { describe, expect, it } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
+
+import type * as colorThemeUtils from './utils';
+
+async function loadUtils(envs: Array<[ string, string ]>): Promise<typeof colorThemeUtils> {
+  return withEnvs(envs, async() => import('./utils'));
+}
+
+const LIGHT_ONLY = [ 'NEXT_PUBLIC_COLOR_THEMES', '["light"]' ] satisfies [ string, string ];
+const DIM_AND_MIDNIGHT = [ 'NEXT_PUBLIC_COLOR_THEMES', '["dim","midnight"]' ] satisfies [ string, string ];
+
+describe('isColorThemeAvailable', () => {
+  it('accepts every theme when no theme list is configured', async() => {
+    const { isColorThemeAvailable } = await loadUtils([]);
+
+    expect(isColorThemeAvailable('dim')).toBe(true);
+    expect(isColorThemeAvailable('midnight')).toBe(true);
+  });
+
+  it('rejects a theme left out of the configured list', async() => {
+    const { isColorThemeAvailable } = await loadUtils([ DIM_AND_MIDNIGHT ]);
+
+    expect(isColorThemeAvailable('dim')).toBe(true);
+    expect(isColorThemeAvailable('light')).toBe(false);
+  });
+
+  it('rejects an unknown theme id', async() => {
+    const { isColorThemeAvailable } = await loadUtils([]);
+
+    expect(isColorThemeAvailable('sepia')).toBe(false);
+  });
+});
+
+describe('getDefaultColorTheme', () => {
+  it('picks the darkest theme of the requested color mode', async() => {
+    const { getDefaultColorTheme } = await loadUtils([]);
+
+    expect(getDefaultColorTheme('light')).toBe('light');
+    expect(getDefaultColorTheme('dark')).toBe('dark');
+  });
+
+  it('picks the darkest available theme of the requested color mode', async() => {
+    const { getDefaultColorTheme } = await loadUtils([ DIM_AND_MIDNIGHT ]);
+
+    expect(getDefaultColorTheme('dark')).toBe('midnight');
+  });
+
+  it('falls back to an available theme when the requested color mode is not available', async() => {
+    const { getDefaultColorTheme } = await loadUtils([ LIGHT_ONLY ]);
+
+    expect(getDefaultColorTheme('dark')).toBe('light');
+  });
+});
+
+describe('getInitialColorTheme', () => {
+  const DEFAULT_LIGHT = [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'light' ] satisfies [ string, string ];
+
+  it('keeps an available theme from the cookie', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'dim', prefersDark: false })).toBe('dim');
+  });
+
+  it('derives the theme from the cookie color mode when the cookie theme is unavailable', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'sepia', prefersDark: false })).toBe('dark');
+  });
+
+  it('prefers the configured default over the OS preference when there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('light');
+  });
+
+  it('uses the exact configured default theme, not just its color mode', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEME_DEFAULT', 'dim' ] ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('dim');
+  });
+
+  it('is the system theme when no default is configured and there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('system');
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('system');
+  });
+
+  it('keeps the system theme from the cookie', async() => {
+    const { getInitialColorTheme } = await loadUtils([ DEFAULT_LIGHT ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'system', prefersDark: false })).toBe('system');
+  });
+
+  it('follows the OS preference when the offered themes leave the system theme out and there are no cookies', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark"]' ] ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: true })).toBe('dark');
+    expect(getInitialColorTheme({ cookieColorMode: undefined, cookieColorTheme: undefined, prefersDark: false })).toBe('light');
+  });
+
+  it('derives a concrete theme from the cookie color mode when the system theme is no longer offered', async() => {
+    const { getInitialColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","dark"]' ] ]);
+
+    expect(getInitialColorTheme({ cookieColorMode: 'dark', cookieColorTheme: 'system', prefersDark: false })).toBe('dark');
+  });
+});
+
+describe('resolveColorTheme', () => {
+  it('resolves the system theme to the darkest offered theme of the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([]);
+
+    expect(resolveColorTheme('system', true)).toBe('dark');
+    expect(resolveColorTheme('system', false)).toBe('light');
+  });
+
+  it('resolves the system theme to the darkest available theme of the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([ [ 'NEXT_PUBLIC_COLOR_THEMES', '["light","midnight","system"]' ] ]);
+
+    expect(resolveColorTheme('system', true)).toBe('midnight');
+  });
+
+  it('leaves a concrete theme alone whatever the OS color mode', async() => {
+    const { resolveColorTheme } = await loadUtils([]);
+
+    expect(resolveColorTheme('dim', false)).toBe('dim');
+    expect(resolveColorTheme('light', true)).toBe('light');
+  });
+});
+
+describe('getThemeHexWithOverrides', () => {
+  const OVERRIDES = [
+    'NEXT_PUBLIC_COLOR_THEME_OVERRIDES',
+    '{"bg":{"primary":{"_light":{"value":"#f0f0f0"},"_dark":{"value":"#101010"}}}}',
+  ] satisfies [ string, string ];
+
+  it('returns the theme hex when no overrides are configured', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+
+  it('takes the overridden background for the light and dark themes', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([ OVERRIDES ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#f0f0f0');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101010');
+  });
+
+  it('leaves the other themes alone even when overrides are configured', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([ OVERRIDES ]);
+
+    expect(getThemeHexWithOverrides('dim')).toBe('#232B37');
+    expect(getThemeHexWithOverrides('midnight')).toBe('#1B2E48');
+  });
+
+  it('falls back to the theme hex when the override value is missing or not a string', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_light":{"value":1},"_dark":{"color":"#000"}}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+
+  it('takes a leaf string reached before the end of the override path', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_dark":"#000"}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('dark')).toBe('#000');
+  });
+
+  it('falls back to the theme hex when an intermediate override node is an array or null', async() => {
+    const { getThemeHexWithOverrides } = await loadUtils([
+      [ 'NEXT_PUBLIC_COLOR_THEME_OVERRIDES', '{"bg":{"primary":{"_light":[],"_dark":null}}}' ],
+    ]);
+
+    expect(getThemeHexWithOverrides('light')).toBe('#FFFFFF');
+    expect(getThemeHexWithOverrides('dark')).toBe('#101112');
+  });
+});

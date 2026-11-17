@@ -31,11 +31,14 @@ export interface ReleaseSource extends PrResolver {
   readonly pullRequest: (number: number) => ReleasePullRequest;
 }
 
-export interface ReleasePrs {
-  readonly previousTag: string;
+export interface RangePrs {
   readonly prs: ReadonlyArray<ReleasePullRequest>;
   readonly skipped: ReadonlyArray<ReleasePullRequest>;
   readonly unresolved: ReadonlyArray<Commit>;
+}
+
+export interface ReleasePrs extends RangePrs {
+  readonly previousTag: string;
 }
 
 const CHERRY_PICK_TRAILER = /^\(cherry picked from commit ([0-9a-f]{7,40})\)$/gm;
@@ -82,12 +85,11 @@ export function isReleasedElsewhere(labels: ReadonlyArray<string>, tag: string):
   return labels.some((label) => isVersionLabel(label) && label !== ownLabel);
 }
 
-export function releasePrs(tag: string, source: ReleaseSource): ReleasePrs {
-  const previous = previousTag(tag, source.tags());
+export function rangePrs(tag: string, from: string, to: string, source: ReleaseSource): RangePrs {
   const numbers = new Set<number>();
   const unresolved: Array<Commit> = [];
 
-  for (const commit of source.commits(previous, tag).filter((commit) => !isDocsCommit(commit, tag))) {
+  for (const commit of source.commits(from, to).filter((commit) => !isDocsCommit(commit, tag))) {
     const number = resolvePr(commit, source);
     if (number === undefined) {
       unresolved.push(commit);
@@ -98,11 +100,15 @@ export function releasePrs(tag: string, source: ReleaseSource): ReleasePrs {
 
   const pullRequests = [ ...numbers ].map(source.pullRequest);
   return {
-    previousTag: previous,
     prs: pullRequests.filter(({ labels }) => !isReleasedElsewhere(labels, tag)),
     skipped: pullRequests.filter(({ labels }) => isReleasedElsewhere(labels, tag)),
     unresolved,
   };
+}
+
+export function releasePrs(tag: string, source: ReleaseSource): ReleasePrs {
+  const previous = previousTag(tag, source.tags());
+  return { previousTag: previous, ...rangePrs(tag, previous, tag, source) };
 }
 
 export function issuesToLabel(prs: ReadonlyArray<ReleasePullRequest>, tag: string): Array<number> {

@@ -12,9 +12,7 @@ import { SECOND } from 'src/toolkit/utils/consts';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, waitFor } from 'vitest/lib';
 import { mockApiAndRpc, rpcRequests, apiRequests } from 'vitest/utils/mockJsonRpc';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
+import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
 import Transaction from './Transaction';
 
@@ -41,7 +39,7 @@ afterEach(() => {
 
 function renderPage(tab: string) {
   routerStandIn.reset({ pathname: '/tx/[hash]', query: { hash: TX_HASH, tab } });
-  return render(<AppErrorBoundary><Transaction/></AppErrorBoundary>);
+  return render(<RouterStandInProvider><AppErrorBoundary><Transaction/></AppErrorBoundary></RouterStandInProvider>);
 }
 
 describe('tx page on an API 404', () => {

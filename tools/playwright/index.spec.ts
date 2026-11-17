@@ -39,11 +39,13 @@ interface RecordingOptions {
   readonly changedFiles?: ReadonlyArray<string>;
   readonly existingFiles?: ReadonlyArray<string>;
   readonly isTTY?: boolean;
+  readonly gitCommonDir?: string | null;
 }
 
 // A runtime that records every step and answers each with the next status from the list, 0 once
 // the list runs out; the diff lookup answers with a fixed merge-base and the given changed files.
-function recordingRuntime({ statuses = [], changedFiles = [], existingFiles = [], isTTY = false }: RecordingOptions = {}): RecordingRuntime {
+function recordingRuntime(recordingOptions: RecordingOptions = {}): RecordingRuntime {
+  const { statuses = [], changedFiles = [], existingFiles = [], isTTY = false, gitCommonDir = null } = recordingOptions;
   const steps: Array<Step> = [];
   const reads: Array<string> = [];
   const baseRefs: Array<string> = [];
@@ -66,6 +68,7 @@ function recordingRuntime({ statuses = [], changedFiles = [], existingFiles = []
       baseRefs.push(baseRef);
       return { baseCommit: MERGE_BASE, changedFiles };
     },
+    gitCommonDir: () => gitCommonDir,
   };
 }
 
@@ -231,6 +234,24 @@ describe('run --docker', () => {
 
   it('returns docker\'s exit code', () => {
     expect(run([ '--docker' ], recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ], statuses: [ 3 ] }))).toBe(3);
+  });
+
+  it('mounts the main repository\'s .git when run from a linked worktree, so --changed resolves its base in the container', () => {
+    const gitCommonDir = '/Users/dev/main-repo/.git';
+    const runtime = recordingRuntime({ existingFiles: [ LINUX_MODULES_MARKER ], gitCommonDir });
+
+    run([ '--docker', '--changed' ], runtime);
+
+    expect(runtime.steps[0].args).toContain(`${ gitCommonDir }:${ gitCommonDir }:ro`);
+  });
+
+  it('skips the git mount for --docker-deps', () => {
+    const gitCommonDir = '/Users/dev/main-repo/.git';
+    const runtime = recordingRuntime({ gitCommonDir });
+
+    run([ '--docker-deps' ], runtime);
+
+    expect(runtime.steps[0].args.join(' ')).not.toContain(gitCommonDir);
   });
 
   it('refuses to start without the Linux dependencies and names the command that installs them', () => {

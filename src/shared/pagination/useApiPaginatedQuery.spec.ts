@@ -1,23 +1,18 @@
 // @vitest-environment jsdom
 
 import React from 'react';
+import { animateScroll } from 'react-scroll';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 
 import { chainA } from 'src/features/multichain/mocks/chains';
 
+import type { MockInstance } from 'vitest';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, render, wrapper, act, cleanup } from 'vitest/lib';
+import { renderHook, render, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-const { mockScrollToTop } = vi.hoisted(() => ({
-  mockScrollToTop: vi.fn(),
-}));
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: mockScrollToTop } }));
+import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
 import type { Params, ApiPaginatedQueryResult } from './useApiPaginatedQuery';
 import useApiPaginatedQuery from './useApiPaginatedQuery';
@@ -78,9 +73,11 @@ const params: Params<'core:address_txs'> = {
   pathParams: { hash: addressParamMock.hash },
 };
 
+let scrollToTop: MockInstance<typeof animateScroll.scrollToTop>;
+
 beforeEach(() => {
   fetchMock.resetMocks();
-  mockScrollToTop.mockClear();
+  scrollToTop = vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/blocks' });
 });
 
@@ -89,7 +86,7 @@ afterEach(cleanup);
 it('returns correct data if there is only one page', async() => {
   fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
 
-  const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+  const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
   await waitForApiResponse();
 
   expect(result.current.data).toEqual(responses.page_empty);
@@ -107,7 +104,7 @@ describe('if there are multiple pages', () => {
   it('return correct data for the first page', async() => {
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.data).toEqual(responses.page_1);
@@ -131,7 +128,7 @@ describe('if there are multiple pages', () => {
       fetchMock.once(JSON.stringify(responses.page_3), responseInit);
       fetchMock.once(JSON.stringify(responses.page_1), responseInit);
 
-      const { result: r } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+      const { result: r } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
       result = r;
       await waitForApiResponse();
     });
@@ -153,15 +150,15 @@ describe('if there are multiple pages', () => {
       });
 
       expect(routerStandIn.push).toHaveBeenCalledTimes(1);
-      expect(routerStandIn.push).toHaveBeenLastCalledWith(expect.anything(), undefined, { shallow: true });
+      expect(routerStandIn.push).toHaveBeenLastCalledWith(expect.anything(), { shallow: true });
       expect(routerStandIn.pathname).toBe('/blocks');
       expect(routerStandIn.query).toEqual({
         next_page_params: encodePageParams(responses.page_1.next_page_params),
         page: '2',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(1);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(1);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 2 to page 3', async() => {
@@ -191,8 +188,8 @@ describe('if there are multiple pages', () => {
         page: '3',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(2);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 3 to page 2', async() => {
@@ -227,8 +224,8 @@ describe('if there are multiple pages', () => {
         page: '2',
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(3);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(3);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
 
     it('from page 2 to page 1', async() => {
@@ -265,8 +262,8 @@ describe('if there are multiple pages', () => {
       expect(routerStandIn.push).toHaveBeenCalledTimes(4);
       expect(routerStandIn.query).toEqual({});
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(4);
-      expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+      expect(scrollToTop).toHaveBeenCalledTimes(4);
+      expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
     });
   });
 
@@ -276,7 +273,7 @@ describe('if there are multiple pages', () => {
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -307,8 +304,8 @@ describe('if there are multiple pages', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(3);
     expect(routerStandIn.query).toEqual({});
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(3);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(3);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('when navigates between pages can scroll to custom element', async() => {
@@ -324,7 +321,7 @@ describe('if there are multiple pages', () => {
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithScrollRef), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithScrollRef), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -342,7 +339,7 @@ describe('if there is page query param in URL', () => {
     routerStandIn.reset({ pathname: '/blocks', query: { page: '3' } });
     fetchMock.mockResponse(JSON.stringify(responses.page_empty), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.data).toEqual(responses.page_empty);
@@ -361,7 +358,7 @@ describe('if there is page query param in URL', () => {
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -394,7 +391,7 @@ describe('queries with filters', () => {
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_filtered), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -420,8 +417,8 @@ describe('queries with filters', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(2);
     expect(routerStandIn.query).toEqual({ filter: 'from', foo: 'bar', sort: 'val-desc' });
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(2);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('saves filter params in query when navigating between pages', async() => {
@@ -429,7 +426,7 @@ describe('queries with filters', () => {
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -454,7 +451,7 @@ describe('queries with sorting', () => {
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
     fetchMock.once(JSON.stringify(responses.page_sorted), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -481,8 +478,8 @@ describe('queries with sorting', () => {
     expect(routerStandIn.push).toHaveBeenCalledTimes(2);
     expect(routerStandIn.query).toEqual({ filter: 'from', foo: 'bar', sort: 'val-desc' });
 
-    expect(mockScrollToTop).toHaveBeenCalledTimes(2);
-    expect(mockScrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
+    expect(scrollToTop).toHaveBeenCalledTimes(2);
+    expect(scrollToTop).toHaveBeenLastCalledWith({ duration: 0 });
   });
 
   it('saves sorting params in query when navigating between pages', async() => {
@@ -490,7 +487,7 @@ describe('queries with sorting', () => {
     fetchMock.once(JSON.stringify(responses.page_1), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -520,7 +517,7 @@ describe('router query changes', () => {
     fetchMock.once(JSON.stringify(responses.page_3), responseInit);
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.data).toEqual(responses.page_3);
@@ -550,7 +547,7 @@ describe('values derived from the URL', () => {
     routerStandIn.reset({ pathname: '/blocks', query: { filter: 'to', sort: 'value', order: 'desc', foo: 'bar' } });
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
-    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.filters).toEqual({ filter: 'to' });
@@ -566,7 +563,7 @@ describe('values derived from the URL', () => {
       queryParams: { filter: 'validated' },
     };
 
-    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithFixedFilter), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithFixedFilter), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(new URL(String(fetchMock.mock.calls[0][0])).searchParams.get('filter')).toBe('validated');
@@ -578,7 +575,7 @@ describe('values derived from the URL', () => {
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
     const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useApiPaginatedQuery(hookParams), {
-      wrapper,
+      wrapper: routerStandIn.appWrapper,
       initialProps: params,
     });
     await waitForApiResponse();
@@ -598,7 +595,7 @@ describe('values derived from the URL', () => {
       options: { placeholderData: generateListStub<'core:address_txs'>(TX_ITEM, 1, { next_page_params: null }) },
     };
 
-    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithStub), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithStub), { wrapper: routerStandIn.appWrapper });
     expect(result.current.isInitialLoading).toBe(true);
     expect(result.current.isTransitioning).toBe(false);
     expect(result.current.pagination.isLoading).toBe(true);
@@ -630,7 +627,7 @@ describe('values derived from the URL', () => {
       options: { placeholderData: stub },
     };
 
-    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithStub), { wrapper });
+    const { result } = renderHook(() => useApiPaginatedQuery(paramsWithStub), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     for (const expectedPage of [ 2, 3 ]) {
@@ -660,7 +657,7 @@ describe('referential stability', () => {
     fetchMock.mockResponse(JSON.stringify(responses.page_1), responseInit);
 
     const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useApiPaginatedQuery(hookParams), {
-      wrapper,
+      wrapper: routerStandIn.appWrapper,
       initialProps: params,
     });
     await waitForApiResponse();
@@ -682,7 +679,7 @@ describe('referential stability', () => {
     fetchMock.once(JSON.stringify(responses.page_2), responseInit);
 
     const { result, rerender } = renderHook((hookParams: Params<'core:address_txs'>) => useApiPaginatedQuery(hookParams), {
-      wrapper,
+      wrapper: routerStandIn.appWrapper,
       initialProps: params,
     });
     await waitForApiResponse();
@@ -748,7 +745,7 @@ describe('cost of one user action', () => {
       return React.createElement(Consumer, { query: hookResult });
     };
 
-    render(React.createElement(Host, paramsWithStub));
+    render(React.createElement(RouterStandInProvider, null, React.createElement(Host, paramsWithStub)));
     await waitForApiResponse();
 
     for (let page = 1; page < pageNumber; page++) {

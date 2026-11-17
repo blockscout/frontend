@@ -10,10 +10,6 @@ import wagmiConfig from 'src/features/connect-wallet/utils/wagmi-config';
 
 import { collator } from 'src/shared/texts/collator';
 
-// 20% headroom so the tx does not OOG between estimate and inclusion
-const GAS_ESTIMATE_BUFFER_NUMERATOR = BigInt(120);
-const GAS_ESTIMATE_BUFFER_DENOMINATOR = BigInt(100);
-
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
     return BigInt(0);
@@ -132,8 +128,4 @@ export async function estimateTransactionGas(params: EstimateTransactionGasParam
     value,
     data,
   });
-}
-
-export function withGasEstimateBuffer(estimatedGas: bigint) {
-  return estimatedGas * GAS_ESTIMATE_BUFFER_NUMERATOR / GAS_ESTIMATE_BUFFER_DENOMINATOR;
 }

@@ -102,6 +102,31 @@ describe('single-chain schema', () => {
     });
   });
 
+  describe('NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE', () => {
+    it('accepts text formatting and links', () => {
+      expect(getValidationErrors(schema, {
+        ...REQUIRED,
+        NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: '<b>Notice:</b> use the <a href="https://example.com" target="_blank">new API</a>',
+      })).toEqual([]);
+    });
+
+    it('accepts a single-quoted attribute value that holds a double quote, as the app renders it', () => {
+      expect(getValidationErrors(schema, {
+        ...REQUIRED,
+        NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: `Pay <a href="https://example.com" title='x" onclick="steal()'>here</a>`,
+      })).toEqual([]);
+    });
+
+    it('rejects a frame or an event handler', () => {
+      expect(getValidationErrors(schema, {
+        ...REQUIRED,
+        NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: '<a href="https://example.com" onclick="steal()">Notice</a><iframe src="https://evil.example"></iframe>',
+      })).toEqual([
+        'NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: HTML contains elements that are not allowed: onclick attribute on <a>, <iframe>',
+      ]);
+    });
+  });
+
   describe('NEXT_PUBLIC_WEB3_WALLETS', () => {
     it('accepts a list of supported wallets or the "none" literal', () => {
       expect(getValidationErrors(schema, { ...REQUIRED, NEXT_PUBLIC_WEB3_WALLETS: toEnvValue([ 'metamask', 'coinbase' ]) })).toEqual([]);

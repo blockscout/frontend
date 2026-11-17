@@ -7,11 +7,9 @@ import { TX, TX_HASH } from 'src/slices/tx/stubs/tx';
 import { SECOND } from 'src/toolkit/utils/consts';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, wrapper, cleanup, waitFor } from 'vitest/lib';
+import { renderHook, cleanup, waitFor } from 'vitest/lib';
 import { mockApiAndRpc, rpcRequests, apiRequests } from 'vitest/utils/mockJsonRpc';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 
 import useTxQuery from './useTxQuery';
 
@@ -48,7 +46,7 @@ describe('useTxQuery', () => {
   it('serves the API transaction and never asks the RPC node', async() => {
     mockApiAndRpc({ api: () => API_TX });
 
-    const { result } = renderHook(() => useTxQuery(), { wrapper });
+    const { result } = renderHook(() => useTxQuery(), { wrapper: routerStandIn.appWrapper });
     await waitFor(() => expect(result.current.isPlaceholderData).toBe(false));
 
     expect(result.current.data?.hash).toBe(TX_HASH);
@@ -60,7 +58,7 @@ describe('useTxQuery', () => {
   it('reports a malformed hash straight away without asking the RPC node', async() => {
     mockApiAndRpc({ api: () => API_INVALID_HASH, rpc: RPC_NODE_WITH_TX });
 
-    const { result } = renderHook(() => useTxQuery(), { wrapper });
+    const { result } = renderHook(() => useTxQuery(), { wrapper: routerStandIn.appWrapper });
     await waitFor(() => expect(result.current.isError).toBe(true));
 
     expect(result.current.error?.status).toBe(422);
@@ -71,7 +69,7 @@ describe('useTxQuery', () => {
   it('reports the API 404 once the RPC node does not know the transaction either', async() => {
     mockApiAndRpc({ api: () => API_NOT_FOUND });
 
-    const { result } = renderHook(() => useTxQuery(), { wrapper });
+    const { result } = renderHook(() => useTxQuery(), { wrapper: routerStandIn.appWrapper });
 
     await waitFor(() => expect(rpcRequests()).toEqual([ 'eth_getTransactionByHash' ]));
     expect(result.current.isDegradedData).toBe(true);
@@ -96,7 +94,7 @@ describe('useTxQuery', () => {
       rpc: { eth_getTransactionByHash: rpcTx, eth_getBlockByNumber: RPC_NODE_WITH_TX.eth_getBlockByNumber },
     });
 
-    const { result } = renderHook(() => useTxQuery(), { wrapper });
+    const { result } = renderHook(() => useTxQuery(), { wrapper: routerStandIn.appWrapper });
     await waitFor(() => expect(result.current.isPlaceholderData).toBe(false));
 
     expect(result.current.isDegradedData).toBe(true);
@@ -109,7 +107,7 @@ describe('useTxQuery', () => {
     let apiResponse: typeof API_TX | Promise<typeof API_TX> = API_NOT_FOUND;
     mockApiAndRpc({ api: () => apiResponse, rpc: RPC_NODE_WITH_TX });
 
-    const { result } = renderHook(() => useTxQuery(), { wrapper });
+    const { result } = renderHook(() => useTxQuery(), { wrapper: routerStandIn.appWrapper });
     await waitFor(() => expect(result.current.isPlaceholderData).toBe(false));
 
     expect(result.current.isDegradedData).toBe(true);

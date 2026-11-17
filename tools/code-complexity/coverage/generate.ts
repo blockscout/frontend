@@ -19,9 +19,7 @@ import { readCoverageOrEmpty } from './read';
 const VITEST_BIN = path.join('node_modules', '.bin', 'vitest');
 const COVERAGE_FILE = 'coverage-final.json';
 
-// Primed-request drift tests (src/server/primedRequests/CONTEXT.md) import huge swaths of the app, so
-// `related` pulls them in for almost any file at a large page-mount cost and no useful coverage.
-const COVERAGE_TEST_EXCLUDES: ReadonlyArray<string> = [ '**/*.primed.spec.tsx' ];
+const VITEST_CONFIG = path.join('tools', 'code-complexity', 'coverage', 'vitest.config.ts');
 
 export type CoverageRequest =
   | { readonly mode: 'related'; readonly paths: ReadonlyArray<string> } |
@@ -51,7 +49,7 @@ function runVitestCoverage(reportsDirectory: string, request: CoverageRequest, o
     ...vitestSelectionArgs(request),
     // A selection with no matching specs still yields (empty) coverage instead of failing the run.
     '--passWithNoTests',
-    ...COVERAGE_TEST_EXCLUDES.map((glob) => `--exclude=${ glob }`),
+    `--config=${ VITEST_CONFIG }`,
     '--coverage',
     '--coverage.provider=v8',
     '--coverage.reporter=json',

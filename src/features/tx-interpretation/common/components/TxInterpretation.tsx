@@ -2,7 +2,6 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -24,6 +23,7 @@ import * as analytics from 'src/shared/analytics';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getChainTooltipText from 'src/shared/external-chains/get-chain-tooltip-text';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Badge } from 'src/toolkit/chakra/badge';

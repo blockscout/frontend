@@ -1,7 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/experimental-ct-react';
 import { devices, defineConfig } from '@playwright/experimental-ct-react';
 import react from '@vitejs/plugin-react';
-import path from 'node:path';
 import svgr from 'vite-plugin-svgr';
 
 import appConfig from 'src/config';
@@ -101,7 +100,7 @@ const config: PlaywrightTestConfig = defineConfig({
         minify: false,
         rolldownOptions: {
           output: {
-            // Ensure __envs exists in every chunk so code (e.g. next/router, configs/app) that
+            // Ensure __envs exists in every chunk so code (e.g. configs/app) that
             // runs before index.ts/envs.js doesn't throw. Real envs are set when envs.js runs.
             //
             // Explanation:
@@ -124,10 +123,6 @@ const config: PlaywrightTestConfig = defineConfig({
           // so for now we just mock these modules in tests
           { find: '@metamask/post-message-stream', replacement: './playwright/mocks/modules/@metamask/post-message-stream.js' },
           { find: '@metamask/providers', replacement: './playwright/mocks/modules/@metamask/providers.js' },
-
-          // Rolldown forbids assigning to an imported binding, so useRouter is swapped by aliasing the module.
-          // The path is absolute so that playwright/index.ts and the app share one instance of the mock.
-          { find: /^next\/router$/, replacement: path.resolve(__dirname, 'playwright/mocks/modules/next/router.ts') },
 
           // Mock for growthbook to test feature flags
           { find: 'src/services/growthbook/useFeatureValue', replacement: './playwright/mocks/client/services/growthbook/useFeatureValue.js' },

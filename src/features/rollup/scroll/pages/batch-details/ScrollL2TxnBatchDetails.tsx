@@ -1,17 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
 import type { ResourceError } from 'src/api/resources';
 
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import ScrollL2TxnBatchDA from 'src/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'src/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
@@ -21,6 +21,8 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -41,7 +43,7 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.number + increment);
 
-    router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
+    router.push({ pathname: '/batches/[number]', query: { number: nextId } });
   }, [ data, router ]);
 
   if (isError) {
@@ -163,11 +165,12 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         Committed transaction hash
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue alignSelf="flex-start">
-        <TxEntityL1
+        <TxEntity
           isLoading={ isPlaceholderData }
           hash={ data.commitment_transaction.hash }
           maxW="100%"
           noCopy
+          chain={ parentChain }
 
         />
       </DetailedInfo.ItemValue>
@@ -179,9 +182,10 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
         Committed block
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
-        <BlockEntityL1
+        <BlockEntity
           isLoading={ isPlaceholderData }
           number={ data.commitment_transaction.block_number }
+          chain={ parentChain }
         />
       </DetailedInfo.ItemValue>
 
@@ -193,11 +197,12 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue alignSelf="flex-start">
         { data.confirmation_transaction.hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isPlaceholderData }
             hash={ data.confirmation_transaction.hash }
             maxW="100%"
             noCopy
+            chain={ parentChain }
           />
         ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>
@@ -210,9 +215,10 @@ const ScrollL2TxnBatchDetails = ({ query }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.confirmation_transaction.block_number ? (
-          <BlockEntityL1
+          <BlockEntity
             isLoading={ isPlaceholderData }
             number={ data.confirmation_transaction.block_number }
+            chain={ parentChain }
           />
         ) : <Skeleton loading={ isPlaceholderData } display="inline-block">Pending</Skeleton> }
       </DetailedInfo.ItemValue>

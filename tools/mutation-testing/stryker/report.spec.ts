@@ -1,24 +1,55 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Mutant, MutantStatus, MutationReport } from './report';
-import { buildFileScores, collectFindings, isFailingRun, parseReport } from './report';
+import { buildFileScores, collectFindings, isFailingRun, parseReport, statusOf } from './report';
 
 const LINE = 10;
 
+// Shaped the way Stryker writes a mutant once the dry run collected coverage: `coveredBy` lists the
+// tests that executed it, and is empty for one no test reached.
 function mutant(status: MutantStatus, mutatorName = 'EqualityOperator', line = LINE): Mutant {
   return {
     id: `${ status }-${ mutatorName }-${ line }`,
     mutatorName,
     status,
     location: { start: { line, column: 1 }, end: { line, column: 20 } },
+    coveredBy: status === 'NoCoverage' ? [] : [ 'src/a.spec.ts#asserts' ],
   };
+}
+
+function withoutCoverageData(status: MutantStatus): Mutant {
+  const { coveredBy: _, ...rest } = mutant(status);
+  return rest;
 }
 
 function reportOf(statuses: ReadonlyArray<MutantStatus>): MutationReport {
   return { files: { 'src/a.ts': { mutants: statuses.map((status) => mutant(status)) } } };
 }
 
+describe('statusOf', () => {
+  it('keeps a survivor some test executed', () => {
+    expect(statusOf(mutant('Survived'))).toBe('Survived');
+  });
+
+  // The vitest runner reports no coverage at all when no test executed any mutant of the selection,
+  // and Stryker then scores every mutant off the whole suite: an untested line comes back Survived.
+  it('reads a survivor from a run with no coverage data as a mutant no test covered', () => {
+    expect(statusOf(withoutCoverageData('Survived'))).toBe('NoCoverage');
+  });
+
+  it('leaves every other verdict of a run with no coverage data as Stryker gave it', () => {
+    expect(statusOf(withoutCoverageData('Killed'))).toBe('Killed');
+    expect(statusOf(withoutCoverageData('Timeout'))).toBe('Timeout');
+    expect(statusOf(withoutCoverageData('Ignored'))).toBe('Ignored');
+  });
+});
+
 describe('buildFileScores', () => {
+  it('counts a survivor from a run with no coverage data under no-coverage, not survived', () => {
+    const report = { files: { 'src/a.ts': { mutants: [ withoutCoverageData('Survived'), withoutCoverageData('Killed') ] } } };
+    expect(buildFileScores(report)[0]).toMatchObject({ mutants: 2, killed: 1, survived: 0, noCoverage: 1, score: 50 });
+  });
+
   it('scores a file off the killed share of its scored mutants', () => {
     expect(buildFileScores(reportOf([ 'Killed', 'Killed', 'Survived', 'NoCoverage' ]))).toEqual([ {
       file: 'src/a.ts',
@@ -180,6 +211,15 @@ describe('isFailingRun', () => {
     expect(isFailingRun(collectFindings(reportOf([ 'Killed', 'NoCoverage' ])))).toBe(false);
   });
 
+  it('passes a run over untested lines only, which Stryker reports as survivors for want of coverage data', () => {
+    const report = { files: { 'src/a.ts': { mutants: [ withoutCoverageData('Survived'), withoutCoverageData('Survived') ] } } };
+    const findings = collectFindings(report);
+
+    expect(findings.survivors).toEqual([]);
+    expect(findings.noCoverage).toEqual([ { file: 'src/a.ts', mutants: 2 } ]);
+    expect(isFailingRun(findings)).toBe(false);
+  });
+
   it('passes a run that killed everything', () => {
     expect(isFailingRun(collectFindings(reportOf([ 'Killed', 'Timeout' ])))).toBe(false);
   });
@@ -193,7 +233,7 @@ describe('parseReport', () => {
   it('reads the mutants out of the reporter JSON', () => {
     const json = [
       '{"files":{"src/a.ts":{"mutants":[{"id":"1","mutatorName":"LogicalOperator",',
-      '"status":"Survived","location":{"start":{"line":3,"column":1},"end":{"line":3,"column":9}}}]}}}',
+      '"status":"Survived","location":{"start":{"line":3,"column":1},"end":{"line":3,"column":9}},"coveredBy":["1"]}]}}}',
     ].join('');
     expect(buildFileScores(parseReport(json))).toEqual([ {
       file: 'src/a.ts',

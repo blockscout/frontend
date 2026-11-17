@@ -7,6 +7,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { currencyUnits } from 'src/slices/chain/units';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -30,13 +32,15 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading, re
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(items, getBaseKey);
   const hasPercentage = !totalSupply.eq(ZERO);
+  const multichainContext = useMultichainContext();
+  const currencySymbol = multichainContext?.chain.app_config.chain.currency.symbol ?? currencyUnits.ether;
   return (
     <TableRoot minW="900px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="64px">Rank</TableColumnHeader>
           <TableColumnHeader width={ hasPercentage ? '50%' : '60%' }>Address</TableColumnHeader>
-          <TableColumnHeader width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencyUnits.ether }` }</TableColumnHeader>
+          <TableColumnHeader width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencySymbol }` }</TableColumnHeader>
           { hasPercentage && <TableColumnHeader width="15%" isNumeric>Percentage</TableColumnHeader> }
           <TableColumnHeader width="15%" isNumeric>Txn count</TableColumnHeader>
         </TableRow>

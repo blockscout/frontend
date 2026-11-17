@@ -1,27 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
+import { getRawEnvValue, parseEnvHtmlList } from 'src/config/utils/envs';
 
-const maintenanceAlertMessage = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE');
-  const parsedValue = envValue ? parseEnvJson<Array<string>>(envValue) : undefined;
-
-  if (!parsedValue || !Array.isArray(parsedValue)) {
-    return envValue;
-  }
-
-  if (parsedValue.length < 2) {
-    return parsedValue[0];
-  }
-
-  const index = Math.floor(Math.random() * parsedValue.length);
-
-  return parsedValue[index];
-})();
+const messages = parseEnvHtmlList(getRawEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE'));
 
 const config = Object.freeze({
   maintenanceAlert: {
-    message: maintenanceAlertMessage || '',
+    message: messages.length > 0 ? messages[Math.floor(Math.random() * messages.length)] : '',
   },
 });
 

@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -11,6 +8,9 @@ import useQuickSearchQuery from 'src/slices/search/hooks/useQuickSearchQuery';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'src/slices/search/utils/recent-search-keywords';
 
 import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
+import type { Route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -54,7 +54,7 @@ const SearchBarMobile = ({ isHeroBanner, onGoToSearchResults }: Props) => {
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
-      router.push(resultRoute, undefined, { shallow: true });
+      router.push(resultRoute, { shallow: true });
       onGoToSearchResults?.(searchTerm);
       onClose();
     }

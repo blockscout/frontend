@@ -22,6 +22,8 @@ export interface Mutant {
   readonly mutatorName: string;
   readonly status: MutantStatus;
   readonly location: { readonly start: MutantPosition; readonly end: MutantPosition };
+  // The tests the dry run saw execute the mutant; absent when the dry run collected no coverage at all.
+  readonly coveredBy?: ReadonlyArray<string>;
 }
 
 export interface MutationReport {
@@ -56,8 +58,17 @@ export function readReport(): MutationReport {
   return parseReport(fs.readFileSync(JSON_REPORT_FILE, 'utf8'));
 }
 
+// Stryker's verdict is not read off the status alone. The vitest runner builds its coverage object
+// on the first instrumented mutant a test executes, so a selection whose mutants are all on untested
+// lines hands Stryker no coverage at all. Stryker then runs the whole suite against each mutant,
+// and "nothing failed" comes back as Survived instead of NoCoverage — the only path on which
+// `coveredBy` is left unset, which is what tells an untested line from a weak assertion.
+export function statusOf(mutant: Mutant): MutantStatus {
+  return mutant.status === 'Survived' && mutant.coveredBy === undefined ? 'NoCoverage' : mutant.status;
+}
+
 function countBy(mutants: ReadonlyArray<Mutant>, statuses: ReadonlyArray<MutantStatus>): number {
-  return mutants.filter((mutant) => statuses.includes(mutant.status)).length;
+  return mutants.filter((mutant) => statuses.includes(statusOf(mutant))).length;
 }
 
 function scoreFile(file: string, mutants: ReadonlyArray<Mutant>): FileScore {
@@ -129,7 +140,7 @@ function groupByLine(mutants: ReadonlyArray<Mutant>): Array<LineFinding> {
 }
 
 function withStatus(mutants: ReadonlyArray<Mutant>, status: MutantStatus): Array<Mutant> {
-  return mutants.filter((mutant) => mutant.status === status);
+  return mutants.filter((mutant) => statusOf(mutant) === status);
 }
 
 // What makes a run's findings a failure, and the only finding that does: a mutant nothing caught. A

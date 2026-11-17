@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
@@ -14,6 +13,7 @@ import AddressModal from 'src/features/account/pages/private-tags/AddressModal/A
 import TransactionModal from 'src/features/account/pages/private-tags/TransactionModal/TransactionModal';
 
 import * as analytics from 'src/shared/analytics';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { MenuItem } from 'src/toolkit/chakra/menu';

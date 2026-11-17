@@ -1,19 +1,14 @@
 // @vitest-environment jsdom
 
 import type React from 'react';
+import { animateScroll } from 'react-scroll';
 
 import type { NextPageParams } from './types';
 
+import type { MockInstance } from 'vitest';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-const { mockScrollToTop } = vi.hoisted(() => ({
-  mockScrollToTop: vi.fn(),
-}));
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: mockScrollToTop } }));
 
 import type { PaginationActionsParams } from './usePaginationActions';
 import { usePaginationActions } from './usePaginationActions';
@@ -44,11 +39,13 @@ function renderActions(nextPageParams: NextPageParams | undefined, overrides: Ov
       noScroll: undefined,
       ...overrides,
     });
-  }, { initialProps });
+  }, { initialProps, wrapper: routerStandIn.wrapper });
 }
 
+let scrollToTop: MockInstance<typeof animateScroll.scrollToTop>;
+
 beforeEach(() => {
-  mockScrollToTop.mockClear();
+  scrollToTop = vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/blocks' });
 });
 
@@ -64,9 +61,9 @@ describe('next page', () => {
     });
 
     expect(routerStandIn.push).toHaveBeenCalledTimes(1);
-    expect(routerStandIn.push).toHaveBeenLastCalledWith(expect.anything(), undefined, { shallow: true });
+    expect(routerStandIn.push).toHaveBeenLastCalledWith(expect.anything(), { shallow: true });
     expect(routerStandIn.query).toEqual({ tab: 'txs', filter: 'from', page: '2', next_page_params: encodeCursor(PAGE_1_CURSOR) });
-    expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+    expect(scrollToTop).toHaveBeenCalledTimes(1);
   });
 
   it('does nothing when there is no cursor for the next page', async() => {
@@ -77,7 +74,7 @@ describe('next page', () => {
     });
 
     expect(routerStandIn.push).not.toHaveBeenCalled();
-    expect(mockScrollToTop).not.toHaveBeenCalled();
+    expect(scrollToTop).not.toHaveBeenCalled();
   });
 });
 
@@ -115,7 +112,7 @@ describe('previous page', () => {
 
     expect(routerStandIn.query).toEqual({ filter: 'from' });
     expect(result.current.canGoBackwards).toBe(false);
-    expect(mockScrollToTop).toHaveBeenCalledTimes(2);
+    expect(scrollToTop).toHaveBeenCalledTimes(2);
   });
 
   it('cannot go backwards from a deep page reached by URL', () => {
@@ -156,7 +153,7 @@ describe('first page', () => {
 
     expect(routerStandIn.push).toHaveBeenCalledTimes(1);
     expect(routerStandIn.query).toEqual({ filter: 'from', sort: 'value' });
-    expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+    expect(scrollToTop).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -173,7 +170,7 @@ describe('filter change', () => {
     });
 
     expect(routerStandIn.query).toEqual({ filter: 'to', sort: 'value', foo: 'bar' });
-    expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+    expect(scrollToTop).toHaveBeenCalledTimes(1);
   });
 
   it('drops empty values, joins arrays and keeps booleans', async() => {
@@ -188,7 +185,7 @@ describe('filter change', () => {
         scrollRef: undefined,
         noScroll: undefined,
       });
-    });
+    }, { wrapper: routerStandIn.wrapper });
 
     await act(async() => {
       // @ts-expect-error -- the URL encoding rules are what is under test, not the per-resource filter types
@@ -223,7 +220,7 @@ describe('sorting change', () => {
     });
 
     expect(routerStandIn.query).toEqual({ sort: 'fee', order: 'desc', filter: 'from' });
-    expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+    expect(scrollToTop).toHaveBeenCalledTimes(1);
   });
 
   it('removes sorting when called without a value', async() => {
@@ -248,7 +245,7 @@ describe('scrolling', () => {
     });
 
     expect(scrollRef.current.scrollIntoView).toHaveBeenCalledWith(true);
-    expect(mockScrollToTop).not.toHaveBeenCalled();
+    expect(scrollToTop).not.toHaveBeenCalled();
   });
 
   it('does not scroll when disabled', async() => {
@@ -258,7 +255,7 @@ describe('scrolling', () => {
       result.current.onNextPageClick();
     });
 
-    expect(mockScrollToTop).not.toHaveBeenCalled();
+    expect(scrollToTop).not.toHaveBeenCalled();
   });
 });
 

@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
+
+import { useRouter } from 'src/shared/router/useRouter';
 
 const RewardsActivityTracker = () => {
   const router = useRouter();

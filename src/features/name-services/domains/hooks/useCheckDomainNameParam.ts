@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import config from 'src/config';
+import { useRouter } from 'src/shared/router/useRouter';
 
 const DOMAIN_NAME_REGEXP = /.\../;
 

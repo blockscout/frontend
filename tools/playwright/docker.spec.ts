@@ -17,6 +17,8 @@ const CWD = '/Users/dev/frontend';
 const IMAGE = 'example.test/playwright:v0.0.0-test';
 const PNPM_VERSION = '11.0.0';
 const OPTIONS: DockerOptions = { tty: false, image: IMAGE, pnpm: PNPM_VERSION };
+const MAIN_GIT_DIR = `${ CWD }/.git`;
+const WORKTREE_GIT_DIR = '/Users/dev/main-repo/.git';
 
 function scriptOf(args: ReadonlyArray<string>): string {
   const bashIndex = args.indexOf('bash');
@@ -26,7 +28,7 @@ function scriptOf(args: ReadonlyArray<string>): string {
 
 describe('buildDockerCommand', () => {
   it('mounts the repo and the Linux modules, then runs the inner test:pw with the args as "$@"', () => {
-    const { command, args } = buildDockerCommand([ 'src/a.pw.tsx', '-g', 'renders the empty state', '--update-snapshots' ], OPTIONS, CWD);
+    const { command, args } = buildDockerCommand([ 'src/a.pw.tsx', '-g', 'renders the empty state', '--update-snapshots' ], OPTIONS, MAIN_GIT_DIR, CWD);
 
     expect(command).toBe('docker');
     expect(args).toEqual([
@@ -41,7 +43,7 @@ describe('buildDockerCommand', () => {
   });
 
   it('activates the pinned pnpm and disables the pre-run dependency check inside the container', () => {
-    const script = scriptOf(buildDockerCommand([], OPTIONS, CWD).args);
+    const script = scriptOf(buildDockerCommand([], OPTIONS, MAIN_GIT_DIR, CWD).args);
 
     expect(script).toBe(
       'npm i -g corepack@latest && ' +
@@ -53,8 +55,35 @@ describe('buildDockerCommand', () => {
   // An agent or CI caller has no terminal; docker with -it would then abort with "the input device is
   // not a TTY".
   it('asks docker for a terminal only when the caller has one', () => {
-    expect(buildDockerCommand([], { ...OPTIONS, tty: true }, CWD).args).toContain('-it');
-    expect(buildDockerCommand([], { ...OPTIONS, tty: false }, CWD).args).not.toContain('-it');
+    expect(buildDockerCommand([], { ...OPTIONS, tty: true }, MAIN_GIT_DIR, CWD).args).toContain('-it');
+    expect(buildDockerCommand([], { ...OPTIONS, tty: false }, MAIN_GIT_DIR, CWD).args).not.toContain('-it');
+  });
+
+  // From a linked worktree the repo's .git is a file pointing into the main repository, outside the cwd
+  // mount; git in the container needs that directory at the very path the file names.
+  it('mounts the main repository\'s .git read-only at its own path when the cwd is a linked worktree', () => {
+    const { args } = buildDockerCommand([], OPTIONS, WORKTREE_GIT_DIR, CWD);
+
+    expect(args).toEqual([
+      'run', '--rm', '--ipc=host',
+      '-v', `${ CWD }:${ CONTAINER_WORKDIR }`,
+      '-v', `${ CWD }/${ LINUX_MODULES_DIR }:${ CONTAINER_WORKDIR }node_modules`,
+      '-v', `${ WORKTREE_GIT_DIR }:${ WORKTREE_GIT_DIR }:ro`,
+      '-w', CONTAINER_WORKDIR,
+      IMAGE,
+      'bash', '-c', expect.any(String),
+      'bash',
+    ]);
+  });
+
+  it('adds no git mount when the .git directory is already under the cwd, or there is no repository', () => {
+    const mountsOf = (gitCommonDir: string | null): Array<string> => {
+      const { args } = buildDockerCommand([], OPTIONS, gitCommonDir, CWD);
+      return args.filter((arg, index) => args[index - 1] === '-v');
+    };
+
+    expect(mountsOf(MAIN_GIT_DIR)).toEqual([ `${ CWD }:${ CONTAINER_WORKDIR }`, `${ CWD }/${ LINUX_MODULES_DIR }:${ CONTAINER_WORKDIR }node_modules` ]);
+    expect(mountsOf(null)).toEqual(mountsOf(MAIN_GIT_DIR));
   });
 });
 

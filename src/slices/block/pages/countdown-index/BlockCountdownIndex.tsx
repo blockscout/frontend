@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Box, Center } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import { routeParams } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Heading } from 'src/toolkit/chakra/heading';
@@ -24,7 +24,7 @@ const BlockCountdownIndex = () => {
     const searchTerm = formData.get('search_term');
     if (typeof searchTerm === 'string' && searchTerm) {
       const url = routeParams({ pathname: '/block/countdown/[height]', query: { height: searchTerm } }, multichainContext);
-      router.push(url, undefined, { shallow: true });
+      router.push(url, { shallow: true });
     }
   }, [ router, multichainContext ]);
 

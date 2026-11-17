@@ -4,8 +4,10 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'src/features/rollup/zk-sync/types/api';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
@@ -37,10 +39,11 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       <DetailedInfo.ItemValue multiRow >
         { data.commit_transaction_hash ? (
           <>
-            <TxEntityL1
+            <TxEntity
               isLoading={ isLoading }
               hash={ data.commit_transaction_hash }
               maxW="100%"
+              chain={ parentChain }
             />
             { data.commit_transaction_timestamp && (
               <DetailedInfoTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isLoading }/>
@@ -58,10 +61,11 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       <DetailedInfo.ItemValue multiRow>
         { data.prove_transaction_hash ? (
           <>
-            <TxEntityL1
+            <TxEntity
               isLoading={ isLoading }
               hash={ data.prove_transaction_hash }
               maxW="100%"
+              chain={ parentChain }
             />
             { data.prove_transaction_timestamp && (
               <DetailedInfoTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isLoading }/>
@@ -79,10 +83,11 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
       <DetailedInfo.ItemValue multiRow>
         { data.execute_transaction_hash ? (
           <>
-            <TxEntityL1
+            <TxEntity
               isLoading={ isLoading }
               hash={ data.execute_transaction_hash }
               maxW="100%"
+              chain={ parentChain }
             />
             { data.execute_transaction_timestamp && (
               <DetailedInfoTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isLoading }/>

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
@@ -12,6 +11,7 @@ import multichainConfig from 'src/features/multichain/chains-config';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
+import { useRouter } from 'src/shared/router/useRouter';
 
 interface Params {
   checkRedirectQuery: UseQueryResult<multichain.CheckRedirectResponse, ResourceError<unknown>>;

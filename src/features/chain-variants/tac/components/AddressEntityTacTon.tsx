@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import * as tac from '@blockscout/tac-operation-lifecycle-types';
@@ -9,6 +7,7 @@ import * as tac from '@blockscout/tac-operation-lifecycle-types';
 import * as AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 
 const tacFeature = config.features.tac;
 
@@ -62,4 +61,4 @@ const AddressEntityTacTon = (props: Props) => {
   );
 };
 
-export default chakra(AddressEntityTacTon);
+export default AddressEntityTacTon;

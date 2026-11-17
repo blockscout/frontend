@@ -52,6 +52,19 @@ const updateTreeBaseDuration = (id: number, duration: number): Array<number> => 
 const updateErrorsOrWarnings = (id: number, errors: number, warnings: number): Array<number> => [ 5, id, errors, warnings ];
 const removeRootRecord = (): Array<number> => [ 6 ];
 const setSubtreeMode = (mode: number): Array<number> => [ 7, ROOT_ID, mode ];
+const NO_RECTS = -1;
+const rect = (x: number, y: number, width: number, height: number): Array<number> => [ x, y, width, height ];
+function suspenseAdd(id: number, isSuspended: 0 | 1, rects: Array<Array<number>> | typeof NO_RECTS): Array<number> {
+  return rects === NO_RECTS ?
+    [ 8, id, ROOT_ID, 0, isSuspended, NO_RECTS ] :
+    [ 8, id, ROOT_ID, 0, isSuspended, rects.length, ...rects.flat() ];
+}
+const suspenseRemove = (...ids: Array<number>): Array<number> => [ 9, ids.length, ...ids ];
+const suspenseReorderChildren = (id: number, ...children: Array<number>): Array<number> => [ 10, id, children.length, ...children ];
+function suspenseResize(id: number, rects: Array<Array<number>> | typeof NO_RECTS): Array<number> {
+  return rects === NO_RECTS ? [ 11, id, NO_RECTS ] : [ 11, id, rects.length, ...rects.flat() ];
+}
+const appliedActivitySliceChange = (sliceID: number): Array<number> => [ 13, sliceID ];
 
 function operations(strings: ReadonlyArray<string>, ...records: Array<Array<number>>): Array<number> {
   return [ RENDERER_ID, ROOT_ID, ...stringTable(strings), ...records.flat() ];
@@ -146,6 +159,13 @@ describe('replayOperations', () => {
     [ 'UPDATE_ERRORS_OR_WARNINGS', updateErrorsOrWarnings(2, 30, 31) ],
     [ 'REMOVE_ROOT', removeRootRecord() ],
     [ 'SET_SUBTREE_MODE', setSubtreeMode(1) ],
+    [ 'SUSPENSE_ADD with rects', suspenseAdd(30, 1, [ rect(1000, 1000, 2000, 2000), rect(-1000, -1000, 1000, 1000) ]) ],
+    [ 'SUSPENSE_ADD without rects', suspenseAdd(30, 0, NO_RECTS) ],
+    [ 'SUSPENSE_REMOVE', suspenseRemove(30, 31, 32) ],
+    [ 'SUSPENSE_REORDER_CHILDREN', suspenseReorderChildren(30, 31, 32, 33) ],
+    [ 'SUSPENSE_RESIZE with rects', suspenseResize(30, [ rect(1000, 1000, 2000, 2000), rect(-1000, -1000, 1000, 1000), rect(0, 0, 0, 0) ]) ],
+    [ 'SUSPENSE_RESIZE without rects', suspenseResize(30, NO_RECTS) ],
+    [ 'APPLIED_ACTIVITY_SLICE_CHANGE', appliedActivitySliceChange(30) ],
   ];
 
   it.each(SKIPPED)('advances past a %s record to the next ADD', (_label, record) => {

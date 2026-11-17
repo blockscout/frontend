@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { omit } from 'es-toolkit';
-import type { NextRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
@@ -12,6 +10,8 @@ import getChainValueFromQuery from 'src/features/multichain/utils/get-chain-valu
 
 import { scrollListToTop } from 'src/shared/pagination/usePaginationActions';
 import { getPageFromQuery, PAGE_FIELDS } from 'src/shared/pagination/usePaginationParams';
+import { useRouter } from 'src/shared/router/useRouter';
+import type { Router } from 'src/shared/router/useRouter';
 
 export interface ChainValueParams {
   readonly chainIds?: Array<string>;
@@ -26,7 +26,7 @@ export interface ChainValue {
 }
 
 interface LatestInputs {
-  readonly router: NextRouter;
+  readonly router: Router;
   readonly scrollRef: React.RefObject<HTMLDivElement | null> | undefined;
 }
 
@@ -47,7 +47,7 @@ export function useChainValue({ chainIds, withAllOption, scrollRef }: ChainValue
     if (getPageFromQuery(query) !== 1) {
       scrollListToTop(scrollRef, false);
     }
-    push({ pathname, query: { ...omit(query, PAGE_FIELDS), chain_id: value[0] } }, undefined, { shallow: true });
+    push({ pathname, query: { ...omit(query, PAGE_FIELDS), chain_id: value[0] } }, { shallow: true });
   }, []);
 
   return React.useMemo(() => ({ chainValue, chain, onChainValueChange }), [ chainValue, chain, onChainValueChange ]);

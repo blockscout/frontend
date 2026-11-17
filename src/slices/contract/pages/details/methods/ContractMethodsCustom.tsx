@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SmartContract } from 'src/slices/contract/types/api';
@@ -15,6 +14,7 @@ import CustomAbiModal from 'src/features/account/pages/custom-abi/CustomAbiModal
 
 import RawDataSnippet from 'src/shared/data/RawDataSnippet';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';

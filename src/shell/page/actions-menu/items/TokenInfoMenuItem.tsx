@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from '../types';
@@ -14,6 +13,7 @@ import AddressVerificationModal from 'src/features/account/pages/verified-addres
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { MenuItem } from 'src/toolkit/chakra/menu';

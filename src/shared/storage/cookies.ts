@@ -29,6 +29,8 @@ export enum NAMES {
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
   SHOW_POOR_REPUTATION_TOKENS = 'show_poor_reputation_tokens',
   APP_PROFILE = 'app_profile',
+  CUSTOM_RPC_URL = 'custom_rpc_url',
+  CUSTOM_RPC_IN_USE = 'custom_rpc_in_use',
 }
 
 /**

@@ -1,0 +1,12 @@
+{
+  "name": "@blockscout/og-image-generator",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "./dev.sh"
+  },
+  "devDependencies": {
+    "dotenv-cli": "10.0.0"
+  }
+}

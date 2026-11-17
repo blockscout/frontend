@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, Text, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -20,6 +19,7 @@ import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 
 import * as analytics from 'src/shared/analytics';
 import getErrorObjStatusCode from 'src/shared/errors/get-error-obj-status-code';
+import { route } from 'src/shared/router/routes';
 import capitalizeFirstLetter from 'src/shared/texts/capitalize-first-letter';
 import delay from 'src/shared/utils/delay';
 

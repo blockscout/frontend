@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Route } from 'nextjs-routes';
 import type { Product, WebApplication, WithContext } from 'schema-dts';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 import type { schemas } from '@blockscout/api-types';
 import type { LineChart } from '@blockscout/stats-types';
 import type { TxOgDescriptionParams } from 'src/slices/tx/types/api';
+
+import type { Route } from 'src/shared/router/routes';
 
 /* eslint-disable @stylistic/indent */
 export type ApiData<Pathname extends Route['pathname']> =

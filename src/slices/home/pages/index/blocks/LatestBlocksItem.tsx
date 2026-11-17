@@ -41,7 +41,7 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         <BlockEntity
           isLoading={ isLoading }
           number={ block.height }
-          tailLength={ 2 }
+          truncation={{ type: 'dynamic', tailLength: 2 }}
           textStyle="md"
           fontWeight={ 500 }
           mr="auto"

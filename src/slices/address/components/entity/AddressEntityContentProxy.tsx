@@ -3,33 +3,43 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ContentBaseProps } from 'src/shared/entities/components';
 import * as EntityBase from 'src/shared/entities/components';
 
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
-import type { ContentProps } from './AddressEntity';
+import type { AddressProp } from './AddressEntity';
 import AddressEntity from './AddressEntity';
 
-const AddressEntityContentProxy = ({ tooltipContentAfter, tooltipInteractive, ...props }: ContentProps) => {
-  const implementations = props.address.implementations;
+interface Props extends Omit<ContentBaseProps, 'text'> {
+  address: AddressProp;
+  altHash: string | undefined;
+}
+
+const MAX_IMPLEMENTATION_COLUMNS = 3;
+const TOOLTIP_MAX_WIDTH = { base: 'calc(100vw - 8px)', lg: '410px' };
+
+const AddressEntityContentProxy = ({ address, altHash, tooltipContentAfter, tooltipInteractive, ...props }: Props) => {
+  const implementations = address.implementations;
 
   if (!implementations || implementations.length === 0) {
     return null;
   }
 
-  const colNum = Math.min(implementations.length, 3);
-  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+  const colNum = Math.min(implementations.length, MAX_IMPLEMENTATION_COLUMNS);
+  const nameTag = address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
 
   const implementationName = implementations.length === 1 && implementations[0].name ? implementations[0].name : undefined;
+  const displayedName = nameTag || implementationName || address.name;
 
   const content = (
     <>
       <Box fontWeight={ 600 }>
         Proxy contract
-        { props.address.name ? ` (${ props.address.name })` : '' }
+        { address.name ? ` (${ address.name })` : '' }
       </Box>
       <AddressEntity
-        address={{ hash: props.address.hash, filecoin: props.address.filecoin }}
+        address={{ hash: address.hash, filecoin: address.filecoin }}
         noLink
         noIcon
         noHighlight
@@ -61,12 +71,12 @@ const AddressEntityContentProxy = ({ tooltipContentAfter, tooltipInteractive, ..
   );
 
   return (
-    <Tooltip content={ content } interactive contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '410px' } }} >
+    <Tooltip content={ content } interactive contentProps={{ maxW: TOOLTIP_MAX_WIDTH }}>
       <Box display="inline-flex" w="100%" minW={ 0 }>
         <EntityBase.Content
           { ...props }
-          truncation={ nameTag || implementationName || props.address.name ? 'tail' : props.truncation }
-          text={ nameTag || implementationName || props.address.name || props.altHash || props.address.hash }
+          truncation={ displayedName ? 'tail' : props.truncation }
+          text={ displayedName || altHash || address.hash }
           noTooltip
         />
       </Box>

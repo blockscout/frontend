@@ -31,13 +31,14 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 
 ## Running locally
 
-Three ways to start the dev server:
+Two ways to start the dev server:
 
 - `pnpm dev:preset <alias>` (e.g. `eth`) — the quickest way to a running app. Fetches a live instance's config over HTTP at startup, so it needs outbound internet. Aliases are defined in `tools/dev-server/registry.json`; how the fetch and env layering work is documented in `tools/dev-server/CONTEXT.md`.
-- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`.
-- `pnpm dev` — plain Next.js dev; needs a hand-written `.env.local` with the instance config.
+- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`. A hand-written instance config goes in `.env.local`, which wins over it.
 
-Both `dev:preset` and `dev:local` accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+Both accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+
+`tools/dev-server/` also holds the local production build (`pnpm prod:preset`) and the local docker image (`pnpm build:docker`, `pnpm start:docker:*`) — everything that runs the app on this machine.
 
 Gotchas:
 
@@ -52,8 +53,9 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against valibot schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
 - `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
-- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
+- `src/shared/entities/` — the entity-link base: the root context and parts, the `defineEntity` contract, the chain rule, and what a definition must tolerate.
 - `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.
 - `src/shared/pagination/` — the paginated-list components and utils.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
@@ -67,7 +69,6 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 - `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
-- `tools/review-screen/` — the Jev review-screen pilot: what a suspect is, what a run must never do, where the sidecars go.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.
@@ -93,8 +94,9 @@ implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent
 Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
 rules contract, the per-file symlink Cursor needs, and how references here are checked.
 
-## Reaching people & channels on Slack
+## Slack: messages, people and channels
 
-To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
-before sending anything — unless the skill you are running names an explicit exception. Before composing
-any Slack message, read `./slack-message.md` (language, addressing, links, attribution).
+Text that will be read on Slack, whether you send it, draft it or return it for another agent
+to post: read `./slack-message.md` first (language, addressing, links, content, attribution).
+Slack IDs come from `./TEAM.md`. Draft and get approval before sending anything, unless the
+skill you are running names an explicit exception.

@@ -43,29 +43,9 @@ the lazy loader (`utils/runtime.ts`) and the sibling/island components. Break it
 and the deferral silently regresses — the bundle is the only place it surfaces,
 so this is not caught by tests.
 
-## Connector modes
-
-Three modes, selected from config (`config.ts`): `reown`, `dynamic`, and a
-disabled *fallback*.
-
-- **reown / fallback** use the deferred-loading model above.
-- **dynamic** (Dynamic-labs auth) is the exception: its provider stack is not
-  island-friendly, so it keeps a single root provider wrapping the whole app and
-  does not defer. Because a wagmi provider is then already present, the islands
-  detect it and turn transparent (render children directly) — without that they
-  would wait forever for a readiness signal only the deferred path emits.
-  Moving dynamic mode onto the deferred model is a known follow-up.
-  Its hooks reach the synchronous `useWallet` / `useAccount` hubs through
-  `utils/dynamic-hooks.ts`, registered by `DynamicProvider`. Keep them off a
-  static import (the reown bundle grows) and off any post-paint suspend: a
-  suspend into a root boundary after first paint stops every mounted zag
-  presence machine, and a tab switched in that window keeps the old panel
-  visible (#3788).
-
-Before changing anything in the dynamic-mode graph, verify it in a production build (`pnpm prod:preset <alias>`)
-against an instance whose `NEXT_PUBLIC_ACCOUNT_AUTH_PROVIDER=dynamic`, not just in dev — reshaping it once
-tripped a production-only bundler bug that dev never surfaces (see
-`.agents/adr/0003-turbopack-for-production-builds.md`).
+Keep the `useWallet` / `useAccount` hubs off any post-paint suspend: a suspend
+into a root boundary after first paint stops every mounted zag presence machine,
+and a tab switched in that window keeps the old panel visible (#3788).
 
 ## Persisted connection
 

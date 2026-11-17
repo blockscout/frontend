@@ -77,6 +77,8 @@ describe('renderNotes', () => {
     expect(renderNotes(prs, META)).toBe([
       '## 🚀 New Features',
       '- Add the badge by @alice in https://github.com/blockscout/frontend/pull/10',
+      '',
+      '## 💎 Enhancements',
       '- PR 13 by @tom2drum in https://github.com/blockscout/frontend/pull/13',
       '',
       '## 🐛 Bug Fixes',

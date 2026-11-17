@@ -8,13 +8,11 @@ import { renderToString } from 'react-dom/server';
 
 import type { ColumnStates } from './types';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, renderHook } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 import type { TableColumnsAnalytics } from './usePersistedColumns';
-
-vi.mock('mixpanel-browser', () => ({ 'default': { init: vi.fn(), track: vi.fn() } }));
 
 type ColumnId = 'hash' | 'block' | 'from' | 'amount' | 'fee';
 
@@ -62,11 +60,15 @@ const renderColumnsProbe = async() => {
   return ColumnsProbe;
 };
 
+beforeEach(() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
+});
+
 afterEach(() => {
   cleanup();
   window.localStorage.clear();
   vi.restoreAllMocks();
-  vi.clearAllMocks();
 });
 
 describe('usePersistedColumns', () => {

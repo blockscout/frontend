@@ -1,7 +1,7 @@
 name: Feature spec (Blockscout team)
 description: A simple template to capture title, overview, todo, mockups and deployment info.
 type: feature
-labels: ['enhancement']
+labels: ['feature']
 assignees: []
 body:
   - type: textarea

@@ -3,14 +3,12 @@
 
 import React from 'react';
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, fireEvent, render, screen, waitFor } from 'vitest/lib';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
+import { routerStandIn, RouterStandInProvider } from 'vitest/utils/routerStandIn';
 
 import * as advancedFilterMock from '../../mocks';
 import AdvancedFilter from './AdvancedFilter';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 
 const STORAGE_KEY = 'table_columns_advanced_filter';
 
@@ -31,7 +29,7 @@ afterEach(() => {
 });
 
 async function renderPage() {
-  render(<AdvancedFilter/>);
+  render(<RouterStandInProvider><AdvancedFilter/></RouterStandInProvider>);
   await waitFor(() => expect(document.querySelectorAll('tbody tr').length).toBeGreaterThan(0));
 }
 

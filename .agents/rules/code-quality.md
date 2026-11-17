@@ -202,7 +202,7 @@ const onMouseMove = useCallback(() => {}, [ ]);
 
 ### Links
 
-When links to **application pages** are constructed, verify that `nextjs-routes` or `src/shared/router/routes` utilities are used instead of string concatenation or template literals. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
+When links to **application pages** are constructed, verify that `route()` from `src/shared/router/routes` is used instead of string concatenation or template literals. The same module is the only import surface for the `Route` / `Query` / `DynamicRoute` types. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
 
 ### Date and time
 

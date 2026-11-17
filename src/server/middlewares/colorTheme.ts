@@ -2,8 +2,8 @@
 
 import type { NextRequest, NextResponse } from 'next/server';
 
-import { isConcreteColorTheme } from 'src/shell/top-bar/settings/color-theme/config';
-import { getDefaultColorTheme, isColorThemeAvailable } from 'src/shell/top-bar/settings/color-theme/utils';
+import { isConcreteColorTheme } from 'src/shell/top-bar/settings/fields/color-theme/config';
+import { getDefaultColorTheme, isColorThemeAvailable } from 'src/shell/top-bar/settings/fields/color-theme/utils';
 
 import appConfig from 'src/config';
 import * as cookiesLib from 'src/shared/storage/cookies';

@@ -159,8 +159,8 @@ export function listBackportPrs(): Array<BackportPullRequest> {
   });
 }
 
-// Listed rather than fetched by tag: `releases/tags/<tag>` never returns a draft, and the line's
-// pre-release stays a draft through its alphas. Seeing drafts takes push access.
+// Listed rather than fetched by tag: `releases/tags/<tag>` answers 404 for a tag without a release, which
+// the check treats as a skip, not a failure.
 export function fetchReleaseBodies(tag: string): Array<string> {
   const jq = `.[] | select(.tag_name == ${ JSON.stringify(tag) }) | .body // "" | @json`;
   return gh([ 'api', '--paginate', 'repos/{owner}/{repo}/releases', '--jq', jq ])
@@ -245,8 +245,11 @@ export function createDraftPreRelease(content: ReleaseContent): GithubRelease {
   return toGithubRelease(ghSend('POST', 'repos/{owner}/{repo}/releases', { ...releaseFields(content), draft: true, prerelease: true }));
 }
 
-export function updateRelease(id: number, content: ReleaseContent): GithubRelease {
-  return toGithubRelease(ghSend('PATCH', `repos/{owner}/{repo}/releases/${ id }`, releaseFields(content)));
+// Publishing a release whose tag GitHub does not have yet creates the tag at the target, and that creation
+// fires the tag's push event as a `git push` would.
+export function publishPreRelease(id: number, content: ReleaseContent): GithubRelease {
+  const fields = { ...releaseFields(content), draft: false, prerelease: true };
+  return toGithubRelease(ghSend('PATCH', `repos/{owner}/{repo}/releases/${ id }`, fields));
 }
 
 // Turns the pre-release into the final release: published, marked latest, which fires release.yml.

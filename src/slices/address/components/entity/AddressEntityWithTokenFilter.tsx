@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, Separator } from '@chakra-ui/react';
+import { Separator } from '@chakra-ui/react';
 import React from 'react';
 
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -18,7 +18,7 @@ interface Props extends AddressEntity.EntityProps {
   tokenSymbol: string | undefined;
 }
 
-const AddressEntityWithTokenFilter = (props: Props) => {
+const AddressEntityWithTokenFilter = ({ tokenHash, tokenSymbol, ...props }: Props) => {
 
   const multiChainContext = useMultichainContext();
 
@@ -28,21 +28,21 @@ const AddressEntityWithTokenFilter = (props: Props) => {
     return <AddressEntity.default { ...props }/>;
   }
 
-  const defaultHref = route({
+  const filterHref = route({
     pathname: '/advanced-filter',
     query: {
       ...props.query,
       to_address_hashes_to_include: [ props.address.hash ],
       from_address_hashes_to_include: [ props.address.hash ],
-      token_contract_address_hashes_to_include: [ props.tokenHash ],
-      ...(props.tokenSymbol ? { token_contract_symbols_to_include: [ props.tokenSymbol ] } : {}),
+      token_contract_address_hashes_to_include: [ tokenHash ],
+      ...(tokenSymbol ? { token_contract_symbols_to_include: [ tokenSymbol ] } : {}),
     },
   }, { chain: multiChainContext?.chain });
 
   const tooltipContentAfter = (
     <>
       <Separator my={ 1 } className="dark"/>
-      <Link href={ defaultHref } display="flex" alignItems="center" justifyContent="center" gap={ 2 } fontWeight={ 500 } className="dark" textStyle="xs">
+      <Link href={ filterHref } display="flex" alignItems="center" justifyContent="center" gap={ 2 } fontWeight={ 500 } className="dark" textStyle="xs">
         <SpriteIcon name="advanced-filter" boxSize={ 5 }/>
         <span>View all token transfers for this address and token</span>
       </Link>
@@ -50,14 +50,14 @@ const AddressEntityWithTokenFilter = (props: Props) => {
   );
 
   return (
-    <AddressEntity.default
-      { ...props }
-      contentProps={{
-        tooltipInteractive: true,
-        tooltipContentAfter,
-      }}
-    />
+    <AddressEntity.Container { ...props }>
+      <AddressEntity.Icon/>
+      <AddressEntity.Link>
+        <AddressEntity.Content tooltipInteractive tooltipContentAfter={ tooltipContentAfter }/>
+      </AddressEntity.Link>
+      <AddressEntity.Copy/>
+    </AddressEntity.Container>
   );
 };
 
-export default chakra(AddressEntityWithTokenFilter);
+export default AddressEntityWithTokenFilter;

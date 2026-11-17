@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 // https://schema.org
-import type { Route } from 'nextjs-routes';
 
 import type { StructuredData, ApiData } from '../types';
 import type { RouteParams } from 'src/server/types';
@@ -9,6 +8,8 @@ import type { RouteParams } from 'src/server/types';
 import generateTokenProductSchema from 'src/slices/token/structured-data/token';
 
 import generateDappInfoSchema from 'src/features/marketplace/structured-data/dapp-info';
+
+import type { Route } from 'src/shared/router/routes';
 
 interface Params<Pathname extends Route['pathname']> {
   route: RouteParams<Pathname>;

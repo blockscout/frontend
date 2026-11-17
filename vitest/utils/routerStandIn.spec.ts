@@ -1,13 +1,11 @@
 // @vitest-environment jsdom
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'src/shared/router/useRouter';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
 
 import { routerStandIn } from './routerStandIn';
-
-vi.mock('next/router', () => import('./routerStandIn').then((m) => m.nextRouterModule));
 
 beforeEach(() => {
   routerStandIn.reset({ pathname: '/blocks', query: { tab: 'txs' } });
@@ -20,17 +18,16 @@ function renderRouterConsumer() {
   const hook = renderHook(() => {
     renderCount++;
     return useRouter();
-  });
+  }, { wrapper: routerStandIn.wrapper });
   return { ...hook, getRenderCount: () => renderCount };
 }
 
-it('installs as next/router and exposes the reset location', () => {
+it('installs through the router provider and exposes the reset location', () => {
   const { result } = renderRouterConsumer();
 
   expect(result.current.pathname).toBe('/blocks');
   expect(result.current.query).toEqual({ tab: 'txs' });
   expect(result.current.asPath).toBe('/blocks?tab=txs');
-  expect(result.current.isReady).toBe(true);
 });
 
 describe('push', () => {
@@ -39,7 +36,7 @@ describe('push', () => {
 
     let resolved: boolean | undefined;
     await act(async() => {
-      resolved = await result.current.push({ pathname: '/blocks', query: { page: '2' } }, undefined, { shallow: true });
+      resolved = await result.current.push({ pathname: '/blocks', query: { page: '2' } }, { shallow: true });
     });
 
     expect(resolved).toBe(true);

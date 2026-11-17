@@ -18,7 +18,7 @@ import { hiddenProtocolTagWithMeta, protocolTag, tokenActionButtonHiddenServiceT
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { cleanup, render, screen, waitFor } from 'vitest/lib';
+import { cleanup, screen, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 const ENV_BUTTON_TEXT = 'Buy on Duck Portal';
@@ -52,6 +52,7 @@ function mockMetadata(tags: Array<AddressMetadataTagApi>): void {
 }
 
 async function renderTitle(query = tokenQuery): Promise<void> {
+  const { render } = await import('vitest/lib');
   const { 'default': TokenPageTitle } = await import('./TokenPageTitle');
   render(
     <TokenPageTitle
@@ -67,6 +68,7 @@ async function renderTitle(query = tokenQuery): Promise<void> {
 type AppConfig = ClusterChainConfig['app_config'];
 
 async function renderTitleOnChain(getAppConfig: (rootConfig: AppConfig) => AppConfig): Promise<void> {
+  const { render } = await import('vitest/lib');
   const { 'default': TokenPageTitle } = await import('./TokenPageTitle');
   const { MultichainContext } = await import('src/features/multichain/context');
   const { 'default': config } = await import('src/config');

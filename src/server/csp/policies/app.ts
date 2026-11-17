@@ -149,6 +149,12 @@ export function app(isPrivateMode = false, primerScriptHashes: Array<string> = [
       KEY_WORDS.NONE,
     ],
 
+    // All app forms submit through JS (react-hook-form), never via a native action URL.
+    // Keeps operator-supplied HTML (maintenance alert, banners) from posting a phishing form to a third party.
+    'form-action': [
+      KEY_WORDS.SELF,
+    ],
+
     // Restrict frame-src in private mode to prevent iframe tracking
     // In normal mode, frame-src is also set by marketplace.ts when marketplace is enabled
     ...(isPrivateMode ? {} as CspDev.DirectiveDescriptor : {

@@ -37,7 +37,7 @@
       }
     },
     "I25201:111693;24311:103865;24311:87610": {
-      "component": "AddressStringOrParam",
+      "component": "AddressEntity",
       "props": {
         "truncation": "constant"
       },
@@ -47,7 +47,7 @@
       }
     },
     "I25201:111693;24311:103865;24311:87614": {
-      "component": "AddressStringOrParam",
+      "component": "AddressEntity",
       "props": {
         "truncation": "constant"
       },
@@ -57,7 +57,7 @@
       }
     },
     "I25201:111693;24311:103865;24311:87615": {
-      "component": "AddressStringOrParam",
+      "component": "AddressEntity",
       "props": {
         "truncation": "constant"
       },

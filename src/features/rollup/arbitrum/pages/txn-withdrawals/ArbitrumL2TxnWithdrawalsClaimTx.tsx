@@ -4,7 +4,9 @@ import { HStack, Spinner } from '@chakra-ui/react';
 import React from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 
@@ -38,7 +40,7 @@ const ArbitrumL2TxnWithdrawalsClaimTx = ({ isPending, hash, onSuccess, onError }
   return (
     <HStack columnGap={ 2 } lineHeight="32px">
       { isPending && <Spinner size="sm"/> }
-      <TxEntityL1 hash={ hash } noIcon maxW="160px" noCopy/>
+      <TxEntity hash={ hash } noIcon maxW="160px" noCopy chain={ parentChain }/>
     </HStack >
   );
 };

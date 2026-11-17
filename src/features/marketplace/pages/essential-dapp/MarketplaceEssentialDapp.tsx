@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { EssentialDappsConfig } from 'src/features/marketplace/types/client';
@@ -12,6 +11,7 @@ import { ensureLoaded as ensureWeb3Runtime } from 'src/features/connect-wallet/u
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import useAutoConnectWallet from '../../hooks/useAutoConnectWallet';
 import Multisend from './multisend/Multisend';

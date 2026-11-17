@@ -2,13 +2,14 @@
 
 import type { LinkProps as ChakraLinkProps, IconProps } from '@chakra-ui/react';
 import { Link as ChakraLink, LinkBox as ChakraLinkBox, LinkOverlay as ChakraLinkOverlay, Icon } from '@chakra-ui/react';
-import NextLink from 'next/link';
-import type { LinkProps as NextLinkProps } from 'next/link';
 import React from 'react';
+
+import type { RouterLinkProps, Url } from '../router/types';
 
 import stripUtmParams from 'src/shared/links/strip-utm-params';
 import ArrowIcon from 'src/sprite/icons/link_external.svg';
 
+import { useLink } from '../router/context';
 import { Skeleton } from './skeleton';
 
 export const LinkExternalIcon = ({ color, ...rest }: IconProps) => (
@@ -34,17 +35,21 @@ interface LinkPropsChakra extends ChakraLinkProps {
   disabled?: boolean;
 }
 
-interface LinkPropsNext extends Partial<Pick<NextLinkProps, 'shallow' | 'prefetch' | 'scroll'>> {}
+interface LinkPropsRouter extends Partial<Pick<RouterLinkProps, 'shallow' | 'prefetch' | 'scroll'>> {}
 
-export interface LinkProps extends LinkPropsChakra, LinkPropsNext {}
+export interface LinkProps extends LinkPropsChakra, LinkPropsRouter {}
 
-const splitProps = (props: LinkProps): { chakra: LinkPropsChakra; next: NextLinkProps } => {
+interface RouterLinkPropsMaybeHref extends Omit<RouterLinkProps, 'href'> {
+  href: Url | undefined;
+}
+
+const splitProps = (props: LinkProps): { chakra: LinkPropsChakra; router: RouterLinkPropsMaybeHref } => {
   const { scroll = true, shallow = false, prefetch = false, ...rest } = props;
 
   return {
     chakra: rest,
-    next: {
-      href: rest.href as NextLinkProps['href'],
+    router: {
+      href: rest.href,
       scroll,
       shallow,
       prefetch,
@@ -54,7 +59,8 @@ const splitProps = (props: LinkProps): { chakra: LinkPropsChakra; next: NextLink
 
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function Link(props, ref) {
-    const { chakra, next } = splitProps(props);
+    const RouterLink = useLink();
+    const { chakra, router } = splitProps(props);
     const { external, loading, href, children, disabled, noIcon, iconColor, className, ...rest } = chakra;
 
     if (external) {
@@ -86,10 +92,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
           { ...(disabled ? { 'data-disabled': true } : {}) }
           { ...rest }
         >
-          { next.href ? (
-            <NextLink { ...next }>
+          { router.href ? (
+            <RouterLink { ...router } href={ router.href }>
               { children }
-            </NextLink>
+            </RouterLink>
           ) :
             <span>{ children }</span>
           }
@@ -103,7 +109,8 @@ export const LinkBox = ChakraLinkBox;
 
 export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
   function LinkOverlay(props, ref) {
-    const { chakra, next } = splitProps(props);
+    const RouterLink = useLink();
+    const { chakra, router } = splitProps(props);
     const { children, external, loading, href, noIcon, iconColor, ...rest } = chakra;
 
     if (external) {
@@ -137,10 +144,10 @@ export const LinkOverlay = React.forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       <ChakraLinkOverlay
         ref={ ref }
-        asChild={ Boolean(next.href) }
+        asChild={ Boolean(router.href) }
         { ...rest }
       >
-        { next.href ? <NextLink { ...next }>{ content }</NextLink> : content }
+        { router.href ? <RouterLink { ...router } href={ router.href }>{ content }</RouterLink> : content }
       </ChakraLinkOverlay>
     );
   },

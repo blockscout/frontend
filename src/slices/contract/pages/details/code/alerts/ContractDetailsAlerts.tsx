@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { chakra, Box, Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import type { Channel } from 'phoenix';
 import React from 'react';
 
@@ -12,6 +11,8 @@ import type { SmartContract } from 'src/slices/contract/types/api';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+
+import { route } from 'src/shared/router/routes';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { Link } from 'src/toolkit/chakra/link';

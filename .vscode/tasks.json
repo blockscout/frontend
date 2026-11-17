@@ -376,6 +376,7 @@
               "eth",
               "eth_sepolia",
               "filecoin",
+              "fuse",
               "gnosis",
               "gnosis_chiado",
               "hpp",

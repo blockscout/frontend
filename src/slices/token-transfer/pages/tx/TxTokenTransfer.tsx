@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -29,12 +28,18 @@ import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
 
 const NO_TYPES: Array<TokenType> = [];
+
+const LOCAL_TAB_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  widthAllocation: 'available' as const,
+};
 
 interface Props {
   txQuery: TxQuery;
@@ -122,12 +127,10 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
 
   const rightSlotProps = React.useMemo(() => {
     if (tabs.length === 1) {
-      return { ml: 0 };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 0 };
     }
     if (isLocalTab) {
-      return {
-        ml: 6,
-      };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 6 };
     }
   }, [ isLocalTab, tabs.length ]);
 

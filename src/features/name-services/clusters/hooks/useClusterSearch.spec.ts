@@ -1,50 +1,34 @@
 // @vitest-environment jsdom
 
-import { useRouter } from 'next/router';
-
-import type { Mock } from 'vitest';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook } from 'vitest/lib';
+import { describe, it, expect, afterEach } from 'vitest';
+import { renderHook, cleanup } from 'vitest/lib';
+import { routerStandIn } from 'vitest/utils/routerStandIn';
 
 import { useClusterSearch } from './useClusterSearch';
 
-vi.mock('next/router', () => ({
-  useRouter: vi.fn(),
-}));
-
-const mockUseRouter = useRouter as Mock<typeof useRouter>;
-
 describe('useClusterSearch', () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
+  afterEach(cleanup);
 
-  it('should return search term from router query', async() => {
-    mockUseRouter.mockReturnValue({
-      query: { q: 'test-search' },
-    } as unknown as ReturnType<typeof useRouter>);
+  it('should return search term from router query', () => {
+    routerStandIn.reset({ pathname: '/name-domains', query: { q: 'test-search' } });
 
-    const { result } = await renderHook(() => useClusterSearch());
+    const { result } = renderHook(() => useClusterSearch(), { wrapper: routerStandIn.wrapper });
 
     expect(result.current.searchTerm).toBe('test-search');
   });
 
-  it('should debounce search term', async() => {
-    mockUseRouter.mockReturnValue({
-      query: { q: 'test' },
-    } as unknown as ReturnType<typeof useRouter>);
+  it('should debounce search term', () => {
+    routerStandIn.reset({ pathname: '/name-domains', query: { q: 'test' } });
 
-    const { result } = await renderHook(() => useClusterSearch());
+    const { result } = renderHook(() => useClusterSearch(), { wrapper: routerStandIn.wrapper });
 
     expect(result.current.debouncedSearchTerm).toBe('test');
   });
 
-  it('should handle empty query', async() => {
-    mockUseRouter.mockReturnValue({
-      query: {},
-    } as unknown as ReturnType<typeof useRouter>);
+  it('should handle empty query', () => {
+    routerStandIn.reset({ pathname: '/name-domains', query: {} });
 
-    const { result } = await renderHook(() => useClusterSearch());
+    const { result } = renderHook(() => useClusterSearch(), { wrapper: routerStandIn.wrapper });
 
     expect(result.current.searchTerm).toBe('');
     expect(result.current.debouncedSearchTerm).toBe('');

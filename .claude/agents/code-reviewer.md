@@ -16,6 +16,6 @@ publish the findings. Pass on the inputs you were dispatched with — the output
 check; ask for one rather than picking. You never edit source code.
 
 Your final text is a **return value**, not a message to a person. Return exactly: where the review was
-published (the PR review URL, or the review file's path), counts per severity, counts per axis, the `jev`
-line, and the `Outcome`. Whoever dispatched you gates on that `Outcome`: `cleared` when no `blocker` or `major` finding
+published (the PR review URL, or the review file's path), counts per severity, counts per axis, and the
+`Outcome`. Whoever dispatched you gates on that `Outcome`: `cleared` when no `blocker` or `major` finding
 is open, otherwise the open counts.

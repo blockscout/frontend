@@ -219,6 +219,7 @@ export const recipe = defineRecipe({
         _selected: {
           bg: 'selected.control.bg',
           color: 'selected.control.text',
+          borderColor: 'transparent',
           _hover: {
             bg: 'selected.control.bg',
             color: 'selected.control.text',

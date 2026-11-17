@@ -12,11 +12,13 @@ export const RELEASE_SOURCE: NotesSource = {
   generatedNotes: generateReleaseNotes,
 };
 
-// For a tag not cut yet: the notes are read up to the commit it is going to name.
-export function releaseSourceAt(head: string): NotesSource {
+// For a tag not cut yet: the notes are read up to the commit it is going to name. GitHub generates its notes
+// only at a commit it has, so they go up to `pushedHead`, the newest commit of the branch already on origin;
+// what sits past it are picks and the docs commit, which GitHub ties to no PR of their own.
+export function releaseSourceAt(head: string, pushedHead: string): NotesSource {
   return {
     ...RELEASE_SOURCE,
     commits: (from) => listCommits(from, head),
-    generatedNotes: (tag, previousTag) => generateReleaseNotes(tag, previousTag, head),
+    generatedNotes: (tag, previousTag) => generateReleaseNotes(tag, previousTag, pushedHead),
   };
 }

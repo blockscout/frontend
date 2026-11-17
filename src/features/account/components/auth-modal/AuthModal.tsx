@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Screen, ScreenSuccess } from './types';
@@ -13,6 +12,7 @@ import { useRewardsContext } from 'src/features/rewards/context';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { DialogBody, DialogContent, DialogHeader, DialogRoot } from 'src/toolkit/chakra/dialog';
 

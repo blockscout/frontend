@@ -2,7 +2,6 @@
 
 import { Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -17,6 +16,7 @@ import GasUsed from 'src/slices/gas/components/GasUsed';
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
+import { route } from 'src/shared/router/routes';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import Utilization from 'src/shared/values/utilization/Utilization';

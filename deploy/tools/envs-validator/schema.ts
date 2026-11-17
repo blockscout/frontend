@@ -16,7 +16,7 @@ import * as featuresSchemas from './schemas/features';
 import metaSchema from './schemas/meta';
 import servicesSchema from './schemas/services';
 import * as uiSchemas from './schemas/ui';
-import { composeSchemas, envBoolean, envJson, envUrl, requires } from './utils';
+import { composeSchemas, envBoolean, envHtml, envJson, envUrl, requires } from './utils';
 
 type AddressProfileAPIConfig = {
   api_url_template: string;
@@ -83,7 +83,7 @@ const singleVariableFeaturesSchema = v.pipe(
 
 const miscSchema = v.object({
   NEXT_PUBLIC_PRO_API_SUPPORTED: v.optional(envBoolean()),
-  NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: v.optional(v.string()),
+  NEXT_PUBLIC_API_KEYS_ALERT_MESSAGE: v.optional(envHtml()),
   NEXT_PUBLIC_API_DOCS_ALERT_MESSAGE: v.optional(v.string()),
 });
 

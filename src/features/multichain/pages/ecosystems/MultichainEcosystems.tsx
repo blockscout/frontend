@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { createListCollection } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ChainMetricsSorting, ChainMetricsSortingField, ChainMetricsSortingValue } from 'src/features/multichain/types/client';
@@ -15,6 +14,7 @@ import { CHAIN_METRICS } from 'src/features/multichain/stubs';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
+import { useRouter } from 'src/shared/router/useRouter';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';

@@ -2,10 +2,10 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, Flex, Text, chakra } from '@chakra-ui/react';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { Route } from 'src/shared/router/routes';
+import { route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 

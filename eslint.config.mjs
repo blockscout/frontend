@@ -48,6 +48,29 @@ const spdxLicenseRule = {
   },
 };
 
+/*
+ * The router facade (src/shared/router) is the only consumer of the framework's routing primitives; everything
+ * else goes through it so a router change touches the adapter, not the app.
+ */
+const ROUTER_FRAMEWORK_MODULES = [
+  { name: 'next/router', message: 'Please use useRouter() from "src/shared/router/useRouter" instead' },
+  { name: 'next/navigation', message: 'Please use usePathname() from "src/shared/router/usePathname" instead' },
+  { name: 'next/link', message: 'Please use the Link component from "src/toolkit/chakra/link" instead' },
+  {
+    name: 'nextjs-routes',
+    message: 'Please import route() and the Route / Query / DynamicRoute types from "src/shared/router/routes" instead',
+  },
+];
+const ROUTER_FRAMEWORK_MODULE_NAMES = ROUTER_FRAMEWORK_MODULES.map((module) => module.name);
+
+const ROUTER_FRAMEWORK_ALLOWED_FILES = [
+  'src/shared/router/NextRouterProvider.tsx',
+  'src/shared/router/routes.ts',
+  'src/toolkit/router/**',
+  'vitest/**',
+  'playwright/**',
+];
+
 const RESTRICTED_MODULES = {
   paths: [
     { name: 'dayjs', message: 'Please use src/shared/date-and-time/dayjs.ts instead of directly importing dayjs' },
@@ -76,11 +99,7 @@ const RESTRICTED_MODULES = {
       ],
       message: 'Please use corresponding component or hook from "src/toolkit" instead',
     },
-    {
-      name: 'next/link',
-      importNames: [ 'default' ],
-      message: 'Please use toolkit/chakra/link component instead',
-    },
+    ...ROUTER_FRAMEWORK_MODULES,
   ],
   patterns: [
     { group: [ 'src/sprite/icons/*' ] },
@@ -171,6 +190,37 @@ const WINDOW_ENVS_RESTRICTION = {
   message: APP_CONFIG_ENVS_MESSAGE,
 };
 
+// Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
+// puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
+// Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
+// is not on the list: it resets the registry around its callback and restores the envs it set.
+const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
+const ISOLATED_SPEC_MESSAGE =
+  ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in .agents/rules/tests-unit.md.';
+const HAND_SET_ENV_MESSAGE =
+  'An env variable changed by hand is ignored once an earlier spec in the worker has evaluated the app config, and leaks into every spec after it.' +
+  ' Override envs with `withEnvs` from vitest/utils/mockEnvs — see "Overriding environment variables" in .agents/rules/tests-unit.md.';
+const SHARED_SPEC_RESTRICTED_SYNTAX = [
+  {
+    selector: 'CallExpression[callee.object.name=\'vi\'][callee.property.name=/^(mock|doMock|unmock|doUnmock|resetModules)$/]',
+    message: 'Mocking a module or resetting the module registry' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: ':matches(ImportDeclaration, ImportExpression)[source.value=/(^|\\/)(mockSocket|checkPrimedRequests)$/]',
+    message: 'This helper re-evaluates or mocks modules, so a spec using it' + ISOLATED_SPEC_MESSAGE,
+  },
+  {
+    selector: 'CallExpression[callee.object.name=\'Object\'][callee.property.name=\'assign\']' +
+      '[arguments.0.object.name=\'process\'][arguments.0.property.name=\'env\']',
+    message: HAND_SET_ENV_MESSAGE,
+  },
+  {
+    selector: ':matches(AssignmentExpression > MemberExpression.left, UnaryExpression[operator=\'delete\'] > MemberExpression.argument)' +
+      '[object.object.name=\'process\'][object.property.name=\'env\']',
+    message: HAND_SET_ENV_MESSAGE,
+  },
+];
+
 const RESTRICTED_SYNTAX = [
   {
     selector: 'CallExpression[callee.property.name=\'localeCompare\']',
@@ -200,7 +250,6 @@ export default tseslint.config(
     '.claude/worktrees/',
     'next.config.js',
     'tools/code-complexity/dist/',
-    'tools/review-screen/dist/',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },
@@ -741,8 +790,25 @@ export default tseslint.config(
       'src/toolkit/package/**',
     ],
     rules: {
-      // for toolkit components allow to import @chakra-ui/react directly
-      'no-restricted-imports': 'off',
+      // toolkit components import @chakra-ui/react directly; the package stays framework-neutral, so only the router ban applies
+      'no-restricted-imports': [ 'error', { paths: ROUTER_FRAMEWORK_MODULES } ],
+    },
+  },
+  {
+    files: ROUTER_FRAMEWORK_ALLOWED_FILES,
+    rules: {
+      'no-restricted-imports': [ 'error', {
+        paths: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.paths.filter((path) => !ROUTER_FRAMEWORK_MODULE_NAMES.includes(path.name)),
+        patterns: RESTRICTED_MODULES_WITH_ANALYTICS_VENDORS.patterns,
+      } ],
+    },
+  },
+
+  {
+    files: [ '**/*.spec.{ts,tsx}' ],
+    ignores: ISOLATED_SPEC_GLOBS,
+    rules: {
+      'no-restricted-syntax': [ 'error', ...RESTRICTED_SYNTAX, ...SHARED_SPEC_RESTRICTED_SYNTAX ],
     },
   },
 

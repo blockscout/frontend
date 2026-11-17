@@ -23,10 +23,10 @@ interface Props {
 // before the runtime loads it shows the fallback; the `WagmiContext` value flips from undefined to the
 // config in place. If the chunks fail to load, `useIsWeb3Ready` stays false and the fallback stays up.
 //
-// Dynamic connector mode is different: `<DynamicProvider>` wraps the whole app in a root `<WagmiProvider>`,
-// so a config is already in context here. There is nothing to lazy-load or gate on — the boundary must be
-// transparent and render children straight away, otherwise `useIsWeb3Ready` (which only `<Web3Provider>`
-// supplies) is never true and the feature is stuck on its fallback forever.
+// Under an ancestor `<WagmiProvider>` (the test harnesses mount one around everything) a config is already
+// in context. There is nothing to lazy-load or gate on — the boundary must be transparent and render
+// children straight away, otherwise `useIsWeb3Ready` (which only `<Web3Provider>` supplies) is never true
+// and the feature is stuck on its fallback forever.
 const Web3Boundary = ({ children, fallback = null }: Props) => {
   const existingConfig = React.useContext(WagmiContext);
   const isReady = useIsWeb3Ready();

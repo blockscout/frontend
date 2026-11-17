@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, HStack, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import type { MouseEvent } from 'react';
 import React from 'react';
 
@@ -14,6 +13,7 @@ import throwOnAbsentParamError from 'src/shared/errors/throw-on-absent-param-err
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';

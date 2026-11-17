@@ -2,12 +2,9 @@
 
 import { ENVS_MAP } from 'src/config/test-utils/env-presets';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { act, cleanup, renderHook, waitFor, wrapper } from 'vitest/lib';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { act, cleanup, renderHook, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
 
 const responseInit = {
   headers: {
@@ -28,12 +25,22 @@ describe('useBridgedTokensQuery (cross-chain)', () => {
 
   afterEach(cleanup);
 
+  // withEnvs resets the module registry, so the stand-in must come from the same graph as the hook under test:
+  // a statically imported one would provide a router context the re-evaluated facade never reads
+  const loadModules = async() => {
+    const [ { routerStandIn }, { 'default': useBridgedTokensQuery } ] = await Promise.all([
+      import('vitest/utils/routerStandIn'),
+      import('./useBridgedTokensQuery'),
+    ]);
+    return { routerStandIn, useBridgedTokensQuery };
+  };
+
   it('sends the search term from the URL to the bridged tokens API', async() => {
     await withEnvs(ENVS_MAP.crossChainTxs, async() => {
+      const { routerStandIn, useBridgedTokensQuery } = await loadModules();
       routerStandIn.reset({ pathname: '/tokens', query: { tab: 'bridged', q: 'USDC' } });
-      const { 'default': useBridgedTokensQuery } = await import('./useBridgedTokensQuery');
 
-      const { result } = renderHook(() => useBridgedTokensQuery({ enabled: true }), { wrapper });
+      const { result } = renderHook(() => useBridgedTokensQuery({ enabled: true }), { wrapper: routerStandIn.appWrapper });
 
       expect(result.current.searchTerm).toBe('USDC');
       await waitFor(() => expect(getRequestedSearchTerms()).toEqual([ 'USDC' ]));
@@ -42,10 +49,10 @@ describe('useBridgedTokensQuery (cross-chain)', () => {
 
   it('refetches the bridged tokens with the term typed into the search input', async() => {
     await withEnvs(ENVS_MAP.crossChainTxs, async() => {
+      const { routerStandIn, useBridgedTokensQuery } = await loadModules();
       routerStandIn.reset({ pathname: '/tokens', query: { tab: 'bridged' } });
-      const { 'default': useBridgedTokensQuery } = await import('./useBridgedTokensQuery');
 
-      const { result } = renderHook(() => useBridgedTokensQuery({ enabled: true }), { wrapper });
+      const { result } = renderHook(() => useBridgedTokensQuery({ enabled: true }), { wrapper: routerStandIn.appWrapper });
       await waitFor(() => expect(getRequestedSearchTerms()).toEqual([ null ]));
 
       act(() => result.current.onSearchTermChange('DAI'));

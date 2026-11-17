@@ -39,7 +39,6 @@ test.describe('Cluster Details Page', () => {
         hooksConfig: {
           router: {
             query: { name: 'campnetwork/lol' },
-            isReady: true,
           },
         },
       },
@@ -68,7 +67,6 @@ test.describe('Cluster Details Page', () => {
         hooksConfig: {
           router: {
             query: { name: 'test/cluster' },
-            isReady: true,
           },
         },
       },

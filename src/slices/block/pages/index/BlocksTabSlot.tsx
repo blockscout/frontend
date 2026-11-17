@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { PaginationParams } from 'src/shared/pagination/types';
@@ -9,6 +8,7 @@ import type { PaginationParams } from 'src/shared/pagination/types';
 import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
 import Pagination from 'src/shared/pagination/Pagination';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';

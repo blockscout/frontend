@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { omit } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { NovesHistoryFilterValue } from 'src/features/tx-interpretation/noves/types/api';
@@ -19,6 +18,7 @@ import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
@@ -55,7 +55,7 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
     router.push({
       pathname: router.pathname,
       query: nextValue ? { ...router.query, filter: nextValue } : omit(router.query, FILTER_FIELDS),
-    }, undefined, { shallow: true });
+    }, { shallow: true });
   }, [ router ]);
 
   if (!isMounted || !shouldRender) {

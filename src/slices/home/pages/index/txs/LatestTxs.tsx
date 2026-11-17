@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -12,6 +11,7 @@ import useNewTxsSocket from 'src/slices/tx/hooks/useTxsSocketTypeAll';
 import { TX } from 'src/slices/tx/stubs/tx';
 
 import config from 'src/config';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';

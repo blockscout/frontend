@@ -2,11 +2,12 @@
 
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
 import PageNextJs from 'src/server/PageNextJs';
+
+import type { Route } from 'src/shared/router/routes';
 
 const MultichainTokenInstance = dynamic(() => import('src/features/multichain/pages/token-instance/MultichainTokenInstance'), { ssr: false });
 

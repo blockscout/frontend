@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { upperFirst } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
+
+import { route } from 'src/shared/router/routes';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';

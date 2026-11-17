@@ -9,11 +9,9 @@ import { createConfig, mock, WagmiProvider } from 'wagmi';
 import { connect } from 'wagmi/actions';
 import { optimism } from 'wagmi/chains';
 
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { act, cleanup, renderHook, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
-
-vi.mock('mixpanel-browser', () => ({ 'default': { init: vi.fn(), track: vi.fn() } }));
 
 const ACCOUNT = '0x1111111111111111111111111111111111111111';
 const RECIPIENT = '0x2222222222222222222222222222222222222222';
@@ -28,10 +26,14 @@ const ENV_OVERRIDES: Array<[ string, string ]> = [
   [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'test-mixpanel' ],
 ];
 
+beforeEach(() => {
+  vi.spyOn(mixpanel, 'init').mockImplementation(() => undefined);
+  vi.spyOn(mixpanel, 'track').mockImplementation(() => undefined);
+});
+
 afterEach(() => {
   cleanup();
   document.cookie = 'rewards_api_token=; Max-Age=0; path=/';
-  vi.clearAllMocks();
 });
 
 describe('marketplace transaction activity', () => {

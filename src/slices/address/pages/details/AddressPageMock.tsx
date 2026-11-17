@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import { useRouter } from 'src/shared/router/useRouter';
 
 const MockAddressPage = ({ children }: { children: React.JSX.Element }): React.JSX.Element => {
   const router = useRouter();

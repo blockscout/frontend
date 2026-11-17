@@ -1,21 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from '../types';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Link, LinkExternalIcon } from 'src/toolkit/chakra/link';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import { isInternalItem } from '../useNavItems';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../utils';
+import { checkRouteHighlight, isInternalItem } from '../utils';
 
 type Props = {
   item: NavItem;

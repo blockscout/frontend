@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import UserOpsContent from 'src/features/user-ops/pages/index/UserOpsContent';
@@ -10,6 +9,7 @@ import useIsMounted from 'src/shared/hooks/useIsMounted';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;

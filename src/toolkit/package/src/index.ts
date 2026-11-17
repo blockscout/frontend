@@ -126,6 +126,12 @@ export * from '../../utils/url';
 export * from '../../utils/isBrowser';
 export * from '../../utils/texts';
 
+// Export router
+export * from '../../router/context';
+export * from '../../router/defaults';
+export * from '../../router/format-url';
+export type * from '../../router/types';
+
 // Export hooks
 export { useClipboard } from '../../hooks/useClipboard';
 export * from '../../hooks/useDisclosure';

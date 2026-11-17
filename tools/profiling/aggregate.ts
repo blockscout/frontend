@@ -24,6 +24,12 @@ const OP_UPDATE_TREE_BASE_DURATION = 4;
 const OP_UPDATE_ERRORS_OR_WARNINGS = 5;
 const OP_REMOVE_ROOT = 6;
 const OP_SET_SUBTREE_MODE = 7;
+const OP_SUSPENSE_ADD = 8;
+const OP_SUSPENSE_REMOVE = 9;
+const OP_SUSPENSE_REORDER_CHILDREN = 10;
+const OP_SUSPENSE_RESIZE = 11;
+const OP_APPLIED_ACTIVITY_SLICE_CHANGE = 13;
+const RECT_SIZE = 4;
 
 export interface SnapshotNode {
   readonly displayName: string | null;
@@ -89,8 +95,8 @@ function utfDecode(arr: ReadonlyArray<number>, start: number, length: number): s
 }
 
 // ADD: id, type, then either the four root-only fields (isStrictModeCompliant, profilingFlags,
-// supportsStrictMode, hasOwnerMetadata) or parentID, ownerID, displayNameStringID, keyStringID and
-// the trailing compiledWithForget flag recent DevTools versions carry. Returns the next index.
+// supportsStrictMode, hasOwnerMetadata) or parentID, ownerID, displayNameStringID, keyStringID and a
+// fifth per-element field (namePropStringID today, compiledWithForget in DevTools 6). Returns the next index.
 function replayAdd(
   operations: ReadonlyArray<number>,
   i: number,
@@ -111,6 +117,11 @@ function replayAdd(
   }
   names.set(id, { name: stringTable[displayNameStringID] ?? 'Anonymous', type });
   return i + 8;
+}
+
+// A rect list is a count followed by x, y, width, height per rect; -1 stands for "no rects".
+function rectsWidth(numRects: number): number {
+  return numRects === -1 ? 0 : RECT_SIZE * numRects;
 }
 
 // Replays one entry of the DevTools "operations" wire format
@@ -149,6 +160,21 @@ export function replayOperations(operations: ReadonlyArray<number>, names: Fiber
         break;
       case OP_SET_SUBTREE_MODE: // operands: rootID, mode
         i += 3;
+        break;
+      case OP_SUSPENSE_ADD: // operands: id, parentID, nameStringID, isSuspended, numRects, ...rects
+        i += 6 + rectsWidth(operations[i + 5]);
+        break;
+      case OP_SUSPENSE_REMOVE: // operands: count, ...ids
+        i += 2 + operations[i + 1];
+        break;
+      case OP_SUSPENSE_REORDER_CHILDREN: // operands: id, numChildren, ...children
+        i += 3 + operations[i + 2];
+        break;
+      case OP_SUSPENSE_RESIZE: // operands: id, numRects, ...rects
+        i += 3 + rectsWidth(operations[i + 2]);
+        break;
+      case OP_APPLIED_ACTIVITY_SLICE_CHANGE: // operands: sliceID
+        i += 2;
         break;
       default:
         throw new Error(`unknown op ${ op } at index ${ i }`);

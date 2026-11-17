@@ -218,7 +218,7 @@ function zksyncChainSection(): string | undefined {
 
 function tacChainSection(): string | undefined {
   return config.features.tac.isEnabled && config.apis.tac ? `
-        > **Note:** TAC operations endpoints below are served by a separate microservice and are **not** part of the Blockscout PRO API. The \`Authorization: Bearer {api_key}\` requirement stated in the introduction does not apply here.
+        > **Note:** TAC operations endpoints below are served by a separate microservice and are **not** part of the Blockscout API. The \`Authorization: Bearer {api_key}\` requirement stated in the introduction does not apply here.
 
         ### TAC Operations:
 
@@ -331,14 +331,14 @@ function chainSpecificSection(): string {
 }
 
 export function generateProApi(): string {
-  // Shibarium endpoints are not yet listed in the PRO API index (tracked in blockscout/blockscout#14322); the indexer exposes them and the OpenAPI listing is forthcoming.
-  // Stability validators endpoint is not yet listed in the PRO API index (tracked in blockscout/blockscout#14323); the indexer exposes it and the OpenAPI listing is forthcoming.
+  // Shibarium endpoints are not yet listed in the Blockscout API index (tracked in blockscout/blockscout#14322); the indexer exposes them and the OpenAPI listing is forthcoming.
+  // Stability validators endpoint is not yet listed in the Blockscout API index (tracked in blockscout/blockscout#14323); the indexer exposes it and the OpenAPI listing is forthcoming.
   return dedent`
         # Blockscout - ${ chainName }
 
         Blockscout is a human-friendly blockchain explorer for EVM-compatible networks. It lets users browse blocks, transactions, addresses, tokens (ERC-20/721/1155), logs, contract ABIs, and decoded contract interactions. While the site is primarily designed for people, all rendered information is backed by API endpoints that machines can consume.
 
-        All endpoint examples below target the **Blockscout PRO API** at \`${ PRO_API_URL }\` — a single HTTP API spanning 100+ EVM chains. Every request requires the header \`Authorization: Bearer {api_key}\`; for brevity it is omitted from the individual \`curl\` examples and must be added by the caller. Generate an API key at the Blockscout developer portal: \`https://dev.blockscout.com\` (free tier, no credit card required). For the full set of conventions (additional headers, response shape, pagination, plan limits) consult the public \`web3-dev\` agent skill linked from the "Additional Info" section at the bottom of this document.
+        All endpoint examples below target the **Blockscout API** at \`${ PRO_API_URL }\` — a single HTTP API spanning 100+ EVM chains. Every request requires the header \`Authorization: Bearer {api_key}\`; for brevity it is omitted from the individual \`curl\` examples and must be added by the caller. Generate an API key at the Blockscout developer portal: \`https://dev.blockscout.com\` (free tier, no credit card required). For the full set of conventions (additional headers, response shape, pagination, plan limits) consult the public \`web3-dev\` agent skill linked from the "Additional Info" section at the bottom of this document.
 
         Chain name: ${ chainName }
         Chain ID: ${ chainId }
@@ -489,12 +489,12 @@ export function generateProApi(): string {
         ${ chainSpecificSection() }
         ## Additional Info
 
-        ### Blockscout PRO API — deterministic workflow construction
+        ### Blockscout API — deterministic workflow construction
 
-        The Blockscout PRO API is the recommended surface for building repeatable services, tools, and automations on top of indexed blockchain data. A single HTTP API spans 100+ EVM chains; one Bearer token authenticates every call.
+        The Blockscout API is the recommended surface for building repeatable services, tools, and automations on top of indexed blockchain data. A single HTTP API spans 100+ EVM chains; one Bearer token authenticates every call.
 
         - Generate an API key at the Blockscout developer portal: https://dev.blockscout.com (free tier, no credit card).
-        - For AI agents, install the \`web3-dev\` skill — it encodes the conventions, headers, pagination, and pre-flight checks needed to call the PRO API correctly. Installation instructions: https://raw.githubusercontent.com/blockscout/agent-skills/refs/heads/main/README.md
+        - For AI agents, install the \`web3-dev\` skill — it encodes the conventions, headers, pagination, and pre-flight checks needed to call the Blockscout API correctly. Installation instructions: https://raw.githubusercontent.com/blockscout/agent-skills/refs/heads/main/README.md
 
         ### Blockscout MCP server — ad-hoc agent interaction
 

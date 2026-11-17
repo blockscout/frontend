@@ -3,6 +3,7 @@
 import type { BoxProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 
+// Renders `html` as-is. Content not authored by the app (operator envs, API data) must be sanitized by the caller.
 export const BoxHtml = ({ html, ...props }: { html: string } & BoxProps) => {
   return (
     <Box

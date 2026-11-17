@@ -2,10 +2,13 @@ import * as tokenInstanceMock from 'src/slices/token/mocks/instance';
 import * as txMock from 'src/slices/tx/mocks/details';
 
 import { stabilityTx } from 'src/features/chain-variants/stability/mocks/tx';
+import { suaveTxn } from 'src/features/chain-variants/suave/mocks/tx';
 import { withBlob } from 'src/features/data-availability/mocks/tx';
 import { withInteropInMessage, withInteropOutMessage } from 'src/features/op-interop/mocks/tx';
 import { arbitrumTxn } from 'src/features/rollup/arbitrum/mocks/tx';
 import { l2tx } from 'src/features/rollup/common/mocks/tx';
+import { scrollTxn } from 'src/features/rollup/scroll/mocks/tx';
+import { zkSyncTxn } from 'src/features/rollup/zk-sync/mocks/tx';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { expect, test } from 'playwright/lib';
@@ -66,7 +69,7 @@ test('with blob', async({ render, page }) => {
   });
 });
 
-test('l2', async({ render, page, mockEnvs }) => {
+test('optimism', async({ render, page, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.optimisticRollup);
   const component = await render(<TxDetails data={ l2tx } isLoading={ false }/>);
   await expect(component).toHaveScreenshot({
@@ -115,13 +118,47 @@ test('with grouped fees', async({ render, page, mockEnvs }) => {
   });
 });
 
-test('arbitrum L1 status', async({ render, mockEnvs }) => {
+test('arbitrum', async({ render, page, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.arbitrumRollup);
   const component = await render(<TxDetails data={ arbitrumTxn } isLoading={ false }/>);
 
-  const statusElement = component.locator('div').filter({ hasText: 'Processed on rollup' }).nth(2);
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
 
-  await expect(statusElement).toHaveScreenshot();
+test('zkSync', async({ render, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.zkSyncRollup);
+  const component = await render(<TxDetails data={ zkSyncTxn } isLoading={ false }/>);
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('scroll', async({ render, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.scrollRollup);
+  const component = await render(<TxDetails data={ scrollTxn } isLoading={ false }/>);
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
+});
+
+test('suave kettle', async({ render, page }) => {
+  const component = await render(<TxDetails data={ suaveTxn } isLoading={ false }/>);
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
 test('with external txs +@mobile', async({ page, render, mockEnvs, mockApiResponse, mockAssetResponse }) => {

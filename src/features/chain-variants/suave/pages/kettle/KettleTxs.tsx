@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
@@ -12,6 +11,7 @@ import { TX_ITEM } from 'src/slices/tx/stubs/tx';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 const KettleTxs = () => {
   const router = useRouter();

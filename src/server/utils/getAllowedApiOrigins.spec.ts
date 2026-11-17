@@ -1,58 +1,70 @@
+// @vitest-environment jsdom
+
+import { chainA, chainB, chainC } from 'src/features/multichain/mocks/chains';
+
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
 import { describe, it, expect, vi } from 'vitest';
+import withEnvs from 'vitest/utils/mockEnvs';
 
-import getAllowedApiOrigins from './getAllowedApiOrigins';
+const INSTANCE_ORIGINS = [
+  'https://localhost:3003',
+  'https://localhost:3004',
+  'https://localhost:3005',
+  'https://localhost:3006',
+  'https://api.clusters.xyz',
+];
 
-vi.mock('src/config', () => ({
-  'default': {
-    apis: {
-      core: { endpoint: 'https://core.example.com' },
-      stats: { endpoint: 'https://stats.example.com:8443' },
-      // invalid endpoint should be ignored, not throw
-      broken: { endpoint: 'not-a-url' },
-      // undefined api should be ignored
-      admin: undefined,
-    },
-  },
-}));
+const ESSENTIAL_DAPPS_ENVS: Array<[ string, string ]> = [
+  [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
+  [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', JSON.stringify({ revoke: { chains: [ chainC.id ] } }) ],
+];
 
-vi.mock('src/features/multichain/chains-config', () => ({
-  'default': () => ({
-    chains: [
-      { app_config: { apis: { core: { endpoint: 'https://chain-a.example.com' } } } },
-      { app_config: { apis: { core: { endpoint: 'https://chain-b.example.com' } } } },
-    ],
-  }),
-}));
+const CHAIN_WITHOUT_APP_CONFIG = { id: '10', name: 'OP Mainnet' };
 
-vi.mock('src/features/marketplace/chains-config/essential-dapps', () => ({
-  'default': () => ({
-    chains: [
-      { app_config: { apis: { core: { endpoint: 'https://dapp-chain.example.com' } } } },
-      // chain without app_config should be ignored
-      {},
-    ],
-  }),
-}));
+// the allow-list is cached for the lifetime of the module, so every test reads it from a fresh copy
+async function getOrigins(envs?: Array<[ string, string ]>) {
+  return withEnvs(envs, async() => (await import('./getAllowedApiOrigins')).default());
+}
 
 describe('getAllowedApiOrigins', () => {
-  it('collects origins from local, multichain and essential dapps config', () => {
-    const origins = getAllowedApiOrigins();
-
-    expect(origins.has('https://core.example.com')).toBe(true);
-    expect(origins.has('https://stats.example.com:8443')).toBe(true);
-    expect(origins.has('https://chain-a.example.com')).toBe(true);
-    expect(origins.has('https://chain-b.example.com')).toBe(true);
-    expect(origins.has('https://dapp-chain.example.com')).toBe(true);
+  it('allows the origin of every API the instance is configured with', async() => {
+    expect(await getOrigins()).toEqual(new Set(INSTANCE_ORIGINS));
   });
 
-  it('ignores endpoints that are not valid URLs', () => {
-    const origins = getAllowedApiOrigins();
+  it('adds the APIs of every chain in the multichain cluster', async() => {
+    vi.stubGlobal('__multichainConfig', { chains: [ chainA, chainB ] });
 
-    expect([ ...origins ].some((origin) => origin.includes('not-a-url'))).toBe(false);
+    const origins = await getOrigins(ENVS_MAP.multichain);
+
+    expect(origins).toEqual(new Set([
+      ...INSTANCE_ORIGINS,
+      'http://localhost:3012',
+      'http://localhost:3013',
+      'http://localhost:4003',
+      'http://localhost:4004',
+    ]));
   });
 
-  it('rejects origins that are not present in the configuration', () => {
-    const origins = getAllowedApiOrigins();
+  it('adds the core API of every essential dapps chain that has an app config', async() => {
+    vi.stubGlobal('__essentialDappsChains', { chains: [ chainC, CHAIN_WITHOUT_APP_CONFIG ] });
+
+    const origins = await getOrigins(ESSENTIAL_DAPPS_ENVS);
+
+    expect(origins).toEqual(new Set([ ...INSTANCE_ORIGINS, 'http://localhost:4005' ]));
+  });
+
+  it('ignores an endpoint that is not a valid URL', async() => {
+    const origins = await getOrigins([ [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'not-a-url' ] ]);
+
+    expect(origins).toEqual(new Set(INSTANCE_ORIGINS));
+  });
+
+  it('rejects origins that are not present in the configuration', async() => {
+    vi.stubGlobal('__multichainConfig', { chains: [ chainA, chainB ] });
+    vi.stubGlobal('__essentialDappsChains', { chains: [ chainC ] });
+
+    const origins = await getOrigins([ ...ENVS_MAP.multichain, ...ESSENTIAL_DAPPS_ENVS ]);
 
     expect(origins.has('http://169.254.169.254')).toBe(false);
     expect(origins.has('http://localhost:3000')).toBe(false);

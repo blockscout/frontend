@@ -5,8 +5,10 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -47,12 +49,13 @@ const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
         />
       </TableCell>
       <TableCell verticalAlign="middle" pr={ 12 }>
-        <TxEntityL1
+        <TxEntity
           isLoading={ isLoading }
           hash={ item.l1_transaction_hash }
           noIcon
           truncation="constant_long"
           noCopy
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle">

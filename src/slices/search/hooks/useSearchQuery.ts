@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -16,6 +15,7 @@ import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilt
 import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();

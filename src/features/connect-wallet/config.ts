@@ -2,7 +2,6 @@
 
 import chain from 'src/slices/chain/config';
 
-import accountFeature from 'src/features/account/config';
 import multichain from 'src/features/multichain/config';
 
 import app from 'src/config/app';
@@ -16,9 +15,6 @@ const title = 'Blockchain interaction (writing to contract, etc.)';
 type FeaturePayload = {
   connectorType: 'reown';
   reown: { projectId: string; featuredWalletIds: Array<string> };
-} | {
-  connectorType: 'dynamic';
-  dynamic: { environmentId: string };
 };
 
 const config: Feature<FeaturePayload> = (() => {
@@ -38,28 +34,18 @@ const config: Feature<FeaturePayload> = (() => {
 
   if (
     !app.isPrivateMode &&
-    (isSingleChain || isMultichain)
+    (isSingleChain || isMultichain) &&
+    walletConnectProjectId
   ) {
-    if (accountFeature.isEnabled && accountFeature.authProvider === 'dynamic' && accountFeature.dynamic?.environmentId) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        connectorType: 'dynamic',
-        dynamic: {
-          environmentId: accountFeature.dynamic.environmentId,
-        },
-      });
-    } else if (walletConnectProjectId) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        connectorType: 'reown',
-        reown: {
-          projectId: walletConnectProjectId,
-          featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
-        },
-      });
-    }
+    return Object.freeze({
+      title,
+      isEnabled: true,
+      connectorType: 'reown',
+      reown: {
+        projectId: walletConnectProjectId,
+        featuredWalletIds: parseEnvJson<Array<string>>(getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_FEATURED_WALLET_IDS')) ?? [],
+      },
+    });
   }
 
   return Object.freeze({

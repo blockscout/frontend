@@ -57,10 +57,10 @@ time.
    `SKIP_ENVS_VALIDATION=true`.
 4. **`favicon_generator.sh`** → `favicon-generator` — regenerates favicons
    from the network icon saved by step 2 (or from `FAVICON_MASTER_URL`, fetched directly).
-5. **`og_image_generator.js`** — renders the Open Graph preview image used
+5. **`og-image-generator`** — renders the Open Graph preview image used
    for link unfurls.
 6. **`export_pro_api_flag.sh`** — auto-detects whether the configured chain
-   is supported by the Blockscout Pro API and exports
+   is supported by the Blockscout API and exports
    `NEXT_PUBLIC_PRO_API_SUPPORTED` accordingly (unless the operator already
    set it).
 7. **`make_envs_script.sh`** — writes every `NEXT_PUBLIC_*` value into

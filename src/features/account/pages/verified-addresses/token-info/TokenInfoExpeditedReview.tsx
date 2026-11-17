@@ -5,6 +5,7 @@ import React from 'react';
 
 import type { Fields } from './types';
 
+import { sanitizeHtml } from 'src/shared/texts/sanitize-html';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { BoxHtml } from 'src/toolkit/chakra/box';
@@ -18,9 +19,12 @@ const DOCS_URL = 'https://docs.blockscout.com/using-blockscout/token-info#expedi
 interface Props {
   html: string;
   readOnly?: boolean;
+  required?: boolean;
 }
 
-const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
+const TokenInfoExpeditedReview = ({ html, readOnly, required }: Props) => {
+
+  const safeHtml = React.useMemo(() => sanitizeHtml(html), [ html ]);
 
   const rules = React.useMemo(() => ({
     validate: {
@@ -45,11 +49,18 @@ const TokenInfoExpeditedReview = ({ html, readOnly }: Props) => {
         </Flex>
         <List.Root as="ol" listStyleType="decimal" gap={ 6 } mt={ 6 } pl={ 5 }>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
-            <BoxHtml html={ html }/>
+            <BoxHtml html={ safeHtml }/>
           </List.Item>
           <List.Item _marker={{ fontWeight: 600 }} pl={ 3 }>
             Once payment is completed, enter the <chakra.span fontWeight={ 600 }>transaction hash</chakra.span>
-            <FormFieldText<Fields, 'payment_tx'> name="payment_tx" placeholder="Payment transaction hash" readOnly={ readOnly } mt={ 2 } rules={ rules }/>
+            <FormFieldText<Fields, 'payment_tx'>
+              name="payment_tx"
+              placeholder="Payment transaction hash"
+              readOnly={ readOnly }
+              required={ required }
+              mt={ 2 }
+              rules={ rules }
+            />
           </List.Item>
         </List.Root>
       </Box>

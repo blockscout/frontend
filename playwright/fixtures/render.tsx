@@ -1,8 +1,9 @@
 /* eslint-disable no-restricted-imports */
 import type { MountOptions } from '@playwright/experimental-ct-react';
 import type { Locator, TestFixture } from '@playwright/test';
-import type router from 'next/router';
 import React from 'react';
+
+import type { Router } from 'src/toolkit/router/types';
 
 import type { Props as TestAppProps } from 'playwright/TestApp';
 import TestApp from 'playwright/TestApp';
@@ -13,7 +14,7 @@ interface MountResult extends Locator {
 }
 
 interface AppHooksConfig {
-  router: Partial<Pick<typeof router, 'query' | 'isReady' | 'asPath' | 'pathname'>>;
+  router: Partial<Pick<Router, 'query' | 'asPath' | 'pathname'>>;
 }
 
 type Mount = <HooksConfig extends AppHooksConfig>(component: React.JSX.Element, options?: MountOptions<HooksConfig>) => Promise<MountResult>;

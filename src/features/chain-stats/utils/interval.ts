@@ -1,11 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextRouter } from 'next/router';
-
 import { StatsIntervalId, type StatsIntervalIds } from '../types/client';
 import { ChartResolution } from 'src/toolkit/components/charts/types';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Router } from 'src/shared/router/useRouter';
 import { formatDate } from 'src/shared/stats/line-chart-utils';
 
 export const STATS_INTERVALS: { [key in StatsIntervalIds]: { title: string; shortTitle: string; start?: Date } } = {
@@ -57,7 +56,7 @@ export function getDatesFromInterval(interval: StatsIntervalIds): { start?: stri
   };
 }
 
-export function getIntervalFromQuery(router: NextRouter): StatsIntervalIds | undefined {
+export function getIntervalFromQuery(router: Router): StatsIntervalIds | undefined {
   const intervalFromQuery = getQueryParamString(router.query.interval);
 
   if (!intervalFromQuery || !Object.values(StatsIntervalId).includes(intervalFromQuery as StatsIntervalIds)) {

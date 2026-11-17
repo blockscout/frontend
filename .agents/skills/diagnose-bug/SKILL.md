@@ -150,22 +150,31 @@ Branch off `origin/main`: `issue-<N>` for an issue, otherwise `bug-<kebab-slug>`
 
 ### 9. Report
 
-The **final message** has four parts, in this order: what was broken, the root cause, the fix (or the
-outcome and its justification from step 6), and how it was verified. Links: the PR, the fixing commit,
-or the request and payload that clear the frontend. **Cannot reproduce** replaces the last three parts
-with what was tried and the artifacts to ask the reporter for: exact URL and instance, browser, a
-screenshot or recording with timestamps, a HAR, the console output, wallet or account state.
+The **report** is the final message, written for the developer. Four parts, in this order: what was
+broken, the root cause, the fix (or the outcome and its justification from step 6), and how it was
+verified. Links: the PR, the fixing commit, or the request and payload that clear the frontend.
+**Cannot reproduce** replaces the last three parts with what was tried and the artifacts to ask the
+reporter for: exact URL and instance, browser, a screenshot or recording with timestamps, a HAR, the
+console output, wallet or account state.
+
+The **reply** is the report rewritten for the reporter per `.agents/slack-message.md` → Content: the
+answer first, in the reader's vocabulary, four sentences, then the ask. **Needs human fix** ends with
+the ask. A decision goes with its options to the team whose "Own:" line in `.agents/TEAM.md` covers
+it. A bad pick names the pick for the Frontend team, which cuts the release. **Cannot reproduce** asks
+for the artifacts by what the reporter does to get each: a HAR is the network log saved from the
+browser's Network tab. The hypotheses ruled out, the tokens and the paths stay in the report, the PR or
+the issue comment.
 
 Then post back to the source, without asking — the named exception to `AGENTS.md`'s
-approve-before-sending rule. Slack text follows `.agents/slack-message.md`.
+approve-before-sending rule.
 
 | Source | Fix PR | Already fixed | Not a frontend bug | Needs human fix | Cannot reproduce |
 | --- | --- | --- | --- | --- | --- |
-| Slack thread | two lines: outcome and PR link | the report | the report | the report | the artifact request |
-| GitHub issue | nothing — the PR's `Resolves #N` links it | comment, close | comment, close | comment | comment, label `need info` |
-| Conversation | the final message only | | | | |
+| Slack thread | two lines: outcome and PR link | the reply | the reply | the reply | the reply |
+| GitHub issue | nothing — the PR's `Resolves #N` links it | the report as a comment, close | the report as a comment, close | the report as a comment | the artifact request as a comment, label `need info` |
+| Conversation | the report only | | | | |
 
-**Done when:** the message is shown to the user and posted where the table above names a post.
+**Done when:** the report is shown to the user and the table's text is posted where it names a post.
 
 ## Run by Honk
 
@@ -174,6 +183,6 @@ no statuses of its own; the shared three with their triggers here:
 
 | Status | When | Resumed? |
 | --- | --- | --- |
-| `done` | the outcome is Fix PR, Already fixed, Not a frontend bug or Needs human fix, and the step 9 message is shown and posted where the step 9 table names a post; the message is that text | no |
-| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, also posted where the step 9 table names a post | yes, with the artifacts |
+| `done` | the outcome is Fix PR, Already fixed, Not a frontend bug or Needs human fix, and the step 9 table's text is posted where it names a post; the message is the report | no |
+| `needs_user` | the outcome is Cannot reproduce; the message is the artifact request, and the step 9 table's text is posted where it names a post | yes, with the artifacts |
 | `needs_approval` | the push, the PR creation, a label, an issue comment or the Slack reply needs a tool the worker profile denies; the message carries exactly what would be done | yes, once a human did it or allowed it |

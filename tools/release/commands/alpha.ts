@@ -1,7 +1,9 @@
 /* eslint-disable no-console -- CLI subcommand, console output is the interface */
-import { createTag, fetchBranch, hasRemoteRef, push, pushBranch, REMOTE } from '../git';
-import { fetchPrLabels, listReleases, updateRelease } from '../github';
+import { createTag, fetchBranch, hasRemoteRef, push, pushBranch, REMOTE, remoteBranch, resolveCommit } from '../git';
+import { fetchPrLabels, listReleases, publishPreRelease } from '../github';
+import type { ReleaseNotes } from '../notes';
 import { releaseNotes } from '../notes';
+import type { GithubRelease } from '../pre-release';
 import { findReleasePreRelease } from '../pre-release';
 import { releaseSourceAt } from '../release-source';
 import type { Version } from '../versions';
@@ -9,15 +11,17 @@ import { formatVersion, parseAlphaTagOrThrow, releaseBranch } from '../versions'
 import { parsePhaseArgs } from './args';
 import { checkTag } from './check-tag';
 import { readNotesTemplate } from './notes';
+import type { BranchView } from './release-branch';
 import { checkoutBranch, updateReleaseBranch } from './release-branch';
+import type { StepRunner } from './report';
 import { logList, logReleaseNotes, stepRunner } from './report';
 import { assertTagIsNew, watchTagRun } from './tag-run';
 
 const USAGE = `Usage: pnpm release alpha <vX.Y.Z-alpha.N> [--dry-run]
 
   picks the merged "backport" PRs onto release/vX.Y.Z, releases "upcoming" in the ENV docs, tags the head
-  once it passes the tag check, re-points the release's pre-release to the tag with regenerated notes,
-  pushes the branch and the tag and watches the pre-release.yml run the tag fires`;
+  once it passes the tag check, publishes the release's pre-release re-pointed to the tag with regenerated
+  notes, which creates the tag on GitHub and fires pre-release.yml, pushes the branch and watches the run`;
 
 const WORKFLOW = 'pre-release.yml';
 
@@ -32,6 +36,63 @@ export function parseAlphaArgs(args: ReadonlyArray<string>): AlphaArgs {
   return { tag: target, version: parseAlphaTagOrThrow(target), dryRun };
 }
 
+// The tag on origin is where an earlier run got to: the publish that creates the tag went through and the
+// run stopped at the push or the watch, and the re-run does not tag or publish again. It is judged against
+// the branch on origin, before the checkout: a "backport" PR merged since is the next alpha's, not this one's.
+// A tag elsewhere than that head is not this alpha, and a tag the pre-release does not point at, or points
+// at while still a draft, was not made by the publish.
+export function alphaState(tag: string, branch: string, taggedSha: string | undefined, pushedHead: string, preRelease: GithubRelease): 'new' | 'published' {
+  if (taggedSha === undefined) {
+    return 'new';
+  }
+  if (taggedSha !== pushedHead) {
+    throw new Error(`${ tag } is on ${ REMOTE } at ${ taggedSha.slice(0, 10) }, not at the head of ${ remoteBranch(branch) } (${ pushedHead.slice(0, 10) })`);
+  }
+  if (preRelease.tagName !== tag) {
+    throw new Error(`${ tag } is on ${ REMOTE } at the head of ${ remoteBranch(branch) }, but the pre-release still points at ${ preRelease.tagName } ` +
+      `(${ preRelease.url }); re-point it to ${ tag } by hand, or delete the tag from ${ REMOTE } and re-run`);
+  }
+  if (preRelease.draft) {
+    throw new Error(`${ tag } is on ${ REMOTE } at the head of ${ remoteBranch(branch) } and the pre-release points at it, but is still a draft ` +
+      `(${ preRelease.url }); publish it by hand, or delete the tag from ${ REMOTE } and re-run`);
+  }
+  return 'published';
+}
+
+interface Alpha {
+  readonly tag: string;
+  readonly branch: string;
+  readonly head: string;
+  readonly notes: ReleaseNotes;
+  readonly preRelease: GithubRelease;
+}
+
+function checkAlpha({ tag, notes }: Alpha, view: BranchView): boolean {
+  const { failures } = checkTag(tag, { readDoc: view.readDoc, releaseBodies: () => [ notes.markdown ], prLabels: fetchPrLabels });
+  if (failures.length > 0) {
+    logList(`\nTag ${ tag } fails the tag check, nothing tagged or pushed`, failures);
+  }
+  return failures.length === 0;
+}
+
+function alphaSteps(steps: StepRunner, { tag, branch, head, notes, preRelease }: Alpha): void {
+  const content = { tagName: tag, target: head, body: notes.markdown };
+  steps.run(`Tag ${ branch } at ${ head.slice(0, 10) } as ${ tag }`, () => createTag(tag, head));
+  // The branch goes first: the publish names the head as the release target, which GitHub must already have.
+  steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
+  const publishTitle = `Publish the pre-release ${ preRelease.tagName } re-pointed to ${ tag } with its notes replaced, ` +
+    `which creates the tag and fires ${ WORKFLOW }: ${ preRelease.url }`;
+  steps.run(publishTitle, () => {
+    console.log(publishPreRelease(preRelease.id, content).url);
+  });
+  steps.run(`Push ${ tag } to ${ REMOTE }, a no-op once the publish created it`, () => push(`refs/tags/${ tag }`));
+}
+
+function watchAlphaRun(steps: StepRunner, tag: string): void {
+  steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'push'));
+  steps.finish();
+}
+
 export function alphaCommand(args: ReadonlyArray<string>): number {
   const { tag, version, dryRun } = parseAlphaArgs(args);
   const releaseTag = formatVersion(version);
@@ -42,32 +103,33 @@ export function alphaCommand(args: ReadonlyArray<string>): number {
   }
   fetchBranch(branch);
   fetchBranch('main');
-  assertTagIsNew(tag);
+  const pushedHead = resolveCommit(remoteBranch(branch));
   const preRelease = findReleasePreRelease(listReleases(), version);
+  const state = alphaState(tag, branch, hasRemoteRef(`refs/tags/${ tag }`) ? resolveCommit(tag) : undefined, pushedHead, preRelease);
+  if (state === 'new') {
+    assertTagIsNew(tag);
+  }
 
   const steps = stepRunner(dryRun);
+  if (state === 'published') {
+    console.error(`${ tag } is already on ${ REMOTE } at the head of ${ remoteBranch(branch) } and the pre-release points at it; ` +
+      `resuming with the ${ WORKFLOW } run.`);
+    console.log(preRelease.url);
+    watchAlphaRun(steps, tag);
+    return 0;
+  }
+
   const view = checkoutBranch(steps, branch, dryRun);
   updateReleaseBranch(steps, view, releaseTag);
   const head = view.head();
-  const notes = releaseNotes(tag, releaseSourceAt(head), readNotesTemplate());
+  const notes = releaseNotes(tag, releaseSourceAt(head, pushedHead), readNotesTemplate());
   logReleaseNotes(tag, notes);
-
-  const { failures } = checkTag(tag, { readDoc: view.readDoc, releaseBodies: () => [ notes.markdown ], prLabels: fetchPrLabels });
-  if (failures.length > 0) {
-    logList(`\nTag ${ tag } fails the tag check, nothing tagged or pushed`, failures);
+  const alpha: Alpha = { tag, branch, head, notes, preRelease };
+  if (!checkAlpha(alpha, view)) {
     return 1;
   }
-
-  const content = { tagName: tag, target: head, body: notes.markdown };
-  steps.run(`Tag ${ branch } at ${ head.slice(0, 10) } as ${ tag }`, () => createTag(tag, head));
-  // The branch goes first: the re-point names the head as the release target, which GitHub must already have.
-  steps.run(`Push ${ branch } to ${ REMOTE }`, () => pushBranch(branch));
-  steps.run(`Re-point the pre-release ${ preRelease.tagName } to ${ tag } and replace its notes: ${ preRelease.url }`, () => {
-    updateRelease(preRelease.id, content);
-  });
-  steps.run(`Push ${ tag } to ${ REMOTE }, which fires ${ WORKFLOW }`, () => push(`refs/tags/${ tag }`));
-  steps.run(`Watch the ${ WORKFLOW } run of ${ tag }`, () => watchTagRun(WORKFLOW, tag, 'push'));
-  steps.finish();
+  alphaSteps(steps, alpha);
+  watchAlphaRun(steps, tag);
 
   if (dryRun) {
     console.log(notes.markdown);

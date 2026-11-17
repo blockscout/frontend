@@ -1,27 +1,41 @@
 // @vitest-environment jsdom
 
+import { animateScroll } from 'react-scroll';
+
 import { chainA, chainB } from 'src/features/multichain/mocks/chains';
 
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
+import type { MockInstance } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterEach, vi } from 'vitest';
 import { renderHook, act, cleanup } from 'vitest/lib';
-import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-const { mockScrollToTop } = vi.hoisted(() => ({
-  mockScrollToTop: vi.fn(),
-}));
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: mockScrollToTop } }));
-vi.mock('src/features/multichain/chains-config', () => ({
-  'default': () => ({ chains: [ chainA, chainB ] }),
-}));
-
-import { useChainValue } from './useChainValue';
+import withEnvs from 'vitest/utils/mockEnvs';
 
 const ENCODED_CURSOR = encodeURIComponent(JSON.stringify({ block_number: 11, index: 12, items_count: 13 }));
 
+// the hook reads the multichain chains only with the feature on, and the router stand-in has to come from the
+// same module graph as the hook, or the hook reads a router context nobody provides
+function loadModules() {
+  return withEnvs(ENVS_MAP.multichain, async() => {
+    const [ { routerStandIn }, { useChainValue } ] = await Promise.all([
+      import('vitest/utils/routerStandIn'),
+      import('./useChainValue'),
+    ]);
+    return { routerStandIn, useChainValue };
+  });
+}
+
+let routerStandIn: Awaited<ReturnType<typeof loadModules>>['routerStandIn'];
+let useChainValue: Awaited<ReturnType<typeof loadModules>>['useChainValue'];
+let scrollToTop: MockInstance<typeof animateScroll.scrollToTop>;
+
+beforeAll(async() => {
+  ({ routerStandIn, useChainValue } = await loadModules());
+});
+
 beforeEach(() => {
-  mockScrollToTop.mockClear();
+  vi.stubGlobal('__multichainConfig', { chains: [ chainA, chainB ] });
+  scrollToTop = vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/address/[hash]', query: { hash: '0x1' } });
 });
 
@@ -32,21 +46,21 @@ describe('useChainValue', () => {
     it('reads chain_id and resolves its config', () => {
       routerStandIn.setQuery({ hash: '0x1', chain_id: chainB.id });
 
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.chainValue).toEqual([ chainB.id ]);
       expect(result.current.chain).toBe(chainB);
     });
 
     it('falls back to the first configured chain when the URL names none', () => {
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.chainValue).toEqual([ chainA.id ]);
       expect(result.current.chain).toBe(chainA);
     });
 
     it('falls back to the first available chain when chainIds restrict the choice', () => {
-      const { result } = renderHook(() => useChainValue({ chainIds: [ chainB.id ] }));
+      const { result } = renderHook(() => useChainValue({ chainIds: [ chainB.id ] }), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.chainValue).toEqual([ chainB.id ]);
       expect(result.current.chain).toBe(chainB);
@@ -55,20 +69,20 @@ describe('useChainValue', () => {
     it('ignores a chain_id that is not configured', () => {
       routerStandIn.setQuery({ hash: '0x1', chain_id: '999' });
 
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.chainValue).toEqual([ chainA.id ]);
     });
 
     it('selects "all" with no chain config when the all option is allowed and the URL names no chain', () => {
-      const { result } = renderHook(() => useChainValue({ withAllOption: true }));
+      const { result } = renderHook(() => useChainValue({ withAllOption: true }), { wrapper: routerStandIn.wrapper });
 
       expect(result.current.chainValue).toEqual([ 'all' ]);
       expect(result.current.chain).toBeUndefined();
     });
 
     it('follows an external URL change without a handler call', () => {
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       act(() => {
         routerStandIn.setQuery({ hash: '0x1', chain_id: chainB.id });
@@ -82,14 +96,14 @@ describe('useChainValue', () => {
   describe('onChainValueChange', () => {
     it('pushes chain_id, strips the page params and keeps the rest of the query', async() => {
       routerStandIn.setQuery({ hash: '0x1', tab: 'txs', filter: 'from', page: '3', next_page_params: ENCODED_CURSOR });
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       await act(async() => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
       expect(routerStandIn.push).toHaveBeenCalledTimes(1);
-      expect(routerStandIn.push).toHaveBeenCalledWith(expect.anything(), undefined, { shallow: true });
+      expect(routerStandIn.push).toHaveBeenCalledWith(expect.anything(), { shallow: true });
       expect(routerStandIn.query).toEqual({ hash: '0x1', tab: 'txs', filter: 'from', chain_id: chainB.id });
       expect(result.current.chainValue).toEqual([ chainB.id ]);
       expect(result.current.chain).toBe(chainB);
@@ -97,43 +111,43 @@ describe('useChainValue', () => {
 
     it('scrolls to the top when leaving a deeper page', async() => {
       routerStandIn.setQuery({ hash: '0x1', page: '3', next_page_params: ENCODED_CURSOR });
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       await act(async() => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
-      expect(mockScrollToTop).toHaveBeenCalledTimes(1);
+      expect(scrollToTop).toHaveBeenCalledTimes(1);
     });
 
     it('does not scroll when already on the first page', async() => {
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
 
       await act(async() => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
-      expect(mockScrollToTop).not.toHaveBeenCalled();
+      expect(scrollToTop).not.toHaveBeenCalled();
     });
 
     it('scrolls to the given element instead of the window', async() => {
       routerStandIn.setQuery({ hash: '0x1', page: '2', next_page_params: ENCODED_CURSOR });
       const scrollIntoView = vi.fn();
       const scrollRef = { current: { scrollIntoView } as unknown as HTMLDivElement };
-      const { result } = renderHook(() => useChainValue({ scrollRef }));
+      const { result } = renderHook(() => useChainValue({ scrollRef }), { wrapper: routerStandIn.wrapper });
 
       await act(async() => {
         result.current.onChainValueChange({ value: [ chainB.id ] });
       });
 
       expect(scrollIntoView).toHaveBeenCalledTimes(1);
-      expect(mockScrollToTop).not.toHaveBeenCalled();
+      expect(scrollToTop).not.toHaveBeenCalled();
     });
   });
 
   describe('referential stability', () => {
     it('keeps the result and handler across a re-render with the same URL', () => {
-      const { result, rerender } = renderHook(() => useChainValue());
+      const { result, rerender } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
       const before = result.current;
 
       rerender();
@@ -142,7 +156,7 @@ describe('useChainValue', () => {
     });
 
     it('keeps the handler when the chain changes and reads the latest router from it', async() => {
-      const { result } = renderHook(() => useChainValue());
+      const { result } = renderHook(() => useChainValue(), { wrapper: routerStandIn.wrapper });
       const handlerBefore = result.current.onChainValueChange;
 
       await act(async() => {

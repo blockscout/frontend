@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import NetworkIcon from 'src/slices/chain/logo/NetworkIcon';
@@ -19,8 +18,6 @@ import { useIsSticky } from 'src/toolkit/hooks/useIsSticky';
 
 import Burger from './Burger';
 
-const UserProfileDynamic = dynamic(() => import('src/features/account/components/user-profile/dynamic/UserProfile'), { ssr: false });
-
 type Props = {
   hideSearchButton?: boolean;
   onGoToSearchResults?: (searchTerm: string) => void;
@@ -31,16 +28,8 @@ const HeaderMobile = ({ hideSearchButton, onGoToSearchResults }: Props) => {
   const isSticky = useIsSticky(ref, 5);
 
   const userProfile = (() => {
-    const accountFeature = config.features.account;
-    if (accountFeature.isEnabled) {
-      switch (accountFeature.authProvider) {
-        case 'auth0':
-          return <UserProfileAuth0/>;
-        case 'dynamic':
-          return <UserProfileDynamic/>;
-        default:
-          return null;
-      }
+    if (config.features.account.isEnabled) {
+      return <UserProfileAuth0/>;
     }
     if (config.features.connectWallet.isEnabled) {
       return <UserWalletMobile/>;

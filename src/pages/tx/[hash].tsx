@@ -2,7 +2,6 @@
 
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
@@ -16,6 +15,7 @@ import getOgDescriptionParams from 'src/slices/tx/utils/get-og-description-param
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Route } from 'src/shared/router/routes';
 
 import { SECOND } from 'src/toolkit/utils/consts';
 

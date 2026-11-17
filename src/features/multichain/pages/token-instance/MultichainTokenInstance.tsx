@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { SocketProvider } from 'src/api/socket/context';
@@ -12,6 +11,7 @@ import multichainConfig from 'src/features/multichain/chains-config';
 import { MultichainProvider } from 'src/features/multichain/context';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 const MultichainTokenInstance = () => {
   const router = useRouter();

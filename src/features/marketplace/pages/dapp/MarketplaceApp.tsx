@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 
 import * as metadata from 'src/shell/metadata';
@@ -14,6 +13,7 @@ import config from 'src/config';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
@@ -70,6 +70,8 @@ export default function MarketplaceApp() {
       setIsAutoConnectDisabled(!data.internalWallet);
     }
   }, [ data, isPlaceholderData, setIsAutoConnectDisabled ]);
+
+  useEffect(() => () => setIsAutoConnectDisabled(false), [ setIsAutoConnectDisabled ]);
 
   throwOnResourceLoadError(query);
 

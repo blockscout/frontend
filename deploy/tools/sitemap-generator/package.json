@@ -5,7 +5,13 @@
   "keywords": [],
   "author": "",
   "description": "",
+  "scripts": {
+    "dev": "./dev.sh"
+  },
   "dependencies": {
     "next-sitemap": "4.2.3"
+  },
+  "devDependencies": {
+    "dotenv-cli": "10.0.0"
   }
 }

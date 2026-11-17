@@ -21,7 +21,7 @@ pnpm prod:preset <alias> --profile --skip-build  # re-serve the existing build
 
 That is the ordinary `pnpm prod:preset` production build + serve (env-wired to a live instance —
 see `tools/dev-server/CONTEXT.md` for the env layering and the preset registry), with `--profile`
-switching the build to `next build --webpack --profile` so the profiling `react-dom` is aliased in.
+switching the build to `next build --profile` so the profiling `react-dom` is aliased in.
 With `--skip-build` nothing is rebuilt, so `--profile` has no effect there: you get whatever
 flavor is already in `.next` — profileable only if the last full build had the flag.
 
@@ -40,19 +40,23 @@ Keep exports in `.ai/tmp/` — they're ~30MB each and `.ai` is git-ignored.
 ## Gotchas (these bit us; don't re-learn them)
 
 - **A normal prod build cannot be profiled** — the Profiler tab refuses to record. `--profile`
-  aliases `react-dom` → `react-dom/profiling`. We pass `--webpack` because the flag is guaranteed
-  on the webpack pipeline; Turbopack (the Next 16 default) doesn't document support.
-  `next.config.js` deliberately maintains both pipelines.
+  aliases `react-dom` → `react-dom/profiling`. Turbopack honours it since Next 16.4 (the native
+  config has `reactProductionProfiling`); the build used to force `--webpack`, which no longer
+  compiles because `@libp2p/http-utils` imports `node:stream` through a `browser` field webpack
+  ignores. To check a build is the profiling flavor, grep `.next/static/chunks` for
+  `actualDuration` — a fiber field only the profiling `react-dom` has.
 - **Prod traces still attribute better than expected**: components with an explicit `displayName`
   (all of Chakra/Ark, `SpriteIcon`, …) survive minification; app function components don't.
 - **Durations are render-phase self times.** Layout/passive effect totals are separate fields on
   each commit (the analyzer prints them in the header) — check them before assuming render is the problem.
 - **A data-driven page commits twice** per navigation/filter change: once with skeleton placeholder
   rows, once with real data. Look at both big commits, not just the first.
-- **The DevTools `operations` wire format drifts.** Current parser handles the trailing
-  `compiledWithForget` field on ADD records (DevTools ≥ 6.x). On format drift it warns and
-  degrades to partial attribution instead of failing — if you see many unattributed fibers,
-  check the ADD record layout in `react-devtools-shared` first.
+- **The DevTools `operations` wire format drifts.** The parser knows the Suspense-tree operations
+  (op codes 8–11) and the activity-slice change (13) DevTools 7 emits, and the fifth per-element ADD
+  field (`namePropStringID` now, `compiledWithForget` in 6.x — same width). On drift it warns and
+  degrades to partial attribution instead of failing. An `unknown op N` warning is a new op code:
+  take its operand layout from `onBridgeOperations` in `react-devtools-shared/src/devtools/store.js`
+  and add a case plus a `SKIPPED` fixture in the spec.
 - **Fibers unmounted mid-session** (e.g. rows replaced when real data arrives) are only nameable
   through the `operations` replay, not the final-tree `snapshots` — that's why the analyzer
   replays operations first and uses snapshots as a fallback.

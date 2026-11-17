@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, VStack } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -12,6 +11,7 @@ import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context
 import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import useInitialList from 'src/shared/lists/useInitialList';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiInfiniteQuery from 'src/api/hooks/useApiInfiniteQuery';
@@ -8,6 +7,7 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 interface Props {
   chainId: string | undefined;
@@ -67,7 +67,7 @@ export default function useSearchQuery({ chainId }: Props) {
     router.push({
       pathname: router.pathname,
       query: { ...router.query, q: value },
-    }, undefined, { shallow: true });
+    }, { shallow: true });
   });
 
   const handleSearchTermChange = React.useCallback((value: string) => {

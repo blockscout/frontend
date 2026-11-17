@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { uniqBy } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ChainStatsChart, ChainStatsPayload, ChainStatsSection, StatsIntervalIds } from '../types/client';
@@ -13,6 +12,7 @@ import { CROSS_CHAIN_TXS_SECTIONS } from 'src/features/cross-chain-txs/utils/cha
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { CHAIN_STATS_CHARTS } from '../stubs/charts';
 
@@ -74,7 +74,7 @@ export default function useChainStats({ chain }: Props = {}) {
       if (chartName) {
         setInitialFilterQuery(chartName);
         setFilterQuery(chartName);
-        router.replace({ pathname: '/stats' }, undefined, { scroll: false });
+        router.replace({ pathname: '/stats' }, { scroll: false });
       }
     }
   // run only when data is loaded
