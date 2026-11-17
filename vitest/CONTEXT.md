@@ -97,7 +97,8 @@ None of these is checked by a linter.
   untested.
 - **A spec imports `render`, `screen` and the rest from `vitest/lib`, never from `@testing-library/react`.**
   The direct import renders with no provider at all, so the component fails on the first context it reads,
-  or passes on a default no page has.
+  or passes on a default no page has. `src/toolkit/router/context.spec.tsx` is the exception: the
+  no-provider defaults are what it tests.
 - **A spec never mocks `next/router` or `next/navigation`.** The route goes in through the `router` prop of
   the wrapper or through `routerStandIn`. The adapter's own spec is the exception, and has its row above.
 - **A spec never replaces `window.matchMedia` by hand to change the breakpoint**: `mockViewport` does that.

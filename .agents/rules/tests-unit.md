@@ -1,5 +1,5 @@
 ---
-description: Vitest unit tests — purpose, setup, utilities, and conventions
+description: Vitest unit tests — purpose and conventions; the setup and utilities are in vitest/CONTEXT.md
 paths:
   - "**/*.spec.{ts,tsx}"
 globs: "**/*.spec.ts,**/*.spec.tsx"
