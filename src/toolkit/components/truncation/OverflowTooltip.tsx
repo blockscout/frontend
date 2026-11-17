@@ -11,7 +11,6 @@ import useFontFaceObserver from 'use-font-face-observer';
 
 import type { TooltipProps } from '../../chakra/tooltip';
 import { Tooltip } from '../../chakra/tooltip';
-import { useDisclosure } from '../../hooks/useDisclosure';
 import { BODY_TYPEFACE } from '../../theme/foundations/typography';
 
 export interface OverflowTooltipProps extends TooltipProps {
@@ -21,7 +20,6 @@ export interface OverflowTooltipProps extends TooltipProps {
 export const OverflowTooltip = React.memo(({ children, always, ...rest }: OverflowTooltipProps) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
-  const { open, onToggle, onOpen, onClose } = useDisclosure();
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE },
@@ -60,31 +58,19 @@ export const OverflowTooltip = React.memo(({ children, always, ...rest }: Overfl
 
   // as for now it supports only one child
   // and it is not cleared how to manage case with two or more children
-  const child = React.Children.only(children) as React.ReactElement & {
-    ref?: React.Ref<React.ReactNode>;
-    onClick?: () => void;
-    onMouseEnter?: () => void;
-    onMouseLeave?: () => void;
-  };
-  const handleClick = React.useCallback(() => {
-    onToggle();
-  }, [ onToggle ]);
+  const child = React.Children.only(children) as React.ReactElement;
 
+  // The open state must stay with Tooltip: a controlled `open` makes the lazy Tooltip remount
+  // the trigger node on hover, and the browser never reports the pointer leaving the new node.
   const modifiedChildren = React.cloneElement(
     child,
-    {
-      ref: childRef,
-      onClick: handleClick,
-      onMouseEnter: onOpen,
-      onMouseLeave: onClose,
-    } as React.HTMLAttributes<HTMLElement>,
+    { ref: childRef } as React.HTMLAttributes<HTMLElement>,
   );
 
   if (isTruncated || always) {
     return (
       <Tooltip
         contentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '400px' } }}
-        open={ open }
         { ...rest }
       >
         { modifiedChildren }
