@@ -1,5 +1,5 @@
 ---
-description: Vitest unit tests — purpose and conventions; the setup and utilities are in vitest/CONTEXT.md
+description: Vitest unit tests — purpose and conventions
 paths:
   - "**/*.spec.{ts,tsx}"
 globs: "**/*.spec.ts,**/*.spec.tsx"
@@ -11,12 +11,7 @@ alwaysApply: false
 > `blockscout/frontend-home`, where it is `.agents/rules/tests-unit.md`. Edit it there, not here: see
 > [Frozen copies](../README.md#frozen-copies).
 
-The unit-test runner here is Vitest, and a test that renders in a browser is a Playwright one. The local
-setup is in `vitest/CONTEXT.md`: which specs are isolated and why, what breaks in a shared worker,
-overriding environment variables, the conventions no linter checks, and where each part of the setup is
-described. Rendering (`render`), mocking fetch (`fetchMock`) and each helper under `vitest/utils/`
-(`withEnvs`, `mockSocket` and the rest) are described in the header comment of their file; the doc says
-which. Read it before writing or changing a spec. It is edited here.
+The unit-test runner here is Vitest, and a test that renders in a browser is a Playwright one.
 
 ## Purpose
 
