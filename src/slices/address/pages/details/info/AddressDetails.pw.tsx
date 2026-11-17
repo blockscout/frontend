@@ -28,7 +28,7 @@ const hooksConfig = {
   },
 };
 
-const mockFundingTxs = async(mockApiResponse: TestFnArgs['mockApiResponse'], items: ResourcePayload<'core:address_txs'>['items']) => {
+const mockFundingTxs = async(mockApiResponse: TestFnArgs['mockApiResponse'], items: ResourcePayload<'core:address_txs'>['items']): Promise<void> => {
   await mockApiResponse(
     'core:address_txs',
     { items, next_page_params: null },

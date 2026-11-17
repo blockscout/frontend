@@ -17,9 +17,9 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 interface Props {
-  addressHash: string;
-  isAddressLoading: boolean;
-  isEnabled: boolean;
+  readonly addressHash: string;
+  readonly isAddressLoading: boolean;
+  readonly isEnabled: boolean;
 }
 
 const PLACEHOLDER_DATA: ResourcePayload<'core:address_txs'> = { items: [ TX_ITEM ], next_page_params: null };

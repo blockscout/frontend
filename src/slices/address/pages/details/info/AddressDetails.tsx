@@ -78,7 +78,7 @@ const AddressDetails = ({ addressQuery, countersQuery, isLoading }: Props) => {
         <AddressFundedBy
           addressHash={ data.hash }
           isAddressLoading={ Boolean(isLoading) }
-          isEnabled={ !isLoading && Boolean(addressQuery.data) && !addressQuery.isDegradedData && !data.is_contract }
+          isEnabled={ !addressQuery.isPlaceholderData && Boolean(addressQuery.data) && !addressQuery.isDegradedData && !data.is_contract }
         />
         { !isLoading && data.is_contract && data.implementations && data.implementations?.length > 0 && (
           <AddressImplementations
