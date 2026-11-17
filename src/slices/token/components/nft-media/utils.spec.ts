@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getIpfsUri } from './utils';
+import { getIpfsUri, getPreliminaryMediaType } from './utils';
 
 const CID = 'bafybeigdyrztx7ls4mrwlwyfm2p3zjnyxyuhx2qrcdxjr2bnqh6qhvcfsy';
 
@@ -51,5 +51,34 @@ describe('getIpfsUri', () => {
     'not a url ipfs',
   ])('rejects a URL that does not address IPFS content: %s', (url) => {
     expect(getIpfsUri(url)).toBeUndefined();
+  });
+});
+
+describe('getPreliminaryMediaType', () => {
+  it.each([
+    [ 'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=', 'image' ],
+    [ 'data:video/mp4;base64,AAAA', 'video' ],
+    [ 'data:text/html,<html></html>', 'html' ],
+    [ 'data:text/html;base64,PGh0bWw+PC9odG1sPg==', 'html' ],
+  ])('classifies a data URI by its MIME type: %s', (url, expected) => {
+    expect(getPreliminaryMediaType(url)).toBe(expected);
+  });
+
+  it('trusts the data URI MIME type over a trailing file extension', () => {
+    expect(getPreliminaryMediaType('data:text/html,<a href="x.png">x.png')).toBe('html');
+  });
+
+  it.each([
+    [ 'https://example.com/1.png', 'image' ],
+    [ 'https://example.com/1.webm', 'video' ],
+  ])('classifies a URL by its file extension: %s', (url, expected) => {
+    expect(getPreliminaryMediaType(url)).toBe(expected);
+  });
+
+  it.each([
+    'https://example.com/animation',
+    'data:application/json,{}',
+  ])('leaves an unrecognised URL unclassified: %s', (url) => {
+    expect(getPreliminaryMediaType(url)).toBeUndefined();
   });
 });

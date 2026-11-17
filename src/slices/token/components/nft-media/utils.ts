@@ -39,11 +39,19 @@ const VIDEO_EXTENSIONS = [
 ];
 
 export function getPreliminaryMediaType(url: string): MediaType | undefined {
-  if (IMAGE_EXTENSIONS.some((ext) => url.endsWith(ext))) {
+  if (url.startsWith('data:image')) {
     return 'image';
   }
 
-  if (url.startsWith('data:image')) {
+  if (url.startsWith('data:video')) {
+    return 'video';
+  }
+
+  if (url.startsWith('data:text/html')) {
+    return 'html';
+  }
+
+  if (IMAGE_EXTENSIONS.some((ext) => url.endsWith(ext))) {
     return 'image';
   }
 

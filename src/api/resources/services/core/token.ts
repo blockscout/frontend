@@ -85,6 +85,10 @@ export const CORE_API_TOKEN_RESOURCES = {
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
   },
+  token_instance_media_type: {
+    path: '/api/v2/tokens/:hash/instances/:id/media-type',
+    pathParams: [ 'hash' as const, 'id' as const ],
+  },
 
   // TOKEN TRANSFERS
   token_transfers_all: {
@@ -107,6 +111,7 @@ R extends 'core:token_instance' ? paths['/api/v2/tokens/{address_hash_param}/ins
 R extends 'core:token_instance_transfers_count' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get'] :
 R extends 'core:token_instance_transfers' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] :
 R extends 'core:token_instance_holders' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/holders']['get'] :
+R extends 'core:token_instance_media_type' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/media-type']['get'] :
 R extends 'core:token_inventory' ? paths['/api/v2/tokens/{address_hash_param}/instances']['get'] :
 R extends 'core:tokens' ? paths['/api/v2/tokens/']['get'] :
 R extends 'core:tokens_bridged' ? paths['/api/v2/tokens/bridged']['get'] :
