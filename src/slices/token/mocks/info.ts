@@ -5,7 +5,7 @@ import { toTokenModel } from '../utils/model';
 export const tokenInfo = toTokenModel({
   address_hash: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
   circulating_market_cap: '117629601.61913824',
-  circulating_supply: '58519576000000000',
+  circulating_supply: '58519576',
   decimals: '18',
   exchange_rate: '2.0101',
   holders_count: '46554',
