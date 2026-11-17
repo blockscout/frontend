@@ -1,14 +1,13 @@
 // @vitest-environment jsdom
 
+import { animateScroll } from 'react-scroll';
+
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { renderHook, wrapper, act, cleanup } from 'vitest/lib';
+import { renderHook, act, cleanup } from 'vitest/lib';
 import flushPromises from 'vitest/utils/flushPromises';
 import { routerStandIn } from 'vitest/utils/routerStandIn';
-
-vi.mock('next/router', () => import('vitest/utils/routerStandIn').then((m) => m.nextRouterModule));
-vi.mock('react-scroll', () => ({ animateScroll: { scrollToTop: vi.fn() } }));
 
 import { useInternalTxsPaginatedQuery } from './useInternalTxsPaginatedQuery';
 
@@ -33,6 +32,7 @@ async function waitForApiResponse() {
 beforeEach(() => {
   fetchMock.resetMocks();
   fetchMock.mockResponse(JSON.stringify(response), responseInit);
+  vi.spyOn(animateScroll, 'scrollToTop').mockImplementation(() => undefined);
   routerStandIn.reset({ pathname: '/address/[hash]' });
 });
 
@@ -40,7 +40,7 @@ afterEach(cleanup);
 
 describe('zero-value internal transactions filter', () => {
   it('hides zero-value items by default and asks the API to exclude them', async() => {
-    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.isZeroValueShown).toBe(false);
@@ -50,7 +50,7 @@ describe('zero-value internal transactions filter', () => {
   it('shows zero-value items when the URL opts in', async() => {
     routerStandIn.reset({ pathname: '/address/[hash]', query: { include_zero_value: 'true' } });
 
-    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     expect(result.current.isZeroValueShown).toBe(true);
@@ -60,7 +60,7 @@ describe('zero-value internal transactions filter', () => {
   it('turning the switch on writes only the opt-in to the URL and keeps the other filters', async() => {
     routerStandIn.reset({ pathname: '/address/[hash]', query: { filter: 'from' } });
 
-    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
@@ -77,7 +77,7 @@ describe('zero-value internal transactions filter', () => {
   it('turning the switch off removes the param from the URL', async() => {
     routerStandIn.reset({ pathname: '/address/[hash]', query: { filter: 'from', include_zero_value: 'true' } });
 
-    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper });
+    const { result } = renderHook(() => useInternalTxsPaginatedQuery(params), { wrapper: routerStandIn.appWrapper });
     await waitForApiResponse();
 
     await act(async() => {
