@@ -111,6 +111,21 @@ describe('useNftMediaInfo', () => {
     expect(result.current.data).toBeNull();
   });
 
+  it.each([
+    [ 'animation_url', 'ipfs://animation-cid' ],
+    [ 'image_url', 'ipfs://image-cid' ],
+  ] as const)('loads an image in %s over IPFS from the metadata entry of that field', async(field, ipfsSrc) => {
+    const url = `${ IMAGE_URL }.png`;
+    const metadata = { animation_url: 'ipfs://animation-cid', image: 'ipfs://image-cid' };
+
+    const data = await resolveMediaInfo({ [field]: url, metadata }, field);
+
+    expect(data).toEqual([
+      { src: ipfsSrc, mediaType: 'image', transport: 'ipfs' },
+      { src: url, mediaType: 'image', transport: 'http' },
+    ]);
+  });
+
   it('shares one API request between the animation and the image of an instance', async() => {
     mockMediaTypeResponse({ animation_media_type: 'video', image_media_type: 'image' });
     const data = toInstance({ animation_url: ANIMATION_URL, image_url: IMAGE_URL });
