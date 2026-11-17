@@ -191,15 +191,15 @@ const WINDOW_ENVS_RESTRICTION = {
 };
 
 // Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
-// puts it in the `isolated` one — see vitest.config.ts and .agents/rules/tests-unit.md -> "Isolation".
+// puts it in the `isolated` one — see vitest.config.ts and vitest/CONTEXT.md -> "Isolation".
 // Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
 // is not on the list: it resets the registry around its callback and restores the envs it set.
 const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
 const ISOLATED_SPEC_MESSAGE =
-  ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in .agents/rules/tests-unit.md.';
+  ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in vitest/CONTEXT.md.';
 const HAND_SET_ENV_MESSAGE =
   'An env variable changed by hand is ignored once an earlier spec in the worker has evaluated the app config, and leaks into every spec after it.' +
-  ' Override envs with `withEnvs` from vitest/utils/mockEnvs — see "Overriding environment variables" in .agents/rules/tests-unit.md.';
+  ' Override envs with `withEnvs` from vitest/utils/mockEnvs — see "Overriding environment variables" in vitest/CONTEXT.md.';
 const SHARED_SPEC_RESTRICTED_SYNTAX = [
   {
     selector: 'CallExpression[callee.object.name=\'vi\'][callee.property.name=/^(mock|doMock|unmock|doUnmock|resetModules)$/]',

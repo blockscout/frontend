@@ -43,7 +43,7 @@ export default defineConfig({
     ],
     // Two projects, split by file name. Evaluating the shared module graph once per spec file is the
     // largest single cost of a run, so a spec shares its worker's module registry unless its name says
-    // it needs a fresh one. The rule for which is which: .agents/rules/tests-unit.md -> "Isolation".
+    // it needs a fresh one. The rule for which is which: vitest/CONTEXT.md -> "Isolation".
     projects: [
       {
         test: {

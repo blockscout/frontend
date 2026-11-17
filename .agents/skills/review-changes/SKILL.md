@@ -9,6 +9,9 @@ disable-model-invocation: true
 
 # Review changes
 
+> **Frozen copy.** This skill has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/skills/review-changes/`. Edit it there, not here: see [Frozen copies](../../README.md#frozen-copies).
+
 Review a change the way a lead reviewer would: the **axes** that apply, in parallel, each in its own fresh
 subagent context, then one normalized report.
 

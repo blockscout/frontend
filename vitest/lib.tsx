@@ -28,6 +28,13 @@ import { buildRouterMock } from './utils/mockRouter';
 
 import 'src/shared/i18n/set-locale';
 
+// What a spec imports in place of `@testing-library/react`: everything RTL exports, with `render`
+// wrapping the tree in `TestApp` (below). An RTL call that takes a wrapper gets it by hand:
+//
+//   import { render, renderHook, screen, wrapper } from 'vitest/lib';
+//
+//   renderHook(() => useMyHook(), { wrapper });
+
 const PAGE_PROPS = {
   cookies: '',
   referrer: '',

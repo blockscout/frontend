@@ -5,6 +5,8 @@
         "@helia/verified-fetch",
         "helia",
         "multiformats",
-        "posthog-js"
+        "posthog-js",
+        // The organisation's own home repo, installed from GitHub by commit: it is not on the registry, so no license is found.
+        "frontend-home"
     ]
 }

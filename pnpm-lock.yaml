@@ -652,6 +652,9 @@ importers:
       eslint-plugin-vitest:
         specifier: 0.5.4
         version: 0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2)(vitest@5.0.0)
+      frontend-home:
+        specifier: github:blockscout/frontend-home#4b2a47ffa5d9b0d932a1518897d16f46bbae1935
+        version: https://codeload.github.com/blockscout/frontend-home/tar.gz/4b2a47ffa5d9b0d932a1518897d16f46bbae1935
       globals:
         specifier: 15.12.0
         version: 15.12.0
@@ -9241,6 +9244,12 @@ packages:
 
   from-exponential@1.1.1:
     resolution: {integrity: sha512-VBE7f5OVnYwdgB3LHa+Qo29h8qVpxhVO9Trlc+AWm+/XNAgks1tAwMFHb33mjeiof77GglsJzeYF7OqXrROP/A==}
+
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/4b2a47ffa5d9b0d932a1518897d16f46bbae1935:
+    resolution: {gitHosted: true, integrity: sha512-q2yLR1M/u1QIPJ8z8iI7keuQYe0RewEsAoF8Aatab5Hq3KlVj4pU9einiKk41I+GEDmYE1/zCGuAaC7+48cXNA==, tarball: https://codeload.github.com/blockscout/frontend-home/tar.gz/4b2a47ffa5d9b0d932a1518897d16f46bbae1935}
+    version: 0.0.0
+    engines: {node: '>=24.21.0', pnpm: '>=9.0.0'}
+    hasBin: true
 
   fs-extra@11.3.5:
     resolution: {integrity: sha512-eKpRKAovdpZtR1WopLHxlBWvAgPny3c4gX1G5Jhwmmw4XJj0ifSD5qB5TOo8hmA0wlRKDAOAhEE1yVPgs6Fgcg==}
@@ -25783,6 +25792,8 @@ snapshots:
   fresh@0.5.2: {}
 
   from-exponential@1.1.1: {}
+
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/4b2a47ffa5d9b0d932a1518897d16f46bbae1935: {}
 
   fs-extra@11.3.5:
     dependencies:

@@ -7,6 +7,9 @@ alwaysApply: false
 ---
 # Architecture decision records
 
+> **Frozen copy.** This rule has moved to the home repo, `blockscout/frontend-home`, where it is
+> `.agents/rules/adr.md`. Edit it there, not here: see [Frozen copies](../README.md#frozen-copies).
+
 An ADR answers "why is it like this?" without a git archaeology session. It carries the evidence and the
 trade-off, so read the relevant one before changing what it decided.
 

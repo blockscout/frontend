@@ -26,7 +26,7 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 
 ## Testing
 
-- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
+- Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose and conventions, and `vitest/CONTEXT.md` for the setup and utilities.
 - Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
 ## Running locally
@@ -64,11 +64,12 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
 - `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
-- `tools/doc-links/` — the doc-link checker.
+- `tools/home/` — the home repo dependency: the pin and its bump, and the registry of the tools it supplies.
 - `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
 - `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
 - `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
+- `vitest/` — the unit-test setup: the shared and isolated projects, the conventions a spec keeps, and where the setup files and helpers are described.
 
 See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
 `docs/`, a module `README.md`.

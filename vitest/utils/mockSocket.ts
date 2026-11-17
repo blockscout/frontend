@@ -1,5 +1,27 @@
 import { vi } from 'vitest';
 
+// A fake Phoenix transport whose channels join at once, for a component that keeps a query disabled
+// until `useSocketChannel` reports a join, or that reacts to live socket messages. Only the `phoenix`
+// `Socket` is replaced: `SocketProvider`, `useSocketChannel` and `useSocketMessage` run for real.
+//
+// It replaces a module, so the spec is an `*.isolated.spec`. A spec that imports the component
+// statically installs it with a top-level `vi.mock` and delivers server events itself:
+//
+//   vi.mock('phoenix', () => import('vitest/utils/mockSocket').then((m) => m.phoenixModule));
+//
+//   render(<SocketProvider url={ MOCK_SOCKET_URL }><AddressTokenTransfers/></SocketProvider>);
+//   act(() => sendSocketMessage('addresses:0x…', 'token_transfer', { token_transfers: [ … ] }));
+//
+// `mockSocket()` is the `vi.doMock` form, which reaches only modules imported after the call: pair it
+// with `vi.resetModules()` and a dynamic import of the component.
+//
+//   mockSocket();
+//   const { default: Token } = await import('./Token');
+//   render(<TestApp socketUrl={ MOCK_SOCKET_URL }><Token/></TestApp>);
+//   await flushPromises();
+//
+// Pass the url either way: without one the provider creates no socket at all.
+
 /** any non-empty url works — the mocked socket never opens a connection */
 export const MOCK_SOCKET_URL = 'wss://localhost/socket';
 
