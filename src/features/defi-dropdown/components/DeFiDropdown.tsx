@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
-import { space } from 'src/toolkit/utils/htmlEntities';
 
 import DeFiDropdownItem from './DeFiDropdownItem';
 
@@ -20,10 +19,10 @@ const feature = config.features.deFiDropdown;
 
 const DeFiDropdown = () => {
   const router = useRouter();
-  const source = mixpanel.getPageType(router.pathname);
+  const source = analytics.getPageType(router.pathname);
 
   const handleClick = React.useCallback((content: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: `DeFi button: ${ content }`, Source: source });
   }, [ source ]);
 
   if (!feature.isEnabled) {
@@ -39,10 +38,12 @@ const DeFiDropdown = () => {
     <PopoverRoot>
       <PopoverTrigger>
         <Button size="2xs" gap={ 0 }>
-          <chakra.span display={{ base: 'none', lg: 'inline' }} whiteSpace="pre-wrap">
-            Blockscout{ space }
+          <chakra.span display={{ base: 'none', lg: 'inline' }}>
+            { feature.buttonText.desktop }
           </chakra.span>
-          DeFi
+          <chakra.span display={{ base: 'inline', lg: 'none' }}>
+            { feature.buttonText.mobile }
+          </chakra.span>
           <SpriteIcon name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>
         </Button>
       </PopoverTrigger>

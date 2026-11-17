@@ -1,33 +1,42 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
-import type { AddressMetadataTagFormatted } from 'src/features/address-metadata/types/client';
+import type { AppActionSource } from 'src/features/address-metadata/utils/build-app-action-url';
+import { buildAppActionUrl } from 'src/features/address-metadata/utils/build-app-action-url';
+import type { AppActionData } from 'src/features/address-metadata/utils/get-app-action-data';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
+import { route } from 'src/shared/router/routes';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 
 type Props = {
-  data: NonNullable<AddressMetadataTagFormatted['meta']>;
+  data: AppActionData;
   className?: string;
+  addressHash?: string;
   txHash?: string;
-  source: 'Txn' | 'NFT collection' | 'NFT item';
+  source: AppActionSource;
 };
 
-const AppActionButton = ({ data, className, txHash, source }: Props) => {
+const AppActionButton = ({ data, className, addressHash, txHash, source }: Props) => {
   const { appID, textColor, bgColor, appActionButtonText, appLogoURL, appMarketplaceURL } = data;
 
-  const actionURL = appMarketplaceURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
+  const multichainContext = useMultichainContext();
+  const chainId = multichainContext?.chain?.app_config.chain.id || config.chain.id;
+
+  const actionURL = appMarketplaceURL ?
+    buildAppActionUrl(appMarketplaceURL, { address: addressHash, chainId, txHash }, source) :
+    undefined;
 
   const handleClick = React.useCallback(() => {
     const info = appID || actionURL;
     if (info) {
-      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: info, Source: source });
+      analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: info, Source: source });
     }
   }, [ source, appID, actionURL ]);
 

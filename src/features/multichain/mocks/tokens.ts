@@ -25,6 +25,9 @@ export const tokenAA: AddressTokenItem = {
       },
     },
     reputation: null,
+    ui_multiplier: null,
+    new_ui_multiplier: null,
+    ui_multiplier_effective_at: null,
   },
   token_instance: null,
   token_id: null,
@@ -55,6 +58,9 @@ export const tokenAB: AddressTokenItem = {
       },
     },
     reputation: null,
+    ui_multiplier: null,
+    new_ui_multiplier: null,
+    ui_multiplier_effective_at: null,
   },
   token_id: null,
   value: '32115625288281011210',
@@ -134,5 +140,33 @@ export const tokenDA: AddressTokenItem = {
     symbol: 'GOOSE',
     name: 'Mega Goose',
     exchange_rate: null,
+  },
+};
+
+export const tokenBC: AddressTokenItem = {
+  ...tokenAA,
+  token: {
+    ...tokenAA.token,
+    address_hash: '0x7336D3B609bAc510842d7F7Ceb61bcB6910f501D',
+    name: 'Caterpillar Inc 3.7% 2028',
+    symbol: '14913UBF6',
+    decimals: '18',
+    type: 'ERC-8056',
+    exchange_rate: '1.02',
+    ui_multiplier: '1250000000000000000',
+    new_ui_multiplier: null,
+    ui_multiplier_effective_at: null,
+    chain_infos: {
+      [chainB.id]: {
+        holders_count: '4',
+        total_supply: '9692016594070863347712',
+        is_verified: false,
+        contract_name: undefined,
+      },
+    },
+  },
+  value: '4987401008000000000000',
+  chain_values: {
+    [chainB.id]: '4987401008000000000000',
   },
 };

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { NovesHistoryFilterValue } from 'src/features/tx-interpretation/noves/types/api';
@@ -14,10 +14,11 @@ import { getFromToValue } from 'src/features/tx-interpretation/noves/utils/from-
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getFilterValueFromQuery from 'src/shared/router/get-filter-value-from-query';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
@@ -25,6 +26,8 @@ import AccountHistoryFilter from './AddressAccountHistoryFilter';
 import AddressAccountHistoryTable from './AddressAccountHistoryTable';
 
 const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(null, NovesHistoryFilterValues);
+
+const FILTER_FIELDS = [ 'filter' ];
 
 type Props = {
   shouldRender?: boolean;
@@ -36,10 +39,9 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   const isMounted = useIsMounted();
 
   const currentAddress = getQueryParamString(router.query.hash).toLowerCase();
+  const filterValue = getFilterValue(router.query.filter);
 
-  const [ filterValue, setFilterValue ] = React.useState<NovesHistoryFilterValue>(getFilterValue(router.query.filter));
-
-  const { data, isError, pagination, isPlaceholderData, queryHash } = useQueryWithPages({
+  const { data, isError, pagination, isInitialLoading, isTransitioning, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:noves_address_history',
     pathParams: { address: currentAddress },
     options: {
@@ -49,10 +51,12 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
   });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
-
-    const newVal = getFilterValue(val);
-    setFilterValue(newVal);
-  }, [ ]);
+    const nextValue = getFilterValue(val);
+    router.push({
+      pathname: router.pathname,
+      query: nextValue ? { ...router.query, filter: nextValue } : omit(router.query, FILTER_FIELDS),
+    }, { shallow: true });
+  }, [ router ]);
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -71,14 +75,14 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
     </ActionBar>
   );
 
-  const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
+  const filteredData = isInitialLoading ? data?.items : data?.items.filter(i => filterValue ? getFromToValue(i, currentAddress) === filterValue : i);
 
   const content = filteredData ? (
     <TableContainerScrollable>
       <AddressAccountHistoryTable
         items={ filteredData }
         currentAddress={ currentAddress }
-        isPlaceholderData={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         resetKey={ `${ queryHash }:${ filterValue ?? '' }` }
       />
     </TableContainerScrollable>
@@ -94,6 +98,7 @@ const AddressAccountHistory = ({ shouldRender = true, isQueryEnabled = true }: P
       emptyStateProps={{
         description: 'No match found for current filter',
       }}
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

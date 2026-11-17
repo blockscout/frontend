@@ -30,15 +30,6 @@ interface IconInfo {
 
 const Item = ({ name, file_size: fileSize, bgColor }: IconInfo & HTMLChakraProps<'div'>) => {
   const { hasCopied, copy } = useClipboard(name, 1000);
-  const [ copied, setCopied ] = React.useState(false);
-
-  React.useEffect(() => {
-    if (hasCopied) {
-      setCopied(true);
-    } else {
-      setCopied(false);
-    }
-  }, [ hasCopied ]);
 
   return (
     <Flex
@@ -52,7 +43,7 @@ const Item = ({ name, file_size: fileSize, bgColor }: IconInfo & HTMLChakraProps
       cursor="pointer"
     >
       <SpriteIcon name={ name.replace('.svg', '') as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
-      <Tooltip content={ copied ? 'Copied' : 'Copy to clipboard' } open={ copied }>
+      <Tooltip content={ hasCopied ? 'Copied' : 'Copy to clipboard' } open={ hasCopied }>
         <Box fontWeight={ 500 } mt={ 2 }>{ name }</Box>
       </Tooltip>
       <Box color="text.secondary">{ formatFileSize(fileSize) }</Box>

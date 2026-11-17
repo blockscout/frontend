@@ -75,12 +75,8 @@ export default function useFlashblocksSocketData() {
             if (isPausedRef.current) {
               setNewItemsNum((prev) => (prev ?? 0) + newItems.length);
             } else {
-              setItems((prev) => {
-                if (prev.length === 0) {
-                  setInitialTs(now);
-                }
-                return [ ...newItems, ...prev ].slice(0, MAX_FLASHBLOCKS_COUNT);
-              });
+              setInitialTs((prev) => prev ?? now);
+              setItems((prev) => [ ...newItems, ...prev ].slice(0, MAX_FLASHBLOCKS_COUNT));
             }
 
             setItemsNum((prev) => prev + newItems.length);

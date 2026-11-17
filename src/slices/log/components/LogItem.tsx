@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, GridItem } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -14,6 +13,7 @@ import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 import type { DataType } from 'src/shared/data/RawInputData';
 import RawInputData from 'src/shared/data/RawInputData';
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
+import { route } from 'src/shared/router/routes';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { Link } from 'src/toolkit/chakra/link';

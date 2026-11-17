@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -12,16 +11,16 @@ import { INTEROP_MESSAGE } from 'src/features/op-interop/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
-import InteropMessagesListItem from './InteropMessagesListItem';
 import InteropMessagesTable from './InteropMessagesTable';
 
 const InteropMessages = () => {
-  const interopMessagesQuery = useQueryWithPages({
+  const interopMessagesQuery = useApiPaginatedQuery({
     resourceName: 'core:optimistic_l2_interop_messages',
     options: {
       placeholderData: generateListStub<'core:optimistic_l2_interop_messages'>(INTEROP_MESSAGE, 50, { next_page_params: {
@@ -44,7 +43,7 @@ const InteropMessages = () => {
     }
 
     return (
-      <Skeleton loading={ countQuery.isPlaceholderData }>
+      <Skeleton loading={ countQuery.isInitialLoading }>
         A total of { countQuery.data?.toLocaleString() } messages found
       </Skeleton>
     );
@@ -53,24 +52,13 @@ const InteropMessages = () => {
   const actionBar = <StickyPaginationWithText text={ text } pagination={ interopMessagesQuery.pagination }/>;
 
   const content = (
-    <>
-      <Box hideFrom="lg">
-        { interopMessagesQuery.data?.items.map((item, index) => (
-          <InteropMessagesListItem
-            key={ item.init_transaction_hash + (interopMessagesQuery.isPlaceholderData ? index : '') }
-            item={ item }
-            isLoading={ interopMessagesQuery.isPlaceholderData }
-          />
-        )) }
-      </Box>
-      <Box hideBelow="lg">
-        <InteropMessagesTable
-          items={ interopMessagesQuery.data?.items }
-          top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ interopMessagesQuery.isPlaceholderData }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <InteropMessagesTable
+        items={ interopMessagesQuery.data?.items }
+        top={ interopMessagesQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ interopMessagesQuery.isInitialLoading }
+      />
+    </TableContainerScrollable>
   );
 
   return (
@@ -84,6 +72,7 @@ const InteropMessages = () => {
         itemsNum={ interopMessagesQuery.data?.items.length }
         emptyText="There are no interop messages."
         actionBar={ actionBar }
+        isTransitioning={ interopMessagesQuery.isTransitioning }
       >
         { content }
       </DataList>

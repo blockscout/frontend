@@ -18,8 +18,8 @@ import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-w
 
 import config from 'src/config';
 import hexToDecimal from 'src/shared/data/transformers/hex-to-decimal';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub, emptyPagination } from 'src/shared/pagination/utils';
 
 import { SECOND } from 'src/toolkit/utils/consts';
@@ -28,7 +28,7 @@ import { WITHDRAWAL } from '../../stubs/withdrawals';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 
-export type BlockWithdrawalsQuery = QueryWithPagesResult<'core:block_withdrawals'> & {
+export type BlockWithdrawalsQuery = ApiPaginatedQueryResult<'core:block_withdrawals'> & {
   isDegradedData: boolean;
 };
 
@@ -41,7 +41,7 @@ interface Params {
 export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab }: Params): BlockWithdrawalsQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
-  const apiQuery = useQueryWithPages({
+  const apiQuery = useApiPaginatedQuery({
     resourceName: 'core:block_withdrawals',
     pathParams: { height_or_hash: heightOrHash },
     options: {
@@ -131,17 +131,19 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && isPublicClientAvailable);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'core:block_withdrawals'> = {
+  const rpcPaginatedQuery: ApiPaginatedQueryResult<'core:block_withdrawals'> = {
     ...rpcQuery as UseQueryResult<operations['BlockController.withdrawals']['json'], ResourceError>,
     pagination: emptyPagination,
     onFilterChange: () => {},
     onSortingChange: () => {},
-    chainValue: undefined,
-    onChainValueChange: () => {},
+    filters: apiQuery.filters,
+    sorting: apiQuery.sorting,
     queryHash: hashKey(rpcQueryKey),
+    isInitialLoading: rpcQuery.isPlaceholderData,
+    isTransitioning: false,
   };
 
-  const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
+  const query = isRpcQuery ? rpcPaginatedQuery : apiQuery;
 
   return {
     ...query,

@@ -1,65 +1,47 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import PoolsList from 'src/features/dex-pools/pages/index/PoolsList';
 import PoolsTable from 'src/features/dex-pools/pages/index/PoolsTable';
 import { POOL } from 'src/features/dex-pools/stubs';
 
 import config from 'src/config';
-import useDebounce from 'src/shared/hooks/useDebounce';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const Pools = () => {
-  const router = useRouter();
-  const q = getQueryParamString(router.query.query);
-
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const poolsQuery = useQueryWithPages({
+  const poolsQuery = useApiPaginatedQuery({
     resourceName: 'contractInfo:pools',
     pathParams: { instanceId: config.apis.contractInfo?.instanceId },
-    filters: { query: debouncedSearchTerm },
     options: {
       placeholderData: { items: Array(50).fill(POOL), next_page_params: { page_token: 'a', page_size: 50 } },
     },
   });
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    poolsQuery.onFilterChange({ query: value });
-    setSearchTerm(value);
-  }, [ poolsQuery ]);
+  const searchTerm = getQueryParamString(poolsQuery.filters.query);
+  const { onFilterChange } = poolsQuery;
+  const handleSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ query: value }));
 
   const content = poolsQuery.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <PoolsList
-          items={ poolsQuery.data.items }
-          isLoading={ poolsQuery.isPlaceholderData }
-          resetKey={ poolsQuery.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <PoolsTable
-          items={ poolsQuery.data.items }
-          top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ poolsQuery.isPlaceholderData }
-          page={ poolsQuery.pagination.page }
-          resetKey={ poolsQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <PoolsTable
+        items={ poolsQuery.data.items }
+        top={ poolsQuery.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ poolsQuery.isInitialLoading }
+        page={ poolsQuery.pagination.page }
+        resetKey={ poolsQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const filter = (
@@ -100,10 +82,11 @@ const Pools = () => {
         itemsNum={ poolsQuery.data?.items.length }
         emptyText="There are no pools."
         actionBar={ actionBar }
-        hasActiveFilters={ Boolean(debouncedSearchTerm) }
+        hasActiveFilters={ Boolean(searchTerm) }
         emptyStateProps={{
           term: 'pool',
         }}
+        isTransitioning={ poolsQuery.isTransitioning }
       >
         { content }
       </DataList>

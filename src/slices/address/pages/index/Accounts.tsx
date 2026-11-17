@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -12,14 +11,15 @@ import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 import DataList from 'src/shared/lists/DataList';
 import getItemIndex from 'src/shared/lists/get-item-index';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import AddressesList from './AddressesList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import AddressesTable from './AddressesTable';
 
 const Accounts = () => {
-  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:addresses',
     options: {
       placeholderData: generateListStub<'core:addresses'>(
@@ -50,27 +50,16 @@ const Accounts = () => {
   }, [ data?.total_supply ]);
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <AddressesTable
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          items={ data.items }
-          totalSupply={ totalSupply }
-          pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        <AddressesList
-          items={ data.items }
-          totalSupply={ totalSupply }
-          pageStartIndex={ pageStartIndex }
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <AddressesTable
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        items={ data.items }
+        totalSupply={ totalSupply }
+        pageStartIndex={ pageStartIndex }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (
@@ -81,6 +70,7 @@ const Accounts = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no accounts."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

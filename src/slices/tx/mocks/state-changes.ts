@@ -1,6 +1,7 @@
 import type { paths, schemas } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import * as tokenInfoMock from 'src/slices/token/mocks/info';
 import { toTokenModel } from 'src/slices/token/utils/model';
 
 export const mintToken: schemas['StateChange'] = {
@@ -27,6 +28,7 @@ export const mintToken: schemas['StateChange'] = {
     reputation: 'ok',
   }),
   type: 'token' as const,
+  ui_multiplier: null,
 };
 
 export const receiveMintedToken: schemas['StateChange'] = {
@@ -53,6 +55,7 @@ export const receiveMintedToken: schemas['StateChange'] = {
     reputation: 'ok',
   }),
   type: 'token' as const,
+  ui_multiplier: null,
 };
 
 export const transfer1155Token: schemas['StateChange'] = {
@@ -79,6 +82,7 @@ export const transfer1155Token: schemas['StateChange'] = {
   }),
   token_id: '1',
   type: 'token' as const,
+  ui_multiplier: null,
 };
 
 export const receiveCoin: schemas['StateChange'] = {
@@ -92,6 +96,7 @@ export const receiveCoin: schemas['StateChange'] = {
   is_miner: true,
   token: null,
   type: 'coin' as const,
+  ui_multiplier: null,
 };
 
 export const sendCoin: schemas['StateChange'] = {
@@ -105,6 +110,7 @@ export const sendCoin: schemas['StateChange'] = {
   is_miner: false,
   token: null,
   type: 'coin' as const,
+  ui_multiplier: null,
 };
 
 export const sendERC20Token: schemas['StateChange'] = {
@@ -130,6 +136,21 @@ export const sendERC20Token: schemas['StateChange'] = {
     reputation: 'ok',
   }),
   type: 'token' as const,
+  ui_multiplier: null,
+};
+
+export const sendERC8056Token: schemas['StateChange'] = {
+  address: {
+    ...addressParamMock.withoutName,
+    hash: '0xA955675Dac496eB2c384D2d288e6C07fDb2234AF',
+  },
+  balance_after: '999900000000000000000000',
+  balance_before: '1000000000000000000000000',
+  change: '-100000000000000000000',
+  is_miner: false,
+  token: tokenInfoMock.tokenInfoERC8056,
+  type: 'token' as const,
+  ui_multiplier: '1690000000000000000',
 };
 
 export const baseResponse: paths['/api/v2/transactions/{transaction_hash_param}/state-changes']['get'] = {
@@ -140,6 +161,7 @@ export const baseResponse: paths['/api/v2/transactions/{transaction_hash_param}/
     receiveCoin,
     transfer1155Token,
     sendERC20Token,
+    sendERC8056Token,
   ],
   next_page_params: {
     items_count: 50,

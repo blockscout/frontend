@@ -12,6 +12,7 @@ export const recipe = defineRecipe({
       opacity: 'control.disabled',
     },
     minWidth: 'auto',
+    '--close-button-icon-size': 'sizes.5',
   },
   variants: {
     visual: {

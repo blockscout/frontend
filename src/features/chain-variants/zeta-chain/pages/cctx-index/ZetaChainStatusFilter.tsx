@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ZetaChainCCTXFilterParams, StatusReducedFilters } from 'src/features/chain-variants/zeta-chain/types/client';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 
 import { Radio, RadioGroup } from 'src/toolkit/chakra/radio';
 
@@ -70,15 +70,11 @@ const ZetaChainStatusFilter = ({ value = [], handleFilterChange, onClose }: Prop
   }, [ handleStatusChange ]);
 
   return (
-    <TableColumnFilter
-      title="Status"
-      isFilled={ currentValue !== 'all' }
+    <ColumnFilterContent
       isTouched={ isTouched }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <Flex direction="column" gap={ 2 }>
+      <ColumnFilterContentSection title="Status" isFilled={ currentValue !== 'all' } onReset={ onReset }>
         <RadioGroup value={ currentValue } onValueChange={ handleRadioChange }>
           { STATUS_OPTIONS.map(option => (
             <Radio key={ option.value } value={ option.value }>
@@ -86,8 +82,8 @@ const ZetaChainStatusFilter = ({ value = [], handleFilterChange, onClose }: Prop
             </Radio>
           )) }
         </RadioGroup>
-      </Flex>
-    </TableColumnFilter>
+      </ColumnFilterContentSection>
+    </ColumnFilterContent>
   );
 };
 

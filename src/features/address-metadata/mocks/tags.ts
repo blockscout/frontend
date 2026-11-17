@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
-import type { AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+import type { AddressMetadataInfo, AddressMetadataTagApi } from 'src/features/address-metadata/types/api';
+
+import { TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG } from 'src/features/token-action-button/utils/is-token-action-button-hidden';
 
 export const nameTag: AddressMetadataTagApi = {
   slug: 'quack-quack',
@@ -128,3 +130,37 @@ export const noteTag2: AddressMetadataTagApi = {
     data: 'The token MILF was launched on May 13, 2021. The maximum total supply of the token is 100 billion.',
   },
 };
+
+export const hiddenProtocolTagWithMeta: AddressMetadataTagApi = {
+  slug: 'buy-on-duck-portal',
+  name: 'Buy on Duck portal',
+  tagType: 'protocol',
+  ordinal: 0,
+  meta: {
+    appActionButtonText: 'Buy on Duck portal',
+    appLogoURL: 'https://localhost:3100/icon.svg',
+    appMarketplaceURL: 'https://portal.duck.io/swap?chainId={chainId}&token={address}',
+    bgColor: '#3A3B54',
+    textColor: '#FFFFFF',
+    hidden: 'true',
+  },
+};
+
+export const tokenActionButtonHiddenServiceTag: AddressMetadataTagApi = {
+  slug: TOKEN_ACTION_BUTTON_HIDDEN_TAG_SLUG,
+  name: 'Token action button hidden',
+  tagType: 'service',
+  ordinal: 0,
+  meta: null,
+};
+
+export function generateAddressMetadataInfo(addressHash: string, tag: AddressMetadataTagApi): AddressMetadataInfo {
+  return {
+    addresses: {
+      [ addressHash.toLowerCase() ]: {
+        tags: [ { ...tag, meta: JSON.stringify(tag.meta) } ],
+        reputation: null,
+      },
+    },
+  };
+}

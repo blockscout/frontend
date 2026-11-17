@@ -18,6 +18,7 @@ import TxType from 'src/slices/tx/components/TxType';
 
 import TxWatchListTags from 'src/features/account/components/TxWatchListTags';
 import MetadataTag from 'src/features/address-metadata/components/tag/MetadataTag';
+import { getVisibleProtocolTags } from 'src/features/address-metadata/utils/get-visible-protocol-tags';
 import TxTranslationType from 'src/features/tx-interpretation/noves/components/TxTranslationType';
 
 import config from 'src/config';
@@ -55,7 +56,7 @@ const TxsTableItem = ({
 }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
-  const protocolTag = tx.to?.hash !== currentAddress && tx.to?.metadata?.tags?.find(tag => tag.tagType === 'protocol');
+  const protocolTag = tx.to?.hash !== currentAddress && getVisibleProtocolTags(tx.to?.metadata?.tags)[0];
 
   return (
     <TableRow key={ tx.hash } animation={ animation }>
@@ -113,7 +114,7 @@ const TxsTableItem = ({
       { showBlockInfo && (
         <TableCell>
           <Flex alignItems="center" gap={ 2 }>
-            { tx.block_number && (
+            { tx.block_number !== null && (
               <BlockEntity
                 isLoading={ isLoading }
                 number={ tx.block_number }

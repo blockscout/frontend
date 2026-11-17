@@ -1,25 +1,34 @@
-import * as yup from 'yup';
-import type { DeFiDropdownItem } from 'src/features/defi-dropdown/types/client';
-import type { IconName } from 'public/icons/name';
-import { urlTest } from '../../utils';
-import { replaceQuotes } from 'src/config/utils/envs';
+// SPDX-License-Identifier: LicenseRef-Blockscout
 
-const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
-  .object({
-    text: yup.string().required(),
-    icon: yup.string<IconName>(),
-    dappId: yup.string(),
-    isEssentialDapp: yup.boolean(),
-    url: yup.string().test(urlTest),
-  })
-  .test('oneOfRequired', 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: Either dappId or url is required', function(value) {
-    return Boolean(value.dappId) || Boolean(value.url);
-  }) as yup.ObjectSchema<DeFiDropdownItem>;
+import * as v from 'valibot';
 
-export const defiDropdownSchema = yup.object({
-    NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
-    .array()
-    .transform(replaceQuotes)
-    .json()
-    .of(deFiDropdownItemSchema),
+import { envJson, requires } from '../../utils';
+
+const MIN_ITEMS_FOR_DROPDOWN = 2;
+
+const deFiDropdownItemSchema = v.pipe(
+  v.object({
+    text: v.pipe(v.string(), v.nonEmpty()),
+    icon: v.optional(v.string()),
+    dappId: v.optional(v.string()),
+    isEssentialDapp: v.optional(v.boolean()),
+    url: v.optional(v.pipe(v.string(), v.url())),
+  }),
+  v.check((item) => Boolean(item.dappId) || Boolean(item.url), 'Either dappId or url is required'),
+);
+
+const deFiDropdownButtonTextSchema = v.object({
+  desktop: v.pipe(v.string(), v.nonEmpty()),
+  mobile: v.optional(v.string()),
 });
+
+export const defiDropdownSchema = v.pipe(
+  v.object({
+    NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: v.optional(envJson(v.array(deFiDropdownItemSchema))),
+    NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: v.optional(envJson(deFiDropdownButtonTextSchema)),
+  }),
+  requires('NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT', 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS', {
+    when: (items) => Array.isArray(items) && items.length >= MIN_ITEMS_FOR_DROPDOWN,
+    message: `NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT can only be used when NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS contains at least ${ MIN_ITEMS_FOR_DROPDOWN } items`,
+  }),
+);

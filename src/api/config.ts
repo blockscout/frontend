@@ -2,30 +2,14 @@
 
 import { pickBy } from 'es-toolkit';
 
-import type { ApiName } from 'src/api/types';
+import type { Apis } from 'src/api/types';
+// eslint-disable-next-line boundaries/element-types -- the list of stats resources with a refetch interval is owned by the chain-stats feature
 import { STATS_API_RESOURCES_REFETCH_INTERVAL } from 'src/features/chain-stats/types/config';
 import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
 
 import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
-
-import type { ResourceName } from './resources';
-
-export interface ApiPropsBase {
-  endpoint: string;
-  basePath?: string;
-  socketEndpoint?: string;
-  instanceId?: string;
-  refetchInterval?: Partial<Record<ResourceName, number>>;
-}
-
-export interface ApiPropsFull extends ApiPropsBase {
-  host: string;
-  protocol: string;
-  port?: string;
-  socketEndpoint: string;
-}
 
 const coreApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
@@ -242,10 +226,6 @@ const zetachainApi = (() => {
     return;
   }
 })();
-
-export type Apis = {
-  core: ApiPropsFull | undefined;
-} & Partial<Record<Exclude<ApiName, 'core'>, ApiPropsBase>>;
 
 const apis: Apis = Object.freeze({
   core: coreApi,

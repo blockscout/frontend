@@ -1,0 +1,69 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=22842-177328",
+  "nodeId": "22842:177328",
+  "component": "src/features/gas-tracker/components/GasTrackerPrices.tsx",
+  "stale": false,
+  "cells": {
+    "22842:177342": {
+      "component": "GasTrackerPriceSnippet",
+      "props": {
+        "type": "fast"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "22842:177356": {
+      "component": "GasPrice",
+      "props": {
+        "fontWeight": 600,
+        "fontFamily": "heading"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I22842:177360;1024:23743": {
+      "component": "GasPrice",
+      "props": {
+        "unitMode": "secondary"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I22842:177361;1024:23743": {
+      "component": "GasTrackerPriceSnippet",
+      "props": {
+        "type": "fast"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "22842:177368": {
+      "component": "GasTrackerPriceSnippet",
+      "props": {
+        "type": "average"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "22842:177388": {
+      "component": "GasTrackerPriceSnippet",
+      "props": {
+        "type": "slow"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

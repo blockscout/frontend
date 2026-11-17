@@ -151,6 +151,40 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
   },
 };
 
+function getEvmVersionsByMethod(method: SmartContractVerificationMethod, config: SmartContractVerificationConfig): Array<string> | undefined {
+  if (method === 'flattened-code' || method === 'multi-part') {
+    return config.solidity_evm_versions;
+  }
+
+  if (method === 'vyper-multi-part') {
+    return config.vyper_evm_versions;
+  }
+}
+
+function setDefaultEvmVersion(defaultValues: FormFields, method: SmartContractVerificationMethod, config: SmartContractVerificationConfig): void {
+  const evmVersions = getEvmVersionsByMethod(method, config);
+
+  if ('evm_version' in defaultValues && evmVersions) {
+    defaultValues.evm_version = evmVersions.find((value) => value === 'default') ? [ 'default' ] : [];
+  }
+}
+
+function setRustVerifierDefaults(defaultValues: FormFields, method: SmartContractVerificationMethod): void {
+  if (method !== 'flattened-code' && method !== 'standard-input') {
+    return;
+  }
+
+  // Stryker disable next-line ConditionalExpression: both methods that reach here define the field, the guard only narrows the FormFields union
+  if ('name' in defaultValues) {
+    defaultValues.name = undefined;
+  }
+
+  // Stryker disable next-line ConditionalExpression: both methods that reach here define the field, the guard only narrows the FormFields union
+  if ('autodetect_constructor_args' in defaultValues) {
+    defaultValues.autodetect_constructor_args = false;
+  }
+}
+
 export function getDefaultValues(
   methodParam: SmartContractVerificationMethod | undefined,
   config: SmartContractVerificationConfig,
@@ -166,21 +200,10 @@ export function getDefaultValues(
 
   const defaultValues: FormFields = { ...DEFAULT_VALUES[method], address: hash || '', license_type: licenseType };
 
-  if ('evm_version' in defaultValues) {
-    if (method === 'flattened-code' || method === 'multi-part') {
-      defaultValues.evm_version = config.solidity_evm_versions.find((value) => value === 'default') ? [ 'default' ] : [];
-    }
-
-    if (method === 'vyper-multi-part') {
-      defaultValues.evm_version = config.vyper_evm_versions.find((value) => value === 'default') ? [ 'default' ] : [];
-    }
-  }
+  setDefaultEvmVersion(defaultValues, method, config);
 
   if (config.is_rust_verifier_microservice_enabled) {
-    if (method === 'flattened-code' || method === 'standard-input') {
-      'name' in defaultValues && (defaultValues.name = undefined);
-      'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
-    }
+    setRustVerifierDefaults(defaultValues, method);
   }
 
   if (singleMethod) {

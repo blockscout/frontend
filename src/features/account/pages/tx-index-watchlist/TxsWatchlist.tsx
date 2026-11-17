@@ -6,10 +6,10 @@ import TxsWithFrontendSorting from 'src/slices/tx/pages/index/list/TxsWithFronte
 
 import useRedirectForInvalidAuthToken from 'src/features/account/hooks/useRedirectForInvalidAuthToken';
 
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 type Props = {
-  query: QueryWithPagesResult<'core:txs_watchlist'>;
+  query: ApiPaginatedQueryResult<'core:txs_watchlist'>;
   top?: number;
 };
 

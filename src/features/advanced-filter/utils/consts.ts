@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { AdvancedFilterParams } from '../types/api';
-import type { TxTableColumn } from '../types/client';
+import type { ColumnsIds, TxTableColumn } from '../types/client';
+import type { ColumnStates } from 'src/shared/lists/columns/types';
+import type { ChainConfig } from 'src/slices/token/types/client';
 
 import { toTokenModel } from 'src/slices/token/utils/model';
+import { isTokenMultiplierEnabled } from 'src/slices/token/utils/ui-multiplier';
 
 import config from 'src/config';
 
@@ -44,6 +47,13 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
     width: '160px',
   },
   {
+    id: 'multiplier',
+    name: 'Multiplier',
+    width: '90px',
+    isNumeric: true,
+    noFilter: true,
+  },
+  {
     id: 'amount',
     name: 'Amount',
     isNumeric: true,
@@ -61,6 +71,22 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
     width: '120px',
   },
 ] as const;
+
+export function getColumnStates(chainConfig?: ChainConfig): ColumnStates<ColumnsIds> {
+  return {
+    tx_hash: 'on',
+    type: 'on',
+    method: 'on',
+    age: 'on',
+    from: 'on',
+    or_and: 'on',
+    to: 'on',
+    multiplier: isTokenMultiplierEnabled(chainConfig) ? 'on' : 'unavailable',
+    amount: 'on',
+    asset: 'on',
+    fee: 'on',
+  };
+}
 
 export const NATIVE_TOKEN = toTokenModel({
   name: config.chain.currency.name || '',

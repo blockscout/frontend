@@ -1,11 +1,13 @@
 {
-  "enabledPlugins": {
-    "figma@claude-plugins-official": false
-  },
   "hooks": {
     "SessionStart": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "git -C \"$CLAUDE_PROJECT_DIR\" fetch --quiet origin 2>/dev/null || true",
+            "timeout": 30
+          },
           {
             "type": "command",
             "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/worktree-deps.sh session-start",
@@ -32,5 +34,6 @@
         ]
       }
     ]
-  }
+  },
+  "enabledPlugins": {}
 }

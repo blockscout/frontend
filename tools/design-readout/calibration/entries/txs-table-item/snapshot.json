@@ -1,0 +1,432 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "I21998:143467;20539:206951",
+  "capturedAt": "2026-10-08T09:19:56.695Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "I21998:143467;20539:206952"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I21998:143467;20539:206953",
+      "values": {
+        "kind": "icon",
+        "icon": "additionla_info",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 543,
+        "y": 621,
+        "width": 30,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206955",
+      "values": {
+        "kind": "text",
+        "text": "0x444689...39c8",
+        "font": {
+          "family": "Inter",
+          "weight": 700,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 585,
+        "y": 621,
+        "width": 124,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;26785:88063;13460:162892",
+      "values": {
+        "kind": "text",
+        "text": "10s ago",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 585,
+        "y": 651,
+        "width": 52,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206966",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#FAF5FF",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 721,
+        "y": 627,
+        "width": 87,
+        "height": 24
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206966;1015:22864",
+      "values": {
+        "kind": "text",
+        "text": "Transaction",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#805AD5",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 725,
+        "y": 629,
+        "width": 79,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:143467;26785:88079",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#F0FFF4",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 721,
+        "y": 657,
+        "width": 79,
+        "height": 24
+      }
+    },
+    {
+      "id": "I21998:143467;26785:88079;1003:19143",
+      "values": {
+        "kind": "icon",
+        "icon": "icon/check-circle",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#38A169",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 725,
+        "y": 664,
+        "width": 10,
+        "height": 10
+      }
+    },
+    {
+      "id": "I21998:143467;26785:88079;1003:19144",
+      "values": {
+        "kind": "text",
+        "text": "Success",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#38A169",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 739,
+        "y": 659,
+        "width": 57,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206977",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#101112",
+            "alpha": 0.019999999552965164
+          }
+        ]
+      },
+      "bbox": {
+        "x": 847,
+        "y": 624,
+        "width": 81,
+        "height": 24
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206977;1003:19153",
+      "values": {
+        "kind": "text",
+        "text": "Withdraw",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#4A5568",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 855,
+        "y": 626,
+        "width": 65,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206981",
+      "values": {
+        "kind": "text",
+        "text": "1248136",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 962,
+        "y": 621,
+        "width": 72,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206992",
+      "values": {
+        "kind": "icon",
+        "icon": "Avatar",
+        "colors": []
+      },
+      "bbox": {
+        "x": 1046,
+        "y": 624,
+        "width": 24,
+        "height": 24
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206993",
+      "values": {
+        "kind": "text",
+        "text": "0x35...4568",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1078,
+        "y": 626,
+        "width": 84,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206994",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#FFFAF0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1170,
+        "y": 624,
+        "width": 47,
+        "height": 24
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206996",
+      "values": {
+        "kind": "text",
+        "text": "OUT",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#D69E2E",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1178,
+        "y": 626,
+        "width": 31,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:143467;20539:206999",
+      "values": {
+        "kind": "text",
+        "text": "*🍐️🍐️🍐️.eth",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1257,
+        "y": 621,
+        "width": 81,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;20539:207001",
+      "values": {
+        "kind": "text",
+        "text": "0.25303",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2D3748",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1327,
+        "y": 621,
+        "width": 186,
+        "height": 30
+      }
+    },
+    {
+      "id": "I21998:143467;20539:207002",
+      "values": {
+        "kind": "text",
+        "text": "0.27646303",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2D3748",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1525,
+        "y": 621,
+        "width": 186,
+        "height": 30
+      }
+    }
+  ]
+}

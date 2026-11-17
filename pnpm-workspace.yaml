@@ -4,16 +4,25 @@ injectWorkspacePackages: true
 
 packages:
   - 'src/toolkit/package'
+  - 'deploy/tools/assets-downloader'
   - 'deploy/tools/envs-validator'
   - 'deploy/tools/feature-reporter'
   - 'deploy/tools/favicon-generator'
   - 'deploy/tools/sitemap-generator'
+  - 'deploy/tools/og-image-generator'
   - 'deploy/tools/multichain-config-generator'
   - 'deploy/tools/essential-dapps-chains-config-generator'
   - 'deploy/tools/llms-txt-generator'
-  - 'deploy/tools/affected-tests'
 
 verifyDepsBeforeRun: warn
+
+# The widget-light EVM handler is patched for these wagmi v2 / viem versions.
+# Resolve wallet clients per request; explicit chainId supports syncConnectedChain: false.
+peerDependencyRules:
+  allowedVersions:
+    '@lifi/widget-light@4.3.2>wagmi': '2.19.5'
+    '@lifi/widget-light@4.3.2>@wagmi/core': '2.22.1'
+    '@lifi/widget-light@4.3.2>viem': '2.41.2'
 
 overrides:
   '@wagmi/connectors': "6.2.0"
@@ -23,8 +32,9 @@ overrides:
   node-forge: "1.3.2"
   brace-expansion: "1.1.12"
   js-yaml: "4.1.1"
-  "@noble/hashes": "1.8.0"
+  "@noble/hashes@1": "1.8.0"
   "vite-plugin-dts>brace-expansion": "2.0.2"
+  "minimatch@10>brace-expansion": "5.0.9"
   protobufjs: "7.5.5"
 
 # pnpm 11+: allowlisted dependency install scripts (required for native addons).
@@ -33,9 +43,8 @@ allowBuilds:
   '@ipshipyard/node-datachannel': true
   '@reown/appkit': false
   '@scarf/scarf': false
-  '@specify-sh/sdk': false
+  '@specify-sh/publisher-sdk': false
   '@tree-sitter-grammars/tree-sitter-yaml': false
-  bigint-buffer: false
   bufferutil: false
   core-js: false
   core-js-pure: false
@@ -64,6 +73,6 @@ minimumReleaseAgeExclude:
   - '@blockscout/tac-operation-lifecycle-types'
   - '@blockscout/visualizer-types'
   - '@blockscout/zetachain-cctx-types'
-  # remove after 27.07.2026
-  - '@chakra-ui/cli@3.36.1'
-  - '@chakra-ui/react@3.36.1'
+
+patchedDependencies:
+  '@lifi/widget-light@4.3.2': patches/@lifi__widget-light@4.3.2.patch

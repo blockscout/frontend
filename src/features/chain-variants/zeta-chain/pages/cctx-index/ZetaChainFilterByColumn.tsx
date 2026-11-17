@@ -9,7 +9,7 @@ import { ZETA_CHAIN_CCTX_COIN_TYPE_FILTER, type ZetaChainCCTXFilterParams } from
 
 import { toTokenModel } from 'src/slices/token/utils/model';
 
-import TableColumnFilterWrapper from 'src/shared/filters/TableColumnFilterWrapper';
+import ColumnFilter from 'src/shared/filters/ColumnFilter';
 
 import ZetaChainAgeFilter from './ZetaChainAgeFilter';
 import ZetaChainAssetFilter, { ZETA_NATIVE_TOKEN } from './ZetaChainAssetFilter';
@@ -27,6 +27,28 @@ type Props = {
   isLoading?: boolean;
 };
 
+function getAssetFilterValue(filters: ZetaChainCCTXFilterParams): schemas['Token'] | null {
+  if (filters.token_symbol?.[0]) {
+    return toTokenModel({
+      address_hash: '',
+      symbol: filters.token_symbol[0],
+      name: filters.token_symbol[0],
+      decimals: '18',
+      total_supply: '0',
+      icon_url: null,
+      type: 'ERC-20',
+      holders_count: null,
+      exchange_rate: null,
+      circulating_market_cap: null,
+      reputation: null,
+    });
+  }
+  if (filters.coin_type && castArray(filters.coin_type).includes(ZETA_CHAIN_CCTX_COIN_TYPE_FILTER)) {
+    return ZETA_NATIVE_TOKEN;
+  }
+  return null;
+}
+
 const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChange, isLoading }: Props) => {
   const commonProps = { columnName, handleFilterChange, isLoading };
 
@@ -34,87 +56,68 @@ const ZetaChainFilterByColumn = ({ column, filters, columnName, handleFilterChan
     case 'age': {
       const value = { age: (filters.age || '') as AdvancedFilterAge | '', from: filters.start_timestamp || '', to: filters.end_timestamp || '' };
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Age"
           isLoading={ isLoading }
           selected={ Boolean(value.age || value.from || value.to) }
-          w="382px"
+          contentProps={{ w: '382px' }}
         >
           <ZetaChainAgeFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'status': {
       const value = filters.status_reduced ? castArray(filters.status_reduced) : [];
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Status"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) }
-          w="200px"
+          contentProps={{ w: '200px' }}
         >
           <ZetaChainStatusFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'sender': {
       const value = filters.sender_address ? castArray(filters.sender_address) : [];
       const chainValue = filters.source_chain_id ? castArray(filters.source_chain_id) : [];
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Sender"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) || Boolean(chainValue && chainValue.length) }
-          w="480px"
+          contentProps={{ w: '480px' }}
         >
           <ZetaChainSenderFilter { ...commonProps } value={ value } chainValue={ chainValue }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'receiver': {
       const value = filters.receiver_address ? castArray(filters.receiver_address) : [];
       const chainValue = filters.target_chain_id ? castArray(filters.target_chain_id) : [];
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Receiver"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) || Boolean(chainValue && chainValue.length) }
-          w="480px"
+          contentProps={{ w: '480px' }}
         >
           <ZetaChainReceiverFilter { ...commonProps } value={ value } chainValue={ chainValue }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'asset': {
-      let value: schemas['Token'] | null = null;
-      if (filters.coin_type && castArray(filters.coin_type).includes(ZETA_CHAIN_CCTX_COIN_TYPE_FILTER)) {
-        value = ZETA_NATIVE_TOKEN;
-      }
-      if (filters.token_symbol?.[0]) {
-        value = toTokenModel({
-          address_hash: '',
-          symbol: filters.token_symbol[0],
-          name: filters.token_symbol[0],
-          decimals: '18',
-          total_supply: '0',
-          icon_url: null,
-          type: 'ERC-20',
-          holders_count: null,
-          exchange_rate: null,
-          circulating_market_cap: null,
-          reputation: null,
-        });
-      }
-
+      const value = getAssetFilterValue(filters);
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Asset"
           isLoading={ isLoading }
           selected={ Boolean(value) }
-          w="350px"
+          contentProps={{ w: '350px' }}
         >
           <ZetaChainAssetFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     default:

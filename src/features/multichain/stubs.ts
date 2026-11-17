@@ -45,6 +45,9 @@ export const TOKEN: AddressTokenItem = {
     type: 'ERC-20' as const,
     exchange_rate: '123.456',
     reputation: null,
+    ui_multiplier: null,
+    new_ui_multiplier: null,
+    ui_multiplier_effective_at: null,
     chain_infos: {
       '11155111': {
         holders_count: '141268',

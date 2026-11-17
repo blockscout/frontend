@@ -6,7 +6,6 @@ import React from 'react';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 import useInternalTxsQuery from 'src/slices/internal-tx/hooks/useInternalTxsQuery';
 
@@ -14,14 +13,15 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const InternalTxs = () => {
 
   const isMobile = useIsMobile();
 
-  const { query, searchTerm, debouncedSearchTerm, onSearchTermChange } = useInternalTxsQuery();
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery();
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
   const filterInput = (
     <FilterInput
@@ -50,14 +50,9 @@ const InternalTxs = () => {
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <InternalTxsTable data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (
@@ -70,7 +65,8 @@ const InternalTxs = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no internal transactions."
-        hasActiveFilters={ Boolean(debouncedSearchTerm) }
+        hasActiveFilters={ Boolean(searchTerm) }
+        isTransitioning={ isTransitioning }
         emptyStateProps={{
           term: 'internal transaction',
         }}

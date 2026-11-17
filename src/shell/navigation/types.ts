@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Route } from 'nextjs-routes';
 import type React from 'react';
 
+import type { Route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
 
 type NavIconOrComponent = {

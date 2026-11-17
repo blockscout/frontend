@@ -6,7 +6,7 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import { route } from 'src/shared/router/routes';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
@@ -54,7 +54,7 @@ const MarketplaceAppCard = ({
   const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
   }, [ id ]);
 
   const handleFavoriteClick = useCallback(() => {

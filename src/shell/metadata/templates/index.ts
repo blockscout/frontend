@@ -2,34 +2,30 @@
 
 /* eslint-disable max-len */
 
-import type { Route } from 'nextjs-routes';
+import type { OgTemplateValue, TemplateValue } from '../types';
 
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
+import type { Route } from 'src/shared/router/routes';
 
 const dappEntityName = (getFeaturePayload(config.features.marketplace)?.titles.entity_name ?? '').toLowerCase();
 
 interface RouteTemplateRecord {
   metadata: {
-    title: {
-      'default': string;
-      enhanced?: string;
-    };
-    description: {
-      'default': string;
-      enhanced?: string;
-    };
+    title: TemplateValue;
+    description: TemplateValue;
   };
   og?: {
-    description: string;
-    image: string;
+    title?: OgTemplateValue;
+    description?: OgTemplateValue;
+    image?: string;
   };
 }
 
 const OG_ROOT_PAGE = {
-  description: config.metadata.og.description,
+  description: { 'default': config.metadata.og.description },
   image: config.metadata.og.imageUrl,
 };
 
@@ -86,6 +82,14 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
       description: {
         'default': '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+      },
+    },
+    og: {
+      title: {
+        'default': '%chain_name% transaction %hash_short%',
+      },
+      description: {
+        enhanced: '%tx_status% · %tx_action% · %tx_timestamp%',
       },
     },
   },
@@ -657,7 +661,7 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
-  '/cross-chain-tx/[id]': {
+  '/bridge/[bridgeId]/cross-chain-tx/[id]': {
     metadata: {
       title: {
         'default': '%chain_name% cross-chain transaction %id% details',

@@ -5,6 +5,7 @@ export * from '../../chakra/accordion';
 export * from '../../chakra/alert';
 export * from '../../chakra/avatar';
 export * from '../../chakra/badge';
+export * from '../../chakra/box';
 export * from '../../chakra/button';
 export * from '../../chakra/checkbox';
 export * from '../../chakra/close-button';
@@ -111,8 +112,8 @@ export * from '../../components/forms/inputs';
 export * from '../../components/forms/utils';
 export * from '../../components/forms/validators';
 export * from '../../components/loaders/ContentLoader';
-export * from '../../components/truncation/TruncatedTextTooltip';
-export * from '../../components/truncation/TruncatedText';
+export { Truncate } from '../../components/truncation/Truncate';
+export type { TruncateProps, TruncateTooltipConfig } from '../../components/truncation/Truncate';
 
 // Export utils
 export { default as getComponentDisplayName } from '../../utils/getComponentDisplayName';
@@ -123,6 +124,13 @@ export * as guards from '../../utils/guards';
 export * as file from '../../utils/file';
 export * from '../../utils/url';
 export * from '../../utils/isBrowser';
+export * from '../../utils/texts';
+
+// Export router
+export * from '../../router/context';
+export * from '../../router/defaults';
+export * from '../../router/format-url';
+export type * from '../../router/types';
 
 // Export hooks
 export { useClipboard } from '../../hooks/useClipboard';

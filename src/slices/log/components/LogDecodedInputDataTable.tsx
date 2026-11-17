@@ -10,7 +10,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props extends JsxStyleProps {
   data: schemas['DecodedLogInput']['parameters'] | schemas['DecodedInput']['parameters'];
@@ -53,7 +53,7 @@ const Row = ({
       const text = JSON.stringify(value, undefined, 4);
       return (
         <Flex alignItems="flex-start" whiteSpace="normal" wordBreak="break-all">
-          <TruncatedText text={ text } loading={ isLoading }/>
+          <Truncate value={ text } type="end" loading={ isLoading }/>
           <CopyToClipboard text={ text } isLoading={ isLoading }/>
         </Flex>
       );
@@ -61,7 +61,7 @@ const Row = ({
 
     return (
       <Flex alignItems="flex-start" whiteSpace="normal" wordBreak="break-all">
-        <TruncatedText text={ value } loading={ isLoading }/>
+        <Truncate value={ value } type="end" loading={ isLoading }/>
         <CopyToClipboard text={ value } isLoading={ isLoading }/>
       </Flex>
     );
@@ -69,8 +69,8 @@ const Row = ({
 
   return (
     <>
-      <TruncatedText text={ name } loading={ isLoading }/>
-      <TruncatedText text={ type } loading={ isLoading }/>
+      <Truncate value={ name } type="end" loading={ isLoading }/>
+      <Truncate value={ type } type="end" loading={ isLoading }/>
       { indexed !== undefined && (
         <Skeleton loading={ isLoading } display="inline-block">{ indexed ? 'true' : 'false' }</Skeleton>
       ) }

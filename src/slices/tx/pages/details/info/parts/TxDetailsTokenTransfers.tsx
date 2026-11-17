@@ -11,7 +11,6 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import { route } from 'src/shared/router/routes';
-import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 
@@ -64,13 +63,9 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
                 { items.map((item, index) => <TokenTransferSnippet key={ index } data={ item }/>) }
               </Flex>
               { isOverflow && (
-                <>
-                  { /* FIXME use non-navigation icon */ }
-                  <SpriteIcon name="navigation/tokens" boxSize={ 6 }/>
-                  <Link href={ viewAllUrl }>
-                    View all
-                  </Link>
-                </>
+                <Link href={ viewAllUrl } textStyle="sm" variant="secondary" mt={ 1.5 }>
+                  View all
+                </Link>
               ) }
             </DetailedInfo.ItemValue>
           </React.Fragment>

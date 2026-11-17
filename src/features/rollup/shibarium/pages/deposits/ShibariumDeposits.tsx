@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -13,17 +12,17 @@ import { SHIBARIUM_DEPOSIT_ITEM } from 'src/features/rollup/shibarium/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import DepositsList from './DepositsList';
 import DepositsTable from './DepositsTable';
 
 const ShibariumDeposits = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:shibarium_deposits',
     options: {
       placeholderData: generateListStub<'core:shibarium_deposits'>(
@@ -46,19 +45,14 @@ const ShibariumDeposits = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <DepositsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <DepositsTable
-          items={ data.items }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <DepositsTable
+        items={ data.items }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {
@@ -86,6 +80,7 @@ const ShibariumDeposits = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no deposits."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

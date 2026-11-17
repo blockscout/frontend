@@ -3,6 +3,8 @@ import React from 'react';
 
 import * as internalTxsMock from 'src/slices/internal-tx/mocks';
 
+import * as csvExportMock from 'src/features/csv-export/mocks';
+
 import { test, expect } from 'playwright/lib';
 
 import AddressInternalTxs from './AddressInternalTxs';
@@ -14,11 +16,12 @@ const hooksConfig = {
   },
 };
 
-test('base view +@mobile', async({ render, mockApiResponse }) => {
+test('base view', async({ render, mockApiResponse }) => {
   test.slow();
   await mockApiResponse('core:address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('core:config_csv_export', csvExportMock.config);
   const component = await render(
-    <Box pt={{ base: '134px', lg: 6 }}>
+    <Box pt={ 6 }>
       <AddressInternalTxs/>
     </Box>,
     { hooksConfig },

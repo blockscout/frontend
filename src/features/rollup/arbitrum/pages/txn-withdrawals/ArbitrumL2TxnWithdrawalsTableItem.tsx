@@ -5,7 +5,9 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import AddressEntityL1 from 'src/features/rollup/common/components/AddressEntityL1';
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
+
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
@@ -27,7 +29,7 @@ const ArbitrumL2TxnWithdrawalsTableItem = ({ data, isLoading, txHash }: Props) =
         <Skeleton loading={ isLoading }>{ data.id }</Skeleton>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <AddressEntityL1 address={{ hash: data.token?.destination_address_hash || data.destination_address_hash }} isLoading={ isLoading }/>
+        <AddressEntity address={{ hash: data.token?.destination_address_hash || data.destination_address_hash }} isLoading={ isLoading } chain={ parentChain }/>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>
         <ArbitrumL2TxnWithdrawalsValue data={ data } loading={ isLoading }/>

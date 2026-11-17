@@ -23,7 +23,7 @@ const approvalsQueryDataWithPagination = {
   total: APPROVALS_PAGE_SIZE + 1,
 };
 
-test('base view +@dark-mode +@mobile', async({ render, mockAssetResponse }: TestFnArgs) => {
+test('base view with responsive summary +@dark-mode +@mobile', async({ render, mockAssetResponse }: TestFnArgs) => {
   const props = {
     selectedChain: chainDataMock.chainA,
     searchAddress: addressHash,

@@ -2,25 +2,27 @@
 
 import React from 'react';
 
-import useHomeBlocksData, { type HomeBlocksQueryResult } from 'src/slices/home/hooks/useHomeBlocksData';
+import useHomeBlocksData, { type HomeBlocksData, type HomeBlocksQueryResult } from 'src/slices/home/hooks/useHomeBlocksData';
 
 import useHomeLatestBatchData, { type HomeLatestBatchQueryResult } from 'src/features/rollup/common/hooks/useHomeLatestBatchData';
 
 type HomeDataContextValue = {
   blocksQuery: HomeBlocksQueryResult | undefined;
+  blocksSocket: Pick<HomeBlocksData, 'newBlocksCount' | 'showSocketErrorAlert'> | undefined;
   latestBatchQuery: HomeLatestBatchQueryResult | undefined;
 };
 
 const HomeDataContext = React.createContext<HomeDataContextValue | null>(null);
 
 export function HomeDataContextProvider({ children }: { children: React.ReactNode }) {
-  const blocksQuery = useHomeBlocksData();
+  const blocksData = useHomeBlocksData();
   const latestBatchQuery = useHomeLatestBatchData();
 
   const value = React.useMemo<HomeDataContextValue>(() => ({
-    blocksQuery,
+    blocksQuery: blocksData?.query,
+    blocksSocket: blocksData,
     latestBatchQuery,
-  }), [ blocksQuery, latestBatchQuery ]);
+  }), [ blocksData, latestBatchQuery ]);
 
   return (
     <HomeDataContext.Provider value={ value }>

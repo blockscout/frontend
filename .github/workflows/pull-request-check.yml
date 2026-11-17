@@ -1,0 +1,44 @@
+name: PR check
+on:
+  pull_request:
+    types: [ opened, edited, synchronize, labeled, unlabeled, ready_for_review ]
+
+# Label and body edits fire in bursts; only the latest state of the PR matters.
+concurrency:
+  group: ${{ github.workflow }}__${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  check_pr:
+    name: PR template and category label
+    runs-on: ubuntu-latest
+    # Draft PRs are skipped: the spec-first workflow opens them before the description is written.
+    if: ${{ github.event.pull_request.draft != true }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.1
+          cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The body is fetched by number, not read from the event payload, so an `edited` run sees the saved body.
+      - name: Check the PR body and labels
+        run: pnpm release check-pr ${{ github.event.pull_request.number }}
+        env:
+          GH_TOKEN: ${{ github.token }}

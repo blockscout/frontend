@@ -1,6 +1,8 @@
 import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
+import * as profileMock from 'src/features/account/mocks/user-profile';
+
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
@@ -50,7 +52,8 @@ const authTest = test.extend<{ context: BrowserContext }>({
 authTest.describe('auth', () => {
   authTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 800 } });
 
-  authTest('base view', async({ render, page }) => {
+  authTest('base view', async({ render, page, mockApiResponse }) => {
+    await mockApiResponse('core:user_info', profileMock.base);
     const component = await render(<Burger/>, { hooksConfig });
 
     await component.getByRole('button', { name: 'Menu button' }).click();

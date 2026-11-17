@@ -1,42 +1,53 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import TokenHoldersListItem from './TokenHoldersListItem';
+import DataList from 'src/shared/lists/DataList';
+
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
+import TokenHoldersTable from './TokenHoldersTable';
+import type { TokenHoldersQuery } from './useTokenHoldersQuery';
 
 interface Props {
-  data: Array<schemas['TokenHolderResponse']>;
-  token: schemas['Token'];
-  isLoading?: boolean;
-  resetKey?: string;
+  token: schemas['Token'] | undefined;
+  query: TokenHoldersQuery;
+  actionBar: React.ReactNode;
 }
 
-const TokenHoldersList = ({ data, token, isLoading, resetKey }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+const TokenHoldersList = ({ token, query, actionBar }: Props) => {
+
+  const items = query.data?.items;
+
+  const content = items && token ? (
+    <TableContainerScrollable>
+      <TokenHoldersTable
+        data={ items }
+        token={ token }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
+        isLoading={ query.isInitialLoading }
+        resetKey={ query.queryHash }
+      />
+    </TableContainerScrollable>
+  ) : null;
 
   return (
-    <>
-      <Box>
-        { data.slice(0, renderedItemsNum).map((item, index) => {
-          const tokenId = 'token_id' in item ? item.token_id : null;
-          return (
-            <TokenHoldersListItem
-              key={ item.address.hash + tokenId + (isLoading ? index : '') }
-              token={ token }
-              holder={ item }
-              isLoading={ isLoading }
-            />
-          );
-        }) }
-      </Box>
-      <Box ref={ cutRef } h={ 0 }/>
-    </>
+    <DataList
+      isError={ query.isError }
+      itemsNum={ query.data?.items.length }
+      emptyText="There are no holders for this token."
+      actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
+      showActionBarIfEmpty
+      showActionBarIfError
+    >
+      { content }
+    </DataList>
   );
 };
 
-export default TokenHoldersList;
+export default React.memo(TokenHoldersList);

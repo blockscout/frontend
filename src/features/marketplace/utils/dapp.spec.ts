@@ -1,11 +1,13 @@
-import type { NextRouter } from 'next/router';
+import type { Router } from 'src/shared/router/useRouter';
 
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 import { getAppUrl } from './dapp';
 
+type MutableRouter = { -readonly [K in keyof Router]: Router[K] };
+
 describe('getAppUrl', () => {
-  let router: NextRouter;
+  let router: MutableRouter;
 
   beforeEach(() => {
     router = {
@@ -13,7 +15,7 @@ describe('getAppUrl', () => {
       asPath: '/current/path?someParam=value',
       query: {},
       replace: vi.fn(),
-    } as unknown as NextRouter;
+    } as unknown as MutableRouter;
   });
 
   it('should return undefined if url is undefined', () => {
@@ -31,7 +33,7 @@ describe('getAppUrl', () => {
     router.query.url = 'https://different.com/custom-path?query=value';
     const result = getAppUrl('https://example.com/app', router);
     expect(result).toBe('https://example.com/app?someParam=value');
-    expect(router.replace).toHaveBeenCalledWith({ pathname: '/current/path', query: {}, hash: '' }, undefined, { shallow: true });
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/current/path', query: {}, hash: '' }, { shallow: true });
   });
 
   it('should construct the new url with custom params and hash', () => {

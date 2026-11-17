@@ -1,13 +1,11 @@
 import type {
   ChainInfo,
-  GetCommonStatisticsResponse,
-  GetDailyStatisticsResponse,
   InterchainMessage,
   InterchainTransfer,
   StatsBridgedTokenRow,
   StatsChainRow,
 } from '@blockscout/interchain-indexer-types';
-import { MessageStatus } from '@blockscout/interchain-indexer-types';
+import { MessageStatus, TokenInfo_TokenType } from '@blockscout/interchain-indexer-types';
 
 import { ADDRESS_HASH } from 'src/slices/address/stubs/address-params';
 import { TX_HASH } from 'src/slices/tx/stubs/tx';
@@ -19,6 +17,7 @@ const TOKEN = {
   name: 'Wrapped AVAX',
   symbol: 'WAVAX',
   decimals: '18',
+  type: TokenInfo_TokenType.ERC20,
 };
 
 const CHAIN = {
@@ -30,6 +29,7 @@ const CHAIN = {
 
 export const INTERCHAIN_TRANSFER = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
@@ -50,10 +50,12 @@ export const INTERCHAIN_TRANSFER = {
     hash: ADDRESS_HASH,
   },
   receive_timestamp: '2026-01-07T18:41:53.000Z',
+  has_unindexed_chain: false,
 } satisfies InterchainTransfer;
 
 export const INTERCHAIN_MESSAGE = {
   bridge: {
+    id: 2,
     name: 'Avalanche ICTT',
   },
   message_id: MESSAGE_ID,
@@ -75,19 +77,8 @@ export const INTERCHAIN_MESSAGE = {
   transfers: [
     INTERCHAIN_TRANSFER,
   ],
+  has_unindexed_chain: false,
 } satisfies InterchainMessage;
-
-export const INTERCHAIN_STATS_DAILY = {
-  date: '2026-01-12',
-  daily_messages: 75,
-  daily_transfers: 75,
-} satisfies GetDailyStatisticsResponse;
-
-export const INTERCHAIN_STATS_COMMON = {
-  timestamp: '2026-01-12T11:49:59.380Z',
-  total_messages: 10823,
-  total_transfers: 10822,
-} satisfies GetCommonStatisticsResponse;
 
 export const INTERCHAIN_STATS_CHAINS_ITEM = {
   id: '8021',
@@ -113,6 +104,7 @@ export const INTERCHAIN_BRIDGED_TOKEN_ITEM = {
       symbol: 'WAVAX',
       icon_url: undefined,
       decimals: 18,
+      type: TokenInfo_TokenType.ERC20,
     },
   ],
 } satisfies StatsBridgedTokenRow;

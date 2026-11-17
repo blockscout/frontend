@@ -8,7 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -62,12 +62,13 @@ const ScrollL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.completion_transaction_hash ? (
-          <TxEntityL1
+          <TxEntity
             isLoading={ isLoading }
             hash={ item.completion_transaction_hash }
             truncation="constant_long"
             noIcon
             noCopy
+            chain={ parentChain }
           />
         ) : (
           <chakra.span color="text.secondary">

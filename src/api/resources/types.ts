@@ -4,6 +4,7 @@ export interface ApiResource {
   path: string;
   pathParams?: Array<string>;
   filterFields?: Array<string>;
+  scopeFilters?: Array<string>;
   paginated?: boolean;
   headers?: RequestInit['headers'];
 }

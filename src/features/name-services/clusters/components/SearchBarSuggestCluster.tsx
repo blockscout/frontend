@@ -9,8 +9,9 @@ import type { ItemsProps } from 'src/slices/search/components/search-bar/SearchB
 import { toBech32Address } from 'src/slices/address/utils/bech32';
 import { isEvmAddress } from 'src/slices/address/utils/is-evm-address';
 
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ClusterIcon from './ClusterIcon';
 
@@ -45,7 +46,7 @@ const SearchBarSuggestCluster = ({ data, searchTerm, addressFormat }: ItemsProps
       whiteSpace="nowrap"
       color="text.secondary"
     >
-      <HashStringShortenDynamic hash={ hash } noTooltip/>
+      <Truncate value={ hash } tooltip={ false }/>
     </Text>
   );
 

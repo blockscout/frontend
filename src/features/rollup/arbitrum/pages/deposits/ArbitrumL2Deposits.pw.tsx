@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 import * as depositsMock from '../../mocks/deposits';
 import ArbitrumL2Deposits from './ArbitrumL2Deposits';
 
-test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
+test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   test.slow();
   await mockTextAd();
   await mockEnvs(ENVS_MAP.arbitrumRollup);

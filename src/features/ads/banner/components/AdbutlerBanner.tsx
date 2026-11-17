@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import React from 'react';
 
@@ -23,8 +22,6 @@ import {
 const feature = config.features.adsBanner;
 
 const AdbutlerBanner = ({ className, format = 'responsive' }: BannerProps) => {
-  const router = useRouter();
-
   const isMobileViewport = useIsMobile();
   const isMobile = format === 'mobile' || (format === 'responsive' && isMobileViewport);
 
@@ -58,7 +55,7 @@ const AdbutlerBanner = ({ className, format = 'responsive' }: BannerProps) => {
         );
       }, opt: { place: plc++, keywords: abkw, domain: 'servedbyadbutler.com', click: 'CLICK_MACRO_PLACEHOLDER' } });
     }
-  }, [ router, isMobile ]);
+  }, [ isMobile ]);
 
   if (!('adButler' in feature)) {
     return null;

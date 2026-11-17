@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, HStack, VStack } from '@chakra-ui/react';
+import { chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
-import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
@@ -27,6 +26,12 @@ interface Props {
   currentAddress?: string;
 }
 
+const TOKEN_VALUE_PROPS = {
+  fontWeight: 'semibold',
+  tokenEntityProps: { fontWeight: 'medium' },
+};
+const ADDRESS_LINK_PROPS = { variant: 'secondary' as const };
+
 const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: Props) => {
 
   const dashElement = <chakra.span color="text.secondary" lineHeight="24px">{ mdash }</chakra.span>;
@@ -34,7 +39,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
   return (
     <TableRow>
       <TableCell>
-        <HStack gap={ 1 }>
+        <VStack alignItems="start" gap={ 1.5 }>
           <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
           { currentAddress && (
             <CrossChainFromToTag
@@ -44,9 +49,9 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
               isLoading={ isLoading }
             />
           ) }
-        </HStack>
+        </VStack>
       </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         <VStack alignItems="start">
           { data.source_token && (
             <TokenValueInterchain
@@ -55,6 +60,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
               chain={ data.source_chain }
               loading={ isLoading }
               lineHeight="24px"
+              { ...TOKEN_VALUE_PROPS }
             />
           ) }
           {
@@ -64,6 +70,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
                 address={ data.sender }
                 isLoading={ isLoading }
                 truncation="constant"
+                link={ ADDRESS_LINK_PROPS }
                 noIcon
                 currentAddress={ currentAddress }
                 textStyle="xs"
@@ -72,10 +79,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           }
         </VStack>
       </TableCell>
-      <TableCell>
-        <AddressFromToIcon type="unspecified" isLoading={ isLoading } mt={ 0.5 }/>
-      </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         <VStack alignItems="start">
           { data.destination_token && (
             <TokenValueInterchain
@@ -84,6 +88,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
               chain={ data.destination_chain }
               loading={ isLoading }
               lineHeight="24px"
+              { ...TOKEN_VALUE_PROPS }
             />
           ) }
           {
@@ -93,6 +98,7 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
                 address={ data.recipient }
                 isLoading={ isLoading }
                 truncation="constant"
+                link={ ADDRESS_LINK_PROPS }
                 noIcon
                 currentAddress={ currentAddress }
                 textStyle="xs"
@@ -143,20 +149,19 @@ const TokenTransfersCrossChainTableItem = ({ data, isLoading, currentAddress }: 
           />
         </VStack>
       </TableCell>
-      <TableCell>
+      <TableCell maxW="150px">
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id } lineHeight="24px"/>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px"/>
-      </TableCell>
-      <TableCell>
-        <TimeWithTooltip
-          timestamp={ data.send_timestamp || data.receive_timestamp }
-          isLoading={ isLoading }
-          color="text.secondary"
-          lineHeight="24px"
-          whiteSpace="nowrap"
-        />
+        <VStack alignItems="start">
+          <CrossChainMessageEntity id={ data.message_id } bridgeId={ data.bridge?.id } isLoading={ isLoading } lineHeight="24px"/>
+          <TimeWithTooltip
+            timestamp={ data.send_timestamp || data.receive_timestamp }
+            isLoading={ isLoading }
+            color="text.secondary"
+            whiteSpace="nowrap"
+          />
+        </VStack>
       </TableCell>
     </TableRow>
   );

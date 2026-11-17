@@ -12,13 +12,13 @@ import getPoolLinks from 'src/features/dex-pools/utils/get-pool-links';
 
 import getItemIndex from 'src/shared/lists/get-item-index';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   item: contractsInfo.Pool;
@@ -54,7 +54,7 @@ const PoolsTableItem = ({
               />
             ) : (
               <Flex color="text.secondary" alignItems="center">
-                <HashStringShorten hash={ item.pool_id } type="long"/>
+                <Truncate value={ item.pool_id } type="middle-static" maxSymbols={ 16 }/>
                 <CopyToClipboard text={ item.pool_id }/>
               </Flex>
             ) }

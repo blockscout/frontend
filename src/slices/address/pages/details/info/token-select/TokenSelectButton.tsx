@@ -7,7 +7,7 @@ import type { FormattedData } from './types';
 
 import { getTokensTotalInfo } from 'src/slices/token/pages/address/utils';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -29,7 +29,7 @@ const TokenSelectButton = ({ isOpen, isLoading, data, ...rest }: Props, ref: Rea
       return;
     }
 
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Tokens dropdown' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Tokens dropdown' });
   }, [ isLoading, isOpen ]);
 
   return (

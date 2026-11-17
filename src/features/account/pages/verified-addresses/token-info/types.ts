@@ -14,6 +14,7 @@ export interface Fields extends SocialLinkFields, TickerUrlFields {
   support?: string;
   icon_url: string;
   comment?: string;
+  payment_tx?: string;
 }
 
 export interface TickerUrlFields {

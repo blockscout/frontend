@@ -15,6 +15,7 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import { BLOCK_ITEM } from 'src/slices/block/stubs/list';
 
 import config from 'src/config';
+import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 
 /** Max blocks kept in React Query cache for `core:homepage_blocks` (fetch + socket). */
 const HOME_BLOCKS_QUERY_LIMIT = 5;
@@ -33,8 +34,16 @@ export type HomeBlocksQueryResult = UseQueryResult<
   ResourceError<unknown>
 >;
 
-export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
+export interface HomeBlocksData {
+  readonly query: HomeBlocksQueryResult;
+  readonly newBlocksCount: number;
+  readonly showSocketErrorAlert: boolean;
+}
+
+export default function useHomeBlocksData(): HomeBlocksData | undefined {
   const queryClient = useQueryClient();
+  const [ newBlocksCount, incrementNewBlocksCount ] = useGradualIncrement(0);
+  const [ showSocketErrorAlert, setShowSocketErrorAlert ] = React.useState(false);
 
   const blocksQuery = useApiQuery('core:homepage_blocks', {
     queryOptions: {
@@ -55,8 +64,20 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
     });
   }, [ queryClient ]);
 
+  const handleNewBlocksCountMessage: SocketMessage.NewBlockCount['handler'] = React.useCallback((payload) => {
+    if ((payload.type ?? 'block') === 'block') {
+      incrementNewBlocksCount(payload.count);
+    }
+  }, [ incrementNewBlocksCount ]);
+
+  const handleSocketFailure = React.useCallback(() => {
+    setShowSocketErrorAlert(true);
+  }, []);
+
   const channel = useSocketChannel({
     topic: 'blocks:new_block',
+    onSocketClose: handleSocketFailure,
+    onSocketError: handleSocketFailure,
     isDisabled: !isHomepageBlocksDataEnabled || blocksQuery.isPlaceholderData || blocksQuery.isError,
   });
   useSocketMessage({
@@ -64,6 +85,16 @@ export default function useHomeBlocksData(): HomeBlocksQueryResult | undefined {
     event: 'new_block',
     handler: handleNewBlockMessage,
   });
+  useSocketMessage({
+    channel,
+    event: 'new_blocks_count',
+    handler: handleNewBlocksCountMessage,
+  });
 
-  return isHomepageBlocksDataEnabled ? blocksQuery : undefined;
+  return React.useMemo(() => {
+    if (!isHomepageBlocksDataEnabled) {
+      return undefined;
+    }
+    return { query: blocksQuery, newBlocksCount, showSocketErrorAlert };
+  }, [ blocksQuery, newBlocksCount, showSocketErrorAlert ]);
 }

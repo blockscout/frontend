@@ -1,6 +1,7 @@
 import type { operations } from '@blockscout/api-types';
 
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
+import * as tokenInfoMock from 'src/slices/token/mocks/info';
 
 export const baseResponse: operations['AdvancedFilterController.list']['json'] = {
   items: [
@@ -83,6 +84,35 @@ export const baseResponse: operations['AdvancedFilterController.list']['json'] =
       },
       method: 'approve',
       fee: '620080096879104',
+      block_number: 0,
+      internal_transaction_index: null,
+      transaction_index: 0,
+      created_contract: null,
+      status: 'ok',
+      token_transfer_batch_index: null,
+      token_transfer_index: null,
+    },
+    {
+      timestamp: '2024-12-06T12:38:59.000000Z',
+      total: {
+        decimals: '18',
+        value: '100000000000000000000',
+        ui_multiplier: '1690000000000000000',
+      },
+      type: 'ERC-8056',
+      value: null,
+      hash: '0xd872e60be3db1ef32aabd863af2037330decb3dd73a3786df7a9540b38597fbd',
+      from: {
+        ...addressParamMock.withoutName,
+        hash: '0xA955675Dac496eB2c384D2d288e6C07fDb2234AF',
+      },
+      token: tokenInfoMock.tokenInfoERC8056,
+      to: {
+        ...addressParamMock.withoutName,
+        hash: '0x242ba6d68FfEb4a098B591B32d370F973FF882B7',
+      },
+      method: 'transfer',
+      fee: '63849188818350',
       block_number: 0,
       internal_transaction_index: null,
       transaction_index: 0,

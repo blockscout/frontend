@@ -74,6 +74,12 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  // Turbopack's standalone tracer copies only @swc/helpers/cjs and drops the esm/ entry points that
+  // Next's require-hook loads at runtime, so `node server.js` crashes on boot. Force the whole
+  // package into the standalone bundle until the tracer is fixed upstream.
+  outputFileTracingIncludes: {
+    '/**': [ './node_modules/@swc/helpers/**' ],
+  },
   productionBrowserSourceMaps: false,
   serverExternalPackages: [
     '@opentelemetry/sdk-node',
@@ -87,11 +93,25 @@ const moduleExports = {
       dynamic: 30,
       'static': 180,
     },
+    // Next 16.4 turned the Turbopack shared runtime on by default. In production it replaces the per-route
+    // runtime chunk with an inline bootstrap <script> that carries neither a nonce nor a hash, so the strict
+    // script-src in src/server/csp blocks it and the page never hydrates. Keep the per-route chunk instead.
+    // Upstream: https://github.com/vercel/next.js/pull/100102 (app router only), https://github.com/vercel/next.js/pull/97574
+    turbopackSharedRuntime: false,
   },
+
+  // Type-checking is done by `pnpm lint:tsc` (TypeScript 7), not by Next: Next resolves the
+  // `typescript` package, which here is the TS 6 alias — see .agents/adr/0004-typescript-7-side-by-side.md.
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+
 
   // workaround for passing outDir to nextjs-routes CLI, see ROUTES_OUT_DIR above.
   // Next.js warns about this unrecognized key on startup; the warning is harmless.
   outDir: ROUTES_OUT_DIR,
+
+  agentRules: false
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

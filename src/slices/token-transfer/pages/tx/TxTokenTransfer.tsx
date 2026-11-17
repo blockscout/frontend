@@ -1,20 +1,22 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
+import { HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 import type { TokenType } from 'src/slices/token/types/api';
 
-import { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import { getTokenTransfersStub } from 'src/slices/token-transfer/stubs';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 import TxPendingAlert from 'src/slices/tx/components/TxPendingAlert';
 import TxSocketAlert from 'src/slices/tx/components/TxSocketAlert';
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
+import { hasActiveColumnFilters } from 'src/features/cross-chain-txs/components/filters/utils';
 import useTxCrossChainTransfersQuery from 'src/features/cross-chain-txs/hooks/useTxCrossChainTransfersQuery';
 import TxTokenTransferCrossChain from 'src/features/cross-chain-txs/pages/tx/TxTokenTransferCrossChain';
 import { useMultichainContext } from 'src/features/multichain/context';
@@ -22,13 +24,22 @@ import { useMultichainContext } from 'src/features/multichain/context';
 import config from 'src/config';
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import TxTokenTransferLocal from './TxTokenTransferLocal';
+
+const NO_TYPES: Array<TokenType> = [];
+
+const LOCAL_TAB_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  widthAllocation: 'available' as const,
+};
 
 interface Props {
   txQuery: TxQuery;
@@ -45,19 +56,21 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
   const areQueriesEnabled = !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash);
   const chainConfig = multichainContext?.chain?.app_config ?? config;
 
-  const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(
-    getTokenFilterValue(router.query.type, multichainContext?.chain?.app_config) || [],
-  );
-
-  const localQuery = useQueryWithPages({
+  const localQuery = useApiPaginatedQuery({
     resourceName: 'core:tx_token_transfers',
     pathParams: { hash: txQuery.data?.hash.toString() },
     options: {
       enabled: areQueriesEnabled,
       placeholderData: getTokenTransfersStub(),
     },
-    filters: { type: typeFilter },
   });
+
+  const typeParam = localQuery.filters.type;
+  const typeFilter = React.useMemo(
+    () => getTokenFilterValue(typeParam, multichainContext?.chain?.app_config) || NO_TYPES,
+    [ typeParam, multichainContext?.chain?.app_config ],
+  );
+  const columnsState = useTokenTransferColumns('tx', { typeFilter, chainConfig: multichainContext?.chain?.app_config });
 
   const crossChainQuery = useTxCrossChainTransfersQuery({
     hash: String(txQuery.data?.hash),
@@ -66,11 +79,11 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
 
   const hasCrossChainTab =
     chainConfig.features.crossChainTxs.isEnabled &&
-    Boolean(!crossChainQuery.isPlaceholderData && crossChainQuery.data?.items.length) &&
+    (Boolean(!crossChainQuery.isPlaceholderData && crossChainQuery.data?.items.length) || hasActiveColumnFilters(crossChainQuery.filters)) &&
     !noCrossChain;
   const isLocalTab = tab === 'token_transfers' || (tab !== 'token_transfers_cross_chain' && !hasCrossChainTab);
   const isTabsLoading = useIsInitialLoading(
-    localQuery.isPlaceholderData ||
+    localQuery.isInitialLoading ||
     (chainConfig.features.crossChainTxs.isEnabled && crossChainQuery.isPlaceholderData && !noCrossChain),
   );
 
@@ -84,6 +97,7 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           tokenTransferFilter={ tokenTransferFilter }
           tokenTransferQuery={ localQuery }
           numActiveFilters={ typeFilter.length }
+          columnsState={ columnsState }
         />
       ),
     },
@@ -96,24 +110,27 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
           crossChainQuery={ crossChainQuery }
           isLoading={ isTabsLoading }
           tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          actionBar={ isMobile && crossChainQuery.pagination.isVisible && (
+            <ActionBar>
+              <Pagination ml="auto" { ...crossChainQuery.pagination }/>
+            </ActionBar>
+          ) }
         />
       ),
     },
   ].filter(Boolean);
 
+  const { onFilterChange } = localQuery;
   const handleTypeFilterChange = React.useCallback((nextValue: Array<TokenType>) => {
-    localQuery.onFilterChange({ type: nextValue });
-    setTypeFilter(nextValue);
-  }, [ localQuery ]);
+    onFilterChange({ type: nextValue });
+  }, [ onFilterChange ]);
 
   const rightSlotProps = React.useMemo(() => {
     if (tabs.length === 1) {
-      return { ml: 0 };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 0 };
     }
     if (isLocalTab) {
-      return {
-        ml: 6,
-      };
+      return { ...LOCAL_TAB_RIGHT_SLOT_PROPS, ml: 6 };
     }
   }, [ isLocalTab, tabs.length ]);
 
@@ -137,16 +154,31 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter, noCrossChain }: Props) 
       }
       return (
         <>
-          <TokenTransferFilter
-            defaultTypeFilters={ typeFilter }
-            onTypeFilterChange={ handleTypeFilterChange }
-            appliedFiltersNum={ typeFilter.length }
-            isLoading={ txQuery.isPlaceholderData || localQuery.isPlaceholderData }
-            chainConfig={ multichainContext?.chain?.app_config }
-          />
+          <HStack gap={{ base: 2, lg: 3 }}>
+            <TokenTransferFilter
+              defaultTypeFilters={ typeFilter }
+              onTypeFilterChange={ handleTypeFilterChange }
+              appliedFiltersNum={ typeFilter.length }
+              isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
+              chainConfig={ multichainContext?.chain?.app_config }
+            />
+            <ColumnsButton
+              tableColumns={ columnsState.selectableColumns }
+              columns={ columnsState.checkedColumns }
+              onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
+              selected={ columnsState.isCustomized }
+              onReset={ columnsState.onColumnsReset }
+              isLoading={ txQuery.isPlaceholderData || localQuery.isInitialLoading }
+            />
+          </HStack>
           <Pagination ml="auto" { ...localQuery.pagination }/>
         </>
       );
+    }
+
+    if (isMobile) {
+      return null;
     }
 
     return (

@@ -5,6 +5,8 @@ import type { Abi } from 'viem';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import * as methodsMock from 'src/slices/contract/mocks/methods';
 
+import * as profileMock from 'src/features/account/mocks/user-profile';
+
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test, expect } from 'playwright/lib';
 
@@ -16,7 +18,12 @@ const authTest = test.extend<{ context: BrowserContext }>({
   context: contextWithAuth,
 });
 
-authTest('without data', async({ render }) => {
+authTest.beforeEach(async({ mockApiResponse }) => {
+  await mockApiResponse('core:user_info', profileMock.base);
+});
+
+authTest('without data', async({ render, mockApiResponse }) => {
+  await mockApiResponse('core:custom_abi', []);
   const hooksConfig = {
     router: {
       query: { hash: addressHash, tab: 'read_write_custom_methods' },

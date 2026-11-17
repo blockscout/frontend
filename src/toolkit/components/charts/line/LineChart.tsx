@@ -92,6 +92,7 @@ export const LineChart = React.memo(({
     data: displayedCharts,
     margin,
     axesConfig,
+    resolution,
   });
 
   return (
@@ -155,7 +156,7 @@ export const LineChart = React.memo(({
           type="bottom"
           scale={ axes.x.scale }
           transform={ `translate(0, ${ innerHeight })` }
-          ticks={ axesConfig.x.ticks }
+          tickValues={ axes.x.tickValues }
           anchorEl={ overlayRef.current }
           tickFormatGenerator={ axes.x.tickFormatter }
           noAnimation

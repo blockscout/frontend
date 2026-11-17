@@ -26,7 +26,7 @@ const SearchResultsTable = ({ items, searchTerm, isLoading, addressFormat, top, 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot fontWeight={ 500 }>
+    <TableRoot minW="1000px" fontWeight={ 500 }>
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader width="30%">Search result</TableColumnHeader>

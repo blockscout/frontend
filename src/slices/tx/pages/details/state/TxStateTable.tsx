@@ -6,6 +6,8 @@ import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
 import TxStateTableItem from './TxStateTableItem';
@@ -17,6 +19,8 @@ interface Props {
 }
 
 const TxStateTable = ({ data, isLoading, top }: Props) => {
+  const chainData = useMultichainContext()?.chain;
+
   return (
     <AddressHighlightProvider>
       <TableRoot minWidth="1000px" w="100%">
@@ -31,7 +35,7 @@ const TxStateTable = ({ data, isLoading, top }: Props) => {
           </TableRow>
         </TableHeaderSticky>
         <TableBody>
-          { data.map((item, index) => <TxStateTableItem data={ item } key={ index } isLoading={ isLoading }/>) }
+          { data.map((item, index) => <TxStateTableItem data={ item } key={ index } chainData={ chainData } isLoading={ isLoading }/>) }
         </TableBody>
       </TableRoot>
     </AddressHighlightProvider>

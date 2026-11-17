@@ -5,13 +5,16 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import CeleniumLink from 'src/features/rollup/common/components/CeleniumLink';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 
@@ -29,7 +32,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
             <GridItem fontWeight={ 600 }>Commitment</GridItem>
             <GridItem overflow="hidden">
               <Flex minW="0" w="calc(100% - 20px)">
-                <HashStringShortenDynamic hash={ blob.commitment }/>
+                <Truncate value={ blob.commitment }/>
                 <CopyToClipboard text={ blob.commitment }/>
               </Flex>
             </GridItem>
@@ -44,7 +47,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
             </GridItem>
             <GridItem fontWeight={ 600 }>{ layerLabels.parent } txn hash</GridItem>
             <GridItem overflow="hidden" colSpan={ 2 }>
-              <TxEntityL1 hash={ blob.l1_transaction_hash } noIcon/>
+              <TxEntity hash={ blob.l1_transaction_hash } noIcon chain={ parentChain }/>
             </GridItem>
           </OptimisticL2TxnBatchBlobWrapper>
         );

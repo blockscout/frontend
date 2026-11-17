@@ -8,7 +8,7 @@ import type { UsercentricsConsentResult } from './types';
 
 import config from 'src/config';
 
-import { STORAGE_KEY } from './config';
+import { STORAGE_KEY } from './consts';
 import getConsentStatus from './get-consent-status';
 
 export default function useUpdateUsercentricsConsent() {

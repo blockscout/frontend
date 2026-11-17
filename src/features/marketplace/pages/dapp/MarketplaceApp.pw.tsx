@@ -11,10 +11,11 @@ import { test, expect, devices } from 'playwright/lib';
 
 import MarketplaceApp from './MarketplaceApp';
 
+const embeddedApp = { ...appsMock[0], external: false };
+
 const hooksConfig = {
   router: {
-    query: { id: appsMock[0].id },
-    isReady: true,
+    query: { id: embeddedApp.id },
   },
 };
 
@@ -22,8 +23,8 @@ const testFn = async({ render, mockAssetResponse, mockEnvs, mockRpcResponse, moc
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
   ]);
-  await mockApiResponse('admin:marketplace_dapp', appsMock[0], { pathParams: { instanceId: config.apis.admin?.instanceId, dappId: appsMock[0].id } });
-  await mockAssetResponse(appsMock[0].url, './src/features/marketplace/mocks/dapps.html');
+  await mockApiResponse('admin:marketplace_dapp', embeddedApp, { pathParams: { instanceId: config.apis.admin?.instanceId, dappId: embeddedApp.id } });
+  await mockAssetResponse(embeddedApp.url, './src/features/marketplace/mocks/dapps.html');
   await mockRpcResponse([ {
     Method: 'eth_chainId',
     ReturnType: numberToHex(Number(config.chain.id)),

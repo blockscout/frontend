@@ -6,6 +6,9 @@ export const SERVICES = {
   mixpanel: {
     name: 'Mixpanel',
   },
+  posthog: {
+    name: 'PostHog',
+  },
   googleAnalytics: {
     name: 'Google Tag Manager',
   },
@@ -33,6 +36,7 @@ export const SERVICES_NAMES = Object.values(SERVICES).map(({ name }) => name);
 
 export const CONSENT_RESULT_ALL_ACCEPTED: UsercentricsConsentResult = {
   mixpanel: true,
+  posthog: true,
   googleAnalytics: true,
   rollbar: true,
   growthBook: true,

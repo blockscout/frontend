@@ -22,14 +22,15 @@ export enum NAMES {
   LOCAL_TIME = 'local_time',
   INDEXING_ALERT = 'indexing_alert',
   ADBLOCK_DETECTED = 'adblock_detected',
-  MIXPANEL_DEBUG = '_mixpanel_debug',
+  ANALYTICS_DEBUG = '_analytics_debug',
   ADDRESS_NFT_DISPLAY_TYPE = 'address_nft_display_type',
   HIDE_ADD_TO_WALLET_BUTTON = 'hide_add_to_wallet_button',
   UUID = 'uuid',
   SHOW_SCAM_TOKENS = 'show_scam_tokens',
   SHOW_POOR_REPUTATION_TOKENS = 'show_poor_reputation_tokens',
   APP_PROFILE = 'app_profile',
-  TABLE_VIEW_ON_MOBILE = 'table_view_on_mobile',
+  CUSTOM_RPC_URL = 'custom_rpc_url',
+  CUSTOM_RPC_IN_USE = 'custom_rpc_in_use',
 }
 
 /**
@@ -39,7 +40,7 @@ export enum NAMES {
 export const PRIVATE_MODE_DISALLOWED: ReadonlyArray<NAMES> = [
   NAMES.UUID,
   NAMES.ADBLOCK_DETECTED,
-  NAMES.MIXPANEL_DEBUG,
+  NAMES.ANALYTICS_DEBUG,
 ];
 
 export const getDefaultAttributes = () => ({

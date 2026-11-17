@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
@@ -9,6 +8,7 @@ import useRoutedChainSelect from 'src/features/multichain/hooks/useRoutedChainSe
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';

@@ -25,7 +25,7 @@ export const CloseButton = React.forwardRef<
 
   return (
     <IconButton aria-label="Close" ref={ ref } css={ styles } { ...rest }>
-      { props.children ?? <Icon boxSize={ 5 } { ...iconProps }><CloseIcon/></Icon> }
+      { props.children ?? <Icon boxSize="var(--close-button-icon-size)" { ...iconProps }><CloseIcon/></Icon> }
     </IconButton>
   );
 });

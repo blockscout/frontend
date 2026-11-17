@@ -22,7 +22,7 @@ const ScrollL2TxnBatchesTable = ({ items, top, isLoading, resetKey }: Props) => 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot tableLayout="auto" minW="1000px">
+    <TableRoot tableLayout="auto" minW="1100px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader>Batch #</TableColumnHeader>

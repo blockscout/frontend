@@ -7,10 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import OptimisticL2Deposits from './OptimisticL2Deposits';
 
-test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
-  // test on mobile is flaky
-  // my assumption is there is not enough time to calculate hashes truncation so component is unstable
-  // so I raised the test timeout to check if it helps
+test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.optimisticRollup);
   await mockTextAd();

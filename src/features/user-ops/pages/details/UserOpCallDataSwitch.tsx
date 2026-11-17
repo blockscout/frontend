@@ -18,12 +18,10 @@ const UserOpCallDataSwitch = ({ className, initialValue, isDisabled, onChange, i
   const [ isChecked, setIsChecked ] = React.useState(initialValue ?? false);
 
   const handleChange = React.useCallback(() => {
-    setIsChecked((prevValue) => {
-      const nextValue = !prevValue;
-      onChange(nextValue);
-      return nextValue;
-    });
-  }, [ onChange ]);
+    const nextValue = !isChecked;
+    setIsChecked(nextValue);
+    onChange(nextValue);
+  }, [ isChecked, onChange ]);
 
   return (
     <Flex ml="auto" alignItems="center" gap={ 2 }>

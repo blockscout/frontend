@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { operations } from '@blockscout/api-types';
@@ -15,9 +14,10 @@ import useSocketMessage from 'src/api/socket/useSocketMessage';
 import { ADDRESS_COIN_BALANCE } from 'src/slices/address/stubs/address';
 
 import useIsMounted from 'src/shared/hooks/useIsMounted';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import AddressCoinBalanceChart from './AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './AddressCoinBalanceHistory';
@@ -36,7 +36,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const addressHash = getQueryParamString(router.query.hash);
-  const coinBalanceQuery = useQueryWithPages({
+  const coinBalanceQuery = useApiPaginatedQuery({
     resourceName: 'core:address_coin_balance',
     pathParams: { hash: addressHash },
     scrollRef,
@@ -84,7 +84,7 @@ const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Prop
     topic: `addresses:${ addressHash.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: !addressHash || coinBalanceQuery.isPlaceholderData || coinBalanceQuery.pagination.page !== 1,
+    isDisabled: !addressHash || coinBalanceQuery.isInitialLoading || coinBalanceQuery.pagination.page !== 1,
   });
   useSocketMessage({
     channel,

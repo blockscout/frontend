@@ -23,10 +23,10 @@ export const Slider = React.forwardRef<HTMLDivElement, SliderProps>(
 
     return (
       <ChakraSlider.Root ref={ ref } thumbAlignment="center" { ...rest }>
-        { label && !showValue && (
+        { Boolean(label) && !showValue && (
           <ChakraSlider.Label>{ label }</ChakraSlider.Label>
         ) }
-        { label && showValue && (
+        { Boolean(label) && showValue && (
           <HStack justify="space-between">
             <ChakraSlider.Label>{ label }</ChakraSlider.Label>
             <ChakraSlider.ValueText/>

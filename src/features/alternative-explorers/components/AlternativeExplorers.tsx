@@ -6,6 +6,7 @@ import React from 'react';
 import type { AlternativeExplorer as TAlternativeExplorer } from '../types/client';
 
 import config from 'src/config';
+import { getFeaturePayload } from 'src/config/utils/features';
 import VerifyWith from 'src/shared/links/VerifyWith';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -21,7 +22,7 @@ interface Props {
 
 const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
   const explorersLinks = React.useMemo(() => {
-    return config.features.alternativeExplorers.items
+    return (getFeaturePayload(config.features.alternativeExplorers)?.items ?? [])
       .filter((explorer) => typeof explorer.paths[type] === 'string')
       .map((explorer) => {
         const path = explorer.paths[type] || '';
@@ -54,7 +55,7 @@ const AlternativeExplorers = ({ className, type, pathParam }: Props) => {
     <VerifyWith
       className={ className }
       links={ explorersLinks }
-      label="Verify with other explorers"
+      label="Verify with other sources"
       longText={ `${ explorersLinks.length } Explorer${ explorersLinks.length > 1 ? 's' : '' }` }
       shortText={ explorersLinks.length.toString() }
     />

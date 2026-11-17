@@ -15,6 +15,7 @@ import type { TxsTranslationQuery } from 'src/features/tx-interpretation/noves/h
 import config from 'src/config';
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useInitialList from 'src/shared/lists/useInitialList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -36,7 +37,10 @@ type Props = {
   stickyHeader?: boolean;
   translationQuery?: TxsTranslationQuery;
   resetKey?: string;
+  withBlockSort?: boolean;
 };
+
+const getBaseKey = (item: schemas['Transaction']): string => item.hash;
 
 const TxsTable = ({
   txs,
@@ -51,6 +55,7 @@ const TxsTable = ({
   stickyHeader = true,
   translationQuery,
   resetKey,
+  withBlockSort = true,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: txs, isEnabled: !isLoading, resetKey });
   const initialList = useInitialList({
@@ -61,6 +66,7 @@ const TxsTable = ({
   const multichainContext = useMultichainContext();
   const chainData = multichainContext?.chain;
   const isMobile = useIsMobile();
+  const keys = useUniqueKeys(txs, getBaseKey);
 
   const feeCurrency = config.slices.tx.hiddenFields?.fee_currency || config.chain.hasMultipleGasCurrencies ?
     '' :
@@ -90,7 +96,7 @@ const TxsTable = ({
             <TableColumnHeader width="160px">Type</TableColumnHeader>
             <TableColumnHeader width={ baseWidth }>Method</TableColumnHeader>
             { showBlockInfo && (
-              onSortToggle ? (
+              onSortToggle && withBlockSort ? (
                 <TableColumnHeaderSortable
                   width={ baseWidth }
                   sortField="block_number"
@@ -138,11 +144,11 @@ const TxsTable = ({
           </TableRow>
         </TableHeaderComponent>
         <TableBody>
-          { socketType && <TxsSocketNotice type={ socketType } place="table" isLoading={ isLoading }/> }
+          { socketType && <TxsSocketNotice type={ socketType } isLoading={ isLoading }/> }
           { txs.slice(0, renderedItemsNum).map((item, index) => {
             return (
               <TxsTableItem
-                key={ item.hash + (isLoading ? index : '') }
+                key={ keys[index] }
                 tx={ item }
                 showBlockInfo={ showBlockInfo }
                 currentAddress={ currentAddress }

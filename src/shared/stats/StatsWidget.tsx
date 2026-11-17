@@ -2,17 +2,17 @@
 
 import type { BoxProps } from '@chakra-ui/react';
 import { Box, Flex, Text, chakra } from '@chakra-ui/react';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
+import type { Route } from 'src/shared/router/routes';
+import { route } from 'src/shared/router/routes';
 import type { IconName } from 'src/sprite/SpriteIcon';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface ContainerProps extends BoxProps {
   href?: Route;
@@ -112,12 +112,12 @@ const StatsWidget = React.forwardRef<HTMLDivElement, Props>(({
           >
             { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (
-              <TruncatedText text={ value } loading={ isLoading }/>
+              <Truncate value={ value } type="end" loading={ isLoading }/>
             ) : (
               value
             ) }
             { valuePostfix && <chakra.span whiteSpace="pre">{ valuePostfix }</chakra.span> }
-            { diff && Number(diff) > 0 && (
+            { Number(diff) > 0 && (
               <>
                 <Text ml={ 2 } mr={ 1 } color="green.500">
                   +{ diffFormatted || Number(diff).toLocaleString() }

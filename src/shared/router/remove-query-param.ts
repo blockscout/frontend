@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { NextRouter } from 'next/router';
+import type { Router } from 'src/shared/router/useRouter';
 
-export default function removeQueryParam(router: NextRouter, param: string) {
+export default function removeQueryParam(router: Router, param: string) {
   const { pathname, query, asPath } = router;
   const newQuery = { ...query };
   delete newQuery[param];
@@ -10,5 +10,5 @@ export default function removeQueryParam(router: NextRouter, param: string) {
   const hashIndex = asPath.indexOf('#');
   const hash = hashIndex !== -1 ? asPath.substring(hashIndex) : '';
 
-  router.replace({ pathname, query: newQuery, hash }, undefined, { shallow: true });
+  router.replace({ pathname, query: newQuery, hash }, { shallow: true });
 }

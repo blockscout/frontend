@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useEffect, useMemo } from 'react';
 
 import * as metadata from 'src/shell/metadata';
@@ -14,12 +13,14 @@ import config from 'src/config';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { useColorMode } from 'src/toolkit/chakra/color-mode';
 
 import MarketplaceAppIframe from '../../components/MarketplaceAppIframe';
 import useAppQuery from '../../hooks/useAppQuery';
 import useAutoConnectWallet from '../../hooks/useAutoConnectWallet';
+import { useExternalDappRedirect } from '../../hooks/useExternalDappRedirect';
 import { getAppUrl } from '../../utils/dapp';
 import MarketplaceAppTopBar from './MarketplaceAppTopBar';
 
@@ -46,6 +47,9 @@ export default function MarketplaceApp() {
     [ data?.url, isPlaceholderData, router ],
   );
 
+  const isExternal = !isPlaceholderData && Boolean(data?.external);
+  useExternalDappRedirect(appUrl, isExternal);
+
   const message = useMemo(() => ({
     blockscoutColorMode: colorMode,
     blockscoutRootUrl: route({ pathname: '/' }, { absolute: true }),
@@ -67,6 +71,8 @@ export default function MarketplaceApp() {
     }
   }, [ data, isPlaceholderData, setIsAutoConnectDisabled ]);
 
+  useEffect(() => () => setIsAutoConnectDisabled(false), [ setIsAutoConnectDisabled ]);
+
   throwOnResourceLoadError(query);
 
   return (
@@ -78,7 +84,7 @@ export default function MarketplaceApp() {
       />
       <MarketplaceAppIframe
         appId={ id }
-        appUrl={ appUrl }
+        appUrl={ isExternal ? undefined : appUrl }
         message={ message }
         mx={{ base: -4, lg: -6 }}
       />

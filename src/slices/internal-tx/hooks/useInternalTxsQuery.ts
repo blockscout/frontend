@@ -1,27 +1,23 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
+
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
 interface Props {
-  isMultichain?: boolean;
+  chain?: ExternalChainExtended;
 }
 
-export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
-  const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.transaction_hash) || undefined);
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
-  const query = useQueryWithPages({
+export default function useInternalTxsQuery({ chain }: Props = {}) {
+  const query = useApiPaginatedQuery({
     resourceName: 'core:internal_txs',
-    filters: { transaction_hash: debouncedSearchTerm },
     options: {
       placeholderData: generateListStub<'core:internal_txs'>(
         INTERNAL_TX,
@@ -41,18 +37,17 @@ export default function useInternalTxsQuery({ isMultichain }: Props = {}) {
         },
       ),
     },
-    isMultichain,
+    chain,
   });
 
-  const onSearchTermChange = React.useCallback((value: string) => {
-    query.onFilterChange({ transaction_hash: value });
-    setSearchTerm(value);
-  }, [ query ]);
+  const searchTerm = getQueryParamString(query.filters.transaction_hash) || undefined;
+
+  const { onFilterChange } = query;
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ transaction_hash: value }));
 
   return React.useMemo(() => ({
     query,
     searchTerm,
-    debouncedSearchTerm,
     onSearchTermChange,
-  }), [ query, searchTerm, debouncedSearchTerm, onSearchTermChange ]);
+  }), [ query, searchTerm, onSearchTermChange ]);
 }

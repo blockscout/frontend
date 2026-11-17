@@ -2,7 +2,6 @@
 
 import { GridItem } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES, type ZkSyncBatch } from 'src/features/rollup/zk-sync/types/api';
@@ -23,13 +22,14 @@ import isCustomAppError from 'src/shared/errors/is-custom-app-error';
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
 import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import GasPriceValue from 'src/shared/values/entity/GasPriceValue';
 
 import { CollapsibleDetails } from 'src/toolkit/chakra/collapsible';
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
 
@@ -52,7 +52,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.number + increment);
 
-    router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
+    router.push({ pathname: '/batches/[number]', query: { number: nextId } });
   }, [ data, router ]);
 
   if (isError) {
@@ -148,7 +148,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           flexWrap="nowrap"
           alignSelf="flex-start"
         >
-          <TruncatedText text={ data.root_hash }/>
+          <Truncate value={ data.root_hash } type="end"/>
           <CopyToClipboard text={ data.root_hash }/>
         </DetailedInfo.ItemValue>
 

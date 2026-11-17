@@ -49,11 +49,11 @@
             "group": "build",
         },
         {
-            "type": "npm",
-            "script": "lint:eslint:fix",
+            "type": "shell",
+            "command": "pnpm lint:eslint --fix",
             "problemMatcher": [],
             "label": "eslint",
-            "detail": "run eslint",
+            "detail": "run eslint --fix",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
@@ -73,7 +73,7 @@
         // PW TESTS
         {
             "type": "shell",
-            "command": "${input:pwDebugFlag} pnpm test:pw:local ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "${input:pwDebugFlag} pnpm test:pw ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: local",
             "detail": "run visual components tests for current file",
@@ -94,7 +94,7 @@
         },
         {
             "type": "shell",
-            "command": "pnpm test:pw:docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
+            "command": "pnpm test:pw --docker ${relativeFileDirname}/${fileBasename} ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker",
             "detail": "run visual components tests for current file",
@@ -115,10 +115,31 @@
         },
         {
             "type": "shell",
-            "command": "pnpm test:pw:docker ${input:pwArgs}",
+            "command": "pnpm test:pw --docker ${input:pwArgs}",
             "problemMatcher": [],
             "label": "pw: docker all",
             "detail": "run visual components tests",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
+        {
+            "type": "shell",
+            "command": "pnpm test:pw --docker --changed ${input:pwArgs}",
+            "problemMatcher": [],
+            "label": "pw: changed",
+            "detail": "run visual components tests affected by the changed files in the current branch",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared",
@@ -154,27 +175,6 @@
             "runOptions": {
                 "instanceLimit": 1
             }
-        },
-        {
-            "type": "shell",
-            "command": "pnpm test:pw:detect-affected",
-            "problemMatcher": [],
-            "label": "pw: detect affected",
-            "detail": "detect PW tests affected by changes in current branch",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared",
-                "focus": true,
-                "close": false,
-                "revealProblems": "onProblem",
-            },
-            "icon": {
-                "color": "terminal.ansiBlue",
-                "id": "diff"
-            },
-            "runOptions": {
-                "instanceLimit": 1
-            },
         },
 
         // VITEST TESTS
@@ -215,6 +215,50 @@
             "icon": {
                 "color": "terminal.ansiBlue",
                 "id": "beaker"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+
+        // CODE COMPLEXITY
+        {
+            "type": "shell",
+            "command": "pnpm test:code-complexity ${relativeFileDirname}/${fileBasename}",
+            "problemMatcher": [],
+            "label": "code complexity: file",
+            "detail": "run code complexity for current file",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "file-binary"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
+        {
+            "type": "shell",
+            "command": "pnpm test:code-complexity --changed",
+            "problemMatcher": [],
+            "label": "code complexity: changed",
+            "detail": "run code complexity for changed files in the current branch",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "file-binary"
             },
             "runOptions": {
                 "instanceLimit": 1
@@ -305,7 +349,6 @@
             "options": [
               "",
               "--update-snapshots",
-              "--update-snapshots --affected",
               "--ui",
             ],
             "default": ""
@@ -324,6 +367,7 @@
               // presets:start — generated from tools/dev-server/registry.json (run `pnpm presets:sync`)
               "arbitrum",
               "arbitrum_sepolia",
+              "arc_testnet",
               "base",
               "blackfort_testnet",
               "celo",
@@ -332,7 +376,7 @@
               "eth",
               "eth_sepolia",
               "filecoin",
-              "garnet",
+              "fuse",
               "gnosis",
               "gnosis_chiado",
               "hpp",
@@ -347,7 +391,6 @@
               "rootstock",
               "rootstock_testnet",
               "robinhood",
-              "scroll_sepolia",
               "shibarium",
               "stability_testnet",
               "staging",
@@ -358,7 +401,6 @@
               "zetachain_testnet",
               "zilliqa",
               "zksync",
-              "zora",
               // presets:end
             ],
             "default": "staging"

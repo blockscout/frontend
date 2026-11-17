@@ -6,7 +6,7 @@ import React from 'react';
 import useIsAuth from 'src/features/account/hooks/useIsAuth';
 
 import config from 'src/config';
-import type { EventTypes, EventPayload } from 'src/services/mixpanel';
+import type { EventTypes, EventPayload } from 'src/shared/analytics';
 
 import type { PopoverContentProps } from 'src/toolkit/chakra/popover';
 import { PopoverBody, PopoverContent, PopoverRoot } from 'src/toolkit/chakra/popover';
@@ -50,8 +50,8 @@ const MarketplaceRating = ({
       { fullView && (
         <>
           <RatingComponent defaultValue={ Math.floor(rating || 0) } readOnly key={ rating }/>
-          { rating && <Text fontSize="md" ml={ 2 }>{ rating }</Text> }
-          { ratingsTotalCount && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
+          { Boolean(rating) && <Text fontSize="md" ml={ 2 }>{ rating }</Text> }
+          { Boolean(ratingsTotalCount) && <Text color="text.secondary" textStyle="md" ml={ 1 }>({ ratingsTotalCount })</Text> }
         </>
       ) }
       <PopoverRoot positioning={{ placement: 'bottom' }}>

@@ -39,7 +39,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Eden** | chain | A rollup built on `ev-reth` / evstack. Introduces the **Sponsored Transaction** type. |
 | **Epoch** | entity | A consensus time period specific to **Celo**. Has its own index and detail pages. Always refers to a Celo epoch in this codebase — not a generic blockchain concept. |
 | **Fault Proof System** | feature | Optimism's mechanism for proving the correctness of L2 state transitions on L1 via **Dispute Games**. |
-| **Flashblocks** | feature | Code name for the sub-second pre-confirmation block streaming feature. Surfaced to users as **Subblocks** on OP Stack chains (OP Labs renamed it from "Flashblocks") and as **mini-blocks** on MegaETH. The `flashblocks` code name and `FLASHBLOCKS` env vars are retained. |
+| **Flashblocks** | feature | Code name for the sub-second pre-confirmation block streaming feature. Surfaced to users as **Subblocks** or **Flashblocks** on OP Stack chains, whichever name the chain uses (OP Labs renamed it from "Flashblocks"), and as **mini-blocks** on MegaETH. The `flashblocks` code name and `FLASHBLOCKS` env vars are retained. |
 | **Hot Contracts** | feature | Ranked list of the most recently and frequently interacted-with smart contracts on the network. |
 | **Interchain Indexer** | service | Microservice that indexes cross-chain messages and token transfers across heterogeneous chains. General-purpose interop indexer, not ZetaChain-specific. Provides "Cross chain txs" feature. Distinct from **CCTX**. |
 | **Interop Messages** | entity | **Deprecated** Cross-rollup messages passed between OP Stack chains using the native interoperability protocol. Distinct from **Interchain Indexer** messages. |
@@ -50,6 +50,7 @@ vars are documented in `docs/ENVS.md`. Architectural concepts like
 | **Operation** | entity | **TAC**-specific entity representing a bridge operation between the TON and EVM ecosystems. No equivalent on standard EVM chains. |
 | **Pools** | entity | DEX liquidity pool positions tracked on-chain. |
 | **Public Tags** | feature | Community-submitted labels for addresses, visible on address pages. A sub-feature of **Address Metadata**. |
+| **Readout (design readout)** | concept | The mapping of a Figma node to repo components, props and design tokens, with every ambiguous, unrecognized and layout item listed for a developer to resolve before markup. The tool of the same name extracts the values and recognizes signals and tokens; the skill maps those to components — the tool names none. Recognition only, never implementation. |
 | **Rewards** | feature | The Blockscout Merits program — a token rewards and incentives system operated by Blockscout. Entirely distinct from **Block Reward** (on-chain block-producer payouts). |
 | **Rollup** | concept | A chain that settles transactions on a parent (L1) chain. Introduces specific entities: deposits, withdrawals, transaction batches, output roots. Contrast with **Chain Variant**. |
 | **SolidityScan** | service | Third-party smart contract security vulnerability scanner integrated into contract detail pages. |

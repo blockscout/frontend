@@ -21,8 +21,9 @@ The frontend never hardcodes a full API URL. A request is assembled as:
   object per service from `NEXT_PUBLIC_*` env vars; the env-var → field mapping changes, so
   the file is the source of truth.
 - **Every deployed instance exposes its full public config** at
-  **`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`; served by
-  `src/pages/api/config.ts`) — the canonical source for those values on a live instance.
+  **`GET <host>/node-api/config`** (`{ envs: { …all NEXT_PUBLIC_* } }`, plus the start-up variables
+  allowlisted in `src/pages/api/config.ts`, which serves it) — the canonical source for those values
+  on a live instance.
   It also carries the "secret-ish" public keys (WalletConnect, reCAPTCHA, GA) by design;
   treat it as a config source, not secrets.
 - **The `/node-api/proxy` rewrite is a browser-CORS workaround only.** In local dev /
@@ -88,7 +89,10 @@ per-service package/repo/workflow mapping table and the `gh` dispatch procedure.
   embed data the Core API merely proxies from a micro-service and doesn't fully describe in
   its own OpenAPI spec — it doesn't know those shapes (e.g. the `tac_operation` field in the
   search-result variant with `type: 'tac_operation'`). In the generated `@blockscout/api-types` schema such data
-  therefore shows up only as **optional properties** or **loose members of a type union**.
+  therefore shows up only as **optional properties** or **loose members of a type union**. The same applies
+  when Core *does* describe the shape but the generated types can't express it — e.g. a proxied object whose
+  own `type` field collides with the discriminator of the union it sits in, which `openapi-typescript`
+  resolves by overwriting the object's field.
   The precise shape is owned by the **feature** and must live under
   `src/features/**/types/api.ts` (the feature owns the rendering, so it owns the type). A
   slice may then **consolidate** these feature types with the generated schema — swapping a

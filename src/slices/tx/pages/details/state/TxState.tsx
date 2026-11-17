@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -12,9 +12,10 @@ import { TX_STATE_CHANGES } from 'src/slices/tx/stubs/state-changes';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
-import TxStateList from './TxStateList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import TxStateTable from './TxStateTable';
 
 interface Props {
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const TxState = ({ txQuery }: Props) => {
-  const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination } = useApiPaginatedQuery({
     resourceName: 'core:tx_state_changes',
     pathParams: { hash: txQuery.data?.hash },
     options: {
@@ -42,14 +43,9 @@ const TxState = ({ txQuery }: Props) => {
   }
 
   const content = data ? (
-    <>
-      <Box hideBelow="lg">
-        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
-      </Box>
-      <Box hideFrom="lg">
-        <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxStateTable data={ data.items } isLoading={ isInitialLoading } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = pagination.isVisible ? (
@@ -71,6 +67,7 @@ const TxState = ({ txQuery }: Props) => {
         itemsNum={ data?.items.length }
         emptyText="There are no state changes for this transaction."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

@@ -20,14 +20,13 @@ test('details tab', async({ render, mockTextAd, mockApiResponse, mockAssetRespon
     { hooksConfig: {
       router: {
         query: { name: ensDomainMock.ensDomainA.name },
-        isReady: true,
       },
     } },
   );
   await expect(component).toHaveScreenshot();
 });
 
-test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
+test('history tab', async({ render, mockTextAd, mockApiResponse, mockAssetResponse }) => {
   await mockTextAd();
   await mockApiResponse('bens:domain_info', ensDomainMock.ensDomainA, {
     pathParams: { name: ensDomainMock.ensDomainA.name },
@@ -48,7 +47,6 @@ test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse, mockAs
     { hooksConfig: {
       router: {
         query: { name: ensDomainMock.ensDomainA.name, tab: 'history' },
-        isReady: true,
       },
     } },
   );

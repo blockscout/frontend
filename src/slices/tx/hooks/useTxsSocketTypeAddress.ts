@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { operations, schemas } from '@blockscout/api-types';
@@ -17,6 +16,7 @@ import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 
 import { sortTxsFromSocket } from '../utils/sort-txs';
@@ -73,12 +73,13 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
         const newItems: Array<schemas['Transaction']> = [];
         let newCount = 0;
         let hasUpdatedItems = false;
+        const prevItems = [ ...prevData.items ];
 
         payload.transactions.forEach(tx => {
-          const currIndex = prevData.items.findIndex((item) => item.hash === tx.hash);
+          const currIndex = prevItems.findIndex((item) => item.hash === tx.hash);
 
           if (currIndex > -1) {
-            prevData.items[currIndex] = tx;
+            prevItems[currIndex] = tx;
             hasUpdatedItems = true;
           } else {
             const isMatch = matchFilter(filterValue as AddressFromToFilter, tx, currentAddress);
@@ -107,7 +108,7 @@ export default function useTxsSocketTypeAddress({ isLoading }: Params) {
           ...prevData,
           items: [
             ...newItems,
-            ...prevData.items,
+            ...prevItems,
           ].sort(sortTxsFromSocket(sort)),
         };
       });

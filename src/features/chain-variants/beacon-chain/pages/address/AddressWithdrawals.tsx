@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
@@ -11,9 +10,10 @@ import { WITHDRAWAL } from 'src/features/chain-variants/beacon-chain/stubs/withd
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
@@ -27,7 +27,7 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData, isError, pagination, queryHash } = useQueryWithPages({
+  const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:address_withdrawals',
     pathParams: { hash },
     options: {
@@ -49,7 +49,7 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
         items={ data.items }
         view="address"
         top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-        isLoading={ isPlaceholderData }
+        isLoading={ isInitialLoading }
         resetKey={ queryHash }
       />
     </TableContainerScrollable>
@@ -67,6 +67,7 @@ const AddressWithdrawals = ({ shouldRender = true, isQueryEnabled = true }: Prop
       itemsNum={ data?.items?.length }
       emptyText="There are no withdrawals for this address."
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

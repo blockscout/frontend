@@ -1,19 +1,18 @@
-import * as yup from 'yup';
-import { urlTest } from '../../utils';
+// SPDX-License-Identifier: LicenseRef-Blockscout
 
-export const crossChainTxsSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: yup
-      .string()
-      .when('NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.test(
-          'not-exist',
-          'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST can only be used with NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED',
-          value => value === undefined,
-        ),
-      }),
-  });
+import * as v from 'valibot';
+
+import { envBoolean, envJson, envUrl, requiredIf, requires } from '../../utils';
+
+export const crossChainTxsSchema = v.pipe(
+  v.object({
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED: v.optional(envBoolean()),
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS: v.optional(envJson(v.array(v.number()))),
+    NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS: v.optional(envBoolean()),
+    NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST: v.optional(envUrl()),
+  }),
+  requires('NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requiredIf('NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requires('NEXT_PUBLIC_CROSS_CHAIN_TXS_INCLUDE_UNINDEXED_CHAINS', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+  requires('NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED'),
+);

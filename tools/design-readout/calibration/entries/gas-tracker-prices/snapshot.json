@@ -1,0 +1,523 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "22842:177328",
+  "capturedAt": "2026-10-08T09:19:29.866Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "22842:177328"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "22842:177331",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.1599999964237213
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1461,
+        "y": -526,
+        "width": 1115,
+        "height": 200
+      }
+    },
+    {
+      "id": "22842:177332",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.1599999964237213
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1461,
+        "y": -526,
+        "width": 1115,
+        "height": 200
+      }
+    },
+    {
+      "id": "22842:177342",
+      "values": {
+        "kind": "text",
+        "text": "Fast",
+        "font": {
+          "family": "Poppins",
+          "weight": 500,
+          "size": 24,
+          "lineHeight": 32
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1497,
+        "y": -502,
+        "width": 138,
+        "height": 32
+      }
+    },
+    {
+      "id": "22842:177350",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1497,
+        "y": -454,
+        "width": 39.9999885559082,
+        "height": 40
+      }
+    },
+    {
+      "id": "22842:177356",
+      "values": {
+        "kind": "text",
+        "text": "18 Gwei",
+        "font": {
+          "family": "Poppins",
+          "weight": 600,
+          "size": 48,
+          "lineHeight": 48
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1549,
+        "y": -458,
+        "width": 174,
+        "height": 48
+      }
+    },
+    {
+      "id": "I22842:177360;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "≈ $0.82 per transaction / 1s",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1497,
+        "y": -397,
+        "width": 184,
+        "height": 20
+      }
+    },
+    {
+      "id": "I22842:177361;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "Base 10 / Priority 8",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1497,
+        "y": -368,
+        "width": 126,
+        "height": 20
+      }
+    },
+    {
+      "id": "22842:177362",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#FFFFFF",
+            "alpha": 0.05999999865889549
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1832.6666259765625,
+        "y": -526,
+        "width": 371.66668701171875,
+        "height": 200
+      }
+    },
+    {
+      "id": "22842:177368",
+      "values": {
+        "kind": "text",
+        "text": "Normal",
+        "font": {
+          "family": "Poppins",
+          "weight": 500,
+          "size": 24,
+          "lineHeight": 32
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1868.6666259765625,
+        "y": -502,
+        "width": 90,
+        "height": 32
+      }
+    },
+    {
+      "id": "22842:177374",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          },
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1868.6666259765625,
+        "y": -454,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "id": "22842:177376",
+      "values": {
+        "kind": "text",
+        "text": "15 Gwei",
+        "font": {
+          "family": "Poppins",
+          "weight": 600,
+          "size": 48,
+          "lineHeight": 48
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1920.6666259765625,
+        "y": -458,
+        "width": 175,
+        "height": 48
+      }
+    },
+    {
+      "id": "I22842:177380;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "≈ $0.56 per transaction / 1s",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1868.6666259765625,
+        "y": -393,
+        "width": 185,
+        "height": 20
+      }
+    },
+    {
+      "id": "I22842:177381;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "Base 10 / Priority 6",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1868.6666259765625,
+        "y": -364,
+        "width": 126,
+        "height": 20
+      }
+    },
+    {
+      "id": "22842:177382",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#FFFFFF",
+            "alpha": 0.05999999865889549
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2204.33349609375,
+        "y": -526,
+        "width": 371.66668701171875,
+        "height": 200
+      }
+    },
+    {
+      "id": "22842:177388",
+      "values": {
+        "kind": "text",
+        "text": "Slow ",
+        "font": {
+          "family": "Poppins",
+          "weight": 500,
+          "size": 24,
+          "lineHeight": 32
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2240.33349609375,
+        "y": -502,
+        "width": 56,
+        "height": 32
+      }
+    },
+    {
+      "id": "22842:177389",
+      "values": {
+        "kind": "icon",
+        "icon": "up and down/up",
+        "colors": []
+      },
+      "bbox": {
+        "x": 2304.33349609375,
+        "y": -498,
+        "width": 63,
+        "height": 24
+      }
+    },
+    {
+      "id": "22842:177398",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          },
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2240.33349609375,
+        "y": -454,
+        "width": 40,
+        "height": 40
+      }
+    },
+    {
+      "id": "22842:177400",
+      "values": {
+        "kind": "text",
+        "text": "13 Gwei",
+        "font": {
+          "family": "Poppins",
+          "weight": 600,
+          "size": 48,
+          "lineHeight": 48
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2292.33349609375,
+        "y": -458,
+        "width": 172,
+        "height": 48
+      }
+    },
+    {
+      "id": "I22842:177404;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "≈ $0.36 per transaction / 1s",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2240.33349609375,
+        "y": -393,
+        "width": 185,
+        "height": 20
+      }
+    },
+    {
+      "id": "I22842:177405;1024:23743",
+      "values": {
+        "kind": "text",
+        "text": "Base 10 / Priority 3",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2240.33349609375,
+        "y": -364,
+        "width": 126,
+        "height": 20
+      }
+    },
+    {
+      "id": "22842:177494",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.1599999964237213
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1832.9999921756903,
+        "y": -526,
+        "width": 0.000007824309705029009,
+        "height": 200
+      }
+    },
+    {
+      "id": "22842:177495",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "border",
+            "hex": "#FFFFFF",
+            "alpha": 0.1599999964237213
+          }
+        ]
+      },
+      "bbox": {
+        "x": 2205.9999921756903,
+        "y": -526,
+        "width": 0.000007824309705029009,
+        "height": 200
+      }
+    }
+  ]
+}

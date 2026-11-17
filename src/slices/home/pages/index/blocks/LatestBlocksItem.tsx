@@ -41,12 +41,12 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
         <BlockEntity
           isLoading={ isLoading }
           number={ block.height }
-          tailLength={ 2 }
+          truncation={{ type: 'dynamic', tailLength: 2 }}
           textStyle="md"
           fontWeight={ 500 }
           mr="auto"
         />
-        { block.celo?.l1_era_finalized_epoch_number && (
+        { typeof block.celo?.l1_era_finalized_epoch_number === 'number' && (
           <Tooltip content={ `Finalized epoch #${ block.celo.l1_era_finalized_epoch_number }` }>
             <SpriteIcon name="checkered_flag" boxSize={ 5 } p="1px" ml={ 2 } isLoading={ isLoading } flexShrink={ 0 }/>
           </Tooltip>
@@ -86,7 +86,6 @@ const LatestBlocksItem = ({ block, isLoading, animation }: Props) => {
               address={ block.miner }
               isLoading={ isLoading }
               noIcon
-              noCopy
               truncation="constant"
             />
           </>

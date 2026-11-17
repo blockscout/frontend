@@ -193,7 +193,7 @@ export const recipe = defineSlotRecipe({
           _selected: {
             color: 'selected.control.text',
             bg: 'selected.control.bg',
-            borderColor: 'selected.control.bg',
+            borderColor: 'transparent',
             _hover: {
               color: 'selected.control.text',
             },

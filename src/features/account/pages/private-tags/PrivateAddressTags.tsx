@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
 import type { AddressTag } from 'src/features/account/types/api';
@@ -10,22 +9,22 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 import AccountPageDescription from 'src/features/account/components/AccountPageDescription';
 import { PRIVATE_TAG_ADDRESS } from 'src/features/account/stubs';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 
 import AddressModal from './AddressModal/AddressModal';
-import AddressTagListItem from './AddressTagTable/AddressTagListItem';
 import AddressTagTable from './AddressTagTable/AddressTagTable';
 import DeletePrivateTagModal from './DeletePrivateTagModal';
 
 const PrivateAddressTags = () => {
-  const { data: addressTagsData, isError, isPlaceholderData, refetch, pagination } = useQueryWithPages({
+  const { data: addressTagsData, isError, isInitialLoading, isTransitioning, refetch, pagination } = useApiPaginatedQuery({
     resourceName: 'core:private_tags_address',
     options: {
       refetchOnMount: false,
@@ -80,29 +79,19 @@ const PrivateAddressTags = () => {
         itemsNum={ addressTagsData?.items.length }
         emptyText=""
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
-        <Box display={{ base: 'block', lg: 'none' }}>
-          { addressTagsData?.items.map((item: AddressTag, index: number) => (
-            <AddressTagListItem
-              item={ item }
-              key={ item.id + (isPlaceholderData ? String(index) : '') }
-              onDeleteClick={ onDeleteClick }
-              onEditClick={ onEditClick }
-              isLoading={ isPlaceholderData }
-            />
-          )) }
-        </Box>
-        <Box display={{ base: 'none', lg: 'block' }}>
+        <TableContainerScrollable>
           <AddressTagTable
-            isLoading={ isPlaceholderData }
+            isLoading={ isInitialLoading }
             data={ addressTagsData?.items }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
-        </Box>
+        </TableContainerScrollable>
       </DataList>
-      <Skeleton mt={ 8 } loading={ isPlaceholderData } display="inline-block">
+      <Skeleton mt={ 8 } loading={ isInitialLoading } display="inline-block">
         <Button
           onClick={ addressModalProps.onOpen }
         >
@@ -112,7 +101,7 @@ const PrivateAddressTags = () => {
       <AddressModal
         { ...addressModalProps }
         data={ addressModalData }
-        pageType={ mixpanel.getPageType('/account/tag-address') }
+        pageType={ analytics.getPageType('/account/tag-address') }
         onOpenChange={ onAddressModalOpenChange }
         onSuccess={ onAddOrEditSuccess }
       />

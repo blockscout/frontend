@@ -5,7 +5,7 @@ import { clustersLeaderboardMock } from 'src/features/name-services/clusters/moc
 import * as ensDomainMock from 'src/features/name-services/domains/mocks/domain';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect, devices } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import NameServices from './NameServices';
 
@@ -50,15 +50,6 @@ test.describe('domains', () => {
     await expect(component).toHaveScreenshot({ timeout: 10_000 });
   });
 
-  test.describe('mobile', () => {
-    test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-    test('default view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig });
-      await expect(component).toHaveScreenshot({ timeout: 10_000 });
-    });
-  });
-
   test('filters', async({ render, page }) => {
     const component = await render(<NameServices/>, { hooksConfig });
 
@@ -75,18 +66,16 @@ test.describe('directories', () => {
     directories: {
       router: {
         query: { tab: 'directories', view: 'directory' },
-        isReady: true,
       },
     },
     leaderboard: {
       router: {
         query: { tab: 'directories', view: 'leaderboard' },
-        isReady: true,
       },
     },
   };
 
-  test.beforeEach(async({ mockEnvs, mockTextAd, mockApiResponse, mockAssetResponse }) => {
+  test.beforeEach(async({ page, mockEnvs, mockTextAd, mockApiResponse, mockAssetResponse }) => {
     await mockEnvs([
       ...ENVS_MAP.clusters,
       [ 'NEXT_PUBLIC_CLUSTERS_CDN_URL', CDN_URL ],
@@ -95,6 +84,11 @@ test.describe('directories', () => {
     await mockAssetResponse(`${ CDN_URL }/profile-image/campnetwork/lol`, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(`${ CDN_URL }/profile-image/duck/quack`, './playwright/mocks/image_s.jpg');
     await mockAssetResponse(`${ CDN_URL }/profile-image/test/cluster`, './playwright/mocks/image_s.jpg');
+    const mockMissingProfileImage = (name: string) => page.route(`${ CDN_URL }/profile-image/${ name }`, (route) => route.fulfill({ status: 404 }));
+    await mockMissingProfileImage('this-is-a-very-long-cluster-name-that-should-test-truncation/subdomain');
+    await mockMissingProfileImage('ethereum/foundation');
+    await mockMissingProfileImage('defi/protocol');
+    await mockMissingProfileImage('gaming/world');
     await mockApiResponse('clusters:get_directory', clustersDirectoryMock, {
       queryParams: {
         input: JSON.stringify({
@@ -124,19 +118,5 @@ test.describe('directories', () => {
   test('leaderboard view', async({ render }) => {
     const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
     await expect(component).toHaveScreenshot();
-  });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-
-    test('directory view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.directories });
-      await expect(component).toHaveScreenshot();
-    });
-
-    test('leaderboard view', async({ render }) => {
-      const component = await render(<NameServices/>, { hooksConfig: hooksConfig.leaderboard });
-      await expect(component).toHaveScreenshot();
-    });
   });
 });

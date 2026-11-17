@@ -70,6 +70,6 @@ Two consequences worth flagging as findings:
 - **`AGENTS.md` carries pointers, never mechanics.** It is always-loaded, so every session pays for it —
   including the majority that never touch the thing being explained. A *how* there is misfiled by
   construction.
-- **A statement naming a spec artefact** — subtask, leaf, tag, checkbox, breakdown — belongs to the
+- **A statement naming a spec artefact** — ticket, leaf, tag, checkbox, breakdown — belongs to the
   workflow layer, not to `delegation.md`, which must read correctly in a repo that never adopted the
   workflow.

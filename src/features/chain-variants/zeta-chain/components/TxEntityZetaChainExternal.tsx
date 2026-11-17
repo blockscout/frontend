@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
@@ -29,4 +28,4 @@ const TxEntityZetaChainExternal = (props: Props) => {
   return <TxEntity.default { ...props } href={ props.href ?? defaultHref } link={{ external: true }}/>;
 };
 
-export default chakra(TxEntityZetaChainExternal);
+export default TxEntityZetaChainExternal;

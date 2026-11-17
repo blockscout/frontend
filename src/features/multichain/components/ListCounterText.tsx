@@ -4,7 +4,7 @@ import React from 'react';
 
 import useIsInitialLoading from 'src/shared/hooks/useIsInitialLoading';
 
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   value: string | undefined;
@@ -23,15 +23,12 @@ const ListCounterText = ({ isLoading, value, type }: Props) => {
   const text = `A total of ${ valueNum.toLocaleString() } ${ valueNum === 1 ? type : `${ type }s` } found`;
 
   return (
-    <TruncatedText
-      text={ text }
-      loading={ isInitialLoading }
+    <Truncate value={ text } type="end" loading={ isInitialLoading }
       textStyle={{ base: 'md', lg: 'sm' }}
       color="text.secondary"
       ml={{ base: 0, lg: 6 }}
       mr={{ base: 0, lg: 8 }}
-      mb={{ base: 4, lg: 0 }}
-    />
+      mb={{ base: 4, lg: 0 }}/>
   );
 };
 

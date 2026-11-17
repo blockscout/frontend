@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
@@ -15,13 +14,14 @@ import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
 
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 import { TOKEN } from 'src/features/multichain/stubs';
 
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
-import useDebounce from 'src/shared/hooks/useDebounce';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 
@@ -32,31 +32,18 @@ const getChainIdFilterValue = (chainIds: Array<string>) => {
 };
 
 const MultichainTokens = () => {
-  const router = useRouter();
   const isMobile = useIsMobile();
 
   const chainConfigs = React.useMemo(() => {
     return multichainConfig()?.chains.map((chain) => chain.app_config);
   }, []);
 
-  const q = getQueryParamString(router.query.query);
-  const chainIdParam = getQueryParamString(router.query.chain_id);
+  const { chainValue: chainIds } = useChainValue({ withAllOption: true });
+  const chainIdFilter = React.useMemo(() => getChainIdFilterValue(chainIds), [ chainIds ]);
 
-  const [ chainIds, setChainIds ] = React.useState<Array<string>>(chainIdParam ? [ chainIdParam ] : [ 'all' ]);
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(
-    getTokenFilterValue(router.query.type, chainConfigs),
-  );
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-
-  const tokensQuery = useQueryWithPages({
+  const tokensQuery = useApiPaginatedQuery({
     resourceName: 'multichainAggregator:tokens',
-    filters: {
-      type: tokenTypes?.join(','),
-      chain_id: getChainIdFilterValue(chainIds),
-      query: debouncedSearchTerm,
-    },
+    queryParams: { chain_id: chainIdFilter },
     options: {
       placeholderData: generateListStub<'multichainAggregator:tokens'>(TOKEN['token'], 50, {
         next_page_params: {
@@ -68,32 +55,35 @@ const MultichainTokens = () => {
     },
   });
 
-  const handleTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
-    tokensQuery.onFilterChange({
-      type: value.join(','),
-      chain_id: getChainIdFilterValue(chainIds),
-      query: debouncedSearchTerm,
-    });
-    setTokenTypes(value);
-  }, [ tokensQuery, chainIds, debouncedSearchTerm ]);
+  const searchTerm = getQueryParamString(tokensQuery.filters.query);
+  const typeParam = tokensQuery.filters.type;
+  const tokenTypes = React.useMemo(() => getTokenFilterValue(typeParam, chainConfigs), [ typeParam, chainConfigs ]);
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    tokensQuery.onFilterChange({
+  const { onFilterChange } = tokensQuery;
+
+  const handleTokenTypesChange = React.useCallback((value: Array<TokenType>) => {
+    onFilterChange({
+      type: value.join(','),
+      chain_id: chainIdFilter,
+      query: searchTerm,
+    });
+  }, [ onFilterChange, chainIdFilter, searchTerm ]);
+
+  const handleSearchTermChange = useDebouncedFilterChange((value) => {
+    onFilterChange({
       type: tokenTypes?.join(','),
-      chain_id: getChainIdFilterValue(chainIds),
+      chain_id: chainIdFilter,
       query: value,
     });
-    setSearchTerm(value);
-  }, [ tokenTypes, tokensQuery, chainIds ]);
+  });
 
   const handleChainIdsChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    tokensQuery.onFilterChange({
+    onFilterChange({
       chain_id: getChainIdFilterValue(value),
       type: tokenTypes?.join(','),
-      query: debouncedSearchTerm,
+      query: searchTerm,
     });
-    setChainIds(value);
-  }, [ tokensQuery, tokenTypes, debouncedSearchTerm ]);
+  }, [ onFilterChange, tokenTypes, searchTerm ]);
 
   const filter = (
     <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>

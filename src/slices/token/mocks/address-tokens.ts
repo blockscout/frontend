@@ -49,6 +49,16 @@ export const erc20BigAmount: schemas['TokenBalance'] = {
   token_instance: null,
 };
 
+export const erc8056: schemas['TokenBalance'] = {
+  token: {
+    ...tokens.tokenInfoERC8056,
+    exchange_rate: '0.5',
+  },
+  token_id: null,
+  value: '1000000000000000000000',
+  token_instance: null,
+};
+
 export const erc721a: schemas['TokenBalance'] = {
   token: tokens.tokenInfoERC721a,
   token_id: null,
@@ -150,6 +160,13 @@ export const erc404List: paths['/api/v2/addresses/{address_hash_param}/tokens'][
   items: [
     erc404a,
     erc404b,
+  ],
+  next_page_params: null,
+};
+
+export const erc8056List: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
+  items: [
+    erc8056,
   ],
   next_page_params: null,
 };

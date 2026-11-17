@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import { L2_TXN_BATCH } from 'src/features/rollup/optimism/stubs';
+
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
+
+export default function useBatchQuery() {
+  const router = useRouter();
+  const number = getQueryParamString(router.query.number);
+  const height = getQueryParamString(router.query.height);
+  const commitment = getQueryParamString(router.query.commitment);
+
+  const batchByNumberQuery = useApiQuery('core:optimistic_l2_txn_batch', {
+    pathParams: { number },
+    queryOptions: {
+      enabled: Boolean(number),
+      placeholderData: L2_TXN_BATCH,
+    },
+  });
+
+  const batchByHeightQuery = useApiQuery('core:optimistic_l2_txn_batch_celestia', {
+    pathParams: { height, commitment },
+    queryOptions: {
+      enabled: Boolean(height && commitment),
+      placeholderData: L2_TXN_BATCH,
+    },
+  });
+
+  return number ? batchByNumberQuery : batchByHeightQuery;
+}

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Screen } from 'src/features/account/components/auth-modal/types';
@@ -10,7 +9,8 @@ import useProfileQuery from 'src/features/account/hooks/useProfileQuery';
 import useAccount from 'src/features/connect-wallet/hooks/useAccount';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { DrawerBody, DrawerContent, DrawerRoot, DrawerTrigger } from 'src/toolkit/chakra/drawer';
 import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
@@ -34,7 +34,7 @@ const UserProfileMobile = () => {
 
   const handleProfileButtonClick = React.useCallback(() => {
     if (profileQuery.data || web3Address) {
-      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
+      analytics.logEvent(analytics.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
       profileMenu.onOpen();
       return;
     }

@@ -26,6 +26,12 @@ export const CORE_API_TOKEN_RESOURCES = {
     filterFields: [],
     paginated: true,
   },
+  token_ui_multiplier_changes: {
+    path: '/api/v2/tokens/:hash/ui-multiplier-changes',
+    pathParams: [ 'hash' as const ],
+    filterFields: [],
+    paginated: true,
+  },
   token_transfers: {
     path: '/api/v2/tokens/:hash/transfers',
     pathParams: [ 'hash' as const ],
@@ -96,6 +102,7 @@ R extends 'core:token' ? paths['/api/v2/tokens/{address_hash_param}']['get'] :
 R extends 'core:token_counters' ? paths['/api/v2/tokens/{address_hash_param}/counters']['get'] :
 R extends 'core:token_transfers' ? paths['/api/v2/tokens/{address_hash_param}/transfers']['get'] :
 R extends 'core:token_holders' ? paths['/api/v2/tokens/{address_hash_param}/holders']['get'] :
+R extends 'core:token_ui_multiplier_changes' ? paths['/api/v2/tokens/{address_hash_param}/ui-multiplier-changes']['get'] :
 R extends 'core:token_instance' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}']['get'] :
 R extends 'core:token_instance_transfers_count' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers-count']['get'] :
 R extends 'core:token_instance_transfers' ? paths['/api/v2/tokens/{address_hash_param}/instances/{token_id_param}/transfers']['get'] :

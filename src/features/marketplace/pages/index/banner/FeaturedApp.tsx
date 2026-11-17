@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { useColorModeValue } from 'src/toolkit/chakra/color-mode';
 import { Heading } from 'src/toolkit/chakra/heading';
@@ -41,7 +41,7 @@ const FeaturedApp = ({
   const categoriesLabel = categories.join(', ');
 
   const handleInfoClick = useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
   }, [ id ]);
 
   const handleFavoriteClick = useCallback(() => {

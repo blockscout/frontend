@@ -1,0 +1,5 @@
+# Standalone project, deliberately outside the root workspace: react-doctor's dependencies would
+# otherwise re-key every eslint/vite/webpack entry in the root lockfile. See ./CONTEXT.md.
+packages: []
+
+minimumReleaseAge: 10080 # 1 week, same policy as the root workspace

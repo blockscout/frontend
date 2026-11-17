@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -11,6 +10,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import EpochRewardTypeTag from 'src/features/chain-variants/celo/components/EpochRewardTypeTag';
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
+import { route } from 'src/shared/router/routes';
 import TokenValue from 'src/shared/values/entity/TokenValue';
 
 import { Link } from 'src/toolkit/chakra/link';

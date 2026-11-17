@@ -13,7 +13,7 @@ import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import AddressNftItem from './AddressNftItem';
 import AddressNftTypeFilter from './AddressNftTypeFilter';
@@ -22,7 +22,7 @@ import AddressNftTypeFilter from './AddressNftTypeFilter';
 const INITIAL_RENDERED_ITEMS_NUM = 30;
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'core:address_nfts'>;
+  tokensQuery: ApiPaginatedQueryResult<'core:address_nfts'>;
   tokenTypes: Array<NftTokenType> | undefined;
   onTokenTypesChange: (value: Array<NftTokenType>) => void;
 };
@@ -31,11 +31,11 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
-  const { isError, isPlaceholderData, data, pagination } = tokensQuery;
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = tokensQuery;
 
   const { cutRef, renderedItemsNum } = useLazyRenderedList({
     list: data?.items,
-    isEnabled: !isPlaceholderData,
+    isEnabled: !isInitialLoading,
     minItemsNum: INITIAL_RENDERED_ITEMS_NUM,
     resetKey: tokensQuery.queryHash,
   });
@@ -58,14 +58,14 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
         gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
       >
         { data.items.slice(0, renderedItemsNum).map((item, index) => {
-          const key = item.token?.address_hash + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
+          const key = item.token?.address_hash + '_' + (item.id && !isInitialLoading ? `id_${ item.id }` : `index_${ index }`);
 
           return (
             <AddressNftItem
               key={ key }
               instance={ item }
               token={ item.token ?? undefined }
-              isLoading={ isPlaceholderData }
+              isLoading={ isInitialLoading }
               withTokenLink
               chain={ multichainContext?.chain }
             />
@@ -86,6 +86,7 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
       emptyStateProps={{
         term: 'token',
       }}
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

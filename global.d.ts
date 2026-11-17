@@ -3,6 +3,8 @@ import type { MultichainConfig } from 'src/features/multichain/types/client';
 import type { WalletProvider } from 'src/features/web3-wallet/types/wallet-provider';
 import 'vitest-fetch-mock';
 
+import type { MockUrlBuilder } from 'playwright/utils/mock-url-builder';
+
 declare global {
   export interface Window {
     ethereum?: WalletProvider | undefined;
@@ -16,6 +18,7 @@ declare global {
     };
     abkw: string;
     __envs: Record<string, string>;
+    __mockUrlBuilder: MockUrlBuilder;
     __primedFetches?: Map<string, { promise: Promise<Response>; headers: Record<string, string> }>;
     __multichainConfig?: MultichainConfig;
     __essentialDappsChains?: { chains: Array<EssentialDappsChainConfig> };

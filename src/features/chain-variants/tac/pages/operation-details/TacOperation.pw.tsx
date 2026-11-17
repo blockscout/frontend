@@ -20,7 +20,6 @@ test('base view +@dark-mode +@mobile', async({ render, mockTextAd, mockApiRespon
     { hooksConfig: {
       router: {
         query: { id: tacOperationMock.tacOperation.operation_id },
-        isReady: true,
       },
     } },
   );
@@ -35,7 +34,8 @@ test('pending operation', async({ render, mockTextAd, mockApiResponse, mockEnvs 
   await mockTextAd();
   await mockApiResponse('tac:operation', {
     ... tacOperationMock.tacOperation,
-    type: tac.OperationType.PENDING,
+    status: tac.V2OperationStatus.pending,
+    error_reason: undefined,
   }, {
     pathParams: { id: tacOperationMock.tacOperation.operation_id },
   });
@@ -45,7 +45,6 @@ test('pending operation', async({ render, mockTextAd, mockApiResponse, mockEnvs 
     { hooksConfig: {
       router: {
         query: { id: tacOperationMock.tacOperation.operation_id },
-        isReady: true,
       },
     } },
   );

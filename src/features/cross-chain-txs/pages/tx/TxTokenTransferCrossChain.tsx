@@ -1,55 +1,57 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TxQuery } from 'src/slices/tx/hooks/useTxQuery';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
-import TokenTransfersCrossChainList from '../../components/token-transfers/TokenTransfersCrossChainList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
+import CrossChainFilterTags from '../../components/filters/CrossChainFilterTags';
+import { hasActiveColumnFilters } from '../../components/filters/utils';
 import TokenTransfersCrossChainTable from '../../components/token-transfers/TokenTransfersCrossChainTable';
 
 interface Props {
   txQuery: TxQuery;
-  crossChainQuery: QueryWithPagesResult<'interchainIndexer:tx_transfers'>;
+  crossChainQuery: ApiPaginatedQueryResult<'interchainIndexer:tx_transfers'>;
   isLoading?: boolean;
   tableTop?: number;
+  actionBar?: React.ReactNode;
 }
 
-const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop }: Props) => {
+const TxTokenTransferCrossChain = ({ txQuery, crossChainQuery, isLoading, tableTop, actionBar }: Props) => {
   const content = crossChainQuery.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <TokenTransfersCrossChainList
-          items={ crossChainQuery.data.items }
-          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
-          resetKey={ crossChainQuery.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <TokenTransfersCrossChainTable
-          data={ crossChainQuery.data.items }
-          isLoading={ isLoading || crossChainQuery.isPlaceholderData }
-          top={ tableTop }
-          resetKey={ crossChainQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TokenTransfersCrossChainTable
+        data={ crossChainQuery.data.items }
+        isLoading={ isLoading || crossChainQuery.isInitialLoading }
+        top={ tableTop }
+        resetKey={ crossChainQuery.queryHash }
+        filters={ crossChainQuery.filters }
+        onFilterChange={ crossChainQuery.onFilterChange }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (
-    <DataList
-      isError={ txQuery.isError || crossChainQuery.isError }
-      itemsNum={ crossChainQuery.data?.items.length }
-      emptyText="There are no cross-chain token transfers."
-      emptyStateProps={{
-        term: 'token transfer',
-      }}
-    >
-      { content }
-    </DataList>
+    <>
+      <CrossChainFilterTags filters={ crossChainQuery.filters } onFilterChange={ crossChainQuery.onFilterChange } mb={ actionBar ? 6 : 3 }/>
+      <DataList
+        actionBar={ actionBar }
+        isError={ txQuery.isError || crossChainQuery.isError }
+        itemsNum={ crossChainQuery.data?.items.length }
+        emptyText="There are no cross-chain token transfers."
+        emptyStateProps={{
+          term: 'token transfer',
+        }}
+        hasActiveFilters={ hasActiveColumnFilters(crossChainQuery.filters) }
+        isTransitioning={ crossChainQuery.isTransitioning }
+      >
+        { content }
+      </DataList>
+    </>
   );
 };
 

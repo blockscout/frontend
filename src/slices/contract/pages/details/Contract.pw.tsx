@@ -7,6 +7,7 @@ import * as contractMethodsMock from 'src/slices/contract/mocks/methods';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect } from 'playwright/lib';
 
 import Contract from './Contract';
@@ -14,21 +15,22 @@ import Contract from './Contract';
 const hash = addressMock.contract.hash;
 
 test.describe('ABI functionality', () => {
-  test.beforeEach(async({ mockApiResponse }) => {
+  const mockContractData = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
     await mockApiResponse('core:address', addressMock.contract, { pathParams: { hash } });
     await mockApiResponse(
       'core:contract',
       { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] as Abi },
       { pathParams: { hash } },
     );
-  });
+  };
 
-  test('read', async({ render, createSocket }) => {
+  test('read', async({ render, createSocket, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'read_contract' },
       },
     };
+    await mockContractData(mockApiResponse);
     const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
@@ -38,13 +40,14 @@ test.describe('ABI functionality', () => {
     await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
 
-  test('read, no wallet client', async({ render, createSocket, mockEnvs }) => {
+  test('read, no wallet client', async({ render, createSocket, mockEnvs, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'read_contract' },
       },
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
+    await mockContractData(mockApiResponse);
     const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
@@ -54,12 +57,13 @@ test.describe('ABI functionality', () => {
     await expect(component.getByLabel('FLASHLOAN_PREMIUM_TOTAL').getByRole('button', { name: 'Read' })).toBeVisible();
   });
 
-  test('write', async({ render, createSocket }) => {
+  test('write', async({ render, createSocket, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'write_contract' },
       },
     };
+    await mockContractData(mockApiResponse);
     const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
@@ -74,13 +78,14 @@ test.describe('ABI functionality', () => {
     await expect(component.getByLabel('5.').getByRole('button', { name: 'Write' })).toBeEnabled();
   });
 
-  test('write, no wallet client', async({ render, createSocket, mockEnvs }) => {
+  test('write, no wallet client', async({ render, createSocket, mockEnvs, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'write_contract' },
       },
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
+    await mockContractData(mockApiResponse);
 
     const component = await render(<Contract addressData={ addressMock.contract }/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
@@ -99,19 +104,19 @@ test.describe('ABI functionality', () => {
 
 test.describe('auto verification status', () => {
   const addressData = { ...addressMock.contract, is_verified: false, implementations: [] };
-  let contractApiUrl: string;
 
-  test.beforeEach(async({ mockApiResponse }) => {
+  const mockContractData = async(mockApiResponse: TestFnArgs['mockApiResponse']) => {
     await mockApiResponse('core:address', addressData, { pathParams: { hash } });
-    contractApiUrl = await mockApiResponse('core:contract', contractInfoMock.nonVerified, { pathParams: { hash } });
-  });
+    return mockApiResponse('core:contract', contractInfoMock.nonVerified, { pathParams: { hash } });
+  };
 
-  test('base flow', async({ render, createSocket }) => {
+  test('base flow', async({ render, createSocket, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'contract' },
       },
     };
+    await mockContractData(mockApiResponse);
     const component = await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
@@ -122,12 +127,13 @@ test.describe('auto verification status', () => {
     await expect(tabs).toHaveScreenshot();
   });
 
-  test('after verification will refetch contract data', async({ page, render, createSocket }) => {
+  test('after verification will refetch contract data', async({ page, render, createSocket, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'contract' },
       },
     };
+    const contractApiUrl = await mockContractData(mockApiResponse);
     await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();
@@ -139,7 +145,7 @@ test.describe('auto verification status', () => {
     expect(contractRequest).toBeTruthy();
   });
 
-  test('with one tab', async({ render, createSocket, mockEnvs }) => {
+  test('with one tab', async({ render, createSocket, mockEnvs, mockApiResponse }) => {
     const hooksConfig = {
       router: {
         query: { hash, tab: 'contract' },
@@ -148,6 +154,7 @@ test.describe('auto verification status', () => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'false' ],
     ]);
+    await mockContractData(mockApiResponse);
     const component = await render(<Contract addressData={ addressData }/>, { hooksConfig }, { withSocket: true });
 
     const socket = await createSocket();

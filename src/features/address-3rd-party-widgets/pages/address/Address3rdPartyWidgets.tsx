@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Grid, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { route } from 'nextjs-routes';
 import { useMemo } from 'react';
 
 import type { Address3rdPartyWidget } from 'src/features/address-3rd-party-widgets/types/view';
 
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Link } from 'src/toolkit/chakra/link';
 

@@ -14,7 +14,7 @@ This skill declares new resource(s) in an **existing** service.
 (registration + dispatch-type branches) and a `src/api/config.ts` block; not covered here.
 
 **Out of scope — consuming the resource.** Wiring it into UI (`useApiQuery` /
-`useQueryWithPages`, stubs) is the caller's job; this skill only makes the resource exist and
+`useApiPaginatedQuery`, stubs) is the caller's job; this skill only makes the resource exist and
 be correctly typed.
 
 **Background reading:** *Where a resource's response types come from* in

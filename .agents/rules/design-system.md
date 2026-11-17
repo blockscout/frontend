@@ -79,6 +79,28 @@ Available `radii` tokens: `none`, `sm` (4px), `base` (8px), `md` (12px), `lg` (1
 
 Available `shadows` tokens: `size.xs`, `size.sm`, `size.base`, `size.md`, `size.lg`, `size.xl`, `size.2xl`, `action_bar`, `dark-lg`.
 
+## Styling components
+
+Use Chakra's style props and conditional styles where possible. Reach for the `css` prop only when there is
+no other way: a selector Chakra has no prop for, styling an external module's markup, or a non-literal value
+such as a recipe slot object (`css={ styles.cell }`).
+
+```tsx
+// BAD
+<Text css={{ contain: 'inline-size' }}>Label</Text>
+
+// GOOD
+<Text contain="inline-size">Label</Text>
+<Box css={{
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
+  '& > .external-module-classname': {
+    bg: 'white',
+  },
+}}>...</Box>
+```
+
 ## Text styles
 
 Do not set `fontSize` or `lineHeight` directly. Apply the appropriate `textStyle` token instead — it encodes both properties together along with `fontWeight` and `fontFamily`.

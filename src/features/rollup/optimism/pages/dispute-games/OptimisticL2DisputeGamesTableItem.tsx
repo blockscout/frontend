@@ -5,16 +5,16 @@ import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import BlockEntityL2 from 'src/features/rollup/common/components/BlockEntityL2';
-
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShorten from 'src/shared/texts/HashStringShorten';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+
+import OptimisticL2DisputeGameL2Position from './OptimisticL2DisputeGameL2Position';
 
 type Props = { item: schemas['OptimismGame']; isLoading?: boolean };
 
@@ -34,17 +34,13 @@ const OptimisticL2DisputeGamesTableItem = ({ item, isLoading }: Props) => {
       <TableCell verticalAlign="middle">
         <Flex overflow="hidden" w="100%" alignItems="center">
           <Skeleton loading={ isLoading }>
-            <HashStringShorten hash={ item.contract_address_hash } type="long"/>
+            <Truncate value={ item.contract_address_hash } type="middle-static" maxSymbols={ 16 }/>
           </Skeleton>
           <CopyToClipboard text={ item.contract_address_hash } ml={ 2 } isLoading={ isLoading }/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <BlockEntityL2
-          isLoading={ isLoading }
-          number={ item.l2_block_number }
-          noIcon
-        />
+        <OptimisticL2DisputeGameL2Position item={ item } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
         <TimeWithTooltip

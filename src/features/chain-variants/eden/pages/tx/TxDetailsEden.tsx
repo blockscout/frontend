@@ -12,7 +12,7 @@ import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 /** One call of a sponsored batch transaction. `to` is `null` for a contract-creation call. */
 type TransactionEdenCall = NonNullable<schemas['TransactionResponse']['calls']>[number];
@@ -47,7 +47,7 @@ const CallRow = ({ to, value, input, isLoading }: TransactionEdenCall & { isLoad
         <NativeCoinValue amount={ value } loading={ isLoading }/>
       </div>
       <Flex alignItems="flex-start" whiteSpace="normal" wordBreak="break-all">
-        <TruncatedText text={ input } loading={ isLoading }/>
+        <Truncate value={ input } type="end" loading={ isLoading }/>
         <CopyToClipboard text={ input } isLoading={ isLoading }/>
       </Flex>
     </>

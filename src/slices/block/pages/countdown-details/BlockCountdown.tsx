@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Center, Flex, Grid } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Box, Center, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -15,6 +14,8 @@ import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-e
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -23,7 +24,7 @@ import { Heading } from 'src/toolkit/chakra/heading';
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 import { downloadBlob } from 'src/toolkit/utils/file';
 
 import BlockCountdownTimer from './BlockCountdownTimer';
@@ -80,7 +81,7 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
             <Heading
               level="1"
             >
-              <TruncatedText text={ `Block #${ height }` } w="100%"/>
+              <Truncate value={ `Block #${ height }` } type="end" w="100%"/>
             </Heading>
             <Box mt={ 2 } color="text.secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
@@ -139,10 +140,10 @@ const BlockCountdown = ({ hideCapybaraRunner }: Props) => {
           value={ Math.ceil(Number(data.estimated_time_in_seconds)) }
           onFinish={ handleTimerFinish }
         />
-        <Grid gridTemplateColumns="repeat(2, calc(50% - 4px))" columnGap={ 2 } mt={ 2 }>
+        <StatsContainer mt={{ base: 1, lg: 2 }}>
           <StatsWidget label="Remaining blocks" value={ data.remaining_blocks_count } icon="apps"/>
           <StatsWidget label="Current block" value={ data.current_block_number } icon="block"/>
-        </Grid>
+        </StatsContainer>
         { !hideCapybaraRunner && <CapybaraRunner/> }
       </Flex>
     </Center>

@@ -28,12 +28,12 @@ const NavLinkGroup = ({ item }: Props) => {
     <HStack separator={ <Separator/> } alignItems="stretch">
       { item.subItems.map((subItem, index) => {
         if (!Array.isArray(subItem)) {
-          return <NavLink key={ subItem.text } item={ subItem }/>;
+          return <NavLink key={ subItem.text } item={ subItem } minH="48px"/>;
         }
 
         return (
           <chakra.ul key={ index } display="flex" flexDir="column" rowGap={ 1 }>
-            { subItem.map((navItem) => <NavLink key={ navItem.text } item={ navItem }/>) }
+            { subItem.map((navItem) => <NavLink key={ navItem.text } item={ navItem } minH="48px"/>) }
           </chakra.ul>
         );
       }) }
@@ -44,7 +44,7 @@ const NavLinkGroup = ({ item }: Props) => {
         if (Array.isArray(subItem)) {
           return null;
         }
-        return <NavLink key={ subItem.text } item={ subItem }/>;
+        return <NavLink key={ subItem.text } item={ subItem } minH="48px"/>;
       }) }
     </chakra.ul>
   );

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CctxListItem } from '@blockscout/zetachain-cctx-types';
@@ -13,7 +12,10 @@ import ZetaChainCCTXValue from 'src/features/chain-variants/zeta-chain/component
 
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 
+import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { SECOND } from 'src/toolkit/utils/consts';
+
+export const LATEST_ZETA_CHAIN_CCTXS_TABLE_MIN_WIDTH = '800px';
 
 type Props = {
   tx: CctxListItem;
@@ -23,35 +25,38 @@ type Props = {
 
 const LatestZetaChainCCTXItem = ({ tx, isLoading, animation }: Props) => {
   return (
-    <Grid
-      gridTemplateColumns="18px 120px 80px 350px auto"
-      gridGap={ 3 }
-      width="100%"
-      minW="740px"
-      borderBottom="1px solid"
-      borderColor="border.divider"
-      alignItems="center"
-      p={ 4 }
-      fontSize="sm"
-      animation={ animation }
-
-    >
-      <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading }/>
-      <TxEntityZetaChainCC truncation="constant" hash={ tx.index } isLoading={ isLoading } fontWeight={ 600 }/>
-      <TimeWithTooltip color="text.secondary" timestamp={ Number(tx.last_update_timestamp) * SECOND } isLoading={ isLoading } timeFormat="relative"/>
-      <AddressFromTo
-        from={{ hash: tx.sender_address, chainId: tx.source_chain_id.toString(), chainType: 'zeta' }}
-        to={{ hash: tx.receiver_address, chainId: tx.target_chain_id.toString(), chainType: 'zeta' }}
-        isLoading={ isLoading }
-      />
-      <ZetaChainCCTXValue
-        coinType={ tx.coin_type }
-        tokenSymbol={ tx.token_symbol }
-        amount={ tx.amount }
-        decimals={ tx.decimals }
-        isLoading={ isLoading }
-      />
-    </Grid>
+    <TableRow animation={ animation }>
+      <TableCell w="36px">
+        <ZetaChainCCTXReducedStatus status={ tx.status_reduced } isLoading={ isLoading }/>
+      </TableCell>
+      <TableCell w="160px">
+        <TxEntityZetaChainCC truncation="constant" hash={ tx.index } isLoading={ isLoading } fontWeight={ 600 }/>
+      </TableCell>
+      <TableCell w="92px">
+        <TimeWithTooltip
+          color="text.secondary"
+          timestamp={ Number(tx.last_update_timestamp) * SECOND }
+          isLoading={ isLoading }
+          timeFormat="relative"
+        />
+      </TableCell>
+      <TableCell w="362px">
+        <AddressFromTo
+          from={{ hash: tx.sender_address, chainId: tx.source_chain_id.toString(), chainType: 'zeta' }}
+          to={{ hash: tx.receiver_address, chainId: tx.target_chain_id.toString(), chainType: 'zeta' }}
+          isLoading={ isLoading }
+        />
+      </TableCell>
+      <TableCell>
+        <ZetaChainCCTXValue
+          coinType={ tx.coin_type }
+          tokenSymbol={ tx.token_symbol }
+          amount={ tx.amount }
+          decimals={ tx.decimals }
+          isLoading={ isLoading }
+        />
+      </TableCell>
+    </TableRow>
   );
 };
 

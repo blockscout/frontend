@@ -1,0 +1,19 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=21998-159259",
+  "nodeId": "I21998:159259;20539:210205;20534:197023",
+  "component": "src/slices/address/pages/details/info/AddressNetWorth.tsx",
+  "stale": false,
+  "cells": {
+    "I21998:159259;20539:210205;20534:197143": {
+      "component": "SimpleValue",
+      "props": {
+        "prefix": "$",
+        "overflowed": true
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    }
+  }
+}

@@ -1,14 +1,14 @@
 # *****************************
 # *** STAGE 0: Shared base ****
 # *****************************
-FROM node:22.14.0-alpine AS base
+FROM node:24.21.0-alpine AS base
 # corepack prepare makes a single network request to the npm registry and has no
 # built-in retry. Transient registry failures (HTTP 429, timeout, DNS) are not
 # uncommon, so retry with a linear backoff.
 RUN set -eu; \
     corepack enable; \
     n=0; \
-    until corepack prepare pnpm@11.5.1 --activate; do \
+    until corepack prepare pnpm@12.4.1 --activate; do \
       n=$((n + 1)); \
       if [ "$n" -ge 5 ]; then echo "corepack prepare failed after $n attempts" >&2; exit 1; fi; \
       echo "corepack prepare attempt $n failed, retrying in $((n * 10))s..." >&2; \
@@ -72,6 +72,9 @@ RUN pnpm run build
 RUN cd ./deploy/tools/feature-reporter && pnpm run build
 
 
+### ASSETS DOWNLOADER
+RUN cd ./deploy/tools/assets-downloader && pnpm run build
+
 ### ENV VARIABLES CHECKER
 RUN cd ./deploy/tools/envs-validator && pnpm run build
 
@@ -101,7 +104,7 @@ RUN pnpm exec tsc -p ./tools/dev-server/tsconfig.json
 # ******* STAGE 3: Run ********
 # *****************************
 # Production image, copy all the files and run next
-FROM node:22.14.0-alpine AS runner
+FROM node:24.21.0-alpine AS runner
 RUN apk add --no-cache --upgrade bash curl jq unzip
 
 ### APP
@@ -122,6 +125,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 
 # Copy tools
+COPY --from=builder /app/deploy/tools/assets-downloader/dist/index.js ./assets-downloader/index.js
 COPY --from=builder /app/deploy/tools/envs-validator/dist/index.js ./envs-validator/index.js
 COPY --from=builder /app/deploy/tools/feature-reporter/dist/index.js ./feature-reporter.js
 COPY --from=builder /app/deploy/tools/multichain-config-generator/dist ./deploy/tools/multichain-config-generator/dist
@@ -137,7 +141,7 @@ COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 ## OG image generator
-COPY ./deploy/scripts/og_image_generator.js .
+COPY ./deploy/tools/og-image-generator/index.js ./deploy/tools/og-image-generator/index.js
 ## Pro API support flag
 COPY --chmod=755 ./deploy/scripts/export_pro_api_flag.sh .
 ## Favicon generator

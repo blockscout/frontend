@@ -14,7 +14,7 @@ See `./rules/design-system.md` for Chakra UI v3 design system configuration and 
 
 ## Code Style & Quality
 
-See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch.
+See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch, and the complexity/CRAP scores.
 
 ## TypeScript Conventions
 
@@ -27,17 +27,18 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 ## Testing
 
 - Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose, setup, utilities, and conventions.
-- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for purpose, setup, fixtures, and conventions.
+- Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
 ## Running locally
 
-Three ways to start the dev server:
+Two ways to start the dev server:
 
 - `pnpm dev:preset <alias>` (e.g. `eth`) — the quickest way to a running app. Fetches a live instance's config over HTTP at startup, so it needs outbound internet. Aliases are defined in `tools/dev-server/registry.json`; how the fetch and env layering work is documented in `tools/dev-server/CONTEXT.md`.
-- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`.
-- `pnpm dev` — plain Next.js dev; needs a hand-written `.env.local` with the instance config.
+- `pnpm dev:local` — runs against a locally running Blockscout backend, using the committed `tools/dev-server/.env.localhost`. A hand-written instance config goes in `.env.local`, which wins over it.
 
-Both `dev:preset` and `dev:local` accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+Both accept `--port <number>` to run on a port other than 3000 (it overrides `NEXT_PUBLIC_APP_PORT`, keeping the generated `envs.js` consistent).
+
+`tools/dev-server/` also holds the local production build (`pnpm prod:preset`) and the local docker image (`pnpm build:docker`, `pnpm start:docker:*`) — everything that runs the app on this machine.
 
 Gotchas:
 
@@ -49,31 +50,38 @@ Gotchas:
 Some directories have a `CONTEXT.md` documenting non-obvious patterns specific to that area. Read the relevant one before working in (or reaching into) that directory:
 
 - `deploy/scripts/` — how the frontend container is built and starts up (Dockerfile stages, entrypoint).
-- `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against yup schemas.
+- `deploy/tools/envs-validator/` — startup validation of `NEXT_PUBLIC_*` envs against valibot schemas.
 - `src/api/` — how a request URL is assembled (resource registry, runtime config, `/node-api/config`) and where resource response types come from.
-- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists, and the connector-mode differences.
+- `src/config/` — the app-config convention (default-only exports, one import surface, envs read only in config modules), its ESLint enforcement and exemptions.
+- `src/features/connect-wallet/` — why the wallet stack is loaded lazily (off the critical path), how account state reaches boot-time consumers before a provider exists.
 - `src/server/primedRequests/` — the early-fetch primer: why it exists, the CSP-driven determinism constraint, its correctness guarantee, and the drift-test contract.
+- `src/shared/entities/` — the entity-link base: the root context and parts, the `defineEntity` contract, the chain rule, and what a definition must tolerate.
+- `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.
+- `src/shared/pagination/` — the paginated-list components and utils.
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
+- `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
+- `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
+- `tools/doc-links/` — the doc-link checker.
+- `tools/mutation-testing/` — the mutation-testing gate for unit-test assertion strength.
+- `tools/playwright/` — the runner for Playwright component tests.
 - `tools/profiling/` — React render profiling: production profiling build and DevTools trace aggregation.
+- `tools/react-doctor/` — the React Doctor PR gate: reading a failure, suppressing a finding, changing the rule allowlist.
 
-If you encounter a `CONTEXT.md` not listed here, read it too (and consider adding it to this list).
+See `./rules/docs.md` before adding or editing any doc about the code — a `CONTEXT.md`, a file under
+`docs/`, a module `README.md`.
 
-## Architecture decision records
+## Architecture decision records (ADRs)
 
-Decisions with repo-wide consequences are recorded in `.agents/adr/`, named
-`<0000>-<slug>.md`. Read the relevant one before changing what it decided — an ADR carries the
-evidence and the trade-off, so it answers "why is it like this?" without a git archaeology session.
+See `./rules/adr.md` when proposing or adding a new record.
 
-- `0001-webpack-for-production-builds.md` — why production bundles are built with webpack while dev stays on Turbopack.
-- `0002-layer-shaped-subtask-leaves.md` — why a product task's subtasks cut vertically while the leaves inside them run along layers.
+The repo-wide records index:
 
-Add a new record (next free number, and a line here) whenever a decision is expensive to rediscover:
-it constrains future work, was reached by measurement or an investigation worth not repeating, or
-looks wrong without its context. Supersede rather than rewrite — flip the old record's `Status` to
-`superseded by <n>` and leave its reasoning intact.
+- `0002-layer-shaped-ticket-leaves.md` — why a product task's tickets cut vertically while the leaves inside them run along layers.
+- `0003-turbopack-for-production-builds.md` — why production builds moved back to Turbopack.
+- `0004-typescript-7-side-by-side.md` — why `tsc` is TypeScript 7 while the `typescript` package is TypeScript 6, and when to collapse them.
 
 ## Product task workflow
 
@@ -86,7 +94,9 @@ implementation, code review. Specs accumulate in `.agents/tasks/` as a permanent
 Before changing anything under `.agents/`, read `./README.md` — it owns the layout, the dual-frontmatter
 rules contract, the per-file symlink Cursor needs, and how references here are checked.
 
-## Reaching people & channels on Slack
+## Slack: messages, people and channels
 
-To reach anyone or any channel on Slack, resolve the Slack IDs from `./TEAM.md`. Draft and get approval
-before sending anything — unless the skill you are running names an explicit exception.
+Text that will be read on Slack, whether you send it, draft it or return it for another agent
+to post: read `./slack-message.md` first (language, addressing, links, content, attribution).
+Slack IDs come from `./TEAM.md`. Draft and get approval before sending anything, unless the
+skill you are running names an explicit exception.

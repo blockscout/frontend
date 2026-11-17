@@ -1,0 +1,96 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=29167-7007",
+  "nodeId": "29167:7007",
+  "component": "src/features/rollup/optimism/pages/withdrawals/OptimisticL2WithdrawalsTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "I29167:7007;31015:32759": {
+      "component": "Skeleton",
+      "props": {
+        "display": "inline-block"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I29167:7007;31015:32763": {
+      "component": "AddressEntity",
+      "props": {
+        "truncation": "constant"
+      },
+      "status": "unrecognized"
+    },
+    "I29167:7007;31015:32765": {
+      "component": "AddressEntity",
+      "props": {
+        "truncation": "constant"
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I29167:7007;31015:32766": {
+      "component": "AddressEntity",
+      "props": {
+        "truncation": "constant"
+      },
+      "icon": "copy",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "I29167:7007;31015:32778": {
+      "component": "TxEntity",
+      "props": {
+        "truncation": "constant_long",
+        "noIcon": true
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "I29167:7007;31015:33335": {
+      "component": "TxEntity",
+      "props": {
+        "truncation": "constant_long",
+        "noIcon": true
+      },
+      "icon": "copy",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "I29167:7007;31015:32780;13460:162892": {
+      "component": "TimeWithTooltip",
+      "props": {
+        "fallbackText": "N/A",
+        "color": "text.secondary"
+      },
+      "shape": "relative-timestamp",
+      "color": {
+        "text": "text.secondary"
+      }
+    },
+    "I29167:7007;31015:33343": {
+      "component": "OptimisticL2WithdrawalsItemStatus",
+      "props": {},
+      "status": "unrecognized",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "I29167:7007;31015:32808": {
+      "component": "Skeleton",
+      "props": {
+        "color": "text.secondary"
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "text.secondary"
+      }
+    }
+  }
+}

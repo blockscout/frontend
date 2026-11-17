@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { FlashblockItem } from 'src/features/flashblocks/types/client';
@@ -9,6 +8,7 @@ import type { FlashblockItem } from 'src/features/flashblocks/types/client';
 import FlashblockEntity from 'src/features/flashblocks/components/FlashblockEntity';
 
 import Time from 'src/shared/date-and-time/Time';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';

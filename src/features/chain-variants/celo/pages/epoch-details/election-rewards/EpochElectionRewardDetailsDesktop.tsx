@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, Grid, GridItem, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -10,6 +9,7 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 
 import useLazyLoadedList from 'src/shared/pagination/useLazyLoadedList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import AssetValue from 'src/shared/values/entity/AssetValue';
 
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';

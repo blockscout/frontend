@@ -7,6 +7,9 @@ import { hasTokenIds, isConfidentialTokenType } from 'src/slices/token/utils/tok
 
 import TokenHoldersTableItem from 'src/slices/token/pages/details/holders/TokenHoldersTableItem';
 
+import { useMultichainContext } from 'src/features/multichain/context';
+
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -19,11 +22,19 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: schemas['TokenHolderResponse']): string => {
+  const tokenId = 'token_id' in item ? item.token_id : null;
+
+  return item.address.hash + tokenId;
+};
+
 const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => {
+  const chainData = useMultichainContext()?.chain;
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
-    <TableRoot>
+    <TableRoot minW="800px">
       <TableHeaderSticky top={ top }>
         <TableRow>
           <TableColumnHeader w="70%">Holder</TableColumnHeader>
@@ -35,12 +46,15 @@ const TokenHoldersTable = ({ data, token, top, isLoading, resetKey }: Props) => 
         </TableRow>
       </TableHeaderSticky>
       <TableBody>
-        { data.slice(0, renderedItemsNum).map((item, index) => {
-          const tokenId = 'token_id' in item ? item.token_id : null;
-          return (
-            <TokenHoldersTableItem key={ item.address.hash + tokenId + (isLoading ? index : '') } holder={ item } token={ token } isLoading={ isLoading }/>
-          );
-        }) }
+        { data.slice(0, renderedItemsNum).map((item, index) => (
+          <TokenHoldersTableItem
+            key={ keys[index] }
+            holder={ item }
+            token={ token }
+            chainData={ chainData }
+            isLoading={ isLoading }
+          />
+        )) }
         <TableRow ref={ cutRef }/>
       </TableBody>
     </TableRoot>

@@ -4,7 +4,7 @@ import type { BadgeProps as ChakraBadgeProps } from '@chakra-ui/react';
 import { chakra, Badge as ChakraBadge } from '@chakra-ui/react';
 import React from 'react';
 
-import { TruncatedTextTooltip } from '../components/truncation/TruncatedTextTooltip';
+import { OverflowTooltip } from '../components/truncation/OverflowTooltip';
 import { Skeleton } from './skeleton';
 
 export interface BadgeProps extends Omit<ChakraBadgeProps, 'colorScheme'> {
@@ -21,9 +21,9 @@ export const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
     const child = children ? <chakra.span overflow="hidden" textOverflow="ellipsis">{ children }</chakra.span> : null;
 
     const childrenElement = truncated ? (
-      <TruncatedTextTooltip label={ children }>
+      <OverflowTooltip content={ children }>
         { child }
-      </TruncatedTextTooltip>
+      </OverflowTooltip>
     ) : child;
 
     return (

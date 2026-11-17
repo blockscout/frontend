@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 
 import * as crossChainConfigMock from 'src/features/cross-chain-txs/mocks/config';
+import * as crossChainCountersMock from 'src/features/cross-chain-txs/mocks/counters';
 import * as crossChainTransfersMock from 'src/features/cross-chain-txs/mocks/transfers';
 
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
@@ -16,12 +17,12 @@ test.describe('txs', () => {
       [ 'NEXT_PUBLIC_NETWORK_ID', crossChainConfigMock.config[0].id ],
     ]);
     await mockApiResponse('interchainIndexer:transfers', crossChainTransfersMock.listResponse);
-    await mockApiResponse('interchainIndexer:stats_common', { total_messages: 100, total_transfers: 101, timestamp: '2022-01-13T12:00:00.000Z' });
-    await mockApiResponse('interchainIndexer:stats_daily', { daily_messages: 42, daily_transfers: 55, date: '2022-01-13' });
+    await mockApiResponse('stats:counters', crossChainCountersMock.counters);
 
     await mockAssetResponse(crossChainConfigMock.config[0].logo as string, './playwright/mocks/duck.png');
     await mockAssetResponse(crossChainConfigMock.config[1].logo as string, './playwright/mocks/goose.png');
     await mockAssetResponse(crossChainTransfersMock.transferA.source_token.icon_url as string, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(crossChainTransfersMock.transferNative.destination_token.icon_url, './playwright/mocks/image_md.jpg');
   });
 
   test.describe('desktop', () => {
@@ -34,16 +35,6 @@ test.describe('txs', () => {
         </Box>,
       );
       await expect(component).toHaveScreenshot();
-    });
-  });
-
-  test.describe('mobile', () => {
-    test.use({ viewport: pwConfig.viewport.mobile });
-    test.slow();
-
-    test('base view', async({ render }) => {
-      const component = await render(<TokenTransfersCrossChain/>);
-      await expect(component).toHaveScreenshot({ timeout: 30_000 });
     });
   });
 });

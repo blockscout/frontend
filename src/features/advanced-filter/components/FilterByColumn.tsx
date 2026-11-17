@@ -6,7 +6,7 @@ import type { AdvancedFilterParams } from '../types/api';
 import type { ColumnsIds } from '../types/client';
 import type { schemas } from '@blockscout/api-types';
 
-import TableColumnFilterWrapper from 'src/shared/filters/TableColumnFilterWrapper';
+import ColumnFilter from 'src/shared/filters/ColumnFilter';
 
 import { NATIVE_TOKEN } from '../utils/consts';
 import type { AddressFilterMode } from './filters/AddressFilter';
@@ -34,52 +34,50 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
     case 'type': {
       const value = filters.transaction_types;
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Type"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) }
         >
           <TypeFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'method': {
       const value = filters.methods?.map(m => ({ name: searchParams?.methods[m] || m, method_id: m }));
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Method"
           isLoading={ isLoading }
           selected={ Boolean(value && value.length) }
-          w="350px"
         >
           <MethodFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'age': {
       const value = { age: filters.age || '' as const, from: filters.age_from || '', to: filters.age_to || '' };
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Age"
           isLoading={ isLoading }
           selected={ Boolean(value.from || value.to || value.age) }
-          w="382px"
         >
           <AgeFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'or_and': {
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="And/Or"
           isLoading={ isLoading }
           selected
-          w="106px"
+          contentProps={{ w: '106px' }}
           value={ filters.address_relation === 'and' ? 'AND' : 'OR' }
         >
           <AddressRelationFilter { ...commonProps } value={ filters.address_relation }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'from': {
@@ -88,14 +86,14 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
 
       const value = (valueInclude || []).concat(valueExclude || []);
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Address from"
           isLoading={ isLoading }
           selected={ Boolean(value.length) }
-          w="480px"
+          contentProps={{ w: '480px' }}
         >
           <AddressFilter { ...commonProps } type="from" value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
 
     }
@@ -105,27 +103,26 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
 
       const value = (valueInclude || []).concat(valueExclude || []);
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Address to"
           isLoading={ isLoading }
           selected={ Boolean(value.length) }
-          w="480px"
+          contentProps={{ w: '480px' }}
         >
           <AddressFilter { ...commonProps } type="to" value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'amount': {
       const value = { from: filters.amount_from, to: filters.amount_to };
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Amount"
           isLoading={ isLoading }
           selected={ Boolean(value.from || value.to) }
-          w="382px"
         >
           <AmountFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     case 'asset': {
@@ -145,14 +142,13 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
         value.unshift({ token: NATIVE_TOKEN, mode: 'exclude' });
       }
       return (
-        <TableColumnFilterWrapper
+        <ColumnFilter
           columnName="Asset"
           isLoading={ isLoading }
           selected={ Boolean(value.length) }
-          w="382px"
         >
           <AssetFilter { ...commonProps } value={ value }/>
-        </TableColumnFilterWrapper>
+        </ColumnFilter>
       );
     }
     default: {

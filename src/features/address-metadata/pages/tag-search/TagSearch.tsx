@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MetadataTag as TMetadataTag, MetadataTagType } from '../../components/tag/types';
@@ -13,14 +12,15 @@ import { TOP_ADDRESS } from 'src/slices/address/stubs/address';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import MetadataTag from '../../components/tag/MetadataTag';
-import TagSearchListItem from './TagSearchListItem';
 import TagSearchTable from './TagSearchTable';
 
 const TagSearch = () => {
@@ -30,9 +30,9 @@ const TagSearch = () => {
   const tagType = getQueryParamString(router.query.tagType);
   const tagName = getQueryParamString(router.query.tagName);
 
-  const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = useApiPaginatedQuery({
     resourceName: 'core:addresses_metadata_search',
-    filters: {
+    queryParams: {
       slug,
       tag_type: tagType,
     },
@@ -48,26 +48,13 @@ const TagSearch = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideBelow="lg">
-        <TagSearchTable
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          items={ data.items }
-          isLoading={ isPlaceholderData }
-        />
-      </Box>
-      <Box hideFrom="lg">
-        { data.items.map((item, index) => {
-          return (
-            <TagSearchListItem
-              key={ item.hash + (isPlaceholderData ? index : '') }
-              item={ item }
-              isLoading={ isPlaceholderData }
-            />
-          );
-        }) }
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TagSearchTable
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        items={ data.items }
+        isLoading={ isInitialLoading }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {
@@ -86,14 +73,14 @@ const TagSearch = () => {
 
     return (
       <Flex alignItems="center" columnGap={ 2 } flexWrap="wrap" rowGap={ 1 }>
-        <Skeleton loading={ isPlaceholderData } display="inline-block">
+        <Skeleton loading={ isInitialLoading } display="inline-block">
           Found{ ' ' }
           <chakra.span fontWeight={ 700 }>
             { num }{ data?.next_page_params || pagination.page > 1 ? '+' : '' }
           </chakra.span>{ ' ' }
           matching result{ num > 1 ? 's' : '' } for
         </Skeleton>
-        <MetadataTag data={ tagData } isLoading={ isPlaceholderData } noLink/>
+        <MetadataTag data={ tagData } isLoading={ isInitialLoading } noLink/>
       </Flex>
     );
   })();
@@ -108,6 +95,7 @@ const TagSearch = () => {
         itemsNum={ data?.items.length }
         emptyText={ text }
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

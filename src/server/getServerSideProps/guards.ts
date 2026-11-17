@@ -1,14 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
-import type { Route } from 'nextjs-routes';
 
 import type { RollupType } from 'src/features/rollup/common/types/config';
 
 import type { Props } from 'src/server/getServerSideProps/handlers';
 
+import { SERVICE_TAG_TYPE } from 'src/features/address-metadata/utils/is-hidden-tag';
+
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
+import { route } from 'src/shared/router/routes';
+import type { Route } from 'src/shared/router/routes';
 
 export type Guard = (chainConfig: typeof config) => <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext) =>
 Promise<GetServerSidePropsResult<Props<Pathname>> | undefined>;
@@ -39,7 +42,7 @@ export const accountAuth0: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const verifiedAddresses: Guard = (chainConfig: typeof config) => async() => {
-  if (!getFeaturePayload(chainConfig.features.account)?.addressVerificationEnabled) {
+  if (!getFeaturePayload(chainConfig.features.account)?.verifiedAddresses?.isEnabled) {
     return {
       notFound: true,
     };
@@ -123,7 +126,7 @@ export const accounts: Guard = (chainConfig: typeof config) => async() => {
 };
 
 export const accountsLabelSearch: Guard = (chainConfig: typeof config) => async(context) => {
-  if (!chainConfig.features.addressMetadata.isEnabled || !context.query.tagType) {
+  if (!chainConfig.features.addressMetadata.isEnabled || !context.query.tagType || context.query.tagType === SERVICE_TAG_TYPE) {
     return {
       notFound: true,
     };
@@ -354,4 +357,24 @@ export const megaEth: Guard = () => async() => {
       notFound: true,
     };
   }
+};
+
+export const blocks: Guard = (chainConfig: typeof config) => async(context) => {
+  const feature = chainConfig.features.flashblocks;
+  const tab = context.query.tab;
+  if (!feature.isEnabled || typeof tab !== 'string') {
+    return;
+  }
+
+  const [ canonicalTabId, ...aliasTabIds ] = feature.tabIds;
+  if (!aliasTabIds.some((id) => id === tab)) {
+    return;
+  }
+
+  return {
+    redirect: {
+      destination: route({ pathname: '/blocks', query: { ...context.query, tab: canonicalTabId } }),
+      permanent: false,
+    },
+  };
 };

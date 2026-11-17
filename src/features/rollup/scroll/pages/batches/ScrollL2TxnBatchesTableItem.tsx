@@ -1,18 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
+import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import BatchEntityL2 from 'src/features/rollup/common/components/BatchEntityL2';
-import BlockEntityL1 from 'src/features/rollup/common/components/BlockEntityL1';
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import ScrollL2TxnBatchDA from 'src/features/rollup/scroll/components/ScrollL2TxnBatchDA';
 import ScrollL2TxnBatchStatus from 'src/features/rollup/scroll/components/ScrollL2TxnBatchStatus';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
@@ -44,17 +46,21 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <ScrollL2TxnBatchStatus status={ item.confirmation_transaction.hash ? 'Finalized' : 'Committed' } isLoading={ isLoading }/>
       </TableCell>
       <TableCell verticalAlign="middle">
-        <BlockEntityL1
+        <BlockEntity
           number={ item.commitment_transaction.block_number }
           isLoading={ isLoading }
+          noIcon
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle">
-        <TxEntityL1
+        <TxEntity
           hash={ item.commitment_transaction.hash }
           isLoading={ isLoading }
           truncation="constant_long"
           noCopy
+          noIcon
+          chain={ parentChain }
         />
       </TableCell>
       <TableCell verticalAlign="middle">
@@ -67,19 +73,23 @@ const ScrollL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.confirmation_transaction.block_number ? (
-          <BlockEntityL1
+          <BlockEntity
             number={ item.confirmation_transaction.block_number }
             isLoading={ isLoading }
+            noIcon
+            chain={ parentChain }
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </TableCell>
       <TableCell verticalAlign="middle">
         { item.confirmation_transaction.hash ? (
-          <TxEntityL1
+          <TxEntity
             hash={ item.confirmation_transaction.hash }
             isLoading={ isLoading }
             truncation="constant_long"
             noCopy
+            noIcon
+            chain={ parentChain }
           />
         ) : <Skeleton loading={ isLoading } display="inline-block">Pending</Skeleton> }
       </TableCell>

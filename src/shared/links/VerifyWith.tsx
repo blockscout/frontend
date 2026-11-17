@@ -22,7 +22,13 @@ const VerifyWith = ({ className, links, label, longText, shortText }: Props) => 
   const popover = useDisclosure();
 
   return (
-    <PopoverRoot open={ popover.open } onOpenChange={ popover.onOpenChange }>
+    <PopoverRoot
+      open={ popover.open }
+      onOpenChange={ popover.onOpenChange }
+      // We render links to the partner pages in the popover body.
+      // So it has to be mounted immediately, so search engines can index the links.
+      lazyMount={ false }
+    >
       <Tooltip content={ label } disabled={ popover.open } disableOnMobile closeOnClick>
         <Box className={ className }>
           <PopoverTrigger>

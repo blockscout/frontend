@@ -55,25 +55,55 @@ npm-debug.log*
 # compiled dev-server fetch script
 /tools/dev-server/fetch.js
 
+# compiled preset-list sync tool
+/tools/dev-server/sync-presets/dist/
+
+# compiled code-complexity gate
+/tools/code-complexity/dist/
+
+# compiled doc-link checker
+/tools/doc-links/dist/
+
+# react-doctor standalone install (not part of the root workspace)
+/tools/react-doctor/node_modules/
+
+# compiled React profile aggregator
+/tools/profiling/dist/
+
+# mutation-testing per-run compile output, reports, Stryker's sandbox and the run lock
+/tools/mutation-testing/.build.*/
+/tools/mutation-testing/reports/
+/tools/mutation-testing/.stryker-tmp/
+/tools/mutation-testing/.lock
+
+# compiled Playwright runner
+/tools/playwright/dist/
+
+# compiled design-readout CLI
+/tools/design-readout/dist/
+
+# compiled release tool
+/tools/release/dist/
+
 # typescript
 *.tsbuildinfo
 
 .eslintcache
 
 **.decrypted~**
-/test-results/
+/playwright-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
-/playwright/affected-tests.txt
+/.playwright-mcp/
 
 **.dec**
 
 # build outputs
 /toolkit/package/dist
 license.json
-release-prs-data.json
 
 .ai
+/ds-bundle

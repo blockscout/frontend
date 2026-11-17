@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
@@ -21,9 +20,10 @@ import AdvancedFilterLink from 'src/features/advanced-filter/components/Advanced
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
@@ -38,9 +38,9 @@ const TransactionsZetaChain = () => {
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
-  const txsWithBlobsQuery = useQueryWithPages({
+  const txsWithBlobsQuery = useApiPaginatedQuery({
     resourceName: 'core:txs',
-    filters: { type: 'blob_transaction' },
+    queryParams: { type: 'blob_transaction' },
     options: {
       enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
       placeholderData: generateListStub<'core:txs'>(TX_ITEM, 50, { next_page_params: {
@@ -51,7 +51,7 @@ const TransactionsZetaChain = () => {
     },
   });
 
-  const txsWatchlistQuery = useQueryWithPages({
+  const txsWatchlistQuery = useApiPaginatedQuery({
     resourceName: 'core:txs_watchlist',
     options: {
       enabled: tab === 'watchlist',

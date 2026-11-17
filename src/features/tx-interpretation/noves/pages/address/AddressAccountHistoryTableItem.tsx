@@ -16,7 +16,7 @@ import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { SECOND } from 'src/toolkit/utils/consts';
 
 type Props = {
-  isPlaceholderData: boolean;
+  isLoading: boolean;
   tx: NovesResponseData;
   currentAddress: string;
 };
@@ -34,14 +34,14 @@ const AddressAccountHistoryTableItem = (props: Props) => {
       <TableCell px={ 3 } py="18px" fontSize="sm" >
         <TimeWithTooltip
           timestamp={ props.tx.rawTransactionData.timestamp * SECOND }
-          isLoading={ props.isPlaceholderData }
+          isLoading={ props.isLoading }
           color="text.secondary"
           borderRadius="sm"
           flexShrink={ 0 }
         />
       </TableCell>
       <TableCell px={ 3 } py="18px" fontSize="sm" >
-        <Skeleton borderRadius="sm" loading={ props.isPlaceholderData }>
+        <Skeleton borderRadius="sm" loading={ props.isLoading }>
           <Box display="flex">
             <SpriteIcon
               name="lightning"
@@ -64,7 +64,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
       </TableCell>
       <TableCell px={ 3 } py="18px" fontSize="sm">
         <Box flexShrink={ 0 } >
-          <NovesFromTo txData={ props.tx } currentAddress={ props.currentAddress } isLoaded={ !props.isPlaceholderData }/>
+          <NovesFromTo txData={ props.tx } currentAddress={ props.currentAddress } isLoaded={ !props.isLoading }/>
         </Box>
       </TableCell>
     </TableRow>

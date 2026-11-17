@@ -18,9 +18,9 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import { generateFlowViewData } from '../../utils/generateFlowViewData';
-import TxAssetFlowsList from './TxAssetFlowsList';
 import TxAssetFlowsTable from './TxAssetFlowsTable';
 
 interface FlowViewProps {
@@ -78,23 +78,13 @@ export default function TxAssetFlows(props: FlowViewProps) {
   );
 
   const content = data ? (
-    <>
-      <Box hideFrom="lg">
-        <TxAssetFlowsList
-          items={ data }
-          isPlaceholderData={ isPlaceholderData }
-          resetKey={ resetKey }
-        />
-      </Box>
-
-      <Box hideBelow="lg">
-        <TxAssetFlowsTable
-          items={ data }
-          isPlaceholderData={ isPlaceholderData }
-          resetKey={ resetKey }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <TxAssetFlowsTable
+        items={ data }
+        isPlaceholderData={ isPlaceholderData }
+        resetKey={ resetKey }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (

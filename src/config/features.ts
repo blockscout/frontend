@@ -10,6 +10,7 @@ export { default as alternativeExplorers } from 'src/features/alternative-explor
 export { default as apiDocs } from 'src/features/api-docs/config';
 export { default as beaconChain } from 'src/features/chain-variants/beacon-chain/config';
 export { default as bridgedTokens } from 'src/features/bridged-tokens/config';
+export { default as bubblemaps } from 'src/features/bubblemaps/config';
 export { default as connectWallet } from 'src/features/connect-wallet/config';
 export { default as celo } from 'src/features/chain-variants/celo/config';
 export { default as crossChainTxs } from 'src/features/cross-chain-txs/config';
@@ -36,6 +37,7 @@ export { default as sol2uml } from 'src/features/sol2uml/config';
 export { default as stats } from 'src/features/chain-stats/config';
 export { default as suave } from 'src/features/chain-variants/suave/config';
 export { default as tac } from 'src/features/chain-variants/tac/config';
+export { default as tokenActionButton } from 'src/features/token-action-button/config';
 export { default as txInterpretation } from 'src/features/tx-interpretation/common/config';
 export { default as userOps } from 'src/features/user-ops/config';
 export { default as addressProfileAPI } from 'src/features/address-profile-api/config';

@@ -123,22 +123,26 @@ export const recipe = defineSlotRecipe({
         root: {
           bgColor: 'tag.root.filter.bg',
         },
+        closeTrigger: {
+          '--close-button-icon-size': '12px',
+        },
       },
       select: {
         root: {
           cursor: 'pointer',
-          bgColor: 'tag.root.select.bg',
-          color: 'tag.root.select.fg',
+          bgColor: 'transparent',
+          color: 'text.primary',
+          border: '2px solid',
+          borderColor: 'tag.root.select.border',
           _hover: {
             color: 'hover',
-            opacity: 0.76,
           },
           _selected: {
-            bgColor: 'selected.option.bg',
-            color: 'whiteAlpha.800',
+            bgColor: 'selected.control.bg',
+            color: 'selected.control.text',
+            borderColor: 'transparent',
             _hover: {
-              color: 'whiteAlpha.800',
-              opacity: 0.76,
+              color: 'selected.control.text',
             },
           },
         },

@@ -1,47 +1,52 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import { getTokenHoldersStub } from 'src/slices/token/stubs';
-
+import BubblemapsMap from 'src/features/bubblemaps/components/BubblemapsMap';
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 
-import ApiFetchAlert from 'src/shared/alerts/ApiFetchAlert';
-import DataList from 'src/shared/lists/DataList';
+import config from 'src/config';
+import useIsMobile from 'src/shared/hooks/useIsMobile';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
+
+import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import TokenHoldersList from './TokenHoldersList';
-import TokenHoldersTable from './TokenHoldersTable';
+import { useTokenHoldersQuery } from './useTokenHoldersQuery';
+
+export const TOKEN_HOLDERS_TAB_IDS = [ 'holders_address' as const, 'holders_bubblemaps' as const ];
+
+const TAB_LIST_PROPS = {
+  marginBottom: 0,
+  pt: 6,
+  pb: 3,
+  marginTop: -6,
+};
 
 interface Props {
   token: schemas['Token'] | undefined;
-  tokenId?: string;
   isLoading: boolean;
-};
+  tokenId?: string;
+}
 
-const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
+const TokenHolders = ({ token, isLoading, tokenId }: Props) => {
+  const router = useRouter();
+  const isMobile = useIsMobile();
+  const tab = getQueryParamString(router.query.tab);
 
-  const holdersQuery = useQueryWithPages({
-    resourceName: tokenId ? 'core:token_instance_holders' : 'core:token_holders',
-    pathParams: { hash: token?.address_hash, id: tokenId },
-    options: {
-      enabled: Boolean(token?.address_hash) && !isLoading,
-      placeholderData: getTokenHoldersStub(token?.type, null),
-    },
-  });
+  const hasBubblemapsTab = config.features.bubblemaps.isEnabled && (isLoading || token?.type === 'ERC-20');
+  const isAddressTab = !hasBubblemapsTab || tab === 'holders_address' || tab === 'holders';
 
-  if (holdersQuery.isError) {
-    return <ApiFetchAlert/>;
-  }
+  const holdersQuery = useTokenHoldersQuery({ token, tokenId, enabled: !isLoading && isAddressTab });
 
-  const actionBar = (
-    <ActionBar mt={ -6 }>
+  const controls = (
+    <>
       { token && (
         <CsvExport
           type="token_holders"
@@ -53,43 +58,49 @@ const TokenHolders = ({ token, tokenId, isLoading }: Props) => {
         />
       ) }
       { holdersQuery.pagination.isVisible && <Pagination ml="auto" { ...holdersQuery.pagination }/> }
-    </ActionBar>
+    </>
   );
 
-  const items = holdersQuery.data?.items;
-
-  const content = items && token ? (
-    <>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <TokenHoldersTable
-          data={ items }
-          token={ token }
-          top={ ACTION_BAR_HEIGHT_DESKTOP }
-          isLoading={ holdersQuery.isPlaceholderData }
-          resetKey={ holdersQuery.queryHash }
-        />
-      </Box>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        <TokenHoldersList
-          data={ items }
-          token={ token }
-          isLoading={ holdersQuery.isPlaceholderData }
-          resetKey={ holdersQuery.queryHash }
-        />
-      </Box>
-    </>
+  const addressActionBar = isMobile ? (
+    <ActionBar>
+      { controls }
+    </ActionBar>
   ) : null;
 
+  const tabs = [
+    {
+      id: 'holders_address',
+      title: 'Address',
+      component: <TokenHoldersList token={ token } query={ holdersQuery } actionBar={ addressActionBar }/>,
+    },
+    hasBubblemapsTab ? {
+      id: 'holders_bubblemaps',
+      title: 'Bubblemaps',
+      component: token ? <BubblemapsMap key={ token.address_hash } hash={ token.address_hash } isLoading={ isLoading }/> : null,
+    } : null,
+  ].filter(Boolean);
+
+  const rightSlot = isAddressTab && !isMobile ? controls : null;
+
+  const rightSlotProps = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    ml: { base: 0, lg: hasBubblemapsTab ? 4 : 0 },
+    widthAllocation: 'available' as const,
+  };
+
   return (
-    <DataList
-      isError={ holdersQuery.isError }
-      itemsNum={ holdersQuery.data?.items.length }
-      emptyText="There are no holders for this token."
-      actionBar={ actionBar }
-    >
-      { content }
-    </DataList>
+    <RoutedTabs
+      variant="secondary"
+      isLoading={ isLoading }
+      size="sm"
+      tabs={ tabs }
+      rightSlot={ rightSlot }
+      rightSlotProps={ rightSlotProps }
+      listProps={ isMobile ? undefined : TAB_LIST_PROPS }
+      stickyEnabled={ !isMobile && isAddressTab }
+    />
   );
 };
 
-export default TokenHolders;
+export default React.memo(TokenHolders);

@@ -8,9 +8,9 @@ import useFlashblocksSocketData from 'src/features/flashblocks/hooks/useFlashblo
 import config from 'src/config';
 
 import { Switch } from 'src/toolkit/chakra/switch';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { Hint } from 'src/toolkit/components/Hint/Hint';
 
-import FlashblocksList from './FlashblocksList';
 import FlashblocksStats from './FlashblocksStats';
 import FlashblocksTable from './FlashblocksTable';
 
@@ -53,22 +53,14 @@ const Flashblocks = () => {
           label={ `Real-time ${ flashblocksFeature.name }s show the latest ${ flashblocksFeature.name }s with real-time updates in the chronological order. ` }
         />
       </HStack>
-      <Box hideBelow="lg">
+      <TableContainerScrollable>
         <FlashblocksTable
           items={ items }
           newItemsNum={ newItemsNum }
           onAlertLinkClick={ handleAlertLinkClick }
           showAlertError={ showAlertError }
         />
-      </Box>
-      <Box hideFrom="lg">
-        <FlashblocksList
-          data={ items }
-          newItemsNum={ newItemsNum }
-          onAlertLinkClick={ handleAlertLinkClick }
-          showAlertError={ showAlertError }
-        />
-      </Box>
+      </TableContainerScrollable>
     </Box>
   );
 };

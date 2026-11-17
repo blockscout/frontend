@@ -21,7 +21,7 @@ import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 import MyProfileEmail from './MyProfileEmail';
 import MyProfileWallet from './MyProfileWallet';
 
-const MIXPANEL_CONFIG = {
+const ANALYTICS_CONFIG = {
   wallet_connect: {
     source: 'Profile' as const,
   },
@@ -63,7 +63,7 @@ const MyProfile = () => {
             <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
         </Flex>
         { authModal.open && authInitialScreen &&
-          <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose } mixpanelConfig={ MIXPANEL_CONFIG }/> }
+          <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose } analyticsConfig={ ANALYTICS_CONFIG }/> }
       </>
     );
   })();

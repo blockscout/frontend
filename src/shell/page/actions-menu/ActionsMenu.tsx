@@ -1,15 +1,15 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ItemProps } from './types';
 
 import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { IconButton } from 'src/toolkit/chakra/icon-button';
@@ -36,7 +36,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   const isTxPage = router.pathname === '/tx/[hash]';
 
   const handleButtonClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
 
   const items = [
@@ -46,7 +46,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: config.features.account.isEnabled && isTokenPage && getFeaturePayload(config.features.account)?.addressVerificationEnabled,
+      enabled: config.features.account.isEnabled && isTokenPage && getFeaturePayload(config.features.account)?.verifiedAddresses?.isEnabled,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,

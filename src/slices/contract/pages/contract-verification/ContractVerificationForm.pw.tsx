@@ -90,6 +90,10 @@ test('flatten source code method +@dark-mode +@mobile', async({ render, page }) 
 
   await page.getByRole('textbox', { name: 'Contract code' }).fill('test');
 
+  // The cursor is left where the "Add item" button was clicked. Which "Library address" input ends up
+  // under it depends on the scroll offset at capture time, so park it over the empty right margin.
+  await page.mouse.move(1190, 740);
+
   await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
 

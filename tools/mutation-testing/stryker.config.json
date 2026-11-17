@@ -1,0 +1,68 @@
+{
+  "$schema": "../../node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "vitest": {
+    "configFile": "tools/mutation-testing/vitest.config.ts"
+  },
+  "plugins": [
+    "@stryker-mutator/vitest-runner"
+  ],
+  "reporters": [ "json", "html", "stream" ],
+  "jsonReporter": {
+    "fileName": "tools/mutation-testing/reports/mutation.json"
+  },
+  "htmlReporter": {
+    "fileName": "tools/mutation-testing/reports/mutation.html"
+  },
+  "tempDirName": "tools/mutation-testing/.stryker-tmp",
+  "ignoreStatic": true,
+  "timeoutMS": 60000,
+  "dryRunTimeoutMinutes": 15,
+  "mutator": {
+    "excludedMutations": [
+      "ArrayDeclaration",
+      "ArrowFunction",
+      "AssignmentOperator",
+      "BlockStatement",
+      "CallExpression",
+      "MethodExpression",
+      "ObjectLiteral",
+      "OptionalChaining",
+      "Regex",
+      "StringLiteral",
+      "UnaryOperator",
+      "UpdateOperator"
+    ]
+  },
+  "ignorePatterns": [
+    "**",
+    "!/src/**",
+    "!/tools/**",
+    "!/deploy/scripts/make_envs_script.sh",
+    "!/deploy/tools/assets-downloader/**",
+    "!/deploy/tools/envs-validator/**",
+    "!/docs/BUILD-TIME_ENVS.md",
+    "!/docs/DEPRECATED_ENVS.md",
+    "!/docs/ENVS.md",
+    "!/docs/PULL_REQUEST_TEMPLATE.md",
+    "!/docs/RELEASING.md",
+    "!/vitest/**",
+    "!/decs.d.ts",
+    "!/global.d.ts",
+    "!/next-types.d.ts",
+    "!/package.json",
+    "!/pnpm-workspace.yaml",
+    "!/reset.d.ts",
+    "!/tsconfig.json",
+    "!/vitest.config.ts",
+    "**/node_modules",
+    "**/node_modules_linux",
+    "**/dist",
+    "tools/mutation-testing/.build.*",
+    "tools/mutation-testing/.stryker-tmp",
+    "tools/mutation-testing/reports",
+    "tools/mutation-testing/.lock",
+    "**/*.pw.tsx"
+  ]
+}

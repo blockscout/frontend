@@ -11,7 +11,7 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   data: ValidatorBlackfort;
@@ -30,7 +30,7 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
       </TableCell>
       <TableCell verticalAlign="middle">
         <Flex>
-          <TruncatedText text={ data.name } loading={ isLoading }/>
+          <Truncate value={ data.name } type="end" loading={ isLoading }/>
         </Flex>
       </TableCell>
       <TableCell verticalAlign="middle" isNumeric>

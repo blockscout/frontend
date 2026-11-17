@@ -9,7 +9,7 @@ import { test, expect } from 'playwright/lib';
 
 import UserOps from './UserOps';
 
-test('base view +@mobile', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
+test('base view', async({ render, mockEnvs, mockTextAd, mockApiResponse }) => {
   test.slow();
   await mockEnvs(ENVS_MAP.userOps);
   await mockTextAd();

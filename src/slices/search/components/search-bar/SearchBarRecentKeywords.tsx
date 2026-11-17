@@ -8,10 +8,10 @@ import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchK
 import TextAd from 'src/features/ads/text/components/TextAd';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { ClearButton } from 'src/toolkit/components/buttons/ClearButton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 type Props = {
   onClick: (kw: string) => void;
@@ -87,7 +87,7 @@ const SearchBarRecentKeywords = ({ onClick, onClear }: Props) => {
           >
             { kw.startsWith('0x') ? (
               <Box overflow="hidden" whiteSpace="nowrap">
-                <HashStringShortenDynamic hash={ kw } noTooltip/>
+                <Truncate value={ kw } tooltip={ false }/>
               </Box>
             ) :
               <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ kw }</Text>

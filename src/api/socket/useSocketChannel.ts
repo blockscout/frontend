@@ -41,13 +41,6 @@ export default function useSocketChannel({ topic, params, isDisabled, onJoin, on
   }, [ onSocketClose, onSocketError, socket, isDisabled ]);
 
   useEffect(() => {
-    if (isDisabled && channel) {
-      channel.leave();
-      setChannel(undefined);
-    }
-  }, [ channel, isDisabled ]);
-
-  useEffect(() => {
     if (!socket || isDisabled || !topic || !channelRegistry) {
       return;
     }

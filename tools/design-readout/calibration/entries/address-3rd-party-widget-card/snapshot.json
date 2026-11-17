@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "I21998:159259;20539:210205;27896:45000;27896:44423",
+  "capturedAt": "2026-10-08T09:19:01.543Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52867"
+  ],
+  "frameBackground": {
+    "role": "background",
+    "hex": "#101112",
+    "alpha": 0.03999999910593033
+  },
+  "leaves": [
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52869",
+      "values": {
+        "kind": "text",
+        "text": "149",
+        "font": {
+          "family": "Poppins",
+          "weight": 500,
+          "size": 32,
+          "lineHeight": 40
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 751,
+        "y": 177,
+        "width": 52,
+        "height": 40
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52871",
+      "values": {
+        "kind": "text",
+        "text": "Builder score",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 751,
+        "y": 221,
+        "width": 87,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52872",
+      "values": {
+        "kind": "icon",
+        "icon": "Info Square",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 842,
+        "y": 221,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52874",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "border",
+            "hex": "#101112",
+            "alpha": 0.03999999910593033
+          }
+        ]
+      },
+      "bbox": {
+        "x": 751,
+        "y": 253,
+        "width": 149,
+        "height": 28
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:53460",
+      "values": {
+        "kind": "icon",
+        "icon": "Widgets_app_logos",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#262621",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 751,
+        "y": 261,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52894",
+      "values": {
+        "kind": "text",
+        "text": "Talent Protocol",
+        "font": {
+          "family": "Inter",
+          "weight": 400,
+          "size": 12,
+          "lineHeight": 16
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#718096",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 779,
+        "y": 263,
+        "width": 86,
+        "height": 16
+      }
+    },
+    {
+      "id": "I21998:159259;20539:210205;27896:45000;27896:44423;27805:52898",
+      "values": {
+        "kind": "icon",
+        "icon": "send",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 888,
+        "y": 265,
+        "width": 12,
+        "height": 12
+      }
+    }
+  ]
+}

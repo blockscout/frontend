@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box, chakra } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
-import { SEARCH_RESULT_TYPES } from '../../utils/result-types';
 import type { SearchResultItem } from 'src/slices/search/types/client';
 
 import HeaderAlert from 'src/shell/header/HeaderAlert';
@@ -19,6 +17,7 @@ import { useSettingsContext } from 'src/shell/top-bar/settings/context';
 import SearchBarSuggestBlockCountdown from 'src/slices/search/components/search-bar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'src/slices/search/hooks/useSearchQuery';
 import type { SearchResultAppItem } from 'src/slices/search/utils/search-categories';
+import { buildFutureBlockItem, getRedirectRoute, isDisplayableResultItem } from 'src/slices/search/utils/search-results';
 
 import ExternalSearchItem from 'src/features/chain-variants/zeta-chain/components/ExternalSearchItem';
 import useMarketplaceApps from 'src/features/marketplace/hooks/useMarketplaceApps';
@@ -29,16 +28,17 @@ import AppErrorBoundary from 'src/shared/errors/AppErrorBoundary';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import removeQueryParam from 'src/shared/router/remove-query-param';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { ContentLoader } from 'src/toolkit/components/loaders/ContentLoader';
 import * as regexp from 'src/toolkit/utils/regexp';
 
 import SearchResultsInput from './SearchResultsInput';
-import SearchResultsList from './SearchResultsList';
 import SearchResultsTable from './SearchResultsTable';
 
-const nameServicesFeature = config.features.nameServices;
+const EMPTY_ITEMS: Array<SearchResultItem> = [];
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
@@ -47,15 +47,15 @@ const SearchResultsPageContent = () => {
     query,
     redirectCheckQuery,
     searchTerm,
-    debouncedSearchTerm,
+    appliedSearchTerm,
     handleSearchTermChange,
     zetaChainCCTXQuery,
     externalSearchItem,
   } = useSearchQuery(withRedirectCheck);
-  const { data, isError, isPlaceholderData, pagination } = query;
+  const { data, isError, isInitialLoading, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
-  const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
+  const marketplaceApps = useMarketplaceApps(appliedSearchTerm);
   const settingsContext = useSettingsContext();
 
   const handleNavigateToResults = React.useCallback((searchTerm: string) => {
@@ -67,95 +67,39 @@ const SearchResultsPageContent = () => {
       return;
     }
 
-    if (!debouncedSearchTerm) {
+    if (!appliedSearchTerm) {
       setShowContent(true);
       return;
     }
 
-    if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
-      switch (redirectCheckQuery.data.type) {
-        case 'block': {
-          router.replace({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'address': {
-          router.replace({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'transaction': {
-          router.replace({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
-        }
-        case 'user_operation': {
-          if (config.features.userOps.isEnabled) {
-            router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-        case 'blob': {
-          if (config.features.dataAvailability.isEnabled) {
-            router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-        case 'ens_domain': {
-          const feature = config.features.nameServices;
-          if (feature.isEnabled && feature.ens.isEnabled) {
-            router.replace({ pathname: '/name-services/domains/[name]', query: { name: redirectCheckQuery.data.parameter } });
-            return;
-          }
-          break;
-        }
-      }
+    const redirectRoute = getRedirectRoute(redirectCheckQuery.data);
+    if (redirectRoute) {
+      router.replace(redirectRoute);
+      return;
     }
 
     if (!redirectCheckQuery.isPending) {
       setShowContent(true);
       removeQueryParam(router, 'redirect');
     }
-  }, [ redirectCheckQuery, router, debouncedSearchTerm, showContent ]);
+  }, [ redirectCheckQuery, router, appliedSearchTerm, showContent ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   }, [ ]);
 
-  const isLoading = marketplaceApps.isPlaceholderData || isPlaceholderData;
+  const isLoading = marketplaceApps.isPlaceholderData || isInitialLoading;
 
   const displayedItems: Array<SearchResultItem | SearchResultAppItem> = React.useMemo(() => {
-    const apiData = (data?.items || []).filter((item) => {
-      if (!SEARCH_RESULT_TYPES.includes(item.type)) {
-        return false;
-      }
-      if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
-        return false;
-      }
-      if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
-        return false;
-      }
-      if ((!nameServicesFeature.isEnabled || !nameServicesFeature.ens.isEnabled) && item.type === 'ens_domain') {
-        return false;
-      }
-      if (!config.features.tac.isEnabled && item.type === 'tac_operation') {
-        return false;
-      }
-      return true;
-    });
+    const apiData = (data?.items ?? EMPTY_ITEMS).filter(isDisplayableResultItem);
 
-    const futureBlockItem = !isPlaceholderData &&
-      pagination.page === 1 &&
-      !data?.next_page_params &&
-      apiData.length > 0 &&
-      !apiData.some(({ type }) => type === 'block') &&
-      regexp.BLOCK_HEIGHT.test(debouncedSearchTerm) ?
-      {
-        type: 'block' as const,
-        block_type: 'block' as const,
-        block_number: debouncedSearchTerm,
-        block_hash: '',
-        timestamp: undefined,
-      } : undefined;
+    const futureBlockItem = buildFutureBlockItem({
+      searchTerm: appliedSearchTerm,
+      items: apiData,
+      isFirstPage: pagination.page === 1,
+      isLastPage: !data?.next_page_params,
+      isLoading: isInitialLoading,
+    });
 
     return [
       ...(pagination.page === 1 && !isLoading ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
@@ -171,9 +115,9 @@ const SearchResultsPageContent = () => {
   }, [
     data?.items,
     data?.next_page_params,
-    isPlaceholderData,
+    isInitialLoading,
     pagination.page,
-    debouncedSearchTerm,
+    appliedSearchTerm,
     marketplaceApps.displayedApps,
     isLoading,
     zetaChainCCTXQuery.data,
@@ -189,27 +133,16 @@ const SearchResultsPageContent = () => {
     }
 
     return (
-      <>
-        <Box hideFrom="lg">
-          <SearchResultsList
-            items={ displayedItems }
-            searchTerm={ debouncedSearchTerm }
-            isLoading={ isLoading }
-            addressFormat={ settingsContext?.addressFormat }
-            resetKey={ `${ query.queryHash }:${ debouncedSearchTerm }` }
-          />
-        </Box>
-        <Box hideBelow="lg">
-          <SearchResultsTable
-            items={ displayedItems }
-            searchTerm={ debouncedSearchTerm }
-            isLoading={ isLoading }
-            addressFormat={ settingsContext?.addressFormat }
-            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-            resetKey={ `${ query.queryHash }:${ debouncedSearchTerm }` }
-          />
-        </Box>
-      </>
+      <TableContainerScrollable>
+        <SearchResultsTable
+          items={ displayedItems }
+          searchTerm={ appliedSearchTerm }
+          isLoading={ isLoading }
+          addressFormat={ settingsContext?.addressFormat }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          resetKey={ `${ query.queryHash }:${ appliedSearchTerm }` }
+        />
+      </TableContainerScrollable>
     );
   })();
 
@@ -237,10 +170,10 @@ const SearchResultsPageContent = () => {
               { resultsCount }
             </chakra.span>
             <span> matching result{ (((displayedItems.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
-            "<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>"
+            "<chakra.span fontWeight={ 700 }>{ appliedSearchTerm }</chakra.span>"
           </Box>
-          { resultsCount === 0 && regexp.BLOCK_HEIGHT.test(debouncedSearchTerm) &&
-            <SearchBarSuggestBlockCountdown blockHeight={ debouncedSearchTerm } mt={ -4 }/> }
+          { resultsCount === 0 && regexp.BLOCK_HEIGHT.test(appliedSearchTerm) &&
+            <SearchBarSuggestBlockCountdown blockHeight={ appliedSearchTerm } mt={ -4 }/> }
         </>
       );
     })();

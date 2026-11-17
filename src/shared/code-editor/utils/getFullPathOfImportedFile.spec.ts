@@ -101,4 +101,48 @@ describe('correctly manages remappings', () => {
 
     expect(result).toBe('/@base58-solidity/Base58.sol');
   });
+
+  it('with an empty remappings list', () => {
+    expect(getFullPathOfImportedFile('/index.sol', 'abc/contract.sol', [])).toBe('/abc/contract.sol');
+  });
+
+  it('when no remapping matches', () => {
+    expect(getFullPathOfImportedFile('/index.sol', 'abc/contract.sol', [ '@openzeppelin/=node_modules/@openzeppelin/' ])).toBe('/abc/contract.sol');
+  });
+
+  it('when the matching remapping has no target', () => {
+    expect(getFullPathOfImportedFile('/index.sol', 'abc/contract.sol', [ 'abc/' ])).toBe('/abc/contract.sol');
+  });
+
+  it('when the remapping target is already absolute', () => {
+    expect(getFullPathOfImportedFile('/index.sol', 'abc/contract.sol', [ 'abc/=/lib/abc/' ])).toBe('/lib/abc/contract.sol');
+  });
+
+  it('when several remappings match, taking the first', () => {
+    const result = getFullPathOfImportedFile(
+      '/module_1/index.sol',
+      'abc/contract.sol',
+      [ '/module_1/:abc/=first/', 'abc/=second/' ],
+    );
+
+    expect(result).toBe('/first/contract.sol');
+  });
+});
+
+it('returns undefined if the path climbs above the root before descending', () => {
+  const result = getFullPathOfImportedFile(
+    '/foo/index.sol',
+    './../../abc/contract.sol',
+  );
+
+  expect(result).toBeUndefined();
+});
+
+it('resolves a parent directory reference in the middle of the path', () => {
+  const result = getFullPathOfImportedFile(
+    'foo/bar/index.sol',
+    './abc/../contract.sol',
+  );
+
+  expect(result).toBe('/foo/bar/contract.sol');
 });

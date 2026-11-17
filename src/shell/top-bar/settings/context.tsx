@@ -8,7 +8,8 @@ import { useAppContext } from 'src/shell/app/context';
 
 import * as cookies from 'src/shared/storage/cookies';
 
-import type { TimeFormat } from './time-format/utils';
+import type { ColorThemeId } from './fields/color-theme/config';
+import type { TimeFormat } from './fields/time-format/utils';
 
 interface SettingsProviderProps {
   children: React.ReactNode;
@@ -21,6 +22,8 @@ interface TSettingsContext {
   toggleTimeFormat: () => void;
   isLocalTime: boolean;
   toggleIsLocalTime: () => void;
+  colorTheme: ColorThemeId | undefined;
+  setColorTheme: (value: ColorThemeId) => void;
 }
 
 export const SettingsContext = React.createContext<TSettingsContext | null>(null);
@@ -41,29 +44,25 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
     (cookies.get(cookies.NAMES.LOCAL_TIME, appCookies) ?? 'true') === 'true',
   );
 
+  const [ colorTheme, setColorTheme ] = React.useState<ColorThemeId>();
+
   const toggleAddressFormat = React.useCallback(() => {
-    setAddressFormat(prev => {
-      const nextValue = prev === 'base16' ? 'bech32' : 'base16';
-      cookies.set(cookies.NAMES.ADDRESS_FORMAT, nextValue);
-      return nextValue;
-    });
-  }, []);
+    const nextValue = addressFormat === 'base16' ? 'bech32' : 'base16';
+    cookies.set(cookies.NAMES.ADDRESS_FORMAT, nextValue);
+    setAddressFormat(nextValue);
+  }, [ addressFormat ]);
 
   const toggleTimeFormat = React.useCallback(() => {
-    setTimeFormat(prev => {
-      const nextValue = prev === 'relative' ? 'absolute' : 'relative';
-      cookies.set(cookies.NAMES.TIME_FORMAT, nextValue);
-      return nextValue;
-    });
-  }, []);
+    const nextValue = timeFormat === 'relative' ? 'absolute' : 'relative';
+    cookies.set(cookies.NAMES.TIME_FORMAT, nextValue);
+    setTimeFormat(nextValue);
+  }, [ timeFormat ]);
 
   const toggleIsLocalTime = React.useCallback(() => {
-    setIsLocalTime(prev => {
-      const nextValue = !prev;
-      cookies.set(cookies.NAMES.LOCAL_TIME, nextValue ? 'true' : 'false');
-      return nextValue;
-    });
-  }, []);
+    const nextValue = !isLocalTime;
+    cookies.set(cookies.NAMES.LOCAL_TIME, nextValue ? 'true' : 'false');
+    setIsLocalTime(nextValue);
+  }, [ isLocalTime ]);
 
   const value = React.useMemo(() => {
     return {
@@ -73,8 +72,10 @@ export function SettingsContextProvider({ children }: SettingsProviderProps) {
       toggleTimeFormat,
       isLocalTime,
       toggleIsLocalTime,
+      colorTheme,
+      setColorTheme,
     };
-  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat, isLocalTime, toggleIsLocalTime ]);
+  }, [ addressFormat, toggleAddressFormat, timeFormat, toggleTimeFormat, isLocalTime, toggleIsLocalTime, colorTheme ]);
 
   return (
     <SettingsContext.Provider value={ value }>

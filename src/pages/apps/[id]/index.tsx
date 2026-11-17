@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import dynamic from 'next/dynamic';
-import type { Route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'src/server/types';
@@ -10,6 +9,8 @@ import type { Props } from 'src/server/getServerSideProps/handlers';
 import PageNextJs from 'src/server/PageNextJs';
 
 import LayoutApp from 'src/shell/layout/LayoutApp';
+
+import type { Route } from 'src/shared/router/routes';
 
 const MarketplaceAppPage = dynamic(() => import('src/features/marketplace/pages/dapp/MarketplaceApp'), { ssr: false });
 

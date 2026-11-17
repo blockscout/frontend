@@ -3,7 +3,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 interface Props {
   label: string;
@@ -18,14 +18,11 @@ const BlockCountdownTimerItem = ({ label, value }: Props) => {
       overflow="hidden"
       flex="1 1 auto"
     >
-      <TruncatedText
-        text={ value }
-        fontFamily="heading"
+      <Truncate value={ value } type="end" fontFamily="heading"
         fontSize={{ base: '40px', lg: '48px' }}
         lineHeight="48px"
         fontWeight={ 600 }
-        w="100%"
-      />
+        w="100%"/>
       <Box fontSize="sm" lineHeight="20px" mt={ 1 } color="text.secondary">{ label }</Box>
     </Box>
   );

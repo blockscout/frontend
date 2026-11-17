@@ -4,12 +4,14 @@ import React from 'react';
 import type { BlockBaseFeeCelo } from 'src/features/chain-variants/celo/types/api';
 
 import * as blockMock from 'src/slices/block/mocks/details';
+import * as tokenMock from 'src/slices/token/mocks/info';
 
 import { test, expect } from 'playwright/lib';
 
 import BlockDetailsBaseFeeCelo from './BlockDetailsBaseFeeCelo';
 
-test('base view +@mobile', async({ render }) => {
+test('base view +@mobile', async({ render, mockAssetResponse }) => {
+  await mockAssetResponse(tokenMock.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_s.jpg');
   const component = await render(
     <Grid
       columnGap={ 8 }

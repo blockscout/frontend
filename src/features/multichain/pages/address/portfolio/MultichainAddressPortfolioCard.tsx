@@ -12,7 +12,7 @@ import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import { formatPercentage } from './utils';
 
@@ -63,7 +63,7 @@ const MultichainAddressPortfolioCard = ({ chain, value, share, isLoading, isSele
     >
       <ChainIcon data={ chain } boxSize="30px" flexShrink={ 0 } isLoading={ isLoading } noTooltip/>
       <VStack alignItems="flex-start" gap={ 1 } overflow="hidden">
-        <TruncatedText text={ chain.name } loading={ isLoading } color="text.secondary" maxW="100%"/>
+        <Truncate value={ chain.name } type="end" loading={ isLoading } color="text.secondary" maxW="100%"/>
         <HStack gap={ 1 } maxW="100%">
           <SimpleValue value={ value } prefix="$" loading={ isLoading } noTooltip accuracy={ DEFAULT_ACCURACY_USD }/>
           { share !== undefined && share > 0 && (

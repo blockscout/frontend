@@ -7,14 +7,14 @@ import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
 import useTxsSort from 'src/slices/tx/hooks/useTxsSort';
 
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import TxsContent from './TxsContent';
 
 type Props = {
-  query: QueryWithPagesResult<'core:txs'> |
-    QueryWithPagesResult<'core:txs_watchlist'> |
-    QueryWithPagesResult<'core:block_txs'>;
+  query: ApiPaginatedQueryResult<'core:txs'> |
+    ApiPaginatedQueryResult<'core:txs_watchlist'> |
+    ApiPaginatedQueryResult<'core:block_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;
@@ -22,6 +22,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
+  withBlockSort?: boolean;
 };
 
 const TxsWithFrontendSorting = ({
@@ -33,8 +34,9 @@ const TxsWithFrontendSorting = ({
   currentAddress,
   enableTimeIncrement,
   top,
+  withBlockSort,
 }: Props) => {
-  const { data, isPlaceholderData, isError, setSortByValue, sorting } = useTxsSort(query);
+  const { data, isError, setSortByValue, sorting } = useTxsSort(query, withBlockSort);
 
   return (
     <TxsContent
@@ -46,12 +48,14 @@ const TxsWithFrontendSorting = ({
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }
       items={ data?.items }
-      isPlaceholderData={ isPlaceholderData }
+      isInitialLoading={ query.isInitialLoading }
+      isTransitioning={ query.isTransitioning }
       isError={ isError }
       setSorting={ setSortByValue }
       sort={ sorting }
       pagination={ query.pagination }
       resetKey={ query.queryHash }
+      withBlockSort={ withBlockSort }
     />
   );
 };

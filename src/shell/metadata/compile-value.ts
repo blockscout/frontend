@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-export default function compileValue(template: { 'default': string; enhanced?: string }, params: Record<string, string | Array<string> | undefined>) {
+import type { TemplateValue } from './types';
+
+export default function compileValue(template: TemplateValue, params: Record<string, string | Array<string> | undefined>) {
   const PLACEHOLDER_REGEX = /%(\w+)%/g;
 
   const enhancedPlaceholders = (() => {

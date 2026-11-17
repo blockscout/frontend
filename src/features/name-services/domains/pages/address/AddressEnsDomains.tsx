@@ -3,7 +3,6 @@
 import { Box, Flex, Grid, chakra } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { clamp } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
@@ -13,6 +12,7 @@ import type { ResourceError } from 'src/api/resources';
 import EnsEntity from 'src/features/name-services/domains/components/EnsEntity';
 
 import dayjs from 'src/shared/date-and-time/dayjs';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';

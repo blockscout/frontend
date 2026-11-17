@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { AddressTokenItem } from 'src/features/multichain/types/client';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -17,8 +18,12 @@ interface Props {
   resetKey?: string;
 }
 
+const getBaseKey = (item: AddressTokenItem): string =>
+  item.token.address_hash + (item.chain_values ? Object.keys(item.chain_values).join(',') : '');
+
 const MultichainAddressTokensTable = ({ data, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(data, getBaseKey);
 
   return (
     <TableRoot minW="900px">
@@ -33,7 +38,7 @@ const MultichainAddressTokensTable = ({ data, top, isLoading, resetKey }: Props)
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
           <MultichainAddressTokensTableItem
-            key={ item.token.address_hash + (isLoading ? index : '') + (item.chain_values ? Object.keys(item.chain_values).join(',') : '') }
+            key={ keys[index] }
             data={ item }
             isLoading={ isLoading }
           />

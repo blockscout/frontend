@@ -1,21 +1,20 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack, Box, useBreakpointValue, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { NavItem } from '../types';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Link, LinkExternalIcon } from 'src/toolkit/chakra/link';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
 import NavLinkIcon from '../NavLinkIcon';
-import { isInternalItem } from '../useNavItems';
 import useNavLinkStyleProps from '../useNavLinkStyleProps';
-import { checkRouteHighlight } from '../utils';
+import { checkRouteHighlight, isInternalItem } from '../utils';
 
 type Props = {
   item: NavItem;
@@ -51,6 +50,8 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
         noIcon
         { ...styleProps.itemProps }
         w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
+        minH="48px"
+        fontWeight="500"
         display="flex"
         position="relative"
         px={{ base: 2, lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
@@ -77,10 +78,9 @@ const NavLink = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
           interactive
         >
           <HStack gap={ 0 } overflow="hidden">
-            <NavLinkIcon item={ item }/>
+            <NavLinkIcon item={ item } mr={ 3 }/>
             <chakra.span
               { ...styleProps.textProps }
-              ml={ 3 }
               display={{ base: 'inline-flex', lg: isExpanded ? 'inline-flex' : 'none', xl: isCollapsed ? 'none' : 'inline-flex' }}
               alignItems="center"
             >

@@ -11,6 +11,7 @@ import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useInitialList from 'src/shared/lists/useInitialList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
@@ -26,13 +27,14 @@ type Props = {
   isLoading?: boolean;
   filters?: ZetaChainCCTXFilterParams;
   onFilterChange: <T extends keyof ZetaChainCCTXFilterParams>(field: T, val: ZetaChainCCTXFilterParams[T]) => void;
-  isPlaceholderData?: boolean;
   showStatusFilter?: boolean;
   showSocketInfo?: boolean;
   showSocketErrorAlert?: boolean;
   socketInfoNum?: number;
   resetKey?: string;
 };
+
+const getBaseKey = (item: CctxListItem): string => item.index;
 
 const ZetaChainCCTxsTable = ({
   txs,
@@ -41,7 +43,6 @@ const ZetaChainCCTxsTable = ({
   isLoading,
   filters = {},
   onFilterChange,
-  isPlaceholderData,
   showStatusFilter = true,
   showSocketInfo = false,
   showSocketErrorAlert = false,
@@ -54,6 +55,7 @@ const ZetaChainCCTxsTable = ({
     idFn: (item) => item.index,
     enabled: !isLoading,
   });
+  const keys = useUniqueKeys(txs, getBaseKey);
 
   return (
     <AddressHighlightProvider>
@@ -70,7 +72,7 @@ const ZetaChainCCTxsTable = ({
                   columnName="Age"
                   filters={ filters }
                   handleFilterChange={ onFilterChange }
-                  isLoading={ isPlaceholderData }
+                  isLoading={ isLoading }
                 />
                 <TimeFormatToggle ml={ 0 }/>
               </Flex>
@@ -85,7 +87,7 @@ const ZetaChainCCTxsTable = ({
                   columnName="Status"
                   filters={ filters }
                   handleFilterChange={ onFilterChange }
-                  isLoading={ isPlaceholderData }
+                  isLoading={ isLoading }
                 />
               ) }
             </TableColumnHeader>
@@ -98,7 +100,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Sender"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
             <TableColumnHeader width="165px">
@@ -110,7 +112,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Receiver"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
             <TableColumnHeader width="100%" isNumeric>
@@ -122,7 +124,7 @@ const ZetaChainCCTxsTable = ({
                 columnName="Asset"
                 filters={ filters }
                 handleFilterChange={ onFilterChange }
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             </TableColumnHeader>
           </TableRow>
@@ -138,7 +140,7 @@ const ZetaChainCCTxsTable = ({
           ) }
           { txs.slice(0, renderedItemsNum).map((item, index) => (
             <ZetaChainCCTxsTableItem
-              key={ item.index + (isLoading ? index : '') }
+              key={ keys[index] }
               tx={ item }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }

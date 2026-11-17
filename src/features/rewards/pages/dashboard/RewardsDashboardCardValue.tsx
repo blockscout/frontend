@@ -23,7 +23,7 @@ const RewardsDashboardCardValue = ({ label, value, withIcon, hint, isLoading, bo
   <Flex key={ label } flexDirection="column" alignItems="center" gap={{ base: 1, md: 2 }}>
     { label && (
       <Flex alignItems="center" gap={ 1 }>
-        { hint && <Hint label={ hint }/> }
+        { Boolean(hint) && <Hint label={ hint }/> }
         <Text textStyle="xs" fontWeight="500" color="text.secondary">
           { label }
         </Text>

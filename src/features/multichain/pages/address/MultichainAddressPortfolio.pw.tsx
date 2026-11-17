@@ -32,7 +32,7 @@ test.describe('nfts', () => {
     await mockApiResponse(
       'core:address_collections',
       { ...tokensMock.collections, items: [ tokensMock.collections.items[2] ] },
-      { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
+      { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
     await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 

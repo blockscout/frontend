@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, createListCollection, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { createListCollection, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { HotContractsInterval, HotContractsSorting, HotContractsSortingField, HotContractsSortingValue } from 'src/features/hot-contracts/types/api';
@@ -12,34 +11,32 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useStatsQuery from 'src/slices/chain/stats/useStatsQuery';
 
 import HotContractsIntervalSelect from 'src/features/hot-contracts/pages/index/HotContractsIntervalSelect';
-import HotContractsList from 'src/features/hot-contracts/pages/index/HotContractsList';
 import HotContractsTable from 'src/features/hot-contracts/pages/index/HotContractsTable';
 import { HOT_CONTRACTS } from 'src/features/hot-contracts/stubs';
 import { getIntervalValueFromQuery, SORT_OPTIONS } from 'src/features/hot-contracts/utils';
 
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { usePaginationParams } from 'src/shared/pagination/usePaginationParams';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 import Sort from 'src/shared/sort/Sort';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const sortCollection = createListCollection({
   items: SORT_OPTIONS,
 });
 
 const HotContracts = () => {
-  const router = useRouter();
-  const [ interval, setInterval ] = React.useState<HotContractsInterval>(getIntervalValueFromQuery(router.query.scale));
-  const [ sort, setSort ] =
-      React.useState<HotContractsSortingValue>(getSortValueFromQuery<HotContractsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
+  const { filters } = usePaginationParams('core:stats_hot_contracts');
+  const interval = getIntervalValueFromQuery(filters.scale);
 
-  const { data, isError, isPlaceholderData, pagination, onSortingChange, onFilterChange, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, sorting, onSortingChange, onFilterChange, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:stats_hot_contracts',
-    filters: { scale: interval },
-    sorting: getSortParamsFromValue<HotContractsSortingValue, HotContractsSortingField, HotContractsSorting['order']>(sort),
+    queryParams: { scale: interval },
     options: {
       placeholderData: {
         items: Array(50).fill(HOT_CONTRACTS),
@@ -50,39 +47,30 @@ const HotContracts = () => {
 
   const statsQuery = useStatsQuery();
 
-  const isLoading = isPlaceholderData || statsQuery.isPlaceholderData;
+  const sort = getSortValueFromQuery<HotContractsSortingValue>({ ...sorting }, SORT_OPTIONS) ?? 'default';
+  const isLoading = isInitialLoading || statsQuery.isPlaceholderData;
 
   const handleSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setSort(value[0] as HotContractsSortingValue);
-    onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as HotContractsSortingValue));
+    onSortingChange(
+      getSortParamsFromValue<HotContractsSortingValue, HotContractsSortingField, HotContractsSorting['order']>(value[0] as HotContractsSortingValue),
+    );
   }, [ onSortingChange ]);
 
   const handleIntervalChange = React.useCallback((newInterval: HotContractsInterval) => {
-    setInterval(newInterval);
     onFilterChange({ scale: newInterval });
   }, [ onFilterChange ]);
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <HotContractsList
-          items={ data.items }
-          isLoading={ isLoading }
-          exchangeRate={ statsQuery.data?.coin_price ?? null }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <HotContractsTable
-          items={ data.items }
-          isLoading={ isLoading }
-          sort={ sort }
-          setSorting={ handleSortChange }
-          exchangeRate={ statsQuery.data?.coin_price ?? null }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <HotContractsTable
+        items={ data.items }
+        isLoading={ isLoading }
+        sort={ sort }
+        setSorting={ handleSortChange }
+        exchangeRate={ statsQuery.data?.coin_price ?? null }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = (
@@ -127,6 +115,7 @@ const HotContracts = () => {
         emptyStateProps={{
           term: 'hot contract',
         }}
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

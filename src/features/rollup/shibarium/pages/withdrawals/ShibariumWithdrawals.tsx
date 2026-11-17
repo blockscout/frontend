@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -13,17 +12,17 @@ import { SHIBARIUM_WITHDRAWAL_ITEM } from 'src/features/rollup/shibarium/stubs';
 
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { rightLineArrow, nbsp } from 'src/toolkit/utils/htmlEntities';
 
-import WithdrawalsList from './WithdrawalsList';
 import WithdrawalsTable from './WithdrawalsTable';
 
 const ShibariumWithdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:shibarium_withdrawals',
     options: {
       placeholderData: generateListStub<'core:shibarium_withdrawals'>(
@@ -46,19 +45,14 @@ const ShibariumWithdrawals = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <WithdrawalsList items={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <WithdrawalsTable
-          items={ data.items }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <WithdrawalsTable
+        items={ data.items }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {
@@ -83,6 +77,7 @@ const ShibariumWithdrawals = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

@@ -113,7 +113,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
         }}
         { ...rest }
       >
-        { startElement && (
+        { Boolean(startElement) && (
           <InputElement pointerEvents="none" ref={ startElementRef } px={ 0 } color="input.element" { ...startElementProps }>
             { startElement }
           </InputElement>
@@ -130,7 +130,7 @@ export const InputGroup = React.forwardRef<HTMLDivElement, InputGroupProps>(
             placeholder: inlinePaddings ? child.props.placeholder : undefined,
           });
         }) }
-        { endElement && (
+        { Boolean(endElement) && (
           <InputElement placement="end" ref={ endElementRef } px={ 0 } color="input.element" { ...endElementProps }>
             { endElement }
           </InputElement>

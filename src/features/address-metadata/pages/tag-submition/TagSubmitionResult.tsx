@@ -2,10 +2,11 @@
 
 import { Flex, Grid, GridItem } from '@chakra-ui/react';
 import { pickBy } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { FormSubmitResult } from './types';
+
+import { route } from 'src/shared/router/routes';
 
 import { Alert } from 'src/toolkit/chakra/alert';
 import { Button } from 'src/toolkit/chakra/button';

@@ -1,2 +1,0 @@
-NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST=https://tac-operation-lifecycle.blockscout.com
-NEXT_PUBLIC_TAC_TON_EXPLORER_URL=https://tonscan.org

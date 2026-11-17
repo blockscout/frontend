@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 import type {
   VerifiedContractsFilters,
   VerifiedContractsSorting,
@@ -13,30 +13,20 @@ import type {
 import { SORT_OPTIONS } from 'src/slices/contract/pages/index/sort';
 import { VERIFIED_CONTRACT_INFO } from 'src/slices/contract/stubs';
 
-import useDebounce from 'src/shared/hooks/useDebounce';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
+import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 import getSortValueFromQuery from 'src/shared/sort/get-sort-value-from-query';
 
 interface Props {
-  isMultichain?: boolean;
+  chain?: ExternalChainExtended;
 }
 
-export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) {
-  const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
-  const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
-  const [ sort, setSort ] =
-      React.useState<VerifiedContractsSortingValue>(getSortValueFromQuery<VerifiedContractsSortingValue>(router.query, SORT_OPTIONS) ?? 'default');
-
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
-
-  const query = useQueryWithPages({
+export default function useVerifiedContractsQuery({ chain }: Props = {}) {
+  const query = useApiPaginatedQuery({
     resourceName: 'core:verified_contracts',
-    filters: { q: debouncedSearchTerm, filter: type },
-    sorting: getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(sort),
     options: {
       placeholderData: generateListStub<'core:verified_contracts'>(
         VERIFIED_CONTRACT_INFO,
@@ -49,14 +39,16 @@ export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) 
         },
       ),
     },
-    isMultichain,
+    chain,
   });
+
+  const searchTerm = getQueryParamString(query.filters.q) || undefined;
+  const type = getQueryParamString(query.filters.filter) as VerifiedContractsFilters['filter'] || undefined;
+  const sort = getSortValueFromQuery<VerifiedContractsSortingValue>({ ...query.sorting }, SORT_OPTIONS) ?? 'default';
+
   const { onFilterChange, onSortingChange } = query;
 
-  const onSearchTermChange = React.useCallback((value: string) => {
-    onFilterChange({ q: value, filter: type });
-    setSearchTerm(value);
-  }, [ type, onFilterChange ]);
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ q: value, filter: type }));
 
   const onTypeChange = React.useCallback((value: string | Array<string>) => {
     if (Array.isArray(value)) {
@@ -65,23 +57,24 @@ export default function useVerifiedContractsQuery({ isMultichain }: Props = {}) 
 
     const filter = value === 'all' ? undefined : value as VerifiedContractsFilters['filter'];
 
-    onFilterChange({ q: debouncedSearchTerm, filter });
-    setType(filter);
-  }, [ debouncedSearchTerm, onFilterChange ]);
+    onFilterChange({ q: searchTerm, filter });
+  }, [ searchTerm, onFilterChange ]);
 
   const onSortChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    setSort(value[0] as VerifiedContractsSortingValue);
-    onSortingChange(value[0] === 'default' ? undefined : getSortParamsFromValue(value[0] as VerifiedContractsSortingValue));
+    onSortingChange(
+      getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(
+        value[0] as VerifiedContractsSortingValue,
+      ),
+    );
   }, [ onSortingChange ]);
 
   return React.useMemo(() => ({
     query,
     type,
     searchTerm,
-    debouncedSearchTerm,
     sort,
     onSearchTermChange,
     onTypeChange,
     onSortChange,
-  }), [ query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange ]);
+  }), [ query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange ]);
 }

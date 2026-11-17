@@ -5,11 +5,14 @@ import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
+import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
+import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
 import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
 
@@ -22,23 +25,26 @@ import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 import { TableCell, TableRow } from 'src/toolkit/chakra/table';
 import { Tag } from 'src/toolkit/chakra/tag';
 
-type Props = Pick<schemas['TokenBalance'], 'token' | 'value'> & { isLoading: boolean; hasAdditionalTokenTypes?: boolean };
+type Props = Pick<schemas['TokenBalance'], 'token' | 'value'> & { chainData?: ClusterChainConfig; isLoading: boolean; hasAdditionalTokenTypes?: boolean };
 
 const AddressFungibleTokensTableItem = ({
   token,
   value,
+  chainData,
   isLoading,
   hasAdditionalTokenTypes,
 }: Props) => {
-
   if (!token) {
     return null;
   }
 
+  const multiplier = getUiMultiplier(token, chainData?.app_config);
+
   const {
     valueBn: tokenQuantity,
+    rawValueBn: tokenRawQuantity,
     usdBn: tokenValue,
-  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals });
+  } = calculateUsdValue({ amount: value, exchangeRate: token.exchange_rate, decimals: token.decimals, multiplier });
 
   const isNativeToken = config.slices.address.nativeTokenAddress &&
     token.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
@@ -88,6 +94,9 @@ const AddressFungibleTokensTableItem = ({
         ) : (
           <SimpleValue
             value={ tokenQuantity }
+            rawValue={ tokenRawQuantity }
+            multiplier={ multiplier }
+            startElement={ multiplier && <TokenMultiplierTag multiplier={ multiplier } loading={ isLoading } mr={ 2 }/> }
             color={ isNativeToken ? 'text.secondary' : undefined }
             loading={ isLoading }
           />

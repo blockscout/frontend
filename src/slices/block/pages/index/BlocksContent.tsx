@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { HStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -8,32 +8,32 @@ import type { operations, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
-import * as SocketNewItemsNotice from 'src/api/socket/SocketNewItemsNotice';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import BlocksList from 'src/slices/block/pages/index/BlocksList';
 import BlocksTable from 'src/slices/block/pages/index/BlocksTable';
+import ChainUtilization from 'src/slices/chain/ChainUtilization';
 
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 const OVERLOAD_COUNT = 75;
 const TABS_HEIGHT = 88;
 
 export interface Props {
   type?: schemas['BlockResponse']['type'];
-  query: QueryWithPagesResult<'core:blocks'> | QueryWithPagesResult<'core:optimistic_l2_txn_batch_blocks'>;
+  query: ApiPaginatedQueryResult<'core:blocks'> | ApiPaginatedQueryResult<'core:optimistic_l2_txn_batch_blocks'>;
   enableSocket?: boolean;
   top?: number;
 }
@@ -97,7 +97,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1 || !enableSocket,
+    isDisabled: query.isInitialLoading || query.isError || query.pagination.page !== 1 || !enableSocket,
   });
   useSocketMessage({
     channel,
@@ -113,48 +113,34 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const chainData = multichainContext?.chain;
 
   const content = query.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        { query.pagination.page === 1 && enableSocket && (
-          <SocketNewItemsNotice.Mobile
-            num={ newItemsCount }
-            showErrorAlert={ showSocketAlert }
-            type="block"
-            isLoading={ query.isPlaceholderData }
-          />
-        ) }
-        <BlocksList
-          data={ query.data.items }
-          isLoading={ query.isPlaceholderData }
-          page={ query.pagination.page }
-          chainData={ chainData }
-          resetKey={ query.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <BlocksTable
-          data={ query.data.items }
-          top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
-          page={ query.pagination.page }
-          isLoading={ query.isPlaceholderData }
-          showSocketInfo={ query.pagination.page === 1 && enableSocket }
-          socketInfoNum={ newItemsCount }
-          showSocketErrorAlert={ showSocketAlert }
-          chainData={ chainData }
-          resetKey={ query.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BlocksTable
+        data={ query.data.items }
+        top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
+        page={ query.pagination.page }
+        isLoading={ query.isInitialLoading }
+        showSocketInfo={ query.pagination.page === 1 && enableSocket }
+        socketInfoNum={ newItemsCount }
+        showSocketErrorAlert={ showSocketAlert }
+        chainData={ chainData }
+        resetKey={ query.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const actionBar = isMobile ? (
-    <ActionBar mt={ -6 }>
-      <Link href={ route({ pathname: '/block/countdown' }, multichainContext) }>
-        <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
-        <span>Block countdown</span>
-      </Link>
-      <Pagination ml="auto" { ...query.pagination }/>
-    </ActionBar>
+    <>
+      <HStack gap={ 3 } mb={ 6 }>
+        <ChainUtilization/>
+        <Link href={ route({ pathname: '/block/countdown' }, multichainContext) } textStyle="sm">
+          <SpriteIcon name="hourglass" boxSize={ 5 } mr={ 2 }/>
+          <span>Block countdown</span>
+        </Link>
+      </HStack>
+      <ActionBar mt={ -6 }>
+        <Pagination ml="auto" { ...query.pagination }/>
+      </ActionBar>
+    </>
   ) : null;
 
   return (
@@ -163,6 +149,7 @@ const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
       itemsNum={ query.data?.items?.length }
       emptyText="There are no blocks."
       actionBar={ actionBar }
+      isTransitioning={ query.isTransitioning }
     >
       { content }
     </DataList>

@@ -7,8 +7,8 @@ import React from 'react';
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
 import config from 'src/config';
-import type { EventTypes, EventPayload } from 'src/services/mixpanel';
-import * as mixpanel from 'src/services/mixpanel';
+import type { EventTypes, EventPayload } from 'src/shared/analytics';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Rating } from 'src/toolkit/chakra/rating';
@@ -48,8 +48,8 @@ const MarketplaceRatingPopoverContent = ({ appId, userRating, source }: Props) =
         description: 'Your rating improves the service',
       });
 
-      mixpanel.logEvent(
-        mixpanel.EventTypes.APP_FEEDBACK,
+      analytics.logEvent(
+        analytics.EventTypes.APP_FEEDBACK,
         { Action: 'Rating', Source: source, AppId: appId, Score: value },
       );
     } catch (error) {
@@ -74,7 +74,7 @@ const MarketplaceRatingPopoverContent = ({ appId, userRating, source }: Props) =
   return (
     <>
       <Flex alignItems="center" h="30px">
-        { ratingValue && (
+        { Boolean(ratingValue) && (
           // FIXME use non-navigation icon
           <SpriteIcon name="navigation/verified_contracts" color="green.400" boxSize="30px" mr={ 1 } ml="-5px"/>
         ) }

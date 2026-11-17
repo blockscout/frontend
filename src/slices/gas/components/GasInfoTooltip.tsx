@@ -5,7 +5,6 @@ import {
   Flex,
   Grid,
 } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -13,6 +12,7 @@ import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 import type { TooltipProps } from 'src/toolkit/chakra/tooltip';
@@ -24,7 +24,7 @@ import GasInfoUpdateTimer from './GasInfoUpdateTimer';
 
 interface Props {
   children: React.ReactNode;
-  data: schemas['StatsResponse'];
+  data: Pick<schemas['StatsResponse'], 'gas_prices' | 'gas_price_updated_at' | 'gas_prices_update_in'>;
   dataUpdatedAt: number;
   placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
 }

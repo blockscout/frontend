@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, chakra, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { chakra, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -12,13 +11,14 @@ import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import DataList from 'src/shared/lists/DataList';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 import { FormFieldError } from 'src/toolkit/components/forms/components/FormFieldError';
 import { TRANSACTION_HASH_REGEXP } from 'src/toolkit/components/forms/validators/transaction';
 
 import { ARBITRUM_L2_TXN_WITHDRAWALS_ITEM } from '../../stubs';
-import ArbitrumL2TxnWithdrawalsList from './ArbitrumL2TxnWithdrawalsList';
 import ArbitrumL2TxnWithdrawalsTable from './ArbitrumL2TxnWithdrawalsTable';
 
 const ArbitrumL2TxnWithdrawals = () => {
@@ -51,11 +51,7 @@ const ArbitrumL2TxnWithdrawals = () => {
     if (!value || TRANSACTION_HASH_REGEXP.test(value)) {
       setSearchTerm(value);
       setError(null);
-      router.push(
-        { pathname: router.pathname, query: value ? { q: value } : undefined },
-        undefined,
-        { shallow: true },
-      );
+      router.push({ pathname: router.pathname, query: value ? { q: value } : undefined }, { shallow: true });
     } else {
       setError('Invalid transaction hash');
       setSearchTerm(undefined);
@@ -70,14 +66,9 @@ const ArbitrumL2TxnWithdrawals = () => {
   }, [ handleSearchInputBlur ]);
 
   const content = data?.items ? (
-    <>
-      <Box display={{ base: 'block', lg: 'none' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsList data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
-      </Box>
-      <Box display={{ base: 'none', lg: 'block' }} mt={ 6 }>
-        <ArbitrumL2TxnWithdrawalsTable data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ArbitrumL2TxnWithdrawalsTable data={ data.items } txHash={ searchTerm } isLoading={ isPlaceholderData }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (

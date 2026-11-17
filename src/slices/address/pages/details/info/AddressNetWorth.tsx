@@ -11,7 +11,7 @@ import { getTokensTotalInfo } from 'src/slices/token/pages/address/utils';
 import AddressMultichainButton from 'src/features/multichain-button/pages/address/AddressMultichainButton';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
@@ -41,7 +41,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   const totalUsd = nativeUsd.plus(usd);
 
   const onMultichainClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Multichain', Source: 'address' });
   }, []);
 
   let multichainItems = null;
@@ -54,20 +54,17 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
     multichainItems = (
       <>
         <TextSeparator/>
-        <HStack columnGap={ 2 }>
-          <Text>Multichain</Text>
-          <HStack gap={{ base: 2, lg: 3 }}>
-            { providers.map((item, index) => (
+        <HStack columnGap={ 2 } alignItems="flex-start">
+          <Text lineHeight="32px">Multichain</Text>
+          <HStack gap={ 1 } flexWrap="wrap">
+            { providers.map((item) => (
               <AddressMultichainButton
                 key={ item.name }
                 item={ item }
                 addressHash={ addressHash }
                 onClick={ onMultichainClick }
-                isFirst={ index === 0 }
-                isLast={ index === providers.length - 1 }
               />
-            ))
-            }
+            )) }
           </HStack>
         </HStack>
       </>

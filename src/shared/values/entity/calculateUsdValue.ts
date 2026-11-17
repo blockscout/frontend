@@ -1,0 +1,64 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import BigNumber from 'bignumber.js';
+
+import { ZERO } from 'src/toolkit/utils/consts';
+
+import { DEFAULT_ACCURACY, DEFAULT_ACCURACY_USD } from './utils';
+
+export interface Params {
+  amount: string | null;
+  decimals?: string | number | null;
+  exchangeRate?: string | null;
+  accuracy?: number;
+  accuracyUsd?: number;
+  multiplier?: BigNumber | null;
+}
+
+export default function calculateUsdValue({
+  amount,
+  accuracy = DEFAULT_ACCURACY,
+  accuracyUsd = DEFAULT_ACCURACY_USD,
+  decimals,
+  exchangeRate,
+  multiplier,
+}: Params) {
+  const rawValueBn = BigNumber(amount ?? '0').div(BigNumber(10 ** Number(decimals || '0')));
+  const valueBn = multiplier ? rawValueBn.times(multiplier) : rawValueBn;
+
+  const valueStr = (() => {
+    if (!accuracy) {
+      return valueBn.toFormat();
+    }
+    const formattedValue = valueBn.dp(accuracy).toFormat();
+    return formattedValue === '0' && !valueBn.isEqualTo(ZERO) ? `< 0.${ '0'.repeat(accuracy - 1) }1` : formattedValue;
+  })();
+
+  const usdBn = (() => {
+    if (!exchangeRate) {
+      return ZERO;
+    }
+    const exchangeRateBn = new BigNumber(exchangeRate);
+    return valueBn.times(exchangeRateBn);
+  })();
+
+  const usdStr = (() => {
+    if (!exchangeRate) {
+      return undefined;
+    }
+
+    if (accuracyUsd && !usdBn.isEqualTo(0)) {
+      const usdBnDp = usdBn.dp(accuracyUsd);
+      return usdBnDp.isEqualTo(0) ? usdBn.precision(accuracyUsd).toFormat() : usdBnDp.toFormat();
+    }
+    return usdBn.toFormat();
+  })();
+
+  return {
+    valueBn,
+    rawValueBn,
+    valueStr,
+    usdBn,
+    usdStr,
+  };
+}

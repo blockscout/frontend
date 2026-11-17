@@ -8,7 +8,7 @@ import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedTextTooltip } from 'src/toolkit/components/truncation/TruncatedTextTooltip';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const feature = config.features.beaconChain;
 
@@ -41,9 +41,7 @@ const BeaconChainValidatorLink = ({ pubkey, isLoading }: { pubkey: string; isLoa
         display="grid"
         gridTemplateColumns="auto 20px"
       >
-        <TruncatedTextTooltip label={ pubkey }>
-          <Text overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap">{ pubkey }</Text>
-        </TruncatedTextTooltip>
+        <Truncate value={ pubkey } type="end" w="100%"/>
       </Link>
     );
   }

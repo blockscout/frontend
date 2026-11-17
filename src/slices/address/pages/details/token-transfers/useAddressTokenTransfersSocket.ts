@@ -7,6 +7,7 @@ import type { paths, schemas } from '@blockscout/api-types';
 import type { SocketMessage } from 'src/api/socket/types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
+import type { PaginationFilters } from 'src/api/resources';
 import useSocketChannel from 'src/api/socket/useSocketChannel';
 import useSocketMessage from 'src/api/socket/useSocketMessage';
 
@@ -47,13 +48,15 @@ type AddressTokenTransferResponse = paths['/api/v2/addresses/{address_hash_param
 
 interface Props {
   filters: Filters;
+  // raw URL filter values the list query is keyed by; on page 1 the paginated hook's query key is exactly these (or none)
+  queryFilters: PaginationFilters<'core:address_token_transfers'>;
   addressHash: string;
   data: AddressTokenTransferResponse | undefined;
   overloadCount?: number;
   enabled: boolean;
 }
 
-export default function useAddressTokenTransfersSocket({ filters, addressHash, data, overloadCount = OVERLOAD_COUNT, enabled }: Props) {
+export default function useAddressTokenTransfersSocket({ filters, queryFilters, addressHash, data, overloadCount = OVERLOAD_COUNT, enabled }: Props) {
   const { cookies: appCookies } = useAppContext();
   const [ showSocketAlert, setShowSocketAlert ] = React.useState(false);
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
@@ -88,7 +91,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
     if (newItems.length > 0) {
       const queryKey = getResourceKey('core:address_token_transfers', {
         pathParams: { hash: addressHash },
-        queryParams: { ...filters },
+        queryParams: Object.keys(queryFilters).length ? queryFilters : undefined,
         chainId: multichainContext?.chain?.id,
       });
       queryClient.setQueryData(
@@ -109,7 +112,7 @@ export default function useAddressTokenTransfersSocket({ filters, addressHash, d
       );
     }
 
-  }, [ data?.items, overloadCount, enabled, filters, addressHash, multichainContext?.chain?.id, queryClient, shouldHideScamTokens ]);
+  }, [ data?.items, overloadCount, enabled, filters, queryFilters, addressHash, multichainContext?.chain?.id, queryClient, shouldHideScamTokens ]);
 
   const handleSocketClose = React.useCallback(() => {
     setShowSocketAlert(true);

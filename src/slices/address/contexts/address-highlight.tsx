@@ -11,36 +11,44 @@ interface TAddressHighlightContext {
   onMouseLeave: (event: React.MouseEvent) => void;
 }
 
+const HIGHLIGHTED_CLASS = 'address-entity_highlighted';
+
 export const AddressHighlightContext = React.createContext<TAddressHighlightContext | null>(null);
 
 export function AddressHighlightProvider({ children }: AddressHighlightProviderProps) {
   const timeoutId = React.useRef<number | null>(null);
-  const hashRef = React.useRef<string | null>(null);
+
+  const clearHighlightTimeout = React.useCallback(() => {
+    typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
+  }, []);
 
   const onMouseEnter = React.useCallback((event: React.MouseEvent) => {
-    const hash = event.currentTarget.getAttribute('data-hash');
+    const target = event.currentTarget;
+    const hash = target.getAttribute('data-hash');
     if (hash) {
-      hashRef.current = hash;
+      clearHighlightTimeout();
       timeoutId.current = window.setTimeout(() => {
+        // A lazily mounted tooltip swaps the DOM node under the cursor right after the first hover,
+        // and the browser may never dispatch 'mouseleave' if the pointer exits before it re-targets.
+        if (!target.matches(':hover')) {
+          return;
+        }
         // for better performance we update DOM-nodes directly bypassing React reconciliation
-        const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
+        const nodes = window.document.querySelectorAll(`[data-hash="${ hash }"]`);
         for (const node of nodes) {
-          node.classList.add('address-entity_highlighted');
+          node.classList.add(HIGHLIGHTED_CLASS);
         }
       }, 100);
     }
-  }, []);
+  }, [ clearHighlightTimeout ]);
 
   const onMouseLeave = React.useCallback(() => {
-    if (hashRef.current) {
-      const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
-      for (const node of nodes) {
-        node.classList.remove('address-entity_highlighted');
-      }
-      hashRef.current = null;
+    const nodes = window.document.querySelectorAll(`.${ HIGHLIGHTED_CLASS }`);
+    for (const node of nodes) {
+      node.classList.remove(HIGHLIGHTED_CLASS);
     }
-    typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
-  }, []);
+    clearHighlightTimeout();
+  }, [ clearHighlightTimeout ]);
 
   const value = React.useMemo(() => {
     return {
@@ -50,10 +58,8 @@ export function AddressHighlightProvider({ children }: AddressHighlightProviderP
   }, [ onMouseEnter, onMouseLeave ]);
 
   React.useEffect(() => {
-    return () => {
-      typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
-    };
-  }, []);
+    return clearHighlightTimeout;
+  }, [ clearHighlightTimeout ]);
 
   return (
     <AddressHighlightContext.Provider value={ value }>

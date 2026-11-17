@@ -6,6 +6,7 @@ import type { AddressMetadataTagApi } from 'src/features/address-metadata/types/
 
 import MetadataTagIcon from 'src/features/address-metadata/components/tag/MetadataTagIcon';
 import { getTagName } from 'src/features/address-metadata/components/tag/utils';
+import { isHiddenTag } from 'src/features/address-metadata/utils/is-hidden-tag';
 
 import highlightText from 'src/shared/texts/highlight-text';
 
@@ -19,6 +20,10 @@ interface Props extends TagProps {
 }
 
 const SearchResultMetadataTag = ({ metadata, searchTerm, addressHash, ...rest }: Props) => {
+  if (isHiddenTag(metadata)) {
+    return null;
+  }
+
   const name = getTagName(metadata, addressHash);
 
   return (

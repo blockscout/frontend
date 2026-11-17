@@ -3,8 +3,10 @@
 import { GridItem } from '@chakra-ui/react';
 import React from 'react';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import DetailedInfoTimestamp from 'src/shared/detailed-info/DetailedInfoTimestamp';
 
@@ -25,7 +27,7 @@ const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp, isLoading }
       </GridItem>
       <GridItem fontWeight={ 600 }>{ layerLabels.parent } txn hash{ l1TxHashes.length > 1 ? 'es' : '' }</GridItem>
       <GridItem overflow="hidden" display="flex" flexDir="column" rowGap={ 2 }>
-        { l1TxHashes.map((hash) => <TxEntityL1 key={ hash } hash={ hash } noIcon/>) }
+        { l1TxHashes.map((hash) => <TxEntity key={ hash } hash={ hash } noIcon chain={ parentChain }/>) }
       </GridItem>
     </OptimisticL2TxnBatchBlobWrapper>
 

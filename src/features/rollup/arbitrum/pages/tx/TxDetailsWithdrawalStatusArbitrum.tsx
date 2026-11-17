@@ -1,17 +1,19 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Text } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
 import type { ArbitrumTransactionMessageStatus } from 'src/features/rollup/arbitrum/types/api';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import VerificationSteps from 'src/shared/lifecycle/steps/VerificationSteps';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
 
@@ -94,7 +96,7 @@ const TxDetailsWithdrawalStatusArbitrum = ({ data }: Props) => {
       </DetailedInfo.ItemLabel>
       <DetailedInfo.ItemValue>
         { data.arbitrum.message_related_info.associated_l1_transaction_hash ?
-          <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction_hash }/> :
+          <TxEntity hash={ data.arbitrum.message_related_info.associated_l1_transaction_hash } chain={ parentChain }/> :
           <Text color="text.secondary">Waiting for confirmation</Text>
         }
       </DetailedInfo.ItemValue>

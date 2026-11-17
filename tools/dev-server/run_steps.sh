@@ -2,7 +2,7 @@
 
 # The steps every local run script performs, in the order they perform them:
 # layer the env files, regenerate what the app reads from disk at boot, launch.
-# Shared by dev.preset.sh, dev.local.sh and prod.preset.sh — what stays in those scripts is
+# Shared by the dev.*, prod.* and docker.* entry points — what stays in those scripts is
 # their argument parsing and the command they finally run.
 #
 # Must be SOURCED, not executed: prepare_assets sources deploy/scripts/build_sprite.sh so the
@@ -21,6 +21,7 @@ set -o pipefail
 
 port_args=()
 env_args=()
+docker_env_args=()
 
 # --port overrides NEXT_PUBLIC_APP_PORT (dotenv-cli applies -v variables AFTER the -e files,
 # so this beats every env file). Overriding the env var — not just `next dev -p` — keeps the
@@ -65,6 +66,31 @@ build_env_args() {
   env_args+=( -e "$1" )
 }
 
+# The same files in `docker run --env-file` order. Docker's precedence is the REVERSE of
+# dotenv-cli's: the LAST --env-file wins, so the list is lowest priority first.
+#
+# Usage: build_docker_env_args <base_env_file>
+# Sets: docker_env_args
+build_docker_env_args() {
+  docker_env_args=( --env-file "$1" )
+  if [ -f ./.env.secrets ]; then
+    docker_env_args+=( --env-file ./.env.secrets )
+  fi
+  docker_env_args+=( --env-file ./.env.extra )
+  if [ -f ./.env.local ]; then
+    docker_env_args+=( --env-file ./.env.local )
+  fi
+}
+
+# Removes everything a previous run generated under public/, so neither a dev server nor a docker
+# build (which COPYs public/ into the image) picks up stale assets.
+clean_assets() {
+  rm -rf ./public/assets/configs
+  rm -rf ./public/assets/multichain
+  rm -rf ./public/assets/essential-dapps
+  rm -rf ./public/assets/envs.js
+}
+
 # Regenerates everything the app reads off disk at boot: the downloaded instance assets, the
 # generated configs, the icon sprite and the route map.
 #
@@ -75,11 +101,7 @@ build_env_args() {
 prepare_assets() {
   local preset_name="$1"
 
-  # remove previous assets
-  rm -rf ./public/assets/configs
-  rm -rf ./public/assets/multichain
-  rm -rf ./public/assets/essential-dapps
-  rm -rf ./public/assets/envs.js
+  clean_assets
 
   # download assets for the running instance
   dotenv \

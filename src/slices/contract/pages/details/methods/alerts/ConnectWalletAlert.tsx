@@ -72,7 +72,7 @@ const ConnectWalletAlert = ({ isLoading }: Props) => {
   })();
 
   return (
-    <Skeleton loading={ isLoading }>
+    <Skeleton loading={ isLoading } flexGrow={ 1 }>
       <Alert status="info" descriptionProps={{ alignItems: 'center' }}>
         { content }
       </Alert>

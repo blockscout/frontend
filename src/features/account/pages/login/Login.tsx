@@ -8,8 +8,8 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import config from 'src/config';
 import useFeatureValue from 'src/services/growthbook/useFeatureValue';
-import { track } from 'src/services/mixpanel/queue';
 import { useRollbar } from 'src/services/rollbar';
+import * as analytics from 'src/shared/analytics';
 import useGradualIncrement from 'src/shared/numbers/useGradualIncrement';
 import * as cookies from 'src/shared/storage/cookies';
 
@@ -36,8 +36,8 @@ const Login = () => {
     rollbar?.error('Test error', { payload: 'foo' });
   }, [ rollbar ]);
 
-  const checkMixpanel = React.useCallback(() => {
-    track('Test event', { my_prop: 'foo bar' });
+  const checkAnalytics = React.useCallback(() => {
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Check analytics', Source: 'Login page' });
   }, []);
 
   const handleTokenChange = React.useCallback((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -85,7 +85,7 @@ const Login = () => {
       ) }
       <Flex columnGap={ 2 }>
         <Button colorScheme="red" onClick={ checkRollbar }>Check Rollbar</Button>
-        <Button colorScheme="teal" onClick={ checkMixpanel }>Check Mixpanel</Button>
+        <Button colorScheme="teal" onClick={ checkAnalytics }>Check analytics</Button>
       </Flex>
       <Flex columnGap={ 2 } alignItems="center">
         <Box w="50px" textAlign="center">{ num }</Box>

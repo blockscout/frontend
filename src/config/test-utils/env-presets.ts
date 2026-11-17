@@ -18,7 +18,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   arbitrumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101"}' ],
+    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"name":"DuckChain","baseUrl":"https://localhost:3101","id":11155111,"rpcUrls":["https://localhost:3101"],"currency":{"name":"Ether","symbol":"ETH","decimals":18},"isTestnet":true}' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE', '0x1234' ],
     [ 'NEXT_PUBLIC_ROLLUP_DA_CELESTIA_CELENIUM_URL', 'https://mocha.celenium.io/blob' ],
   ],
@@ -46,11 +46,18 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   xStarScore: [
     [ 'NEXT_PUBLIC_XSTAR_SCORE_URL', 'https://localhost:3115' ],
   ],
+  bubblemaps: [
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_CHAIN_SLUG', 'eth' ],
+    [ 'NEXT_PUBLIC_BUBBLEMAPS_PARTNER_ID', 'demo' ],
+  ],
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
   ],
   blockHiddenFields: [
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
+  ],
+  blockHiddenViews: [
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_VIEWS', '["reorgs", "uncles"]' ],
   ],
   stabilityEnvs: [
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', '["top_accounts"]' ],
@@ -87,7 +94,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3009' ],
   ],
   addressBech32Format: [
-    [ 'NEXT_PUBLIC_ADDRESS_FORMAT', '["bech32","base16"]' ],
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT', '["bech32","base16"]' ],
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX', 'tom' ],
   ],
   externalTxs: [
@@ -100,7 +107,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
   ],
   tac: [
-    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3100' ],
+    [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3010' ],
     [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonviewer.com' ],
   ],
   celo: [
@@ -132,8 +139,25 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   crossChainTxs: [
     [ 'NEXT_PUBLIC_INTERCHAIN_INDEXER_API_HOST', 'http://localhost:3014' ],
     [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_CROSS_CHAIN_TXS_BRIDGE_IDS', '[1,2]' ],
   ],
   proApi: [
     [ 'NEXT_PUBLIC_PRO_API_SUPPORTED', 'true' ],
+  ],
+  flashblocks: [
+    [ 'NEXT_PUBLIC_FLASHBLOCKS_SOCKET_URL', 'wss://localhost:3120/ws' ],
+  ],
+  additionalTokenTypes: [
+    [ 'NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES', '[{"id":"ERC-7984","name":"ERC-7984"},{"id":"ERC-8056","name":"ERC-8056"}]' ],
+  ],
+  tokenActionButton: [
+    [
+      'NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG',
+      '{"text":"Buy on Duck Portal","url":"https://portal.duck.io/swap?chainId=1&token={hash}","colors":{"_default":{"bg":["rgb(179, 167, 0)","rgb(134, 86, 239)"],"text":["white"]}}}',
+    ],
+  ],
+  verifiedAddresses: [
+    [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'true' ],
+    [ 'NEXT_PUBLIC_TOKEN_INFO_EXPEDITED_REVIEW_HTML', 'Send <b>99 USDC/USDT</b> to one of the addresses below:<br>Duck Chain: 0xFB74767C1ce1aadA0a0E114441173b57f8C1571b<br>Goose Chaing: 0x4675C7e5BaAFBFFbca748158bEcBA61ef3b0a263' ],
   ],
 };

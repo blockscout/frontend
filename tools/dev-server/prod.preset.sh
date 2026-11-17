@@ -5,16 +5,15 @@
 # on-demand compile, StrictMode double-fetch) would skew the numbers.
 # The shared steps live in run_steps.sh.
 #
-# Builds with `--webpack`, like the shipped image does — see
-# .agents/adr/0001-webpack-for-production-builds.md. Measuring a Turbopack build here would not
-# represent what users get (and on some module graphs it miscompiles).
+# Builds with Turbopack (the Next.js default), like the shipped image does — see
+# .agents/adr/0003-turbopack-for-production-builds.md.
 #
 # Usage: pnpm prod:preset <instance_alias> [--port <number>] [--skip-build] [--profile]
 #
 #   --skip-build  Start the server from the existing build (.next) without rebuilding.
 #                 Reuses the .env.tmp and public assets produced by the previous full run.
-#   --profile     Build a React-profileable production bundle (`next build --webpack --profile`).
-#                 What that build is good for, and why those two flags: tools/profiling/CONTEXT.md.
+#   --profile     Build a React-profileable production bundle (`next build --profile`).
+#                 What it's good for: tools/profiling/CONTEXT.md.
 
 source ./tools/dev-server/run_steps.sh
 
@@ -56,10 +55,10 @@ preset_name="${positional[0]}"
 
 # the command the user actually typed, for error hints
 cmd="pnpm prod:preset $preset_name"
-build_flags=" --webpack"
+build_flags=""
 if [ "$profile" = true ]; then
   cmd="$cmd --profile"
-  build_flags=" --webpack --profile"
+  build_flags=" --profile"
 fi
 
 build_port_args "$port" "$usage"
@@ -72,7 +71,7 @@ if [ "$skip_build" = false ]; then
   prepare_assets "$preset_name"
 
   # build the app
-  run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && next build${build_flags}" || exit 1
+  run_with_envs "source ./deploy/scripts/export_pro_api_flag.sh && pnpm lint:tsc && next build${build_flags}" || exit 1
   echo ""
 else
   if [ ! -f ./.env.tmp ]; then

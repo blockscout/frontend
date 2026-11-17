@@ -7,6 +7,7 @@ import type { schemas } from '@blockscout/api-types';
 import { layerLabels } from 'src/features/rollup/common/utils/layer';
 
 import TimeFormatToggle from 'src/shared/date-and-time/TimeFormatToggle';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
@@ -22,8 +23,11 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (item: schemas['ArbitrumMessage']): string => String(item.id);
+
 const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading, resetKey }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
+  const keys = useUniqueKeys(items, getBaseKey);
 
   return (
     <TableRoot tableLayout="auto" minW="950px">
@@ -44,7 +48,7 @@ const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading, resetKey }:
       <TableBody>
         { items.slice(0, renderedItemsNum).map((item, index) => (
           <ArbitrumL2MessagesTableItem
-            key={ String(item.id) + (isLoading ? index : '') }
+            key={ keys[index] }
             item={ item }
             direction={ direction }
             isLoading={ isLoading }

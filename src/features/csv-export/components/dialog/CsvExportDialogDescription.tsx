@@ -7,7 +7,8 @@ import type { CsvExportType } from '../../types/client';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
-import shortenString from 'src/shared/texts/shorten-string';
+
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import getPrefixByFilter from '../../utils/get-prefix-by-filter';
 

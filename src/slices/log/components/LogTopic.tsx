@@ -9,10 +9,10 @@ import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import hexToAddress from 'src/shared/data/transformers/hex-to-address';
 import hexToUtf8 from 'src/shared/data/transformers/hex-to-utf8';
 import CopyToClipboard from 'src/shared/texts/CopyToClipboard';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 
 import { SelectContent, SelectControl, SelectItem, SelectRoot, SelectValueText } from 'src/toolkit/chakra/select';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import LogIndex from './LogIndex';
 
@@ -56,7 +56,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
         return (
           <>
             <Skeleton loading={ isLoading } overflow="hidden" whiteSpace="nowrap">
-              <HashStringShortenDynamic hash={ value }/>
+              <Truncate value={ value }/>
             </Skeleton>
             <CopyToClipboard text={ value } isLoading={ isLoading }/>
           </>

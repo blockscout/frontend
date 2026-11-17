@@ -15,7 +15,7 @@ const hooksConfig = {
   },
 };
 
-test('base view +@mobile', async({ render, mockApiResponse }) => {
+test('base view', async({ render, mockApiResponse }) => {
   await mockApiResponse('core:tx_blobs', blobsMock.txBlobs, { pathParams: { hash: txMock.base.hash } });
   const txQuery = {
     data: txMock.base,

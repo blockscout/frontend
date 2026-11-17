@@ -5,10 +5,10 @@ import { Box, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
-import shortenString from 'src/shared/texts/shorten-string';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import UserIdenticon from '../UserIdenticon';
 

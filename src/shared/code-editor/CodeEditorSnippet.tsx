@@ -27,7 +27,7 @@ const CodeEditorSnippet = ({ data, copyData, language, title, className, rightSl
 
   return (
     <Box className={ className } as="section" title={ title }>
-      { (title || rightSlot) && (
+      { Boolean(title || rightSlot) && (
         <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
           { title && <Skeleton loading={ isLoading } fontWeight={ 500 }>{ title }</Skeleton> }
           { rightSlot }

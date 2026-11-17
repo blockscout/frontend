@@ -6,6 +6,8 @@ import * as csvExportStorageMock from 'src/features/csv-export/mocks/storage';
 import type { StorageItem } from 'src/features/csv-export/utils/storage';
 import { STORAGE_KEY } from 'src/features/csv-export/utils/storage';
 
+import { SECOND } from 'src/toolkit/utils/consts';
+
 import { test, expect } from 'playwright/lib';
 
 import TopBar from './TopBar';
@@ -31,15 +33,30 @@ test('default view +@dark-mode', async({ render, mockApiResponse, page, injectMe
 
   await component.getByLabel('User settings').click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
+
+  await page.getByText('Advanced settings').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page).toHaveScreenshot();
+
+  await page.getByRole('tab', { name: 'Custom RPC' }).click();
+  await expect(page).toHaveScreenshot();
 });
 
 test('default view +@mobile -@default', async({ render, mockApiResponse, page, injectMetaMaskProvider }) => {
+  test.slow();
   await mockApiResponse('core:stats', statsMock.base);
   await injectMetaMaskProvider();
   const component = await render(<TopBar/>);
 
   await component.getByLabel('User settings').click();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 450 }, timeout: 10 * SECOND });
+
+  await page.getByText('Advanced settings').click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page).toHaveScreenshot({ timeout: 10 * SECOND });
+
+  await page.getByRole('tab', { name: 'Custom RPC' }).click();
+  await expect(page).toHaveScreenshot({ timeout: 10 * SECOND });
 });
 
 test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {
@@ -59,7 +76,7 @@ test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiRes
 
   const component = await render(<TopBar/>);
 
-  await component.getByText(/DeFi/i).click();
+  await component.getByRole('button', { name: /defi/i }).click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 });
 

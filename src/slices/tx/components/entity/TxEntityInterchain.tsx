@@ -1,32 +1,22 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { JsxStyleProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ExternalChain } from 'src/shared/external-chains/types';
 
-import multichainConfig from 'src/features/multichain/chains-config';
+import { isLinkableChain } from 'src/shared/entities/interchain';
 
-import config from 'src/config';
-
-import type { EntityProps as TxEntityProps } from './TxEntity';
+import type { EntityProps } from './TxEntity';
 import TxEntity from './TxEntity';
-import TxEntityExternal from './TxEntityExternal';
 
-interface Props extends TxEntityProps, JsxStyleProps {
+interface Props extends Omit<EntityProps, 'chain'> {
   chain: ExternalChain | undefined;
 }
 
-const TxEntityInterchain = ({ chain, ...props }: Props) => {
+const TxEntityInterchain = (props: Props) => {
+  const noLink = props.noLink || (!props.href && !isLinkableChain(props.chain)) || undefined;
 
-  const isCurrentChain = chain?.id === config.chain.id;
-  const multichainChainInfo = multichainConfig()?.chains.find(({ id }) => id === chain?.id);
-
-  if (isCurrentChain || multichainChainInfo) {
-    return <TxEntity { ...props } chain={ multichainConfig() ? multichainChainInfo : chain }/>;
-  }
-
-  return <TxEntityExternal { ...props } chain={ chain }/>;
+  return <TxEntity { ...props } noLink={ noLink }/>;
 };
 
 export default React.memo(TxEntityInterchain);

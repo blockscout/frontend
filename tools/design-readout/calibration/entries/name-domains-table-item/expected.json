@@ -1,0 +1,70 @@
+{
+  "url": "https://www.figma.com/design/ErLH8qySSkpprB87H0onWw/?node-id=13828-42285",
+  "nodeId": "13828:42285",
+  "component": "src/features/name-services/domains/pages/index/NameDomainsTableItem.tsx",
+  "stale": false,
+  "cells": {
+    "13828:42397": {
+      "component": "EnsEntity",
+      "props": {
+        "fontWeight": 600
+      },
+      "status": "unrecognized",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "14092:333172": {
+      "component": "EnsEntity",
+      "props": {
+        "fontWeight": 600
+      },
+      "icon": "copy",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "13859:49012": {
+      "component": "AddressEntity",
+      "props": {
+        "fontWeight": 500
+      },
+      "status": "unrecognized"
+    },
+    "13859:49014": {
+      "component": "AddressEntity",
+      "props": {
+        "fontWeight": 500
+      },
+      "shape": "truncated-hash",
+      "color": {
+        "text": "link.primary"
+      }
+    },
+    "13859:49015": {
+      "component": "AddressEntity",
+      "props": {
+        "fontWeight": 500
+      },
+      "icon": "copy",
+      "color": {
+        "icon": "icon.secondary"
+      }
+    },
+    "13859:49010": {
+      "component": "TimeWithTooltip",
+      "props": {},
+      "shape": "absolute-timestamp",
+      "color": {
+        "text": "text.primary"
+      }
+    },
+    "13849:5495": {
+      "component": "TimeWithTooltip",
+      "props": {
+        "color": "inherit"
+      },
+      "shape": "absolute-timestamp"
+    }
+  }
+}

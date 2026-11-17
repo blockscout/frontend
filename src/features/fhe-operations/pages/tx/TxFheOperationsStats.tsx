@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 interface Props {
@@ -14,12 +14,7 @@ interface Props {
 
 const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, isLoading }: Props) => {
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: 'repeat(3, calc(33.333% - 8px))' }}
-      gap={ 3 }
-      mb={ 6 }
-    >
+    <StatsContainer mb={ 6 }>
       <StatsWidget
         label="Total HCU"
         hint="Sum of all Homomorphic Computation Units consumed by FHE operations in this transaction"
@@ -38,7 +33,7 @@ const TxFHEOperationsStats = ({ totalHcu, maxDepthHcu, operationCount, isLoading
         value={ operationCount.toLocaleString() }
         isLoading={ isLoading }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 

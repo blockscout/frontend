@@ -15,7 +15,7 @@ const localFieldsOf = (isoString: string) => {
 
 describe('serializeFormFields', () => {
   it('returns an empty object when there is no data', () => {
-    expect(serializeFormFields(undefined)).toEqual({});
+    expect(serializeFormFields(undefined, true)).toEqual({});
   });
 
   it('omits fields whose value was cleared', () => {
@@ -24,26 +24,32 @@ describe('serializeFormFields', () => {
       to_period: [ new CalendarDateTime(2026, 7, 30, 12, 0) ],
     } as FormFields;
 
-    expect(Object.keys(serializeFormFields(data))).toEqual([ 'to_period' ]);
+    expect(Object.keys(serializeFormFields(data, true))).toEqual([ 'to_period' ]);
   });
 
   it('returns an empty object when every field was cleared', () => {
-    expect(serializeFormFields({ from_period: [], to_period: [] } as FormFields)).toEqual({});
+    expect(serializeFormFields({ from_period: [], to_period: [] } as FormFields, true)).toEqual({});
   });
 
   it('resolves a CalendarDateTime in the local zone, preserving the wall clock', () => {
     const data = { from_period: [ new CalendarDateTime(2026, 7, 30, 12, 0) ] } as FormFields;
 
-    const result = serializeFormFields(data).from_period;
+    const result = serializeFormFields(data, true).from_period;
 
     expect(result).toMatch(/Z$/);
     expect(localFieldsOf(result)).toEqual([ 2026, 7, 30, 12, 0 ]);
   });
 
+  it('reads the wall clock as UTC when local time is off', () => {
+    const data = { from_period: [ new CalendarDateTime(2026, 7, 30, 12, 0) ] } as FormFields;
+
+    expect(serializeFormFields(data, false).from_period).toBe('2026-07-30T12:00:00.000Z');
+  });
+
   it('treats a date-only value as local midnight', () => {
     const data = { from_period: [ new CalendarDate(2026, 7, 30) ] } as FormFields;
 
-    expect(localFieldsOf(serializeFormFields(data).from_period)).toEqual([ 2026, 7, 30, 0, 0 ]);
+    expect(localFieldsOf(serializeFormFields(data, true).from_period)).toEqual([ 2026, 7, 30, 0, 0 ]);
   });
 
   it('keeps the instant of a zoned value regardless of the local zone', () => {
@@ -51,7 +57,7 @@ describe('serializeFormFields', () => {
       from_period: [ parseAbsolute('2026-07-30T09:05:00Z', 'America/New_York') ],
     } as FormFields;
 
-    expect(serializeFormFields(data).from_period).toBe('2026-07-30T09:05:00.000Z');
+    expect(serializeFormFields(data, true).from_period).toBe('2026-07-30T09:05:00.000Z');
   });
 
   it('serializes every populated field', () => {
@@ -60,7 +66,7 @@ describe('serializeFormFields', () => {
       to_period: [ new CalendarDateTime(2026, 7, 30, 17, 45) ],
     } as FormFields;
 
-    const result = serializeFormFields(data);
+    const result = serializeFormFields(data, true);
 
     expect(localFieldsOf(result.from_period)).toEqual([ 2026, 7, 29, 8, 30 ]);
     expect(localFieldsOf(result.to_period)).toEqual([ 2026, 7, 30, 17, 45 ]);

@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { pickBy } from 'es-toolkit';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import getChainValueFromQuery from 'src/features/multichain/utils/get-chain-value-from-query';
+
+import { useRouter } from 'src/shared/router/useRouter';
 
 interface Props {
   persistedParams?: Array<string>;

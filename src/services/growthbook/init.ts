@@ -3,13 +3,12 @@
 import { GrowthBook } from '@growthbook/growthbook-react';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
 export interface GrowthBookFeatures {
   test_value: string;
-  txns_view_exp: 'table_view' | 'list_view';
 }
 
 export const initGrowthBook = (uuid: string) => {
@@ -31,7 +30,7 @@ export const initGrowthBook = (uuid: string) => {
       }
 
       saveExperimentInStorage(experiment.key);
-      mixpanel.logEvent(mixpanel.EventTypes.EXPERIMENT_STARTED, {
+      analytics.logEvent(analytics.EventTypes.EXPERIMENT_STARTED, {
         'Experiment name': experiment.key,
         'Variant name': result.value,
         Source: 'growthbook',

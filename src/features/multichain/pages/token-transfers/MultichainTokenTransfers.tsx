@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
@@ -8,6 +7,7 @@ import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
 
 import PageTitle from 'src/shell/page/title/PageTitle';
 
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 import useTokenTransfersQuery from 'src/slices/token-transfer/hooks/useTokenTransfersQuery';
 import TokenTypeFilter from 'src/slices/token/components/TokenTypeFilter';
 import { getTokenFilterValue } from 'src/slices/token/utils/list-utils';
@@ -16,12 +16,15 @@ import TokenTransfersCrossChain from 'src/features/cross-chain-txs/pages/token-t
 import multichainConfig from 'src/features/multichain/chains-config';
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import config from 'src/config';
 import PopoverFilter from 'src/shared/filters/PopoverFilter';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
@@ -48,12 +51,13 @@ const MultichainTokenTransfers = () => {
 
   const isLocalTab = tab === 'local' || !tab;
 
-  const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, isMultichain: true });
-  const chainId = queryLocal.query.chainValue?.[0];
-  const chainData = multichainConfig()?.chains.find(chain => chain.id === chainId);
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const queryLocal = useTokenTransfersQuery({ enabled: isLocalTab, chain });
+  const columnsState = useTokenTransferColumns('index', { typeFilter: queryLocal.typeFilter, chainConfig: chain?.app_config });
+  const chainId = chain?.id;
 
   const handleChainValueChange = React.useCallback(({ value }: { value: Array<string> }) => {
-    queryLocal.query.onChainValueChange({ value });
+    onChainValueChange({ value });
     const chainConfig = multichainConfig()?.chains.find(chain => chain.id === value[0]);
     const tokenTypes = getTokenFilterValue(router.query.type, chainConfig?.app_config);
     if (tokenTypes) {
@@ -62,7 +66,7 @@ const MultichainTokenTransfers = () => {
         queryLocal.onTokenTypesChange(chainTokenTypes);
       }
     }
-  }, [ queryLocal, router.query.type ]);
+  }, [ onChainValueChange, queryLocal, router.query.type ]);
 
   const tabs: Array<TabItemRegular> = React.useMemo(() => {
     return [
@@ -80,12 +84,13 @@ const MultichainTokenTransfers = () => {
               query={ queryLocal.query }
               typeFilter={ queryLocal.typeFilter }
               onTokenTypesChange={ queryLocal.onTokenTypesChange }
+              columnsState={ columnsState }
             />
           </MultichainProvider>
         ),
       },
     ];
-  }, [ queryLocal.query, queryLocal.typeFilter, queryLocal.onTokenTypesChange, chainId ]);
+  }, [ queryLocal.query, queryLocal.typeFilter, queryLocal.onTokenTypesChange, columnsState, chainId ]);
 
   const filter = isLocalTab && (
     <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ queryLocal.typeFilter.length }>
@@ -93,7 +98,7 @@ const MultichainTokenTransfers = () => {
         onChange={ queryLocal.onTokenTypesChange }
         defaultValue={ queryLocal.typeFilter }
         category="all"
-        chainConfig={ chainData?.app_config }
+        chainConfig={ chain?.app_config }
       />
     </PopoverFilter>
   );
@@ -101,8 +106,18 @@ const MultichainTokenTransfers = () => {
   const rightSlot = isLocalTab && (
     <>
       { !isMobile && filter }
+      { !isMobile && (
+        <ColumnsButton
+          tableColumns={ columnsState.selectableColumns }
+          columns={ columnsState.checkedColumns }
+          onChange={ columnsState.onColumnsChange }
+          onOrderChange={ columnsState.onColumnsReorder }
+          selected={ columnsState.isCustomized }
+          onReset={ columnsState.onColumnsReset }
+        />
+      ) }
       <ChainSelect
-        value={ queryLocal.query.chainValue }
+        value={ chainValue }
         onValueChange={ handleChainValueChange }
         ml={ isMobile ? 'auto' : undefined }
       />

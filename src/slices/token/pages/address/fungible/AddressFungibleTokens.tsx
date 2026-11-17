@@ -22,6 +22,7 @@ import AddressFungibleTokensTable from './AddressFungibleTokensTable';
 type Props = {
   items: Array<Pick<schemas['TokenBalance'], 'token' | 'value'>> | undefined;
   isLoading: boolean;
+  isTransitioning?: boolean;
   pagination: PaginationParams;
   isError: boolean;
   top?: number;
@@ -30,7 +31,7 @@ type Props = {
   resetKey?: string;
 };
 
-const AddressFungibleTokens = ({ items, isLoading, pagination, isError, top, tokenTypes, onTokenTypesChange, resetKey }: Props) => {
+const AddressFungibleTokens = ({ items, isLoading, isTransitioning, pagination, isError, top, tokenTypes, onTokenTypesChange, resetKey }: Props) => {
   const isMobile = useIsMobile();
 
   const hasAdditionalTokenTypes = config.slices.token.additionalTypes.length > 0;
@@ -59,6 +60,7 @@ const AddressFungibleTokens = ({ items, isLoading, pagination, isError, top, tok
       itemsNum={ items?.length }
       emptyText="There are no tokens of selected type."
       actionBar={ actionBar }
+      isTransitioning={ isTransitioning }
     >
       { content }
     </DataList>

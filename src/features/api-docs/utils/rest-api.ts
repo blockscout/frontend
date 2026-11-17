@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { SwaggerRequest } from '../types/client';
-
-import type { ApiPropsBase, ApiPropsFull } from 'src/api/config';
+import type { ApiPropsBase, ApiPropsFull } from 'src/api/types';
 
 import config from 'src/config';
 
@@ -117,6 +116,14 @@ export const REST_API_SECTIONS = [
     swagger: {
       url: getMicroserviceSwaggerUrl(config.apis.interchainIndexer),
       requestInterceptor: microserviceRequestInterceptorFactory(config.apis.interchainIndexer),
+    },
+  },
+  config.apis.multichainStats && {
+    id: 'multichain-stats-api',
+    title: 'Multichain stats API',
+    swagger: {
+      url: getMicroserviceSwaggerUrl(config.apis.multichainStats),
+      requestInterceptor: microserviceRequestInterceptorFactory(config.apis.multichainStats),
     },
   },
 ].filter(Boolean);

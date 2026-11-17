@@ -11,14 +11,15 @@ import { VALIDATORS_ZILLIQA_ITEM } from 'src/features/chain-variants/zilliqa/stu
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
-import ValidatorsList from './ValidatorsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import ValidatorsTable from './ValidatorsTable';
 
 const ValidatorsZilliqa = () => {
-  const { isError, isPlaceholderData, data, pagination, queryHash } = useQueryWithPages({
+  const { isError, isInitialLoading, isTransitioning, data, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:validators_zilliqa',
     options: {
       enabled: config.features.validators.isEnabled,
@@ -37,19 +38,14 @@ const ValidatorsZilliqa = () => {
   ) : null;
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <ValidatorsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <ValidatorsTable
-          data={ data.items }
-          isLoading={ isPlaceholderData }
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <ValidatorsTable
+        data={ data.items }
+        isLoading={ isInitialLoading }
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   return (
@@ -60,6 +56,7 @@ const ValidatorsZilliqa = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no validators."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

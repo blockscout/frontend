@@ -1,4 +1,5 @@
-/* eslint-disable no-console */
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
 import config from 'src/config';
 
 run();

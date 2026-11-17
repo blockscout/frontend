@@ -5,42 +5,44 @@ import React from 'react';
 
 import type { TokenType } from 'src/slices/token/types/api';
 
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
+import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
-import TokenTransferTable from 'src/slices/token-transfer/components/list/TokenTransferTable';
+import TokenTransfersTable from 'src/slices/token-transfer/components/table/TokenTransfersTable';
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import type { TokenTransferColumnsState } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 
 import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/AddressAdvancedFilterLink';
 import CsvExport from 'src/features/csv-export/components/CsvExport';
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
-
-import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import type { Filters } from './useAddressTokenTransfersQuery';
 import useAddressTokenTransfersSocket from './useAddressTokenTransfersSocket';
 
 interface Props {
-  query: QueryWithPagesResult<'core:address_token_transfers'>;
+  query: ApiPaginatedQueryResult<'core:address_token_transfers'>;
   filters: Filters;
   addressHash: string;
   onTypeFilterChange: (type: Array<TokenType>) => void;
   onAddressFilterChange: (filter: string) => void;
+  columnsState: TokenTransferColumnsState;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, overloadCount }: Props) => {
-  const { isError, isPlaceholderData, data, pagination } = query;
+const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterChange, onAddressFilterChange, columnsState, overloadCount }: Props) => {
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
   const isMobile = useIsMobile();
   const multichainContext = useMultichainContext();
 
   const { showSocketAlert, newItemsCount } = useAddressTokenTransfersSocket({
     filters,
+    queryFilters: query.filters,
     addressHash,
     data,
     overloadCount,
@@ -50,20 +52,17 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
 
   const content = data?.items ? (
-    <TableContainerScrollable>
-      <TokenTransferTable
-        data={ data?.items }
-        baseAddress={ addressHash }
-        showTxInfo
-        top={ ACTION_BAR_HEIGHT_DESKTOP }
-        enableTimeIncrement
-        showSocketInfo={ pagination.page === 1 }
-        showSocketErrorAlert={ showSocketAlert }
-        socketInfoNum={ newItemsCount }
-        isLoading={ isPlaceholderData }
-        resetKey={ query.queryHash }
-      />
-    </TableContainerScrollable>
+    <TokenTransfersTable
+      columns={ columnsState.columns }
+      items={ data.items }
+      baseAddress={ addressHash }
+      enableTimeIncrement
+      showSocketInfo={ pagination.page === 1 }
+      showSocketErrorAlert={ showSocketAlert }
+      socketInfoNum={ newItemsCount }
+      isLoading={ isInitialLoading }
+      resetKey={ query.queryHash }
+    />
   ) : null;
 
   const actionBar = isMobile ? (
@@ -76,8 +75,17 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
           withAddressFilter
           onAddressFilterChange={ onAddressFilterChange }
           defaultAddressFilter={ filters.filter }
-          isLoading={ query.isPlaceholderData }
+          isLoading={ isInitialLoading }
           chainConfig={ multichainContext?.chain?.app_config }
+        />
+        <ColumnsButton
+          tableColumns={ columnsState.selectableColumns }
+          columns={ columnsState.checkedColumns }
+          onChange={ columnsState.onColumnsChange }
+          onOrderChange={ columnsState.onColumnsReorder }
+          selected={ columnsState.isCustomized }
+          onReset={ columnsState.onColumnsReset }
+          isLoading={ isInitialLoading }
         />
         <CsvExport
           type="address_token_transfers"
@@ -87,10 +95,10 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
             filter_type: 'address',
             filter_value: filters.filter,
           } : undefined }
-          loadingInitial={ isPlaceholderData }
+          loadingInitial={ isInitialLoading }
         />
         <AddressAdvancedFilterLink
-          isLoading={ isPlaceholderData }
+          isLoading={ isInitialLoading }
           address={ addressHash }
           typeFilter={ filters.type }
           directionFilter={ filters.filter }
@@ -106,6 +114,7 @@ const AddressTokenTransfersLocal = ({ query, filters, addressHash, onTypeFilterC
       itemsNum={ data?.items?.length }
       emptyText="There are no token transfers."
       hasActiveFilters={ Boolean(numActiveFilters) }
+      isTransitioning={ isTransitioning }
       emptyStateProps={{
         term: 'token transfer',
       }}

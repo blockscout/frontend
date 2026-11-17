@@ -18,15 +18,18 @@ import RestApi from './RestApi';
 import RpcApi from './RpcApi';
 
 const feature = getFeaturePayload(config.features.apiDocs);
+const multichainFeature = config.features.multichain;
 
 const ApiDocs = () => {
 
   const tabs: Array<TabItemRegular> = [
     { id: 'rest_api', title: 'REST API', component: <RestApi/> },
-    { id: 'eth_rpc_api', title: 'ETH RPC API', component: <EthRpcApi/> },
-    { id: 'rpc_api', title: 'RPC API endpoints', component: <RpcApi/> },
-    { id: 'graphql_api', title: 'GraphQL API', component: <GraphQL/> },
-  ].filter(({ id }) => feature?.mode === 'internal' && feature.tabs.includes(id));
+    !multichainFeature.isEnabled && { id: 'eth_rpc_api', title: 'ETH RPC API', component: <EthRpcApi/> },
+    !multichainFeature.isEnabled && { id: 'rpc_api', title: 'RPC API endpoints', component: <RpcApi/> },
+    !multichainFeature.isEnabled && { id: 'graphql_api', title: 'GraphQL API', component: <GraphQL/> },
+  ]
+    .filter(Boolean)
+    .filter(({ id }) => feature?.mode === 'internal' && feature.tabs.includes(id));
 
   return (
     <>

@@ -5,7 +5,7 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
-import AddressStringOrParam from 'src/slices/address/components/entity/AddressStringOrParam';
+import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import BlockEntity from 'src/slices/block/components/entity/BlockEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -52,7 +52,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender, chainData, exch
       </TableCell>
       { showSender && (
         <TableCell verticalAlign="middle">
-          <AddressStringOrParam
+          <AddressEntity
             address={ item.address }
             isLoading={ isLoading }
             truncation="constant"

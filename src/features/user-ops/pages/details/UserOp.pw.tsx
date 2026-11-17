@@ -1,6 +1,7 @@
 import React from 'react';
 
 import * as statsMock from 'src/slices/chain/stats/mocks';
+import * as txMock from 'src/slices/tx/mocks/details';
 
 import { userOpData } from 'src/features/user-ops/mocks/user-op';
 
@@ -12,12 +13,12 @@ import UserOp from './UserOp';
 const hooksConfig = {
   router: {
     query: { hash: userOpData.hash },
-    isReady: true,
   },
 };
 
-test.beforeEach(async({ mockEnvs }) => {
+test.beforeEach(async({ mockEnvs, mockApiResponse }) => {
   await mockEnvs(ENVS_MAP.userOps);
+  await mockApiResponse('core:tx', txMock.base, { pathParams: { hash: userOpData.transaction_hash } });
 });
 
 test('base view', async({ render, mockTextAd, mockApiResponse }) => {

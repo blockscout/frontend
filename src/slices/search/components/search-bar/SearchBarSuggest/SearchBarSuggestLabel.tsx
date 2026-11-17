@@ -8,9 +8,10 @@ import type { schemas } from '@blockscout/api-types';
 
 import { toBech32Address } from 'src/slices/address/utils/bech32';
 
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
 import highlightText from 'src/shared/texts/highlight-text';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<schemas['SearchResultLabel']>) => {
   const icon = <SpriteIcon name="publictags" boxSize={ 5 } color="icon.primary"/>;
@@ -33,7 +34,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm, addressFormat }: It
       whiteSpace="nowrap"
       color="text.secondary"
     >
-      <HashStringShortenDynamic hash={ hash } noTooltip/>
+      <Truncate value={ hash } tooltip={ false }/>
     </Text>
   );
 

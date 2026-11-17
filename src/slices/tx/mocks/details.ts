@@ -150,9 +150,9 @@ export const withTokenTransfer: schemas['TransactionResponse'] = {
   },
   token_transfers: [
     tokenTransferMock.erc20,
+    tokenTransferMock.erc8056,
     tokenTransferMock.erc721,
     tokenTransferMock.erc1155A,
-    tokenTransferMock.erc1155B,
     tokenTransferMock.erc1155C,
     tokenTransferMock.erc1155D,
     tokenTransferMock.erc404A,
@@ -286,4 +286,19 @@ export const withRecipientNameTag = {
 export const withRecipientContract = {
   ...withRecipientEns,
   to: addressParamMock.contract,
+};
+
+const toPreviewAddress = (address: schemas['Address']): schemas['TransactionPreviewAddress'] => ({
+  hash: address.hash,
+  name: address.name,
+  ens_domain_name: address.ens_domain_name,
+  metadata: address.metadata,
+});
+
+export const preview: schemas['TransactionPreview'] = {
+  status: base.status,
+  timestamp: base.timestamp,
+  method: base.method,
+  from: toPreviewAddress(base.from),
+  to: base.to ? toPreviewAddress(base.to) : null,
 };

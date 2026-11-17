@@ -9,13 +9,14 @@ import type { ItemsProps } from 'src/slices/search/components/search-bar/SearchB
 import * as UserOpEntity from 'src/features/user-ops/components/entity/UserOpEntity';
 
 import Time from 'src/shared/date-and-time/Time';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 const SearchBarSuggestUserOp = ({ data, isMobile }: ItemsProps<schemas['SearchResultUserOperation']>) => {
   const icon = <UserOpEntity.Icon/>;
   const hash = (
     <chakra.mark overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
-      <HashStringShortenDynamic hash={ data.user_operation_hash } noTooltip/>
+      <Truncate value={ data.user_operation_hash } tooltip={ false }/>
     </chakra.mark>
   );
 

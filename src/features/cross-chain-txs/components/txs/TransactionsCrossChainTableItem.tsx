@@ -1,18 +1,17 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { chakra, HStack, VStack } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
+import { chakra, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { InterchainMessage } from '@blockscout/interchain-indexer-types';
 
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
-import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 import TxEntityInterchain from 'src/slices/tx/components/entity/TxEntityInterchain';
 
 import config from 'src/config';
 import TimeWithTooltip from 'src/shared/date-and-time/TimeWithTooltip';
 import ChainLabel from 'src/shared/external-chains/ChainLabel';
+import { route } from 'src/shared/router/routes';
 import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 
 import { Link } from 'src/toolkit/chakra/link';
@@ -35,6 +34,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
 
   const hasTransfers = data.transfers.length > 0;
   const firstTransfer = hasTransfers ? data.transfers[0] : null;
+  const bridgeId = data.bridge?.id;
   const txHashWithTransfers = (() => {
     if (!hasTransfers) {
       return;
@@ -54,7 +54,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
   return (
     <TableRow>
       <TableCell w="42px">
-        <HStack gap={ 1 }>
+        <VStack alignItems="start" gap={ 1.5 }>
           <CrossChainTxsStatusTag status={ data.status } loading={ isLoading }/>
           { currentAddress && (
             <CrossChainFromToTagTx
@@ -63,22 +63,21 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
               isLoading={ isLoading }
             />
           ) }
-        </HStack>
+        </VStack>
       </TableCell>
       <TableCell>
-        <CrossChainMessageEntity id={ data.message_id } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+        <VStack alignItems="start">
+          <CrossChainMessageEntity id={ data.message_id } bridgeId={ bridgeId } isLoading={ isLoading } lineHeight="24px" fontWeight={ 700 }/>
+          <TimeWithTooltip
+            timestamp={ data.send_timestamp || data.receive_timestamp }
+            isLoading={ isLoading }
+            enableIncrement
+            color="text.secondary"
+            whiteSpace="nowrap"
+          />
+        </VStack>
       </TableCell>
-      <TableCell>
-        <TimeWithTooltip
-          timestamp={ data.send_timestamp || data.receive_timestamp }
-          isLoading={ isLoading }
-          enableIncrement
-          color="text.secondary"
-          lineHeight="24px"
-          whiteSpace="nowrap"
-        />
-      </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="130px">
         { data.sender ? (
           <AddressEntityInterchain
             chain={ data.source_chain }
@@ -155,7 +154,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           </Skeleton>
         ) }
       </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         <VStack alignItems="start">
           { hasTransfers && (
             <>
@@ -183,13 +182,16 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
                   color="text.secondary"
                 />
               ) }
-              { data.transfers.length > 1 && (
+              { data.transfers.length > 1 && bridgeId !== undefined && (
                 <Link
                   variant="secondary"
                   textDecorationStyle="dashed"
                   textDecorationLine="underline"
                   mt={ 2 }
-                  href={ route({ pathname: '/cross-chain-tx/[id]', query: { id: data.message_id, tab: 'transfers' } }) }
+                  href={ route({
+                    pathname: '/bridge/[bridgeId]/cross-chain-tx/[id]',
+                    query: { bridgeId: String(bridgeId), id: data.message_id, tab: 'transfers' },
+                  }) }
                   textStyle="xs"
                 >
                   View all
@@ -199,10 +201,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           ) }
         </VStack>
       </TableCell>
-      <TableCell>
-        { hasTransfers && <AddressFromToIcon type="unspecified" isLoading={ isLoading } mt={ 0.5 }/> }
-      </TableCell>
-      <TableCell maxW="150px">
+      <TableCell maxW="200px">
         { hasTransfers && (
           <VStack alignItems="start">
             {
@@ -232,7 +231,7 @@ const TransactionsCrossChainTableItem = ({ data, isLoading, currentAddress }: Pr
           </VStack>
         ) }
       </TableCell>
-      <TableCell>
+      <TableCell maxW="120px">
         <CrossChainBridgeLink data={ data.bridge } isLoading={ isLoading } messageId={ data.message_id } lineHeight="24px"/>
       </TableCell>
     </TableRow>

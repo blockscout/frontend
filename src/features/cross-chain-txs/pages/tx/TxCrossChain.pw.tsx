@@ -7,9 +7,14 @@ import { test, expect } from 'playwright/lib';
 
 import TxCrossChain from './TxCrossChain';
 
+const bridgeId = String(crossChainTxMock.base.bridge.id);
+
 const hooksConfig = {
   router: {
-    query: { id: crossChainTxMock.base.message_id },
+    query: {
+      bridgeId,
+      id: crossChainTxMock.base.message_id,
+    },
   },
 };
 
@@ -22,6 +27,9 @@ test('successful tx +@mobile', async({ render, mockEnvs, mockApiResponse, mockAs
   await mockApiResponse('interchainIndexer:message', crossChainTxMock.base, {
     pathParams: {
       id: crossChainTxMock.base.message_id,
+    },
+    queryParams: {
+      bridge_id: bridgeId,
     },
   });
 

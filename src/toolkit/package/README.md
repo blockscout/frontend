@@ -39,7 +39,6 @@ Ensure you have the following peer dependencies installed:
     "dayjs": ">=1.11.5",
     "dom-to-image": ">=2.6.0",
     "es-toolkit": ">=1.39.10",
-    "next": ">=16.2.4",
     "next-themes": ">=0.4.4",
     "react": ">=18.3.1",
     "react-dom": ">=18.3.1",
@@ -116,6 +115,55 @@ Add the following script to your `package.json` to generate Chakra UI type defin
   "scripts": {
     "chakra:typegen": "chakra typegen ./src/theme.ts"
   }
+}
+```
+
+### 4. Routing
+
+The toolkit has no router of its own. `Link`, `LinkOverlay`, `RoutedTabs` and `useActiveTabFromQuery` read
+the navigation primitives from a `RouterProvider`; the adapter interface they rely on is
+`RouterContextValue` in `src/toolkit/router/types.ts` (exported as types from the package):
+
+- `Link` — a forward-ref component taking `href` (a string or `{ pathname, query, hash }`), the navigation
+  hints `scroll` / `shallow` / `prefetch`, anchor attributes and `children`.
+- `router` — `{ query, pathname, asPath, push(url, options?), replace(url, options?) }`, with options
+  `{ shallow?, scroll? }`.
+- `pathname` — the current path, or `null` when the host cannot tell.
+
+Without a provider the toolkit falls back to a plain `<a href>` (an object `href` is stringified) and a
+router whose `push` / `replace` resolve `false`; client-side navigation needs the provider.
+
+A minimal Next.js (Pages Router) adapter:
+
+```tsx
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { RouterProvider } from '@blockscout/ui-toolkit';
+import type { RouterContextValue, RouterLinkProps } from '@blockscout/ui-toolkit';
+
+const Link = React.forwardRef<HTMLAnchorElement, RouterLinkProps>(function Link(props, ref) {
+  return <NextLink ref={ref} {...props} href={props.href as never} />;
+});
+
+function AppRouterProvider({ children }: { children: React.ReactNode }) {
+  const nextRouter = useRouter();
+  const pathname = usePathname();
+
+  const value = React.useMemo((): RouterContextValue => ({
+    Link,
+    router: {
+      query: nextRouter.query,
+      pathname: nextRouter.pathname,
+      asPath: nextRouter.asPath,
+      push: (url, options) => nextRouter.push(url as never, undefined, options),
+      replace: (url, options) => nextRouter.replace(url as never, undefined, options),
+    },
+    pathname,
+  }), [nextRouter, pathname]);
+
+  return <RouterProvider value={value}>{children}</RouterProvider>;
 }
 ```
 

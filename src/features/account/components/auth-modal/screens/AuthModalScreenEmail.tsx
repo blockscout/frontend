@@ -9,9 +9,9 @@ import type { EmailFormFields, Screen } from '../types';
 
 import useApiFetch from 'src/api/hooks/useApiFetch';
 
-import * as mixpanel from 'src/services/mixpanel';
 import ReCaptcha from 'src/services/re-captcha/ReCaptcha';
 import useReCaptcha from 'src/services/re-captcha/useReCaptcha';
+import * as analytics from 'src/shared/analytics';
 import getErrorMessage from 'src/shared/errors/get-error-message';
 import getErrorObjPayload from 'src/shared/errors/get-error-obj-payload';
 
@@ -22,14 +22,14 @@ import { FormFieldEmail } from 'src/toolkit/components/forms/fields/FormFieldEma
 interface Props {
   onSubmit: (screen: Screen) => void;
   isAuth?: boolean;
-  mixpanelConfig?: {
+  analyticsConfig?: {
     account_link_info: {
-      source: mixpanel.EventPayload<mixpanel.EventTypes.ACCOUNT_LINK_INFO>['Source'];
+      source: analytics.EventPayload<analytics.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };
 }
 
-const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
+const AuthModalScreenEmail = ({ onSubmit, isAuth, analyticsConfig }: Props) => {
 
   const apiFetch = useApiFetch();
   const recaptcha = useReCaptcha();
@@ -58,13 +58,13 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
       await recaptcha.fetchProtectedResource(sendCodeFetchFactory(formData.email));
 
       if (isAuth) {
-        mixpanelConfig?.account_link_info.source !== 'Profile' && mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
-          Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
+        analyticsConfig?.account_link_info.source !== 'Profile' && analytics.logEvent(analytics.EventTypes.ACCOUNT_LINK_INFO, {
+          Source: analyticsConfig?.account_link_info.source ?? 'Profile dropdown',
           Status: 'OTP sent',
           Type: 'Email',
         });
       } else {
-        mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+        analytics.logEvent(analytics.EventTypes.LOGIN, {
           Action: 'OTP sent',
           Source: 'Email',
         });
@@ -76,7 +76,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
-  }, [ recaptcha, sendCodeFetchFactory, isAuth, onSubmit, mixpanelConfig?.account_link_info.source ]);
+  }, [ recaptcha, sendCodeFetchFactory, isAuth, onSubmit, analyticsConfig?.account_link_info.source ]);
 
   return (
     <FormProvider { ...formApi }>

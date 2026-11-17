@@ -6,14 +6,14 @@ import type { AddressFromToFilter } from 'src/slices/address/types/api';
 import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 import type { TxsSocketType } from 'src/slices/tx/types/socket';
 
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 import getSortParamsFromValue from 'src/shared/sort/get-sort-params-from-value';
 
 import TxsContent from './TxsContent';
 
 interface Props {
 
-  query: QueryWithPagesResult<'core:address_txs'>;
+  query: ApiPaginatedQueryResult<'core:address_txs'>;
   showBlockInfo?: boolean;
   socketType?: TxsSocketType;
   currentAddress?: string;
@@ -22,8 +22,6 @@ interface Props {
   enableTimeIncrement?: boolean;
   top?: number;
   sorting: TransactionsSortingValue;
-  setSort: (value: TransactionsSortingValue) => void;
-  showTableView?: boolean;
 };
 
 const TxsWithApiSorting = ({
@@ -36,14 +34,11 @@ const TxsWithApiSorting = ({
   enableTimeIncrement,
   top,
   sorting,
-  setSort,
-  showTableView,
 }: Props) => {
-
+  const { onSortingChange } = query;
   const handleSortChange = React.useCallback((value: TransactionsSortingValue) => {
-    setSort(value);
-    query.onSortingChange(getSortParamsFromValue(value));
-  }, [ setSort, query ]);
+    onSortingChange(getSortParamsFromValue(value));
+  }, [ onSortingChange ]);
 
   return (
     <TxsContent
@@ -55,12 +50,12 @@ const TxsWithApiSorting = ({
       enableTimeIncrement={ enableTimeIncrement }
       top={ top }
       items={ query.data?.items }
-      isPlaceholderData={ query.isPlaceholderData }
+      isInitialLoading={ query.isInitialLoading }
+      isTransitioning={ query.isTransitioning }
       isError={ query.isError }
       setSorting={ handleSortChange }
       sort={ sorting }
       pagination={ query.pagination }
-      showTableView={ showTableView }
       resetKey={ query.queryHash }
     />
   );

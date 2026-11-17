@@ -1,8 +1,0 @@
-{
-  "name": "affected-tests",
-  "version": "1.0.0",
-  "main": "index.js",
-  "dependencies": {
-    "dependency-tree": "10.0.9"
-  }
-}

@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Box } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import React from 'react';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
@@ -16,7 +16,7 @@ const GetGasButton = () => {
   const isMobile = useIsMobile();
 
   const onGetGasClick = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
   }, []);
 
   if (getGasFeature.isEnabled && !isMobile) {

@@ -7,7 +7,8 @@ import React from 'react';
 
 import type { AdvancedFilterParams } from '../../types/api';
 
-import TableColumnFilter from 'src/shared/filters/TableColumnFilter';
+import ColumnFilterContent from 'src/shared/filters/ColumnFilterContent';
+import ColumnFilterContentSection from 'src/shared/filters/ColumnFilterContentSection';
 import TagGroupSelect from 'src/shared/tags/select/TagGroupSelect';
 
 import { Input } from 'src/toolkit/chakra/input';
@@ -77,29 +78,29 @@ const AmountFilter = ({ value = {}, handleFilterChange }: Props) => {
   }, [ handleFilterChange ]);
 
   return (
-    <TableColumnFilter
-      title="Amount"
-      isFilled={ Boolean(currentValue.from || currentValue.to) }
+    <ColumnFilterContent
       isTouched={ !isEqual(currentValue, value) }
       onFilter={ onFilter }
-      onReset={ onReset }
-      hasReset
     >
-      <PopoverCloseTriggerWrapper>
-        <Flex gap={ 3 }>
-          <TagGroupSelect<string>
-            items={ PRESETS.map((preset) => ({ id: preset.value, title: preset.name })) }
-            onChange={ onPresetChange }
-            value={ (!currentValue.from || currentValue.from === '0') ? PRESETS.find(preset => preset.value === currentValue.to)?.value : undefined }
-          />
+      <ColumnFilterContentSection title="Maximum amount" isFilled={ Boolean(currentValue.to) } onReset={ onReset }>
+        <PopoverCloseTriggerWrapper>
+          <Flex gap={ 3 }>
+            <TagGroupSelect<string>
+              items={ PRESETS.map((preset) => ({ id: preset.value, title: preset.name })) }
+              onChange={ onPresetChange }
+              value={ (!currentValue.from || currentValue.from === '0') ? PRESETS.find(preset => preset.value === currentValue.to)?.value : undefined }
+            />
+          </Flex>
+        </PopoverCloseTriggerWrapper>
+      </ColumnFilterContentSection>
+      <ColumnFilterContentSection title="Amount range">
+        <Flex alignItems="center">
+          <Input value={ currentValue.from } onChange={ handleFromChange } placeholder="From" type="number" size="sm"/>
+          <Text mx={ 3 }>{ ndash }</Text>
+          <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="sm"/>
         </Flex>
-      </PopoverCloseTriggerWrapper>
-      <Flex mt={ 3 } alignItems="center">
-        <Input value={ currentValue.from } onChange={ handleFromChange } placeholder="From" type="number" size="sm"/>
-        <Text mx={ 3 }>{ ndash }</Text>
-        <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="sm"/>
-      </Flex>
-    </TableColumnFilter>
+      </ColumnFilterContentSection>
+    </ColumnFilterContent>
   );
 };
 

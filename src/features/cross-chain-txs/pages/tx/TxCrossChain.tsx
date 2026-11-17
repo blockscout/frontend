@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TabItemRegular } from 'src/toolkit/components/AdaptiveTabs/types';
@@ -13,21 +12,27 @@ import TextAd from 'src/features/ads/text/components/TextAd';
 
 import throwOnResourceLoadError from 'src/shared/errors/throw-on-resource-load-error';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
 import CrossChainMessageEntity from '../../components/CrossChainMessageEntity';
 import { INTERCHAIN_MESSAGE } from '../../stubs/messages';
+import { remapBadRequestToInvalidInput } from '../../utils/message-details-error';
 import TxCrossChainDetails from './TxCrossChainDetails';
 import TxCrossChainTransfers from './TxCrossChainTransfers';
 
 const TxCrossChain = () => {
   const router = useRouter();
   const messageId = getQueryParamString(router.query.id);
+  const bridgeId = getQueryParamString(router.query.bridgeId);
 
   const query = useApiQuery('interchainIndexer:message', {
     pathParams: {
       id: messageId,
+    },
+    queryParams: {
+      bridge_id: bridgeId,
     },
     queryOptions: {
       placeholderData: INTERCHAIN_MESSAGE,
@@ -47,11 +52,12 @@ const TxCrossChain = () => {
     },
   ];
 
-  throwOnResourceLoadError(query);
+  throwOnResourceLoadError(remapBadRequestToInvalidInput(query));
 
   const titleSecondRow = (
     <CrossChainMessageEntity
       id={ messageId }
+      bridgeId={ query.data?.bridge?.id }
       isLoading={ query.isPlaceholderData }
       variant="subheading"
       truncation="dynamic"

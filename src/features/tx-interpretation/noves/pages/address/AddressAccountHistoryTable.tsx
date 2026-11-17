@@ -13,12 +13,12 @@ import AddressAccountHistoryTableItem from './AddressAccountHistoryTableItem';
 interface Props {
   items: Array<NovesResponseData>;
   currentAddress: string;
-  isPlaceholderData?: boolean;
+  isLoading?: boolean;
   resetKey?: string;
 }
 
-const AddressAccountHistoryTable = ({ items, currentAddress, isPlaceholderData, resetKey }: Props) => {
-  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isPlaceholderData, resetKey });
+const AddressAccountHistoryTable = ({ items, currentAddress, isLoading, resetKey }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: items, isEnabled: !isLoading, resetKey });
 
   return (
     <TableRoot minW="900px">
@@ -38,10 +38,10 @@ const AddressAccountHistoryTable = ({ items, currentAddress, isPlaceholderData, 
       <TableBody maxWidth="full">
         { items.slice(0, renderedItemsNum).map((item, i) => (
           <AddressAccountHistoryTableItem
-            key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
+            key={ item.rawTransactionData.transactionHash + (isLoading ? i : '') }
             tx={ item }
             currentAddress={ currentAddress }
-            isPlaceholderData={ Boolean(isPlaceholderData) }
+            isLoading={ Boolean(isLoading) }
           />
         )) }
         <TableRow ref={ cutRef }/>

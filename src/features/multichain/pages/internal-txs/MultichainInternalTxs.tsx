@@ -6,24 +6,26 @@ import React from 'react';
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 import PageTitle from 'src/shell/page/title/PageTitle';
 
-import InternalTxsList from 'src/slices/internal-tx/components/InternalTxsList';
 import InternalTxsTable from 'src/slices/internal-tx/components/InternalTxsTable';
 import useInternalTxsQuery from 'src/slices/internal-tx/hooks/useInternalTxsQuery';
 
 import ChainSelect from 'src/features/multichain/components/ChainSelect';
 import { MultichainProvider } from 'src/features/multichain/context';
+import { useChainValue } from 'src/features/multichain/hooks/useChainValue';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 const MultichainInternalTxs = () => {
   const isMobile = useIsMobile();
 
-  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ isMultichain: true });
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { chainValue, chain, onChainValueChange } = useChainValue();
+  const { query, searchTerm, onSearchTermChange } = useInternalTxsQuery({ chain });
+  const { isError, isInitialLoading, data, pagination } = query;
 
   const filterInput = (
     <FilterInput
@@ -38,8 +40,8 @@ const MultichainInternalTxs = () => {
 
   const chainSelect = (
     <ChainSelect
-      value={ query.chainValue }
-      onValueChange={ query.onChainValueChange }
+      value={ chainValue }
+      onValueChange={ onChainValueChange }
     />
   );
 
@@ -59,13 +61,10 @@ const MultichainInternalTxs = () => {
   );
 
   const content = data?.items ? (
-    <MultichainProvider chainId={ query.chainValue?.[0] }>
-      <Box hideBelow="lg">
-        <InternalTxsTable data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideFrom="lg">
-        <InternalTxsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
+    <MultichainProvider chainId={ chain?.id }>
+      <TableContainerScrollable>
+        <InternalTxsTable data={ data.items } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
+      </TableContainerScrollable>
     </MultichainProvider>
   ) : null;
 
@@ -86,6 +85,7 @@ const MultichainInternalTxs = () => {
         actionBar={ actionBar }
         showActionBarIfError
         showActionBarIfEmpty
+        isTransitioning={ query.isTransitioning }
       >
         { content }
       </DataList>

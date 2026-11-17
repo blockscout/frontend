@@ -3,7 +3,7 @@
 import { INTERCHAIN_TRANSFER } from 'src/features/cross-chain-txs/stubs/messages';
 
 import config from 'src/config';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export default function useTxCrossChainTransfersQuery({ hash, enabled = true }: Props) {
-  return useQueryWithPages({
+  return useApiPaginatedQuery({
     resourceName: 'interchainIndexer:tx_transfers',
     pathParams: { hash },
     options: {

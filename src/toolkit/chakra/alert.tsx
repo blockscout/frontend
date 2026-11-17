@@ -69,7 +69,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           { iconElement }
           { children ? (
             <ChakraAlert.Content>
-              { title && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }
+              { Boolean(title) && <ChakraAlert.Title>{ title }</ChakraAlert.Title> }
               <ChakraAlert.Description display="inline-flex" flexWrap="wrap" { ...descriptionProps }>{ children }</ChakraAlert.Description>
             </ChakraAlert.Content>
           ) : (

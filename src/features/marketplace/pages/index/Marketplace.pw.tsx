@@ -5,6 +5,7 @@ import { apps as appsMock } from 'src/features/marketplace/mocks/dapps';
 
 import config from 'src/config';
 
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
@@ -19,15 +20,19 @@ const ESSENTIAL_DAPPS_CONFIG = JSON.stringify({
 const MARKETPLACE_BANNER_CONTENT_URL = 'https://localhost/marketplace-banner.html';
 const MARKETPLACE_BANNER_LINK_URL = 'https://example.com';
 
-test.beforeEach(async({ mockEnvs, mockAssetResponse, mockApiResponse }) => {
+const mockDapps = (mockApiResponse: TestFnArgs['mockApiResponse']) => {
+  return mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { instanceId: config.apis.admin?.instanceId } });
+};
+
+test.beforeEach(async({ mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
   ]);
-  await mockApiResponse('admin:marketplace_dapps', appsMock, { pathParams: { instanceId: config.apis.admin?.instanceId } });
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
 });
 
-test('base view +@dark-mode', async({ render, page }) => {
+test('base view +@dark-mode', async({ render, page, mockApiResponse }) => {
+  await mockDapps(mockApiResponse);
   await page.evaluate(() => window.localStorage.setItem('favoriteApps', '["hop-exchange"]'));
 
   const component = await render(<Marketplace/>);
@@ -35,10 +40,11 @@ test('base view +@dark-mode', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with featured app +@dark-mode', async({ render, mockEnvs, page }) => {
+test('with featured app +@dark-mode', async({ render, mockEnvs, mockApiResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP', 'hop-exchange' ],
   ]);
+  await mockDapps(mockApiResponse);
   await page.evaluate(() => window.localStorage.setItem('favoriteApps', '["hop-exchange"]'));
 
   const component = await render(<Marketplace/>);
@@ -49,11 +55,12 @@ test('with featured app +@dark-mode', async({ render, mockEnvs, page }) => {
   });
 });
 
-test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
+test('with banner +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockConfigResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
   ]);
+  await mockDapps(mockApiResponse);
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
 
@@ -63,12 +70,13 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse, pa
   });
 });
 
-test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigResponse, page }) => {
+test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockConfigResponse, page }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
     [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
   ]);
+  await mockDapps(mockApiResponse);
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
   await expect(component).toHaveScreenshot({
@@ -82,7 +90,8 @@ test('with essential dapps +@dark-mode', async({ render, mockEnvs, mockConfigRes
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('base view', async({ render, page }) => {
+  test('base view', async({ render, page, mockApiResponse }) => {
+    await mockDapps(mockApiResponse);
     await page.evaluate(() => window.localStorage.setItem('favoriteApps', '["hop-exchange"]'));
     const component = await render(
       <Box>
@@ -97,33 +106,36 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with featured app', async({ render, mockEnvs, page }) => {
+  test('with featured app', async({ render, mockEnvs, mockApiResponse, page }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP', 'hop-exchange' ],
     ]);
+    await mockDapps(mockApiResponse);
     await page.evaluate(() => window.localStorage.setItem('favoriteApps', '["hop-exchange"]'));
     const component = await render(<Marketplace/>);
 
     await expect(component).toHaveScreenshot();
   });
 
-  test('with banner', async({ render, mockEnvs, mockConfigResponse }) => {
+  test('with banner', async({ render, mockEnvs, mockApiResponse, mockConfigResponse }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
     ]);
+    await mockDapps(mockApiResponse);
     await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
     const component = await render(<Marketplace/>);
 
     await expect(component).toHaveScreenshot();
   });
 
-  test('with essential dapps', async({ render, mockEnvs, mockConfigResponse }) => {
+  test('with essential dapps', async({ render, mockEnvs, mockApiResponse, mockConfigResponse }) => {
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_ESSENTIAL_DAPPS_CONFIG', ESSENTIAL_DAPPS_CONFIG ],
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
       [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
     ]);
+    await mockDapps(mockApiResponse);
     await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
     const component = await render(<Marketplace/>);
     await expect(component).toHaveScreenshot();

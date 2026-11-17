@@ -15,7 +15,7 @@ import StatusTag from 'src/shared/tags/status-tag/StatusTag';
 
 interface Props {
   isLast: boolean;
-  data: tac.OperationStage;
+  data: tac.V2OperationStage;
 }
 
 const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
@@ -44,7 +44,7 @@ const TacOperationLifecycleAccordionItemContent = ({ isLast, data }: Props) => {
             >
               {
                 data.transactions.map((tx) => {
-                  if (tx.type === tac.BlockchainType.TON) {
+                  if (tx.type === tac.V2BlockchainType.TON) {
                     return <TxEntityTon key={ tx.hash } hash={ tx.hash }/>;
                   }
 

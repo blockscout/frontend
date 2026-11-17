@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import { upperFirst } from 'es-toolkit';
 import React from 'react';
 
 import config from 'src/config';
+import StatsContainer from 'src/shared/stats/StatsContainer';
 import StatsWidget from 'src/shared/stats/StatsWidget';
 
 import { SECOND } from 'src/toolkit/utils/consts';
@@ -26,12 +26,7 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
   }
 
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: `repeat(3, calc(${ 100 / 3 }% - 9px))` }}
-      gap={{ base: 1, lg: 3 }}
-      mb={ 6 }
-    >
+    <StatsContainer mb={ 6 }>
       <StatsWidget
         label={ `${ upperFirst(flashblocksFeature.name) }s (sec)` }
         value={ timeElapsed ? Number(itemsNum / (timeElapsed / SECOND)).toLocaleString(undefined, { maximumFractionDigits: 0 }) : '-' }
@@ -48,7 +43,7 @@ const FlashblocksStats = ({ itemsNum, txsNum, initialTs }: Props) => {
             '-'
         }
       />
-    </Box>
+    </StatsContainer>
   );
 };
 

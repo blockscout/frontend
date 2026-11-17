@@ -1,0 +1,187 @@
+diff --git a/dist/esm/handlers/ethereum/useEthereumIframeHandler.js b/dist/esm/handlers/ethereum/useEthereumIframeHandler.js
+index 4759c2e65418e8739dc020bf3ada1901b5c16b63..63e98fb081e053faf9573d7bcf144ac60a238f45 100644
+--- a/dist/esm/handlers/ethereum/useEthereumIframeHandler.js
++++ b/dist/esm/handlers/ethereum/useEthereumIframeHandler.js
+@@ -1,7 +1,19 @@
+ import { handleRpcRequest } from "./rpcHandler.js";
+ import { useCallback, useEffect, useMemo, useRef } from "react";
+-import { useConnection, usePublicClient, useSwitchChain, useWalletClient } from "wagmi";
++import { useAccount, useConfig, useSwitchChain } from "wagmi";
++import { getAccount, getPublicClient, getWalletClient } from "wagmi/actions";
+ //#region src/handlers/ethereum/useEthereumIframeHandler.ts
++const WALLET_METHODS = new Set([
++	"eth_sendTransaction",
++	"personal_sign",
++	"eth_sign",
++	"eth_signTypedData_v4",
++	"wallet_addEthereumChain",
++	"wallet_sendCalls",
++	"wallet_getCallsStatus",
++	"wallet_showCallsStatus",
++	"wallet_getCapabilities"
++]);
+ /**
+ * Host-side hook that creates an `IframeEcosystemHandler` for EVM.
+ *
+@@ -9,25 +21,20 @@ import { useConnection, usePublicClient, useSwitchChain, useWalletClient } from
+ * forwards EIP-1193 RPC requests from the guest iframe.
+ */
+ function useEthereumIframeHandler() {
+-	const { address, chainId, connector } = useConnection();
+-	const { data: walletClient } = useWalletClient();
+-	const publicClient = usePublicClient();
+-	const { mutateAsync: switchChainAsync } = useSwitchChain();
++	const { address, chainId, connector } = useAccount();
++	const config = useConfig();
++	const { switchChainAsync } = useSwitchChain();
+ 	const connectorName = connector?.name;
+ 	const connectorIcon = connector?.icon;
+ 	const stateRef = useRef({
+ 		address,
+ 		chainId,
+-		walletClient,
+-		publicClient,
+ 		connectorName,
+ 		connectorIcon
+ 	});
+ 	stateRef.current = {
+ 		address,
+ 		chainId,
+-		walletClient,
+-		publicClient,
+ 		connectorName,
+ 		connectorIcon
+ 	};
+@@ -66,7 +73,11 @@ function useEthereumIframeHandler() {
+ 		};
+ 	}, []);
+ 	const handleRequest = useCallback(async (_id, method, params) => {
+-		const { address, chainId, walletClient, publicClient } = stateRef.current;
++		const { address, chainId, connector } = getAccount(config);
++		const walletClient = address && WALLET_METHODS.has(method)
++			? await getWalletClient(config, { account: address, chainId, connector })
++			: undefined;
++		const publicClient = getPublicClient(config, { chainId });
+ 		return handleRpcRequest(method, params, {
+ 			address,
+ 			chainId,
+@@ -76,7 +87,7 @@ function useEthereumIframeHandler() {
+ 				await switchChainAsync({ chainId: targetChainId });
+ 			}
+ 		});
+-	}, [switchChainAsync]);
++	}, [config, switchChainAsync]);
+ 	const subscribe = useCallback((emit) => {
+ 		emitRef.current = emit;
+ 		return () => {
+diff --git a/dist/esm/host/useWidgetLightHost.js b/dist/esm/host/useWidgetLightHost.js
+index 93e96184f3a00879d496554d34bdcfaedf94c95e..74bd0f0f7aeadcd007a8140f0debe6274d6d1e75 100644
+--- a/dist/esm/host/useWidgetLightHost.js
++++ b/dist/esm/host/useWidgetLightHost.js
+@@ -65,7 +65,7 @@ function useWidgetLightHost({ config, handlers = EMPTY_HANDLERS, iframeOrigin, a
+ 				return;
+ 			}
+ 			if (msg.type === "RESIZE" && autoResize) {
+-				iframeRef.current.style.height = `${msg.height}px`;
++				iframeRef.current.style.height = `calc(${msg.height}px + var(--lifi-iframe-height-offset, 0px))`;
+ 				return;
+ 			}
+ 			if (msg.type === "WIDGET_EVENT") {
+diff --git a/src/handlers/ethereum/useEthereumIframeHandler.ts b/src/handlers/ethereum/useEthereumIframeHandler.ts
+index 30f119089950c81dd66b6937f710e6657a0a0164..10a97557ad0c825f4efdf8d77cbb0d2af4399748 100644
+--- a/src/handlers/ethereum/useEthereumIframeHandler.ts
++++ b/src/handlers/ethereum/useEthereumIframeHandler.ts
+@@ -1,13 +1,21 @@
+ import { useCallback, useEffect, useMemo, useRef } from 'react'
+-import {
+-  useConnection,
+-  usePublicClient,
+-  useSwitchChain,
+-  useWalletClient,
+-} from 'wagmi'
++import { useAccount, useConfig, useSwitchChain } from 'wagmi'
++import { getAccount, getPublicClient, getWalletClient } from 'wagmi/actions'
+ import type { IframeEcosystemHandler } from '../../shared/protocol.js'
+ import { handleRpcRequest } from './rpcHandler.js'
+ 
++const WALLET_METHODS = new Set([
++  'eth_sendTransaction',
++  'personal_sign',
++  'eth_sign',
++  'eth_signTypedData_v4',
++  'wallet_addEthereumChain',
++  'wallet_sendCalls',
++  'wallet_getCallsStatus',
++  'wallet_showCallsStatus',
++  'wallet_getCapabilities',
++])
++
+ /**
+  * Host-side hook that creates an `IframeEcosystemHandler` for EVM.
+  *
+@@ -15,10 +23,9 @@ import { handleRpcRequest } from './rpcHandler.js'
+  * forwards EIP-1193 RPC requests from the guest iframe.
+  */
+ export function useEthereumIframeHandler(): IframeEcosystemHandler {
+-  const { address, chainId, connector } = useConnection()
+-  const { data: walletClient } = useWalletClient()
+-  const publicClient = usePublicClient()
+-  const { mutateAsync: switchChainAsync } = useSwitchChain()
++  const { address, chainId, connector } = useAccount()
++  const config = useConfig()
++  const { switchChainAsync } = useSwitchChain()
+ 
+   const connectorName = connector?.name
+   const connectorIcon = connector?.icon
+@@ -26,16 +33,12 @@ export function useEthereumIframeHandler(): IframeEcosystemHandler {
+   const stateRef = useRef({
+     address,
+     chainId,
+-    walletClient,
+-    publicClient,
+     connectorName,
+     connectorIcon,
+   })
+   stateRef.current = {
+     address,
+     chainId,
+-    walletClient,
+-    publicClient,
+     connectorName,
+     connectorIcon,
+   }
+@@ -76,7 +79,11 @@ export function useEthereumIframeHandler(): IframeEcosystemHandler {
+ 
+   const handleRequest = useCallback(
+     async (_id: string, method: string, params?: unknown) => {
+-      const { address, chainId, walletClient, publicClient } = stateRef.current
++      const { address, chainId, connector } = getAccount(config)
++      const walletClient = address && WALLET_METHODS.has(method)
++        ? await getWalletClient(config, { account: address, chainId, connector })
++        : undefined
++      const publicClient = getPublicClient(config, { chainId })
+       return handleRpcRequest(method, params as unknown[] | undefined, {
+         address,
+         chainId,
+@@ -87,7 +94,7 @@ export function useEthereumIframeHandler(): IframeEcosystemHandler {
+         },
+       })
+     },
+-    [switchChainAsync]
++    [config, switchChainAsync]
+   )
+ 
+   const subscribe = useCallback(
+diff --git a/src/host/useWidgetLightHost.ts b/src/host/useWidgetLightHost.ts
+index 96dd214321f91aa0d1198c2b04d54e96e70415eb..8984d5db7c82ee47c502c4a4da488221da6393b7 100644
+--- a/src/host/useWidgetLightHost.ts
++++ b/src/host/useWidgetLightHost.ts
+@@ -140,7 +140,7 @@ export function useWidgetLightHost({
+ 
+       // ── RESIZE ─────────────────────────────────────────────────────────────
+       if (msg.type === 'RESIZE' && autoResize) {
+-        iframeRef.current.style.height = `${msg.height}px`
++        iframeRef.current.style.height = `calc(${msg.height}px + var(--lifi-iframe-height-offset, 0px))`
+         return
+       }
+ 

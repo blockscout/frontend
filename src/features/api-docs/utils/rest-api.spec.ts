@@ -1,4 +1,4 @@
-import type { ApiPropsFull } from 'src/api/config';
+import type { ApiPropsFull } from 'src/api/types';
 
 import { describe, test, expect } from 'vitest';
 

@@ -6,13 +6,12 @@ was scaffolded earlier (its `TODO (api-data):` markers are still in place); on d
 run the *Data* item of the Step 0 interview first.
 
 **The worklist is the tag.** Grep the page's directories for `TODO (api-data):` — every hit
-(page shell, `Content`, `Table`/`TableItem`, `List`/`ListItem`, `Details`, `GeneralInfo`) is
-a spot this phase must resolve (the done-condition is checked in Step W5). `TODO (design):`
-markers are the next stage's worklist — leave them in place, and add new ones for any
-representation decision you defer (Step W4).
+(page shell, `Content`, `Table`/`TableItem`, `Details`, `GeneralInfo`) is
+a spot this phase must resolve (the done-condition is checked in Step W5). A representation
+decision this phase defers is listed to the user at the end (Step W4), never marked in the code.
 
 **In scope:** resource declaration (via the `add-api-resource` skill), minimal loading stubs,
-`useApiQuery` / `useQueryWithPages` wiring, pagination controls, plain rendering of every
+`useApiQuery` / `useApiPaginatedQuery` wiring, pagination controls, plain rendering of every
 payload field.
 **Out of scope:** filters, sorting, search, socket live-updates, mocks, tests, and design
 polish — unless the task explicitly names them.
@@ -45,10 +44,10 @@ Mocks and tests are **not** produced here.
 
 Replace the scaffold's placeholder `items` / `data` / `isLoading` / `isError` consts, and
 replace the `unknown` item/data types with the payload (item) type **everywhere it appears** —
-the page shell *and* the `Table`/`TableItem`/`List`/`ListItem` (or `Details`) components each
+the page shell *and* the `Table`/`TableItem` (or `Details`) components each
 carry their own `unknown` marker.
 
-- **index, paginated resource** — in the page shell, `useQueryWithPages({ resourceName,
+- **index, paginated resource** — in the page shell, `useApiPaginatedQuery({ resourceName,
   options: { placeholderData: generateListStub<'service:name'>(ITEM_STUB, 50,
   { next_page_params: { … } }) } })`; take the `next_page_params` keys from the sample body.
   Thread the query down to the content body; pass `isPlaceholderData` as `isLoading` and
@@ -69,8 +68,7 @@ carry their own `unknown` marker.
 
 Inventory the payload fields from the type + sample body and render **all of them** in the
 scaffolded body — `DetailedInfo` rows in `Details` for detail pages; for index pages the
-columns in `Table`, the cells in `TableItem`, **and** the label/value pairs in `ListItem`
-(desktop and mobile views must show the same fields); free layout in `GeneralInfo` for
+columns in `Table` and the cells in `TableItem`; free layout in `GeneralInfo` for
 general:
 
 - Use the obvious shared component **only when the field is unambiguous** — an address
@@ -78,9 +76,10 @@ general:
   timestamp → the shared time-format helpers.
 - Everything else is **plain text**: numbers/strings as-is; nested objects either split into
   sub-fields or JSON-stringified. **Never invent formatting** (no rounding, units, or
-  truncation decisions) — tag each plain-text field with
-  `// TODO (design): <field> representation` instead, and **list all tagged fields to the
-  user at the end** so the design pass has a worklist.
+  truncation decisions) — leave the field plain and **list every such field to the user at
+  the end**, so the style leaf has a worklist. No marker goes in the code.
+- On a detail page, set every `ItemLabel`'s `hint` to the confirmed text from Step 0 item 7. A field with no confirmed hint keeps the template's
+  `TODO (api-data):` hint placeholder and joins the list above.
 - Replace the scaffold's generic `DataList` placeholders with the real entity: plural
   sentence in `emptyText`, singular `emptyStateProps.term`.
 

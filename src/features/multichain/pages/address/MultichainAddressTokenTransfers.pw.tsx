@@ -5,6 +5,7 @@ import React from 'react';
 import * as countersMock from 'src/slices/address/mocks/counters';
 import * as tokenTransferMock from 'src/slices/token-transfer/mocks';
 
+import * as csvExportMock from 'src/features/csv-export/mocks';
 import * as addressMock from 'src/features/multichain/mocks/address';
 import * as chainDataMock from 'src/features/multichain/mocks/chains';
 
@@ -32,13 +33,14 @@ test.describe('local transfers', () => {
     await mockApiResponse(
       'core:address_token_transfers',
       { items: [ tokenTransferMock.erc20 ], next_page_params: DEFAULT_PAGINATION },
-      { pathParams: { hash: CURRENT_ADDRESS }, queryParams: { type: [] }, chainConfig: chainDataMock.chainA },
+      { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
     await mockApiResponse(
       'core:address_counters',
       countersMock.forAddress,
       { pathParams: { hash: CURRENT_ADDRESS }, chainConfig: chainDataMock.chainA },
     );
+    await mockApiResponse('core:config_csv_export', csvExportMock.config, { chainConfig: chainDataMock.chainA });
     await mockAssetResponse(chainDataMock.chainA.logo as string, './playwright/mocks/image_s.jpg');
 
     component = await render(

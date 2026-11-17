@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
 
 export async function setup() {
-  dotenv.config({ path: './vitest/.env.vitest' });
+  dotenv.config({ path: './vitest/.env.vitest', quiet: true });
 }

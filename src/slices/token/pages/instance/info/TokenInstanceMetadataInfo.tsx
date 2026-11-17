@@ -12,7 +12,7 @@ import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
-import { TruncatedText } from 'src/toolkit/components/truncation/TruncatedText';
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
 import { useMetadataUpdateContext } from '../metadata-update-context';
 
@@ -41,12 +41,12 @@ const Item = ({ data, isLoading }: ItemProps) => {
           textStyle="sm"
           loading={ isLoading }
         >
-          <TruncatedText text={ data.value } w="calc(100% - 16px)" loading={ isLoading }/>
+          <Truncate value={ data.value } type="end" w="calc(100% - 16px)" loading={ isLoading }/>
         </Link>
       );
     }
 
-    return <TruncatedText text={ data.value } fontSize="sm" w="100%" loading={ isLoading }/>;
+    return <Truncate value={ data.value } type="end" fontSize="sm" w="100%" loading={ isLoading }/>;
   })();
 
   return (
@@ -59,15 +59,12 @@ const Item = ({ data, isLoading }: ItemProps) => {
       flexDir="column"
       alignItems="flex-start"
     >
-      <TruncatedText
-        text={ data.trait_type }
-        textStyle="xs"
+      <Truncate value={ data.trait_type } type="end" textStyle="xs"
         w="100%"
         color="text.secondary"
         fontWeight={ 500 }
         mb={ 1 }
-        loading={ isLoading }
-      />
+        loading={ isLoading }/>
       { value }
     </GridItem>
   );

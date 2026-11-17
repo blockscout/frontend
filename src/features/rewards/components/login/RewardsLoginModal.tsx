@@ -14,7 +14,7 @@ import { useDisclosure } from 'src/toolkit/hooks/useDisclosure';
 import CongratsStepContent from './steps/CongratsStepContent';
 import LoginStepContent from './steps/LoginStepContent';
 
-const MIXPANEL_CONFIG = {
+const ANALYTICS_CONFIG = {
   account_link_info: {
     source: 'Merits' as const,
   },
@@ -91,7 +91,7 @@ const RewardsLoginModal = () => {
         <AuthModal
           onClose={ handleAuthModalClose }
           initialScreen={ authModalInitialScreen }
-          mixpanelConfig={ MIXPANEL_CONFIG }
+          analyticsConfig={ ANALYTICS_CONFIG }
           closeOnError
         />
       ) }

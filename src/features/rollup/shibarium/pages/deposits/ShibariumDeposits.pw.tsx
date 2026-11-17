@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import ShibariumDeposits from './ShibariumDeposits';
 
-test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
+test('base view', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   test.slow();
   await mockTextAd();
   await mockEnvs(ENVS_MAP.shibariumRollup);

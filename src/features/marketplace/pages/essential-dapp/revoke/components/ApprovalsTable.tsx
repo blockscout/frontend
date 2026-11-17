@@ -34,7 +34,7 @@ export default function ApprovalsTable({
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: approvals, isEnabled: !isLoading, resetKey });
 
   return (
-    <TableRoot>
+    <TableRoot minW="1000px">
       <TableHeaderSticky top={ tableHeaderTop }>
         <TableRow>
           <TableColumnHeader w="30%">Token</TableColumnHeader>

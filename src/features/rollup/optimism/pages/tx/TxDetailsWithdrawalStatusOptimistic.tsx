@@ -7,7 +7,9 @@ import type { schemas } from '@blockscout/api-types';
 
 import { getResourceKey } from 'src/api/hooks/useApiQuery';
 
-import TxEntityL1 from 'src/features/rollup/common/components/TxEntityL1';
+import TxEntity from 'src/slices/tx/components/entity/TxEntity';
+
+import { parentChain } from 'src/features/rollup/common/utils/parent-chain-entity';
 import OptimisticL2ClaimButton, { canClaimDirectlyGuard } from 'src/features/rollup/optimism/components/OptimisticL2ClaimButton';
 
 import config from 'src/config';
@@ -97,7 +99,7 @@ const TxDetailsWithdrawalStatusOptimistic = ({ data, from, txHash }: Props) => {
         if (data.l1_transaction_hash) {
           return WITHDRAWAL_STATUS_STEPS.map((status) => {
             return status === 'Relayed' && data.l1_transaction_hash ? {
-              content: <TxEntityL1 hash={ data.l1_transaction_hash } truncation="constant" text="Relayed" noIcon noCopy/>,
+              content: <TxEntity hash={ data.l1_transaction_hash } truncation="constant" text="Relayed" noIcon noCopy chain={ parentChain }/>,
               label: status,
             } : status;
           });

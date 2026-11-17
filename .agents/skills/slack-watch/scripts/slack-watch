@@ -1,0 +1,226 @@
+#!/usr/bin/env node
+// Slack Socket Mode reply watcher. Holds the WebSocket, acks every event, and
+// prints one line per genuinely-new reply in a watched thread. It does no
+// reasoning: the live session reads the thread itself (via the Slack MCP) when
+// a NEW line arrives. It never prints message content and never logs event
+// payloads — the user-token message.im feed is a DM firehose and must not leak.
+//
+// A single Socket Mode connection carries the app's bot events and its user
+// events together, so DM and channel threads are watched over one socket. The
+// two identities split by conversation type: DMs are the developer's own (user
+// token), channels belong to the Honk bot invited into them (bot token).
+//
+// Three tokens, all from the macOS Keychain, never in argv, a dotfile, or output:
+//   app-level (xapp-)  opens the Socket Mode socket          — slack-orchestrator-app-token
+//   user      (xoxp-)  reads DM replies, is the DM identity   — slack-orchestrator-user-token
+//   bot       (xoxb-)  reads channel replies, is the bot ident — slack-orchestrator-bot-token
+//
+// Node 22+ only: relies on the built-in global WebSocket and fetch — no npm deps.
+// cspell:ignore acks xapp xoxp xoxb
+'use strict';
+
+const { execFileSync } = require('node:child_process');
+
+const APP_TOKEN_SERVICE = 'slack-orchestrator-app-token';
+const USER_TOKEN_SERVICE = 'slack-orchestrator-user-token';
+const BOT_TOKEN_SERVICE = 'slack-orchestrator-bot-token';
+const FATAL_AUTH_ERRORS = new Set(['invalid_auth', 'not_authed', 'account_inactive', 'token_revoked']);
+
+function die(msg) {
+  process.stderr.write(`slack-watch: ${msg}\n`);
+  process.exit(1);
+}
+
+function warn(msg) {
+  // stderr only — Monitor routes it to the output file, not to notifications.
+  process.stderr.write(`slack-watch: ${msg}\n`);
+}
+
+function emit(line) {
+  process.stdout.write(line + '\n');
+}
+
+function keychain(service) {
+  try {
+    return execFileSync('security', ['find-generic-password', '-s', service, '-w'], {
+      encoding: 'utf8',
+    }).trim();
+  } catch {
+    die(`no token in Keychain under service '${service}' — see the slack-watch skill (Setup)`);
+  }
+}
+
+const num = (ts) => parseFloat(ts);
+
+// A message counts as a real reply unless its subtype marks it as noise
+// (edits, joins/leaves, bot_message, channel chrome). Two subtypes are genuine
+// human replies and must be kept: `thread_broadcast` (a reply the author also
+// sent to the channel) and `file_share` (a reply that carries attachments —
+// e.g. screenshots). Plain replies have no subtype at all.
+const KEPT_SUBTYPES = new Set([ 'thread_broadcast', 'file_share' ]);
+const isReply = (m) => !m.subtype || KEPT_SUBTYPES.has(m.subtype);
+
+// argv: one "CHANNEL:THREAD_TS" per watched thread. lastTs is the per-thread
+// watermark; it starts at thread_ts and only ever advances.
+const watched = new Map();
+for (const arg of process.argv.slice(2)) {
+  const i = arg.indexOf(':');
+  if (i < 0) die(`bad thread arg '${arg}', expected CHANNEL:THREAD_TS`);
+  const channel = arg.slice(0, i);
+  const thread_ts = arg.slice(i + 1);
+  watched.set(`${channel}:${thread_ts}`, { channel, thread_ts, lastTs: thread_ts });
+}
+if (watched.size === 0) die('no threads to watch — pass CHANNEL:THREAD_TS args');
+
+const appToken = keychain(APP_TOKEN_SERVICE);
+const userToken = keychain(USER_TOKEN_SERVICE);
+const botToken = keychain(BOT_TOKEN_SERVICE);
+
+const seenEventIds = new Set();
+const ownIds = new Set(); // our own user ids (developer + Honk bot) — never a reply to notify on.
+let ws = null;
+let established = false; // flips on the first `hello`; later `hello`s mean a reconnect.
+let reconnectTimer = null;
+
+// DM channels (D…) are read with the user token; channels (C…) and private
+// groups (G…) are read with the bot token, which has history only where the bot
+// was invited.
+const tokenFor = (channel) => (channel[0] === 'D' ? userToken : botToken);
+
+async function call(method, token, params = {}, httpMethod = 'GET') {
+  const qs = new URLSearchParams(params).toString();
+  const url = `https://slack.com/api/${method}` + (httpMethod === 'GET' && qs ? `?${qs}` : '');
+  const res = await fetch(url, {
+    method: httpMethod,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(httpMethod === 'POST' ? { 'Content-Type': 'application/x-www-form-urlencoded' } : {}),
+    },
+    body: httpMethod === 'POST' ? qs : undefined,
+  });
+  return res.json();
+}
+
+// Advance each thread's watermark to Slack's current state. emitMissed=false is
+// the first-connect baseline (adopt "from now" silently — earlier replies are
+// already in the session transcript); emitMissed=true is the post-downtime
+// catch-up that prints what was missed while the socket was down.
+async function reconcile(emitMissed) {
+  for (const w of watched.values()) {
+    let res;
+    try {
+      res = await call('conversations.replies', tokenFor(w.channel), {
+        channel: w.channel,
+        ts: w.thread_ts,
+        oldest: w.lastTs,
+        inclusive: 'false',
+        limit: '200',
+      });
+    } catch (e) {
+      warn(`replies ${w.channel}: ${e.message}`);
+      continue;
+    }
+    if (!res.ok) {
+      warn(`replies ${w.channel}: ${res.error}`);
+      continue;
+    }
+    for (const m of res.messages || []) {
+      // Drop edits/joins/bot_message and our own posts; keep genuine replies
+      // (plain, thread_broadcast, file_share — see isReply).
+      if (!isReply(m) || ownIds.has(m.user)) continue;
+      if (num(m.ts) <= num(w.lastTs)) continue;
+      if (emitMissed) emit(`NEW channel=${w.channel} thread_ts=${w.thread_ts} ts=${m.ts}`);
+      w.lastTs = m.ts;
+    }
+  }
+}
+
+function handleEvent(payload) {
+  const eventId = payload.event_id;
+  if (eventId) {
+    if (seenEventIds.has(eventId)) return;
+    seenEventIds.add(eventId);
+  }
+  const e = payload.event;
+  // genuine replies only (plain, thread_broadcast, file_share) — drop edits/joins/bot_message.
+  if (!e || e.type !== 'message' || !isReply(e)) return;
+  if (ownIds.has(e.user)) return; // our own follow-ups (developer or bot) arrive here too — ignore them
+  const thread_ts = e.thread_ts;
+  if (!thread_ts) return; // a top-level message, not a threaded reply
+  const w = watched.get(`${e.channel}:${thread_ts}`);
+  if (!w || num(e.ts) <= num(w.lastTs)) return;
+  emit(`NEW channel=${e.channel} thread_ts=${thread_ts} ts=${e.ts}`);
+  w.lastTs = e.ts;
+}
+
+function handleFrame(data) {
+  let msg;
+  try {
+    msg = JSON.parse(data);
+  } catch {
+    return;
+  }
+  if (msg.type === 'hello') {
+    if (!established) {
+      established = true;
+      reconcile(false);
+    } else {
+      emit('RECONNECTED');
+      reconcile(true);
+    }
+    return;
+  }
+  if (msg.type === 'disconnect') {
+    // Slack asks us to reconnect (refresh/too-many-connections). Close and the
+    // close handler reopens on a fresh URL.
+    if (ws) ws.close();
+    return;
+  }
+  if (msg.envelope_id) {
+    // Ack within Slack's 3s window, before doing anything else with the event.
+    ws.send(JSON.stringify({ envelope_id: msg.envelope_id }));
+  }
+  if (msg.type === 'events_api') handleEvent(msg.payload);
+}
+
+function scheduleReconnect() {
+  if (reconnectTimer) return;
+  reconnectTimer = setTimeout(() => {
+    reconnectTimer = null;
+    // Retry the whole init, not just connect(): if a startup auth.test threw
+    // (network/JSON), ownIds is still empty, and opening the socket then would
+    // report our own posts as NEW. init() re-runs auth.test until ownIds is
+    // populated; on a plain socket drop it skips straight to connect().
+    init().catch(scheduleReconnect);
+  }, 1000);
+}
+
+async function connect() {
+  const open = await call('apps.connections.open', appToken, {}, 'POST');
+  if (!open.ok) {
+    if (FATAL_AUTH_ERRORS.has(open.error)) die(`apps.connections.open: ${open.error} (check the app-level token)`);
+    throw new Error(`apps.connections.open: ${open.error}`);
+  }
+  ws = new WebSocket(open.url);
+  ws.addEventListener('message', (ev) => handleFrame(typeof ev.data === 'string' ? ev.data : ''));
+  ws.addEventListener('close', scheduleReconnect);
+  ws.addEventListener('error', () => {}); // a close event always follows; reconnect there
+}
+
+// Establish our own identities, then open the socket. ownIds is populated
+// atomically — both auth.test calls succeed before either id is added — so a
+// thrown call leaves it empty and a retry re-runs both. Once it is filled (the
+// common case on a socket-drop reconnect) init() skips auth.test and reconnects.
+async function init() {
+  if (ownIds.size === 0) {
+    const user = await call('auth.test', userToken);
+    if (!user.ok) die(`auth.test: ${user.error} (check the user token)`);
+    const bot = await call('auth.test', botToken);
+    if (!bot.ok) die(`auth.test: ${bot.error} (check the bot token)`);
+    ownIds.add(user.user_id);
+    ownIds.add(bot.user_id);
+  }
+  await connect();
+}
+
+init().catch(scheduleReconnect);

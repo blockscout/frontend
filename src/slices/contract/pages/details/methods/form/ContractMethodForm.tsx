@@ -9,7 +9,7 @@ import { encodeFunctionData, type AbiFunction } from 'viem';
 import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -111,7 +111,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
         setLoading(false);
       })
       .finally(() => {
-        mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_INTERACTION, {
+        analytics.logEvent(analytics.EventTypes.CONTRACT_INTERACTION, {
           'Method type': methodType === 'write' ? 'Write' : 'Read',
           'Method name': 'name' in data ? data.name : 'Fallback',
         });

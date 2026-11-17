@@ -5,6 +5,9 @@
   "keywords": [],
   "author": "",
   "description": "",
+  "scripts": {
+    "dev": "./dev.sh"
+  },
   "dependencies": {
     "favicons": "^7.2.0"
   }

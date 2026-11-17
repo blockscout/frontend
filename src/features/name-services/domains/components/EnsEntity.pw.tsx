@@ -81,7 +81,16 @@ test.describe('tooltip test', () => {
       />,
     );
 
-    await component.getByAltText(`${ domainMock.protocolA.title } protocol icon`).first().hover();
+    const protocolIcon = component.getByAltText(`${ domainMock.protocolA.title } protocol icon`).first();
+    await protocolIcon.hover();
+
+    // The first hover mounts the lazy tooltip, which remounts the icon and briefly swaps it with a skeleton.
+    // With a still cursor the browser may leave the hover state on the removed skeleton, so the tooltip
+    // never opens; re-entering the settled icon opens it through a regular pointer event.
+    await expect(protocolIcon).toHaveAttribute('data-part', 'trigger');
+    await expect(protocolIcon).toBeVisible();
+    await page.mouse.move(599, 399);
+    await protocolIcon.hover();
 
     await expect(page.getByText(domainMock.protocolA.description)).toBeVisible();
     await expect(page).toHaveScreenshot();

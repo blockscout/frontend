@@ -1,0 +1,33 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import useApiQuery from 'src/api/hooks/useApiQuery';
+
+import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
+
+import { ARBITRUM_L2_TXN_BATCH, ARBITRUM_L2_TXN_BATCH_CELESTIA } from '../../stubs';
+
+export default function useBatchQuery() {
+  const router = useRouter();
+  const number = getQueryParamString(router.query.number);
+  const height = getQueryParamString(router.query.height);
+  const commitment = getQueryParamString(router.query.commitment);
+
+  const batchByNumberQuery = useApiQuery('core:arbitrum_l2_txn_batch', {
+    pathParams: { number },
+    queryOptions: {
+      enabled: Boolean(number),
+      placeholderData: ARBITRUM_L2_TXN_BATCH,
+    },
+  });
+
+  const batchByHeightQuery = useApiQuery('core:arbitrum_l2_txn_batch_celestia', {
+    pathParams: { height, commitment },
+    queryOptions: {
+      enabled: Boolean(height && commitment),
+      placeholderData: ARBITRUM_L2_TXN_BATCH_CELESTIA,
+    },
+  });
+
+  return number ? batchByNumberQuery : batchByHeightQuery;
+}

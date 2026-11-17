@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useMemo, useCallback, useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 import type { PublicClient } from 'viem';
@@ -14,10 +13,11 @@ import useWeb3Wallet from 'src/features/connect-wallet/hooks/useWallet';
 import essentialDappsChainsConfig from 'src/features/marketplace/chains-config/essential-dapps';
 
 import config from 'src/config';
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useQueryParams } from 'src/shared/router/useQueryParams';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Button } from 'src/toolkit/chakra/button';
 import { EmptyState } from 'src/toolkit/chakra/empty-state';
@@ -74,7 +74,7 @@ const RevokeContent = () => {
   const handleChainValueChange = useCallback(({ value }: { value: Array<string> }) => {
     setSelectedChainId(value);
     setApprovalsPage(1);
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, {
       Type: 'Chain switch',
       Info: value[0],
       Source: 'Revoke essential dapp',

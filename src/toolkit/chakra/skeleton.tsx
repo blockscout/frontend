@@ -50,6 +50,35 @@ export interface SkeletonProps extends Omit<ChakraSkeletonProps, 'loading'> {
   loading: boolean | undefined;
 }
 
+type InactiveSkeletonStyleProps = Omit<SkeletonProps, 'loading' | 'asChild' | 'children'>;
+
+// all asChild call sites have a chakra-styled child, so it accepts style props;
+// on conflicts the skeleton's own props win — they are forwarded from the call site
+// (e.g. w/h passed to SpriteIcon must override the inner svg's w="100%"), which is
+// how the Chakra skeleton's class merge resolved these conflicts before the fast path;
+// className/css/ref are merged rather than overridden
+function mergeChildProps(
+  child: React.ReactElement<Record<string, unknown>>,
+  styleProps: InactiveSkeletonStyleProps,
+  ref: React.ForwardedRef<HTMLDivElement>,
+): Record<string, unknown> {
+  const mergedProps: Record<string, unknown> = { ...child.props, ...styleProps };
+
+  if (styleProps.className && child.props.className) {
+    mergedProps.className = `${ styleProps.className } ${ child.props.className }`;
+  }
+  if (styleProps.css && child.props.css) {
+    mergedProps.css = [ child.props.css, styleProps.css ];
+  }
+
+  const childRef = child.props.ref as React.Ref<HTMLDivElement> | undefined;
+  if (ref) {
+    mergedProps.ref = childRef ? mergeRefs(ref, childRef) : ref;
+  }
+
+  return mergedProps;
+}
+
 export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
   function Skeleton(props, ref) {
     const { loading = false, ...rest } = props;
@@ -63,27 +92,8 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
       const { asChild, children, ...styleProps } = rest;
 
       if (asChild && React.isValidElement(children)) {
-        // all asChild call sites have a chakra-styled child, so it accepts style props;
-        // on conflicts the skeleton's own props win — they are forwarded from the call site
-        // (e.g. w/h passed to SpriteIcon must override the inner svg's w="100%"), which is
-        // how the Chakra skeleton's class merge resolved these conflicts before the fast path;
-        // className/css/ref are merged rather than overridden
         const child = children as React.ReactElement<Record<string, unknown>>;
-        const mergedProps: Record<string, unknown> = { ...child.props, ...styleProps };
-
-        if (styleProps.className && child.props.className) {
-          mergedProps.className = `${ styleProps.className } ${ child.props.className }`;
-        }
-        if (styleProps.css && child.props.css) {
-          mergedProps.css = [ child.props.css, styleProps.css ];
-        }
-
-        const childRef = child.props.ref as React.Ref<HTMLDivElement> | undefined;
-        if (ref) {
-          mergedProps.ref = childRef ? mergeRefs(ref, childRef) : ref;
-        }
-
-        return React.cloneElement(child, mergedProps);
+        return React.cloneElement(child, mergeChildProps(child, styleProps, ref));
       }
 
       return <chakra.div ref={ ref } { ...styleProps }>{ children }</chakra.div>;

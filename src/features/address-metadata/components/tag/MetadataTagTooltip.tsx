@@ -5,12 +5,14 @@ import React from 'react';
 
 import type { MetadataTag } from './types';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 
 import { Image } from 'src/toolkit/chakra/image';
 import { Link } from 'src/toolkit/chakra/link';
 import { Tooltip } from 'src/toolkit/chakra/tooltip';
 import { makePrettyLink } from 'src/toolkit/utils/url';
+
+import { hasTagTooltip } from './utils';
 
 interface Props {
   data: MetadataTag;
@@ -18,14 +20,6 @@ interface Props {
 }
 
 const EntityTagTooltip = ({ data, children }: Props) => {
-  const hasPopover = Boolean(
-    data.meta?.tooltipIcon ||
-    data.meta?.tooltipTitle ||
-    data.meta?.tooltipDescription ||
-    data.meta?.tooltipUrl ||
-    data.meta?.tooltipAttribution,
-  );
-
   const link = makePrettyLink(data.meta?.tooltipUrl);
 
   const attribution = React.useMemo(() => {
@@ -41,14 +35,14 @@ const EntityTagTooltip = ({ data, children }: Props) => {
       return;
     }
 
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+    analytics.logEvent(analytics.EventTypes.PAGE_WIDGET, {
       Type: 'Address tag',
       Info: data.slug,
       URL: data.meta.tooltipUrl,
     });
   }, [ data.meta?.tooltipUrl, data.slug ]);
 
-  if (!hasPopover) {
+  if (!hasTagTooltip(data)) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{ children }</>;
   }

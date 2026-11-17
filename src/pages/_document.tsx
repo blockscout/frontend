@@ -12,6 +12,8 @@ import * as serverTiming from 'src/server/utils/serverTiming';
 import config from 'src/config';
 import { SPRITE_URL } from 'src/sprite/SpriteInjector';
 
+import { ColorModeProvider } from 'src/toolkit/chakra/color-mode';
+
 const marketplaceFeature = config.features.marketplace;
 const usercentrics = config.services.usercentrics;
 
@@ -41,6 +43,11 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          { /* Color mode script: without children the provider renders only its inline script, which sets the theme */ }
+          { /* class on <html> before the first paint. The copy rendered by the app provider sits after the global styles */ }
+          { /* in <body>, and Firefox paints the page white before reaching it. */ }
+          <ColorModeProvider/>
+
           { /* Early-fetch primer: fire the page's first-render API requests before the JS bundle boots */ }
           { primerScript && <script dangerouslySetInnerHTML={{ __html: primerScript }}/> }
 

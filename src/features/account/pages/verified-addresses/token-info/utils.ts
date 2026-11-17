@@ -35,6 +35,7 @@ export function getFormDefaultValues(address: string, tokenName: string, applica
     medium: application.medium || '',
     reddit: application.reddit || '',
     comment: application.comment || '',
+    payment_tx: application.paymentTx || '',
   };
 }
 
@@ -65,5 +66,6 @@ export function prepareRequestBody(data: Fields): Omit<adminRs.TokenInfoSubmissi
     tokenAddress: data.address,
     twitter: data.twitter,
     comment: data.comment,
+    paymentTx: data.payment_tx || undefined,
   };
 }

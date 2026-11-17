@@ -1,0 +1,39 @@
+name: Check release tag
+
+on:
+    workflow_call:
+        inputs:
+            tag:
+                description: 'Release tag'
+                required: true
+                type: string
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        steps:
+            # The ENV docs are read from the checkout, which on a tag push or a release event is the tag.
+            -   name: Checkout repo
+                uses: actions/checkout@v4
+
+            -   name: Install pnpm
+                uses: pnpm/action-setup@v6
+                with:
+                    version: 12.4.1
+                    cache: true
+
+            -   name: Setup node
+                uses: actions/setup-node@v4
+                with:
+                    node-version: 24.21.0
+                    cache: 'pnpm'
+
+            -   name: Install dependencies
+                run: pnpm install --frozen-lockfile
+
+            -   name: Check the ENV docs and the release notes
+                run: pnpm release check-tag "$TAG"
+                env:
+                    GH_TOKEN: ${{ github.token }}
+                    TAG: ${{ inputs.tag }}

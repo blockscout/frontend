@@ -8,7 +8,7 @@ import chain from 'src/slices/chain/config';
 import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 import type { Feature } from 'src/config/utils/features';
 
-// Chains served by the Pro API send users straight to the developer portal,
+// Chains served by the Blockscout API send users straight to the developer portal,
 // so the in-app documentation is skipped unless an operator asks for it explicitly.
 const DEV_PORTAL_URL = 'https://dev.blockscout.com/?utm_source=blockscout&utm_medium=navigation';
 

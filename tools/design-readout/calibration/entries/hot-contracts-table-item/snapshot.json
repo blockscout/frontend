@@ -1,0 +1,355 @@
+{
+  "version": 1,
+  "fileKey": "ErLH8qySSkpprB87H0onWw",
+  "nodeId": "29131:74920",
+  "capturedAt": "2026-10-08T09:19:37.018Z",
+  "file": {
+    "lastModified": "2026-10-06T08:17:32Z",
+    "version": "2407877869758240031"
+  },
+  "regions": [
+    "29131:74920"
+  ],
+  "frameBackground": null,
+  "leaves": [
+    {
+      "id": "I29131:74925;28249:17341",
+      "values": {
+        "kind": "icon",
+        "icon": "Contract",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#38A169",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 843,
+        "y": 531,
+        "width": 20,
+        "height": 20
+      }
+    },
+    {
+      "id": "I29131:74925;28249:17345",
+      "values": {
+        "kind": "text",
+        "text": "Uniswap V3: Universal Router",
+        "font": {
+          "family": "Inter",
+          "weight": 600,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#2B6CB0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 867,
+        "y": 531,
+        "width": 201,
+        "height": 20
+      }
+    },
+    {
+      "id": "29131:74929",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#FE017A",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 843,
+        "y": 559,
+        "width": 116,
+        "height": 24
+      }
+    },
+    {
+      "id": "29131:74932",
+      "values": {
+        "kind": "text",
+        "text": "Uniswap V2",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#FFFFFF",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 863,
+        "y": 561,
+        "width": 80,
+        "height": 20
+      }
+    },
+    {
+      "id": "29131:74933",
+      "values": {
+        "kind": "icon",
+        "icon": "send",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#FFFFFF",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 943,
+        "y": 565,
+        "width": 12,
+        "height": 12
+      }
+    },
+    {
+      "id": "29949:25599",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#EDF2F7",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 963,
+        "y": 559,
+        "width": 100,
+        "height": 24
+      }
+    },
+    {
+      "id": "29949:25603",
+      "values": {
+        "kind": "text",
+        "text": "Uniswap V2",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 967,
+        "y": 561,
+        "width": 80,
+        "height": 20
+      }
+    },
+    {
+      "id": "29949:25604",
+      "values": {
+        "kind": "icon",
+        "icon": "send",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1047,
+        "y": 565,
+        "width": 12,
+        "height": 12
+      }
+    },
+    {
+      "id": "29949:25548",
+      "values": {
+        "kind": "box",
+        "colors": [
+          {
+            "role": "background",
+            "hex": "#EDF2F7",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1067,
+        "y": 559,
+        "width": 132,
+        "height": 24
+      }
+    },
+    {
+      "id": "29949:25549",
+      "values": {
+        "kind": "icon",
+        "icon": "Tags",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1071,
+        "y": 565,
+        "width": 12,
+        "height": 12
+      }
+    },
+    {
+      "id": "29949:25551",
+      "values": {
+        "kind": "text",
+        "text": "Uniswap V2",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1103,
+        "y": 561,
+        "width": 80,
+        "height": 20
+      }
+    },
+    {
+      "id": "29949:25552",
+      "values": {
+        "kind": "icon",
+        "icon": "send",
+        "colors": [
+          {
+            "role": "icon",
+            "hex": "#A0AEC0",
+            "alpha": 1
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1183,
+        "y": 565,
+        "width": 12,
+        "height": 12
+      }
+    },
+    {
+      "id": "29131:74937",
+      "values": {
+        "kind": "text",
+        "text": "16",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1193,
+        "y": 526,
+        "width": 130,
+        "height": 30
+      }
+    },
+    {
+      "id": "29131:74938",
+      "values": {
+        "kind": "text",
+        "text": "0.27646303",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1323,
+        "y": 526,
+        "width": 320.5,
+        "height": 30
+      }
+    },
+    {
+      "id": "29131:74940",
+      "values": {
+        "kind": "text",
+        "text": "0.25264",
+        "font": {
+          "family": "Inter",
+          "weight": 500,
+          "size": 14,
+          "lineHeight": 20
+        },
+        "colors": [
+          {
+            "role": "text",
+            "hex": "#101112",
+            "alpha": 0.800000011920929
+          }
+        ]
+      },
+      "bbox": {
+        "x": 1907,
+        "y": 526,
+        "width": 57,
+        "height": 30
+      }
+    }
+  ]
+}

@@ -7,6 +7,7 @@ import type { MouseEvent } from 'react';
 
 import type { MarketplaceDapp } from '@blockscout/admin-rs-types';
 
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { MARKETPLACE_APPS_PLACEHOLDER_COUNT } from '../../hooks/useMarketplaceApps';
@@ -24,6 +25,8 @@ type Props = {
   resetKey?: string;
 };
 
+const getBaseKey = (app: MarketplaceDapp): string => app.id;
+
 const MarketplaceList = ({
   apps, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
   onAppClick, graphLinksQuery, resetKey,
@@ -40,6 +43,8 @@ const MarketplaceList = ({
     onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick ]);
 
+  const keys = useUniqueKeys(apps, getBaseKey);
+
   return apps.length > 0 ? (
     <>
       <Grid
@@ -50,7 +55,7 @@ const MarketplaceList = ({
       >
         { apps.slice(0, renderedItemsNum).map((app, index) => (
           <MarketplaceAppCard
-            key={ app.id + (isLoading ? index : '') }
+            key={ keys[index] }
             id={ app.id }
             external={ app.external }
             url={ app.url }

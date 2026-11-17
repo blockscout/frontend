@@ -42,7 +42,6 @@ export const STATS: schemas['StatsResponse'] = {
   static_gas_price: null,
   total_addresses: '28634064',
   total_blocks: '8940150',
-  total_gas_used: '0',
   total_transactions: '193823272',
   transactions_today: '0',
   tvl: '1767425.102766552',

@@ -1,13 +1,15 @@
 import { Flex } from '@chakra-ui/react';
-import React from 'react';
 
 import * as addressMock from 'src/slices/address/mocks/address';
 import * as addressParamMock from 'src/slices/address/mocks/address-param';
 import MockAddressPage from 'src/slices/address/pages/details/AddressPageMock';
 import * as tokensMock from 'src/slices/token/mocks/address-tokens';
-import { tokenInfoERC20c, tokenInfoERC20a } from 'src/slices/token/mocks/info';
+import { tokenInfoERC20a, tokenInfoERC20c } from 'src/slices/token/mocks/info';
 
-import { test, expect, devices } from 'playwright/lib';
+import { ENVS_MAP } from 'src/config/test-utils/env-presets';
+
+import type { TestFnArgs } from 'playwright/lib';
+import { devices, expect, test } from 'playwright/lib';
 
 import TokenSelect from './TokenSelect';
 
@@ -20,16 +22,25 @@ const hooksConfig = {
 };
 const CLIPPING_AREA = { x: 0, y: 0, width: 360, height: 500 };
 
-test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
+const mockTokenSelectData = async({ mockApiResponse, mockAssetResponse }: Pick<TestFnArgs, 'mockApiResponse' | 'mockAssetResponse'>) => {
   await mockAssetResponse(ASSET_URL, './playwright/mocks/image_s.jpg');
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc20List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc721List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc1155List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' }, times: 1 });
   await mockApiResponse('core:address_tokens', tokensMock.erc404List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' }, times: 1 });
-});
+  await mockApiResponse(
+    'core:address_tokens',
+    { items: [], next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-7984' }, times: 1 },
+  );
+  await mockApiResponse('core:address_tokens', tokensMock.erc8056List, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-8056' }, times: 1 });
+};
 
-test('base view +@dark-mode', async({ render, page }) => {
+test('base view +@dark-mode', async({ render, page, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+  await mockEnvs(ENVS_MAP.additionalTokenTypes);
+  await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
+
   await render(
     <MockAddressPage>
       <Flex>
@@ -51,7 +62,8 @@ test('base view +@dark-mode', async({ render, page }) => {
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('base view', async({ render, page }) => {
+  test('base view', async({ render, page, mockApiResponse, mockAssetResponse }) => {
+    await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
     await render(
       <MockAddressPage>
         <Flex>
@@ -67,7 +79,8 @@ test.describe('mobile', () => {
   });
 });
 
-test('sort', async({ render, page }) => {
+test('sort', async({ render, page, mockApiResponse, mockAssetResponse }) => {
+  await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
   await render(
     <MockAddressPage>
       <Flex>
@@ -89,7 +102,8 @@ test('sort', async({ render, page }) => {
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });
 
-test('filter', async({ render, page }) => {
+test('filter', async({ render, page, mockApiResponse, mockAssetResponse }) => {
+  await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
   await render(
     <MockAddressPage>
       <Flex>
@@ -104,7 +118,8 @@ test('filter', async({ render, page }) => {
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });
 
-test('long values', async({ render, page, mockApiResponse }) => {
+test('long values', async({ render, page, mockApiResponse, mockAssetResponse }) => {
+  await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
   await mockApiResponse('core:address_tokens', {
     items: [ tokensMock.erc20LongSymbol, tokensMock.erc20BigAmount ], next_page_params: null,
   }, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' }, times: 1 });
@@ -129,10 +144,11 @@ test('long values', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 });
 
-test('native token', async({ render, mockEnvs, page }) => {
+test('native token', async({ render, mockEnvs, page, mockApiResponse, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfoERC20c.address_hash ],
   ]);
+  await mockTokenSelectData({ mockApiResponse, mockAssetResponse });
 
   await render(
     <MockAddressPage>

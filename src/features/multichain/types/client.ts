@@ -30,6 +30,9 @@ export interface AggregatedTokenInfo extends Pick<multichain.AggregatedTokenInfo
   exchange_rate: string | null;
   icon_url: string | null;
   reputation: null;
+  ui_multiplier: string | null;
+  new_ui_multiplier: string | null;
+  ui_multiplier_effective_at: string | null;
 }
 
 export interface AddressTokenItem extends

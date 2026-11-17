@@ -2,8 +2,9 @@
 
 import { Box, Flex } from '@chakra-ui/react';
 import { clamp } from 'es-toolkit';
-import { route } from 'nextjs-routes';
 import React from 'react';
+
+import type { schemas } from '@blockscout/api-types';
 
 import { AddressHighlightProvider } from 'src/slices/address/contexts/address-highlight';
 import { useHomeRpcDataContext } from 'src/slices/home/contexts/rpc-data-context';
@@ -12,19 +13,23 @@ import { TX } from 'src/slices/tx/stubs/tx';
 import { isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
 
 import config from 'src/config';
+import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
+import { route } from 'src/shared/router/routes';
 
 import { Link } from 'src/toolkit/chakra/link';
+import { TableBody, TableContainerScrollable, TableRoot } from 'src/toolkit/chakra/table';
 
 import LatestTxsDegradedNewItems from './LatestTxsDegradedNewItems';
 import LatestTxsFallback from './LatestTxsFallback';
-import LatestTxsItem from './LatestTxsItem';
-import LatestTxsItemMobile from './LatestTxsItemMobile';
+import LatestTxsItem, { LATEST_TXS_TABLE_MIN_WIDTH } from './LatestTxsItem';
 
 const zetachainFeature = config.features.zetachain;
 
 interface Props {
   maxNum: number;
 }
+
+const getBaseKey = (tx: schemas['Transaction']): string => tx.hash;
 
 const LatestTxsDegraded = ({ maxNum }: Props) => {
   const { txs, totalTxs, isError, isLoading, enable } = useHomeRpcDataContext();
@@ -36,11 +41,12 @@ const LatestTxsDegraded = ({ maxNum }: Props) => {
     };
   }, [ enable ]);
 
+  const items = React.useMemo(() => isLoading ? Array(maxNum).fill(TX) : txs.slice(0, maxNum), [ isLoading, maxNum, txs ]);
+  const keys = useUniqueKeys(items, getBaseKey);
+
   if (isError || !isPublicClientAvailable) {
     return <LatestTxsFallback/>;
   }
-
-  const items = isLoading ? Array(maxNum).fill(TX) : txs.slice(0, maxNum);
 
   if (items.length === 0) {
     return <Box textStyle="sm">No latest transactions found.</Box>;
@@ -51,25 +57,22 @@ const LatestTxsDegraded = ({ maxNum }: Props) => {
 
   return (
     <>
-      <LatestTxsDegradedNewItems overflow={ overflow } url={ txsUrl } isLoading={ isLoading }/>
-      <Box mb={ 3 } display={{ base: 'block', lg: 'none' }} textStyle="sm">
-        { items.map(((tx, index) => (
-          <LatestTxsItemMobile
-            key={ tx.hash + (isLoading ? index : '') }
-            tx={ tx }
-            isLoading={ isLoading }
-          />
-        ))) }
-      </Box>
       <AddressHighlightProvider>
-        <Box mb={ 3 } display={{ base: 'none', lg: 'block' }} textStyle="sm">
-          { items.map(((tx, index) => (
-            <LatestTxsItem
-              key={ tx.hash + (isLoading ? index : '') }
-              tx={ tx }
-              isLoading={ isLoading }
-            />
-          ))) }
+        <Box mb={ 3 } textStyle="sm">
+          <TableContainerScrollable>
+            <LatestTxsDegradedNewItems overflow={ overflow } url={ txsUrl } isLoading={ isLoading }/>
+            <TableRoot minW={ LATEST_TXS_TABLE_MIN_WIDTH }>
+              <TableBody>
+                { items.map(((tx, index) => (
+                  <LatestTxsItem
+                    key={ keys[index] }
+                    tx={ tx }
+                    isLoading={ isLoading }
+                  />
+                ))) }
+              </TableBody>
+            </TableRoot>
+          </TableContainerScrollable>
         </Box>
       </AddressHighlightProvider>
       <Flex justifyContent="center">

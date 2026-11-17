@@ -7,15 +7,20 @@ import type * as tac from '@blockscout/tac-operation-lifecycle-types';
 import type { BadgeProps } from 'src/toolkit/chakra/badge';
 import { Badge } from 'src/toolkit/chakra/badge';
 
-import { getTacOperationStatus } from '../utils/tac-operation';
+import { getTacOperationRoute } from '../utils/tac-operation';
 
 interface Props extends BadgeProps {
-  type: tac.OperationType;
+  type: tac.V2OperationType;
+  isRollback?: boolean;
 }
 
-const TacOperationTag = ({ type, ...rest }: Props) => {
+const TacOperationTag = ({ type, isRollback, ...rest }: Props) => {
 
-  const text = getTacOperationStatus(type);
+  if (isRollback) {
+    return <Badge { ...rest }>Rollback</Badge>;
+  }
+
+  const text = getTacOperationRoute(type);
 
   if (!text) {
     return null;

@@ -1,25 +1,17 @@
+// SPDX-License-Identifier: LicenseRef-Blockscout
+
+import { delay } from 'es-toolkit';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve as resolvePath } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
-import { delay } from 'es-toolkit';
 
-import { ClusterChainConfig } from 'src/features/multichain/types/client';
-import appConfig from 'src/config';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+
+import type appConfig from 'src/config';
 
 const currentFilePath = fileURLToPath(import.meta.url);
 const currentDir = dirname(currentFilePath);
-
-// const EXPLORER_URLS = [
-//   'https://optimism.blockscout.com',
-//   'https://base.blockscout.com',
-//   'https://arbitrum.blockscout.com',
-//   'https://unichain.blockscout.com',
-//   'https://explorer.redstone.xyz',
-//   'https://matchscan.io'
-//   // 'https://optimism-interop-alpha-0.blockscout.com',
-//   // 'https://optimism-interop-alpha-1.blockscout.com',
-// ];
 
 function getSlug(chainName: string) {
   return chainName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
@@ -36,14 +28,12 @@ async function getChainscoutInfo(chainIds: Array<string>) {
     if (!response.ok) {
       throw new Error(`Failed to fetch chains info from Chainscout API`);
     }
-    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ], logo: string }>;
-  
+    const chainsInfo = await response.json() as Record<string, { explorers: [ { url: string } ]; logo: string }>;
+
     return chainIds.map((chainId) => ({
       id: chainId,
       logoUrl: chainsInfo[chainId]?.logo,
-    }))
-  } catch (error) {
-    throw error;
+    }));
   } finally {
     clearTimeout(timeout);
   }
@@ -54,7 +44,7 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
   const worker = new Worker(workerPath, {
     workerData: { url },
-    env: {} // Start with empty environment
+    env: {}, // Start with empty environment
   });
   const controller = new AbortController();
 
@@ -77,24 +67,23 @@ async function computeChainConfig(url: string): Promise<unknown> {
 
   return Promise.race([
     configPromise,
-    delay(30_000, { signal: controller.signal })
+    delay(30_000, { signal: controller.signal }),
   ]).finally(() => {
     worker.terminate();
-  })
+  });
 }
 
 async function getExplorerUrls() {
-  // return EXPLORER_URLS;
   try {
     const basePath = `/api/v1/clusters/${ process.env.NEXT_PUBLIC_MULTICHAIN_CLUSTER }/chains`;
     const url = new URL(basePath, process.env.NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST);
 
     const response = await fetch(url.toString());
-    const data = await response.json();
+    const data = await response.json() as { items: Array<{ explorer_url: string }> };
 
     console.log(`💡 Found ${ data.items.length } chains in cluster.`);
 
-    return data.items.map((item: { explorer_url: string }) => item.explorer_url);
+    return data.items.map((item) => item.explorer_url);
   } catch (error) {
     return [];
   }
@@ -126,8 +115,8 @@ async function run() {
 
     const chainscoutInfo = await getChainscoutInfo(
       configs
-      .map((config) => config.chain.id)
-      .filter((chainId) => chainId !== undefined)
+        .map((config) => config.chain.id)
+        .filter((chainId) => chainId !== undefined),
     );
 
     const config = {

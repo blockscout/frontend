@@ -13,15 +13,7 @@ Slack IDs are stored so addressing is deterministic (no runtime name lookup). Th
 identifiers, **not credentials** — knowing one grants no access. To find your own member ID in Slack:
 your profile → **⋯ More** → **Copy member ID**. Do not add emails to this file.
 
-## How to address
-
-- **Person** — the *Slack member ID* (`U…`) from the People table. Mention as `<@U…>`; to DM, pass the ID as
-  the channel to the send tool.
-- **Team / group** — the *Slack group ID* (`S…`) from the Groups table. Mention as `<!subteam^S…>`.
-- **Channel** — the *Channel ID* (`C…`). Pass it as the channel target when sending; refer to it in prose by
-  its `#name`.
-- **Permalink** — `https://blockscout.slack.com/archives/<channel-id>/p<message-ts>` (the message timestamp
-  with the dot removed).
+How to turn an ID into a mention, a DM target, or a permalink: `./slack-message.md` → Addressing.
 
 ## Product managers
 
@@ -54,12 +46,19 @@ Own: core API endpoints and response models, field propagation across services, 
 | --- | --- | --- | --- |
 | Victor | @vbaranov | U8L403FEG | ✓ |
 | Nikita P. | @nikitosing | U0218K3MTC5 | |
+| Alexey | @Qwerty5Uiop | U03EE7T5TJS | |
 
 ### Groups
 
 | Team | Slack group ID |
 | --- | --- |
 | Core API | S064H6TD6MA |
+
+### Channels
+
+| Purpose | Channel | Channel ID |
+| --- | --- | --- |
+| Default for core API questions | blockscout-elixir | C04NCPZGRAR |
 
 ## Microservices API
 
@@ -98,12 +97,19 @@ Own: architecture, the delegation boundary.
 | tom | @tom2drum | U03MN1588AU | ✓ |
 | Max | @maxaleks | UKP0RR9K9 | |
 
+### Bots
+| Name | Role | Bot ID | But used ID
+| --- | --- | --- | --- |
+| Rollbar | Post error monitoring events | B0AADAP5PM0 | U0A9XT13GB1 |
+
+
 ### Channels
 
 | Purpose | Channel | Channel ID |
 | --- | --- | --- |
 | Default for frontend questions | blockscout-frontend | C03MMUTQDNU |
 | Ask a frontend engineer to prepare an instance's config | front-config-requests | C08D60ZL1QB |
+| Get alert events from the error monitoring system | blockscout-sentry-alerts | C05ULMSURUZ |
 
 ### Groups
 

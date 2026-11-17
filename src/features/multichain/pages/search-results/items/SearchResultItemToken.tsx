@@ -6,15 +6,17 @@ import React from 'react';
 
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import TokenEntity from 'src/slices/token/components/entity/TokenEntity';
 
 import * as contract from 'src/features/multichain/utils/contract';
 
 import { route } from 'src/shared/router/routes';
-import HashStringShortenDynamic from 'src/shared/texts/HashStringShortenDynamic';
-import shortenString from 'src/shared/texts/shorten-string';
 import SpriteIcon from 'src/sprite/SpriteIcon';
+
+import { Truncate } from 'src/toolkit/components/truncation/Truncate';
+import { shortenString } from 'src/toolkit/utils/texts';
 
 import SearchResultListItem from '../SearchResultListItem';
 
@@ -25,6 +27,7 @@ interface Props {
 }
 
 const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
+  const isFungibleToken = isFungibleTokenType(data.type, chain.app_config);
 
   const isVerified = contract.isVerified({ chain_infos: mapValues(data.chain_infos, (chainInfo) => ({ ...chainInfo, is_contract: true, coin_balance: '0' })) });
 
@@ -59,7 +62,7 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
           _groupHover={{ color: 'inherit' }}
         >
           { isMobile ? shortenString(data.address_hash) : (
-            <HashStringShortenDynamic hash={ data.address_hash }/>
+            <Truncate value={ data.address_hash }/>
           ) }
         </Box>
         { isVerified && <SpriteIcon name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
@@ -71,8 +74,8 @@ const SearchResultItemToken = ({ data, chain, isMobile }: Props) => {
           ml="auto"
           maxW={{ base: '60%', lg: 'unset' }}
         >
-          { (data.type as string) === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
-          { (data.type as string) !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
+          { isFungibleToken && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
+          { !isFungibleToken && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
         </Text>
       </Flex>
     </SearchResultListItem>

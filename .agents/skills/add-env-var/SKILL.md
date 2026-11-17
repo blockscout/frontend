@@ -32,7 +32,9 @@ Add a row in the section that mirrors where the variable's config lives:
 App configuration / APIs configuration / App shell / Slices / Features /
 External services / Misc. The doc sections mirror `src/config/index.ts`.
 
-Fill in: name, type, description, required/optional, default, example.
+Fill in the name, type, description, required/optional status, default, and example. 
+Description: one sentence maximum; avoid validation logic and implementation details; 
+be extremely concise.
 
 Set the **Version** column to `upcoming`. The release process replaces this
 with the actual version number when the change ships.
@@ -140,9 +142,9 @@ URL of a same-origin asset, etc.), this section doesn't apply.
 
 ## Step 3 — Validator schema and tests
 
-Add the rule and a test preset entry. The full procedure (which schema file,
-where in the schema, JSON shape conventions, JSON-URL example assets,
-companion-variable rules, running the tests, verifying the negative path)
+Add the rule and its spec cases. The full procedure (which schema file,
+where in the schema, JSON shape conventions, JSON-URL fixtures,
+companion-variable rules, running the tests)
 lives in `deploy/tools/envs-validator/CONTEXT.md` — follow the "Adding a new
 variable" section there.
 
@@ -162,9 +164,9 @@ For any other external host (analytics, third-party services, custom
 integrations, etc.), add the domain to the matching policy and gate it on
 the feature/option being enabled.
 
-## Step 5 — Only if the variable holds an asset URL (image or JSON config)
+## Step 5 — Only if the variable holds an asset URL (image, JSON config or HTML snippet)
 
-Append the variable name to the `ASSETS_ENVS` array in
-`deploy/scripts/download_assets.sh`. The container entrypoint downloads the
-asset into the image at startup so the browser serves it same-origin.
-
+Add the variable to `ASSET_ENVS` in `deploy/tools/assets-downloader/assets.ts`
+with the content kind the app expects — the `AssetKind` union in that file lists
+them. The container entrypoint downloads the asset at startup, checks the content
+against that kind, and saves it so the browser serves it same-origin.

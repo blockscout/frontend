@@ -6,13 +6,13 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 
 import { USER_OPS_ITEM } from 'src/features/user-ops/stubs';
 
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 
 import UserOpsContent from './UserOpsContent';
 
 const UserOps = () => {
-  const query = useQueryWithPages({
+  const query = useApiPaginatedQuery({
     resourceName: 'core:user_ops',
     options: {
       placeholderData: generateListStub<'core:user_ops'>(USER_OPS_ITEM, 50, { next_page_params: {

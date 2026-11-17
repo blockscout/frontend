@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -14,20 +14,20 @@ import { currencyUnits } from 'src/slices/chain/units';
 import config from 'src/config';
 import DataList from 'src/shared/lists/DataList';
 import StickyPaginationWithText from 'src/shared/pagination/StickyPaginationWithText';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 
 import { WITHDRAWAL } from '../../stubs/withdrawals';
-import BeaconChainWithdrawalsList from './BeaconChainWithdrawalsList';
 import BeaconChainWithdrawalsTable from './BeaconChainWithdrawalsTable';
 
 const feature = config.features.beaconChain;
 
 const BeaconChainWithdrawals = () => {
-  const { data, isError, isPlaceholderData, pagination, queryHash } = useQueryWithPages({
+  const { data, isError, isInitialLoading, isTransitioning, pagination, queryHash } = useApiPaginatedQuery({
     resourceName: 'core:withdrawals',
     options: {
       placeholderData: generateListStub<'core:withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
@@ -47,25 +47,15 @@ const BeaconChainWithdrawals = () => {
   });
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <BeaconChainWithdrawalsList
-          items={ data.items }
-          view="list"
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainWithdrawalsTable
-          items={ data.items }
-          view="list"
-          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
-          isLoading={ isPlaceholderData }
-          resetKey={ queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainWithdrawalsTable
+        items={ data.items }
+        view="list"
+        top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+        isLoading={ isInitialLoading }
+        resetKey={ queryHash }
+      />
+    </TableContainerScrollable>
   ) : null;
 
   const text = (() => {
@@ -74,11 +64,14 @@ const BeaconChainWithdrawals = () => {
     }
 
     return (
-      <Skeleton loading={ countersQuery.isPlaceholderData || isPlaceholderData } display="flex" flexWrap="wrap">
+      <Skeleton loading={ countersQuery.isPlaceholderData || isInitialLoading } display="flex" flexWrap="wrap">
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
             { BigNumber(countersQuery.data.withdrawals_count).toFormat() } withdrawals processed
-            and { calculateUsdValue({ amount: countersQuery.data.withdrawals_sum }).valueStr } { currencyUnits.ether } withdrawn
+            and { calculateUsdValue({
+              amount: countersQuery.data.withdrawals_sum,
+              decimals: String(config.chain.currency.decimals),
+            }).valueStr } { currencyUnits.ether } withdrawn
           </Text>
         ) }
       </Skeleton>
@@ -95,6 +88,7 @@ const BeaconChainWithdrawals = () => {
         itemsNum={ data?.items.length }
         emptyText="There are no withdrawals."
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

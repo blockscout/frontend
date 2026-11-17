@@ -36,7 +36,7 @@ const InfoPopoverButton = ({ children, isLoading }: Props) => {
   if (isMobile) {
     return (
       <DialogRoot size="full">
-        <DialogTrigger>
+        <DialogTrigger asChild>
           { triggerButton }
         </DialogTrigger>
         <DialogContent>

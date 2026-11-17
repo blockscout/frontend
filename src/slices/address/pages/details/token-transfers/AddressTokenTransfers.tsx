@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { HStack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
 import TokenTransferFilter from 'src/slices/token-transfer/components/TokenTransferFilter';
+import { useTokenTransferColumns } from 'src/slices/token-transfer/hooks/useTokenTransferColumns';
 
 import AddressAdvancedFilterLink from 'src/features/advanced-filter/components/AddressAdvancedFilterLink';
 import TokenTransfersCrossChainContent from 'src/features/cross-chain-txs/components/token-transfers/TokenTransfersCrossChainContent';
@@ -16,10 +16,12 @@ import CsvExport from 'src/features/csv-export/components/CsvExport';
 import config from 'src/config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
+import ColumnsButton from 'src/shared/lists/columns/ColumnsButton';
 import Pagination from 'src/shared/pagination/Pagination';
-import useQueryWithPages from 'src/shared/pagination/useQueryWithPages';
+import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
@@ -54,8 +56,9 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
     currentAddress: hash,
     enabled: isQueryEnabled && isLocalTab,
   });
+  const columnsState = useTokenTransferColumns('address', { typeFilter: localQuery.filters.type });
 
-  const crossChainQuery = useQueryWithPages({
+  const crossChainQuery = useApiPaginatedQuery({
     resourceName: 'interchainIndexer:address_transfers',
     pathParams: { hash },
     options: {
@@ -63,12 +66,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       enabled: isQueryEnabled && !isLocalTab,
     },
   });
-
-  const handleTabValueChange = React.useCallback(({ value }: { value: string }) => {
-    if (value === 'token_transfers_local') {
-      localQuery.setFilters({ type: [], filter: undefined });
-    }
-  }, [ localQuery ]);
 
   if (!isMounted || !shouldRender) {
     return null;
@@ -85,6 +82,7 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
           onTypeFilterChange={ localQuery.onTypeFilterChange }
           onAddressFilterChange={ localQuery.onAddressFilterChange }
           addressHash={ hash }
+          columnsState={ columnsState }
           overloadCount={ overloadCount }
         />
       ),
@@ -93,22 +91,23 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       id: 'token_transfers_cross_chain',
       title: 'Cross-chain transfers',
       component: (
-        <>
-          { isMobile && crossChainQuery.pagination.isVisible && (
+        <TokenTransfersCrossChainContent
+          items={ crossChainQuery.data?.items }
+          isLoading={ crossChainQuery.isInitialLoading }
+          isTransitioning={ crossChainQuery.isTransitioning }
+          isError={ crossChainQuery.isError }
+          pagination={ crossChainQuery.pagination }
+          tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
+          currentAddress={ hash }
+          resetKey={ crossChainQuery.queryHash }
+          filters={ crossChainQuery.filters }
+          onFilterChange={ crossChainQuery.onFilterChange }
+          actionBar={ isMobile && crossChainQuery.pagination.isVisible && (
             <ActionBar>
               <Pagination ml="auto" { ...crossChainQuery.pagination }/>
             </ActionBar>
           ) }
-          <TokenTransfersCrossChainContent
-            items={ crossChainQuery.data?.items }
-            isLoading={ crossChainQuery.isPlaceholderData }
-            isError={ crossChainQuery.isError }
-            pagination={ crossChainQuery.pagination }
-            tableTop={ ACTION_BAR_HEIGHT_DESKTOP }
-            currentAddress={ hash }
-            resetKey={ crossChainQuery.queryHash }
-          />
-        </>
+        />
       ),
     },
   ].filter(Boolean);
@@ -135,7 +134,16 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
               withAddressFilter
               onAddressFilterChange={ localQuery.onAddressFilterChange }
               defaultAddressFilter={ localQuery.filters.filter }
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
+            />
+            <ColumnsButton
+              tableColumns={ columnsState.selectableColumns }
+              columns={ columnsState.checkedColumns }
+              onChange={ columnsState.onColumnsChange }
+              onOrderChange={ columnsState.onColumnsReorder }
+              selected={ columnsState.isCustomized }
+              onReset={ columnsState.onColumnsReset }
+              isLoading={ localQuery.query.isInitialLoading }
             />
             <CsvExport
               type="address_token_transfers"
@@ -145,10 +153,10 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
                 filter_type: 'address',
                 filter_value: localQuery.filters.filter,
               } : undefined }
-              loadingInitial={ localQuery.query.isPlaceholderData }
+              loadingInitial={ localQuery.query.isInitialLoading }
             />
             <AddressAdvancedFilterLink
-              isLoading={ localQuery.query.isPlaceholderData }
+              isLoading={ localQuery.query.isInitialLoading }
               address={ hash }
               typeFilter={ localQuery.filters.type }
               directionFilter={ localQuery.filters.filter }
@@ -183,7 +191,6 @@ const AddressTokenTransfers = ({ shouldRender = true, overloadCount, isQueryEnab
       variant="secondary"
       size="sm"
       tabs={ tabs }
-      onValueChange={ handleTabValueChange }
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }
       listProps={ isMobile ? undefined : TAB_LIST_PROPS }

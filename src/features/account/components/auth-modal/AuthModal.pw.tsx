@@ -9,7 +9,7 @@ import { test, expect } from 'playwright/lib';
 import AuthModalStory from './AuthModal.pwstory';
 
 test('email login', async({ render, page, mockApiResponse }) => {
-
+  await mockApiResponse('core:csrf', {} as never);
   await render(<AuthModalStory flow="email_login"/>);
 
   await expect(page.getByText('Status: Not authenticated')).toBeVisible();
@@ -54,6 +54,7 @@ const linkEmailTest = test.extend<{ context: BrowserContext }>({
 
 linkEmailTest('link email to account', async({ render, page, mockApiResponse }) => {
   await mockApiResponse('core:user_info', profileMock.base);
+  await mockApiResponse('core:csrf', {} as never);
   await render(<AuthModalStory flow="email_link"/>);
 
   await expect(page.getByText('Status: Authenticated')).toBeVisible();

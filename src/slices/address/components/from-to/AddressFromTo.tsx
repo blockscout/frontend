@@ -26,6 +26,7 @@ interface Props {
   tokenSymbol?: string;
   truncation?: EntityProps['truncation'];
   noIcon?: boolean;
+  plainArrow?: boolean;
 }
 
 const AddressFromTo = ({
@@ -33,7 +34,13 @@ const AddressFromTo = ({
   to,
   current,
   mode: modeProp,
-  className, isLoading, tokenHash = '', tokenSymbol = '', noIcon }: Props) => {
+  className,
+  isLoading,
+  tokenHash = '',
+  tokenSymbol = '',
+  noIcon,
+  plainArrow,
+}: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' && 'base' in modeProp ? modeProp.base : modeProp),
@@ -74,7 +81,7 @@ const AddressFromTo = ({
         <Flex alignItems="center" columnGap={ 2 }>
           <AddressFromToIcon
             isLoading={ isLoading }
-            type={ getTxCourseType(from.hash, to?.hash, current) }
+            type={ plainArrow ? 'unspecified' : getTxCourseType(from.hash, to?.hash, current) }
             transform="rotate(90deg)"
           />
           <EntityFrom
@@ -130,7 +137,7 @@ const AddressFromTo = ({
       />
       <AddressFromToIcon
         isLoading={ isLoading }
-        type={ getTxCourseType(from.hash, to?.hash, current) }
+        type={ plainArrow ? 'unspecified' : getTxCourseType(from.hash, to?.hash, current) }
       />
       { to && (
         <EntityTo

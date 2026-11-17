@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import type { Router } from 'next/router';
-
 import multichainConfig from 'src/features/multichain/chains-config';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import type { Router } from 'src/shared/router/useRouter';
 
 export default function getChainValueFromQuery(
   query: Router['query'],

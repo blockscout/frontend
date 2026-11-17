@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex, Text, chakra } from '@chakra-ui/react';
-import { route } from 'nextjs-routes';
 import { useCallback, useMemo, useState } from 'react';
 
 import useApiQuery from 'src/api/hooks/useApiQuery';
@@ -14,6 +13,7 @@ import config from 'src/config';
 import { getFeaturePayload } from 'src/config/utils/features';
 import dayjs from 'src/shared/date-and-time/dayjs';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Button } from 'src/toolkit/chakra/button';
@@ -360,7 +360,7 @@ export default function ActivityTab() {
             <Text textStyle="xs" color="text.secondary" fontWeight="500">
               Metrics are not updated in real time. Please allow up to one hour for your Performance Rank and earned Merits to reflect recent activity.
               If you experience any issues, feel free to reach out on{ ' ' }
-              <Link external href="https://discord.gg/blockscout">
+              <Link external href="https://discord.gg/3yAWj8TXV2">
                 Discord
               </Link>
             </Text>

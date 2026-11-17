@@ -9,7 +9,6 @@ import PageTitle from 'src/shell/page/title/PageTitle';
 import useVerifiedContractsQuery from 'src/slices/contract/hooks/useVerifiedContractsQuery';
 import VerifiedContractsCounters from 'src/slices/contract/pages/index/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'src/slices/contract/pages/index/VerifiedContractsFilter';
-import VerifiedContractsList from 'src/slices/contract/pages/index/VerifiedContractsList';
 import VerifiedContractsTable from 'src/slices/contract/pages/index/VerifiedContractsTable';
 
 import useIsMobile from 'src/shared/hooks/useIsMobile';
@@ -17,6 +16,7 @@ import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import Sort from 'src/shared/sort/Sort';
 
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 
 import { SORT_OPTIONS } from './sort';
@@ -28,8 +28,8 @@ const sortCollection = createListCollection({
 const VerifiedContracts = () => {
   const isMobile = useIsMobile();
 
-  const { query, type, searchTerm, debouncedSearchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
-  const { isError, isPlaceholderData, data, pagination } = query;
+  const { query, type, searchTerm, sort, onSearchTermChange, onTypeChange, onSortChange } = useVerifiedContractsQuery();
+  const { isError, isInitialLoading, isTransitioning, data, pagination } = query;
 
   const typeFilter = (
     <VerifiedContractsFilter
@@ -55,7 +55,7 @@ const VerifiedContracts = () => {
       defaultValue={ [ sort ] }
       collection={ sortCollection }
       onValueChange={ onSortChange }
-      isLoading={ isPlaceholderData }
+      isLoading={ isInitialLoading }
     />
   );
 
@@ -79,14 +79,9 @@ const VerifiedContracts = () => {
   );
 
   const content = data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
-      <Box hideBelow="lg">
-        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isPlaceholderData } resetKey={ query.queryHash }/>
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ onSortChange } isLoading={ isInitialLoading } resetKey={ query.queryHash }/>
+    </TableContainerScrollable>
   ) : null;
 
   return (
@@ -97,11 +92,12 @@ const VerifiedContracts = () => {
         isError={ isError }
         itemsNum={ data?.items.length }
         emptyText="There are no verified contracts."
-        hasActiveFilters={ Boolean(debouncedSearchTerm || type) }
+        hasActiveFilters={ Boolean(searchTerm || type) }
         emptyStateProps={{
           term: 'contract',
         }}
         actionBar={ actionBar }
+        isTransitioning={ isTransitioning }
       >
         { content }
       </DataList>

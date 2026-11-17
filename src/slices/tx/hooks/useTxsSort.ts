@@ -23,7 +23,16 @@ export const SORT_OPTIONS: Array<SelectOption<TransactionsSortingValue>> = [
   { label: 'Block number ascending', value: 'block_number-asc' },
 ];
 
+export const SORT_OPTIONS_WITHOUT_BLOCK: Array<SelectOption<TransactionsSortingValue>> =
+  SORT_OPTIONS.filter(({ value }) => !value.startsWith('block_number'));
+
 type SortingValue = TransactionsSortingValue;
+
+function getInitialSorting(withBlockSort: boolean): SortingValue {
+  const value = cookies.get(cookies.NAMES.TXS_SORT);
+  const options = withBlockSort ? SORT_OPTIONS : SORT_OPTIONS_WITHOUT_BLOCK;
+  return options.find((option) => option.value === value)?.value ?? 'default';
+}
 
 type HookResult = UseQueryResult<operations['TransactionController.transactions']['json'], ResourceError<unknown>> & {
   sorting: SortingValue;
@@ -32,20 +41,16 @@ type HookResult = UseQueryResult<operations['TransactionController.transactions'
 
 export default function useTxsSort(
   queryResult: UseQueryResult<operations['TransactionController.transactions']['json'], ResourceError<unknown>>,
+  withBlockSort = true,
 ): HookResult {
 
-  const [ sorting, setSorting ] = React.useState<SortingValue>((cookies.get(cookies.NAMES.TXS_SORT) as SortingValue | undefined) ?? 'default');
+  const [ sorting, setSorting ] = React.useState<SortingValue>(() => getInitialSorting(withBlockSort));
 
   const setSortByValue = React.useCallback((value: SortingValue) => {
-    setSorting((prevVal: SortingValue) => {
-      let newVal: SortingValue = 'default';
-      if (value !== prevVal) {
-        newVal = value as SortingValue;
-      }
-      cookies.set(cookies.NAMES.TXS_SORT, newVal ? newVal : '');
-      return newVal;
-    });
-  }, []);
+    const newVal: SortingValue = value !== sorting ? value : 'default';
+    cookies.set(cookies.NAMES.TXS_SORT, newVal);
+    setSorting(newVal);
+  }, [ sorting ]);
 
   return React.useMemo(() => {
     if (queryResult.isError || queryResult.isPending) {

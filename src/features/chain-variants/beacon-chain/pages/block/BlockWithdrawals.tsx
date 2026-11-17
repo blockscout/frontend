@@ -1,40 +1,30 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import DataList from 'src/shared/lists/DataList';
-import type { QueryWithPagesResult } from 'src/shared/pagination/useQueryWithPages';
+import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
-import BeaconChainWithdrawalsList from '../withdrawals/BeaconChainWithdrawalsList';
+import { TableContainerScrollable } from 'src/toolkit/chakra/table';
+
 import BeaconChainWithdrawalsTable from '../withdrawals/BeaconChainWithdrawalsTable';
 
 type Props = {
-  blockWithdrawalsQuery: QueryWithPagesResult<'core:block_withdrawals'>;
+  blockWithdrawalsQuery: ApiPaginatedQueryResult<'core:block_withdrawals'>;
 };
 const TABS_HEIGHT = 88;
 
 const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
-    <>
-      <Box hideFrom="lg">
-        <BeaconChainWithdrawalsList
-          items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          view="block"
-          resetKey={ blockWithdrawalsQuery.queryHash }
-        />
-      </Box>
-      <Box hideBelow="lg">
-        <BeaconChainWithdrawalsTable
-          items={ blockWithdrawalsQuery.data.items }
-          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
-          view="block"
-          resetKey={ blockWithdrawalsQuery.queryHash }
-        />
-      </Box>
-    </>
+    <TableContainerScrollable>
+      <BeaconChainWithdrawalsTable
+        items={ blockWithdrawalsQuery.data.items }
+        isLoading={ blockWithdrawalsQuery.isInitialLoading }
+        top={ blockWithdrawalsQuery.pagination.isVisible ? TABS_HEIGHT : 0 }
+        view="block"
+        resetKey={ blockWithdrawalsQuery.queryHash }
+      />
+    </TableContainerScrollable>
   ) : null ;
 
   return (
@@ -42,6 +32,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
       isError={ blockWithdrawalsQuery.isError }
       itemsNum={ blockWithdrawalsQuery.data?.items?.length }
       emptyText="There are no withdrawals for this block."
+      isTransitioning={ blockWithdrawalsQuery.isTransitioning }
     >
       { content }
     </DataList>

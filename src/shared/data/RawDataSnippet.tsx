@@ -41,7 +41,7 @@ const RawDataSnippet = ({
   const bgColor = { _light: '#f5f5f6', _dark: '#1a1b1b' };
   return (
     <Box className={ className } as="section" title={ title }>
-      { (title || rightSlot || showCopy) && (
+      { Boolean(title || rightSlot || showCopy) && (
         <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={{ base: 1, lg: 3 }}>
           { title && <Skeleton fontWeight={ 500 } loading={ isLoading }>{ title }</Skeleton> }
           { rightSlot }

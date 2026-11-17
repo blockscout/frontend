@@ -61,10 +61,13 @@ const IndexingStatusInternalTxs = () => {
     return null;
   }
 
+  const ratio = data.indexed_internal_transactions_ratio;
+  const hasRatio = ratio !== null && ratio !== undefined;
+
   const hint = (
     <Text textStyle="xs">
-      { data.indexed_internal_transactions_ratio &&
-        `${ Math.floor(Number(data.indexed_internal_transactions_ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
+      { hasRatio &&
+        `${ Math.floor(Number(ratio) * 100) }% Blocks With Internal Transactions Indexed${ nbsp }${ ndash } ` }
       We{ apos }re indexing this chain right now. Some of the counts may be inaccurate.
     </Text>
   );
@@ -80,9 +83,9 @@ const IndexingStatusInternalTxs = () => {
       _hover={{ color: 'hover' }}
     >
       <SpriteIcon name="info" boxSize={ 5 }/>
-      { data.indexed_internal_transactions_ratio && (
+      { hasRatio && (
         <Text fontWeight={ 600 } textStyle="xs" color="inherit">
-          { Math.floor(Number(data.indexed_internal_transactions_ratio) * 100) + '%' }
+          { Math.floor(Number(ratio) * 100) + '%' }
         </Text>
       ) }
     </Flex>

@@ -1,0 +1,8 @@
+{
+  "name": "react-doctor-runner",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "react-doctor": "0.9.13"
+  }
+}

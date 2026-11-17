@@ -6,6 +6,9 @@ export type ExcludeUndefined<T> = T extends undefined ? never : T;
 
 export type KeysOfObjectOrNull<T> = keyof ExcludeNull<T>;
 
+export type NonEmptyArray<T> = [T, ...Array<T>];
+export type Pairs<T> = Array<[T, T]>;
+
 /** Combines members of an intersection into a readable type. */
 // https://twitter.com/mattpocockuk/status/1622730173446557697?s=20&t=NdpAcmEFXY01xkqU3KO0Mg
 export type Evaluate<Type> = { [key in keyof Type]: Type[key] } & unknown;
@@ -18,6 +21,9 @@ export type PickByType<T, X> = Record<
 
 // Make some properties of an object optional
 export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+// Omit applied to each member of a union separately, so keys present in only some members survive
+export type DistributiveOmit<T, K extends PropertyKey> = T extends unknown ? Omit<T, K> : never;
 
 // Make all properties of an object optional
 export type DeepPartial<T> = {

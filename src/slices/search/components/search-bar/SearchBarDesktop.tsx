@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { useClickAway } from '@uidotdev/usehooks';
-import { useRouter } from 'next/router';
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
 import type { FormEvent } from 'react';
 import React from 'react';
 
@@ -11,8 +8,11 @@ import { getRecentSearchKeywords, saveToRecentKeywords } from 'src/slices/search
 
 import useSearchWithClusters from 'src/features/name-services/clusters/hooks/useSearchWithClusters';
 
-import * as mixpanel from 'src/services/mixpanel';
+import * as analytics from 'src/shared/analytics';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
+import { route } from 'src/shared/router/routes';
+import type { Route } from 'src/shared/router/routes';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { PopoverBody, PopoverContent, PopoverFooter, PopoverRoot, PopoverTrigger } from 'src/toolkit/chakra/popover';
@@ -42,13 +42,13 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
     if (searchTerm) {
       const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: redirect ? 'true' : 'false' } };
       const url = route(resultRoute);
-      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+      analytics.logEvent(analytics.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
-        'Source page type': mixpanel.getPageType(router.pathname),
+        'Source page type': analytics.getPageType(router.pathname),
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
-      router.push(resultRoute, undefined, { shallow: true });
+      router.push(resultRoute, { shallow: true });
     }
   }, [ searchTerm, router ]);
 
@@ -95,9 +95,9 @@ const SearchBarDesktop = ({ isHeroBanner }: Props) => {
   }, [ handleSearchTermChange ]);
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+    analytics.logEvent(analytics.EventTypes.SEARCH_QUERY, {
       'Search query': searchTerm,
-      'Source page type': mixpanel.getPageType(router.pathname),
+      'Source page type': analytics.getPageType(router.pathname),
       'Result URL': event.currentTarget.href,
     });
     saveToRecentKeywords(searchTerm);

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import { Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
@@ -9,6 +8,7 @@ import type { schemas } from '@blockscout/api-types';
 import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+import { useRouter } from 'src/shared/router/useRouter';
 
 import ContractSourceAddressSelector from '../code/ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';

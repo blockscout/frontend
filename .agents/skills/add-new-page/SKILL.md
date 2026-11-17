@@ -15,10 +15,11 @@ sorting, search, socket live-updates, mocks, tests, and design polish are out of
 wiring is deferred, the freshly-scaffolded page keeps its intentional `TODO`s and will not fully pass
 `lint`/`tsc` until its data is wired — that is expected.
 
-**TODO tags.** Every deferred piece of work is marked with a stage-tagged TODO, so each later stage can find
-its worklist with a grep: **`TODO (api-data):`** — resolved by the data-wiring phase (`wiring.md`);
-**`TODO (design):`** — content/representation decisions left for the design stage (icons, field hints,
-uncertain value formatting). Keep the tags when scaffolding, and use them for any new deferred work you mark.
+**TODO tag.** Every piece of work deferred to the data-wiring phase is marked **`TODO (api-data):`**, so that
+phase finds its worklist with a grep (`wiring.md`). Keep the tag when scaffolding, and use it for any new
+deferred data work you mark. Nothing is deferred to the style leaf by a marker: a representation decision
+the scaffold cannot make is listed to the user at the end, and a visual item still with the designer is a
+question on the task, not a comment in the code.
 
 **Rule of thumb: never guess.** Whenever information is missing or required to proceed, **pause and ask the
 user, or confirm your findings**, before writing files.
@@ -43,13 +44,13 @@ substitute the placeholders and delete any optional blocks you don't need:
 Template sets:
 - `templates/general/{Page,GeneralInfo}.tsx.tmpl` (`Page` = non-tabbed general page; `GeneralInfo` = a general-content body, used as a tab panel)
 - `templates/detail/{Page,Details}.tsx.tmpl`
-- `templates/index/{Page,Content,Table,TableItem,List,ListItem}.tsx.tmpl`
+- `templates/index/{Page,Content,Table,TableItem}.tsx.tmpl`
 - `templates/tabs/PageWithTabs.tsx.tmpl` (tabbed page shell — `PageTitle` + `RoutedTabs`)
 - `templates/route.tsx.tmpl` (shared route wrapper; has a commented dynamic-route variant)
 
 A **page shell** is one of: a non-tabbed `Page.tsx.tmpl` (embeds a single content body) or the tabbed
 `PageWithTabs.tsx.tmpl` (renders `RoutedTabs`). A **content body** is `Details` (detail), `Content` +
-`Table`/`List`/items (index), or `GeneralInfo` (general). Tabbed pages combine one shell with one body per tab.
+`Table`/`TableItem` (index), or `GeneralInfo` (general). Tabbed pages combine one shell with one body per tab.
 
 **Naming the destination files.** Drop the `.tmpl` extension and name each component file after the
 component it exports — i.e. the `__PageName__`-prefixed name used in the template's `const` / `import`
@@ -65,8 +66,6 @@ route wrapper is named after the route, not the component.
 | `index/Content.tsx.tmpl` | `__PageName__Content.tsx` → `ValidatorsContent.tsx` |
 | `index/Table.tsx.tmpl` | `__PageName__Table.tsx` → `ValidatorsTable.tsx` |
 | `index/TableItem.tsx.tmpl` | `__PageName__TableItem.tsx` → `ValidatorsTableItem.tsx` |
-| `index/List.tsx.tmpl` | `__PageName__List.tsx` → `ValidatorsList.tsx` |
-| `index/ListItem.tsx.tmpl` | `__PageName__ListItem.tsx` → `ValidatorsListItem.tsx` |
 | `general/GeneralInfo.tsx.tmpl` | `__PageName__GeneralInfo.tsx` → `ValidatorsGeneralInfo.tsx` |
 | `tabs/PageWithTabs.tsx.tmpl` | `__PageName__.tsx` → `Validators.tsx` |
 | `route.tsx.tmpl` | `src/pages/__route__.tsx` → `src/pages/validators.tsx` |
@@ -76,8 +75,7 @@ components live in their own kebab-case sub-folder** under it (mirrors
 `src/slices/tx/pages/details/{info,logs,state,…}`). Name a tab's components after the tab so same-type tabs
 don't collide: replace the `__PageName__` base with `__PageName__<TabName>` (PascalCase tab name), and rename
 the body's sub-components/imports to match. E.g. an `index`-type tab "Active" on page `Validators` → folder
-`active/` holding `ValidatorsActive` (from `Content`), `ValidatorsActiveTable`, `ValidatorsActiveTableItem`,
-`ValidatorsActiveList`, `ValidatorsActiveListItem`. A `detail`-type tab "Details" → folder `info/` holding
+`active/` holding `ValidatorsActive` (from `Content`), `ValidatorsActiveTable`, `ValidatorsActiveTableItem`. A `detail`-type tab "Details" → folder `info/` holding
 `ValidatorsDetails` (from `Details`). A `general`-type tab "Stats" → folder `stats/` holding `ValidatorsStats`
 (from `GeneralInfo`).
 
@@ -90,7 +88,7 @@ Propose each of the following and **wait for the user's explicit approval**. Ask
 obvious from the conversation or the codebase.
 
 1. **Layout** — does the page have **tabs**? Decide this first; ask if it isn't obvious from the conversation.
-   - **No tabs** → pick the single content type: `index` (list + table views), `detail` (label/value grid),
+   - **No tabs** → pick the single content type: `index` (table view), `detail` (label/value grid),
      or `general` (title + content).
    - **Tabs** → list the tabs **in order**; for each, give a **name** (the tab title) and a **content type**
      (`details` / `index` / `general info`). That's enough at this stage. **A `details` tab, if present, must
@@ -100,8 +98,8 @@ obvious from the conversation or the codebase.
 3. **Gated or core?** — apply the architecture rule's test: *"Can this exist on a vanilla EVM chain with no
    feature flag?"* If yes → **core slice** (`__area__` = `slices`, no feature config/sitemap). If no →
    **config-gated feature** (`__area__` = `features`).
-4. **Title** and **navigation placement** — the `<PageTitle>` text, the nav label, and which nav group it
-   belongs to.
+4. **Title** and **navigation placement** — the `<PageTitle>` text, the nav label, which nav group it
+   belongs to, and the nav icon (the exact sprite name).
 5. **Metadata** — **suggest** a default page title and description; let the user confirm or refine. Default
    only — do **not** add `enhanced` variants.
 6. **Data — wire data now, or layout only?** If now, collect for **each content body** (per tab if tabbed):
@@ -111,6 +109,7 @@ obvious from the conversation or the codebase.
    the endpoint isn't deployed anywhere yet, wiring is deferred — layout only. For each resource that
    doesn't exist yet, also run the **Step 0 interview of the `add-api-resource` skill** here — after this
    step, no question should remain for the middle of the work.
+7. **Field hints (detail pages)** — Every `DetailedInfo.ItemLabel` on a detail page includes a `hint`: a one-line explanation of the field displayed when users hover over it. Collect the hint text for each field from the available context. If the context does not explicitly specify a hint, draft a suggestion for the user to confirm.
 
 Proceed only once these are settled.
 
@@ -141,10 +140,11 @@ The **content bodies** are the same regardless of tabs — reference these exemp
   `src/features/gas-tracker/pages/index/GasTracker.tsx`.
 - **detail** (`Details.tsx`) — a `DetailedInfo.Container` grid of `ItemLabel`/`ItemValue` rows wrapped in
   `Skeleton`. Exemplars `src/slices/block/pages/details/BlockDetails.tsx`; grid `src/shared/detailed-info/DetailedInfo.tsx`.
-- **index** (`Content.tsx` + `Table`/`TableItem` + `List`/`ListItem`) — `Content.tsx` is `DataList` + dual
-  view (`<Box hideFrom="lg">` mobile `List`, `<Box hideBelow="lg">` desktop `Table`); `Table`/`List` render
-  one row per item via dedicated `TableItem`/`ListItem` components (mirroring `BlocksTableItem`/`BlocksListItem`).
-  Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem,BlocksList,BlocksListItem}.tsx`;
+- **index** (`Content.tsx` + `Table`/`TableItem`) — `Content.tsx` is `DataList` wrapping the `Table` in
+  `TableContainerScrollable`, one view for every viewport (mobile scrolls it horizontally); the `Table` root's
+  `minWidth` is set from its columns' content so they don't compress. `Table` renders one row per item via a
+  dedicated `TableItem` component (mirroring `BlocksTableItem`).
+  Exemplars `src/slices/block/pages/index/{BlocksContent,BlocksTable,BlocksTableItem}.tsx`;
   `src/shared/lists/DataList.tsx`.
   Replace the `DataList` placeholders with the page's entity (don't leave the generic "items"):
   set `emptyText` to a plural no-data sentence (`"There are no blocks."`) and `emptyStateProps={{ term: '<entity>' }}` to 
@@ -158,7 +158,7 @@ Use the single page shell that embeds its one content body directly:
 
 - **general** → `general/Page.tsx.tmpl` (content inline; no separate body needed).
 - **detail** → `detail/Page.tsx.tmpl` (reads the route param, renders `PageTitle` + `Details`) + `detail/Details.tsx.tmpl`.
-- **index** → `index/Page.tsx.tmpl` (renders `PageTitle` + `Content`) + `index/{Content,Table,TableItem,List,ListItem}.tsx.tmpl`.
+- **index** → `index/Page.tsx.tmpl` (renders `PageTitle` + `Content`) + `index/{Content,Table,TableItem}.tsx.tmpl`.
 
 ### B. With tabs
 
@@ -204,18 +204,18 @@ Run **`pnpm run routes:generate`** (runs `nextjs-routes`) to regenerate `src/sha
 
 ## Step 5 — Navigation
 
-In `src/shell/navigation/useNavItems.tsx` add a `NavItem` to the group agreed in Step 0:
+In `src/shell/navigation/useNavItems.ts` add a `NavItem` to the group agreed in Step 0:
 ```ts
 const __featureName__: NavItem | null = config.features.__featureName__.isEnabled ? {
   text: '__title__',
   nextRoute: { pathname: '__route__' as const },
-  // TODO (design): set nav icon
+  icon: '<sprite name from Step 0>',
   isActive: pathname.startsWith('__route__'),
 } : null;
 ```
-For a core slice page drop the `config.features.*` guard (or gate on `config.slices.*`). **Do not invent an
-icon** — leave the `// TODO (design): set nav icon` comment and omit the `icon` field so the user assigns the correct
-sprite later. Then insert the item into the appropriate group array.
+For a core slice page drop the `config.features.*` guard (or gate on `config.slices.*`). The `icon` is the
+sprite name settled in Step 0 (`public/icons/name.d.ts` is the list of valid names) — never a guess. Then
+insert the item into the appropriate group array.
 
 ## Step 6 — Metadata
 
@@ -236,7 +236,7 @@ title/description (`default` only, no `enhanced`):
 
 ## Step 7 — Page-type analytics
 
-In `src/services/mixpanel/get-page-type.ts` add an entry to `PAGE_TYPE_DICT` (a
+In `src/shared/analytics/get-page-type.ts` add an entry to `PAGE_TYPE_DICT` (a
 `Record<Route['pathname'], string>`). **Suggest** a human-readable name; let the user adjust:
 ```ts
 '__pathname__': '__title__',

@@ -290,8 +290,17 @@ test('hover', async({ page, render }) => {
     </AddressHighlightProvider>,
   );
 
-  await component.getByText(addressParamMock.hash.slice(0, 4)).hover();
+  const entityText = component.getByText(addressParamMock.hash.slice(0, 4));
+  await entityText.hover();
   await page.getByText(addressParamMock.hash).waitFor({ state: 'visible' });
+
+  // In this tiny viewport the tooltip's first, not yet positioned frame at the page's top-left covers the cursor.
+  // If the highlight delay expires during that frame, the entity is not ':hover' and the highlight is skipped,
+  // so the pointer re-enters the entity once the tooltip is positioned (it stays open, see closeDelay in pw).
+  await page.mouse.move(0, 0);
+  await entityText.hover();
+  await expect(component.locator(`[data-hash="${ addressParamMock.hash }"]`)).toHaveClass(/address-entity_highlighted/);
+
   await expect(page).toHaveScreenshot();
 });
 
