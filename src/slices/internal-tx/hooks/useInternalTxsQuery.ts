@@ -6,17 +6,18 @@ import type { ExternalChainExtended } from 'src/shared/external-chains/types';
 
 import { INTERNAL_TX } from 'src/slices/internal-tx/stubs';
 
-import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
 import { useDebouncedFilterChange } from 'src/shared/pagination/useDebouncedFilterChange';
 import { generateListStub } from 'src/shared/pagination/utils';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
+
+import { useInternalTxsPaginatedQuery } from './useInternalTxsPaginatedQuery';
 
 interface Props {
   chain?: ExternalChainExtended;
 }
 
 export default function useInternalTxsQuery({ chain }: Props = {}) {
-  const query = useApiPaginatedQuery({
+  const query = useInternalTxsPaginatedQuery({
     resourceName: 'core:internal_txs',
     options: {
       placeholderData: generateListStub<'core:internal_txs'>(
@@ -42,8 +43,8 @@ export default function useInternalTxsQuery({ chain }: Props = {}) {
 
   const searchTerm = getQueryParamString(query.filters.transaction_hash) || undefined;
 
-  const { onFilterChange } = query;
-  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ transaction_hash: value }));
+  const { onFilterChange, filters } = query;
+  const onSearchTermChange = useDebouncedFilterChange((value) => onFilterChange({ ...filters, transaction_hash: value }));
 
   return React.useMemo(() => ({
     query,
