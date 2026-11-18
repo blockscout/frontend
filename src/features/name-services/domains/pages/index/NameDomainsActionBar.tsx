@@ -95,7 +95,6 @@ const NameDomainsActionBar = ({
                 variant="link"
                 onClick={ handleProtocolReset }
                 disabled={ protocolsFilterValue.length === 0 }
-                textStyle="sm"
               >
                 Reset
               </Button>

@@ -67,7 +67,6 @@ const ColumnsButton = <TColumnId extends string>({
       variant="link"
       onClick={ onReset }
       disabled={ !selected }
-      textStyle="sm"
     >
       Reset
     </Button>

@@ -43,7 +43,6 @@ const TokensBridgedChainsFilter = ({ onChange, defaultValue }: Props) => {
           variant="link"
           onClick={ handleReset }
           disabled={ value.length === 0 }
-          textStyle="sm"
         >
           Reset
         </Button>

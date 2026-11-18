@@ -36,7 +36,6 @@ const CustomRpcAlert = ({ isLoading }: Props) => {
       loadingSkeleton={ isLoading || isPending }
       variant="dropdown"
       selected
-      textStyle="sm"
       fontWeight="medium"
       h="auto"
     >

@@ -22,7 +22,6 @@ const ColumnFilterContentSection = ({ title, onReset, isFilled, children }: Prop
             variant="link"
             onClick={ onReset }
             disabled={ !isFilled }
-            textStyle="sm"
           >
             Reset
           </Button>
