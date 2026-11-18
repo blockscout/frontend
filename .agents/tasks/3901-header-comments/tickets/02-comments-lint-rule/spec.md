@@ -34,5 +34,5 @@ and 10 of the spec. Both checks are one custom ESLint rule with its own spec, re
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write the rule and its spec
-- [ ] 2 `[agent]` Register the rule in `eslint.config.mjs` and clear what it reports in the files this ticket touches
+- [x] 1 `[agent]` Write the rule and its spec
+- [x] 2 `[agent]` Register the rule in `eslint.config.mjs` and clear what it reports in the files this ticket touches

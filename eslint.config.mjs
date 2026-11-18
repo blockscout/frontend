@@ -20,6 +20,7 @@ import { fileURLToPath } from 'node:url';
 
 import tseslint from 'typescript-eslint';
 
+import { commentLengthAndJsdocRule } from './tools/eslint/comment-length-and-jsdoc.mjs';
 import { strykerDisableRule } from './tools/mutation-testing/eslint/well-formed-disable.mjs';
 
 const SPDX_HEADER = '// SPDX-License-Identifier: LicenseRef-Blockscout';
@@ -144,7 +145,6 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const gitignorePath = path.resolve(__dirname, '.gitignore');
 
-/** @see src/ARCH_REDESIGN.md §8 — dependency layers for migrated code */
 const ARCH_BOUNDARY_ELEMENTS = [
   { type: 'src-api', pattern: 'src/api/**', mode: 'full' },
   { type: 'src-slices', pattern: 'src/slices/**', mode: 'full' },
@@ -840,6 +840,14 @@ export default tseslint.config(
     files: [ '**/*.{ts,tsx,mjs,js,cjs}' ],
     rules: {
       'stryker/well-formed-disable': 'error',
+    },
+  },
+
+  {
+    plugins: { comments: { rules: { 'length-and-jsdoc': commentLengthAndJsdocRule } } },
+    files: [ '**/*.{js,mjs,cjs,jsx,ts,mts,tsx}' ],
+    rules: {
+      'comments/length-and-jsdoc': 'error',
     },
   },
 );
