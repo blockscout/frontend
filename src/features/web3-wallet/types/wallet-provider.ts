@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// copied from node_modules/@wagmi/core/src/connectors/injected.ts
 import type { EIP1193Provider } from 'viem';
 
 import type { Evaluate } from 'src/shared/types/utils';
@@ -49,11 +48,7 @@ EIP1193Provider & {
   [key in WalletProviderFlags]?: true | undefined
 } & {
   providers?: Array<WalletProvider> | undefined;
-
-  /** Only exists in MetaMask as of 2022/04/03 */
   _events?: { connect?: (() => void) | undefined } | undefined;
-
-  /** Only exists in MetaMask as of 2022/04/03 */
   _state?:
   | {
     accounts?: Array<string>;

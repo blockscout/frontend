@@ -37,6 +37,6 @@ included.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Work the rows of `research.md` file by file
-- [ ] 2 `[agent]` Move the lines that requirement 14 keeps into the area's `CONTEXT.md`, and correct the documents that point at a removed header
-- [ ] 3 `[agent]` Run the lint, type and test checks from the acceptance criteria
+- [x] 1 `[agent]` Work the rows of `research.md` file by file
+- [x] 2 `[agent]` Move the lines that requirement 14 keeps into the area's `CONTEXT.md`, and correct the documents that point at a removed header
+- [x] 3 `[agent]` Run the lint, type and test checks from the acceptance criteria
