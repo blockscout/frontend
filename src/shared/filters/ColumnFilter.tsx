@@ -34,7 +34,6 @@ const ColumnFilter = ({ columnName, contentProps, rootProps, children, isLoading
           selected={ selected }
           borderRadius="4px"
           size="sm"
-          textStyle="sm"
           fontWeight={ 500 }
           padding={ 0 }
         >

@@ -166,7 +166,7 @@ describe('recordOverride', () => {
       .toThrow('bg=whiteAlpha.100 names a token the mockup does not draw on 22842:178386: the node resolved no background fill.');
     expect(() => recordOverride(tmp, ref, { nodeId: '22842:178400', props: [ 'color=link.primary' ] }, new Date()))
       .toThrow('color=link.primary names a token the mockup does not draw on 22842:178400: ' +
-        'the node resolved text tokens link.secondary, link.subtle, link.subtle.hover, text.secondary.');
+        'the node resolved text tokens link.subtle, link.subtle.hover, text.secondary.');
     const unmapped = readSidecar(target).nodes[0];
     writeSidecar(target, { ...readSidecar(target), nodes: [ { ...unmapped, tokens: [ { role: 'background', color: '#FFFFFF/6', tokens: [] } ] } ] });
     expect(() => recordOverride(tmp, ref, { nodeId: unmapped.id, props: [ 'bg=whiteAlpha.100' ] }, new Date()))
@@ -211,7 +211,7 @@ describe('readoutOf', () => {
     ]);
     expect(recognitions.map((recognition) => recognition.tokens)).toEqual([
       [ { role: 'text', color: '#63B3ED', tokens: [ 'link.primary' ] } ],
-      [ { role: 'text', color: '#A0AEC0', tokens: [ 'link.secondary', 'link.subtle', 'link.subtle.hover', 'text.secondary' ] } ],
+      [ { role: 'text', color: '#A0AEC0', tokens: [ 'link.subtle', 'link.subtle.hover', 'text.secondary' ] } ],
       [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],
       [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],
       [ { role: 'text', color: '#FFFFFF/80', tokens: DARK_PRIMARY_TEXT_TOKENS } ],

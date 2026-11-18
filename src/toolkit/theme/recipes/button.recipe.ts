@@ -385,11 +385,14 @@ export const recipe = defineRecipe({
         px: 3,
         h: 10,
         minW: 10,
-        textStyle: 'md',
+        textStyle: 'sm',
         borderRadius: 'base',
         gap: 2,
         _icon: { boxSize: 'auto' },
-        '& .chakra-spinner': { '--spinner-size': '20px' },
+        '& .chakra-spinner': {
+          '--spinner-size': '20px',
+          textStyle: 'md', // spinner should stay 2px width in this button size
+        },
       },
     },
   },

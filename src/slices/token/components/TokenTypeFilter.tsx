@@ -45,7 +45,6 @@ const TokenTypeFilter = <T extends TokenType | NftTokenType>({ category, onChang
           variant="link"
           onClick={ handleReset }
           disabled={ value.length === 0 }
-          textStyle="sm"
           ml={ 3 }
         >
           Reset
