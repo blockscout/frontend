@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { withHTTP } from '@helia/http';
 import type { VerifiedFetch } from '@helia/verified-fetch';
-import { createVerifiedFetchWithHelia } from '@helia/verified-fetch';
-import { createHeliaLight } from 'helia';
 import React from 'react';
 
 import { VERIFIED_FETCH_GATEWAYS } from 'src/slices/token/utils/verified-fetch';
@@ -24,6 +21,13 @@ let verifiedFetchPromise: Promise<VerifiedFetch> | undefined;
 // but those hosts are unknown in advance and cannot be allowed by the CSP, so only the fixed gateways are used.
 function getVerifiedFetch(): Promise<VerifiedFetch> {
   verifiedFetchPromise ??= (async() => {
+    // Loaded on demand: the helia stack throws while its modules evaluate in old Chromium WebViews (Chrome 97),
+    // and a static import would take the whole page down with it instead of just falling back to HTTP.
+    const [ { withHTTP }, { createVerifiedFetchWithHelia }, { createHeliaLight } ] = await Promise.all([
+      import('@helia/http'),
+      import('@helia/verified-fetch'),
+      import('helia'),
+    ]);
     const helia = withHTTP(createHeliaLight(), {
       delegatedRouters: [],
       recursiveGateways: VERIFIED_FETCH_GATEWAYS,
