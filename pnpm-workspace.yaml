@@ -31,6 +31,7 @@ overrides:
   # entry once that parent moves past the floor. Keep them ranges: an exact pin stops receiving patches
   # and becomes the source of the next alerts.
   axios: "^1.20.0" # @coinbase/cdp-sdk pins 1.16.0
+  handlebars: "^4.7.10" # eslint-plugin-boundaries and @boundaries/elements pin 4.7.9
   js-yaml: "^4.3.2" # swagger-ui-react pins 4.1.1
   protobufjs: "^7.6.5" # @opentelemetry/otlp-transformer pins 8.0.1
   ws: "^8.21.0" # viem pins 8.18.x, @walletconnect/jsonrpc-ws-connection asks for ^7
