@@ -98,6 +98,9 @@ const moduleExports = {
     // script-src in src/server/csp blocks it and the page never hydrates. Keep the per-route chunk instead.
     // Upstream: https://github.com/vercel/next.js/pull/100102 (app router only), https://github.com/vercel/next.js/pull/97574
     turbopackSharedRuntime: false,
+    // Next 16.4 checks security advisories on dev/build start and, under a coding agent, exits the first
+    // run with an upgrade notice. Dependency upgrades here are handled separately.
+    agentUpgrade: false,
   },
 
   // Type-checking is done by `pnpm lint:tsc` (TypeScript 7), not by Next: Next resolves the
@@ -111,7 +114,7 @@ const moduleExports = {
   // Next.js warns about this unrecognized key on startup; the warning is harmless.
   outDir: ROUTES_OUT_DIR,
 
-  agentRules: false
+  agentRules: false,
 };
 
 module.exports = withBundleAnalyzer(withRoutes(moduleExports));

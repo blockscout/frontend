@@ -40,6 +40,12 @@ const ensLookupQueryParams = {
   order: 'ASC',
 };
 
+const fundingTxsQueryParams = {
+  filter: 'to',
+  sort: 'block_number',
+  order: 'asc',
+};
+
 test.beforeEach(async({ mockTextAd }) => {
   await mockTextAd();
 });
@@ -50,6 +56,11 @@ test.describe('fetched bytecode', () => {
     await mockApiResponse('core:address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressParamMock.hash } });
     await mockApiResponse('core:address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressParamMock.hash } });
     await mockApiResponse('core:address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressParamMock.hash } });
+    await mockApiResponse(
+      'core:address_txs',
+      { items: [], next_page_params: null },
+      { pathParams: { hash: addressParamMock.hash }, queryParams: fundingTxsQueryParams },
+    );
     await mockApiResponse('core:stats', statsMock.base);
     await mockApiResponse('metadata:info', generateAddressMetadataInfo(addressParamMock.hash, nameTag), { queryParams: addressMetadataQueryParams });
     await mockApiResponse('metadata:address_submit', null as never);
