@@ -64,6 +64,7 @@ reason.
 | Specify publisher SDK | `SpecifyBanner.isolated.spec.tsx` | The SDK is a class instantiated inside the feature's client factory. Observing it means replacing the constructor |
 | `phoenix`, through `mockSocket` | `AddressTokenTransfers.isolated.spec.tsx` | The transport is replaced as a module by design |
 | `next/router`, `next/navigation` | `NextRouterProvider.isolated.spec.tsx` | The router adapter's own spec. The adapter is what wraps those modules |
+| `helia` | `useLoadImageViaIpfs.isolated.spec.ts` | The failure under test is the package throwing while it evaluates, which only a module mock produces |
 | Module singleton | `metrics.isolated.spec.ts` | A second, fresh instance of the module is the behaviour under test |
 | Primed-requests drift specs | every `*.primed.spec.tsx` | The harness resets the registry and mocks the socket transport |
 
