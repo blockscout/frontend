@@ -1,10 +1,6 @@
 import { MINUTE_MS } from '../config';
 import type { RunResults } from '../stryker/results';
 
-// The line a truncated run prints alongside its totals. A run stopped at its budget covers part of
-// the selection, and the numbers beside it are only that part's — so the notice says both, and the
-// report is never presented as a complete one.
-
 const PERCENT = 100;
 
 // Two decimals so a budget set in seconds during a bisect is still reported as what was asked for,

@@ -8,12 +8,6 @@ import { EXEC_MAX_BUFFER } from '../../cli/exec';
 import type { CoverageData } from './read';
 import { readCoverageOrEmpty } from './read';
 
-// Auto-generates coverage by running vitest and reading the coverage-final.json it writes, so a user
-// never has to produce a report by hand. Each mode maps to a vitest selection — 'related' →
-// `vitest related <paths>`, 'changed' → `vitest run --changed <since>`, 'full' → `vitest run`. All
-// three select through the module graph, which is what makes a file's coverage independent of how it
-// was reached (../docs/RUNNING.md).
-//
 // Output goes to a throwaway temp dir (never the user's ./coverage) and is removed once read.
 
 const VITEST_BIN = path.join('node_modules', '.bin', 'vitest');
@@ -64,9 +58,7 @@ function runVitestCoverage(reportsDirectory: string, request: CoverageRequest, o
     });
   } catch {
     // A non-zero vitest exit (a failing test) must not sink the whole gate: vitest still writes
-    // coverage for what did run, and the complexity half needs none. Warn and press on with
-    // whatever coverage landed — a failing suite means the coverage numbers may be incomplete.
-    // Point at --verbose so the hidden failure is recoverable.
+    // coverage for what did run, and the complexity half needs none.
     console.error('warning: vitest exited non-zero; coverage may be incomplete (re-run with --verbose to see why).');
   }
 }

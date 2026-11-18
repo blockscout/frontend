@@ -3,10 +3,8 @@ import fs from 'fs';
 import { STREAM_REPORT_FILE } from '../config';
 import type { Mutant, MutationReport } from './report';
 
-// The line-delimited result stream the reporter plugin writes and a truncated run reads back.
-// Stryker's own json report lands only when a whole run finishes, so a run stopped at its
-// wall-clock budget has nothing else to report from. One JSON object per line is what makes a file
-// cut off mid-write usable: every complete line before the cut is still a whole record.
+// One JSON object per line is what makes a file cut off mid-write usable: every complete line before
+// the cut is still a whole record.
 
 export type StreamRecord =
   // Emitted once, when Stryker has planned the run: the denominator for how much of the selection a

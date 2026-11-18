@@ -19,19 +19,12 @@ export const SANDBOX_DIR = strykerConfig.tempDirName;
 // ignorePatterns, neither of which can read it from here.
 export const LOCK_FILE = path.join(TOOL_DIR, '.lock');
 
-// Stryker's own json report is written only once a whole run finishes, so a run stopped at its
-// budget would leave nothing behind. ./stryker/streaming-reporter.mts appends a record here as each
-// mutant is tested, and ./stryker/stream.ts reads it back when the run did not finish.
 export const STREAM_REPORT_FILE = path.join(TOOL_DIR, 'reports', 'mutation.ndjson');
 
 // src/toolkit/utils/consts, which owns the shared unit constants, sits outside this tool's tsconfig
 // rootDir and cannot be imported here.
 export const MINUTE_MS = 60 * 1_000;
 
-// A run is bounded by wall-clock time rather than mutant count because cost follows import-graph
-// centrality: one 28-mutant file imported across the app costs more than five leaf utilities with
-// 140 between them, since Stryker's dry run executes everything related to what it mutates.
-// Overridable per invocation with --budget.
 export const DEFAULT_BUDGET_MS = 15 * MINUTE_MS;
 
 // How long the stopped process group gets to exit on its own before it is killed outright.

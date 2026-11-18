@@ -17,9 +17,6 @@ import { getAllSourceFiles, getChangedFiles, getChangedLineRanges, rangesOverlap
 import { hasCoLocatedSpec } from './select/eligibility';
 import { isInScope } from './select/scope';
 
-// The CLI has two independent axes, mirroring vitest: selection (which functions to score) and
-// coverage source (how the CRAP half is fed). Any selection combines with any source; ./docs/RUNNING.md
-// tabulates both. USAGE below is the flag reference.
 type CoverageMode = 'generate' | 'file' | 'off';
 
 interface CliOptions {
@@ -139,13 +136,8 @@ function thresholdsOf(options: CliOptions): Thresholds {
   };
 }
 
-// Resolve coverage from the chosen mode. `request` steers generation; it is ignored for 'file' and
-// 'off'. `anyNeedsCoverage` short-circuits generation: when no file in the selection needs coverage
-// generated (see fileNeedsCoverage) vitest would produce nothing, so we skip the run.
-//
-// Only 'off' yields null. Skipping the run yields *empty* coverage instead, because null means "the
-// CRAP gate is disabled" to analyze.ts — which would let generation scope decide which functions are
-// scored, and make a function's score depend on what else happened to be in the same selection.
+// Skipping the run yields empty coverage, not null: null disables the CRAP gate, which would make a
+// function's score depend on what else happened to be in the same selection.
 function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeedsCoverage: boolean): CoverageData | null {
   switch (options.coverageMode) {
     case 'off':
@@ -158,9 +150,6 @@ function resolveCoverage(options: CliOptions, request: CoverageRequest, anyNeeds
   }
 }
 
-// Whether a file needs vitest coverage generated for it: a JSX-less logic file always does; a JSX
-// component only when it has a co-located vitest spec. This drives only the generation scope
-// (./docs/RUNNING.md); per-function CRAP applicability is decided in analyze.ts.
 function fileNeedsCoverage(file: string, source: string): boolean {
   return !fileContainsJsx(source, file) || hasCoLocatedSpec(file);
 }
@@ -184,9 +173,8 @@ function runFocusedMode(options: CliOptions): Array<ReportRow> {
   }));
 }
 
-// Full-repo mode (default): score every in-scope function, across both allowlisted roots. This is
-// the mode threshold calibration runs (./docs/CALIBRATION.md). The repo always has files that need
-// coverage and generation runs the whole suite regardless, so there is no per-file skip here.
+// No per-file skip here: the repo always has files that need coverage, and generation runs the
+// whole suite regardless.
 function runFullMode(options: CliOptions): Array<ReportRow> {
   const files = getAllSourceFiles(process.cwd());
   if (files.length === 0) return [];
@@ -232,9 +220,6 @@ function selectRows(options: CliOptions): Array<ReportRow> {
   return runFullMode(options);
 }
 
-// Under $GITHUB_ACTIONS, add the two CI outputs: `::error` annotations that surface each offender
-// inline on the PR diff, and the full table written to the job summary. The plain-stdout table has
-// already been printed.
 function emitGithubActionsOutput(rows: ReadonlyArray<ReportRow>, thresholds: Thresholds, table: string): void {
   for (const annotation of githubAnnotations(rows, thresholds)) console.log(annotation);
   // eslint-disable-next-line no-restricted-properties -- Node CLI reading a CI-provided path, not an app env var
@@ -263,8 +248,7 @@ function main(): void {
 }
 
 // run.sh always executes the compiled `tools/code-complexity/dist/code-complexity/index.js`, so that
-// path is what marks this module as the process entry point. The guard exists so `index.spec.ts` can
-// import parseArgs without kicking off a whole report run — under vitest the entry is vitest's own binary.
+// path is what marks this module as the process entry point.
 const CLI_ENTRY_PATH = 'code-complexity/dist/code-complexity/index.js';
 
 function isProcessEntryPoint(): boolean {

@@ -96,9 +96,6 @@ describe('git-backed modes', () => {
     return request(overrides, repo);
   }
 
-  // A repo forked from `main`, with one commit on each side of the fork point:
-  //   main:    src/base.ts (+spec), then src/landed-later.ts (+spec) after the fork
-  //   feature: src/touched.ts (+spec), src/untested.ts (no spec), src/notes.md (out of scope)
   function createForkedRepo(): void {
     repo = fs.mkdtempSync(path.join(os.tmpdir(), 'mutation-select-'));
     git('init', '-b', BASE_REF);

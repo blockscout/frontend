@@ -2,10 +2,6 @@ import fs from 'fs';
 
 import { JSON_REPORT_FILE } from '../config';
 
-// Reads Stryker's JSON report — the mutation-testing-elements schema its json reporter writes — and
-// reduces it to one row per file. The clear-text reporter is not used: it prints every mutant with
-// its full diff, which is unusable at this scale.
-
 // Stryker's per-mutant verdicts. Only the four that bear on assertion strength are scored; see
 // SCORED_STATUSES.
 export type MutantStatus =
@@ -89,10 +85,6 @@ export function buildFileScores(report: MutationReport): Array<FileScore> {
   return Object.entries(report.files).map(([ file, { mutants } ]) => scoreFile(file, mutants));
 }
 
-// The two findings a run produces, kept apart because they are different problems. A survivor is a
-// weak assertion: a test ran the line and noticed nothing. A no-coverage mutant is an untested line,
-// which is the CRAP gate's question, not this one's — so it is counted, not listed.
-
 // Survivors are grouped by the line they sit on: several mutators surviving together is one weak
 // assertion, not several findings.
 export interface LineFinding {
@@ -118,8 +110,7 @@ export interface Findings {
 
 // Sorted by name, through the default sort rather than the shared collator: this tool sits outside
 // the src/ tsconfig that owns the collator, and the default sort's code-unit order is
-// locale-independent, which is what keeps two runs over an unchanged tree byte-identical. Tallying
-// the names in that order leaves the map's insertion order sorted too.
+// locale-independent, which is what keeps two runs over an unchanged tree byte-identical.
 function tally(names: ReadonlyArray<string>): Array<{ name: string; count: number }> {
   const counts = new Map<string, number>();
   for (const name of [ ...names ].sort()) counts.set(name, (counts.get(name) ?? 0) + 1);
@@ -143,18 +134,15 @@ function withStatus(mutants: ReadonlyArray<Mutant>, status: MutantStatus): Array
   return mutants.filter((mutant) => statusOf(mutant) === status);
 }
 
-// What makes a run's findings a failure, and the only finding that does: a mutant nothing caught. A
-// no-coverage mutant is an untested line, which the CRAP gate already fails a PR for — failing here
-// too would report one gap twice and make this gate's verdict unreadable. A run that tested nothing
-// has no findings at all and fails on `testedNothing` in ./results.ts instead.
+// Only a survivor fails a run: a no-coverage mutant is an untested line, which the CRAP gate already
+// fails a PR for. A run that tested nothing has no findings at all; see `testedNothing` in ./results.ts.
 export function isFailingRun(findings: Findings): boolean {
   return findings.survivors.length > 0;
 }
 
 export function collectFindings(report: MutationReport): Findings {
-  // Alphabetical by file, ascending by line: two runs over an unchanged tree must read identically,
-  // and the report's own file order is whatever Stryker happened to emit. Sorting the file names up
-  // front carries that order into both listings; see tally() on why it is the default sort.
+  // Two runs over an unchanged tree must read identically, and the report's own file order is
+  // whatever Stryker happened to emit. See tally() on why it is the default sort.
   const files = Object.keys(report.files).sort().map((file) => ({ file, mutants: report.files[file].mutants }));
 
   return {

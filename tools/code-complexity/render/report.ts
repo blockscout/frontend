@@ -1,6 +1,3 @@
-// Renders the results table: every checked function with its cognitive complexity, coverage%, CRAP,
-// and which threshold (if any) it broke, sorted by CRAP descending with offenders flagged.
-
 import type { Contribution } from '../measure/complexity';
 
 // A function's class, decided by whether JSX appears directly in its own body (../measure/complexity.ts).

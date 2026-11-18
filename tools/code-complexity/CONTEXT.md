@@ -50,7 +50,7 @@ with no co-located spec reads 0%, accurately — no unit test exercises it.
 ## File map
 
 Four directories, one per pipeline stage, and files at the root that tie them together. Specs
-sit next to what they test, and each file's header comment carries its own local detail.
+sit next to what they test.
 
 Measuring and judging are separate jobs. `select/`, `measure/` and `coverage/` compute the numbers
 and never see a cap; the caps enter once, at `./analyze.ts`, which stamps a verdict onto each row.

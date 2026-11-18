@@ -1,8 +1,3 @@
-// Renders what a run found: the survivors, grouped by the source line they sit on, and a one-line
-// count of the mutants no test covered. The two are rendered differently on purpose — a survivor is
-// an assertion to strengthen and needs its line, while a no-coverage mutant is a missing test, which
-// is the CRAP gate's finding and needs only its size.
-
 import type { Findings, LineFinding } from '../stryker/report';
 
 const NOTHING_FOUND = 'No survivors and no uncovered mutants — nothing to act on.';

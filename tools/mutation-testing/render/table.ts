@@ -1,6 +1,3 @@
-// Renders the per-file score table: how many mutants each file got, how many any test noticed, and
-// the resulting mutation score, worst file first.
-
 import type { FileScore } from '../stryker/report';
 
 const NA = '—';

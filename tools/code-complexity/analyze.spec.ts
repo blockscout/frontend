@@ -27,9 +27,7 @@ function coverageStub(byPath: Record<string, ReadonlyArray<[ number, number ]>>)
   };
 }
 
-// A wide-but-shallow body: cyclomatic 8 (base 1 + 7 `&&`), but cognitive 1 — a single boolean run.
-// It drives the CRAP tests (CRAP is fed by cyclomatic) and confirms flat logic scores near-zero
-// cognitively. On one line so coverage maps to it. No JSX -> `behavior`.
+// Cyclomatic 8 (base 1 + 7 `&&`) but cognitive 1, a single boolean run. On one line so coverage maps to it.
 const WIDE_LOGIC = 'export function f(a: any) { return a && a && a && a && a && a && a && a; }';
 
 // A genuinely-nested body: three nested ifs -> cognitive 6 (1 + 2 + 3), cyclomatic 4. No JSX ->
