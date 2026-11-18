@@ -184,11 +184,15 @@ Before writing custom utility logic (clamping, deep cloning, grouping, etc.), ch
 **Do not write comments. Never. Period.**
 Prefer a name or a structure change that makes the comment unnecessary.
 
-A comment in the diff is allowed only when it explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast, raw color) still explain *why*, in their own sections.
+The ban has exactly two exceptions: the why-comment and the header comment.
 
 Never write *diff-narration* (what this change replaces). That belongs in the commit and the PR. Test: if the comment would confuse someone who never saw the previous file, delete it.
 
-Do not add JSDoc that restates the name or types. Do not rewrite comments you did not have to touch. Delete commented-out code; git keeps it. TODOs only with an issue or a concrete follow-up.
+Do not write JSDoc (`/** */`). A header comment is an ordinary comment like any other. Do not rewrite comments you did not have to touch. Delete commented-out code; git keeps it. TODOs only with an issue or a concrete follow-up.
+
+#### Why-comments
+
+A why-comment explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast, raw color) still explain *why*, in their own sections.
 
 ```ts
 // BAD — narrates the change and restates the next line
@@ -199,6 +203,31 @@ const active = useMemo(() => items.filter(isActive), [ items ]);
 // Firefox: drag outside the window swallows mouse events until re-entry; see onMouseLeave().
 const onMouseMove = useCallback(() => {}, [ ]);
 ```
+
+#### Header comments
+
+A header comment tells a **caller** what the name and the signature cannot.
+
+An export whose name and signature tell the caller everything gets no header comment. This is the usual case.
+
+**The locality test.** A header comment states only what can become false through an edit to the same file. A statement about the file's own contract breaks in the diff that edits the file, so the author sees it. A statement about another file breaks through an edit elsewhere, and nobody sees it. Examples of the test:
+
+| Allowed | Not allowed |
+| --- | --- |
+| When the module applies, and when it does not | What the name, the types or the parameters already say |
+| What the caller must do around the call: the order of calls, what a required argument means, a requirement on the calling file such as its name or its test project | A walk through the implementation |
+| What the call changes outside its return value, and what undoes it | Who calls it today, or how it used to work |
+| What the module does that the obvious alternative cannot | How another module or the subsystem works |
+| A bare pointer to that alternative, or to the area's `CONTEXT.md` | What the alternative does, or what the `CONTEXT.md` says |
+| A call sample, under the test below | A call sample that fails the test below |
+
+**Which modules.** A header comment is allowed only on a module that is imported from outside its own directory: a shared util, a test helper, a setup file, a script. A component or a page gets none.
+
+**Placement.** Write at most one header comment per exported declaration, above it. Write at most one more at the top of the file, for a contract of the module as a whole.
+
+**Pointers.** A header comment may name an alternative module or the area's `CONTEXT.md` as a bare pointer. It does not describe what that file does.
+
+**The call-sample test.** A sample stays only when a reader holding the prose and the signature would still get the call wrong: the setup spans several statements whose order matters, or it goes through a mock factory or a dynamic import. A single call with plain arguments needs none. A sample that repeats a sentence above it is deleted, or the sentence is.
 
 ### Links
 

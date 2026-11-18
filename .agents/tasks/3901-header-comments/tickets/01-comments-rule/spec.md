@@ -35,5 +35,5 @@ How to verify: read the "Comments" section of `.agents/rules/code-quality.md` in
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Rewrite the "Comments" section — skill: `writing-for-agents`
-- [ ] 2 `[agent]` Run `pnpm lint:doc-links` and `pnpm lint:cspell`
+- [x] 1 `[agent]` Rewrite the "Comments" section — skill: `writing-for-agents`
+- [x] 2 `[agent]` Run `pnpm lint:doc-links` and `pnpm lint:cspell`
