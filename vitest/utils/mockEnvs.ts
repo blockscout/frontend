@@ -1,14 +1,8 @@
 /* eslint-disable no-restricted-properties -- patching raw envs (and re-evaluating src/config) is this utility's purpose */
 import { vi } from 'vitest';
 
-// The Vitest counterpart of the Playwright `mockEnvs` fixture: applies env overrides and
-// re-evaluates the config graph. `src/config` is a frozen module-level singleton (and page
-// modules capture feature configs into module-scope consts), so overriding envs only works
-// together with `vi.resetModules()` — which means everything that reads config must be
-// imported dynamically INSIDE `run`, not statically at the top of the spec file.
-//
-// Env bundles for common feature setups live in `src/config/test-utils/env-presets.ts`
-// (shared with the Playwright suite).
+// Applies env overrides and resets the module registry around `run`, so everything that reads the
+// config must be imported dynamically INSIDE `run`, not statically at the top of the spec file.
 export default async function withEnvs<T>(
   envs: Array<[ string, string ]> | undefined,
   run: () => Promise<T>,
