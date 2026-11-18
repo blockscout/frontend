@@ -49,10 +49,6 @@ const spdxLicenseRule = {
   },
 };
 
-/*
- * The router facade (src/shared/router) is the only consumer of the framework's routing primitives; everything
- * else goes through it so a router change touches the adapter, not the app.
- */
 const ROUTER_FRAMEWORK_MODULES = [
   { name: 'next/router', message: 'Please use useRouter() from "src/shared/router/useRouter" instead' },
   { name: 'next/navigation', message: 'Please use usePathname() from "src/shared/router/usePathname" instead' },
@@ -151,10 +147,6 @@ const ARCH_BOUNDARY_ELEMENTS = [
   { type: 'src-features', pattern: 'src/features/**', mode: 'full' },
 ];
 
-/*
- * App config convention (src/config/CONTEXT.md) — the modules the root aggregator assembles.
- * `types/config.ts` and `mocks/config.ts` are companions, not config modules, and stay out.
- */
 const APP_CONFIG_MODULE_GLOBS = [
   'src/api/config.ts',
   'src/features/**/config.ts',
@@ -190,10 +182,6 @@ const WINDOW_ENVS_RESTRICTION = {
   message: APP_CONFIG_ENVS_MESSAGE,
 };
 
-// Vitest runs a spec in the `shared` project (one module registry per worker) unless its file name
-// puts it in the `isolated` one — see vitest.config.ts and vitest/CONTEXT.md -> "Isolation".
-// Everything below breaks in a shared worker, so it is only allowed in an isolated spec. `withEnvs`
-// is not on the list: it resets the registry around its callback and restores the envs it set.
 const ISOLATED_SPEC_GLOBS = [ '**/*.isolated.spec.{ts,tsx}', '**/*.primed.spec.tsx' ];
 const ISOLATED_SPEC_MESSAGE =
   ' needs a module registry of its own. Rename the spec to `*.isolated.spec.ts(x)` — see "Isolation" in vitest/CONTEXT.md.';
@@ -498,25 +486,9 @@ export default tseslint.config(
     },
   },
 
-  // I have to disable this rule because of performance issues:
-  //    https://github.com/import-js/eslint-plugin-import/issues/3060
-  // Examples in our CI:
-  //    before: 1m15s - https://github.com/blockscout/frontend/actions/runs/23210591334/job/67457992864
-  //    after: 4m27s - https://github.com/blockscout/frontend/actions/runs/25108323146/job/73585871924
-  //
-  // {
-  //   files: [ 'src/**' ],
-  //   plugins: {
-  //     'import': importPlugin,
-  //   },
-  //   rules: {
-  //     'import/no-cycle': [ 'error', { maxDepth: 10 } ],
-  //   },
-  // },
+  // import/no-cycle stays off: it took the CI lint run from 1m15s to 4m27s,
+  // https://github.com/import-js/eslint-plugin-import/issues/3060
 
-  /*
-   * ARCH_REDESIGN.md §6 — two hard boundaries enforced as ESLint errors.
-   */
   {
     files: [
       'src/**/*.{ts,tsx}',
@@ -539,10 +511,7 @@ export default tseslint.config(
     },
   },
 
-  /*
-   * App config convention (src/config/CONTEXT.md): the root aggregator is the only import surface for
-   * config modules, and env values are read only inside them. Later policies override earlier ones.
-   */
+  // A later entry in `rules` below overrides an earlier one.
   {
     files: [
       'src/**/*.{ts,tsx}',

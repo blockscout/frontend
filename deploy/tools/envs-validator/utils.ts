@@ -50,8 +50,7 @@ const disallowedHtmlMessage = (values: Array<string>): string => {
 const isAllowedHtml = (values: Array<string>): boolean => values.every((value) => findDisallowedHtml(value).length === 0);
 
 // The value is rendered as HTML on the app's origin and the app strips what the sanitizer rejects; the operator
-// is told at startup instead of finding quietly reduced markup. Both schemas check the string the app reads,
-// which is the value as set (src/config/utils/envs.ts, getEnvHtmlValue and parseEnvHtmlList).
+// is told at startup instead of finding quietly reduced markup.
 export const envHtml = (): v.GenericSchema<string, string> => v.pipe(
   v.string(),
   v.check((value) => isAllowedHtml([ value ]), (issue) => disallowedHtmlMessage([ issue.input ])),

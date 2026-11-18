@@ -2,11 +2,6 @@
 import type { AggregateResult } from './aggregate';
 import { aggregate, biggestCommitIndex, loadProfile, printCommitList, printDelta, printTable } from './aggregate';
 
-// CLI entry for the React DevTools profile aggregator. Everything worth a test lives in
-// ./aggregate.ts; this file only parses arguments and calls the printers.
-//
-// See tools/profiling/CONTEXT.md for the full workflow.
-
 const USAGE = 'Usage: pnpm profile:analyze <profile.json> [profileB.json] [--commit=N] [--commit-b=N] [--top=N] [--min-ms=N]';
 const DEFAULT_TOP = 40;
 const DEFAULT_MIN_MS = 15;

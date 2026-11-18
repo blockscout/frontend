@@ -15,11 +15,8 @@ import {
   printDelta,
 } from './aggregate';
 
-// --- Hand-built wire-format fixtures ------------------------------------------------------------
-//
-// Deliberately not a real DevTools export: an export pins the fixture to one DevTools version, and
-// the wire format is exactly what is under test. The record layouts below mirror
-// react-devtools-shared's store operations — keep them in step with the parser's op codes and operand notes.
+// Hand-built wire-format fixtures, not a real DevTools export: an export pins the fixture to one
+// DevTools version, and the wire format is exactly what is under test.
 
 const RENDERER_ID = 1;
 const ROOT_ID = 1;

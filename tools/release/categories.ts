@@ -1,11 +1,9 @@
-// The one source of truth for how a PR's category label places it in the release notes. Order is
-// section order in the notes; within a section, label order is irrelevant.
-
 export interface Category {
   readonly section: string;
   readonly labels: ReadonlyArray<string>;
 }
 
+// Order is section order in the release notes; within a section, label order is irrelevant.
 export const CATEGORIES: ReadonlyArray<Category> = [
   { section: 'New Features', labels: [ 'feature', 'client feature' ] },
   { section: 'Enhancements', labels: [ 'enhancement' ] },
