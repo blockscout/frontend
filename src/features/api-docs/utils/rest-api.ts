@@ -5,6 +5,8 @@ import type { ApiPropsBase } from 'src/api/types';
 
 import config from 'src/config';
 
+import { createCoreApiRequestInterceptor } from './core-api-request-interceptor';
+
 const microserviceRequestInterceptorFactory = (api: ApiPropsBase) => (req: SwaggerRequest) => {
   try {
     const url = new URL(req.url);
@@ -25,6 +27,7 @@ export const REST_API_SECTIONS = [
     swagger: {
       // default swagger URL, will be replaced with an URL constructed from the backend version and the openapi spec folder name
       url: 'https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml',
+      requestInterceptor: createCoreApiRequestInterceptor(config.apis.core),
     },
   },
   config.apis.stats && {
