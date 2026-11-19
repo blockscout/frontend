@@ -116,9 +116,6 @@ const MarketplaceAppIframeContent = ({
   );
 };
 
-// The dapp bridge feeds wallet actions (send tx / sign / switch chain via `useMarketplaceWallet`) into the
-// iframe, so the host lives in a wallet island. Marketplace pages call `ensureLoaded()` at mount, so the
-// runtime is already loading by the time this renders; the fallback reuses the iframe's content loader.
 const MarketplaceAppIframe = (props: Props) => (
   <Web3Boundary fallback={ null }>
     <MarketplaceAppIframeContent { ...props }/>

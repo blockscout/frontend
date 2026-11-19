@@ -7,5 +7,5 @@
 - [x] 05 → `tickets/05-sweep-vitest-server-api/`
 - [x] 06 → `tickets/06-sweep-wallet-services/`
 - [x] 07 → `tickets/07-sweep-toolkit-shared/`
-- [ ] 08 → `tickets/08-sweep-features-slices-rest/`
+- [x] 08 → `tickets/08-sweep-features-slices-rest/`
 - [ ] 09 → `tickets/09-close-whole-repo/`

@@ -14,7 +14,6 @@ import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
 
-/** One call of a sponsored batch transaction. `to` is `null` for a contract-creation call. */
 type TransactionEdenCall = NonNullable<schemas['TransactionResponse']['calls']>[number];
 
 interface Props {

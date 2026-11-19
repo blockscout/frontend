@@ -7,10 +7,6 @@ import type React from 'react';
 export type MediaType = 'image' | 'video' | 'html';
 export type TransportType = 'http' | 'ipfs';
 
-// Currently we have only 3 sizes:
-//    sm = max-width<=30px
-//    md = max-width<=250px
-//    original
 export type Size = 'sm' | 'md' | 'original';
 
 export type MediaElementProps<As extends React.ElementType> = HTMLChakraProps<As> & {

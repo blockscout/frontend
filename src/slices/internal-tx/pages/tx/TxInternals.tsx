@@ -58,21 +58,11 @@ const sortFn = (sort: SortValue) => (a: schemas['InternalTransaction'], b: schem
   }
 };
 
-// const searchFn = (searchTerm: string) => (item: InternalTransaction): boolean => {
-//   const formattedSearchTerm = searchTerm.toLowerCase();
-//   return item.type.toLowerCase().includes(formattedSearchTerm) ||
-//     item.from.hash.toLowerCase().includes(formattedSearchTerm) ||
-//     item.to.hash.toLowerCase().includes(formattedSearchTerm);
-// };
-
 interface Props {
   txQuery: TxQuery;
 }
 
 const TxInternals = ({ txQuery }: Props) => {
-  // filters are not implemented yet in api
-  // const [ filters, setFilters ] = React.useState<Array<TxInternalsType>>([]);
-  // const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const isMobile = useIsMobile();
   const [ sort, setSort ] = React.useState<SortValue>('default');
   const { data, isInitialLoading, isTransitioning, isError, pagination, queryHash, isZeroValueShown, onZeroValueToggle } = useInternalTxsPaginatedQuery({
@@ -83,10 +73,6 @@ const TxInternals = ({ txQuery }: Props) => {
       placeholderData: generateListStub<'core:tx_internal_txs'>(INTERNAL_TX, 3, { next_page_params: null, meta: { message: null, status: 1 } }),
     },
   });
-
-  // const handleFilterChange = React.useCallback((nextValue: Array<TxInternalsType>) => {
-  //   setFilters(nextValue);
-  // }, []);
 
   const handleSortToggle = React.useCallback((field: SortField) => {
     if (isInitialLoading) {
@@ -106,8 +92,6 @@ const TxInternals = ({ txQuery }: Props) => {
 
   const filteredData = data?.items
     .slice()
-  // .filter(({ type }) => filters.length > 0 ? filters.includes(type) : true)
-  // .filter(searchFn(searchTerm))
     .sort(sortFn(sort));
 
   const content = filteredData ? (
@@ -160,10 +144,6 @@ const TxInternals = ({ txQuery }: Props) => {
       isError={ isError || txQuery.isError }
       itemsNum={ data?.items.length }
       emptyText="There are no internal transactions for this transaction."
-      // filterProps={{
-      // emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`.
-      // hasActiveFilters: Boolean(filters.length || searchTerm),
-      // }}
       actionBar={ actionBar }
       showActionBarIfEmpty
       showActionBarIfError

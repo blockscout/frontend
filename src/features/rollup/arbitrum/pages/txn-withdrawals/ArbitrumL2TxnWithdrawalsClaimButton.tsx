@@ -138,9 +138,6 @@ const ArbitrumL2TxnWithdrawalsClaimButtonContent = ({ messageId, txHash, complet
   );
 };
 
-// The claim flow drives wagmi hooks (send tx / switch chain) and the receipt child, so the button lives
-// in a wallet island. It renders in the withdrawals list on page load, so the fallback keeps the claim
-// button visible in a loading state (matching its data-loading skeleton) while the runtime loads.
 const ArbitrumL2TxnWithdrawalsClaimButton = (props: Props) => (
   <Web3Boundary
     fallback={ <Button size="sm" variant="outline" loadingSkeleton>Claim</Button> }

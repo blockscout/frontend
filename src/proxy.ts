@@ -52,12 +52,6 @@ export async function proxy(req: NextRequest) {
   return res;
 }
 
-/**
- * Configure which routes should pass through the proxy.
- */
 export const config = {
   matcher: [ '/', '/:notunderscore((?!_next).+)' ],
-  // matcher: [
-  //   '/((?!.*\\.|api\\/|node-api\\/).*)', // exclude all static + api + node-api routes
-  // ],
 };

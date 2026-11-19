@@ -4,10 +4,7 @@ import * as tac from '@blockscout/tac-operation-lifecycle-types';
 
 import { rightLineArrow } from 'src/toolkit/utils/htmlEntities';
 
-/**
- * The transfer route, and nothing else — the outcome lives in `status`. Returns `null` for
- * `UNKNOWN`, which means the operation id is indexed but its route is not known yet.
- */
+// `null` for `UNKNOWN`: the operation id is indexed, but its route is not known yet.
 export function getTacOperationRoute(type: tac.V2OperationType): string | null {
   switch (type) {
     case tac.V2OperationType.TON_TAC_TON:
@@ -28,10 +25,6 @@ export const TAC_OPERATION_STATUS_LABELS: Record<tac.V2OperationStatus, string> 
   [tac.V2OperationStatus.UNRECOGNIZED]: 'Unknown',
 };
 
-/**
- * The route when it is known, otherwise the status word — the tag always carries the status icon and
- * colour, so it must never render empty.
- */
 export function getTacOperationStatusText(status: tac.V2OperationStatus, type: tac.V2OperationType): string {
   return getTacOperationRoute(type) ?? TAC_OPERATION_STATUS_LABELS[status];
 }
@@ -41,10 +34,6 @@ export const FAILURE_TOOLTIP = 'Failed operation';
 export const ROLLBACK_TOOLTIP = 'The cross‑chain operation was reverted and the original assets and state ' +
   'were returned to the sender after a failure on the destination chain';
 
-/**
- * Only a failure gets a tooltip; `error_reason` is a short label the API publishes when it has one, and is
- * legitimately absent in many failed states.
- */
 export function getTacOperationStatusTooltip(
   status: tac.V2OperationStatus,
   errorReason: string | null | undefined,

@@ -81,11 +81,8 @@ const GraphQL = () => {
 
   const fetcher = createGraphiQLFetcher({
     url: graphqlUrl,
-    // graphql ws implementation with absinthe plugin is incompatible with graphiql-ws protocol
-    // or the older one subscriptions-transport-ws
-    // so we (@isstuev & @vbaranov) decided to configure playground without subscriptions
-    // in case of any complaint consider reconfigure the graphql ws server with absinthe_graphql_ws package
-    // subscriptionUrl: `wss://${config.app.host}/socket/`,
+    // No subscriptions: the GraphQL WS server (absinthe plugin) speaks neither the graphql-ws protocol nor the
+    // older subscriptions-transport-ws. Reconfiguring it with the absinthe_graphql_ws package would allow them.
   });
 
   return (

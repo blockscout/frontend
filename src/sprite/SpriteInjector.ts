@@ -9,17 +9,9 @@ const CONTAINER_ID = 'svg-sprite';
 // single source of truth for the sprite URL — also used by _document.tsx to preload it
 export const SPRITE_URL = config.app.spriteHash ? `/icons/sprite.${ config.app.spriteHash }.svg` : '/icons/sprite.svg';
 
-// Fetches the SVG sprite once and injects it into the document, so that SpriteIcon can
-// reference symbols with a same-document fragment (href="#name").
-//
-// External references (href="/icons/sprite.svg#name") are re-resolved every time an icon
-// element is (re)mounted, and that resolution is asynchronous in WebKit even with a warm
-// cache (and in other browsers whenever the sprite is not cached) — so icons flicker
-// whenever their subtree remounts, e.g. on the lazy tooltip trigger swap. Same-document
-// references resolve synchronously in all browsers.
-//
-// The sprite URL is content-hashed and served with immutable caching, so this costs one
-// request per session — the same request the external references were triggering anyway.
+// The injected sprite lets SpriteIcon use same-document references (href="#name"), which resolve
+// synchronously. An external reference (href="/icons/sprite.svg#name") re-resolves on every remount,
+// asynchronously in WebKit even with a warm cache, so icons flicker, e.g. on the lazy tooltip trigger swap.
 const SpriteInjector = () => {
   React.useEffect(() => {
     if (document.getElementById(CONTAINER_ID)) {

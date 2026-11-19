@@ -52,32 +52,6 @@ const UserOpSubHeading = ({ hash }: Props) => {
           <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
       </Flex>
     );
-    // fallback will be added later
-
-    // } else if (hasInterpretationFeature && userOpQuery.data?.decoded_call_data.method_call && userOpQuery.data?.sender && userOpQuery.data?.to) {
-    //   return (
-    //     <TxInterpretation
-    //       summary={{
-    //         summary_template: `{sender_hash} called {method} on {receiver_hash}`,
-    //         summary_template_variables: {
-    //           sender_hash: {
-    //             type: 'address',
-    //             value: txQuery.data.from,
-    //           },
-    //           method: {
-    //             type: 'method',
-    //             value: txQuery.data.method,
-    //           },
-    //           receiver_hash: {
-    //             type: 'address',
-    //             value: txQuery.data.to,
-    //           },
-    //         },
-    //       }}
-    //       isLoading={ txQuery.isPlaceholderData }
-    //       fontSize="lg"
-    //     />
-    //   );
   } else {
     return <UserOpEntity hash={ hash } noLink variant="subheading" chain={ multichainContext?.chain }/>;
   }

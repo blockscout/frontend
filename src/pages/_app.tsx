@@ -46,7 +46,6 @@ const RewardsLoginModal = dynamic(() => import('src/features/rewards/components/
 const RewardsActivityTracker = dynamic(() => import('src/features/rewards/components/RewardsActivityTracker'), { ssr: false });
 
 import 'src/shared/i18n/set-locale';
-// import 'focus-visible/dist/focus-visible';
 import 'src/server/global.css';
 
 type AppPropsWithLayout = AppProps<PageProps<'/'>> & {
@@ -108,8 +107,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   const socketUrl = !config.features.multichain.isEnabled ? getSocketUrl() : undefined;
 
   // The app intentionally does not render on the server. Gating the shell on client mount preserves that
-  // without putting a wallet chunk on the critical path, which a provider-based gate would. `PageNextJs`
-  // already covers page content; this covers the layout shell.
+  // without putting a wallet chunk on the critical path, which a provider-based gate would.
   const isShellMounted = useIsMounted();
 
   const appTree = (
@@ -134,9 +132,6 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
     </AppContextProvider>
   );
 
-  // `<Web3Provider>` renders children provider-less at first paint (no wallet chunk on the critical path)
-  // and swaps in a native `<WagmiProvider>` once the runtime loads — eagerly for a returning user, or on
-  // the first wallet interaction / wallet route. It also owns the eager-load and AppKit theme-sync.
   const walletBoundary = (
     <Web3Provider>
       { isShellMounted ? appTree : null }
