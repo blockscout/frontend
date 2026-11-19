@@ -159,7 +159,6 @@ const statsApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_STATS_API_BASE_PATH') || ''),
     refetchInterval,
   });
 })();
@@ -194,7 +193,6 @@ const visualizeApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_VISUALIZE_API_BASE_PATH') || ''),
   });
 })();
 
