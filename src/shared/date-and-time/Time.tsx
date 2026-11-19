@@ -16,7 +16,9 @@ interface Props extends BoxProps {
 const Time = ({ timestamp, format = 'lll', ...rest }: Props) => {
   const settings = useSettingsContext();
   const formatStr = FORMATS[format as keyof typeof FORMATS] || format;
-  return <chakra.span { ...rest }>{ dayjs(timestamp).utc(settings?.isLocalTime).format(formatStr) }</chakra.span>;
+  // `.utc(true)` keeps the local wall clock but reports a zero offset, which breaks the formats that print the offset
+  const date = settings?.isLocalTime ? dayjs(timestamp) : dayjs(timestamp).utc();
+  return <chakra.span { ...rest }>{ date.format(formatStr) }</chakra.span>;
 };
 
 export default React.memo(Time);

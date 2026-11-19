@@ -2,7 +2,7 @@
 
 // we use that regex as a separator when splitting template and don't want to capture variables
 
-import type { TxInterpretationVariable } from 'src/features/tx-interpretation/common/types/api';
+import type { TxInterpretationSummary, TxInterpretationVariable } from 'src/features/tx-interpretation/common/types/api';
 
 // eslint-disable-next-line regexp/no-useless-non-capturing-group
 export const VAR_REGEXP = /\{(?:[^}]+)\}/g;
@@ -50,4 +50,25 @@ export function fillStringVariables(template: string, variables: Record<string, 
   });
 
   return result;
+}
+
+export interface SummaryTemplateParts {
+  readonly chunks: Array<string>;
+  readonly variablesNames: Array<string>;
+}
+
+export function parseSummaryTemplate(summary: TxInterpretationSummary): SummaryTemplateParts | null {
+  const template = summary.summary_template;
+  const variables = summary.summary_template_variables;
+
+  if (!checkSummary(template, variables)) {
+    return null;
+  }
+
+  const templateWithStrings = fillStringVariables(template, variables);
+
+  return {
+    chunks: getStringChunks(templateWithStrings),
+    variablesNames: extractVariables(templateWithStrings),
+  };
 }

@@ -71,4 +71,7 @@ export default dayjs;
 export const FORMATS = {
   // the "lll" format with seconds
   lll_s: 'MMM D, YYYY H:mm:ss',
+  date_only: 'MMM DD YYYY',
+  time_only: 'HH:mm:ss',
+  utc_offset: `(Z${ nbsp }UTC)`,
 };

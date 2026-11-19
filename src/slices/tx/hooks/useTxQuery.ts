@@ -20,6 +20,7 @@ import { TX } from 'src/slices/tx/stubs/tx';
 import { formatTxDetailsRpcData } from 'src/slices/tx/utils/format-rpc-data';
 
 import { getPublicClient, isPublicClientAvailable } from 'src/features/connect-wallet/utils/public-client';
+import { useMultichainContext } from 'src/features/multichain/context';
 
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
@@ -45,6 +46,7 @@ export type TxQuery = UseQueryResult<schemas['TransactionResponse'], TxError> & 
 interface Params {
   hash?: string;
   isEnabled?: boolean;
+  isRpcFallbackEnabled?: boolean;
 }
 
 export default function useTxQuery(params?: Params): TxQuery {
@@ -53,6 +55,7 @@ export default function useTxQuery(params?: Params): TxQuery {
 
   const router = useRouter();
   const queryClient = useQueryClient();
+  const chainId = useMultichainContext()?.chain.id;
 
   const hash = params?.hash ?? getQueryParamString(router.query.hash);
 
@@ -85,7 +88,8 @@ export default function useTxQuery(params?: Params): TxQuery {
 
   // the API could not serve the transaction (anything but a malformed hash), so the RPC node is asked instead;
   // a 404 is included on purpose: a slow indexer may not have caught a fresh transaction yet
-  const isRpcFallbackNeeded = isPublicClientAvailable && ((isError && apiQuery.error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
+  const isRpcFallbackAllowed = params?.isRpcFallbackEnabled !== false && isPublicClientAvailable;
+  const isRpcFallbackNeeded = isRpcFallbackAllowed && ((isError && apiQuery.error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const rpcQuery = useQuery<RpcResponseType, unknown, schemas['TransactionResponse'] | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
@@ -136,9 +140,9 @@ export default function useTxQuery(params?: Params): TxQuery {
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     await delay(5 * SECOND);
     queryClient.invalidateQueries({
-      queryKey: getResourceKey('core:tx', { pathParams: { hash } }),
+      queryKey: getResourceKey('core:tx', { pathParams: { hash }, chainId }),
     });
-  }, [ queryClient, hash ]);
+  }, [ queryClient, hash, chainId ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketStatus('close');

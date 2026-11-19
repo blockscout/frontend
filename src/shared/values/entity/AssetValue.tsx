@@ -25,6 +25,7 @@ export interface Props extends Omit<BoxProps, 'prefix' | 'suffix'>, Omit<Calcula
   tooltipContent?: React.ReactNode;
   historicalExchangeRate?: string | null;
   hasExchangeRateToggle?: boolean;
+  usdColor?: BoxProps['color'];
 }
 
 const AssetValue = ({
@@ -43,6 +44,7 @@ const AssetValue = ({
   layout = 'horizontal',
   tooltipContent,
   multiplier,
+  usdColor = 'text.secondary',
   ...rest
 }: Props) => {
   const hasHistorical = Boolean(historicalExchangeRate);
@@ -142,7 +144,7 @@ const AssetValue = ({
       endElement={ layout === 'horizontal' ? <span>)</span> : undefined }
       tooltipContentBefore={ tooltipContentBefore }
       loading={ loading }
-      color="text.secondary"
+      color={ usdColor }
     />
   );
 

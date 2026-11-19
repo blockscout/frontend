@@ -14,16 +14,22 @@ import BlobEntity from 'src/features/data-availability/components/entity/BlobEnt
 import { useMultichainContext } from 'src/features/multichain/context';
 
 import config from 'src/config';
+import * as analytics from 'src/shared/analytics';
 import { route } from 'src/shared/router/routes';
 import TextSeparator from 'src/shared/texts/TextSeparator';
 import NativeCoinValue from 'src/shared/values/entity/NativeCoinValue';
 import Utilization from 'src/shared/values/utilization/Utilization';
+import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
 const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: schemas['Transaction'] | schemas['TransactionResponse']; isLoading?: boolean }) => {
   const multichainContext = useMultichainContext();
+
+  const handleReceiptClick = React.useCallback(() => {
+    analytics.logEvent(analytics.EventTypes.BUTTON_CLICK, { Content: 'Receipt', Source: 'Additional info' });
+  }, []);
 
   const sectionTitleProps = {
     color: 'text.secondary',
@@ -178,14 +184,25 @@ const TxAdditionalInfoContent = ({ tx, isLoading }: { tx: schemas['Transaction']
             </VStack>
           </VStack>
         ) }
-        <Link
-          href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }
-          loading={ isLoading }
-          mt={ 1 }
-          w="fit-content"
-        >
-          More details
-        </Link>
+        <Flex alignItems="center" justifyContent="space-between" columnGap={ 3 } mt={ 1 }>
+          <Link
+            href={ route({ pathname: '/tx/[hash]', query: { hash: tx.hash } }, multichainContext) }
+            loading={ isLoading }
+          >
+            More details
+          </Link>
+          <Link
+            href={ route({ pathname: '/tx/[hash]/receipt', query: { hash: tx.hash } }, multichainContext) }
+            target="_blank"
+            variant="secondary"
+            columnGap={ 2 }
+            loading={ isLoading }
+            onClick={ handleReceiptClick }
+          >
+            <SpriteIcon name="receipt" boxSize={ 5 }/>
+            <span>Receipt</span>
+          </Link>
+        </Flex>
       </VStack>
     </>
   );

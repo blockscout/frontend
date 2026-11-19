@@ -29,6 +29,14 @@ const OG_ROOT_PAGE = {
   image: config.metadata.og.imageUrl,
 };
 
+const TX_DESCRIPTION = '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.';
+
+const TX_OG_DESCRIPTION: OgTemplateValue = {
+  enhanced: '%tx_status% · %tx_action% · %tx_timestamp%',
+};
+
+const MULTICHAIN_TX_DESCRIPTION = 'View transaction %hash% details across supported chains.';
+
 const DESCRIPTION_DEFAULT = 'Scan %chain_explorer_title% with Blockscout. Search transactions, verify smart contracts, analyze addresses, and access blockchain data through explorer APIs.';
 
 export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
@@ -81,16 +89,30 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transaction %hash%',
       },
       description: {
-        'default': '%chain_name% detailed transaction info. View transaction status, block confirmation, gas fee, native coin and token transfers.',
+        'default': TX_DESCRIPTION,
       },
     },
     og: {
       title: {
         'default': '%chain_name% transaction %hash_short%',
       },
-      description: {
-        enhanced: '%tx_status% · %tx_action% · %tx_timestamp%',
+      description: TX_OG_DESCRIPTION,
+    },
+  },
+  '/tx/[hash]/receipt': {
+    metadata: {
+      title: {
+        'default': '%chain_name% transaction receipt %hash%',
       },
+      description: {
+        'default': TX_DESCRIPTION,
+      },
+    },
+    og: {
+      title: {
+        'default': '%chain_name% transaction receipt %hash_short%',
+      },
+      description: TX_OG_DESCRIPTION,
     },
   },
   '/blocks': {
@@ -845,7 +867,17 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
         'default': '%chain_name% transaction %hash% details',
       },
       description: {
-        'default': 'View transaction %hash% details across supported chains.',
+        'default': MULTICHAIN_TX_DESCRIPTION,
+      },
+    },
+  },
+  '/chain/[chain_slug_or_id]/tx/[hash]/receipt': {
+    metadata: {
+      title: {
+        'default': '%chain_name% transaction receipt %hash%',
+      },
+      description: {
+        'default': MULTICHAIN_TX_DESCRIPTION,
       },
     },
   },
