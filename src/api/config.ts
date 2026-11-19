@@ -11,6 +11,12 @@ import { getEnvValue, parseEnvJson } from 'src/config/utils/envs';
 
 import { stripTrailingSlash } from 'src/toolkit/utils/url';
 
+const readApiBasePath = (envName: string): string => {
+  const basePath = getEnvValue(envName);
+
+  return basePath ? stripTrailingSlash(basePath) : '';
+};
+
 const coreApi = (() => {
   const apiHost = getEnvValue('NEXT_PUBLIC_API_HOST');
   if (!apiHost) {
@@ -36,7 +42,7 @@ const coreApi = (() => {
 
   return Object.freeze({
     endpoint: apiEndpoint,
-    basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_API_BASE_PATH') || ''),
+    basePath: readApiBasePath('NEXT_PUBLIC_API_BASE_PATH'),
     socketEndpoint: socketEndpoint,
     host: apiHost ?? '',
     protocol: apiSchema ?? 'https',
@@ -159,6 +165,7 @@ const statsApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
+    basePath: readApiBasePath('NEXT_PUBLIC_STATS_API_BASE_PATH'),
     refetchInterval,
   });
 })();
@@ -193,6 +200,7 @@ const visualizeApi = (() => {
 
   return Object.freeze({
     endpoint: apiHost,
+    basePath: readApiBasePath('NEXT_PUBLIC_VISUALIZE_API_BASE_PATH'),
   });
 })();
 
