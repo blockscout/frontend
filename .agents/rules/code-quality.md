@@ -184,7 +184,7 @@ Before writing custom utility logic (clamping, deep cloning, grouping, etc.), ch
 **Do not write comments. Never. Period.**
 Prefer a name or a structure change that makes the comment unnecessary.
 
-The ban has exactly two exceptions: the why-comment and the header comment.
+The ban has exactly three exceptions: the why-comment, the header comment and the source pointer.
 
 Never write *diff-narration* (what this change replaces). That belongs in the commit and the PR. Test: if the comment would confuse someone who never saw the previous file, delete it.
 
@@ -228,6 +228,20 @@ An export whose name and signature tell the caller everything gets no header com
 **Pointers.** A header comment may name an alternative module or the area's `CONTEXT.md` as a bare pointer. It does not describe what that file does.
 
 **The call-sample test.** A sample stays only when a reader holding the prose and the signature would still get the call wrong: the setup spans several statements whose order matters, or it goes through a mock factory or a dynamic import. A single call with plain arguments needs none. A sample that repeats a sentence above it is deleted, or the sentence is.
+
+#### Source pointers
+
+A source pointer names where code, types, data or a format came from. It is one line, labeled with what the source is. It names the source; it does not retell it.
+
+```ts
+// BAD — an unlabeled link, and a retelling of the source
+// https://eips.ethereum.org/EIPS/eip-6963
+// A wallet announces itself with an `eip6963:announceProvider` event that carries its info and provider.
+
+// GOOD
+// The EIP-6963 spec - https://eips.ethereum.org/EIPS/eip-6963
+// The types source - node_modules/@wagmi/core/src/connectors/injected.ts
+```
 
 ### Links
 

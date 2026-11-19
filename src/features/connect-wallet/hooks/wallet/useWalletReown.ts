@@ -78,6 +78,7 @@ export function useWalletReown({ source, onConnect }: Params): Result {
   }, []);
 
   // `reconnecting` counts as connected, so a returning user sees their address, not a "Connect" flash.
+  // The `isConnected` source - node_modules/@wagmi/core/src/actions/getAccount.ts
   const isConnected = status !== 'disconnected' && status !== 'connecting' && Boolean(address);
   const isReconnecting = status === 'reconnecting';
 

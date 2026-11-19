@@ -17,6 +17,7 @@ export default function useAccountReown(): UseAccountReturnType {
       connector: undefined,
     };
 
+    // The status mapping source - node_modules/@wagmi/core/src/actions/getAccount.ts
     switch (status) {
       case 'connected':
         return {

@@ -35,8 +35,9 @@ it that can be checked mechanically, and the existing comments follow the rule.
 
 ### The rule
 
-1. The "Comments" section keeps its opening ban and names exactly two exceptions: the why-comment, as it
-   is today, and the header comment.
+1. The "Comments" section keeps its opening ban and names exactly three exceptions: the why-comment, as it
+   is today, the header comment, and the source pointer: one line, labeled with what the source is,
+   naming where code, types, data or a format came from.
 2. A header comment tells a caller what the name and the signature cannot, and states only what can
    become false through an edit to the same file. This locality test is the criterion; the
    allowed / not-allowed table from the issue's draft is given as examples of it.

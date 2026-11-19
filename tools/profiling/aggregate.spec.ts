@@ -17,6 +17,7 @@ import {
 
 // Hand-built wire-format fixtures, not a real DevTools export: an export pins the fixture to one
 // DevTools version, and the wire format is exactly what is under test.
+// The record layouts source - react-devtools-shared store operations; keep in step with the op codes in aggregate.ts
 
 const RENDERER_ID = 1;
 const ROOT_ID = 1;

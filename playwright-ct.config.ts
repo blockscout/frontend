@@ -9,6 +9,7 @@ import { ctPort } from './playwright/utils/ports';
 
 const isInsideWorktree = __dirname.includes('/.claude/worktrees/');
 
+// The Playwright config docs - https://playwright.dev/docs/test-configuration
 const config: PlaywrightTestConfig = defineConfig({
   testDir: './',
 
@@ -99,6 +100,7 @@ const config: PlaywrightTestConfig = defineConfig({
           output: {
             // A dynamically imported chunk can run before the entry that runs envs.js, and reading the
             // config there throws `ReferenceError: __envs is not defined`. envs.js sets the real values later.
+            // The Rollup `output.banner` docs - https://rollupjs.org/configuration-options/#output-banner-output-footer
             banner: '(function(){if(typeof window!==\'undefined\')window.__envs=window.__envs||{};})();',
           },
         },

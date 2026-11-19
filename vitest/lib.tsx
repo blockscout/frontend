@@ -70,6 +70,7 @@ const toPathname = (asPath: string): string => new URL(asPath, 'http://localhost
 
 // The full app provider stack. The wallet client stays inert, and so does the socket unless `socketUrl`
 // is given. The router is a frozen stand-in: `router` overrides the home-page default field by field.
+// The provider stack source - playwright/TestApp.tsx
 const TestApp = ({ children, socketUrl, router }: TestAppProps) => {
   const routerContext = React.useMemo((): RouterContextValue => {
     const value = { ...buildRouterMock('/', '/'), ...router };
