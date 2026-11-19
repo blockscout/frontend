@@ -6,8 +6,6 @@ import React from 'react';
 import type { PaginationParams } from 'src/shared/pagination/types';
 import type { TransactionsSortingValue } from 'src/slices/tx/types/api';
 
-// import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
-
 import ActionBar from 'src/shell/page/action-bar/ActionBar';
 
 import { SORT_OPTIONS, SORT_OPTIONS_WITHOUT_BLOCK } from 'src/slices/tx/hooks/useTxsSort';
@@ -65,14 +63,6 @@ const TxsHeaderMobile = ({
             isLoading={ paginationProps.isLoading }
           />
         ) }
-        { /* api is not implemented */ }
-        { /* <FilterInput
-          // eslint-disable-next-line react/jsx-no-bind
-          onChange={ () => {} }
-          maxW="360px"
-          size="xs"
-          placeholder="Search by addresses, hash, method..."
-        /> */ }
         { linkSlot }
       </HStack>
       { showPagination && <Pagination { ...paginationProps }/> }

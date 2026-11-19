@@ -230,9 +230,6 @@ const RevokeContent = () => {
   );
 };
 
-// Revoke reads the connected account and issues approvals reads/writes through wagmi hooks, so it renders
-// inside a wallet island. The essential-dapp page calls `ensureLoaded()` at mount, so the runtime is
-// already loading when this renders; the fallback reuses the shared content loader until it is ready.
 const Revoke = () => (
   <Web3Boundary fallback={ <ContentLoader/> }>
     <RevokeContent/>

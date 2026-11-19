@@ -26,6 +26,7 @@ export {
 // Root
 //  Container
 //    TopRow
+//    NavBar
 //    MainArea
 //       SideBar
 //       MainColumn

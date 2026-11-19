@@ -1,11 +1,6 @@
-// The ESLint side of the mutation gate: suppressing a mutant has to stay a claim a reviewer can
-// check, so this rule allows only the fully specified disable comment. Registered from the root
-// eslint.config.mjs, which is where the repo's rule set lives.
-//
 // Stryker's directive grammar (@stryker-mutator/instrumenter, directive-bookkeeper.js) is
 //   Stryker (disable|restore) [next-line] <MutatorName>[,<MutatorName>…][: <reason>]
-// and everything after `disable` is optional to it. Without `next-line` a disable runs to the end of
-// the file, and `all` covers every mutator — both mute code nobody chose to exempt.
+// and everything after `disable` is optional to it.
 
 const STRYKER_DISABLE = /^\s*Stryker\s+disable\b/;
 const STRYKER_WILDCARD = 'all';

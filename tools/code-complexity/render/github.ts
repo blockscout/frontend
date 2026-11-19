@@ -1,7 +1,3 @@
-// GitHub Actions output path: inline `::error` annotations on the PR diff for each
-// offender, plus the full report table written to the job summary. Pure formatters here; the
-// side effects (stdout + $GITHUB_STEP_SUMMARY) live in index.ts, guarded by $GITHUB_ACTIONS.
-
 import type { Contribution } from '../measure/complexity';
 import { flatteningSaving, isNestingStructureReason } from '../measure/complexity';
 import type { ReportRow, Thresholds } from './report';

@@ -206,7 +206,7 @@ interface C extends A, B {
 
 ## JSDoc
 
-JSDoc is a comment. Same rule as [Comments](./code-quality.md#comments): omit it unless it explains *why*. Never restate the name or types. If a JSDoc block already earned its place, `@link` is fine for same-file references.
+Do not write JSDoc (`/** */`). Which comments are allowed, and in what form: [Comments](./code-quality.md#comments).
 
 ## Naming conventions
 

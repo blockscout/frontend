@@ -5,10 +5,6 @@ import { describe, expect, it } from 'vitest';
 
 import { strykerDisableRule } from './well-formed-disable.mjs';
 
-// The rule exercised in both directions, through ESLint itself rather than against the parse helper:
-// a suppression Stryker would honour has to name its mutators, scope itself to one line, and give a
-// reason, and everything short of that has to be an error rather than a quiet mute.
-
 const linter = new Linter();
 
 const CONFIG: LinterTypes.Config = {

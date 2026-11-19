@@ -3,15 +3,8 @@ import path from 'path';
 
 import { runSync } from './cli';
 
-// Regenerates / checks the alias dropdowns from tools/dev-server/registry.json.
-//
-//   node dist/index.js            # check mode (CI) — exits 1 on drift
-//   node dist/index.js --write    # rewrite the lists from the registry
-//
 // This file is only ever run as the compiled ./dist/index.js (see run.sh), which is the directory
-// the hops below count from. It declares no functions of its own: everything worth a test lives in
-// ./cli.ts.
-
+// the hops below count from.
 const DEV_SERVER_DIR = path.resolve(__dirname, '../..');
 
 const result = runSync({

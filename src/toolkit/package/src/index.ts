@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Export Chakra components
 export * from '../../chakra/accordion';
 export * from '../../chakra/alert';
 export * from '../../chakra/avatar';
@@ -42,57 +41,6 @@ export * from '../../chakra/textarea';
 export * from '../../chakra/time-picker';
 export * from '../../chakra/toaster';
 export * from '../../chakra/tooltip';
-
-// FIXME (maybe): not sure if we need to re-export the rest of the Chakra components
-// export {
-//   AspectRatio,
-//   Box,
-//   Center,
-//   Circle,
-//   ClientOnly,
-//   Code,
-//   ColorPicker,
-//   ColorSwatch,
-//   Fieldset,
-//   Flex,
-//   For,
-//   FormatNumber,
-//   FormatByte,
-//   Grid,
-//   GridItem,
-//   Group,
-//   HStack,
-//   Icon,
-//   LinkBox,
-//   LinkOverlay,
-//   List,
-//   ListItem,
-//   LocaleProvider,
-//   Portal,
-//   Presence,
-//   Progress,
-//   QrCode,
-//   SegmentGroup,
-//   Separator,
-//   Show,
-//   Slider,
-//   Spinner,
-//   StackSeparator,
-//   Stat,
-//   Status,
-//   Text,
-//   Theme,
-//   VisuallyHidden,
-//   VStack,
-//   Wrap,
-
-//   useBreakpointValue,
-//   useCheckboxGroup,
-//   useToken,
-
-//   chakra,
-//   createListCollection,
-// } from '@chakra-ui/react';
 
 // Export theme
 export { default as theme } from '../../theme/theme';

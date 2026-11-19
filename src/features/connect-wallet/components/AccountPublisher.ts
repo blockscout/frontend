@@ -5,11 +5,6 @@ import { useAccount, useAccountEffect } from 'wagmi';
 
 import * as bridge from '../utils/bridge';
 
-// Rendered inside `<WagmiProvider>`, so it can use wagmi's native hooks. It is the SOLE writer of the
-// Bridge account state: it mirrors wagmi's confirmed `useAccount` into the Bridge for boot-time consumers,
-// keeps our own persisted flag in sync (drives the optimistic header display + eager reconnect), and emits
-// connect/disconnect for the `WALLET_CONNECT` analytics. Reconnection/hydration are wagmi's job — this
-// component only observes and forwards, so nothing wagmi-internal is reimplemented.
 const AccountPublisher = () => {
   const { address, status } = useAccount();
 

@@ -85,9 +85,6 @@ describe('useLazyRenderedList', () => {
     expect(sentinelTop()).toBeGreaterThan(REVEAL_THRESHOLD);
   });
 
-  // regression: an IntersectionObserver only reports crossings, so once a reveal left the sentinel
-  // out of reach while the observer still considered it intersecting, scrolling back down produced
-  // no callback and the list stalled forever
   it('keeps revealing on scroll after a step left the sentinel out of reach', () => {
     render(<TestList list={ Array.from({ length: 500 }, (_, i) => i) }/>);
     flushFrames();

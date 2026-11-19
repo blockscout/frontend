@@ -52,11 +52,9 @@ export interface SkeletonProps extends Omit<ChakraSkeletonProps, 'loading'> {
 
 type InactiveSkeletonStyleProps = Omit<SkeletonProps, 'loading' | 'asChild' | 'children'>;
 
-// all asChild call sites have a chakra-styled child, so it accepts style props;
+// the asChild child gets the style props, so it must be a chakra-styled component;
 // on conflicts the skeleton's own props win — they are forwarded from the call site
-// (e.g. w/h passed to SpriteIcon must override the inner svg's w="100%"), which is
-// how the Chakra skeleton's class merge resolved these conflicts before the fast path;
-// className/css/ref are merged rather than overridden
+// (e.g. w/h passed to SpriteIcon must override the inner svg's w="100%")
 function mergeChildProps(
   child: React.ReactElement<Record<string, unknown>>,
   styleProps: InactiveSkeletonStyleProps,
@@ -84,10 +82,8 @@ export const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     const { loading = false, ...rest } = props;
 
     // When the skeleton is inactive, skip ChakraSkeleton entirely — its recipe resolution
-    // is a top render-time offender on pages with many idle instances (~1000 per table page).
-    // The inactive skeleton contributes no visuals (its "none" variant only sets `animation: none`),
-    // so with asChild we merge our props directly into the only child, and otherwise render
-    // a plain chakra.div (ChakraSkeleton also renders a div).
+    // is a top render-time offender on pages with many idle instances (~1000 per table page),
+    // and the inactive skeleton contributes no visuals (its "none" variant only sets `animation: none`).
     if (!loading) {
       const { asChild, children, ...styleProps } = rest;
 

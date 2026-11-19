@@ -13,20 +13,6 @@ interface Props {
   fallback?: React.ReactNode;
 }
 
-// Island for route features that use wagmi hooks (contract methods, revoke, L2 claims, marketplace bridge).
-// In reown/fallback mode the app tree is NOT under a `<WagmiProvider>` (that would remount the whole app
-// when the wallet loads — see `context`), so each feature gets the wagmi config injected here, over
-// just its own subtree. It publishes the SAME config the sibling provider owns, read-only: no `<Hydrate>`,
-// so it never re-hydrates or double-reconnects — it only reads the connection state that provider maintains.
-//
-// The feature's real content mounts once, when ready — never before — so there is no lost-state remount:
-// before the runtime loads it shows the fallback; the `WagmiContext` value flips from undefined to the
-// config in place. If the chunks fail to load, `useIsWeb3Ready` stays false and the fallback stays up.
-//
-// Under an ancestor `<WagmiProvider>` (the test harnesses mount one around everything) a config is already
-// in context. There is nothing to lazy-load or gate on — the boundary must be transparent and render
-// children straight away, otherwise `useIsWeb3Ready` (which only `<Web3Provider>` supplies) is never true
-// and the feature is stuck on its fallback forever.
 const Web3Boundary = ({ children, fallback = null }: Props) => {
   const existingConfig = React.useContext(WagmiContext);
   const isReady = useIsWeb3Ready();
@@ -39,10 +25,13 @@ const Web3Boundary = ({ children, fallback = null }: Props) => {
     ensureLoaded();
   }, [ existingConfig ]);
 
+  // An ancestor `<WagmiProvider>`, as in the test harnesses, already supplies the config. Gating on
+  // `useIsWeb3Ready` there would keep the fallback up forever: no `<Web3Provider>` sets it.
   if (existingConfig) {
     return children;
   }
 
+  // The context alone, not `<WagmiProvider>`: its `<Hydrate>` would hydrate and reconnect a second time.
   return (
     <WagmiContext.Provider value={ config }>
       { isReady && config ? children : fallback }

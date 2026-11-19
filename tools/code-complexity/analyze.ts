@@ -11,16 +11,9 @@ export type Gate = (fn: Pick<FunctionComplexity, 'startLine' | 'endLine'>) => bo
 export interface BuildOptions {
   readonly thresholds: Thresholds;
   readonly gate: Gate;
-  // How to score a `behavior` function absent from the coverage report: `true` reads absence as
-  // "no spec executed it" (0%), `false` as "no data" (`—`). Which mode passes which, and why:
-  // ./docs/MODEL.md.
   readonly missingCoverageIsZero: boolean;
 }
 
-// Joins the pieces into report rows for one file's source, applying both gates per function.
-// `gate` decides which functions the thresholds apply to — focused/full gate all functions, diff
-// gates only the ones a changed line falls within. Kept pure (no fs/git) so both gates are
-// unit-testable without a working tree.
 export function buildFileRows(
   file: string,
   source: string,

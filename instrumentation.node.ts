@@ -18,15 +18,6 @@ const traceExporter = new OTLPTraceExporter();
 
 const sdk = new NodeSDK({
   serviceName: 'blockscout_frontend',
-  // service: {
-  //   name: 'blockscout_frontend',
-  //   version: process.env.NEXT_PUBLIC_GIT_TAG || process.env.NEXT_PUBLIC_GIT_COMMIT_SHA || 'unknown_version',
-  //   instance: {
-  //     id: process.env.NEXT_PUBLIC_APP_INSTANCE ||
-  //       process.env.NEXT_PUBLIC_APP_HOST?.replace('.blockscout.com', '').replaceAll('-', '_') ||
-  //       'unknown_app',
-  //   },
-  // },
   spanProcessors: [ new SimpleSpanProcessor(traceExporter) ],
   traceExporter,
   metricReader: new PeriodicExportingMetricReader({

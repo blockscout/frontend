@@ -28,8 +28,7 @@ export default defineConfig({
     // not see an edited entry; its spec is what keeps the committed set green
     forceRerunTriggers: [ 'tools/design-readout/calibration/**' ],
     // specs in the shared project run in one module registry and one global scope per worker, so
-    // whatever a spec stubs or spies on is undone before every test rather than left to the spec;
-    // vitest/setup.ts undoes it after every test too, which is what covers the last test of a file
+    // whatever a spec stubs or spies on is undone before every test rather than left to the spec
     restoreMocks: true,
     unstubGlobals: true,
     unstubEnvs: true,
@@ -41,9 +40,6 @@ export default defineConfig({
       '.claude/worktrees/**',
       'tools/mutation-testing/.stryker-tmp/**',
     ],
-    // Two projects, split by file name. Evaluating the shared module graph once per spec file is the
-    // largest single cost of a run, so a spec shares its worker's module registry unless its name says
-    // it needs a fresh one. The rule for which is which: vitest/CONTEXT.md -> "Isolation".
     projects: [
       {
         test: {

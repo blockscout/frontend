@@ -24,10 +24,6 @@ const STATUS_TAG_TYPES: Record<tac.V2OperationStatus, StatusTagType> = {
   [tac.V2OperationStatus.UNRECOGNIZED]: 'pending',
 };
 
-/**
- * One tag carrying both facts the v2 contract separates: the icon and colour come from `status`, the text
- * from `type`. Keeping them combined is a standing product decision — a split into two fields was rejected.
- */
 const TacOperationStatus = ({ status, type, errorReason, isLoading, isRollback }: Props) => {
   return (
     <StatusTag

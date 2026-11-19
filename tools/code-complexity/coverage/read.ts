@@ -1,9 +1,5 @@
 import fs from 'fs';
 
-// Coverage join: read per-function line coverage from a v8/istanbul `coverage-final.json`. The v8
-// provider remaps its data into istanbul's shape, so both are read the same way: a `statementMap`
-// (statement id -> source range) paired with `s` (statement id -> hit count).
-
 interface SourcePosition {
   readonly line: number;
 }
@@ -64,15 +60,13 @@ export function readCoverage(filePath: string): CoverageData {
 }
 
 // A vitest run that covered nothing writes no report at all, so an absent file means "nothing was
-// covered", not a broken invocation. Both readers go through here: the tool's own generated run, and
-// the CI `--coverage-file` artifact, whose `--changed --passWithNoTests` run can select no specs.
+// covered", not a broken invocation.
 export function readCoverageOrEmpty(filePath: string): CoverageData {
   return fs.existsSync(filePath) ? readCoverage(filePath) : parseCoverage('{}');
 }
 
-// Fraction (0..1) of coverable lines within a function's [startLine, endLine] range that were
-// executed. A line is coverable when it carries a statement; a function with no coverable lines
-// (e.g. a bare type-only body) counts as fully covered, so CRAP reduces to its complexity.
+// Fraction (0..1) of the coverable lines in [startLine, endLine] that were executed. A function with
+// no coverable lines (e.g. a bare type-only body) counts as fully covered.
 export function functionLineCoverage(lineHits: LineHits, startLine: number, endLine: number): number {
   let coverable = 0;
   let covered = 0;

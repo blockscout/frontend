@@ -19,13 +19,11 @@ export interface Params {
 }
 
 // Renders only the first `minItemsNum` items initially and reveals the rest in steps as the
-// bottom sentinel scrolls into view. This keeps the initial (blocking) render cheap on pages
-// with many heavy rows, without the complexity of full windowing.
+// bottom sentinel (`cutRef`) scrolls into view, to keep the initial render cheap on pages with many heavy rows.
 //
-// `resetKey` is optional: when provided, the revealed window shrinks back to `minItemsNum`
-// whenever the key changes. Pass the list itself (or a filter/page key) to reset on a fresh
-// dataset — e.g. a filter or pagination change — while leaving it undefined keeps the grown
-// window across in-place list updates (e.g. socket prepends), which is the original behavior.
+// When `resetKey` changes, the revealed window shrinks back to `minItemsNum`. Pass the list itself (or a
+// filter/page key) to reset on a fresh dataset; left undefined, the grown window survives in-place list
+// updates such as socket prepends.
 export default function useLazyRenderedList({
   list,
   isEnabled,
@@ -54,13 +52,9 @@ export default function useLazyRenderedList({
 
   const hasMore = renderedItemsNum < itemsNum;
 
-  // The reveal is driven by measuring the sentinel on scroll rather than by an IntersectionObserver.
-  // An observer only reports threshold *crossings*, and a step usually adds more content than the
-  // margin below the sentinel — so every reveal pushes the sentinel back out of the trigger zone and
-  // the next one depends on a fresh crossing. When the observer instead stays stuck reporting
-  // "intersecting" (it does, once rows are revealed underneath it without an intervening scroll),
-  // no crossing is left to report and the list stalls until the user scrolls far enough up to force
-  // one. Re-measuring on every scroll frame has no such edge to miss.
+  // The sentinel is measured on scroll rather than watched by an IntersectionObserver: an observer reports
+  // only threshold crossings, and once rows are revealed underneath a sentinel it already reports as
+  // intersecting, no crossing is left to report and the list stalls.
   React.useEffect(() => {
     if (!isEnabled || !hasMore) {
       return;

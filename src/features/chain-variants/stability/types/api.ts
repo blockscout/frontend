@@ -37,7 +37,6 @@ export interface ValidatorsStabilityCountersResponse {
 }
 
 export interface ValidatorsStabilityFilters {
-  // address_hash: string | undefined; // right now API doesn't support filtering by address_hash
   state_filter: ValidatorStability['state'] | undefined;
 }
 

@@ -5,14 +5,7 @@ import type { UseAccountReturnType } from 'wagmi';
 
 import { useWeb3Account } from 'src/features/connect-wallet/utils/bridge';
 
-// Bridge-backed replacement for wagmi's `useAccount` in reown mode. Reads account state from the
-// always-mounted Bridge (optimistic at boot, confirmed once the runtime loads), so boot-time consumers
-// (header button, ad banner, ENS lookup) no longer pull the wagmi/appkit chunks onto the critical path.
-//
-// The Bridge only tracks address + status; `chain`/`chainId`/`connector`/`addresses` are not needed by
-// any boot consumer, so they are filled with the same defaults the fallback account hook uses.
-// The status mapping mirrors wagmi's own `getAccount`: a returning user's persisted address surfaces as
-// `reconnecting` (address visible, no "Connect" flash) until the provider confirms or clears it.
+// Unlike wagmi's `useAccount`, `chain`, `chainId` and `connector` are always undefined.
 export default function useAccountReown(): UseAccountReturnType {
   const { address, status } = useWeb3Account();
 
@@ -24,6 +17,7 @@ export default function useAccountReown(): UseAccountReturnType {
       connector: undefined,
     };
 
+    // The status mapping source - node_modules/@wagmi/core/src/actions/getAccount.ts
     switch (status) {
       case 'connected':
         return {

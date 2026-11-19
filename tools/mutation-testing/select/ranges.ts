@@ -2,9 +2,6 @@ import type { FunctionComplexity } from '../../code-complexity/measure/complexit
 import { computeFunctionComplexities } from '../../code-complexity/measure/complexity';
 import type { LineRange } from '../../code-complexity/select/diff';
 
-// Which lines of a file Stryker may create mutants on. Two restrictions compose: a `jsx` function
-// body is never mutated, and under --changed only the lines the diff touched are.
-//
 // Stryker's `mutate` option takes ranges but has no exclude form, so an exclusion is expressed as
 // the complement — the spans of the file no `jsx` body covers.
 
@@ -18,10 +15,6 @@ function coversTheSameLines(fn: FunctionComplexity, other: FunctionComplexity): 
   return fn.startLine === other.startLine && fn.endLine === other.endLine;
 }
 
-// A line belongs to the innermost function containing it: a `useCallback` body inside a component is
-// `behavior` even though the component around it renders JSX, and a `.map(() => <Row/>)` callback is
-// `jsx` even though the `useMemo` around it is `behavior`.
-//
 // computeFunctionComplexities reports a nested function before the one enclosing it, so the first
 // function containing the line is the innermost one and no nesting test is needed. The one case the
 // order does not settle is a tie — two functions covering exactly the same lines — where `jsx`
@@ -80,9 +73,6 @@ export function intersectRanges(first: ReadonlyArray<LineRange>, second: Readonl
   return ranges;
 }
 
-// The ranges one file contributes to a run. `changedRanges` is undefined outside --changed, where the
-// whole file (minus its `jsx` bodies) is mutated. An empty result means the file has nothing left to
-// mutate and is dropped from the selection.
 export function computeMutationRanges(
   source: string,
   fileName: string,

@@ -1,8 +1,3 @@
-// GitHub Actions output path, which puts the report where a reviewer already is: an inline `::error`
-// annotation per surviving line, so a weak assertion shows up on the diff rather than at the bottom
-// of a job log, and the whole report as a step summary on the run page. Pure formatters here; the
-// writes live in index.ts, guarded by $GITHUB_ACTIONS.
-
 import type { Findings, LineFinding } from '../stryker/report';
 import { formatMutators } from './findings';
 
@@ -23,9 +18,6 @@ export function githubAnnotations(findings: Findings): Array<string> {
     `::error file=${ file },line=${ finding.line }::${ sanitize(survivorMessage(finding)) }`));
 }
 
-// A truncated run reports fewer survivors than the selection holds, so it could pass the gate on
-// mutants it never tested. The notice is on stdout either way; as a `::warning` it also reaches the
-// job's annotation list, where a green run gets looked at.
 export function truncationAnnotation(notice: string): string {
   return `::warning::${ sanitize(notice) }`;
 }

@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Middle-ellipsis truncation by a fixed character count — a pure string slice with no DOM
-// measurement. SSR-safe and the cheapest option, so it is the default for high-traffic hashes
-// (every hash in every table row). "Truncated" here means value.length > maxSymbols.
-
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 

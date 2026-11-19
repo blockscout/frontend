@@ -1,15 +1,6 @@
 /* eslint-disable no-console -- CLI tool, console output is the interface */
 import fs from 'fs';
 
-// Aggregates a React DevTools Profiler export ("Save profile..." JSON) into a per-component cost
-// table: total self-render time, instance count, and average per instance. With two profiles the
-// caller also gets a delta table matched by component name.
-//
-// Argument parsing and the print calls live in ./index.ts, so everything here can be imported by the
-// specs without executing a run.
-//
-// See tools/profiling/CONTEXT.md for the full workflow and the wire-format gotchas.
-
 const TYPE_NAMES: Record<number, string | undefined> = {
   '1': 'Class', '2': 'Context', '3': 'Function', '4': 'ForwardRef', '5': 'Function',
   '6': 'ForwardRef', '7': 'HostComponent', '8': 'Memo', '9': 'OtherOrUnknown',

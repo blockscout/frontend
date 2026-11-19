@@ -40,9 +40,6 @@ describe('parseArgs', () => {
     expect(parseArgs([ '--base=upstream/main' ])).toMatchObject({ diffSelected: true, baseRef: 'upstream/main' });
   });
 
-  // A value flag takes the following token only when it carries no inline value: swallowing the
-  // token after --base=<ref> would drop a focus path, and not swallowing it after a bare --base
-  // would turn the ref itself into one.
   it('consumes the token after a value flag only when the value is not inline', () => {
     expect(parseArgs([ '--base', 'upstream/main', 'src/a.ts' ])).toMatchObject({
       baseRef: 'upstream/main',

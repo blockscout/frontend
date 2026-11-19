@@ -19,13 +19,6 @@ import { buildFileScores, collectFindings, isFailingRun } from './stryker/report
 import type { RunResults } from './stryker/results';
 import { readResults, testedNothing } from './stryker/results';
 
-// Mutation testing: change the code, and see whether any test notices. Coverage answers "was this
-// line executed?"; a surviving mutant answers "would a bug here be caught?", which is the question
-// this tool exists to ask.
-//
-// Selection has three modes, mirroring the complexity gate's flags; ./select/files.ts owns them.
-// USAGE below is the flag reference.
-
 interface CliOptions {
   baseRef: string;
   diffSelected: boolean;
@@ -54,9 +47,7 @@ const USAGE = `Usage:
   lines inside a jsx render body are left alone. When the selection comes out empty the run says why
   and exits 0 without starting Stryker.`;
 
-// Two readers, two places. A local run is read in the terminal it was started from; a CI run is read
-// on the run page, where the log sits behind a click and shares the job with checkout and install
-// output. $GITHUB_STEP_SUMMARY is absent in Actions runtimes that provide no summary file.
+// $GITHUB_STEP_SUMMARY is absent in Actions runtimes that provide no summary file.
 /* eslint-disable no-restricted-properties -- a Node CLI reading its own CI runtime, not app env vars */
 const IN_GITHUB_ACTIONS = Boolean(process.env.GITHUB_ACTIONS);
 const STEP_SUMMARY_FILE = process.env.GITHUB_STEP_SUMMARY;
@@ -126,9 +117,7 @@ function reportSelection(selection: Extract<Selection, { outcome: 'selected' }>)
 }
 
 // Stryker writes the html report only when a whole run finishes, and ./stryker/invoke.ts deletes the
-// previous one before starting — so the file existing is what makes the path this run's rather than
-// a stale one being advertised as fresh. Only a local reader can open the path: on a runner it names
-// a workspace that is gone by the time anyone reads the log.
+// previous one before starting — so the file existing is what makes the path this run's.
 function reportHtmlLocation(): void {
   if (!fs.existsSync(HTML_REPORT_FILE)) return;
   console.log(`\nFull report: ${ pathToFileURL(HTML_REPORT_FILE).href }`);
@@ -141,9 +130,8 @@ function formatReport(results: RunResults, findings: Findings, budgetMs: number)
   return sections.join('\n\n');
 }
 
-// Stryker narrates its own run — instrumentation counts, worker setup, report paths — through this
-// process's inherited stdio, so in CI that lands between the selection line and the report. A log
-// group folds it away instead of silencing it: when Stryker fails, its output is the diagnosis.
+// A log group folds Stryker's own narration away in CI instead of silencing it: when Stryker fails,
+// its output is the diagnosis.
 async function runGrouped(targets: ReadonlyArray<MutateTarget>, budgetMs: number): Promise<RunOutcome> {
   if (!IN_GITHUB_ACTIONS) return runStryker(targets, budgetMs);
 
@@ -200,8 +188,7 @@ async function main(): Promise<void> {
 }
 
 // run.sh always executes the compiled entry point, so that path is what marks this module as the
-// process entry. The guard exists so index.spec.ts can import parseArgs without kicking off a whole
-// mutation run — under vitest the entry is vitest's own binary.
+// process entry.
 const CLI_ENTRY_PATH = 'mutation-testing/index.js';
 
 function isProcessEntryPoint(): boolean {

@@ -1,8 +1,7 @@
 import breakpoints from 'src/toolkit/theme/foundations/breakpoints';
 
-// The simulated viewport width behind the `matchMedia` stub of vitest/setup.ts. A test that needs a
-// breakpoint other than the desktop default calls `mockViewport` before it renders, with `base` for
-// the mobile layout.
+// A test that needs a breakpoint other than the desktop default calls `mockViewport` before it
+// renders, with `base` for the mobile layout.
 
 export type ViewportBreakpoint = 'base' | keyof typeof breakpoints;
 

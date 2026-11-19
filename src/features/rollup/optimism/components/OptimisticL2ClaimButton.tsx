@@ -47,9 +47,6 @@ const OptimisticL2ClaimButton = ({ data, from, onSuccess, source }: Props) => {
     return (
       <>
         { modal.open && (
-          // The modal reads the wallet via wagmi hooks; the island loads the runtime lazily and provides
-          // the config. It only mounts on user intent (Claim clicked), by which point the runtime is
-          // typically already loaded, so no fallback is needed before the dialog appears.
           <Web3Boundary>
             <OptimisticL2ClaimModal
               data={ data }

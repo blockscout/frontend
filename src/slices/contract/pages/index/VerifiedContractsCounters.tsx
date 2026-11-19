@@ -61,8 +61,6 @@ const VerifiedContractsCounters = () => {
         diff={ newContractsCount }
         diffFormatted={ Number(newContractsCount).toLocaleString() }
         isLoading={ isLoading }
-        // there is no stats for contracts growth for now
-        // href={ config.features.stats.isEnabled ? { pathname: '/stats/[id]', query: { id: 'contractsGrowth' } } : undefined }
       />
       <StatsWidget
         label="Verified contracts"

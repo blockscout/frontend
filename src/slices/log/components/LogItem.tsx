@@ -6,7 +6,6 @@ import React from 'react';
 import type { schemas } from '@blockscout/api-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
-// import searchIcon from 'src/sprite/icons/search.svg';
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import TxEntity from 'src/slices/tx/components/entity/TxEntity';
 
@@ -87,12 +86,6 @@ const LogItem = ({
             mr={{ base: 9, lg: 4 }}
           />
         ) }
-        { /* api doesn't have find topic feature yet */ }
-        { /* <Tooltip label="Find matches topic">
-          <Link ml={ 2 } mr={{ base: 9, lg: 0 }} display="inline-flex">
-            <Icon as={ searchIcon } boxSize={ 5 }/>
-          </Link>
-        </Tooltip> */ }
         <LogIndex
           isLoading={ isLoading }
           textStyle="sm"

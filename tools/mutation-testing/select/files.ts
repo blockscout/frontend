@@ -7,12 +7,6 @@ import { hasCoLocatedSpec } from '../../code-complexity/select/eligibility';
 import { isInScope } from '../../code-complexity/select/scope';
 import { computeMutationRanges } from './ranges';
 
-// Which files a run mutates, and which of their lines. Three modes mirror the complexity gate's: the
-// full eligible set when invoked bare, the given paths when invoked with some, and the diff against a
-// base ref under --changed. Eligibility is the same rule in all three — a file is mutated only when a
-// vitest spec sits beside it, so an untested file yields no findings instead of a run of unkillable
-// mutants. ./ranges.ts then narrows each file to the lines worth mutating.
-
 export interface SelectionRequest {
   readonly focusPaths: ReadonlyArray<string>;
   readonly diffSelected: boolean;
@@ -69,9 +63,8 @@ function selectAll(cwd: string): Selection {
   return { outcome: 'selected', targets, ineligible: [] };
 }
 
-// Focused mode: the given paths, no diff-scoping. A path that does not exist is a typo worth failing
-// on; one that exists but has no spec is reported as ineligible rather than silently dropped, so
-// "no findings" never has to mean "your file was never mutated".
+// A path that does not exist is a typo worth failing on; one that exists but has no spec is reported
+// rather than silently dropped, so "no findings" never has to mean "your file was never mutated".
 function selectFocused(cwd: string, focusPaths: ReadonlyArray<string>): Selection {
   const paths = focusPaths.map(normalizePath);
   const missing = paths.filter((filePath) => !fs.existsSync(path.resolve(cwd, filePath)));
@@ -86,10 +79,6 @@ function selectFocused(cwd: string, focusPaths: ReadonlyArray<string>): Selectio
   return { outcome: 'selected', targets, ineligible };
 }
 
-// Diff mode: the in-scope files the branch touched, resolved through the merge-base so the selection
-// carries the branch's own commits plus uncommitted edits and never base-branch churn. Deleted files
-// are dropped — they are in the diff, but there is nothing left to mutate. Each file is narrowed to
-// the lines the diff added or modified, so a one-line fix does not pay for the whole file.
 function selectChanged(cwd: string, baseRef: string): Selection {
   const baseCommit = resolveBaseCommit(baseRef, cwd);
   const changed = getChangedFiles(baseCommit, cwd).filter(isInScope).filter((file) => fs.existsSync(path.resolve(cwd, file)));
@@ -104,8 +93,7 @@ function selectChanged(cwd: string, baseRef: string): Selection {
 }
 
 // `cwd` is the repository to resolve the selection in, passed rather than read off the process:
-// ./files.spec.ts points it at a throwaway repo, and process.chdir() throws in the worker threads
-// Stryker runs vitest in — which this tool's own specs have to survive.
+// process.chdir() throws in the worker threads Stryker runs vitest in.
 export function selectFiles(request: SelectionRequest, cwd: string): Selection {
   if (request.focusPaths.length > 0) return selectFocused(cwd, request.focusPaths);
   if (request.diffSelected) return selectChanged(cwd, request.baseRef);

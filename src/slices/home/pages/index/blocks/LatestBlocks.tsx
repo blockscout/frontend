@@ -24,7 +24,6 @@ import LatestBlocksItem from './LatestBlocksItem';
 
 const LatestBlocks = () => {
   const isMobile = useIsMobile();
-  // const blocksMaxCount = isMobile ? 2 : 3;
   let blocksMaxCount: number;
   if (config.features.rollup.isEnabled || config.slices.block.hiddenFields?.total_reward) {
     blocksMaxCount = isMobile ? 4 : 5;

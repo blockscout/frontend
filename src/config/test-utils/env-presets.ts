@@ -2,11 +2,7 @@
 
 /* eslint-disable max-len */
 
-// Curated env bundles for exercising feature-config branches in tests.
-// Shared by the Playwright `mockEnvs` fixture (playwright/fixtures/mockEnvs.ts) and the
-// Vitest `withEnvs` utility (vitest/utils/mockEnvs.ts) so both test layers speak the same
-// env vocabulary. Keep this module dependency-free (plain data) — it must not import
-// src/config, which both consumers re-evaluate with these values applied.
+// Keep this module plain data: it must not import src/config, which is re-evaluated with these envs applied.
 
 export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   optimisticRollup: [

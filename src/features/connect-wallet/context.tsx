@@ -11,19 +11,8 @@ import { useColorMode } from 'src/toolkit/chakra/color-mode';
 import * as bridge from './utils/bridge';
 import { applyThemeMode, ensureLoaded, subscribeRuntimeLoaded } from './utils/runtime';
 
-// `<Web3Provider>` hosts the wallet stack for reown/fallback modes without ever wrapping the app. It mounts
-// NO wallet chunk at first paint; when the runtime loads (eagerly for a returning user, or on the first
-// wallet interaction / wallet route) it mounts the native `<WagmiProvider>` as a trailing SIBLING of the
-// app — never an ancestor — so the app tree is never remounted and keeps all its state (an email-auth
-// session survives connecting a wallet). Boot-time consumers read account state from the Bridge, not from
-// wagmi context, so they need no provider above them. This module stays free of any static wagmi/viem
-// import so it never pulls those chunks onto the critical path; the native provider lives in the lazily
-// imported inner module. The eager reconnect is still focus-guarded (see below): the sibling mount doesn't
-// remount the app, but an idle load kicked off mid-keystroke is pointless churn, so it waits for a pause.
-
 const Web3ReadyContext = React.createContext(false);
 
-/** True once the native `<WagmiProvider>` is mounted — wallet hooks may be used only where this is true. */
 export function useIsWeb3Ready(): boolean {
   return React.useContext(Web3ReadyContext);
 }
@@ -55,9 +44,6 @@ export const Web3Provider = ({ children }: Props) => {
     applyThemeMode(colorMode ?? 'light');
   }, [ colorMode ]);
 
-  // Observe the runtime load — started by the eager reconnect below, a connect click, or a wallet route.
-  // Once it resolves with a config, pull the inner provider module and mount it in a single state update,
-  // so the subtree remounts exactly once. A failed load leaves us provider-less with the Bridge reset.
   React.useEffect(() => {
     let isActive = true;
     const unsubscribe = subscribeRuntimeLoaded((runtime) => {
@@ -71,10 +57,8 @@ export const Web3Provider = ({ children }: Props) => {
           setLoaded({ Inner: module.default, config: runtimeConfig });
         }
       }).catch(() => {
-        // The provider chunk failed *after* the runtime already loaded (rare — its wagmi import is a chunk
-        // the runtime pulled too). Degrade rather than strand the islands on their skeletons forever: flip
-        // ready with the config but no sibling, so `Web3Boundary` islands still render and read through the
-        // public client, and reset the header account so it drops the optimistic seed instead of spinning.
+        // Ready without the sibling, so the `Web3Boundary` islands do not stay on their fallback forever. The
+        // Bridge reset makes the header drop the optimistic address instead of spinning.
         if (isActive) {
           bridge.reset();
           setLoaded({ config: runtimeConfig });
@@ -88,9 +72,8 @@ export const Web3Provider = ({ children }: Props) => {
     };
   }, []);
 
-  // Returning user (reown only): reconnect without an interaction. Deferred to idle and skipped while an
-  // input is focused — the provider mount remounts the tree, which would wipe in-progress typing; retry on
-  // a later idle tick instead. New users load the runtime on their first connect click, so no eager load.
+  // A returning user (reown only) reconnects without an interaction. The load waits for an idle tick with no
+  // input focused, so it does not land mid-keystroke.
   React.useEffect(() => {
     if (!isReownMode || !bridge.hasPersistedConnection()) {
       return;
@@ -133,11 +116,9 @@ export const Web3Provider = ({ children }: Props) => {
 
   const Inner = loaded?.Inner;
 
-  // The app (`children`) is never wrapped by the wagmi provider — the provider mounts as a trailing SIBLING
-  // that hosts only `AccountPublisher`. Adding a trailing sibling doesn't remount the earlier ones, and
-  // flipping the ready-context value re-renders consumers without remounting them, so mounting the wallet
-  // stack leaves all app state intact (e.g. an email-authenticated session survives connecting a wallet).
-  // Route features that need wagmi hooks get their own context from `<Web3Boundary>` islands instead.
+  // Beside `children`, not around them: a wrapper mounted on load would remount the app and lose its state,
+  // such as an email-authenticated session. Reconnecting on mount only with a persisted connection spares a
+  // new user the reconnect spinner.
   return (
     <Web3ReadyContext.Provider value={ Boolean(loaded) }>
       { children }

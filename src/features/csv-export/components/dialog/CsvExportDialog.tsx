@@ -46,7 +46,7 @@ const CsvExportDialog = ({ open, onOpenChange, onFormSubmit, onCancel, children,
 
   // when the zone toggle flips, re-express the held wall-clock values in the new zone instant-preserving
   // (18:40 local → 16:40 UTC), so the toggle only changes how the picked moment is shown — never which
-  // moment it is. Matches how the global "Local time format" setting re-expresses timestamps everywhere.
+  // moment it is.
   const prevIsLocalTimeRef = React.useRef(isLocalTime);
   React.useEffect(() => {
     const prevIsLocalTime = prevIsLocalTimeRef.current;

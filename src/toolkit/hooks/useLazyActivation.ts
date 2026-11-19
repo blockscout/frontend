@@ -30,12 +30,9 @@ const CLICKLESS_GESTURE_FALLBACK = 500;
 // and reports it in a gesture-safe way. Mounting the wrapper swaps the trigger DOM node, and if
 // that happens before the activating gesture has fully finished, the browser can lose the
 // gesture's "click" (reproduced in iOS Safari: buttons wrapped in a lazy tooltip required
-// a second tap). The tricky part is WebKit's tap event order — pointerup fires at touch-end,
-// but the compatibility mousedown/mouseup/click sequence arrives in FOLLOW-UP tasks, so even
-// a zero timeout scheduled at pointerup can swap the node before the click is synthesized.
-// Hence the rule: during a touch gesture nothing is scheduled until the click handler itself
-// (click is the last event of the sequence), with a delayed fallback for click-less gestures.
-// Mouse hover and keyboard focus (no gesture in flight) activate right after the current task.
+// a second tap). WebKit synthesizes a tap's click in tasks after pointerup, so during a touch
+// gesture `activation` is set only after the click, or after a fallback delay when the gesture
+// produces none. Mouse hover and keyboard focus activate right after the current task.
 export function useLazyActivation(): Result {
   const [ activation, setActivation ] = React.useState<LazyActivation | null>(null);
   const typeRef = React.useRef<LazyActivation['type'] | null>(null);

@@ -5,9 +5,6 @@ import path from 'path';
 import { HTML_REPORT_FILE, JSON_REPORT_FILE, SANDBOX_DIR, STOP_GRACE_MS, STREAM_REPORT_FILE, STRYKER_BIN, STRYKER_CONFIG_FILE } from '../config';
 import type { MutateTarget } from '../select/files';
 
-// Runs Stryker over a selection, under a wall-clock budget. Everything that does not vary per run
-// lives in the committed stryker.config.json, so the command line carries only what to mutate.
-
 // Stryker rejects a mutation range on a pattern minimatch reads as a glob, and Next.js route files
 // (`src/pages/tx/[hash].tsx`) are exactly that. Escaping the metacharacters makes the pattern
 // literal — which is also the only form that matches such a path at all. The backslash is itself

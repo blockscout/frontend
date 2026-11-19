@@ -1,11 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// The public text-truncation primitive. App code picks *what* to show (`value`) and *how*
-// (`type`); the implementation is chosen per-type and lives in a small internal module:
-//   - `middle` (default) — measured middle-ellipsis (container width, binary search)
-//   - `middle-static`     — fixed char count, pure string slice, SSR-safe, cheapest
-//   - `end`               — measured end-ellipsis (CSS text-overflow)
-
 import React from 'react';
 
 import { TruncateEnd } from './TruncateEnd';

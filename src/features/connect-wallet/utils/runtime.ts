@@ -12,18 +12,6 @@ import colors from 'src/toolkit/theme/foundations/colors';
 import { BODY_TYPEFACE } from 'src/toolkit/theme/foundations/typography';
 import zIndex from 'src/toolkit/theme/foundations/zIndex';
 
-// The Runtime is the lazy owner of the wallet chunks: it dynamically imports `wagmi-config` (pulling in
-// wagmi + viem + the reown adapter), builds the AppKit singleton in reown mode, and exposes the imperative
-// actions the header button needs before it lives under a provider (open modal, disconnect). Nothing here
-// loads until `getWeb3Runtime()` / `ensureLoaded()` is called, so first paint never waits for these chunks.
-//
-// Hydration and reconnection are NOT done here — `<Web3Provider>` mounts a native `<WagmiProvider ssr:false>`
-// around the app with the `config` this returns, and wagmi's own `<Hydrate>` restores the persisted state
-// and reconnects. This module only prepares the config + AppKit and hands them over.
-//
-// A load failure resolves to a disabled runtime: the Bridge flips to disconnected and every action rejects
-// with `Web3RuntimeUnavailableError`, matching the "wallet unavailable, page still works" goal.
-
 type AppKit = ReturnType<typeof createAppKit>;
 
 export class Web3RuntimeUnavailableError extends Error {
@@ -112,8 +100,7 @@ async function loadRuntime(): Promise<Web3Runtime> {
         });
 
         // Wait for AppKit to register its connectors before `<WagmiProvider>` mounts and reconnects: an
-        // unready AppKit lets wagmi's reconnect read a not-yet-registered connector and throw. Once ready,
-        // the provider's native hydrate/reconnect flows through fully-registered connectors.
+        // unready AppKit lets wagmi's reconnect read a not-yet-registered connector and throw.
         await appKit.ready();
       } catch {}
     }
@@ -144,10 +131,8 @@ const loadListeners = new Set<(runtime: Web3Runtime) => void>();
 // and applied once the modal is available — otherwise the modal would open in a stale theme.
 let desiredThemeMode: 'light' | 'dark' | undefined;
 
-/**
- * Load (once) and return the wallet runtime. Single-flight: concurrent and repeated calls share one load.
- * Never rejects — a chunk-load failure resolves to the disabled runtime.
- */
+// The first call loads the wallet chunks, and concurrent or later calls share that load. Never rejects: a
+// failed load resolves to a runtime with `isReady: false`, whose actions reject.
 export function getWeb3Runtime(): Promise<Web3Runtime> {
   if (!runtimePromise) {
     runtimePromise = loadRuntime().then((runtime) => {
@@ -165,11 +150,8 @@ export function getWeb3Runtime(): Promise<Web3Runtime> {
   return runtimePromise;
 }
 
-/**
- * Observe the runtime load without triggering it — `<Web3Provider>` uses this to mount the native
- * `<WagmiProvider>` whenever any caller (eager reconnect, connect click, a wallet route) starts the load.
- * Fires immediately if the runtime is already loaded. Does NOT start the load itself.
- */
+// Does not start the load. Calls `cb` once: right away when the runtime has already loaded, otherwise when
+// the load resolves.
 export function subscribeRuntimeLoaded(cb: (runtime: Web3Runtime) => void): () => void {
   if (loadedRuntime) {
     cb(loadedRuntime);
@@ -181,19 +163,13 @@ export function subscribeRuntimeLoaded(cb: (runtime: Web3Runtime) => void): () =
   };
 }
 
-/** Alias used by route-eager and interaction paths. Triggers the load and resolves when ready. */
 export const ensureLoaded = getWeb3Runtime;
 
-/** The already-loaded runtime, or undefined if the load has not resolved yet. */
 export function getLoadedRuntime(): Web3Runtime | undefined {
   return loadedRuntime;
 }
 
-/**
- * Sync the AppKit modal's theme with the app color mode without forcing the runtime to load (that would
- * defeat the deferral just to set a theme): record the mode and only touch AppKit if already loaded; the
- * load path applies the recorded mode on resolve. No-op without an AppKit instance.
- */
+// Does not start the load: the mode is kept and applied once the runtime loads.
 export function applyThemeMode(mode: 'light' | 'dark'): void {
   desiredThemeMode = mode;
   loadedRuntime?.setThemeMode(mode);

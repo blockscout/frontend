@@ -7,8 +7,7 @@ that data from.
 
 ## The convention
 
-Three rules. ESLint enforces all of them (`eslint.config.mjs`, the "App config convention" blocks), so a
-violation fails before review.
+Three rules. ESLint enforces all of them (`eslint.config.mjs`), so a violation fails before review.
 
 1. **A config module has no export besides its default.** Everything the feature owns lives inside the
    config object, widening its `Feature<Payload>`. `Feature<>` hides the payload when `isEnabled` is

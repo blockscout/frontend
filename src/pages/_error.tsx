@@ -32,9 +32,8 @@ CustomErrorComponent.getInitialProps = async(context: NextPageContext) => {
   const cookies = req?.headers?.cookie || '';
 
   if (rollbar) {
-    // Pass the Error itself, not just its message, so Rollbar builds a trace carrying `exception.class`
-    // — the field the shared `isIgnoredExceptionClass` check in the server config reads to drop the DOM
-    // / Abort noise. Falls back to a bare message when Next.js hands us no error object.
+    // Pass the Error itself, not just its message, so Rollbar builds a trace carrying `exception.class`,
+    // which its ignore filter reads to drop the DOM / Abort noise.
     rollbar.error(err ?? 'Unknown error', { cause: err?.cause });
   }
 

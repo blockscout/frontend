@@ -4,9 +4,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 type ModalStateCb = (state: { open: boolean }) => void;
 
-// wagmi's imperative actions the runtime binds to the config. The provider (`<WagmiProvider>`) owns
-// hydration/reconnection now, so the runtime no longer touches `hydrate`/`watchAccount` — it only prepares
-// the config + AppKit and exposes these actions for boot-time consumers that call before a provider exists.
 const actionsMock = vi.hoisted(() => ({
   disconnect: vi.fn<() => Promise<void>>(),
   signMessage: vi.fn<() => Promise<string>>(),

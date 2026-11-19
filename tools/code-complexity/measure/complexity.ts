@@ -1,12 +1,6 @@
 import ts from 'typescript';
 
-// Per-function complexity from a single walk of the syntax tree produced by ts.createSourceFile
-// (no type-checker). Two scores accrue on the *same* walk: `complexity` (cyclomatic, the CRAP input)
-// and `cognitive` (the readability gate), with every cognitive increment recorded in
-// `contributions` so a violation can name the sites that cost the most.
-//
-// ../docs/MODEL.md is the specification — which constructs increment, how nesting is charged, and the
-// divergences from SonarSource and ESLint. The ADRs cited below live in ../adr/.
+// ../docs/MODEL.md is the specification. The ADRs cited below live in ../adr/.
 
 export interface Contribution {
   // Line of the construct that added the increment (1-based).
@@ -32,10 +26,8 @@ export interface FunctionComplexity {
   cognitive: number;
   // Every cognitive increment, in walk order. Empty when `cognitive` is 0.
   contributions: Array<Contribution>;
-  // Whether JSX appears directly in this function's own body — outside any nested function. This
-  // classifies the function `jsx` vs `behavior`, which selects its cognitive cap and whether CRAP
-  // applies (../docs/MODEL.md). A `.map(x => <Row/>)` callback is `jsx`; an `onClick` handler that
-  // renders nothing is `behavior`, even inside a component.
+  // Whether JSX appears directly in this function's own body, outside any nested function: true for a
+  // `.map(x => <Row/>)` callback, false for an `onClick` handler that renders nothing inside a component.
   containsJsx: boolean;
 }
 
@@ -68,10 +60,8 @@ const LOGICAL_OPERATORS: ReadonlySet<ts.SyntaxKind> = new Set([
   ts.SyntaxKind.QuestionQuestionEqualsToken,
 ]);
 
-// The expression-level logical operators that form cognitive "boolean sequences": a run of the same
-// operator costs +1 for the whole run, and switching operator starts a new run. Compound-assignment
-// forms are not sequence operators (they are statements, not chains). Null-coalescing (`??`, `??=`)
-// is deliberately absent — ADR 0002.
+// Compound-assignment forms are not sequence operators: they are statements, not chains.
+// Null-coalescing (`??`, `??=`) is deliberately absent — ADR 0002.
 const SEQUENCE_OPERATORS: ReadonlyMap<ts.SyntaxKind, string> = new Map([
   [ ts.SyntaxKind.AmpersandAmpersandToken, '&&' ],
   [ ts.SyntaxKind.BarBarToken, '||' ],
@@ -159,9 +149,6 @@ function inferName(node: ts.Node): string {
   return '<anonymous>';
 }
 
-// The bare identifier a function calls to recur on itself, when it has one. Recursion is detected by
-// name match only (no type-checker): a call whose callee is this identifier is direct self-recursion.
-// Methods/`this.x()` and destructured/aliased calls are not caught — a documented approximation.
 function selfCallName(node: ts.Node): string | undefined {
   if (ts.isFunctionDeclaration(node) || ts.isFunctionExpression(node)) {
     if (node.name) return node.name.text;
@@ -207,9 +194,6 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
   const recurse = (node: ts.Node, frame: Frame | null, nesting: number): void =>
     ts.forEachChild(node, (child) => visit(child, frame, nesting));
 
-  // Cyclomatic, JSX classification, recursion and labelled-jump increments apply to every node
-  // identically, however the node is reached. Cognitive nesting-structure increments are applied by
-  // the per-kind traversal below, because they depend on `nesting` and on how children are descended.
   const applyUniversal = (node: ts.Node, frame: Frame, nesting: number): void => {
     if (countsAsBranch(node)) frame.complexity += 1;
     if (JSX_KINDS.has(node.kind)) frame.containsJsx = true;
@@ -236,10 +220,6 @@ export function computeFunctionComplexities(sourceText: string, fileName: string
     }
   };
 
-  // An `if` chain is the one construct whose traversal needs its own branch pocket — a leading `if`
-  // pays the nesting price, an `else if` continues flat, and a bare `else` nests its body. Kept out
-  // of `visit` so that pocket is scored against this function rather than deepening every other arm
-  // of the dispatch below.
   const visitIfStatement = (node: ts.IfStatement, frame: Frame, nesting: number): void => {
     // `else if` (an if that is its parent's else branch) is a flat continuation: +1, no nesting
     // penalty, and the chain stays at the same base level. A leading `if` pays the nesting price.

@@ -4,32 +4,9 @@ import type CspDev from 'csp-dev';
 
 import { makePolicyString, KEY_WORDS } from './utils';
 
-/**
- * Content-Security-Policy used **only** for responses to `/nft-html-embed.html` (see `nextjs/csp/index.ts`).
- *
- * **What it is for**
- * Interactive NFTs often ship as `data:text/html` or remote HTML with arbitrary inline and third-party
- * scripts. The main explorer uses a strict `script-src` (hashed / `'self'` only). Any preview that
- * inherits that policy—e.g. `srcdoc`, same-origin `blob:`, or framing `data:` under the main document—
- * will block those scripts. We avoid widening CSP on the whole app by serving a tiny **first-party shell**
- * on this URL. The shell listens for `postMessage` from the explorer and sets a **nested** iframe’s
- * `src` to the NFT URL (commonly `data:text/html;base64,...`).
- *
- * **Why this policy is broad**
- * The **untrusted** markup runs inside the **inner** iframe (see `public/nft-html-embed.html`), not in
- * the shell’s inline script. The inner document still needs a permissive policy to run typical NFT
- * animations (inline scripts, eval in some bundles, arbitrary `connect-src`, images, fonts, nested
- * frames). This file’s CSP applies to the **shell document** and to what that document is allowed to
- * embed; we keep `object-src` and `base-uri` tight where we can.
- *
- * **`frame-src` includes `data:`**
- * In CSP, `frame-src *` does not cover `data:` URLs; those must be listed explicitly or framing fails.
- *
- * **`frame-ancestors 'self'`**
- * Only our origin may frame this page, reducing drive-by embedding and tightening who can target the
- * shell with `postMessage` (the shell also checks `event.origin` in script).
- */
-
+// Broad on purpose: the untrusted NFT markup runs in an iframe nested in this shell document, and
+// still needs a permissive policy to run typical NFT animations (inline scripts, eval in some
+// bundles, arbitrary `connect-src`, images, fonts, nested frames).
 export default function generateNftHtmlEmbedCspPolicy(): string {
 
   const descriptor: CspDev.DirectiveDescriptor = {
@@ -64,6 +41,7 @@ export default function generateNftHtmlEmbedCspPolicy(): string {
 
     'frame-ancestors': [ KEY_WORDS.SELF ],
 
+    // `frame-src *` does not cover `data:` URLs; without it, framing an NFT given as one fails
     'frame-src': [ '*', KEY_WORDS.DATA ],
   };
 

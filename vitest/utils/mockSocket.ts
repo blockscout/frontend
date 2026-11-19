@@ -22,7 +22,6 @@ import { vi } from 'vitest';
 //
 // Pass the url either way: without one the provider creates no socket at all.
 
-/** any non-empty url works — the mocked socket never opens a connection */
 export const MOCK_SOCKET_URL = 'wss://localhost/socket';
 
 type MessageHandler = (payload: unknown) => void;

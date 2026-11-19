@@ -45,30 +45,10 @@ export default function useApiFetch() {
     return fetch<SuccessType, ErrorType>(
       url,
       {
-        // Things to remember:
-        //
-        // A: Currently, we use only one API-related cookie, "_explorer_key," which is for the account feature.
-        // We include credentials only for core API requests.
-        // Note that some APIs may share the same origin with the core API, but they don't require credentials (e.g the Stats API).
-        //
-        // B: We cannot limit the routes for which credentials should be sent exclusively to the "/account/**" routes.
-        // This is because the watchlist names and private tags preloading will not function on the API side.
-        // Therefore, we include credentials for all core API routes.
-        //
-        // C: We cannot include credentials in cross-origin requests.
-        // In this case, we must explicitly list all the origins allowed to make requests in the "Access-Control-Allow-Origin" header,
-        // which is challenging for our devops and backend teams. Thus, we do not use the "include" option here.
-        // And because of this, the account feature in cross-origin setup will not work.
-        //
-        // Considering all of the above, we use:
-        //   -  The "same-origin" option for all core API requests
-        //   -  The "omit" option for all other requests
-        //
-        // UPDATED:
-        // In some scenarios, we need to include credentials for request to non-core API which is on the same origin as the core API.
-        // For example, the request to the Stats API which is behind Claudflare authentication.
-        // So we use the "same-origin" option for all requests which is the default behavior of fetch API.
-        // credentials: apiName === 'core' ? 'same-origin' : 'omit',
+        // `credentials` stays at the fetch default, "same-origin". Not "omit" for non-core APIs: one on the
+        // core API's origin can need them, such as the Stats API behind Cloudflare authentication. Not
+        // "include": every allowed origin would have to be listed in "Access-Control-Allow-Origin", so the
+        // account feature does not work in a cross-origin setup.
         headers,
         ...(fetchParams ? omit(fetchParams, [ 'headers' ]) : {}),
       },
