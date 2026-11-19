@@ -7,7 +7,7 @@ what `finalize-task` acts on. `to-tickets` appends a line per ticket; `implement
 commit time. Task status is derived from these boxes — see `.agents/tasks/structure.md`. -->
 
 - [x] 01 → `tickets/01-shared-cluster-config-accessor/`
-- [ ] 02 → `tickets/02-multichain-portfolio-feature-config/`
+- [x] 02 → `tickets/02-multichain-portfolio-feature-config/`
 - [ ] 03 → `tickets/03-shared-tokens-table-and-plate/`
 - [ ] 04 → `tickets/04-tokens-sub-tab-table/`
 - [ ] 05 → `tickets/05-tokens-sub-tab-plate/`

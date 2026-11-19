@@ -56,11 +56,12 @@ describe('multichain schema', () => {
   });
 
   describe('multichain services', () => {
-    it('accepts valid aggregator and stats hosts', () => {
+    it('accepts valid aggregator and stats hosts with the cluster', () => {
       expect(getValidationErrors(schema, {
         ...REQUIRED,
         NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'https://example.com',
         NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST: 'https://example.com',
+        NEXT_PUBLIC_MULTICHAIN_CLUSTER: 'test',
       })).toEqual([]);
     });
 
