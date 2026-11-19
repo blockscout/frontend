@@ -2,26 +2,27 @@
 
 import React from 'react';
 
-import type { AddressTokenItem } from 'src/features/multichain/types/client';
+import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
 
 import { useUniqueKeys } from 'src/shared/lists/get-unique-keys';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
 
 import { TableBody, TableColumnHeader, TableHeaderSticky, TableRoot, TableRow } from 'src/toolkit/chakra/table';
 
-import MultichainAddressTokensTableItem from './MultichainAddressTokensTableItem';
+import AddressPortfolioTokensTableItem from './AddressPortfolioTokensTableItem';
 
 interface Props {
-  data: Array<AddressTokenItem>;
+  data: Array<AddressFungibleTokensItem>;
   top: number;
   isLoading: boolean;
   resetKey?: string;
+  hasAddToWallet?: boolean;
 }
 
-const getBaseKey = (item: AddressTokenItem): string =>
+const getBaseKey = (item: AddressFungibleTokensItem): string =>
   item.token.address_hash + (item.chain_values ? Object.keys(item.chain_values).join(',') : '');
 
-const MultichainAddressTokensTable = ({ data, top, isLoading, resetKey }: Props) => {
+const AddressPortfolioTokensTable = ({ data, top, isLoading, resetKey, hasAddToWallet }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList({ list: data, isEnabled: !isLoading, resetKey });
   const keys = useUniqueKeys(data, getBaseKey);
 
@@ -37,10 +38,11 @@ const MultichainAddressTokensTable = ({ data, top, isLoading, resetKey }: Props)
       </TableHeaderSticky>
       <TableBody>
         { data.slice(0, renderedItemsNum).map((item, index) => (
-          <MultichainAddressTokensTableItem
+          <AddressPortfolioTokensTableItem
             key={ keys[index] }
             data={ item }
             isLoading={ isLoading }
+            hasAddToWallet={ hasAddToWallet }
           />
         )) }
         <TableRow ref={ cutRef }/>
@@ -49,4 +51,4 @@ const MultichainAddressTokensTable = ({ data, top, isLoading, resetKey }: Props)
   );
 };
 
-export default React.memo(MultichainAddressTokensTable);
+export default React.memo(AddressPortfolioTokensTable);

@@ -37,9 +37,12 @@ interface Props {
   netWorth?: string;
   isLoading: boolean;
   topTokens?: Array<{ symbol: string; share: number }>;
+  hasAdBanner?: boolean;
+  hasMultichainButtons?: boolean;
+  children?: React.ReactNode;
 }
 
-const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens }: Props) => {
+const AddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens, hasAdBanner, hasMultichainButtons, children }: Props) => {
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
@@ -121,7 +124,8 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
               accuracy={ DEFAULT_ACCURACY_USD }
               color={ !netWorth ? 'text.secondary' : undefined }
             />
-            { multichainBalanceFeature.isEnabled && (
+            { children }
+            { hasMultichainButtons && multichainBalanceFeature.isEnabled && (
               <>
                 <Separator height="16px" orientation="vertical"/>
                 <HStack gap={ 1 } flexWrap="wrap">
@@ -151,9 +155,9 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
           { topTokensContent }
         </Flex>
       </VStack>
-      { !isMobile && <AdBanner format="mobile" w="fit-content"/> }
+      { hasAdBanner && !isMobile && <AdBanner format="mobile" w="fit-content"/> }
     </HStack>
   );
 };
 
-export default React.memo(MultichainAddressPortfolioNetWorth);
+export default React.memo(AddressPortfolioNetWorth);

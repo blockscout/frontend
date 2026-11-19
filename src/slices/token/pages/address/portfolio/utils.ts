@@ -2,12 +2,13 @@
 
 import BigNumber from 'bignumber.js';
 
-import type { AddressTokenItem, ClusterChainConfig } from 'src/features/multichain/types/client';
+import type { ClusterChainConfig } from 'src/features/multichain/types/client';
+import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
 import { isFungibleTokenType } from 'src/slices/token/utils/token-types';
 
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
-import multichainConfig from 'src/features/multichain/chains-config';
+import { clusterConfig } from 'src/shared/external-chains/cluster-config';
 
 import { hairsp } from 'src/toolkit/utils/htmlEntities';
 
@@ -23,16 +24,17 @@ export function formatPercentage(percentage: number) {
 }
 
 // An address-portfolio token item belongs to exactly one chain, the single key of `chain_values`.
-export const getTokenChain = (data: AddressTokenItem): ClusterChainConfig | undefined => {
+// An item without `chain_values` is a token of the current chain.
+export const getTokenChain = (data: Pick<AddressFungibleTokensItem, 'chain_values'>): ClusterChainConfig | undefined => {
   if (!data.chain_values) {
     return;
   }
 
   const chainId = Object.keys(data.chain_values)[0];
-  return multichainConfig()?.chains.find((chain) => chain.id === chainId);
+  return clusterConfig()?.chains.find((chain) => chain.id === chainId);
 };
 
-export const calculateUsdValue = (data: AddressTokenItem) => {
+export const calculateUsdValue = (data: AddressFungibleTokensItem) => {
   const isFungibleToken = isFungibleTokenType(data.token?.type);
 
   if (!isFungibleToken) {

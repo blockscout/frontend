@@ -13,6 +13,10 @@ import useApiQuery from 'src/api/hooks/useApiQuery';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
+import AddressPortfolioNetWorth from 'src/slices/token/pages/address/portfolio/AddressPortfolioNetWorth';
+import AddressPortfolioTokensTable from 'src/slices/token/pages/address/portfolio/AddressPortfolioTokensTable';
+import { calculateUsdValue } from 'src/slices/token/pages/address/portfolio/utils';
+
 import multichainConfig from 'src/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
@@ -30,9 +34,6 @@ import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
 import { ZERO } from 'src/toolkit/utils/consts';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
-import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
-import MultichainAddressTokensTable from './MultichainAddressTokensTable';
-import { calculateUsdValue } from './utils';
 
 interface Props {
   addressData: multichain.GetAddressResponse | undefined;
@@ -181,7 +182,7 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
 
   const tokensContent = tokensQuery.data?.items ? (
     <TableContainerScrollable>
-      <MultichainAddressTokensTable
+      <AddressPortfolioTokensTable
         data={ tokensQuery.data.items }
         top={ ACTION_BAR_HEIGHT_DESKTOP }
         isLoading={ tokensQuery.isInitialLoading }
@@ -208,11 +209,13 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
 
   return (
     <Box>
-      <MultichainAddressPortfolioNetWorth
+      <AddressPortfolioNetWorth
         addressHash={ hash }
         netWorth={ portfolioQuery.data?.portfolio?.total_value }
         isLoading={ portfolioQuery.isPlaceholderData || allTokensQuery.isPlaceholderData || isLoading }
         topTokens={ topTokens }
+        hasAdBanner
+        hasMultichainButtons
       />
       <MultichainAddressPortfolioCards
         chainValues={ portfolioData }

@@ -15,17 +15,17 @@ page renders them exactly as today.
 
 ## Acceptance criteria
 
-- [ ] The table and the plate live outside the Multichain explorer feature, under names that no longer say
+- [x] The table and the plate live outside the Multichain explorer feature, under names that no longer say
       "Multichain"; the Multichain explorer imports them from there.
-- [ ] Neither they nor the helpers they use (`getTokenChain`, the portfolio `calculateUsdValue`) call
+- [x] Neither they nor the helpers they use (`getTokenChain`, the portfolio `calculateUsdValue`) call
       `multichainConfig()`; chain lookup goes through `clusterConfig()`.
-- [ ] Table: add-to-wallet is an opt-in prop, off by default; a row needs no chain (a row without one is a
+- [x] Table: add-to-wallet is an opt-in prop, off by default; a row needs no chain (a row without one is a
       current-chain token), so core-API token balances can feed it in T04.
-- [ ] Plate: the ad banner and the multichain-button providers are opt-in props; the slot for extra stats
+- [x] Plate: the ad banner and the multichain-button providers are opt-in props; the slot for extra stats
       (native balance, token count) that T05 needs is available as a prop or children, unused here.
-- [ ] The Multichain explorer passes the options that reproduce today's look: banner and providers on,
+- [x] The Multichain explorer passes the options that reproduce today's look: banner and providers on,
       add-to-wallet off (FR15).
-- [ ] Existing `*.pw.tsx` suites of the moved components and of `MultichainAddressPortfolio*` pass against
+- [x] Existing `*.pw.tsx` suites of the moved components and of `MultichainAddressPortfolio*` pass against
       their current baselines — no baseline is regenerated.
 
 ## Details
@@ -41,6 +41,6 @@ page renders them exactly as today.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move and rename the table, its item and their helpers; switch to `clusterConfig()`; add the add-to-wallet option
-- [ ] 2 `[agent]` Move and rename the plate; make banner, providers and the extra-stats slot opt-in
-- [ ] 3 `[agent]` Repoint the Multichain explorer's portfolio view and run its visual suites unchanged
+- [x] 1 `[agent]` Move and rename the table, its item and their helpers; switch to `clusterConfig()`; add the add-to-wallet option
+- [x] 2 `[agent]` Move and rename the plate; make banner, providers and the extra-stats slot opt-in
+- [x] 3 `[agent]` Repoint the Multichain explorer's portfolio view and run its visual suites unchanged
