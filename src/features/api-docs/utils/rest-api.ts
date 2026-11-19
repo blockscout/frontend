@@ -1,51 +1,9 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { SwaggerRequest } from '../types/client';
-import type { ApiPropsBase, ApiPropsFull } from 'src/api/types';
+import type { ApiPropsBase } from 'src/api/types';
 
 import config from 'src/config';
-
-const DEFAULT_SERVER = 'blockscout.com/poa/core';
-const DEFAULT_SERVER_NEW = 'http://localhost/api';
-const DEFAULT_SERVER_NEW_BASE = 'http://localhost';
-
-export const coreApiRequestInterceptorFactory = (api: ApiPropsFull) => (req: SwaggerRequest): SwaggerRequest => {
-  if (!req.loadSpec) {
-    const newUrl = (() => {
-      try {
-        if (req.url.includes(DEFAULT_SERVER)) {
-          const url = new URL(req.url.replace(DEFAULT_SERVER, api.host));
-
-          url.protocol = api.protocol + ':';
-
-          if (api.port) {
-            url.port = api.port;
-          }
-
-          if (api.basePath && !url.pathname.includes(api.basePath)) {
-            url.pathname = api.basePath + url.pathname;
-          }
-
-          return url;
-        }
-
-        if (req.url.includes(DEFAULT_SERVER_NEW)) {
-          return new URL(req.url.replace(DEFAULT_SERVER_NEW, `${ api.endpoint }${ api.basePath ?? '' }/api`));
-        }
-
-        if (req.url.includes(DEFAULT_SERVER_NEW_BASE)) {
-          return new URL(req.url.replace(DEFAULT_SERVER_NEW_BASE, `${ api.endpoint }${ api.basePath ?? '' }`));
-        }
-
-      } catch (error) {}
-    })();
-
-    if (newUrl) {
-      req.url = newUrl.toString();
-    }
-  }
-  return req;
-};
 
 const microserviceRequestInterceptorFactory = (api: ApiPropsBase) => (req: SwaggerRequest) => {
   try {
@@ -67,7 +25,6 @@ export const REST_API_SECTIONS = [
     swagger: {
       // default swagger URL, will be replaced with an URL constructed from the backend version and the openapi spec folder name
       url: 'https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml',
-      requestInterceptor: coreApiRequestInterceptorFactory(config.apis.core),
     },
   },
   config.apis.stats && {
