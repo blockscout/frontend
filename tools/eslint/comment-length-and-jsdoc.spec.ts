@@ -71,6 +71,20 @@ describe('comments/length-and-jsdoc', () => {
       expect(lint([ '/*', ...prose(8, ' * '), ' *   const result = call(a, b);', ' *   use(result);', ' */', 'const a = 1;' ].join('\n'))).toEqual([]);
     });
 
+    it('does not count a sample line without the star in a decorated /* */ block', () => {
+      expect(lint([ '/*', ...prose(8, ' * '), '   const sample = call(a, b);', ' */', 'const a = 1;' ].join('\n'))).toEqual([]);
+    });
+
+    it('counts a * bullet at the text column of a /* */ block without the star decoration as prose', () => {
+      expect(lint([ '/* opening prose', ...prose(7, '   '), '   * a bullet', '*/', 'const a = 1;' ].join('\n'))).toEqual([ 'tooLong' ]);
+    });
+
+    it('counts the wrapped text of a * bullet in a /* */ block without the star decoration', () => {
+      const bullets = [ 'first', 'second', 'third', 'fourth' ].flatMap((name) => [ `   * ${ name } case,`, '     wrapped' ]);
+
+      expect(lint([ '/* Four cases:', ...bullets, '*/', 'const a = 1;' ].join('\n'))).toEqual([ 'tooLong' ]);
+    });
+
     it('does not count indented sample lines in a /* */ block without the star decoration', () => {
       expect(lint([ '/* opening prose', '     call(a, b);', '     use(result);', ...prose(7, '   '), '*/', 'const a = 1;' ].join('\n'))).toEqual([]);
     });

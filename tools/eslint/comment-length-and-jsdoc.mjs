@@ -51,26 +51,42 @@ function groupLineCommentRuns(sourceCode) {
   return groups;
 }
 
+function indentOf(line) {
+  return line.column + line.text.search(/\S/);
+}
+
+function minIndent(lines) {
+  return Math.min(...lines.map(indentOf));
+}
+
+function isUnstarredText(line) {
+  return WORD.test(line.text) && !BLOCK_DECORATION.test(line.text);
+}
+
+// The decoration stars sit left of the text, while a `* ` bullet in an undecorated block sits at its column
+function isDecorated(opening, continuation) {
+  const starColumn = minIndent(continuation.filter((line) => BLOCK_DECORATION.test(line.text)));
+  const textColumn = minIndent([ opening, ...continuation ].filter(isUnstarredText));
+  return starColumn < textColumn || !continuation.some(isUnstarredText);
+}
+
 function textLinesWithStartColumn(comment) {
   const [ first, ...rest ] = comment.value.split(/\r?\n/);
   const stars = BLOCK_OPENING_STARS.exec(first)?.[0].length ?? 0;
-  const opening = first.slice(stars);
+  const opening = { column: comment.loc.start.column + 2 + stars, text: first.slice(stars) };
+  const continuation = rest.map((text) => ({ column: 0, text }));
 
-  const isDecorated = rest.every((line) => line.trim() === '' || BLOCK_DECORATION.test(line));
-  if (isDecorated) {
-    return [ opening, ...rest.map((line) => line.replace(BLOCK_DECORATION, '')) ].map((text) => ({ column: 0, text }));
+  if (isDecorated(opening, continuation)) {
+    return [ opening.text, ...rest.map((line) => line.replace(BLOCK_DECORATION, '')) ].map((text) => ({ column: 0, text }));
   }
 
-  return [
-    { column: comment.loc.start.column + 2 + stars, text: opening },
-    ...rest.map((text) => ({ column: 0, text })),
-  ];
+  return [ opening, ...continuation ];
 }
 
 function countProseLines(lines) {
   const worded = lines
     .filter((line) => WORD.test(line.text))
-    .map((line) => ({ indent: line.column + line.text.search(/\S/), text: line.text.trim() }));
+    .map((line) => ({ indent: indentOf(line), text: line.text.trim() }));
   let maxProseIndent = Math.min(...worded.map((line) => line.indent));
   let count = 0;
 

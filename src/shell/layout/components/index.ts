@@ -22,3 +22,13 @@ export {
   Footer,
   TopRow,
 };
+
+// Root
+//  Container
+//    TopRow
+//    NavBar
+//    MainArea
+//       SideBar
+//       MainColumn
+//          Content
+//    Footer
