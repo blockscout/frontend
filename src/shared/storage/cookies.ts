@@ -4,9 +4,6 @@ import Cookies from 'js-cookie';
 
 import config from 'src/config';
 
-/**
- * All cookie names that can be used in the application.
- */
 export enum NAMES {
   NAV_BAR_COLLAPSED = 'nav_bar_collapsed',
   API_TOKEN = '_explorer_key',
@@ -33,10 +30,6 @@ export enum NAMES {
   CUSTOM_RPC_IN_USE = 'custom_rpc_in_use',
 }
 
-/**
- * Cookies that are disallowed in private mode.
- * These cookies should not be set when app profile is 'private'.
- */
 export const PRIVATE_MODE_DISALLOWED: ReadonlyArray<NAMES> = [
   NAMES.UUID,
   NAMES.ADBLOCK_DETECTED,
@@ -62,16 +55,10 @@ export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   }
 }
 
-/**
- * Checks if a cookie is disallowed in private mode.
- */
 function isDisallowedInPrivateMode(name: NAMES): boolean {
   return PRIVATE_MODE_DISALLOWED.includes(name);
 }
 
-/**
- * Checks if the app is currently in private mode by reading the APP_PROFILE cookie.
- */
 export function isPrivateMode(serverCookie?: string): boolean {
   const appProfile = get(NAMES.APP_PROFILE, serverCookie);
   return appProfile === 'private';

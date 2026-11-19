@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Config-free theme defaults: the runtime theme composes them with the app config in ./colors.ts,
-// the design-readout color map reads them as they are (tools/design-readout/).
+// The semantic tokens before an instance's config overrides; keep this file free of `src/config`.
+// With the overrides: `./semanticTokens.ts`.
 
 export const SEMANTIC_TOKENS_DEFAULT = {
   colors: {

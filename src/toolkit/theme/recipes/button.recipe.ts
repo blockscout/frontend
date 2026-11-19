@@ -116,9 +116,6 @@ export const recipe = defineRecipe({
           color: 'hover',
           borderColor: 'hover',
         },
-        // We have a special state for this button variant that serves as a popover trigger.
-        // When any items (filters) are selected in the popover, the button should change its background and text color.
-        // The last CSS selector is for redefining styles for the TabList component.
         _selected: {
           bg: 'selected.control.bg',
           color: 'selected.control.text',

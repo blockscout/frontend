@@ -37,7 +37,6 @@ const RawDataSnippet = ({
   // there is a problem with scrollbar color in chromium
   // so blackAlpha.50 here is replaced with #f5f5f6
   // and whiteAlpha.50 is replaced with #1a1b1b
-  // const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const bgColor = { _light: '#f5f5f6', _dark: '#1a1b1b' };
   return (
     <Box className={ className } as="section" title={ title }>

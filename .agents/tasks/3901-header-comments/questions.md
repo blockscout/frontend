@@ -23,3 +23,11 @@
 - Resolved when: the ticket that registers the rule at `error` is named
 - Slack: none, answered in session
 - Answer: ticket 02 registers it at once; the full lint run is red until ticket 09, accepted because all tickets land in one pull request (2026-11-18)
+
+### Q04 — Does the sweep cover generated files?
+
+- Owner: developer (tom)
+- Status: `resolved`
+- Resolved when: files written by a generator, such as `src/shared/router/nextjs-routes.d.ts`, are in or out of requirements 11–13
+- Slack: none, answered in session
+- Answer: out of scope for the sweep and the lint check, as `public/` is in Q02; a generated file is left untouched, because its generator writes its comments back on the next run (2026-11-19)

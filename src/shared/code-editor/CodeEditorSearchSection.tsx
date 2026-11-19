@@ -47,7 +47,6 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
           _groupExpanded={{
             transform: 'rotate(0deg)',
           }}
-          // transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }
           width="20px"
           height="22px"
           py="3px"

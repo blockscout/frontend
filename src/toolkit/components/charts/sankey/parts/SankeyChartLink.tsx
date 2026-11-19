@@ -9,14 +9,14 @@ import type { SankeyChartLinkExtended } from '../types';
 export interface SankeyChartLinkProps {
   link: SankeyChartLinkExtended;
 
-  /** Single color when gradient is not used */
+  // Single color when gradient is not used
   color?: string;
 
-  /** When set with targetColor, link stroke is a gradient from source to target */
+  // When set with targetColor, link stroke is a gradient from source to target
   sourceColor?: string;
   targetColor?: string;
 
-  /** Unique suffix for gradient id (e.g. link index) when multiple links share same source/target */
+  // Unique suffix for gradient id (e.g. link index) when multiple links share same source/target
   gradientIdSuffix?: string | number;
   opacity: number;
   hoverOpacity: number;

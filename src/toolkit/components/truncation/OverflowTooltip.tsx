@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Low-level primitive: wrap any single child and show a tooltip only when that child overflows
-// its container. `Truncate` is the value-oriented public API built on top of this; app code should
-// reach for `Truncate`, not this. Kept toolkit-internal for consumers that wrap arbitrary
-// ReactNode children (tag/badge) which Truncate's `value: string` contract can't express.
-
 import { debounce } from 'es-toolkit';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';

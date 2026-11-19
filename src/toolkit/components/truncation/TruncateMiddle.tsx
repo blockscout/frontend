@@ -1,10 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// Middle-ellipsis truncation driven by container width: measures a hidden shadow node and
-// binary-searches the longest head that fits, keeping a fixed-length tail (0x123...4567).
-// Can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail leaves an
-// unremovable gap between the dots and the tail, so it's computed in JS.
-
 import { chakra } from '@chakra-ui/react';
 import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
@@ -25,6 +20,8 @@ export interface TruncateMiddleProps extends TruncateBaseProps {
 
 const DEFAULT_FONT_WEIGHT = '400';
 
+// A middle ellipsis can't be done in pure CSS — a `text-overflow: ellipsis` head + fixed tail leaves an
+// unremovable gap between the dots and the tail, so it's computed in JS.
 export const TruncateMiddle = React.memo(({
   value,
   tailLength = TAIL_LENGTH,

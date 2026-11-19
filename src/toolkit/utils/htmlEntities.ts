@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// https://symbl.cc/en/
+// The char code source - https://symbl.cc/en/
 export const asymp = String.fromCharCode(8776); // ≈
 export const tilde = String.fromCharCode(126); // ~
 export const hellip = String.fromCharCode(8230); // …

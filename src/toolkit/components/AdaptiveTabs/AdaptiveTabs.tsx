@@ -55,11 +55,8 @@ const AdaptiveTabs = (props: Props) => {
       { ...rest }
     >
       <AdaptiveTabsList
-      // the easiest and most readable way to achieve correct tab's cut recalculation when
-        //    - screen is resized or
-        //    - tabs list is changed when API data is loaded
-        // is to do full re-render of the tabs list
-        // so we use screenWidth + tabIds as a key for the TabsList component
+        // remounting the tabs list is the simplest way to recalculate the tabs cut
+        // when the screen is resized or the tabs change after the API data loads
         key={ isLoading + '_' + viewportSize.width + '_' + tabs.map((tab) => tab.id).join(':') }
         tabs={ tabs }
         listProps={ listProps }

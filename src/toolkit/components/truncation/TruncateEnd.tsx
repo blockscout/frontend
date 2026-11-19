@@ -1,8 +1,5 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-// End-ellipsis truncation driven by container width via CSS `text-overflow: ellipsis`.
-// A tooltip is shown only when the text actually overflows, measured by OverflowTooltip.
-
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
