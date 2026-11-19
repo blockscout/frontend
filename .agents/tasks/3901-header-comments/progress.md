@@ -8,4 +8,4 @@
 - [x] 06 → `tickets/06-sweep-wallet-services/`
 - [x] 07 → `tickets/07-sweep-toolkit-shared/`
 - [x] 08 → `tickets/08-sweep-features-slices-rest/`
-- [ ] 09 → `tickets/09-close-whole-repo/`
+- [x] 09 → `tickets/09-close-whole-repo/`

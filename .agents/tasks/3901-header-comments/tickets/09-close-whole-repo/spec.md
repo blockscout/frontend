@@ -30,6 +30,6 @@ to a header comment is valid (17), and the branch changed no code behaviour (18)
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Run the whole-repository lint and fix what it reports
-- [ ] 2 `[agent]` Re-run the census and judge the remaining rows
-- [ ] 3 `[agent]` Check the document pointers and the diff for code changes
+- [x] 1 `[agent]` Run the whole-repository lint and fix what it reports
+- [x] 2 `[agent]` Re-run the census and judge the remaining rows
+- [x] 3 `[agent]` Check the document pointers and the diff for code changes
