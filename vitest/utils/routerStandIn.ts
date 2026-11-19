@@ -13,8 +13,8 @@ import { wrapper as TestApp } from 'vitest/lib';
 // re-renders on `push`/`replace`/`setQuery`, and `push` resolves only after that render has committed,
 // so a spec can count requests and renders per user action, not just check the final state.
 //
-// Install from the spec with the `wrapper`; it is the innermost provider, so it wins over the frozen
-// `buildRouterMock` value that `vitest/lib`'s TestApp mounts when the two are nested:
+// Install from the spec with the `wrapper`, as the innermost router provider, so it wins over any
+// router provider around it:
 //
 //   import { routerStandIn } from 'vitest/utils/routerStandIn';
 //

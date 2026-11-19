@@ -188,7 +188,7 @@ The ban has exactly three exceptions: the why-comment, the header comment and th
 
 Never write *diff-narration* (what this change replaces). That belongs in the commit and the PR. Test: if the comment would confuse someone who never saw the previous file, delete it.
 
-Do not write JSDoc (`/** */`). A header comment is an ordinary comment like any other. Do not rewrite comments you did not have to touch. Delete commented-out code; git keeps it. TODOs only with an issue or a concrete follow-up.
+Do not write JSDoc (`/** */`). The one exception is a single-line `/** @type … */` in a JavaScript file, which TypeScript reads as the declared type. A header comment is an ordinary comment like any other. Do not rewrite comments you did not have to touch. Delete commented-out code; git keeps it. TODOs only with an issue or a concrete follow-up.
 
 #### Why-comments
 

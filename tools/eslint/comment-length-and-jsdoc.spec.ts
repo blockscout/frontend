@@ -201,6 +201,28 @@ describe('comments/length-and-jsdoc', () => {
       expect(lint(code)).toEqual([]);
     });
 
+    it('leaves a global binding list alone, however many lines it spans', () => {
+      const code = [ '/* global', ...Array.from({ length: 9 }, (_, index) => `   value${ index }: readonly,`), '*/', 'const value = 1;' ].join('\n');
+
+      expect(lint(code)).toEqual([]);
+    });
+
+    it('reports a /** */ block whose text starts with a directive word', () => {
+      expect(lint([ '/** exported so tests can call it. */', 'export const value = 1;' ].join('\n'))).toEqual([ 'jsdoc' ]);
+      expect(lint([ '/**', ' * eslint runs this check on every file.', ...prose(8, ' * '), ' */', 'const value = 1;' ].join('\n')))
+        .toEqual([ 'tooLong', 'jsdoc' ]);
+    });
+
+    it('counts a // line that starts with a directive word other than eslint-disable-line or -next-line', () => {
+      const code = [ '// exported so tests can call it.', lineComment(prose(8, '')), 'export const value = 1;' ].join('\n');
+
+      expect(lint(code)).toEqual([ 'tooLong' ]);
+    });
+
+    it('counts a /* exported */ block whose text is a sentence, not a binding list', () => {
+      expect(lint([ '/* exported so tests can call it.', ...prose(8, '   '), '*/', 'export const value = 1;' ].join('\n'))).toEqual([ 'tooLong' ]);
+    });
+
     it('does not count TypeScript directive lines inside a run', () => {
       const code = [
         '/// <reference types="node" />',

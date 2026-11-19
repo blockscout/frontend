@@ -2,11 +2,13 @@ const MAX_PROSE_LINES = 8;
 const COMMENTS_RULE = '.agents/rules/code-quality.md → "Comments"';
 
 const EXEMPT_COMMENTS = [
-  /^[\s*]*(?:eslint-(?:disable|enable|env)\b|eslint\s|globals?\s|exported\s)/,
   /^[\s*]*(?:@ts-|\/\s*<(?:reference|amd-))/,
   /^[\s*]*(?:@vitest-environment\b|Stryker\s+(?:disable|restore)\b)/,
   /SPDX-License-Identifier|@license\b/,
 ];
+const DIRECTIVE_JUSTIFICATION = /\s-{2,}\s/;
+const BINDING_DIRECTIVE = /^(?:globals?|exported)(?:\s|$)/;
+const BINDING_LIST = /^(?:globals?|exported)(?:[\s,]+[\p{L}\p{N}_$]+(?:\s*:\s*[a-z]+)?)*[\s,]*$/u;
 const TYPE_ANNOTATION = /^\*\s*@type\b/;
 const JAVASCRIPT_FILE = /\.(?:js|mjs|cjs|jsx)$/;
 
@@ -15,8 +17,15 @@ const LIST_ITEM = /^(?:[-*+•]|\d+[.)])\s+/;
 const BLOCK_DECORATION = /^\s*\*/;
 const BLOCK_OPENING_STARS = /^\*+/;
 
-function isExempt(comment) {
-  return EXEMPT_COMMENTS.some((pattern) => pattern.test(comment.value));
+function isEslintDirective(comment, directiveComments) {
+  if (!directiveComments.has(comment)) return false;
+  const directive = comment.value.split(DIRECTIVE_JUSTIFICATION)[0].trim();
+  // ESLint reads every word after `global` or `exported` as a name, so it takes a sentence for a directive too
+  return !BINDING_DIRECTIVE.test(directive) || BINDING_LIST.test(directive);
+}
+
+function isExempt(comment, directiveComments) {
+  return isEslintDirective(comment, directiveComments) || EXEMPT_COMMENTS.some((pattern) => pattern.test(comment.value));
 }
 
 function isOwnLine(sourceCode, comment) {
@@ -99,8 +108,8 @@ export const commentLengthAndJsdocRule = {
     const { sourceCode } = context;
     const isJavaScript = JAVASCRIPT_FILE.test(context.filename);
 
-    function check(group) {
-      const comments = group.filter((comment) => !isExempt(comment));
+    function check(group, directiveComments) {
+      const comments = group.filter((comment) => !isExempt(comment, directiveComments));
       const count = countProseLines(comments.flatMap(textLinesWithStartColumn));
       if (count > MAX_PROSE_LINES) {
         context.report({ loc: { start: comments[0].loc.start, end: comments.at(-1).loc.end }, messageId: 'tooLong', data: { count } });
@@ -113,7 +122,8 @@ export const commentLengthAndJsdocRule = {
 
     return {
       Program() {
-        groupLineCommentRuns(sourceCode).forEach(check);
+        const directiveComments = new Set(sourceCode.getInlineConfigNodes());
+        groupLineCommentRuns(sourceCode).forEach((group) => check(group, directiveComments));
       },
     };
   },

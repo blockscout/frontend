@@ -14,9 +14,7 @@ const adTextFeature = config.features.adsText;
 
 const AD_LOAD_TIMEOUT = 1_000;
 
-// Sevio native ad template (configured on the Sevio platform):
-// <img src="[%thumbnail%]" width="20" height="20" style="display: inline-block; vertical-align: text-bottom; margin-right: 4px;" alt="" />
-// <strong>Sponsored:</strong> [%sponsored%] &#8211; [%title%] <a href="[%clickURL%]" target="_blank">[%ctatext%]</a>
+// The ad markup source - the native ad template configured on the Sevio platform
 
 type Status = 'loading' | 'loaded' | 'empty';
 
