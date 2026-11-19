@@ -169,6 +169,30 @@ test('vyper vyper-standard-input method', async({ render, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
+const CORE_API_BASE_PATH_ENVS: Array<[ string, string ]> = [ [ 'NEXT_PUBLIC_API_BASE_PATH', '/blockscout' ] ];
+
+test('solidity-hardhat method', async({ render, page, mockEnvs }) => {
+  await mockEnvs(CORE_API_BASE_PATH_ENVS);
+
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
+
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Hardhat)' }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('solidity-foundry method', async({ render, page, mockEnvs }) => {
+  await mockEnvs(CORE_API_BASE_PATH_ENVS);
+
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
+
+  await component.locator('button').filter({ hasText: 'Verification method' }).click();
+  await page.getByRole('option', { name: 'Solidity (Foundry)' }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('verification of zkSync contract', async({ render, mockEnvs }) => {
   const zkSyncFormConfig: SmartContractVerificationConfig = {
     ...formConfig,
