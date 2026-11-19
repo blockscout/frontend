@@ -30,7 +30,6 @@ function getRequestParams(token: schemas['Token'] | AggregatedTokenInfo, tokenId
         options: {
           address: token.address_hash,
           symbol: token.symbol || '',
-          decimals: Number(token.decimals ?? '18'),
           image: token.icon_url || '',
         },
       };
