@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// The Usercentrics docs for these types - https://usercentrics.com/docs/web/features/api/interfaces
+
 type ConsentActionType = 'onAcceptAllServices' |
     'onDenyAllServices' |
     'onEssentialChange' |

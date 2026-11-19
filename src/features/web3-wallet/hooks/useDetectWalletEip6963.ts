@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// The EIP-6963 spec - https://eips.ethereum.org/EIPS/eip-6963
+
 import React from 'react';
 
 import type { WalletType } from '../types/config';

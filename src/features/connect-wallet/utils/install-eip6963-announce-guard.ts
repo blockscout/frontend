@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+// The EIP-6963 spec - https://eips.ethereum.org/EIPS/eip-6963
+
 let isInstalled = false;
 
 // A non-compliant wallet extension can announce with a null or partial `detail`. wagmi's vendored `mipd`
