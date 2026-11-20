@@ -40,8 +40,8 @@ address with more than one page of each
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Move the Tokens and NFTs controls into the sub-tab content and delete the right-slot code
-- [ ] 2 `[agent]` Style the Tokens sub-tab controls to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6337-4418)
-- [ ] 3 `[agent]` Style the NFTs sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6339-2653)
-- [ ] 4 `[agent]` Extend `AddressTokens.pw.tsx` for the control placement
-- [ ] 5 `[human]` Regenerate and review the affected screenshot baselines
+- [x] 1 `[agent]` Move the Tokens and NFTs controls into the sub-tab content and delete the right-slot code
+- [x] 2 `[agent]` Style the Tokens sub-tab controls to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6337-4418)
+- [x] 3 `[agent]` Style the NFTs sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6339-2653)
+- [x] 4 `[agent]` Extend `AddressTokens.pw.tsx` for the control placement
+- [x] 5 `[human]` Regenerate and review the affected screenshot baselines

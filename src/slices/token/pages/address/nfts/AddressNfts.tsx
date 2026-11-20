@@ -5,18 +5,15 @@ import React from 'react';
 
 import type { NftTokenType } from 'src/slices/token/types/api';
 
-import ActionBar from 'src/shell/page/action-bar/ActionBar';
-
 import { useMultichainContext } from 'src/features/multichain/context';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import useLazyRenderedList from 'src/shared/lists/useLazyRenderedList';
-import Pagination from 'src/shared/pagination/Pagination';
 import type { ApiPaginatedQueryResult } from 'src/shared/pagination/useApiPaginatedQuery';
 
 import AddressNftItem from './AddressNftItem';
-import AddressNftTypeFilter from './AddressNftTypeFilter';
+import type { NftDisplayTypeSwitch } from './AddressNftsActionBar';
+import AddressNftsActionBar from './AddressNftsActionBar';
 
 // grid layout (not a table), so the initial window is larger than the default
 const INITIAL_RENDERED_ITEMS_NUM = 30;
@@ -25,10 +22,10 @@ type Props = {
   tokensQuery: ApiPaginatedQueryResult<'core:address_nfts'>;
   tokenTypes: Array<NftTokenType> | undefined;
   onTokenTypesChange: (value: Array<NftTokenType>) => void;
+  displayTypeSwitch?: NftDisplayTypeSwitch;
 };
 
-const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => {
-  const isMobile = useIsMobile();
+const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange, displayTypeSwitch }: Props) => {
   const multichainContext = useMultichainContext();
 
   const { isError, isInitialLoading, isTransitioning, data, pagination } = tokensQuery;
@@ -42,11 +39,13 @@ const AddressNfts = ({ tokensQuery, tokenTypes, onTokenTypesChange }: Props) => 
 
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
-  const actionBar = isMobile && pagination.isVisible && (
-    <ActionBar mt={ multichainContext ? -6 : -3 }>
-      <AddressNftTypeFilter value={ tokenTypes } onChange={ onTokenTypesChange }/>
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
+  const actionBar = (
+    <AddressNftsActionBar
+      tokenTypes={ tokenTypes }
+      onTokenTypesChange={ onTokenTypesChange }
+      pagination={ pagination }
+      displayTypeSwitch={ displayTypeSwitch }
+    />
   );
 
   const content = data?.items ? (

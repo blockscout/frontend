@@ -9,7 +9,6 @@ import type { TokenType } from 'src/slices/token/types/api';
 
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/ActionBar';
 
-import useIsMobile from 'src/shared/hooks/useIsMobile';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 
@@ -29,20 +28,20 @@ type Props = {
   isTransitioning?: boolean;
   pagination: PaginationParams;
   isError: boolean;
-  top?: number;
   tokenTypes: Array<TokenType>;
   onTokenTypesChange: (value: Array<TokenType>) => void;
   resetKey?: string;
 };
 
-const AddressFungibleTokens = ({ items, isLoading, isTransitioning, pagination, isError, top, tokenTypes, onTokenTypesChange, resetKey }: Props) => {
-  const isMobile = useIsMobile();
-
+const AddressFungibleTokens = ({ items, isLoading, isTransitioning, pagination, isError, tokenTypes, onTokenTypesChange, resetKey }: Props) => {
   const tableItems = React.useMemo(() => items?.filter(hasToken), [ items ]);
 
-  const actionBar = isMobile && pagination.isVisible && (
-    <ActionBar mt={ -3 }>
-      { FUNGIBLE_TOKEN_TYPES.length > 1 && <AddressFungibleTokensFilter value={ tokenTypes } onChange={ onTokenTypesChange }/> }
+  const hasTypeFilter = FUNGIBLE_TOKEN_TYPES.length > 1;
+  const hasActionBar = hasTypeFilter || pagination.isVisible;
+
+  const actionBar = hasActionBar && (
+    <ActionBar>
+      { hasTypeFilter && <AddressFungibleTokensFilter value={ tokenTypes } onChange={ onTokenTypesChange }/> }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
@@ -51,7 +50,7 @@ const AddressFungibleTokens = ({ items, isLoading, isTransitioning, pagination, 
     <TableContainerScrollable>
       <AddressPortfolioTokensTable
         data={ tableItems }
-        top={ top ?? (pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
+        top={ hasActionBar ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         isLoading={ isLoading }
         resetKey={ resetKey }
         hasAddToWallet
@@ -65,6 +64,8 @@ const AddressFungibleTokens = ({ items, isLoading, isTransitioning, pagination, 
       itemsNum={ items?.length }
       emptyText="There are no tokens of selected type."
       actionBar={ actionBar }
+      showActionBarIfEmpty
+      showActionBarIfError
       isTransitioning={ isTransitioning }
     >
       { content }
