@@ -353,10 +353,11 @@ const CodeEditor = ({ data, isTreePossible, remappings, libraries, language, mai
             tabs={ openFiles }
             activeTab={ data[index].key }
             mainFile={ mainFile }
+            hasRawPaths={ !isTreePossible }
             onTabSelect={ handleTabSelect }
             onTabClose={ handleTabClose }
           />
-          <CodeEditorBreadcrumbs path={ data[index].display_path }/>
+          <CodeEditorBreadcrumbs path={ data[index].display_path } hasRawPaths={ !isTreePossible }/>
           <MonacoEditor
             className="editor-container"
             height={ `${ EDITOR_HEIGHT }px` }

@@ -3,16 +3,16 @@
 import { Flex, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import { stripLeadingSlash } from 'src/toolkit/utils/url';
-
+import { getBreadcrumbChunks } from './utils/get-breadcrumb-chunks';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   path: string;
+  hasRawPaths: boolean;
 }
 
-const CodeEditorBreadcrumbs = ({ path }: Props) => {
-  const chunks = stripLeadingSlash(path).split('/');
+const CodeEditorBreadcrumbs = ({ path, hasRawPaths }: Props) => {
+  const chunks = getBreadcrumbChunks(path, hasRawPaths);
   const themeColors = useThemeColors();
 
   return (

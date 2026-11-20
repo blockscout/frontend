@@ -4,10 +4,10 @@ import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { alt } from 'src/toolkit/utils/htmlEntities';
-import { stripLeadingSlash } from 'src/toolkit/utils/url';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
+import { splitDisplayPath } from './utils/compose-file-list';
 import getFilePathParts, { hasTwinTab } from './utils/getFilePathParts';
 import useThemeColors from './utils/useThemeColors';
 
@@ -16,13 +16,14 @@ interface Props {
   isMainFile?: boolean;
   fileKey: string;
   path: string;
+  hasRawPaths: boolean;
   onClick: (fileKey: string) => void;
   onClose: (fileKey: string) => void;
   isCloseDisabled: boolean;
   tabsPathChunks: Array<Array<string>>;
 }
 
-const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
+const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, hasRawPaths, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
   const isFolderNameCutAtStart = folderName !== undefined && folderName[0] !== '.' && !hasTwinTab(path, tabsPathChunks);
   const themeColors = useThemeColors();
@@ -52,7 +53,7 @@ const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, 
       fontWeight={ 400 }
       cursor="pointer"
       onClick={ handleClick }
-      title={ stripLeadingSlash(path) }
+      title={ splitDisplayPath(path, hasRawPaths).path }
       _hover={{
         '& .codicon-close': {
           visibility: 'visible',

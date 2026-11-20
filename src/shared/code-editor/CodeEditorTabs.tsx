@@ -12,11 +12,12 @@ interface Props {
   tabs: Array<File>;
   activeTab: string;
   mainFile?: string;
+  hasRawPaths: boolean;
   onTabSelect: (fileKey: string) => void;
   onTabClose: (fileKey: string) => void;
 }
 
-const CodeEditorTabs = ({ tabs, activeTab, mainFile, onTabSelect, onTabClose }: Props) => {
+const CodeEditorTabs = ({ tabs, activeTab, mainFile, hasRawPaths, onTabSelect, onTabClose }: Props) => {
   const themeColors = useThemeColors();
 
   const tabsPathChunks = React.useMemo(() => {
@@ -35,6 +36,7 @@ const CodeEditorTabs = ({ tabs, activeTab, mainFile, onTabSelect, onTabClose }: 
           key={ tab.key }
           fileKey={ tab.key }
           path={ tab.display_path }
+          hasRawPaths={ hasRawPaths }
           isActive={ activeTab === tab.key }
           isMainFile={ mainFile === tab.key }
           onClick={ onTabSelect }
