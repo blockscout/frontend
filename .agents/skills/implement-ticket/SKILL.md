@@ -61,7 +61,9 @@ tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-pag
 say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
 agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
 When the ticket's **How to verify** line names a `pnpm dev:preset` alias and a route, open that route on the
-dev server through the Playwright MCP, at a desktop and a mobile width, and look at what you built. A defect you can see
+dev server through the Playwright MCP, at a desktop and a mobile width, and look at what you built. Save a
+screenshot with a relative path under `.playwright-mcp/`, such as `.playwright-mcp/<route>-mobile.png`: the
+Playwright MCP refuses a path outside the workspace, the scratchpad included. A defect you can see
 is yours to fix before the hand-off; what to probe follows from the leaf. The `(human)` criteria stay the
 developer's — this pass is your own check, not their sign-off.
 
