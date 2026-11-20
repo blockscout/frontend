@@ -33,6 +33,12 @@ describe('useEtherscanRedirects', () => {
     expect(routerStandIn.replace).toHaveBeenCalledWith({ pathname: '/address/[hash]', query: { hash: HASH, tab: 'write_contract' } });
   });
 
+  it('turns the etherscan address tokens anchor into the Tokens sub-tab, not the bare tokens tab', () => {
+    mountAt('/address/[hash]', '#asset-tokens');
+
+    expect(routerStandIn.replace).toHaveBeenCalledWith({ pathname: '/address/[hash]', query: { hash: HASH, tab: 'tokens_erc20' } });
+  });
+
   it('turns the etherscan token balances anchor into the holders tab', () => {
     mountAt('/token/[hash]', '#balances');
 

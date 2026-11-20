@@ -164,6 +164,8 @@ export const singleChainConfig: Record<string, string> = {
   NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: 'stability',
   NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: toEnvValue(deFiDropdownItems),
   NEXT_PUBLIC_DEFI_DROPDOWN_BUTTON_TEXT: toEnvValue(deFiDropdownButtonText),
+  NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: 'https://example.com',
+  NEXT_PUBLIC_MULTICHAIN_CLUSTER: 'test',
   NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: toEnvValue(multichainBalanceProviders),
   NEXT_PUBLIC_TOKEN_ACTION_BUTTON_CONFIG: toEnvValue(tokenActionButton),
   NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: toEnvValue(gasRefuelProvider),

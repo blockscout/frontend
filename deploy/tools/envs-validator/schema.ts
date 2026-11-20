@@ -9,7 +9,7 @@ import { VALIDATORS_CHAIN_TYPE } from 'src/features/validators/types/config';
 import { SUPPORTED_WALLETS } from 'src/features/web3-wallet/types/config';
 import { GAS_UNITS } from 'src/slices/gas/types/config';
 
-import apisSchema from './schemas/apis';
+import apisSchema, { multichainAggregatorApiSchema } from './schemas/apis';
 import { appSchema, buildTimeSchema, proxySchema } from './schemas/app';
 import chainSchema from './schemas/chain';
 import * as featuresSchemas from './schemas/features';
@@ -94,6 +94,7 @@ const schema = composeSchemas([
   singleVariableFeaturesSchema,
   miscSchema,
   apisSchema,
+  multichainAggregatorApiSchema,
   chainSchema,
   metaSchema,
   uiSchemas.homepageSchema,

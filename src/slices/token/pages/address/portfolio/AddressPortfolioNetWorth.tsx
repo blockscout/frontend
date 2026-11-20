@@ -16,13 +16,20 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import { formatPercentage } from './utils';
+import type { TopToken } from './utils';
+import { formatPercentage, OTHERS_SYMBOL } from './utils';
 
 const multichainBalanceFeature = config.features.multichainButton;
 
 const TOP_TOKENS_COLORS = [
   [ 'purple.300', 'pink.300', 'blackAlpha.300' ],
   [ 'purple.500', 'pink.600', 'whiteAlpha.300' ],
+];
+
+const LOADING_TOP_TOKENS: ReadonlyArray<TopToken> = [
+  { symbol: 'Token 1', share: 0.5 },
+  { symbol: 'Token 2', share: 0.3 },
+  { symbol: OTHERS_SYMBOL, share: 0.2 },
 ];
 
 const getBgColor = (index: number) => {
@@ -35,11 +42,17 @@ const getBgColor = (index: number) => {
 interface Props {
   addressHash: string;
   netWorth?: string;
+  isOverflow?: boolean;
   isLoading: boolean;
-  topTokens?: Array<{ symbol: string; share: number }>;
+  topTokens?: ReadonlyArray<TopToken>;
+  hasAdBanner?: boolean;
+  hasMultichainButtons?: boolean;
+  children?: React.ReactNode;
 }
 
-const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens }: Props) => {
+const AddressPortfolioNetWorth = ({
+  addressHash, netWorth, isOverflow, isLoading, topTokens, hasAdBanner, hasMultichainButtons, children,
+}: Props) => {
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
@@ -47,33 +60,35 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
   }, []);
 
   const topTokensContent = (() => {
-    if (!topTokens) {
+    if (!topTokens && !isLoading) {
       return (
         <chakra.span color="text.secondary">There are no tokens at this address</chakra.span>
       );
     }
 
+    const items = topTokens ?? LOADING_TOP_TOKENS;
+
     return (
       <>
         <Skeleton loading={ isLoading } w={{ base: '100%', lg: '225px' }} h={ 3 } display="flex" alignItems="center" borderRadius="full" overflow="hidden">
-          { topTokens.map((token, index) => (
+          { items.map((token, index) => (
             <Box
               key={ token.symbol }
               h="100%"
               w={ `${ token.share * 100 }%` }
-              bgColor={ getBgColor(token.symbol === 'Others' ? 2 : index) }
+              bgColor={ getBgColor(token.symbol === OTHERS_SYMBOL ? 2 : index) }
               minW="1px"
             />
           )) }
         </Skeleton>
         <HStack flexWrap="wrap">
-          { topTokens.map((token, index) => (
+          { items.map((token, index) => (
             <HStack key={ token.symbol }>
               <Skeleton
                 boxSize={ 4 }
                 borderRadius="full"
                 loading={ isLoading }
-                bgColor={ !isLoading ? getBgColor(token.symbol === 'Others' ? 2 : index) : undefined }
+                bgColor={ !isLoading ? getBgColor(token.symbol === OTHERS_SYMBOL ? 2 : index) : undefined }
               />
               <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
                 <span>{ token.symbol }</span>
@@ -105,7 +120,7 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
           textStyle="sm"
           alignItems="center"
         >
-          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
+          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } maxW="100%">
             <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
               <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
               <Text fontWeight={ 500 }>
@@ -119,9 +134,11 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
               loading={ isLoading }
               fontWeight={ 600 }
               accuracy={ DEFAULT_ACCURACY_USD }
+              overflowed={ isOverflow }
               color={ !netWorth ? 'text.secondary' : undefined }
             />
-            { multichainBalanceFeature.isEnabled && (
+            { children }
+            { hasMultichainButtons && multichainBalanceFeature.isEnabled && (
               <>
                 <Separator height="16px" orientation="vertical"/>
                 <HStack gap={ 1 } flexWrap="wrap">
@@ -151,9 +168,9 @@ const MultichainAddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, 
           { topTokensContent }
         </Flex>
       </VStack>
-      { !isMobile && <AdBanner format="mobile" w="fit-content"/> }
+      { hasAdBanner && !isMobile && <AdBanner format="mobile" w="fit-content"/> }
     </HStack>
   );
 };
 
-export default React.memo(MultichainAddressPortfolioNetWorth);
+export default React.memo(AddressPortfolioNetWorth);

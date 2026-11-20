@@ -19,7 +19,7 @@ const TAB_REDIRECTS: Record<TabRedirectPathname, Record<string, string | undefin
   '/address/[hash]': {
     '#internaltx': 'internal_txns',
     '#tokentxns': 'token_transfers',
-    '#asset-tokens': 'tokens',
+    '#asset-tokens': 'tokens_erc20',
     '#asset-nfts': 'tokens_nfts',
     '#aatx': 'user_ops',
     '#code': 'contract',

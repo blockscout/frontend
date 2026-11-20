@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { VStack } from '@chakra-ui/react';
+import { Flex, VStack } from '@chakra-ui/react';
 import { BigNumber } from 'bignumber.js';
 import React from 'react';
 
-import type { AddressTokenItem } from 'src/features/multichain/types/client';
+import type { AddressFungibleTokensItem } from 'src/slices/token/pages/address/types';
 import { getTokenTypeName, isConfidentialTokenType } from 'src/slices/token/utils/token-types';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
@@ -13,6 +13,9 @@ import NativeTokenTag from 'src/slices/token/components/NativeTokenTag';
 import TokenMultiplierTag from 'src/slices/token/components/ui-multiplier/TokenMultiplierTag';
 import { getUiMultiplier } from 'src/slices/token/utils/ui-multiplier';
 
+import TokenAddToWallet from 'src/features/web3-wallet/components/TokenAddToWallet';
+
+import config from 'src/config';
 import calculateUsdValue from 'src/shared/values/entity/calculateUsdValue';
 import ConfidentialValue from 'src/shared/values/entity/ConfidentialValue';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
@@ -24,11 +27,12 @@ import { Tag } from 'src/toolkit/chakra/tag';
 import { getTokenChain } from './utils';
 
 interface Props {
-  data: AddressTokenItem;
+  data: AddressFungibleTokensItem;
   isLoading: boolean;
+  hasAddToWallet?: boolean;
 }
 
-const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
+const AddressPortfolioTokensTableItem = ({ data, isLoading, hasAddToWallet }: Props) => {
 
   const chainInfo = React.useMemo(() => getTokenChain(data), [ data ]);
 
@@ -40,11 +44,21 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
     usdBn: tokenValue,
   } = calculateUsdValue({ amount: data.value, exchangeRate: data.token.exchange_rate, decimals: data.token.decimals, multiplier });
 
-  const isNativeToken = chainInfo?.app_config.slices.address.nativeTokenAddress &&
-    data.token.address_hash.toLowerCase() === chainInfo?.app_config.slices.address.nativeTokenAddress.toLowerCase();
+  const nativeTokenAddress = (chainInfo?.app_config ?? config).slices.address.nativeTokenAddress;
+  const isNativeToken = nativeTokenAddress && data.token.address_hash.toLowerCase() === nativeTokenAddress.toLowerCase();
+
+  const addressEntity = (
+    <AddressEntity
+      address={{ hash: data.token.address_hash }}
+      chain={ chainInfo }
+      isLoading={ isLoading }
+      noIcon
+      link={{ variant: 'secondary' }}
+    />
+  );
 
   return (
-    <TableRow>
+    <TableRow className="group">
       <TableCell>
         <VStack alignItems="flex-start" rowGap={ 2.5 }>
           <TokenEntity
@@ -57,14 +71,19 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
             width="auto"
             noLink={ data.token.type === 'NATIVE' }
           />
-          { data.token.type !== 'NATIVE' && (
-            <AddressEntity
-              address={{ hash: data.token.address_hash }}
-              isLoading={ isLoading }
-              noIcon
-              link={{ variant: 'secondary' }}
-            />
-          ) }
+          { data.token.type !== 'NATIVE' && (hasAddToWallet ? (
+            <Flex columnGap={ 2 } alignItems="center">
+              { addressEntity }
+              <TokenAddToWallet
+                token={ data.token }
+                isLoading={ isLoading }
+                iconSize={ 5 }
+                opacity={ 0 }
+                _groupHover={{ opacity: 1 }}
+                chainConfig={ chainInfo?.app_config }
+              />
+            </Flex>
+          ) : addressEntity) }
           { isNativeToken ?
             <NativeTokenTag chainConfig={ chainInfo?.app_config }/> :
             <Tag loading={ isLoading }>{ getTokenTypeName(data.token.type, chainInfo?.app_config) }</Tag> }
@@ -112,4 +131,4 @@ const MultichainAddressTokensTableItem = ({ data, isLoading }: Props) => {
   );
 };
 
-export default React.memo(MultichainAddressTokensTableItem);
+export default React.memo(AddressPortfolioTokensTableItem);

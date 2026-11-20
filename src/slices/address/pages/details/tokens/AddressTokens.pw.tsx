@@ -18,6 +18,7 @@ import { devices, expect, test } from 'playwright/lib';
 import AddressTokens from './AddressTokens';
 
 const ADDRESS_HASH = addressMock.validator.hash;
+const PLATE_LABEL = 'Total net worth';
 
 const nextPageParams = {
   items_count: 50,
@@ -46,7 +47,7 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], 
   };
   const responseFungible: paths['/api/v2/addresses/{address_hash_param}/tokens']['get'] = {
     items: [ tokensMock.erc20a, tokensMock.erc20b, tokensMock.erc20c, tokensMock.erc20d, tokensMock.erc8056 ],
-    next_page_params: null,
+    next_page_params: nextPageParams,
   };
 
   await mockApiResponse('core:address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
@@ -54,7 +55,7 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], 
   await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
   await mockAssetResponse(tokenInfo.tokenInfoERC20a.icon_url as string, './playwright/mocks/image_s.jpg');
 
-  // data for stats widgets
+  // data for the net-worth plate
   await mockApiResponse('core:address_tokens', response20, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } });
   await mockApiResponse('core:address_tokens', response721, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } });
   await mockApiResponse('core:address_tokens', response1155, { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } });
@@ -81,7 +82,8 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], 
   await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH } });
 };
 
-test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse, injectMetaMaskProvider }) => {
+  await injectMetaMaskProvider();
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
     ...ENVS_MAP.additionalTokenTypes,
@@ -101,7 +103,15 @@ test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, m
     { hooksConfig },
   );
 
+  await expect(component.getByText(PLATE_LABEL)).toBeVisible();
+  await expect(component.getByRole('button', { name: 'Filter' })).toBeVisible();
+  await expect(component.getByRole('navigation')).toBeVisible();
   await expect(component).toHaveScreenshot();
+
+  const erc20Row = component.getByRole('row').filter({ hasText: tokenInfo.tokenInfoERC20a.name ?? '' });
+  await erc20Row.hover();
+  await expect(erc20Row.getByLabel('Add token to wallet')).toBeVisible();
+  await expect(erc20Row).toHaveScreenshot();
 });
 
 test('collections +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
@@ -141,6 +151,7 @@ test('nfts +@dark-mode', async({ render, mockAssetResponse, mockApiResponse }) =
 
   await component.getByText('List').click();
 
+  await expect(component.getByText(PLATE_LABEL)).toBeHidden();
   await expect(component).toHaveScreenshot();
 });
 

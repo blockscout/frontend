@@ -4,6 +4,7 @@ import * as v from 'valibot';
 
 import { IDENTICON_TYPES } from 'src/slices/address/types/config';
 
+import { multichainAggregatorApiSchema } from './schemas/apis';
 import { appSchema, buildTimeSchema, proxySchema } from './schemas/app';
 import * as featuresSchemas from './schemas/features';
 import servicesSchema from './schemas/services';
@@ -36,8 +37,6 @@ const featuresSchema = v.object({
 
 const multichainSchema = v.object({
   NEXT_PUBLIC_MULTICHAIN_ENABLED: v.optional(envBoolean()),
-  NEXT_PUBLIC_MULTICHAIN_CLUSTER: v.optional(v.string()),
-  NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST: v.optional(envUrl()),
   NEXT_PUBLIC_MULTICHAIN_STATS_API_HOST: v.optional(envUrl()),
 });
 
@@ -49,6 +48,7 @@ const schema = composeSchemas([
   viewsSchema,
   featuresSchema,
   multichainSchema,
+  multichainAggregatorApiSchema,
   uiSchemas.homepageSchema,
   uiSchemas.navigationSchema,
   uiSchemas.footerSchema,

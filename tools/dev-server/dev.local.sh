@@ -33,7 +33,6 @@ done
 build_port_args "$port" "$usage"
 build_env_args ./tools/dev-server/.env.localhost
 
-# no preset name: a local backend serves a single chain, so there is no multichain config
 prepare_assets
 
 # generate envs.js file and run the app

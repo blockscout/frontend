@@ -7,14 +7,14 @@ import React from 'react';
 
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
+import { formatPercentage } from 'src/slices/token/pages/address/portfolio/utils';
+
 import ChainIcon from 'src/shared/external-chains/ChainIcon';
 import SimpleValue from 'src/shared/values/entity/SimpleValue';
 import { DEFAULT_ACCURACY_USD } from 'src/shared/values/entity/utils';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 import { Truncate } from 'src/toolkit/components/truncation/Truncate';
-
-import { formatPercentage } from './utils';
 
 interface Props {
   chain: ClusterChainConfig;

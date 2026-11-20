@@ -5,7 +5,7 @@ import type { MultichainProviderConfig } from 'src/features/multichain-button/ty
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import MultichainAddressPortfolioNetWorth from './MultichainAddressPortfolioNetWorth';
+import AddressPortfolioNetWorth from './AddressPortfolioNetWorth';
 
 const ICON_URL = 'https://localhost:3000/my-icon.png';
 const ICON_URL_2 = 'https://localhost:3000/my-icon-2.png';
@@ -28,11 +28,13 @@ test.beforeEach(async({ mockEnvs, mockAssetResponse }) => {
 
 test('base view +@mobile', async({ render, page }) => {
   const component = await render(
-    <MultichainAddressPortfolioNetWorth
+    <AddressPortfolioNetWorth
       addressHash={ ADDRESS_HASH }
       netWorth="449022.89544"
       isLoading={ false }
       topTokens={ TOP_TOKENS }
+      hasAdBanner
+      hasMultichainButtons
     />,
   );
 
@@ -46,11 +48,13 @@ test.describe('small desktop', () => {
   test.use({ viewport: { width: 1024, height: 768 } });
   test('base view', async({ render, page }) => {
     const component = await render(
-      <MultichainAddressPortfolioNetWorth
+      <AddressPortfolioNetWorth
         addressHash={ ADDRESS_HASH }
         netWorth="449022.89544"
         isLoading={ false }
         topTokens={ TOP_TOKENS }
+        hasAdBanner
+        hasMultichainButtons
       />,
     );
     await expect(component).toHaveScreenshot({
