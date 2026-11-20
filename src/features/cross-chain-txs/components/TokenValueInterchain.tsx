@@ -11,8 +11,8 @@ import TokenEntityInterchain from 'src/slices/token/components/entity/TokenEntit
 
 import { isNativeToken, toCoreTokenType } from 'src/features/cross-chain-txs/utils/token-type';
 
-import type { Props as AssetValueProps } from './AssetValue';
-import AssetValue from './AssetValue';
+import type { Props as AssetValueProps } from 'src/shared/values/entity/AssetValue';
+import AssetValue from 'src/shared/values/entity/AssetValue';
 
 interface Props extends Omit<AssetValueProps, 'asset'> {
   token: TokenInfo;
