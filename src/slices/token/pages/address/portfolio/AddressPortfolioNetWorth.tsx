@@ -16,7 +16,8 @@ import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Skeleton } from 'src/toolkit/chakra/skeleton';
 
-import { formatPercentage } from './utils';
+import type { TopToken } from './utils';
+import { formatPercentage, OTHERS_SYMBOL } from './utils';
 
 const multichainBalanceFeature = config.features.multichainButton;
 
@@ -35,14 +36,17 @@ const getBgColor = (index: number) => {
 interface Props {
   addressHash: string;
   netWorth?: string;
+  isOverflow?: boolean;
   isLoading: boolean;
-  topTokens?: Array<{ symbol: string; share: number }>;
+  topTokens?: ReadonlyArray<TopToken>;
   hasAdBanner?: boolean;
   hasMultichainButtons?: boolean;
   children?: React.ReactNode;
 }
 
-const AddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens, hasAdBanner, hasMultichainButtons, children }: Props) => {
+const AddressPortfolioNetWorth = ({
+  addressHash, netWorth, isOverflow, isLoading, topTokens, hasAdBanner, hasMultichainButtons, children,
+}: Props) => {
   const isMobile = useIsMobile();
 
   const handleMultichainClick = React.useCallback(() => {
@@ -64,7 +68,7 @@ const AddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens,
               key={ token.symbol }
               h="100%"
               w={ `${ token.share * 100 }%` }
-              bgColor={ getBgColor(token.symbol === 'Others' ? 2 : index) }
+              bgColor={ getBgColor(token.symbol === OTHERS_SYMBOL ? 2 : index) }
               minW="1px"
             />
           )) }
@@ -76,7 +80,7 @@ const AddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens,
                 boxSize={ 4 }
                 borderRadius="full"
                 loading={ isLoading }
-                bgColor={ !isLoading ? getBgColor(token.symbol === 'Others' ? 2 : index) : undefined }
+                bgColor={ !isLoading ? getBgColor(token.symbol === OTHERS_SYMBOL ? 2 : index) : undefined }
               />
               <Skeleton loading={ isLoading } fontWeight={ 600 } whiteSpace="pre">
                 <span>{ token.symbol }</span>
@@ -122,6 +126,7 @@ const AddressPortfolioNetWorth = ({ addressHash, netWorth, isLoading, topTokens,
               loading={ isLoading }
               fontWeight={ 600 }
               accuracy={ DEFAULT_ACCURACY_USD }
+              overflowed={ isOverflow }
               color={ !netWorth ? 'text.secondary' : undefined }
             />
             { children }

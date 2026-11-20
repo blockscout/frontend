@@ -10,6 +10,6 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 02 → `tickets/02-multichain-portfolio-feature-config/`
 - [x] 03 → `tickets/03-shared-tokens-table-and-plate/`
 - [x] 04 → `tickets/04-tokens-sub-tab-table/`
-- [ ] 05 → `tickets/05-tokens-sub-tab-plate/`
+- [x] 05 → `tickets/05-tokens-sub-tab-plate/`
 - [ ] 06 → `tickets/06-controls-inside-sub-tab-content/`
 - [ ] 07 → `tickets/07-multichain-portfolio-sub-tab/`

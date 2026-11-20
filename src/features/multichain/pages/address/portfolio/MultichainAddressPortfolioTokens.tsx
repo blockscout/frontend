@@ -2,7 +2,7 @@
 
 import { Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import { groupBy, mapValues } from 'es-toolkit';
+import { mapValues } from 'es-toolkit';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
 
@@ -15,7 +15,7 @@ import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'src/shell/page/action-bar/
 
 import AddressPortfolioNetWorth from 'src/slices/token/pages/address/portfolio/AddressPortfolioNetWorth';
 import AddressPortfolioTokensTable from 'src/slices/token/pages/address/portfolio/AddressPortfolioTokensTable';
-import { calculateUsdValue } from 'src/slices/token/pages/address/portfolio/utils';
+import { calculateUsdValue, getTopTokens } from 'src/slices/token/pages/address/portfolio/utils';
 
 import multichainConfig from 'src/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
@@ -31,7 +31,6 @@ import * as cookies from 'src/shared/storage/cookies';
 
 import { TableContainerScrollable } from 'src/toolkit/chakra/table';
 import { FilterInput } from 'src/toolkit/components/filters/FilterInput';
-import { ZERO } from 'src/toolkit/utils/consts';
 
 import MultichainAddressPortfolioCards from './MultichainAddressPortfolioCards';
 
@@ -124,50 +123,12 @@ const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => 
   });
 
   const topTokens = React.useMemo(() => {
-    if (allTokensQuery.data?.items?.length === 0) {
-      return;
-    }
-
-    const totalUsd = BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0');
-    if (totalUsd.isZero()) {
-      const hasOneToken = allTokensQuery.data?.items?.length === 1;
-      if (hasOneToken) {
-        return [
-          { symbol: allTokensQuery.data?.items?.[0]?.token.symbol ?? 'Unknown', share: 1 },
-        ];
-      }
-      return [
-        { symbol: 'Others', share: 1 },
-      ];
-    }
-
-    const usdBalances = allTokensQuery.data?.items?.map((item) => ({
+    const holdings = allTokensQuery.data?.items?.map((item) => ({
       symbol: item.token.symbol ?? 'Unknown',
       usd: calculateUsdValue(item)?.usd,
     }));
-    const groups = groupBy(usdBalances ?? [], (item) => item.symbol);
-    const topTokens = Object.entries(groups)
-      .map(([ symbol, items ]) => ({
-        symbol,
-        usd: items.reduce((acc, item) => acc.plus(item.usd ?? ZERO), ZERO),
-      }))
-      .filter((item) => item.usd.gt(0))
-      .sort((a, b) => b.usd.minus(a.usd).toNumber())
-      .slice(0, 2)
-      .map((item) => ({
-        symbol: item.symbol,
-        share: item.usd.div(totalUsd).toNumber(),
-      }));
 
-    const othersShare = 1 - topTokens.reduce((acc, item) => acc + item.share, 0);
-
-    return [
-      ...topTokens,
-      othersShare > 0 ? {
-        symbol: 'Others',
-        share: othersShare,
-      } : undefined,
-    ].filter(Boolean);
+    return getTopTokens(holdings, BigNumber(portfolioQuery.data?.portfolio?.total_value ?? '0'));
   }, [ allTokensQuery.data?.items, portfolioQuery.data?.portfolio?.total_value ]);
 
   const searchInput = (

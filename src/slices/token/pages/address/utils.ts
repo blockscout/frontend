@@ -17,9 +17,9 @@ import { ZERO } from 'src/toolkit/utils/consts';
 
 export const FUNGIBLE_TOKEN_TYPES = Object.keys(getTokenTypes('fungible'));
 
-const isNativeToken = (token: TokenEnhancedData) =>
-  config.slices.address.nativeTokenAddress &&
-  token.token?.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress.toLowerCase();
+export const isNativeToken = (token: TokenEnhancedData): boolean =>
+  Boolean(config.slices.address.nativeTokenAddress) &&
+  token.token?.address_hash.toLowerCase() === config.slices.address.nativeTokenAddress?.toLowerCase();
 
 export type TokenEnhancedData = schemas['TokenBalance'] & {
   usd?: BigNumber ;

@@ -3,8 +3,8 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import AddressTokenBalances from 'src/slices/token/pages/address/AddressTokenBalances';
 import AddressFungibleTokens from 'src/slices/token/pages/address/fungible/AddressFungibleTokens';
+import AddressFungibleTokensNetWorth from 'src/slices/token/pages/address/fungible/AddressFungibleTokensNetWorth';
 import AddressNfts from 'src/slices/token/pages/address/nfts/AddressNfts';
 import AddressNftsCollections from 'src/slices/token/pages/address/nfts/AddressNftsCollections';
 import useAddressFungibleTokensQuery from 'src/slices/token/pages/address/useAddressFungibleTokensQuery';
@@ -23,7 +23,8 @@ import AddressTokensRightSlot from './AddressTokensRightSlot';
 
 const TAB_LIST_PROPS = {
   mb: 0,
-  pt: 6,
+  mt: { lg: -6 },
+  pt: { base: '6px', lg: 6 },
   pb: 3,
 };
 
@@ -65,16 +66,21 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
       id: 'tokens_erc20',
       title: 'Tokens',
       component: (
-        <AddressFungibleTokens
-          items={ fungibleTokensQuery.data?.items }
-          isLoading={ fungibleTokensQuery.isInitialLoading }
-          isTransitioning={ fungibleTokensQuery.isTransitioning }
-          pagination={ fungibleTokensQuery.pagination }
-          isError={ fungibleTokensQuery.isError }
-          tokenTypes={ fungibleTokenTypes }
-          onTokenTypesChange={ handleFungibleTokenTypesChange }
-          resetKey={ fungibleTokensQuery.queryHash }
-        />
+        <>
+          <Box mb={ 6 }>
+            <AddressFungibleTokensNetWorth addressHash={ hash }/>
+          </Box>
+          <AddressFungibleTokens
+            items={ fungibleTokensQuery.data?.items }
+            isLoading={ fungibleTokensQuery.isInitialLoading }
+            isTransitioning={ fungibleTokensQuery.isTransitioning }
+            pagination={ fungibleTokensQuery.pagination }
+            isError={ fungibleTokensQuery.isError }
+            tokenTypes={ fungibleTokenTypes }
+            onTokenTypesChange={ handleFungibleTokenTypesChange }
+            resetKey={ fungibleTokensQuery.queryHash }
+          />
+        </>
       ),
     },
     {
@@ -118,7 +124,6 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
 
   return (
     <>
-      <AddressTokenBalances/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
       <RoutedTabs
