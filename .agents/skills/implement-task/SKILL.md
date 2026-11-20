@@ -135,8 +135,9 @@ boxes are what the next run resumes from.
 Skip this step under `--no-finalize`, and report that every ticket is committed.
 
 Spawn one fresh `general-purpose` worker with the same [`worker-brief.md`](worker-brief.md), running
-`.agents/skills/finalize-task/SKILL.md`. It needs no confirmation: running this skill is the developer's
-go-ahead for the push, the ready PR and the demo deploys.
+`.agents/skills/finalize-task/SKILL.md`. Give it the repository root's absolute path, as in step 3. It needs
+no confirmation: running this skill is the developer's go-ahead for the push, the ready PR and the demo
+deploys.
 
 Read its report as in step 3. A `touchpoint` here is a `needs-human` block from the review loop, and step 4
 relays it the same way. On `done`, print the worker's report verbatim and fire the `PushNotification`
