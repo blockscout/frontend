@@ -86,16 +86,18 @@ const AddressFungibleTokensNetWorth = ({ addressHash }: Props) => {
           <Skeleton loading={ isLoading } fontWeight="semibold">
             <Box as="span">{ summary.isOverflow ? `>${ thinsp }` : '' }{ BigNumber(summary.tokensNum).toFormat() }</Box>
           </Skeleton>
-          <SimpleValue
-            value={ summary.tokensUsd }
-            prefix="$"
-            accuracy={ DEFAULT_ACCURACY_USD }
-            overflowed={ summary.isOverflow }
-            startElement="("
-            endElement=")"
-            loading={ isLoading }
-            color="text.secondary"
-          />
+          { !summary.tokensUsd.isZero() && (
+            <SimpleValue
+              value={ summary.tokensUsd }
+              prefix="$"
+              accuracy={ DEFAULT_ACCURACY_USD }
+              overflowed={ summary.isOverflow }
+              startElement={ isLoading ? null : '(' }
+              endElement={ isLoading ? null : ')' }
+              loading={ isLoading }
+              color="text.secondary"
+            />
+          ) }
         </HStack>
       </HStack>
     </AddressPortfolioNetWorth>

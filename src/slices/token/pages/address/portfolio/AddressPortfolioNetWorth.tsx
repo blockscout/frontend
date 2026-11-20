@@ -112,7 +112,7 @@ const AddressPortfolioNetWorth = ({
           textStyle="sm"
           alignItems="center"
         >
-          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
+          <HStack alignItems="center" flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } maxW="100%">
             <HStack w={{ base: 'full', lg: 'auto' }} minH={{ base: 'auto', lg: '32px' }}>
               <SpriteIcon name="wallet" boxSize={ 5 } flexShrink={ 0 } color="icon.primary"/>
               <Text fontWeight={ 500 }>
