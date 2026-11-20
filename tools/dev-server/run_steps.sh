@@ -94,13 +94,10 @@ clean_assets() {
 # Regenerates everything the app reads off disk at boot: the downloaded instance assets, the
 # generated configs, the icon sprite and the route map.
 #
-# Usage: prepare_assets [preset_name]   — a preset_name matching "multichain" also generates the
-#        multichain config; omit it for a local-backend run, which has no multichain config.
+# Usage: prepare_assets
 # Reads: env_args
 # Exports: NEXT_PUBLIC_ICON_SPRITE_HASH (via build_sprite.sh)
 prepare_assets() {
-  local preset_name="$1"
-
   clean_assets
 
   # download assets for the running instance
@@ -108,12 +105,11 @@ prepare_assets() {
     "${env_args[@]}" \
     -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
-  # generate multichain config (matches both "multichain" and "staging_multichain")
-  if [[ "$preset_name" =~ "multichain" ]]; then
-    dotenv \
-      "${env_args[@]}" \
-      -- bash -c 'cd deploy/tools/multichain-config-generator && pnpm build && pnpm generate' || exit 1
-  fi
+  # generate multichain config if the aggregator is configured: the Multichain explorer and a
+  # single-chain instance with the multichain portfolio both read it
+  dotenv \
+    "${env_args[@]}" \
+    -- bash -c 'if [ -n "$NEXT_PUBLIC_MULTICHAIN_AGGREGATOR_API_HOST" ]; then cd deploy/tools/multichain-config-generator && pnpm build && pnpm generate; fi' || exit 1
 
   # generate essential dapps chains config if marketplace essential dapps enabled
   dotenv \

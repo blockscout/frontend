@@ -8,8 +8,7 @@ import React from 'react';
 import type * as multichain from '@blockscout/multichain-aggregator-types';
 import type { ClusterChainConfig } from 'src/features/multichain/types/client';
 
-import multichainConfig from 'src/features/multichain/chains-config';
-
+import { clusterConfig } from 'src/shared/external-chains/cluster-config';
 import useIsMobile from 'src/shared/hooks/useIsMobile';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
@@ -35,7 +34,7 @@ const MultichainAddressPortfolioCards = ({ isLoading, selectedChainId, onChange,
 
   const [ initialActiveIndex, setInitialActiveIndex ] = React.useState<number | undefined>(undefined);
 
-  const chains = multichainConfig()?.chains;
+  const chains = clusterConfig()?.chains;
 
   const isMobile = useIsMobile();
 

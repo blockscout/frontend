@@ -50,6 +50,7 @@ const AddressPortfolioTokensTableItem = ({ data, isLoading, hasAddToWallet }: Pr
   const addressEntity = (
     <AddressEntity
       address={{ hash: data.token.address_hash }}
+      chain={ chainInfo }
       isLoading={ isLoading }
       noIcon
       link={{ variant: 'secondary' }}

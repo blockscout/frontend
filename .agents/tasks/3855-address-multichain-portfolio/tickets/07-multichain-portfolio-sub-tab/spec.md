@@ -66,11 +66,11 @@ for an EOA and for a contract; then empty the two variables and reopen
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the aggregator variables to `.env.extra`
-- [ ] 2 `[agent]` Load the cluster config on demand on a single-chain instance and expose its readiness to the portfolio
-- [ ] 3 `[agent]` Make the portfolio tokens view usable on the single-chain address page: own address query, current-chain links, no add-to-wallet
-- [ ] 4 `[agent]` Wire the sub-tab into the address page: "Assets" title, `tokens_multichain` first and default, feature-off path untouched
-- [ ] 5 `[agent]` Point the token select's "view all" link and the `#asset-tokens` redirect at `tokens_erc20`
-- [ ] 6 `[agent]` Unit tests: feature on/off tab set, no aggregator request when off, link targets, redirect
-- [ ] 7 `[agent]` Style the Multichain portfolio sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6330-3356)
-- [ ] 8 `[human]` Regenerate and review any affected screenshot baselines
+- [x] 1 `[agent]` Add the aggregator variables to `.env.extra`
+- [x] 2 `[agent]` Load the cluster config on demand on a single-chain instance and expose its readiness to the portfolio
+- [x] 3 `[agent]` Make the portfolio tokens view usable on the single-chain address page: own address query, current-chain links, no add-to-wallet
+- [x] 4 `[agent]` Wire the sub-tab into the address page: "Assets" title, `tokens_multichain` first and default, feature-off path untouched
+- [x] 5 `[agent]` Point the token select's "view all" link and the `#asset-tokens` redirect at `tokens_erc20`
+- [x] 6 `[agent]` Unit tests: feature on/off tab set, no aggregator request when off, link targets, redirect
+- [x] 7 `[agent]` Style the Multichain portfolio sub-tab to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6330-3356)
+- [x] 8 `[human]` Regenerate and review any affected screenshot baselines

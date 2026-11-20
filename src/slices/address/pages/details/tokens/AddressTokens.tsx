@@ -10,14 +10,31 @@ import AddressNftsCollections from 'src/slices/token/pages/address/nfts/AddressN
 import useAddressFungibleTokensQuery from 'src/slices/token/pages/address/useAddressFungibleTokensQuery';
 import useAddressNftQuery from 'src/slices/token/pages/address/useAddressNftQuery';
 
+import AddressMultichainPortfolio from 'src/features/multichain-portfolio/pages/address/AddressMultichainPortfolio';
+
+import config from 'src/config';
 import useIsMounted from 'src/shared/hooks/useIsMounted';
 import getQueryParamString from 'src/shared/router/get-query-param-string';
 import { useRouter } from 'src/shared/router/useRouter';
 
 import RoutedTabs from 'src/toolkit/components/RoutedTabs/RoutedTabs';
 
-const FUNGIBLE_TAB_IDS = [ 'tokens', 'tokens_erc20' ];
+const hasMultichainPortfolio = config.features.multichainPortfolio.isEnabled;
+
+const FUNGIBLE_TAB_ID = 'tokens_erc20';
 const NFT_TAB_ID = 'tokens_nfts';
+const MULTICHAIN_PORTFOLIO_TAB_ID = 'tokens_multichain';
+
+export const ADDRESS_TOKENS_TAB_IDS = [
+  ...(hasMultichainPortfolio ? [ MULTICHAIN_PORTFOLIO_TAB_ID ] : []),
+  FUNGIBLE_TAB_ID,
+  NFT_TAB_ID,
+  'tokens_nfts_collection',
+  'tokens_nfts_list',
+];
+
+// The bare `tokens` id opens the first sub-tab, which is the portfolio when the feature is on.
+const FUNGIBLE_TAB_IDS = hasMultichainPortfolio ? [ FUNGIBLE_TAB_ID ] : [ 'tokens', FUNGIBLE_TAB_ID ];
 
 const TAB_LIST_PROPS = {
   mb: 3,
@@ -56,8 +73,13 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
   }
 
   const tabs = [
+    hasMultichainPortfolio && {
+      id: MULTICHAIN_PORTFOLIO_TAB_ID,
+      title: 'Multichain portfolio',
+      component: <AddressMultichainPortfolio/>,
+    },
     {
-      id: 'tokens_erc20',
+      id: FUNGIBLE_TAB_ID,
       title: 'Tokens',
       component: (
         <>
@@ -97,7 +119,7 @@ const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) =>
         />
       ),
     },
-  ];
+  ].filter(Boolean);
 
   return (
     <>

@@ -17,9 +17,9 @@ import AddressPortfolioNetWorth from 'src/slices/token/pages/address/portfolio/A
 import AddressPortfolioTokensTable from 'src/slices/token/pages/address/portfolio/AddressPortfolioTokensTable';
 import { calculateUsdValue, getTopTokens } from 'src/slices/token/pages/address/portfolio/utils';
 
-import multichainConfig from 'src/features/multichain/chains-config';
 import { ADDRESS_PORTFOLIO, TOKEN } from 'src/features/multichain/stubs';
 
+import { clusterConfig } from 'src/shared/external-chains/cluster-config';
 import DataList from 'src/shared/lists/DataList';
 import Pagination from 'src/shared/pagination/Pagination';
 import useApiPaginatedQuery from 'src/shared/pagination/useApiPaginatedQuery';
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const MultichainAddressPortfolioTokens = ({ addressData, isLoading }: Props) => {
-  const config = multichainConfig();
+  const config = clusterConfig();
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
