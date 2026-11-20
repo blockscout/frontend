@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { File } from './types';
@@ -8,6 +8,9 @@ import type { File } from './types';
 import CodeEditorCollapseButton from './CodeEditorCollapseButton';
 import CodeEditorFileList from './CodeEditorFileList';
 import CodeEditorFileTree from './CodeEditorFileTree';
+import type { FileExplorerView } from './CodeEditorViewSwitcher';
+import CodeEditorViewSwitcher from './CodeEditorViewSwitcher';
+import { centerInScrollParent } from './utils/center-in-scroll-parent';
 import { composeFileList } from './utils/compose-file-list';
 import composeFileTree from './utils/composeFileTree';
 
@@ -22,23 +25,39 @@ interface Props {
 }
 
 const CodeEditorFileExplorer = ({ data, isTreePossible, onFileSelect, selectedFile, mainFile, isActive, setActionBarRenderer }: Props) => {
-  const [ key, setKey ] = React.useState(0);
+  const [ preferredView, setPreferredView ] = React.useState<FileExplorerView>('tree');
+  const [ treeKey, setTreeKey ] = React.useState(0);
+  const [ isTreeCollapsed, setIsTreeCollapsed ] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const view = isTreePossible ? preferredView : 'list';
+  const viewWithSelectionInSightRef = React.useRef(view);
+
   const tree = React.useMemo(() => {
-    return isTreePossible ? composeFileTree(data) : undefined;
-  }, [ data, isTreePossible ]);
+    return view === 'tree' ? composeFileTree(data) : undefined;
+  }, [ data, view ]);
   const list = React.useMemo(() => {
-    return isTreePossible ? undefined : composeFileList(data, { hasRawPaths: true, mainFile });
-  }, [ data, isTreePossible, mainFile ]);
+    return view === 'list' ? composeFileList(data, { hasRawPaths: !isTreePossible, mainFile }) : undefined;
+  }, [ data, isTreePossible, mainFile, view ]);
 
   const handleCollapseButtonClick = React.useCallback(() => {
-    setKey((prev) => prev + 1);
+    setIsTreeCollapsed(true);
+    setTreeKey((prev) => prev + 1);
+  }, []);
+
+  const handleViewSwitcherClick = React.useCallback(() => {
+    setPreferredView((prev) => prev === 'tree' ? 'list' : 'tree');
+    setIsTreeCollapsed(false);
   }, []);
 
   const renderActionBar = React.useCallback(() => {
     return (
-      <CodeEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders"/>
+      <Flex ml="auto" alignSelf="center" columnGap="2px">
+        <CodeEditorViewSwitcher view={ view } onClick={ handleViewSwitcherClick } isTreePossible={ isTreePossible }/>
+        <CodeEditorCollapseButton onClick={ handleCollapseButtonClick } label="Collapse folders" isDisabled={ view === 'list' }/>
+      </Flex>
     );
-  }, [ handleCollapseButtonClick ]);
+  }, [ handleCollapseButtonClick, handleViewSwitcherClick, isTreePossible, view ]);
 
   const handleFileClick = React.useCallback((event: React.MouseEvent) => {
     const fileKey = (event.currentTarget as HTMLDivElement).getAttribute('data-file-key');
@@ -53,14 +72,27 @@ const CodeEditorFileExplorer = ({ data, isTreePossible, onFileSelect, selectedFi
     isActive && setActionBarRenderer(() => renderActionBar);
   }, [ isActive, renderActionBar, setActionBarRenderer ]);
 
+  React.useEffect(() => {
+    if (viewWithSelectionInSightRef.current === view) {
+      return;
+    }
+
+    viewWithSelectionInSightRef.current = view;
+
+    const rows = containerRef.current?.querySelectorAll<HTMLElement>('[data-file-key]') ?? [];
+    const selectedRow = Array.from(rows).find((row) => row.getAttribute('data-file-key') === selectedFile);
+
+    selectedRow && centerInScrollParent(selectedRow);
+  }, [ selectedFile, view ]);
+
   return (
-    <Box>
+    <Box ref={ containerRef }>
       { tree && (
         <CodeEditorFileTree
-          key={ key }
+          key={ treeKey }
           tree={ tree }
           onItemClick={ handleFileClick }
-          isCollapsed={ key > 0 }
+          isCollapsed={ isTreeCollapsed }
           selectedFile={ selectedFile }
           mainFile={ mainFile }
         />

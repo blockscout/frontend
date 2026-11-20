@@ -25,7 +25,7 @@ interface Props {
   mainFile?: string;
 }
 
-export const CONTAINER_WIDTH = 250;
+export const CONTAINER_WIDTH = 300;
 
 const CodeEditorSideBar = ({ onFileSelect, data, isTreePossible, monaco, editor, selectedFile, mainFile }: Props) => {
 

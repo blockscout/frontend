@@ -17,19 +17,19 @@ because several source files resolve to the same path.
 How to verify: `pnpm dev:preset robinhood`, open a multi-file contract without a conflict and
 `/address/0xd4EB21209C4D6093f80B5b84f5C45cc093EA14a3?tab=contract`
 
-- [ ] The switcher sits in the action bar next to `CodeEditorCollapseButton` and matches it in size and
+- [x] The switcher sits in the action bar next to `CodeEditorCollapseButton` and matches it in size and
       hover. It shows the icon of the view it switches to: `codicon codicon-search-list` in the tree view,
       `codicon codicon-search-tree` in the list view. Titles: "View as list", "View as tree".
-- [ ] Without a conflict both views show the same files; a list path has no leading slash.
-- [ ] In conflict mode the switcher is disabled and carries the tooltip.
-- [ ] The "Collapse folders" button is disabled in the list view.
-- [ ] Switching the view keeps the selected file selected and scrolls it into view. Switching from list to
+- [x] Without a conflict both views show the same files; a list path has no leading slash.
+- [x] In conflict mode the switcher is disabled and carries the tooltip.
+- [x] The "Collapse folders" button is disabled in the list view.
+- [x] Switching the view keeps the selected file selected and scrolls it into view. Switching from list to
       tree shows all folders expanded.
-- [ ] Opening a file from an import link or a search result does not change the view.
-- [ ] A contract with a single source file has no side bar and no switcher.
-- [ ] `(human)` The switcher works as described on a contract without a conflict, and is disabled with the
+- [x] Opening a file from an import link or a search result does not change the view.
+- [x] A contract with a single source file has no side bar and no switcher.
+- [x] `(human)` The switcher works as described on a contract without a conflict, and is disabled with the
       tooltip on the example contract.
-- [ ] `(human)` List rows of the example contract are readable at the current side bar width. If they are
+- [x] `(human)` List rows of the example contract are readable at the current side bar width. If they are
       not, the developer names the remedy — a wider side bar, horizontal scrolling in it, or a resizable
       side bar — and it is appended as a new ticket.
 
@@ -44,6 +44,6 @@ How to verify: `pnpm dev:preset robinhood`, open a multi-file contract without a
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Switcher button component and the view state in `CodeEditorFileExplorer`
-- [ ] 2 `[agent]` Disabled states: the switcher in conflict mode with its tooltip, the collapse button in the list view
-- [ ] 3 `[agent]` Keep the selection and scroll it into view on switch; expand all folders on list → tree
+- [x] 1 `[agent]` Switcher button component and the view state in `CodeEditorFileExplorer`
+- [x] 2 `[agent]` Disabled states: the switcher in conflict mode with its tooltip, the collapse button in the list view
+- [x] 3 `[agent]` Keep the selection and scroll it into view on switch; expand all folders on list → tree
