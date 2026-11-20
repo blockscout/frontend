@@ -8,7 +8,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-file-identity/`
 - [x] 02 → `tickets/02-duplicate-model-guard/`
-- [ ] 03 → `tickets/03-conflict-mode-list-view/`
+- [x] 03 → `tickets/03-conflict-mode-list-view/`
 - [ ] 04 → `tickets/04-view-switcher/`
 - [ ] 05 → `tickets/05-tab-hints-search-sections/`
 - [ ] 06 → `tickets/06-import-resolution/`

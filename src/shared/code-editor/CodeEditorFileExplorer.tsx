@@ -6,11 +6,14 @@ import React from 'react';
 import type { File } from './types';
 
 import CodeEditorCollapseButton from './CodeEditorCollapseButton';
+import CodeEditorFileList from './CodeEditorFileList';
 import CodeEditorFileTree from './CodeEditorFileTree';
+import { composeFileList } from './utils/compose-file-list';
 import composeFileTree from './utils/composeFileTree';
 
 interface Props {
   data: Array<File>;
+  isTreePossible: boolean;
   onFileSelect: (index: number) => void;
   selectedFile: string;
   mainFile?: string;
@@ -18,11 +21,14 @@ interface Props {
   setActionBarRenderer: React.Dispatch<React.SetStateAction<(() => React.JSX.Element) | undefined>>;
 }
 
-const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, isActive, setActionBarRenderer }: Props) => {
+const CodeEditorFileExplorer = ({ data, isTreePossible, onFileSelect, selectedFile, mainFile, isActive, setActionBarRenderer }: Props) => {
   const [ key, setKey ] = React.useState(0);
   const tree = React.useMemo(() => {
-    return composeFileTree(data);
-  }, [ data ]);
+    return isTreePossible ? composeFileTree(data) : undefined;
+  }, [ data, isTreePossible ]);
+  const list = React.useMemo(() => {
+    return isTreePossible ? undefined : composeFileList(data, { hasRawPaths: true, mainFile });
+  }, [ data, isTreePossible, mainFile ]);
 
   const handleCollapseButtonClick = React.useCallback(() => {
     setKey((prev) => prev + 1);
@@ -49,14 +55,24 @@ const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, is
 
   return (
     <Box>
-      <CodeEditorFileTree
-        key={ key }
-        tree={ tree }
-        onItemClick={ handleFileClick }
-        isCollapsed={ key > 0 }
-        selectedFile={ selectedFile }
-        mainFile={ mainFile }
-      />
+      { tree && (
+        <CodeEditorFileTree
+          key={ key }
+          tree={ tree }
+          onItemClick={ handleFileClick }
+          isCollapsed={ key > 0 }
+          selectedFile={ selectedFile }
+          mainFile={ mainFile }
+        />
+      ) }
+      { list && (
+        <CodeEditorFileList
+          items={ list }
+          onItemClick={ handleFileClick }
+          selectedFile={ selectedFile }
+          mainFile={ mainFile }
+        />
+      ) }
     </Box>
   );
 };

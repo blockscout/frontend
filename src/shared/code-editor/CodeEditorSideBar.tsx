@@ -19,6 +19,7 @@ interface Props {
   monaco: Monaco | undefined;
   editor: monaco.editor.IStandaloneCodeEditor | undefined;
   data: Array<File>;
+  isTreePossible: boolean;
   onFileSelect: (index: number, lineNumber?: number) => void;
   selectedFile: string;
   mainFile?: string;
@@ -26,7 +27,7 @@ interface Props {
 
 export const CONTAINER_WIDTH = 250;
 
-const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, mainFile }: Props) => {
+const CodeEditorSideBar = ({ onFileSelect, data, isTreePossible, monaco, editor, selectedFile, mainFile }: Props) => {
 
   const [ isStuck, setIsStuck ] = React.useState(false);
   const [ isDrawerOpen, setIsDrawerOpen ] = React.useState(false);
@@ -143,6 +144,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, monaco, editor, selectedFile, m
           <TabsContent value="explorer" p={ 0 }>
             <CodeEditorFileExplorer
               data={ data }
+              isTreePossible={ isTreePossible }
               onFileSelect={ handleFileSelect }
               selectedFile={ selectedFile }
               mainFile={ mainFile }

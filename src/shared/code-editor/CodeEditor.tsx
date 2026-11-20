@@ -56,6 +56,7 @@ const EMPTY_FILES: Array<File> = [];
 
 interface Props {
   data: Array<File>;
+  isTreePossible: boolean;
   remappings?: Array<string>;
   libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
@@ -63,7 +64,7 @@ interface Props {
   contractName?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractName }: Props) => {
+const CodeEditor = ({ data, isTreePossible, remappings, libraries, language, mainFile, contractName }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -142,11 +143,14 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     });
 
     if (language === 'solidity') {
+      const displayPathByKey = new Map(data.map((file) => [ file.key, file.display_path ]));
+
       loadedModels.concat(newModels)
         .forEach((model) => {
-          contractName && mainFile === model.uri.path && addMainContractCodeDecoration(model, contractName, editor);
+          const key = model.uri.path;
+          contractName && mainFile === key && addMainContractCodeDecoration(model, contractName, editor);
           addFileImportDecorations(model);
-          libraries?.length && addExternalLibraryWarningDecoration(model, libraries);
+          libraries?.length && addExternalLibraryWarningDecoration(model, displayPathByKey.get(key) ?? key, libraries);
         });
     }
 
@@ -371,6 +375,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         </Box>
         <CodeEditorSideBar
           data={ data }
+          isTreePossible={ isTreePossible }
           onFileSelect={ handleSelectFile }
           monaco={ instance }
           editor={ editor }

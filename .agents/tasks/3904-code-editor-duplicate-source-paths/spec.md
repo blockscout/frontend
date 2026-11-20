@@ -58,8 +58,8 @@ Terms used below:
 7. A list row shows the file name first, then the directory in a dimmed color. The directory is cut at its
    end when the row is too narrow. Hovering the row shows the full path.
 8. The list is sorted alphabetically by normalized path, with the raw path as the tiebreak, so twins are
-   adjacent. The main file stays in its sorted place and carries the same main-file indicator as in the
-   tree.
+   adjacent. The main file comes first, ahead of the sorted files, and carries the same main-file
+   indicator as in the tree.
 9. The "Collapse folders" button is disabled in the list view.
 10. Switching the view keeps the selected file selected and scrolls it into view. Switching from list to
     tree shows all folders expanded.
