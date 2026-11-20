@@ -18,12 +18,12 @@ Both rules hold with and without a conflict.
 How to verify: `pnpm dev:preset robinhood`, open
 `/address/0xd4EB21209C4D6093f80B5b84f5C45cc093EA14a3?tab=contract`
 
-- [ ] Without a conflict the tab hints are unchanged; the existing `getFilePathParts` cases pass.
-- [ ] Twins open together get hints in the compact form, differing by the raw prefix.
-- [ ] A search section shows the dimmed directory only when another section in the current results has the
+- [x] Without a conflict the tab hints are unchanged; the existing `getFilePathParts` cases pass.
+- [x] Twins open together get hints in the compact form, differing by the raw prefix.
+- [x] A search section shows the dimmed directory only when another section in the current results has the
       same file name.
-- [ ] Unit spec: the tab hint for twins.
-- [ ] `(human)` With both `Tick.sol` twins open the two tabs can be told apart, and a search that matches
+- [x] Unit spec: the tab hint for twins.
+- [x] `(human)` With both `Tick.sol` twins open the two tabs can be told apart, and a search that matches
       both shows two sections that can be told apart.
 
 ## Details
@@ -35,5 +35,5 @@ How to verify: `pnpm dev:preset robinhood`, open
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Compact twin hints in `getFilePathParts` and `CodeEditorTab`, with the unit spec
-- [ ] 2 `[agent]` Dimmed directory for same-name sections in `CodeEditorSearch` and `CodeEditorSearchSection`
+- [x] 1 `[agent]` Compact twin hints in `getFilePathParts` and `CodeEditorTab`, with the unit spec
+- [x] 2 `[agent]` Dimmed directory for same-name sections in `CodeEditorSearch` and `CodeEditorSearchSection`

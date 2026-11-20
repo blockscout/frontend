@@ -1,11 +1,38 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
+import formatFilePath from './formatFilePath';
+
+const RAW_PREFIXES = [ './', '/' ];
+
 export default function getFilePathParts(path: string, tabsPathChunks: Array<Array<string>>): [string, string | undefined] {
-  const chunks = path.split('/');
+  const tabsPaths = tabsPathChunks.map((chunks) => chunks.join('/'));
+  const chunks = formatFilePath(path).split('/');
   const fileName = chunks[chunks.length - 1];
-  const folderName = getFolderName(chunks, tabsPathChunks);
+  const folderName = hasTwinTab(path, tabsPathChunks) ?
+    getTwinFolderName(path, chunks) :
+    getFolderName(chunks, tabsPaths.map((tabPath) => formatFilePath(tabPath).split('/')));
 
   return [ fileName, folderName ];
+}
+
+export function hasTwinTab(path: string, tabsPathChunks: Array<Array<string>>): boolean {
+  const normalizedPath = formatFilePath(path);
+
+  return tabsPathChunks.some((tabChunks) => {
+    const tabPath = tabChunks.join('/');
+    return tabPath !== path && formatFilePath(tabPath) === normalizedPath;
+  });
+}
+
+function getTwinFolderName(path: string, normalizedChunks: Array<string>): string | undefined {
+  const rawPrefix = RAW_PREFIXES.find((prefix) => path.startsWith(prefix)) ?? '';
+  const folders = normalizedChunks.slice(1, -1);
+
+  if (folders.length === 0) {
+    return rawPrefix || undefined;
+  }
+
+  return rawPrefix + (folders.length > 1 ? '…/' : '') + folders[folders.length - 1];
 }
 
 function getFolderName(chunks: Array<string>, tabsPathChunks: Array<Array<string>>): string | undefined {

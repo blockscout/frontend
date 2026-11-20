@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResult } from './types';
@@ -14,10 +14,12 @@ import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   data: SearchResult;
+  directory: string | undefined;
+  path: string;
   onItemClick: (fileKey: string, lineNumber: number) => void;
 }
 
-const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
+const CodeEditorSearchSection = ({ data, directory, path, onItemClick }: Props) => {
   const fileName = getFileName(data.display_path);
 
   const handleFileLineClick = React.useCallback((event: React.MouseEvent) => {
@@ -40,6 +42,7 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
         lineHeight="22px"
         alignItems="center"
         noIndicator
+        title={ path }
       >
         <Box
           className="codicon codicon-tree-item-expanded"
@@ -53,15 +56,18 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
           flexShrink={ 0 }
         />
         <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
-        <Box
+        <Flex
           mr="8px"
+          minW={ 0 }
           whiteSpace="nowrap"
           overflow="hidden"
-          textOverflow="ellipsis"
           textAlign="left"
         >
-          { fileName }
-        </Box>
+          <chakra.span flexShrink={ 0 } maxW="100%" overflow="hidden" textOverflow="ellipsis">{ fileName }</chakra.span>
+          { directory && (
+            <chakra.span minW={ 0 } ml="6px" fontSize="11px" opacity={ 0.7 } overflow="hidden" textOverflow="ellipsis">{ directory }</chakra.span>
+          ) }
+        </Flex>
         <Box
           className="monaco-count-badge"
           ml="auto"

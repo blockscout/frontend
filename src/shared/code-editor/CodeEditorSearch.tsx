@@ -15,10 +15,13 @@ import { InputGroup } from 'src/toolkit/chakra/input-group';
 
 import CodeEditorCollapseButton from './CodeEditorCollapseButton';
 import CodeEditorSearchSection from './CodeEditorSearchSection';
+import { splitDisplayPath } from './utils/compose-file-list';
+import { getDirectoriesOfSameNameFiles } from './utils/get-directories-of-same-name-files';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   data: Array<File>;
+  hasRawPaths: boolean;
   monaco: Monaco | undefined;
   onFileSelect: (index: number, lineNumber?: number) => void;
   isInputStuck: boolean;
@@ -29,7 +32,7 @@ interface Props {
 
 const EMPTY_RESULTS: Array<SearchResult> = [];
 
-const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, setActionBarRenderer, defaultValue }: Props) => {
+const CodeEditorSearch = ({ monaco, data, hasRawPaths, onFileSelect, isInputStuck, isActive, setActionBarRenderer, defaultValue }: Props) => {
   const [ searchTerm, changeSearchTerm ] = React.useState('');
   const [ searchResults, setSearchResults ] = React.useState<Array<SearchResult>>(EMPTY_RESULTS);
   const [ expandedSections, setExpandedSections ] = React.useState<Array<string>>([]);
@@ -90,6 +93,10 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
     setSearchResults(result.length > 0 ? result : EMPTY_RESULTS);
     setExpandedSections(result.map((item) => item.key));
   }, [ data, debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
+
+  const directoryByFileKey = React.useMemo(() => {
+    return getDirectoriesOfSameNameFiles(searchResults, hasRawPaths);
+  }, [ hasRawPaths, searchResults ]);
 
   const handleSearchTermChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     changeSearchTerm(event.target.value);
@@ -238,7 +245,15 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
         onValueChange={ handleAccordionStateChange }
         noAnimation
       >
-        { searchResults.map((item) => <CodeEditorSearchSection key={ item.key } data={ item } onItemClick={ handleResultItemClick }/>) }
+        { searchResults.map((item) => (
+          <CodeEditorSearchSection
+            key={ item.key }
+            data={ item }
+            directory={ directoryByFileKey.get(item.key) }
+            path={ splitDisplayPath(item.display_path, hasRawPaths).path }
+            onItemClick={ handleResultItemClick }
+          />
+        )) }
       </AccordionRoot>
     </>
   );

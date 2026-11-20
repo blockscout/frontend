@@ -53,7 +53,7 @@ const CodeEditorFileList = ({ items, onItemClick, selectedFile, mainFile }: Prop
             <Flex minW={ 0 } overflow="hidden">
               <chakra.span flexShrink={ 0 } maxW="100%" overflow="hidden" textOverflow="ellipsis">{ item.name }</chakra.span>
               { item.directory && (
-                <chakra.span minW={ 0 } ml="6px" opacity={ 0.7 } overflow="hidden" textOverflow="ellipsis">{ item.directory }</chakra.span>
+                <chakra.span minW={ 0 } ml="6px" fontSize="11px" opacity={ 0.7 } overflow="hidden" textOverflow="ellipsis">{ item.directory }</chakra.span>
               ) }
             </Flex>
           </Flex>

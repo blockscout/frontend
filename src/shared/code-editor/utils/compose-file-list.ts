@@ -23,17 +23,18 @@ interface Options {
 export function composeFileList(files: Array<File>, { hasRawPaths, mainFile }: Options): Array<FileListItem> {
   return files
     .toSorted((a, b) => Number(b.key === mainFile) - Number(a.key === mainFile) || compareByNormalizedPath(a, b))
-    .map((file) => {
-      const path = hasRawPaths ? file.display_path : stripLeadingSlash(file.display_path);
-      const nameStart = path.lastIndexOf('/') + 1;
+    .map((file) => ({ key: file.key, ...splitDisplayPath(file.display_path, hasRawPaths) }));
+}
 
-      return {
-        key: file.key,
-        name: path.slice(nameStart),
-        directory: getDirectory(path, nameStart),
-        path,
-      };
-    });
+export function splitDisplayPath(displayPath: string, hasRawPaths: boolean): Omit<FileListItem, 'key'> {
+  const path = hasRawPaths ? displayPath : stripLeadingSlash(displayPath);
+  const nameStart = path.lastIndexOf('/') + 1;
+
+  return {
+    name: path.slice(nameStart),
+    directory: getDirectory(path, nameStart),
+    path,
+  };
 }
 
 function compareByNormalizedPath(a: File, b: File): number {

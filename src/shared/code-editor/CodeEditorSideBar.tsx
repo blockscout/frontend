@@ -155,6 +155,7 @@ const CodeEditorSideBar = ({ onFileSelect, data, isTreePossible, monaco, editor,
           <TabsContent value="search" p={ 0 }>
             <CodeEditorSearch
               data={ data }
+              hasRawPaths={ !isTreePossible }
               onFileSelect={ handleFileSelect }
               monaco={ monaco }
               isInputStuck={ isStuck }

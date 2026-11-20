@@ -4,10 +4,11 @@ import { Flex, chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { alt } from 'src/toolkit/utils/htmlEntities';
+import { stripLeadingSlash } from 'src/toolkit/utils/url';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
-import getFilePathParts from './utils/getFilePathParts';
+import getFilePathParts, { hasTwinTab } from './utils/getFilePathParts';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
@@ -23,6 +24,7 @@ interface Props {
 
 const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
+  const isFolderNameCutAtStart = folderName !== undefined && folderName[0] !== '.' && !hasTwinTab(path, tabsPathChunks);
   const themeColors = useThemeColors();
 
   const handleClick = React.useCallback(() => {
@@ -50,6 +52,7 @@ const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, 
       fontWeight={ 400 }
       cursor="pointer"
       onClick={ handleClick }
+      title={ stripLeadingSlash(path) }
       _hover={{
         '& .codicon-close': {
           visibility: 'visible',
@@ -59,7 +62,7 @@ const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, 
     >
       <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
       <span>{ fileName }</span>
-      { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
+      { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ isFolderNameCutAtStart && '...' }{ folderName }</chakra.span> }
       { isMainFile && <CodeEditorMainFileIndicator ml={ 2 }/> }
       <Box
         className="codicon codicon-close"
