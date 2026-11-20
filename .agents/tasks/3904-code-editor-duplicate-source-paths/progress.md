@@ -12,4 +12,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [x] 04 → `tickets/04-view-switcher/`
 - [x] 05 → `tickets/05-tab-hints-search-sections/`
 - [x] 06 → `tickets/06-import-resolution/`
-- [ ] 07 → `tickets/07-side-bar-visual-tests/`
+- [x] 07 → `tickets/07-side-bar-visual-tests/`

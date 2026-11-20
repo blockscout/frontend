@@ -104,6 +104,8 @@ const CodeEditorSideBar = ({ onFileSelect, data, isTreePossible, monaco, editor,
   return (
     <>
       <Box
+        role="complementary"
+        aria-label="Side bar"
         w={ `${ CONTAINER_WIDTH }px` }
         flexShrink={ 0 }
         bgColor={ themeColors['sideBar.background'] }
