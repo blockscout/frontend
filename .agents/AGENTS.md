@@ -58,6 +58,7 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/shared/entities/` — the entity-link base: the root context and parts, the `defineEntity` contract, the chain rule, and what a definition must tolerate.
 - `src/shared/lists/` — the list helpers shared by tables: the row-key rule and the lazy-render constraint.
 - `src/shared/pagination/` — the paginated-list components and utils.
+- `src/shared/values/` — which value component fits which kind of value (native coin, token, asset, fiat, gas price, plain number).
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.

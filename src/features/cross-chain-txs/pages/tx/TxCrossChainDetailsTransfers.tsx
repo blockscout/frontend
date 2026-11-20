@@ -8,9 +8,10 @@ import type { InterchainTransfer } from '@blockscout/interchain-indexer-types';
 import AddressEntityInterchain from 'src/slices/address/components/entity/AddressEntityInterchain';
 import AddressFromToIcon from 'src/slices/address/components/from-to/AddressFromToIcon';
 
+import TokenValueInterchain from 'src/features/cross-chain-txs/components/TokenValueInterchain';
+
 import * as DetailedInfo from 'src/shared/detailed-info/DetailedInfo';
 import { route } from 'src/shared/router/routes';
-import TokenValueInterchain from 'src/shared/values/entity/TokenValueInterchain';
 import SpriteIcon from 'src/sprite/SpriteIcon';
 
 import { Link } from 'src/toolkit/chakra/link';
