@@ -43,7 +43,8 @@ not hold, hand it to the ticket's worker or stop the run (step 5).
 2. Resolve the task folder from the branch (`issue-<number>`). Read `progress.md`, `questions.md`, `inbox.md`
    if present, and each ticket's `Blocked by` row.
 3. If `inbox.md` has a section whose status is `pending`, tell the developer to run `process-task-inbox`
-   and stop.
+   and stop. This is the inbox gate [`concepts.md`](../../tasks/concepts.md) defines, applied before any
+   worker is spawned.
 
 **Done when**: the task folder and every ticket's blockers are known, and no inbox section is pending.
 
@@ -59,7 +60,8 @@ Print the progress list as it stands, one line per ticket, and nothing else:
 ```
 
 - `👨‍💻 touchpoint` — the ticket's `spec.md` holds an unchecked `[human]` leaf or a `(human)` criterion.
-- `⛔ blocked by <ids>` — a `Q<NN>` entry that is not `resolved` or `waived` in `questions.md`.
+- `⛔ blocked by <ids>` — a `Q<NN>` entry that is not `resolved` or `waived` in `questions.md`. A `T<NN>`
+  entry gets no marker: it clears inside the run, when that ticket commits.
 - `⛔ not scoped` — the folder holds a `brief.md` and no `spec.md`.
 
 Then start step 3 in the same turn. The list tells the developer when they will be needed, and it is not a
@@ -70,12 +72,15 @@ question.
 Repeat until no ticket is runnable:
 
 1. **Pick the ticket.** A ticket is **runnable** when its box is unchecked, it has a `spec.md`, and every
-   `Blocked by` entry has cleared. A runnable ticket with a leaf box already checked is half-done from an
-   earlier run and goes first. Otherwise take the lowest `NN`.
+   `Blocked by` entry has cleared: a `T<NN>` entry when that ticket's box is checked in `progress.md`, a
+   `Q<NN>` entry when it is `resolved` or `waived` in `questions.md`. Re-read both files for each pick. A
+   runnable ticket with a leaf box already checked is half-done from an earlier run and goes first.
+   Otherwise take the lowest `NN`.
 2. **Spawn one fresh `general-purpose` worker**, in this tree, with this brief: read
    [`worker-brief.md`](worker-brief.md) at its absolute path and follow it, running
-   `.agents/skills/implement-ticket/SKILL.md` for ticket `<NN>`. Give the child's absolute path. One worker
-   at a time: a ticket's uncommitted work fills the tree until its commit.
+   `.agents/skills/implement-ticket/SKILL.md` for ticket `<NN>`. Give the repository root's absolute path
+   (`git rev-parse --show-toplevel`): the worker runs everything from there. One worker at a time: a
+   ticket's uncommitted work fills the tree until its commit.
 3. **Wait** for the worker and read the `STATUS:` line that opens its report.
 
    | Status | Then |
@@ -105,16 +110,20 @@ A ticket keeps one worker until it commits, across any number of these rounds.
 Two replies are addressed to the orchestrator, and it acts on them instead of relaying:
 
 - **"abort"** → stop the run (step 5).
-- **"stop after this ticket"** → relay as usual until the ticket is `done`, then stop the run (step 5).
+- **"stop after this ticket"** → a flag the orchestrator keeps. Send the worker nothing: it is still
+  waiting for its hand-off answer, so ask the developer for that answer and end the turn. Relay the answer,
+  and every later reply on this ticket, verbatim as above. When the ticket reports `done`, verify it and
+  stop the run (step 5) instead of picking the next ticket.
 
 ## Step 5 — Stop the run
 
 A stop leaves the tree exactly as it is: staged work, the developer's unstaged fixes and the checked leaf
 boxes are what the next run resumes from.
 
-1. If a worker is still running, stop it.
-2. Send the ticket's worker one message: stop every background process it started, change nothing else,
-   and report what is still running. A worker that cannot be resumed is named in the report instead.
+1. Send the worker in play, the ticket's or the land step's, one message: stop every background process it
+   started, change nothing else, and report what is still running.
+2. Stop a worker only when it is still running and that message cannot reach it. A worker that could not
+   be messaged is named in the report instead.
 3. Print the reason for the stop, the worker's report verbatim when it gave one, and the state: the open
    ticket, its checked leaf boxes, and whether the index holds staged work.
 4. Fire a `PushNotification` with the reason in one line, unless the developer asked for the stop.

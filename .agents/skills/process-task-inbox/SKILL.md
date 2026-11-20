@@ -11,8 +11,8 @@ A task's `inbox.md` holds decisions that arrived from outside any session: a wee
 (what the file is and who writes it is in [`../../tasks/structure.md`](../../tasks/structure.md)). Each
 pending section is context the task has not absorbed yet. This skill decides, with the developer, what
 every decision does to the task files, applies it, and marks the section folded. `to-tickets`,
-`implement-ticket` and `finalize-task` refuse to start while a section is pending, so this is the way
-back into the task.
+`implement-ticket`, `implement-task` and `finalize-task` refuse to start while a section is pending, so
+this is the way back into the task.
 
 No arguments; runs on the checked-out feature branch.
 

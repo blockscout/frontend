@@ -110,6 +110,9 @@ acceptance criterion:
   - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
     criteria and ask the session to commit (Step 7).
 
+  When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
+  `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.
+
   The stopping turn ends at its bullet.
 
 ## Step 6 — Record corrections

@@ -5,6 +5,9 @@ ticket, or `finalize-task` — and named it in your dispatch. Read that skill's 
 written. This brief changes one thing: **you have no developer**. The orchestrator stands between you and
 them, and your report is how you reach them.
 
+Your dispatch names the repository root. Run the skill and every `git` and `pnpm` command from that
+directory.
+
 ## Reaching the developer
 
 Wherever the skill has you tell the developer something and wait — a hand-off at a human touchpoint, a
@@ -14,6 +17,9 @@ skill from where you stopped, with everything you had in context.
 
 - **Write the text for the developer**, complete enough to act on without your transcript: what to verify,
   where, and what to say when done.
+- **Say how to open the app.** Your dev server is stopped before the report (below), so a hand-off that
+  asks the developer to verify in the app says so and gives the command and the route: `pnpm dev:preset
+  <alias>` and the route from the ticket's **How to verify** line.
 - **Read the reply as the developer's own words.** "Continue", "record my corrections", a bug to fix and a
   confirmation of the criteria all mean what the skill says they mean.
 - **Leave notifications to the orchestrator.** Where the skill fires a `PushNotification`, put its line in
