@@ -81,7 +81,8 @@ const mockAddressTokens = async(mockApiResponse: TestFnArgs['mockApiResponse'], 
   await mockApiResponse('core:address_collections', tokensMock.collections, { pathParams: { hash: ADDRESS_HASH } });
 };
 
-test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, mockAssetResponse, injectMetaMaskProvider }) => {
+  await injectMetaMaskProvider();
   await mockEnvs([
     [ 'NEXT_PUBLIC_VIEWS_ADDRESS_NATIVE_TOKEN_ADDRESS', tokenInfo.tokenInfoERC20c.address_hash ],
     ...ENVS_MAP.additionalTokenTypes,
@@ -102,6 +103,11 @@ test('fungible tokens +@dark-mode', async({ render, mockEnvs, mockApiResponse, m
   );
 
   await expect(component).toHaveScreenshot();
+
+  const erc20Row = component.getByRole('row').filter({ hasText: tokenInfo.tokenInfoERC20a.name ?? '' });
+  await erc20Row.hover();
+  await expect(erc20Row.getByLabel('Add token to wallet')).toBeVisible();
+  await expect(erc20Row).toHaveScreenshot();
 });
 
 test('collections +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {

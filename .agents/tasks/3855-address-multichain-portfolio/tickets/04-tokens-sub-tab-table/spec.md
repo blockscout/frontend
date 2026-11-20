@@ -16,17 +16,17 @@ contract address, placed as in the tokens index table (FR3, FR4).
 
 How to verify: `pnpm dev:preset eth`, open `/address/<hash>?tab=tokens_erc20` for an address holding tokens
 
-- [ ] The Tokens sub-tab renders the shared table fed from the core API query it uses today
+- [x] The Tokens sub-tab renders the shared table fed from the core API query it uses today
       (`useAddressFungibleTokensQuery`); list, filter and pagination behaviour is unchanged.
-- [ ] Add-to-wallet is on for this use and placed as in `TokensTableItem`; the Multichain explorer's table
+- [x] Add-to-wallet is on for this use and placed as in `TokensTableItem`; the Multichain explorer's table
       still has none.
-- [ ] Rows link inside the explorer; the native-token row (when the instance configures a native token
+- [x] Rows link inside the explorer; the native-token row (when the instance configures a native token
       address) keeps its tag.
-- [ ] `AddressFungibleTokensTable` and `AddressFungibleTokensTableItem` are deleted, with no remaining
+- [x] `AddressFungibleTokensTable` and `AddressFungibleTokensTableItem` are deleted, with no remaining
       import.
-- [ ] `AddressTokens.pw.tsx` is extended for the new table, not joined by a new suite.
-- [ ] `(human)` Add-to-wallet works from a row and sits where the tokens index table puts it.
-- [ ] `(human)` The Tokens table matches the mockup at every breakpoint, with the deliberate deviation below.
+- [x] `AddressTokens.pw.tsx` is extended for the new table, not joined by a new suite.
+- [x] `(human)` Add-to-wallet works from a row and sits where the tokens index table puts it.
+- [x] `(human)` The Tokens table matches the mockup at every breakpoint, with the deliberate deviation below.
 
 ## Details
 
@@ -36,7 +36,7 @@ How to verify: `pnpm dev:preset eth`, open `/address/<hash>?tab=tokens_erc20` fo
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Feed the shared table from the core fungible-tokens query, enable add-to-wallet, delete the old table
-- [ ] 2 `[agent]` Style the Tokens table to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6337-4418)
-- [ ] 3 `[agent]` Extend `AddressTokens.pw.tsx` for the new table
-- [ ] 4 `[human]` Regenerate and review the affected screenshot baselines
+- [x] 1 `[agent]` Feed the shared table from the core fungible-tokens query, enable add-to-wallet, delete the old table
+- [x] 2 `[agent]` Style the Tokens table to mockup — [Figma](https://www.figma.com/design/CEgxqWOzVulwfTUHhs0gUC/?node-id=6337-4418)
+- [x] 3 `[agent]` Extend `AddressTokens.pw.tsx` for the new table
+- [x] 4 `[human]` Regenerate and review the affected screenshot baselines
