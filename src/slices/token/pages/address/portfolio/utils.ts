@@ -14,7 +14,7 @@ import { clusterConfig } from 'src/shared/external-chains/cluster-config';
 import { ZERO } from 'src/toolkit/utils/consts';
 import { hairsp } from 'src/toolkit/utils/htmlEntities';
 
-export function formatPercentage(percentage: number) {
+export function formatPercentage(percentage: number): string {
   const value = Math.round(percentage * 100);
   if (value === 0 && percentage > 0) {
     return `<${ hairsp }1%`;
@@ -36,7 +36,7 @@ export const getTokenChain = (data: Pick<AddressFungibleTokensItem, 'chain_value
   return clusterConfig()?.chains.find((chain) => chain.id === chainId);
 };
 
-export const calculateUsdValue = (data: AddressFungibleTokensItem) => {
+export const calculateUsdValue = (data: AddressFungibleTokensItem): { readonly usd: BigNumber } | undefined => {
   const isFungibleToken = isFungibleTokenType(data.token?.type);
 
   if (!isFungibleToken) {

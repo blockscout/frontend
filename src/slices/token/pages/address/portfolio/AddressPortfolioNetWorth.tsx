@@ -26,6 +26,12 @@ const TOP_TOKENS_COLORS = [
   [ 'purple.500', 'pink.600', 'whiteAlpha.300' ],
 ];
 
+const LOADING_TOP_TOKENS: ReadonlyArray<TopToken> = [
+  { symbol: 'Token 1', share: 0.5 },
+  { symbol: 'Token 2', share: 0.3 },
+  { symbol: OTHERS_SYMBOL, share: 0.2 },
+];
+
 const getBgColor = (index: number) => {
   return {
     _light: TOP_TOKENS_COLORS[0][index],
@@ -54,16 +60,18 @@ const AddressPortfolioNetWorth = ({
   }, []);
 
   const topTokensContent = (() => {
-    if (!topTokens) {
+    if (!topTokens && !isLoading) {
       return (
         <chakra.span color="text.secondary">There are no tokens at this address</chakra.span>
       );
     }
 
+    const items = topTokens ?? LOADING_TOP_TOKENS;
+
     return (
       <>
         <Skeleton loading={ isLoading } w={{ base: '100%', lg: '225px' }} h={ 3 } display="flex" alignItems="center" borderRadius="full" overflow="hidden">
-          { topTokens.map((token, index) => (
+          { items.map((token, index) => (
             <Box
               key={ token.symbol }
               h="100%"
@@ -74,7 +82,7 @@ const AddressPortfolioNetWorth = ({
           )) }
         </Skeleton>
         <HStack flexWrap="wrap">
-          { topTokens.map((token, index) => (
+          { items.map((token, index) => (
             <HStack key={ token.symbol }>
               <Skeleton
                 boxSize={ 4 }

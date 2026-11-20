@@ -9,6 +9,8 @@ import { chainA, chainB } from 'src/features/multichain/mocks/chains';
 
 import { CLUSTER_CONFIG_SCRIPT_URL } from 'src/shared/external-chains/cluster-config';
 
+import { SECOND } from 'src/toolkit/utils/consts';
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, screen, waitFor } from 'vitest/lib';
 import withEnvs from 'vitest/utils/mockEnvs';
@@ -24,7 +26,7 @@ const MULTICHAIN_PORTFOLIO_ENVS: Array<Env> = [
 const CLUSTER_CONFIG = { chains: [ chainA, chainB ] };
 
 // every test re-imports the address tokens view (withEnvs resets modules), which is slow on a CI runner
-const TEST_TIMEOUT = 20_000;
+const TEST_TIMEOUT = 20 * SECOND;
 
 async function renderAddressTokens(tab: string): Promise<void> {
   const { render, wrapper: TestApp } = await import('vitest/lib');
