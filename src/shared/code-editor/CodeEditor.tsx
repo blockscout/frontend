@@ -51,6 +51,8 @@ const TABS_HEIGHT = 35;
 const BREADCRUMBS_HEIGHT = 22;
 const EDITOR_HEIGHT = 500;
 
+const EMPTY_FILES: Array<File> = [];
+
 interface Props {
   data: Array<File>;
   remappings?: Array<string>;
@@ -64,9 +66,9 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
-  const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
+  const [ tabs, setTabs ] = React.useState([ data[index].key ]);
   const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
-  const handleTabCloseRef = React.useRef<(path: string, isActive?: boolean) => void>(() => {});
+  const handleTabCloseRef = React.useRef<(key: string, isActive?: boolean) => void>(() => {});
 
   const [ containerRect, containerNodeRef ] = useClientRect<HTMLDivElement>();
 
@@ -133,8 +135,8 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     const loadedModels = monaco.editor.getModels();
     const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
     const newModels = data.slice(1)
-      .filter((file) => !loadedModelsPaths.includes(file.file_path))
-      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
+      .filter((file) => !loadedModelsPaths.includes(file.key))
+      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.key)));
 
     if (language === 'solidity') {
       loadedModels.concat(newModels)
@@ -155,9 +157,9 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       contextMenuOrder: 1.7,
       run: function(editor) {
         const model = editor.getModel();
-        const path = model?.uri.path;
-        if (path) {
-          handleTabCloseRef.current(path, true);
+        const key = model?.uri.path;
+        if (key) {
+          handleTabCloseRef.current(key, true);
         }
       },
     });
@@ -167,7 +169,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
   const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
     setIndex(index);
-    setTabs((prev) => prev.some((item) => item === data[index].file_path) ? prev : ([ ...prev, data[index].file_path ]));
+    setTabs((prev) => prev.some((item) => item === data[index].key) ? prev : ([ ...prev, data[index].key ]));
     if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
       window.setTimeout(() => {
         editor?.revealLineInCenter(lineNumber);
@@ -176,28 +178,32 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     editor?.focus();
   }, [ data, editor ]);
 
-  const handleTabSelect = React.useCallback((path: string) => {
-    const index = data.findIndex((item) => item.file_path === path);
+  const handleTabSelect = React.useCallback((key: string) => {
+    const index = data.findIndex((item) => item.key === key);
     if (index > -1) {
       setIndex(index);
     }
   }, [ data ]);
 
-  const handleTabClose = React.useCallback((path: string, _isActive?: boolean) => {
+  const handleTabClose = React.useCallback((key: string, _isActive?: boolean) => {
     if (tabs.length <= 1) {
       return;
     }
 
-    const tabIndex = tabs.findIndex((item) => item === path);
-    const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
+    const tabIndex = tabs.findIndex((item) => item === key);
+    const isActive = _isActive !== undefined ? _isActive : data[index].key === key;
 
     if (isActive) {
-      const nextActiveIndex = data.findIndex((item) => item.file_path === tabs[(tabIndex === 0 ? 1 : tabIndex - 1)]);
+      const nextActiveIndex = data.findIndex((item) => item.key === tabs[(tabIndex === 0 ? 1 : tabIndex - 1)]);
       setIndex(nextActiveIndex);
     }
 
-    setTabs(tabs.filter((item) => item !== path));
+    setTabs(tabs.filter((item) => item !== key));
   }, [ data, index, tabs ]);
+
+  const openFiles = React.useMemo(() => {
+    return tabs.flatMap((key) => data.find((file) => file.key === key) ?? EMPTY_FILES);
+  }, [ data, tabs ]);
 
   React.useEffect(() => {
     handleTabCloseRef.current = handleTabClose;
@@ -220,8 +226,8 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         .map((element: HTMLSpanElement) => element.innerText)
         .join('');
 
-      const fullPath = getFullPathOfImportedFile(data[index].file_path, path, remappings);
-      const fileIndex = data.findIndex((file) => file.file_path === fullPath);
+      const fullPath = getFullPathOfImportedFile(data[index].key, path, remappings);
+      const fileIndex = data.findIndex((file) => file.key === fullPath);
       if (fileIndex > -1) {
         event.stopPropagation();
         handleSelectFile(fileIndex);
@@ -314,7 +320,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
           <MonacoEditor
             className="editor-container"
             language={ editorLanguage }
-            path={ data[index].file_path }
+            path={ data[index].key }
             defaultValue={ data[index].source_code }
             options={ EDITOR_OPTIONS }
             onMount={ handleEditorDidMount }
@@ -342,18 +348,18 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
       <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ handleEditorError }>
         <Box flexGrow={ 1 }>
           <CodeEditorTabs
-            tabs={ tabs }
-            activeTab={ data[index].file_path }
+            tabs={ openFiles }
+            activeTab={ data[index].key }
             mainFile={ mainFile }
             onTabSelect={ handleTabSelect }
             onTabClose={ handleTabClose }
           />
-          <CodeEditorBreadcrumbs path={ data[index].file_path }/>
+          <CodeEditorBreadcrumbs path={ data[index].display_path }/>
           <MonacoEditor
             className="editor-container"
             height={ `${ EDITOR_HEIGHT }px` }
             language={ editorLanguage }
-            path={ data[index].file_path }
+            path={ data[index].key }
             defaultValue={ data[index].source_code }
             options={ EDITOR_OPTIONS }
             onMount={ handleEditorDidMount }
@@ -365,7 +371,7 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
           onFileSelect={ handleSelectFile }
           monaco={ instance }
           editor={ editor }
-          selectedFile={ data[index].file_path }
+          selectedFile={ data[index].key }
           mainFile={ mainFile }
         />
       </ErrorBoundary>

@@ -14,23 +14,23 @@ import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   data: SearchResult;
-  onItemClick: (filePath: string, lineNumber: number) => void;
+  onItemClick: (fileKey: string, lineNumber: number) => void;
 }
 
 const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
-  const fileName = getFileName(data.file_path);
+  const fileName = getFileName(data.display_path);
 
   const handleFileLineClick = React.useCallback((event: React.MouseEvent) => {
     const lineNumber = Number((event.currentTarget as HTMLDivElement).getAttribute('data-line-number'));
     if (!Object.is(lineNumber, NaN)) {
-      onItemClick(data.file_path, Number(lineNumber));
+      onItemClick(data.key, Number(lineNumber));
     }
-  }, [ data.file_path, onItemClick ]);
+  }, [ data.key, onItemClick ]);
 
   const themeColors = useThemeColors();
 
   return (
-    <AccordionItem value={ data.file_path } borderWidth="0px" _last={{ borderBottomWidth: '0px' }}>
+    <AccordionItem value={ data.key } borderWidth="0px" _last={{ borderBottomWidth: '0px' }}>
       <AccordionItemTrigger
         py={ 0 }
         px={ 2 }
@@ -74,8 +74,8 @@ const CodeEditorSearchSection = ({ data, onItemClick }: Props) => {
       <AccordionItemContent p={ 0 }>
         { data.matches.map((match) => (
           <CodeEditorSearchResultItem
-            key={ data.file_path + '_' + match.startLineNumber + '_' + match.startColumn }
-            filePath={ data.file_path }
+            key={ data.key + '_' + match.startLineNumber + '_' + match.startColumn }
+            fileKey={ data.key }
             onClick={ handleFileLineClick }
             { ...match }
           />

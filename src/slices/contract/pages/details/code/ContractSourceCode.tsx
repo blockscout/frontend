@@ -98,7 +98,7 @@ export const ContractSourceCode = ({ data, isLoading, sourceAddress }: Props) =>
         remappings={ remappings }
         libraries={ data?.external_libraries ?? undefined }
         language={ data?.language ?? undefined }
-        mainFile={ editorData[0]?.file_path }
+        mainFile={ editorData[0]?.key }
         contractName={ data?.name ?? undefined }
       />
     );

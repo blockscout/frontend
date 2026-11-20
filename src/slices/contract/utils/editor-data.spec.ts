@@ -31,9 +31,9 @@ describe('getEditorData', () => {
     }));
 
     expect(result).toEqual([
-      { file_path: '/contracts/proxies/SafeProxy.sol', source_code: 'contract SafeProxy {}' },
-      { file_path: '/contracts/common/Enum.sol', source_code: 'enum' },
-      { file_path: '/@openzeppelin/contracts/utils/Address.sol', source_code: 'address' },
+      { key: '/contracts/proxies/SafeProxy.sol', display_path: '/contracts/proxies/SafeProxy.sol', source_code: 'contract SafeProxy {}' },
+      { key: '/contracts/common/Enum.sol', display_path: '/contracts/common/Enum.sol', source_code: 'enum' },
+      { key: '/@openzeppelin/contracts/utils/Address.sol', display_path: '/@openzeppelin/contracts/utils/Address.sol', source_code: 'address' },
     ]);
   });
 
@@ -46,7 +46,7 @@ describe('getEditorData', () => {
     [ 'geas', '/index.eas' ],
     [ null, '/index.sol' ],
   ] as const)('names the main file by language when the API gives no path (%s)', (language, expected) => {
-    expect(getEditorData(makeContract({ file_path: null, language }))?.[0].file_path).toBe(expected);
+    expect(getEditorData(makeContract({ file_path: null, language }))?.[0].display_path).toBe(expected);
   });
 
   test('keeps distinct paths whose content happens to be identical', () => {
@@ -57,7 +57,7 @@ describe('getEditorData', () => {
       ],
     }));
 
-    expect(result?.map((file) => file.file_path)).toEqual([
+    expect(result?.map((file) => file.display_path)).toEqual([
       '/contracts/proxies/SafeProxy.sol',
       '/contracts/interfaces/IERC165.sol',
       '/contracts/external/IERC165.sol',
@@ -73,7 +73,7 @@ describe('getEditorData', () => {
       ],
     }));
 
-    expect(result?.map((file) => file.file_path)).toEqual([ '/contracts/proxies/SafeProxy.sol', '/contracts/Kept.sol' ]);
+    expect(result?.map((file) => file.display_path)).toEqual([ '/contracts/proxies/SafeProxy.sol', '/contracts/Kept.sol' ]);
   });
 
   test('keeps a single copy of a file repeated under prefix-only path variants with identical content', () => {
@@ -87,8 +87,8 @@ describe('getEditorData', () => {
     }));
 
     expect(result).toEqual([
-      { file_path: '/contracts/proxies/SafeProxy.sol', source_code: 'contract SafeProxy {}' },
-      { file_path: '/contracts/proxies/IProxyCreationCallback.sol', source_code: 'callback' },
+      { key: '/contracts/proxies/SafeProxy.sol', display_path: '/contracts/proxies/SafeProxy.sol', source_code: 'contract SafeProxy {}' },
+      { key: '/contracts/proxies/IProxyCreationCallback.sol', display_path: '/contracts/proxies/IProxyCreationCallback.sol', source_code: 'callback' },
     ]);
   });
 
@@ -101,8 +101,8 @@ describe('getEditorData', () => {
     }));
 
     expect(result?.slice(1)).toEqual([
-      { file_path: '/contracts/A.sol', source_code: 'version one' },
-      { file_path: '/contracts/A.sol', source_code: 'version two' },
+      { key: '/contracts/A.sol', display_path: '/contracts/A.sol', source_code: 'version one' },
+      { key: '/contracts/A.sol', display_path: '/contracts/A.sol', source_code: 'version two' },
     ]);
   });
 });

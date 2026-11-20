@@ -35,8 +35,8 @@ const CodeEditorFileExplorer = ({ data, onFileSelect, selectedFile, mainFile, is
   }, [ handleCollapseButtonClick ]);
 
   const handleFileClick = React.useCallback((event: React.MouseEvent) => {
-    const filePath = (event.currentTarget as HTMLDivElement).getAttribute('data-file-path');
-    const fileIndex = data.findIndex((item) => item.file_path === filePath);
+    const fileKey = (event.currentTarget as HTMLDivElement).getAttribute('data-file-key');
+    const fileIndex = data.findIndex((item) => item.key === fileKey);
 
     if (fileIndex > -1) {
       onFileSelect(fileIndex);

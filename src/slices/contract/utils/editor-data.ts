@@ -28,7 +28,13 @@ function getMainFileExtension(language: SmartContract['language']): string {
 // Only byte-identical repeats are dropped; the same path with different content is a backend bug
 // that should stay visible rather than be silently resolved here.
 function isRepeat(file: File, index: number, files: Array<File>): boolean {
-  return files.findIndex((item) => item.file_path === file.file_path && item.source_code === file.source_code) !== index;
+  return files.findIndex((item) => item.key === file.key && item.source_code === file.source_code) !== index;
+}
+
+function toEditorFile(rawPath: string, sourceCode: string): File {
+  const normalizedPath = formatFilePath(rawPath);
+
+  return { key: normalizedPath, display_path: normalizedPath, source_code: sourceCode };
 }
 
 export function getEditorData(contractInfo: SmartContract | undefined): Array<File> | undefined {
@@ -36,17 +42,11 @@ export function getEditorData(contractInfo: SmartContract | undefined): Array<Fi
     return undefined;
   }
 
-  const mainFile: File = {
-    file_path: formatFilePath(contractInfo.file_path || `index.${ getMainFileExtension(contractInfo.language) }`),
-    source_code: contractInfo.source_code,
-  };
+  const mainFile = toEditorFile(contractInfo.file_path || `index.${ getMainFileExtension(contractInfo.language) }`, contractInfo.source_code);
 
   const additionalFiles: Array<File> = (contractInfo.additional_sources || [])
     .filter((source) => source.file_path && source.source_code)
-    .map((source) => ({
-      source_code: source.source_code || '',
-      file_path: formatFilePath(source.file_path || ''),
-    }));
+    .map((source) => toEditorFile(source.file_path || '', source.source_code || ''));
 
   return [ mainFile, ...additionalFiles ].filter((file, index, files) => !isRepeat(file, index, files));
 }

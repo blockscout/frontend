@@ -13,25 +13,26 @@ import useThemeColors from './utils/useThemeColors';
 interface Props {
   isActive?: boolean;
   isMainFile?: boolean;
+  fileKey: string;
   path: string;
-  onClick: (path: string) => void;
-  onClose: (path: string) => void;
+  onClick: (fileKey: string) => void;
+  onClose: (fileKey: string) => void;
   isCloseDisabled: boolean;
   tabsPathChunks: Array<Array<string>>;
 }
 
-const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
+const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
   const themeColors = useThemeColors();
 
   const handleClick = React.useCallback(() => {
-    onClick(path);
-  }, [ onClick, path ]);
+    onClick(fileKey);
+  }, [ onClick, fileKey ]);
 
   const handleClose = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-    !isCloseDisabled && onClose(path);
-  }, [ isCloseDisabled, onClose, path ]);
+    !isCloseDisabled && onClose(fileKey);
+  }, [ isCloseDisabled, onClose, fileKey ]);
 
   return (
     <Flex

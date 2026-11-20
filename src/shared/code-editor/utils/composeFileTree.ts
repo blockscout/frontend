@@ -15,7 +15,7 @@ export default function composeFileTree(files: Array<File>) {
   const level: Level = { result };
 
   files.forEach((file) => {
-    const path = stripLeadingSlash(file.file_path);
+    const path = stripLeadingSlash(file.display_path);
     const segments = path.split('/');
 
     segments.reduce((acc, segment, currentIndex, array) => {

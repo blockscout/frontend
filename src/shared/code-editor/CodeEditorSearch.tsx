@@ -67,34 +67,36 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
     const matches = models.map((model) => model.findMatches(debouncedSearchTerm, false, isMatchRegex, isMatchCase, isMatchWholeWord ? 'true' : null, false));
 
     models.forEach((model, index) => {
-      const filePath = model.uri.path;
-      const prevDecorations = decorations.current[filePath] || [];
+      const fileKey = model.uri.path;
+      const prevDecorations = decorations.current[fileKey] || [];
       const newDecorations: Array<monaco.editor.IModelDeltaDecoration> = matches[index].map(({ range }) => ({ range, options: { className: 'highlight' } }));
 
       const newDecorationsIds = model.deltaDecorations(prevDecorations, newDecorations);
-      decorations.current[filePath] = newDecorationsIds;
+      decorations.current[fileKey] = newDecorationsIds;
     });
 
     const result: Array<SearchResult> = matches
       .map((match, index) => {
         const model = models[index];
+        const key = model.uri.path;
         return {
-          file_path: model.uri.path,
+          key,
+          display_path: data.find((file) => file.key === key)?.display_path ?? key,
           matches: match.map(({ range }) => ({ ...range, lineContent: model.getLineContent(range.startLineNumber) })),
         };
       })
       .filter(({ matches }) => matches.length > 0);
 
     setSearchResults(result.length > 0 ? result : EMPTY_RESULTS);
-    setExpandedSections(result.map((item) => item.file_path));
-  }, [ debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
+    setExpandedSections(result.map((item) => item.key));
+  }, [ data, debouncedSearchTerm, isMatchCase, isMatchRegex, isMatchWholeWord, monaco ]);
 
   const handleSearchTermChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     changeSearchTerm(event.target.value);
   }, []);
 
-  const handleResultItemClick = React.useCallback((filePath: string, lineNumber: number) => {
-    const fileIndex = data.findIndex((item) => item.file_path === filePath);
+  const handleResultItemClick = React.useCallback((fileKey: string, lineNumber: number) => {
+    const fileIndex = data.findIndex((item) => item.key === fileKey);
     if (fileIndex > -1) {
       onFileSelect(fileIndex, Number(lineNumber));
     }
@@ -106,7 +108,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
 
   const handleToggleCollapseClick = React.useCallback(() => {
     if (expandedSections.length === 0) {
-      setExpandedSections(searchResults.map((item) => item.file_path));
+      setExpandedSections(searchResults.map((item) => item.key));
     } else {
       setExpandedSections([]);
     }
@@ -236,7 +238,7 @@ const CodeEditorSearch = ({ monaco, data, onFileSelect, isInputStuck, isActive, 
         onValueChange={ handleAccordionStateChange }
         noAnimation
       >
-        { searchResults.map((item) => <CodeEditorSearchSection key={ item.file_path } data={ item } onItemClick={ handleResultItemClick }/>) }
+        { searchResults.map((item) => <CodeEditorSearchSection key={ item.key } data={ item } onItemClick={ handleResultItemClick }/>) }
       </AccordionRoot>
     </>
   );

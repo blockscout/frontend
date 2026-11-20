@@ -22,7 +22,7 @@ interface Props {
 const CodeEditorSnippet = ({ data, copyData, language, title, className, rightSlot, isLoading }: Props) => {
 
   const editorData = React.useMemo(() => {
-    return [ { file_path: 'index', source_code: data } ];
+    return [ { key: 'index', display_path: 'index', source_code: data } ];
   }, [ data ]);
 
   return (
