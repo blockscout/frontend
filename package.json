@@ -27,7 +27,7 @@
     "routes:generate": "nextjs-routes",
     "lint:eslint": "./tools/eslint/run.sh",
     "lint:tsc": "tsc -p ./tsconfig.json",
-    "lint:cspell": "cspell . --no-must-find-files",
+    "lint:cspell": "cspell .",
     "lint:doc-links": "doc-links",
     "lint:react-doctor": "./tools/react-doctor/run.sh",
     "react-doctor": "./tools/react-doctor/run.sh",

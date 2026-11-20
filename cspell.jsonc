@@ -4,6 +4,9 @@
     // language - current active spelling language
     "language": "en,en-GB",
     "useGitignore": true,
+    // stop at this repository's root: without it cspell also applies the .gitignore of a repository this
+    // one is nested in, and checks no files when that one ignores the path
+    "gitignoreRoot": ".",
     "ignorePaths": [
         "**/*.svg",
         "**/*.sfd",
