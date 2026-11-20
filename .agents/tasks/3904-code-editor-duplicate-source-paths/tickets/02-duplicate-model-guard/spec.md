@@ -18,10 +18,10 @@ with one file of each differing pair still missing until ticket 03.
 How to verify: `pnpm dev:preset robinhood`, open
 `/address/0xd4EB21209C4D6093f80B5b84f5C45cc093EA14a3?tab=contract`
 
-- [ ] Model creation skips a key that is already loaded or already seen in the same data array.
-- [ ] Each skipped repeat is reported as a Rollbar warning, not an error, with the key in the payload.
-- [ ] Data without repeats reports nothing.
-- [ ] `(human)` The Contract tab of the example contract renders the editor instead of the error screen.
+- [x] Model creation skips a key that is already loaded or already seen in the same data array.
+- [x] Each skipped repeat is reported as a Rollbar warning, not an error, with the key in the payload.
+- [x] Data without repeats reports nothing.
+- [x] `(human)` The Contract tab of the example contract renders the editor instead of the error screen.
 
 ## Details
 
@@ -32,5 +32,5 @@ How to verify: `pnpm dev:preset robinhood`, open
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the guard and the Rollbar warning to the editor's model creation
-- [ ] 2 `[agent]` Unit spec for the helper: no repeats, a repeat of the first file, a repeat among additional files
+- [x] 1 `[agent]` Add the guard and the Rollbar warning to the editor's model creation
+- [x] 2 `[agent]` Unit spec for the helper: no repeats, a repeat of the first file, a repeat among additional files

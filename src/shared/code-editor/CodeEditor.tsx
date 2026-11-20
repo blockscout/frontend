@@ -28,6 +28,7 @@ import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration
 import { defGeas, configGeas } from './utils/defGeas';
 import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
+import { splitFilesByModelKey } from './utils/split-files-by-model-key';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
 
@@ -133,10 +134,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     }
 
     const loadedModels = monaco.editor.getModels();
-    const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
-    const newModels = data.slice(1)
-      .filter((file) => !loadedModelsPaths.includes(file.key))
-      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.key)));
+    const { filesToCreate, repeatedKeys } = splitFilesByModelKey(data, loadedModels.map((model) => model.uri.path));
+    const newModels = filesToCreate.map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.key)));
+
+    repeatedKeys.forEach((key) => {
+      rollbar?.warn('Code editor skipped a file with a repeated model key', { key });
+    });
 
     if (language === 'solidity') {
       loadedModels.concat(newModels)
