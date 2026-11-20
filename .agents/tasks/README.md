@@ -40,6 +40,8 @@ Each step names the skill that runs it; the session model — what runs where, a
      `process-task-inbox` folds each pending section into questions, spec and tickets. The three
      implementing skills below refuse to start while a section is pending.
 5. **Implement** — run `implement-ticket <NN>` repeatedly, **one ticket per run**.
+   - *Or* — [`implement-task`](../skills/implement-task/SKILL.md) runs steps 5 and 6 from one orchestrator
+     session.
 6. **Land** — [`finalize-task`](../skills/finalize-task/SKILL.md) runs five handoffs in order: 
   - it prunes the task folder down to `spec.md`; 
   - [`create-pr`](../skills/create-pr/SKILL.md) pushes, writes the real description and flips the draft to ready; 
