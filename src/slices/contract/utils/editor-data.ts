@@ -54,7 +54,11 @@ function hasConflict(sources: Array<Source>): boolean {
 }
 
 function isRepeat(file: File, index: number, files: Array<File>): boolean {
-  return files.findIndex((item) => item.key === file.key && item.source_code === file.source_code) !== index;
+  return files.findIndex((item) => (
+    item.key === file.key &&
+    // Stryker disable next-line ConditionalExpression: reached only when hasConflict() is false, where equal keys already mean equal content
+    item.source_code === file.source_code
+  )) !== index;
 }
 
 function toNormalizedFile({ rawPath, sourceCode }: Source): File {

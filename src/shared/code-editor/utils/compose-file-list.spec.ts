@@ -77,6 +77,16 @@ it('puts the main file first, ahead of the sorted files', () => {
   ]);
 });
 
+it('keeps the main file first when its path sorts after every other path', () => {
+  const result = composeFileList([
+    file('/contracts/Zap.sol', '/contracts/Zap.sol'),
+    file('/contracts/Asset.sol', '/contracts/Asset.sol'),
+    file('/contracts/Pool.sol', '/contracts/Pool.sol'),
+  ], { hasRawPaths: false, mainFile: '/contracts/Zap.sol' });
+
+  expect(result.map((item) => item.key)).toEqual([ '/contracts/Zap.sol', '/contracts/Asset.sol', '/contracts/Pool.sol' ]);
+});
+
 it('does not reorder the given array', () => {
   const files = [ file('/b.sol', '/b.sol'), file('/a.sol', '/a.sol') ];
 
