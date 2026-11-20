@@ -3,22 +3,25 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { File } from './types';
+
 import CodeEditorTab from './CodeEditorTab';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
-  tabs: Array<string>;
+  tabs: Array<File>;
   activeTab: string;
   mainFile?: string;
-  onTabSelect: (tab: string) => void;
-  onTabClose: (tab: string) => void;
+  hasRawPaths: boolean;
+  onTabSelect: (fileKey: string) => void;
+  onTabClose: (fileKey: string) => void;
 }
 
-const CodeEditorTabs = ({ tabs, activeTab, mainFile, onTabSelect, onTabClose }: Props) => {
+const CodeEditorTabs = ({ tabs, activeTab, mainFile, hasRawPaths, onTabSelect, onTabClose }: Props) => {
   const themeColors = useThemeColors();
 
   const tabsPathChunks = React.useMemo(() => {
-    return tabs.map((tab) => tab.split('/'));
+    return tabs.map((tab) => tab.display_path.split('/'));
   }, [ tabs ]);
 
   return (
@@ -30,10 +33,12 @@ const CodeEditorTabs = ({ tabs, activeTab, mainFile, onTabSelect, onTabClose }: 
     >
       { tabs.map((tab) => (
         <CodeEditorTab
-          key={ tab }
-          path={ tab }
-          isActive={ activeTab === tab }
-          isMainFile={ mainFile === tab }
+          key={ tab.key }
+          fileKey={ tab.key }
+          path={ tab.display_path }
+          hasRawPaths={ hasRawPaths }
+          isActive={ activeTab === tab.key }
+          isMainFile={ mainFile === tab.key }
           onClick={ onTabSelect }
           onClose={ onTabClose }
           isCloseDisabled={ tabs.length === 1 }

@@ -7,31 +7,35 @@ import { alt } from 'src/toolkit/utils/htmlEntities';
 
 import CodeEditorFileIcon from './CodeEditorFileIcon';
 import CodeEditorMainFileIndicator from './CodeEditorMainFileIndicator';
-import getFilePathParts from './utils/getFilePathParts';
+import { splitDisplayPath } from './utils/compose-file-list';
+import getFilePathParts, { hasTwinTab } from './utils/getFilePathParts';
 import useThemeColors from './utils/useThemeColors';
 
 interface Props {
   isActive?: boolean;
   isMainFile?: boolean;
+  fileKey: string;
   path: string;
-  onClick: (path: string) => void;
-  onClose: (path: string) => void;
+  hasRawPaths: boolean;
+  onClick: (fileKey: string) => void;
+  onClose: (fileKey: string) => void;
   isCloseDisabled: boolean;
   tabsPathChunks: Array<Array<string>>;
 }
 
-const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
+const CodeEditorTab = ({ isActive, isMainFile, fileKey, path, hasRawPaths, onClick, onClose, isCloseDisabled, tabsPathChunks }: Props) => {
   const [ fileName, folderName ] = getFilePathParts(path, tabsPathChunks);
+  const isFolderNameCutAtStart = folderName !== undefined && folderName[0] !== '.' && !hasTwinTab(path, tabsPathChunks);
   const themeColors = useThemeColors();
 
   const handleClick = React.useCallback(() => {
-    onClick(path);
-  }, [ onClick, path ]);
+    onClick(fileKey);
+  }, [ onClick, fileKey ]);
 
   const handleClose = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-    !isCloseDisabled && onClose(path);
-  }, [ isCloseDisabled, onClose, path ]);
+    !isCloseDisabled && onClose(fileKey);
+  }, [ isCloseDisabled, onClose, fileKey ]);
 
   return (
     <Flex
@@ -49,6 +53,7 @@ const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDi
       fontWeight={ 400 }
       cursor="pointer"
       onClick={ handleClick }
+      title={ splitDisplayPath(path, hasRawPaths).path }
       _hover={{
         '& .codicon-close': {
           visibility: 'visible',
@@ -58,7 +63,7 @@ const CodeEditorTab = ({ isActive, isMainFile, path, onClick, onClose, isCloseDi
     >
       <CodeEditorFileIcon mr="4px" fileName={ fileName }/>
       <span>{ fileName }</span>
-      { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ folderName[0] === '.' ? '' : '...' }{ folderName }</chakra.span> }
+      { folderName && <chakra.span fontSize="11px" opacity={ 0.8 } ml={ 1 }>{ isFolderNameCutAtStart && '...' }{ folderName }</chakra.span> }
       { isMainFile && <CodeEditorMainFileIndicator ml={ 2 }/> }
       <Box
         className="codicon codicon-close"
