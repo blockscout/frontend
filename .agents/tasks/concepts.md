@@ -21,7 +21,8 @@ this file carries the meaning they act on. Layout and file ownership live in
 - **Inbox** — decisions about the task made in the **outer loop**: the part of the work no session sees,
   where the team meets, chats and writes docs. Each source is one section of `inbox.md`, `pending` until
   `process-task-inbox` folds it into the questions, the spec and the tickets. A pending section blocks
-  `to-tickets`, `implement-ticket` and `finalize-task`: the task does not move on context it has not read.
+  `to-tickets`, `implement-ticket`, `implement-task` and `finalize-task`: the task does not move on context
+  it has not read.
 - **Brief** — the marker of a **deferred** ticket: a ticket folder with a `brief.md` and no `spec.md`,
   because the ticket can't be scoped until something happens first (a prototype, a spike, an answer nobody
   has yet).

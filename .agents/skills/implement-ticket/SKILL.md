@@ -65,7 +65,8 @@ dev server through the Playwright MCP, at a desktop and a mobile width, and look
 screenshot with a relative path under `.playwright-mcp/`, such as `.playwright-mcp/<route>-mobile.png`: the
 Playwright MCP refuses a path outside the workspace, the scratchpad included. A defect you can see
 is yours to fix before the hand-off; what to probe follows from the leaf. The `(human)` criteria stay the
-developer's — this pass is your own check, not their sign-off.
+developer's — this pass is your own check, not their sign-off. When the check is over, stop the dev server
+if this run started it. A server that was already running is the developer's and stays up.
 
 ## Step 5 — Close
 
@@ -108,6 +109,9 @@ acceptance criterion:
     **"record my corrections"** (Step 6).
   - **At the `(human)` criteria, no style leaf** → **verify** and **fix** the same way, then confirm the
     criteria and ask the session to commit (Step 7).
+
+  When Step 4 stopped the dev server, say so and give the developer the command and the route to open:
+  `pnpm dev:preset <alias>` and the route from the ticket's **How to verify** line.
 
   The stopping turn ends at its bullet.
 
