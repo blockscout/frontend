@@ -27,7 +27,8 @@ import addFileImportDecorations from './utils/addFileImportDecorations';
 import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
 import { defGeas, configGeas } from './utils/defGeas';
 import { defScilla, configScilla } from './utils/defScilla';
-import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
+import { findImportedFileIndex } from './utils/find-imported-file-index';
+import { getImportLinkPath } from './utils/get-import-link-path';
 import { splitFilesByModelKey } from './utils/split-files-by-model-key';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
@@ -221,20 +222,14 @@ const CodeEditor = ({ data, isTreePossible, remappings, libraries, language, mai
       return;
     }
 
-    const target = event.target as HTMLSpanElement;
-    const isImportLink = target.classList.contains('import-link');
-    if (isImportLink) {
-      const path = [
-        target.previousElementSibling as HTMLSpanElement,
-        target,
-        target.nextElementSibling as HTMLSpanElement,
-      ]
-        .filter((element) => element?.classList.contains('import-link'))
-        .map((element: HTMLSpanElement) => element.innerText)
-        .join('');
+    // Not `event.target`: Monaco captures the pointer on mousedown, so a click is dispatched to the lines container,
+    // and the text cursor covers the token it stands on.
+    const importLinkToken = document.elementsFromPoint(event.clientX, event.clientY)
+      .find((element) => element.classList.contains('import-link'));
 
-      const fullPath = getFullPathOfImportedFile(data[index].key, path, remappings);
-      const fileIndex = data.findIndex((file) => file.key === fullPath);
+    if (importLinkToken) {
+      const path = getImportLinkPath(importLinkToken);
+      const fileIndex = findImportedFileIndex(data, data[index], path, remappings);
       if (fileIndex > -1) {
         event.stopPropagation();
         handleSelectFile(fileIndex);

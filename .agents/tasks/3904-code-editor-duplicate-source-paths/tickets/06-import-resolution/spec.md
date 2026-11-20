@@ -33,5 +33,5 @@ How to verify: `pnpm dev:preset robinhood`, open
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Same-family resolution with the normalized fallback, with the unit spec
-- [ ] 2 `[agent]` Use it in the import-link click handler of `CodeEditor`
+- [x] 1 `[agent]` Same-family resolution with the normalized fallback, with the unit spec
+- [x] 2 `[agent]` Use it in the import-link click handler of `CodeEditor`
