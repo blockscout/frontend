@@ -8,7 +8,6 @@ const CORE_API = {
   endpoint: 'https://eth.example.com',
   host: 'eth.example.com',
   protocol: 'https',
-  socketEndpoint: 'wss://eth.example.com',
 };
 
 const CORE_API_WITH_BASE_PATH = { ...CORE_API, basePath: '/base' };
@@ -18,7 +17,6 @@ const LOCAL_CORE_API = {
   host: 'localhost',
   protocol: 'http',
   port: '3003',
-  socketEndpoint: 'ws://localhost:3003',
 };
 
 describe('createCoreApiRequestInterceptor', () => {
