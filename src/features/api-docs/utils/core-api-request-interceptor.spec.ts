@@ -43,6 +43,21 @@ describe('createCoreApiRequestInterceptor', () => {
     expect(interceptor(req).url).toBe('https://stats.example.com/api/v1/counters?foo=bar');
   });
 
+  test('does not normalize a URL of another server', () => {
+    const interceptor = createCoreApiRequestInterceptor(CORE_API_WITH_BASE_PATH);
+    const req = { url: 'https://stats.example.com' };
+
+    expect(interceptor(req).url).toBe('https://stats.example.com');
+  });
+
+  test('leaves a request without a string URL untouched and does not throw', () => {
+    const interceptor = createCoreApiRequestInterceptor(CORE_API_WITH_BASE_PATH);
+    const req = { method: 'GET' };
+
+    expect(interceptor(req)).toBe(req);
+    expect(req).toEqual({ method: 'GET' });
+  });
+
   describe('legacy placeholder server', () => {
     test('points the URL at the instance host', () => {
       const interceptor = createCoreApiRequestInterceptor(CORE_API);
@@ -84,6 +99,13 @@ describe('createCoreApiRequestInterceptor', () => {
       const req = { url: 'https://blockscout.com/poa/core/api/v2/blocks' };
 
       expect(interceptor(req).url).toBe('http://eth.example.com/api/v2/blocks');
+    });
+
+    test('keeps the port of the instance host when the instance port is empty', () => {
+      const interceptor = createCoreApiRequestInterceptor({ ...CORE_API, host: 'eth.example.com:8080', port: '' });
+      const req = { url: 'https://blockscout.com/poa/core/api/v2/blocks' };
+
+      expect(interceptor(req).url).toBe('https://eth.example.com:8080/api/v2/blocks');
     });
 
     test('wins over the current placeholder server when the URL contains both', () => {
