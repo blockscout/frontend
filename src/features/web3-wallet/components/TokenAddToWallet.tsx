@@ -11,6 +11,7 @@ import { WALLETS_INFO } from 'src/features/web3-wallet/types/wallets';
 import useRewardsActivity from 'src/features/rewards/hooks/useRewardsActivity';
 import useProvider from 'src/features/web3-wallet/hooks/useProvider';
 import useSwitchOrAddChain from 'src/features/web3-wallet/hooks/useSwitchOrAddChain';
+import { getWatchAssetDecimals } from 'src/features/web3-wallet/utils/get-watch-asset-decimals';
 
 import config from 'src/config';
 import * as analytics from 'src/shared/analytics';
@@ -30,7 +31,7 @@ function getRequestParams(token: schemas['Token'] | AggregatedTokenInfo, tokenId
         options: {
           address: token.address_hash,
           symbol: token.symbol || '',
-          decimals: Number(token.decimals ?? '18'),
+          decimals: getWatchAssetDecimals(token.decimals),
           image: token.icon_url || '',
         },
       };
