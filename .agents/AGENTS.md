@@ -14,11 +14,11 @@ See `./rules/design-system.md` for Chakra UI v3 design system configuration and 
 
 ## Code Style & Quality
 
-See `./rules/code-quality.md` for code style, lint commands plus conventions linters don't catch, and the complexity/CRAP scores.
+See `./rules/code-quality.md` for code style and the conventions linters don't catch, and `./rules/code-quality-local.md` for the lint commands, the complexity/CRAP scores and this repo's own conventions.
 
 ## TypeScript Conventions
 
-See `./rules/typescript.md` for established rules how to write Typescript code.
+See `./rules/typescript.md` for established rules how to write Typescript code, and `./rules/typescript-local.md` for what this repo adds to them.
 
 ## Environment Variables
 

@@ -22,7 +22,7 @@ repo has it under the same name. A frozen copy opens with a `Frozen copy` note n
 | Kind | Frozen copies |
 |---|---|
 | Skills | `grilling`, `update-glossary`, `review-loop`, `review-changes`, `resolve-review` |
-| Rules | `adr`, `docs`, and the general half of `tests-unit` |
+| Rules | `adr`, `docs`, `typescript`, `code-quality`, and the general half of `tests-unit` |
 
 - **Edit the home original, never the copy.** A change made only here is lost when the copies are removed,
   and until then the two versions disagree depending on where the session started.
@@ -33,6 +33,9 @@ repo has it under the same name. A frozen copy opens with a `Frozen copy` note n
   copied over.
 - **`tests-unit` is frozen in part.** Its general half is home's. The description of this repo's Vitest
   setup is `vitest/CONTEXT.md`, which is not a copy and is edited here.
+- **`typescript` and `code-quality` each have a local rule.** What this repo adds to the home rule or does
+  differently is `rules/typescript-local.md` and `rules/code-quality-local.md`. They are not copies and are
+  edited here. Local content never goes into the frozen copy, because a home session skips that file.
 
 ## The rules contract
 
