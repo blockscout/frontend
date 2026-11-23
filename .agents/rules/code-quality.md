@@ -7,44 +7,12 @@ alwaysApply: false
 ---
 # Code Quality
 
-We use ESLint, cSpell, TypeScript to maintain code quality.
+> **Frozen copy.** The general part of this rule has moved to the home repo, `blockscout/frontend-home`,
+> where it is `.agents/rules/code-quality.md`. Edit it there, not here: see
+> [Frozen copies](../README.md#frozen-copies).
 
-```bash
-pnpm lint:eslint --fix                       # whole repo
-pnpm lint:eslint path/to/file.tsx            # one file or directory
-pnpm lint:eslint --changed                   # this branch vs origin/main, including uncommitted and untracked files
-pnpm lint:eslint --changed=<ref> --fix       # another base; eslint flags such as --fix pass through
-pnpm lint:tsc
-pnpm lint:cspell
-```
-
-Pull requests also pass a React Doctor gate for React bugs ESLint misses, on changed code only:
-`pnpm lint:react-doctor --scope changed --base origin/main`. Reading a failure and suppressing a
-finding: `tools/react-doctor/CONTEXT.md`.
-
-The rest of this file covers code complexity scores and conventions that the linters do not.
-
-## Complexity and CRAP
-
-Two independent per-function gates:
-
-- **COG** (cognitive complexity) — readability. A `BROKE` here means decompose the function (flatten nesting, extract, early-return).
-- **CRAP** — under-tested *behavior* (handlers, hooks, utils — not JSX render bodies). A `BROKE` here means add a Vitest spec; simplifying the function does not lower CRAP.
-
-How a score is counted, which functions are gated, and how to read a failure: `tools/code-complexity/CONTEXT.md`.
-
-How to run:
-
-```bash
-# The file you are on — every function in it
-pnpm test:code-complexity path/to/file.ts
-
-# This branch vs origin/main, including uncommitted edits
-pnpm test:code-complexity --changed
-
-# For the full command usage
-pnpm test:code-complexity --help
-```
+The lint commands, the quality gates and what this repo adds to the rule or does differently are in
+`./code-quality-local.md`, which wins where the two disagree.
 
 ## Code Style and Structure
 
@@ -66,7 +34,7 @@ const useWidgets = () => { ... };
 const useAddress3rdPartyWidgets = () => { ... };
 ```
 
-This applies to hooks, components, functions, and variables alike..
+This applies to hooks, components, functions, and variables alike.
 
 ## Specific rules
 
@@ -103,25 +71,9 @@ Apply the same test to strings used as discriminators, keys, or thresholds, and 
 
 If the same unexplained value must stay in sync at more than one call site, one constant is the share point.
 
-#### Shared unit constants
-
-`src/toolkit/utils/consts.ts` already defines unit constants: `SECOND`, `MINUTE`, `HOUR`, `DAY`, `WEEK`, `MONTH`, `YEAR` (milliseconds), `Kb`, `Mb` (bytes), and the BigNumber `ZERO`. Never define local equivalents (e.g. `MS_IN_SECOND = 1_000`) or use raw duration literals — import from there and compose.
-
-```ts
-// BAD
-const REFETCH_INTERVAL = 2_000;
-setTimeout(handleTimeout, 5 * 60 * 1_000);
-
-// GOOD
-import { SECOND, MINUTE } from 'src/toolkit/utils/consts';
-
-const REFETCH_INTERVAL = 2 * SECOND;
-setTimeout(handleTimeout, 5 * MINUTE);
-```
-
 ### Static empty defaults
 
-Never define empty arrays or objects inline as default values — a new reference is created on every render, causing unnecessary re-renders or stale hook dependencies.
+In React code, never define empty arrays or objects inline as default values — a new reference is created on every render, causing unnecessary re-renders or stale hook dependencies.
 
 ```ts
 // BAD
@@ -136,7 +88,7 @@ Define the constant outside the component or hook.
 
 ### useMemo for derived arrays
 
-Wrap `.filter()`, `.map()`, or `.reduce()` results in `useMemo` when the result is passed as a prop or used as a hook dependency. Without memoisation, a new array reference is produced on every render.
+In React code, wrap `.filter()`, `.map()`, or `.reduce()` results in `useMemo` when the result is passed as a prop or used as a hook dependency. Without memoisation, a new array reference is produced on every render.
 
 ```ts
 // BAD
@@ -177,7 +129,9 @@ const STREAK_IMAGES: Record<number, string> = {
 
 ### Prefer es-toolkit utilities
 
-Before writing custom utility logic (clamping, deep cloning, grouping, etc.), check whether `es-toolkit` already provides it. Prefer the library function over a manual implementation. Documentation: https://es-toolkit.dev/llms-full.txt
+`es-toolkit` is the utility library of every frontend repository. Before writing custom utility logic (clamping, deep cloning, grouping, etc.), check whether `es-toolkit` already provides it. Prefer the library function over a manual implementation. Documentation: https://es-toolkit.dev/llms-full.txt
+
+Use no other utility library, `lodash` included. If the repository does not depend on `es-toolkit` yet, raise adding it with the developer before you write the utility by hand.
 
 ### Comments
 
@@ -192,7 +146,7 @@ Do not write JSDoc (`/** */`). The one exception is a single-line `/** @type …
 
 #### Why-comments
 
-A why-comment explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast, raw color) still explain *why*, in their own sections.
+A why-comment explains *why* the obvious code is wrong — a quirk, workaround, or invariant git cannot show — optionally with a link to the issue. Required mechanical comments (`eslint-disable`, unavoidable double-cast) still explain *why*, in their own sections.
 
 ```ts
 // BAD — narrates the change and restates the next line
@@ -242,11 +196,3 @@ A source pointer names where code, types, data or a format came from. It is one 
 // The EIP-6963 spec - https://eips.ethereum.org/EIPS/eip-6963
 // The types source - node_modules/@wagmi/core/src/connectors/injected.ts
 ```
-
-### Links
-
-When links to **application pages** are constructed, verify that `route()` from `src/shared/router/routes` is used instead of string concatenation or template literals. The same module is the only import surface for the `Route` / `Query` / `DynamicRoute` types. The full list of application routes is available in `src/shared/router/nextjs-routes.d.ts`.
-
-### Date and time
-
-Render all dates and times through the shared `Time` or `TimeWithTooltip` components. Do not format timestamps inline.

@@ -56,7 +56,7 @@ desktop layout adapted the way neighbouring views do. An item that is still with
 
 ## Step 4 — Verify
 
-Run every code-quality check the repo defines (per `.agents/rules/code-quality.md`) plus the relevant unit 
+Run every code-quality check the repo defines (per `.agents/rules/code-quality-local.md`) plus the relevant unit 
 tests. Intentional scaffold `TODO`s may keep ESLint red the way the `add-new-page` skill documents — 
 say so explicitly rather than chasing green. Then walk the ticket's **acceptance criteria** and confirm each 
 agent-checkable one holds. A `(human)` criterion is not yours to judge — it is a touchpoint Step 5 stops for.
