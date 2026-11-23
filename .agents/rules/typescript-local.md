@@ -46,20 +46,6 @@ import type { NonEmptyArray } from 'src/shared/types/utils';
 
 ## API response types
 
-Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the exceptions; how to find which is `src/api/CONTEXT.md` ("Where a resource's response types come from"). Derive from them.
-
-```ts
-// BAD. Duplicate shape, drifts when the schema changes.
-type BlockTimeStats = {
-  average_block_time?: { value: string; units?: string };
-};
-function renderBlockTime(s: BlockTimeStats) {
-  /* ... */
-}
-
-// GOOD. Derive from the generated type.
-import type { MainPageStats } from '@blockscout/stats-types';
-function renderBlockTime(s: Pick<MainPageStats, 'average_block_time'>) {
-  /* ... */
-}
-```
+Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the
+exceptions; how to find which is `src/api/CONTEXT.md` ("Where a resource's response types come from").
+Derive from them, as `./typescript.md` ("Schema-derived types") shows.
