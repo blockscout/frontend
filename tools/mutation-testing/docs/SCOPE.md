@@ -14,7 +14,7 @@ A new file without a spec is therefore the CRAP gate’s responsibility, not thi
 
 Markup is not behaviour. A render-body mutant changes what the component draws, which no Vitest assertion in this repo is designed to detect. The Playwright screenshot suite covers that, but Stryker cannot run it (below). Such mutants would be unkillable in principle.
 
-`behavior` code is mutated wherever it lives. The classifier is the complexity gate’s (`../../code-complexity/measure/complexity.ts`), so `KIND` in complexity reports always agrees with mutability here.
+`behavior` code is mutated wherever it lives. The classifier is the complexity gate’s, taken from the `frontend-home/code-complexity` library entry, so `KIND` in complexity reports always agrees with mutability here.
 
 ## Only the five logic mutator classes
 

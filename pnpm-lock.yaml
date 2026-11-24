@@ -649,8 +649,8 @@ importers:
         specifier: 0.5.4
         version: 0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2)(vitest@5.0.0)
       frontend-home:
-        specifier: github:blockscout/frontend-home#ace19cd4e4511ec06b405925aeb60e030b3899d3
-        version: https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3
+        specifier: github:blockscout/frontend-home#70e6e8439d81624b009c60d0ed97489cec7f595f
+        version: https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f(@typescript/typescript6@6.0.2)
       globals:
         specifier: 15.12.0
         version: 15.12.0
@@ -9249,11 +9249,13 @@ packages:
   from-exponential@1.1.1:
     resolution: {integrity: sha512-VBE7f5OVnYwdgB3LHa+Qo29h8qVpxhVO9Trlc+AWm+/XNAgks1tAwMFHb33mjeiof77GglsJzeYF7OqXrROP/A==}
 
-  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3:
-    resolution: {gitHosted: true, integrity: sha512-iXUWKBC90RlkvrO1pFLfcgMtYuK5LeA0z4KlHYR3FZmwtS/Qxr6+wRVXVMF9ffMjkPD7Jr2P5WYAl7VYf2BQug==, tarball: https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3}
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f:
+    resolution: {gitHosted: true, integrity: sha512-MvJ/eoIfpFCRWVpi/GAnvL3I2HeibvChgpeE45+qGYSNhGcHpQa1t8vcYCHCI149H1iAZ6pjT9dAL+R19WzZUg==, tarball: https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f}
     version: 0.0.0
     engines: {node: '>=24.21.0', pnpm: '>=9.0.0'}
     hasBin: true
+    peerDependencies:
+      typescript: '>=5.7'
 
   fs-extra@11.3.5:
     resolution: {integrity: sha512-eKpRKAovdpZtR1WopLHxlBWvAgPny3c4gX1G5Jhwmmw4XJj0ifSD5qB5TOo8hmA0wlRKDAOAhEE1yVPgs6Fgcg==}
@@ -25813,7 +25815,9 @@ snapshots:
 
   from-exponential@1.1.1: {}
 
-  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3: {}
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f(@typescript/typescript6@6.0.2):
+    dependencies:
+      typescript: '@typescript/typescript6@6.0.2'
 
   fs-extra@11.3.5:
     dependencies:

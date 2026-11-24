@@ -1,6 +1,5 @@
-import type { FunctionComplexity } from '../../code-complexity/measure/complexity';
-import { computeFunctionComplexities } from '../../code-complexity/measure/complexity';
-import type { LineRange } from '../../code-complexity/select/diff';
+import type { FunctionComplexity, LineRange } from 'frontend-home/code-complexity';
+import { computeFunctionComplexities } from 'frontend-home/code-complexity';
 
 // Stryker's `mutate` option takes ranges but has no exclude form, so an exclusion is expressed as
 // the complement — the spans of the file no `jsx` body covers.
