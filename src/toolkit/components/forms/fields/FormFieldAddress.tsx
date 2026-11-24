@@ -3,14 +3,13 @@
 import React from 'react';
 import type { FieldValues } from 'react-hook-form';
 
-import type { FormFieldPropsBase } from './types';
-import type { PartialBy } from 'src/shared/types/utils';
+import type { FormFieldPropsOptionalPlaceholder } from './types';
 
 import { addressValidator } from '../validators/address';
 import { FormFieldText } from './FormFieldText';
 
 const FormFieldAddressContent = <FormFields extends FieldValues>(
-  props: PartialBy<FormFieldPropsBase<FormFields>, 'placeholder'>,
+  props: FormFieldPropsOptionalPlaceholder<FormFields>,
 ) => {
   const rules = React.useMemo(
     () => ({

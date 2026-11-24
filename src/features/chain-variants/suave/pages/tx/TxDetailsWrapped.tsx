@@ -5,7 +5,6 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import AddressEntity from 'src/slices/address/components/entity/AddressEntity';
 import LogDecodedInputData from 'src/slices/log/components/LogDecodedInputData';
@@ -21,7 +20,7 @@ import DetailedInfoNativeCoinValue from 'src/shared/detailed-info/DetailedInfoNa
 import { Badge } from 'src/toolkit/chakra/badge';
 
 interface Props {
-  data: ExcludeUndefined<schemas['Transaction']['wrapped']>;
+  data: Exclude<schemas['Transaction']['wrapped'], undefined>;
 }
 
 const TxDetailsWrapped = ({ data }: Props) => {

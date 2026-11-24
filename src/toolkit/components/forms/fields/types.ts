@@ -27,3 +27,7 @@ export interface FormFieldPropsBase<
   };
 
 }
+
+export type FormFieldPropsOptionalPlaceholder<FormFields extends FieldValues> =
+  Omit<FormFieldPropsBase<FormFields>, 'placeholder'> &
+  Partial<Pick<FormFieldPropsBase<FormFields>, 'placeholder'>>;

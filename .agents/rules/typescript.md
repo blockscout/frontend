@@ -392,14 +392,22 @@ Declare untyped third-party modules in one declaration file kept for that purpos
 declare module 'some-untyped-package';
 ```
 
+## Generic type utilities
+
+A generic type utility comes from [`type-fest`](https://github.com/sindresorhus/type-fest): `SetOptional`,
+`DistributedOmit`, `Simplify`, `PartialDeep`, `NonEmptyTuple` and the rest. Add the package as a dependency
+at its first use in a repository. Don't define a type it already has.
+
+A built-in comes first where it does the job: `Exclude<T, undefined>`, `NonNullable<T>`.
+
 ## Constructive modeling
 
 Build the type from parts that are all legal instead of restricting a loose type with runtime checks.
 
-Non-empty, via a variadic tuple:
+Non-empty, via a variadic tuple, which `NonEmptyTuple` is:
 
 ```ts
-type NonEmptyArray<T> = [T, ...Array<T>];
+import type { NonEmptyTuple } from 'type-fest';
 
 // BAD: Array<T> plus a length check every caller must repeat
 function pickWinner(entries: Array<string>): string {
@@ -408,7 +416,7 @@ function pickWinner(entries: Array<string>): string {
 }
 
 // GOOD: an empty value of the type can't exist
-function pickWinner(entries: NonEmptyArray<string>): string {
+function pickWinner(entries: NonEmptyTuple<string>): string {
   return entries[Math.floor(Math.random() * entries.length)];
 }
 ```
@@ -416,10 +424,10 @@ function pickWinner(entries: NonEmptyArray<string>): string {
 Where a plain `Array<T>` arrives, narrow once with a guard. The fact then travels in the type:
 
 ```ts
-const isNonEmpty = <T>(arr: Array<T>): arr is NonEmptyArray<T> => arr.length > 0;
+const isNonEmpty = <T>(arr: ReadonlyArray<T>): arr is NonEmptyTuple<T> => arr.length > 0;
 ```
 
-Even length, as pairs:
+Even length, as pairs. `type-fest` has no such type, so it is defined where it is used:
 
 ```ts
 type Pairs<T> = Array<[T, T]>;
@@ -455,7 +463,7 @@ function newestSession(sessions: Array<Session>): Session {
 }
 
 // GOOD: strengthen the input; the assertion disappears
-function newestSession(sessions: NonEmptyArray<Session>): Session {
+function newestSession(sessions: NonEmptyTuple<Session>): Session {
   return sessions[0];
 }
 ```

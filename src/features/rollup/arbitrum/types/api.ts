@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { schemas } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
-export type ArbitrumBatchStatus = ExcludeUndefined<schemas['Block']['arbitrum']>['status'];
+export type ArbitrumBatchStatus = Exclude<schemas['Block']['arbitrum'], undefined>['status'];
 
 export type NewArbitrumBatchSocketResponse = { batch: schemas['ArbitrumBatch'] };
 
