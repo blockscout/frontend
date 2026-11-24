@@ -60,6 +60,6 @@ Keep the alias a parameter so a switch to `eth_sepolia` is one value.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the smoke Playwright config, the `run.sh` entry point and the `test:smoke` script
-- [ ] 2 `[agent]` Add the shared fixture with the failure rules and the third-party allowlist
-- [ ] 3 `[agent]` Add the home, transaction, address and API documentation tests
+- [x] 1 `[agent]` Add the smoke Playwright config, the `run.sh` entry point and the `test:smoke` script
+- [x] 2 `[agent]` Add the shared fixture with the failure rules and the third-party allowlist
+- [x] 3 `[agent]` Add the home, transaction, address and API documentation tests

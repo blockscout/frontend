@@ -440,7 +440,7 @@ export default tseslint.config(
 
   {
     ...playwrightPlugin.configs['flat/recommended'],
-    files: [ '**/*.pw.tsx' ],
+    files: [ '**/*.pw.tsx', 'tools/smoke/**/*.smoke.ts' ],
     rules: {
       ...playwrightPlugin.configs['flat/recommended'].rules,
       'playwright/no-standalone-expect': 'off', // this rules does not work correctly with extended test functions
@@ -721,6 +721,7 @@ export default tseslint.config(
       'instrumentation*.ts',
       '*.config.ts',
       '*.config.js',
+      'tools/smoke/playwright.config.ts',
     ],
     rules: {
       // for configs allow to consume env variables from process.env directly; the raw browser env map stays off-limits
