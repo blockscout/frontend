@@ -13,7 +13,7 @@ ROOT="$(cd "$DIR/../.." && pwd)"
 OUT="$(mktemp -d "$DIR/.build.XXXXXX")"
 trap 'rm -rf "$OUT"' EXIT
 
-# The tool imports the complexity gate's selection modules, so tsc's rootDir spans both tool
-# folders and the entry point lands one level deeper than the outDir.
+# The tool imports the shared flag parser from ../cli, so tsc's rootDir spans the tools folder and
+# the entry point lands one level deeper than the outDir.
 "$ROOT/node_modules/.bin/tsc" -p "$DIR/tsconfig.json" --outDir "$OUT"
 node "$OUT/mutation-testing/index.js" "$@"

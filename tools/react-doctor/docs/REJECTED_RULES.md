@@ -23,5 +23,5 @@ Hits are from the full scan at the version named.
 | `js-set-map-lookups` | 0.9.14 | 33 | `.includes()` on arrays of a handful of items; no measurable cost. |
 | `rerender-lazy-state-init` | 0.9.13 | 16 | True but trivial: a cheap `map`/`concat` in a `useState` initialiser. |
 | `query-destructure-result` | 0.9.13 | 3 | Spreading a query result is how the paginated-query wrappers are built. |
-| `no-high-complexity-react-function`, `no-giant-component` | 0.9.14 | 74 | Duplicate the gate in `tools/code-complexity/`. |
+| `no-high-complexity-react-function`, `no-giant-component` | 0.9.14 | 74 | Duplicate the code-complexity gate (`pnpm test:code-complexity`). |
 | `require-pnpm-hardening` | 0.9.14 | 1 | Not a React concern; dependency policy lives in `pnpm-workspace.yaml`. |

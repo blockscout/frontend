@@ -15,6 +15,7 @@ bumped here.
 |---|---|---|---|
 | `doc-links` | `pnpm lint:doc-links`, and a step of the Checks workflow | [the `doc-links` context](https://github.com/blockscout/frontend-home/blob/main/tools/doc-links/CONTEXT.md) | `doc-links.config.json` at the repo root. `src/toolkit/package` stays excluded: it is published to npm as its own package |
 | The cspell base config | `pnpm lint:cspell`, the pre-commit hook, and a step of the Checks workflow | [the cspell config context](https://github.com/blockscout/frontend-home/blob/main/configs/cspell/CONTEXT.md) | `cspell.jsonc` at the repo root: the import, `gitignoreRoot`, the ignored paths and the words only this repo uses |
+| `code-complexity` | `pnpm test:code-complexity`, a step of the Checks workflow, and the `frontend-home/code-complexity` library entry that `tools/mutation-testing` and `tools/playwright` import | [the `code-complexity` context](https://github.com/blockscout/frontend-home/blob/main/tools/code-complexity/CONTEXT.md) | `code-complexity.config.json` at the repo root: the scope, the caps and the base ref. `tools/code-complexity/vitest.config.ts` is the vitest config of the coverage run |
 | `home-bump` | `pnpm home:bump` | [the pin context](https://github.com/blockscout/frontend-home/blob/main/tools/home-bump/CONTEXT.md) | None |
 
 ## The pin

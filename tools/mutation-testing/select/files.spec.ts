@@ -1,4 +1,5 @@
 import { execFileSync } from 'child_process';
+import { createScopeRule } from 'frontend-home/code-complexity';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -9,11 +10,20 @@ import type { Selection, SelectionRequest } from './files';
 import { selectFiles } from './files';
 
 // Real repo files, so eligibility is exercised against the naming convention on disk rather than a
-// stubbed fs: crap.spec.ts sits beside the first, nothing sits beside the second.
-const ELIGIBLE_FILE = 'tools/code-complexity/measure/crap.ts';
-const INELIGIBLE_FILE = 'tools/code-complexity/config.ts';
+// stubbed fs: ranges.spec.ts sits beside the first, nothing sits beside the second.
+const ELIGIBLE_FILE = 'tools/mutation-testing/select/ranges.ts';
+const INELIGIBLE_FILE = 'tools/mutation-testing/config.ts';
 
 const BASE_REF = 'main';
+
+// The scope of the throwaway repositories below, spelled out here so the specs do not depend on the
+// repo's own code-complexity.config.json: Stryker's sandbox does not hold that file.
+const isInScope = createScopeRule({
+  roots: [ 'src/' ],
+  extensions: [ '.ts', '.tsx' ],
+  specPatterns: [ '\\.spec\\.' ],
+  generatedPatterns: [],
+});
 
 const NOTHING_OUTSIDE_RENDER_BODIES = 'Every eligible file has all of its logic inside a jsx render body — nothing to mutate.';
 
@@ -33,7 +43,7 @@ const RENDER_BODY_ONLY_COMPONENT = `export default ({ show }: { show: boolean })
 `;
 
 function request(overrides: Partial<SelectionRequest>, cwd: string = process.cwd()): Selection {
-  return selectFiles({ focusPaths: [], diffSelected: false, baseRef: BASE_REF, ...overrides }, cwd);
+  return selectFiles({ focusPaths: [], diffSelected: false, baseRef: BASE_REF, ...overrides }, cwd, isInScope);
 }
 
 // The files a selection resolved to, dropping the ranges each was narrowed to — ./ranges.spec.ts

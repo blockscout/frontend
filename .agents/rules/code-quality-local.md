@@ -34,7 +34,10 @@ Two independent per-function gates:
 - **COG** (cognitive complexity) — readability. A `BROKE` here means decompose the function (flatten nesting, extract, early-return).
 - **CRAP** — under-tested *behavior* (handlers, hooks, utils — not JSX render bodies). A `BROKE` here means add a Vitest spec; simplifying the function does not lower CRAP.
 
-How a score is counted, which functions are gated, and how to read a failure: `tools/code-complexity/CONTEXT.md`.
+The gate comes from the home repo (`tools/home/CONTEXT.md`). How a score is counted, which functions are gated, and how to read a failure:
+[the gate's context in home](https://github.com/blockscout/frontend-home/blob/main/tools/code-complexity/CONTEXT.md).
+The scope and the caps of this repo are in `code-complexity.config.json`; how they are derived, and why one is not raised to unblock a PR:
+[the calibration procedure in home](https://github.com/blockscout/frontend-home/blob/main/tools/code-complexity/docs/CALIBRATION.md).
 
 How to run:
 
