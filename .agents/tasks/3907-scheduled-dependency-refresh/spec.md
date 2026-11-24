@@ -107,9 +107,8 @@ No UI changes.
 - **Wallet probe.** A fake wallet provider is injected into the page before the app loads, so the app
   lists it as an installed wallet and the connect flow runs end to end. No real browser extension: it
   needs a headed browser and breaks with every wallet release.
-- **Refresh tool.** The hosted Renovate app. Its pull requests trigger the checks without a token of ours.
-  If the app cannot be installed (Q01), the fallback is a scheduled workflow that updates the lockfile
-  within the declared ranges and opens the pull request with a token that triggers the checks.
+- **Refresh tool.** Self-hosted Renovate, run by a scheduled workflow in the repository (Q01). It opens
+  its pull requests with a token DevOps provides as a repository secret, so they trigger the checks.
 - **Renovate rules.** Lockfile maintenance on Mondays. Wallet group: `wagmi`, `viem`, `@wagmi/*`,
   `@reown/*`, `@walletconnect/*`, `@lifi/widget-light`. The group holds patches too, because the
   `@lifi/widget-light` patch is written against exact `wagmi` and `viem` versions. Transitive wallet
