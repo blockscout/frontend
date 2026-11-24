@@ -32,9 +32,14 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 ## Temporary files
 
 Throwaway files you make while working go in your session scratchpad. When one has to live inside the repo,
-because a test runner has to find it or it imports app code, put it in `.ai/tmp/<task-slug>/`. That folder is
-gitignored, and you create it if it's missing. Import app code there through the `src/*` alias. Delete these
-files when you're done if you can; if you can't, leave them, since they're never committed.
+because a test runner has to find it or it imports app code, put it in `.ai/tmp/<slug>/`, the slug a short
+kebab-case name for your work. That folder is gitignored, and you create it if it's missing. Import app code
+there through the `src/*` alias. Name a Vitest probe `*.isolated.spec.ts(x)`, so a mock in it cannot leak into
+other specs.
+
+Delete these files when you're done. The gitignore keeps them out of commits, not out of test runs: an
+unfiltered `pnpm test:vitest` or `pnpm test:pw` still runs a leftover. If you can't delete them, list them in
+your report.
 
 ## Running locally
 

@@ -13,6 +13,6 @@ climb when a rung cannot reach the bug. A rung's agent-runnable command is what 
 | **Differential** | one instance or version against another | The same page or the same request on two instances (`registry.json` has production and staging aliases), or two revs; diff the outputs. |
 
 A loop you expect to keep as the regression test goes beside the code, as the table says; a throwaway probe
-goes in `.ai/tmp/<slug>/` (`AGENTS.md` → Temporary files).
+goes where `AGENTS.md` → Temporary files puts it.
 
 A rung that needs a human to click is not a loop: the artifacts to ask for are in step 9.
