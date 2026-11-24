@@ -3,7 +3,8 @@ name: Dependency checks
 # Checks for a pull request that changes dependencies. Every dependency edit, in package.json or in the
 # overrides of pnpm-workspace.yaml, rewrites pnpm-lock.yaml, so the lockfile is the one trigger. The
 # regular checks stay change-scoped and run no unit tests on a lockfile-only pull request; this workflow
-# runs the whole suite instead. It is not a required check for merging into main.
+# runs the whole suite instead, and builds the app for production to run the smoke set against it. It is
+# not a required check for merging into main.
 on:
   workflow_dispatch:
   pull_request:
@@ -44,3 +45,58 @@ jobs:
       # `--sequence.seed <seed>` replays the order locally.
       - name: Run Vitest
         run: pnpm test:vitest --sequence.shuffle.files
+
+  build_and_smoke:
+    name: Production build and smoke run
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # If GitHub runners cannot reach staging, the fallback is eth_sepolia.
+      PRESET: staging
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          # The run scripts read the last release tag with `git describe`. A shallow clone has none, and
+          # the empty value they then pass to dotenv-cli fails the build.
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.1
+          cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The browser comes from the installed @playwright/test, so it follows the lockfile instead of an
+      # image tag pinned by hand, as the component tests' container in checks.yml is.
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps --only-shell chromium
+
+      # The build is the production-build check. It is a step of its own, apart from the smoke run, so
+      # the run's summary tells a broken build from a failed smoke test. The two steps are what
+      # `pnpm test:smoke` runs locally in one go.
+      - name: Build for production
+        run: pnpm prod:preset "$PRESET" --build-only
+
+      - name: Run the smoke set
+        id: smoke
+        run: pnpm test:smoke "$PRESET" --skip-build
+
+      - name: Upload the smoke report
+        if: ${{ failure() && steps.smoke.outcome == 'failure' }}
+        uses: actions/upload-artifact@v5
+        with:
+          name: smoke-report
+          path: |
+            tools/smoke/report
+            tools/smoke/results
+          retention-days: 7

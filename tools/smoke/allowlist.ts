@@ -8,6 +8,10 @@ export const ALLOWED_PAGE_ERRORS: ReadonlyArray<AllowedPageError> = [
     thirdParty: 'the adx.ws ad loader, rendering a winning bid into an ad slot that is no longer on the page',
     stack: /Cannot set properties of null \(setting 'innerHTML'\)\s+at renderPrebidWinningBid \(https:\/\/cdn\.adx\.ws\//,
   },
+  {
+    thirdParty: 'Google reCAPTCHA, rejecting a promise nobody awaits when its own backend answers too slowly',
+    stack: /Timed out\.\s+at [^\n]*\(https:\/\/www\.gstatic\.com\/recaptcha\//,
+  },
 ];
 
 export const isAllowedPageError = (error: Error): boolean => {

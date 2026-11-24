@@ -38,4 +38,4 @@ touch the lockfile until ticket 06. The first real run, and with it the answer t
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the build and smoke job to the dependency checks workflow, with the failure artifact
+- [x] 1 `[agent]` Add the build and smoke job to the dependency checks workflow, with the failure artifact
