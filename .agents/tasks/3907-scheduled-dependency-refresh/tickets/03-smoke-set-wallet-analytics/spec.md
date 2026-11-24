@@ -41,6 +41,6 @@ whatever the flow asks next on the `staging` chain. It is test code in `tools/sm
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the fake wallet provider and its injection helper
-- [ ] 2 `[agent]` Add the wallet modal and connection tests
-- [ ] 3 `[agent]` Add the analytics initialization test
+- [x] 1 `[agent]` Add the fake wallet provider and its injection helper
+- [x] 2 `[agent]` Add the wallet modal and connection tests
+- [x] 3 `[agent]` Add the analytics initialization test

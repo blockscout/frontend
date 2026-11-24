@@ -8,7 +8,7 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 
 - [x] 01 → `tickets/01-dependency-checks-workflow/`
 - [x] 02 → `tickets/02-smoke-set-pages/`
-- [ ] 03 → `tickets/03-smoke-set-wallet-analytics/`
+- [x] 03 → `tickets/03-smoke-set-wallet-analytics/`
 - [ ] 04 → `tickets/04-build-and-smoke-job/`
 - [ ] 05 → `tickets/05-renovate-config/`
 - [ ] 06 → `tickets/06-lockfile-refresh/`
