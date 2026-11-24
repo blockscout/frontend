@@ -44,4 +44,4 @@ for.
 
 - [x] 1 `[agent]` Re-resolve the lockfile within the declared ranges and run the local checks
 - [x] 2 `[agent]` Record the remaining high and critical runtime advisories in `notes.md`
-- [ ] 3 `[human]` Push, confirm the first dependency checks run and the regular checks, and connect a real wallet
+- [x] 3 `[human]` Push, confirm the first dependency checks run and the regular checks, and connect a real wallet

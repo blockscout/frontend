@@ -41,6 +41,18 @@ lands its manifest change, that pull request fails the same checks.
 The direct wallet dependencies are exact pins and did not move. Beneath them: `@coinbase/cdp-sdk` 1.50.0 →
 1.62.0, the nested `viem` 2.51.2 → 2.58.0, `ox` 0.14.25 → 0.14.67, `@metamask/utils` 11.11.0 → 11.12.1.
 
+## Real wallet check
+
+OKX connects without an error. MetaMask connects too, but in the login flow its popup throws `TypeError:
+Cannot read properties of undefined (reading 'origin')` right after the network switch is confirmed. Reopening
+the extension clears it. Connecting from a contract's read/write tab asks for no switch and shows no error.
+
+This is not the refresh. The login flow sends `wallet_switchEthereumChain` twice: once from the connect, and
+again 12–29 ms after that switch resolves, from `useSignInWithWallet` before it asks for the signature. A
+recording of the app's wallet calls, with a test wallet that poses as MetaMask, shows the same calls in the same
+order with the same timing on the pre-refresh build (`095de5a90`) and on the refreshed one. The second switch
+reaches MetaMask just as its switch prompt closes, which is where the popup fails.
+
 ## Runtime advisories left after the refresh
 
 `pnpm audit --prod --audit-level high`: high 28 → 3 advisories, critical 0. For the record, moderate went
