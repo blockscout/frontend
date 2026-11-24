@@ -46,5 +46,5 @@ dated research note; fix the two mentions only if the doc-links check objects.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the dependency checks workflow with the lockfile trigger, manual dispatch and the full unit job
-- [ ] 2 `[agent]` Delete `e2e-tests.yml` and the disabled `e2e_tests` block in `pre-release.yml`
+- [x] 1 `[agent]` Add the dependency checks workflow with the lockfile trigger, manual dispatch and the full unit job
+- [x] 2 `[agent]` Delete `e2e-tests.yml` and the disabled `e2e_tests` block in `pre-release.yml`

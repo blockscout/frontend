@@ -1,0 +1,46 @@
+name: Dependency checks
+
+# Checks for a pull request that changes dependencies. Every dependency edit, in package.json or in the
+# overrides of pnpm-workspace.yaml, rewrites pnpm-lock.yaml, so the lockfile is the one trigger. The
+# regular checks stay change-scoped and run no unit tests on a lockfile-only pull request; this workflow
+# runs the whole suite instead. It is not a required check for merging into main.
+on:
+  workflow_dispatch:
+  pull_request:
+    # Draft pull requests run too, for now: this workflow can only be dispatched once it is on main, so
+    # the pull request that adds it is where it gets its first runs. It takes the draft skip of checks.yml
+    # once those runs are confirmed.
+    types: [ opened, synchronize, reopened ]
+    paths:
+      - 'pnpm-lock.yaml'
+
+permissions:
+  contents: read
+
+jobs:
+  vitest_tests:
+    name: Unit tests (full suite)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.1
+          cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Spec files run in random order, as in checks.yml. The run prints its seed;
+      # `--sequence.seed <seed>` replays the order locally.
+      - name: Run Vitest
+        run: pnpm test:vitest --sequence.shuffle.files
