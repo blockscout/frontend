@@ -29,6 +29,13 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 - Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose and conventions, and `vitest/CONTEXT.md` for the setup and utilities.
 - Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
+## Temporary files
+
+Throwaway files you make while working go in your session scratchpad. When one has to live inside the repo,
+because a test runner has to find it or it imports app code, put it in `.ai/tmp/<task-slug>/`. That folder is
+gitignored, and you create it if it's missing. Import app code there through the `src/*` alias. Delete these
+files when you're done if you can; if you can't, leave them, since they're never committed.
+
 ## Running locally
 
 Two ways to start the dev server:

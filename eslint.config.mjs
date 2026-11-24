@@ -238,6 +238,8 @@ export default tseslint.config(
     '.claude/worktrees/',
     'next.config.js',
     'tools/code-complexity/dist/',
+    // agents' throwaway probes (AGENTS.md → Temporary files); they are never committed
+    '.ai/**',
   ] },
 
   { languageOptions: { globals: { ...globals.browser, ...globals.node } } },

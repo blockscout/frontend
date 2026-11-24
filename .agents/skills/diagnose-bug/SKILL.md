@@ -136,8 +136,8 @@ Branch off `origin/main`: `issue-<N>` for an issue, otherwise `bug-<kebab-slug>`
    when the test would be expensive, integration-heavy, or unclear. A visual bug gets a DOM assertion 
    in Vitest, or no test: screenshot baselines are a human's to generate.
 3. **Fix**, watch it pass, then re-run the step 2 loop on the original, un-minimised scenario.
-4. **Cleanup.** `grep -r "DEBUG-" src/` returns nothing; throwaway scripts are gone from the scratchpad
-   and the tree; a registry alias added in step 2 stays.
+4. **Cleanup.** `grep -r "DEBUG-" src/` returns nothing; throwaway files exist only in the scratchpad or
+   `.ai/tmp/` (AGENTS.md → Temporary files); a registry alias added in step 2 stays.
 5. **Verify** per `.agents/rules/code-quality-local.md`, linting the changed files with `--fix`; then
    `pnpm test:vitest --changed`, and `pnpm test:pw <file>` only when the regression test is a `*.pw.tsx`.
 6. **Commit**, then follow the `create-pr` skill, Mode C. The Description carries, in this order:
