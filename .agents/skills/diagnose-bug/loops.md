@@ -12,4 +12,7 @@ climb when a rung cannot reach the bug. A rung's agent-runnable command is what 
 | **Bisect** | a regression between two known states | A release tag or a commit is a rev (the instance's `/node-api/config` reports its tag or SHA). `git bisect run` with a rung-1 or rung-2 command as the script. |
 | **Differential** | one instance or version against another | The same page or the same request on two instances (`registry.json` has production and staging aliases), or two revs; diff the outputs. |
 
+A loop you expect to keep as the regression test goes beside the code, as the table says; a throwaway probe
+goes where `AGENTS.md` → Temporary files puts it.
+
 A rung that needs a human to click is not a loop: the artifacts to ask for are in step 9.
