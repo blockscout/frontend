@@ -22,8 +22,7 @@ Applies to every doc about the code: a `CONTEXT.md`, a file under `docs/`, a mod
 - **Navigation.** Which directory or file to open for what, so the reader skips a repo-wide search.
   Earned only by an area large or nested enough that the split of responsibility is unclear on a
   first read. Two or three files need no map. Past about ten entries the directory needs grouping by
-  concern (`tools/mutation-testing/` is the precedent), not a longer map: group it, then map the
-  directories, one line each.
+  concern, not a longer map: group it, then map the directories, one line each.
 - **Recurring questions.** How to read the tool's output, which command answers a given question, where a
   failure is explained. Prefer a table of question to location over prose. A row earns its place only
   when the answer is not the module whose name says so: a path outside the directory, a generated
