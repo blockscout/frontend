@@ -102,10 +102,10 @@ dismissed now.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Release the `d3` and `ws` holds and drop the `axios` floor
-- [ ] 2 `[agent]` Remove `query-string` from `@walletconnect/utils`, or fall back to an ignore entry
-- [ ] 3 `[agent]` Add the audit ignore setting with the `zod` entry, and check the server output for the
+- [x] 1 `[agent]` Release the `d3` and `ws` holds and drop the `axios` floor
+- [x] 2 `[agent]` Remove `query-string` from `@walletconnect/utils`, or fall back to an ignore entry
+- [x] 3 `[agent]` Add the audit ignore setting with the `zod` entry, and check the server output for the
       wallet stack
-- [ ] 4 `[agent]` Run the throwaway full re-resolve and record the result in `notes.md`
-- [ ] 5 `[human]` Dismiss the accepted advisories' alerts on GitHub with the same reasons
-- [ ] 6 `[human]` Connect a real wallet on `pnpm prod:preset staging` and open the WalletConnect QR code
+- [x] 4 `[agent]` Run the throwaway full re-resolve and record the result in `notes.md`
+- [x] 5 `[human]` Dismiss the accepted advisories' alerts on GitHub with the same reasons
+- [x] 6 `[human]` Connect a real wallet on `pnpm prod:preset staging` and open the WalletConnect QR code
