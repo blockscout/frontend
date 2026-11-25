@@ -36,4 +36,4 @@ they contain: package lists, schedules and flags have their home in those files.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Write `docs/DEPENDENCIES.md` and link it from `docs/CONTRIBUTING.md`
+- [x] 1 `[agent]` Write `docs/DEPENDENCIES.md` and link it from `docs/CONTRIBUTING.md`

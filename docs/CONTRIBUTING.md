@@ -84,6 +84,8 @@ For all types of dependencies:
 - **Do not add** a dependency if the desired functionality is easily implementable
 - If adding a dependency is necessary, please be sure that it is well-maintained and trustworthy
 
+A pull request that changes `pnpm-lock.yaml` also runs the dependency checks, a vulnerability audit among them. What to do when the audit fails, and how the scheduled dependency updates and the vulnerability alerts are handled, is in [DEPENDENCIES.md](./DEPENDENCIES.md).
+
 &nbsp;
 
 ## Adding new ENV variable
