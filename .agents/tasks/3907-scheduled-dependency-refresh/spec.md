@@ -41,8 +41,9 @@ routine for the alerts a refresh cannot clear.
    the CI job with the config of the `staging` preset and talking to that instance's real backend.
 7. The smoke set covers: the home page showing real stats, a transaction page and an address page showing
    real data, the API documentation page rendering, the wallet modal opening and listing wallets, a
-   connection through an injected test wallet ending with the connected address shown in the header, and
-   the analytics initialization request being sent.
+   connection through an injected test wallet ending with the connected address shown in the header, the
+   swap essential dapp showing the LI.FI widget to the connected test wallet, and the analytics
+   initialization request being sent.
 8. A smoke test fails on an uncaught page exception and on a failed request to the application's own
    origin. Browser console output is not asserted. Known third-party exceptions are listed in one
    allowlist.
