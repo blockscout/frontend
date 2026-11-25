@@ -69,7 +69,7 @@ dependency checks with `gh`. A red run is fixed in a follow-up commit.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Run the malformed-header probe against the current production build and note the result
-- [ ] 2 `[agent]` Move the OTel packages to the newest 2.x line, hold `@opentelemetry/api` below 1.10, and
+- [x] 1 `[agent]` Run the malformed-header probe against the current production build and note the result
+- [x] 2 `[agent]` Move the OTel packages to the newest 2.x line, hold `@opentelemetry/api` below 1.10, and
       drop `exporter-jaeger` and the `protobufjs` floor
-- [ ] 3 `[agent]` Run the probe and the local checks on the bumped build
+- [x] 3 `[agent]` Run the probe and the local checks on the bumped build

@@ -33,7 +33,6 @@ overrides:
   # never imports.
   handlebars: "^4.7.10" # eslint-plugin-boundaries and @boundaries/elements pin 4.7.9
   js-yaml: "^4.3.2" # swagger-ui-react pins 4.1.1
-  protobufjs: "^7.6.5" # @opentelemetry/otlp-transformer pins 8.0.1
   'viem>ws': "^8.21.0" # viem pins 8.18.x
   # @walletconnect/utils 2.21.x pins query-string 7.1.3, which holds decode-uri-component 0.2.2, and never
   # imports it (2.21.9 dropped it as unused: WalletConnect/walletconnect-monorepo#6855)
