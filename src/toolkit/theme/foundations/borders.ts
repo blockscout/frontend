@@ -2,9 +2,7 @@
 
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import type { ExcludeUndefined } from 'src/shared/types/utils';
-
-export const radii: ExcludeUndefined<ThemingConfig['tokens']>['radii'] = {
+export const radii: Exclude<ThemingConfig['tokens'], undefined>['radii'] = {
   none: { value: '0' },
   sm: { value: '4px' },
   base: { value: '8px' },

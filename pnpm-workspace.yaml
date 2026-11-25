@@ -59,7 +59,7 @@ allowBuilds:
   esbuild: false
   # The home repo, whose `prepare` builds the doc-links command. pnpm wants the exact commit here;
   # change it with `pnpm home:bump`, never by hand (tools/home/CONTEXT.md).
-  'frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3': true
+  'frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f': true
   iso-constants: false
   keccak: false
   protobufjs: false

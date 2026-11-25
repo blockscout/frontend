@@ -8,7 +8,6 @@ import {
 import React from 'react';
 
 import type { schemas } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 import config from 'src/config';
 import Time from 'src/shared/date-and-time/Time';
@@ -26,7 +25,7 @@ interface Props {
   children: React.ReactNode;
   data: Pick<schemas['StatsResponse'], 'gas_prices' | 'gas_price_updated_at' | 'gas_prices_update_in'>;
   dataUpdatedAt: number;
-  placement?: ExcludeUndefined<TooltipProps['positioning']>['placement'];
+  placement?: Exclude<TooltipProps['positioning'], undefined>['placement'];
 }
 
 const feature = config.features.gasTracker;

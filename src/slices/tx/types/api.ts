@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { operations } from '@blockscout/api-types';
-import type { ExcludeUndefined } from 'src/shared/types/utils';
 
 export interface TransactionsSorting {
   sort: 'value' | 'fee' | 'block_number';
@@ -12,8 +11,8 @@ export type TransactionsSortingField = TransactionsSorting['sort'];
 
 export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }` | 'default';
 
-export type TxsStatusFilter = ExcludeUndefined<ExcludeUndefined<operations['TransactionController.transactions']['params']['query']>['filter']>;
-export type TxsTypeFilter = ExcludeUndefined<ExcludeUndefined<operations['TransactionController.transactions']['params']['query']>['type']>;
+export type TxsStatusFilter = Exclude<Exclude<operations['TransactionController.transactions']['params']['query'], undefined>['filter'], undefined>;
+export type TxsTypeFilter = Exclude<Exclude<operations['TransactionController.transactions']['params']['query'], undefined>['type'], undefined>;
 
 export interface TxsFilters {
   filter?: TxsStatusFilter;

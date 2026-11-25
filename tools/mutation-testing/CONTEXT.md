@@ -46,7 +46,7 @@ splitting a component, or reshaping a signature, the wrong outcome was chosen. G
 Watch for the fix that drops the file to zero mutants: `behavior` code moved into a `jsx` render body
 stops being mutated at all (`./docs/SCOPE.md`), so the survivor disappears without anything being tested.
 
-**`NO COVERAGE` — not this gate's finding.** No test reached the line. The CRAP gate (`../code-complexity/CONTEXT.md`) already reports this as insufficient coverage. It appears here as a count and never fails the run.
+**`NO COVERAGE` — not this gate's finding.** No test reached the line. The CRAP gate ([its context in home](https://github.com/blockscout/frontend-home/blob/main/tools/code-complexity/CONTEXT.md)) already reports this as insufficient coverage. It appears here as a count and never fails the run.
 
 **`Run TRUNCATED`** — the wall-clock budget expired, so the results cover only part of the selection. A green result is not a pass, and a run that tested nothing at all fails. See `./docs/RUNNING.md`.
 
@@ -61,14 +61,16 @@ The process has four stages: **select** files and lines → **run** Stryker → 
 - `./stryker.config.json` — fixed Stryker settings, mutator classes, and determinism requirements
 - `./vitest.config.ts` — the Vitest configuration Stryker uses
 - `./run.sh` — compile-and-run wrapper
-- `./tsconfig.json` — covers this folder, `../code-complexity`, and `../cli`
+- `./tsconfig.json` — covers this folder and `../cli`
 
 ### `select/`
 
 - `./select/files.ts` — selection modes, eligibility, and empty-run exits
 - `./select/ranges.ts` — eligible lines and exclusions
 
-These reuse Git plumbing, scope rules, and function classification from `../code-complexity`.
+These reuse Git plumbing, the scope rule and function classification from the complexity gate, through the
+`frontend-home/code-complexity` library entry. The scope rule is built from `code-complexity.config.json` at
+the repo root, so a change of scope there moves both gates.
 
 ### `stryker/`
 

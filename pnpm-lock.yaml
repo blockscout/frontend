@@ -645,8 +645,8 @@ importers:
         specifier: 0.5.4
         version: 0.5.4(@typescript-eslint/eslint-plugin@5.62.0(@typescript-eslint/parser@5.62.0(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2))(@typescript/typescript6@6.0.2)(eslint@9.39.2(supports-color@10.2.2))(supports-color@10.2.2)(vitest@5.0.0)
       frontend-home:
-        specifier: github:blockscout/frontend-home#ace19cd4e4511ec06b405925aeb60e030b3899d3
-        version: https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3
+        specifier: github:blockscout/frontend-home#70e6e8439d81624b009c60d0ed97489cec7f595f
+        version: https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f(@typescript/typescript6@6.0.2)
       globals:
         specifier: 15.12.0
         version: 15.12.0
@@ -680,6 +680,9 @@ importers:
       svgo:
         specifier: ^2.8.2
         version: 2.8.4
+      type-fest:
+        specifier: 6.0.1
+        version: 6.0.1
       typescript:
         specifier: npm:@typescript/typescript6@6.0.2
         version: '@typescript/typescript6@6.0.2'
@@ -839,6 +842,9 @@ importers:
       react-hook-form:
         specifier: '>=7.52.1'
         version: 7.52.1(react@19.1.4)
+      type-fest:
+        specifier: ^6.0.1
+        version: 6.0.1
     devDependencies:
       '@svgr/plugin-jsx':
         specifier: 8.1.0
@@ -8686,11 +8692,13 @@ packages:
   from-exponential@1.1.1:
     resolution: {integrity: sha512-VBE7f5OVnYwdgB3LHa+Qo29h8qVpxhVO9Trlc+AWm+/XNAgks1tAwMFHb33mjeiof77GglsJzeYF7OqXrROP/A==}
 
-  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3:
-    resolution: {gitHosted: true, integrity: sha512-iXUWKBC90RlkvrO1pFLfcgMtYuK5LeA0z4KlHYR3FZmwtS/Qxr6+wRVXVMF9ffMjkPD7Jr2P5WYAl7VYf2BQug==, tarball: https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3}
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f:
+    resolution: {gitHosted: true, integrity: sha512-MvJ/eoIfpFCRWVpi/GAnvL3I2HeibvChgpeE45+qGYSNhGcHpQa1t8vcYCHCI149H1iAZ6pjT9dAL+R19WzZUg==, tarball: https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f}
     version: 0.0.0
     engines: {node: '>=24.21.0', pnpm: '>=9.0.0'}
     hasBin: true
+    peerDependencies:
+      typescript: '>=5.7'
 
   fs-extra@11.3.6:
     resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
@@ -11828,6 +11836,10 @@ packages:
     resolution: {integrity: sha512-B3LDjbDo+ac+D5RwkBOPZZ6ua8716KdT+6NO3DKOCHJq0ezE6vV2r92rjrC1ci2H+ocuysl5ytf1T0QqV65yoA==}
     engines: {node: '>=20'}
 
+  tagged-tag@1.0.0:
+    resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
+    engines: {node: '>=20'}
+
   tailwind-merge@2.6.1:
     resolution: {integrity: sha512-Oo6tHdpZsGpkKG88HJ8RR1rg/RdnEkQEfMoEk2x1XRI3F1AxeU+ijRXpiVUF4UbLfcxxRGw6TbUINKYdWVsQTQ==}
 
@@ -12016,6 +12028,10 @@ packages:
   type-fest@4.41.0:
     resolution: {integrity: sha512-TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==}
     engines: {node: '>=16'}
+
+  type-fest@6.0.1:
+    resolution: {integrity: sha512-nnRRKEpyNxX4XkeR6dpMy27ZNT5/nE3D73fs5FcKW/+OtqwSmdshWUw5azvpsMzjst5rAUe61ZxilQ70YFS9yA==}
+    engines: {node: '>=22'}
 
   typed-array-buffer@1.0.3:
     resolution: {integrity: sha512-nAYYwfY3qnzX30IkA6AQZjVbtK6duGontcQm1WSG1MD94YLqK0515GNApXkoxKOWMusVssAHWLh9SeaoefYFGw==}
@@ -24646,7 +24662,9 @@ snapshots:
 
   from-exponential@1.1.1: {}
 
-  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/ace19cd4e4511ec06b405925aeb60e030b3899d3: {}
+  frontend-home@https://codeload.github.com/blockscout/frontend-home/tar.gz/70e6e8439d81624b009c60d0ed97489cec7f595f(@typescript/typescript6@6.0.2):
+    dependencies:
+      typescript: '@typescript/typescript6@6.0.2'
 
   fs-extra@11.3.6:
     dependencies:
@@ -28296,6 +28314,8 @@ snapshots:
       wordwrapjs: 5.1.1
       wrap-ansi: 9.0.2
 
+  tagged-tag@1.0.0: {}
+
   tailwind-merge@2.6.1: {}
 
   tapable@2.3.4: {}
@@ -28459,6 +28479,10 @@ snapshots:
   type-fest@0.7.1: {}
 
   type-fest@4.41.0: {}
+
+  type-fest@6.0.1:
+    dependencies:
+      tagged-tag: 1.0.0
 
   typed-array-buffer@1.0.3:
     dependencies:

@@ -71,5 +71,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "type-fest": "^6.0.1"
   }
 }

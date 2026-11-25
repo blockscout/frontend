@@ -35,15 +35,6 @@ Use `decs.d.ts` exclusively for untyped third-party module declarations.
 declare module 'some-untyped-package';
 ```
 
-## Type utilities
-
-`NonEmptyArray`, `Pairs` and the other generic type utilities are in `src/shared/types/utils.ts`. Import
-them from there, and add a new one there.
-
-```ts
-import type { NonEmptyArray } from 'src/shared/types/utils';
-```
-
 ## API response types
 
 Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the

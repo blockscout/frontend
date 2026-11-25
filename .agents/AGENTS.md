@@ -29,6 +29,18 @@ See `./rules/env-vars.md` for where environment variables live, how they're deli
 - Vitest unit tests (`*.spec.ts` / `*.spec.tsx`): See `./rules/tests-unit.md` for purpose and conventions, and `vitest/CONTEXT.md` for the setup and utilities.
 - Playwright component visual tests (`*.pw.tsx`): See `./rules/tests-visual.md` for their purpose, when to use them, setup, fixtures, and conventions.
 
+## Temporary files
+
+Throwaway files you make while working go in your session scratchpad. When one has to live inside the repo,
+because a test runner has to find it or it imports app code, put it in `.ai/tmp/<slug>/`, the slug a short
+kebab-case name for your work. That folder is gitignored, and you create it if it's missing. Import app code
+there through the `src/*` alias. Name a Vitest probe `*.isolated.spec.ts(x)`, so a mock in it cannot leak into
+other specs.
+
+Delete these files when you're done. The gitignore keeps them out of commits, not out of test runs: an
+unfiltered `pnpm test:vitest` or `pnpm test:pw` still runs a leftover. If you can't delete them, list them in
+your report.
+
 ## Running locally
 
 Two ways to start the dev server:
@@ -62,7 +74,6 @@ Some directories have a `CONTEXT.md` documenting non-obvious patterns specific t
 - `src/slices/` — slice ownership model (who owns an entity's rendering).
 - `src/sprite/` — SVG sprite build pipeline and which outputs are tracked vs. generated.
 - `src/toolkit/` — the `@blockscout/ui-toolkit` workspace package structure.
-- `tools/code-complexity/` — the cognitive-complexity / CRAP code-quality gate: what a failure means and how to fix it.
 - `tools/design-readout/` — the Figma design readout.
 - `tools/dev-server/` — how the dev server and demo deploy get their env vars from a running instance config.
 - `tools/home/` — the home repo dependency: the pin and its bump, and the registry of the tools it supplies.

@@ -1,4 +1,5 @@
 /* eslint-disable no-console -- this is a CLI whose entire job is to print a report to stdout */
+import { createScopeRule, loadConfig } from 'frontend-home/code-complexity';
 import fs from 'fs';
 import { pathToFileURL } from 'url';
 
@@ -157,7 +158,7 @@ function writeStepSummary(report: string): void {
 
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2));
-  const selection = selectFiles(options, process.cwd());
+  const selection = selectFiles(options, process.cwd(), createScopeRule(loadConfig(process.cwd()).scope));
 
   if (selection.outcome === 'empty') {
     console.log(selection.reason);

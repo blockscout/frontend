@@ -619,17 +619,6 @@ export const TEMPLATE_MAP: Record<Route['pathname'], RouteTemplateRecord> = {
       },
     },
   },
-  '/interop-messages': {
-    metadata: {
-      title: {
-        'default': '%chain_name% interop messages',
-      },
-      description: {
-        'default': 'Track %chain_name% cross-chain interop messages. Monitor message status and delivery.',
-      },
-    },
-    og: OG_ROOT_PAGE,
-  },
   '/operations': {
     metadata: {
       title: {
