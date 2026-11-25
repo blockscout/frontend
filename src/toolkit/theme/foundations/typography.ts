@@ -2,14 +2,12 @@
 
 import type { ThemingConfig } from '@chakra-ui/react';
 
-import type { ExcludeUndefined } from 'src/shared/types/utils';
-
 import config from 'src/config';
 
 export const BODY_TYPEFACE = config.misc.fonts.body?.name ?? 'Inter, InterFallback';
 export const HEADING_TYPEFACE = config.misc.fonts.heading?.name ?? 'Poppins';
 
-export const fonts: ExcludeUndefined<ThemingConfig['tokens']>['fonts'] = {
+export const fonts: Exclude<ThemingConfig['tokens'], undefined>['fonts'] = {
   heading: { value: `${ HEADING_TYPEFACE }, sans-serif` },
   body: { value: `${ BODY_TYPEFACE }, sans-serif` },
 };
