@@ -35,6 +35,11 @@ Use `decs.d.ts` exclusively for untyped third-party module declarations.
 declare module 'some-untyped-package';
 ```
 
+## Generic type utilities
+
+Nothing under `src/toolkit/` imports `type-fest`: use a built-in, or define the type next to its use. Why is
+`src/toolkit/CONTEXT.md` ("No `type-fest` in toolkit sources").
+
 ## API response types
 
 Response types come from the generated `@blockscout/*-types` packages, or from a local `types/api.ts` for the
