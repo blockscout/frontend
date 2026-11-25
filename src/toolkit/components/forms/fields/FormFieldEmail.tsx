@@ -2,14 +2,15 @@
 
 import React from 'react';
 import type { FieldValues } from 'react-hook-form';
+import type { SetOptional } from 'type-fest';
 
-import type { FormFieldPropsOptionalPlaceholder } from './types';
+import type { FormFieldPropsBase } from './types';
 
 import { EMAIL_REGEXP } from '../validators/email';
 import { FormFieldText } from './FormFieldText';
 
 const FormFieldEmailContent = <FormFields extends FieldValues>(
-  props: FormFieldPropsOptionalPlaceholder<FormFields>,
+  props: SetOptional<FormFieldPropsBase<FormFields>, 'placeholder'>,
 ) => {
   const rules = React.useMemo(
     () => ({

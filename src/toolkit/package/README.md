@@ -49,10 +49,12 @@ Ensure you have the following peer dependencies installed:
     "@types/node": "^20",
     "@types/react": "18.3.12",
     "@types/react-dom": "18.3.1",
-    "typescript": "5.4.2"
+    "typescript": ">=6"
   }
 }
 ```
+
+TypeScript 6 or newer is required: the package's type declarations import `type-fest`, which needs it.
 
 ## Quick Start
 

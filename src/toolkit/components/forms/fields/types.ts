@@ -27,8 +27,3 @@ export interface FormFieldPropsBase<
   };
 
 }
-
-export interface FormFieldPropsOptionalPlaceholder<FormFields extends FieldValues>
-  extends Omit<FormFieldPropsBase<FormFields>, 'placeholder'> {
-  placeholder?: string;
-}

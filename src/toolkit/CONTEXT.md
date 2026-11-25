@@ -16,12 +16,6 @@ When publishing or versioning, target `src/toolkit/package/package.json` —
 not any other `package.json` in the repo, and not the toolkit folder root
 (it has no manifest).
 
-## No `type-fest` in toolkit sources
-
-Nothing under `src/toolkit/` imports `type-fest`. The package's declarations
-are published, and `type-fest` requires TypeScript 6, a floor every consumer
-would inherit. Use a built-in, or define the type next to its use.
-
 ## Icons in toolkit components
 
 Toolkit components must **not** use `SpriteIcon` or rely on the sprite
