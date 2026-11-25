@@ -20,7 +20,6 @@ describe('rollupSchema', () => {
       NEXT_PUBLIC_FAULT_PROOF_ENABLED: 'true',
       NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: 'true',
       NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: 'false',
-      NEXT_PUBLIC_INTEROP_ENABLED: 'true',
       NEXT_PUBLIC_ROLLUP_STAGE_INDEX: '1',
       NEXT_PUBLIC_ROLLUP_LAYER_NUMBER: '5',
     })).toEqual([]);
@@ -95,7 +94,6 @@ describe('rollupSchema', () => {
       'true',
       'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
     ],
-    [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true', 'NEXT_PUBLIC_INTEROP_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ' ],
     [ 'NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'true', 'NEXT_PUBLIC_FAULT_PROOF_ENABLED can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic' ],
   ])('%s', (name, value, message) => {
     it('is accepted for the optimistic rollup', () => {

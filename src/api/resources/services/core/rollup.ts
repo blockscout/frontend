@@ -2,7 +2,6 @@
 
 import type { ApiResource } from '../../types';
 import type { paths } from '@blockscout/api-types';
-import type { InteropMessageListResponse } from 'src/features/op-interop/types/api';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'src/features/rollup/shibarium/types/api';
 import type { ZkSyncBatch, ZkSyncBatchesResponse } from 'src/features/rollup/zk-sync/types/api';
 
@@ -66,16 +65,6 @@ export const CORE_API_ROLLUP_RESOURCES = {
   },
   optimistic_l2_dispute_games_count: {
     path: '/api/v2/optimism/games/count',
-  },
-
-  // OPTIMISTIC INTEROP
-  optimistic_l2_interop_messages: {
-    path: '/api/v2/optimism/interop/messages',
-    filterFields: [],
-    paginated: true,
-  },
-  optimistic_l2_interop_messages_count: {
-    path: '/api/v2/optimism/interop/messages/count',
   },
 
   // ARBITRUM
@@ -227,8 +216,6 @@ R extends 'core:optimistic_l2_txn_batch_txs' ? paths['/api/v2/transactions/optim
 R extends 'core:optimistic_l2_txn_batch_blocks' ? paths['/api/v2/blocks/optimism-batch/{batch_number_param}']['get'] :
 R extends 'core:optimistic_l2_dispute_games' ? paths['/api/v2/optimism/games']['get'] :
 R extends 'core:optimistic_l2_dispute_games_count' ? paths['/api/v2/optimism/games/count']['get'] :
-R extends 'core:optimistic_l2_interop_messages' ? InteropMessageListResponse :
-R extends 'core:optimistic_l2_interop_messages_count' ? number :
 R extends 'core:shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 R extends 'core:shibarium_deposits' ? ShibariumDepositsResponse :
 R extends 'core:shibarium_withdrawals_count' ? number :

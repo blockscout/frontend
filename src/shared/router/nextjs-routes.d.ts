@@ -68,7 +68,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/hot-contracts">
     | StaticRoute<"/ictt-users">
     | StaticRoute<"/internal-txs">
-    | StaticRoute<"/interop-messages">
     | StaticRoute<"/login">
     | StaticRoute<"/name-services">
     | DynamicRoute<"/name-services/clusters/[name]", { "name": string }>

@@ -32,7 +32,6 @@ export const rollupSchema = v.pipe(
     NEXT_PUBLIC_ROLLUP_PARENT_CHAIN: v.optional(envJson(parentChainSchema)),
     NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: v.optional(envUrl()),
     NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: v.optional(envBoolean()),
-    NEXT_PUBLIC_INTEROP_ENABLED: v.optional(envBoolean()),
     NEXT_PUBLIC_FAULT_PROOF_ENABLED: v.optional(envBoolean()),
     NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS: v.optional(envBoolean()),
     NEXT_PUBLIC_ROLLUP_DA_CELESTIA_NAMESPACE: v.optional(v.pipe(v.string(), v.length(60), v.regex(regexp.HEX_REGEXP_WITH_0X))),
@@ -51,10 +50,6 @@ export const rollupSchema = v.pipe(
   requires('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
     when: isOptimistic,
     message: 'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
-  }),
-  requires('NEXT_PUBLIC_INTEROP_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
-    when: isOptimistic,
-    message: 'NEXT_PUBLIC_INTEROP_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
   }),
   requires('NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'NEXT_PUBLIC_ROLLUP_TYPE', {
     when: isOptimistic,
