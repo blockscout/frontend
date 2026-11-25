@@ -68,4 +68,4 @@ widget with a real wallet, which the smoke set does not.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the swap widget smoke test
+- [x] 1 `[agent]` Add the swap widget smoke test
