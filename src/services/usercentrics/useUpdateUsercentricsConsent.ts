@@ -10,6 +10,7 @@ import config from 'src/config';
 
 import { STORAGE_KEY } from './consts';
 import getConsentStatus from './get-consent-status';
+import { CONSENT_RESULT_ALL_ACCEPTED } from './services';
 
 export default function useUpdateUsercentricsConsent() {
   React.useEffect(() => {
@@ -32,7 +33,10 @@ export default function useUpdateUsercentricsConsent() {
           const parsedConsent = currentConsent ? JSON.parse(currentConsent) as UsercentricsConsentResult : undefined;
           if (!isEqual(parsedConsent, consent)) {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-            window.location.reload();
+            // With nothing stored the page already runs with everything accepted (./config.ts), so accepting all needs no reload
+            if (!isEqual(parsedConsent ?? CONSENT_RESULT_ALL_ACCEPTED, consent)) {
+              window.location.reload();
+            }
           }
         }
       } catch (error) {}
