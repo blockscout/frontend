@@ -24,3 +24,11 @@ checkout -- package.json pnpm-lock.yaml`. Neither change was committed.
   step's command still exits 0; without `--prod` it exits 1 on that advisory.
 - **A runtime dependency.** `lodash` 4.17.20 in `dependencies` as well. The step's command exits 1 on two
   high advisories: GHSA-35jh-r3h4-6jhm and GHSA-r5fr-rjxr-66jc.
+
+## The pull request run, deferred
+
+The push of the audit step started no workflow: the pull request conflicts with `main` in
+`pnpm-lock.yaml` (#3925, #3929), and GitHub starts no `pull_request` run on a conflicting pull request.
+The developer waived the `(human)` criterion on the local run above. The audit's first CI run comes once
+the conflict is resolved and the pull request is marked ready, which the draft skip now waits for. The
+audit is rerun then on the merged lockfile.

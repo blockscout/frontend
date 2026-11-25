@@ -8,10 +8,11 @@ name: Dependency checks
 on:
   workflow_dispatch:
   pull_request:
-    # Draft pull requests run too, for now: this workflow can only be dispatched once it is on main, so
-    # the pull request that adds it is where it gets its first runs. It takes the draft skip of checks.yml
-    # once those runs are confirmed.
-    types: [ opened, synchronize, reopened ]
+    # Every job skips a draft pull request with the condition checks.yml uses, and the checks start when
+    # it is marked ready. The paths filter matches the pull request's whole diff, so without the skip a
+    # draft that adds one package would run all of this on every push. Renovate's pull requests are not
+    # drafts. A manual dispatch carries no pull request, so it runs on any branch.
+    types: [ opened, synchronize, reopened, ready_for_review ]
     paths:
       - 'pnpm-lock.yaml'
 
@@ -22,6 +23,7 @@ jobs:
   vitest_tests:
     name: Unit tests (full suite)
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft != true }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -49,6 +51,7 @@ jobs:
   build_and_smoke:
     name: Production build and smoke run
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft != true }}
     timeout-minutes: 30
     env:
       # If GitHub runners cannot reach staging, the fallback is eth_sepolia.
@@ -104,6 +107,7 @@ jobs:
   audit:
     name: Vulnerability audit
     runs-on: ubuntu-latest
+    if: ${{ github.event.pull_request.draft != true }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

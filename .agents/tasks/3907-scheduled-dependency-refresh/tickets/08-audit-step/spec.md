@@ -44,5 +44,5 @@ its failure should read as "audit" in the run summary.
 ## Leaf worklist
 
 - [x] 1 `[agent]` Add the audit step
-- [ ] 2 `[human]` Confirm the audit is green in the pull request's dependency checks run
-- [ ] 3 `[agent]` Make the dependency checks skip drafts and start on `ready_for_review`
+- [x] 2 `[human]` Confirm the audit is green in the pull request's dependency checks run
+- [x] 3 `[agent]` Make the dependency checks skip drafts and start on `ready_for_review`
