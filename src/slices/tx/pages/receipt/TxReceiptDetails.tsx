@@ -85,7 +85,7 @@ interface Props {
 
 const TxReceiptDetails = ({ data, isLoading }: Props) => {
   return (
-    <Flex flexDir="column" gap={ 3 } textStyle="sm" color="text.secondary">
+    <Flex flexDir="column" gap={ 3 } px={ 1 } textStyle="sm" color="text.secondary">
       { ROW_GROUPS.map((group, index) => (
         <React.Fragment key={ group.id }>
           { index > 0 && <Separator borderColor="border.divider"/> }
