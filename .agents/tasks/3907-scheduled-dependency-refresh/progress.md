@@ -15,3 +15,4 @@ commit time. Task status is derived from these boxes — see `.agents/tasks/stru
 - [ ] 07 → `tickets/07-residual-alerts/`
 - [ ] 08 → `tickets/08-audit-step/`
 - [ ] 09 → `tickets/09-triage-routine-doc/`
+- [ ] 10 → `tickets/10-opentelemetry-latest-2x/`

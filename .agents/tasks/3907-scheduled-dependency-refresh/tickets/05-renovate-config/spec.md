@@ -59,6 +59,11 @@ key (`tools/home/CONTEXT.md`). Renovate must leave it alone.
 **Why patches of the wallet group are separate.** `patches/@lifi__widget-light@4.3.2.patch` and the
 `peerDependencyRules` in `pnpm-workspace.yaml` are written against exact `wagmi` and `viem` versions.
 
+**OpenTelemetry's 0.x jump.** At the 3.x line, the experimental OTel packages go from 0.223 to 0.301. That
+move breaks code and needs a newer `@opentelemetry/api` (ticket 10). Check in the Renovate docs how it
+classifies a 0.x minor bump. If it counts as non-major, the grouped pull request would carry that jump;
+make it a major, opened only on request.
+
 **What cannot be checked here.** A scheduled workflow runs only from `main`, and Renovate reads its config
 from `main`. The first Monday after the merge is the real test; `docs/DEPENDENCIES.md` (ticket 09) tells the reviewer what a correct set of pull requests
 looks like.

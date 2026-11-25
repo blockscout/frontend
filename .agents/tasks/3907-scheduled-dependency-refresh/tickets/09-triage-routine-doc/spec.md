@@ -16,6 +16,7 @@ and the manual checklist for a wallet stack pull request. It is linked from `doc
 - [ ] It says when to bump the parent, when to add a ranged override, and when to dismiss an alert with a
       reason.
 - [ ] It says overrides are reviewed for removal on each refresh.
+- [ ] It says the audit ignore entries are reviewed for removal on each refresh too.
 - [ ] It says a fix younger than the minimum release age waits, except a critical one, which gets a
       temporary exemption, and how that exemption is added and removed.
 - [ ] It says what to do when the audit fails on a dependency pull request: fix it in the same pull
