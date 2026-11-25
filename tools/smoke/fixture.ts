@@ -2,6 +2,7 @@ import type { Page } from '@playwright/test';
 import { test as base, expect } from '@playwright/test';
 
 import { isAllowedPageError } from './allowlist';
+import { isPostHogCaptureUrl } from './posthog';
 
 const watchPageFailures = (page: Page, appOrigin: string): Array<string> => {
   const failures: Array<string> = [];
@@ -30,7 +31,7 @@ const watchPageFailures = (page: Page, appOrigin: string): Array<string> => {
   return failures;
 };
 
-export const test = base.extend<{ failureRules: void }>({
+export const test = base.extend<{ failureRules: void; postHogCaptureStub: void }>({
   failureRules: [ async({ page, baseURL }, use) => {
     if (!baseURL) {
       throw new Error('The smoke config sets no baseURL');
@@ -39,6 +40,13 @@ export const test = base.extend<{ failureRules: void }>({
     const failures = watchPageFailures(page, new URL(baseURL).origin);
     await use();
     expect(failures, 'uncaught exceptions and failed requests to the app').toEqual([]);
+  }, { auto: true } ],
+
+  // the smoke server lets PostHog send events from this automated browser (playwright.config.ts); answered here, none of
+  // them reaches the PostHog project, and a PostHog outage does not fail a run
+  postHogCaptureStub: [ async({ page }, use) => {
+    await page.route(isPostHogCaptureUrl, (route) => route.fulfill({ status: 200 }));
+    await use();
   }, { auto: true } ],
 });
 

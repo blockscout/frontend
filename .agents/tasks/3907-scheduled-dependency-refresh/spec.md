@@ -42,8 +42,8 @@ routine for the alerts a refresh cannot clear.
 7. The smoke set covers: the home page showing real stats, a transaction page and an address page showing
    real data, the API documentation page rendering, the wallet modal opening and listing wallets, a
    connection through an injected test wallet ending with the connected address shown in the header, the
-   swap essential dapp showing the LI.FI widget to the connected test wallet, and the analytics
-   initialization request being sent.
+   swap essential dapp showing the LI.FI widget to the connected test wallet, the Mixpanel initialization
+   request being sent, and the PostHog page view event being sent to PostHog's capture endpoint.
 8. A smoke test fails on an uncaught page exception and on a failed request to the application's own
    origin. Browser console output is not asserted. Known third-party exceptions are listed in one
    allowlist.
@@ -110,6 +110,10 @@ No UI changes.
 - **Wallet probe.** A fake wallet provider is injected into the page before the app loads, so the app
   lists it as an installed wallet and the connect flow runs end to end. No real browser extension: it
   needs a headed browser and breaks with every wallet release.
+- **PostHog probe.** posthog-js drops every event from an automated browser, so the smoke server turns
+  its user-agent filter off, on top of the preset's own PostHog config. Every smoke test answers PostHog's
+  capture requests itself, so no event reaches the PostHog project and whether PostHog accepts one is not
+  checked.
 - **Refresh tool.** Self-hosted Renovate, run by a scheduled workflow in the repository (Q01). It opens
   its pull requests with a token DevOps provides as a repository secret, so they trigger the checks.
 - **Renovate rules.** Lockfile maintenance on Mondays. Wallet group: `wagmi`, `viem`, `@wagmi/*`,
