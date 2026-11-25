@@ -52,7 +52,8 @@ routine for the alerts a refresh cannot clear.
 **Scheduled refresh**
 
 10. A lockfile maintenance pull request is opened weekly without manual work.
-11. Non-major updates of direct dependencies arrive weekly, grouped in one pull request.
+11. Non-major updates of direct dependencies arrive weekly, grouped in one pull request. A
+    `@blockscout/*-types` package pinned to a beta is the exception: it moves by hand.
 12. A major update is opened only when someone asks for it.
 13. Every update of a direct wallet stack dependency, patch and minor included, stays out of the grouped
     pull request: `@lifi/widget-light` arrives in a pull request of its own, the rest of the wallet stack

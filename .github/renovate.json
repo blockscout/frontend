@@ -56,33 +56,10 @@
       "dependencyDashboardApproval": true
     },
     {
-      "description": "By semver a 0.x minor bump may break, like a major, while Renovate counts it as a minor. Keeping it apart from the patches lets the patches still arrive while it waits.",
-      "matchCurrentVersion": "/^0\\./",
-      "separateMinorPatch": true
-    },
-    {
-      "description": "A 0.x minor bump is opened only on request, like a major.",
-      "matchCurrentVersion": "/^0\\./",
-      "matchUpdateTypes": ["minor"],
-      "dependencyDashboardApproval": true
-    },
-    {
-      "description": [
-        "Patches and minors arrive weekly in one pull request, except the wallet stack's (below).",
-        "The branch is named here, not from the group slug, which gets a patch- prefix for a 0.x patch kept apart from its minor."
-      ],
-      "matchUpdateTypes": ["patch"],
+      "description": "Patches and minors arrive weekly in one pull request, except the wallet stack's (below).",
+      "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["!wagmi", "!viem", "!@wagmi/**", "!@reown/**", "!@walletconnect/**", "!@lifi/widget-light"],
-      "groupName": "all non-major dependencies",
-      "group": { "branchTopic": "all-minor-patch" }
-    },
-    {
-      "description": "Minors join it, except a 0.x minor bump and the wallet stack's.",
-      "matchUpdateTypes": ["minor"],
-      "matchCurrentVersion": "!/^0\\./",
-      "matchPackageNames": ["!wagmi", "!viem", "!@wagmi/**", "!@reown/**", "!@walletconnect/**", "!@lifi/widget-light"],
-      "groupName": "all non-major dependencies",
-      "group": { "branchTopic": "all-minor-patch" }
+      "groupName": "all non-major dependencies"
     },
     {
       "description": [
