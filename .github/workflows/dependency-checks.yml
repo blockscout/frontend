@@ -3,8 +3,8 @@ name: Dependency checks
 # Checks for a pull request that changes dependencies. Every dependency edit, in package.json or in the
 # overrides of pnpm-workspace.yaml, rewrites pnpm-lock.yaml, so the lockfile is the one trigger. The
 # regular checks stay change-scoped and run no unit tests on a lockfile-only pull request; this workflow
-# runs the whole suite instead, and builds the app for production to run the smoke set against it. It is
-# not a required check for merging into main.
+# runs the whole suite instead, builds the app for production to run the smoke set against it, and audits
+# the runtime dependencies. It is not a required check for merging into main.
 on:
   workflow_dispatch:
   pull_request:
@@ -100,3 +100,33 @@ jobs:
             tools/smoke/report
             tools/smoke/results
           retention-days: 7
+
+  audit:
+    name: Vulnerability audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 12.4.1
+          cache: true
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Fails on a runtime dependency with a high or critical advisory; development dependencies and
+      # lower severities are reported without failing. An advisory the team lives with is skipped by an
+      # entry in the `audit.ignore` setting of pnpm-workspace.yaml, with its reason, so this step passes
+      # no ignore of its own. It runs only here, not in checks.yml: it reads the whole lockfile against
+      # the live advisory database, so there it would fail pull requests unrelated to the advisory.
+      - name: Audit runtime dependencies
+        run: pnpm audit --prod --audit-level high
