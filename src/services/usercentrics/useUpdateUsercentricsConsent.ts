@@ -13,7 +13,8 @@ import getConsentStatus from './get-consent-status';
 
 export default function useUpdateUsercentricsConsent() {
   React.useEffect(() => {
-    if (!config.services.usercentrics) {
+    const runningConsent = config.services.usercentrics?.consent;
+    if (!runningConsent) {
       return;
     }
 
@@ -32,6 +33,8 @@ export default function useUpdateUsercentricsConsent() {
           const parsedConsent = currentConsent ? JSON.parse(currentConsent) as UsercentricsConsentResult : undefined;
           if (!isEqual(parsedConsent, consent)) {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
+          }
+          if (!isEqual(runningConsent, consent)) {
             window.location.reload();
           }
         }
