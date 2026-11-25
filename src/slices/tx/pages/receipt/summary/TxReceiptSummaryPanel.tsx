@@ -22,7 +22,7 @@ const TxReceiptSummaryPanel = ({ action, children, parties, isLoading }: Props) 
       borderRadius="md"
       bgColor={{ _light: 'blackAlpha.50', _dark: 'whiteAlpha.100' }}
     >
-      <Flex flexDir="column" alignItems="center" rowGap={ 2 } px={ 6 } py={ 4 } textAlign="center">
+      <Flex flexDir="column" alignItems="center" rowGap={ 2 } p={ 4 } textAlign="center">
         { action && (
           <Skeleton loading={ isLoading }>
             <Heading as="h3" textStyle="heading.md" color="text.secondary">{ action }</Heading>
@@ -33,7 +33,7 @@ const TxReceiptSummaryPanel = ({ action, children, parties, isLoading }: Props) 
         </Box>
       </Flex>
       <Separator borderColor="bg.primary"/>
-      <Box px={ 6 } py={ 4 }>
+      <Box p={ 4 }>
         { parties }
       </Box>
     </Flex>

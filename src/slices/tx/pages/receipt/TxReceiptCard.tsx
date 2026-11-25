@@ -41,11 +41,11 @@ const TxReceiptCard = ({ hash, data, isLoading: isTxLoading }: Props) => {
     <Flex
       as="article"
       flexDir="column"
-      gap={ 8 }
+      gap={ 6 }
       w={{ base: '100%', lg: isLoading ? NARROW_CARD_WIDTH : 'fit-content' }}
       minW={{ lg: NARROW_CARD_WIDTH }}
       maxW="500px"
-      p={{ base: 6, lg: 8 }}
+      p={ 6 }
       bgColor="bg.primary"
       borderRadius="md"
       boxShadow="size.xl"

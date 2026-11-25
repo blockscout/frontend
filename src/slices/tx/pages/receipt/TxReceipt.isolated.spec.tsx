@@ -88,7 +88,7 @@ describe('transaction receipt', () => {
     expect(screen.getByText('Success')).toBeTruthy();
     expect(getRowValue('Date')).toBe('Oct 10 2022');
     expect(getRowValue('Time')).toBe(`14:34:30 (+00:00${ nbsp }UTC)`);
-    expect(getRowValue('Tx fee')).toMatch(/^0\.007143168\s*ETH\s*\(<\s*\$0\.01\)$/);
+    expect(getRowValue('Tx fee')).toMatch(/^0\.00714317\s*ETH\s*\(<\s*\$0\.01\)$/);
     expect(getRowValue('Chain')).toBe('Blockscout');
     expect(getRowValue('Tx hash')).toBe('0x62...3193');
   });
@@ -472,7 +472,7 @@ describe('transaction receipt in multichain mode', () => {
     renderMultichainReceipt();
     await waitForLoaded();
 
-    expect(getRowValue('Tx fee')).toMatch(/^0\.007143168\s*xDAI/);
+    expect(getRowValue('Tx fee')).toMatch(/^0\.00714317\s*xDAI/);
   });
 
   it('scales the fee by the decimals of the routed chain\'s native coin', async() => {
