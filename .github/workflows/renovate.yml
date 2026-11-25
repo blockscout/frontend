@@ -1,0 +1,36 @@
+name: Renovate
+
+# Self-hosted Renovate for this repository, with the config in .github/renovate.json, which Renovate
+# reads from main. It opens its pull requests with the RENOVATE_TOKEN token, not GITHUB_TOKEN: a pull
+# request opened with GITHUB_TOKEN would not start the dependency checks.
+on:
+  schedule:
+    # Inside the Monday window of the config's schedule (UTC), early enough that a scheduled run GitHub
+    # starts late still falls in it. Outside the window Renovate opens nothing on its own.
+    - cron: '30 0 * * 1'
+  # A run by hand opens what was asked for on the Dependency Dashboard and refreshes the open pull
+  # requests, at any time.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Two runs at once would push to the same branches.
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  renovate:
+    name: Renovate
+    runs-on: ubuntu-latest
+    # A fork has neither the token nor any business refreshing this repository.
+    if: ${{ github.repository == 'blockscout/frontend' }}
+    steps:
+      - name: Run Renovate
+        uses: renovatebot/github-action@v46.3.15
+        with:
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          # The config is already on main, so there is nothing for an onboarding pull request to add.
+          RENOVATE_ONBOARDING: 'false'

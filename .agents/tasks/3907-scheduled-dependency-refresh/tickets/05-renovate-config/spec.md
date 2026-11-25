@@ -10,8 +10,9 @@
 Self-hosted Renovate (Q01): a scheduled workflow in this repository runs it with the `RENOVATE_TOKEN`
 secret, and a config tells it what to open once this branch is on `main`. Every Monday it opens a lockfile
 maintenance pull request and one grouped pull request with the non-major updates of direct dependencies.
-A major update appears only when someone asks for it. Every update of a direct wallet stack dependency
-comes in its own pull request. Nothing merges by itself, and each pull request passes the template and
+A major update appears only when someone asks for it. The updates of direct wallet stack dependencies
+stay out of the grouped pull request: `@lifi/widget-light` comes in a pull request of its own, the rest of
+the wallet stack together in one. Nothing merges by itself, and each pull request passes the template and
 category check as opened.
 
 ## Acceptance criteria
@@ -20,7 +21,8 @@ category check as opened.
 - [ ] Non-major updates of direct dependencies are grouped into one weekly pull request.
 - [ ] Major updates need an explicit request and are not opened otherwise.
 - [ ] `wagmi`, `viem`, `@wagmi/*`, `@reown/*`, `@walletconnect/*` and `@lifi/widget-light` are excluded
-      from the grouped pull request and get one pull request per update, patches and minors included.
+      from the grouped pull request, patches and minors included. `@lifi/widget-light` gets a pull request
+      of its own; the others share one.
 - [ ] Automerge is off for every rule.
 - [ ] Pull requests for vulnerability alerts outside the schedule are off.
 - [ ] The minimum release age matches `minimumReleaseAge` in `pnpm-workspace.yaml` and covers every
@@ -58,6 +60,7 @@ key (`tools/home/CONTEXT.md`). Renovate must leave it alone.
 
 **Why patches of the wallet group are separate.** `patches/@lifi__widget-light@4.3.2.patch` and the
 `peerDependencyRules` in `pnpm-workspace.yaml` are written against exact `wagmi` and `viem` versions.
+`@lifi/widget-light` is apart from the rest of the group because each of its bumps means redoing that patch.
 
 **OpenTelemetry's 0.x jump.** At the 3.x line, the experimental OTel packages go from 0.223 to 0.301. That
 move breaks code and needs a newer `@opentelemetry/api` (ticket 10). Check in the Renovate docs how it
@@ -70,8 +73,8 @@ looks like.
 
 ## Leaf worklist
 
-- [ ] 1 `[agent]` Add the Renovate config with the schedule, grouping, wallet and major rules
-- [ ] 2 `[agent]` Add the label and the body template, and the `checkPr` unit test for the body shape
-- [ ] 3 `[agent]` Validate the config with `renovate-config-validator`
-- [ ] 4 `[agent]` Add the scheduled workflow that runs Renovate with the `RENOVATE_TOKEN` secret
-- [ ] 5 `[human]` Confirm with DevOps that the `RENOVATE_TOKEN` secret is in the repository
+- [x] 1 `[agent]` Add the Renovate config with the schedule, grouping, wallet and major rules
+- [x] 2 `[agent]` Add the label and the body template, and the `checkPr` unit test for the body shape
+- [x] 3 `[agent]` Validate the config with `renovate-config-validator`
+- [x] 4 `[agent]` Add the scheduled workflow that runs Renovate with the `RENOVATE_TOKEN` secret
+- [x] 5 `[human]` Confirm with DevOps that the `RENOVATE_TOKEN` secret is in the repository

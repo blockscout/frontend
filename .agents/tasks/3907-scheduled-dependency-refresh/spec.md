@@ -53,8 +53,9 @@ routine for the alerts a refresh cannot clear.
 10. A lockfile maintenance pull request is opened weekly without manual work.
 11. Non-major updates of direct dependencies arrive weekly, grouped in one pull request.
 12. A major update is opened only when someone asks for it.
-13. Every update of a direct wallet stack dependency, patch and minor included, arrives in its own pull
-    request and never in the grouped one.
+13. Every update of a direct wallet stack dependency, patch and minor included, stays out of the grouped
+    pull request: `@lifi/widget-light` arrives in a pull request of its own, the rest of the wallet stack
+    together in one.
 14. No dependency pull request merges without a human.
 15. The existing minimum release age applies to every scheduled pull request.
 16. A scheduled pull request passes the pull request template and category check as opened, carrying the
@@ -111,7 +112,9 @@ No UI changes.
   its pull requests with a token DevOps provides as a repository secret, so they trigger the checks.
 - **Renovate rules.** Lockfile maintenance on Mondays. Wallet group: `wagmi`, `viem`, `@wagmi/*`,
   `@reown/*`, `@walletconnect/*`, `@lifi/widget-light`. The group holds patches too, because the
-  `@lifi/widget-light` patch is written against exact `wagmi` and `viem` versions. Transitive wallet
+  `@lifi/widget-light` patch is written against exact `wagmi` and `viem` versions. `@lifi/widget-light` gets a
+  pull request of its own, since each of its bumps means redoing that patch; the rest moves together, since
+  Reown AppKit pins exact versions of its own packages and of WalletConnect. Transitive wallet
   packages that float within a range still move with lockfile maintenance; the smoke wallet probe covers
   them. No automerge anywhere. Immediate security pull
   requests are off: an advisory published between refreshes surfaces on the next refresh pull request.

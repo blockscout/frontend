@@ -1,0 +1,97 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "Run by .github/workflows/renovate.yml. Only the npm dependencies are refreshed: the actions, the Docker base image and the Node version stay manual.",
+    "The workflow runs once inside the Monday window, so that run opens every weekly pull request: no hourly or concurrent cap.",
+    "The release age and its exemptions are the minimumReleaseAge settings of pnpm-workspace.yaml. pnpm enforces them on every install, lock file maintenance included, and Renovate reads them to wait as long before it proposes an update.",
+    "The label and the body make the pull request pass the PR check as opened (tools/release/check-pr.ts). Every template heading comes before the release notes, the part Renovate cuts from a body that is too long."
+  ],
+  "extends": ["config:recommended"],
+  "enabledManagers": ["npm"],
+  "schedule": ["* 0-3 * * 1"],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0,
+  "minimumReleaseAgePackageManagerSync": true,
+  "labels": ["dependencies"],
+  "prBodyTemplate": "## Description\n\n{{{header}}}{{{table}}}{{{warnings}}}{{{notes}}}\n\n## Environment variables\n\nNone\n\n## Minimum API version\n\nNone\n\n## Breaking or incompatible changes\n\nNone\n\n## Additional information\n\n{{{changelogs}}}{{{configDescription}}}{{{controls}}}{{{footer}}}",
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 0-3 * * 1"]
+  },
+  "vulnerabilityAlerts": {
+    "description": "A security fix arrives with the next weekly refresh, not in a pull request of its own outside the schedule.",
+    "enabled": false
+  },
+  "packageRules": [
+    {
+      "description": "Node and pnpm are also set in the workflows, the Dockerfile and .nvmrc, and move with them by hand.",
+      "matchDepTypes": ["engines", "packageManager"],
+      "enabled": false
+    },
+    {
+      "description": "Each override in pnpm-workspace.yaml is kept by hand for the parent named on its line. Lock file maintenance moves the ranged ones.",
+      "matchDepTypes": ["pnpm-workspace.overrides"],
+      "enabled": false
+    },
+    {
+      "description": "The home repo pin moves only with `pnpm home:bump`, which also rewrites its allowBuilds key (tools/home/CONTEXT.md).",
+      "matchDepNames": ["frontend-home"],
+      "enabled": false
+    },
+    {
+      "description": "react-doctor is a pnpm project of its own, bumped by hand after a full scan (tools/react-doctor/CONTEXT.md).",
+      "matchFileNames": ["tools/react-doctor/**"],
+      "enabled": false
+    },
+    {
+      "description": "A beta of a types package is pinned by hand (the publish-beta-types skill), and its builds are named by a commit hash, not ordered. Leaving it for a stable release is a major.",
+      "matchPackageNames": ["@blockscout/**"],
+      "matchCurrentVersion": "/-beta\\./",
+      "matchUpdateTypes": ["patch", "minor"],
+      "enabled": false
+    },
+    {
+      "description": "Major updates and package replacements are opened only when someone asks for them on the Dependency Dashboard.",
+      "matchUpdateTypes": ["major", "replacement"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "By semver a 0.x minor bump may break, like a major, while Renovate counts it as a minor. Keeping it apart from the patches lets the patches still arrive while it waits.",
+      "matchCurrentVersion": "/^0\\./",
+      "separateMinorPatch": true
+    },
+    {
+      "description": "A 0.x minor bump is opened only on request, like a major.",
+      "matchCurrentVersion": "/^0\\./",
+      "matchUpdateTypes": ["minor"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": [
+        "Patches and minors arrive weekly in one pull request, except the wallet stack's (below).",
+        "The branch is named here, not from the group slug, which gets a patch- prefix for a 0.x patch kept apart from its minor."
+      ],
+      "matchUpdateTypes": ["patch"],
+      "matchPackageNames": ["!wagmi", "!viem", "!@wagmi/**", "!@reown/**", "!@walletconnect/**", "!@lifi/widget-light"],
+      "groupName": "all non-major dependencies",
+      "group": { "branchTopic": "all-minor-patch" }
+    },
+    {
+      "description": "Minors join it, except a 0.x minor bump and the wallet stack's.",
+      "matchUpdateTypes": ["minor"],
+      "matchCurrentVersion": "!/^0\\./",
+      "matchPackageNames": ["!wagmi", "!viem", "!@wagmi/**", "!@reown/**", "!@walletconnect/**", "!@lifi/widget-light"],
+      "groupName": "all non-major dependencies",
+      "group": { "branchTopic": "all-minor-patch" }
+    },
+    {
+      "description": [
+        "The wallet stack stays out of the weekly pull request, patches included: patches/@lifi__widget-light@4.3.2.patch and the peerDependencyRules of pnpm-workspace.yaml are written against exact wagmi and viem versions.",
+        "wagmi, viem, Reown AppKit and WalletConnect move together in one pull request: AppKit pins exact versions of its own packages and of WalletConnect, and takes wagmi and viem as peers.",
+        "@lifi/widget-light gets a pull request of its own: each of its bumps means redoing its patch, which would hold the rest back."
+      ],
+      "matchPackageNames": ["wagmi", "viem", "@wagmi/**", "@reown/**", "@walletconnect/**"],
+      "groupName": "wallet stack"
+    }
+  ]
+}
