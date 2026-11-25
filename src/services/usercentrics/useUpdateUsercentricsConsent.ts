@@ -10,19 +10,6 @@ import config from 'src/config';
 import { STORAGE_KEY } from './consts';
 import getConsentStatus from './get-consent-status';
 
-function readStoredConsent(): unknown {
-  const storedConsent = window.localStorage.getItem(STORAGE_KEY);
-  if (!storedConsent) {
-    return;
-  }
-
-  try {
-    return JSON.parse(storedConsent);
-  } catch {
-    return;
-  }
-}
-
 export default function useUpdateUsercentricsConsent() {
   React.useEffect(() => {
     const runningConsent = config.services.usercentrics?.consent;
@@ -41,9 +28,7 @@ export default function useUpdateUsercentricsConsent() {
       try {
         const consent = getConsentStatus(details);
         if (consent) {
-          if (!isEqual(readStoredConsent(), consent)) {
-            window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
-          }
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
           if (!isEqual(runningConsent, consent)) {
             window.location.reload();
           }

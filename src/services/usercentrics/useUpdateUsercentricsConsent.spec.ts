@@ -16,8 +16,8 @@ function dispatchUserChoice(given: boolean, serviceNames: Array<string> = SERVIC
   window.dispatchEvent(new CustomEvent('UC_CONSENT', { detail: { consent: { fromUserAction: true }, services } }));
 }
 
-async function renderOnPage(run: () => void): Promise<void> {
-  await withEnvs(ENVS, async() => {
+async function renderOnPage(run: () => void, envs: Array<[ string, string ]> = ENVS): Promise<void> {
+  await withEnvs(envs, async() => {
     const { renderHook } = await import('vitest/lib');
     const { 'default': useUpdateUsercentricsConsent } = await import('./useUpdateUsercentricsConsent');
     const { unmount } = renderHook(() => useUpdateUsercentricsConsent());
@@ -85,5 +85,12 @@ describe('useUpdateUsercentricsConsent', () => {
     await renderOnPage(() => dispatchUserChoice(true));
 
     expect(reload).not.toHaveBeenCalled();
+  });
+
+  it('ignores the banner when Usercentrics is not configured', async() => {
+    await renderOnPage(() => dispatchUserChoice(true), []);
+
+    expect(reload).not.toHaveBeenCalled();
+    expect(window.localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 });
