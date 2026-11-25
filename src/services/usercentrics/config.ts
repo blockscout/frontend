@@ -16,8 +16,8 @@ interface UsercentricsConfig {
 }
 
 const consent = (() => {
-  // The server cannot read the user's choice, and the CSP and the server-rendered ads it builds from this
-  // value must allow every service the user may have accepted. The browser applies the actual choice.
+  // The server cannot read the user's choice, and the CSP and the ad provider it picks from this value
+  // must cover every service the user may have accepted. The browser applies the actual choice.
   if (!isBrowser()) {
     return CONSENT_RESULT_ALL_ACCEPTED;
   }

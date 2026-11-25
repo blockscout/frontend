@@ -4,12 +4,24 @@ import { isEqual } from 'es-toolkit';
 import React from 'react';
 
 import type { ConsentDetails } from './lib-types';
-import type { UsercentricsConsentResult } from './types';
 
 import config from 'src/config';
 
 import { STORAGE_KEY } from './consts';
 import getConsentStatus from './get-consent-status';
+
+function readStoredConsent(): unknown {
+  const storedConsent = window.localStorage.getItem(STORAGE_KEY);
+  if (!storedConsent) {
+    return;
+  }
+
+  try {
+    return JSON.parse(storedConsent);
+  } catch {
+    return;
+  }
+}
 
 export default function useUpdateUsercentricsConsent() {
   React.useEffect(() => {
@@ -29,9 +41,7 @@ export default function useUpdateUsercentricsConsent() {
       try {
         const consent = getConsentStatus(details);
         if (consent) {
-          const currentConsent = window.localStorage.getItem(STORAGE_KEY);
-          const parsedConsent = currentConsent ? JSON.parse(currentConsent) as UsercentricsConsentResult : undefined;
-          if (!isEqual(parsedConsent, consent)) {
+          if (!isEqual(readStoredConsent(), consent)) {
             window.localStorage.setItem(STORAGE_KEY, JSON.stringify(consent));
           }
           if (!isEqual(runningConsent, consent)) {

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import withEnvs from 'vitest/utils/mockEnvs';
 
 describe('usercentrics consent on the server', () => {
-  it('keeps every service enabled, since the CSP and the server-rendered ads must allow whatever the user may have accepted', async() => {
+  it('keeps every service enabled, since the CSP and the ad provider the server picks must cover whatever the user may have accepted', async() => {
     await withEnvs([
       [ 'NEXT_PUBLIC_USERCENTRICS_CONFIG', JSON.stringify({ rulesetId: 'test-ruleset' }) ],
       [ 'NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN', 'mixpanel-token' ],
