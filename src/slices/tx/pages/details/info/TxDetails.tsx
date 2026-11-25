@@ -14,8 +14,6 @@ import TxDetailsSuave from 'src/features/chain-variants/suave/pages/tx/TxDetails
 import TxDetailsTacOperation from 'src/features/chain-variants/tac/pages/tx/TxDetailsTacOperation';
 import TxDetailsCrossChainMessages from 'src/features/cross-chain-txs/pages/tx/TxDetailsCrossChainMessages';
 import TxDetailsCrossChainTransfers from 'src/features/cross-chain-txs/pages/tx/TxDetailsCrossChainTransfers';
-import TxDetailsInterop from 'src/features/op-interop/pages/tx/TxDetailsInterop';
-import TxDetailsInteropTarget from 'src/features/op-interop/pages/tx/TxDetailsInteropTarget';
 import TxDetailsArbitrumBatch from 'src/features/rollup/arbitrum/pages/tx/TxDetailsArbitrumBatch';
 import TxDetailsArbitrumFees from 'src/features/rollup/arbitrum/pages/tx/TxDetailsArbitrumFees';
 import TxDetailsArbitrumGasUsed from 'src/features/rollup/arbitrum/pages/tx/TxDetailsArbitrumGasUsed';
@@ -100,10 +98,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       { config.features.tac.isEnabled && <TxDetailsTacOperation isLoading={ isLoading } txHash={ data.hash }/> }
 
-      { data.op_interop_messages ? data.op_interop_messages.map((message) => (
-        <TxDetailsInterop key={ message.nonce } data={ message } isLoading={ isLoading }/>
-      )) : null }
-
       { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainMessages hash={ data.hash } isLoading={ isLoading }/> }
 
       <TxHash hash={ data.hash } isLoading={ isLoading } status={ data.status }/>
@@ -149,8 +143,6 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
       ) }
 
       { config.features.crossChainTxs.isEnabled && <TxDetailsCrossChainTransfers hash={ data.hash } isLoading={ isLoading }/> }
-
-      <TxDetailsInteropTarget data={ data } isLoading={ isLoading }/>
 
       <DetailedInfo.ItemDivider/>
 

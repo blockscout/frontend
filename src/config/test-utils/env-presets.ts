@@ -96,12 +96,6 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   externalTxs: [
     [ 'NEXT_PUBLIC_TX_EXTERNAL_TRANSACTIONS_CONFIG', '{"chain_name": "Solana", "chain_logo_url": "http://example.url", "explorer_url_template": "https://scan.io/tx/{hash}"}' ],
   ],
-  interop: [
-    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'optimistic' ],
-    [ 'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN', '{"baseUrl":"https://localhost:3101"}' ],
-    [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
-    [ 'NEXT_PUBLIC_INTEROP_ENABLED', 'true' ],
-  ],
   tac: [
     [ 'NEXT_PUBLIC_TAC_OPERATION_LIFECYCLE_API_HOST', 'http://localhost:3010' ],
     [ 'NEXT_PUBLIC_TAC_TON_EXPLORER_URL', 'https://testnet.tonviewer.com' ],

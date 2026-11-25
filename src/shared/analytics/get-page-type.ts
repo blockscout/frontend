@@ -64,7 +64,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/advanced-filter': 'Advanced filter',
   '/pools': 'DEX pools',
   '/pools/[hash]': 'Pool details',
-  '/interop-messages': 'Interop messages',
   '/operations': 'Operations',
   '/operation/[id]': 'Operation details',
   '/cc/tx/[hash]': 'Cross-chain transaction details',
