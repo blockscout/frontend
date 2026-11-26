@@ -53,4 +53,20 @@ describe('cookies', () => {
       expect(cookies.get(cookies.NAMES.TXS_SORT)).toBe('value-desc');
     });
   });
+
+  it('marks a cookie secure when the app is served over https', async() => {
+    await withEnvs([ [ 'NEXT_PUBLIC_APP_PROTOCOL', 'https' ] ], async() => {
+      const cookies = await import('./index');
+
+      expect(cookies.getDefaultAttributes()).toEqual({ path: '/', secure: true });
+    });
+  });
+
+  it('does not mark a cookie secure when the app is served over http', async() => {
+    await withEnvs([ [ 'NEXT_PUBLIC_APP_PROTOCOL', 'http' ] ], async() => {
+      const cookies = await import('./index');
+
+      expect(cookies.getDefaultAttributes()).toEqual({ path: '/', secure: false });
+    });
+  });
 });
