@@ -18,7 +18,6 @@ export { default as csvExport } from 'src/features/csv-export/config';
 export { default as dataAvailability } from 'src/features/data-availability/config';
 export { default as deFiDropdown } from 'src/features/defi-dropdown/config';
 export { default as easterEggs } from 'src/features/easter-eggs/config';
-export { default as externalTxs } from 'src/features/external-txs/config';
 export { default as flashblocks } from 'src/features/flashblocks/config';
 export { default as gasTracker } from 'src/features/gas-tracker/config';
 export { default as getGasButton } from 'src/features/get-gas-button/config';

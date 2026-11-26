@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LicenseRef-Blockscout
 
 import type { StatsApiResourceNameRefetchInterval } from 'src/features/chain-stats/types/config';
-import type { TxExternalTxsConfig } from 'src/features/external-txs/types/client';
 import type { GasRefuelProviderConfig } from 'src/features/get-gas-button/types/client';
 import type { MultichainProviderConfig } from 'src/features/multichain-button/types/client';
 import type { TokenActionButtonConfig } from 'src/features/token-action-button/types/config';
@@ -55,12 +54,6 @@ const gasRefuelProvider: GasRefuelProviderConfig = {
 const statsRefetchInterval: Record<StatsApiResourceNameRefetchInterval, number> = {
   'stats:counters': 10_000,
   'stats:pages_main': 10_000,
-};
-
-export const txExternalTxsConfig: TxExternalTxsConfig = {
-  chain_name: 'Ethereum',
-  chain_logo_url: 'https://example.com/logo.png',
-  explorer_url_template: 'https://example.com/tx/{hash}',
 };
 
 export const singleChainConfig: Record<string, string> = {
