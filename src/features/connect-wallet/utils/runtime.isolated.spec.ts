@@ -4,7 +4,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 type ModalStateCb = (state: { open: boolean }) => void;
 
+interface ConnectedWallet {
+  connector: { getChainId: () => Promise<number> } | undefined;
+}
+
 const actionsMock = vi.hoisted(() => ({
+  getAccount: vi.fn<() => ConnectedWallet>(),
   disconnect: vi.fn<() => Promise<void>>(),
   signMessage: vi.fn<() => Promise<string>>(),
   switchChain: vi.fn<() => Promise<{ id: number }>>(),
@@ -74,6 +79,7 @@ describe('connect-wallet runtime', () => {
   beforeEach(() => {
     vi.resetModules();
     vi.resetAllMocks();
+    actionsMock.getAccount.mockReturnValue({ connector: undefined });
     actionsMock.disconnect.mockResolvedValue(undefined);
     actionsMock.signMessage.mockResolvedValue('0xSignature');
     actionsMock.switchChain.mockResolvedValue({ id: 1 });
@@ -134,6 +140,26 @@ describe('connect-wallet runtime', () => {
 
       await runtime.disconnect();
       expect(actionsMock.disconnect).toHaveBeenCalledWith(wagmiConfigMock.config, undefined);
+    });
+
+    it('does not ask the wallet to switch when it is already on the requested chain', async() => {
+      actionsMock.getAccount.mockReturnValue({ connector: { getChainId: () => Promise.resolve(1) } });
+      const { getWeb3Runtime } = await importRuntime();
+      const runtime = await getWeb3Runtime();
+
+      await runtime.switchChain({ chainId: 1 });
+
+      expect(actionsMock.switchChain).not.toHaveBeenCalled();
+    });
+
+    it('asks the wallet to switch when it is on another chain', async() => {
+      actionsMock.getAccount.mockReturnValue({ connector: { getChainId: () => Promise.resolve(10) } });
+      const { getWeb3Runtime } = await importRuntime();
+      const runtime = await getWeb3Runtime();
+
+      await runtime.switchChain({ chainId: 1 });
+
+      expect(actionsMock.switchChain).toHaveBeenCalledWith(wagmiConfigMock.config, { chainId: 1 });
     });
 
     it('drives the AppKit modal controls', async() => {
